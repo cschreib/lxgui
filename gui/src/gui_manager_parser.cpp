@@ -21,9 +21,9 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
         {
             if (pElemBlock->get_name() == "Script")
             {
-                std::string sFile = pAddOn->sDirectory + "/" + pElemBlock->get_attribute("file");
+                std::string sScriptFile = pAddOn->sDirectory + "/" + pElemBlock->get_attribute("file");
 
-                try { pLua_->do_file(sFile); }
+                try { pLua_->do_file(sScriptFile); }
                 catch (lua::exception& e)
                 {
                     std::string sError = e.get_description();

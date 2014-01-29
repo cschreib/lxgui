@@ -643,16 +643,16 @@ void manager::load_addon_directory_(const std::string& sDirectory)
                     utils::trim(sKey, ' ');
                     std::string sValue = lArgs[1];
                     utils::trim(sValue, ' ');
-                    auto iter = lAddOns.find(sKey);
-                    if (iter != lAddOns.end())
+                    auto iter2 = lAddOns.find(sKey);
+                    if (iter2 != lAddOns.end())
                     {
                         if (bCore)
-                            lCoreAddOnStack.push_back(&iter->second);
+                            lCoreAddOnStack.push_back(&iter2->second);
                         else
-                            lAddOnStack.push_back(&iter->second);
+                            lAddOnStack.push_back(&iter2->second);
 
                         if (sValue != "1")
-                            iter->second.bEnabled = false;
+                            iter2->second.bEnabled = false;
                     }
                 }
             }
@@ -1146,7 +1146,6 @@ void manager::update(float fDelta)
             begin(pRenderTarget_);
             pRenderTarget_->clear(color::EMPTY);
 
-            std::map<frame_strata, strata>::const_iterator iterStrata;
             foreach (iterStrata, lStrataList_)
             {
                 if (iterStrata->second.pSprite)

@@ -299,11 +299,12 @@ bool make_directory_(const std::string& sPath)
 
 bool make_directory(const std::string& sPath)
 {
-    std::string sTemp = utils::trim(sPath, " \t");
+    std::string sTemp = sPath;
+    utils::trim(sTemp, " \t");
     utils::replace(sTemp, "\\", "/");
     std::vector<std::string> lDirs = utils::cut(sTemp, "/");
     sTemp = "";
-    
+
     // Add back the root directory or drive
 #ifdef LINUX
     if (!sTemp.empty() && sTemp[0] == '/')

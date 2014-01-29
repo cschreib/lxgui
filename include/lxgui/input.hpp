@@ -443,7 +443,7 @@ namespace input
         std::string get_mouse_button_string(mouse::button mID) const;
 
         /// Sets the double click maximum time.
-        /** \param dDoubleClickTime
+        /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
         */
         void set_doubleclick_time(double dDoubleClickTime);
 

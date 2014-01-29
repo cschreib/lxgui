@@ -1121,18 +1121,18 @@ int lua_frame::_set_script(lua_State* pLua)
         std::string sScriptName = mFunc.get(0)->get_string();
         if (pFrameParent_->can_use_script(sScriptName))
         {
-            lua::state* pLua = mFunc.get_state();
+            lua::state* pState = mFunc.get_state();
             utils::wptr<lua::argument> pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::TYPE_FUNCTION)
             {
-                pLua->push_value(pArg->get_index());
-                pLua->set_global(pFrameParent_->get_name() + ":" + sScriptName);
+                pState->push_value(pArg->get_index());
+                pState->set_global(pFrameParent_->get_name() + ":" + sScriptName);
                 pFrameParent_->notify_script_defined(sScriptName, true);
             }
             else
             {
-                pLua->push_nil();
-                pLua->set_global(pFrameParent_->get_name() + ":" + sScriptName);
+                pState->push_nil();
+                pState->set_global(pFrameParent_->get_name() + ":" + sScriptName);
                 pFrameParent_->notify_script_defined(sScriptName, false);
             }
         }

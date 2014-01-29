@@ -76,8 +76,8 @@ int lua_slider::_get_orientation(lua_State* pLua)
 
     switch (pSliderParent_->get_orientation())
     {
-        case slider::ORIENT_VERTICAL     : mFunc.push(std::string("VERTICAL"));
-        case slider::ORIENT_HORIZONTAL : mFunc.push(std::string("HORIZONTAL"));
+        case slider::ORIENT_VERTICAL     : mFunc.push(std::string("VERTICAL")); break;
+        case slider::ORIENT_HORIZONTAL : mFunc.push(std::string("HORIZONTAL")); break;
     }
 
     return mFunc.on_return();

@@ -1018,7 +1018,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
                 {
                     throw utils::exception(pDoc_->get_current_location(),
                         "\""+sParent+"\" has not (yet?) been pre-defined and cannot be "+
-                        (bCopy ? std::string("copied.") : std::string("inherited."))
+                        std::string(bCopy ? "copied." : "inherited.")
                     );
                 }
             }
@@ -1186,7 +1186,7 @@ void document::def_state::read_opening_tag(const std::string& sTagContent)
                 {
                     throw utils::exception(pDoc_->get_current_location(),
                         "\""+sParent+"\" has not (yet?) been pre-defined and cannot be "+
-                        (bCopy ? std::string("copied.") : std::string("inherited."))
+                        std::string(bCopy ? "copied." : "inherited.")
                     );
                 }
             }

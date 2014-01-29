@@ -593,6 +593,9 @@ std::string state::serialize(const std::string& sTab, int iIndex)
             break;
         }
 
+        case TYPE_NONE :
+        case TYPE_FUNCTION :
+        case TYPE_THREAD :
         default : break;
     }
 

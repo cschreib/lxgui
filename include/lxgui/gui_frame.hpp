@@ -495,8 +495,7 @@ namespace gui
         void set_min_resize(uint uiMinWidth, uint uiMinHeight);
 
         /// Sets this frame's minimum size.
-        /** \param uiMinWidth  The minimum width this frame can have
-        *   \param uiMinHeight The minimum height this frame can have
+        /** \param mMin Minimum dimensions of this frame
         */
         void set_min_resize(const vector2ui& mMin);
 

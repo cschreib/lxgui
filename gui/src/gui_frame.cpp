@@ -1070,9 +1070,9 @@ void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
 
     if (bDefined)
     {
-        std::map<std::string, handler>::iterator iter = lDefinedHandlerList_.find(sScriptName);
-        if (iter != lDefinedHandlerList_.end())
-            lDefinedHandlerList_.erase(iter);
+        std::map<std::string, handler>::iterator iter2 = lDefinedHandlerList_.find(sScriptName);
+        if (iter2 != lDefinedHandlerList_.end())
+            lDefinedHandlerList_.erase(iter2);
 
         lDefinedScriptList_[sCutScriptName] = "";
     } else
@@ -1330,14 +1330,14 @@ void frame::on(const std::string& sScriptName, event* pEvent)
             // that will print the actual line numbers in the XML file.
             pErrorFunc = pLua->get_lua_error_function();
 
-            std::map<std::string, script_info>::const_iterator iter = lXMLScriptInfoList_.find(sScriptName);
-            if (iter != lXMLScriptInfoList_.end())
+            std::map<std::string, script_info>::const_iterator iter2 = lXMLScriptInfoList_.find(sScriptName);
+            if (iter2 != lXMLScriptInfoList_.end())
             {
                 sFile     = pLua->get_global_string("_xml_file_name", false, "");
                 uiLineNbr = pLua->get_global_int("_xml_line_nbr", false, 0);
 
-                pLua->push_string(iter->second.sFile);     pLua->set_global("_xml_file_name");
-                pLua->push_number(iter->second.uiLineNbr); pLua->set_global("_xml_line_nbr");
+                pLua->push_string(iter2->second.sFile);     pLua->set_global("_xml_file_name");
+                pLua->push_number(iter2->second.uiLineNbr); pLua->set_global("_xml_line_nbr");
 
                 pLua->set_lua_error_function(l_xml_error);
             }
@@ -1561,7 +1561,7 @@ void frame::set_parent(uiobject* pParent)
         gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_parent(this)." << std::endl;
         return;
     }
-    
+
     if (pParent != pParent_)
     {
         if (!pParentFrame_ && uiID_ != uint(-1))

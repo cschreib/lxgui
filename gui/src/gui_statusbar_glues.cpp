@@ -40,8 +40,8 @@ int lua_status_bar::_get_orientation(lua_State* pLua)
 
     switch (pStatusBarParent_->get_orientation())
     {
-        case status_bar::ORIENT_HORIZONTAL : mFunc.push(std::string("HORIZONTAL"));
-        case status_bar::ORIENT_VERTICAL   : mFunc.push(std::string("VERTICAL"));
+        case status_bar::ORIENT_HORIZONTAL : mFunc.push(std::string("HORIZONTAL")); break;
+        case status_bar::ORIENT_VERTICAL   : mFunc.push(std::string("VERTICAL")); break;
     }
 
     return mFunc.on_return();

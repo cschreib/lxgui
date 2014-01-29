@@ -140,7 +140,7 @@ namespace gui
         virtual void render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const;
 
         /// Sets this sprite's internal quad.
-        /** \param lVertexArray
+        /** \param lVertexArray The new quad
         *   \note This quad will be overwritten by any render_XXX() call.
         *         If you want to render it, call render_static().
         */

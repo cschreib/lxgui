@@ -211,9 +211,9 @@ bool block::check_attributes(const std::string& sAttributes)
                         << "Unknown attribute : \"" << sAttrName << "\"." << std::endl;
 
                     pDoc_->out << "Listing available possibilities :" << std::endl;
-                    std::map<std::string, attribute>::iterator iterAttr;
-                    foreach (iterAttr, lAttributeList_)
-                        pDoc_->out << "    " << iterAttr->first << std::endl;
+                    std::map<std::string, attribute>::iterator itmp;
+                    foreach (itmp, lAttributeList_)
+                        pDoc_->out << "    " << itmp->first << std::endl;
 
                     return false;
                 }

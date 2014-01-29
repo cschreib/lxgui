@@ -183,7 +183,6 @@ bool function::check(bool bPrintError)
                 foreach (iterArgList, lArgListStack_)
                 {
                     std::string sArguments = "\n  - ["+utils::to_string(iterArgList->lArg_.size())+"] : ";
-                    std::map<uint, utils::refptr<argument>>::iterator iterArg;
                     foreach (iterArg, iterArgList->lArg_)
                     {
                         if (iterArg != iterArgList->lArg_.begin())
