@@ -1,0 +1,10 @@
+<Main>
+    <Tag1 s:attr1 n:attr2 b:attr3 n:attr4="25">
+        <SubTag1 n:attr1>
+            <n[1,1]:SubbTag1 x/>
+            <n[.,1]:SubbTag2 y/>
+            <n[*]:SubbTagR1 w/>
+            <n[*]:SubbTagR2 h/>
+        </SubTag1>
+    </Tag1>
+</Main>
