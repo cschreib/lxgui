@@ -784,7 +784,6 @@ std::string state::get_type_name(type mType)
 void state::get_global(const std::string& sName)
 {
     std::deque<std::string> lDecomposedName;
-    std::string sVarName;
     utils::string_vector lWords = utils::cut(sName, ":");
     utils::string_vector::iterator iter1;
     foreach (iter1, lWords)

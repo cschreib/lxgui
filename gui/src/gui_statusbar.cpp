@@ -124,7 +124,7 @@ void status_bar::set_max_value(float fMax)
     if (fMax != fMaxValue_)
     {
         fMaxValue_ = fMax;
-        if (fMaxValue_ < fMaxValue_) fMaxValue_ = fMinValue_;
+        if (fMaxValue_ < fMinValue_) fMaxValue_ = fMinValue_;
         fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
         fire_update_bar_texture_();
     }

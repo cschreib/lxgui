@@ -234,7 +234,7 @@ void slider::set_max_value(float fMax)
     if (fMax != fMaxValue_)
     {
         fMaxValue_ = fMax;
-        if (fMaxValue_ < fMaxValue_) fMaxValue_ = fMinValue_;
+        if (fMaxValue_ < fMinValue_) fMaxValue_ = fMinValue_;
         else step_value(fMaxValue_, fValueStep_);
 
         if (fValue_ > fMaxValue_)
