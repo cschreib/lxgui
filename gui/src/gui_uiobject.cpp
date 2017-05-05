@@ -259,7 +259,8 @@ bool uiobject::is_visible() const
 
 void uiobject::set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight)
 {
-    if (uiAbsWidth_ != uiAbsWidth || !bIsWidthAbs_ || uiAbsHeight_ != uiAbsHeight || !bIsWidthAbs_)
+    if (uiAbsWidth_  != uiAbsWidth  || !bIsWidthAbs_ ||
+        uiAbsHeight_ != uiAbsHeight || !bIsHeightAbs_)
     {
         pManager_->notify_object_moved();
         bIsWidthAbs_ = true;
