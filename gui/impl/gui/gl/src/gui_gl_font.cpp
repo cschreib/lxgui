@@ -67,7 +67,7 @@ font::font(const std::string& sFontFile, uint uiSize) : bKerning_(false)
             iMaxBearingY = mFace->glyph->metrics.horiBearingY;
 
         int iCharWidth = std::max(
-            mFace->glyph->bitmap.width + int(mFace->glyph->metrics.horiBearingX >> 6),
+            int(mFace->glyph->bitmap.width) + int(mFace->glyph->metrics.horiBearingX >> 6),
             int(mFace->glyph->advance.x >> 6)
         );
 
@@ -133,8 +133,8 @@ font::font(const std::string& sFontFile, uint uiSize) : bKerning_(false)
         {
             int iYBearing  = iMaxBearingY - (mFace->glyph->metrics.horiBearingY >> 6);
 
-            for (int j = 0; j < mFace->glyph->bitmap.rows;  ++j)
-            for (int i = 0; i < mFace->glyph->bitmap.width; ++i, ++sBuffer)
+            for (int j = 0; j < int(mFace->glyph->bitmap.rows);  ++j)
+            for (int i = 0; i < int(mFace->glyph->bitmap.width); ++i, ++sBuffer)
                 pTexture_->set_pixel(x + i + uiXBearing, y + j + iYBearing, ub32color(255, 255, 255, *sBuffer));
         }
 
