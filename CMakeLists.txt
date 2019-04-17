@@ -113,7 +113,9 @@ find_package(GLFW)
 find_package(SFML 2 COMPONENTS system window)
 find_package(GLEW)
 find_package(OpenGL)
-find_package(OIS)
+if(LXGUI_BUILD_INPUT_OIS_IMPL)
+    find_package(OIS)
+endif()
 
 # add the subdirectories
 add_subdirectory(utils)
