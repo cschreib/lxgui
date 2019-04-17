@@ -28,7 +28,7 @@ set(VERSION_MINOR 2)
 if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wall)
 
-    execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
+    execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpfullversion -dumpversion
                     OUTPUT_VARIABLE GCC_VERSION)
 
     string(REGEX MATCHALL "[0-9]+" GCC_VERSION_COMPONENTS ${GCC_VERSION})
