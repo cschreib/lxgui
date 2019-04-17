@@ -20,10 +20,12 @@
 # Allow the user to select to link to a shared library or to a static library.
 
 #Search for the include file...
-FIND_PATH(GLFW_INCLUDE_DIR GL/glfw.h DOC "Path to GLFW include directory."
+FIND_PATH(GLFW_INCLUDE_DIR
+    NAMES GL/glfw.h GLFW/glfw3.h
+    DOC "Path to GLFW include directory."
     HINTS
     $ENV{GLFW_ROOT}
-    PATH_SUFFIX include # For finding the include file under the root of the glfw expanded archive, typically on Windows.
+    PATH_SUFFIXES include # For finding the include file under the root of the glfw expanded archive, typically on Windows.
     PATHS
     /usr/include/
     /usr/local/include/
@@ -44,8 +46,15 @@ FIND_LIBRARY(GLFW_LIBRARY DOC "Absolute path to GLFW library."
     ${GLFW_ROOT_DIR}/lib-msvc100/release # added by ptr
 )
 
-IF(GLFW_INCLUDE_DIR AND EXISTS "${GLFW_INCLUDE_DIR}/GL/glfw.h")
-    FILE(STRINGS "${GLFW_INCLUDE_DIR}/GL/glfw.h" glfw_version_str
+IF(EXISTS "${GLFW_INCLUDE_DIR}/GL/glfw.h")
+    SET(GLFW_HEADER_FILE "${GLFW_INCLUDE_DIR}/GL/glfw.h")
+ENDIF()
+IF(EXISTS "${GLFW_INCLUDE_DIR}/GLFW/glfw3.h")
+    SET(GLFW_HEADER_FILE "${GLFW_INCLUDE_DIR}/GLFW/glfw3.h")
+ENDIF()
+
+IF(GLFW_INCLUDE_DIR AND GLFW_HEADER_FILE)
+    FILE(STRINGS "${GLFW_HEADER_FILE}" glfw_version_str
          REGEX "^#[\t ]*define[\t ]+GLFW_VERSION_(MAJOR|MINOR|REVISION)[\t ]+[0-9]+$")
 
     UNSET(GLFW_VERSION_STRING)
@@ -63,7 +72,7 @@ IF(GLFW_INCLUDE_DIR AND EXISTS "${GLFW_INCLUDE_DIR}/GL/glfw.h")
             ENDIF()
         ENDFOREACH(VLINE)
     ENDFOREACH(VPART)
-ENDIF(GLFW_INCLUDE_DIR AND EXISTS "${GLFW_INCLUDE_DIR}/GL/glfw.h")
+ENDIF(GLFW_INCLUDE_DIR AND GLFW_HEADER_FILE)
 
 INCLUDE(${CMAKE_ROOT}/Modules/FindPackageHandleStandardArgs.cmake)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(GLFW
