@@ -5,6 +5,7 @@
 #include <png.h>
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 namespace gui {
 namespace gl
@@ -83,7 +84,7 @@ utils::refptr<gui::material> manager::create_material_png(const std::string& sFi
         png_uint_32 uiWidth  = png_get_image_width(pReadStruct, pInfoStruct);
         png_uint_32 uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
 
-        utils::refptr<png_bytep> pRows(new png_bytep[uiHeight]);
+        std::unique_ptr<png_bytep[]> pRows(new png_bytep[uiHeight]);
         utils::refptr<material>  pTex(new gui::gl::material(
             uiWidth, uiHeight, gui::gl::material::REPEAT,
             (mFilter == FILTER_LINEAR ? gui::gl::material::LINEAR : gui::gl::material::NONE)
