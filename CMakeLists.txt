@@ -105,7 +105,7 @@ endif()
 
 # find libraries
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
-find_package(Lua51 REQUIRED)
+find_package(Lua REQUIRED)
 find_package(Freetype)
 find_package(PNG)
 find_package(ZLIB)
@@ -115,6 +115,9 @@ find_package(GLEW)
 find_package(OpenGL)
 if(LXGUI_BUILD_INPUT_OIS_IMPL)
     find_package(OIS)
+endif()
+if (LUA_VERSION_STRING VERSION_EQUAL 5.1)
+    add_definitions(-DLXGUI_LUA51)
 endif()
 
 # add the subdirectories

@@ -78,7 +78,7 @@ manager* lua_manager::get_manager()
 
 int lua_manager::get_data_table(lua_State* pLua)
 {
-    lua_getref(pLua, iRef_);
+    lua_rawgeti(pLua, LUA_REGISTRYINDEX, iRef_);
     return 1;
 }
 

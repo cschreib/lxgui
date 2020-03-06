@@ -25,7 +25,11 @@ public:
     // store method table in globals so that
     // scripts can add functions written in Lua.
     lua_pushvalue(L, methods);
+    #ifdef LXGUI_LUA51
     set(L, LUA_GLOBALSINDEX, ("Lunar_" + std::string(T::className)).c_str());
+    #else
+    lua_setglobal(L, ("Lunar_" + std::string(T::className)).c_str());
+    #endif
 
     // hide metatable from Lua getmetatable()
     lua_pushvalue(L, methods);
@@ -139,7 +143,14 @@ public:
   static T *check(lua_State *L, int narg) {
     userdataType *ud =
       static_cast<userdataType*>(luaL_checkudata(L, narg, ("Lunar_" + std::string(T::className)).c_str()));
-    if(!ud) luaL_typerror(L, narg, ("Lunar_" + std::string(T::className)).c_str());
+    if(!ud)
+    {
+      #ifdef LUXGUI_LUA51
+      luaL_typerror(L, narg, ("Lunar_" + std::string(T::className)).c_str());
+      #else
+      luaL_argerror(L, narg, ("Lunar_" + std::string(T::className)).c_str());
+      #endif
+    }
     return ud->pT;  // pointer to T object
   }
 
