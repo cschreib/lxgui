@@ -83,11 +83,13 @@ void frame::render()
 
 void frame::create_glue()
 {
+    if (lGlue_) return;
+
     if (bVirtual_)
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
+        lGlue_ = pLua->push_new<lua_virtual_glue>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }
@@ -95,7 +97,7 @@ void frame::create_glue()
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_string(sName_);
-        lGlueList_.push_back(pLua->push_new<lua_frame>());
+        lGlue_ = pLua->push_new<lua_frame>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }

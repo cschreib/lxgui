@@ -305,11 +305,13 @@ texture* status_bar::create_bar_texture_()
 
 void status_bar::create_glue()
 {
+    if (lGlue_) return;
+
     if (bVirtual_)
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
+        lGlue_ = pLua->push_new<lua_virtual_glue>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }
@@ -317,7 +319,7 @@ void status_bar::create_glue()
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_string(sName_);
-        lGlueList_.push_back(pLua->push_new<lua_status_bar>());
+        lGlue_ = pLua->push_new<lua_status_bar>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }

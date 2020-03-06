@@ -103,9 +103,11 @@ void texture::render()
 
 void texture::create_glue()
 {
+    if (lGlue_) return;
+
     utils::wptr<lua::state> pLua = pManager_->get_lua();
     pLua->push_string(sName_);
-    lGlueList_.push_back(pLua->push_new<lua_texture>());
+    lGlue_ = pLua->push_new<lua_texture>();
     pLua->set_global(sLuaName_);
     pLua->pop();
 }

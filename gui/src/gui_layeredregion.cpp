@@ -45,9 +45,11 @@ std::string layered_region::serialize(const std::string& sTab) const
 
 void layered_region::create_glue()
 {
+    if (lGlue_) return;
+
     utils::wptr<lua::state> pLua = pManager_->get_lua();
     pLua->push_string(sName_);
-    lGlueList_.push_back(pLua->push_new<lua_layered_region>());
+    lGlue_ = pLua->push_new<lua_layered_region>();
     pLua->set_global(sName_);
     pLua->pop();
 }

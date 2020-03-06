@@ -392,14 +392,6 @@ void manager::remove_uiobject(uiobject* pObj)
     if (pSizedObject_ == pObj)
         stop_sizing(pObj);
 
-    lRemovedObjectList_.push_back(pObj);
-}
-
-void manager::remove_uiobject_(uiobject* pObj)
-{
-    if (!pObj)
-        return;
-
     delete pObj;
 }
 
@@ -788,12 +780,6 @@ void manager::close_ui()
         lObjectList_.clear();
         lNamedObjectList_.clear();
 
-        std::vector<uiobject*>::iterator iterRemoved;
-        foreach (iterRemoved, lRemovedObjectList_)
-            remove_uiobject_(*iterRemoved);
-
-        lRemovedObjectList_.clear();
-
         std::map<std::string, uiobject*>::iterator iterVirtual;
         foreach (iterVirtual, lNamedVirtualObjectList_)
             delete iterVirtual->second;
@@ -991,16 +977,6 @@ void manager::update(float fDelta)
 {
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
-
-    if (lRemovedObjectList_.size() != 0)
-    {
-        DEBUG_LOG(" Removing uiobjects...");
-        std::vector<uiobject*>::iterator iterRemoved;
-        foreach (iterRemoved, lRemovedObjectList_)
-            remove_uiobject_(*iterRemoved);
-
-        lRemovedObjectList_.clear();
-    }
 
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);

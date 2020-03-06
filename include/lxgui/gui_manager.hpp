@@ -785,8 +785,6 @@ namespace gui
 
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 
-        void remove_uiobject_(uiobject* pObj);
-
         std::string sUIVersion_;
         uint        uiScreenWidth_;
         uint        uiScreenHeight_;
@@ -809,8 +807,6 @@ namespace gui
 
         std::map<uint, uiobject*> lObjectList_;
         std::map<uint, uiobject*> lMainObjectList_;
-
-        std::vector<uiobject*> lRemovedObjectList_;
 
         std::vector<std::string> lGUIDirectoryList_;
         addon*                   pCurrentAddOn_;

@@ -561,7 +561,7 @@ namespace gui
         bool         bLoaded_;
         mutable bool bReady_;
 
-        std::vector<lua_glue*>   lGlueList_;
+        lua_glue*                lGlue_;
         std::vector<std::string> lCopyList_;
 
         std::vector<std::string> lType_;

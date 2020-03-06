@@ -180,11 +180,13 @@ void check_button::set_disabled_checked_texture(texture* pTexture)
 
 void check_button::create_glue()
 {
+    if (lGlue_) return;
+
     if (bVirtual_)
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
+        lGlue_ = pLua->push_new<lua_virtual_glue>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }
@@ -192,7 +194,7 @@ void check_button::create_glue()
     {
         utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_string(sLuaName_);
-        lGlueList_.push_back(pLua->push_new<lua_check_button>());
+        lGlue_ = pLua->push_new<lua_check_button>();
         pLua->set_global(sLuaName_);
         pLua->pop();
     }

@@ -18,7 +18,7 @@ uiobject::uiobject(manager* pManager) :
     pManager_(pManager), uiID_(uint(-1)), pParent_(nullptr), pInheritance_(nullptr),
     bSpecial_(false), bManuallyRendered_(false), bNewlyCreated_(false),
     pRenderer_(nullptr), bInherits_(false), bVirtual_(false), bLoaded_(false),
-    bReady_(true), lDefinedBorderList_(false, false, false, false),
+    bReady_(true), lGlue_(nullptr), lDefinedBorderList_(false, false, false, false),
     lBorderList_(quad2i::ZERO), fAlpha_(1.0f), bIsShown_(true), bIsVisible_(true),
     bIsWidthAbs_(true), bIsHeightAbs_(true), uiAbsWidth_(0u), uiAbsHeight_(0u),
     fRelWidth_ (0.0f), fRelHeight_(0.0f), bUpdateAnchors_(false),
@@ -29,9 +29,11 @@ uiobject::uiobject(manager* pManager) :
 
 uiobject::~uiobject()
 {
-    std::vector<lua_glue*>::iterator iter;
-    foreach (iter, lGlueList_)
-        (*iter)->notify_deleted();
+    if (lGlue_)
+    {
+        lGlue_->notify_deleted();
+        remove_glue();
+    }
 }
 
 const manager* uiobject::get_manager() const
@@ -383,7 +385,7 @@ void uiobject::set_parent(uiobject* pParent)
         gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_parent(this)." << std::endl;
         return;
     }
-    
+
     if (pParent_ != pParent)
     {
         pParent_ = pParent;
@@ -1031,6 +1033,7 @@ void uiobject::remove_glue()
     utils::wptr<lua::state> pLua = pManager_->get_lua();
     pLua->push_nil();
     pLua->set_global(sLuaName_);
+    lGlue_ = nullptr;
 }
 
 void uiobject::set_special()
