@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.com/cschreib/lxgui.svg?branch=master)](https://travis-ci.com/cschreib/lxgui)
+
 # What is lxgui?
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are :
