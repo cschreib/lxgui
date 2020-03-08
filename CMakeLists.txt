@@ -13,8 +13,8 @@ endmacro()
 lxgui_set_option(CMAKE_BUILD_TYPE Release STRING "Choose the type of build (Debug or Release)")
 lxgui_set_option(LXGUI_BUILD_GUI_GL_IMPL TRUE BOOL "Build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
-lxgui_set_option(LXGUI_BUILD_INPUT_GLFW_IMPL TRUE BOOL "Build the GLFW input implementation")
-lxgui_set_option(LXGUI_BUILD_INPUT_OIS_IMPL TRUE BOOL "Build the OIS input implementation")
+lxgui_set_option(LXGUI_BUILD_INPUT_GLFW_IMPL FALSE BOOL "Build the GLFW input implementation")
+lxgui_set_option(LXGUI_BUILD_INPUT_OIS_IMPL FALSE BOOL "Build the OIS input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
 
 # project name
@@ -164,4 +164,3 @@ if(LXGUI_BUILD_TEST)
         message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SFML.")
     endif()
 endif()
-
