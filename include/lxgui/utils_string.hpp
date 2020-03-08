@@ -292,7 +292,7 @@ template<class T>
 string to_string(T* p)
 {
     if (p != nullptr)
-        return to_string((std::size_t)p);
+        return to_string(reinterpret_cast<std::size_t>(p));
     else
         return "NULL";
 }
