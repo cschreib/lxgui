@@ -72,8 +72,17 @@ namespace xml
         /// Copy constructor
         block(const block& mOther) = default;
 
+        /// Move constructor
+        block(block&& mOther) = default;
+
         /// Destructor.
         ~block();
+
+        /// Copy assignment operator
+        block& operator=(const block& mOther) = default;
+
+        /// Move assignment operator
+        block& operator=(block&& mOther) = default;
 
         /// Returns this Block's name.
         /** \return This Block's name
