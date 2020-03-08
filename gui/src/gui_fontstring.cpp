@@ -128,7 +128,7 @@ std::string font_string::serialize(const std::string& sTab) const
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  |   # vertical   : ";
-    switch (mJustifyH_)
+    switch (mJustifyV_)
     {
         case text::ALIGN_TOP :    sStr << "TOP\n"; break;
         case text::ALIGN_MIDDLE : sStr << "MIDDLE\n"; break;
