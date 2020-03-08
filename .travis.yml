@@ -13,4 +13,4 @@ before_script:
   - cd build
   - cmake ..
 
-script: make install
+script: sudo make install
