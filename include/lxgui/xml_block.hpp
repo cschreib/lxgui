@@ -69,6 +69,9 @@ namespace xml
         */
         block(const std::string& sName, uint uiMinNbr, uint uiMaxNbr, const std::string& sFile, uint uiLineNbr, uint uiRadioGroup = -1);
 
+        /// Copy constructor
+        block(const block& mOther) = default;
+
         /// Destructor.
         ~block();
 
