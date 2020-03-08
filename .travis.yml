@@ -1,0 +1,16 @@
+os:
+  - linux
+
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+before_script:
+  - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script: make install
