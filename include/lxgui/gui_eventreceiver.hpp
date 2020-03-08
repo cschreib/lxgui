@@ -20,7 +20,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit event_receiver(event_manager* mManager = nullptr);
+        explicit event_receiver(event_manager* pManager = nullptr);
 
         /// Destructor.
         virtual ~event_receiver();
@@ -45,6 +45,10 @@ namespace gui
         virtual void unregister_event(const std::string& sEventName);
 
     protected :
+
+        void set_event_manager(event_manager* pManager);
+
+    private :
 
         event_manager* pEventManager_;
     };

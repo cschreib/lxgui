@@ -45,7 +45,7 @@ manager::manager(const input::handler& mInputHandler, const std::string& sLocale
     pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(pImpl)
 {
     pEventManager_ = utils::refptr<event_manager>(new event_manager());
-    event_receiver::pEventManager_ = pEventManager_.get();
+    event_receiver::set_event_manager(pEventManager_.get());
     pInputManager_->register_event_manager(pEventManager_);
     register_event("KEY_PRESSED");
     pImpl_->set_parent(this);
@@ -55,8 +55,8 @@ manager::~manager()
 {
     close_ui();
 
-    pEventManager_ = nullptr;
-    event_receiver::pEventManager_ = nullptr;
+    // Notify event receiver that event manager is about to be destroyed
+    event_receiver::set_event_manager(nullptr);
 }
 
 utils::wptr<manager_impl> manager::get_impl()

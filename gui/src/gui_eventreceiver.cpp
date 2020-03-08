@@ -3,8 +3,8 @@
 
 namespace gui
 {
-event_receiver::event_receiver(event_manager* mManager) :
-    pEventManager_(mManager)
+event_receiver::event_receiver(event_manager* pManager) :
+    pEventManager_(pManager)
 {
 }
 
@@ -24,5 +24,13 @@ void event_receiver::unregister_event(const std::string& sEventName)
 {
     if (pEventManager_)
         pEventManager_->unregister_event(this, sEventName);
+}
+
+void event_receiver::set_event_manager(event_manager* pManager)
+{
+    if (pEventManager_)
+        pEventManager_->unregister_receiver(this);
+
+    pEventManager_ = pManager;
 }
 }
