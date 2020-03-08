@@ -15,7 +15,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
 
-The only rendering front end available uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). For the input front end, you can use SFML2, GLFW, or OIS.
+The only rendering back end available uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). For the input back end, you can use SFML2, GLFW, or OIS.
 
 Here is a brief list of the available widgets:
 
