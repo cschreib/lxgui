@@ -420,7 +420,7 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
     mFunc.add(0, "Frame", lua::TYPE_USERDATA, true);
     if (mFunc.check())
     {
-        utils::wptr<lua::argument> pArg = mFunc.get(0);
+        lua::argument* pArg = mFunc.get(0);
         if (pArg->is_provided())
         {
             uiobject* pFrame = nullptr;
@@ -464,7 +464,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
     mFunc.add(0, "parent", lua::TYPE_USERDATA, true);
     if (mFunc.check())
     {
-        utils::wptr<lua::argument> pArg = mFunc.get(0);
+        lua::argument* pArg = mFunc.get(0);
         uiobject* pParent = nullptr;
 
         if (pArg->is_provided())
@@ -531,7 +531,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
         anchor_point mPoint = anchor::get_anchor_point(mFunc.get(0)->get_string());
 
         // parent
-        utils::wptr<lua::argument> pArg = mFunc.get(1);
+        lua::argument* pArg = mFunc.get(1);
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {
@@ -590,7 +590,7 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
         anchor_point mPoint = anchor::get_anchor_point(mFunc.get(0)->get_string());
 
         // parent
-        utils::wptr<lua::argument> pArg = mFunc.get(1);
+        lua::argument* pArg = mFunc.get(1);
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {

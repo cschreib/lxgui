@@ -1122,7 +1122,7 @@ int lua_frame::_set_script(lua_State* pLua)
         if (pFrameParent_->can_use_script(sScriptName))
         {
             lua::state* pState = mFunc.get_state();
-            utils::wptr<lua::argument> pArg = mFunc.get(1);
+            lua::argument* pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::TYPE_FUNCTION)
             {
                 pState->push_value(pArg->get_index());

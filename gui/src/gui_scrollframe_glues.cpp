@@ -109,7 +109,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
     mFunc.add(0, "child", lua::TYPE_USERDATA, true);
     if (mFunc.check())
     {
-        utils::wptr<lua::argument> pArg = mFunc.get(0);
+        lua::argument* pArg = mFunc.get(0);
         frame* pChild = nullptr;
 
         if (pArg->is_provided())

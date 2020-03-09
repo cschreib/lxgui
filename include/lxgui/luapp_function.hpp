@@ -155,9 +155,9 @@ private :
 /// Holds all possible arguments of a Lua function's argument set.
 struct argument_list
 {
-    std::map<uint, utils::refptr<argument>> lArg_;
-    std::map<uint, utils::refptr<argument>> lOptional_;
-    uint                                    uiRank_;
+    std::map<uint, std::unique_ptr<argument>> lArg_;
+    std::map<uint, std::unique_ptr<argument>> lOptional_;
+    uint                                      uiRank_;
 };
 
 /// A helper to write Lua glues
@@ -229,7 +229,7 @@ public :
     /** \param uiIndex The index of the argument
     *   \return The argument at the provided index
     */
-    utils::wptr<argument> get(uint uiIndex);
+    argument* get(uint uiIndex);
 
     /// Checks if an argument has been provided (in case it is optional).
     /** \param uiIndex The index of the argument
