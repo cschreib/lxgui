@@ -178,7 +178,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
             }
             else
             {
-                lEdgeList_.fill(nullptr);
+                for (auto& mEdge : lEdgeList_) mEdge = nullptr;
                 sEdgeFile_ = "";
 
                 gui::out << gui::error << "backdrop : "
@@ -189,7 +189,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
         }
         else
         {
-            lEdgeList_.fill(nullptr);
+            for (auto& mEdge : lEdgeList_) mEdge = nullptr;
             sEdgeFile_ = "";
 
             gui::out << gui::warning << "backdrop : "
@@ -198,7 +198,9 @@ void backdrop::set_edge(const std::string& sEdgeFile)
         }
     }
     else
-        lEdgeList_.fill(nullptr);
+    {
+        for (auto& mEdge : lEdgeList_) mEdge = nullptr;
+    }
 
     sEdgeFile_ = sEdgeFile;
 }

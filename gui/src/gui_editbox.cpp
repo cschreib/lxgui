@@ -802,10 +802,10 @@ void edit_box::create_carret_()
         pCarret_->create_glue();
         add_region(pCarret_);
 
-        utils::refptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(TO_U('|'));
+        std::unique_ptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(TO_U('|'));
         pSprite->set_color(pFontString_->get_text_color());
 
-        pCarret_->set_sprite(pSprite);
+        pCarret_->set_sprite(std::move(pSprite));
         pCarret_->set_abs_point(ANCHOR_CENTER, sName_, ANCHOR_LEFT, lTextInsets_.left - 1, 0);
 
         pCarret_->notify_loaded();

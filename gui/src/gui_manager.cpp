@@ -237,32 +237,32 @@ layered_region* manager::create_layered_region(const std::string& sClassName)
     return nullptr;
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat) const
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat));
+        return std::unique_ptr<sprite>(new sprite(this, pMat));
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat, fWidth, fHeight);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fWidth, fHeight);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat, fWidth, fHeight));
+        return std::unique_ptr<sprite>(new sprite(this, pMat, fWidth, fHeight));
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat, fU, fV, fWidth, fHeight);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fU, fV, fWidth, fHeight);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
+        return std::unique_ptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
 }
 
 utils::refptr<material> manager::create_material(const std::string& sFileName, filter mFilter) const
@@ -1725,17 +1725,17 @@ manager_impl::~manager_impl()
 {
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat) const
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat) const
 {
     return nullptr;
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
 {
     return nullptr;
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat,
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
     return nullptr;

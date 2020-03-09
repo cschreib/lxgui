@@ -412,12 +412,12 @@ void texture::set_color(const color& mColor)
     notify_renderer_need_redraw();
 }
 
-void texture::set_sprite(utils::refptr<sprite> pSprite)
+void texture::set_sprite(std::unique_ptr<sprite> pSprite)
 {
     mGradient_ = gradient();
     sTextureFile_ = "";
 
-    pSprite_ = pSprite;
+    pSprite_ = std::move(pSprite);
 
     set_abs_dimensions(pSprite->get_width(), pSprite->get_height());
 

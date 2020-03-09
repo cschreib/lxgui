@@ -902,14 +902,14 @@ void text::update_cache_()
     }
 }
 
-utils::refptr<sprite> text::create_sprite(char32_t uiChar) const
+std::unique_ptr<sprite> text::create_sprite(char32_t uiChar) const
 {
     quad2f lUVs = pFont_->get_character_uvs(uiChar);
 
     float fWidth = get_character_width(uiChar);
     float fHeight = lUVs.height()*pFont_->get_texture()->get_height();
 
-    utils::refptr<sprite> pSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
+    std::unique_ptr<sprite> pSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
     pSprite->set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
 
     pSprite->set_color(mColor_);

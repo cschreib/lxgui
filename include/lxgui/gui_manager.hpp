@@ -105,7 +105,7 @@ namespace gui
         std::map<int, level>         lLevelList;
         mutable bool                 bRedraw;
         utils::refptr<render_target> pRenderTarget;
-        utils::refptr<sprite>        pSprite;
+        std::unique_ptr<sprite>      pSprite;
         mutable uint                 uiRedrawCount;
     };
 
@@ -262,7 +262,7 @@ namespace gui
         /** \param pMat The material with which to create the sprite
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat) const;
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -275,7 +275,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -290,7 +290,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat,
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
@@ -843,7 +843,7 @@ namespace gui
         bool bEnableCaching_;
 
         utils::refptr<render_target> pRenderTarget_;
-        utils::refptr<sprite>        pSprite_;
+        std::unique_ptr<sprite>      pSprite_;
 
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
@@ -903,7 +903,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat) const;
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -920,7 +920,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -939,7 +939,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat,
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
