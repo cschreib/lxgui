@@ -338,7 +338,7 @@ void frame::copy_from(uiobject* pObj)
 
         if (pFrame->pBackdrop_)
         {
-            pBackdrop_ = utils::refptr<backdrop>(new backdrop(this));
+            pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
             pBackdrop_->copy_from(*pFrame->pBackdrop_);
         }
 
@@ -862,9 +862,14 @@ frame_strata frame::get_frame_strata() const
     return mStrata_;
 }
 
-utils::wptr<backdrop> frame::get_backdrop() const
+const backdrop* frame::get_backdrop() const
 {
-    return pBackdrop_;
+    return pBackdrop_.get();
+}
+
+backdrop* frame::get_backdrop()
+{
+    return pBackdrop_.get();
 }
 
 const std::string& frame::get_frame_type() const
@@ -1454,9 +1459,9 @@ void frame::set_frame_strata(const std::string& sStrata)
     set_frame_strata(mStrata);
 }
 
-void frame::set_backdrop(utils::refptr<backdrop> pBackdrop)
+void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop)
 {
-    pBackdrop_ = pBackdrop;
+    pBackdrop_ = std::move(pBackdrop);
     notify_renderer_need_redraw();
 }
 

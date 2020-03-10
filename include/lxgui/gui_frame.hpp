@@ -274,7 +274,12 @@ namespace gui
         /// Returns this frame's backdrop.
         /** \return This frame's backdrop
         */
-        utils::wptr<backdrop> get_backdrop() const;
+        const backdrop* get_backdrop() const;
+
+        /// Returns this frame's backdrop.
+        /** \return This frame's backdrop
+        */
+        backdrop* get_backdrop();
 
         /// Returns this frame's type.
         /** \return This frame's type (Frame, Slider, ...)
@@ -440,7 +445,7 @@ namespace gui
         /// Sets this frames' backdrop.
         /** \param pBackdrop The new backdrop
         */
-        void set_backdrop(utils::refptr<backdrop> pBackdrop);
+        void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
 
         /// Sets this frame's absolute hit rect insets.
         /** \param iLeft   Offset from the left border
@@ -741,7 +746,7 @@ namespace gui
         bool         bIsTopLevel_;
         frame*       pTopLevelParent_;
 
-        utils::refptr<backdrop> pBackdrop_;
+        std::unique_ptr<backdrop> pBackdrop_;
 
         bool bHasAllEventsRegistred_;
 
