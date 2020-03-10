@@ -32,24 +32,7 @@ void focus_frame::copy_from(uiobject* pObj)
 
 void focus_frame::create_glue()
 {
-    if (lGlue_) return;
-
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlue_ = pLua->push_new<lua_virtual_glue>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sLuaName_);
-        lGlue_ = pLua->push_new<lua_focus_frame>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_focus_frame>();
 }
 
 void focus_frame::enable_auto_focus(bool bEnable)

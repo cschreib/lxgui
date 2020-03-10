@@ -428,24 +428,7 @@ void scroll_frame::notify_child_strata_changed(frame* pChild)
 
 void scroll_frame::create_glue()
 {
-    if (lGlue_) return;
-
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlue_ = pLua->push_new<lua_virtual_glue>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sLuaName_);
-        lGlue_ = pLua->push_new<lua_scroll_frame>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_scroll_frame>();
 }
 
 void scroll_frame::add_to_scroll_child_list_(frame* pChild)

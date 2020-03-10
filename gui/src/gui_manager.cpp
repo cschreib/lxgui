@@ -458,9 +458,14 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
     }
 }
 
-utils::wptr<lua::state> manager::get_lua()
+lua::state* manager::get_lua()
 {
-    return pLua_;
+    return pLua_.get();
+}
+
+const lua::state* manager::get_lua() const
+{
+    return pLua_.get();
 }
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
@@ -700,7 +705,7 @@ void manager::create_lua(std::function<void()> pLuaRegs)
 {
     if (!pLua_)
     {
-        pLua_ = utils::refptr<lua::state>(new lua::state());
+        pLua_ = std::unique_ptr<lua::state>(new lua::state());
         pLua_->set_print_error_function(gui_out);
 
         register_lua_manager_();

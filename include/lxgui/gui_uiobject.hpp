@@ -14,6 +14,7 @@
 namespace gui
 {
     class lua_glue;
+    class lua_virtual_glue;
 
     enum border_type
     {
@@ -542,6 +543,28 @@ namespace gui
         virtual void update_dimensions_() const;
 
         virtual void notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered);
+
+        template<typename T>
+        void create_glue_()
+        {
+            if (lGlue_) return;
+
+            lua::state* pLua = pManager_->get_lua();
+
+            if (bVirtual_)
+            {
+                pLua->push_number(uiID_);
+                lGlue_ = pLua->push_new<lua_virtual_glue>();
+            }
+            else
+            {
+                pLua->push_string(sLuaName_);
+                lGlue_ = pLua->push_new<T>();
+            }
+
+            pLua->set_global(sLuaName_);
+            pLua->pop();
+        }
 
         manager* pManager_;
 

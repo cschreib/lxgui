@@ -7,7 +7,7 @@
 
 namespace gui
 {
-void font_string::register_glue(utils::wptr<lua::state> pLua)
+void font_string::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_font_string>();
 }

@@ -6,7 +6,7 @@
 
 namespace gui
 {
-void scroll_frame::register_glue(utils::wptr<lua::state> pLua)
+void scroll_frame::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_scroll_frame>();
 }

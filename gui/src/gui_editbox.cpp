@@ -286,13 +286,12 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
 
     if (lDefinedScriptList_.find(sScriptName) != lDefinedScriptList_.end())
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-
         if (sScriptName == "Char")
         {
-            // set_ key name
+            // Set key name
             if (pEvent)
             {
+                lua::state* pLua = pManager_->get_lua();
                 pLua->push_string(pEvent->get<std::string>(0));
                 pLua->set_global("arg1");
             }
@@ -314,24 +313,7 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
 
 void edit_box::create_glue()
 {
-    if (lGlue_) return;
-
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlue_ = pLua->push_new<lua_virtual_glue>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sLuaName_);
-        lGlue_ = pLua->push_new<lua_edit_box>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_edit_box>();
 }
 
 void edit_box::set_text(const std::string& sText)

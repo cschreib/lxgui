@@ -250,7 +250,7 @@ namespace gui
         utils::wptr<text> get_text_object();
 
         /// Registers this widget to the provided lua::state
-        static void register_glue(utils::wptr<lua::state> pLua);
+        static void register_glue(lua::state* pLua);
 
         #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "FontString";

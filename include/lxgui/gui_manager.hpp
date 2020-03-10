@@ -459,7 +459,12 @@ namespace gui
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
         */
-        utils::wptr<lua::state> get_lua();
+        lua::state* get_lua();
+
+        /// Returns the GUI Lua state.
+        /** \return The GUI Lua state
+        */
+        const lua::state* get_lua() const;
 
         /// Creates the lua::State that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
@@ -691,7 +696,7 @@ namespace gui
         void register_frame_type(const std::string&)
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_);
+            frame_type::register_glue(pLua_.get());
         }
 
         /// Registers a new frame type.
@@ -705,7 +710,7 @@ namespace gui
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_);
+            frame_type::register_glue(pLua_.get());
         }
 
         /// Registers a new layered_region type.
@@ -721,7 +726,7 @@ namespace gui
         void register_region_type(const std::string&)
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_);
+            region_type::register_glue(pLua_.get());
         }
 
         /// Registers a new layered_region type.
@@ -735,7 +740,7 @@ namespace gui
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_);
+            region_type::register_glue(pLua_.get());
         }
 
         /// Returns the implementation dependent manager_impl.
@@ -792,11 +797,11 @@ namespace gui
 
         bool bClearFontsOnClose_;
 
-        utils::refptr<lua::state> pLua_;
-        std::function<void()>     pLuaRegs_;
-        bool                      bClosed_;
-        bool                      bLoadingUI_;
-        bool                      bFirstIteration_;
+        std::unique_ptr<lua::state> pLua_;
+        std::function<void()>       pLuaRegs_;
+        bool                        bClosed_;
+        bool                        bLoadingUI_;
+        bool                        bFirstIteration_;
 
         bool                          bInputEnabled_;
         utils::refptr<input::manager> pInputManager_;

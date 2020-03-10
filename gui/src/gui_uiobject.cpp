@@ -105,7 +105,7 @@ void uiobject::copy_from(uiobject* pObj)
                     lCopyList_.push_back(*iter);
             }
 
-            utils::wptr<lua::state> pLua = pManager_->get_lua();
+            lua::state* pLua = pManager_->get_lua();
             pLua->get_global(pObj->get_lua_name());
             if (pLua->get_type() != lua::TYPE_NIL)
             {
@@ -1030,7 +1030,7 @@ void uiobject::push_on_lua(lua::state* pLua) const
 
 void uiobject::remove_glue()
 {
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
+    lua::state* pLua = pManager_->get_lua();
     pLua->push_nil();
     pLua->set_global(sLuaName_);
     lGlue_ = nullptr;

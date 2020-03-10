@@ -6,7 +6,7 @@
 
 namespace gui
 {
-void status_bar::register_glue(utils::wptr<lua::state> pLua)
+void status_bar::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_status_bar>();
 }

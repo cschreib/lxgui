@@ -36,22 +36,21 @@ void button::create_glue()
 {
     if (lGlue_) return;
 
+    lua::state* pLua = pManager_->get_lua();
+
     if (bVirtual_)
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_number(uiID_);
         lGlue_ = pLua->push_new<lua_virtual_glue>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
     }
     else
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
         pLua->push_string(sName_);
         lGlue_ = pLua->push_new<lua_button>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
     }
+
+    pLua->set_global(sLuaName_);
+    pLua->pop();
 }
 
 bool button::can_use_script(const std::string& sScriptName) const

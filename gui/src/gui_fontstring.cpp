@@ -148,13 +148,7 @@ std::string font_string::serialize(const std::string& sTab) const
 
 void font_string::create_glue()
 {
-    if (lGlue_) return;
-
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
-    pLua->push_string(sName_);
-    lGlue_ = pLua->push_new<lua_font_string>();
-    pLua->set_global(sLuaName_);
-    pLua->pop();
+    create_glue_<lua_font_string>();
 }
 
 void font_string::copy_from(uiobject* pObj)

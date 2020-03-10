@@ -83,24 +83,7 @@ void frame::render()
 
 void frame::create_glue()
 {
-    if (lGlue_) return;
-
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlue_ = pLua->push_new<lua_virtual_glue>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sName_);
-        lGlue_ = pLua->push_new<lua_frame>();
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_frame>();
 }
 
 std::string frame::serialize(const std::string& sTab) const
@@ -666,12 +649,13 @@ void frame::add_region(layered_region* pRegion)
 
             if (!bVirtual_)
             {
-                utils::wptr<lua::state> pLua = pManager_->get_lua();
                 const std::string& sRawName = pRegion->get_raw_name();
                 if (utils::starts_with(sRawName, "$parent"))
                 {
                     std::string sTempName = pRegion->get_name();
                     sTempName.erase(0, sName_.size());
+
+                    lua::state* pLua = pManager_->get_lua();
                     pLua->get_global(pRegion->get_name());
                     pLua->set_global(sName_+"."+sTempName);
                 }
@@ -793,11 +777,12 @@ void frame::add_child(frame* pChild)
 
             if (!bVirtual_)
             {
-                utils::wptr<lua::state> pLua = pManager_->get_lua();
                 std::string sRawName = pChild->get_raw_name();
                 if (utils::starts_with(sRawName, "$parent"))
                 {
                     sRawName.erase(0, 7);
+
+                    lua::state* pLua = pManager_->get_lua();
                     pLua->get_global(pChild->get_lua_name());
                     pLua->set_global(sLuaName_+"."+sRawName);
                 }
@@ -1003,7 +988,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     sStr += "function " + sLuaName_ + ":" + sAdjustedName + "() " + sContent + " end";
 
     // Use XML specific error handling
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
+    lua::state* pLua = pManager_->get_lua();
 
     std::string     sOldFile     = pLua->get_global_string("_xml_file_name", false, "");
     uint            uiOldLineNbr = pLua->get_global_int("_xml_line_nbr", false, 0);
@@ -1264,7 +1249,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
     if (iter != lDefinedScriptList_.end())
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
+        lua::state* pLua = pManager_->get_lua();
 
         if ((sScriptName == "KeyDown") ||
             (sScriptName == "KeyUp"))

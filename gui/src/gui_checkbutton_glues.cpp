@@ -7,7 +7,7 @@
 
 namespace gui
 {
-void check_button::register_glue(utils::wptr<lua::state> pLua)
+void check_button::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_check_button>();
 }
