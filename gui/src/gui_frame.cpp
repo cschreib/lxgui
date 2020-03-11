@@ -28,7 +28,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager().lock().get()),
+frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
     region(pManager), pAddOn_(nullptr), iLevel_(0), mStrata_(STRATA_MEDIUM), bIsTopLevel_(false),
     pTopLevelParent_(nullptr), bHasAllEventsRegistred_(false), bIsKeyboardEnabled_(false),
     bIsMouseEnabled_(false), bAllowWorldInput_(false), bIsMouseWheelEnabled_(false),

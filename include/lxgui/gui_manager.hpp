@@ -756,7 +756,12 @@ namespace gui
         /// Returns the gui event manager.
         /** \return The gui event manager
         */
-        utils::wptr<event_manager> get_event_manager();
+        const event_manager* get_event_manager() const;
+
+        /// Returns the gui event manager.
+        /** \return The gui event manager
+        */
+        event_manager* get_event_manager();
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
@@ -853,9 +858,9 @@ namespace gui
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
 
-        std::string                   sLocale_;
-        utils::refptr<event_manager>  pEventManager_;
-        std::unique_ptr<manager_impl> pImpl_;
+        std::string                    sLocale_;
+        std::unique_ptr<event_manager> pEventManager_;
+        std::unique_ptr<manager_impl>  pImpl_;
     };
 
     /// Abstract type for implementation specific management

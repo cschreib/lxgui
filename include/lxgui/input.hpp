@@ -515,13 +515,13 @@ namespace input
         *         manager. If you need to remove one from the list, see
         *         remove_event_manager().
         */
-        void register_event_manager(utils::wptr<gui::event_manager> pManager);
+        void register_event_manager(gui::event_manager* pManager);
 
         /// Unregisters an event manager.
         /** \param pManager The manager to unregister
         *   \note For more details, see register_event_manager().
         */
-        void unregister_event_manager(utils::wptr<gui::event_manager> pManager);
+        void unregister_event_manager(gui::event_manager* pManager);
 
         /// Returns this manager's handler.
         /** \return This manager's handler
@@ -541,7 +541,7 @@ namespace input
         bool bFocus_;
         gui::event_receiver* pFocusReceiver_;
 
-        std::vector<utils::wptr<gui::event_manager>> lEventManagerList_;
+        std::vector<gui::event_manager*> lEventManagerList_;
 
         // Keyboard
         std::array<double, key::K_MAXKEY> lKeyDelay_;

@@ -44,9 +44,9 @@ manager::manager(const input::handler& mInputHandler, const std::string& sLocale
     bResizeFromBottom_(false), uiFrameNumber_(0), bEnableCaching_(true),
     pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(std::move(pImpl))
 {
-    pEventManager_ = utils::refptr<event_manager>(new event_manager());
+    pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
     event_receiver::set_event_manager(pEventManager_.get());
-    pInputManager_->register_event_manager(pEventManager_);
+    pInputManager_->register_event_manager(pEventManager_.get());
     register_event("KEY_PRESSED");
     pImpl_->set_parent(this);
 }
@@ -1712,9 +1712,14 @@ std::string manager::print_ui() const
     return s.str();
 }
 
-utils::wptr<event_manager> manager::get_event_manager()
+const event_manager* manager::get_event_manager() const
 {
-    return pEventManager_;
+    return pEventManager_.get();
+}
+
+event_manager* manager::get_event_manager()
+{
+    return pEventManager_.get();
 }
 
 utils::wptr<input::manager> manager::get_input_manager()

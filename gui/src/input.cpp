@@ -764,13 +764,13 @@ handler& manager::get_handler()
     return mHandler_;
 }
 
-void manager::register_event_manager(utils::wptr<gui::event_manager> pManager)
+void manager::register_event_manager(gui::event_manager* pManager)
 {
     if (utils::find(lEventManagerList_, pManager) == lEventManagerList_.end())
         lEventManagerList_.push_back(pManager);
 }
 
-void manager::unregister_event_manager(utils::wptr<gui::event_manager> pManager)
+void manager::unregister_event_manager(gui::event_manager* pManager)
 {
     auto iter = utils::find(lEventManagerList_, pManager);
     if (iter != lEventManagerList_.end())
@@ -783,9 +783,9 @@ void manager::fire_event_(const gui::event& mEvent, bool bForce)
         pFocusReceiver_->on_event(mEvent);
     else
     {
-        std::vector<utils::wptr<gui::event_manager>>::iterator iter;
-        foreach (iter, lEventManagerList_)
-            (*iter)->fire_event(mEvent);
+        std::vector<gui::event_manager>::iterator iter;
+        for (auto* pManager : lEventManagerList_)
+            pManager->fire_event(mEvent);
     }
 }
 }
