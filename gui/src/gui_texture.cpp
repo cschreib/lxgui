@@ -413,9 +413,9 @@ void texture::set_sprite(std::unique_ptr<sprite> pSprite)
 
     pSprite_ = std::move(pSprite);
 
-    set_abs_dimensions(pSprite->get_width(), pSprite->get_height());
+    set_abs_dimensions(pSprite_->get_width(), pSprite_->get_height());
 
-    lTexCoord_ = pSprite->get_texture_coords(true);
+    lTexCoord_ = pSprite_->get_texture_coords(true);
 
     notify_renderer_need_redraw();
 }
