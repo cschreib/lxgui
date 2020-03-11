@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
         sf::Clock mClock, mPerfClock;
         uint uiFrameCount = 0;
 
-        utils::wptr<input::manager> pInputMgr = mManager.get_input_manager();
+        input::manager* pInputMgr = mManager.get_input_manager();
 
         std::cout << "Entering loop..." << std::endl;
         while (bRunning)

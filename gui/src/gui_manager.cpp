@@ -1722,9 +1722,14 @@ event_manager* manager::get_event_manager()
     return pEventManager_.get();
 }
 
-utils::wptr<input::manager> manager::get_input_manager()
+const input::manager* manager::get_input_manager() const
 {
-    return pInputManager_;
+    return pInputManager_.get();
+}
+
+input::manager* manager::get_input_manager()
+{
+    return pInputManager_.get();
 }
 
 const std::string& manager::get_locale() const

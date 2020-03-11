@@ -766,7 +766,12 @@ namespace gui
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        utils::wptr<input::manager> get_input_manager();
+        const input::manager* get_input_manager() const;
+
+        /// Returns the input manager associated to this gui.
+        /** \return The input manager associated to this gui
+        */
+        input::manager* get_input_manager();
 
         /// Returns the current game locale ("enGB", ...).
         /** \return The current game locale
@@ -808,8 +813,8 @@ namespace gui
         bool                        bLoadingUI_;
         bool                        bFirstIteration_;
 
-        bool                          bInputEnabled_;
-        utils::refptr<input::manager> pInputManager_;
+        bool                            bInputEnabled_;
+        std::unique_ptr<input::manager> pInputManager_;
         std::map<uint, std::map<uint, std::map<uint, std::string>>> lKeyBindingList_;
 
         std::map<std::string, uiobject*> lNamedObjectList_;
