@@ -254,7 +254,7 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
     sFontName_ = sFontName;
     uiHeight_ = uiHeight;
 
-    pText_ = utils::refptr<text>(new text(pManager_, sFontName, uiHeight));
+    pText_ = std::unique_ptr<text>(new text(pManager_, sFontName, uiHeight));
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);
@@ -463,9 +463,14 @@ void font_string::set_text(const std::string& sText)
     }
 }
 
-utils::wptr<text> font_string::get_text_object()
+text* font_string::get_text_object()
 {
-    return pText_;
+    return pText_.get();
+}
+
+const text* font_string::get_text_object() const
+{
+    return pText_.get();
 }
 
 void font_string::update_borders_() const

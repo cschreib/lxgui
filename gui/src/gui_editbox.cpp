@@ -373,7 +373,7 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
             int iLeftPos = 0;
             int iRightPos = pFontString_->get_right() - pFontString_->get_left();
 
-            utils::wptr<text> pText = pFontString_->get_text_object();
+            text* pText = pFontString_->get_text_object();
             const std::vector<text::letter>& lLetters = pText->get_letter_cache();
 
             std::vector<text::letter>::const_iterator iter;
@@ -822,7 +822,7 @@ void edit_box::update_displayed_text_()
 
         if (!bMultiLine_)
         {
-            utils::wptr<text> pTextObject = pFontString_->get_text_object();
+            text* pTextObject = pFontString_->get_text_object();
 
             if (!math::isinf(pTextObject->get_box_width()))
             {
@@ -875,7 +875,7 @@ void edit_box::update_carret_position_()
             return;
         }
 
-        utils::wptr<text> pText = pFontString_->get_text_object();
+        text* pText = pFontString_->get_text_object();
         utils::ustring::iterator iterDisplayCarret;
 
         if (!bMultiLine_)
@@ -1063,7 +1063,7 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
-        utils::wptr<text> pText = pFontString_->get_text_object();
+        text* pText = pFontString_->get_text_object();
         const std::vector<text::letter>& lLetters = pText->get_letter_cache();
 
         if (lLetters.empty())
