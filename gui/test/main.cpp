@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
             // Dimensions of the render window
             mWindow.getSize().x, mWindow.getSize().y,
             // The OpenGL implementation of the gui
-            utils::refptr<gui::manager_impl>(new gui::gl::manager())
+            std::unique_ptr<gui::manager_impl>(new gui::gl::manager())
         );
 
         mManager.enable_caching(false);

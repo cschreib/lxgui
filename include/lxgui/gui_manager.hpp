@@ -136,7 +136,7 @@ namespace gui
         *   \param pImpl          The implementation specific class
         */
         manager(const input::handler& mInputHandler, const std::string& sLocale,
-                uint uiScreenWidth, uint uiScreenHeight, utils::refptr<manager_impl> pImpl);
+                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl);
 
         /// Destructor.
         ~manager();
@@ -746,12 +746,12 @@ namespace gui
         /// Returns the implementation dependent manager_impl.
         /** \return The implementation dependent manager_impl
         */
-        utils::wptr<const manager_impl> get_impl() const;
+        const manager_impl* get_impl() const;
 
         /// Returns the implementation dependent manager_impl.
         /** \return The implementation dependent manager_impl
         */
-        utils::wptr<manager_impl> get_impl();
+        manager_impl* get_impl();
 
         /// Returns the gui event manager.
         /** \return The gui event manager
@@ -853,9 +853,9 @@ namespace gui
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
 
-        std::string                  sLocale_;
-        utils::refptr<event_manager> pEventManager_;
-        utils::refptr<manager_impl>  pImpl_;
+        std::string                   sLocale_;
+        utils::refptr<event_manager>  pEventManager_;
+        std::unique_ptr<manager_impl> pImpl_;
     };
 
     /// Abstract type for implementation specific management

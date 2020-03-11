@@ -29,7 +29,7 @@ int l_get_locale(lua_State* pLua);
 int l_log(lua_State* pLua);
 
 manager::manager(const input::handler& mInputHandler, const std::string& sLocale,
-    uint uiScreenWidth, uint uiScreenHeight, utils::refptr<manager_impl> pImpl) :
+    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl) :
     event_receiver(nullptr), sUIVersion_("0001"),
     uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     bClearFontsOnClose_(true), pLua_(nullptr), pLuaRegs_(nullptr), bClosed_(true),
@@ -42,7 +42,7 @@ manager::manager(const input::handler& mInputHandler, const std::string& sLocale
     iMovementStartPositionY_(0), mConstraint_(CONSTRAINT_NONE), uiResizeStartW_(0),
     uiResizeStartH_(0), bResizeWidth_(false), bResizeHeight_(false), bResizeFromRight_(false),
     bResizeFromBottom_(false), uiFrameNumber_(0), bEnableCaching_(true),
-    pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(pImpl)
+    pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(std::move(pImpl))
 {
     pEventManager_ = utils::refptr<event_manager>(new event_manager());
     event_receiver::set_event_manager(pEventManager_.get());
@@ -59,9 +59,14 @@ manager::~manager()
     event_receiver::set_event_manager(nullptr);
 }
 
-utils::wptr<manager_impl> manager::get_impl()
+manager_impl* manager::get_impl()
 {
-    return pImpl_;
+    return pImpl_.get();
+}
+
+const manager_impl* manager::get_impl() const
+{
+    return pImpl_.get();
 }
 
 uint manager::get_screen_width() const
