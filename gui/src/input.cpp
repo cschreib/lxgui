@@ -9,76 +9,46 @@
 
 namespace input
 {
-handler::handler() : bManuallyUpdated_(false)
+void manager_impl::update()
 {
+    update_();
+    lChars_.clear();
+    std::swap(lChars_, lCharsCache_);
 }
 
-void handler::update()
-{
-    if (!pImpl_)
-        throw utils::exception("input::manager::handler", "No input source defined !");
-
-    pImpl_->update();
-    pImpl_->lChars.clear();
-    std::swap(pImpl_->lChars, pImpl_->lCharsCache_);
-}
-
-bool handler::is_manually_updated() const
+bool manager_impl::is_manually_updated() const
 {
     return bManuallyUpdated_;
 }
 
-void handler::set_manually_updated(bool bManuallyUpdated)
+void manager_impl::set_manually_updated(bool bManuallyUpdated)
 {
     bManuallyUpdated_ = bManuallyUpdated;
 }
 
-const handler_impl::key_state& handler::get_key_state() const
+const manager_impl::key_state& manager_impl::get_key_state() const
 {
-    return pImpl_->mKeyboard;
+    return mKeyboard_;
 }
 
-std::vector<char32_t> handler::get_chars() const
+const std::vector<char32_t>& manager_impl::get_chars() const
 {
-    return pImpl_->lChars;
+    return lChars_;
 }
 
-std::string handler::get_key_name(key::code mKey) const
+const manager_impl::mouse_state& manager_impl::get_mouse_state() const
 {
-    return pImpl_->get_key_name(mKey);
+    return mMouse_;
 }
 
-const handler_impl::mouse_state& handler::get_mouse_state() const
-{
-    return pImpl_->mMouse;
-}
-
-utils::wptr<handler_impl> handler::get_impl()
-{
-    return pImpl_;
-}
-
-handler_impl::handler_impl()
-{
-    mKeyboard.lKeyState.fill(false);
-
-    mMouse.bHasDelta = false;
-    mMouse.fAbsX = mMouse.fAbsY = 0.0f;
-    mMouse.fRelX = mMouse.fRelY = 0.0f;
-    mMouse.fDX = mMouse.fDY = 0.0f;
-    mMouse.fRelDX = mMouse.fRelDY = 0.0f;
-    mMouse.fRelWheel = 0.0f;
-    mMouse.lButtonState.fill(false);
-}
-
-manager::manager(const handler& mHandler) :
+manager::manager(std::unique_ptr<manager_impl> pImpl) :
     bRemoveFocus_(false), bFocus_(false), pFocusReceiver_(nullptr), bCtrlPressed_(false),
     bShiftPressed_(false), bAltPressed_ (false), bKey_(false),
     dDoubleClickTime_(0.25), fMX_(0.0f), fMY_(0.0f), fRelMX_(0.0f), fRelMY_(0.0f),
     fDMX_(0.0f), fDMY_(0.0f), fRelDMX_(0.0f), fRelDMY_(0.0f), fRawDMX_(0.0f), fRawDMY_(0.0f),
     fMouseSensibility_(1.0f), dMouseHistoryMaxLength_(0.1), dLongPressDelay_(0.7),
     fSmoothDMX_(0.0f), fSmoothDMY_(0.0f), fSmoothMWheel_(0.0f), fMWheel_(0.0f),
-    bWheelRolled_(false), bLastDragged_(false), dTime_(0.0), mHandler_(mHandler)
+    bWheelRolled_(false), bLastDragged_(false), dTime_(0.0), pImpl_(std::move(pImpl))
 {
     lKeyDelay_.fill(false);
     lKeyLong_.fill(false);
@@ -131,7 +101,7 @@ bool manager::get_key(bool bForce) const
 
 std::string manager::get_key_name(key::code mKey) const
 {
-    return mHandler_.get_key_name(mKey);
+    return pImpl_->get_key_name(mKey);
 }
 
 std::string manager::get_key_name(key::code mKey, key::code mModifier) const
@@ -308,10 +278,10 @@ void manager::update(float fTempDelta)
         bRemoveFocus_ = false;
     }
 
-    if (!mHandler_.is_manually_updated())
-        mHandler_.update();
+    if (!pImpl_->is_manually_updated())
+        pImpl_->update();
 
-    lChars_ = mHandler_.get_chars();
+    lChars_ = pImpl_->get_chars();
 
     lDownStack_.clear();
     lUpStack_.clear();
@@ -345,7 +315,7 @@ void manager::update(float fTempDelta)
         }
 
         // Update state
-        lKeyBuf_[i] = mHandler_.get_key_state().lKeyState[i];
+        lKeyBuf_[i] = pImpl_->get_key_state().lKeyState[i];
 
         if (lKeyBuf_[i])
         {
@@ -399,7 +369,7 @@ void manager::update(float fTempDelta)
     bShiftPressed_ = key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
     bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
 
-    const handler_impl::mouse_state& mMouseState = mHandler_.get_mouse_state();
+    const manager_impl::mouse_state& mMouseState = pImpl_->get_mouse_state();
     gui::event mMouseEvent;
     mMouseEvent.add(uint(0));
     mMouseEvent.add(mMouseState.fAbsX);
@@ -754,14 +724,14 @@ std::string manager::get_mouse_button_string(mouse::button mID) const
     }
 }
 
-const handler& manager::get_handler() const
+const manager_impl* manager::get_impl() const
 {
-    return mHandler_;
+    return pImpl_.get();
 }
 
-handler& manager::get_handler()
+manager_impl* manager::get_impl()
 {
-    return mHandler_;
+    return pImpl_.get();
 }
 
 void manager::register_event_manager(gui::event_manager* pManager)

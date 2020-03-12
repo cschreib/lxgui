@@ -11,8 +11,6 @@
 #include <map>
 #include "lxgui/input_keys.hpp"
 
-#define INPUT_MOUSE_BUTTON_NUMBER 3
-
 namespace gui
 {
     class event;
@@ -22,19 +20,70 @@ namespace gui
 
 namespace input
 {
-    /// The base class for input implementation
-    class handler_impl
+    constexpr std::size_t INPUT_MOUSE_BUTTON_NUMBER = 3u;
+
+    /// The base class for input manager implementation
+    /** \note In case you want to share the same implementation
+    *         for several input::managers, you have to call
+    *         set_manually_updated(true), and update the
+    *         manager yourself. Else, it will be updated
+    *         by each input::manager (which may not be
+    *         desirable).
+    */
+    class manager_impl
     {
     public :
 
+        struct key_state
+        {
+            std::array<bool, key::K_MAXKEY> lKeyState = {};
+        };
+
+        struct mouse_state
+        {
+            std::array<bool, INPUT_MOUSE_BUTTON_NUMBER> lButtonState = {};
+            float fAbsX = 0.0f, fAbsY = 0.0f, fDX = 0.0f, fDY = 0.0f;
+            float fRelX = 0.0f, fRelY = 0.0f, fRelDX = 0.0f, fRelDY = 0.0f;
+            float fRelWheel = 0.0f;
+            bool  bHasDelta = false;
+        };
+
         /// Constructor.
-        handler_impl();
+        manager_impl() = default;
 
         /// Destructor.
-        virtual ~handler_impl() {}
+        virtual ~manager_impl() = default;
 
-        /// Updates this implementation handler.
-        virtual void update() = 0;
+        /// Updates this handler.
+        void update();
+
+        /// Checks if this handler is manually updated.
+        /** \return 'true' if this handler is manually updated
+        *   \note See set_manually_updated().
+        */
+        bool is_manually_updated() const;
+
+        /// Marks this handler as manually updated.
+        /** \param bManuallyUpdated 'true' if this handler is manually updated
+        *   \note In case you want to share the same implementation
+        *         for several input::managers, you have to call
+        *         set_manually_updated(true), and update the
+        *         manager yourself. Else, it will be updated
+        *         by each input::manager (which may not be
+        *         desirable).
+        */
+        void set_manually_updated(bool bManuallyUpdated);
+
+        /// Returns the keyboard state of this input handler.
+        const manager_impl::key_state& get_key_state() const;
+
+        /// Returns the unicode characters that have been entered.
+        /** \return The unicode characters entered with the keyboard
+        */
+        const std::vector<char32_t>& get_chars() const;
+
+        /// Returns the mouse state of this input handler.
+        const manager_impl::mouse_state& get_mouse_state() const;
 
         /// Toggles mouse grab.
         /** When the mouse is grabbed, it is confined to the borders
@@ -51,91 +100,18 @@ namespace input
         */
         virtual std::string get_key_name(key::code mKey) const = 0;
 
-        struct key_state
-        {
-            std::array<bool, key::K_MAXKEY> lKeyState;
-        } mKeyboard;
+    protected:
 
-        struct mouse_state
-        {
-            std::array<bool, INPUT_MOUSE_BUTTON_NUMBER> lButtonState;
-            float fAbsX, fAbsY, fDX, fDY;
-            float fRelX, fRelY, fRelDX, fRelDY;
-            float fRelWheel;
-            bool  bHasDelta;
-        } mMouse;
+        /// Updates this implementation handler.
+        virtual void update_() = 0;
 
-        std::vector<char32_t> lChars;
+        key_state   mKeyboard_;
+        mouse_state mMouse_;
+
+        std::vector<char32_t> lChars_;
         std::vector<char32_t> lCharsCache_;
-    };
 
-    /// A reference to an input implementation
-    /** \note In case you want to share the same handler for
-    *         several input::managers, you have to call
-    *         set_manually_updated(true), and update the
-    *         handler yourself. Else, it will be updated
-    *         by each input::manager (and that may be something
-    *         you don't want to happen).
-    */
-    class handler
-    {
-    public :
-
-        /// Default constructor (empty handler).
-        handler();
-
-        /// Implementation constructor.
-        /** \param pImpl A pointer to the implementation handler
-        */
-        template<class T>
-        handler(utils::refptr<T> pImpl) : bManuallyUpdated_(false), pImpl_(pImpl) {
-        }
-
-        /// Updates this handler.
-        /** \note This function calls pImpl->update().
-        */
-        void update();
-
-        /// Checks if this handler is manually updated.
-        /** \return 'true' if this handler is manually updated
-        *   \note See set_manually_updated().
-        */
-        bool is_manually_updated() const;
-
-        /// Marks this handler as manually updated.
-        /** \param bManuallyUpdated 'true' if this handler is manually updated
-        *   \note In case you want to share the same handler for
-        *         several input::managers, you have to call
-        *         set_manually_updated(true), and update the
-        *         handler yourself. Else, it will be updated
-        *         by each input::manager (and that may be something
-        *         you don't want to happen).
-        */
-        void set_manually_updated(bool bManuallyUpdated);
-
-        /// Returns the keyboard state of this input handler.
-        const handler_impl::key_state& get_key_state() const;
-
-        /// Returns the unicode characters that has been entered.
-        /** \return The unicode characters entered with the keyboard
-        */
-        std::vector<char32_t> get_chars() const;
-
-        /// Returns the name of the key as it appears on the keyboard.
-        /** \return The name of the key as it appears on the keyboard
-        */
-        std::string get_key_name(key::code mKey) const;
-
-        /// Returns the mouse state of this input handler.
-        const handler_impl::mouse_state& get_mouse_state() const;
-
-        /// Returns the implementation specific handler.
-        utils::wptr<handler_impl> get_impl();
-
-    private :
-
-        bool                        bManuallyUpdated_;
-        utils::refptr<handler_impl> pImpl_;
+        bool bManuallyUpdated_ = false;
     };
 
     /// Handles inputs (keyboard and mouse)
@@ -143,10 +119,10 @@ namespace input
     {
     public :
 
-        /// Initializes this manager with the proper input source.
-        /** \param mHandler The input source (from another library)
+        /// Initializes this manager with a chosen implementation.
+        /** \param pImpl The implementation class of the input manager
         */
-        explicit manager(const handler& mHandler);
+        explicit manager(std::unique_ptr<manager_impl> pImpl);
 
         #ifndef NO_CPP11_DELETE_FUNCTION
         /// This class is non copiable.
@@ -526,12 +502,12 @@ namespace input
         /// Returns this manager's handler.
         /** \return This manager's handler
         */
-        const handler& get_handler() const;
+        const manager_impl* get_impl() const;
 
         /// Returns this manager's handler.
         /** \return This manager's handler
         */
-        handler& get_handler();
+        manager_impl* get_impl();
 
     private :
 
@@ -587,7 +563,7 @@ namespace input
 
         double dTime_;
 
-        handler mHandler_;
+        std::unique_ptr<manager_impl> pImpl_;
     };
 }
 

@@ -11,22 +11,22 @@ namespace sf {
 
 namespace input
 {
-    class sfml_handler : public handler_impl
+    class sfml_manager : public manager_impl
     {
     public :
 
         /// Initializes this handler.
         /** \param pWindow The window from which to receive input
         */
-        explicit sfml_handler(const sf::Window& pWindow, bool bMouseGrab = false);
+        explicit sfml_manager(const sf::Window& pWindow, bool bMouseGrab = false);
 
         #ifndef NO_CPP11_DELETE_FUNCTION
-        sfml_handler(const sfml_handler&) = delete;
-        sfml_handler& operator = (const sfml_handler&) = delete;
+        sfml_manager(const sfml_manager&) = delete;
+        sfml_manager& operator = (const sfml_manager&) = delete;
         #else
     private :
-        sfml_handler(const sfml_handler&);
-        sfml_handler& operator = (const sfml_handler&);
+        sfml_manager(const sfml_manager&);
+        sfml_manager& operator = (const sfml_manager&);
 
     public :
         #endif
@@ -34,8 +34,11 @@ namespace input
         void toggle_mouse_grab();
         std::string get_key_name(key::code mKey) const;
 
-        void update();
         void on_sfml_event(const sf::Event& mEvent);
+
+    protected :
+
+        void update_() override;
 
     private :
 

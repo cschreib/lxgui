@@ -39,24 +39,25 @@ Setting up the GUI in C++ is rather straight forward:
 // Create an SFML window, for example
 sf::Window mWindow;
 
-// Create an input handler (mouse, keyboard, ...)
-utils::refptr<input::handler_impl> pSFMLHandler(new input::sfml_handler(mWindow));
-
-// Initialize the gui
+// Initialize the GUI
 gui::manager mManager(
-    // Provide an input handler
-    pSFMLHandler,
+    // Provide an input manager
+    std::unique_ptr<input::sfml_manager>(new input::sfml_manager(mWindow)),
     // The language that will be used by the interface
     // (purely informative: it's always up to each addon to localize
     // itself according to this value)
     "enGB",
     // Dimensions of the render window
     mWindow.getSize().x, mWindow.getSize().y,
-    // The OpenGL implementation of the gui
+    // The OpenGL implementation of the GUI
     std::unique_ptr<gui::manager_impl>(new gui::gl::manager())
 );
 
-// Load files :
+// Grab a pointer to the SFML input manager so we can feed events to it later
+input::sfml_manager* pSFMLInput = static_cast<input::sfml_manager*>(
+    mManager->get_input_manager()->get_impl());
+
+// Load files:
 //  - first set the directory in which the interface is located
 mManager.add_addon_directory("interface");
 //  - create the lua::state
@@ -80,7 +81,7 @@ mManager.read_files();
 
 // Start the main loop
 sf::Clock mClock;
-while (bRunning)
+while (true)
 {
     // Retrieve the window events
     sf::Event mEvent;
@@ -102,6 +103,8 @@ while (bRunning)
     // Render the GUI
     mManager.render_ui();
 }
+
+// Resources are cleared up automatically on destruction
 ```
 
 With these few lines of code, you can then create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.

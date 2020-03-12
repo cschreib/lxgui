@@ -18,7 +18,7 @@ namespace lua {
 }
 
 namespace input {
-    class handler;
+    class manager_impl;
     class manager;
 }
 
@@ -129,13 +129,13 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param mInputHandler  The implementation input handler to use
+        /** \param pInputImpl     The implementation input manager to use
         *   \param sLocale        The name of the game locale ("enGB", ...)
         *   \param uiScreenWidth  The width of the screen
         *   \param uiScreenHeight The height of the screen
         *   \param pImpl          The implementation specific class
         */
-        manager(const input::handler& mInputHandler, const std::string& sLocale,
+        manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
                 uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl);
 
         /// Destructor.

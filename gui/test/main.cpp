@@ -71,28 +71,25 @@ int main(int argc, char* argv[])
         else
             mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test");
 
-        // Define the input handling method
-        input::handler mHandler;
+        // Define the input manager
+        std::unique_ptr<input::manager_impl> pInputImpl;
     #ifdef OIS_INPUT
         // OIS if available
-        mHandler = utils::refptr<input::handler_impl>(new input::ois_handler(
+        pInputImpl = std::unique_ptr<input::manager_impl>(new input::ois_manager(
             utils::to_string((uint)mWindow.getSystemHandle()), mWindow.getSize().x, mWindow.getSize().y
         ));
     #else
         // Else fall back to SFML input.
         // Note that the current SFML input handler is not fully functional,
         // since SFML doesn't provide keyboard layout independent key codes.
-        mHandler = utils::refptr<input::handler_impl>(new input::sfml_handler(mWindow));
-        utils::wptr<input::sfml_handler> pSFMLHandler = utils::wptr<input::sfml_handler>::dyn_cast(
-            mHandler.get_impl()
-        );
+        pInputImpl = std::unique_ptr<input::manager_impl>(new input::sfml_manager(mWindow));
     #endif
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
         gui::manager mManager(
             // Provide the input handler
-            mHandler,
+            std::move(pInputImpl),
             // The locale
             sLocale,
             // Dimensions of the render window
@@ -215,7 +212,7 @@ int main(int argc, char* argv[])
                     bFocus = true;
 
             #ifndef OIS_INPUT
-                pSFMLHandler->on_sfml_event(mEvent);
+                static_cast<input::sfml_manager*>(pInputMgr->get_impl())->on_sfml_event(mEvent);
             #endif
             }
 

@@ -1,8 +1,11 @@
-v1.2.1:
- - switched to MIT license
- - various fixes and improvements to the build system
- - added support for Lua versions later than 5.1
- - fixed various warnings and minor bugs detected by clang
+v1.3.0:
+ - general: switched to MIT license
+ - general: various fixes and improvements to the build system
+ - general: dropped support for C++03
+ - general: fixed various warnings and minor bugs detected by clang
+ - general: moved away from using reference-counted smart pointers whenever possible
+ - lua: added support for Lua versions later than 5.1
+ - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
 
 v1.2.0:
  - added support for MSVC 2010
