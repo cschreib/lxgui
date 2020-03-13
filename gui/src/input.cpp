@@ -753,7 +753,6 @@ void manager::fire_event_(const gui::event& mEvent, bool bForce)
         pFocusReceiver_->on_event(mEvent);
     else
     {
-        std::vector<gui::event_manager>::iterator iter;
         for (auto* pManager : lEventManagerList_)
             pManager->fire_event(mEvent);
     }

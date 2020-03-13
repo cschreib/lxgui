@@ -76,7 +76,6 @@ utils::refptr<gui::material> manager::create_material_png(const std::string& sFi
         if (uiColorType == PNG_COLOR_TYPE_RGB)
         {
             png_set_filler(pReadStruct, 0xff, PNG_FILLER_AFTER);
-            uiChannels = 4;
         }
         else if (uiColorType != PNG_COLOR_TYPE_RGBA)
             throw utils::exception("only RGB or RGBA is supported for PNG images.");
