@@ -55,7 +55,8 @@ gui::manager mManager(
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
 input::sfml_manager* pSFMLInput = static_cast<input::sfml_manager*>(
-    mManager->get_input_manager()->get_impl());
+    mManager->get_input_manager()->get_impl()
+);
 
 // Load files:
 //  - first set the directory in which the interface is located
