@@ -2,8 +2,6 @@
 #define INPUT_HPP
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
 #include <string>
 #include <vector>
 #include <deque>

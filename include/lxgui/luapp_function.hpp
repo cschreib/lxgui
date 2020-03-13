@@ -2,8 +2,6 @@
 #define LUAPP_FUNCTION_HPP
 
 #include "lxgui/luapp_var.hpp"
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
 #include <map>
 
 namespace lua

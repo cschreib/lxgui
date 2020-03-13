@@ -2,10 +2,11 @@
 #define GUI_FONT_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_refptr.hpp>
+#include <lxgui/utils_wptr.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_quad2.hpp"
 
-#include <lxgui/utils_refptr.hpp>
 #include <array>
 
 namespace gui

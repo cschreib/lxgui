@@ -2,6 +2,7 @@
 #define GUI_GL_RENDERTARGET_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_refptr.hpp>
 #include <lxgui/gui_rendertarget.hpp>
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_matrix4.hpp"
