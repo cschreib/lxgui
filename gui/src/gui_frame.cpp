@@ -1252,53 +1252,71 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     {
         lua::state* pLua = pManager_->get_lua();
 
-        if ((sScriptName == "KeyDown") ||
-            (sScriptName == "KeyUp"))
+        // Reset all arg* to nil
         {
-            // Set key name
-            if (pEvent)
+            uint i = 1;
+            pLua->get_global("arg"+utils::to_string(i));
+
+            while (pLua->get_type() != lua::TYPE_NIL)
             {
+                pLua->pop();
+                pLua->push_nil();
+                pLua->set_global("arg"+utils::to_string(i));
+
+                ++i;
+                pLua->get_global("arg"+utils::to_string(i));
+            }
+
+            pLua->pop();
+        }
+
+        if (pEvent)
+        {
+            if ((sScriptName == "KeyDown") ||
+                (sScriptName == "KeyUp"))
+            {
+                // Set key name
                 pLua->push_number(pEvent->get<uint>(0));
                 pLua->set_global("arg1");
                 pLua->push_string(pEvent->get<std::string>(1));
                 pLua->set_global("arg2");
             }
-        }
-        else if (sScriptName == "MouseDown")
-        {
-            // Set mouse button
-            pLua->push_string(pEvent->get<std::string>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "MouseUp")
-        {
-            // Set mouse button
-            pLua->push_string(pEvent->get<std::string>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "MouseWheel")
-        {
-            pLua->push_number(pEvent->get<float>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "Update")
-        {
-            // Set delta time
-            pLua->push_number(pEvent->get<float>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "Event")
-        {
-            // Set event name
-            pLua->push_string(pEvent->get_name());
-            pLua->set_global("event");
-
-            // Set arguments
-            for (uint i = 0; i < pEvent->get_num_param(); ++i)
+            else if (sScriptName == "MouseDown")
             {
-                const lua::var* pArg = pEvent->get(i);
-                pLua->push(*pArg);
-                pLua->set_global("arg"+utils::to_string(i+1));
+                // Set mouse button
+                pLua->push_string(pEvent->get<std::string>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "MouseUp")
+            {
+                // Set mouse button
+                pLua->push_string(pEvent->get<std::string>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "MouseWheel")
+            {
+                pLua->push_number(pEvent->get<float>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "Update")
+            {
+                // Set delta time
+                pLua->push_number(pEvent->get<float>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "Event")
+            {
+                // Set event name
+                pLua->push_string(pEvent->get_name());
+                pLua->set_global("event");
+
+                // Set arguments
+                for (uint i = 0; i < pEvent->get_num_param(); ++i)
+                {
+                    const lua::var* pArg = pEvent->get(i);
+                    pLua->push(*pArg);
+                    pLua->set_global("arg"+utils::to_string(i+1));
+                }
             }
         }
 
