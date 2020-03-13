@@ -328,7 +328,8 @@ void frame::copy_from(uiobject* pObj)
         if (pFrame->pTitleRegion_)
         {
             this->create_title_region();
-            pTitleRegion_->copy_from(pFrame->pTitleRegion_);
+            if (pTitleRegion_)
+                pTitleRegion_->copy_from(pFrame->pTitleRegion_);
         }
 
         std::map<uint, layered_region*>::const_iterator iterRegion;
