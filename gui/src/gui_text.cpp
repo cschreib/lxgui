@@ -466,7 +466,6 @@ void text::update_lines_()
         if (fBoxH_ < get_line_height())
         {
             uiMaxLineNbr = 0;
-            return;
         }
         else
         {
