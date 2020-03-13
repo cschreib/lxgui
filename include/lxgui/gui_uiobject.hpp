@@ -13,8 +13,53 @@
 
 namespace gui
 {
-    class lua_glue;
-    class lua_virtual_glue;
+    /** \cond NOT_REMOVE_FROM_DOC
+    */
+
+    // Generic Lua glue
+    class lua_glue
+    {
+    public :
+
+        explicit lua_glue(lua_State* luaVM);
+        virtual ~lua_glue();
+
+        virtual void notify_deleted() = 0;
+
+        int get_data_table(lua_State *L);
+
+    protected :
+
+        lua_State* pLua_;
+        int        iRef_;
+    };
+
+    // Virtual widget Lua glue
+    class lua_virtual_glue : public lua_glue
+    {
+    public :
+
+        explicit lua_virtual_glue(lua_State* luaVM);
+        virtual ~lua_virtual_glue();
+
+        virtual void notify_deleted();
+
+        int _mark_for_copy(lua_State*);
+        int _get_base(lua_State*);
+        int _get_name(lua_State*);
+
+        static const char className[];
+        static const char* classList[];
+        static Lunar<lua_virtual_glue>::RegType methods[];
+
+    protected :
+
+        uint      uiID_;
+        uiobject* pParent_;
+    };
+
+    /** \endcond
+    */
 
     enum border_type
     {
@@ -614,48 +659,6 @@ namespace gui
 
     /** \cond NOT_REMOVE_FROM_DOC
     */
-
-    // Generic Lua glue
-    class lua_glue
-    {
-    public :
-
-        explicit lua_glue(lua_State* luaVM);
-        virtual ~lua_glue();
-
-        virtual void notify_deleted() = 0;
-
-        int get_data_table(lua_State *L);
-
-    protected :
-
-        lua_State* pLua_;
-        int        iRef_;
-    };
-
-    // Virtual widget Lua glue
-    class lua_virtual_glue : public lua_glue
-    {
-    public :
-
-        explicit lua_virtual_glue(lua_State* luaVM);
-        virtual ~lua_virtual_glue();
-
-        virtual void notify_deleted();
-
-        int _mark_for_copy(lua_State*);
-        int _get_base(lua_State*);
-        int _get_name(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static Lunar<lua_virtual_glue>::RegType methods[];
-
-    protected :
-
-        uint      uiID_;
-        uiobject* pParent_;
-    };
 
     // uiobject Lua glue
     class lua_uiobject : public lua_glue
