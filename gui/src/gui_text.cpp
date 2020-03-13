@@ -802,6 +802,8 @@ void text::update_cache_()
 
         color mColor = color::EMPTY;
 
+        float fFontTextureHeight = pFont_->get_texture()->get_height();
+
         std::vector<line>::iterator iterLine;
         foreach (iterLine, lLineList_)
         {
@@ -843,7 +845,7 @@ void text::update_cache_()
                 if (*iterChar == '\n')
                 {
                     quad2f lUVs = pFont_->get_character_uvs(TO_U('_'));
-                    fCharHeight = lUVs.height()*pFont_->get_texture()->get_height();
+                    fCharHeight = lUVs.height()*fFontTextureHeight;
                     float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
 
                     mLetter.mQuad = quad2f(0.0f, 0.0f, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
@@ -859,7 +861,7 @@ void text::update_cache_()
                     fCharWidth = fSpaceWidth_;
                     if (*iterChar == TO_U('\t'))
                         fCharWidth *= 4;
-                    fCharHeight = lUVs.height()*pFont_->get_texture()->get_height();
+                    fCharHeight = lUVs.height()*fFontTextureHeight;
                     float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
 
                     mLetter.mQuad = quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
@@ -871,7 +873,7 @@ void text::update_cache_()
                 {
                     quad2f lUVs = pFont_->get_character_uvs(*iterChar);
                     fCharWidth = get_character_width(*iterChar);
-                    fCharHeight = lUVs.height()*pFont_->get_texture()->get_height();
+                    fCharHeight = lUVs.height()*fFontTextureHeight;
                     float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
 
                     mLetter.mQuad = quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
