@@ -301,8 +301,8 @@ int lua_uiobject::_get_point(lua_State* pLua)
     mFunc.add(0, "point ID", lua::TYPE_NUMBER, true);
     if (mFunc.check())
     {
-        const std::map<anchor_point, anchor>& lanchorList = pParent_->get_point_list();
-        if (!lanchorList.empty())
+        const std::map<anchor_point, anchor>& lAnchorList = pParent_->get_point_list();
+        if (!lAnchorList.empty())
         {
             uint uianchorID = 1;
             if (mFunc.is_provided(0))
@@ -311,7 +311,7 @@ int lua_uiobject::_get_point(lua_State* pLua)
             const anchor* pAnchor = nullptr;
             uint uiCounter = 1;
             std::map<anchor_point, anchor>::const_iterator iter;
-            foreach (iter, lanchorList)
+            foreach (iter, lAnchorList)
             {
                 pAnchor = &iter->second;
                 if (uiCounter == uianchorID)
