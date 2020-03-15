@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.7)
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
@@ -120,7 +120,7 @@ find_package(OpenGL)
 if(LXGUI_BUILD_INPUT_OIS_IMPL)
     find_package(OIS)
 endif()
-if (LUA_VERSION_STRING VERSION_EQUAL 5.1)
+if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_LESS 5.2)
     add_definitions(-DLXGUI_LUA51)
 endif()
 
