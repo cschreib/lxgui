@@ -45,6 +45,20 @@ public :
         increment_();
     }
 
+    /// Move constructor.
+    /** \param mValue the refptr to copy
+    */
+    refptr(refptr&& mValue)
+    {
+        pValue_    = mValue.pValue_;
+        pCounter_  = mValue.pCounter_;
+        pWCounter_ = mValue.pWCounter_;
+
+        mValue.pValue_    = nullptr;
+        mValue.pCounter_  = nullptr;
+        mValue.pWCounter_ = nullptr;
+    }
+
     /// Conversion from nullptr.
     refptr(const nullptr_t&)
     {
@@ -78,6 +92,21 @@ public :
         pWCounter_ = mValue.pWCounter_;
 
         increment_();
+    }
+
+    template<class N>
+    /// Conversion move constructor.
+    /** \param mValue the refptr to move
+    */
+    explicit refptr(refptr<N>&& mValue)
+    {
+        pValue_    = mValue.pValue_;
+        pCounter_  = mValue.pCounter_;
+        pWCounter_ = mValue.pWCounter_;
+
+        mValue.pValue_    = nullptr;
+        mValue.pCounter_  = nullptr;
+        mValue.pWCounter_ = nullptr;
     }
 
     /// Destructor.
@@ -226,6 +255,53 @@ public :
             pWCounter_ = mValue.pWCounter_;
 
             increment_();
+        }
+
+        return *this;
+    }
+
+    /// Move operator.
+    /** \param mValue The value to move
+    *   \note Can cause deletion of the contained
+    *         pointer.
+    */
+    refptr& operator = (refptr&& mValue)
+    {
+        if (&mValue != this)
+        {
+            decrement_();
+
+            pValue_    = mValue.pValue_;
+            pCounter_  = mValue.pCounter_;
+            pWCounter_ = mValue.pWCounter_;
+
+            mValue.pValue_    = nullptr;
+            mValue.pCounter_  = nullptr;
+            mValue.pWCounter_ = nullptr;
+        }
+
+        return *this;
+    }
+
+    template<class N>
+    /// Move operator.
+    /** \param mValue The value to move
+    *   \note Can cause deletion of the contained
+    *         pointer.
+    */
+    refptr& operator = (refptr<N>&& mValue)
+    {
+        if (mValue.pValue_ != pValue_)
+        {
+            decrement_();
+
+            pValue_    = mValue.pValue_;
+            pCounter_  = mValue.pCounter_;
+            pWCounter_ = mValue.pWCounter_;
+
+            mValue.pValue_    = nullptr;
+            mValue.pCounter_  = nullptr;
+            mValue.pWCounter_ = nullptr;
         }
 
         return *this;

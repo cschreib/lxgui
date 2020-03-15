@@ -42,6 +42,18 @@ public :
         increment_();
     }
 
+    /// Move constructor.
+    wptr(wptr&& pPtr)
+    {
+        pValue_    = pPtr.pValue_;
+        pCounter_  = pPtr.pCounter_;
+        pWCounter_ = pPtr.pWCounter_;
+
+        pPtr.pValue_    = nullptr;
+        pPtr.pCounter_  = nullptr;
+        pPtr.pWCounter_ = nullptr;
+    }
+
     /// Conversion from nullptr.
     wptr(const nullptr_t&)
     {
@@ -80,6 +92,19 @@ public :
         increment_();
     }
 
+    template<class N>
+    /// wptr conversion move.
+    wptr(wptr<N>&& pPtr)
+    {
+        pValue_    = pPtr.pValue_;
+        pCounter_  = pPtr.pCounter_;
+        pWCounter_ = pPtr.pWCounter_;
+
+        pPtr.pValue_    = nullptr;
+        pPtr.pCounter_  = nullptr;
+        pPtr.pWCounter_ = nullptr;
+    }
+
     /// Checks if this pointer points to a valid object.
     /** \note The pointer can be invalid if the object has
     *         been deleted somewhere else.
@@ -95,7 +120,7 @@ public :
     *         been deleted and this pointer is invalid, or it
     *         is simply NULL.
     */
-    uint GetCount() const
+    uint get_count() const
     {
         if (pCounter_)
             return *pCounter_;
@@ -107,7 +132,7 @@ public :
     /** \return The number of wptr pointing to the object
     *   \note This function returns 0 if the pointer is NULL.
     */
-    uint GetWeakCount() const
+    uint get_weak_count() const
     {
         if (pWCounter_)
             return *pWCounter_;
@@ -196,9 +221,9 @@ public :
     */
     wptr& operator = (const nullptr_t& pPtr)
     {
-        pValue_    = nullptr;
-        pCounter_  = nullptr;
-        pWCounter_ = nullptr;
+        decrement_();
+
+        pValue_ = nullptr;
 
         return *this;
     }
@@ -208,6 +233,8 @@ public :
     */
     wptr& operator = (const wptr& pPtr)
     {
+        decrement_();
+
         pValue_ = pPtr.pValue_;
         pCounter_ = pPtr.pCounter_;
         pWCounter_ = pPtr.pWCounter_;
@@ -223,11 +250,50 @@ public :
     */
     wptr& operator = (const wptr<N>& pPtr)
     {
+        decrement_();
+
         pValue_ = pPtr.pValue_;
         pCounter_ = pPtr.pCounter_;
         pWCounter_ = pPtr.pWCounter_;
 
         increment_();
+
+        return *this;
+    }
+
+    /// Move operator.
+    /** \param pPtr The value to move
+    */
+    wptr& operator = (wptr&& pPtr)
+    {
+        decrement_();
+
+        pValue_ = pPtr.pValue_;
+        pCounter_ = pPtr.pCounter_;
+        pWCounter_ = pPtr.pWCounter_;
+
+        pPtr.pValue_    = nullptr;
+        pPtr.pCounter_  = nullptr;
+        pPtr.pWCounter_ = nullptr;
+
+        return *this;
+    }
+
+    template<class N>
+    /// Move operator.
+    /** \param pPtr The value to move
+    */
+    wptr& operator = (wptr<N>&& pPtr)
+    {
+        decrement_();
+
+        pValue_ = pPtr.pValue_;
+        pCounter_ = pPtr.pCounter_;
+        pWCounter_ = pPtr.pWCounter_;
+
+        pPtr.pValue_    = nullptr;
+        pPtr.pCounter_  = nullptr;
+        pPtr.pWCounter_ = nullptr;
 
         return *this;
     }
