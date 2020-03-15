@@ -248,7 +248,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
     xml::block* pBackdropBlock = pBlock->get_block("Backdrop");
     if (pBackdropBlock)
     {
-        utils::refptr<backdrop> pBackdrop(new backdrop(this));
+        std::unique_ptr<backdrop> pBackdrop(new backdrop(this));
 
         pBackdrop->set_background(pManager_->parse_file_name(
             pBackdropBlock->get_attribute("bgFile")
@@ -335,7 +335,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             }
         }
 
-        set_backdrop(pBackdrop);
+        set_backdrop(std::move(pBackdrop));
     }
 }
 

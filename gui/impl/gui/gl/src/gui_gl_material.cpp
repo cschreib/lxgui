@@ -34,7 +34,7 @@ ub32color::ub32color(chanel r, chanel g, chanel b, chanel a) : r(r), g(g), b(b),
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
     mType_(TYPE_TEXTURE)
 {
-    pTexData_ = utils::refptr<texture_data>(new texture_data());
+    pTexData_ = std::unique_ptr<texture_data>(new texture_data());
     pTexData_->uiWidth_ = uiWidth;
     pTexData_->uiHeight_ = uiHeight;
     pTexData_->mWrap_ = mWrap;
@@ -102,7 +102,7 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
 
 material::material(const color& mColor) : mType_(TYPE_COLOR)
 {
-    pColData_ = utils::refptr<color_data>(new color_data());
+    pColData_ = std::unique_ptr<color_data>(new color_data());
     pColData_->mColor_ = mColor;
 }
 
@@ -271,8 +271,8 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     if (uiWidth > pTexData_->uiRealWidth_ || uiHeight > pTexData_->uiRealHeight_)
     {
 
-        utils::refptr<texture_data> pOldData = pTexData_;
-        pTexData_ = utils::refptr<texture_data>(new texture_data());
+        std::unique_ptr<texture_data> pOldData = std::move(pTexData_);
+        pTexData_ = std::unique_ptr<texture_data>(new texture_data());
         pTexData_->uiWidth_  = uiWidth;
         pTexData_->uiHeight_ = uiHeight;
         pTexData_->mWrap_    = pOldData->mWrap_;
@@ -291,11 +291,13 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
         if (pTexData_->uiRealWidth_ > MAXIMUM_SIZE || pTexData_->uiRealHeight_ > MAXIMUM_SIZE)
         {
-            pTexData_ = pOldData;
+            pTexData_ = std::move(pOldData);
             return false;
         }
 
         glDeleteTextures(1, &pTexData_->uiTextureHandle_);
+
+        pOldData = nullptr;
 
         GLint iPreviousID;
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);

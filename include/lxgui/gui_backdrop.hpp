@@ -175,8 +175,8 @@ namespace gui
         color       mBackgroundColor_;
         color       mEdgeColor_;
 
-        mutable utils::refptr<sprite>               pBackground_;
-        mutable std::array<utils::refptr<sprite>,8> lEdgeList_;
+        mutable std::unique_ptr<sprite>               pBackground_;
+        mutable std::array<std::unique_ptr<sprite>,8> lEdgeList_;
 
         bool   bBackgroundTilling_;
         uint   uiTileSize_;

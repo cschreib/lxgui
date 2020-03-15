@@ -35,14 +35,14 @@ void function::add(uint uiIndex, const std::string& sName, type mLuaType, bool b
         if (pArgList_->lOptional_.find(uiIndex) != pArgList_->lOptional_.end())
             pArgList_->lOptional_[uiIndex]->add(sName, mLuaType);
         else
-            pArgList_->lOptional_[uiIndex] = utils::refptr<argument>(new argument(sName, mLuaType, this));
+            pArgList_->lOptional_[uiIndex] = std::unique_ptr<argument>(new argument(sName, mLuaType, this));
     }
     else
     {
         if (pArgList_->lArg_.find(uiIndex) != pArgList_->lArg_.end())
             pArgList_->lArg_[uiIndex]->add(sName, mLuaType);
         else
-            pArgList_->lArg_[uiIndex] = utils::refptr<argument>(new argument(sName, mLuaType, this));
+            pArgList_->lArg_[uiIndex] = std::unique_ptr<argument>(new argument(sName, mLuaType, this));
     }
 }
 
@@ -58,20 +58,20 @@ uint function::get_param_set_rank()
     return pArgList_->uiRank_;
 }
 
-utils::wptr<argument> function::get(uint uiIndex)
+argument* function::get(uint uiIndex)
 {
     if (pArgList_->lArg_.find(uiIndex) != pArgList_->lArg_.end())
-        return pArgList_->lArg_[uiIndex];
+        return pArgList_->lArg_[uiIndex].get();
 
     if (pArgList_->lOptional_.find(uiIndex) != pArgList_->lOptional_.end())
-        return pArgList_->lOptional_[uiIndex];
+        return pArgList_->lOptional_[uiIndex].get();
 
     return nullptr;
 }
 
 bool function::is_provided(uint uiIndex) const
 {
-    std::map<uint, utils::refptr<argument>>::const_iterator iter = pArgList_->lArg_.find(uiIndex);
+    auto iter = pArgList_->lArg_.find(uiIndex);
     if (iter != pArgList_->lArg_.end())
         return iter->second->is_provided();
 
@@ -92,12 +92,11 @@ bool function::check(bool bPrintError)
     uiArgumentCount_ = pLua_->get_top();
 
     // Check if that's enough
-    std::vector<argument_list>::iterator iterArgList;
     std::vector<argument_list*> lValidArgList;
-    foreach (iterArgList, lArgListStack_)
+    for (auto& mArgList : lArgListStack_)
     {
-        if (uiArgumentCount_ >= iterArgList->lArg_.size())
-            lValidArgList.push_back(&(*iterArgList));
+        if (uiArgumentCount_ >= mArgList.lArg_.size())
+            lValidArgList.push_back(&mArgList);
     }
 
     if (lValidArgList.empty())
@@ -105,29 +104,33 @@ bool function::check(bool bPrintError)
         if (bPrintError)
         {
             std::string sError;
-            foreach (iterArgList, lArgListStack_)
+            for (auto& mArgList : lArgListStack_)
             {
-                std::string sArguments = "\n  - ["+utils::to_string(iterArgList->lArg_.size())+"] : ";
-                std::map<uint, utils::refptr<argument>>::iterator iterArg;
-                foreach (iterArg, iterArgList->lArg_)
+                std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
+                for (auto iterArg = mArgList.lArg_.begin(); iterArg != mArgList.lArg_.end(); ++iterArg)
                 {
-                    if (iterArg != iterArgList->lArg_.begin())
+                    if (iterArg != mArgList.lArg_.begin())
                         sArguments += ", ";
+
                     sArguments += iterArg->second->get_data()->get_name();
                 }
-                if (iterArgList->lOptional_.size() > 0)
+
+                if (mArgList.lOptional_.size() > 0)
                 {
                     if (sArguments != "")
                         sArguments += ", ";
+
                     sArguments += "(+";
-                    foreach (iterArg, iterArgList->lOptional_)
+
+                    for (auto iterArg = mArgList.lOptional_.begin(); iterArg != mArgList.lOptional_.end(); ++iterArg)
                     {
-                        if (iterArg != iterArgList->lOptional_.begin())
+                        if (iterArg != mArgList.lOptional_.begin())
                             sArguments += ", ";
                         sArguments += iterArg->second->get_data()->get_name();
                     }
                     sArguments += ")";
                 }
+
                 sError += sArguments;
             }
 
@@ -150,27 +153,26 @@ bool function::check(bool bPrintError)
 
     // We then check the value type
     int i = 0;
-    std::map<uint, utils::refptr<argument>>::iterator iterArg;
     if (lValidArgList.size() > 1)
     {
-        std::vector<argument_list*>::iterator iterArgListPtr;
         pArgList_ = nullptr;
-        foreach (iterArgListPtr, lValidArgList)
+        for (auto* pArgList : lValidArgList)
         {
             i = 1;
             bool bValid = true;
-            foreach (iterArg, (*iterArgListPtr)->lArg_)
+            for (auto& mArg : pArgList->lArg_)
             {
-                if (!iterArg->second->test(pLua_, i, false))
+                if (!mArg.second->test(pLua_, i, false))
                 {
                     bValid = false;
                     break;
                 }
                 ++i;
             }
+
             if (bValid)
             {
-                pArgList_ = (*iterArgListPtr);
+                pArgList_ = pArgList;
                 break;
             }
         }
@@ -180,28 +182,33 @@ bool function::check(bool bPrintError)
             if (bPrintError)
             {
                 std::string sError;
-                foreach (iterArgList, lArgListStack_)
+                for (auto& mArgList : lArgListStack_)
                 {
-                    std::string sArguments = "\n  - ["+utils::to_string(iterArgList->lArg_.size())+"] : ";
-                    foreach (iterArg, iterArgList->lArg_)
+                    std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
+                    for (auto iterArg = mArgList.lArg_.begin(); iterArg != mArgList.lArg_.end(); ++iterArg)
                     {
-                        if (iterArg != iterArgList->lArg_.begin())
+                        if (iterArg != mArgList.lArg_.begin())
                             sArguments += ", ";
                         sArguments += iterArg->second->get_data()->get_name();
                     }
-                    if (iterArgList->lOptional_.size() > 0)
+
+                    if (mArgList.lOptional_.size() > 0)
                     {
                         if (sArguments != "")
                             sArguments += ", ";
+
                         sArguments += "(+";
-                        foreach (iterArg, iterArgList->lOptional_)
+
+                        for (auto iterArg = mArgList.lOptional_.begin(); iterArg != mArgList.lOptional_.end(); ++iterArg)
                         {
-                            if (iterArg != iterArgList->lOptional_.begin())
+                            if (iterArg != mArgList.lOptional_.begin())
                                 sArguments += ", ";
                             sArguments += iterArg->second->get_data()->get_name();
                         }
+
                         sArguments += ")";
                     }
+
                     sError += sArguments;
                 }
 
@@ -217,9 +224,9 @@ bool function::check(bool bPrintError)
         pArgList_ = lValidArgList[0];
         i = 1;
         bool bValid = true;
-        foreach (iterArg, pArgList_->lArg_)
+        for (auto& mArg : pArgList_->lArg_)
         {
-            if (!iterArg->second->test(pLua_, i, bPrintError))
+            if (!mArg.second->test(pLua_, i, bPrintError))
                 bValid = false;
             ++i;
         }
@@ -235,11 +242,11 @@ bool function::check(bool bPrintError)
 
     // And we check optional arguments
     bool bValid = true;
-    foreach (iterArg, pArgList_->lOptional_)
+    for (auto& mArg : pArgList_->lOptional_)
     {
         if (pLua_->get_type(i) != TYPE_NIL)
         {
-            if (!iterArg->second->test(pLua_, i, bPrintError))
+            if (!mArg.second->test(pLua_, i, bPrintError))
                 bValid = false;
         }
         ++i;

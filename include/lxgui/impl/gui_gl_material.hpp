@@ -218,8 +218,8 @@ namespace gl
 
         type mType_;
 
-        utils::refptr<texture_data> pTexData_;
-        utils::refptr<color_data>   pColData_;
+        std::unique_ptr<texture_data> pTexData_;
+        std::unique_ptr<color_data>   pColData_;
 
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;

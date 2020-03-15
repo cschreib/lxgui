@@ -176,7 +176,7 @@ namespace gui
         virtual void update(float fDelta);
 
         /// Registers this widget to the provided lua::state
-        static void register_glue(utils::wptr<lua::state> pLua);
+        static void register_glue(lua::state* pLua);
 
         #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "Slider";

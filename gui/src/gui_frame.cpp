@@ -28,7 +28,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager().lock().get()),
+frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
     region(pManager), pAddOn_(nullptr), iLevel_(0), mStrata_(STRATA_MEDIUM), bIsTopLevel_(false),
     pTopLevelParent_(nullptr), bHasAllEventsRegistred_(false), bIsKeyboardEnabled_(false),
     bIsMouseEnabled_(false), bAllowWorldInput_(false), bIsMouseWheelEnabled_(false),
@@ -83,22 +83,7 @@ void frame::render()
 
 void frame::create_glue()
 {
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sName_);
-        lGlueList_.push_back(pLua->push_new<lua_frame>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_frame>();
 }
 
 std::string frame::serialize(const std::string& sTab) const
@@ -336,14 +321,15 @@ void frame::copy_from(uiobject* pObj)
 
         if (pFrame->pBackdrop_)
         {
-            pBackdrop_ = utils::refptr<backdrop>(new backdrop(this));
+            pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
             pBackdrop_->copy_from(*pFrame->pBackdrop_);
         }
 
         if (pFrame->pTitleRegion_)
         {
             this->create_title_region();
-            pTitleRegion_->copy_from(pFrame->pTitleRegion_);
+            if (pTitleRegion_)
+                pTitleRegion_->copy_from(pFrame->pTitleRegion_);
         }
 
         std::map<uint, layered_region*>::const_iterator iterRegion;
@@ -664,12 +650,13 @@ void frame::add_region(layered_region* pRegion)
 
             if (!bVirtual_)
             {
-                utils::wptr<lua::state> pLua = pManager_->get_lua();
                 const std::string& sRawName = pRegion->get_raw_name();
                 if (utils::starts_with(sRawName, "$parent"))
                 {
                     std::string sTempName = pRegion->get_name();
                     sTempName.erase(0, sName_.size());
+
+                    lua::state* pLua = pManager_->get_lua();
                     pLua->get_global(pRegion->get_name());
                     pLua->set_global(sName_+"."+sTempName);
                 }
@@ -791,11 +778,12 @@ void frame::add_child(frame* pChild)
 
             if (!bVirtual_)
             {
-                utils::wptr<lua::state> pLua = pManager_->get_lua();
                 std::string sRawName = pChild->get_raw_name();
                 if (utils::starts_with(sRawName, "$parent"))
                 {
                     sRawName.erase(0, 7);
+
+                    lua::state* pLua = pManager_->get_lua();
                     pLua->get_global(pChild->get_lua_name());
                     pLua->set_global(sLuaName_+"."+sRawName);
                 }
@@ -860,9 +848,14 @@ frame_strata frame::get_frame_strata() const
     return mStrata_;
 }
 
-utils::wptr<backdrop> frame::get_backdrop() const
+const backdrop* frame::get_backdrop() const
 {
-    return pBackdrop_;
+    return pBackdrop_.get();
+}
+
+backdrop* frame::get_backdrop()
+{
+    return pBackdrop_.get();
 }
 
 const std::string& frame::get_frame_type() const
@@ -996,7 +989,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     sStr += "function " + sLuaName_ + ":" + sAdjustedName + "() " + sContent + " end";
 
     // Use XML specific error handling
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
+    lua::state* pLua = pManager_->get_lua();
 
     std::string     sOldFile     = pLua->get_global_string("_xml_file_name", false, "");
     uint            uiOldLineNbr = pLua->get_global_int("_xml_line_nbr", false, 0);
@@ -1257,55 +1250,73 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
     if (iter != lDefinedScriptList_.end())
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
+        lua::state* pLua = pManager_->get_lua();
 
-        if ((sScriptName == "KeyDown") ||
-            (sScriptName == "KeyUp"))
+        // Reset all arg* to nil
         {
-            // Set key name
-            if (pEvent)
+            uint i = 1;
+            pLua->get_global("arg"+utils::to_string(i));
+
+            while (pLua->get_type() != lua::TYPE_NIL)
             {
+                pLua->pop();
+                pLua->push_nil();
+                pLua->set_global("arg"+utils::to_string(i));
+
+                ++i;
+                pLua->get_global("arg"+utils::to_string(i));
+            }
+
+            pLua->pop();
+        }
+
+        if (pEvent)
+        {
+            if ((sScriptName == "KeyDown") ||
+                (sScriptName == "KeyUp"))
+            {
+                // Set key name
                 pLua->push_number(pEvent->get<uint>(0));
                 pLua->set_global("arg1");
                 pLua->push_string(pEvent->get<std::string>(1));
                 pLua->set_global("arg2");
             }
-        }
-        else if (sScriptName == "MouseDown")
-        {
-            // Set mouse button
-            pLua->push_string(pEvent->get<std::string>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "MouseUp")
-        {
-            // Set mouse button
-            pLua->push_string(pEvent->get<std::string>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "MouseWheel")
-        {
-            pLua->push_number(pEvent->get<float>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "Update")
-        {
-            // Set delta time
-            pLua->push_number(pEvent->get<float>(0));
-            pLua->set_global("arg1");
-        }
-        else if (sScriptName == "Event")
-        {
-            // Set event name
-            pLua->push_string(pEvent->get_name());
-            pLua->set_global("event");
-
-            // Set arguments
-            for (uint i = 0; i < pEvent->get_num_param(); ++i)
+            else if (sScriptName == "MouseDown")
             {
-                const lua::var* pArg = pEvent->get(i);
-                pLua->push(*pArg);
-                pLua->set_global("arg"+utils::to_string(i+1));
+                // Set mouse button
+                pLua->push_string(pEvent->get<std::string>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "MouseUp")
+            {
+                // Set mouse button
+                pLua->push_string(pEvent->get<std::string>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "MouseWheel")
+            {
+                pLua->push_number(pEvent->get<float>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "Update")
+            {
+                // Set delta time
+                pLua->push_number(pEvent->get<float>(0));
+                pLua->set_global("arg1");
+            }
+            else if (sScriptName == "Event")
+            {
+                // Set event name
+                pLua->push_string(pEvent->get_name());
+                pLua->set_global("event");
+
+                // Set arguments
+                for (uint i = 0; i < pEvent->get_num_param(); ++i)
+                {
+                    const lua::var* pArg = pEvent->get(i);
+                    pLua->push(*pArg);
+                    pLua->set_global("arg"+utils::to_string(i+1));
+                }
             }
         }
 
@@ -1452,9 +1463,9 @@ void frame::set_frame_strata(const std::string& sStrata)
     set_frame_strata(mStrata);
 }
 
-void frame::set_backdrop(utils::refptr<backdrop> pBackdrop)
+void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop)
 {
-    pBackdrop_ = pBackdrop;
+    pBackdrop_ = std::move(pBackdrop);
     notify_renderer_need_redraw();
 }
 

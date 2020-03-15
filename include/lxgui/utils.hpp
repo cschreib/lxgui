@@ -2,6 +2,7 @@
 #define UTILS_HPP
 
 #include <cmath>
+#include <memory>
 #define foreach(iter, cont) for (iter = (cont).begin(); iter != (cont).end(); ++(iter))
 
 typedef unsigned long ulong;

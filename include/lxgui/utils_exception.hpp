@@ -16,6 +16,9 @@ public :
     */
     exception();
 
+    /// Copy constructor
+    exception(const exception& mOther) = default;
+
     /// Simple message exception.
     /** \param sMessage The message to throw
     *   \note Reports : "<sMessage>"
@@ -30,7 +33,7 @@ public :
     exception(const std::string& sClassName, const std::string& sMessage);
 
     /// Destructor.
-    virtual ~exception();
+    virtual ~exception() = default;
 
     /// Returns the message of the exception.
     /** \return The message of the exception

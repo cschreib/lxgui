@@ -247,10 +247,15 @@ namespace gui
         /// Returns the text used to render this fontString.
         /** \return The text used to render this fontString
         */
-        utils::wptr<text> get_text_object();
+        text* get_text_object();
+
+        /// Returns the text used to render this fontString.
+        /** \return The text used to render this fontString
+        */
+        const text* get_text_object() const;
 
         /// Registers this widget to the provided lua::state
-        static void register_glue(utils::wptr<lua::state> pLua);
+        static void register_glue(lua::state* pLua);
 
         #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "FontString";
@@ -265,7 +270,7 @@ namespace gui
 
         void update_borders_() const;
 
-        mutable utils::refptr<text> pText_;
+        mutable std::unique_ptr<text> pText_;
 
         std::string sText_;
         std::string sFontName_;

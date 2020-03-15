@@ -5,7 +5,7 @@
 
 namespace gui
 {
-void slider::register_glue(utils::wptr<lua::state> pLua)
+void slider::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_slider>();
 }

@@ -97,7 +97,7 @@ find_package_handle_standard_args(LXGUI
                                   REQUIRED_VARS LXGUI_LIBRARY LXGUI_LUAPP_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY LXGUI_INCLUDE_DIR
                                   VERSION_VAR LXGUI_VERSION_STRING)
 
-find_package(Lua51 REQUIRED)
+find_package(Lua REQUIRED)
 
 set(LXGUI_GUI_GL_FOUND FALSE)
 set(LXGUI_INPUT_GLFW_FOUND FALSE)

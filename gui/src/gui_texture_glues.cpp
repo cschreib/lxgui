@@ -6,7 +6,7 @@
 
 namespace gui
 {
-void texture::register_glue(utils::wptr<lua::state> pLua)
+void texture::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_texture>();
 }

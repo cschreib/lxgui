@@ -21,11 +21,7 @@ void region::render()
 
 void region::create_glue()
 {
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
-    pLua->push_string(sName_);
-    lGlueList_.push_back(pLua->push_new<lua_uiobject>());
-    pLua->set_global(sName_);
-    pLua->pop();
+    create_glue_<lua_uiobject>();
 }
 
 bool region::is_in_region(int iX, int iY) const

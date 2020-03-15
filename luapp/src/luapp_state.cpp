@@ -27,9 +27,14 @@ void open_libs(lua_State* pLua_)
 {
     for (const luaL_Reg* lib = lualibs; lib->func != nullptr; ++lib)
     {
+        #ifdef LXGUI_LUA51
         lua_pushcfunction(pLua_, lib->func);
         lua_pushstring(pLua_, lib->name);
         lua_call(pLua_, 1, 0);
+        #else
+        luaL_requiref(pLua_, lib->name, lib->func, 1);
+        lua_pop(pLua_, 1);
+        #endif
     }
 }
 
@@ -41,7 +46,7 @@ state::state()
     pErrorFunction_ = &l_treat_error;
     pPrintFunction_ = &default_print_function;
 
-    pLua_ = lua_open();
+    pLua_ = luaL_newstate();
     if (!pLua_)
         throw lua::exception("state", "Error while initializing Lua.");
 

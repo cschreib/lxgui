@@ -103,11 +103,7 @@ void texture::render()
 
 void texture::create_glue()
 {
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
-    pLua->push_string(sName_);
-    lGlueList_.push_back(pLua->push_new<lua_texture>());
-    pLua->set_global(sLuaName_);
-    pLua->pop();
+    create_glue_<lua_texture>();
 }
 
 void texture::copy_from(uiobject* pObj)
@@ -410,16 +406,16 @@ void texture::set_color(const color& mColor)
     notify_renderer_need_redraw();
 }
 
-void texture::set_sprite(utils::refptr<sprite> pSprite)
+void texture::set_sprite(std::unique_ptr<sprite> pSprite)
 {
     mGradient_ = gradient();
     sTextureFile_ = "";
 
-    pSprite_ = pSprite;
+    pSprite_ = std::move(pSprite);
 
-    set_abs_dimensions(pSprite->get_width(), pSprite->get_height());
+    set_abs_dimensions(pSprite_->get_width(), pSprite_->get_height());
 
-    lTexCoord_ = pSprite->get_texture_coords(true);
+    lTexCoord_ = pSprite_->get_texture_coords(true);
 
     notify_renderer_need_redraw();
 }

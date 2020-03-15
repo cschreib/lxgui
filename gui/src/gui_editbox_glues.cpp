@@ -4,7 +4,7 @@
 
 namespace gui
 {
-void edit_box::register_glue(utils::wptr<lua::state> pLua)
+void edit_box::register_glue(lua::state* pLua)
 {
     pLua->reg<lua_edit_box>();
 }

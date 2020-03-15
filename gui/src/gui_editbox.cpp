@@ -286,13 +286,12 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
 
     if (lDefinedScriptList_.find(sScriptName) != lDefinedScriptList_.end())
     {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-
         if (sScriptName == "Char")
         {
-            // set_ key name
+            // Set key name
             if (pEvent)
             {
+                lua::state* pLua = pManager_->get_lua();
                 pLua->push_string(pEvent->get<std::string>(0));
                 pLua->set_global("arg1");
             }
@@ -314,22 +313,7 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
 
 void edit_box::create_glue()
 {
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sLuaName_);
-        lGlueList_.push_back(pLua->push_new<lua_edit_box>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_edit_box>();
 }
 
 void edit_box::set_text(const std::string& sText)
@@ -389,7 +373,7 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
             int iLeftPos = 0;
             int iRightPos = pFontString_->get_right() - pFontString_->get_left();
 
-            utils::wptr<text> pText = pFontString_->get_text_object();
+            text* pText = pFontString_->get_text_object();
             const std::vector<text::letter>& lLetters = pText->get_letter_cache();
 
             std::vector<text::letter>::const_iterator iter;
@@ -800,10 +784,10 @@ void edit_box::create_carret_()
         pCarret_->create_glue();
         add_region(pCarret_);
 
-        utils::refptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(TO_U('|'));
+        std::unique_ptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(TO_U('|'));
         pSprite->set_color(pFontString_->get_text_color());
 
-        pCarret_->set_sprite(pSprite);
+        pCarret_->set_sprite(std::move(pSprite));
         pCarret_->set_abs_point(ANCHOR_CENTER, sName_, ANCHOR_LEFT, lTextInsets_.left - 1, 0);
 
         pCarret_->notify_loaded();
@@ -838,7 +822,7 @@ void edit_box::update_displayed_text_()
 
         if (!bMultiLine_)
         {
-            utils::wptr<text> pTextObject = pFontString_->get_text_object();
+            text* pTextObject = pFontString_->get_text_object();
 
             if (!math::isinf(pTextObject->get_box_width()))
             {
@@ -891,7 +875,7 @@ void edit_box::update_carret_position_()
             return;
         }
 
-        utils::wptr<text> pText = pFontString_->get_text_object();
+        text* pText = pFontString_->get_text_object();
         utils::ustring::iterator iterDisplayCarret;
 
         if (!bMultiLine_)
@@ -1079,7 +1063,7 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
-        utils::wptr<text> pText = pFontString_->get_text_object();
+        text* pText = pFontString_->get_text_object();
         const std::vector<text::letter>& lLetters = pText->get_letter_cache();
 
         if (lLetters.empty())

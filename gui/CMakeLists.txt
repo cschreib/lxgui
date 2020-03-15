@@ -62,10 +62,13 @@ add_library(lxgui STATIC
     ${SRCROOT}/input.cpp
 )
 
+configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
+               "${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp")
+
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
-install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
+install(FILES ${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
 install(TARGETS lxgui ARCHIVE DESTINATION lib)
 

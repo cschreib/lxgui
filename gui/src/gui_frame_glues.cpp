@@ -214,7 +214,8 @@ int lua_frame::_get_backdrop(lua_State* pLua)
 
     lua::function mFunc("Frame:get_backdrop", pLua, 1);
 
-    if (utils::refptr<backdrop> pBackdrop = pFrameParent_->get_backdrop().lock())
+    backdrop* pBackdrop = pFrameParent_->get_backdrop();
+    if (pBackdrop)
     {
         lua::state* pState = mFunc.get_state();
 
@@ -760,7 +761,7 @@ int lua_frame::_set_backdrop(lua_State* pLua)
         }
         else
         {
-            utils::refptr<backdrop> pBackdrop(new backdrop(pFrameParent_));
+            std::unique_ptr<backdrop> pBackdrop(new backdrop(pFrameParent_));
 
             lua::state* pState = mFunc.get_state();
 
@@ -788,7 +789,7 @@ int lua_frame::_set_backdrop(lua_State* pLua)
                 ));
             }
 
-            pFrameParent_->set_backdrop(pBackdrop);
+            pFrameParent_->set_backdrop(std::move(pBackdrop));
         }
     }
 
@@ -810,11 +811,11 @@ int lua_frame::_set_backdrop_border_color(lua_State* pLua)
 
     if (mFunc.check())
     {
-        utils::refptr<backdrop> pBackdrop = pFrameParent_->get_backdrop().lock();
+        backdrop* pBackdrop = pFrameParent_->get_backdrop();
         if (!pBackdrop)
         {
-            pBackdrop = utils::refptr<backdrop>(new backdrop(pFrameParent_));
-            pFrameParent_->set_backdrop(pBackdrop);
+            pFrameParent_->set_backdrop(std::unique_ptr<backdrop>(new backdrop(pFrameParent_)));
+            pBackdrop = pFrameParent_->get_backdrop();
         }
 
         color mColor;
@@ -862,11 +863,11 @@ int lua_frame::_set_backdrop_color(lua_State* pLua)
 
     if (mFunc.check())
     {
-        utils::refptr<backdrop> pBackdrop = pFrameParent_->get_backdrop().lock();
+        backdrop* pBackdrop = pFrameParent_->get_backdrop();
         if (!pBackdrop)
         {
-            pBackdrop = utils::refptr<backdrop>(new backdrop(pFrameParent_));
-            pFrameParent_->set_backdrop(pBackdrop);
+            pFrameParent_->set_backdrop(std::unique_ptr<backdrop>(new backdrop(pFrameParent_)));
+            pBackdrop = pFrameParent_->get_backdrop();
         }
 
         color mColor;
@@ -1122,7 +1123,7 @@ int lua_frame::_set_script(lua_State* pLua)
         if (pFrameParent_->can_use_script(sScriptName))
         {
             lua::state* pState = mFunc.get_state();
-            utils::wptr<lua::argument> pArg = mFunc.get(1);
+            lua::argument* pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::TYPE_FUNCTION)
             {
                 pState->push_value(pArg->get_index());

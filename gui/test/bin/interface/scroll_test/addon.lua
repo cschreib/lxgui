@@ -6,7 +6,7 @@ function ScrollTest:init_root_folder()
     if (not self.initialized) then
         self.folders = {};
         self.files = {};
-        
+
         local rootFolder = create_frame("Button", "$parentRoot", self.Splitter.FolderFrame.Scroll, "ButtonTemplate_FolderButton");
         if (rootFolder) then
             self.lastID = 1;
@@ -128,7 +128,7 @@ function ScrollTest:develop_folder(id, toggle)
                     self.folders[self.lastID] = folderButton;
                     parentFolder.folders[self.lastID] = folderButton;
                     parentFolder.folderNum = parentFolder.folderNum + 1;
-                    parentFolder.lastFolder = folderButton;                    
+                    parentFolder.lastFolder = folderButton;
                 end
             end
 
@@ -140,7 +140,7 @@ function ScrollTest:develop_folder(id, toggle)
 
             self.folderScrollChildHeight = self.folderScrollChildHeight + 18*parentFolder.folderNum;
             self.Splitter.FolderFrame.Scroll:set_height(self.folderScrollChildHeight);
-            if (self.Splitter.FolderFrame:get_height()) then            
+            if (self.Splitter.FolderFrame:get_height()) then
                 self.Splitter.FolderFrame.Slider:set_min_max_values(
                     0, math.max(0, self.folderScrollChildHeight - self.Splitter.FolderFrame:get_height())
                 );
@@ -235,7 +235,7 @@ function ScrollTest:set_folder(id)
 
         self.lastFile = nil;
         self.files = {};
-        
+
         self.File:set_text(parentFolder.folder);
 
         local fileList = {get_file_list(parentFolder.folder)};
@@ -276,9 +276,9 @@ function ScrollTest:set_folder(id)
                 else
                     fileButton:set_point("TOPLEFT", self.Splitter.FileFrame.Scroll, "TOPLEFT", 5, 5);
                 end
-                
+
                 fileButton.IconFrame.Icon:set_texture("|icons.png");
-                
+
                 local dotPos = string.find(file, ".", 0, true);
                 local extension;
                 if (dotPos) then

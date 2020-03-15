@@ -112,7 +112,7 @@ bool lua_uiobject::check_parent_()
 
 int lua_glue::get_data_table(lua_State * pLua)
 {
-    lua_getref(pLua, iRef_);
+    lua_rawgeti(pLua, LUA_REGISTRYINDEX, iRef_);
     return 1;
 }
 
@@ -301,8 +301,8 @@ int lua_uiobject::_get_point(lua_State* pLua)
     mFunc.add(0, "point ID", lua::TYPE_NUMBER, true);
     if (mFunc.check())
     {
-        const std::map<anchor_point, anchor>& lanchorList = pParent_->get_point_list();
-        if (!lanchorList.empty())
+        const std::map<anchor_point, anchor>& lAnchorList = pParent_->get_point_list();
+        if (!lAnchorList.empty())
         {
             uint uianchorID = 1;
             if (mFunc.is_provided(0))
@@ -311,7 +311,7 @@ int lua_uiobject::_get_point(lua_State* pLua)
             const anchor* pAnchor = nullptr;
             uint uiCounter = 1;
             std::map<anchor_point, anchor>::const_iterator iter;
-            foreach (iter, lanchorList)
+            foreach (iter, lAnchorList)
             {
                 pAnchor = &iter->second;
                 if (uiCounter == uianchorID)
@@ -420,7 +420,7 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
     mFunc.add(0, "Frame", lua::TYPE_USERDATA, true);
     if (mFunc.check())
     {
-        utils::wptr<lua::argument> pArg = mFunc.get(0);
+        lua::argument* pArg = mFunc.get(0);
         if (pArg->is_provided())
         {
             uiobject* pFrame = nullptr;
@@ -464,7 +464,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
     mFunc.add(0, "parent", lua::TYPE_USERDATA, true);
     if (mFunc.check())
     {
-        utils::wptr<lua::argument> pArg = mFunc.get(0);
+        lua::argument* pArg = mFunc.get(0);
         uiobject* pParent = nullptr;
 
         if (pArg->is_provided())
@@ -531,7 +531,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
         anchor_point mPoint = anchor::get_anchor_point(mFunc.get(0)->get_string());
 
         // parent
-        utils::wptr<lua::argument> pArg = mFunc.get(1);
+        lua::argument* pArg = mFunc.get(1);
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {
@@ -590,7 +590,7 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
         anchor_point mPoint = anchor::get_anchor_point(mFunc.get(0)->get_string());
 
         // parent
-        utils::wptr<lua::argument> pArg = mFunc.get(1);
+        lua::argument* pArg = mFunc.get(1);
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {

@@ -128,7 +128,7 @@ std::string font_string::serialize(const std::string& sTab) const
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  |   # vertical   : ";
-    switch (mJustifyH_)
+    switch (mJustifyV_)
     {
         case text::ALIGN_TOP :    sStr << "TOP\n"; break;
         case text::ALIGN_MIDDLE : sStr << "MIDDLE\n"; break;
@@ -148,11 +148,7 @@ std::string font_string::serialize(const std::string& sTab) const
 
 void font_string::create_glue()
 {
-    utils::wptr<lua::state> pLua = pManager_->get_lua();
-    pLua->push_string(sName_);
-    lGlueList_.push_back(pLua->push_new<lua_font_string>());
-    pLua->set_global(sLuaName_);
-    pLua->pop();
+    create_glue_<lua_font_string>();
 }
 
 void font_string::copy_from(uiobject* pObj)
@@ -258,7 +254,7 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
     sFontName_ = sFontName;
     uiHeight_ = uiHeight;
 
-    pText_ = utils::refptr<text>(new text(pManager_, sFontName, uiHeight));
+    pText_ = std::unique_ptr<text>(new text(pManager_, sFontName, uiHeight));
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);
@@ -467,9 +463,14 @@ void font_string::set_text(const std::string& sText)
     }
 }
 
-utils::wptr<text> font_string::get_text_object()
+text* font_string::get_text_object()
 {
-    return pText_;
+    return pText_.get();
+}
+
+const text* font_string::get_text_object() const
+{
+    return pText_.get();
 }
 
 void font_string::update_borders_() const

@@ -16,7 +16,7 @@ using sf::Mouse;
 
 namespace input
 {
-const int sfml_handler::lKeyToSFML[100][2] =
+const int sfml_manager::lKeyToSFML[100][2] =
 {
     {key::K_ESCAPE,Keyboard::Escape},
     {key::K_0,Keyboard::Num0},
@@ -124,7 +124,7 @@ const int sfml_handler::lKeyToSFML[100][2] =
     {key::K_APPS,Keyboard::Menu}
 };
 
-sfml_handler::sfml_handler(const sf::Window& mWindow, bool bMouseGrab) :
+sfml_manager::sfml_manager(const sf::Window& mWindow, bool bMouseGrab) :
     mWindow_(mWindow), bMouseGrab_(bMouseGrab), bFirst_(true), fWheelCache_(0.0f)
 {
     if (bMouseGrab_)
@@ -133,10 +133,10 @@ sfml_handler::sfml_handler(const sf::Window& mWindow, bool bMouseGrab) :
         fOldMouseY_ = mWindow_.getSize().y/2;
     }
 
-    mMouse.bHasDelta = true;
+    mMouse_.bHasDelta = true;
 }
 
-int sfml_handler::to_sfml_(key::code mKey) const
+int sfml_manager::to_sfml_(key::code mKey) const
 {
     for (size_t i = 0; i < 100; ++i)
     {
@@ -147,7 +147,7 @@ int sfml_handler::to_sfml_(key::code mKey) const
     return Keyboard::Unknown;
 }
 
-void sfml_handler::toggle_mouse_grab()
+void sfml_manager::toggle_mouse_grab()
 {
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
@@ -391,7 +391,7 @@ KeySym to_xkey_(Keyboard::Key key)
 
 #endif
 
-std::string sfml_handler::get_key_name(key::code mKey) const
+std::string sfml_manager::get_key_name(key::code mKey) const
 {
 #ifdef WIN32
     int vkey = to_vkey_((sf::Keyboard::Key)to_sfml_(mKey));
@@ -447,61 +447,61 @@ std::string sfml_handler::get_key_name(key::code mKey) const
     //return sf::Keyboard::getKeyName((sf::Keyboard::Key)to_sfml_(mKey));
 }
 
-void sfml_handler::update()
+void sfml_manager::update_()
 {
     for (int i = 0; i < 100; ++i)
-        mKeyboard.lKeyState[lKeyToSFML[i][0]] = Keyboard::isKeyPressed((Keyboard::Key)lKeyToSFML[i][1]);
+        mKeyboard_.lKeyState[lKeyToSFML[i][0]] = Keyboard::isKeyPressed((Keyboard::Key)lKeyToSFML[i][1]);
 
     const float width  = mWindow_.getSize().x;
     const float height = mWindow_.getSize().y;
 
     if (bFirst_)
     {
-        mMouse.fAbsX = Mouse::getPosition(mWindow_).x;
-        mMouse.fAbsY = Mouse::getPosition(mWindow_).y;
-        mMouse.fRelX = mMouse.fAbsX/width;
-        mMouse.fRelY = mMouse.fAbsY/height;
+        mMouse_.fAbsX = Mouse::getPosition(mWindow_).x;
+        mMouse_.fAbsY = Mouse::getPosition(mWindow_).y;
+        mMouse_.fRelX = mMouse_.fAbsX/width;
+        mMouse_.fRelY = mMouse_.fAbsY/height;
 
-        mMouse.fDX = mMouse.fDY = mMouse.fRelDX = mMouse.fRelDY = 0.0f;
+        mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
         bFirst_ = false;
 
         if (!bMouseGrab_)
         {
-            fOldMouseX_ = mMouse.fAbsX;
-            fOldMouseY_ = mMouse.fAbsY;
+            fOldMouseX_ = mMouse_.fAbsX;
+            fOldMouseY_ = mMouse_.fAbsY;
         }
     }
     else
     {
-        mMouse.fDX = Mouse::getPosition(mWindow_).x - fOldMouseX_;
-        mMouse.fDY = Mouse::getPosition(mWindow_).y - fOldMouseY_;
-        mMouse.fRelDX = mMouse.fDX/width;
-        mMouse.fRelDY = mMouse.fDY/height;
+        mMouse_.fDX = Mouse::getPosition(mWindow_).x - fOldMouseX_;
+        mMouse_.fDY = Mouse::getPosition(mWindow_).y - fOldMouseY_;
+        mMouse_.fRelDX = mMouse_.fDX/width;
+        mMouse_.fRelDY = mMouse_.fDY/height;
 
-        mMouse.fAbsX += mMouse.fDX;
-        mMouse.fAbsY += mMouse.fDY;
-        mMouse.fRelX = mMouse.fAbsX/width;
-        mMouse.fRelY = mMouse.fAbsY/height;
+        mMouse_.fAbsX += mMouse_.fDX;
+        mMouse_.fAbsY += mMouse_.fDY;
+        mMouse_.fRelX = mMouse_.fAbsX/width;
+        mMouse_.fRelY = mMouse_.fAbsY/height;
 
         if (bMouseGrab_)
             Mouse::setPosition(sf::Vector2i(fOldMouseX_, fOldMouseY_), mWindow_);
         else
         {
-            fOldMouseX_ = mMouse.fAbsX;
-            fOldMouseY_ = mMouse.fAbsY;
+            fOldMouseX_ = mMouse_.fAbsX;
+            fOldMouseY_ = mMouse_.fAbsY;
         }
     }
 
-    mMouse.fRelWheel = 0.0f;
-    std::swap(mMouse.fRelWheel, fWheelCache_);
+    mMouse_.fRelWheel = 0.0f;
+    std::swap(mMouse_.fRelWheel, fWheelCache_);
 
     static const Mouse::Button lMouseToSFML[3] = {Mouse::Left, Mouse::Right, Mouse::Middle};
 
-    for (int i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
-        mMouse.lButtonState[i] = Mouse::isButtonPressed(lMouseToSFML[i]);
+    for (std::size_t i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
+        mMouse_.lButtonState[i] = Mouse::isButtonPressed(lMouseToSFML[i]);
 }
 
-void sfml_handler::on_sfml_event(const sf::Event& mEvent)
+void sfml_manager::on_sfml_event(const sf::Event& mEvent)
 {
     if (mEvent.type == sf::Event::TextEntered)
     {

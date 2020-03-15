@@ -18,7 +18,7 @@ namespace lua {
 }
 
 namespace input {
-    class handler;
+    class manager_impl;
     class manager;
 }
 
@@ -105,7 +105,7 @@ namespace gui
         std::map<int, level>         lLevelList;
         mutable bool                 bRedraw;
         utils::refptr<render_target> pRenderTarget;
-        utils::refptr<sprite>        pSprite;
+        std::unique_ptr<sprite>      pSprite;
         mutable uint                 uiRedrawCount;
     };
 
@@ -129,14 +129,14 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param mInputHandler  The implementation input handler to use
+        /** \param pInputImpl     The implementation input manager to use
         *   \param sLocale        The name of the game locale ("enGB", ...)
         *   \param uiScreenWidth  The width of the screen
         *   \param uiScreenHeight The height of the screen
         *   \param pImpl          The implementation specific class
         */
-        manager(const input::handler& mInputHandler, const std::string& sLocale,
-                uint uiScreenWidth, uint uiScreenHeight, utils::refptr<manager_impl> pImpl);
+        manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
+                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl);
 
         /// Destructor.
         ~manager();
@@ -262,7 +262,7 @@ namespace gui
         /** \param pMat The material with which to create the sprite
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat) const;
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -275,7 +275,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -290,7 +290,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        utils::refptr<sprite> create_sprite(utils::refptr<material> pMat,
+        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
@@ -459,7 +459,12 @@ namespace gui
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
         */
-        utils::wptr<lua::state> get_lua();
+        lua::state* get_lua();
+
+        /// Returns the GUI Lua state.
+        /** \return The GUI Lua state
+        */
+        const lua::state* get_lua() const;
 
         /// Creates the lua::State that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
@@ -691,7 +696,7 @@ namespace gui
         void register_frame_type(const std::string&)
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_);
+            frame_type::register_glue(pLua_.get());
         }
 
         /// Registers a new frame type.
@@ -705,7 +710,7 @@ namespace gui
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_);
+            frame_type::register_glue(pLua_.get());
         }
 
         /// Registers a new layered_region type.
@@ -721,7 +726,7 @@ namespace gui
         void register_region_type(const std::string&)
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_);
+            region_type::register_glue(pLua_.get());
         }
 
         /// Registers a new layered_region type.
@@ -735,28 +740,38 @@ namespace gui
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_);
+            region_type::register_glue(pLua_.get());
         }
 
         /// Returns the implementation dependent manager_impl.
         /** \return The implementation dependent manager_impl
         */
-        utils::wptr<const manager_impl> get_impl() const;
+        const manager_impl* get_impl() const;
 
         /// Returns the implementation dependent manager_impl.
         /** \return The implementation dependent manager_impl
         */
-        utils::wptr<manager_impl> get_impl();
+        manager_impl* get_impl();
 
         /// Returns the gui event manager.
         /** \return The gui event manager
         */
-        utils::wptr<event_manager> get_event_manager();
+        const event_manager* get_event_manager() const;
+
+        /// Returns the gui event manager.
+        /** \return The gui event manager
+        */
+        event_manager* get_event_manager();
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        utils::wptr<input::manager> get_input_manager();
+        const input::manager* get_input_manager() const;
+
+        /// Returns the input manager associated to this gui.
+        /** \return The input manager associated to this gui
+        */
+        input::manager* get_input_manager();
 
         /// Returns the current game locale ("enGB", ...).
         /** \return The current game locale
@@ -785,8 +800,6 @@ namespace gui
 
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 
-        void remove_uiobject_(uiobject* pObj);
-
         std::string sUIVersion_;
         uint        uiScreenWidth_;
         uint        uiScreenHeight_;
@@ -794,14 +807,14 @@ namespace gui
 
         bool bClearFontsOnClose_;
 
-        utils::refptr<lua::state> pLua_;
-        std::function<void()>     pLuaRegs_;
-        bool                      bClosed_;
-        bool                      bLoadingUI_;
-        bool                      bFirstIteration_;
+        std::unique_ptr<lua::state> pLua_;
+        std::function<void()>       pLuaRegs_;
+        bool                        bClosed_;
+        bool                        bLoadingUI_;
+        bool                        bFirstIteration_;
 
-        bool                          bInputEnabled_;
-        utils::refptr<input::manager> pInputManager_;
+        bool                            bInputEnabled_;
+        std::unique_ptr<input::manager> pInputManager_;
         std::map<uint, std::map<uint, std::map<uint, std::string>>> lKeyBindingList_;
 
         std::map<std::string, uiobject*> lNamedObjectList_;
@@ -809,8 +822,6 @@ namespace gui
 
         std::map<uint, uiobject*> lObjectList_;
         std::map<uint, uiobject*> lMainObjectList_;
-
-        std::vector<uiobject*> lRemovedObjectList_;
 
         std::vector<std::string> lGUIDirectoryList_;
         addon*                   pCurrentAddOn_;
@@ -847,14 +858,14 @@ namespace gui
         bool bEnableCaching_;
 
         utils::refptr<render_target> pRenderTarget_;
-        utils::refptr<sprite>        pSprite_;
+        std::unique_ptr<sprite>      pSprite_;
 
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
 
-        std::string                  sLocale_;
-        utils::refptr<event_manager> pEventManager_;
-        utils::refptr<manager_impl>  pImpl_;
+        std::string                    sLocale_;
+        std::unique_ptr<event_manager> pEventManager_;
+        std::unique_ptr<manager_impl>  pImpl_;
     };
 
     /// Abstract type for implementation specific management
@@ -907,7 +918,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat) const;
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -924,7 +935,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -943,7 +954,7 @@ namespace gui
         *         have created your own sprite class and want the gui to use
         *         it instead of the default one.
         */
-        virtual utils::refptr<sprite> create_sprite(utils::refptr<material> pMat,
+        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.

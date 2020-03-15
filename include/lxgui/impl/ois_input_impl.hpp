@@ -14,7 +14,7 @@ namespace input
 {
     class ois_key_listener;
 
-    class ois_handler : public handler_impl
+    class ois_manager : public manager_impl
     {
     public :
 
@@ -25,25 +25,27 @@ namespace input
         *   \param bMouseGrab    'true' to take full control of the mouse and hide it
         *   \note For more infos regarding the window handle, see ois documentation.
         */
-        ois_handler(const std::string& sWindowHandle, float fScreenWidth, float fScreenHeight, bool bMouseGrab = false);
+        ois_manager(const std::string& sWindowHandle, float fScreenWidth, float fScreenHeight, bool bMouseGrab = false);
 
         /// Destructor.
-        ~ois_handler();
+        ~ois_manager();
 
         #ifndef NO_CPP11_DELETE_FUNCTION
-        ois_handler(const ois_handler&) = delete;
-        ois_handler& operator = (const ois_handler&) = delete;
+        ois_manager(const ois_manager&) = delete;
+        ois_manager& operator = (const ois_manager&) = delete;
         #else
     private :
-        ois_handler(const ois_handler&);
-        ois_handler& operator = (const ois_handler&);
+        ois_manager(const ois_manager&);
+        ois_manager& operator = (const ois_manager&);
 
     public :
         #endif
 
         void toggle_mouse_grab();
 
-        void update();
+    protected :
+
+        void update_() override;
 
     private :
 

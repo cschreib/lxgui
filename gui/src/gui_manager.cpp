@@ -28,13 +28,13 @@ int l_delete_frame(lua_State* pLua);
 int l_get_locale(lua_State* pLua);
 int l_log(lua_State* pLua);
 
-manager::manager(const input::handler& mInputHandler, const std::string& sLocale,
-    uint uiScreenWidth, uint uiScreenHeight, utils::refptr<manager_impl> pImpl) :
+manager::manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
+    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl) :
     event_receiver(nullptr), sUIVersion_("0001"),
     uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     bClearFontsOnClose_(true), pLua_(nullptr), pLuaRegs_(nullptr), bClosed_(true),
     bLoadingUI_(false), bFirstIteration_(true), bInputEnabled_(true),
-    pInputManager_(new input::manager(mInputHandler)),
+    pInputManager_(new input::manager(std::move(pInputImpl))),
     pCurrentAddOn_(nullptr), bBuildStrataList_(false), bObjectMoved_(false),
     pOveredFrame_(nullptr), bUpdateOveredFrame_(false), pFocusedFrame_(nullptr),
     pMovedObject_(nullptr), pSizedObject_(nullptr), fMouseMovementX_(0.0f),
@@ -42,11 +42,11 @@ manager::manager(const input::handler& mInputHandler, const std::string& sLocale
     iMovementStartPositionY_(0), mConstraint_(CONSTRAINT_NONE), uiResizeStartW_(0),
     uiResizeStartH_(0), bResizeWidth_(false), bResizeHeight_(false), bResizeFromRight_(false),
     bResizeFromBottom_(false), uiFrameNumber_(0), bEnableCaching_(true),
-    pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(pImpl)
+    pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(std::move(pImpl))
 {
-    pEventManager_ = utils::refptr<event_manager>(new event_manager());
-    event_receiver::pEventManager_ = pEventManager_.get();
-    pInputManager_->register_event_manager(pEventManager_);
+    pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
+    event_receiver::set_event_manager(pEventManager_.get());
+    pInputManager_->register_event_manager(pEventManager_.get());
     register_event("KEY_PRESSED");
     pImpl_->set_parent(this);
 }
@@ -55,13 +55,18 @@ manager::~manager()
 {
     close_ui();
 
-    pEventManager_ = nullptr;
-    event_receiver::pEventManager_ = nullptr;
+    // Notify event receiver that event manager is about to be destroyed
+    event_receiver::set_event_manager(nullptr);
 }
 
-utils::wptr<manager_impl> manager::get_impl()
+manager_impl* manager::get_impl()
 {
-    return pImpl_;
+    return pImpl_.get();
+}
+
+const manager_impl* manager::get_impl() const
+{
+    return pImpl_.get();
 }
 
 uint manager::get_screen_width() const
@@ -237,32 +242,32 @@ layered_region* manager::create_layered_region(const std::string& sClassName)
     return nullptr;
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat) const
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat));
+        return std::unique_ptr<sprite>(new sprite(this, pMat));
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat, fWidth, fHeight);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fWidth, fHeight);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat, fWidth, fHeight));
+        return std::unique_ptr<sprite>(new sprite(this, pMat, fWidth, fHeight));
 }
 
-utils::refptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
+std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
-    utils::refptr<sprite> pSprite = pImpl_->create_sprite(pMat, fU, fV, fWidth, fHeight);
+    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fU, fV, fWidth, fHeight);
     if (pSprite)
         return pSprite;
     else
-        return utils::refptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
+        return std::unique_ptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
 }
 
 utils::refptr<material> manager::create_material(const std::string& sFileName, filter mFilter) const
@@ -392,14 +397,6 @@ void manager::remove_uiobject(uiobject* pObj)
     if (pSizedObject_ == pObj)
         stop_sizing(pObj);
 
-    lRemovedObjectList_.push_back(pObj);
-}
-
-void manager::remove_uiobject_(uiobject* pObj)
-{
-    if (!pObj)
-        return;
-
     delete pObj;
 }
 
@@ -466,9 +463,14 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
     }
 }
 
-utils::wptr<lua::state> manager::get_lua()
+lua::state* manager::get_lua()
 {
-    return pLua_;
+    return pLua_.get();
+}
+
+const lua::state* manager::get_lua() const
+{
+    return pLua_.get();
 }
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
@@ -708,7 +710,7 @@ void manager::create_lua(std::function<void()> pLuaRegs)
 {
     if (!pLua_)
     {
-        pLua_ = utils::refptr<lua::state>(new lua::state());
+        pLua_ = std::unique_ptr<lua::state>(new lua::state());
         pLua_->set_print_error_function(gui_out);
 
         register_lua_manager_();
@@ -787,12 +789,6 @@ void manager::close_ui()
         lMainObjectList_.clear();
         lObjectList_.clear();
         lNamedObjectList_.clear();
-
-        std::vector<uiobject*>::iterator iterRemoved;
-        foreach (iterRemoved, lRemovedObjectList_)
-            remove_uiobject_(*iterRemoved);
-
-        lRemovedObjectList_.clear();
 
         std::map<std::string, uiobject*>::iterator iterVirtual;
         foreach (iterVirtual, lNamedVirtualObjectList_)
@@ -991,16 +987,6 @@ void manager::update(float fDelta)
 {
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
-
-    if (lRemovedObjectList_.size() != 0)
-    {
-        DEBUG_LOG(" Removing uiobjects...");
-        std::vector<uiobject*>::iterator iterRemoved;
-        foreach (iterRemoved, lRemovedObjectList_)
-            remove_uiobject_(*iterRemoved);
-
-        lRemovedObjectList_.clear();
-    }
 
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
@@ -1726,14 +1712,24 @@ std::string manager::print_ui() const
     return s.str();
 }
 
-utils::wptr<event_manager> manager::get_event_manager()
+const event_manager* manager::get_event_manager() const
 {
-    return pEventManager_;
+    return pEventManager_.get();
 }
 
-utils::wptr<input::manager> manager::get_input_manager()
+event_manager* manager::get_event_manager()
 {
-    return pInputManager_;
+    return pEventManager_.get();
+}
+
+const input::manager* manager::get_input_manager() const
+{
+    return pInputManager_.get();
+}
+
+input::manager* manager::get_input_manager()
+{
+    return pInputManager_.get();
 }
 
 const std::string& manager::get_locale() const
@@ -1749,17 +1745,17 @@ manager_impl::~manager_impl()
 {
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat) const
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat) const
 {
     return nullptr;
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
 {
     return nullptr;
 }
 
-utils::refptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat,
+std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
     return nullptr;

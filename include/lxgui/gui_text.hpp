@@ -317,7 +317,7 @@ namespace gui
         /** \param uiChar The character to draw
         *   \note Uses this text's font texture.
         */
-        utils::refptr<sprite> create_sprite(char32_t uiChar) const;
+        std::unique_ptr<sprite> create_sprite(char32_t uiChar) const;
 
     private :
 
@@ -356,7 +356,7 @@ namespace gui
 
         bool                              bUpdateQuads_;
         std::vector<std::array<vertex,4>> lQuadList_;
-        utils::refptr<sprite>             pSprite_;
+        std::unique_ptr<sprite>           pSprite_;
 
         utils::refptr<font> pFont_;
     };

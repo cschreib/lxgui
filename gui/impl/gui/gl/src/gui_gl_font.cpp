@@ -85,10 +85,12 @@ font::font(const std::string& sFontFile, uint uiSize) : bKerning_(false)
     uiTexSide += std::max(iMaxWidth, iMaxHeight);
 
     // Round up to nearest power of two
-    uint i = 1;
-    while (uiTexSide > i)
-        i += i;
-    uiTexSide = i;
+    {
+        uint i = 1;
+        while (uiTexSide > i)
+            i *= 2;
+        uiTexSide = i;
+    }
 
     size_t uiFinalWidth, uiFinalHeight;
     if (uiTexSide*uiTexSide/2 >= uiTexSize)

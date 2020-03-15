@@ -1,60 +1,64 @@
+[![Build Status](https://api.travis-ci.com/cschreib/lxgui.svg?branch=master)](https://travis-ci.com/cschreib/lxgui)
+
 # What is lxgui?
 
-There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are :
+There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
-* **Platform independence**. The library is coded in standard C++ (using C++11 features). Platform dependent concepts, such as rendering or input, are handled by front-end plugins (for rendering: only pure OpenGL for now, for input: SFML and OIS).
+* **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: only pure OpenGL for now, for input: SFML, GLFW, or OIS).
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online here).
-* **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything in C++ code if needed.
+* **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
-* **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven: the sample screenshot renders at 1080 FPS with caching enabled, for example).
+* **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
 
 ![Sample screenshot](/gui/test/expected.png)
 
-In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Projects files are included for Code::Blocks, Visual Studio 2010 and CMake. The GUI library in itself only depends on Lua 5.1 (not 5.2 !) through the "luapp" C++ wrapper that I wrote (included in the source package). XML parsing is done by a library of my own (also included in the package).
+In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
 
-The only rendering front end available uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). For the input front end, you can use SFML2 or OIS.
+The only rendering back end available uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). For the input back end, you can use SFML2, GLFW, or OIS.
 
 Here is a brief list of the available widgets:
 
-* **uiobject** (abstract): the very base of every GUI widget. Can be placed on screen.
+* **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
 * **layered_region** (abstract): can be rendered on the screen.
-* **frame**: can contain layered_regions (sorted by layer) and other frames.
+* **frame**: can contain layered_regions (sorted by layer) and other frames, and respond to events.
 * **texture**: can render a texture file, a gradient, or a plain color.
 * **font_string**: can render text.
-* **button**: a clickable frame with several states : normal, pushed, highlight
-* **check_button**: a button with a check box
-* **slider**: a frame that has a texture that can be moved vertically or horizontally
-* **status_bar**: a frame that uses a texture that grows depending on some value (typical use : health bars, ...)
-* **edit_box**: an editable text box (multiline edit_boxes are not yet fully supported)
-* **scroll_frame**: a frame that has scrollable content
+* **button**: a click-able frame with several states: normal, pushed, highlight.
+* **check_button**: a button with a check box.
+* **slider**: a frame with a texture that can be dragged vertically or horizontally.
+* **status_bar**: a frame with a texture that grows depending on some value (typical use : health bars, ...).
+* **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
+* **scroll_frame**: a frame that has scrollable content.
 
 # How do I use it? A tutorial.
 
 Setting up the GUI in C++ is rather straight forward:
 
 ```c++
-// Create an SFML window for example
+// Create an SFML window, for example
 sf::Window mWindow;
 
-// Create an input handler (mouse, keyboard, ...)
-utils::refptr<input::handler_impl> pSFMLHandler(new input::sfml_handler(mWindow));
-
-// Initialize the gui
+// Initialize the GUI
 gui::manager mManager(
-    // Provide an input handler
-    pSFMLHandler,
+    // Provide an input manager
+    std::unique_ptr<input::sfml_manager>(new input::sfml_manager(mWindow)),
     // The language that will be used by the interface
     // (purely informative: it's always up to each addon to localize
     // itself according to this value)
     "enGB",
     // Dimensions of the render window
     mWindow.getSize().x, mWindow.getSize().y,
-    // The OpenGL implementation of the gui
-    utils::refptr<gui::manager_impl>(new gui::gl::manager())
+    // The OpenGL implementation of the GUI
+    std::unique_ptr<gui::manager_impl>(new gui::gl::manager())
 );
 
-// Load files :
+// Grab a pointer to the SFML input manager so we can feed events to it later
+input::sfml_manager* pSFMLInput = static_cast<input::sfml_manager*>(
+    mManager->get_input_manager()->get_impl()
+);
+
+// Load files:
 //  - first set the directory in which the interface is located
 mManager.add_addon_directory("interface");
 //  - create the lua::state
@@ -77,7 +81,8 @@ mManager.create_lua([&mManager](){
 mManager.read_files();
 
 // Start the main loop
-while (bRunning)
+sf::Clock mClock;
+while (true)
 {
     // Retrieve the window events
     sf::Event mEvent;
@@ -89,12 +94,18 @@ while (bRunning)
         pSFMLHandler->on_sfml_event(mEvent);
     }
 
+    // Compute time spent since last GUI update
+    float fDelta = mClock.getElapsedTime().asSeconds();
+    mClock.restart();
+
     // Update the GUI
     mManager.update(fDeltaTime);
 
     // Render the GUI
     mManager.render_ui();
 }
+
+// Resources are cleared up automatically on destruction
 ```
 
 With these few lines of code, you can then create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.

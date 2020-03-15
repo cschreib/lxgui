@@ -13,7 +13,53 @@
 
 namespace gui
 {
-    class lua_glue;
+    /** \cond NOT_REMOVE_FROM_DOC
+    */
+
+    // Generic Lua glue
+    class lua_glue
+    {
+    public :
+
+        explicit lua_glue(lua_State* luaVM);
+        virtual ~lua_glue();
+
+        virtual void notify_deleted() = 0;
+
+        int get_data_table(lua_State *L);
+
+    protected :
+
+        lua_State* pLua_;
+        int        iRef_;
+    };
+
+    // Virtual widget Lua glue
+    class lua_virtual_glue : public lua_glue
+    {
+    public :
+
+        explicit lua_virtual_glue(lua_State* luaVM);
+        virtual ~lua_virtual_glue();
+
+        virtual void notify_deleted();
+
+        int _mark_for_copy(lua_State*);
+        int _get_base(lua_State*);
+        int _get_name(lua_State*);
+
+        static const char className[];
+        static const char* classList[];
+        static Lunar<lua_virtual_glue>::RegType methods[];
+
+    protected :
+
+        uint      uiID_;
+        uiobject* pParent_;
+    };
+
+    /** \endcond
+    */
 
     enum border_type
     {
@@ -543,6 +589,28 @@ namespace gui
 
         virtual void notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered);
 
+        template<typename T>
+        void create_glue_()
+        {
+            if (lGlue_) return;
+
+            lua::state* pLua = pManager_->get_lua();
+
+            if (bVirtual_)
+            {
+                pLua->push_number(uiID_);
+                lGlue_ = pLua->push_new<lua_virtual_glue>();
+            }
+            else
+            {
+                pLua->push_string(sLuaName_);
+                lGlue_ = pLua->push_new<T>();
+            }
+
+            pLua->set_global(sLuaName_);
+            pLua->pop();
+        }
+
         manager* pManager_;
 
         std::string sName_;
@@ -561,7 +629,7 @@ namespace gui
         bool         bLoaded_;
         mutable bool bReady_;
 
-        std::vector<lua_glue*>   lGlueList_;
+        lua_glue*                lGlue_;
         std::vector<std::string> lCopyList_;
 
         std::vector<std::string> lType_;
@@ -591,48 +659,6 @@ namespace gui
 
     /** \cond NOT_REMOVE_FROM_DOC
     */
-
-    // Generic Lua glue
-    class lua_glue
-    {
-    public :
-
-        explicit lua_glue(lua_State* luaVM);
-        virtual ~lua_glue();
-
-        virtual void notify_deleted() = 0;
-
-        int get_data_table(lua_State *L);
-
-    protected :
-
-        lua_State* pLua_;
-        int        iRef_;
-    };
-
-    // Virtual widget Lua glue
-    class lua_virtual_glue : public lua_glue
-    {
-    public :
-
-        explicit lua_virtual_glue(lua_State* luaVM);
-        virtual ~lua_virtual_glue();
-
-        virtual void notify_deleted();
-
-        int _mark_for_copy(lua_State*);
-        int _get_base(lua_State*);
-        int _get_name(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static Lunar<lua_virtual_glue>::RegType methods[];
-
-    protected :
-
-        uint      uiID_;
-        uiobject* pParent_;
-    };
 
     // uiobject Lua glue
     class lua_uiobject : public lua_glue

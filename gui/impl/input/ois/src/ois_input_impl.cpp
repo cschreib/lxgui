@@ -7,15 +7,15 @@ namespace input
 {
 class ois_key_listener : public OIS::KeyListener
 {
-    ois_handler& mHandler;
+    ois_manager& mManager;
 
 public :
 
-    ois_key_listener(ois_handler& handler) : mHandler(handler) {}
+    ois_key_listener(ois_manager& manager) : mManager(manager) {}
 
     bool keyPressed(const OIS::KeyEvent& arg) {
         if (arg.text >= 32)
-            mHandler.lCharsCache_.push_back(arg.text);
+            mManager.lCharsCache_.push_back(arg.text);
         return true;
     }
 
@@ -24,7 +24,7 @@ public :
     }
 };
 
-ois_handler::ois_handler(const std::string& sWindowHandle, float fScreenWidth, float fScreenHeight, bool bMouseGrab) :
+ois_manager::ois_manager(const std::string& sWindowHandle, float fScreenWidth, float fScreenHeight, bool bMouseGrab) :
     fScreenWidth_(fScreenWidth), fScreenHeight_(fScreenHeight),
     sWindowHandle_(sWindowHandle), bMouseGrab_(bMouseGrab),
     fOldMouseX_(-6666.6f), fOldMouseY_(-6666.6f),
@@ -33,12 +33,12 @@ ois_handler::ois_handler(const std::string& sWindowHandle, float fScreenWidth, f
     create_ois_();
 }
 
-ois_handler::~ois_handler()
+ois_manager::~ois_manager()
 {
     delete_ois_();
 }
 
-void ois_handler::create_ois_()
+void ois_manager::create_ois_()
 {
     std::multimap<std::string, std::string> mPL;
     mPL.insert(std::make_pair(std::string("WINDOW"), sWindowHandle_));
@@ -80,22 +80,22 @@ void ois_handler::create_ois_()
         // Oww... these are "mutable" attributes, and can be changed even
         // if the object is declared "const". This is ugly, but it's not
         // my code ;)
-        const OIS::MouseState& mMouse = pMouse_->getMouseState();
-        mMouse.width = fScreenWidth_;
-        mMouse.height = fScreenHeight_;
+        const OIS::MouseState& mMouse_ = pMouse_->getMouseState();
+        mMouse_.width = fScreenWidth_;
+        mMouse_.height = fScreenHeight_;
     }
     else
         throw utils::exception("ois_input_impl", "Couldn't create OIS input system.");
 }
 
-void ois_handler::delete_ois_()
+void ois_manager::delete_ois_()
 {
     pOISInputMgr_->destroyInputObject(pMouse_);
     pOISInputMgr_->destroyInputObject(pKeyboard_);
     OIS::InputManager::destroyInputSystem(pOISInputMgr_);
 }
 
-void ois_handler::toggle_mouse_grab()
+void ois_manager::toggle_mouse_grab()
 {
     bMouseGrab_ = !bMouseGrab_;
     delete_ois_();
@@ -103,7 +103,7 @@ void ois_handler::toggle_mouse_grab()
     create_ois_();
 }
 
-void ois_handler::update()
+void ois_manager::update_()
 {
     pKeyboard_->capture();
 
@@ -111,36 +111,36 @@ void ois_handler::update()
     pKeyboard_->copyKeyStates(lTempBuff);
 
     for (int i = 0; i < key::K_MAXKEY; ++i)
-        mKeyboard.lKeyState[i] = (lTempBuff[i] != 0);
+        mKeyboard_.lKeyState[i] = (lTempBuff[i] != 0);
 
     pMouse_->capture();
 
     OIS::MouseState mMouseState = pMouse_->getMouseState();
-    mMouse.fAbsX = mMouseState.X.abs;
-    mMouse.fAbsY = mMouseState.Y.abs;
-    mMouse.fRelX = mMouseState.X.abs/fScreenWidth_;
-    mMouse.fRelY = mMouseState.Y.abs/fScreenHeight_;
+    mMouse_.fAbsX = mMouseState.X.abs;
+    mMouse_.fAbsY = mMouseState.Y.abs;
+    mMouse_.fRelX = mMouseState.X.abs/fScreenWidth_;
+    mMouse_.fRelY = mMouseState.Y.abs/fScreenHeight_;
 
-    mMouse.bHasDelta = true;
+    mMouse_.bHasDelta = true;
     if (fOldMouseX_ != -6666.6f || fOldMouseY_ != -6666.6f)
     {
-        mMouse.fDX    = mMouse.fAbsX - fOldMouseX_;
-        mMouse.fDY    = mMouse.fAbsY - fOldMouseY_;
-        mMouse.fRelDX = mMouse.fRelX - fOldMouseX_/fScreenWidth_;
-        mMouse.fRelDY = mMouse.fRelY - fOldMouseY_/fScreenHeight_;
+        mMouse_.fDX    = mMouse_.fAbsX - fOldMouseX_;
+        mMouse_.fDY    = mMouse_.fAbsY - fOldMouseY_;
+        mMouse_.fRelDX = mMouse_.fRelX - fOldMouseX_/fScreenWidth_;
+        mMouse_.fRelDY = mMouse_.fRelY - fOldMouseY_/fScreenHeight_;
     }
     else
-        mMouse.fDX = mMouse.fDY = mMouse.fRelDX = mMouse.fRelDY = 0.0f;
+        mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
 
-    fOldMouseX_ = mMouse.fAbsX;
-    fOldMouseY_ = mMouse.fAbsY;
+    fOldMouseX_ = mMouse_.fAbsX;
+    fOldMouseY_ = mMouse_.fAbsY;
 
-    /*mMouse.fDX = mMouseState.X.rel;
-    mMouse.fDY = mMouseState.Y.rel;*/
+    /*mMouse_.fDX = mMouseState.X.rel;
+    mMouse_.fDY = mMouseState.Y.rel;*/
 
-    mMouse.fRelWheel = mMouseState.Z.rel/120.0f;
+    mMouse_.fRelWheel = mMouseState.Z.rel/120.0f;
 
     for (int i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
-        mMouse.lButtonState[i] = mMouseState.buttonDown((OIS::MouseButtonID)i);
+        mMouse_.lButtonState[i] = mMouseState.buttonDown((OIS::MouseButtonID)i);
 }
 }

@@ -15,10 +15,6 @@ exception::exception(const std::string& sClassName, const std::string& sMessage)
 {
 }
 
-exception::~exception()
-{
-}
-
 const std::string& exception::get_description() const
 {
     return sMessage_;

@@ -1,3 +1,12 @@
+v1.3.0:
+ - general: switched to MIT license
+ - general: various fixes and improvements to the build system
+ - general: dropped support for C++03
+ - general: fixed various warnings and minor bugs detected by clang
+ - general: moved away from using reference-counted smart pointers whenever possible
+ - lua: added support for Lua versions later than 5.1
+ - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
+
 v1.2.0:
  - added support for MSVC 2010
  - gui: added the quad2<T> type
@@ -57,7 +66,7 @@ v1.0.28:
  - input: SFML and GLFW implementations now provide mouse delta information
 
 v1.0.27:
- - gui::manager: fixed const-correctness of render_ui() 
+ - gui::manager: fixed const-correctness of render_ui()
 
 v1.0.26:
  - updating parts of the code to use C++11

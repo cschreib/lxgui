@@ -508,22 +508,7 @@ void slider::fire_update_borders() const
 
 void slider::create_glue()
 {
-    if (bVirtual_)
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_number(uiID_);
-        lGlueList_.push_back(pLua->push_new<lua_virtual_glue>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
-    else
-    {
-        utils::wptr<lua::state> pLua = pManager_->get_lua();
-        pLua->push_string(sLuaName_);
-        lGlueList_.push_back(pLua->push_new<lua_slider>());
-        pLua->set_global(sLuaName_);
-        pLua->pop();
-    }
+    create_glue_<lua_slider>();
 }
 
 void slider::fire_update_thumb_texture_() const
