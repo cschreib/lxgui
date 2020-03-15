@@ -19,4 +19,9 @@ const std::string& exception::get_description() const
 {
     return sMessage_;
 }
+
+const char* exception::what() const noexcept
+{
+    return sMessage_.c_str();
+}
 }

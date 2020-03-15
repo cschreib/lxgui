@@ -7,7 +7,7 @@
 namespace utils
 {
 /// Exception class.
-class exception
+class exception : public std::exception
 {
 public :
 
@@ -39,6 +39,11 @@ public :
     /** \return The message of the exception
     */
     const std::string& get_description() const;
+
+    /// Override std::exception::what()
+    /** \return The message of the exception
+    */
+    const char* what() const noexcept override;
 
 protected :
 
