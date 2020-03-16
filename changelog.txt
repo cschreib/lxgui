@@ -4,8 +4,11 @@ v1.3.0:
  - general: dropped support for C++03
  - general: fixed various warnings and minor bugs detected by clang
  - general: moved away from using reference-counted smart pointers whenever possible
+ - general: exceptions now inherit from std::exception
  - lua: added support for Lua versions later than 5.1
  - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
+ - gui: added a pure SFML implementation for the gui::manager
+ - gui: fixed rare crash in editbox
 
 v1.2.0:
  - added support for MSVC 2010
