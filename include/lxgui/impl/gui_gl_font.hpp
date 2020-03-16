@@ -38,16 +38,28 @@ namespace gl
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
         *   \return The uv coordinates of this character on the texture
-        *   \note The uv coordinates are normalisez, i.e. they range from
+        *   \note The uv coordinates are normalised, i.e. they range from
         *         0 to 1. They are arranged as {u1, v1, u2, v2}.
         */
-        quad2f get_character_uvs(char32_t uiChar) const;
+        quad2f get_character_uvs(char32_t uiChar) const override;
+
+        /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
+        /** \param uiChar The unicode character
+        *   \return The rect coordinates of this character (in pixels, relative to the baseline)
+        */
+        quad2f get_character_bounds(char32_t uiChar) const override;
 
         /// Returns the width of a character in pixels.
         /** \param uiChar The unicode character
         *   \return The width of the character in pixels.
         */
-        float get_character_width(char32_t uiChar) const;
+        float get_character_width(char32_t uiChar) const override;
+
+        /// Returns the height of a character in pixels.
+        /** \param uiChar The unicode character
+        *   \return The height of the character in pixels.
+        */
+        float get_character_height(char32_t uiChar) const override;
 
         /// Return the kerning amount between two characters.
         /** \param uiChar1 The first unicode character
@@ -58,12 +70,12 @@ namespace gl
         *         the two to be closer than with 'VW'. This has no effect
         *         for fixed width fonts (like Courrier, etc).
         */
-        float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const;
+        float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const override;
 
         /// Returns the underlying material to use for rendering.
         /** \return The underlying material to use for rendering
         */
-        utils::wptr<gui::material> get_texture() const;
+        utils::wptr<gui::material> get_texture() const override;
 
     private :
 
@@ -73,6 +85,7 @@ namespace gl
         utils::refptr<gl::material> pTexture_;
         std::vector<character_info> lCharacterList_;
 
+        uint uiSize_;
         bool bKerning_;
     };
 }

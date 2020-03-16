@@ -11,12 +11,19 @@
 #include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
-#include <lxgui/impl/gui_gl_manager.hpp>
 
 #include <SFML/Window.hpp>
-#include <fstream>
 
 //#define OIS_INPUT
+//#define GL_GUI
+
+#ifdef GL_GUI
+#include <lxgui/impl/gui_gl_manager.hpp>
+#include <GL/gl.h>
+#else
+#include <lxgui/impl/gui_sfml_manager.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#endif
 
 #ifdef OIS_INPUT
 #include <lxgui/impl/ois_input_impl.hpp>
@@ -30,7 +37,8 @@
 #pragma comment(linker, "/entry:mainCRTStartup")
 #endif
 #endif
-#include <GL/gl.h>
+
+#include <fstream>
 
 int l_get_folder_list(lua_State* pLua);
 int l_get_file_list(lua_State* pLua);
@@ -65,7 +73,12 @@ int main(int argc, char* argv[])
 
         // Create a window
         std::cout << "Creating window..." << std::endl;
+    #ifdef GL_GUI
         sf::Window mWindow;
+    #else
+        sf::RenderWindow mWindow;
+    #endif
+
         if (bFullScreen)
             mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test", sf::Style::Fullscreen);
         else
@@ -85,17 +98,27 @@ int main(int argc, char* argv[])
         pInputImpl = std::unique_ptr<input::manager_impl>(new input::sfml_manager(mWindow));
     #endif
 
+        // Define the GUI manager
+        std::unique_ptr<gui::manager_impl> pManagerImpl;
+    #ifdef GL_GUI
+        // Use pure OpenGL
+        pManagerImpl = std::unique_ptr<gui::manager_impl>(new gui::gl::manager());
+    #else
+        // Use SFML
+        pManagerImpl = std::unique_ptr<gui::manager_impl>(new gui::sfml::manager(mWindow));
+    #endif
+
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
         gui::manager mManager(
-            // Provide the input handler
+            // Provide the input manager implementation
             std::move(pInputImpl),
             // The locale
             sLocale,
             // Dimensions of the render window
             mWindow.getSize().x, mWindow.getSize().y,
-            // The OpenGL implementation of the gui
-            std::unique_ptr<gui::manager_impl>(new gui::gl::manager())
+            // Provide the GUI renderer implementation
+            std::move(pManagerImpl)
         );
 
         mManager.enable_caching(false);
@@ -243,8 +266,12 @@ int main(int argc, char* argv[])
             mManager.update(fDelta);
 
             // Clear the window
+        #ifdef GL_GUI
             glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+        #else
+            mWindow.clear(sf::Color(51,51,51));
+        #endif
 
             // Render the gui
             mManager.render_ui();
@@ -259,12 +286,7 @@ int main(int argc, char* argv[])
         }
         std::cout << "End of loop, mean FPS : " << uiFrameCount/mPerfClock.getElapsedTime().asSeconds() << std::endl;
     }
-    catch (utils::exception& e)
-    {
-        std::cout << e.get_description() << std::endl;
-        return 1;
-    }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         std::cout << e.what() << std::endl;
         return 1;

@@ -1,57 +1,59 @@
-#ifndef GUI_FONT_HPP
-#define GUI_FONT_HPP
+#ifndef GUI_SFML_FONT_HPP
+#define GUI_SFML_FONT_HPP
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
-#include "lxgui/gui_vector2.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include <lxgui/gui_font.hpp>
+#include <vector>
+#include <SFML/Graphics/Font.hpp>
 
-#include <array>
-
-namespace gui
+namespace gui {
+namespace sfml
 {
     class material;
 
     /// A texture containing characters
-    /** This class is purely virtual. It needs to be implemented
-    *   and created by the corresponding gui::manager_impl.
+    /** This is the OpenGL implementation of the gui::font.
+    *   It uses the freetype library to read data from .ttf and
+    *   .otf files and to render the characters on the font texture.
     */
-    class font
+    class font : public gui::font
     {
     public :
 
         /// Constructor.
-        font();
+        /** \param sFontFile The name of the font file to read
+        *   \param uiSize    The requested size in pixels of the font
+        */
+        font(const std::string& sFontFile, uint uiSize);
 
         /// Destructor.
-        virtual ~font();
+        ~font();
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
         *   \return The uv coordinates of this character on the texture
-        *   \note The uv coordinates are normalised, i.e. they range from
+        *   \note The uv coordinates are normalisez, i.e. they range from
         *         0 to 1. They are arranged as {u1, v1, u2, v2}.
         */
-        virtual quad2f get_character_uvs(char32_t uiChar) const = 0;
+        quad2f get_character_uvs(char32_t uiChar) const override;
 
         /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
         /** \param uiChar The unicode character
         *   \return The rect coordinates of this character (in pixels, relative to the baseline)
         */
-        virtual quad2f get_character_bounds(char32_t uiChar) const = 0;
+        quad2f get_character_bounds(char32_t uiChar) const override;
 
         /// Returns the width of a character in pixels.
         /** \param uiChar The unicode character
         *   \return The width of the character in pixels.
         */
-        virtual float get_character_width(char32_t uiChar) const = 0;
+        float get_character_width(char32_t uiChar) const override;
 
         /// Returns the height of a character in pixels.
         /** \param uiChar The unicode character
         *   \return The height of the character in pixels.
         */
-        virtual float get_character_height(char32_t uiChar) const = 0;
+        float get_character_height(char32_t uiChar) const override;
 
         /// Return the kerning amount between two characters.
         /** \param uiChar1 The first unicode character
@@ -62,13 +64,21 @@ namespace gui
         *         the two to be closer than with 'VW'. This has no effect
         *         for fixed width fonts (like Courrier, etc).
         */
-        virtual float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const = 0;
+        float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const override;
 
         /// Returns the underlying material to use for rendering.
         /** \return The underlying material to use for rendering
         */
-        virtual utils::wptr<material> get_texture() const = 0;
+        utils::wptr<gui::material> get_texture() const override;
+
+    private :
+
+        sf::Font                      mFont_;
+        uint                          uiSize_;
+        uint                          uiSizeSFML_;
+        utils::refptr<sfml::material> pTexture_;
     };
+}
 }
 
 #endif

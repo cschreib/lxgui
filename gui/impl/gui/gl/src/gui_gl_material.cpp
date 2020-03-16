@@ -129,6 +129,8 @@ color material::get_color() const
 
 void material::set_wrap(wrap mWrap)
 {
+    if (!pTexData_) return;
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
     glBindTexture(GL_TEXTURE_2D, pTexData_->uiTextureHandle_);
@@ -151,6 +153,8 @@ void material::set_wrap(wrap mWrap)
 
 void material::set_filter(filter mFilter)
 {
+    if (!pTexData_) return;
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
     glBindTexture(GL_TEXTURE_2D, pTexData_->uiTextureHandle_);
@@ -173,6 +177,8 @@ void material::set_filter(filter mFilter)
 
 void material::bind() const
 {
+    if (!pTexData_) return;
+
     glBindTexture(GL_TEXTURE_2D, pTexData_->uiTextureHandle_);
 }
 
@@ -204,7 +210,7 @@ ub32color& material::get_pixel(uint x, uint y)
 void material::premultiply_alpha()
 {
     uint imax = pTexData_->uiWidth_*pTexData_->uiHeight_;
-    for (uint i = 0; i < imax;  ++i)
+    for (uint i = 0; i < imax; ++i)
     {
         ub32color& c = pTexData_->pData_[i];
         float a = c.a/255.0f;
@@ -268,41 +274,28 @@ float material::get_real_height() const
 
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
+    if (!pTexData_) return false;
+
+    uint uiRealWidth = uiWidth;
+    uint uiRealHeight = uiHeight;
+    if (ONLY_POWER_OF_TWO)
+    {
+        uiRealWidth  = pow(2.0f, ceil(log2((float)uiWidth)));
+        uiRealHeight = pow(2.0f, ceil(log2((float)uiHeight)));
+    }
+
+    if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)
+        return false;
+
     if (uiWidth > pTexData_->uiRealWidth_ || uiHeight > pTexData_->uiRealHeight_)
     {
-
-        std::unique_ptr<texture_data> pOldData = std::move(pTexData_);
-        pTexData_ = std::unique_ptr<texture_data>(new texture_data());
-        pTexData_->uiWidth_  = uiWidth;
-        pTexData_->uiHeight_ = uiHeight;
-        pTexData_->mWrap_    = pOldData->mWrap_;
-        pTexData_->mFilter_  = pOldData->mFilter_;
-
-        if (ONLY_POWER_OF_TWO)
-        {
-            pTexData_->uiRealWidth_  = pow(2.0f, ceil(log2((float)uiWidth)));
-            pTexData_->uiRealHeight_ = pow(2.0f, ceil(log2((float)uiHeight)));
-        }
-        else
-        {
-            pTexData_->uiRealWidth_  = uiWidth;
-            pTexData_->uiRealHeight_ = uiHeight;
-        }
-
-        if (pTexData_->uiRealWidth_ > MAXIMUM_SIZE || pTexData_->uiRealHeight_ > MAXIMUM_SIZE)
-        {
-            pTexData_ = std::move(pOldData);
-            return false;
-        }
-
-        glDeleteTextures(1, &pTexData_->uiTextureHandle_);
-
-        pOldData = nullptr;
+        pTexData_->uiWidth_      = uiWidth;
+        pTexData_->uiHeight_     = uiHeight;
+        pTexData_->uiRealWidth_  = uiRealWidth;
+        pTexData_->uiRealHeight_ = uiRealHeight;
 
         GLint iPreviousID;
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
-
-        glGenTextures(1, &pTexData_->uiTextureHandle_);
 
         glBindTexture(GL_TEXTURE_2D, pTexData_->uiTextureHandle_);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
@@ -347,6 +340,8 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
 void material::update_texture()
 {
+    if (!pTexData_) return;
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
@@ -360,6 +355,8 @@ void material::update_texture()
 
 void material::clear_cache_data_()
 {
+    if (!pTexData_) return;
+
     pTexData_->pData_.clear();
 }
 

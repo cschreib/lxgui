@@ -1,14 +1,18 @@
-#ifndef GUI_GL_RENDERTARGET_HPP
-#define GUI_GL_RENDERTARGET_HPP
+#ifndef GUI_SFML_RENDERTARGET_HPP
+#define GUI_SFML_RENDERTARGET_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_refptr.hpp>
 #include <lxgui/gui_rendertarget.hpp>
-#include "lxgui/impl/gui_gl_material.hpp"
-#include "lxgui/impl/gui_gl_matrix4.hpp"
+#include "lxgui/impl/gui_sfml_material.hpp"
+
+namespace sf
+{
+    class RenderTexture;
+}
 
 namespace gui {
-namespace gl
+namespace sfml
 {
     /// A place to render things (the screen, a texture, ...)
     class render_target : public gui::render_target
@@ -20,9 +24,6 @@ namespace gl
         *   \param uiHeight The height of the render_target
         */
         render_target(uint uiWidth, uint uiHeight);
-
-        /// Destructor.
-        ~render_target();
 
         /// Begins rendering on this target.
         void begin() override;
@@ -48,7 +49,8 @@ namespace gl
         /// Sets this render target's dimensions.
         /** \param uiWidth This render target's width
         *   \param uiHeight This render target's height
-        *   \return 'true' if the function had to re-create a new render target
+        *   \return 'true' if the function had to re-create a
+        *           new render target
         */
         bool set_dimensions(uint uiWidth, uint uiHeight) override;
 
@@ -73,22 +75,24 @@ namespace gl
         /// Returns the associated texture for rendering.
         /** \return The underlying pixel buffer, that you can use to render its content
         */
-        utils::wptr<gl::material> get_material();
+        utils::wptr<sfml::material> get_material();
 
         /// Checks if the machine is capable of using render targets.
         /** \note If not, this function throws a gui::exception.
         */
         static void check_availability();
 
+        /// Returns the underlying SFML render texture object.
+        /** return The underlying SFML render texture object
+        */
+        sf::RenderTexture* get_render_texture();
+
     private :
 
         void update_view_matrix_() const;
 
-        uint                        uiFBOHandle_;
-        utils::refptr<gl::material> pTexture_;
-
-        mutable bool    bUpdateViewMatrix_;
-        mutable matrix4 mViewMatrix_;
+        utils::refptr<sfml::material> pTexture_;
+        sf::RenderTexture*            pRenderTexture_;
     };
 }
 }

@@ -1,27 +1,23 @@
-#ifndef GUI_GL_MATERIAL_HPP
-#define GUI_GL_MATERIAL_HPP
+#ifndef GUI_SFML_MATERIAL_HPP
+#define GUI_SFML_MATERIAL_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_color.hpp>
 
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Image.hpp>
+
 #include <vector>
 
 namespace gui {
-namespace gl
+namespace sfml
 {
-    struct ub32color
-    {
-        typedef unsigned char chanel;
-        ub32color();
-        ub32color(chanel r, chanel g, chanel b, chanel a);
-        chanel r, g, b, a;
-    };
-
     /// A class that holds rendering data
     /** This implementation can contain either a plain color
     *   or a real OpenGL texture. It is also used by the
-    *   gui::gl::render_target class to store the output data.
+    *   gui::sfml::render_target class to store the output data.
     */
     class material : public gui::material
     {
@@ -46,22 +42,32 @@ namespace gl
         };
 
         /// Constructor for textures.
-        /** \param uiWidth  The requested texture width
-        *   \param uiHeight The requested texture height
-        *   \param mWrap    How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter  Use texture filtering or not (see set_filter())
-        *   \param bGPUOnly If 'false', a copy of the texture is kept in CPU memory (RAM). Else
-        *                   the texture only resides in GPU memory (used by render_target).
+        /** \param uiWidth       The requested texture width
+        *   \param uiHeight      The requested texture height
+        *   \param bRenderTarget Create the material for a render target or only for display
+        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
+        *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(uint uiWidth, uint uiHeight, wrap mWrap = REPEAT, filter mFilter = NONE, bool bGPUOnly = false);
+        material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap = REPEAT, filter mFilter = NONE);
+
+        /// Constructor for textures.
+        /** \param mData         The image data to use as texture
+        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
+        *   \param mFilter       Use texture filtering or not (see set_filter())
+        */
+        material(const sf::Image& mData, wrap mWrap = REPEAT, filter mFilter = NONE);
+
+        /// Constructor for textures.
+        /** \param sFileName     The file from which the texture data is loaded
+        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
+        *   \param mFilter       Use texture filtering or not (see set_filter())
+        */
+        material(const std::string& sFileName, wrap mWrap = REPEAT, filter mFilter = NONE);
 
         /// Constructor for plain colors.
         /** \param mColor The plain color to use
         */
         material(const color& mColor);
-
-        /// Destructor.
-        ~material();
 
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)
@@ -111,11 +117,11 @@ namespace gl
         */
         color get_color() const;
 
-        /// Premultiplies the texture by alpha component.
+        /// Premultiplies an image by its alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect
         *         alpha blending when using render targets.
         */
-        void premultiply_alpha();
+        static void premultiply_alpha(sf::Image& mData);
 
         /// Sets the wrap mode of this texture.
         /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
@@ -129,13 +135,10 @@ namespace gl
         */
         void set_filter(filter mFilter);
 
-        /// Sets this material as the active one.
-        void bind() const;
-
         /// Returns the cached texture data (read only).
         /** \return The cached texture data (read only)
         */
-        const std::vector<ub32color>& get_data() const;
+        const sf::Image& get_data() const;
 
         /// Returns the cached texture data (read and write).
         /** \return The cached texture data (read and write)
@@ -143,7 +146,7 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        std::vector<ub32color>&       get_data();
+        sf::Image& get_data();
 
         /// Sets the color of one pixel.
         /** \param x      The coordinate of the pixel in the texture
@@ -153,24 +156,14 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        void                          set_pixel(uint x, uint y, const ub32color& mColor);
+        void       set_pixel(uint x, uint y, const sf::Color& mColor);
 
         /// Returns the color of one pixel (read only).
         /** \param x      The coordinate of the pixel in the texture
         *   \param y      The coordinate of the pixel in the texture
         *   \return The color of the pixel
         */
-        const ub32color&              get_pixel(uint x, uint y) const;
-
-        /// Returns the color of one pixel.
-        /** \param x The coordinate of the pixel in the texture
-        *   \param y The coordinate of the pixel in the texture
-        *   \return The color of the pixel
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        ub32color&                    get_pixel(uint x, uint y);
+        sf::Color  get_pixel(uint x, uint y) const;
 
         /// Updates the texture that is in GPU memory.
         /** \note Whenever you modify pixels of the texture,
@@ -184,17 +177,15 @@ namespace gl
         */
         void clear_cache_data_();
 
-        /// Returns the OpenGL texture handle.
-        /** \note For internal use.
+        /// Returns the underlying SFML render texture object.
+        /** return The underlying SFML render texture object
         */
-        uint get_handle_();
+        sf::RenderTexture* get_render_texture();
 
-        /// Checks if the machine is capable of using some features.
-        /** \note The function checks for non power of two capability.
-        *         If the graphics card doesn't support it, the material
-        *         class will automatically create power of two textures.
+        /// Returns the underlying SFML texture object.
+        /** return The underlying SFML texture object
         */
-        static void check_availability();
+        const sf::Texture* get_texture() const;
 
     private:
 
@@ -207,9 +198,11 @@ namespace gl
             uint   uiRealWidth_, uiRealHeight_;
             wrap   mWrap_;
             filter mFilter_;
-            uint   uiTextureHandle_;
 
-            std::vector<ub32color> pData_;
+            bool              bRenderTarget_;
+            sf::RenderTexture mRenderTexture_;
+            sf::Texture       mTexture_;
+            sf::Image         mData_;
         };
 
         struct color_data
@@ -222,8 +215,7 @@ namespace gl
         std::unique_ptr<texture_data> pTexData_;
         std::unique_ptr<color_data>   pColData_;
 
-        static bool ONLY_POWER_OF_TWO;
-        static uint MAXIMUM_SIZE;
+        static const uint MAXIMUM_SIZE;
     };
 }
 }

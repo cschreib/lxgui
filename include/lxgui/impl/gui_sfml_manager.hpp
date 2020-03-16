@@ -1,12 +1,17 @@
-#ifndef GUI_GL_MANAGER_HPP
-#define GUI_GL_MANAGER_HPP
+#ifndef GUI_SFML_MANAGER_HPP
+#define GUI_SFML_MANAGER_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_manager.hpp>
-#include "lxgui/impl/gui_gl_matrix4.hpp"
+
+namespace sf
+{
+    class RenderWindow;
+    class RenderTarget;
+}
 
 namespace gui {
-namespace gl
+namespace sfml
 {
     class render_target;
 
@@ -16,7 +21,7 @@ namespace gl
     public :
 
         /// Constructor.
-        manager(bool bInitGLEW = true);
+        manager(sf::RenderWindow& mWindow);
 
         /// Destructor.
         ~manager();
@@ -80,24 +85,15 @@ namespace gl
         */
         utils::refptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
-        /// Checks if a given OpenGL extension is supported by the machine.
-        /** \return 'true' if that is the case, 'false' else.
-        */
-        static bool is_gl_extension_supported(const std::string& sExtension);
-
     private :
 
-        void update_view_matrix_() const;
-
-        utils::refptr<gui::material> create_material_png(const std::string& sFileName, filter mFilter) const;
+        sf::RenderWindow& mWindow_;
 
         mutable std::map<std::string, utils::wptr<gui::material>> lTextureList_;
         mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;
 
-        mutable bool    bUpdateViewMatrix_;
-        mutable matrix4 mViewMatrix_;
-
-        mutable utils::refptr<gui::gl::render_target> pCurrentTarget_;
+        mutable utils::refptr<gui::sfml::render_target> pCurrentTarget_;
+        mutable sf::RenderTarget*                       pCurrentSFMLTarget_;
     };
 }
 }

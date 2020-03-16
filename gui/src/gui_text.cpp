@@ -801,8 +801,6 @@ void text::update_cache_()
 
         color mColor = color::EMPTY;
 
-        float fFontTextureHeight = pFont_->get_texture()->get_height();
-
         std::vector<line>::iterator iterLine;
         foreach (iterLine, lLineList_)
         {
@@ -838,50 +836,15 @@ void text::update_cache_()
                     }
                 }
 
-                float fCharWidth, fCharHeight;
-
                 // Add the character to the cache
-                if (*iterChar == '\n')
-                {
-                    quad2f lUVs = pFont_->get_character_uvs(TO_U('_'));
-                    fCharHeight = lUVs.height()*fFontTextureHeight;
-                    float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
+                mLetter.mQuad = pFont_->get_character_bounds(*iterChar) + vector2f(round(fX), round(fY));
+                mLetter.mUVs = pFont_->get_character_uvs(*iterChar);
+                mLetter.mColor = mColor;
+                mLetter.bNoRender = (*iterChar == '\n' || *iterChar == ' ' || *iterChar == '\t');
 
-                    mLetter.mQuad = quad2f(0.0f, 0.0f, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
-                    mLetter.bNoRender = true;
+                lLetterCache_.push_back(mLetter);
 
-                    lLetterCache_.push_back(mLetter);
-
-                    continue; // Don't increase the uiCounter
-                }
-                else if (*iterChar == TO_U(' ') || *iterChar == TO_U('\t'))
-                {
-                    quad2f lUVs = pFont_->get_character_uvs(TO_U('!'));
-                    fCharWidth = fSpaceWidth_;
-                    if (*iterChar == TO_U('\t'))
-                        fCharWidth *= 4;
-                    fCharHeight = lUVs.height()*fFontTextureHeight;
-                    float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
-
-                    mLetter.mQuad = quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
-                    mLetter.bNoRender = true;
-
-                    lLetterCache_.push_back(mLetter);
-                }
-                else
-                {
-                    quad2f lUVs = pFont_->get_character_uvs(*iterChar);
-                    fCharWidth = get_character_width(*iterChar);
-                    fCharHeight = lUVs.height()*fFontTextureHeight;
-                    float fYOffset = floor(fSize_/2.0f + fSize_/8.0f - fCharHeight/2.0f);
-
-                    mLetter.mQuad = quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight) + vector2f(fX, fY);
-                    mLetter.mUVs = lUVs;
-                    mLetter.mColor = mColor;
-                    mLetter.bNoRender = false;
-
-                    lLetterCache_.push_back(mLetter);
-                }
+                if (*iterChar == '\n') continue; // Don't increase the uiCounter
 
                 iterNext = iterChar + 1;
 
@@ -889,7 +852,7 @@ void text::update_cache_()
                 if (iterNext != iterLine->sCaption.end() && *iterNext != TO_U(' ') && *iterChar != TO_U(' '))
                     fKerning = get_character_kerning(*iterChar, *iterNext);
 
-                fX += fCharWidth + fKerning + fTracking_;
+                fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;
                 ++uiCounter;
             }
 

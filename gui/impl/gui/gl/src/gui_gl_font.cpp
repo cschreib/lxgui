@@ -12,7 +12,7 @@
 namespace gui {
 namespace gl
 {
-font::font(const std::string& sFontFile, uint uiSize) : bKerning_(false)
+font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), bKerning_(false)
 {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org
@@ -173,11 +173,13 @@ font::font(const std::string& sFontFile, uint uiSize) : bKerning_(false)
         }
     }
 
-    // Get the width of a space ' '
+    // Get the width of a space ' ' (32) and tab '\t' (9)
     if (!FT_Load_Char(mFace, 32, iLoadFlags))
     {
         lCharacterList_[32].mUVs.left = 0.0f;
         lCharacterList_[32].mUVs.right = (mFace->glyph->advance.x >> 6)/float(uiFinalWidth);
+        lCharacterList_[9].mUVs.left = 0.0f;
+        lCharacterList_[9].mUVs.right = 4.0f*lCharacterList_[32].mUVs.right;
     }
 
     FT_Done_FreeType(mFT);
@@ -196,9 +198,23 @@ quad2f font::get_character_uvs(char32_t uiChar) const
     return lCharacterList_[uiChar].mUVs;
 }
 
+quad2f font::get_character_bounds(char32_t uiChar) const
+{
+    const float fCharWidth = get_character_width(uiChar);
+    const float fCharHeight = get_character_height(uiChar);
+    const float fYOffset = floor(uiSize_/2.0f + uiSize_/8.0f - fCharHeight/2.0f);
+
+    return quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight);
+}
+
 float font::get_character_width(char32_t uiChar) const
 {
     return lCharacterList_[uiChar].mUVs.width()*fTextureWidth_;
+}
+
+float font::get_character_height(char32_t uiChar) const
+{
+    return lCharacterList_[uiChar].mUVs.height()*fTextureHeight_;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
