@@ -828,8 +828,11 @@ void edit_box::update_displayed_text_()
             {
                 sDisplayedText_.erase(0, uiDisplayPos_);
 
-                while (pTextObject->get_string_width(sDisplayedText_) > pTextObject->get_box_width())
-                    sDisplayedText_.erase(sDisplayedText_.size()-2, 1);
+                while (!sDisplayedText_.empty() &&
+                    pTextObject->get_string_width(sDisplayedText_) > pTextObject->get_box_width())
+                {
+                    sDisplayedText_.erase(sDisplayedText_.size()-1, 1);
+                }
             }
         }
     }
