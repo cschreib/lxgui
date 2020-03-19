@@ -31,7 +31,7 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
 
     if (pTexData_->bRenderTarget_)
     {
-        if (!pTexData_->mRenderTexture_.create(uiWidth, uiHeight, false))
+        if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_, false))
         {
             throw gui::exception("gui::sfml::material", "Could not create render target with dimensions "+
                 utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
@@ -41,7 +41,7 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
     }
     else
     {
-        if (!pTexData_->mTexture_.create(uiWidth, uiHeight))
+        if (!pTexData_->mTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_))
         {
             throw gui::exception("gui::sfml::material", "Could not create texture with dimensions "+
                 utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
@@ -240,9 +240,9 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         // SFML is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
         if (uiWidth > pTexData_->uiRealWidth_)
-            pTexData_->uiRealWidth_  += pTexData_->uiRealWidth_/2;
+            pTexData_->uiRealWidth_  = uiWidth + uiWidth/2;
         if (uiHeight > pTexData_->uiRealHeight_)
-            pTexData_->uiRealHeight_ += pTexData_->uiRealHeight_/2;
+            pTexData_->uiRealHeight_ = uiHeight + uiHeight/2;
 
         if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_, false))
         {
