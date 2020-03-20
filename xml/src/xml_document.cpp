@@ -12,7 +12,7 @@ namespace xml
 document::document(const std::string& sDefFileName, std::ostream& mOut) :
     out(mOut.rdbuf()), sDefFileName_(sDefFileName), uiCurrentLineNbr_(0),
     bValid_(true), pState_(nullptr), bSmartComment_(false),
-    uiSmartCommentCount_(0), bMultilineComment_(false), uiMultilineCommentCount_(0),
+    uiSmartCommentCount_(0), bMultilineComment_(false),
     bPreProcessor_(false), uiPreProcessorCount_(0), uiSkippedPreProcessorCount_(0)
 {
     mXMLState_.set_document(this);
@@ -40,7 +40,7 @@ document::document(const std::string& sDefFileName, std::ostream& mOut) :
 document::document(const std::string& sFileName, const std::string& sDefFileName, std::ostream& mOut) :
     out(mOut.rdbuf()),sFileName_(sFileName), sDefFileName_(sDefFileName), uiCurrentLineNbr_(0),
     bValid_(true), pState_(nullptr), bSmartComment_(false), uiSmartCommentCount_(0),
-    bMultilineComment_(false), uiMultilineCommentCount_(0), bPreProcessor_(false),
+    bMultilineComment_(false), bPreProcessor_(false),
     uiPreProcessorCount_(0), uiSkippedPreProcessorCount_(0)
 {
     mXMLState_.set_document(this);
@@ -345,33 +345,35 @@ void document::read_ending_tag_(std::string& sTagContent)
 
 void document::read_tags_(std::string& sLine)
 {
+    const char* sCommentStart        = "<!--";
+    const uint  uiCommentStartLength = 4;
+    const char* sCommentEnd          = "-->";
+    const uint  uiCommentEndLength   = 3;
+
     if (!bMultilineComment_)
     {
         // Search for multiline comments
-        size_t uiFirst  = sLine.find("<--");
-        size_t uiSecond = sLine.find("-->");
-        if (uiSecond < uiFirst)
+        size_t uiFirst  = sLine.find(sCommentStart);
+        size_t uiSecond = sLine.find(sCommentEnd);
+        while (uiSecond < uiFirst)
         {
-            // check there are no misplaced comment end token
+            // Ignore misplaced comment end token
             out << "# Warning # : " << sCurrentFileName_ << ":" << uiCurrentLineNbr_
-                << " : Multiline comment end token in excess (\"-->\"). Ignored." << std::endl;
+                << " : Multiline comment end token in excess (\"" << sCommentEnd << "\"). Ignored." << std::endl;
 
-            std::string sTemp = sLine.substr(0, uiFirst);
-            sLine.erase(0, uiFirst);
-            utils::replace(sTemp, "-->", "");
-            sLine = sTemp + sLine;
-            uiFirst = sLine.find("<--");
-            uiSecond = sLine.find("-->");
+            sLine.erase(uiSecond, uiCommentEndLength);
+            uiFirst  = sLine.find(sCommentStart);
+            uiSecond = sLine.find(sCommentEnd);
         }
 
         while (uiFirst != sLine.npos)
         {
             // Multiline comment started
-            uiSecond = sLine.find("-->", uiFirst);
+            uiSecond = sLine.find(sCommentEnd, uiFirst);
             if (uiSecond != sLine.npos)
             {
                 // It ends on the same line
-                sLine.erase(uiFirst, uiSecond+3 - uiFirst);
+                sLine.erase(uiFirst, uiSecond+uiCommentEndLength - uiFirst);
             }
             else
             {
@@ -380,17 +382,17 @@ void document::read_tags_(std::string& sLine)
                 break;
             }
 
-            uiFirst = sLine.find("<--");
+            uiFirst = sLine.find(sCommentStart);
         }
 
         if (!bMultilineComment_)
         {
             // Check there are no misplaced comment end token
-            if (sLine.find("-->") != sLine.npos)
+            if (sLine.find(sCommentEnd) != sLine.npos)
             {
                 out << "# Warning # : " << sCurrentFileName_ << ":" << uiCurrentLineNbr_
-                    << " : Multiline comment end token in excess (\"-->\"). Ignored." << std::endl;
-                utils::replace(sLine, "-->", "");
+                    << " : Multiline comment end token in excess (\"" << sCommentEnd << "\"). Ignored." << std::endl;
+                utils::replace(sLine, sCommentEnd, "");
             }
 
             // Parse the tag as usual
@@ -422,36 +424,60 @@ void document::read_tags_(std::string& sLine)
                 uiSecond = sLine.find(">", uiFirst);
             }
         }
-        else
-            uiMultilineCommentCount_ = utils::count_occurrences(sLine, "<--") + 1;
     }
     else
     {
-        // Search the line for an ending token
-        size_t uiFirst  = sLine.find("<--");
-        size_t uiSecond = sLine.find("-->");
-
-        while (uiSecond != sLine.npos)
+        size_t uiOpenCount = 0;
+        size_t uiLineSize = sLine.size();
+        size_t uiPos = 0;
+        size_t uiStart = sLine.npos;
+        while (uiPos < uiLineSize)
         {
-            if (uiFirst != sLine.npos && (uiFirst < uiSecond))
-                uiMultilineCommentCount_ += utils::count_occurrences(sLine.substr(uiFirst, uiSecond-uiFirst), "<--");
-
-            sLine.erase(0, uiSecond+3);
-
-            --uiMultilineCommentCount_;
-            if (uiMultilineCommentCount_ == 0)
+            if (uiPos+uiCommentStartLength < uiLineSize && sLine.substr(uiPos, uiCommentStartLength) == sCommentStart)
             {
-                bMultilineComment_ = false;
-                read_tags_(sLine);
-                break;
+                if (uiOpenCount == 0)
+                    uiStart = uiPos;
+
+                ++uiOpenCount;
+                uiPos += uiCommentStartLength;
+
+                continue;
+            }
+            else if (uiPos+uiCommentEndLength < uiLineSize && sLine.substr(uiPos, uiCommentEndLength) == sCommentEnd)
+            {
+                if (uiOpenCount == 0)
+                {
+                    out << "# Warning # : " << sCurrentFileName_ << ":" << uiCurrentLineNbr_
+                        << " : Multiline comment end token in excess (\"" << sCommentEnd << "\"). Ignored." << std::endl;
+                    sLine.erase(uiPos, uiCommentEndLength);
+                }
+                else
+                {
+                    --uiOpenCount;
+
+                    if (uiOpenCount == 0)
+                    {
+                        std::size_t uiNumChar = uiPos + uiCommentEndLength - uiStart;
+                        sLine.erase(uiStart, uiNumChar);
+                        uiLineSize -= uiNumChar;
+                        uiPos -= uiNumChar;
+                        uiStart = sLine.npos;
+                    }
+
+                    uiPos += uiCommentEndLength;
+                }
+
+                continue;
             }
 
-            uiFirst = sLine.find("<--");
-            uiSecond = sLine.find("-->");
+            ++uiPos;
         }
 
-        if (uiSecond == sLine.npos)
-            uiMultilineCommentCount_ += utils::count_occurrences(sLine, "<--");
+        if (uiOpenCount == 0)
+        {
+            bMultilineComment_ = false;
+            read_tags_(sLine);
+        }
     }
 }
 

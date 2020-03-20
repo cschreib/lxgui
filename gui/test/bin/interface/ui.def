@@ -1,6 +1,6 @@
-<--------------------->
-<-- PRE-DEFINITIONS -->
-<--------------------->
+<!--------------------->
+<!-- PRE-DEFINITIONS -->
+<!--------------------->
 
 <d:Region name inherits="" b:virtual="false" b:setAllPoints="false" b:hidden="false">
 
@@ -359,24 +359,24 @@
 
 </StatusBar>
 
-<-------------------->
-<-- FILE STRUCTURE -->
-<-------------------->
+<!-------------------->
+<!-- FILE STRUCTURE -->
+<!-------------------->
 
 <Ui>
 
-    <------------>
-    <--Includes-->
-    <------------>
+    <!------------>
+    <!--Includes-->
+    <!------------>
 
-    <-- Include : Parses another XML file -->
+    <!-- Include : Parses another XML file -->
     <Include file/>
-    <-- Script : Parses a Lua file -->
+    <!-- Script : Parses a Lua file -->
     <Script file/>
 
-    <----------->
-    <--Objects-->
-    <----------->
+    <!----------->
+    <!--Objects-->
+    <!----------->
 
     <l:Frame/>
 

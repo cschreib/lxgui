@@ -206,7 +206,6 @@ namespace xml
         std::string sSmartCommentTag_;
         uint        uiSmartCommentCount_;
         bool        bMultilineComment_;
-        uint        uiMultilineCommentCount_;
         bool        bPreProcessor_;
         uint        uiPreProcessorCount_;
         uint        uiSkippedPreProcessorCount_;
