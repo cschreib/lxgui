@@ -376,8 +376,7 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
             text* pText = pFontString_->get_text_object();
             const std::vector<text::letter>& lLetters = pText->get_letter_cache();
 
-            std::vector<text::letter>::const_iterator iter;
-            foreach (iter, lLetters)
+            for (auto iter : utils::range::iterator(lLetters))
             {
                 uint uiPos = iter - lLetters.begin() + uiDisplayPos_;
 
@@ -1082,8 +1081,7 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
             else if (iX > lBorderList_.right - lTextInsets_.right)
                 return lLetters.size() + uiDisplayPos_;
 
-            std::vector<text::letter>::const_iterator iter;
-            foreach (iter, lLetters)
+            for (auto iter : utils::range::iterator(lLetters))
             {
                 if (fX < iter->mQuad.center().x)
                     return (iter - lLetters.begin()) + uiDisplayPos_;

@@ -1,4 +1,4 @@
-#include <xml_document.hpp>
+#include <lxgui/xml_document.hpp>
 #include <iostream>
 
 int main(int argc, char* argv[])
@@ -13,22 +13,20 @@ int main(int argc, char* argv[])
     {
         std::cout << "## Success !" << std::endl;
     }
-    
+
     xml::block* pMain = doc.get_main_block();
-    
+
     std::cout << "Num sub : " << pMain->get_child_number() << std::endl;
-    
-    xml::block* pSub;
-    foreach_block(pSub, pMain)
+
+    for (xml::block* pSub : pMain->blocks())
     {
         std::cout << "Sub : " << pSub->get_name() << std::endl;
         std::cout << " attr1 : " << pSub->get_attribute("attr1") << std::endl;
         std::cout << " attr2 : " << pSub->get_attribute("attr2") << std::endl;
         std::cout << " attr3 : " << pSub->get_attribute("attr3") << std::endl;
         std::cout << " attr4 : " << pSub->get_attribute("attr4") << std::endl;
-        
-        xml::block* pSubb;
-        foreach_block(pSubb, pSub)
+
+        for (xml::block* pSubb : pSub->blocks())
         {
             xml::block* pSub1 = pSubb->get_block("SubbTag1");
             if (pSub1)
@@ -37,6 +35,6 @@ int main(int argc, char* argv[])
                 std::cout << "# No Subb1 : boo..." << std::endl;
         }
     }
-    
+
     return 0;
 }

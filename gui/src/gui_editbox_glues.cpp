@@ -49,9 +49,8 @@ int lua_edit_box::_get_history_lines(lua_State* pLua)
 
     lua::function mFunc("EditBox:get_history_lines", pLua, lHistoryLine.size());
 
-    std::deque<std::string>::const_iterator iterLine;
-    foreach (iterLine, lHistoryLine)
-        mFunc.push(*iterLine);
+    for (const auto& sLine : lHistoryLine)
+        mFunc.push(sLine);
 
     return mFunc.on_return();
 }

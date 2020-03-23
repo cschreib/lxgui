@@ -338,7 +338,7 @@ void state::call_function(const std::string& sFunctionName)
     if (lua_isnil(pLua_, -1))
     {
         lua_settop(pLua_, uiFuncPos-1);
-        throw lua::exception("state", "\""+sFunctionName+"\" doesn't exist.");
+        throw lua::exception("state", "function \""+sFunctionName+"\" does not exist.");
     }
 
     if (!lua_isfunction(pLua_, -1))
@@ -351,8 +351,7 @@ void state::call_function(const std::string& sFunctionName)
     }
 
     bool bObject = false;
-    std::string::const_reverse_iterator iter;
-    for (iter = sFunctionName.rbegin(); iter != sFunctionName.rend(); ++iter)
+    for (auto iter : utils::range::reverse_iterator(sFunctionName))
     {
         if (*iter == '.')
             break;
@@ -402,7 +401,7 @@ void state::call_function(const std::string& sFunctionName, const std::vector<va
     if (lua_isnil(pLua_, -1))
     {
         lua_settop(pLua_, uiFuncPos-1);
-        throw lua::exception("state", "\""+sFunctionName+"\" doesn't exist.");
+        throw lua::exception("state", "function \""+sFunctionName+"\" does not exist.");
     }
 
     if (lua_isfunction(pLua_, -1))
@@ -411,13 +410,11 @@ void state::call_function(const std::string& sFunctionName, const std::vector<va
         throw lua::exception("state", "\""+sFunctionName+"\" is not a function ("+get_type_name(get_type())+" : "+get_value().to_string()+")");
     }
 
-    std::vector<var>::const_iterator iterArg;
-    foreach (iterArg, lArgumentStack)
-        push(*iterArg);
+    for (const auto& mVar : lArgumentStack)
+        push(mVar);
 
     bool bObject = false;
-    std::string::const_reverse_iterator iter;
-    for (iter = sFunctionName.rbegin(); iter != sFunctionName.rend(); ++iter)
+    for (auto iter : utils::range::reverse_iterator(sFunctionName))
     {
         if (*iter == '.')
             break;
@@ -652,53 +649,40 @@ void state::push_global(const std::string& sName)
 
 void state::set_global(const std::string& sName)
 {
-    std::deque<std::string> lDecomposedName;
-    std::string sVarName;
-    utils::string_vector lWords = utils::cut(sName, ":");
-    utils::string_vector::iterator iter1;
-    foreach (iter1, lWords)
+    std::vector<std::string> lDecomposedName = utils::cut(sName, std::vector<char>{':', '.'});
+    if (lDecomposedName.size() == 1)
     {
-        utils::string_vector lSubWords = utils::cut(*iter1, ".");
-        utils::string_vector::iterator iter2;
-        foreach (iter2, lSubWords)
-            lDecomposedName.push_back(*iter2);
+        lua_setglobal(pLua_, sName.c_str());
+        return;
     }
+
+    const std::string sVarName = lDecomposedName.back();
+    lDecomposedName.pop_back();
 
     // Start at 1 to pop the value the user has put on the stack.
     uint uiCounter = 1;
 
-    sVarName = lDecomposedName.back();
-    lDecomposedName.pop_back();
+    lua_getglobal(pLua_, lDecomposedName.front().c_str());
+    lDecomposedName.erase(lDecomposedName.begin());
+    ++uiCounter;
 
-    if (lDecomposedName.size() >= 1)
+    if (!lua_isnil(pLua_, -1))
     {
-        lua_getglobal(pLua_, lDecomposedName.begin()->c_str());
-        lDecomposedName.pop_front();
-        ++uiCounter;
-
-        if (!lua_isnil(pLua_, -1))
+        for (const auto& sWord : lDecomposedName)
         {
-            std::deque<std::string>::iterator iterWords;
-            foreach (iterWords, lDecomposedName)
+            lua_getfield(pLua_, -1, sWord.c_str());
+            ++uiCounter;
+            if (lua_isnil(pLua_, -1))
             {
-                lua_getfield(pLua_, -1, iterWords->c_str());
-                ++uiCounter;
-                if (lua_isnil(pLua_, -1))
-                {
-                    pop(uiCounter);
-                    return;
-                }
+                pop(uiCounter);
+                return;
             }
         }
+    }
 
-        lua_pushvalue(pLua_, -(int)uiCounter);
-        lua_setfield(pLua_, -2, sVarName.c_str());
-        pop(uiCounter);
-    }
-    else
-    {
-        lua_setglobal(pLua_, sName.c_str());
-    }
+    lua_pushvalue(pLua_, -(int)uiCounter);
+    lua_setfield(pLua_, -2, sVarName.c_str());
+    pop(uiCounter);
 }
 
 void state::new_table()
@@ -788,42 +772,26 @@ std::string state::get_type_name(type mType)
 
 void state::get_global(const std::string& sName)
 {
-    std::deque<std::string> lDecomposedName;
-    utils::string_vector lWords = utils::cut(sName, ":");
-    utils::string_vector::iterator iter1;
-    foreach (iter1, lWords)
-    {
-        utils::string_vector lSubWords = utils::cut(*iter1, ".");
-        utils::string_vector::iterator iter2;
-        foreach (iter2, lSubWords)
-            lDecomposedName.push_back(*iter2);
-    }
-
+    std::vector<std::string> lDecomposedName = utils::cut(sName, std::vector<char>{':','.'});
     lua_getglobal(pLua_, lDecomposedName.front().c_str());
 
-    if (lDecomposedName.size() > 1)
+    if (lDecomposedName.size() == 1)
+        return;
+
+    lDecomposedName.erase(lDecomposedName.begin());
+
+    for (const auto& sWord : lDecomposedName)
     {
-        if (lua_isnil(pLua_, -1))
-            return;
-
-        lDecomposedName.pop_front();
-
-        std::deque<std::string>::iterator iterWords;
-        foreach (iterWords, lDecomposedName)
+        const type mType = get_type(-1);
+        if (mType != TYPE_TABLE && mType != TYPE_USERDATA)
         {
-            lua_getfield(pLua_, -1, iterWords->c_str());
-            lua_remove(pLua_, -2);
-
-            if (lua_isnil(pLua_, -1))
-                return;
-
-            if (!lua_istable(pLua_, -1) && iterWords+1 != lDecomposedName.end())
-            {
-                lua_pop(pLua_, 1);
-                lua_pushnil(pLua_);
-                return;
-            }
+            lua_pop(pLua_, 1);
+            lua_pushnil(pLua_);
+            return;
         }
+
+        lua_getfield(pLua_, -1, sWord.c_str());
+        lua_remove(pLua_, -2);
     }
 }
 

@@ -304,18 +304,20 @@ int lua_uiobject::_get_point(lua_State* pLua)
         const std::map<anchor_point, anchor>& lAnchorList = pParent_->get_point_list();
         if (!lAnchorList.empty())
         {
-            uint uianchorID = 1;
+            uint uiAnchorID = 1;
             if (mFunc.is_provided(0))
-                uianchorID = uint(mFunc.get(0)->get_number());
+                uiAnchorID = uint(mFunc.get(0)->get_number());
 
             const anchor* pAnchor = nullptr;
             uint uiCounter = 1;
             std::map<anchor_point, anchor>::const_iterator iter;
-            foreach (iter, lAnchorList)
+            for (const auto& mAnchor : utils::range::value(lAnchorList))
             {
-                pAnchor = &iter->second;
-                if (uiCounter == uianchorID)
+                if (uiCounter == uiAnchorID)
+                {
+                    pAnchor = &mAnchor;
                     break;
+                }
                 else
                     ++uiCounter;
             }

@@ -41,9 +41,8 @@ block::~block()
 {
     delete pNewBlock_;
 
-    found_block_iterator iterBlock;
-    foreach (iterBlock, lFoundBlockList_)
-        delete iterBlock->second;
+    for (auto* pBlock : utils::range::value(lFoundBlockList_))
+        delete pBlock;
 }
 
 void block::copy(block* pBlock)
@@ -74,10 +73,8 @@ void block::remove_attribute(const std::string& sAttributeName)
 
 void block::check_attributes_def(const std::vector<std::string>& lAttribs)
 {
-    std::vector<std::string>::const_iterator iterAttr;
-    foreach (iterAttr, lAttribs)
+    for (auto sAttr : lAttribs)
     {
-        std::string sAttr = *iterAttr;
         std::string sDefault;
         bool bOptional = false;
         if (sAttr.find("=") != sAttr.npos)
@@ -94,11 +91,10 @@ void block::check_attributes_def(const std::vector<std::string>& lAttribs)
         sAttr = lCommands.back();
         lCommands.pop_back();
 
-        std::vector<std::string>::iterator iterCommand;
         bool bAdd = true;
-        foreach (iterCommand, lCommands)
+        for (const auto& sCommand : lCommands)
         {
-            char cLetterCode = (*iterCommand)[0];
+            char cLetterCode = sCommand[0];
             if (cLetterCode == 's')
             {
                 mType = ATTR_TYPE_STRING;
@@ -120,7 +116,7 @@ void block::check_attributes_def(const std::vector<std::string>& lAttribs)
             {
                 pDoc_->out << "# Warning # : " << pDoc_->get_current_file_name() <<":"
                     << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                    << "Unknown command : \'" << *iterCommand << "\'. Skipped." << std::endl;
+                    << "Unknown command : \'" << sCommand << "\'. Skipped." << std::endl;
             }
         }
 
@@ -134,17 +130,16 @@ bool block::check_attributes(const std::string& sAttributes)
     if (!sAttributes.empty())
     {
         std::vector<std::string> lAttribs;
-        std::string::const_iterator iterStr;
         std::string sAttr;
         bool bString = false;
-        foreach (iterStr, sAttributes)
+        for (auto cChar : sAttributes)
         {
-            if (*iterStr == '"')
+            if (cChar == '"')
             {
-                sAttr += *iterStr;
+                sAttr += cChar;
                 bString = !bString;
             }
-            else if (*iterStr == ' ')
+            else if (cChar == ' ')
             {
                 if (!bString)
                 {
@@ -153,22 +148,20 @@ bool block::check_attributes(const std::string& sAttributes)
                     sAttr = "";
                 }
                 else
-                    sAttr += *iterStr;
+                    sAttr += cChar;
             }
             else
-            {
-                sAttr += *iterStr;
-            }
+                sAttr += cChar;
         }
+
         if (!sAttr.empty())
             lAttribs.push_back(sAttr);
 
-        std::vector<std::string>::iterator iterAttr;
-        foreach (iterAttr, lAttribs)
+        for (const auto& sAttr : lAttribs)
         {
-            if (iterAttr->find("=") != iterAttr->npos)
+            if (sAttr.find("=") != sAttr.npos)
             {
-                std::vector<std::string> lWords = utils::cut(*iterAttr, "=");
+                std::vector<std::string> lWords = utils::cut(sAttr, "=");
                 std::string sAttrName = lWords.front();
                 utils::trim(sAttrName, ' ');
 
@@ -211,9 +204,8 @@ bool block::check_attributes(const std::string& sAttributes)
                         << "Unknown attribute : \"" << sAttrName << "\"." << std::endl;
 
                     pDoc_->out << "Listing available possibilities :" << std::endl;
-                    std::map<std::string, attribute>::iterator itmp;
-                    foreach (itmp, lAttributeList_)
-                        pDoc_->out << "    " << itmp->first << std::endl;
+                    for (const auto& sKey : utils::range::key(lAttributeList_))
+                        pDoc_->out << "    " << sKey << std::endl;
 
                     return false;
                 }
@@ -229,20 +221,19 @@ bool block::check_attributes(const std::string& sAttributes)
     }
 
     bool bGood = true;
-    std::map<std::string, attribute>::iterator iterAttr2;
-    foreach (iterAttr2, lAttributeList_)
+    for (auto& mAttr : utils::range::value(lAttributeList_))
     {
-        if (!iterAttr2->second.bFound)
+        if (!mAttr.bFound)
         {
-            if (iterAttr2->second.bOptional)
+            if (mAttr.bOptional)
             {
-                iterAttr2->second.sValue = iterAttr2->second.sDefault;
+                mAttr.sValue = mAttr.sDefault;
             }
             else
             {
                 pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                     << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                    << "Missing \"" << iterAttr2->second.sName << "\" attribute." << std::endl;
+                    << "Missing \"" << mAttr.sName << "\" attribute." << std::endl;
                 bGood = false;
             }
         }
@@ -255,24 +246,23 @@ bool block::check_blocks()
 {
     if (bRadioChilds_)
     {
-        std::map<std::string, block>::iterator iterDefBlock;
-        foreach (iterDefBlock, lDefBlockList_)
+        for (auto& mBlock : utils::range::value(lDefBlockList_))
         {
-            uint uiCount = lFoundBlockList_.count(iterDefBlock->first);
-            uint uiGroup = iterDefBlock->second.get_radio_group();
+            uint uiCount = lFoundBlockList_.count(mBlock.get_name());
+            uint uiGroup = mBlock.get_radio_group();
             if (uiGroup != (uint)(-1))
             {
                 if (uiCount == 1)
                 {
                     if (!lRadioBlockList_[uiGroup])
                     {
-                        lRadioBlockList_[uiGroup] = lFoundBlockList_.find(iterDefBlock->first)->second;
+                        lRadioBlockList_[uiGroup] = lFoundBlockList_.find(mBlock.get_name())->second;
                     }
                     else
                     {
                         pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                             << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                            << "\"<" << iterDefBlock->first << ">\" is part of a radio group with "
+                            << "\"<" << mBlock.get_name() << ">\" is part of a radio group with "
                             <<"\"<"  << lRadioBlockList_[uiGroup]->get_name()
                             << ">\", which has been found first." << std::endl;
                         return false;
@@ -282,31 +272,30 @@ bool block::check_blocks()
                 {
                     pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                         << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                        << "\"<" << iterDefBlock->first << ">\" is part of a radio group but has "
+                        << "\"<" << mBlock.get_name() << ">\" is part of a radio group but has "
                         << "been found several times." << std::endl;
                     return false;
                 }
             }
         }
 
-        std::map<std::string, predefined_block>::iterator iterPreDefBlock;
-        foreach (iterPreDefBlock, lPreDefBlockList_)
+        for (auto& mPreDefBlock : utils::range::value(lPreDefBlockList_))
         {
-            uint uiCount = lFoundBlockList_.count(iterPreDefBlock->first);
-            uint uiGroup = iterPreDefBlock->second.uiRadioGroup;
+            uint uiCount = lFoundBlockList_.count(mPreDefBlock.pBlock->get_name());
+            uint uiGroup = mPreDefBlock.uiRadioGroup;
             if (uiGroup != (uint)(-1))
             {
                 if (uiCount == 1)
                 {
                     if (!lRadioBlockList_[uiGroup])
                     {
-                        lRadioBlockList_[uiGroup] = lFoundBlockList_.find(iterPreDefBlock->first)->second;
+                        lRadioBlockList_[uiGroup] = lFoundBlockList_.find(mPreDefBlock.pBlock->get_name())->second;
                     }
                     else
                     {
                         pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                             << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                            << "\"<" << iterPreDefBlock->first << ">\" is part of a radio group with "
+                            << "\"<" << mPreDefBlock.pBlock->get_name() << ">\" is part of a radio group with "
                             << "\"<" << lRadioBlockList_[uiGroup]->get_name() << ">\", which has been "
                             << "found first." << std::endl;
                         return false;
@@ -316,67 +305,64 @@ bool block::check_blocks()
                 {
                     pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                         << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                        << "\"<" << iterPreDefBlock->first << ">\" is part of a radio group but has "
+                        << "\"<" << mPreDefBlock.pBlock->get_name() << ">\" is part of a radio group but has "
                         << "been found several times." << std::endl;
                     return false;
                 }
             }
         }
 
-        std::map<uint, block*>::iterator iterRadio;
-        foreach (iterRadio, lRadioBlockList_)
+        for (const auto& mPair : lRadioBlockList_)
         {
-            if (!iterRadio->second &&
-                utils::find(lOptionalRadioGroupList_, iterRadio->first) == lOptionalRadioGroupList_.end())
+            if (!mPair.second &&
+                utils::find(lOptionalRadioGroupList_, mPair.first) == lOptionalRadioGroupList_.end())
             {
                 pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                     << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                    << "No block found for radio group " << iterRadio->first << "." << std::endl;
+                    << "No block found for radio group " << mPair.first << "." << std::endl;
                 return false;
             }
         }
     }
 
-    std::map<std::string, block>::iterator iterDefBlock;
-    foreach (iterDefBlock, lDefBlockList_)
+    for (const auto& mBlock : utils::range::value(lDefBlockList_))
     {
-        uint uiCount = lFoundBlockList_.count(iterDefBlock->first);
-        if (uiCount < iterDefBlock->second.get_min_count())
+        uint uiCount = lFoundBlockList_.count(mBlock.get_name());
+        if (uiCount < mBlock.get_min_count())
         {
             pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                 << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                << "Too few \"<" << iterDefBlock->first << ">\" blocks (expected : at least "
-                << iterDefBlock->second.get_min_count() << ")." << std::endl;
+                << "Too few \"<" << mBlock.get_name() << ">\" blocks (expected : at least "
+                << mBlock.get_min_count() << ")." << std::endl;
             return false;
         }
-        else if (uiCount > iterDefBlock->second.get_max_count())
+        else if (uiCount > mBlock.get_max_count())
         {
             pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                 << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                << "Too many \"<" << iterDefBlock->first << ">\" blocks (expected : at most "
-                << iterDefBlock->second.get_max_count() << ")." << std::endl;
+                << "Too many \"<" << mBlock.get_name() << ">\" blocks (expected : at most "
+                << mBlock.get_max_count() << ")." << std::endl;
             return false;
         }
     }
 
-    std::map<std::string, predefined_block>::iterator iterPreDefBlock;
-    foreach (iterPreDefBlock, lPreDefBlockList_)
+    for (const auto& mPreDefBlock : utils::range::value(lPreDefBlockList_))
     {
-        uint uiCount = lFoundBlockList_.count(iterPreDefBlock->first);
-        if (uiCount < iterPreDefBlock->second.uiMin)
+        uint uiCount = lFoundBlockList_.count(mPreDefBlock.pBlock->get_name());
+        if (uiCount < mPreDefBlock.uiMin)
         {
             pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                 << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                << "Too few \"<" << iterPreDefBlock->first << ">\" blocks (expected : at least "
-                << iterPreDefBlock->second.uiMin << ")." << std::endl;
+                << "Too few \"<" << mPreDefBlock.pBlock->get_name() << ">\" blocks (expected : at least "
+                << mPreDefBlock.uiMin << ")." << std::endl;
             return false;
         }
-        else if (uiCount > iterPreDefBlock->second.uiMax)
+        else if (uiCount > mPreDefBlock.uiMax)
         {
             pDoc_->out << "# Error # : " << pDoc_->get_current_file_name() << ":"
                 << pDoc_->get_current_line_nbr() << " : " << sName_ << " : "
-                << "Too many \"<" << iterPreDefBlock->first << ">\" blocks (expected : at most "
-                << iterPreDefBlock->second.uiMax << ")." << std::endl;
+                << "Too many \"<" << mPreDefBlock.pBlock->get_name() << ">\" blocks (expected : at most "
+                << mPreDefBlock.uiMax << ")." << std::endl;
             return false;
         }
     }
@@ -427,10 +413,9 @@ bool block::has_derivated(const std::string& sName) const
     }
     else
     {
-        std::vector<std::string>::const_iterator iter;
-        foreach (iter, lDerivatedList_)
+        for (const auto& sDerivated : lDerivatedList_)
         {
-            if (pDoc_->get_predefined_block(*iter)->has_derivated(sName))
+            if (pDoc_->get_predefined_block(sDerivated)->has_derivated(sName))
             {
                 return true;
             }
@@ -559,8 +544,8 @@ std::string block::get_attribute(const std::string& sName)
 
         pDoc_->out << "List :" << std::endl;
         std::map<std::string, attribute>::iterator iterAttr;
-        foreach (iterAttr, lAttributeList_)
-            pDoc_->out << "    " << iterAttr->first << std::endl;
+        for (const auto& sKey : utils::range::key(lAttributeList_))
+            pDoc_->out << "    " << sKey << std::endl;
 
         return "";
     }
@@ -616,17 +601,13 @@ bool block::can_have_block(const std::string& sName)
 {
     if (has_block(sName))
         return true;
-    else
+
+    for (const auto& sPreDefName : utils::range::key(lPreDefBlockList_))
     {
-        const block* pGlobal;
-        std::map<std::string, predefined_block>::iterator iterBlock;
-        foreach (iterBlock, lPreDefBlockList_)
+        const block* pGlobal = pDoc_->get_predefined_block(sPreDefName);
+        if (pGlobal->has_derivated(sName))
         {
-            pGlobal = pDoc_->get_predefined_block(iterBlock->first);
-            if (pGlobal->has_derivated(sName))
-            {
-                return true;
-            }
+            return true;
         }
     }
 

@@ -60,12 +60,10 @@ void layered_region::parse_attributes_(xml::block* pBlock)
     std::string sInheritance = pBlock->get_attribute("inherits");
     if (!utils::has_no_content(sInheritance))
     {
-        std::vector<std::string> lObjects = utils::cut(sInheritance, ",");
-        std::vector<std::string>::iterator iter;
-        foreach (iter, lObjects)
+        for (auto sParent : utils::cut(sInheritance, ","))
         {
-            utils::trim(*iter, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(*iter, true);
+            utils::trim(sParent, ' ');
+            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
             if (pObj)
             {
                 if (is_object_type(pObj->get_object_type()))
@@ -77,14 +75,14 @@ void layered_region::parse_attributes_(xml::block* pBlock)
                 {
                     gui::out << gui::warning << pBlock->get_location() << " : "
                         << "\"" << sName_ << "\" (" << "gui::" << lType_.back() << ") cannot inherit "
-                        << "from \"" << *iter << "\" (" << pObj->get_object_type() << "). "
+                        << "from \"" << sParent << "\" (" << pObj->get_object_type() << "). "
                         << "Inheritance skipped." << std::endl;
                 }
             }
             else
             {
                 gui::out << gui::warning <<  pBlock->get_location() << " : "
-                    << "Cannot find inherited object \"" << *iter << "\". Inheritance skipped." << std::endl;
+                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
             }
         }
     }

@@ -309,10 +309,9 @@ int l_get_folder_list(lua_State* pLua)
 
     if (mFunc.check())
     {
-        std::vector<std::string> dirs = utils::get_directory_list(mFunc.get(0)->get_string());
-        std::vector<std::string>::iterator iter;
-        foreach (iter, dirs)
-            mFunc.push(*iter);
+        const std::string sDir = mFunc.get(0)->get_string();
+        for (const auto& sSubDir : utils::get_directory_list(sDir))
+            mFunc.push(sSubDir);
     }
 
     return mFunc.on_return();
@@ -325,10 +324,9 @@ int l_get_file_list(lua_State* pLua)
 
     if (mFunc.check())
     {
-        std::vector<std::string> files = utils::get_file_list(mFunc.get(0)->get_string());
-        std::vector<std::string>::iterator iter;
-        foreach (iter, files)
-            mFunc.push(*iter);
+        const std::string sDir = mFunc.get(0)->get_string();
+        for (const auto& sFile : utils::get_file_list(sDir))
+            mFunc.push(sFile);
     }
 
     return mFunc.on_return();
@@ -344,15 +342,14 @@ int l_cut_file_path(lua_State* pLua)
         std::string sPath = mFunc.get(0)->get_string();
         std::vector<std::string> lWords = utils::cut(sPath, "/");
 
-        std::vector<std::string>::iterator iter, iter2;
-        foreach (iter, lWords)
+        for (auto iter = lWords.begin(); iter != lWords.end(); ++iter)
         {
             std::vector<std::string> lSubWords = utils::cut(*iter, "\\");
             if (lSubWords.size() > 1)
             {
                 iter = lWords.erase(iter);
-                foreach (iter2, lSubWords)
-                    iter = lWords.insert(iter, *iter2);
+                for (const auto& sSubWord : lSubWords)
+                    iter = lWords.insert(iter, sSubWord);
             }
         }
 
@@ -363,12 +360,12 @@ int l_cut_file_path(lua_State* pLua)
             sFile = "";
 
         std::string sFolder;
-        foreach (iter, lWords)
+        for (const auto& sWord : lWords)
         {
             if (sFolder.empty())
-                sFolder += *iter;
+                sFolder += sWord;
             else
-                sFolder += "/" + *iter;
+                sFolder += "/" + sWord;
         }
 
         lua::state* pState = mFunc.get_state();
@@ -380,9 +377,9 @@ int l_cut_file_path(lua_State* pLua)
         pState->get_field("folders");
 
         uint i = 1;
-        foreach (iter, lWords)
+        for (const auto& sWord : lWords)
         {
-            pState->set_field_string(i, *iter);
+            pState->set_field_string(i, sWord);
             ++i;
         }
 

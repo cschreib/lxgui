@@ -77,8 +77,7 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
     if (pAnchorsBlock)
     {
         std::vector<std::string> lFoundPoints;
-        xml::block* pAnchorBlock;
-        foreach_block (pAnchorBlock, pAnchorsBlock)
+        for (auto* pAnchorBlock : pAnchorsBlock->blocks())
         {
             std::string sPoint = pAnchorBlock->get_attribute("point");
             std::string sParent = pAnchorBlock->get_attribute("relativeTo");

@@ -490,11 +490,6 @@ void slider::update(float fDelta)
             pThumbTexture_->fire_update_borders();
             pThumbTexture_->update(fDelta);
 
-            /*const std::map<uint, uiobject*>& lAnchoredList = pThumbTexture_->get_anchored_objects();
-            std::map<uint, uiobject*>::const_iterator iterAnchor;
-            foreach (iterAnchor, lAnchoredList)
-                iterAnchor->second->update_borders_();*/
-
             bUpdateThumbTexture_ = false;
         }
     }

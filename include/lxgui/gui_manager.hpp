@@ -439,22 +439,11 @@ namespace gui
         );
 
         /// Unbinds a key.
-        /** \param uiKey The key to unbind
-        */
-        void remove_key_binding(uint uiKey);
-
-        /// Unbinds a key.
         /** \param uiKey      The key to unbind
-        *   \param uiModifier The modifier key (shift, ctrl, ...)
+        *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
+        *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
         */
-        void remove_key_binding(uint uiKey, uint uiModifier);
-
-        /// Unbinds a key.
-        /** \param uiKey      The key to unbind
-        *   \param uiModifier1 The first modifier key (shift, ctrl, ...)
-        *   \param uiModifier2 The second modifier key (shift, ctrl, ...)
-        */
-        void remove_key_binding(uint uiKey, uint uiModifier1, uint uiModifier2);
+        void remove_key_binding(uint uiKey, uint uiModifier1 = 0, uint uiModifier2 = 0);
 
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
@@ -791,7 +780,7 @@ namespace gui
         void load_addon_files_(addon* pAddOn);
         void load_addon_directory_(const std::string& sDirectory);
 
-        void save_variables_(addon* pAddOn);
+        void save_variables_(const addon* pAddOn);
 
         void set_overed_frame_(frame* pFrame, int iX = 0, int iY = 0);
 

@@ -53,23 +53,22 @@ bool argument::test(state* pLua, int iIndex, bool bPrintError)
     bool bSeveralChoices = (lData_.size() > 1);
 
     type mType = pLua->get_type(iIndex);
-    std::vector<data>::iterator iterdata;
-    foreach (iterdata, lData_)
+    for (auto& mData : lData_)
     {
-        if (mType != iterdata->get_type())
+        if (mType != mData.get_type())
         {
             if (bPrintError && !bSeveralChoices)
             {
                 pLua->print_error(
                     "argument "+utils::to_string(iIndex)+" of \""+pParent_->get_name()+"\" "
-                    "must be a "+pLua->get_type_name(iterdata->get_type())+" "
-                    "("+iterdata->get_name()+") (got a "+pLua->get_type_name(mType)+")."
+                    "must be a "+pLua->get_type_name(mData.get_type())+" "
+                    "("+mData.get_name()+") (got a "+pLua->get_type_name(mType)+")."
                 );
             }
         }
         else
         {
-            iterdata->set(pLua, iIndex);
+            mData.set(pLua, iIndex);
             break;
         }
     }
@@ -80,7 +79,7 @@ bool argument::test(state* pLua, int iIndex, bool bPrintError)
         {
             std::string sEnum = "";
             uint i = 0;
-            foreach (iterdata, lData_)
+            for (const auto& mData : lData_)
             {
                 if (i == 0)
                     sEnum += "a ";
@@ -92,7 +91,7 @@ bool argument::test(state* pLua, int iIndex, bool bPrintError)
                         sEnum += ", a ";
                 }
 
-                sEnum += pLua->get_type_name(iterdata->get_type())+" ("+iterdata->get_name()+")";
+                sEnum += pLua->get_type_name(mData.get_type())+" ("+mData.get_name()+")";
                 ++i;
             }
             pLua->print_error(

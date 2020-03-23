@@ -112,12 +112,10 @@ void frame::parse_attributes_(xml::block* pBlock)
     std::string sInheritance = pBlock->get_attribute("inherits");
     if (!utils::has_no_content(sInheritance))
     {
-        std::vector<std::string> lObjects = utils::cut(sInheritance, ",");
-        std::vector<std::string>::iterator iter;
-        foreach (iter, lObjects)
+        for (auto sParent : utils::cut(sInheritance, ","))
         {
-            utils::trim(*iter, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(*iter, true);
+            utils::trim(sParent, ' ');
+            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
             if (pObj)
             {
                 if (is_object_type(pObj->get_object_type()))
@@ -129,18 +127,18 @@ void frame::parse_attributes_(xml::block* pBlock)
                 {
                     gui::out << gui::warning << pBlock->get_location() << " : "
                         << "\"" << sName_ << "\" (" << "gui::" << lType_.back() << ") cannot inherit "
-                        << "from \"" << *iter << "\" (" << pObj->get_object_type()
+                        << "from \"" << sParent << "\" (" << pObj->get_object_type()
                         << "). Inheritance skipped." << std::endl;
                 }
             }
             else
             {
                 bool bNonVirtual = false;
-                if (pManager_->get_uiobject_by_name(*iter))
+                if (pManager_->get_uiobject_by_name(sParent))
                     bNonVirtual = true;
 
                 gui::out << gui::warning << pBlock->get_location() << " : "
-                    << "Cannot find inherited object \"" << *iter << "\""
+                    << "Cannot find inherited object \"" << sParent << "\""
                     << std::string(bNonVirtual ? " (object is not virtual)" : "")
                     << ". Inheritance skipped." << std::endl;
             }
@@ -371,12 +369,10 @@ void frame::parse_layers_block_(xml::block* pBlock)
     xml::block* pLayersBlock = pBlock->get_block("Layers");
     if (pLayersBlock)
     {
-        xml::block* pLayerBlock;
-        foreach_block (pLayerBlock, pLayersBlock)
+        for (auto* pLayerBlock : pLayersBlock->blocks())
         {
             std::string sLevel = pLayerBlock->get_attribute("level");
-            xml::block* pRegionBlock;
-            foreach_block (pRegionBlock, pLayerBlock)
+            for (auto* pRegionBlock : pLayerBlock->blocks())
             {
                 layered_region* pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
                 if (pRegion)
@@ -408,8 +404,7 @@ void frame::parse_frames_block_(xml::block* pBlock)
     xml::block* pFramesBlock = pBlock->get_block("Frames");
     if (pFramesBlock)
     {
-        xml::block* pElemBlock;
-        foreach_block (pElemBlock, pFramesBlock)
+        for (auto* pElemBlock : pFramesBlock->blocks())
         {
             frame* pFrame = pManager_->create_frame(pElemBlock->get_name());
             if (pFrame)
@@ -441,8 +436,7 @@ void frame::parse_scripts_block_(xml::block* pBlock)
     xml::block* pScriptsBlock = pBlock->get_block("Scripts");
     if (pScriptsBlock)
     {
-        xml::block* pScriptBlock;
-        foreach_block (pScriptBlock, pScriptsBlock)
+        for (auto* pScriptBlock : pScriptsBlock->blocks())
         {
             define_script(
                 pScriptBlock->get_name(), pScriptBlock->get_value(),

@@ -136,10 +136,8 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        std::vector<std::array<vertex,4>>::const_iterator iter;
-        foreach (iter, lQuadList)
+        for (const auto& v :lQuadList)
         {
-            const std::array<vertex,4>& v = *iter;
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];
@@ -155,10 +153,8 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     {
         glDisable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        std::vector<std::array<vertex,4>>::const_iterator iter;
-        foreach (iter, lQuadList)
+        for (const auto& v : lQuadList)
         {
-            const std::array<vertex,4>& v = *iter;
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];

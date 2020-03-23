@@ -356,10 +356,9 @@ void manager::update(float fTempDelta)
     {
         gui::event mCharEvent("TEXT_ENTERED");
         mCharEvent.add(char32_t(0));
-        std::vector<char32_t>::iterator iter;
-        foreach (iter, lChars_)
+        for (auto cChar : lChars_)
         {
-            mCharEvent[0] = *iter;
+            mCharEvent[0] = cChar;
             fire_event_(mCharEvent);
         }
     }
@@ -503,12 +502,11 @@ void manager::update(float fTempDelta)
         fSmoothDMX_ = fSmoothDMY_ = fSmoothMWheel_ = 0.0f;
         float fHistoryWeight = 0.0f;
         float fWeight = 1.0f/lMouseHistory_.size();
-        std::deque<std::pair<double, std::array<float,3>>>::iterator iterHistory;
-        foreach (iterHistory, lMouseHistory_)
+        for (auto mHistory : lMouseHistory_)
         {
-            fSmoothDMX_    += iterHistory->second[0]*fWeight;
-            fSmoothDMY_    += iterHistory->second[1]*fWeight;
-            fSmoothMWheel_ += iterHistory->second[2]*fWeight;
+            fSmoothDMX_    += mHistory.second[0]*fWeight;
+            fSmoothDMY_    += mHistory.second[1]*fWeight;
+            fSmoothMWheel_ += mHistory.second[2]*fWeight;
 
             fHistoryWeight += fWeight;
         }

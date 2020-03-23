@@ -283,30 +283,24 @@ void scroll_frame::update_scroll_child_input_()
     if (bMouseInScrollTexture_)
     {
         frame* pOveredFrame = nullptr;
-
-        std::map<frame_strata, strata>::const_iterator iterStrata = lScrollStrataList_.end();
-        while (iterStrata != lScrollStrataList_.begin() && !pOveredFrame)
+        for (const auto& mStrata : utils::range::reverse_value(lScrollStrataList_))
         {
-            --iterStrata;
-            const strata& mStrata = iterStrata->second;
-
-            std::map<int, level>::const_iterator iterLevel = mStrata.lLevelList.end();
-            while (iterLevel != mStrata.lLevelList.begin() && !pOveredFrame)
+            for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
             {
-                --iterLevel;
-                const level& mLevel = iterLevel->second;
-
-                std::vector<frame*>::const_iterator iterFrame;
-                foreach (iterFrame, mLevel.lFrameList)
+                for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
                 {
-                    frame* pFrame = *iterFrame;
                     if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
                     {
                         pOveredFrame = pFrame;
                         break;
                     }
                 }
+
+                if (pOveredFrame) break;
+
             }
+
+            if (pOveredFrame) break;
         }
 
         if (pOveredFrame != pOveredScrollChild_)
@@ -355,10 +349,8 @@ void scroll_frame::rebuild_scroll_strata_list_()
 {
     lScrollStrataList_.clear();
 
-    std::map<uint, frame*>::iterator iterFrame;
-    foreach (iterFrame, lScrollChildList_)
+    for (auto* pFrame : utils::range::value(lScrollChildList_))
     {
-        frame* pFrame = iterFrame->second;
         lScrollStrataList_[pFrame->get_frame_strata()].
             lLevelList[pFrame->get_frame_level()].
                 lFrameList.push_back(pFrame);
@@ -370,20 +362,12 @@ void scroll_frame::render_scroll_strata_list_()
     pManager_->begin(pScrollRenderTarget_);
     pScrollRenderTarget_->clear(color::EMPTY);
 
-    std::map<frame_strata, strata>::const_iterator iterStrata;
-    foreach (iterStrata, lScrollStrataList_)
+    for (const auto& mStrata : utils::range::value(lScrollStrataList_))
     {
-        const strata& mStrata = iterStrata->second;
-
-        std::map<int, level>::const_iterator iterLevel;
-        foreach (iterLevel, mStrata.lLevelList)
+        for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
         {
-            const level& mLevel = iterLevel->second;
-
-            std::vector<frame*>::const_iterator iterFrame;
-            foreach (iterFrame, mLevel.lFrameList)
+            for (auto* pFrame : mLevel.lFrameList)
             {
-                frame* pFrame = *iterFrame;
                 if (!pFrame->is_newly_created())
                     pFrame->render();
             }
@@ -434,17 +418,15 @@ void scroll_frame::create_glue()
 void scroll_frame::add_to_scroll_child_list_(frame* pChild)
 {
     lScrollChildList_[pChild->get_id()] = pChild;
-    std::map<uint, frame*>::const_iterator iterChild;
-    foreach (iterChild, pChild->get_children())
-        add_to_scroll_child_list_(iterChild->second);
+    for (auto* pChild : utils::range::value(pChild->get_children()))
+        add_to_scroll_child_list_(pChild);
 }
 
 void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
 {
     lScrollChildList_.erase(pChild->get_id());
-    std::map<uint, frame*>::const_iterator iterChild;
-    foreach (iterChild, pChild->get_children())
-        remove_from_scroll_child_list_(iterChild->second);
+    for (auto* pChild : utils::range::value(pChild->get_children()))
+        remove_from_scroll_child_list_(pChild);
 }
 
 void scroll_frame::notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered)

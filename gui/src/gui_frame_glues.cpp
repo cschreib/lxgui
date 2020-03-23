@@ -291,16 +291,15 @@ int lua_frame::_get_backdrop_color(lua_State* pLua)
 
 int lua_frame::_get_children(lua_State* pLua)
 {
-    const std::map<uint, frame* >& lChildList = pFrameParent_->get_children();
     if (!check_parent_())
         return 0;
 
+    const std::map<uint, frame* >& lChildList = pFrameParent_->get_children();
     lua::function mFunc("Frame:get_children", pLua, lChildList.size());
 
-    std::map<uint, frame*>::const_iterator iterChild;
-    foreach (iterChild, lChildList)
+    for (auto* pChild : utils::range::value(lChildList))
     {
-        iterChild->second->push_on_lua(mFunc.get_state());
+        pChild->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
     }
 
@@ -662,8 +661,7 @@ int lua_frame::_on(lua_State* pLua)
             if ('a' <= sScript[0] && sScript[0] <= 'z')
             {
                 sScript[0] = toupper(sScript[0]);
-                std::string::iterator iter;
-                foreach (iter, sScript)
+                for (std::string::iterator iter = sScript.begin(); iter != sScript.end(); ++iter)
                 {
                     if (*iter == '_')
                     {

@@ -220,9 +220,8 @@ int l_delete_frame(lua_State* pLua)
                 manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
                 pState->pop();
 
-                std::vector<uiobject*>::iterator iterObject;
-                foreach (iterObject, lList)
-                    pGUIMgr->remove_uiobject(*iterObject);
+                for (auto* pObject : lList)
+                    pGUIMgr->remove_uiobject(pObject);
             }
             else
             {

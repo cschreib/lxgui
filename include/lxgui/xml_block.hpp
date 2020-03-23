@@ -1,12 +1,6 @@
 #ifndef XML_BLOCK_HPP
 #define XML_BLOCK_HPP
 
-// Iterates through an XML::Block sub-blocks by name
-#define foreach_named_block(block, name, parent) for ((block) = (parent)->first(name); (block); (block) = (parent)->next())
-
-// Iterates through an XML::Block sub-blocks
-#define foreach_block(block, parent) for ((block) = (parent)->first(); (block); (block) = (parent)->next())
-
 #include <string>
 #include <vector>
 #include <map>
@@ -151,6 +145,39 @@ namespace xml
         *   \note See first() for more infos.
         */
         block* next();
+
+        struct range_block
+        {
+            struct iterator
+            {
+                block* pParent = nullptr;
+                block* pBlock = nullptr;
+
+                iterator() = default;
+                iterator(block* b, const std::string& n) : pParent(b) { pBlock = pParent->first(n); }
+                block* operator*() { return pBlock; }
+                iterator& operator++ () { pBlock = pParent->next(); return *this; }
+                bool operator!= (const iterator& o) { return pBlock != o.pBlock; }
+            };
+
+            range_block(block* b, const std::string& s) : pParent(b), sName(s) {}
+
+            block*      pParent = nullptr;
+            std::string sName;
+
+            iterator begin() { return iterator(pParent, sName); }
+            iterator end() { return iterator{}; }
+        };
+
+        /// Enable iteration through this Block's sub-blocks.
+        /** \param sName The name of the sub-blocks you need
+        *   \return An object with begin() and end() functions.
+        *   \note If 'sName' is ommited, iteration will be
+        *         done through all sub-blocks. Else, only
+        *         the sub-blocks which are named 'sName'
+        *         will be visited.
+        */
+        range_block blocks(const std::string& sName = "") { return range_block{this, sName}; }
 
         /// Returns one of this Block's attribute.
         /** \param sName The name of the attribute you need

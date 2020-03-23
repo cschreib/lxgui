@@ -153,10 +153,9 @@ std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::
     std::vector<std::basic_string<T>> lPieces;
 
     std::basic_string<T> sTemp;
-    typename std::basic_string<T>::const_iterator iter;
-    foreach (iter, s)
+    for (auto c : s)
     {
-        if (std::find(lDelims.begin(), lDelims.end(), *iter) != lDelims.end())
+        if (std::find(lDelims.begin(), lDelims.end(), c) != lDelims.end())
         {
             if (!sTemp.empty())
             {
@@ -165,7 +164,7 @@ std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::
             }
         }
         else
-            sTemp.push_back(*iter);
+            sTemp.push_back(c);
     }
 
     if (!sTemp.empty())

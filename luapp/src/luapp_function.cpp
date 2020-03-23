@@ -107,7 +107,7 @@ bool function::check(bool bPrintError)
             for (auto& mArgList : lArgListStack_)
             {
                 std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
-                for (auto iterArg = mArgList.lArg_.begin(); iterArg != mArgList.lArg_.end(); ++iterArg)
+                for (auto iterArg : utils::range::iterator(mArgList.lArg_))
                 {
                     if (iterArg != mArgList.lArg_.begin())
                         sArguments += ", ";
@@ -122,7 +122,7 @@ bool function::check(bool bPrintError)
 
                     sArguments += "(+";
 
-                    for (auto iterArg = mArgList.lOptional_.begin(); iterArg != mArgList.lOptional_.end(); ++iterArg)
+                    for (auto iterArg : utils::range::iterator(mArgList.lOptional_))
                     {
                         if (iterArg != mArgList.lOptional_.begin())
                             sArguments += ", ";
@@ -185,7 +185,7 @@ bool function::check(bool bPrintError)
                 for (auto& mArgList : lArgListStack_)
                 {
                     std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
-                    for (auto iterArg = mArgList.lArg_.begin(); iterArg != mArgList.lArg_.end(); ++iterArg)
+                    for (auto iterArg : utils::range::iterator(mArgList.lArg_))
                     {
                         if (iterArg != mArgList.lArg_.begin())
                             sArguments += ", ";
@@ -199,7 +199,7 @@ bool function::check(bool bPrintError)
 
                         sArguments += "(+";
 
-                        for (auto iterArg = mArgList.lOptional_.begin(); iterArg != mArgList.lOptional_.end(); ++iterArg)
+                        for (auto iterArg : utils::range::iterator(mArgList.lOptional_))
                         {
                             if (iterArg != mArgList.lOptional_.begin())
                                 sArguments += ", ";
@@ -259,16 +259,6 @@ const std::string& function::get_name() const
 {
     return sName_;
 }
-/*
-void function::push(const var& vValue)
-{
-    if (uiReturnCount_ == uiReturnNbr_)
-        ++uiReturnNbr_;
-
-    pLua_->push(vValue);
-
-    ++uiReturnCount_;
-}*/
 
 void function::push(const std::string& sValue)
 {

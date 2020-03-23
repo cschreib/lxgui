@@ -139,14 +139,9 @@ void document::load_definition_()
 
 std::vector<std::string> read_preprocessor_commands(const std::string& sCommands)
 {
-    std::vector<std::string> lPreProcessorCommands;
-    if (sCommands != "")
-    {
-        lPreProcessorCommands = utils::cut(sCommands, ",");
-        std::vector<std::string>::iterator iter;
-        foreach (iter, lPreProcessorCommands)
-            utils::trim(*iter, ' ');
-    }
+    std::vector<std::string> lPreProcessorCommands = utils::cut(sCommands, ",");
+    for (auto& sCommand : lPreProcessorCommands)
+        utils::trim(sCommand, ' ');
 
     return lPreProcessorCommands;
 }
@@ -165,16 +160,16 @@ void document::read_opening_tag_(std::string& sTagContent)
             {
                 std::vector<std::string> lIDList = utils::cut(sTagContent.substr(uiStart+1, uiEnd-(uiStart+1)), ",");
                 std::vector<std::string>::iterator iterID;
-                foreach (iterID, lIDList)
+                for (auto& sID : lIDList)
                 {
-                    utils::trim(*iterID, ' ');
-                    std::string sCommand = *iterID;
+                    utils::trim(sID, ' ');
+                    std::string sCommand = sID;
                     if (!sCommand.empty() && sCommand[0] == '!')
                         sCommand.erase(0, 1);
 
                     // Compare with the preprocessor commands given by the user
                     bool b = utils::find(lPreProcessorCommands_, sCommand) != lPreProcessorCommands_.end();
-                    if (b == ((*iterID)[0] == '!'))
+                    if (b == (sID[0] == '!'))
                     {
                         // Skip all the following code until the proper ending tag is found
                         bPreProcessor_ = true;
@@ -527,9 +522,9 @@ bool document::check(const std::string& sPreProcCommands)
         std::vector<std::string>::iterator iterLine;
 
         // Start parsing line by line
-        foreach (iterLine, lLines)
+        for (const auto& sTempLine : lLines)
         {
-            sLine += (*iterLine) + "\n";
+            sLine += sTempLine + "\n";
             ++uiCurrentLineNbr_;
 
             if (!utils::has_no_content(sLine))
@@ -784,10 +779,10 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
     std::vector<std::string> lCommands = utils::cut(sName, ":");
     sName = lCommands.back();
     lCommands.pop_back();
-    std::vector<std::string>::iterator iterCommand;
-    foreach (iterCommand, lCommands)
+
+    for (const auto& sCommand : lCommands)
     {
-        char sLetterCode = *iterCommand->begin();
+        char sLetterCode = sCommand[0];
         if ((sLetterCode == 'd') || (sLetterCode == 'c'))
         {
             if (sLetterCode == 'c')
@@ -804,12 +799,12 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
             {
                 bPreDefining = true;
 
-                size_t uiStart = iterCommand->find("[");
-                size_t uiEnd   = iterCommand->find("]");
-                if (uiStart != iterCommand->npos && uiEnd != iterCommand->npos)
+                size_t uiStart = sCommand.find("[");
+                size_t uiEnd   = sCommand.find("]");
+                if (uiStart != sCommand.npos && uiEnd != sCommand.npos)
                 {
                     // Inheritance
-                    sParent = iterCommand->substr(uiStart+1, uiEnd - (uiStart+1));
+                    sParent = sCommand.substr(uiStart+1, uiEnd - (uiStart+1));
                 }
             }
         }
@@ -839,11 +834,11 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
         else if (sLetterCode == 'n')
         {
             // Min/max count
-            size_t uiStart = iterCommand->find("[");
-            size_t uiEnd   = iterCommand->find("]");
-            if (uiStart != iterCommand->npos && uiEnd != iterCommand->npos)
+            size_t uiStart = sCommand.find("[");
+            size_t uiEnd   = sCommand.find("]");
+            if (uiStart != sCommand.npos && uiEnd != sCommand.npos)
             {
-                std::string sParams = iterCommand->substr(uiStart+1, uiEnd - (uiStart+1));
+                std::string sParams = sCommand.substr(uiStart+1, uiEnd - (uiStart+1));
                 if (sParams.find(",") != sParams.npos)
                 {
                     std::vector<std::string> lMinMax = utils::cut(sParams, ",");
@@ -887,7 +882,7 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
         else
         {
             pDoc_->out << "# Warning # : " << pDoc_->get_current_location()
-                << " : Unknown command : \'" << *iterCommand << "\'. Skipped." << std::endl;
+                << " : Unknown command : \'" << sCommand << "\'. Skipped." << std::endl;
         }
     }
 }
@@ -924,17 +919,16 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
         utils::replace(sAttributes, " =", "=");
         utils::replace(sAttributes, "= ", "=");
 
-        std::string::iterator iterStr;
         std::string sAttr;
         bool bString = false;
-        foreach (iterStr, sAttributes)
+        for (auto cChar : sAttributes)
         {
-            if (*iterStr == '"')
+            if (cChar == '"')
             {
-                sAttr += *iterStr;
+                sAttr += cChar;
                 bString = !bString;
             }
-            else if (*iterStr == ' ')
+            else if (cChar == ' ')
             {
                 if (!bString)
                 {
@@ -943,12 +937,10 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
                     sAttr = "";
                 }
                 else
-                    sAttr += *iterStr;
+                    sAttr += cChar;
             }
             else
-            {
-                sAttr += *iterStr;
-            }
+                sAttr += cChar;
         }
 
         if (!sAttr.empty())

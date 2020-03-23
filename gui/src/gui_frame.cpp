@@ -44,13 +44,11 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
 
 frame::~frame()
 {
-    std::map<uint, layered_region*>::iterator iterRegion;
-    foreach (iterRegion, lRegionList_)
-        delete iterRegion->second;
+    for (auto* pRegion : utils::range::value(lRegionList_))
+        delete pRegion;
 
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
-        delete iterChild->second;
+    for (auto* pChild : utils::range::value(lChildList_))
+        delete pChild;
 
     delete pTitleRegion_;
 }
@@ -63,19 +61,14 @@ void frame::render()
             pBackdrop_->render();
 
         // Render child regions
-        std::map<layer_type, layer>::iterator iterLayer;
-        foreach (iterLayer, lLayerList_)
+        for (auto& mLayer : utils::range::value(lLayerList_))
         {
-            layer& mLayer = iterLayer->second;
-            if (!mLayer.bDisabled)
+            if (mLayer.bDisabled) continue;
+
+            for (auto* pRegion : mLayer.lRegionList)
             {
-                std::vector<layered_region*>::iterator iterRegion;
-                foreach (iterRegion, mLayer.lRegionList)
-                {
-                    layered_region* pRegion = *iterRegion;
-                    if (pRegion->is_shown() && !pRegion->is_manually_rendered() && !pRegion->is_newly_created())
-                        pRegion->render();
-                }
+                if (pRegion->is_shown() && !pRegion->is_manually_rendered() && !pRegion->is_newly_created())
+                    pRegion->render();
             }
         }
     }
@@ -176,10 +169,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Regions     : " << lRegionList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        std::map<uint, layered_region*>::const_iterator iterRegion;
-        foreach (iterRegion, lRegionList_)
+        for (auto* pRegion : utils::range::value(lRegionList_))
         {
-            sStr << iterRegion->second->serialize(sTab+"  | ");
+            sStr << pRegion->serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -192,10 +184,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        std::map<uint, frame*>::const_iterator iterChild;
-        foreach (iterChild, lChildList_)
+        for (auto* pChild : utils::range::value(lChildList_))
         {
-            sStr << iterChild->second->serialize(sTab+"  | ");
+            sStr << pChild->serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -234,24 +225,21 @@ void frame::copy_from(uiobject* pObj)
 
     if (pFrame)
     {
-        std::map<std::string, std::string>::const_iterator iterScript;
-        foreach (iterScript, pFrame->lDefinedScriptList_)
+        for (const auto& mScript : pFrame->lDefinedScriptList_)
         {
-            if (!iterScript->second.empty())
-            {
-                script_info mInfo = pFrame->lXMLScriptInfoList_[iterScript->first];
-                this->define_script(
-                    "On"+iterScript->first, iterScript->second,
-                    mInfo.sFile, mInfo.uiLineNbr
-                );
-            }
+            if (mScript.second.empty()) continue;
+
+            const script_info& mInfo = pFrame->lXMLScriptInfoList_[mScript.first];
+            this->define_script(
+                "On"+mScript.first, mScript.second,
+                mInfo.sFile, mInfo.uiLineNbr
+            );
         }
 
-        std::map<std::string, handler>::const_iterator iterHandler;
-        foreach (iterHandler, pFrame->lDefinedHandlerList_)
+        for (const auto& mHandler : pFrame->lDefinedHandlerList_)
         {
-            if (iterHandler->second)
-                this->define_script("On"+iterHandler->first, iterHandler->second);
+            if (mHandler.second)
+                this->define_script("On"+mHandler.first, mHandler.second);
         }
 
         this->set_frame_strata(pFrame->get_frame_strata());
@@ -288,10 +276,8 @@ void frame::copy_from(uiobject* pObj)
 
         this->set_scale(pFrame->get_scale());
 
-        std::map<uint, frame*>::const_iterator iterChild;
-        foreach (iterChild, pFrame->lChildList_)
+        for (auto* pChild : utils::range::value(pFrame->lChildList_))
         {
-            frame* pChild = iterChild->second;
             if (!pChild->is_special())
             {
                 frame* pNewChild = pManager_->create_frame(pChild->get_object_type());
@@ -332,39 +318,35 @@ void frame::copy_from(uiobject* pObj)
                 pTitleRegion_->copy_from(pFrame->pTitleRegion_);
         }
 
-        std::map<uint, layered_region*>::const_iterator iterRegion;
-        foreach (iterRegion, pFrame->lRegionList_)
+        for (auto* pArt : utils::range::value(pFrame->lRegionList_))
         {
-            layered_region* pArt = iterRegion->second;
-            if (!pArt->is_special())
+            if (pArt->is_special()) continue;
+
+            layered_region* pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+            if (!pNewArt) continue;
+
+            pNewArt->set_parent(this);
+            if (this->is_virtual())
+                pNewArt->set_virtual();
+            pNewArt->set_name(pArt->get_raw_name());
+            if (!pManager_->add_uiobject(pNewArt))
             {
-                layered_region* pNewArt = pManager_->create_layered_region(pArt->get_object_type());
-                if (pNewArt)
-                {
-                    pNewArt->set_parent(this);
-                    if (this->is_virtual())
-                        pNewArt->set_virtual();
-                    pNewArt->set_name(pArt->get_raw_name());
-                    if (!pManager_->add_uiobject(pNewArt))
-                    {
-                        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                            << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
-                            << "\", but its name was already taken : \"" << pNewArt->get_name()
-                            << "\". Skipped." << std::endl;
+                gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                    << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
+                    << "\", but its name was already taken : \"" << pNewArt->get_name()
+                    << "\". Skipped." << std::endl;
 
-                        delete pNewArt;
-                        continue;
-                    }
-                    if (!pNewArt->is_virtual())
-                        pNewArt->create_glue();
-
-                    pNewArt->set_draw_layer(pArt->get_draw_layer());
-
-                    this->add_region(pNewArt);
-                    pNewArt->copy_from(pArt);
-                    pNewArt->notify_loaded();
-                }
+                delete pNewArt;
+                continue;
             }
+            if (!pNewArt->is_virtual())
+                pNewArt->create_glue();
+
+            pNewArt->set_draw_layer(pArt->get_draw_layer());
+
+            this->add_region(pNewArt);
+            pNewArt->copy_from(pArt);
+            pNewArt->notify_loaded();
         }
 
         bBuildLayerList_ = true;
@@ -403,18 +385,17 @@ void frame::create_title_region()
 
 frame* frame::get_child(const std::string& sName)
 {
-    std::map<uint, frame*>::iterator iter;
-    foreach (iter, lChildList_)
+    for (auto* pChild : utils::range::value(lChildList_))
     {
-        if (iter->second->get_name() == sName)
-            return iter->second;
+        if (pChild->get_name() == sName)
+            return pChild;
     }
 
-    foreach (iter, lChildList_)
+    for (auto* pChild : utils::range::value(lChildList_))
     {
-        const std::string& sRawName = iter->second->get_raw_name();
+        const std::string& sRawName = pChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
-            return iter->second;
+            return pChild;
     }
 
     return nullptr;
@@ -422,18 +403,17 @@ frame* frame::get_child(const std::string& sName)
 
 layered_region* frame::get_region(const std::string& sName)
 {
-    std::map<uint, layered_region*>::iterator iter;
-    foreach (iter, lRegionList_)
+    for (auto* pRegion : utils::range::value(lRegionList_))
     {
-        if (iter->second->get_name() == sName)
-            return iter->second;
+        if (pRegion->get_name() == sName)
+            return pRegion;
     }
 
-    foreach (iter, lRegionList_)
+    for (auto* pRegion : utils::range::value(lRegionList_))
     {
-        const std::string& sRawName = iter->second->get_raw_name();
+        const std::string& sRawName = pRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
-            return iter->second;
+            return pRegion;
     }
 
     return nullptr;
@@ -715,12 +695,10 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
 
     if (!utils::has_no_content(sInheritance))
     {
-        std::vector<std::string> lObjects = utils::cut(sInheritance, ",");
-        std::vector<std::string>::iterator iter;
-        foreach (iter, lObjects)
+        for (auto sParent : utils::cut(sInheritance, ","))
         {
-            utils::trim(*iter, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(*iter, true);
+            utils::trim(sParent, ' ');
+            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
             if (pObj)
             {
                 if (pRegion->is_object_type(pObj->get_object_type()))
@@ -732,14 +710,14 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
                 {
                     gui::out << gui::warning << "gui::" << lType_.back() << " : "
                         << "\"" << pRegion->get_name() << "\" (" << pRegion->get_object_type()
-                        << ") cannot inherit from \"" << *iter << "\" (" << pObj->get_object_type()
+                        << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
                         << "). Inheritance skipped." << std::endl;
                 }
             }
             else
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    << "Cannot find inherited object \"" << *iter << "\". Inheritance skipped." << std::endl;
+                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
             }
         }
     }
@@ -974,8 +952,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         lDefinedHandlerList_.erase(iterH);
 
     std::string sAdjustedName = sScriptName;
-    std::string::iterator iter;
-    foreach (iter, sAdjustedName)
+    for (auto iter = sAdjustedName.begin(); iter != sAdjustedName.end(); ++iter)
     {
         if ('A' <= *iter && *iter <= 'Z')
         {
@@ -1099,10 +1076,9 @@ void frame::on_event(const event& mEvent)
         {
             if (!lMouseButtonList_.empty() && !bMouseDragged_)
             {
-                std::vector<std::string>::iterator iterButton;
-                foreach (iterButton, lMouseButtonList_)
+                for (const auto& sButton : lMouseButtonList_)
                 {
-                    if (lRegDragList_.find(*iterButton) != lRegDragList_.end())
+                    if (lRegDragList_.find(sButton) != lRegDragList_.end())
                     {
                         on("DragStart");
                         bMouseDragged_ = true;
@@ -1155,9 +1131,9 @@ void frame::on_event(const event& mEvent)
             if (bMouseDragged_)
             {
                 bool bDrag = false;
-                foreach (iter, lMouseButtonList_)
+                for (const auto& sButton : lMouseButtonList_)
                 {
-                    if (lRegDragList_.find(*iter) != lRegDragList_.end())
+                    if (lRegDragList_.find(sButton) != lRegDragList_.end())
                     {
                         bDrag = true;
                         break;
@@ -1321,8 +1297,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         }
 
         std::string sAdjustedName = sScriptName;
-        std::string::iterator iterStr;
-        foreach (iterStr, sAdjustedName)
+        for (std::string::iterator iterStr = sAdjustedName.begin(); iterStr != sAdjustedName.end(); ++iterStr)
         {
             if ('A' <= *iterStr && *iterStr <= 'Z')
             {
@@ -1393,9 +1368,8 @@ void frame::register_event(const std::string& sEvent)
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)
 {
     lRegDragList_.clear();
-    std::vector<std::string>::const_iterator iterButton;
-    foreach (iterButton, lButtonList)
-        lRegDragList_.insert(*iterButton);
+    for (const auto& sButton : lButtonList)
+        lRegDragList_.insert(sButton);
 }
 
 void frame::set_clamped_to_screen(bool bIsClampedToScreen)
@@ -1606,9 +1580,8 @@ void frame::set_top_level(bool bIsTopLevel)
     {
         bIsTopLevel_ = bIsTopLevel;
 
-        std::map<uint, frame*>::iterator iterChild;
-        foreach (iterChild, lChildList_)
-            iterChild->second->notify_top_level_parent_(bIsTopLevel_, this);
+        for (auto* pChild : utils::range::value(lChildList_))
+            pChild->notify_top_level_parent_(bIsTopLevel_, this);
     }
 }
 
@@ -1623,9 +1596,8 @@ void frame::raise()
         {
             int iAmount = iLevel_ - iOldLevel;
 
-            std::map<uint, frame*>::iterator iterChild;
-            foreach (iterChild, lChildList_)
-                iterChild->second->add_level_(iAmount);
+            for (auto* pChild : utils::range::value(lChildList_))
+                pChild->add_level_(iAmount);
 
             notify_strata_changed_();
         }
@@ -1638,9 +1610,8 @@ void frame::add_level_(int iAmount)
 {
     iLevel_ += iAmount;
 
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
-        iterChild->second->add_level_(iAmount);
+    for (auto* pChild : utils::range::value(lChildList_))
+        pChild->add_level_(iAmount);
 
     notify_strata_changed_();
 }
@@ -1679,9 +1650,8 @@ void frame::set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer)
 
     uiobject::set_manually_rendered(bManuallyRendered, pRenderer);
 
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
-        iterChild->second->set_manually_rendered(bManuallyRendered, pRenderer);
+    for (auto* pChild : utils::range::value(lChildList_))
+        pChild->set_manually_rendered(bManuallyRendered, pRenderer);
 }
 
 void frame::notify_child_strata_changed(frame* pChild)
@@ -1703,11 +1673,10 @@ void frame::notify_strata_changed_()
 void frame::notify_visible_(bool bTriggerEvents)
 {
     bIsVisible_ = true;
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
+    for (auto* pChild : utils::range::value(lChildList_))
     {
-        if (iterChild->second->is_shown())
-            iterChild->second->notify_visible_(bTriggerEvents);
+        if (pChild->is_shown())
+            pChild->notify_visible_(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1720,11 +1689,10 @@ void frame::notify_visible_(bool bTriggerEvents)
 void frame::notify_invisible_(bool bTriggerEvents)
 {
     bIsVisible_ = false;
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
+    for (auto* pChild : utils::range::value(lChildList_))
     {
-        if (iterChild->second->is_shown())
-            iterChild->second->notify_invisible_(bTriggerEvents);
+        if (pChild->is_shown())
+            pChild->notify_invisible_(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1741,9 +1709,8 @@ void frame::notify_top_level_parent_(bool bTopLevel, frame* pParent)
     else
         pTopLevelParent_ = nullptr;
 
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
-        iterChild->second->notify_top_level_parent_(bTopLevel, pParent);
+    for (auto* pChild : utils::range::value(lChildList_))
+        pChild->notify_top_level_parent_(bTopLevel, pParent);
 }
 
 void frame::notify_renderer_need_redraw() const
@@ -1859,11 +1826,10 @@ void frame::update(float fDelta)
     uiobject::update(fDelta);
     DEBUG_LOG("   #");
 
-    std::vector<std::string>::iterator iterEvent;
-    foreach (iterEvent, lQueuedEventList_)
+    for (const auto& sEvent : lQueuedEventList_)
     {
         DEBUG_LOG("   Event " + *iterEvent);
-        on(*iterEvent);
+        on(sEvent);
     }
 
     lQueuedEventList_.clear();
@@ -1872,22 +1838,18 @@ void frame::update(float fDelta)
     {
         DEBUG_LOG("   Build layers");
         // Clear layers' content
-        std::map<layer_type, layer >::iterator iterLayer;
-        foreach (iterLayer, lLayerList_)
-            iterLayer->second.lRegionList.clear();
+        for (auto& mLayer : utils::range::value(lLayerList_))
+            mLayer.lRegionList.clear();
 
         // Fill layers with regions (with font_string rendered last withing the same layer)
-        std::map<uint, layered_region*>::iterator iterRegion;
-        foreach (iterRegion, lRegionList_)
+        for (auto* pRegion : utils::range::value(lRegionList_))
         {
-            layered_region* pRegion = iterRegion->second;
             if (pRegion->get_object_type() != "font_string")
                 lLayerList_[pRegion->get_draw_layer()].lRegionList.push_back(pRegion);
         }
 
-        foreach (iterRegion, lRegionList_)
+        for (auto* pRegion : utils::range::value(lRegionList_))
         {
-            layered_region* pRegion = iterRegion->second;
             if (pRegion->get_object_type() == "font_string")
                 lLayerList_[pRegion->get_draw_layer()].lRegionList.push_back(pRegion);
         }
@@ -1908,15 +1870,14 @@ void frame::update(float fDelta)
 
     // Update regions
     DEBUG_LOG("   Update regions");
-    std::map<uint, layered_region*>::iterator iterRegion;
-    foreach (iterRegion, lRegionList_)
-        iterRegion->second->update(fDelta);
+    for (auto* pRegion : utils::range::value(lRegionList_))
+        pRegion->update(fDelta);
 
     // Update children
     DEBUG_LOG("   Update children");
     std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lChildList_)
-        iterChild->second->update(fDelta);
+    for (auto* pChild : utils::range::value(lChildList_))
+        pChild->update(fDelta);
 
     if (uiOldWidth != uiAbsWidth_ || uiOldHeight != uiAbsHeight_)
     {
@@ -1932,23 +1893,19 @@ std::vector<uiobject*> frame::clear_links()
     std::vector<uiobject*> lList = uiobject::clear_links();
 
     std::map<uint, layered_region*> lTempRegionList = lRegionList_;
-    std::map<uint, layered_region*>::iterator iterRegion;
-    foreach (iterRegion, lTempRegionList)
+    for (auto* pRegion : utils::range::value(lTempRegionList))
     {
-        std::vector<uiobject*> lTempList = iterRegion->second->clear_links();
-        std::vector<uiobject*>::iterator iter;
-        foreach (iter, lTempList)
-            lList.push_back(*iter);
+        std::vector<uiobject*> lTempList = pRegion->clear_links();
+        for (auto* pObject : lTempList)
+            lList.push_back(pObject);
     }
 
     std::map<uint, frame*> lTempChildList = lChildList_;
-    std::map<uint, frame*>::iterator iterChild;
-    foreach (iterChild, lTempChildList)
+    for (auto* pChild : utils::range::value(lTempChildList))
     {
-        std::vector<uiobject*> lTempList = iterChild->second->clear_links();
-        std::vector<uiobject*>::iterator iter;
-        foreach (iter, lTempList)
-            lList.push_back(*iter);
+        std::vector<uiobject*> lTempList = pChild->clear_links();
+        for (auto* pObject : lTempList)
+            lList.push_back(pObject);
     }
 
     return lList;

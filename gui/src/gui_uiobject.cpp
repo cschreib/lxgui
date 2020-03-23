@@ -65,10 +65,9 @@ std::string uiobject::serialize(const std::string& sTab) const
     if (!lAnchorList_.empty())
     {
         sStr << sTab << "  |-###\n";
-        std::map<anchor_point, anchor>::const_iterator iterAnchor;
-        foreach (iterAnchor, lAnchorList_)
+        for (const auto& mAnchor : utils::range::value(lAnchorList_))
         {
-            sStr << iterAnchor->second.serialize(sTab);
+            sStr << mAnchor.serialize(sTab);
             sStr << sTab << "  |-###\n";
         }
     }
@@ -93,16 +92,15 @@ void uiobject::copy_from(uiobject* pObj)
 {
     if (pObj)
     {
-        // Copy marked variables
+        // Copy marked Lua member variables
         if (!pObj->lCopyList_.empty())
         {
             if (is_virtual())
             {
                 // The current object is virtual too,
-                // add the variables to its copy list.
-                std::vector<std::string>::iterator iter;
-                foreach (iter, pObj->lCopyList_)
-                    lCopyList_.push_back(*iter);
+                // add the Lua member variables to its copy list.
+                for (const auto& mMember : pObj->lCopyList_)
+                    lCopyList_.push_back(mMember);
             }
 
             lua::state* pLua = pManager_->get_lua();
@@ -112,11 +110,10 @@ void uiobject::copy_from(uiobject* pObj)
                 pLua->get_global(sLuaName_);
                 if (pLua->get_type() != lua::TYPE_NIL)
                 {
-                    std::vector<std::string>::iterator iterVariable;
-                    foreach (iterVariable, pObj->lCopyList_)
+                    for (const auto& mMember : pObj->lCopyList_)
                     {
-                        pLua->get_field(*iterVariable, -2);
-                        pLua->set_field(*iterVariable);
+                        pLua->get_field(mMember, -2);
+                        pLua->set_field(mMember);
                     }
                 }
                 pLua->pop();
@@ -139,28 +136,26 @@ void uiobject::copy_from(uiobject* pObj)
         else
             this->set_rel_height(pObj->get_rel_height());
 
-        const std::map<anchor_point, anchor>& lanchorList = pObj->get_point_list();
-        std::map<anchor_point, anchor>::const_iterator iterAnchor;
-        foreach (iterAnchor, lanchorList)
+        for (const auto& mAnchor : utils::range::value(pObj->get_point_list()))
         {
-            if (iterAnchor->second.get_type() == ANCHOR_ABS)
+            if (mAnchor.get_type() == ANCHOR_ABS)
             {
                 this->set_abs_point(
-                    iterAnchor->second.get_point(),
-                    iterAnchor->second.get_parent_raw_name(),
-                    iterAnchor->second.get_parent_point(),
-                    iterAnchor->second.get_abs_offset_x(),
-                    iterAnchor->second.get_abs_offset_y()
+                    mAnchor.get_point(),
+                    mAnchor.get_parent_raw_name(),
+                    mAnchor.get_parent_point(),
+                    mAnchor.get_abs_offset_x(),
+                    mAnchor.get_abs_offset_y()
                 );
             }
             else
             {
                 this->set_rel_point(
-                    iterAnchor->second.get_point(),
-                    iterAnchor->second.get_parent_raw_name(),
-                    iterAnchor->second.get_parent_point(),
-                    iterAnchor->second.get_rel_offset_x(),
-                    iterAnchor->second.get_rel_offset_y()
+                    mAnchor.get_point(),
+                    mAnchor.get_parent_raw_name(),
+                    mAnchor.get_parent_point(),
+                    mAnchor.get_rel_offset_x(),
+                    mAnchor.get_rel_offset_y()
                 );
             }
         }
@@ -671,10 +666,9 @@ bool uiobject::depends_on(uiobject* pObj) const
 {
     if (pObj)
     {
-        std::map<anchor_point, anchor>::const_iterator iterAnchor;
-        foreach (iterAnchor, lAnchorList_)
+        for (const auto& mAnchor : utils::range::value(lAnchorList_))
         {
-            const uiobject* pParent = iterAnchor->second.get_parent();
+            const uiobject* pParent = mAnchor.get_parent();
             if (pParent == pObj)
                 return true;
 
@@ -823,51 +817,50 @@ void uiobject::read_anchors_(float& iLeft, float& iRight, float& iTop,
     iTop    = +std::numeric_limits<float>::infinity();
     iBottom = -std::numeric_limits<float>::infinity();
 
-    std::map<anchor_point, anchor>::const_iterator iterAnchor;
-    foreach (iterAnchor, lAnchorList_)
+    for (const auto& mAnchor : utils::range::value(lAnchorList_))
     {
-        // Make sure the anchored object has its borders Updated
-        const uiobject* pObj = iterAnchor->second.get_parent();
+        // Make sure the anchored object has its borders updated
+        const uiobject* pObj = mAnchor.get_parent();
         if (pObj)
             pObj->update_borders_();
 
-        switch (iterAnchor->second.get_point())
+        switch (mAnchor.get_point())
         {
             case ANCHOR_TOPLEFT :
-                iTop = std::min<float>(iTop, iterAnchor->second.get_abs_y());
-                iLeft = std::min<float>(iLeft, iterAnchor->second.get_abs_x());
+                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
+                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
                 break;
             case ANCHOR_TOP :
-                iTop = std::min<float>(iTop, iterAnchor->second.get_abs_y());
-                iXCenter = iterAnchor->second.get_abs_x();
+                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
+                iXCenter = mAnchor.get_abs_x();
                 break;
             case ANCHOR_TOPRIGHT :
-                iTop = std::min<float>(iTop, iterAnchor->second.get_abs_y());
-                iRight = std::max<float>(iRight, iterAnchor->second.get_abs_x());
+                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
+                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
                 break;
             case ANCHOR_RIGHT :
-                iRight = std::max<float>(iRight, iterAnchor->second.get_abs_x());
-                iYCenter = iterAnchor->second.get_abs_y();
+                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
+                iYCenter = mAnchor.get_abs_y();
                 break;
             case ANCHOR_BOTTOMRIGHT :
-                iBottom = std::max<float>(iBottom, iterAnchor->second.get_abs_y());
-                iRight = std::max<float>(iRight, iterAnchor->second.get_abs_x());
+                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
+                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
                 break;
             case ANCHOR_BOTTOM :
-                iBottom = std::max<float>(iBottom, iterAnchor->second.get_abs_y());
-                iXCenter = iterAnchor->second.get_abs_x();
+                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
+                iXCenter = mAnchor.get_abs_x();
                 break;
             case ANCHOR_BOTTOMLEFT :
-                iBottom = std::max<float>(iBottom, iterAnchor->second.get_abs_y());
-                iLeft = std::min<float>(iLeft, iterAnchor->second.get_abs_x());
+                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
+                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
                 break;
             case ANCHOR_LEFT :
-                iLeft = std::min<float>(iLeft, iterAnchor->second.get_abs_x());
-                iYCenter = iterAnchor->second.get_abs_y();
+                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
+                iYCenter = mAnchor.get_abs_y();
                 break;
             case ANCHOR_CENTER :
-                iXCenter = iterAnchor->second.get_abs_x();
-                iYCenter = iterAnchor->second.get_abs_y();
+                iXCenter = mAnchor.get_abs_x();
+                iYCenter = mAnchor.get_abs_y();
                 break;
         }
     }
@@ -944,8 +937,7 @@ void uiobject::update_anchors()
     if (bUpdateAnchors_)
     {
         std::vector<std::map<anchor_point, anchor>::iterator> lEraseList;
-        std::map<anchor_point, anchor>::iterator iterAnchor;
-        foreach (iterAnchor, lAnchorList_)
+        for (auto iterAnchor : utils::range::iterator(lAnchorList_))
         {
             const uiobject* pObj = iterAnchor->second.get_parent();
             if (pObj && pObj->depends_on(this))
@@ -959,35 +951,30 @@ void uiobject::update_anchors()
             }
         }
 
-        std::vector<std::map<anchor_point, anchor>::iterator>::iterator iterErase;
-        foreach (iterErase, lEraseList)
-            lAnchorList_.erase(*iterErase);
+        for (auto iterErase : lEraseList)
+            lAnchorList_.erase(iterErase);
 
         std::vector<const uiobject*> lAnchorParentList;
-        foreach (iterAnchor, lAnchorList_)
+        for (const auto& mAnchor : utils::range::value(lAnchorList_))
         {
-            const uiobject* pParent = iterAnchor->second.get_parent();
+            const uiobject* pParent = mAnchor.get_parent();
             if (pParent && utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
                 lAnchorParentList.push_back(pParent);
         }
 
-        std::vector<const uiobject*>::iterator iterOldParent;
-        foreach (iterOldParent, lPreviousAnchorParentList_)
+        for (const auto* pParent : lPreviousAnchorParentList_)
         {
-            const uiobject* pParent = *iterOldParent;
             if (utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
                 pParent->notify_anchored_object(this, false);
         }
 
-        std::vector<const uiobject*>::iterator iterParent;
-        foreach (iterParent, lAnchorParentList)
+        for (const auto* pParent : lAnchorParentList)
         {
-            const uiobject* pParent = *iterParent;
             if (utils::find(lPreviousAnchorParentList_, pParent) == lPreviousAnchorParentList_.end())
                 pParent->notify_anchored_object(this, true);
         }
 
-        lPreviousAnchorParentList_ = lAnchorParentList;
+        lPreviousAnchorParentList_ = std::move(lAnchorParentList);
         bUpdateAnchors_ = false;
     }
 }
@@ -996,9 +983,8 @@ void uiobject::fire_update_borders() const
 {
     bUpdateBorders_ = true;
 
-    std::map<uint, uiobject*>::const_iterator iterAnchored;
-    foreach (iterAnchored, lAnchoredObjectList_)
-        iterAnchored->second->fire_update_borders();
+    for (auto* pObject : utils::range::value(lAnchoredObjectList_))
+        pObject->fire_update_borders();
 }
 
 void uiobject::fire_update_dimensions() const
@@ -1135,35 +1121,31 @@ std::vector<uiobject*> uiobject::clear_links()
         pRenderer_->notify_manually_rendered_object_(this, false);
 
     // Tell this widget's anchor parents that it is no longer anchored to them
-    std::map<anchor_point, anchor>::const_iterator iterAnchor;
-    foreach (iterAnchor, lAnchorList_)
+    for (auto& mAnchor : utils::range::value(lAnchorList_))
     {
-        if (iterAnchor->second.get_parent())
-            iterAnchor->second.get_parent()->notify_anchored_object(this, false);
+        if (mAnchor.get_parent())
+            mAnchor.get_parent()->notify_anchored_object(this, false);
     }
 
     lAnchorList_.clear();
 
     // Replace anchors pointing to this widget by absolute anchors
-    std::map<uint, uiobject*>::iterator iterAnchored;
-    std::map<uint, uiobject*> lTempAnchoredObjectList = lAnchoredObjectList_;
-    foreach (iterAnchored, lTempAnchoredObjectList)
+    // (need to copy the anchored object list, because the objects will attempt to modify it when
+    // un-anchored, which would invalidate our iteration)
+    std::map<uint, uiobject*> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
+    for (auto* pObj : utils::range::value(lTempAnchoredObjectList))
     {
-        uiobject* pObj = iterAnchored->second;
         std::vector<anchor_point> lAnchoredPointList;
-        const std::map<anchor_point, anchor>& lanchorList = pObj->get_point_list();
-        std::map<anchor_point, anchor>::const_iterator iterAnchor;
-        foreach (iterAnchor, lanchorList)
+        for (const auto& mAnchor : utils::range::value(pObj->get_point_list()))
         {
-            if (iterAnchor->second.get_parent() == this)
-                lAnchoredPointList.push_back(iterAnchor->first);
+            if (mAnchor.get_parent() == this)
+                lAnchoredPointList.push_back(mAnchor.get_point());
         }
 
-        std::vector<anchor_point>::iterator iterAnchor_point;
-        foreach (iterAnchor_point, lAnchoredPointList)
+        for (const auto& mPoint : lAnchoredPointList)
         {
-            const anchor* pAnchor = pObj->get_point(*iterAnchor_point);
-            anchor mNewAnchor = anchor(pObj, *iterAnchor_point, "", ANCHOR_TOPLEFT);
+            const anchor* pAnchor = pObj->get_point(mPoint);
+            anchor mNewAnchor = anchor(pObj, mPoint, "", ANCHOR_TOPLEFT);
             vector2i mOffset = pAnchor->get_abs_offset();
 
             switch (pAnchor->get_parent_point())

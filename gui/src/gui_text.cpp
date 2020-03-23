@@ -140,47 +140,16 @@ float text::get_box_height() const
 
 float text::get_text_width() const
 {
-    float fWidth = 0.0f;
-    float fMaxWidth = std::numeric_limits<float>::infinity();
-
-    if (bReady_)
-    {
-        utils::ustring::const_iterator iterChar, iterNext;
-        foreach (iterChar, sUnicodeText_)
-        {
-            iterNext = iterChar + 1;
-            if (*iterChar == '\n')
-            {
-                if (fWidth > fMaxWidth)
-                    fMaxWidth = fWidth;
-
-                fWidth = 0.0f;
-            }
-            else
-            {
-                fWidth += get_character_width(*iterChar) + fTracking_;
-                if (iterNext != sUnicodeText_.end() && *iterChar != TO_U(' ') && *iterNext != TO_U(' ') && *iterNext != TO_U('\n'))
-                    fWidth += get_character_kerning(*iterChar, *iterNext);
-            }
-        }
-    }
-
-    return fWidth;
+    return get_string_width(sUnicodeText_);
 }
 
 float text::get_text_height() const
 {
-    float fHeight = 0.0f;
+    if (!bReady_)
+        return 0.0f;
 
-    if (bReady_)
-    {
-        uint count = 0;
-        size_t pos = sText_.find("\n");
-        while (pos != sText_.npos)
-            pos = sText_.find("\n", pos+1);
-
-        fHeight = (1.0f + count*fLineSpacing_)*get_line_height();
-    }
+    uint count = std::count(sText_.begin(), sText_.end(), '\n');
+    float fHeight = (1.0f + count*fLineSpacing_)*get_line_height();
 
     return fHeight;
 }
@@ -192,37 +161,38 @@ float text::get_string_width(const std::string& sString) const
 
 float text::get_string_width(const utils::ustring& sString) const
 {
+    if (!bReady_)
+        return 0.0f;
+
     float fWidth = 0.0f;
-    float fMaxWidth = std::numeric_limits<float>::infinity();
-    if (bReady_)
+    float fMaxWidth = 0.0f;
+
+    for (auto iterChar : utils::range::iterator(sString))
     {
-        utils::ustring::const_iterator iterChar, iterNext;
-        foreach (iterChar, sString)
+        if (*iterChar == '\n')
         {
-            iterNext = iterChar + 1;
-            if (*iterChar == ' ')
-                fWidth += fSpaceWidth_ + fTracking_;
-            else if (*iterChar == '\t')
-                fWidth += 4*fSpaceWidth_ + fTracking_;
-            else if (*iterChar == '\n')
+            if (fWidth > fMaxWidth)
+                fMaxWidth = fWidth;
+
+            fWidth = 0.0f;
+        }
+        else
+        {
+            fWidth += get_character_width(*iterChar) + fTracking_;
+
+            auto iterNext = iterChar + 1;
+            if (iterNext != sString.end())
             {
-                if (fWidth > fMaxWidth)
-                    fMaxWidth = fWidth;
-                fWidth = 0.0f;
-            }
-            else
-            {
-                fWidth += get_character_width(*iterChar) + fTracking_;
-                if (iterNext != sString.end())
-                {
-                    if (*iterNext != TO_U(' ') && *iterNext != TO_U('\n'))
-                        fWidth += get_character_kerning(*iterChar, *iterNext);
-                }
+                if (*iterChar != TO_U(' ') && *iterNext != TO_U(' ') && *iterNext != TO_U('\n'))
+                    fWidth += get_character_kerning(*iterChar, *iterNext);
             }
         }
     }
 
-    return fWidth;
+    if (fWidth > fMaxWidth)
+        fMaxWidth = fWidth;
+
+    return fMaxWidth;
 }
 
 float text::get_character_width(char32_t uiChar) const
@@ -341,68 +311,67 @@ void text::enable_formatting(bool bFormatting)
 
 void text::render(float fX, float fY)
 {
-    if (bReady_)
+    if (!bReady_)
+        return;
+
+    update();
+
+    if (fX != fX_ || fY != fY_)
+        bUpdateQuads_ = true;
+
+    if (bUpdateQuads_)
     {
-        update();
+        fX_ = fX;
+        fY_ = fY;
 
-        if (fX != fX_ || fY != fY_)
-            bUpdateQuads_ = true;
+        lQuadList_.clear();
 
-        if (bUpdateQuads_)
+        std::array<vertex,4> lVertexList;
+
+        if (!bFormattingEnabled_)
         {
-            fX_ = fX;
-            fY_ = fY;
-
-            lQuadList_.clear();
-
-            std::array<vertex,4> lVertexList;
-
-            if (!bFormattingEnabled_)
-            {
-                for (uint i = 0; i < 4; ++i)
-                    lVertexList[i].col = mColor_;
-            }
-
-            std::vector<letter>::iterator iterLetter;
-            foreach (iterLetter, lLetterCache_)
-            {
-                if (iterLetter->bNoRender)
-                    continue;
-
-                quad2f mQuad = iterLetter->mQuad + vector2f(fX, fY);
-
-                lVertexList[0].pos = mQuad.top_left();
-                lVertexList[1].pos = mQuad.top_right();
-                lVertexList[2].pos = mQuad.bottom_right();
-                lVertexList[3].pos = mQuad.bottom_left();
-
-                lVertexList[0].uvs = iterLetter->mUVs.top_left();
-                lVertexList[1].uvs = iterLetter->mUVs.top_right();
-                lVertexList[2].uvs = iterLetter->mUVs.bottom_right();
-                lVertexList[3].uvs = iterLetter->mUVs.bottom_left();
-
-                if (bFormattingEnabled_)
-                {
-                    if (iterLetter->mColor != color::EMPTY && !bForceColor_)
-                    {
-                        for (uint i = 0; i < 4; ++i)
-                            lVertexList[i].col = iterLetter->mColor;
-                    }
-                    else
-                    {
-                        for (uint i = 0; i < 4; ++i)
-                            lVertexList[i].col = mColor_;
-                    }
-                }
-
-                lQuadList_.push_back(lVertexList);
-            }
-
-            bUpdateQuads_ = false;
+            for (uint i = 0; i < 4; ++i)
+                lVertexList[i].col = mColor_;
         }
 
-        pSprite_->render_quads(lQuadList_);
+        for (const auto& mLetter : lLetterCache_)
+        {
+            if (mLetter.bNoRender)
+                continue;
+
+            quad2f mQuad = mLetter.mQuad + vector2f(fX, fY);
+
+            lVertexList[0].pos = mQuad.top_left();
+            lVertexList[1].pos = mQuad.top_right();
+            lVertexList[2].pos = mQuad.bottom_right();
+            lVertexList[3].pos = mQuad.bottom_left();
+
+            lVertexList[0].uvs = mLetter.mUVs.top_left();
+            lVertexList[1].uvs = mLetter.mUVs.top_right();
+            lVertexList[2].uvs = mLetter.mUVs.bottom_right();
+            lVertexList[3].uvs = mLetter.mUVs.bottom_left();
+
+            if (bFormattingEnabled_)
+            {
+                if (mLetter.mColor != color::EMPTY && !bForceColor_)
+                {
+                    for (uint i = 0; i < 4; ++i)
+                        lVertexList[i].col = mLetter.mColor;
+                }
+                else
+                {
+                    for (uint i = 0; i < 4; ++i)
+                        lVertexList[i].col = mColor_;
+                }
+            }
+
+            lQuadList_.push_back(lVertexList);
+        }
+
+        bUpdateQuads_ = false;
     }
+
+    pSprite_->render_quads(lQuadList_);
 }
 
 void text::update()
@@ -422,7 +391,7 @@ void text::update()
     }
 }
 
-void get_format(utils::ustring::iterator& iterChar, text::format& mFormat)
+void get_format(utils::ustring::const_iterator& iterChar, text::format& mFormat)
 {
     if (*iterChar == 'r')
     {
@@ -479,18 +448,18 @@ void text::update_lines_()
     if (uiMaxLineNbr != 0)
     {
         std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, TO_U("\n"));
-        std::vector<utils::ustring>::iterator iterManual;
-        foreach (iterManual, lManualLineList)
+        for (auto iterManual : utils::range::iterator(lManualLineList))
         {
-            DEBUG_LOG("     Line : '" + utils::unicode_to_UTF8(*iterManual) + "'");
+            const utils::ustring& sManualLine = *iterManual;
+
+            DEBUG_LOG("     Line : '" + utils::unicode_to_UTF8(sManualLine) + "'");
             // Make a temporary line array
             std::vector<line> lLines;
             line mLine; mLine.fWidth = 0.0f;
             std::map<uint, format> lTempFormatList;
 
             DEBUG_LOG("     Read chars");
-            utils::ustring::iterator iterChar1;
-            foreach (iterChar1, *iterManual)
+            for (auto iterChar1 = sManualLine.begin(); iterChar1 != sManualLine.end(); ++iterChar1)
             {
                 DEBUG_LOG("      char '" + utils::to_string(*iterChar1) + "'");
                 DEBUG_LOG("      Read format");
@@ -498,7 +467,7 @@ void text::update_lines_()
                 if (*iterChar1 == TO_U('|') && bFormattingEnabled_)
                 {
                     ++iterChar1;
-                    if (iterChar1 != iterManual->end())
+                    if (iterChar1 != sManualLine.end())
                     {
                         if (*iterChar1 != TO_U('|'))
                         {
@@ -518,8 +487,8 @@ void text::update_lines_()
                 else
                 {
                     mLine.fWidth += get_character_width(*iterChar1) + fTracking_;
-                    utils::ustring::iterator iterNext = iterChar1 + 1;
-                    if (iterNext != iterManual->end())
+                    auto iterNext = iterChar1 + 1;
+                    if (iterNext != sManualLine.end())
                     {
                         if (*iterNext != TO_U(' '))
                             mLine.fWidth += get_character_kerning(*iterChar1, *iterNext);
@@ -579,9 +548,8 @@ void text::update_lines_()
                         mLine.sCaption.erase(mLine.sCaption.size() - uiCharToErase, uiCharToErase);
 
                         lLines.push_back(mLine);
-                        std::map<uint, format>::iterator iterFormat;
-                        foreach (iterFormat, lTempFormatList)
-                            lFormatList_[iterFormat->first] = iterFormat->second;
+                        for (auto& mFormat : lTempFormatList)
+                            lFormatList_.insert(std::move(mFormat));
 
                         lTempFormatList.clear();
                         uiCounter += mLine.sCaption.size();
@@ -631,25 +599,23 @@ void text::update_lines_()
                         if (!bWordWrap_)
                         {
                             DEBUG_LOG("       Display single line");
-                            // Word wrap is disabled, so we can only display one line
-                            // anyway.
+                            // Word wrap is disabled, so we can only display one line anyway.
                             lLineList_.push_back(mLine);
-                            std::map<uint, format>::iterator iterFormat;
-                            foreach (iterFormat, lTempFormatList)
-                                lFormatList_[iterFormat->first] = iterFormat->second;
+                            for (const auto& mFormat : lTempFormatList)
+                                lFormatList_[mFormat.first] = mFormat.second;
 
                             return;
                         }
 
                         DEBUG_LOG("       Continue");
-                        utils::ustring::iterator iterTemp = iterChar1;
-                        size_t pos = iterManual->find(TO_U(" "), iterChar1 - iterManual->begin());
-                        if (pos == iterManual->npos)
-                            iterChar1 = iterManual->end();
+                        auto iterTemp = iterChar1;
+                        size_t pos = sManualLine.find(TO_U(" "), iterChar1 - sManualLine.begin());
+                        if (pos == sManualLine.npos)
+                            iterChar1 = sManualLine.end();
                         else
-                            iterChar1 = iterManual->begin() + pos;
+                            iterChar1 = sManualLine.begin() + pos;
 
-                        if (iterChar1 != iterManual->end())
+                        if (iterChar1 != sManualLine.end())
                         {
                             // Read cutted format tags
                             if (bFormattingEnabled_)
@@ -667,7 +633,7 @@ void text::update_lines_()
                             }
 
                             // Look for the next word
-                            while (iterChar1 != iterManual->end())
+                            while (iterChar1 != sManualLine.end())
                             {
                                 if ((*iterChar1) == TO_U(' '))
                                     ++iterChar1;
@@ -676,15 +642,14 @@ void text::update_lines_()
                             }
 
                             // Add the line
-                            if (iterChar1 != iterManual->end())
+                            if (iterChar1 != sManualLine.end())
                             {
                                 --iterChar1;
                                 lLines.push_back(mLine);
                                 uiCounter += mLine.sCaption.size();
 
-                                std::map<uint, format>::iterator iterFormat;
-                                foreach (iterFormat, lTempFormatList)
-                                    lFormatList_[iterFormat->first] = iterFormat->second;
+                                for (auto& mFormat : lTempFormatList)
+                                    lFormatList_.insert(std::move(mFormat));
 
                                 lTempFormatList.clear();
                                 mLine.fWidth = 0.0f;
@@ -705,18 +670,16 @@ void text::update_lines_()
                 mLine.sCaption += TO_U("\n");
 
             lLines.push_back(mLine);
-            std::map<uint, format>::iterator iterFormat;
-            foreach (iterFormat, lTempFormatList)
-                lFormatList_[iterFormat->first] = iterFormat->second;
+            for (auto& mFormat : lTempFormatList)
+                lFormatList_.insert(std::move(mFormat));
 
             lTempFormatList.clear();
             uiCounter += mLine.sCaption.size() - 1;
 
             // Add the maximum number of line to this text
-            std::vector<line>::iterator iterLine;
-            foreach (iterLine, lLines)
+            for (auto& sLine : lLines)
             {
-                lLineList_.push_back(*iterLine);
+                lLineList_.push_back(std::move(sLine));
                 if (lLineList_.size() == uiMaxLineNbr)
                     return;
             }
@@ -734,16 +697,15 @@ void text::update_cache_()
         if (fBoxW_ == 0.0f || math::isinf(fBoxW_))
         {
             fW_ = 0.0f;
-            std::vector<line>::iterator iterLine;
-            foreach (iterLine, lLineList_)
-                fW_ = std::max(fW_, iterLine->fWidth);
+            for (const auto& mLine : lLineList_)
+                fW_ = std::max(fW_, mLine.fWidth);
         }
         else
             fW_ = fBoxW_;
 
         fH_ = (1.0f + (lLineList_.size() - 1)*fLineSpacing_)*get_line_height();
 
-        float fX = 0.0f, fY = 0.0f;
+        float fX  = 0.0f, fY = 0.0f;
         float fX0 = 0.0f;
 
         if (fBoxW_ != 0.0f && !math::isinf(fBoxW_))
@@ -795,14 +757,11 @@ void text::update_cache_()
             }
         }
 
-        uint uiCounter = 0;
-
+        uint   uiCounter = 0;
         letter mLetter;
+        color  mColor = color::EMPTY;
 
-        color mColor = color::EMPTY;
-
-        std::vector<line>::iterator iterLine;
-        foreach (iterLine, lLineList_)
+        for (const auto& mLine : lLineList_)
         {
             switch (mAlign_)
             {
@@ -810,17 +769,16 @@ void text::update_cache_()
                     fX = fX0;
                     break;
                 case ALIGN_CENTER :
-                    fX = fX0 - floor(iterLine->fWidth*0.5f);
+                    fX = fX0 - floor(mLine.fWidth*0.5f);
                     break;
                 case ALIGN_RIGHT :
-                    fX = fX0 - iterLine->fWidth;
+                    fX = fX0 - mLine.fWidth;
                     break;
             }
 
-            utils::ustring::iterator iterChar, iterNext;
-            foreach (iterChar, iterLine->sCaption)
+            for (auto iterChar : utils::range::iterator(mLine.sCaption))
             {
-                // format our text
+                // Format our text
                 if (bFormattingEnabled_ && lFormatList_.find(uiCounter) != lFormatList_.end())
                 {
                     const format& mFormat = lFormatList_[uiCounter];
@@ -846,10 +804,10 @@ void text::update_cache_()
 
                 if (*iterChar == '\n') continue; // Don't increase the uiCounter
 
-                iterNext = iterChar + 1;
-
                 float fKerning = 0.0f;
-                if (iterNext != iterLine->sCaption.end() && *iterNext != TO_U(' ') && *iterChar != TO_U(' '))
+
+                auto iterNext = iterChar + 1;
+                if (iterNext != mLine.sCaption.end() && *iterNext != TO_U(' ') && *iterChar != TO_U(' '))
                     fKerning = get_character_kerning(*iterChar, *iterNext);
 
                 fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;

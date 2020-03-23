@@ -243,9 +243,8 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath)
 string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const std::string& sExtensions)
 {
     string_vector lExtensions = utils::cut(sExtensions, ",");
-    string_vector::iterator iterExtension;
-    foreach (iterExtension, lExtensions)
-        utils::trim(*iterExtension, ' ');
+    for (auto& sExtension : lExtensions)
+        utils::trim(sExtension, ' ');
 
     string_vector lFileList;
 
@@ -320,16 +319,15 @@ bool make_directory(const std::string& sPath)
     }
 #endif
 
-    std::vector<std::string>::iterator iter;
-    foreach (iter, lDirs)
+    for (const auto& sDir : lDirs)
     {
-        if (iter->empty())
+        if (sDir.empty())
             continue;
 
         if (sTemp.empty())
-            sTemp = *iter;
+            sTemp = sDir;
         else
-            sTemp += "/" + *iter;
+            sTemp += "/" + sDir;
 
         if (!make_directory_(sTemp))
             return false;

@@ -16,14 +16,16 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
     xml::document mDoc(sFile, "interface/ui.def", gui::out);
     if (mDoc.check())
     {
-        xml::block* pElemBlock;
-        foreach_block (pElemBlock, mDoc.get_main_block())
+        for (auto* pElemBlock : mDoc.get_main_block()->blocks())
         {
             if (pElemBlock->get_name() == "Script")
             {
                 std::string sScriptFile = pAddOn->sDirectory + "/" + pElemBlock->get_attribute("file");
 
-                try { pLua_->do_file(sScriptFile); }
+                try
+                {
+                    pLua_->do_file(sScriptFile);
+                }
                 catch (lua::exception& e)
                 {
                     std::string sError = e.get_description();
@@ -59,7 +61,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                     else
                     {
                         // TODO : Allow virtual regions to be created at root
-                        gui::out << gui::warning << "gui::manager : " "Creating texture or font_string at root "
+                        gui::out << gui::warning << "gui::manager : " "Creating elements other than Frames at root "
                             "level is forbidden. Skipped." << std::endl;
                         delete pUIObject;
                     }

@@ -109,10 +109,8 @@ bool manager::check_uiobject_name(const std::string& sName) const
         return false;
     }
 
-    std::string::const_iterator iterName;
-    foreach (iterName, sName)
+    for (auto c : sName)
     {
-        char c = *iterName;
         if (!isalnum(c) && c != '_' && c != '$')
         {
             gui::out << gui::error << "gui::manager : "
@@ -197,12 +195,10 @@ frame* manager::create_frame(const std::string& sClassName, const std::string& s
 
     if (!utils::has_no_content(sInheritance))
     {
-        std::vector<std::string> lObjects = utils::cut(sInheritance, ",");
-        std::vector<std::string>::iterator iter;
-        foreach (iter, lObjects)
+        for (auto sParent : utils::cut(sInheritance, ","))
         {
-            utils::trim(*iter, ' ');
-            uiobject* pObj = get_uiobject_by_name(*iter, true);
+            utils::trim(sParent, ' ');
+            uiobject* pObj = get_uiobject_by_name(sParent, true);
             if (pObj)
             {
                 if (pNewFrame->is_object_type(pObj->get_object_type()))
@@ -214,14 +210,14 @@ frame* manager::create_frame(const std::string& sClassName, const std::string& s
                 {
                     gui::out << gui::warning << "gui::manager : "
                         << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                        << ") cannot inherit from \"" << *iter << "\" (" << pObj->get_object_type()
+                        << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
                         << "). Inheritance skipped." << std::endl;
                 }
             }
             else
             {
                 gui::out << gui::warning << "gui::manager : "
-                    << "Cannot find inherited object \"" << *iter << "\". Inheritance skipped." << std::endl;
+                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
             }
         }
     }
@@ -529,13 +525,11 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
                             mAddOn.sAuthor = sValue;
                         else if (sKey == "SavedVariables")
                         {
-                            std::vector<std::string> lVariables = utils::cut(sValue, ",");
-                            std::vector<std::string>::iterator iterVar;
-                            foreach (iterVar, lVariables)
+                            for (auto sVar : utils::cut(sValue, ","))
                             {
-                                utils::trim(*iterVar, ' ');
-                                if (!utils::has_no_content(*iterVar))
-                                    mAddOn.lSavedVariableList.push_back(*iterVar);
+                                utils::trim(sVar, ' ');
+                                if (!utils::has_no_content(sVar))
+                                    mAddOn.lSavedVariableList.push_back(std::move(sVar));
                             }
                         }
                     }
@@ -562,12 +556,15 @@ void manager::load_addon_files_(addon* pAddOn)
 {
     pCurrentAddOn_ = pAddOn;
     std::vector<std::string>::iterator iterFile;
-    foreach (iterFile, pAddOn->lFileList)
+    for (const auto& sFile : pAddOn->lFileList)
     {
-        if (iterFile->find(".lua") != iterFile->npos)
+        if (sFile.find(".lua") != sFile.npos)
         {
-            try { pLua_->do_file(*iterFile); }
-            catch (lua::exception& e)
+            try
+            {
+                pLua_->do_file(sFile);
+            }
+            catch (const lua::exception& e)
             {
                 std::string sError = e.get_description();
 
@@ -578,15 +575,18 @@ void manager::load_addon_files_(addon* pAddOn)
                 pEventManager_->fire_event(mEvent);
             }
         }
-        else if (iterFile->find(".xml") != iterFile->npos)
-            this->parse_xml_file_(*iterFile, pAddOn);
+        else if (sFile.find(".xml") != sFile.npos)
+            this->parse_xml_file_(sFile, pAddOn);
     }
 
     std::string sSavedVariablesFile = "saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua";
     if (utils::file_exists(sSavedVariablesFile))
     {
-        try { pLua_->do_file(sSavedVariablesFile); }
-        catch (lua::exception& e)
+        try
+        {
+            pLua_->do_file(sSavedVariablesFile);
+        }
+        catch (const lua::exception& e)
         {
             std::string sError = e.get_description();
 
@@ -605,11 +605,8 @@ void manager::load_addon_files_(addon* pAddOn)
 
 void manager::load_addon_directory_(const std::string& sDirectory)
 {
-    std::vector<std::string> lDirs = utils::get_directory_list(sDirectory);
-
-    std::vector<std::string>::iterator iter;
-    foreach (iter, lDirs)
-        this->load_addon_toc_(*iter, sDirectory);
+    for (auto sSubDir : utils::get_directory_list(sDirectory))
+        this->load_addon_toc_(sSubDir, sDirectory);
 
     std::vector<addon*> lCoreAddOnStack;
     std::vector<addon*> lAddOnStack;
@@ -622,7 +619,8 @@ void manager::load_addon_directory_(const std::string& sDirectory)
     {
         while (!mFile.eof())
         {
-            std::string sLine; getline(mFile, sLine);
+            std::string sLine;
+            getline(mFile, sLine);
             if (sLine.empty())
                 continue;
 
@@ -645,16 +643,16 @@ void manager::load_addon_directory_(const std::string& sDirectory)
                     utils::trim(sKey, ' ');
                     std::string sValue = lArgs[1];
                     utils::trim(sValue, ' ');
-                    auto iter2 = lAddOns.find(sKey);
-                    if (iter2 != lAddOns.end())
+                    auto iter = lAddOns.find(sKey);
+                    if (iter != lAddOns.end())
                     {
                         if (bCore)
-                            lCoreAddOnStack.push_back(&iter2->second);
+                            lCoreAddOnStack.push_back(&iter->second);
                         else
-                            lAddOnStack.push_back(&iter2->second);
+                            lAddOnStack.push_back(&iter->second);
 
                         if (sValue != "1")
-                            iter2->second.bEnabled = false;
+                            iter->second.bEnabled = false;
                     }
                 }
             }
@@ -662,23 +660,22 @@ void manager::load_addon_directory_(const std::string& sDirectory)
         mFile.close();
     }
 
-    std::vector<addon*>::iterator iterAddon;
-    foreach (iterAddon, lCoreAddOnStack)
+    for (auto* pAddOn : lCoreAddOnStack)
     {
-        if ((*iterAddon)->bEnabled)
-            this->load_addon_files_(*iterAddon);
+        if (pAddOn->bEnabled)
+            this->load_addon_files_(pAddOn);
     }
 
-    foreach (iterAddon, lAddOnStack)
+    for (auto* pAddOn : lAddOnStack)
     {
-        if ((*iterAddon)->bEnabled)
-            this->load_addon_files_(*iterAddon);
+        if (pAddOn->bEnabled)
+            this->load_addon_files_(pAddOn);
     }
 
     pCurrentAddOn_ = nullptr;
 }
 
-void manager::save_variables_(addon* pAddOn)
+void manager::save_variables_(const addon* pAddOn)
 {
     if (!pAddOn->lSavedVariableList.empty())
     {
@@ -691,12 +688,11 @@ void manager::save_variables_(addon* pAddOn)
         }
 
         std::ofstream mFile("saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua");
-        std::vector<std::string>::iterator iterVariable;
-        foreach (iterVariable, pAddOn->lSavedVariableList)
+        for (const auto& sVariable : pAddOn->lSavedVariableList)
         {
-            std::string sVariable = pLua_->serialize_global(*iterVariable);
-            if (!sVariable.empty())
-                mFile << sVariable << "\n";
+            std::string sSerialized = pLua_->serialize_global(sVariable);
+            if (!sSerialized.empty())
+                mFile << sSerialized << "\n";
         }
     }
 }
@@ -738,25 +734,21 @@ void manager::read_files()
     {
         bLoadingUI_ = true;
 
-        std::vector<std::string>::iterator iterDirectory;
-        foreach (iterDirectory, lGUIDirectoryList_)
-            this->load_addon_directory_(*iterDirectory);
+        for (const auto& sDirectory : lGUIDirectoryList_)
+            this->load_addon_directory_(sDirectory);
 
         if (bEnableCaching_)
         {
             // Get the active strata list
-            std::map<uint, frame*>::iterator iterFrame;
-            foreach (iterFrame, lFrameList_)
+            for (auto* pFrame : utils::range::value(lFrameList_))
             {
-                frame* pFrame = iterFrame->second;
                 if (!pFrame->is_manually_rendered())
                     lStrataList_[pFrame->get_frame_strata()];
             }
 
             // Create their render target
-            std::map<frame_strata, strata>::iterator iterStrata;
-            foreach (iterStrata, lStrataList_)
-                create_strata_render_target_(iterStrata->second);
+            for (auto& mStrata : utils::range::value(lStrataList_))
+                create_strata_render_target_(mStrata);
         }
 
         bLoadingUI_ = false;
@@ -774,35 +766,30 @@ void manager::close_ui()
 {
     if (!bClosed_)
     {
-        std::vector<std::string>::iterator iterDirectory;
-        foreach (iterDirectory, lGUIDirectoryList_)
+        for (const auto& sDirectory : lGUIDirectoryList_)
         {
-            std::map<std::string, addon>::iterator iterAddOn;
-            foreach (iterAddOn, lAddOnList_[*iterDirectory])
-                save_variables_(&iterAddOn->second);
+            for (const auto& mAddOn : utils::range::value(lAddOnList_[sDirectory]))
+                save_variables_(&mAddOn);
         }
 
-        std::map<uint, uiobject*>::iterator iterObj;
-        foreach (iterObj, lMainObjectList_)
-            delete iterObj->second;
+        for (auto* pObject : utils::range::value(lMainObjectList_))
+            delete pObject;
 
         lMainObjectList_.clear();
         lObjectList_.clear();
         lNamedObjectList_.clear();
 
-        std::map<std::string, uiobject*>::iterator iterVirtual;
-        foreach (iterVirtual, lNamedVirtualObjectList_)
-            delete iterVirtual->second;
+        for (auto* pObject : utils::range::value(lNamedVirtualObjectList_))
+            delete pObject;
 
         lNamedVirtualObjectList_.clear();
 
         lFrameList_.clear();
 
-        std::map<frame_strata, strata>::iterator iterStrata;
-        foreach (iterStrata, lStrataList_)
+        for (auto& mStrata : utils::range::value(lStrataList_))
         {
-            iterStrata->second.lLevelList.clear();
-            iterStrata->second.bRedraw = true;
+            mStrata.lLevelList.clear();
+            mStrata.bRedraw = true;
         }
 
         lAddOnList_.clear();
@@ -864,19 +851,12 @@ void manager::render_ui() const
     else
     {
         begin();
-        std::map<frame_strata, strata>::const_iterator iterStrata;
-        foreach (iterStrata, lStrataList_)
+        for (const auto& mStrata : utils::range::value(lStrataList_))
         {
-            const strata& mStrata = iterStrata->second;
-            std::map<int, level>::const_iterator iterLevel;
-            foreach (iterLevel, mStrata.lLevelList)
+            for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
             {
-                const level& mLevel = iterLevel->second;
-
-                std::vector<frame*>::const_iterator iterFrame;
-                foreach (iterFrame, mLevel.lFrameList)
+                for (auto* pFrame : mLevel.lFrameList)
                 {
-                    frame* pFrame = *iterFrame;
                     if (!pFrame->is_newly_created())
                         pFrame->render();
                 }
@@ -953,15 +933,10 @@ void manager::render_strata_(strata& mStrata)
         begin(mStrata.pRenderTarget);
         mStrata.pRenderTarget->clear(color::EMPTY);
 
-        std::map<int, level>::const_iterator iterLevel;
-        foreach (iterLevel, mStrata.lLevelList)
+        for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
         {
-            const level& mLevel = iterLevel->second;
-
-            std::vector<frame*>::const_iterator iterFrame;
-            foreach (iterFrame, mLevel.lFrameList)
+            for (auto* pFrame : mLevel.lFrameList)
             {
-                frame* pFrame = *iterFrame;
                 if (!pFrame->is_newly_created())
                     pFrame->render();
             }
@@ -1070,42 +1045,36 @@ void manager::update(float fDelta)
 
     DEBUG_LOG(" Update anchors...");
     // update anchors for all widgets
-    std::map<uint, uiobject*>::iterator iterObj;
-    foreach (iterObj, lObjectList_)
+    for (auto* pObject : utils::range::value(lObjectList_))
     {
-        if (!iterObj->second->is_virtual())
-            iterObj->second->update_anchors();
+        if (!pObject->is_virtual())
+            pObject->update_anchors();
     }
 
     DEBUG_LOG(" Update widgets...");
     // ... then update logics on main widgets from parent to children.
-    foreach (iterObj, lMainObjectList_)
+    for (auto* pObject : utils::range::value(lMainObjectList_))
     {
-        if (!iterObj->second->is_virtual())
-            iterObj->second->update(fDelta);
+        if (!pObject->is_virtual())
+            pObject->update(fDelta);
     }
 
     if (bBuildStrataList_)
     {
         DEBUG_LOG(" Build strata...");
-        std::map<frame_strata, strata>::iterator iterStrata;
-        foreach (iterStrata, lStrataList_)
+        for (auto& mStrata : utils::range::value(lStrataList_))
         {
-            iterStrata->second.lLevelList.clear();
-            iterStrata->second.bRedraw = true;
+            mStrata.lLevelList.clear();
+            mStrata.bRedraw = true;
         }
 
-        std::map<uint, frame*>::iterator iterFrame;
-        foreach (iterFrame, lFrameList_)
+        for (auto* pFrame : utils::range::value(lFrameList_))
         {
-            frame* pFrame = iterFrame->second;
-            if (!pFrame->is_manually_rendered())
-            {
-                strata& mStrata = lStrataList_[pFrame->get_frame_strata()];
-                mStrata.lLevelList[pFrame->get_frame_level()].lFrameList.push_back(pFrame);
+            if (pFrame->is_manually_rendered()) continue;
 
-                mStrata.uiID = pFrame->get_frame_strata();
-            }
+            strata& mStrata = lStrataList_[pFrame->get_frame_strata()];
+            mStrata.lLevelList[pFrame->get_frame_level()].lFrameList.push_back(pFrame);
+            mStrata.uiID = pFrame->get_frame_strata();
         }
     }
 
@@ -1113,11 +1082,8 @@ void manager::update(float fDelta)
     {
         DEBUG_LOG(" Redraw strata...");
         bool bRedraw = false;
-        std::map<frame_strata, strata>::iterator iterStrata;
-        foreach (iterStrata, lStrataList_)
+        for (auto& mStrata : utils::range::value(lStrataList_))
         {
-            strata& mStrata = iterStrata->second;
-
             if (mStrata.bRedraw)
             {
                 render_strata_(mStrata);
@@ -1132,10 +1098,10 @@ void manager::update(float fDelta)
             begin(pRenderTarget_);
             pRenderTarget_->clear(color::EMPTY);
 
-            foreach (iterStrata, lStrataList_)
+            for (auto& mStrata : utils::range::value(lStrataList_))
             {
-                if (iterStrata->second.pSprite)
-                    iterStrata->second.pSprite->render(0, 0);
+                if (mStrata.pSprite)
+                    mStrata.pSprite->render(0, 0);
             }
 
             end();
@@ -1155,29 +1121,25 @@ void manager::update(float fDelta)
 
         frame* pOveredFrame = nullptr;
 
-        std::map<frame_strata, strata>::const_iterator iterStrata = lStrataList_.end();
-        while (iterStrata != lStrataList_.begin() && !pOveredFrame)
+        // Iterate through the frames in reverse order from rendering (frame on top goes first)
+        for (const auto& mStrata : utils::range::reverse_value(lStrataList_))
         {
-            --iterStrata;
-            const strata& mStrata = iterStrata->second;
-
-            std::map<int, level>::const_iterator iterLevel = mStrata.lLevelList.end();
-            while (iterLevel != mStrata.lLevelList.begin() && !pOveredFrame)
+            for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
             {
-                --iterLevel;
-                const level& mLevel = iterLevel->second;
-
-                std::vector<frame*>::const_iterator iterFrame;
-                foreach (iterFrame, mLevel.lFrameList)
+                for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
                 {
-                    frame* pFrame = *iterFrame;
                     if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
                     {
                         pOveredFrame = pFrame;
                         break;
                     }
                 }
+
+                if (pOveredFrame) break;
+
             }
+
+            if (pOveredFrame) break;
         }
 
         set_overed_frame_(pOveredFrame, iX, iY);
@@ -1376,9 +1338,8 @@ void manager::toggle_caching()
 
     if (bEnableCaching_)
     {
-        std::map<frame_strata, strata>::iterator iterStrata;
-        foreach (iterStrata, lStrataList_)
-            iterStrata->second.bRedraw = true;
+        for (auto& mStrata : utils::range::value(lStrataList_))
+            mStrata.bRedraw = true;
     }
 }
 
@@ -1468,52 +1429,6 @@ void manager::set_key_binding(uint uiKey, uint uiModifier1, uint uiModifier2, co
     lKeyBindingList_[uiKey][uiModifier1][uiModifier2] = sLuaString;
 }
 
-void manager::remove_key_binding(uint uiKey)
-{
-    std::map<uint, std::map<uint, std::map<uint, std::string> > >::iterator iter1 = lKeyBindingList_.find(uiKey);
-    if (iter1 != lKeyBindingList_.end())
-    {
-        std::map<uint, std::map<uint, std::string> >::iterator iter2 = iter1->second.find(0);
-        if (iter2 != iter1->second.end())
-        {
-            std::map<uint, std::string>::iterator iter3 = iter2->second.find(0);
-            if (iter3 != iter2->second.end())
-            {
-                iter2->second.erase(iter3);
-
-                if (iter2->second.size() == 0)
-                    iter1->second.erase(iter2);
-
-                if (iter1->second.size() == 0)
-                    lKeyBindingList_.erase(iter1);
-            }
-        }
-    }
-}
-
-void manager::remove_key_binding(uint uiKey, uint uiModifier)
-{
-    std::map<uint, std::map<uint, std::map<uint, std::string> > >::iterator iter1 = lKeyBindingList_.find(uiKey);
-    if (iter1 != lKeyBindingList_.end())
-    {
-        std::map<uint, std::map<uint, std::string> >::iterator iter2 = iter1->second.find(uiModifier);
-        if (iter2 != iter1->second.end())
-        {
-            std::map<uint, std::string>::iterator iter3 = iter2->second.find(0);
-            if (iter3 != iter2->second.end())
-            {
-                iter2->second.erase(iter3);
-
-                if (iter2->second.size() == 0)
-                    iter1->second.erase(iter2);
-
-                if (iter1->second.size() == 0)
-                    lKeyBindingList_.erase(iter1);
-            }
-        }
-    }
-}
-
 void manager::remove_key_binding(uint uiKey, uint uiModifier1, uint uiModifier2)
 {
     std::map<uint, std::map<uint, std::map<uint, std::string> > >::iterator iter1 = lKeyBindingList_.find(uiKey);
@@ -1583,66 +1498,77 @@ void manager::on_event(const event& mEvent)
 {
     if (mEvent.get_name() == "KEY_PRESSED")
     {
-        uint uiKey = mEvent.get<uint>(0);
-        bool bCaptured = false;
+        const uint uiKey = mEvent.get<uint>(0);
 
-        std::map<uint, std::map<uint, std::map<uint, std::string> > >::const_iterator iter1 = lKeyBindingList_.find(uiKey);
-        std::map<uint, std::map<uint, std::string> >::const_iterator iter2;
-        std::map<uint, std::string>::const_iterator iter3;
+        std::string sScript;
+        std::string sKeyName;
 
+        auto iter1 = lKeyBindingList_.find(uiKey);
         if (iter1 != lKeyBindingList_.end())
         {
-            foreach (iter2, iter1->second)
+            for (const auto& iter2 : iter1->second)
             {
-                if (iter2->first == input::key::K_UNASSIGNED || !pInputManager_->key_is_down((input::key::code)iter2->first))
+                if (iter2.first == input::key::K_UNASSIGNED ||
+                    !pInputManager_->key_is_down((input::key::code)iter2.first))
                     continue;
 
-                foreach (iter3, iter2->second)
+                // First try to get a match with the most complicated binding with two modifiers
+                for (const auto& iter3 : iter2.second)
                 {
-                    if (iter3->first == input::key::K_UNASSIGNED || !pInputManager_->key_is_down((input::key::code)iter3->first))
+                    if (iter3.first == input::key::K_UNASSIGNED ||
+                        !pInputManager_->key_is_down((input::key::code)iter3.first))
                         continue;
 
-                    try { pLua_->do_string(iter3->second); }
-                    catch (lua::exception& e)
-                    {
-                        gui::out << gui::error << "Binded action : "+pInputManager_->get_key_name(
-                                (input::key::code)uiKey, (input::key::code)iter2->first, (input::key::code)iter3->first
-                            ) << " : " << e.get_description() << std::endl;
-                    }
-
-                    bCaptured = true;
+                    sScript = iter3.second;
+                    sKeyName = pInputManager_->get_key_name(
+                        (input::key::code)uiKey,
+                        (input::key::code)iter2.first,
+                        (input::key::code)iter3.first
+                    );
                     break;
                 }
 
-                if (bCaptured)
+                if (!sScript.empty())
                     break;
 
-                iter3 = iter2->second.find(input::key::K_UNASSIGNED);
-                if (iter3 != iter2->second.end())
+                // If none was found, try with only one modifier
+                auto iter3 = iter2.second.find(input::key::K_UNASSIGNED);
+                if (iter3 != iter2.second.end())
                 {
-                    try { pLua_->do_string(iter3->second); }
-                    catch (lua::exception& e)
-                    {
-                        gui::out << gui::error << "Binded action : "+pInputManager_->get_key_name(
-                                (input::key::code)uiKey, (input::key::code)iter2->first
-                            ) << " : " << e.get_description() << std::endl;
-                    }
+                    sScript = iter3->second;
+                    sKeyName = pInputManager_->get_key_name(
+                        (input::key::code)uiKey,
+                        (input::key::code)iter2.first
+                    );
                 }
             }
 
-            iter2 = iter1->second.find(input::key::K_UNASSIGNED);
-            if (iter2 != iter1->second.end())
+            if (sScript.empty())
             {
-                iter3 = iter2->second.find(input::key::K_UNASSIGNED);
-                if (iter3 != iter2->second.end())
+                // If no modifier was matching, try with no modifier
+                auto iter2 = iter1->second.find(input::key::K_UNASSIGNED);
+                if (iter2 != iter1->second.end())
                 {
-                    try { pLua_->do_string(iter3->second); }
-                    catch (lua::exception& e)
+                    auto iter3 = iter2->second.find(input::key::K_UNASSIGNED);
+                    if (iter3 != iter2->second.end())
                     {
-                        gui::out << gui::error << "Binded action : "+pInputManager_->get_key_name((input::key::code)uiKey)
-                            << e.get_description() << std::endl;
+                        sScript = iter3->second;
+                        sKeyName = pInputManager_->get_key_name((input::key::code)uiKey);
                     }
                 }
+            }
+        }
+
+        if (!sScript.empty())
+        {
+            try
+            {
+                pLua_->do_string(sScript);
+            }
+            catch (lua::exception& e)
+            {
+                gui::out << gui::error << "Bound action : " << sKeyName
+                    << " : " << e.get_description() << std::endl;
             }
         }
     }
@@ -1662,10 +1588,8 @@ void manager::print_statistics()
 {
     gui::out << "GUI Statistics :" << std::endl;
     gui::out << "    strata redraw percent :" << std::endl;
-    std::map<frame_strata, strata>::const_iterator iterStrata;
-    foreach (iterStrata, lStrataList_)
+    for (const auto& mStrata : utils::range::value(lStrataList_))
     {
-        const strata& mStrata = iterStrata->second;
         gui::out << "     - [" << mStrata.uiID << "] : "
             << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_), 2, 1) << "%" << std::endl;
     }
@@ -1675,37 +1599,34 @@ std::string manager::print_ui() const
 {
     std::stringstream s;
 
-    if (lAddOnList_.size() >= 1)
+    if (!lAddOnList_.empty())
     {
         s << "\n\n######################## Loaded addons ########################\n" << std::endl;
-        std::map<std::string, std::map<std::string, addon>>::const_iterator iterDirectory;
-        foreach (iterDirectory, lAddOnList_)
+        for (const auto& iterDirectory : lAddOnList_)
         {
-            s << "# Directory : " << iterDirectory->first << "\n|-###" << std::endl;
-            std::map<std::string, addon>::const_iterator iterAdd;
-            foreach (iterAdd, iterDirectory->second)
+            s << "# Directory : " << iterDirectory.first << "\n|-###" << std::endl;
+            for (const auto& iterAdd : iterDirectory.second)
             {
-                if (iterAdd->second.bEnabled)
-                    s << "|   # " << iterAdd->first << std::endl;
+                if (iterAdd.second.bEnabled)
+                    s << "|   # " << iterAdd.first << std::endl;
             }
             s << "|-###\n#" << std::endl;
         }
     }
-    if (lObjectList_.size() >= 1)
+    if (!lObjectList_.empty())
     {
         s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
-        std::map<uint, uiobject*>::const_iterator iterObj;
-        foreach (iterObj, lObjectList_)
+        for (const auto* pObject : utils::range::value(lObjectList_))
         {
-            if (!iterObj->second->is_virtual() && !iterObj->second->get_parent())
-                s << iterObj->second->serialize("") << "\n########################\n" << std::endl;
+            if (!pObject->is_virtual() && !pObject->get_parent())
+                s << pObject->serialize("") << "\n########################\n" << std::endl;
         }
 
         s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
-        foreach (iterObj, lObjectList_)
+        for (const auto* pObject : utils::range::value(lObjectList_))
         {
-            if (iterObj->second->is_virtual() && !iterObj->second->get_parent())
-                s << iterObj->second->serialize("") << "\n########################\n" << std::endl;
+            if (pObject->is_virtual() && !pObject->get_parent())
+                s << pObject->serialize("") << "\n########################\n" << std::endl;
         }
     }
 

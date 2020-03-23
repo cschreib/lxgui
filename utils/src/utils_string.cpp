@@ -28,7 +28,7 @@ void trim(std::string& s, const std::string& sPatterns)
     }
     else
         s = s.erase(0, uiStart);
-        
+
     size_t uiEnd = s.find_last_not_of(sPatterns);
     if (uiEnd != s.npos)
         s = s.erase(uiEnd+1);
@@ -103,9 +103,8 @@ ustring UTF8_to_unicode(const string& s)
     string::const_iterator iter;
     unsigned char cEscape = 0;
 
-    foreach (iter, s)
+    for (auto c : s)
     {
-        unsigned char c = *iter;
         if (c <= MAX_ANSI)
         {
             sResult.push_back(c);
@@ -161,9 +160,8 @@ string unicode_to_UTF8(const ustring& s)
 
     ustring::const_iterator iter;
 
-    foreach (iter, s)
+    for (auto c : s)
     {
-        uint c = *iter;
         if (c <= MAX_ANSI)
         {
             sResult.push_back(c);
