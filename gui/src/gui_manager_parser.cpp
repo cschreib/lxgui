@@ -26,7 +26,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 {
                     pLua_->do_file(sScriptFile);
                 }
-                catch (lua::exception& e)
+                catch (const lua::exception& e)
                 {
                     std::string sError = e.get_description();
 

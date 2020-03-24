@@ -984,7 +984,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         lXMLScriptInfoList_[sCutScriptName].sFile = sFile;
         lXMLScriptInfoList_[sCutScriptName].uiLineNbr = uiLineNbr;
     }
-    catch (lua::exception& e)
+    catch (const lua::exception& e)
     {
         std::string sError = e.get_description();
 
@@ -1331,8 +1331,11 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
         pManager_->set_current_addon(pAddOn_);
 
-        try { pLua->call_function(sName_+":on"+sAdjustedName); }
-        catch (lua::exception& e)
+        try
+        {
+            pLua->call_function(sName_+":on"+sAdjustedName);
+        }
+        catch (const lua::exception& e)
         {
             std::string sError = e.get_description();
 

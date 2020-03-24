@@ -105,7 +105,7 @@ utils::refptr<gui::material> manager::create_material_png(const std::string& sFi
 
         return pTex;
     }
-    catch (utils::exception& e)
+    catch (const utils::exception& e)
     {
         gui::out << gui::error << "gui::gl::manager : Parsing " << sFileName << " :\n"
             << e.get_description() << std::endl;

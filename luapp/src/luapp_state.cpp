@@ -119,7 +119,7 @@ void state::copy_table(state& mLua, const std::string& sSrcName, const std::stri
     {
         mLua.do_string("str = \"\";\nstr = ConcTable(str, \"" + sSrcName + "\");\n");
     }
-    catch (exception& e)
+    catch (const exception& e)
     {
         throw lua::exception("state", "copy_table : "+e.get_description());
     }

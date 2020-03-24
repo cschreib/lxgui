@@ -891,7 +891,7 @@ void manager::create_strata_render_target_(strata& mStrata)
         {
             pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
         }
-        catch (utils::exception& e)
+        catch (const utils::exception& e)
         {
             gui::out << gui::error << "gui::manager : "
                 << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
@@ -909,7 +909,7 @@ void manager::create_strata_render_target_(strata& mStrata)
         {
             mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
         }
-        catch (utils::exception& e)
+        catch (const utils::exception& e)
         {
             gui::out << gui::error << "gui::manager : "
                 << "Unable to create render_target for strata " << mStrata.uiID << " :\n"
@@ -1565,7 +1565,7 @@ void manager::on_event(const event& mEvent)
             {
                 pLua_->do_string(sScript);
             }
-            catch (lua::exception& e)
+            catch (const lua::exception& e)
             {
                 gui::out << gui::error << "Bound action : " << sKeyName
                     << " : " << e.get_description() << std::endl;
