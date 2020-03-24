@@ -11,10 +11,6 @@ using namespace input;
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* edit_box::CLASS_NAME = "EditBox";
-#endif
-
 edit_box::edit_box(manager* pManager) : focus_frame(pManager),
     uiDisplayPos_(0), uiNumLetters_(0), uiMaxLetters_(-1), bNumericOnly_(false),
     bPositiveOnly_(false), bIntegerOnly_(false), bPasswordMode_(false),
@@ -783,7 +779,7 @@ void edit_box::create_carret_()
         pCarret_->create_glue();
         add_region(pCarret_);
 
-        std::unique_ptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(TO_U('|'));
+        std::unique_ptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(U'|');
         pSprite->set_color(pFontString_->get_text_color());
 
         pCarret_->set_sprite(std::move(pSprite));
@@ -979,24 +975,24 @@ bool edit_box::add_char_(char32_t sUnicode)
 
     if (bNumericOnly_)
     {
-        if (sUnicode == TO_U('.'))
+        if (sUnicode == U'.')
         {
             if (bIntegerOnly_)
                 return false;
 
-            if (sUnicodeText_.find(TO_U('.')))
+            if (sUnicodeText_.find(U'.'))
                 return false;
         }
-        else if (sUnicode == TO_U('+') || sUnicode == TO_U('-'))
+        else if (sUnicode == U'+' || sUnicode == U'-')
         {
             if (bPositiveOnly_)
                 return false;
 
             if (iterCarretPos_ != sUnicodeText_.begin() ||
-                sUnicodeText_.find(TO_U('+')) || sUnicodeText_.find(TO_U('-')))
+                sUnicodeText_.find(U'+') || sUnicodeText_.find(U'-'))
                 return false;
         }
-        else if (sUnicode < TO_U('0') || sUnicode > TO_U('9'))
+        else if (sUnicode < U'0' || sUnicode > U'9')
             return false;
     }
 
@@ -1189,7 +1185,7 @@ void edit_box::process_key_(uint uiKey)
     {
         if (bMultiLine_)
         {
-            if (add_char_(TO_U('\n')))
+            if (add_char_(U'\n'))
             {
                 event mKeyEvent;
                 mKeyEvent.add(std::string("\n"));

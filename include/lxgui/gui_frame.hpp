@@ -137,11 +137,7 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        #else
-        template<typename region_type>
-        #endif
         region_type* create_region(layer_type mLayer, const std::string& sName, const std::string& sInheritance = "")
         {
             return dynamic_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, sInheritance));
@@ -170,11 +166,7 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created frame.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        #else
-        template<typename frame_type>
-        #endif
         frame_type* create_child(const std::string& sName, const std::string& sInheritance = "")
         {
             return dynamic_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, sInheritance));
@@ -213,11 +205,7 @@ namespace gui
         *         for matches on the full name, then if no child is found, on the
         *         relative name.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        #else
-        template<typename frame_type>
-        #endif
         frame_type* get_child(const std::string& sName)
         {
             return dynamic_cast<frame_type*>(get_child(sName));
@@ -241,11 +229,7 @@ namespace gui
         *         for matches on the full name, then if no region is found, on the
         *         relative name.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        #else
-        template<typename region_type>
-        #endif
         region_type* get_region(const std::string& sName)
         {
             return dynamic_cast<region_type*>(get_region(sName));
@@ -693,11 +677,7 @@ namespace gui
         */
         virtual void parse_block(xml::block* pBlock);
 
-        #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "Frame";
-        #else
-        static const char* CLASS_NAME;
-        #endif
 
     protected :
 

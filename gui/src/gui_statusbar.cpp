@@ -15,10 +15,6 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
     return u;
 }
 
-#ifdef NO_CPP11_CONSTEXPR
-const char* status_bar::CLASS_NAME = "StatusBar";
-#endif
-
 status_bar::status_bar(manager* pManager) : frame(pManager),
     bUpdateBarTexture_(false), mOrientation_(ORIENT_HORIZONTAL), bReversed_(false),
     fValue_(0.0f), fMinValue_(0.0f), fMaxValue_(1.0f), mBarLayer_(LAYER_ARTWORK),

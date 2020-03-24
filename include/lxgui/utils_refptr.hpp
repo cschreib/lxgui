@@ -366,21 +366,10 @@ public :
     }
 
     /// Allows : "if (pPointer)".
-    #ifndef NO_CPP11_EXPLICIT_CONV
     explicit operator bool() const
     {
         return (pValue_ != nullptr);
     }
-    #else
-    typedef void (refptr::*memfunptr)();
-    operator memfunptr() const
-    {
-        if (pValue_ != nullptr)
-            return &refptr::set_null;
-        else
-            return nullptr;
-    }
-    #endif
 
     /// Allows limited implicit inheritance conversion.
     template<class N>

@@ -257,11 +257,7 @@ namespace gui
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);
 
-        #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "FontString";
-        #else
-        static const char* CLASS_NAME;
-        #endif
 
     private :
 

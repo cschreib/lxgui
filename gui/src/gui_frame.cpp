@@ -20,10 +20,6 @@ namespace gui
 {
 int l_xml_error(lua_State*);
 
-#ifdef NO_CPP11_CONSTEXPR
-const char* frame::CLASS_NAME = "Frame";
-#endif
-
 layer::layer() : bDisabled(false)
 {
 }

@@ -8,10 +8,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* font_string::CLASS_NAME = "FontString";
-#endif
-
 const uint  OUTLINE_QUALITY   = 10;
 const float OUTLINE_THICKNESS = 2.0f;
 

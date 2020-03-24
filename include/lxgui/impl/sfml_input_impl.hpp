@@ -20,16 +20,8 @@ namespace input
         */
         explicit sfml_manager(const sf::Window& pWindow, bool bMouseGrab = false);
 
-        #ifndef NO_CPP11_DELETE_FUNCTION
         sfml_manager(const sfml_manager&) = delete;
         sfml_manager& operator = (const sfml_manager&) = delete;
-        #else
-    private :
-        sfml_manager(const sfml_manager&);
-        sfml_manager& operator = (const sfml_manager&);
-
-    public :
-        #endif
 
         void toggle_mouse_grab();
         std::string get_key_name(key::code mKey) const;

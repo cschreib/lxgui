@@ -7,10 +7,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* scroll_frame::CLASS_NAME = "ScrollFrame";
-#endif
-
 scroll_frame::scroll_frame(manager* pManager) : frame(pManager),
     iHorizontalScroll_(0), iHorizontalScrollRange_(0), iVerticalScroll_(0),
     iVerticalScrollRange_(0), pScrollChild_(nullptr),

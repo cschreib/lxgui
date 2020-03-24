@@ -500,21 +500,10 @@ public :
     }
 
     /// Allows : "if (pPointer)".
-    #ifndef NO_CPP11_EXPLICIT_CONV
     explicit operator bool() const
     {
         return (pCounter_ && *pCounter_ != 0u);
     }
-    #else
-    typedef void (wptr::*memfunptr)();
-    operator memfunptr() const
-    {
-        if (pCounter_ && *pCounter_ != 0u)
-            return &wptr::set_null;
-        else
-            return nullptr;
-    }
-    #endif
 
     /// Casts the provided pointer to this one's type.
     /** \param pValue The pointer to cast

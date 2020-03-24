@@ -2,10 +2,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* region::CLASS_NAME = "Region";
-#endif
-
 region::region(manager* pManager) : uiobject(pManager)
 {
     lType_.push_back(CLASS_NAME);

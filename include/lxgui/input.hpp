@@ -122,22 +122,11 @@ namespace input
         */
         explicit manager(std::unique_ptr<manager_impl> pImpl);
 
-        #ifndef NO_CPP11_DELETE_FUNCTION
         /// This class is non copiable.
         manager(const manager& mMgr) = delete;
 
         /// This class is non copiable.
         manager& operator = (const manager& mMgr) = delete;
-        #else
-    private :
-        /// This class is non copiable.
-        manager(const manager& mMgr);
-
-        /// This class is non copiable.
-        manager& operator = (const manager& mMgr);
-
-    public :
-        #endif
 
         /// Updates input (keyboard and mouse).
         void update(float fDelta);

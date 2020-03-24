@@ -141,22 +141,11 @@ namespace gui
         /// Destructor.
         ~manager();
 
-        #ifndef NO_CPP11_DELETE_FUNCTION
         /// This class is non copiable.
         manager(const manager& mMgr) = delete;
 
         /// This class is non copiable.
         manager& operator = (const manager& mMgr) = delete;
-        #else
-    private :
-        /// This class is non copiable.
-        manager(const manager& mMgr);
-
-        /// This class is non copiable.
-        manager& operator = (const manager& mMgr);
-
-    public :
-        #endif
 
         /// Returns the "screen" width.
         /** \return The screen width
@@ -240,11 +229,7 @@ namespace gui
         *   \note This function takes care of the basic initializing : the
         *         frame is directly usable.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        #else
-        template<typename frame_type>
-        #endif
         frame_type* create_frame(const std::string& sName, frame* pParent = nullptr, const std::string& sInheritance = "")
         {
             return dynamic_cast<frame_type*>(create_frame(frame_type::CLASS_NAME, sName, pParent, sInheritance));
@@ -677,11 +662,7 @@ namespace gui
         *   \note The string parameter is not used anymore (still here for
         *         compatibility reasons, will disappear in a future release).
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        #else
-        template<typename frame_type>
-        #endif
         void register_frame_type(const std::string&)
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
@@ -691,11 +672,7 @@ namespace gui
         /// Registers a new frame type.
         /** \note Use as template argument the C++ type of this frame.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        #else
-        template<typename frame_type>
-        #endif
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
@@ -707,11 +684,7 @@ namespace gui
         *   \note The string parameter is not used anymore (still here for
         *         compatibility reasons, will disappear in a future release).
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        #else
-        template<typename region_type>
-        #endif
         void register_region_type(const std::string&)
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
@@ -721,11 +694,7 @@ namespace gui
         /// Registers a new layered_region type.
         /** \note Use as template argument the C++ type of this layered_region.
         */
-        #ifndef NO_CPP11_FUNCTION_TEMPLATE_DEFAULT
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        #else
-        template<typename region_type>
-        #endif
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;

@@ -9,12 +9,6 @@
 #include <iostream>
 #include <algorithm>
 
-#ifndef NO_CPP11_UNICODE_LITTERAL
-#define TO_U(str) U##str
-#else
-#define TO_U(str) utils::UTF8_to_unicode(str)
-#endif
-
 /** \cond NOT_REMOVE_FROM_DOC
 */
 namespace utils

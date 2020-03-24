@@ -8,10 +8,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* button::CLASS_NAME = "Button";
-#endif
-
 button::button(manager* pManager) : frame(pManager),
     mState_(STATE_UP), bHighlighted_(false), bLockHighlight_(false),
     pNormalTexture_(nullptr), pPushedTexture_(nullptr), pDisabledTexture_(nullptr),

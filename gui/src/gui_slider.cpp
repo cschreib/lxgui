@@ -25,10 +25,6 @@ void step_value(float& fValue, float fStep)
         fValue = round(fValue/fStep)*fStep;
 }
 
-#ifdef NO_CPP11_CONSTEXPR
-const char* slider::CLASS_NAME = "Slider";
-#endif
-
 slider::slider(manager* pManager) : frame(pManager),
     bUpdateThumbTexture_(false), mOrientation_(ORIENT_VERTICAL), fValue_(0.0f),
     fMinValue_(0.0f), fMaxValue_(1.0f), fValueStep_(0.1f), bAllowClicksOutsideThumb_(true),

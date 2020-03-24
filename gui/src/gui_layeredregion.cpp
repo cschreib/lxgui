@@ -9,10 +9,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* layered_region::CLASS_NAME = "LayeredRegion";
-#endif
-
 layered_region::layered_region(manager* pManager) : region(pManager),
     mLayer_(LAYER_ARTWORK), pFrameParent_(nullptr)
 {

@@ -30,16 +30,8 @@ namespace input
         /// Destructor.
         ~ois_manager();
 
-        #ifndef NO_CPP11_DELETE_FUNCTION
         ois_manager(const ois_manager&) = delete;
         ois_manager& operator = (const ois_manager&) = delete;
-        #else
-    private :
-        ois_manager(const ois_manager&);
-        ois_manager& operator = (const ois_manager&);
-
-    public :
-        #endif
 
         void toggle_mouse_grab();
 

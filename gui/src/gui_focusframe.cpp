@@ -5,10 +5,6 @@ using namespace input;
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* focus_frame::CLASS_NAME = "FocusFrame";
-#endif
-
 focus_frame::focus_frame(manager* pManager) : frame(pManager),
     bFocus_(false), bAutoFocus_(false)
 {

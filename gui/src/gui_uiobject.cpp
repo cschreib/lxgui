@@ -10,10 +10,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* uiobject::CLASS_NAME = "UIObject";
-#endif
-
 uiobject::uiobject(manager* pManager) :
     pManager_(pManager), uiID_(uint(-1)), pParent_(nullptr), pInheritance_(nullptr),
     bSpecial_(false), bManuallyRendered_(false), bNewlyCreated_(false),

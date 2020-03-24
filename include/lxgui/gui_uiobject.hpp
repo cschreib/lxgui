@@ -569,11 +569,7 @@ namespace gui
         */
         virtual void parse_block(xml::block* pBlock) = 0;
 
-        #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "UIObject";
-        #else
-        static const char* CLASS_NAME;
-        #endif
 
     protected :
 

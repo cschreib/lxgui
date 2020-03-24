@@ -11,10 +11,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* texture::CLASS_NAME = "Texture";
-#endif
-
 texture::texture(manager* pManager) : layered_region(pManager),
     mBlendMode_(BLEND_NONE), mFilter_(FILTER_NONE), bIsDesaturated_(false), mColor_(color::WHITE),
     bTexCoordModifiesRect_(false)

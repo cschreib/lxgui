@@ -77,11 +77,7 @@ namespace gui
         */
         virtual void parse_block(xml::block* pBlock);
 
-        #ifndef NO_CPP11_CONSTEXPR
         static constexpr const char* CLASS_NAME = "LayeredRegion";
-        #else
-        static const char* CLASS_NAME;
-        #endif
 
     protected :
 

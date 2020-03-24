@@ -6,10 +6,6 @@
 
 namespace gui
 {
-#ifdef NO_CPP11_CONSTEXPR
-const char* check_button::CLASS_NAME = "CheckButton";
-#endif
-
 check_button::check_button(manager* pManager) : button(pManager),
     bChecked_(false), pCheckedTexture_(nullptr), pDisabledCheckedTexture_(nullptr)
 {

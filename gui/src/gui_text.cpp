@@ -183,7 +183,7 @@ float text::get_string_width(const utils::ustring& sString) const
             auto iterNext = iterChar + 1;
             if (iterNext != sString.end())
             {
-                if (*iterChar != TO_U(' ') && *iterNext != TO_U(' ') && *iterNext != TO_U('\n'))
+                if (*iterChar != U' ' && *iterNext != U' ' && *iterNext != U'\n')
                     fWidth += get_character_kerning(*iterChar, *iterNext);
             }
         }
@@ -199,9 +199,9 @@ float text::get_character_width(char32_t uiChar) const
 {
     if (bReady_)
     {
-        if (uiChar == TO_U(' '))
+        if (uiChar == U' ')
             return fSpaceWidth_;
-        else if (uiChar == TO_U('\t'))
+        else if (uiChar == U'\t')
             return 4.0f*fSpaceWidth_;
         else
             return pFont_->get_character_width(uiChar);
@@ -447,7 +447,7 @@ void text::update_lines_()
 
     if (uiMaxLineNbr != 0)
     {
-        std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, TO_U("\n"));
+        std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
         for (auto iterManual : utils::range::iterator(lManualLineList))
         {
             const utils::ustring& sManualLine = *iterManual;
@@ -464,12 +464,12 @@ void text::update_lines_()
                 DEBUG_LOG("      char '" + utils::to_string(*iterChar1) + "'");
                 DEBUG_LOG("      Read format");
                 // Read format tags
-                if (*iterChar1 == TO_U('|') && bFormattingEnabled_)
+                if (*iterChar1 == U'|' && bFormattingEnabled_)
                 {
                     ++iterChar1;
                     if (iterChar1 != sManualLine.end())
                     {
-                        if (*iterChar1 != TO_U('|'))
+                        if (*iterChar1 != U'|')
                         {
                             get_format(iterChar1, lTempFormatList[uiCounter+mLine.sCaption.size()]);
                             continue;
@@ -480,9 +480,9 @@ void text::update_lines_()
                 }
 
                 DEBUG_LOG("      Get width");
-                if (*iterChar1 == TO_U(' '))
+                if (*iterChar1 == U' ')
                     mLine.fWidth += fSpaceWidth_ + fTracking_;
-                else if (*iterChar1 == TO_U('\t'))
+                else if (*iterChar1 == U'\t')
                     mLine.fWidth += 4*fSpaceWidth_ + fTracking_;
                 else
                 {
@@ -490,7 +490,7 @@ void text::update_lines_()
                     auto iterNext = iterChar1 + 1;
                     if (iterNext != sManualLine.end())
                     {
-                        if (*iterNext != TO_U(' '))
+                        if (*iterNext != U' ')
                             mLine.fWidth += get_character_kerning(*iterChar1, *iterNext);
                     }
                 }
@@ -501,7 +501,7 @@ void text::update_lines_()
                 {
                     DEBUG_LOG("      Box break " + utils::to_string(mLine.fWidth) + " > " + utils::to_string(fBoxW_));
                     // Whoops, the line is too long...
-                    if (mLine.sCaption.find(TO_U(" ")) != mLine.sCaption.npos && bWordWrap_)
+                    if (mLine.sCaption.find(U" ") != mLine.sCaption.npos && bWordWrap_)
                     {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
@@ -514,7 +514,7 @@ void text::update_lines_()
                         while (mLine.fWidth > fBoxW_ && iterChar2 != mLine.sCaption.begin())
                         {
                             --iterChar2;
-                            if (*iterChar2 == TO_U(' '))
+                            if (*iterChar2 == U' ')
                             {
                                 if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fErasedWidth > fBoxW_)
                                 {
@@ -537,7 +537,7 @@ void text::update_lines_()
 
                         if (bRemoveStartingSpaces_)
                         {
-                            while (iterChar2 != mLine.sCaption.end() && *iterChar2 == TO_U(' '))
+                            while (iterChar2 != mLine.sCaption.end() && *iterChar2 == U' ')
                             {
                                 --uiCharToErase;
                                 sErasedString.erase(0, 1);
@@ -566,7 +566,7 @@ void text::update_lines_()
                         if (bAddEllipsis_)
                         {
                             DEBUG_LOG("       Ellipsis");
-                            float fWordWidth = 3.0f*(get_character_width(TO_U('.')) + fTracking_);
+                            float fWordWidth = 3.0f*(get_character_width(U'.') + fTracking_);
                             utils::ustring::iterator iterChar2 = mLine.sCaption.end();
                             uint uiCharToErase = 0;
                             while ((mLine.fWidth + fWordWidth > fBoxW_) && (iterChar2 != mLine.sCaption.begin()))
@@ -580,7 +580,7 @@ void text::update_lines_()
                                 + utils::to_string(mLine.sCaption.size()));
 
                             mLine.sCaption.erase(mLine.sCaption.size() - uiCharToErase, uiCharToErase);
-                            mLine.sCaption += TO_U("...");
+                            mLine.sCaption += U"...";
                         }
                         else
                         {
@@ -609,7 +609,7 @@ void text::update_lines_()
 
                         DEBUG_LOG("       Continue");
                         auto iterTemp = iterChar1;
-                        size_t pos = sManualLine.find(TO_U(" "), iterChar1 - sManualLine.begin());
+                        size_t pos = sManualLine.find(U" ", iterChar1 - sManualLine.begin());
                         if (pos == sManualLine.npos)
                             iterChar1 = sManualLine.end();
                         else
@@ -622,10 +622,10 @@ void text::update_lines_()
                             {
                                 while (iterTemp != iterChar1)
                                 {
-                                    if (*iterTemp == TO_U('|'))
+                                    if (*iterTemp == U'|')
                                     {
                                         ++iterTemp;
-                                        if (iterTemp != iterChar1 && *iterTemp != TO_U('|'))
+                                        if (iterTemp != iterChar1 && *iterTemp != U'|')
                                             get_format(iterTemp, lTempFormatList[uiCounter+mLine.sCaption.size()]);
                                     }
                                     ++iterTemp;
@@ -635,7 +635,7 @@ void text::update_lines_()
                             // Look for the next word
                             while (iterChar1 != sManualLine.end())
                             {
-                                if ((*iterChar1) == TO_U(' '))
+                                if ((*iterChar1) == U' ')
                                     ++iterChar1;
                                 else
                                     break;
@@ -667,7 +667,7 @@ void text::update_lines_()
             DEBUG_LOG("     End");
 
             if (iterManual != lManualLineList.end() - 1)
-                mLine.sCaption += TO_U("\n");
+                mLine.sCaption += U"\n";
 
             lLines.push_back(mLine);
             for (auto& mFormat : lTempFormatList)
@@ -807,7 +807,7 @@ void text::update_cache_()
                 float fKerning = 0.0f;
 
                 auto iterNext = iterChar + 1;
-                if (iterNext != mLine.sCaption.end() && *iterNext != TO_U(' ') && *iterChar != TO_U(' '))
+                if (iterNext != mLine.sCaption.end() && *iterNext != U' ' && *iterChar != U' ')
                     fKerning = get_character_kerning(*iterChar, *iterNext);
 
                 fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;
