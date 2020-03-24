@@ -33,7 +33,7 @@ public :
     exception(const std::string& sClassName, const std::string& sMessage);
 
     /// Destructor.
-    virtual ~exception() = default;
+    ~exception() noexcept override = default;
 
     /// Returns the message of the exception.
     /** \return The message of the exception
