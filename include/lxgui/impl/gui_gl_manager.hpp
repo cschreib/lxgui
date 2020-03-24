@@ -1,16 +1,16 @@
 #ifndef GUI_GL_MANAGER_HPP
 #define GUI_GL_MANAGER_HPP
 
+#include "lxgui/impl/gui_gl_matrix4.hpp"
+#include "lxgui/impl/gui_gl_rendertarget.hpp"
+
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_manager.hpp>
-#include "lxgui/impl/gui_gl_matrix4.hpp"
 
 namespace gui {
 namespace gl
 {
-    class render_target;
-
-    /// Abstract type for implementation specific management
+    /// Open implementation of rendering
     class manager : public gui::manager_impl
     {
     public :

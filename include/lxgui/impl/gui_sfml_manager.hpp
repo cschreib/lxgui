@@ -1,6 +1,8 @@
 #ifndef GUI_SFML_MANAGER_HPP
 #define GUI_SFML_MANAGER_HPP
 
+#include "lxgui/impl/gui_sfml_rendertarget.hpp"
+
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_manager.hpp>
 
@@ -13,9 +15,7 @@ namespace sf
 namespace gui {
 namespace sfml
 {
-    class render_target;
-
-    /// Abstract type for implementation specific management
+    /// SFML implementation of rendering
     class manager : public gui::manager_impl
     {
     public :

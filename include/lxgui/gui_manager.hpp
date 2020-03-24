@@ -4,6 +4,7 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_rendertarget.hpp"
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_refptr.hpp>
 #include <lxgui/utils_wptr.hpp>
@@ -30,7 +31,6 @@ namespace gui
     class frame;
     class focus_frame;
     class sprite;
-    class render_target;
     class font;
     class color;
     struct quad;

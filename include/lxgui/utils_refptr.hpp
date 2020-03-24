@@ -16,6 +16,8 @@ template<class> class wptr;
 template<class T>
 class refptr
 {
+    static constexpr bool NOEXCEPT_DESTRUCTOR = noexcept(std::declval<T>().~T());
+
 public :
 
     template<class> friend class refptr;
@@ -24,17 +26,12 @@ public :
     /// Default constructor.
     /** \note Initializes the pointer to nullptr.
     */
-    refptr()
-    {
-        pValue_    = nullptr;
-        pCounter_  = nullptr;
-        pWCounter_ = nullptr;
-    }
+    refptr() = default;
 
     /// Copy constructor.
     /** \param mValue the refptr to copy
     */
-    refptr(const refptr& mValue)
+    refptr(const refptr& mValue) noexcept
     {
         pValue_    = mValue.pValue_;
         pCounter_  = mValue.pCounter_;
@@ -46,7 +43,7 @@ public :
     /// Move constructor.
     /** \param mValue the refptr to copy
     */
-    refptr(refptr&& mValue)
+    refptr(refptr&& mValue) noexcept
     {
         pValue_    = mValue.pValue_;
         pCounter_  = mValue.pCounter_;
@@ -58,7 +55,7 @@ public :
     }
 
     /// Conversion from nullptr.
-    refptr(const std::nullptr_t&)
+    refptr(const std::nullptr_t&) noexcept
     {
         pValue_    = nullptr;
         pCounter_  = nullptr;
@@ -70,7 +67,7 @@ public :
     *   \note This is the only way to assign a classic
     *         pointer to a refptr.
     */
-    explicit refptr(T* pValue)
+    explicit refptr(T* pValue) noexcept
     {
         pValue_    = pValue;
         pCounter_  = new uint(0);
@@ -83,7 +80,7 @@ public :
     /// Conversion constructor.
     /** \param mValue the refptr to copy
     */
-    explicit refptr(const refptr<N>& mValue)
+    explicit refptr(const refptr<N>& mValue) noexcept
     {
         pValue_    = mValue.pValue_;
         pCounter_  = mValue.pCounter_;
@@ -96,7 +93,7 @@ public :
     /// Conversion move constructor.
     /** \param mValue the refptr to move
     */
-    explicit refptr(refptr<N>&& mValue)
+    explicit refptr(refptr<N>&& mValue) noexcept
     {
         pValue_    = mValue.pValue_;
         pCounter_  = mValue.pCounter_;
@@ -111,7 +108,7 @@ public :
     /** \note Can cause deletion of the contained
     *         pointer.
     */
-    ~refptr()
+    ~refptr() noexcept(NOEXCEPT_DESTRUCTOR)
     {
         decrement_();
     }
@@ -119,7 +116,7 @@ public :
     /// Returns the contained pointer.
     /** \return The contained pointer
     */
-    const T* get() const
+    const T* get() const noexcept
     {
         return pValue_;
     }
@@ -127,7 +124,7 @@ public :
     /// Returns the contained pointer.
     /** \return The contained pointer
     */
-    T* get()
+    T* get() noexcept
     {
         return pValue_;
     }
@@ -135,7 +132,7 @@ public :
     /// Checks if this pointer is usable.
     /** \return 'true' is this pointer is usable
     */
-    bool is_valid() const
+    bool is_valid() const noexcept
     {
         return (pValue_ != nullptr);
     }
@@ -144,7 +141,7 @@ public :
     /** \return The number of refptr pointing to the object
     *   \note This function returns 0 if the pointer is nullptr.
     */
-    uint get_count() const
+    uint get_count() const noexcept
     {
         if (pCounter_)
             return *pCounter_;
@@ -156,7 +153,7 @@ public :
     /** \return The number of wptr pointing to the object
     *   \note This function returns 0 if the pointer is nullptr.
     */
-    uint get_weak_count() const
+    uint get_weak_count() const noexcept
     {
         if (pWCounter_)
             return *pWCounter_;
@@ -168,7 +165,7 @@ public :
     /** \note Can cause deletion of the contained
     *         pointer.
     */
-    void set_null()
+    void set_null() noexcept(NOEXCEPT_DESTRUCTOR)
     {
         decrement_();
 
@@ -178,7 +175,7 @@ public :
     }
 
     /// Creates a wptr pointing at the same object.
-    wptr<T> create_weak() const
+    wptr<T> create_weak() const noexcept
     {
         return wptr<T>(*this);
     }
@@ -186,7 +183,7 @@ public :
     /// Returns a reference to the contained value.
     /** \return A reference to the contained value
     */
-    const T& operator * () const
+    const T& operator * () const noexcept
     {
         return *pValue_;
     }
@@ -194,7 +191,7 @@ public :
     /// Returns a reference to the contained value.
     /** \return A reference to the contained value
     */
-    T& operator * ()
+    T& operator * () noexcept
     {
         return *pValue_;
     }
@@ -202,7 +199,7 @@ public :
     /// Dereferences the pointer.
     /** \return The contained pointer
     */
-    const T* operator -> () const
+    const T* operator -> () const noexcept
     {
         return pValue_;
     }
@@ -210,7 +207,7 @@ public :
     /// Dereferences the pointer.
     /** \return The contained pointer
     */
-    T* operator -> ()
+    T* operator -> () noexcept
     {
         return pValue_;
     }
@@ -220,7 +217,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (const refptr& mValue)
+    refptr& operator = (const refptr& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
     {
         if (&mValue != this)
         {
@@ -242,7 +239,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (const refptr<N>& mValue)
+    refptr& operator = (const refptr<N>& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
     {
         if (mValue.pValue_ != pValue_)
         {
@@ -263,7 +260,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (refptr&& mValue)
+    refptr& operator = (refptr&& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
     {
         if (&mValue != this)
         {
@@ -281,13 +278,13 @@ public :
         return *this;
     }
 
-    template<class N>
     /// Move operator.
     /** \param mValue The value to move
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (refptr<N>&& mValue)
+    template<class N>
+    refptr& operator = (refptr<N>&& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
     {
         if (mValue.pValue_ != pValue_)
         {
@@ -305,11 +302,11 @@ public :
         return *this;
     }
 
-    template<class N>
     /// Checks if this pointer equals another
     /** \param mValue The pointer to test
     */
-    bool operator == (const refptr<N>& mValue)
+    template<class N>
+    bool operator == (const refptr<N>& mValue) noexcept
     {
         return (pValue_ == mValue.pValue_);
     }
@@ -317,7 +314,7 @@ public :
     /// Checks if this pointer equals another
     /** \param pValue The pointer to test
     */
-    bool operator == (T* pValue) const
+    bool operator == (T* pValue) const noexcept
     {
         return (pValue_ == pValue);
     }
@@ -326,7 +323,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is null
     */
-    bool operator == (std::nullptr_t pValue) const
+    bool operator == (std::nullptr_t pValue) const noexcept
     {
         return (pValue_ == nullptr);
     }
@@ -335,7 +332,7 @@ public :
     /// Checks if this pointer is different from another
     /** \param mValue The pointer to test
     */
-    bool operator != (const refptr<N>& mValue)
+    bool operator != (const refptr<N>& mValue) noexcept
     {
         return (pValue_ != mValue.pValue_);
     }
@@ -343,7 +340,7 @@ public :
     /// Checks if this pointer is different from another
     /** \param pValue The pointer to test
     */
-    bool operator != (T* pValue) const
+    bool operator != (T* pValue) const noexcept
     {
         return (pValue_ != pValue);
     }
@@ -352,33 +349,33 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is not null
     */
-    bool operator != (std::nullptr_t pValue) const
+    bool operator != (std::nullptr_t pValue) const noexcept
     {
         return (pValue_ != nullptr);
     }
 
     /// Allows : "if (!pPointer)".
-    bool operator ! () const
+    bool operator ! () const noexcept
     {
         return (pValue_ == nullptr);
     }
 
     /// Allows : "if (pPointer)".
-    explicit operator bool() const
+    explicit operator bool() const noexcept
     {
         return (pValue_ != nullptr);
     }
 
     /// Allows limited implicit inheritance conversion.
     template<class N>
-    operator refptr<const N>() const
+    operator refptr<const N>() const noexcept
     {
         return refptr<N>(pValue_, pCounter_, pWCounter_);
     }
 
     /// Allows limited implicit inheritance conversion.
     template<class N>
-    operator refptr<N>()
+    operator refptr<N>() noexcept
     {
         return refptr<N>(pValue_, pCounter_, pWCounter_);
     }
@@ -388,7 +385,7 @@ public :
     *   \return The new casted pointer
     */
     template<class N>
-    static refptr<T> cast(const refptr<N>& pValue)
+    static refptr<T> cast(const refptr<N>& pValue) noexcept
     {
         return refptr<T>(static_cast<T*>(pValue.pValue_), pValue.pCounter_, pValue.pWCounter_);
     }
@@ -400,7 +397,7 @@ public :
     *         a nullptr pointer.
     */
     template<class N>
-    static refptr<T> dyn_cast(const refptr<N>& pValue)
+    static refptr<T> dyn_cast(const refptr<N>& pValue) noexcept
     {
         T* pTemp = dynamic_cast<T*>(pValue.pValue_);
         if (pTemp)
@@ -419,24 +416,21 @@ protected :
     *         by anyone else than itself (and other
     *         template specializations).
     */
-    explicit refptr(T* pValue, uint* pCounter, uint* pWCounter)
+    explicit refptr(T* pValue, uint* pCounter, uint* pWCounter) noexcept :
+        pValue_(pValue), pCounter_(pCounter), pWCounter_(pWCounter)
     {
-        pValue_    = pValue;
-        pCounter_  = pCounter;
-        pWCounter_ = pWCounter;
-
         increment_();
     }
 
 private :
 
-    void increment_()
+    void increment_() noexcept
     {
         if (pCounter_)
             ++(*pCounter_);
     }
 
-    void decrement_()
+    void decrement_() noexcept(NOEXCEPT_DESTRUCTOR)
     {
         if (pCounter_)
         {
@@ -457,9 +451,9 @@ private :
         }
     }
 
-    T*    pValue_;
-    uint* pCounter_;
-    uint* pWCounter_;
+    T*    pValue_ = nullptr;
+    uint* pCounter_ = nullptr;
+    uint* pWCounter_ = nullptr;
 };
 }
 

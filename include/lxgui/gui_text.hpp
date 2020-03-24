@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_font.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_refptr.hpp>
@@ -13,7 +14,6 @@
 namespace gui
 {
     class  manager;
-    class  font;
     class  sprite;
     struct vertex;
 

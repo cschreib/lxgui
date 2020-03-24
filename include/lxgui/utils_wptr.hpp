@@ -23,15 +23,10 @@ public :
     /// Default constructor.
     /** \note Initializes the pointer to nullptr.
     */
-    wptr()
-    {
-        pValue_    = nullptr;
-        pCounter_  = nullptr;
-        pWCounter_ = nullptr;
-    }
+    wptr() = default;
 
     /// Copy constructor.
-    wptr(const wptr& pPtr)
+    wptr(const wptr& pPtr) noexcept
     {
         pValue_    = pPtr.pValue_;
         pCounter_  = pPtr.pCounter_;
@@ -41,7 +36,7 @@ public :
     }
 
     /// Move constructor.
-    wptr(wptr&& pPtr)
+    wptr(wptr&& pPtr) noexcept
     {
         pValue_    = pPtr.pValue_;
         pCounter_  = pPtr.pCounter_;
@@ -53,7 +48,7 @@ public :
     }
 
     /// Conversion from nullptr.
-    wptr(const std::nullptr_t&)
+    wptr(const std::nullptr_t&) noexcept
     {
         pValue_    = nullptr;
         pCounter_  = nullptr;
@@ -63,14 +58,14 @@ public :
     /// Destructor.
     /** \note This function will <b>never</b> delete the pointed object (if any).
     */
-    ~wptr()
+    ~wptr() noexcept
     {
         decrement_();
     }
 
     template<class N>
     /// refptr conversion.
-    wptr(const refptr<N>& pRefPtr)
+    wptr(const refptr<N>& pRefPtr) noexcept
     {
         pValue_    = pRefPtr.pValue_;
         pCounter_  = pRefPtr.pCounter_;
@@ -81,7 +76,7 @@ public :
 
     template<class N>
     /// wptr conversion.
-    wptr(const wptr<N>& pPtr)
+    wptr(const wptr<N>& pPtr) noexcept
     {
         pValue_    = pPtr.pValue_;
         pCounter_  = pPtr.pCounter_;
@@ -92,7 +87,7 @@ public :
 
     template<class N>
     /// wptr conversion move.
-    wptr(wptr<N>&& pPtr)
+    wptr(wptr<N>&& pPtr) noexcept
     {
         pValue_    = pPtr.pValue_;
         pCounter_  = pPtr.pCounter_;
@@ -107,7 +102,7 @@ public :
     /** \note The pointer can be invalid if the object has
     *         been deleted somewhere else.
     */
-    bool is_valid() const
+    bool is_valid() const noexcept
     {
         return (pCounter_ && *pCounter_ != 0u);
     }
@@ -118,7 +113,7 @@ public :
     *         been deleted and this pointer is invalid, or it
     *         is simply nullptr.
     */
-    uint get_count() const
+    uint get_count() const noexcept
     {
         if (pCounter_)
             return *pCounter_;
@@ -130,7 +125,7 @@ public :
     /** \return The number of wptr pointing to the object
     *   \note This function returns 0 if the pointer is nullptr.
     */
-    uint get_weak_count() const
+    uint get_weak_count() const noexcept
     {
         if (pWCounter_)
             return *pWCounter_;
@@ -141,7 +136,7 @@ public :
     /// Sets this pointer to nullptr.
     /** \note This function will <b>never</b> delete the pointed object (if any).
     */
-    void set_null()
+    void set_null() noexcept
     {
         decrement_();
 
@@ -155,7 +150,7 @@ public :
     *   \note If this pointer is invalid, this function returns an empty
     *         refptr.
     */
-    refptr<const T> lock() const
+    refptr<const T> lock() const noexcept
     {
         if (is_valid())
             return refptr<const T>(pValue_, pCounter_, pWCounter_);
@@ -168,7 +163,7 @@ public :
     *   \note If this pointer is invalid, this function returns an empty
     *         refptr.
     */
-    refptr<T> lock()
+    refptr<T> lock() noexcept
     {
         if (is_valid())
             return refptr<T>(pValue_, pCounter_, pWCounter_);
@@ -182,7 +177,7 @@ public :
     *         this operator, unless you're sure the object is still
     *         alive.
     */
-    const T* operator -> () const
+    const T* operator -> () const noexcept
     {
         return pValue_;
     }
@@ -193,7 +188,7 @@ public :
     *         this operator, unless you're sure the object is still
     *         alive.
     */
-    T* operator -> ()
+    T* operator -> () noexcept
     {
         return pValue_;
     }
@@ -201,7 +196,7 @@ public :
     /// Returns a reference to the contained value.
     /** \return A reference to the contained value
     */
-    const T& operator * () const
+    const T& operator * () const noexcept
     {
         return *pValue_;
     }
@@ -209,7 +204,7 @@ public :
     /// Returns a reference to the contained value.
     /** \return A reference to the contained value
     */
-    T& operator * ()
+    T& operator * () noexcept
     {
         return *pValue_;
     }
@@ -217,7 +212,7 @@ public :
     /// nullptr assignation operator.
     /** \param pPtr The value to copy
     */
-    wptr& operator = (const std::nullptr_t& pPtr)
+    wptr& operator = (const std::nullptr_t& pPtr) noexcept
     {
         decrement_();
 
@@ -229,7 +224,7 @@ public :
     /// Copy operator.
     /** \param pPtr The value to copy
     */
-    wptr& operator = (const wptr& pPtr)
+    wptr& operator = (const wptr& pPtr) noexcept
     {
         decrement_();
 
@@ -246,7 +241,7 @@ public :
     /// Copy operator.
     /** \param pPtr The value to copy
     */
-    wptr& operator = (const wptr<N>& pPtr)
+    wptr& operator = (const wptr<N>& pPtr) noexcept
     {
         decrement_();
 
@@ -262,7 +257,7 @@ public :
     /// Move operator.
     /** \param pPtr The value to move
     */
-    wptr& operator = (wptr&& pPtr)
+    wptr& operator = (wptr&& pPtr) noexcept
     {
         decrement_();
 
@@ -281,7 +276,7 @@ public :
     /// Move operator.
     /** \param pPtr The value to move
     */
-    wptr& operator = (wptr<N>&& pPtr)
+    wptr& operator = (wptr<N>&& pPtr) noexcept
     {
         decrement_();
 
@@ -300,7 +295,7 @@ public :
     /** \param pValue The pointer to test
     */
     template<class N>
-    bool operator == (const wptr<N>& pValue) const
+    bool operator == (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ == pValue.pValue_);
     }
@@ -309,7 +304,7 @@ public :
     /** \param pValue The pointer to test
     */
     template<class N>
-    bool operator == (const refptr<N>& pValue) const
+    bool operator == (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ == pValue.pValue_);
     }
@@ -318,7 +313,7 @@ public :
     /** \param pValue The pointer to test
     */
     template<class N>
-    bool operator == (N* pValue) const
+    bool operator == (N* pValue) const noexcept
     {
         return (pValue_ == pValue);
     }
@@ -327,7 +322,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is null
     */
-    bool operator == (std::nullptr_t pValue) const
+    bool operator == (std::nullptr_t pValue) const noexcept
     {
         return (pValue_ == 0);
     }
@@ -337,7 +332,7 @@ public :
     *   \return 'true' if this pointer is different from another
     */
     template<class N>
-    bool operator != (const wptr<N>& pValue) const
+    bool operator != (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ != pValue.pValue_);
     }
@@ -347,7 +342,7 @@ public :
     *   \return 'true' if this pointer is different from another
     */
     template<class N>
-    bool operator != (const refptr<N>& pValue) const
+    bool operator != (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ != pValue.pValue_);
     }
@@ -357,7 +352,7 @@ public :
     *   \return 'true' if this pointer is different from another
     */
     template<class N>
-    bool operator != (N* pValue) const
+    bool operator != (N* pValue) const noexcept
     {
         return (pValue_ != pValue);
     }
@@ -366,7 +361,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is not null
     */
-    bool operator != (std::nullptr_t pValue) const
+    bool operator != (std::nullptr_t pValue) const noexcept
     {
         return (pValue_ != 0);
     }
@@ -376,7 +371,7 @@ public :
     *   \return 'true' if this pointer's value is lower than the other
     */
     template<class N>
-    bool operator < (const wptr<N>& pValue) const
+    bool operator < (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ < pValue.pValue_);
     }
@@ -386,7 +381,7 @@ public :
     *   \return 'true' if this pointer's value is lower than the other
     */
     template<class N>
-    bool operator < (const refptr<N>& pValue) const
+    bool operator < (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ < pValue.pValue_);
     }
@@ -396,7 +391,7 @@ public :
     *   \return 'true' if this pointer's value is lower than the other
     */
     template<class N>
-    bool operator < (N* pValue) const
+    bool operator < (N* pValue) const noexcept
     {
         return (pValue_ < pValue);
     }
@@ -406,7 +401,7 @@ public :
     *   \return 'true' if this pointer's value is lower or equal than the other
     */
     template<class N>
-    bool operator <= (const wptr<N>& pValue) const
+    bool operator <= (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ <= pValue.pValue_);
     }
@@ -416,7 +411,7 @@ public :
     *   \return 'true' if this pointer's value is lower or equal than the other
     */
     template<class N>
-    bool operator <= (const refptr<N>& pValue) const
+    bool operator <= (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ <= pValue.pValue_);
     }
@@ -426,7 +421,7 @@ public :
     *   \return 'true' if this pointer's value is lower or equal than the other
     */
     template<class N>
-    bool operator <= (N* pValue) const
+    bool operator <= (N* pValue) const noexcept
     {
         return (pValue_ <= pValue);
     }
@@ -436,7 +431,7 @@ public :
     *   \return 'true' if this pointer's value is greater than the other
     */
     template<class N>
-    bool operator > (const wptr<N>& pValue) const
+    bool operator > (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ > pValue.pValue_);
     }
@@ -446,7 +441,7 @@ public :
     *   \return 'true' if this pointer's value is greater than the other
     */
     template<class N>
-    bool operator > (const refptr<N>& pValue) const
+    bool operator > (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ > pValue.pValue_);
     }
@@ -456,7 +451,7 @@ public :
     *   \return 'true' if this pointer's value is greater than the other
     */
     template<class N>
-    bool operator > (N* pValue) const
+    bool operator > (N* pValue) const noexcept
     {
         return (pValue_ > pValue);
     }
@@ -466,7 +461,7 @@ public :
     *   \return 'true' if this pointer's value is greater or equal than the other
     */
     template<class N>
-    bool operator >= (const wptr<N>& pValue) const
+    bool operator >= (const wptr<N>& pValue) const noexcept
     {
         return (pValue_ >= pValue.pValue_);
     }
@@ -476,7 +471,7 @@ public :
     *   \return 'true' if this pointer's value is greater or equal than the other
     */
     template<class N>
-    bool operator >= (const refptr<N>& pValue) const
+    bool operator >= (const refptr<N>& pValue) const noexcept
     {
         return (pValue_ >= pValue.pValue_);
     }
@@ -486,19 +481,19 @@ public :
     *   \return 'true' if this pointer's value is greater or equal than the other
     */
     template<class N>
-    bool operator >= (N* pValue) const
+    bool operator >= (N* pValue) const noexcept
     {
         return (pValue_ >= pValue);
     }
 
     /// Allows : "if (!pPointer)".
-    bool operator ! () const
+    bool operator ! () const noexcept
     {
         return (pCounter_ == 0 ? true : *pCounter_ == 0u);
     }
 
     /// Allows : "if (pPointer)".
-    explicit operator bool() const
+    explicit operator bool() const noexcept
     {
         return (pCounter_ && *pCounter_ != 0u);
     }
@@ -508,7 +503,7 @@ public :
     *   \return The new casted pointer
     */
     template<class N>
-    static wptr<T> cast(const wptr<N>& pValue)
+    static wptr<T> cast(const wptr<N>& pValue) noexcept
     {
         return wptr<T>(static_cast<T*>(pValue.pValue_), pValue.pCounter_, pValue.pWCounter_);
     }
@@ -520,7 +515,7 @@ public :
     *         a nullptr pointer.
     */
     template<class N>
-    static wptr<T> dyn_cast(const wptr<N>& pValue)
+    static wptr<T> dyn_cast(const wptr<N>& pValue) noexcept
     {
         T* pTemp = dynamic_cast<T*>(pValue.pValue_);
         if (pTemp)
@@ -531,20 +526,19 @@ public :
 
 private :
 
-    wptr(T* pValue, uint* pCounter, uint* pWCounter) :
+    wptr(T* pValue, uint* pCounter, uint* pWCounter) noexcept :
         pValue_(pValue), pCounter_(pCounter), pWCounter_(pWCounter)
     {
+        increment_();
     }
 
-    void increment_()
+    void increment_() noexcept
     {
         if (pWCounter_)
-        {
             ++(*pWCounter_);
-        }
     }
 
-    void decrement_()
+    void decrement_() noexcept
     {
         if (pWCounter_)
         {
@@ -559,9 +553,9 @@ private :
         }
     }
 
-    T*    pValue_;
-    uint* pCounter_;
-    uint* pWCounter_;
+    T*    pValue_ = nullptr;
+    uint* pCounter_ = nullptr;
+    uint* pWCounter_ = nullptr;
 };
 }
 

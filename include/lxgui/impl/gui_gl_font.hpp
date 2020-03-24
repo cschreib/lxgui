@@ -1,6 +1,8 @@
 #ifndef GUI_GL_FONT_HPP
 #define GUI_GL_FONT_HPP
 
+#include "lxgui/impl/gui_gl_material.hpp"
+
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_font.hpp>
 #include <vector>
@@ -8,8 +10,6 @@
 namespace gui {
 namespace gl
 {
-    class material;
-
     struct character_info
     {
         uint                  uiCodePoint;

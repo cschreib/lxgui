@@ -1,20 +1,21 @@
 #ifndef GUI_SFML_FONT_HPP
 #define GUI_SFML_FONT_HPP
 
+#include "lxgui/impl/gui_sfml_material.hpp"
+
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_font.hpp>
-#include <vector>
+
 #include <SFML/Graphics/Font.hpp>
+
+#include <vector>
 
 namespace gui {
 namespace sfml
 {
-    class material;
-
     /// A texture containing characters
-    /** This is the OpenGL implementation of the gui::font.
-    *   It uses the freetype library to read data from .ttf and
-    *   .otf files and to render the characters on the font texture.
+    /** This is the SFML implementation of the gui::font.
+        It uses sf::Font to render glyphs and get character data.
     */
     class font : public gui::font
     {

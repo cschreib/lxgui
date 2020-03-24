@@ -16,7 +16,7 @@ namespace sfml
 {
     /// A class that holds rendering data
     /** This implementation can contain either a plain color
-    *   or a real OpenGL texture. It is also used by the
+    *   or a real sf::Texture. It is also used by the
     *   gui::sfml::render_target class to store the output data.
     */
     class material : public gui::material
