@@ -45,8 +45,8 @@
     long _findfirst(const char *pattern, struct _finddata_t *data)
     {
         _find_search_t *fs = new _find_search_t;
-        fs->curfn = NULL;
-        fs->pattern = NULL;
+        fs->curfn = nullptr;
+        fs->pattern = nullptr;
 
         const char *mask = strrchr(pattern, '/');
         if (mask)

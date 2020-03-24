@@ -91,7 +91,7 @@ namespace xml
 
         /// Returns this Block's parent.
         /** \return This Block's parent
-        *   \note Returns NULL for the main block.
+        *   \note Returns nullptr for the main block.
         */
         block* get_parent() const;
 
@@ -132,7 +132,7 @@ namespace xml
 
         /// Starts iteration through this Block's sub-blocks.
         /** \param sName The name of the sub-blocks you need
-        *   \return The first sub-block (NULL if none)
+        *   \return The first sub-block (nullptr if none)
         *   \note If 'sName' is ommited, iteration will be
         *         done through all sub-blocks. Else, only
         *         the sub-blocks which are named 'sName'
@@ -141,7 +141,7 @@ namespace xml
         block* first(const std::string& sName = "");
 
         /// Iterates once through the sub-blocks.
-        /** \return The next sub-block (NULL if none)
+        /** \return The next sub-block (nullptr if none)
         *   \note See first() for more infos.
         */
         block* next();
@@ -343,7 +343,7 @@ namespace xml
         /** \param sName The name of the block to create
         *   \return The new Block
         *   \note Only used in the loading stage.<br>
-        *         Returns NULL if this block is already
+        *         Returns nullptr if this block is already
         *         creating another Block.<br>
         *         Doesn't check this block can contain
         *         a new block with the provided name.

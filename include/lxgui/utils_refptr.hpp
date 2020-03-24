@@ -3,8 +3,6 @@
 
 #include "lxgui/utils.hpp"
 
-typedef decltype(nullptr) nullptr_t;
-
 namespace utils
 {
 template<class> class wptr;
@@ -24,7 +22,7 @@ public :
     template<class> friend class wptr;
 
     /// Default constructor.
-    /** \note Initializes the pointer to NULL.
+    /** \note Initializes the pointer to nullptr.
     */
     refptr()
     {
@@ -60,7 +58,7 @@ public :
     }
 
     /// Conversion from nullptr.
-    refptr(const nullptr_t&)
+    refptr(const std::nullptr_t&)
     {
         pValue_    = nullptr;
         pCounter_  = nullptr;
@@ -144,7 +142,7 @@ public :
 
     /// Returns the number of refptr pointing to the object.
     /** \return The number of refptr pointing to the object
-    *   \note This function returns 0 if the pointer is NULL.
+    *   \note This function returns 0 if the pointer is nullptr.
     */
     uint get_count() const
     {
@@ -156,7 +154,7 @@ public :
 
     /// Returns the number of wptr pointing to the object.
     /** \return The number of wptr pointing to the object
-    *   \note This function returns 0 if the pointer is NULL.
+    *   \note This function returns 0 if the pointer is nullptr.
     */
     uint get_weak_count() const
     {
@@ -166,7 +164,7 @@ public :
             return 0u;
     }
 
-    /// Sets this pointer to NULL.
+    /// Sets this pointer to nullptr.
     /** \note Can cause deletion of the contained
     *         pointer.
     */
@@ -328,7 +326,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is null
     */
-    bool operator == (nullptr_t pValue) const
+    bool operator == (std::nullptr_t pValue) const
     {
         return (pValue_ == nullptr);
     }
@@ -354,7 +352,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is not null
     */
-    bool operator != (nullptr_t pValue) const
+    bool operator != (std::nullptr_t pValue) const
     {
         return (pValue_ != nullptr);
     }
@@ -399,7 +397,7 @@ public :
     /** \param pValue The pointer to cast
     *   \return The new casted pointer
     *   \note Dynamic cast can fail, and in this case, will result in
-    *         a NULL pointer.
+    *         a nullptr pointer.
     */
     template<class N>
     static refptr<T> dyn_cast(const refptr<N>& pValue)

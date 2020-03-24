@@ -103,7 +103,7 @@ public:
     int status = lua_pcall(L, 1+nargs, nresults, errfunc);  // call method
     if (status) {
       const char *msg = lua_tostring(L, -1);
-      if (msg == NULL) msg = "(error with no message)";
+      if (msg == nullptr) msg = "(error with no message)";
       lua_pushfstring(L, "%s:%s status = %d\n%s",
                       T::className, method, status, msg);
       lua_remove(L, base);             // remove old message
@@ -156,7 +156,7 @@ public:
 
   static T *wide_check(lua_State *L, int narg) {
     void *p = lua_touserdata(L, narg);
-    if (p != NULL) {  /* value is a userdata? */
+    if (p != nullptr) {  /* value is a userdata? */
       if (lua_getmetatable(L, narg)) {  /* does it have a metatable? */
         if (T::classList[0]) {
           int i = 0;
@@ -185,7 +185,7 @@ public:
         lua_pop(L, 1);  /* remove the metatable */
       }
     }
-    return NULL;
+    return nullptr;
   }
 
   static T *push_new(lua_State *L)

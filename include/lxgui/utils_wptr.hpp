@@ -3,8 +3,6 @@
 
 #include "lxgui/utils.hpp"
 
-typedef decltype(nullptr) nullptr_t;
-
 namespace utils
 {
 template<class T>
@@ -23,7 +21,7 @@ public :
     template<class N> friend class wptr;
 
     /// Default constructor.
-    /** \note Initializes the pointer to NULL.
+    /** \note Initializes the pointer to nullptr.
     */
     wptr()
     {
@@ -55,7 +53,7 @@ public :
     }
 
     /// Conversion from nullptr.
-    wptr(const nullptr_t&)
+    wptr(const std::nullptr_t&)
     {
         pValue_    = nullptr;
         pCounter_  = nullptr;
@@ -118,7 +116,7 @@ public :
     /** \return The number of refptr pointing to the object
     *   \note If this function returns 0, then the object has
     *         been deleted and this pointer is invalid, or it
-    *         is simply NULL.
+    *         is simply nullptr.
     */
     uint get_count() const
     {
@@ -130,7 +128,7 @@ public :
 
     /// Returns the number of wptr pointing to the object.
     /** \return The number of wptr pointing to the object
-    *   \note This function returns 0 if the pointer is NULL.
+    *   \note This function returns 0 if the pointer is nullptr.
     */
     uint get_weak_count() const
     {
@@ -140,7 +138,7 @@ public :
             return 0u;
     }
 
-    /// Sets this pointer to NULL.
+    /// Sets this pointer to nullptr.
     /** \note This function will <b>never</b> delete the pointed object (if any).
     */
     void set_null()
@@ -219,7 +217,7 @@ public :
     /// nullptr assignation operator.
     /** \param pPtr The value to copy
     */
-    wptr& operator = (const nullptr_t& pPtr)
+    wptr& operator = (const std::nullptr_t& pPtr)
     {
         decrement_();
 
@@ -329,7 +327,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is null
     */
-    bool operator == (nullptr_t pValue) const
+    bool operator == (std::nullptr_t pValue) const
     {
         return (pValue_ == 0);
     }
@@ -368,7 +366,7 @@ public :
     /** \param pValue The null pointer
     *   \return 'true' if this pointer is not null
     */
-    bool operator != (nullptr_t pValue) const
+    bool operator != (std::nullptr_t pValue) const
     {
         return (pValue_ != 0);
     }
@@ -519,7 +517,7 @@ public :
     /** \param pValue The pointer to cast
     *   \return The new casted pointer
     *   \note Dynamic cast can fail, and in this case, will result in
-    *         a NULL pointer.
+    *         a nullptr pointer.
     */
     template<class N>
     static wptr<T> dyn_cast(const wptr<N>& pValue)

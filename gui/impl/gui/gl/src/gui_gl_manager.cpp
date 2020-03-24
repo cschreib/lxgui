@@ -227,7 +227,7 @@ bool manager::is_gl_extension_supported(const std::string& sExtension)
     // Code taken from :
     // http://nehe.gamedev.net/tutorial/vertex_buffer_objects/22002/
 
-    const unsigned char *pszExtensions = NULL;
+    const unsigned char *pszExtensions = nullptr;
     const unsigned char *pszStart;
     unsigned char *pszWhere, *pszTerminator;
 
