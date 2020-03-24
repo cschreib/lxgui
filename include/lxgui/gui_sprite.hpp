@@ -18,6 +18,7 @@
 
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_color.hpp"
+#include "lxgui/gui_material.hpp"
 
 namespace gui
 {
