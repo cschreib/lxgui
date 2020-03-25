@@ -36,11 +36,11 @@ namespace gui
         color    col;
     };
 
-    enum blend_mode
+    enum class blend_mode
     {
-        BLEND_NORMAL,
-        BLEND_ADD,
-        BLEND_MUL
+        NORMAL,
+        ADD,
+        MUL
     };
 
     struct quad

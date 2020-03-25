@@ -266,7 +266,7 @@ std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
         return std::unique_ptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
 }
 
-utils::refptr<material> manager::create_material(const std::string& sFileName, filter mFilter) const
+utils::refptr<material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     return pImpl_->create_material(sFileName, mFilter);
 }
@@ -1414,30 +1414,30 @@ void manager::request_focus(focus_frame* pFocusFrame)
         pInputManager_->set_focus(false);
 }
 
-void manager::set_key_binding(uint uiKey, const std::string& sLuaString)
+void manager::set_key_binding(input::key mKey, const std::string& sLuaString)
 {
-    lKeyBindingList_[uiKey][0][0] = sLuaString;
+    lKeyBindingList_[mKey][input::key::K_UNASSIGNED][input::key::K_UNASSIGNED] = sLuaString;
 }
 
-void manager::set_key_binding(uint uiKey, uint uiModifier, const std::string& sLuaString)
+void manager::set_key_binding(input::key mKey, input::key mModifier, const std::string& sLuaString)
 {
-    lKeyBindingList_[uiKey][uiModifier][0] = sLuaString;
+    lKeyBindingList_[mKey][mModifier][input::key::K_UNASSIGNED] = sLuaString;
 }
 
-void manager::set_key_binding(uint uiKey, uint uiModifier1, uint uiModifier2, const std::string& sLuaString)
+void manager::set_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2, const std::string& sLuaString)
 {
-    lKeyBindingList_[uiKey][uiModifier1][uiModifier2] = sLuaString;
+    lKeyBindingList_[mKey][mModifier1][mModifier2] = sLuaString;
 }
 
-void manager::remove_key_binding(uint uiKey, uint uiModifier1, uint uiModifier2)
+void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2)
 {
-    std::map<uint, std::map<uint, std::map<uint, std::string> > >::iterator iter1 = lKeyBindingList_.find(uiKey);
+    auto iter1 = lKeyBindingList_.find(mKey);
     if (iter1 != lKeyBindingList_.end())
     {
-        std::map<uint, std::map<uint, std::string> >::iterator iter2 = iter1->second.find(uiModifier1);
+        auto iter2 = iter1->second.find(mModifier1);
         if (iter2 != iter1->second.end())
         {
-            std::map<uint, std::string>::iterator iter3 = iter2->second.find(uiModifier2);
+            auto iter3 = iter2->second.find(mModifier2);
             if (iter3 != iter2->second.end())
             {
                 iter2->second.erase(iter3);
@@ -1498,33 +1498,29 @@ void manager::on_event(const event& mEvent)
 {
     if (mEvent.get_name() == "KEY_PRESSED")
     {
-        const uint uiKey = mEvent.get<uint>(0);
+        const input::key mKey = mEvent.get<input::key>(0);
 
         std::string sScript;
         std::string sKeyName;
 
-        auto iter1 = lKeyBindingList_.find(uiKey);
+        auto iter1 = lKeyBindingList_.find(mKey);
         if (iter1 != lKeyBindingList_.end())
         {
             for (const auto& iter2 : iter1->second)
             {
                 if (iter2.first == input::key::K_UNASSIGNED ||
-                    !pInputManager_->key_is_down((input::key::code)iter2.first))
+                    !pInputManager_->key_is_down(iter2.first))
                     continue;
 
                 // First try to get a match with the most complicated binding with two modifiers
                 for (const auto& iter3 : iter2.second)
                 {
                     if (iter3.first == input::key::K_UNASSIGNED ||
-                        !pInputManager_->key_is_down((input::key::code)iter3.first))
+                        !pInputManager_->key_is_down(iter3.first))
                         continue;
 
                     sScript = iter3.second;
-                    sKeyName = pInputManager_->get_key_name(
-                        (input::key::code)uiKey,
-                        (input::key::code)iter2.first,
-                        (input::key::code)iter3.first
-                    );
+                    sKeyName = pInputManager_->get_key_name(mKey, iter2.first, iter3.first);
                     break;
                 }
 
@@ -1536,10 +1532,7 @@ void manager::on_event(const event& mEvent)
                 if (iter3 != iter2.second.end())
                 {
                     sScript = iter3->second;
-                    sKeyName = pInputManager_->get_key_name(
-                        (input::key::code)uiKey,
-                        (input::key::code)iter2.first
-                    );
+                    sKeyName = pInputManager_->get_key_name(mKey, iter2.first);
                 }
             }
 
@@ -1553,7 +1546,7 @@ void manager::on_event(const event& mEvent)
                     if (iter3 != iter2->second.end())
                     {
                         sScript = iter3->second;
-                        sKeyName = pInputManager_->get_key_name((input::key::code)uiKey);
+                        sKeyName = pInputManager_->get_key_name(mKey);
                     }
                 }
             }

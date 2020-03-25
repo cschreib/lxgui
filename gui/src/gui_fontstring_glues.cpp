@@ -43,9 +43,9 @@ int lua_font_string::_get_justify_h(lua_State* pLua)
 
     switch (mAlignment)
     {
-        case text::ALIGN_LEFT :   sAligment = "LEFT"; break;
-        case text::ALIGN_CENTER : sAligment = "CENTER"; break;
-        case text::ALIGN_RIGHT :  sAligment = "RIGHT"; break;
+        case text::alignment::LEFT :   sAligment = "LEFT"; break;
+        case text::alignment::CENTER : sAligment = "CENTER"; break;
+        case text::alignment::RIGHT :  sAligment = "RIGHT"; break;
     }
 
     mFunc.push(sAligment);
@@ -65,9 +65,9 @@ int lua_font_string::_get_justify_v(lua_State* pLua)
 
     switch (mAlignment)
     {
-        case text::ALIGN_TOP : sAligment = "TOP"; break;
-        case text::ALIGN_MIDDLE : sAligment = "MIDDLE"; break;
-        case text::ALIGN_BOTTOM : sAligment = "BOTTOM"; break;
+        case text::vertical_alignment::TOP : sAligment = "TOP"; break;
+        case text::vertical_alignment::MIDDLE : sAligment = "MIDDLE"; break;
+        case text::vertical_alignment::BOTTOM : sAligment = "BOTTOM"; break;
     }
 
     mFunc.push(sAligment);
@@ -140,9 +140,9 @@ int lua_font_string::_set_font(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_font", pLua);
-    mFunc.add(0, "file", lua::TYPE_STRING);
-    mFunc.add(1, "height", lua::TYPE_NUMBER);
-    mFunc.add(3, "flags", lua::TYPE_STRING, true);
+    mFunc.add(0, "file", lua::type::STRING);
+    mFunc.add(1, "height", lua::type::NUMBER);
+    mFunc.add(3, "flags", lua::type::STRING, true);
 
     if (mFunc.check())
     {
@@ -173,17 +173,17 @@ int lua_font_string::_set_justify_h(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_justify_h", pLua);
-    mFunc.add(0, "justify horizontal", lua::TYPE_STRING);
+    mFunc.add(0, "justify horizontal", lua::type::STRING);
 
     if (mFunc.check())
     {
         std::string sJustifyH = mFunc.get(0)->get_string();
         if (sJustifyH == "LEFT")
-            pFontStringParent_->set_justify_h(text::ALIGN_LEFT);
+            pFontStringParent_->set_justify_h(text::alignment::LEFT);
         else if (sJustifyH == "CENTER")
-            pFontStringParent_->set_justify_h(text::ALIGN_CENTER);
+            pFontStringParent_->set_justify_h(text::alignment::CENTER);
         else if (sJustifyH == "RIGHT")
-            pFontStringParent_->set_justify_h(text::ALIGN_RIGHT);
+            pFontStringParent_->set_justify_h(text::alignment::RIGHT);
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "
@@ -200,17 +200,17 @@ int lua_font_string::_set_justify_v(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_justify_v", pLua);
-    mFunc.add(0, "justify vertical", lua::TYPE_STRING);
+    mFunc.add(0, "justify vertical", lua::type::STRING);
 
     if (mFunc.check())
     {
         std::string sJustifyV = mFunc.get(0)->get_string();
         if (sJustifyV == "TOP")
-            pFontStringParent_->set_justify_v(text::ALIGN_TOP);
+            pFontStringParent_->set_justify_v(text::vertical_alignment::TOP);
         else if (sJustifyV == "MIDDLE")
-            pFontStringParent_->set_justify_v(text::ALIGN_MIDDLE);
+            pFontStringParent_->set_justify_v(text::vertical_alignment::MIDDLE);
         else if (sJustifyV == "BOTTOM")
-            pFontStringParent_->set_justify_v(text::ALIGN_BOTTOM);
+            pFontStringParent_->set_justify_v(text::vertical_alignment::BOTTOM);
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "
@@ -227,12 +227,12 @@ int lua_font_string::_set_shadow_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_shadow_color", pLua);
-    mFunc.add(0, "red", lua::TYPE_NUMBER);
-    mFunc.add(1, "green", lua::TYPE_NUMBER);
-    mFunc.add(2, "blue", lua::TYPE_NUMBER);
-    mFunc.add(3, "alpha", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "red", lua::type::NUMBER);
+    mFunc.add(1, "green", lua::type::NUMBER);
+    mFunc.add(2, "blue", lua::type::NUMBER);
+    mFunc.add(3, "alpha", lua::type::NUMBER, true);
     mFunc.new_param_set();
-    mFunc.add(0, "color", lua::TYPE_STRING);
+    mFunc.add(0, "color", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -272,8 +272,8 @@ int lua_font_string::_set_shadow_offset(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_shadow_offset", pLua);
-    mFunc.add(0, "x offset", lua::TYPE_NUMBER);
-    mFunc.add(1, "y offset", lua::TYPE_NUMBER);
+    mFunc.add(0, "x offset", lua::type::NUMBER);
+    mFunc.add(1, "y offset", lua::type::NUMBER);
 
     if (mFunc.check())
     {
@@ -292,7 +292,7 @@ int lua_font_string::_set_spacing(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_spacing", pLua);
-    mFunc.add(0, "spacing", lua::TYPE_NUMBER);
+    mFunc.add(0, "spacing", lua::type::NUMBER);
 
     if (mFunc.check())
     {
@@ -308,12 +308,12 @@ int lua_font_string::_set_text_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_text_color", pLua);
-    mFunc.add(0, "red", lua::TYPE_NUMBER);
-    mFunc.add(1, "green", lua::TYPE_NUMBER);
-    mFunc.add(2, "blue", lua::TYPE_NUMBER);
-    mFunc.add(3, "alpha", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "red", lua::type::NUMBER);
+    mFunc.add(1, "green", lua::type::NUMBER);
+    mFunc.add(2, "blue", lua::type::NUMBER);
+    mFunc.add(3, "alpha", lua::type::NUMBER, true);
     mFunc.new_param_set();
-    mFunc.add(0, "color", lua::TYPE_STRING);
+    mFunc.add(0, "color", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -377,7 +377,7 @@ int lua_font_string::_enable_formatting(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:enable_formatting", pLua);
-    mFunc.add(0, "formatting", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "formatting", lua::type::BOOLEAN);
 
     if (mFunc.check())
     {
@@ -441,7 +441,7 @@ int lua_font_string::_set_non_space_wrap(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_non_space_wrap", pLua);
-    mFunc.add(0, "can non space wrap", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "can non space wrap", lua::type::BOOLEAN);
 
     if (mFunc.check())
     {
@@ -457,8 +457,8 @@ int lua_font_string::_set_word_wrap(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_word_wrap", pLua);
-    mFunc.add(0, "can word wrap", lua::TYPE_BOOLEAN);
-    mFunc.add(1, "add ellipsis", lua::TYPE_BOOLEAN, true);
+    mFunc.add(0, "can word wrap", lua::type::BOOLEAN);
+    mFunc.add(1, "add ellipsis", lua::type::BOOLEAN, true);
 
     if (mFunc.check())
     {
@@ -478,18 +478,18 @@ int lua_font_string::_set_text(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:set_text", pLua);
-    mFunc.add(0, "text", lua::TYPE_STRING);
-    mFunc.add(0, "number", lua::TYPE_NUMBER);
-    mFunc.add(0, "bool", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "text", lua::type::STRING);
+    mFunc.add(0, "number", lua::type::NUMBER);
+    mFunc.add(0, "bool", lua::type::BOOLEAN);
 
     if (mFunc.check())
     {
         std::string sText;
-        if (mFunc.get(0)->get_type() == lua::TYPE_STRING)
+        if (mFunc.get(0)->get_type() == lua::type::STRING)
             sText = mFunc.get(0)->get_string();
-        else if (mFunc.get(0)->get_type() == lua::TYPE_NUMBER)
+        else if (mFunc.get(0)->get_type() == lua::type::NUMBER)
             sText = utils::to_string(mFunc.get(0)->get_number());
-        else if (mFunc.get(0)->get_type() == lua::TYPE_BOOLEAN)
+        else if (mFunc.get(0)->get_type() == lua::type::BOOLEAN)
             sText = utils::to_string(mFunc.get(0)->get_bool());
 
         pFontStringParent_->set_text(sText);

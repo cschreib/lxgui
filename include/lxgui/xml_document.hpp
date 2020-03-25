@@ -115,10 +115,10 @@ namespace xml
         {
         public :
 
-            enum id
+            enum class id
             {
-                STATE_DEF,
-                STATE_XML
+                DEF,
+                XML
             };
 
             state();

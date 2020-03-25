@@ -63,7 +63,7 @@ void manager::render_quad(const quad& mQuad) const
         const uint j = ids[i];
         sf::Vertex& mSFVertex = mArray[i];
         const vertex& mVertex = mQuad.v[j];
-        const color& mColor = (pMat->get_type() == sfml::material::TYPE_TEXTURE ?
+        const color& mColor = (pMat->get_type() == sfml::material::type::TEXTURE ?
             mVertex.col : mVertex.col*pMat->get_color());
         const float a = mColor.a;
 
@@ -102,7 +102,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
             const uint j = ids[i];
             sf::Vertex& mSFVertex = mArray[k*n + i];
             const vertex& mVertex = mVertices[j];
-            const color& mColor = (pMat->get_type() == sfml::material::TYPE_TEXTURE ?
+            const color& mColor = (pMat->get_type() == sfml::material::type::TEXTURE ?
                 mVertex.col : mVertex.col*pMat->get_color());
             const float a = mColor.a;
 
@@ -123,7 +123,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-utils::refptr<gui::material> manager::create_material(const std::string& sFileName, filter mFilter) const
+utils::refptr<gui::material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
     std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
@@ -138,8 +138,7 @@ utils::refptr<gui::material> manager::create_material(const std::string& sFileNa
     try
     {
         utils::refptr<sfml::material> pTex = utils::refptr<sfml::material>(new sfml::material(
-            sFileName, sfml::material::REPEAT,
-            (mFilter == FILTER_LINEAR ? gui::sfml::material::LINEAR : gui::sfml::material::NONE)
+            sFileName, material::wrap::REPEAT, mFilter
         ));
 
         lTextureList_[sFileName] = pTex;

@@ -41,7 +41,7 @@ int lua_focus_frame::_set_auto_focus(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FocusFrame:set_auto_focus", pLua);
-    mFunc.add(0, "enabled", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "enabled", lua::type::BOOLEAN);
     if (mFunc.check())
         pFocusFrameParent_->enable_auto_focus(mFunc.get(0)->get_bool());
 

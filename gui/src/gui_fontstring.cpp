@@ -12,8 +12,8 @@ const uint  OUTLINE_QUALITY   = 10;
 const float OUTLINE_THICKNESS = 2.0f;
 
 font_string::font_string(manager* pManager) : layered_region(pManager),
-    uiHeight_(0), fSpacing_(0.0f), mJustifyH_(text::ALIGN_CENTER),
-    mJustifyV_(text::ALIGN_MIDDLE), iXOffset_(0), iYOffset_(0),
+    uiHeight_(0), fSpacing_(0.0f), mJustifyH_(text::alignment::CENTER),
+    mJustifyV_(text::vertical_alignment::MIDDLE), iXOffset_(0), iYOffset_(0),
     bIsOutlined_(false), bCanNonSpaceWrap_(false), bCanWordWrap_(true),
     bAddEllipsis_(true), bFormattingEnabled_(true), mTextColor_(color::WHITE),
     bHasShadow_(false), mShadowColor_(color::BLACK), iShadowXOffset_(0),
@@ -36,9 +36,9 @@ void font_string::render()
         {
             switch (mJustifyH_)
             {
-                case text::ALIGN_LEFT   : fX = lBorderList_.left; break;
-                case text::ALIGN_CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
-                case text::ALIGN_RIGHT  : fX = lBorderList_.right; break;
+                case text::alignment::LEFT   : fX = lBorderList_.left; break;
+                case text::alignment::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
+                case text::alignment::RIGHT  : fX = lBorderList_.right; break;
             }
         }
         else
@@ -48,9 +48,9 @@ void font_string::render()
         {
             switch (mJustifyV_)
             {
-                case text::ALIGN_TOP    : fY = lBorderList_.top; break;
-                case text::ALIGN_MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
-                case text::ALIGN_BOTTOM : fY = lBorderList_.bottom; break;
+                case text::vertical_alignment::TOP    : fY = lBorderList_.top; break;
+                case text::vertical_alignment::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
+                case text::vertical_alignment::BOTTOM : fY = lBorderList_.bottom; break;
             }
         }
         else
@@ -118,17 +118,17 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  |   # horizontal : ";
     switch (mJustifyH_)
     {
-        case text::ALIGN_LEFT :   sStr << "LEFT\n"; break;
-        case text::ALIGN_CENTER : sStr << "CENTER\n"; break;
-        case text::ALIGN_RIGHT :  sStr << "RIGHT\n"; break;
+        case text::alignment::LEFT :   sStr << "LEFT\n"; break;
+        case text::alignment::CENTER : sStr << "CENTER\n"; break;
+        case text::alignment::RIGHT :  sStr << "RIGHT\n"; break;
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  |   # vertical   : ";
     switch (mJustifyV_)
     {
-        case text::ALIGN_TOP :    sStr << "TOP\n"; break;
-        case text::ALIGN_MIDDLE : sStr << "MIDDLE\n"; break;
-        case text::ALIGN_BOTTOM : sStr << "BOTTOM\n"; break;
+        case text::vertical_alignment::TOP :    sStr << "TOP\n"; break;
+        case text::vertical_alignment::MIDDLE : sStr << "MIDDLE\n"; break;
+        case text::vertical_alignment::BOTTOM : sStr << "BOTTOM\n"; break;
         default : sStr << "<error>\n"; break;
     }
     sStr << sTab << "  #-###\n";

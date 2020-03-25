@@ -97,7 +97,7 @@ int lua_check_button::_set_checked_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("CheckButton:set_checked_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
@@ -117,7 +117,7 @@ int lua_check_button::_set_disabled_checked_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("CheckButton:set_disabled_checked_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();

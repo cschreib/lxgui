@@ -16,7 +16,7 @@ using sf::Mouse;
 
 namespace input
 {
-const int sfml_manager::lKeyToSFML[100][2] =
+const sfml_manager::key_mapping sfml_manager::lKeyToSFML[100] =
 {
     {key::K_ESCAPE,Keyboard::Escape},
     {key::K_0,Keyboard::Num0},
@@ -136,12 +136,12 @@ sfml_manager::sfml_manager(const sf::Window& mWindow, bool bMouseGrab) :
     mMouse_.bHasDelta = true;
 }
 
-int sfml_manager::to_sfml_(key::code mKey) const
+int sfml_manager::to_sfml_(key mKey) const
 {
     for (size_t i = 0; i < 100; ++i)
     {
-        if (lKeyToSFML[i][0] == mKey)
-            return lKeyToSFML[i][1];
+        if (lKeyToSFML[i].mKey == mKey)
+            return lKeyToSFML[i].mSFKey;
     }
 
     return Keyboard::Unknown;
@@ -391,7 +391,7 @@ KeySym to_xkey_(Keyboard::Key key)
 
 #endif
 
-std::string sfml_manager::get_key_name(key::code mKey) const
+std::string sfml_manager::get_key_name(key mKey) const
 {
 #ifdef WIN32
     int vkey = to_vkey_((sf::Keyboard::Key)to_sfml_(mKey));
@@ -442,15 +442,12 @@ std::string sfml_manager::get_key_name(key::code mKey) const
     else
         return "Unknown";
 #endif
-
-    // This would work if a proposed patch makes it to SFML2 trunk :
-    //return sf::Keyboard::getKeyName((sf::Keyboard::Key)to_sfml_(mKey));
 }
 
 void sfml_manager::update_()
 {
     for (int i = 0; i < 100; ++i)
-        mKeyboard_.lKeyState[lKeyToSFML[i][0]] = Keyboard::isKeyPressed((Keyboard::Key)lKeyToSFML[i][1]);
+        mKeyboard_.lKeyState[(uint)lKeyToSFML[i].mKey] = Keyboard::isKeyPressed((Keyboard::Key)lKeyToSFML[i].mSFKey);
 
     const float width  = mWindow_.getSize().x;
     const float height = mWindow_.getSize().y;
@@ -497,7 +494,7 @@ void sfml_manager::update_()
 
     static const Mouse::Button lMouseToSFML[3] = {Mouse::Left, Mouse::Right, Mouse::Middle};
 
-    for (std::size_t i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
+    for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
         mMouse_.lButtonState[i] = Mouse::isButtonPressed(lMouseToSFML[i]);
 }
 

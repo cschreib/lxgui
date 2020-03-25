@@ -26,9 +26,9 @@ void step_value(float& fValue, float fStep)
 }
 
 slider::slider(manager* pManager) : frame(pManager),
-    bUpdateThumbTexture_(false), mOrientation_(ORIENT_VERTICAL), fValue_(0.0f),
+    bUpdateThumbTexture_(false), mOrientation_(orientation::VERTICAL), fValue_(0.0f),
     fMinValue_(0.0f), fMaxValue_(1.0f), fValueStep_(0.1f), bAllowClicksOutsideThumb_(true),
-    mThumbLayer_(LAYER_OVERLAY), pThumbTexture_(nullptr), bThumbMoved_(false), bMouseInThumb_(false)
+    mThumbLayer_(layer_type::OVERLAY), pThumbTexture_(nullptr), bThumbMoved_(false), bMouseInThumb_(false)
 {
     enable_mouse(true);
     lType_.push_back(CLASS_NAME);
@@ -46,8 +46,8 @@ std::string slider::serialize(const std::string& sTab) const
     sStr << sTab << "  # Orientation: ";
     switch (mOrientation_)
     {
-        case ORIENT_HORIZONTAL : sStr << "HORIZONTAL"; break;
-        case ORIENT_VERTICAL   : sStr << "VERTICAL";   break;
+        case orientation::HORIZONTAL : sStr << "HORIZONTAL"; break;
+        case orientation::VERTICAL   : sStr << "VERTICAL";   break;
     }
     sStr << "\n";
     sStr << sTab << "  # Value      : " << fValue_ << "\n";
@@ -117,14 +117,14 @@ void slider::constrain_thumb_()
     if (fMaxValue_ == fMinValue_)
         return;
 
-    if ((mOrientation_ == ORIENT_HORIZONTAL && uiAbsWidth_  != 0) ||
-        (mOrientation_ == ORIENT_VERTICAL   && uiAbsHeight_ != 0))
+    if ((mOrientation_ == orientation::HORIZONTAL && uiAbsWidth_  != 0) ||
+        (mOrientation_ == orientation::VERTICAL   && uiAbsHeight_ != 0))
     {
         float fValue = 0.0f;
 
         if (bThumbMoved_)
         {
-            if (mOrientation_ == ORIENT_HORIZONTAL)
+            if (mOrientation_ == orientation::HORIZONTAL)
                 fValue = float(pThumbTexture_->get_point(anchor_point::CENTER)->get_abs_offset_x())/float(uiAbsWidth_);
             else
                 fValue = float(pThumbTexture_->get_point(anchor_point::CENTER)->get_abs_offset_y())/float(uiAbsHeight_);
@@ -138,7 +138,7 @@ void slider::constrain_thumb_()
         float fCoef = (fValue - fMinValue_)/(fMaxValue_ - fMinValue_);
 
         anchor* pAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
-        if (mOrientation_ == ORIENT_HORIZONTAL)
+        if (mOrientation_ == orientation::HORIZONTAL)
             pAnchor->set_abs_offset(uiAbsWidth_*fCoef, 0);
         else
             pAnchor->set_abs_offset(0, uiAbsHeight_*fCoef);
@@ -157,7 +157,7 @@ void slider::on_event(const event& mEvent)
             {
                 pManager_->start_moving(
                     pThumbTexture_, pThumbTexture_->modify_point(anchor_point::CENTER),
-                    mOrientation_ == ORIENT_HORIZONTAL ? constraint::X : constraint::Y,
+                    mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
                     std::bind(&slider::constrain_thumb_, this)
                 );
                 bThumbMoved_ = true;
@@ -165,7 +165,7 @@ void slider::on_event(const event& mEvent)
             else if (bMouseInFrame_ && bAllowClicksOutsideThumb_)
             {
                 float fValue;
-                if (mOrientation_ == ORIENT_HORIZONTAL)
+                if (mOrientation_ == orientation::HORIZONTAL)
                 {
                     float fOffset = float(iMousePosX_ - lBorderList_.left);
                     fValue = fOffset/uiAbsWidth_;
@@ -183,14 +183,14 @@ void slider::on_event(const event& mEvent)
                     float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
                     anchor* pAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
-                    if (mOrientation_ == ORIENT_HORIZONTAL)
+                    if (mOrientation_ == orientation::HORIZONTAL)
                         pAnchor->set_abs_offset(uiAbsWidth_*fCoef, 0);
                     else
                         pAnchor->set_abs_offset(0, uiAbsHeight_*fCoef);
 
                     pManager_->start_moving(
                         pThumbTexture_, pThumbTexture_->modify_point(anchor_point::CENTER),
-                        mOrientation_ == ORIENT_HORIZONTAL ? constraint::X : constraint::Y
+                        mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y
                     );
                     bThumbMoved_ = true;
                 }
@@ -303,7 +303,7 @@ void slider::set_thumb_texture(texture* pTexture)
     pThumbTexture_->clear_all_points();
     pThumbTexture_->set_point(anchor(
         pThumbTexture_, anchor_point::CENTER, sName_,
-        mOrientation_ == ORIENT_HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
+        mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
     ));
 
     fire_update_thumb_texture_();
@@ -318,7 +318,7 @@ void slider::set_orientation(orientation mOrientation)
         {
             pThumbTexture_->set_point(anchor(
                 pThumbTexture_, anchor_point::CENTER, sName_,
-                mOrientation_ == ORIENT_HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
+                mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
             ));
         }
 
@@ -336,20 +336,20 @@ void slider::set_thumb_draw_layer(layer_type mThumbLayer)
 void slider::set_thumb_draw_layer(const std::string& sThumbLayer)
 {
     if (sThumbLayer == "ARTWORK")
-        mThumbLayer_ = LAYER_ARTWORK;
+        mThumbLayer_ = layer_type::ARTWORK;
     else if (sThumbLayer == "BACKGROUND")
-        mThumbLayer_ = LAYER_BACKGROUND;
+        mThumbLayer_ = layer_type::BACKGROUND;
     else if (sThumbLayer == "BORDER")
-        mThumbLayer_ = LAYER_BORDER;
+        mThumbLayer_ = layer_type::BORDER;
     else if (sThumbLayer == "HIGHLIGHT")
-        mThumbLayer_ = LAYER_HIGHLIGHT;
+        mThumbLayer_ = layer_type::HIGHLIGHT;
     else if (sThumbLayer == "OVERLAY")
-        mThumbLayer_ = LAYER_OVERLAY;
+        mThumbLayer_ = layer_type::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Uknown layer type : \""+sThumbLayer+"\". Using \"OVERLAY\"." << std::endl;
-        mThumbLayer_ = LAYER_OVERLAY;
+        mThumbLayer_ = layer_type::OVERLAY;
     }
 
     if (pThumbTexture_)
@@ -446,8 +446,8 @@ void slider::update(float fDelta)
 
     if ((bUpdateThumbTexture_ || bThumbMoved_) && pThumbTexture_)
     {
-        if ((mOrientation_ == ORIENT_HORIZONTAL && uiAbsWidth_  != 0) ||
-            (mOrientation_ == ORIENT_VERTICAL   && uiAbsHeight_ != 0))
+        if ((mOrientation_ == orientation::HORIZONTAL && uiAbsWidth_  != 0) ||
+            (mOrientation_ == orientation::VERTICAL   && uiAbsHeight_ != 0))
         {
             if (fMaxValue_ == fMinValue_)
             {
@@ -461,7 +461,7 @@ void slider::update(float fDelta)
 
             if (bThumbMoved_)
             {
-                if (mOrientation_ == ORIENT_HORIZONTAL)
+                if (mOrientation_ == orientation::HORIZONTAL)
                     fValue_ = float(pThumbTexture_->get_point(anchor_point::CENTER)->get_abs_offset_x())/float(uiAbsWidth_);
                 else
                     fValue_ = float(pThumbTexture_->get_point(anchor_point::CENTER)->get_abs_offset_y())/float(uiAbsHeight_);
@@ -478,7 +478,7 @@ void slider::update(float fDelta)
             float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
             anchor* pAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
-            if (mOrientation_ == ORIENT_HORIZONTAL)
+            if (mOrientation_ == orientation::HORIZONTAL)
                 pAnchor->set_abs_offset(uiAbsWidth_*fCoef, 0);
             else
                 pAnchor->set_abs_offset(0, uiAbsHeight_*fCoef);

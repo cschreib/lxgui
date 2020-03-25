@@ -24,9 +24,9 @@ void status_bar::parse_block(xml::block* pBlock)
     {
         std::string sOrientation = pBlock->get_attribute("orientation");
         if (sOrientation == "HORIZONTAL")
-            set_orientation(ORIENT_HORIZONTAL);
+            set_orientation(orientation::HORIZONTAL);
         else if (sOrientation == "VERTICAL")
-            set_orientation(ORIENT_VERTICAL);
+            set_orientation(orientation::VERTICAL);
         else
         {
             gui::out << gui::warning << pBlock->get_location() << " : "

@@ -12,8 +12,8 @@
 namespace gui
 {
 texture::texture(manager* pManager) : layered_region(pManager),
-    mBlendMode_(BLEND_NONE), mFilter_(FILTER_NONE), bIsDesaturated_(false), mColor_(color::WHITE),
-    bTexCoordModifiesRect_(false)
+    mBlendMode_(blend_mode::NONE), mFilter_(material::filter::NONE),
+    bIsDesaturated_(false), mColor_(color::WHITE), bTexCoordModifiesRect_(false)
 {
     lTexCoord_[0] = lTexCoord_[1] = lTexCoord_[3] = lTexCoord_[6] = 0.0f;
     lTexCoord_[2] = lTexCoord_[4] = lTexCoord_[5] = lTexCoord_[7] = 1.0f;
@@ -65,20 +65,20 @@ std::string texture::serialize(const std::string& sTab) const
     sStr << sTab << "  # Blend mode  : ";
     switch (mBlendMode_)
     {
-        case BLEND_NONE  : sStr << "NONE\n";  break;
-        case BLEND_BLEND : sStr << "BLEND\n"; break;
-        case BLEND_KEY   : sStr << "KEY\n";   break;
-        case BLEND_ADD   : sStr << "ADD\n";   break;
-        case BLEND_MOD   : sStr << "MOD\n";   break;
+        case blend_mode::NONE  : sStr << "NONE\n";  break;
+        case blend_mode::BLEND : sStr << "BLEND\n"; break;
+        case blend_mode::KEY   : sStr << "KEY\n";   break;
+        case blend_mode::ADD   : sStr << "ADD\n";   break;
+        case blend_mode::MOD   : sStr << "MOD\n";   break;
         default          : sStr << "<error>\n"; break;
     }
 
     sStr << sTab << "  # Filter      : ";
     switch (mFilter_)
     {
-        case FILTER_NONE   : sStr << "NONE\n";   break;
-        case FILTER_LINEAR : sStr << "LINEAR\n"; break;
-        default            : sStr << "<error>\n"; break;
+        case material::filter::NONE   : sStr << "NONE\n";   break;
+        case material::filter::LINEAR : sStr << "LINEAR\n"; break;
+        default                       : sStr << "<error>\n"; break;
     }
 
     sStr << sTab << "  # Desaturated : " << bIsDesaturated_ << "\n";
@@ -134,7 +134,7 @@ texture::blend_mode texture::get_blend_mode() const
     return mBlendMode_;
 }
 
-filter texture::get_filter_mode() const
+material::filter texture::get_filter_mode() const
 {
     return mFilter_;
 }
@@ -199,28 +199,28 @@ void texture::set_blend_mode(const std::string& sBlendMode)
         << "texture::set_blend_mode is not yet implemented." << std::endl;
 
     if (sBlendMode == "BLEND")
-        mBlendMode_ = BLEND_BLEND;
+        mBlendMode_ = blend_mode::BLEND;
     else if (sBlendMode == "ADD")
-        mBlendMode_ = BLEND_ADD;
+        mBlendMode_ = blend_mode::ADD;
     else if (sBlendMode == "MOD")
-        mBlendMode_ = BLEND_MOD;
+        mBlendMode_ = blend_mode::MOD;
     else if (sBlendMode == "KEY")
-        mBlendMode_ = BLEND_KEY;
+        mBlendMode_ = blend_mode::KEY;
     else if (sBlendMode == "NONE")
-        mBlendMode_ = BLEND_NONE;
+        mBlendMode_ = blend_mode::NONE;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Unknown blending : \"" << sBlendMode << "\". Using \"BLEND\"." << std::endl;
 
-        mBlendMode_ = BLEND_BLEND;
+        mBlendMode_ = blend_mode::BLEND;
     }
 
     if (mOldBlendMode != mBlendMode_)
         notify_renderer_need_redraw();
 }
 
-void texture::set_filter_mode(filter mFilter)
+void texture::set_filter_mode(material::filter mFilter)
 {
     if (mFilter_ != mFilter)
     {
@@ -238,18 +238,18 @@ void texture::set_filter_mode(filter mFilter)
 
 void texture::set_filter_mode(const std::string& sFilter)
 {
-    filter mOldFilter = mFilter_;
+    material::filter mOldFilter = mFilter_;
 
     if (sFilter == "NONE")
-        mFilter_ = FILTER_NONE;
+        mFilter_ = material::filter::NONE;
     else if (sFilter == "LINEAR")
-        mFilter_ = FILTER_LINEAR;
+        mFilter_ = material::filter::LINEAR;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Unknown filtering : \"" << sFilter << "\". Using \"NONE\"." << std::endl;
 
-        mFilter_ = FILTER_NONE;
+        mFilter_ = material::filter::NONE;
     }
 
     if (mOldFilter != mFilter_)

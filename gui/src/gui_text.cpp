@@ -15,7 +15,7 @@ text::text(manager* pManager, const std::string& sFileName, float fSize) :
     bAddEllipsis_(false), mColor_(color::WHITE), bForceColor_(false), bFormattingEnabled_(false),
     fW_(0.0f), fH_(0.0f), fX_(std::numeric_limits<float>::infinity()),
     fY_(std::numeric_limits<float>::infinity()), fBoxW_(std::numeric_limits<float>::infinity()),
-    fBoxH_(std::numeric_limits<float>::infinity()), mAlign_(ALIGN_LEFT), mVertAlign_(ALIGN_MIDDLE),
+    fBoxH_(std::numeric_limits<float>::infinity()), mAlign_(alignment::LEFT), mVertAlign_(vertical_alignment::MIDDLE),
     bUpdateCache_(false), bUpdateQuads_(false)
 
 {
@@ -395,7 +395,7 @@ void get_format(utils::ustring::const_iterator& iterChar, text::format& mFormat)
 {
     if (*iterChar == 'r')
     {
-        mFormat.mColorAction = text::COLOR_ACTION_RESET;
+        mFormat.mColorAction = text::color_action::RESET;
     }
     else if (*iterChar == 'c')
     {
@@ -417,7 +417,7 @@ void get_format(utils::ustring::const_iterator& iterChar, text::format& mFormat)
         sColorPart += *iterChar;
         float fB = utils::hex_to_uint(sColorPart)/255.0f;
 
-        mFormat.mColorAction = text::COLOR_ACTION_SET;
+        mFormat.mColorAction = text::color_action::SET;
         mFormat.mColor = color(fR, fG, fB, fA);
     }
 }
@@ -712,13 +712,13 @@ void text::update_cache_()
         {
             switch (mAlign_)
             {
-                case ALIGN_LEFT :
+                case alignment::LEFT :
                     fX0 = 0.0f;
                     break;
-                case ALIGN_CENTER :
+                case alignment::CENTER :
                     fX0 = floor(fBoxW_*0.5f);
                     break;
-                case ALIGN_RIGHT :
+                case alignment::RIGHT :
                     fX0 = fBoxW_;
                     break;
             }
@@ -730,13 +730,13 @@ void text::update_cache_()
         {
             switch (mVertAlign_)
             {
-                case ALIGN_TOP :
+                case vertical_alignment::TOP :
                     fY = 0.0f;
                     break;
-                case ALIGN_MIDDLE :
+                case vertical_alignment::MIDDLE :
                     fY = floor((fBoxH_ - fH_)*0.5f);
                     break;
-                case ALIGN_BOTTOM :
+                case vertical_alignment::BOTTOM :
                     fY = (fBoxH_ - fH_);
                     break;
             }
@@ -745,13 +745,13 @@ void text::update_cache_()
         {
             switch (mVertAlign_)
             {
-                case ALIGN_TOP :
+                case vertical_alignment::TOP :
                     fY = 0.0f;
                     break;
-                case ALIGN_MIDDLE :
+                case vertical_alignment::MIDDLE :
                     fY = -floor(fH_*0.5f);
                     break;
-                case ALIGN_BOTTOM :
+                case vertical_alignment::BOTTOM :
                     fY = -fH_;
                     break;
             }
@@ -765,13 +765,13 @@ void text::update_cache_()
         {
             switch (mAlign_)
             {
-                case ALIGN_LEFT :
+                case alignment::LEFT :
                     fX = fX0;
                     break;
-                case ALIGN_CENTER :
+                case alignment::CENTER :
                     fX = fX0 - floor(mLine.fWidth*0.5f);
                     break;
-                case ALIGN_RIGHT :
+                case alignment::RIGHT :
                     fX = fX0 - mLine.fWidth;
                     break;
             }
@@ -784,10 +784,10 @@ void text::update_cache_()
                     const format& mFormat = lFormatList_[uiCounter];
                     switch (mFormat.mColorAction)
                     {
-                        case COLOR_ACTION_SET :
+                        case color_action::SET :
                             mColor = mFormat.mColor;
                             break;
-                        case COLOR_ACTION_RESET :
+                        case color_action::RESET :
                             mColor = color::EMPTY;
                             break;
                         default : break;

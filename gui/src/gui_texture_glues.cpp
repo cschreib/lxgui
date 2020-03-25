@@ -30,11 +30,11 @@ int lua_texture::_get_blend_mode(lua_State* pLua)
     std::string sBlend;
     switch (mBlend)
     {
-        case texture::BLEND_NONE  : sBlend = "NONE";  break;
-        case texture::BLEND_BLEND : sBlend = "BLEND"; break;
-        case texture::BLEND_KEY   : sBlend = "KEY";   break;
-        case texture::BLEND_ADD   : sBlend = "ADD";   break;
-        case texture::BLEND_MOD   : sBlend = "MOD";   break;
+        case texture::blend_mode::NONE  : sBlend = "NONE";  break;
+        case texture::blend_mode::BLEND : sBlend = "BLEND"; break;
+        case texture::blend_mode::KEY   : sBlend = "KEY";   break;
+        case texture::blend_mode::ADD   : sBlend = "ADD";   break;
+        case texture::blend_mode::MOD   : sBlend = "MOD";   break;
     }
 
     mFunc.push(sBlend);
@@ -49,13 +49,13 @@ int lua_texture::_get_filter_mode(lua_State* pLua)
 
     lua::function mFunc("Texture:get_filter_mode", pLua, 1);
 
-    filter mFilter = pTextureParent_->get_filter_mode();
+    material::filter mFilter = pTextureParent_->get_filter_mode();
 
     std::string sFilter;
     switch (mFilter)
     {
-        case FILTER_NONE   : sFilter = "NONE";  break;
-        case FILTER_LINEAR : sFilter = "LINEAR"; break;
+        case material::filter::NONE   : sFilter = "NONE";  break;
+        case material::filter::LINEAR : sFilter = "LINEAR"; break;
     }
 
     mFunc.push(sFilter);
@@ -137,21 +137,21 @@ int lua_texture::_set_blend_mode(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_blend_mode", pLua);
-    mFunc.add(0, "blend mode", lua::TYPE_STRING);
+    mFunc.add(0, "blend mode", lua::type::STRING);
     if (mFunc.check())
     {
         std::string sBlend = mFunc.get(0)->get_string();
         texture::blend_mode mBlend;
         if (sBlend == "NONE")
-            mBlend = texture::BLEND_NONE;
+            mBlend = texture::blend_mode::NONE;
         else if (sBlend == "BLEND")
-            mBlend = texture::BLEND_BLEND;
+            mBlend = texture::blend_mode::BLEND;
         else if (sBlend == "KEY")
-            mBlend = texture::BLEND_KEY;
+            mBlend = texture::blend_mode::KEY;
         else if (sBlend == "ADD")
-            mBlend = texture::BLEND_ADD;
+            mBlend = texture::blend_mode::ADD;
         else if (sBlend == "MOD")
-            mBlend = texture::BLEND_MOD;
+            mBlend = texture::blend_mode::MOD;
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "
@@ -171,15 +171,15 @@ int lua_texture::_set_filter_mode(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_filter_mode", pLua);
-    mFunc.add(0, "filter mode", lua::TYPE_STRING);
+    mFunc.add(0, "filter mode", lua::type::STRING);
     if (mFunc.check())
     {
         std::string sFilter = mFunc.get(0)->get_string();
-        filter mFilter;
+        material::filter mFilter;
         if (sFilter == "NONE")
-            mFilter = FILTER_NONE;
+            mFilter = material::filter::NONE;
         else if (sFilter == "LINEAR")
-            mFilter = FILTER_LINEAR;
+            mFilter = material::filter::LINEAR;
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "
@@ -199,7 +199,7 @@ int lua_texture::_set_desaturated(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_desaturated", pLua, 1);
-    mFunc.add(0, "is desaturated", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "is desaturated", lua::type::BOOLEAN);
     if (mFunc.check())
         pTextureParent_->set_desaturated(mFunc.get(0)->get_bool());
 
@@ -214,16 +214,16 @@ int lua_texture::_set_gradient(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_gradient", pLua);
-    mFunc.add(0, "orientation", lua::TYPE_STRING);
-    mFunc.add(1, "min red", lua::TYPE_NUMBER);
-    mFunc.add(2, "min green", lua::TYPE_NUMBER);
-    mFunc.add(3, "min blue", lua::TYPE_NUMBER);
-    mFunc.add(4, "max red", lua::TYPE_NUMBER);
-    mFunc.add(5, "max green", lua::TYPE_NUMBER);
-    mFunc.add(6, "max blue", lua::TYPE_NUMBER);
+    mFunc.add(0, "orientation", lua::type::STRING);
+    mFunc.add(1, "min red", lua::type::NUMBER);
+    mFunc.add(2, "min green", lua::type::NUMBER);
+    mFunc.add(3, "min blue", lua::type::NUMBER);
+    mFunc.add(4, "max red", lua::type::NUMBER);
+    mFunc.add(5, "max green", lua::type::NUMBER);
+    mFunc.add(6, "max blue", lua::type::NUMBER);
     mFunc.new_param_set();
-    mFunc.add(0, "min color", lua::TYPE_STRING);
-    mFunc.add(1, "max color", lua::TYPE_STRING);
+    mFunc.add(0, "min color", lua::type::STRING);
+    mFunc.add(1, "max color", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -275,18 +275,18 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_gradient_alpha", pLua);
-    mFunc.add(0, "orientation", lua::TYPE_STRING);
-    mFunc.add(1, "min red", lua::TYPE_NUMBER);
-    mFunc.add(2, "min green", lua::TYPE_NUMBER);
-    mFunc.add(3, "min blue", lua::TYPE_NUMBER);
-    mFunc.add(4, "min alpha", lua::TYPE_NUMBER);
-    mFunc.add(5, "max red", lua::TYPE_NUMBER);
-    mFunc.add(6, "max green", lua::TYPE_NUMBER);
-    mFunc.add(7, "max blue", lua::TYPE_NUMBER);
-    mFunc.add(8, "max alpha", lua::TYPE_NUMBER);
+    mFunc.add(0, "orientation", lua::type::STRING);
+    mFunc.add(1, "min red", lua::type::NUMBER);
+    mFunc.add(2, "min green", lua::type::NUMBER);
+    mFunc.add(3, "min blue", lua::type::NUMBER);
+    mFunc.add(4, "min alpha", lua::type::NUMBER);
+    mFunc.add(5, "max red", lua::type::NUMBER);
+    mFunc.add(6, "max green", lua::type::NUMBER);
+    mFunc.add(7, "max blue", lua::type::NUMBER);
+    mFunc.add(8, "max alpha", lua::type::NUMBER);
     mFunc.new_param_set();
-    mFunc.add(0, "min color", lua::TYPE_STRING);
-    mFunc.add(1, "max color", lua::TYPE_STRING);
+    mFunc.add(0, "min color", lua::type::STRING);
+    mFunc.add(1, "max color", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -340,19 +340,19 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_tex_coord", pLua);
-    mFunc.add(0, "left", lua::TYPE_NUMBER);
-    mFunc.add(1, "top", lua::TYPE_NUMBER);
-    mFunc.add(2, "right", lua::TYPE_NUMBER);
-    mFunc.add(3, "bottom", lua::TYPE_NUMBER);
+    mFunc.add(0, "left", lua::type::NUMBER);
+    mFunc.add(1, "top", lua::type::NUMBER);
+    mFunc.add(2, "right", lua::type::NUMBER);
+    mFunc.add(3, "bottom", lua::type::NUMBER);
     mFunc.new_param_set();
-    mFunc.add(0, "top-left X", lua::TYPE_NUMBER);
-    mFunc.add(1, "top-left Y", lua::TYPE_NUMBER);
-    mFunc.add(2, "top-right X", lua::TYPE_NUMBER);
-    mFunc.add(3, "top-right Y", lua::TYPE_NUMBER);
-    mFunc.add(4, "bottom-right X", lua::TYPE_NUMBER);
-    mFunc.add(5, "bottom-right Y", lua::TYPE_NUMBER);
-    mFunc.add(6, "bottom-left X", lua::TYPE_NUMBER);
-    mFunc.add(7, "bottom-left Y", lua::TYPE_NUMBER);
+    mFunc.add(0, "top-left X", lua::type::NUMBER);
+    mFunc.add(1, "top-left Y", lua::type::NUMBER);
+    mFunc.add(2, "top-right X", lua::type::NUMBER);
+    mFunc.add(3, "top-right Y", lua::type::NUMBER);
+    mFunc.add(4, "bottom-right X", lua::type::NUMBER);
+    mFunc.add(5, "bottom-right Y", lua::type::NUMBER);
+    mFunc.add(6, "bottom-left X", lua::type::NUMBER);
+    mFunc.add(7, "bottom-left Y", lua::type::NUMBER);
 
     if (mFunc.check())
     {
@@ -385,7 +385,7 @@ int lua_texture::_set_tex_coord_modifies_rect(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_tex_coord_modifies_rect", pLua);
-    mFunc.add(0, "does set_tex_coord modifies size", lua::TYPE_BOOLEAN);
+    mFunc.add(0, "does set_tex_coord modifies size", lua::type::BOOLEAN);
     if (mFunc.check())
         pTextureParent_->set_tex_coord_modifies_rect(mFunc.get(0)->get_bool());
 
@@ -398,14 +398,14 @@ int lua_texture::_set_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_STRING);
+    mFunc.add(0, "texture", lua::type::STRING);
     mFunc.new_param_set();
-    mFunc.add(0, "red", lua::TYPE_NUMBER);
-    mFunc.add(1, "green", lua::TYPE_NUMBER);
-    mFunc.add(2, "blue", lua::TYPE_NUMBER);
-    mFunc.add(3, "alpha", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "red", lua::type::NUMBER);
+    mFunc.add(1, "green", lua::type::NUMBER);
+    mFunc.add(2, "blue", lua::type::NUMBER);
+    mFunc.add(3, "alpha", lua::type::NUMBER, true);
     mFunc.new_param_set();
-    mFunc.add(0, "color", lua::TYPE_STRING);
+    mFunc.add(0, "color", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -459,12 +459,12 @@ int lua_texture::_set_vertex_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_vertex_color", pLua);
-    mFunc.add(0, "red", lua::TYPE_NUMBER);
-    mFunc.add(1, "green", lua::TYPE_NUMBER);
-    mFunc.add(2, "blue", lua::TYPE_NUMBER);
-    mFunc.add(3, "alpha", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "red", lua::type::NUMBER);
+    mFunc.add(1, "green", lua::type::NUMBER);
+    mFunc.add(2, "blue", lua::type::NUMBER);
+    mFunc.add(3, "alpha", lua::type::NUMBER, true);
     mFunc.new_param_set();
-    mFunc.add(0, "color", lua::TYPE_STRING);
+    mFunc.add(0, "color", lua::type::STRING);
 
     if (mFunc.check())
     {

@@ -158,11 +158,11 @@ int main(int argc, char* argv[])
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
         // Create the FontString
-        gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
+        gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
         pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
         pFont->set_font("interface/fonts/main.ttf", 12);
-        pFont->set_justify_v(gui::text::ALIGN_BOTTOM);
-        pFont->set_justify_h(gui::text::ALIGN_RIGHT);
+        pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
+        pFont->set_justify_h(gui::text::alignment::RIGHT);
         pFont->set_outlined(true);
         pFont->set_text_color(gui::color::RED);
         pFont->notify_loaded();
@@ -305,7 +305,7 @@ int main(int argc, char* argv[])
 int l_get_folder_list(lua_State* pLua)
 {
     lua::function mFunc("get_folder_list", pLua);
-    mFunc.add(0, "folder", lua::TYPE_STRING);
+    mFunc.add(0, "folder", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -320,7 +320,7 @@ int l_get_folder_list(lua_State* pLua)
 int l_get_file_list(lua_State* pLua)
 {
     lua::function mFunc("get_file_list", pLua);
-    mFunc.add(0, "folder", lua::TYPE_STRING);
+    mFunc.add(0, "folder", lua::type::STRING);
 
     if (mFunc.check())
     {
@@ -335,7 +335,7 @@ int l_get_file_list(lua_State* pLua)
 int l_cut_file_path(lua_State* pLua)
 {
     lua::function mFunc("cut_file_path", pLua, 1);
-    mFunc.add(0, "path", lua::TYPE_STRING);
+    mFunc.add(0, "path", lua::type::STRING);
 
     if (mFunc.check())
     {

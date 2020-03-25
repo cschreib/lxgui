@@ -32,7 +32,7 @@ ub32color::ub32color(chanel r, chanel g, chanel b, chanel a) : r(r), g(g), b(b),
 }
 
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
-    mType_(TYPE_TEXTURE)
+    mType_(type::TEXTURE)
 {
     pTexData_ = std::unique_ptr<texture_data>(new texture_data());
     pTexData_->uiWidth_ = uiWidth;
@@ -71,11 +71,11 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
 
     switch (mWrap)
     {
-    case CLAMP :
+    case wrap::CLAMP :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         break;
-    case REPEAT :
+    case wrap::REPEAT :
     default :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -83,11 +83,11 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
     }
     switch (mFilter)
     {
-    case LINEAR :
+    case filter::LINEAR :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         break;
-    case NONE :
+    case filter::NONE :
     default :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -100,7 +100,7 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
         pTexData_->pData_.resize(uiWidth*uiHeight);
 }
 
-material::material(const color& mColor) : mType_(TYPE_COLOR)
+material::material(const color& mColor) : mType_(type::COLOR)
 {
     pColData_ = std::unique_ptr<color_data>(new color_data());
     pColData_->mColor_ = mColor;
@@ -110,9 +110,9 @@ material::~material()
 {
     switch (mType_)
     {
-    case TYPE_TEXTURE :
+    case type::TEXTURE :
         glDeleteTextures(1, &pTexData_->uiTextureHandle_); break;
-    case TYPE_COLOR :
+    case type::COLOR :
         break;
     }
 }
@@ -137,11 +137,11 @@ void material::set_wrap(wrap mWrap)
 
     switch (mWrap)
     {
-    case CLAMP :
+    case wrap::CLAMP :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
         break;
-    case REPEAT :
+    case wrap::REPEAT :
     default :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -161,11 +161,11 @@ void material::set_filter(filter mFilter)
 
     switch (mFilter)
     {
-    case LINEAR :
+    case filter::LINEAR :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         break;
-    case NONE :
+    case filter::NONE :
     default :
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -224,9 +224,9 @@ float material::get_width() const
 {
     switch (mType_)
     {
-    case TYPE_TEXTURE :
+    case type::TEXTURE :
         return pTexData_->uiWidth_;
-    case TYPE_COLOR :
+    case type::COLOR :
         return 1.0f;
     }
 
@@ -237,9 +237,9 @@ float material::get_height() const
 {
     switch (mType_)
     {
-    case TYPE_TEXTURE :
+    case type::TEXTURE :
         return pTexData_->uiHeight_;
-    case TYPE_COLOR :
+    case type::COLOR :
         return 1.0f;
     }
 
@@ -250,9 +250,9 @@ float material::get_real_width() const
 {
     switch (mType_)
     {
-    case TYPE_TEXTURE :
+    case type::TEXTURE :
         return pTexData_->uiRealWidth_;
-    case TYPE_COLOR :
+    case type::COLOR :
         return 1.0f;
     }
 
@@ -263,9 +263,9 @@ float material::get_real_height() const
 {
     switch (mType_)
     {
-    case TYPE_TEXTURE :
+    case type::TEXTURE :
         return pTexData_->uiRealHeight_;
-    case TYPE_COLOR :
+    case type::COLOR :
         return 1.0f;
     }
 
@@ -304,11 +304,11 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
         switch (pTexData_->mWrap_)
         {
-        case CLAMP :
+        case wrap::CLAMP :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
             break;
-        case REPEAT :
+        case wrap::REPEAT :
         default :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -316,11 +316,11 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         }
         switch (pTexData_->mFilter_)
         {
-        case LINEAR :
+        case filter::LINEAR :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             break;
-        case NONE :
+        case filter::NONE :
         default :
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

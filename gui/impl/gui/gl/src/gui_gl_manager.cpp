@@ -91,7 +91,7 @@ void manager::render_quad(const quad& mQuad) const
     glColor4ub(255, 255, 255, 255);
 
     utils::refptr<gl::material> pMat = utils::refptr<gl::material>::cast(mQuad.mat);
-    if (pMat->get_type() == gl::material::TYPE_TEXTURE)
+    if (pMat->get_type() == material::type::TEXTURE)
     {
         pMat->bind();
 
@@ -130,7 +130,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     glColor4ub(255, 255, 255, 255);
 
     utils::refptr<gl::material> pMat = utils::refptr<gl::material>::cast(mQuad.mat);
-    if (pMat->get_type() == gl::material::TYPE_TEXTURE)
+    if (pMat->get_type() == material::type::TEXTURE)
     {
         pMat->bind();
 
@@ -168,7 +168,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     }
 }
 
-utils::refptr<gui::material> manager::create_material(const std::string& sFileName, filter mFilter) const
+utils::refptr<gui::material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
     std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);

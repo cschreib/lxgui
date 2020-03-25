@@ -20,7 +20,7 @@ edit_box::edit_box(manager* pManager) : focus_frame(pManager),
     pCarret_(nullptr), dBlinkSpeed_(0.5),
     mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
     uiMaxHistoryLines_(uint(-1)), pFontString_(nullptr),
-    lTextInsets_(quad2i::ZERO), uiLastKeyPressed_(0u), dKeyRepeatSpeed_(0.03),
+    lTextInsets_(quad2i::ZERO), mLastKeyPressed_(key::K_UNASSIGNED), dKeyRepeatSpeed_(0.03),
     mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
 {
     lType_.push_back(CLASS_NAME);
@@ -151,8 +151,8 @@ void edit_box::update(float fDelta)
         }
     }
 
-    if (bFocus_ && uiLastKeyPressed_ != 0u &&
-        pManager_->get_input_manager()->key_is_down_long((key::code)uiLastKeyPressed_, true))
+    if (bFocus_ && mLastKeyPressed_ != key::K_UNASSIGNED &&
+        pManager_->get_input_manager()->key_is_down_long(mLastKeyPressed_, true))
     {
         if (mKeyRepeatTimer_.is_paused())
             mKeyRepeatTimer_.start();
@@ -160,7 +160,7 @@ void edit_box::update(float fDelta)
         mKeyRepeatTimer_.update(fDelta);
 
         if (mKeyRepeatTimer_.ticks())
-            process_key_(uiLastKeyPressed_);
+            process_key_(mLastKeyPressed_);
     }
 }
 
@@ -194,10 +194,10 @@ void edit_box::on_event(const event& mEvent)
 
     if (mEvent.get_name() == "KEY_PRESSED" && bFocus_)
     {
-        uint uiChar = mEvent[0].get<uint>();
-        if (uiChar == key::K_RETURN || uiChar == key::K_NUMPADENTER)
+        key mKey = mEvent[0].get<key>();
+        if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
             on("EnterPressed");
-        else if (uiChar == key::K_END)
+        else if (mKey == key::K_END)
         {
             uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
@@ -216,7 +216,7 @@ void edit_box::on_event(const event& mEvent)
 
             return;
         }
-        else if (uiChar == key::K_HOME)
+        else if (mKey == key::K_HOME)
         {
             uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
@@ -235,28 +235,28 @@ void edit_box::on_event(const event& mEvent)
 
             return;
         }
-        else if (uiChar == key::K_TAB)
+        else if (mKey == key::K_TAB)
             on("TabPressed");
-        else if (uiChar == key::K_SPACE)
+        else if (mKey == key::K_SPACE)
             on("SpacePressed");
 
-        uiLastKeyPressed_ = uiChar;
+        mLastKeyPressed_ = mKey;
 
-        process_key_(uiChar);
+        process_key_(mKey);
     }
     else if (mEvent.get_name() == "KEY_RELEASED")
     {
-        uint uiChar = mEvent[0].get<uint>();
+        key mKey = mEvent[0].get<key>();
 
-        if (uiChar == key::K_ESCAPE)
+        if (mKey == key::K_ESCAPE)
         {
             on("EscapePressed");
             return;
         }
 
-        if (uiChar == uiLastKeyPressed_)
+        if (mKey == mLastKeyPressed_)
         {
-            uiLastKeyPressed_ = 0u;
+            mLastKeyPressed_ = key::K_UNASSIGNED;
             mKeyRepeatTimer_.stop();
         }
     }
@@ -720,7 +720,7 @@ void edit_box::set_font_string(font_string* pFont)
 font_string* edit_box::create_font_string_()
 {
     font_string* pFont = new font_string(pManager_);
-    pFont->set_draw_layer(LAYER_ARTWORK);
+    pFont->set_draw_layer(layer_type::ARTWORK);
     set_font_string(pFont);
 
     return pFontString_;
@@ -731,7 +731,7 @@ void edit_box::create_highlight_()
     pHighlight_ = new texture(pManager_);
     pHighlight_->set_special();
     pHighlight_->set_parent(this);
-    pHighlight_->set_draw_layer(LAYER_HIGHLIGHT);
+    pHighlight_->set_draw_layer(layer_type::HIGHLIGHT);
     pHighlight_->set_name("$parentHighlight");
 
     if (!pManager_->add_uiobject(pHighlight_))
@@ -764,7 +764,7 @@ void edit_box::create_carret_()
         pCarret_ = new texture(pManager_);
         pCarret_->set_special();
         pCarret_->set_parent(this);
-        pCarret_->set_draw_layer(LAYER_HIGHLIGHT);
+        pCarret_->set_draw_layer(layer_type::HIGHLIGHT);
         pCarret_->set_name("$parentCarret");
 
         if (!pManager_->add_uiobject(pCarret_))
@@ -854,14 +854,14 @@ void edit_box::update_carret_position_()
             int iOffset = 0;
             switch (pFontString_->get_justify_h())
             {
-                case text::ALIGN_LEFT :
+                case text::alignment::LEFT :
                     mPoint = anchor_point::LEFT;
                     iOffset = lTextInsets_.left - 1;
                     break;
-                case text::ALIGN_CENTER :
+                case text::alignment::CENTER :
                     mPoint = anchor_point::CENTER;
                     break;
-                case text::ALIGN_RIGHT :
+                case text::alignment::RIGHT :
                     mPoint = anchor_point::RIGHT;
                     iOffset = -lTextInsets_.right - 1;
                     break;
@@ -1179,9 +1179,9 @@ bool edit_box::move_carret_vertically_(bool bDown)
     }
 }
 
-void edit_box::process_key_(uint uiKey)
+void edit_box::process_key_(key mKey)
 {
-    if (uiKey == key::K_RETURN || uiKey == key::K_NUMPADENTER)
+    if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
     {
         if (bMultiLine_)
         {
@@ -1193,7 +1193,7 @@ void edit_box::process_key_(uint uiKey)
             }
         }
     }
-    else if (uiKey == key::K_BACK)
+    else if (mKey == key::K_BACK)
     {
         if (!bSelectedText_)
         {
@@ -1203,21 +1203,21 @@ void edit_box::process_key_(uint uiKey)
         else
             remove_char_();
     }
-    else if (uiKey == key::K_DELETE)
+    else if (mKey == key::K_DELETE)
         remove_char_();
-    else if (uiKey == key::K_LEFT || uiKey == key::K_RIGHT || uiKey == key::K_UP || uiKey == key::K_DOWN)
+    else if (mKey == key::K_LEFT || mKey == key::K_RIGHT || mKey == key::K_UP || mKey == key::K_DOWN)
     {
         if (!bArrowsIgnored_)
         {
             uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
-            if (uiKey == key::K_LEFT)
+            if (mKey == key::K_LEFT)
                 move_carret_horizontally_(false);
-            else if (uiKey == key::K_RIGHT)
+            else if (mKey == key::K_RIGHT)
                 move_carret_horizontally_(true);
-            else if (uiKey == key::K_UP)
+            else if (mKey == key::K_UP)
                 move_carret_vertically_(false);
-            else if (uiKey == key::K_DOWN)
+            else if (mKey == key::K_DOWN)
                 move_carret_vertically_(true);
 
             if (pManager_->get_input_manager()->shift_is_pressed())

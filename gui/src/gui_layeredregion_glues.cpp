@@ -18,7 +18,7 @@ int lua_layered_region::_set_draw_layer(lua_State* pLua)
         return 0;
 
     lua::function mFunc("LayeredRegion:set_draw_layer", pLua);
-    mFunc.add(0, "layer", lua::TYPE_STRING);
+    mFunc.add(0, "layer", lua::type::STRING);
     if (mFunc.check())
         pLayeredRegionParent_->set_draw_layer(mFunc.get(0)->get_string());
 
@@ -34,12 +34,12 @@ int lua_layered_region::_get_draw_layer(lua_State* pLua)
 
     switch (pLayeredRegionParent_->get_draw_layer())
     {
-        case LAYER_BACKGROUND : mFunc.push(std::string("BACKGROUND")); break;
-        case LAYER_BORDER : mFunc.push(std::string("BORDER")); break;
-        case LAYER_ARTWORK : mFunc.push(std::string("ARTWORK")); break;
-        case LAYER_OVERLAY : mFunc.push(std::string("OVERLAY")); break;
-        case LAYER_HIGHLIGHT : mFunc.push(std::string("HIGHLIGHT")); break;
-        case LAYER_SPECIALHIGH : mFunc.push(std::string("SPECIALHIGH")); break;
+        case layer_type::BACKGROUND : mFunc.push(std::string("BACKGROUND")); break;
+        case layer_type::BORDER : mFunc.push(std::string("BORDER")); break;
+        case layer_type::ARTWORK : mFunc.push(std::string("ARTWORK")); break;
+        case layer_type::OVERLAY : mFunc.push(std::string("OVERLAY")); break;
+        case layer_type::HIGHLIGHT : mFunc.push(std::string("HIGHLIGHT")); break;
+        case layer_type::SPECIALHIGH : mFunc.push(std::string("SPECIALHIGH")); break;
     }
 
     return mFunc.on_return();

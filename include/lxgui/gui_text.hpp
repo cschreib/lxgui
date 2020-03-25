@@ -31,35 +31,34 @@ namespace gui
             float          fWidth;
         };
 
-        enum color_action
+        enum class color_action
         {
-            COLOR_ACTION_NONE,
-            COLOR_ACTION_SET,
-            COLOR_ACTION_RESET
+            NONE,
+            SET,
+            RESET
         };
 
         /// Contains information about the text at a given position
         struct format
         {
-            format() : mColorAction(COLOR_ACTION_NONE)
-            {}
+            format() : mColorAction(color_action::NONE) {}
 
             color        mColor;
             color_action mColorAction;
         };
 
-        enum alignment
+        enum class alignment
         {
-            ALIGN_LEFT,
-            ALIGN_CENTER,
-            ALIGN_RIGHT
+            LEFT,
+            CENTER,
+            RIGHT
         };
 
-        enum vertical_alignment
+        enum class vertical_alignment
         {
-            ALIGN_TOP,
-            ALIGN_MIDDLE,
-            ALIGN_BOTTOM
+            TOP,
+            MIDDLE,
+            BOTTOM
         };
 
         /// Holds the position, tex. coordinates and color of a character.

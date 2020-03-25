@@ -10,18 +10,18 @@ namespace lua
 {
 class var;
 
-enum type
+enum class type
 {
-    TYPE_NONE,
-    TYPE_NIL,
-    TYPE_NUMBER,
-    TYPE_BOOLEAN,
-    TYPE_STRING,
-    TYPE_FUNCTION,
-    TYPE_TABLE,
-    TYPE_THREAD,
-    TYPE_LIGHTUSERDATA,
-    TYPE_USERDATA
+    NONE,
+    NIL,
+    NUMBER,
+    BOOLEAN,
+    STRING,
+    FUNCTION,
+    TABLE,
+    THREAD,
+    LIGHTUSERDATA,
+    USERDATA
 };
 
 typedef int (*c_function) (lua_State *L);

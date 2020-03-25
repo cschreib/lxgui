@@ -16,7 +16,7 @@ render_target::render_target(uint uiWidth, uint uiHeight) :
     uiFBOHandle_(0), bUpdateViewMatrix_(true)
 {
     pTexture_ = utils::refptr<gl::material>(new gl::material(
-        uiWidth, uiHeight, gl::material::REPEAT, gl::material::NONE, true
+        uiWidth, uiHeight, material::wrap::REPEAT, material::filter::NONE, true
     ));
 
     glGenFramebuffers(1, &uiFBOHandle_);

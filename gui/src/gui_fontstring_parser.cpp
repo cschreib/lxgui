@@ -51,11 +51,11 @@ void font_string::parse_attributes_(xml::block* pBlock)
     {
         const std::string& sJustifyH = pBlock->get_attribute("justifyH");
         if (sJustifyH == "LEFT")
-            set_justify_h(text::ALIGN_LEFT);
+            set_justify_h(text::alignment::LEFT);
         else if (sJustifyH == "CENTER")
-            set_justify_h(text::ALIGN_CENTER);
+            set_justify_h(text::alignment::CENTER);
         else if (sJustifyH == "RIGHT")
-            set_justify_h(text::ALIGN_RIGHT);
+            set_justify_h(text::alignment::RIGHT);
         else
         {
             gui::out << gui::warning << pBlock->get_location() <<  " : "
@@ -68,11 +68,11 @@ void font_string::parse_attributes_(xml::block* pBlock)
     {
         const std::string& sJustifyV = pBlock->get_attribute("justifyV");
         if (sJustifyV == "TOP")
-            set_justify_v(text::ALIGN_TOP);
+            set_justify_v(text::vertical_alignment::TOP);
         else if (sJustifyV == "MIDDLE")
-            set_justify_v(text::ALIGN_MIDDLE);
+            set_justify_v(text::vertical_alignment::MIDDLE);
         else if (sJustifyV == "BOTTOM")
-            set_justify_v(text::ALIGN_BOTTOM);
+            set_justify_v(text::vertical_alignment::BOTTOM);
         else
         {
             gui::out << gui::warning << pBlock->get_location() <<  " : "

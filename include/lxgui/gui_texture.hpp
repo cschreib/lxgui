@@ -16,13 +16,13 @@ namespace gui
     {
     public :
 
-        enum blend_mode
+        enum class blend_mode
         {
-            BLEND_NONE,
-            BLEND_BLEND,
-            BLEND_KEY,
-            BLEND_ADD,
-            BLEND_MOD
+            NONE,
+            BLEND,
+            KEY,
+            ADD,
+            MOD
         };
 
         /// Constructor.
@@ -53,7 +53,7 @@ namespace gui
         /// Returns this texture's filtering algorithm.
         /** \return This texture's filtering algorithm
         */
-        filter get_filter_mode() const;
+        material::filter get_filter_mode() const;
 
         /// Returns this texture's color.
         /** \return This texture's color (color::EMPTY if none)
@@ -114,7 +114,7 @@ namespace gui
         /// Sets this texture's filtering mode.
         /** \param mFilter The new filtering mode
         */
-        void set_filter_mode(filter mFilter);
+        void set_filter_mode(material::filter mFilter);
 
         /// Sets this texture's blending mode.
         /** \param sFilter The new filtering mode
@@ -223,11 +223,11 @@ namespace gui
         std::unique_ptr<sprite> pSprite_;
         std::string             sTextureFile_;
 
-        blend_mode mBlendMode_;
-        filter     mFilter_;
-        bool       bIsDesaturated_;
-        gradient   mGradient_;
-        color      mColor_;
+        blend_mode       mBlendMode_;
+        material::filter mFilter_;
+        bool             bIsDesaturated_;
+        gradient         mGradient_;
+        color            mColor_;
 
         std::array<float,8> lTexCoord_;
         bool                bTexCoordModifiesRect_;

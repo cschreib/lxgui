@@ -27,24 +27,6 @@ namespace gl
     {
     public :
 
-        enum wrap
-        {
-            REPEAT,
-            CLAMP
-        };
-
-        enum filter
-        {
-            NONE,
-            LINEAR
-        };
-
-        enum type
-        {
-            TYPE_TEXTURE,
-            TYPE_COLOR
-        };
-
         /// Constructor for textures.
         /** \param uiWidth  The requested texture width
         *   \param uiHeight The requested texture height
@@ -53,7 +35,8 @@ namespace gl
         *   \param bGPUOnly If 'false', a copy of the texture is kept in CPU memory (RAM). Else
         *                   the texture only resides in GPU memory (used by render_target).
         */
-        material(uint uiWidth, uint uiHeight, wrap mWrap = REPEAT, filter mFilter = NONE, bool bGPUOnly = false);
+        material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
+            filter mFilter = filter::NONE, bool bGPUOnly = false);
 
         /// Constructor for plain colors.
         /** \param mColor The plain color to use

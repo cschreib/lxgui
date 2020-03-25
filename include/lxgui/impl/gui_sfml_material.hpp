@@ -23,24 +23,6 @@ namespace sfml
     {
     public :
 
-        enum wrap
-        {
-            REPEAT,
-            CLAMP
-        };
-
-        enum filter
-        {
-            NONE,
-            LINEAR
-        };
-
-        enum type
-        {
-            TYPE_TEXTURE,
-            TYPE_COLOR
-        };
-
         /// Constructor for textures.
         /** \param uiWidth       The requested texture width
         *   \param uiHeight      The requested texture height
@@ -48,21 +30,24 @@ namespace sfml
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap = REPEAT, filter mFilter = NONE);
+        material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap = wrap::REPEAT,
+            filter mFilter = filter::NONE);
 
         /// Constructor for textures.
         /** \param mData         The image data to use as texture
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(const sf::Image& mData, wrap mWrap = REPEAT, filter mFilter = NONE);
+        material(const sf::Image& mData, wrap mWrap = wrap::REPEAT,
+            filter mFilter = filter::NONE);
 
         /// Constructor for textures.
         /** \param sFileName     The file from which the texture data is loaded
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(const std::string& sFileName, wrap mWrap = REPEAT, filter mFilter = NONE);
+        material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
+            filter mFilter = filter::NONE);
 
         /// Constructor for plain colors.
         /** \param mColor The plain color to use

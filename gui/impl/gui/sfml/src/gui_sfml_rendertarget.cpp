@@ -9,7 +9,7 @@ namespace sfml
 render_target::render_target(uint uiWidth, uint uiHeight)
 {
     pTexture_ = utils::refptr<sfml::material>(new sfml::material(
-        uiWidth, uiHeight, true, sfml::material::REPEAT, sfml::material::NONE
+        uiWidth, uiHeight, true, material::wrap::REPEAT, material::filter::NONE
     ));
 
     pRenderTexture_ = pTexture_->get_render_texture();

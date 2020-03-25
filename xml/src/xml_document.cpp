@@ -214,7 +214,7 @@ void document::read_opening_tag_(std::string& sTagContent)
                 try { pState_->read_opening_tag(sTagContent); }
                 catch (const utils::exception& e)
                 {
-                    if (pState_->get_id() == state::STATE_DEF)
+                    if (pState_->get_id() == state::id::DEF)
                     {
                         // The definition stage throws exceptions
                         // that are catched in the constructor.
@@ -256,7 +256,7 @@ void document::read_single_tag_(std::string& sTagContent)
             }
             catch (const utils::exception& e)
             {
-                if (pState_->get_id() == state::STATE_DEF)
+                if (pState_->get_id() == state::id::DEF)
                 {
                     // The definition stage throws exceptions
                     // that are catched in the constructor.
@@ -321,7 +321,7 @@ void document::read_ending_tag_(std::string& sTagContent)
             }
             catch (const utils::exception& e)
             {
-                if (pState_->get_id() == state::STATE_DEF)
+                if (pState_->get_id() == state::id::DEF)
                 {
                     // The definition stage throws exceptions
                     // that are catched in the constructor.
@@ -616,7 +616,7 @@ const document::state::id& document::state::get_id() const
 
 document::xml_state::xml_state() : state()
 {
-    mID_ = STATE_XML;
+    mID_ = id::XML;
 }
 
 std::string document::xml_state::read_tag_name(const std::string& sTagContent) const
@@ -766,7 +766,7 @@ void document::xml_state::read_opening_tag(const std::string& sTagContent)
 
 document::def_state::def_state() : state()
 {
-    mID_ = STATE_DEF;
+    mID_ = id::DEF;
 }
 
 std::string document::def_state::read_tag_name(const std::string& sTagContent) const

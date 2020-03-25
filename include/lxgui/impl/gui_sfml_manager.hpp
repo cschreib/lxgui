@@ -57,7 +57,8 @@ namespace sfml
         *   \return The new material
         *   \note Only PNG textures are supported by this implementation (parsed by libpng).
         */
-        utils::refptr<gui::material> create_material(const std::string& sFileName, filter mFilter = FILTER_NONE) const override;
+        utils::refptr<gui::material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const override;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use

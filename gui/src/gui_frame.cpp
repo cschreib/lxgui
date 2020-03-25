@@ -1154,7 +1154,7 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0].get<uint>());
+            mKeyEvent.add(mEvent[0].get<input::key>());
             mKeyEvent.add(mEvent[1].get<std::string>());
 
             on("KeyDown", &mKeyEvent);
@@ -1162,7 +1162,7 @@ void frame::on_event(const event& mEvent)
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0].get<uint>());
+            mKeyEvent.add(mEvent[0].get<input::key>());
             mKeyEvent.add(mEvent[1].get<std::string>());
 
             on("KeyUp", &mKeyEvent);
@@ -1224,7 +1224,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
             uint i = 1;
             pLua->get_global("arg"+utils::to_string(i));
 
-            while (pLua->get_type() != lua::TYPE_NIL)
+            while (pLua->get_type() != lua::type::NIL)
             {
                 pLua->pop();
                 pLua->push_nil();
@@ -1908,21 +1908,21 @@ std::vector<uiobject*> frame::clear_links()
 layer_type layer::get_layer_type(const std::string& sLayer)
 {
     if (sLayer == "ARTWORK")
-        return LAYER_ARTWORK;
+        return layer_type::ARTWORK;
     else if (sLayer == "BACKGROUND")
-        return LAYER_BACKGROUND;
+        return layer_type::BACKGROUND;
     else if (sLayer == "BORDER")
-        return LAYER_BORDER;
+        return layer_type::BORDER;
     else if (sLayer == "HIGHLIGHT")
-        return LAYER_HIGHLIGHT;
+        return layer_type::HIGHLIGHT;
     else if (sLayer == "OVERLAY")
-        return LAYER_OVERLAY;
+        return layer_type::OVERLAY;
     else
     {
         gui::out << gui::warning << "layer : Uknown layer type : \""
             << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
-        return LAYER_ARTWORK;
+        return layer_type::ARTWORK;
     }
 }
 }

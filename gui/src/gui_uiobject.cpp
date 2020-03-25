@@ -101,10 +101,10 @@ void uiobject::copy_from(uiobject* pObj)
 
             lua::state* pLua = pManager_->get_lua();
             pLua->get_global(pObj->get_lua_name());
-            if (pLua->get_type() != lua::TYPE_NIL)
+            if (pLua->get_type() != lua::type::NIL)
             {
                 pLua->get_global(sLuaName_);
-                if (pLua->get_type() != lua::TYPE_NIL)
+                if (pLua->get_type() != lua::type::NIL)
                 {
                     for (const auto& mMember : pObj->lCopyList_)
                     {

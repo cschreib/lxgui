@@ -92,20 +92,20 @@ Lunar<lua_manager>::RegType lua_manager::methods[] = {
 int l_set_key_binding(lua_State* pLua)
 {
     lua::function mFunc("set_key_binding", pLua);
-    mFunc.add(0, "key", lua::TYPE_NUMBER);
-    mFunc.add(1, "code", lua::TYPE_STRING);
-    mFunc.add(1, "nil", lua::TYPE_NIL);
+    mFunc.add(0, "key", lua::type::NUMBER);
+    mFunc.add(1, "code", lua::type::STRING);
+    mFunc.add(1, "nil", lua::type::NIL);
     mFunc.new_param_set();
-    mFunc.add(0, "key", lua::TYPE_NUMBER);
-    mFunc.add(1, "modifier", lua::TYPE_NUMBER);
-    mFunc.add(2, "code", lua::TYPE_STRING);
-    mFunc.add(2, "nil", lua::TYPE_NIL);
+    mFunc.add(0, "key", lua::type::NUMBER);
+    mFunc.add(1, "modifier", lua::type::NUMBER);
+    mFunc.add(2, "code", lua::type::STRING);
+    mFunc.add(2, "nil", lua::type::NIL);
     mFunc.new_param_set();
-    mFunc.add(0, "key", lua::TYPE_NUMBER);
-    mFunc.add(1, "modifier1", lua::TYPE_NUMBER);
-    mFunc.add(2, "modifier2", lua::TYPE_NUMBER);
-    mFunc.add(3, "code", lua::TYPE_STRING);
-    mFunc.add(3, "nil", lua::TYPE_NIL);
+    mFunc.add(0, "key", lua::type::NUMBER);
+    mFunc.add(1, "modifier1", lua::type::NUMBER);
+    mFunc.add(2, "modifier2", lua::type::NUMBER);
+    mFunc.add(3, "code", lua::type::STRING);
+    mFunc.add(3, "nil", lua::type::NIL);
 
     if (mFunc.check())
     {
@@ -114,30 +114,30 @@ int l_set_key_binding(lua_State* pLua)
         manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
         pState->pop();
 
-        uint uiKey = mFunc.get(0)->get_number();
+        input::key uiKey = static_cast<input::key>(mFunc.get(0)->get_number());
 
         if (mFunc.get_param_set_rank() == 0)
         {
-            if (mFunc.is_provided(1) && mFunc.get(1)->get_type() == lua::TYPE_STRING)
+            if (mFunc.is_provided(1) && mFunc.get(1)->get_type() == lua::type::STRING)
                 pGUIMgr->set_key_binding(uiKey, mFunc.get(1)->get_string());
             else
                 pGUIMgr->remove_key_binding(uiKey);
         }
         else if (mFunc.get_param_set_rank() == 1)
         {
-            uint uiModifier = mFunc.get(1)->get_number();
+            input::key uiModifier = static_cast<input::key>(mFunc.get(1)->get_number());
 
-            if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::TYPE_STRING)
+            if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::STRING)
                 pGUIMgr->set_key_binding(uiKey, uiModifier, mFunc.get(2)->get_string());
             else
                 pGUIMgr->remove_key_binding(uiKey, uiModifier);
         }
         else
         {
-            uint uiModifier1 = mFunc.get(1)->get_number();
-            uint uiModifier2 = mFunc.get(2)->get_number();
+            input::key uiModifier1 = static_cast<input::key>(mFunc.get(1)->get_number());
+            input::key uiModifier2 = static_cast<input::key>(mFunc.get(2)->get_number());
 
-            if (mFunc.is_provided(3) && mFunc.get(3)->get_type() == lua::TYPE_STRING)
+            if (mFunc.is_provided(3) && mFunc.get(3)->get_type() == lua::type::STRING)
                 pGUIMgr->set_key_binding(uiKey, uiModifier1, uiModifier2, mFunc.get(3)->get_string());
             else
                 pGUIMgr->remove_key_binding(uiKey, uiModifier1, uiModifier2);
@@ -150,11 +150,11 @@ int l_set_key_binding(lua_State* pLua)
 int l_create_frame(lua_State* pLua)
 {
     lua::function mFunc("create_frame", pLua, 1);
-    mFunc.add(0, "type", lua::TYPE_STRING);
-    mFunc.add(1, "name", lua::TYPE_STRING);
-    mFunc.add(2, "parent", lua::TYPE_USERDATA, true);
-    mFunc.add(2, "parent", lua::TYPE_NIL, true);
-    mFunc.add(3, "inherits", lua::TYPE_STRING, true);
+    mFunc.add(0, "type", lua::type::STRING);
+    mFunc.add(1, "name", lua::type::STRING);
+    mFunc.add(2, "parent", lua::type::USERDATA, true);
+    mFunc.add(2, "parent", lua::type::NIL, true);
+    mFunc.add(3, "inherits", lua::type::STRING, true);
 
     if (mFunc.check())
     {
@@ -167,7 +167,7 @@ int l_create_frame(lua_State* pLua)
         pState->pop();
 
         frame* pParent = nullptr;
-        if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::TYPE_USERDATA)
+        if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::USERDATA)
         {
             lua_uiobject* pObj = mFunc.get(2)->get<lua_uiobject>();
             if (pObj)
@@ -203,7 +203,7 @@ int l_create_frame(lua_State* pLua)
 int l_delete_frame(lua_State* pLua)
 {
     lua::function mFunc("delete_frame", pLua);
-    mFunc.add(0, "frame", lua::TYPE_USERDATA);
+    mFunc.add(0, "frame", lua::type::USERDATA);
 
     if (mFunc.check())
     {
@@ -256,7 +256,7 @@ int l_get_locale(lua_State* pLua)
 int l_log(lua_State* pLua)
 {
     lua::function mFunc("log", pLua);
-    mFunc.add(0, "message", lua::TYPE_STRING);
+    mFunc.add(0, "message", lua::type::STRING);
 
     if (mFunc.check())
         gui::out << mFunc.get(0)->get_string() << std::endl;

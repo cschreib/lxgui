@@ -26,9 +26,9 @@ void slider::parse_block(xml::block* pBlock)
     {
         std::string sOrientation = pBlock->get_attribute("orientation");
         if (sOrientation == "HORIZONTAL")
-            set_orientation(ORIENT_HORIZONTAL);
+            set_orientation(orientation::HORIZONTAL);
         else if (sOrientation == "VERTICAL")
-            set_orientation(ORIENT_VERTICAL);
+            set_orientation(orientation::VERTICAL);
         else
         {
             gui::out << gui::warning << pBlock->get_location() << " : "
@@ -46,7 +46,7 @@ void slider::parse_block(xml::block* pBlock)
         pThumbTexture_->clear_all_points();
         pThumbTexture_->set_point(anchor(
             pThumbTexture_, anchor_point::CENTER, "$parent",
-            get_orientation() == ORIENT_HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
+            get_orientation() == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
     }
 }

@@ -341,7 +341,7 @@ int lua_button::_set_button_state(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_button_state", pLua);
-    mFunc.add(0, "button state", lua::TYPE_STRING);
+    mFunc.add(0, "button state", lua::type::STRING);
     if (mFunc.check())
     {
         std::string sState = mFunc.get(0)->get_string();
@@ -373,7 +373,7 @@ int lua_button::_set_disabled_font_object(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_disabled_font_object", pLua);
-    mFunc.add(0, "font object", lua::TYPE_USERDATA);
+    mFunc.add(0, "font object", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
@@ -393,10 +393,10 @@ int lua_button::_set_disabled_text_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_disabled_text_color", pLua);
-    mFunc.add(0, "r", lua::TYPE_NUMBER);
-    mFunc.add(1, "g", lua::TYPE_NUMBER);
-    mFunc.add(2, "b", lua::TYPE_NUMBER);
-    mFunc.add(3, "a", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "r", lua::type::NUMBER);
+    mFunc.add(1, "g", lua::type::NUMBER);
+    mFunc.add(2, "b", lua::type::NUMBER);
+    mFunc.add(3, "a", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         font_string* pFontString = pButtonParent_->get_disabled_text();
@@ -431,7 +431,7 @@ int lua_button::_set_disabled_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_disabled_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
@@ -451,7 +451,7 @@ int lua_button::_set_highlight_font_object(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_highlight_font_object", pLua);
-    mFunc.add(0, "font object", lua::TYPE_USERDATA);
+    mFunc.add(0, "font object", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
@@ -471,10 +471,10 @@ int lua_button::_set_highlight_text_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_highlight_text_color", pLua);
-    mFunc.add(0, "r", lua::TYPE_NUMBER);
-    mFunc.add(1, "g", lua::TYPE_NUMBER);
-    mFunc.add(2, "b", lua::TYPE_NUMBER);
-    mFunc.add(3, "a", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "r", lua::type::NUMBER);
+    mFunc.add(1, "g", lua::type::NUMBER);
+    mFunc.add(2, "b", lua::type::NUMBER);
+    mFunc.add(3, "a", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         font_string* pFontString = pButtonParent_->get_highlight_text();
@@ -509,7 +509,7 @@ int lua_button::_set_highlight_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_highlight_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
@@ -530,7 +530,7 @@ int lua_button::_set_normal_font_object(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_normal_font_object", pLua);
-    mFunc.add(0, "font object", lua::TYPE_USERDATA);
+    mFunc.add(0, "font object", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
@@ -550,10 +550,10 @@ int lua_button::_set_normal_text_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_normal_text_color", pLua);
-    mFunc.add(0, "r", lua::TYPE_NUMBER);
-    mFunc.add(1, "g", lua::TYPE_NUMBER);
-    mFunc.add(2, "b", lua::TYPE_NUMBER);
-    mFunc.add(3, "a", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "r", lua::type::NUMBER);
+    mFunc.add(1, "g", lua::type::NUMBER);
+    mFunc.add(2, "b", lua::type::NUMBER);
+    mFunc.add(3, "a", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         font_string* pFontString = pButtonParent_->get_normal_text();
@@ -588,7 +588,7 @@ int lua_button::_set_normal_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_normal_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
@@ -608,8 +608,8 @@ int lua_button::_set_pushed_text_offset(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_pushed_text_offset", pLua);
-    mFunc.add(0, "x offset", lua::TYPE_NUMBER);
-    mFunc.add(1, "y offset", lua::TYPE_NUMBER);
+    mFunc.add(0, "x offset", lua::type::NUMBER);
+    mFunc.add(1, "y offset", lua::type::NUMBER);
     if (mFunc.check())
     {
         pButtonParent_->set_pushed_text_offset(vector2i(
@@ -626,7 +626,7 @@ int lua_button::_set_pushed_texture(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_pushed_texture", pLua);
-    mFunc.add(0, "texture", lua::TYPE_USERDATA);
+    mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
@@ -646,7 +646,7 @@ int lua_button::_set_text(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Button:set_text", pLua);
-    mFunc.add(0, "text", lua::TYPE_STRING);
+    mFunc.add(0, "text", lua::type::STRING);
     if (mFunc.check())
         pButtonParent_->set_text(mFunc.get(0)->get_string());
 

@@ -5,9 +5,12 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_rendertarget.hpp"
+#include "lxgui/input_keys.hpp"
+
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_refptr.hpp>
 #include <lxgui/utils_wptr.hpp>
+
 #include <string>
 #include <vector>
 #include <map>
@@ -285,7 +288,8 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        utils::refptr<material> create_material(const std::string& sFileName, filter mFilter = FILTER_NONE) const;
+        utils::refptr<material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use
@@ -404,14 +408,14 @@ namespace gui
         /** \param uiKey      The key to bind
         *   \param sLuaString The Lua code that will be executed
         */
-        void set_key_binding(uint uiKey, const std::string& sLuaString);
+        void set_key_binding(input::key uiKey, const std::string& sLuaString);
 
         /// Binds some Lua code to a key.
         /** \param uiKey      The key to bind
         *   \param uiModifier The modifier key (shift, ctrl, ...)
         *   \param sLuaString The Lua code that will be executed
         */
-        void set_key_binding(uint uiKey, uint uiModifier, const std::string& sLuaString);
+        void set_key_binding(input::key uiKey, input::key uiModifier, const std::string& sLuaString);
 
         /// Binds some Lua code to a key.
         /** \param uiKey       The key to bind
@@ -420,7 +424,8 @@ namespace gui
         *   \param sLuaString  The Lua code that will be executed
         */
         void set_key_binding(
-            uint uiKey, uint uiModifier1, uint uiModifier2, const std::string& sLuaString
+            input::key uiKey, input::key uiModifier1, input::key uiModifier2,
+            const std::string& sLuaString
         );
 
         /// Unbinds a key.
@@ -428,7 +433,10 @@ namespace gui
         *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
         *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
         */
-        void remove_key_binding(uint uiKey, uint uiModifier1 = 0, uint uiModifier2 = 0);
+        void remove_key_binding(
+            input::key uiKey, input::key uiModifier1 = input::key::K_UNASSIGNED,
+            input::key uiModifier2 = input::key::K_UNASSIGNED
+        );
 
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
@@ -773,7 +781,7 @@ namespace gui
 
         bool                            bInputEnabled_;
         std::unique_ptr<input::manager> pInputManager_;
-        std::map<uint, std::map<uint, std::map<uint, std::string>>> lKeyBindingList_;
+        std::map<input::key, std::map<input::key, std::map<input::key, std::string>>> lKeyBindingList_;
 
         std::map<std::string, uiobject*> lNamedObjectList_;
         std::map<std::string, uiobject*> lNamedVirtualObjectList_;
@@ -921,7 +929,8 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        virtual utils::refptr<material> create_material(const std::string& sFileName, filter mFilter = FILTER_NONE) const = 0;
+        virtual utils::refptr<material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use

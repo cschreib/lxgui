@@ -18,10 +18,10 @@ namespace gui
     {
     public :
 
-        enum orientation
+        enum class orientation
         {
-            ORIENT_VERTICAL,
-            ORIENT_HORIZONTAL
+            VERTICAL,
+            HORIZONTAL
         };
 
         /// Constructor.

@@ -126,7 +126,7 @@ glfw_handler::glfw_handler(bool bMouseGrab) :
     mMouse.bHasDelta = true;
 }
 
-int glfw_handler::to_glfw_(key::code mKey) const
+int glfw_handler::to_glfw_(key mKey) const
 {
     for (size_t i = 0; i < 106; ++i)
     {
@@ -381,7 +381,7 @@ KeySym to_xkey_(int key)
 
 #endif
 
-std::string glfw_handler::get_key_name(key::code mKey) const
+std::string glfw_handler::get_key_name(key mKey) const
 {
 #ifdef WIN32
     int vkey = to_vkey_(to_glfw_(mKey));

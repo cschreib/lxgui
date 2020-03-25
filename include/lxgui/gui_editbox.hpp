@@ -3,6 +3,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
+#include "lxgui/input_keys.hpp"
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_quad2.hpp"
@@ -344,7 +345,7 @@ namespace gui
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
 
-        void process_key_(uint uiKey);
+        void process_key_(input::key uiKey);
 
         std::string              sText_;
         utils::ustring           sUnicodeText_;
@@ -379,7 +380,7 @@ namespace gui
         font_string* pFontString_;
         quad2i       lTextInsets_;
 
-        uint           uiLastKeyPressed_;
+        input::key     mLastKeyPressed_;
         double         dKeyRepeatSpeed_;
         periodic_timer mKeyRepeatTimer_;
     };

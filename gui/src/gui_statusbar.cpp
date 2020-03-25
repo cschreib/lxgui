@@ -16,8 +16,8 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
 }
 
 status_bar::status_bar(manager* pManager) : frame(pManager),
-    bUpdateBarTexture_(false), mOrientation_(ORIENT_HORIZONTAL), bReversed_(false),
-    fValue_(0.0f), fMinValue_(0.0f), fMaxValue_(1.0f), mBarLayer_(LAYER_ARTWORK),
+    bUpdateBarTexture_(false), mOrientation_(orientation::HORIZONTAL), bReversed_(false),
+    fValue_(0.0f), fMinValue_(0.0f), fMaxValue_(1.0f), mBarLayer_(layer_type::ARTWORK),
     pBarTexture_(nullptr)
 {
     lInitialTextCoords_[0] = lInitialTextCoords_[1] = 0.0f;
@@ -37,8 +37,8 @@ std::string status_bar::serialize(const std::string& sTab) const
     sStr << sTab << "  # Orientation: ";
     switch (mOrientation_)
     {
-        case ORIENT_HORIZONTAL : sStr << "HORIZONTAL"; break;
-        case ORIENT_VERTICAL   : sStr << "VERTICAL";   break;
+        case orientation::HORIZONTAL : sStr << "HORIZONTAL"; break;
+        case orientation::VERTICAL   : sStr << "VERTICAL";   break;
     }
     sStr << "\n";
     sStr << sTab << "  # Reversed   : " << bReversed_ << "\n";
@@ -157,21 +157,21 @@ void status_bar::set_bar_draw_layer(layer_type mBarLayer)
 void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
 {
     if (sBarLayer == "ARTWORK")
-        mBarLayer_ = LAYER_ARTWORK;
+        mBarLayer_ = layer_type::ARTWORK;
     else if (sBarLayer == "BACKGROUND")
-        mBarLayer_ = LAYER_BACKGROUND;
+        mBarLayer_ = layer_type::BACKGROUND;
     else if (sBarLayer == "BORDER")
-        mBarLayer_ = LAYER_BORDER;
+        mBarLayer_ = layer_type::BORDER;
     else if (sBarLayer == "HIGHLIGHT")
-        mBarLayer_ = LAYER_HIGHLIGHT;
+        mBarLayer_ = layer_type::HIGHLIGHT;
     else if (sBarLayer == "OVERLAY")
-        mBarLayer_ = LAYER_OVERLAY;
+        mBarLayer_ = layer_type::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Uknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
 
-        mBarLayer_ = LAYER_ARTWORK;
+        mBarLayer_ = layer_type::ARTWORK;
     }
 
     if (pBarTexture_)
@@ -311,7 +311,7 @@ void status_bar::update(float fDelta)
     {
         float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
-        if (mOrientation_ == ORIENT_HORIZONTAL)
+        if (mOrientation_ == orientation::HORIZONTAL)
         {
             pBarTexture_->set_rel_width(fCoef);
             pBarTexture_->set_rel_height(1.0f);
@@ -325,7 +325,7 @@ void status_bar::update(float fDelta)
         if (!pBarTexture_->get_texture().empty())
         {
             std::array<float,4> uvs = lInitialTextCoords_;
-            if (mOrientation_ == ORIENT_HORIZONTAL)
+            if (mOrientation_ == orientation::HORIZONTAL)
             {
                 if (bReversed_)
                     uvs[0] = (uvs[0] - uvs[2])*fCoef + uvs[2];

@@ -10,7 +10,7 @@
 namespace gui
 {
 layered_region::layered_region(manager* pManager) : region(pManager),
-    mLayer_(LAYER_ARTWORK), pFrameParent_(nullptr)
+    mLayer_(layer_type::ARTWORK), pFrameParent_(nullptr)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -27,12 +27,12 @@ std::string layered_region::serialize(const std::string& sTab) const
     sStr << sTab << "  # Layer       : ";
     switch (mLayer_)
     {
-        case LAYER_BACKGROUND : sStr << "BACKGROUND\n"; break;
-        case LAYER_BORDER : sStr << "BORDER\n"; break;
-        case LAYER_ARTWORK : sStr << "ARTWORK\n"; break;
-        case LAYER_OVERLAY : sStr << "OVERLAY\n"; break;
-        case LAYER_HIGHLIGHT : sStr << "HIGHLIGHT\n"; break;
-        case LAYER_SPECIALHIGH : sStr << "SPECIALHIGH\n"; break;
+        case layer_type::BACKGROUND : sStr << "BACKGROUND\n"; break;
+        case layer_type::BORDER : sStr << "BORDER\n"; break;
+        case layer_type::ARTWORK : sStr << "ARTWORK\n"; break;
+        case layer_type::OVERLAY : sStr << "OVERLAY\n"; break;
+        case layer_type::HIGHLIGHT : sStr << "HIGHLIGHT\n"; break;
+        case layer_type::SPECIALHIGH : sStr << "SPECIALHIGH\n"; break;
         default : sStr << "<error>\n"; break;
     };
 
@@ -92,21 +92,21 @@ void layered_region::set_draw_layer(const std::string& sLayer)
 {
     layer_type mLayer;
     if (sLayer == "ARTWORK")
-        mLayer = LAYER_ARTWORK;
+        mLayer = layer_type::ARTWORK;
     else if (sLayer == "BACKGROUND")
-        mLayer = LAYER_BACKGROUND;
+        mLayer = layer_type::BACKGROUND;
     else if (sLayer == "BORDER")
-        mLayer = LAYER_BORDER;
+        mLayer = layer_type::BORDER;
     else if (sLayer == "HIGHLIGHT")
-        mLayer = LAYER_HIGHLIGHT;
+        mLayer = layer_type::HIGHLIGHT;
     else if (sLayer == "OVERLAY")
-        mLayer = LAYER_OVERLAY;
+        mLayer = layer_type::OVERLAY;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Uknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
-        mLayer = LAYER_ARTWORK;
+        mLayer = layer_type::ARTWORK;
     }
 
     if (mLayer_ != mLayer)

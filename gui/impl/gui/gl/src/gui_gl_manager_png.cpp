@@ -21,7 +21,7 @@ void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
     ((std::ifstream*)p)->read((char*)pData, uiLength);
 }
 
-utils::refptr<gui::material> manager::create_material_png(const std::string& sFileName, filter mFilter) const
+utils::refptr<gui::material> manager::create_material_png(const std::string& sFileName, material::filter mFilter) const
 {
     std::ifstream mFile(sFileName, std::ios::binary);
     if (!mFile.is_open())
@@ -85,8 +85,7 @@ utils::refptr<gui::material> manager::create_material_png(const std::string& sFi
 
         std::unique_ptr<png_bytep[]> pRows(new png_bytep[uiHeight]);
         utils::refptr<material>  pTex(new gui::gl::material(
-            uiWidth, uiHeight, gui::gl::material::REPEAT,
-            (mFilter == FILTER_LINEAR ? gui::gl::material::LINEAR : gui::gl::material::NONE)
+            uiWidth, uiHeight, material::wrap::REPEAT, mFilter
         ));
 
         png_bytep* pTempRows = pRows.get();

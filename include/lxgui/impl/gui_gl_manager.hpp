@@ -52,7 +52,8 @@ namespace gl
         *   \return The new material
         *   \note Only PNG textures are supported by this implementation (parsed by libpng).
         */
-        utils::refptr<gui::material> create_material(const std::string& sFileName, filter mFilter = FILTER_NONE) const override;
+        utils::refptr<gui::material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const override;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use
@@ -89,7 +90,8 @@ namespace gl
 
         void update_view_matrix_() const;
 
-        utils::refptr<gui::material> create_material_png(const std::string& sFileName, filter mFilter) const;
+        utils::refptr<gui::material> create_material_png(const std::string& sFileName,
+            material::filter mFilter) const;
 
         mutable std::map<std::string, utils::wptr<gui::material>> lTextureList_;
         mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;

@@ -61,22 +61,14 @@ namespace gui
     /** \endcond
     */
 
-    enum border_type
+    enum class layer_type
     {
-        BORDER_LEFT   = 0,
-        BORDER_RIGHT  = 1,
-        BORDER_TOP    = 2,
-        BORDER_BOTTOM = 3
-    };
-
-    enum layer_type
-    {
-        LAYER_BACKGROUND,
-        LAYER_BORDER,
-        LAYER_ARTWORK,
-        LAYER_OVERLAY,
-        LAYER_HIGHLIGHT,
-        LAYER_SPECIALHIGH
+        BACKGROUND,
+        BORDER,
+        ARTWORK,
+        OVERLAY,
+        HIGHLIGHT,
+        SPECIALHIGH
     };
 
     /// The base of the GUI

@@ -44,7 +44,7 @@ void lua_virtual_glue::notify_deleted()
 int lua_virtual_glue::_mark_for_copy(lua_State* pLua)
 {
     lua::function mFunc("VirtualGlue:mark_for_copy", pLua, 1);
-    mFunc.add(0, "variable", lua::TYPE_STRING);
+    mFunc.add(0, "variable", lua::type::STRING);
     if (mFunc.check())
         pParent_->mark_for_copy(mFunc.get(0)->get_string());
 
@@ -158,7 +158,7 @@ int lua_uiobject::_is_object_type(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:is_object_type", pLua, 1);
-    mFunc.add(0, "object type", lua::TYPE_STRING);
+    mFunc.add(0, "object type", lua::type::STRING);
     if (mFunc.check())
     {
         mFunc.push(pParent_->is_object_type(mFunc.get(0)->get_string()));
@@ -173,7 +173,7 @@ int lua_uiobject::_set_alpha(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_alpha", pLua);
-    mFunc.add(0, "alpha", lua::TYPE_NUMBER);
+    mFunc.add(0, "alpha", lua::type::NUMBER);
     if (mFunc.check())
     {
         pParent_->set_alpha(mFunc.get(0)->get_number());
@@ -298,7 +298,7 @@ int lua_uiobject::_get_point(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:get_point", pLua, 5);
-    mFunc.add(0, "point ID", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "point ID", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         const std::map<anchor_point, anchor>& lAnchorList = pParent_->get_point_list();
@@ -418,15 +418,15 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_all_points", pLua);
-    mFunc.add(0, "Frame name", lua::TYPE_STRING, true);
-    mFunc.add(0, "Frame", lua::TYPE_USERDATA, true);
+    mFunc.add(0, "Frame name", lua::type::STRING, true);
+    mFunc.add(0, "Frame", lua::type::USERDATA, true);
     if (mFunc.check())
     {
         lua::argument* pArg = mFunc.get(0);
         if (pArg->is_provided())
         {
             uiobject* pFrame = nullptr;
-            if (pArg->get_type() == lua::TYPE_STRING)
+            if (pArg->get_type() == lua::type::STRING)
                 pFrame = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
             else
             {
@@ -449,7 +449,7 @@ int lua_uiobject::_set_height(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_height", pLua);
-    mFunc.add(0, "height", lua::TYPE_NUMBER);
+    mFunc.add(0, "height", lua::type::NUMBER);
     if (mFunc.check())
         pParent_->set_abs_height(uint(mFunc.get(0)->get_number()));
 
@@ -462,8 +462,8 @@ int lua_uiobject::_set_parent(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_parent", pLua);
-    mFunc.add(0, "parent name", lua::TYPE_STRING, true);
-    mFunc.add(0, "parent", lua::TYPE_USERDATA, true);
+    mFunc.add(0, "parent name", lua::type::STRING, true);
+    mFunc.add(0, "parent", lua::type::USERDATA, true);
     if (mFunc.check())
     {
         lua::argument* pArg = mFunc.get(0);
@@ -471,7 +471,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
 
         if (pArg->is_provided())
         {
-            if (pArg->get_type() == lua::TYPE_STRING)
+            if (pArg->get_type() == lua::type::STRING)
             {
                 pParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
                 if (!pParent)
@@ -521,12 +521,12 @@ int lua_uiobject::_set_point(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_point", pLua);
-    mFunc.add(0, "point", lua::TYPE_STRING);
-    mFunc.add(1, "parent name", lua::TYPE_STRING, true);
-    mFunc.add(1, "parent", lua::TYPE_USERDATA, true);
-    mFunc.add(2, "relative point", lua::TYPE_STRING, true);
-    mFunc.add(3, "x offset", lua::TYPE_NUMBER, true);
-    mFunc.add(4, "y offset", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "point", lua::type::STRING);
+    mFunc.add(1, "parent name", lua::type::STRING, true);
+    mFunc.add(1, "parent", lua::type::USERDATA, true);
+    mFunc.add(2, "relative point", lua::type::STRING, true);
+    mFunc.add(3, "x offset", lua::type::NUMBER, true);
+    mFunc.add(4, "y offset", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         // point
@@ -537,7 +537,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {
-            if (pArg->get_type() == lua::TYPE_STRING)
+            if (pArg->get_type() == lua::type::STRING)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
@@ -580,12 +580,12 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_rel_point", pLua);
-    mFunc.add(0, "point", lua::TYPE_STRING);
-    mFunc.add(1, "parent name", lua::TYPE_STRING, true);
-    mFunc.add(1, "parent", lua::TYPE_USERDATA, true);
-    mFunc.add(2, "relative point", lua::TYPE_STRING, true);
-    mFunc.add(3, "x offset", lua::TYPE_NUMBER, true);
-    mFunc.add(4, "y offset", lua::TYPE_NUMBER, true);
+    mFunc.add(0, "point", lua::type::STRING);
+    mFunc.add(1, "parent name", lua::type::STRING, true);
+    mFunc.add(1, "parent", lua::type::USERDATA, true);
+    mFunc.add(2, "relative point", lua::type::STRING, true);
+    mFunc.add(3, "x offset", lua::type::NUMBER, true);
+    mFunc.add(4, "y offset", lua::type::NUMBER, true);
     if (mFunc.check())
     {
         // point
@@ -596,7 +596,7 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
         uiobject* pParent = nullptr;
         if (pArg->is_provided())
         {
-            if (pArg->get_type() == lua::TYPE_STRING)
+            if (pArg->get_type() == lua::type::STRING)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
@@ -639,7 +639,7 @@ int lua_uiobject::_set_width(lua_State* pLua)
         return 0;
 
     lua::function mFunc("UIObject:set_width", pLua);
-    mFunc.add(0, "width", lua::TYPE_NUMBER);
+    mFunc.add(0, "width", lua::type::NUMBER);
     if (mFunc.check())
         pParent_->set_abs_width(mFunc.get(0)->get_number());
 

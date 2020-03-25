@@ -18,7 +18,8 @@ namespace gui
 
 namespace input
 {
-    constexpr std::size_t INPUT_MOUSE_BUTTON_NUMBER = 3u;
+    constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
+    constexpr std::size_t KEY_NUMBER = static_cast<uint>(key::K_MAXKEY);
 
     /// The base class for input manager implementation
     /** \note In case you want to share the same implementation
@@ -34,12 +35,12 @@ namespace input
 
         struct key_state
         {
-            std::array<bool, key::K_MAXKEY> lKeyState = {};
+            std::array<bool, KEY_NUMBER> lKeyState = {};
         };
 
         struct mouse_state
         {
-            std::array<bool, INPUT_MOUSE_BUTTON_NUMBER> lButtonState = {};
+            std::array<bool, MOUSE_BUTTON_NUMBER> lButtonState = {};
             float fAbsX = 0.0f, fAbsY = 0.0f, fDX = 0.0f, fDY = 0.0f;
             float fRelX = 0.0f, fRelY = 0.0f, fRelDX = 0.0f, fRelDY = 0.0f;
             float fRelWheel = 0.0f;
@@ -96,7 +97,7 @@ namespace input
         /// Returns the name of the key as it appears on the keyboard.
         /** \return The name of the key as it appears on the keyboard
         */
-        virtual std::string get_key_name(key::code mKey) const = 0;
+        virtual std::string get_key_name(key mKey) const = 0;
 
     protected:
 
@@ -166,20 +167,20 @@ namespace input
         *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the key is being pressed
         */
-        bool key_is_down(key::code mKey, bool bForce = false) const;
+        bool key_is_down(key mKey, bool bForce = false) const;
 
         /// Checks if a key is being pressed for a long time.
         /** \param mKey   The ID code of the key you're interested in
         *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the key is being pressed for a long time
         */
-        bool key_is_down_long(key::code mKey, bool bForce = false) const;
+        bool key_is_down_long(key mKey, bool bForce = false) const;
 
         /// Returns elapsed time since the key has been pressed.
         /** \param mKey The ID code of the key you're interested in
         *   \return Elapsed time since the key has been pressed
         */
-        double get_key_press_duration(key::code mKey) const;
+        double get_key_press_duration(key mKey) const;
 
         /// Checks if a key has been pressed.
         /** \param mKey   The ID code of the key you're interested in
@@ -187,7 +188,7 @@ namespace input
         *   \return 'true' if the key has been pressed
         *   \note Happens just when the key is pressed.
         */
-        bool key_is_pressed(key::code mKey, bool bForce = false) const;
+        bool key_is_pressed(key mKey, bool bForce = false) const;
 
         /// Checks if a key has been released.
         /** \param mKey   The ID code of the key you're interested in
@@ -195,7 +196,7 @@ namespace input
         *   \return 'true' if the key has been released
         *   \note Happens just when the key is released.
         */
-        bool key_is_released(key::code mKey, bool bForce = false) const;
+        bool key_is_released(key mKey, bool bForce = false) const;
 
         /// Returns the UTF8 (multibyte) character that has been entered.
         /** \return The multibyte UTF8 character just entered with the keyboard
@@ -206,14 +207,14 @@ namespace input
         /** \param mKey The key
         *   \return The name of the provided key, as it appears on your keyboard
         */
-        std::string get_key_name(key::code mKey) const;
+        std::string get_key_name(key mKey) const;
 
         /// Returns the name of the provided key combination.
         /** \param mKey      The main key
         *   \param mModifier The modifier key (shift, ctrl, ...)
         *   \return The name of key combination, example : "Ctrl + A"
         */
-        std::string get_key_name(key::code mKey, key::code mModifier) const;
+        std::string get_key_name(key mKey, key mModifier) const;
 
         /// Returns the name of the provided key combination.
         /** \param mKey       The main key
@@ -221,17 +222,17 @@ namespace input
         *   \param mModifier2 The second modifier key (shift, ctrl, ...)
         *   \return The name of key combination, example : "Ctrl + Shift + A"
         */
-        std::string get_key_name(key::code mKey, key::code mModifier1, key::code mModifier2) const;
+        std::string get_key_name(key mKey, key mModifier1, key mModifier2) const;
 
         /// Returns the list of keys that have been released during this frame.
         /** \return The list of keys that have been released during this frame.
         */
-        const std::deque<key::code>& get_key_release_stack() const;
+        const std::deque<key>& get_key_release_stack() const;
 
         /// Returns the list of keys that have been pressed during this frame.
         /** \return The list of keys that have been pressed during this frame.
         */
-        const std::deque<key::code>& get_key_press_stack() const;
+        const std::deque<key>& get_key_press_stack() const;
 
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
@@ -252,39 +253,39 @@ namespace input
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button is being pressed
         */
-        bool mouse_is_down(mouse::button mID) const;
+        bool mouse_is_down(mouse_button mID) const;
 
         /// Checks if a mouse button is being pressed for a long time.
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button is being pressed for a long time
         */
-        bool mouse_is_down_long(mouse::button mID) const;
+        bool mouse_is_down_long(mouse_button mID) const;
 
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you're interested in
         *   \return Elapsed time since the mouse button has been pressed
         */
-        double get_mouse_press_duration(mouse::button mKey) const;
+        double get_mouse_press_duration(mouse_button mKey) const;
 
         /// Checks if a mouse button has been pressed.
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button has been pressed
         *   \note Happens just when the mouse button is pressed.
         */
-        bool mouse_is_pressed(mouse::button mID) const;
+        bool mouse_is_pressed(mouse_button mID) const;
 
         /// Checks if a mouse button has been released.
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button has been released
         *   \note Happens just when the mouse button is released.
         */
-        bool mouse_is_released(mouse::button mID) const;
+        bool mouse_is_released(mouse_button mID) const;
 
         /// Checks if a mouse button has been double clicked.
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button has been double clicked
         */
-        bool mouse_is_doubleclicked(mouse::button mID) const;
+        bool mouse_is_doubleclicked(mouse_button mID) const;
 
         /// Checks if the mouse wheel has been rolled.
         /** \return 'true' if the mouse wheel has been rolled
@@ -300,7 +301,7 @@ namespace input
         /** \param mID The ID code of the mouse button you're interested in
         *   \return The mouse button's state
         */
-        mouse::state get_mouse_state(mouse::button mID) const;
+        mouse_state get_mouse_state(mouse_button mID) const;
 
         /// Returns the horizontal position of the mouse.
         /** \return The horizontal position of the mouse
@@ -403,7 +404,7 @@ namespace input
         /** \param mID The ID code of the mouse button you're interested in
         *   \return The string associated with the mouse button
         */
-        std::string get_mouse_button_string(mouse::button mID) const;
+        std::string get_mouse_button_string(mouse_button mID) const;
 
         /// Sets the double click maximum time.
         /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
@@ -507,10 +508,10 @@ namespace input
         std::vector<gui::event_manager*> lEventManagerList_;
 
         // Keyboard
-        std::array<double, key::K_MAXKEY> lKeyDelay_;
-        std::array<bool,   key::K_MAXKEY> lKeyLong_;
-        std::array<bool,   key::K_MAXKEY> lKeyBuf_;
-        std::array<bool,   key::K_MAXKEY> lKeyBufOld_;
+        std::array<double, KEY_NUMBER> lKeyDelay_;
+        std::array<bool,   KEY_NUMBER> lKeyLong_;
+        std::array<bool,   KEY_NUMBER> lKeyBuf_;
+        std::array<bool,   KEY_NUMBER> lKeyBufOld_;
 
         bool bCtrlPressed_;
         bool bShiftPressed_;
@@ -518,17 +519,17 @@ namespace input
         bool bKey_;
         std::vector<char32_t> lChars_;
 
-        std::deque<key::code> lDownStack_;
-        std::deque<key::code> lUpStack_;
+        std::deque<key> lDownStack_;
+        std::deque<key> lUpStack_;
 
         // Mouse
         double                                              dDoubleClickTime_;
-        std::array<double, INPUT_MOUSE_BUTTON_NUMBER>       lDoubleClickDelay_;
-        std::array<double, INPUT_MOUSE_BUTTON_NUMBER>       lMouseDelay_;
-        std::array<bool, INPUT_MOUSE_BUTTON_NUMBER>         lMouseLong_;
-        std::array<bool, INPUT_MOUSE_BUTTON_NUMBER>         lMouseBuf_;
-        std::array<bool, INPUT_MOUSE_BUTTON_NUMBER>         lMouseBufOld_;
-        std::array<mouse::state, INPUT_MOUSE_BUTTON_NUMBER> lMouseState_;
+        std::array<double, MOUSE_BUTTON_NUMBER>       lDoubleClickDelay_;
+        std::array<double, MOUSE_BUTTON_NUMBER>       lMouseDelay_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseLong_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseBuf_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseBufOld_;
+        std::array<mouse_state, MOUSE_BUTTON_NUMBER> lMouseState_;
 
         std::map<std::string, bool> lClickGroupList_;
         std::map<std::string, bool> lForcedClickGroupList_;

@@ -16,13 +16,13 @@ namespace input
         explicit glfw_handler(bool bMouseGrab = false);
 
         void toggle_mouse_grab();
-        std::string get_key_name(key::code mKey) const;
+        std::string get_key_name(key mKey) const;
 
         void update();
 
     private :
 
-        int to_glfw_(key::code mKey) const;
+        int to_glfw_(key mKey) const;
 
         static const int lKeyToGLFW[106][2];
 

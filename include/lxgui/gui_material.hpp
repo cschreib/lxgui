@@ -5,12 +5,6 @@
 
 namespace gui
 {
-    enum filter
-    {
-        FILTER_NONE,
-        FILTER_LINEAR
-    };
-
     /// A class that holds rendering data
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::manager_impl.
@@ -18,6 +12,24 @@ namespace gui
     class material
     {
     public :
+
+        enum class wrap
+        {
+            REPEAT,
+            CLAMP
+        };
+
+        enum class filter
+        {
+            NONE,
+            LINEAR
+        };
+
+        enum class type
+        {
+            TEXTURE,
+            COLOR
+        };
 
         /// Constructor.
         material();

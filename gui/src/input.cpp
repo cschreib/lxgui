@@ -60,7 +60,7 @@ manager::manager(std::unique_ptr<manager_impl> pImpl) :
     lMouseLong_.fill(false);
     lMouseBuf_.fill(false);
     lMouseBufOld_.fill(false);
-    lMouseState_.fill(mouse::UP);
+    lMouseState_.fill(mouse_state::UP);
 }
 
 void manager::allow_input(const std::string& sGroupName)
@@ -99,12 +99,12 @@ bool manager::get_key(bool bForce) const
         return bKey_;
 }
 
-std::string manager::get_key_name(key::code mKey) const
+std::string manager::get_key_name(key mKey) const
 {
     return pImpl_->get_key_name(mKey);
 }
 
-std::string manager::get_key_name(key::code mKey, key::code mModifier) const
+std::string manager::get_key_name(key mKey, key mModifier) const
 {
     std::string sString;
     switch (mModifier)
@@ -132,7 +132,7 @@ std::string manager::get_key_name(key::code mKey, key::code mModifier) const
     return sString + get_key_name(mKey);
 }
 
-std::string manager::get_key_name(key::code mKey, key::code mModifier1, key::code mModifier2) const
+std::string manager::get_key_name(key mKey, key mModifier1, key mModifier2) const
 {
     std::string sString;
     switch (mModifier1)
@@ -182,51 +182,51 @@ std::string manager::get_key_name(key::code mKey, key::code mModifier1, key::cod
     return sString + get_key_name(mKey);
 }
 
-const std::deque<key::code>& manager::get_key_press_stack() const
+const std::deque<key>& manager::get_key_press_stack() const
 {
     return lDownStack_;
 }
 
-const std::deque<key::code>& manager::get_key_release_stack() const
+const std::deque<key>& manager::get_key_release_stack() const
 {
     return lUpStack_;
 }
 
-bool manager::key_is_down(key::code mKey, bool bForce) const
+bool manager::key_is_down(key mKey, bool bForce) const
 {
     if (!bForce && bFocus_)
         return false;
     else
-        return lKeyBuf_[mKey];
+        return lKeyBuf_[(uint)mKey];
 }
 
-bool manager::key_is_down_long(key::code mKey, bool bForce) const
+bool manager::key_is_down_long(key mKey, bool bForce) const
 {
     if (!bForce && bFocus_)
         return false;
     else
-        return (lKeyBuf_[mKey] && lKeyLong_[mKey]);
+        return (lKeyBuf_[(uint)mKey] && lKeyLong_[(uint)mKey]);
 }
 
-double manager::get_key_press_duration(key::code mKey) const
+double manager::get_key_press_duration(key mKey) const
 {
-    return lKeyDelay_[mKey];
+    return lKeyDelay_[(uint)mKey];
 }
 
-bool manager::key_is_pressed(key::code mKey, bool bForce) const
-{
-    if (!bForce && bFocus_)
-        return false;
-    else
-        return (lKeyBuf_[mKey] && !lKeyBufOld_[mKey]);
-}
-
-bool manager::key_is_released(key::code mKey, bool bForce) const
+bool manager::key_is_pressed(key mKey, bool bForce) const
 {
     if (!bForce && bFocus_)
         return false;
     else
-        return (!lKeyBuf_[mKey] && lKeyBufOld_[mKey]);
+        return (lKeyBuf_[(uint)mKey] && !lKeyBufOld_[(uint)mKey]);
+}
+
+bool manager::key_is_released(key mKey, bool bForce) const
+{
+    if (!bForce && bFocus_)
+        return false;
+    else
+        return (!lKeyBuf_[(uint)mKey] && lKeyBufOld_[(uint)mKey]);
 }
 
 std::vector<char32_t> manager::get_chars() const
@@ -234,34 +234,34 @@ std::vector<char32_t> manager::get_chars() const
     return lChars_;
 }
 
-bool manager::mouse_is_down(mouse::button mID) const
+bool manager::mouse_is_down(mouse_button mID) const
 {
-    return lMouseBuf_[mID];
+    return lMouseBuf_[(uint)mID];
 }
 
-bool manager::mouse_is_down_long(mouse::button mID) const
+bool manager::mouse_is_down_long(mouse_button mID) const
 {
-    return (lMouseBuf_[mID] && lMouseLong_[mID]);
+    return (lMouseBuf_[(uint)mID] && lMouseLong_[(uint)mID]);
 }
 
-double manager::get_mouse_press_duration(mouse::button mID) const
+double manager::get_mouse_press_duration(mouse_button mID) const
 {
-    return lMouseDelay_[mID];
+    return lMouseDelay_[(uint)mID];
 }
 
-bool manager::mouse_is_pressed(mouse::button mID) const
+bool manager::mouse_is_pressed(mouse_button mID) const
 {
-    return (lMouseBuf_[mID] && !lMouseBufOld_[mID]);
+    return (lMouseBuf_[(uint)mID] && !lMouseBufOld_[(uint)mID]);
 }
 
-bool manager::mouse_is_released(mouse::button mID) const
+bool manager::mouse_is_released(mouse_button mID) const
 {
-    return (!lMouseBuf_[mID] && lMouseBufOld_[mID]);
+    return (!lMouseBuf_[(uint)mID] && lMouseBufOld_[(uint)mID]);
 }
 
-bool manager::mouse_is_doubleclicked(mouse::button mID) const
+bool manager::mouse_is_doubleclicked(mouse_button mID) const
 {
-    return (mouse_is_pressed(mID) && lDoubleClickDelay_[mID] > 0.0);
+    return (mouse_is_pressed(mID) && lDoubleClickDelay_[(uint)mID] > 0.0);
 }
 
 bool manager::wheel_is_rolled() const
@@ -292,12 +292,12 @@ void manager::update(float fTempDelta)
         dDelta = 0.05;
 
     gui::event mKeyboardEvent;
-    mKeyboardEvent.add(uint(0));
+    mKeyboardEvent.add(key::K_UNASSIGNED);
     mKeyboardEvent.add(std::string());
 
     // Update keys
     bKey_ = false;
-    for (uint i = 0; i < key::K_MAXKEY; ++i)
+    for (uint i = 0; i < KEY_NUMBER; ++i)
     {
         lKeyBufOld_[i] = lKeyBuf_[i];
 
@@ -323,13 +323,13 @@ void manager::update(float fTempDelta)
             if (!lKeyBufOld_[i])
             {
                 // Key is pressed
-                lDownStack_.push_back((key::code)i);
+                lDownStack_.push_back((key)i);
             }
         }
         else if (lKeyBufOld_[i])
         {
             // Key is released
-            lUpStack_.push_back((key::code)i);
+            lUpStack_.push_back((key)i);
         }
 
         // Send events
@@ -338,16 +338,16 @@ void manager::update(float fTempDelta)
             if (!lKeyBufOld_[i])
             {
                 mKeyboardEvent.set_name("KEY_PRESSED");
-                mKeyboardEvent[0] = i;
-                mKeyboardEvent[1] = get_key_name((key::code)i);
+                mKeyboardEvent[0] = (key)i;
+                mKeyboardEvent[1] = get_key_name((key)i);
                 fire_event_(mKeyboardEvent);
             }
         }
         else if (lKeyBufOld_[i])
         {
             mKeyboardEvent.set_name("KEY_RELEASED");
-            mKeyboardEvent[0] = i;
-            mKeyboardEvent[1] = get_key_name((key::code)i);
+            mKeyboardEvent[0] = (key)i;
+            mKeyboardEvent[1] = get_key_name((key)i);
             fire_event_(mKeyboardEvent);
         }
     }
@@ -370,14 +370,14 @@ void manager::update(float fTempDelta)
 
     const manager_impl::mouse_state& mMouseState = pImpl_->get_mouse_state();
     gui::event mMouseEvent;
-    mMouseEvent.add(uint(0));
+    mMouseEvent.add(mouse_button::LEFT);
     mMouseEvent.add(mMouseState.fAbsX);
     mMouseEvent.add(mMouseState.fAbsY);
     mMouseEvent.add(std::string());
 
     // Update mouse state
     bLastDragged_ = false;
-    for (uint i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
+    for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
     {
         bool bOldMouseState = lMouseBufOld_[i] = lMouseBuf_[i];
 
@@ -408,25 +408,25 @@ void manager::update(float fTempDelta)
         {
             if (!bOldMouseState)
             {
-                lMouseState_[i] = mouse::CLICKED; // single pressed
+                lMouseState_[i] = mouse_state::CLICKED; // single pressed
 
                 if (lDoubleClickDelay_[i] > 0.0)
-                    lMouseState_[i] = mouse::DOUBLE; // double clicked
+                    lMouseState_[i] = mouse_state::DOUBLE; // double clicked
             }
             else
             {
                 bLastDragged_ = true;
-                lMouseState_[i] = mouse::DRAGGED; // dragged
+                lMouseState_[i] = mouse_state::DRAGGED; // dragged
             }
         }
         else if (bOldMouseState)
-            lMouseState_[i] = mouse::RELEASED; // released
+            lMouseState_[i] = mouse_state::RELEASED; // released
         else
-            lMouseState_[i] = mouse::UP; // no input
+            lMouseState_[i] = mouse_state::UP; // no input
 
         // Send events
-        mMouseEvent[0] = i;
-        mMouseEvent[3] = get_mouse_button_string((mouse::button)i);
+        mMouseEvent[0] = (mouse_button)i;
+        mMouseEvent[3] = get_mouse_button_string((mouse_button)i);
         if (bMouseState)
         {
             if (!bOldMouseState)
@@ -621,9 +621,9 @@ bool manager::mouse_last_dragged() const
     return bLastDragged_;
 }
 
-mouse::state manager::get_mouse_state(mouse::button mID) const
+mouse_state manager::get_mouse_state(mouse_button mID) const
 {
-    return lMouseState_[mID];
+    return lMouseState_[(uint)mID];
 }
 
 float manager::get_mouse_x() const
@@ -711,14 +711,14 @@ double manager::get_long_press_delay() const
     return dLongPressDelay_;
 }
 
-std::string manager::get_mouse_button_string(mouse::button mID) const
+std::string manager::get_mouse_button_string(mouse_button mID) const
 {
     switch (mID)
     {
-        case mouse::LEFT :   return "LeftButton";
-        case mouse::RIGHT :  return "RightButton";
-        case mouse::MIDDLE : return "MiddleButton";
-        default :            return "";
+        case mouse_button::LEFT :   return "LeftButton";
+        case mouse_button::RIGHT :  return "RightButton";
+        case mouse_button::MIDDLE : return "MiddleButton";
+        default :                   return "";
     }
 }
 

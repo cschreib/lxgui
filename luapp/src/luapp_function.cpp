@@ -238,7 +238,7 @@ bool function::check(bool bPrintError)
     bool bValid = true;
     for (auto& mArg : pArgList_->lOptional_)
     {
-        if (pLua_->get_type(i) != TYPE_NIL)
+        if (pLua_->get_type(i) != type::NIL)
         {
             if (!mArg.second->test(pLua_, i, bPrintError))
                 bValid = false;

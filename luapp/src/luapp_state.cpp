@@ -167,43 +167,43 @@ void state::copy_table(state& mLua, const std::string& sSrcName, const std::stri
                     ++i;
                     s.erase(0, i);
 
-                    int iType;
+                    type mType;
                     if (sValue == "'table'")
-                        iType = TYPE_TABLE;
+                        mType = type::TABLE;
                     else
                     {
-                        iType = TYPE_NUMBER;
+                        mType = type::NUMBER;
                         if (sValue.find("\"") != std::string::npos)
                         {
-                            iType = TYPE_STRING;
+                            mType = type::STRING;
                         }
                         else
                         {
                             if (sValue.find("'") != std::string::npos)
                             {
-                                iType = TYPE_BOOLEAN;
+                                mType = type::BOOLEAN;
                                 utils::trim(sValue, '\'');
                             }
                         }
                     }
 
-                    if (iType == TYPE_NUMBER)
+                    if (mType == type::NUMBER)
                     {
                         sTable += sTab + sKey + " = " + sValue + ";\n";
                     }
-                    else if (iType == TYPE_NIL)
+                    else if (mType == type::NIL)
                     {
                         sTable += sTab + sKey + " = nil;\n";
                     }
-                    else if (iType == TYPE_BOOLEAN)
+                    else if (mType == type::BOOLEAN)
                     {
                         sTable += sTab + sKey + " = " + sValue + ";\n";
                     }
-                    else if (iType == TYPE_STRING)
+                    else if (mType == type::STRING)
                     {
                         sTable += sTab + sKey + " = " + sValue + ";\n";
                     }
-                    else if (iType == TYPE_TABLE)
+                    else if (mType == type::TABLE)
                     {
                         sTable += sTab + sKey + " = {\n";
                         sTab += "    ";
@@ -502,7 +502,7 @@ bool state::is_serializable(int iIndex)
     {
         pop();
         get_field("serialize", iAbsoluteIndex);
-        if (get_type() == TYPE_FUNCTION)
+        if (get_type() == type::FUNCTION)
         {
             pop();
             return true;
@@ -511,8 +511,8 @@ bool state::is_serializable(int iIndex)
     }
 
     type mType = get_type(iIndex);
-    return (mType == TYPE_BOOLEAN) || (mType == TYPE_NUMBER) ||
-           (mType == TYPE_STRING)  || (mType == TYPE_TABLE) || (mType == TYPE_NIL);
+    return (mType == type::BOOLEAN) || (mType == type::NUMBER) ||
+           (mType == type::STRING)  || (mType == type::TABLE) || (mType == type::NIL);
 }
 
 std::string state::serialize_global(const std::string& sName)
@@ -537,7 +537,7 @@ std::string state::serialize(const std::string& sTab, int iIndex)
     {
         pop();
         get_field("serialize", iAbsoluteIndex);
-        if (get_type() == TYPE_FUNCTION)
+        if (get_type() == type::FUNCTION)
         {
             push_value(iAbsoluteIndex);
             push_string(sTab);
@@ -556,23 +556,23 @@ std::string state::serialize(const std::string& sTab, int iIndex)
     type mType = get_type(iIndex);
     switch (mType)
     {
-        case TYPE_NIL :
+        case type::NIL :
             sResult += "nil";
             break;
 
-        case TYPE_BOOLEAN :
+        case type::BOOLEAN :
             sResult += utils::to_string(get_bool(iIndex));
             break;
 
-        case TYPE_NUMBER :
+        case type::NUMBER :
             sResult += utils::to_string(get_number(iIndex));
             break;
 
-        case TYPE_STRING :
+        case type::STRING :
             sResult += "\""+get_string(iIndex)+"\"";
             break;
 
-        case TYPE_TABLE :
+        case type::TABLE :
         {
             sResult += "{";
 
@@ -595,9 +595,9 @@ std::string state::serialize(const std::string& sTab, int iIndex)
             break;
         }
 
-        case TYPE_NONE :
-        case TYPE_FUNCTION :
-        case TYPE_THREAD :
+        case type::NONE :
+        case type::FUNCTION :
+        case type::THREAD :
         default : break;
     }
 
@@ -738,17 +738,17 @@ type state::get_type(int iIndex)
     int type = lua_type(pLua_, iIndex);
     switch (type)
     {
-        case LUA_TBOOLEAN :       return TYPE_BOOLEAN;
-        case LUA_TFUNCTION :      return TYPE_FUNCTION;
-        case LUA_TLIGHTUSERDATA : return TYPE_LIGHTUSERDATA;
-        case LUA_TNIL :           return TYPE_NIL;
-        case LUA_TNONE :          return TYPE_NONE;
-        case LUA_TNUMBER :        return TYPE_NUMBER;
-        case LUA_TSTRING :        return TYPE_STRING;
-        case LUA_TTABLE :         return TYPE_TABLE;
-        case LUA_TTHREAD :        return TYPE_THREAD;
-        case LUA_TUSERDATA :      return TYPE_USERDATA;
-        default :                 return TYPE_NONE;
+        case LUA_TBOOLEAN :       return type::BOOLEAN;
+        case LUA_TFUNCTION :      return type::FUNCTION;
+        case LUA_TLIGHTUSERDATA : return type::LIGHTUSERDATA;
+        case LUA_TNIL :           return type::NIL;
+        case LUA_TNONE :          return type::NONE;
+        case LUA_TNUMBER :        return type::NUMBER;
+        case LUA_TSTRING :        return type::STRING;
+        case LUA_TTABLE :         return type::TABLE;
+        case LUA_TTHREAD :        return type::THREAD;
+        case LUA_TUSERDATA :      return type::USERDATA;
+        default :                 return type::NONE;
     }
 }
 
@@ -756,16 +756,16 @@ std::string state::get_type_name(type mType)
 {
     switch (mType)
     {
-        case TYPE_BOOLEAN :       return lua_typename(pLua_, LUA_TBOOLEAN);
-        case TYPE_FUNCTION :      return lua_typename(pLua_, LUA_TFUNCTION);
-        case TYPE_LIGHTUSERDATA : return lua_typename(pLua_, LUA_TLIGHTUSERDATA);
-        case TYPE_NIL :           return lua_typename(pLua_, LUA_TNIL);
-        case TYPE_NONE :          return lua_typename(pLua_, LUA_TNONE);
-        case TYPE_NUMBER :        return lua_typename(pLua_, LUA_TNUMBER);
-        case TYPE_STRING :        return lua_typename(pLua_, LUA_TSTRING);
-        case TYPE_TABLE :         return lua_typename(pLua_, LUA_TTABLE);
-        case TYPE_THREAD :        return lua_typename(pLua_, LUA_TTHREAD);
-        case TYPE_USERDATA :      return lua_typename(pLua_, LUA_TUSERDATA);
+        case type::BOOLEAN :       return lua_typename(pLua_, LUA_TBOOLEAN);
+        case type::FUNCTION :      return lua_typename(pLua_, LUA_TFUNCTION);
+        case type::LIGHTUSERDATA : return lua_typename(pLua_, LUA_TLIGHTUSERDATA);
+        case type::NIL :           return lua_typename(pLua_, LUA_TNIL);
+        case type::NONE :          return lua_typename(pLua_, LUA_TNONE);
+        case type::NUMBER :        return lua_typename(pLua_, LUA_TNUMBER);
+        case type::STRING :        return lua_typename(pLua_, LUA_TSTRING);
+        case type::TABLE :         return lua_typename(pLua_, LUA_TTABLE);
+        case type::THREAD :        return lua_typename(pLua_, LUA_TTHREAD);
+        case type::USERDATA :      return lua_typename(pLua_, LUA_TUSERDATA);
         default :                 return "";
     }
 }
@@ -783,7 +783,7 @@ void state::get_global(const std::string& sName)
     for (const auto& sWord : lDecomposedName)
     {
         const type mType = get_type(-1);
-        if (mType != TYPE_TABLE && mType != TYPE_USERDATA)
+        if (mType != type::TABLE && mType != type::USERDATA)
         {
             lua_pop(pLua_, 1);
             lua_pushnil(pLua_);
