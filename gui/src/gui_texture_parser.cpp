@@ -51,9 +51,9 @@ void texture::parse_gradient_block_(xml::block* pBlock)
         std::string sOrientation = pGradientBlock->get_attribute("orientation");
         gradient::orientation mOrient;
         if (sOrientation == "HORIZONTAL")
-            mOrient = gradient::HORIZONTAL;
+            mOrient = gradient::orientation::HORIZONTAL;
         else if (sOrientation == "VERTICAL")
-            mOrient = gradient::VERTICAL;
+            mOrient = gradient::orientation::VERTICAL;
         else
         {
             gui::out << gui::warning << pGradientBlock->get_location() << " : "

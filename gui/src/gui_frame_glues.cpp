@@ -352,21 +352,21 @@ int lua_frame::_get_frame_strata(lua_State* pLua)
     frame_strata mStrata = pFrameParent_->get_frame_strata();
     std::string sStrata;
 
-    if (mStrata == STRATA_BACKGROUND)
+    if (mStrata == frame_strata::BACKGROUND)
         sStrata = "BACKGROUND";
-    else if (mStrata == STRATA_LOW)
+    else if (mStrata == frame_strata::LOW)
         sStrata = "LOW";
-    else if (mStrata == STRATA_MEDIUM)
+    else if (mStrata == frame_strata::MEDIUM)
         sStrata = "MEDIUM";
-    else if (mStrata == STRATA_HIGH)
+    else if (mStrata == frame_strata::HIGH)
         sStrata = "HIGH";
-    else if (mStrata == STRATA_DIALOG)
+    else if (mStrata == frame_strata::DIALOG)
         sStrata = "DIALOG";
-    else if (mStrata == STRATA_FULLSCREEN)
+    else if (mStrata == frame_strata::FULLSCREEN)
         sStrata = "FULLSCREEN";
-    else if (mStrata == STRATA_FULLSCREEN_DIALOG)
+    else if (mStrata == frame_strata::FULLSCREEN_DIALOG)
         sStrata = "FULLSCREEN_DIALOG";
-    else if (mStrata == STRATA_TOOLTIP)
+    else if (mStrata == frame_strata::TOOLTIP)
         sStrata = "TOOLTIP";
 
     mFunc.push(sStrata);

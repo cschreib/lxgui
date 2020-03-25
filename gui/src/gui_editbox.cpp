@@ -18,10 +18,10 @@ edit_box::edit_box(manager* pManager) : focus_frame(pManager),
     pHighlight_(nullptr), mHighlightColor_(1.0f, 1.0f, 1.0f, 0.35f),
     uiSelectionStartPos_(0), uiSelectionEndPos_(0), bSelectedText_(false),
     pCarret_(nullptr), dBlinkSpeed_(0.5),
-    mCarretTimer_(dBlinkSpeed_, periodic_timer::START_FIRST_TICK, false),
+    mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
     uiMaxHistoryLines_(uint(-1)), pFontString_(nullptr),
     lTextInsets_(quad2i::ZERO), uiLastKeyPressed_(0u), dKeyRepeatSpeed_(0.03),
-    mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::START_FIRST_TICK, true)
+    mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
 {
     lType_.push_back(CLASS_NAME);
 
@@ -386,8 +386,8 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
                 }
             }
 
-            pHighlight_->set_abs_point(ANCHOR_LEFT,  sName_, ANCHOR_LEFT, iLeftPos,  0);
-            pHighlight_->set_abs_point(ANCHOR_RIGHT, sName_, ANCHOR_LEFT, iRightPos, 0);
+            pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, iLeftPos,  0);
+            pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, iRightPos, 0);
         }
     }
 
@@ -477,7 +477,7 @@ void edit_box::set_blink_speed(const double& dBlinkSpeed)
     if (dBlinkSpeed_ != dBlinkSpeed)
     {
         dBlinkSpeed_ = dBlinkSpeed;
-        mCarretTimer_ = periodic_timer(dBlinkSpeed_, periodic_timer::START_FIRST_TICK, false);
+        mCarretTimer_ = periodic_timer(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false);
     }
 }
 
@@ -640,10 +640,10 @@ void edit_box::set_text_insets(const quad2i& lInsets)
     {
         pFontString_->clear_all_points();
         pFontString_->set_abs_point(
-            ANCHOR_TOPLEFT, sName_, ANCHOR_TOPLEFT, lTextInsets_.top_left()
+            anchor_point::TOPLEFT, sName_, anchor_point::TOPLEFT, lTextInsets_.top_left()
         );
         pFontString_->set_abs_point(
-            ANCHOR_BOTTOMRIGHT, sName_, ANCHOR_BOTTOMRIGHT, lTextInsets_.bottom_right()
+            anchor_point::BOTTOMRIGHT, sName_, anchor_point::BOTTOMRIGHT, lTextInsets_.bottom_right()
         );
 
         update_displayed_text_();
@@ -707,10 +707,10 @@ void edit_box::set_font_string(font_string* pFont)
         pFontString_->set_abs_dimensions(0u, 0u);
         pFontString_->clear_all_points();
         pFontString_->set_abs_point(
-            ANCHOR_TOPLEFT,     "$parent", ANCHOR_TOPLEFT,      lTextInsets_.top_left()
+            anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
         );
         pFontString_->set_abs_point(
-            ANCHOR_BOTTOMRIGHT, "$parent", ANCHOR_BOTTOMRIGHT, -lTextInsets_.bottom_right()
+            anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
         );
 
         pFontString_->enable_formatting(false);
@@ -747,10 +747,10 @@ void edit_box::create_highlight_()
     add_region(pHighlight_);
 
     pHighlight_->set_abs_point(
-        ANCHOR_TOP,    sName_, ANCHOR_TOP,    0,  lTextInsets_.top
+        anchor_point::TOP,    sName_, anchor_point::TOP,    0,  lTextInsets_.top
     );
     pHighlight_->set_abs_point(
-        ANCHOR_BOTTOM, sName_, ANCHOR_BOTTOM, 0, -lTextInsets_.bottom
+        anchor_point::BOTTOM, sName_, anchor_point::BOTTOM, 0, -lTextInsets_.bottom
     );
 
     pHighlight_->set_color(mHighlightColor_);
@@ -783,7 +783,7 @@ void edit_box::create_carret_()
         pSprite->set_color(pFontString_->get_text_color());
 
         pCarret_->set_sprite(std::move(pSprite));
-        pCarret_->set_abs_point(ANCHOR_CENTER, sName_, ANCHOR_LEFT, lTextInsets_.left - 1, 0);
+        pCarret_->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
 
         pCarret_->notify_loaded();
     }
@@ -855,20 +855,20 @@ void edit_box::update_carret_position_()
             switch (pFontString_->get_justify_h())
             {
                 case text::ALIGN_LEFT :
-                    mPoint = ANCHOR_LEFT;
+                    mPoint = anchor_point::LEFT;
                     iOffset = lTextInsets_.left - 1;
                     break;
                 case text::ALIGN_CENTER :
-                    mPoint = ANCHOR_CENTER;
+                    mPoint = anchor_point::CENTER;
                     break;
                 case text::ALIGN_RIGHT :
-                    mPoint = ANCHOR_RIGHT;
+                    mPoint = anchor_point::RIGHT;
                     iOffset = -lTextInsets_.right - 1;
                     break;
-                default : mPoint = ANCHOR_LEFT; break;
+                default : mPoint = anchor_point::LEFT; break;
             }
             pCarret_->set_abs_point(
-                ANCHOR_CENTER, sName_, mPoint, iOffset, 0
+                anchor_point::CENTER, sName_, mPoint, iOffset, 0
             );
             return;
         }
@@ -947,7 +947,7 @@ void edit_box::update_carret_position_()
         if (iterLetter == lLetters.begin())
         {
             pCarret_->set_abs_point(
-                ANCHOR_CENTER, sName_, ANCHOR_LEFT,
+                anchor_point::CENTER, sName_, anchor_point::LEFT,
                 lTextInsets_.left + int(iterLetter->mQuad.left) - 1, int(fYOffset)
             );
         }
@@ -955,7 +955,7 @@ void edit_box::update_carret_position_()
         {
             --iterLetter;
             pCarret_->set_abs_point(
-                ANCHOR_CENTER, sName_, ANCHOR_LEFT,
+                anchor_point::CENTER, sName_, anchor_point::LEFT,
                 lTextInsets_.left + int(iterLetter->mQuad.right) - 1, int(fYOffset)
             );
         }
@@ -1237,7 +1237,7 @@ periodic_timer::periodic_timer(const double& dDuration, start_type mType, bool b
     dElapsed_(bTickFirst ? dDuration : 0.0), dDuration_(dDuration), bPaused_(true),
     bFirstTick_(true), mType_(mType)
 {
-    if (mType == START_NOW)
+    if (mType == start_type::NOW)
         start();
 }
 
@@ -1258,7 +1258,7 @@ bool periodic_timer::is_paused() const
 
 bool periodic_timer::ticks()
 {
-    if (mType_ == START_FIRST_TICK && bFirstTick_)
+    if (mType_ == start_type::FIRST_TICK && bFirstTick_)
     {
         start();
         bFirstTick_ = false;

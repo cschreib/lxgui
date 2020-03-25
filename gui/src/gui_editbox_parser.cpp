@@ -71,10 +71,10 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
         pFontString->set_abs_dimensions(0u, 0u);
         pFontString->clear_all_points();
         pFontString->set_abs_point(
-            ANCHOR_TOPLEFT,     "$parent", ANCHOR_TOPLEFT,      lTextInsets_.top_left()
+            anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
         );
         pFontString->set_abs_point(
-            ANCHOR_BOTTOMRIGHT, "$parent", ANCHOR_BOTTOMRIGHT, -lTextInsets_.bottom_right()
+            anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
         );
 
         pFontString->enable_formatting(false);

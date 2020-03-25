@@ -1,8 +1,3 @@
-/* ###################################### */
-/* ###     Frost Engine, by Kalith    ### */
-/* ###################################### */
-/*                                        */
-
 #include "lxgui/gui_uiobject.hpp"
 
 #include "lxgui/gui_anchor.hpp"

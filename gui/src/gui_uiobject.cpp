@@ -134,7 +134,7 @@ void uiobject::copy_from(uiobject* pObj)
 
         for (const auto& mAnchor : utils::range::value(pObj->get_point_list()))
         {
-            if (mAnchor.get_type() == ANCHOR_ABS)
+            if (mAnchor.get_type() == anchor_type::ABS)
             {
                 this->set_abs_point(
                     mAnchor.get_point(),
@@ -454,11 +454,11 @@ void uiobject::set_all_points(const std::string& sObjName)
     if (sObjName != sName_)
     {
         clear_all_points();
-        anchor mAnchor = anchor(this, ANCHOR_TOPLEFT, sObjName, ANCHOR_TOPLEFT);
-        lAnchorList_[ANCHOR_TOPLEFT] = mAnchor;
+        anchor mAnchor = anchor(this, anchor_point::TOPLEFT, sObjName, anchor_point::TOPLEFT);
+        lAnchorList_[anchor_point::TOPLEFT] = mAnchor;
 
-        mAnchor = anchor(this, ANCHOR_BOTTOMRIGHT, sObjName, ANCHOR_BOTTOMRIGHT);
-        lAnchorList_[ANCHOR_BOTTOMRIGHT] = mAnchor;
+        mAnchor = anchor(this, anchor_point::BOTTOMRIGHT, sObjName, anchor_point::BOTTOMRIGHT);
+        lAnchorList_[anchor_point::BOTTOMRIGHT] = mAnchor;
 
         lDefinedBorderList_ = quad2<bool>(true, true, true, true);
 
@@ -476,11 +476,11 @@ void uiobject::set_all_points(uiobject* pObj)
     if (pObj != this)
     {
         clear_all_points();
-        anchor mAnchor = anchor(this, ANCHOR_TOPLEFT, pObj ? pObj->get_name() : "", ANCHOR_TOPLEFT);
-        lAnchorList_[ANCHOR_TOPLEFT] = mAnchor;
+        anchor mAnchor = anchor(this, anchor_point::TOPLEFT, pObj ? pObj->get_name() : "", anchor_point::TOPLEFT);
+        lAnchorList_[anchor_point::TOPLEFT] = mAnchor;
 
-        mAnchor = anchor(this, ANCHOR_BOTTOMRIGHT, pObj ? pObj->get_name() : "", ANCHOR_BOTTOMRIGHT);
-        lAnchorList_[ANCHOR_BOTTOMRIGHT] = mAnchor;
+        mAnchor = anchor(this, anchor_point::BOTTOMRIGHT, pObj ? pObj->get_name() : "", anchor_point::BOTTOMRIGHT);
+        lAnchorList_[anchor_point::BOTTOMRIGHT] = mAnchor;
 
         lDefinedBorderList_ = quad2<bool>(true, true, true, true);
 
@@ -517,32 +517,32 @@ void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName
 
     switch (mPoint)
     {
-        case ANCHOR_TOPLEFT :
+        case anchor_point::TOPLEFT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_TOP :
+        case anchor_point::TOP :
             lDefinedBorderList_.top    = true;
             break;
-        case ANCHOR_TOPRIGHT :
+        case anchor_point::TOPRIGHT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_RIGHT :
+        case anchor_point::RIGHT :
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOMRIGHT :
+        case anchor_point::BOTTOMRIGHT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOM :
+        case anchor_point::BOTTOM :
             lDefinedBorderList_.bottom = true;
             break;
-        case ANCHOR_BOTTOMLEFT :
+        case anchor_point::BOTTOMLEFT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_LEFT :
+        case anchor_point::LEFT :
             lDefinedBorderList_.left   = true;
             break;
         default : break;
@@ -578,32 +578,32 @@ void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName
 
     switch (mPoint)
     {
-        case ANCHOR_TOPLEFT :
+        case anchor_point::TOPLEFT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_TOP :
+        case anchor_point::TOP :
             lDefinedBorderList_.top    = true;
             break;
-        case ANCHOR_TOPRIGHT :
+        case anchor_point::TOPRIGHT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_RIGHT :
+        case anchor_point::RIGHT :
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOMRIGHT :
+        case anchor_point::BOTTOMRIGHT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOM :
+        case anchor_point::BOTTOM :
             lDefinedBorderList_.bottom = true;
             break;
-        case ANCHOR_BOTTOMLEFT :
+        case anchor_point::BOTTOMLEFT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_LEFT :
+        case anchor_point::LEFT :
             lDefinedBorderList_.left   = true;
             break;
         default : break;
@@ -621,32 +621,32 @@ void uiobject::set_point(const anchor& mAnchor)
 
     switch (mAnchor.get_point())
     {
-        case ANCHOR_TOPLEFT :
+        case anchor_point::TOPLEFT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_TOP :
+        case anchor_point::TOP :
             lDefinedBorderList_.top    = true;
             break;
-        case ANCHOR_TOPRIGHT :
+        case anchor_point::TOPRIGHT :
             lDefinedBorderList_.top    = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_RIGHT :
+        case anchor_point::RIGHT :
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOMRIGHT :
+        case anchor_point::BOTTOMRIGHT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.right  = true;
             break;
-        case ANCHOR_BOTTOM :
+        case anchor_point::BOTTOM :
             lDefinedBorderList_.bottom = true;
             break;
-        case ANCHOR_BOTTOMLEFT :
+        case anchor_point::BOTTOMLEFT :
             lDefinedBorderList_.bottom = true;
             lDefinedBorderList_.left   = true;
             break;
-        case ANCHOR_LEFT :
+        case anchor_point::LEFT :
             lDefinedBorderList_.left   = true;
             break;
         default : break;
@@ -822,39 +822,39 @@ void uiobject::read_anchors_(float& iLeft, float& iRight, float& iTop,
 
         switch (mAnchor.get_point())
         {
-            case ANCHOR_TOPLEFT :
+            case anchor_point::TOPLEFT :
                 iTop = std::min<float>(iTop, mAnchor.get_abs_y());
                 iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
                 break;
-            case ANCHOR_TOP :
+            case anchor_point::TOP :
                 iTop = std::min<float>(iTop, mAnchor.get_abs_y());
                 iXCenter = mAnchor.get_abs_x();
                 break;
-            case ANCHOR_TOPRIGHT :
+            case anchor_point::TOPRIGHT :
                 iTop = std::min<float>(iTop, mAnchor.get_abs_y());
                 iRight = std::max<float>(iRight, mAnchor.get_abs_x());
                 break;
-            case ANCHOR_RIGHT :
+            case anchor_point::RIGHT :
                 iRight = std::max<float>(iRight, mAnchor.get_abs_x());
                 iYCenter = mAnchor.get_abs_y();
                 break;
-            case ANCHOR_BOTTOMRIGHT :
+            case anchor_point::BOTTOMRIGHT :
                 iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
                 iRight = std::max<float>(iRight, mAnchor.get_abs_x());
                 break;
-            case ANCHOR_BOTTOM :
+            case anchor_point::BOTTOM :
                 iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
                 iXCenter = mAnchor.get_abs_x();
                 break;
-            case ANCHOR_BOTTOMLEFT :
+            case anchor_point::BOTTOMLEFT :
                 iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
                 iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
                 break;
-            case ANCHOR_LEFT :
+            case anchor_point::LEFT :
                 iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
                 iYCenter = mAnchor.get_abs_y();
                 break;
-            case ANCHOR_CENTER :
+            case anchor_point::CENTER :
                 iXCenter = mAnchor.get_abs_x();
                 iYCenter = mAnchor.get_abs_y();
                 break;
@@ -1141,20 +1141,20 @@ std::vector<uiobject*> uiobject::clear_links()
         for (const auto& mPoint : lAnchoredPointList)
         {
             const anchor* pAnchor = pObj->get_point(mPoint);
-            anchor mNewAnchor = anchor(pObj, mPoint, "", ANCHOR_TOPLEFT);
+            anchor mNewAnchor = anchor(pObj, mPoint, "", anchor_point::TOPLEFT);
             vector2i mOffset = pAnchor->get_abs_offset();
 
             switch (pAnchor->get_parent_point())
             {
-                case ANCHOR_TOPLEFT :     mOffset   += lBorderList_.top_left();     break;
-                case ANCHOR_TOP :         mOffset.y += lBorderList_.top;            break;
-                case ANCHOR_TOPRIGHT :    mOffset   += lBorderList_.top_right();    break;
-                case ANCHOR_RIGHT :       mOffset.x += lBorderList_.right;          break;
-                case ANCHOR_BOTTOMRIGHT : mOffset   += lBorderList_.bottom_right(); break;
-                case ANCHOR_BOTTOM :      mOffset.y += lBorderList_.bottom;         break;
-                case ANCHOR_BOTTOMLEFT :  mOffset   += lBorderList_.bottom_left();  break;
-                case ANCHOR_LEFT :        mOffset.x += lBorderList_.left;           break;
-                case ANCHOR_CENTER :      mOffset   += lBorderList_.center();       break;
+                case anchor_point::TOPLEFT :     mOffset   += lBorderList_.top_left();     break;
+                case anchor_point::TOP :         mOffset.y += lBorderList_.top;            break;
+                case anchor_point::TOPRIGHT :    mOffset   += lBorderList_.top_right();    break;
+                case anchor_point::RIGHT :       mOffset.x += lBorderList_.right;          break;
+                case anchor_point::BOTTOMRIGHT : mOffset   += lBorderList_.bottom_right(); break;
+                case anchor_point::BOTTOM :      mOffset.y += lBorderList_.bottom;         break;
+                case anchor_point::BOTTOMLEFT :  mOffset   += lBorderList_.bottom_left();  break;
+                case anchor_point::LEFT :        mOffset.x += lBorderList_.left;           break;
+                case anchor_point::CENTER :      mOffset   += lBorderList_.center();       break;
             }
 
             mNewAnchor.set_abs_offset(mOffset);

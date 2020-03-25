@@ -9,30 +9,30 @@ namespace gui
 {
     class uiobject;
 
-    enum anchor_type
+    enum class anchor_type
     {
-        ANCHOR_ABS,
-        ANCHOR_REL
+        ABS,
+        REL
     };
 
-    enum anchor_point
+    enum class anchor_point
     {
-        ANCHOR_TOPLEFT,
-        ANCHOR_TOP,
-        ANCHOR_TOPRIGHT,
-        ANCHOR_RIGHT,
-        ANCHOR_BOTTOMRIGHT,
-        ANCHOR_BOTTOM,
-        ANCHOR_BOTTOMLEFT,
-        ANCHOR_LEFT,
-        ANCHOR_CENTER
+        TOPLEFT = 0,
+        TOP,
+        TOPRIGHT,
+        RIGHT,
+        BOTTOMRIGHT,
+        BOTTOM,
+        BOTTOMLEFT,
+        LEFT,
+        CENTER
     };
 
-    enum constraint
+    enum class constraint
     {
-        CONSTRAINT_NONE,
-        CONSTRAINT_X,
-        CONSTRAINT_Y
+        NONE,
+        X,
+        Y
     };
 
     /// Stores a position for a UI widget

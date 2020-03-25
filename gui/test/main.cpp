@@ -155,11 +155,11 @@ int main(int argc, char* argv[])
         // Create the Frame
         gui::frame* pFrame = mManager.create_frame<gui::frame>("FPSCounter");
         pFrame->set_rel_dimensions(1.0f, 1.0f);
-        pFrame->set_abs_point(gui::ANCHOR_BOTTOMRIGHT, "FontstringTestFrameText", gui::ANCHOR_TOPRIGHT);
+        pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
         // Create the FontString
         gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
-        pFont->set_abs_point(gui::ANCHOR_BOTTOMRIGHT, "$parent", gui::ANCHOR_BOTTOMRIGHT, 0, -5);
+        pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
         pFont->set_font("interface/fonts/main.ttf", 12);
         pFont->set_justify_v(gui::text::ALIGN_BOTTOM);
         pFont->set_justify_h(gui::text::ALIGN_RIGHT);

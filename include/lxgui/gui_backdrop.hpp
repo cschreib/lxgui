@@ -14,18 +14,6 @@ namespace gui
     {
     public :
 
-        enum edge_type
-        {
-            EDGE_LEFT,
-            EDGE_RIGHT,
-            EDGE_TOP,
-            EDGE_BOTTOM,
-            EDGE_TOPLEFT,
-            EDGE_TOPRIGHT,
-            EDGE_BOTTOMLEFT,
-            EDGE_BOTTOMRIGHT
-        };
-
         /// Constructor.
         /** \param pParent The frame it is linked to
         */
@@ -168,6 +156,22 @@ namespace gui
         void render() const;
 
     private :
+
+        /// Defines the position of each edge sprite.
+        enum class edge_type
+        {
+            LEFT = 0,
+            RIGHT,
+            TOP,
+            BOTTOM,
+            TOPLEFT,
+            TOPRIGHT,
+            BOTTOMLEFT,
+            BOTTOMRIGHT
+        };
+
+        /// Return the sprite for a given edge.
+        sprite* get_edge(edge_type mEdge) const;
 
         frame*      pParent_;
         std::string sBackgroundFile_;

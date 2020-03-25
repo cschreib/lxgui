@@ -186,9 +186,9 @@ void status_bar::set_bar_texture(texture* pBarTexture)
         pBarTexture_->clear_all_points();
 
         if (bReversed_)
-            pBarTexture_->set_point(anchor(pBarTexture_, ANCHOR_TOPRIGHT, "$parent", ANCHOR_TOPRIGHT));
+            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
         else
-            pBarTexture_->set_point(anchor(pBarTexture_, ANCHOR_BOTTOMLEFT, "$parent", ANCHOR_BOTTOMLEFT));
+            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
         lInitialTextCoords_ = select_uvs(pBarTexture_->get_tex_coord());
         fire_update_bar_texture_();
@@ -241,9 +241,9 @@ void status_bar::set_reversed(bool bReversed)
     if (pBarTexture_)
     {
         if (bReversed_)
-            pBarTexture_->set_point(anchor(pBarTexture_, ANCHOR_TOPRIGHT, "$parent", ANCHOR_TOPRIGHT));
+            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
         else
-            pBarTexture_->set_point(anchor(pBarTexture_, ANCHOR_BOTTOMLEFT, "$parent", ANCHOR_BOTTOMLEFT));
+            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
         pBarTexture_->fire_update_borders();
     }

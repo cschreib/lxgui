@@ -76,17 +76,17 @@ namespace gui
         std::vector<std::string> lSavedVariableList;
     };
 
-    enum frame_strata
+    enum class frame_strata
     {
-        STRATA_PARENT,
-        STRATA_BACKGROUND,
-        STRATA_LOW,
-        STRATA_MEDIUM,
-        STRATA_HIGH,
-        STRATA_DIALOG,
-        STRATA_FULLSCREEN,
-        STRATA_FULLSCREEN_DIALOG,
-        STRATA_TOOLTIP
+        PARENT,
+        BACKGROUND,
+        LOW,
+        MEDIUM,
+        HIGH,
+        DIALOG,
+        FULLSCREEN,
+        FULLSCREEN_DIALOG,
+        TOOLTIP
     };
 
     /// Contains frame
@@ -101,7 +101,7 @@ namespace gui
         strata();
         ~strata();
 
-        uint                         uiID;
+        frame_strata                 mStrata;
         std::map<int, level>         lLevelList;
         mutable bool                 bRedraw;
         utils::refptr<render_target> pRenderTarget;
@@ -505,7 +505,7 @@ namespace gui
         *         need to do anything.
         */
         void start_moving(
-            uiobject* pObj, anchor* pAnchor = nullptr, constraint mConstraint = CONSTRAINT_NONE,
+            uiobject* pObj, anchor* pAnchor = nullptr, constraint mConstraint = constraint::NONE,
             std::function<void()> pApplyConstraintFunc = nullptr
         );
 

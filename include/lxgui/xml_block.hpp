@@ -11,18 +11,18 @@ namespace xml
     class document;
     class block;
 
-    enum attribute_type
+    enum class attribute_type
     {
-        ATTR_TYPE_STRING,
-        ATTR_TYPE_NUMBER,
-        ATTR_TYPE_BOOL
+        STRING,
+        NUMBER,
+        BOOLEAN
     };
 
     /// An attribute of an XML Block
     struct attribute
     {
         attribute();
-        explicit attribute(const std::string& name, bool optional = false, const std::string& def = "", attribute_type type = ATTR_TYPE_STRING);
+        explicit attribute(const std::string& name, bool optional = false, const std::string& def = "", attribute_type type = attribute_type::STRING);
 
         std::string    sName;
         std::string    sValue;

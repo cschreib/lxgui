@@ -45,8 +45,8 @@ void slider::parse_block(xml::block* pBlock)
         pThumbTexture_->parse_block(pThumbBlock);
         pThumbTexture_->clear_all_points();
         pThumbTexture_->set_point(anchor(
-            pThumbTexture_, ANCHOR_CENTER, "$parent",
-            get_orientation() == ORIENT_HORIZONTAL ? ANCHOR_LEFT : ANCHOR_TOP
+            pThumbTexture_, anchor_point::CENTER, "$parent",
+            get_orientation() == ORIENT_HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
     }
 }

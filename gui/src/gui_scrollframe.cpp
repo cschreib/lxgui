@@ -89,7 +89,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
     if (pScrollChild_)
     {
         pScrollChild_->set_manually_rendered(false);
-        pScrollChild_->modify_point(ANCHOR_TOPLEFT)->set_abs_offset(
+        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(
             lBorderList_.top_left() - vector2i(iHorizontalScroll_, iVerticalScroll_)
         );
 
@@ -139,7 +139,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
 
         pScrollChild_->set_manually_rendered(true, this);
         pScrollChild_->clear_all_points();
-        pScrollChild_->set_abs_point(ANCHOR_TOPLEFT, "", ANCHOR_TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
+        pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
 
         add_to_scroll_child_list_(pScrollChild_);
 
@@ -170,7 +170,7 @@ void scroll_frame::set_horizontal_scroll(int iHorizontalScroll)
         iHorizontalScroll_ = iHorizontalScroll;
         lQueuedEventList_.push_back("HorizontalScroll");
 
-        pScrollChild_->modify_point(ANCHOR_TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
         fire_redraw();
     }
 }
@@ -192,7 +192,7 @@ void scroll_frame::set_vertical_scroll(int iVerticalScroll)
         iVerticalScroll_ = iVerticalScroll;
         lQueuedEventList_.push_back("VerticalScroll");
 
-        pScrollChild_->modify_point(ANCHOR_TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
         fire_redraw();
     }
 }

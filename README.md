@@ -262,11 +262,11 @@ Doing the very same thing in C++ would give the following code :
 // Create the Frame
 gui::frame* pFrame = mManager.create_frame<gui::frame>("FPSCounter");
 pFrame->set_rel_dimensins(1.0f, 1.0f);
-pFrame->set_abs_point(gui::ANCHOR_CENTER, "", gui::ANCHOR_CENTER);
+pFrame->set_abs_point(gui::anchor_point::CENTER, "", gui::anchor_point::CENTER);
 
 // Create the FontString
 gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
-pFont->set_abs_point(gui::ANCHOR_BOTTOMRIGHT, "$parent", gui::ANCHOR_BOTTOMRIGHT, -5, -5);
+pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, -5, -5);
 pFont->set_font("interface/fonts/main.ttf", 12);
 pFont->set_justify_v(gui::text::ALIGN_BOTTOM);
 pFont->set_justify_h(gui::text::ALIGN_RIGHT);

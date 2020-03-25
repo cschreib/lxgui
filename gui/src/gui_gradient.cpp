@@ -5,7 +5,7 @@ namespace gui
 const gradient gradient::NONE = gradient();
 
 gradient::gradient() :
-    bIsEmpty_(true), mOrientation_(HORIZONTAL)
+    bIsEmpty_(true), mOrientation_(orientation::HORIZONTAL)
 {
 }
 

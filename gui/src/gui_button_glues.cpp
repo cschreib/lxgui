@@ -66,9 +66,9 @@ int lua_button::_get_button_state(lua_State* pLua)
 
     switch (pButtonParent_->get_button_state())
     {
-        case button::STATE_UP :       mFunc.push(std::string("NORMAL"));   break;
-        case button::STATE_DOWN :     mFunc.push(std::string("PUSHED"));   break;
-        case button::STATE_DISABLED : mFunc.push(std::string("DISABLED")); break;
+        case button::state::UP :       mFunc.push(std::string("NORMAL"));   break;
+        case button::state::DOWN :     mFunc.push(std::string("PUSHED"));   break;
+        case button::state::DISABLED : mFunc.push(std::string("DISABLED")); break;
         default : mFunc.push_nil(); break;
     }
 

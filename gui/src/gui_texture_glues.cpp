@@ -230,9 +230,9 @@ int lua_texture::_set_gradient(lua_State* pLua)
         std::string sOrientation = mFunc.get(0)->get_string();
         gradient::orientation mOrientation;
         if (sOrientation == "HORIZONTAL")
-            mOrientation = gradient::HORIZONTAL;
+            mOrientation = gradient::orientation::HORIZONTAL;
         else if (sOrientation == "VERTICAL")
-            mOrientation = gradient::VERTICAL;
+            mOrientation = gradient::orientation::VERTICAL;
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "
@@ -293,9 +293,9 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
         std::string sOrientation = mFunc.get(0)->get_string();
         gradient::orientation mOrientation;
         if (sOrientation == "HORIZONTAL")
-            mOrientation = gradient::HORIZONTAL;
+            mOrientation = gradient::orientation::HORIZONTAL;
         else if (sOrientation == "VERTICAL")
-            mOrientation = gradient::VERTICAL;
+            mOrientation = gradient::orientation::VERTICAL;
         else
         {
             gui::out << gui::warning << mFunc.get_name() << " : "

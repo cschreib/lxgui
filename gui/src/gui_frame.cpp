@@ -1,8 +1,3 @@
-/* ###################################### */
-/* ###     Frost Engine, by Kalith    ### */
-/* ###################################### */
-/*                                        */
-
 #include "lxgui/gui_frame.hpp"
 
 #include "lxgui/gui_layeredregion.hpp"
@@ -25,7 +20,7 @@ layer::layer() : bDisabled(false)
 }
 
 frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
-    region(pManager), pAddOn_(nullptr), iLevel_(0), mStrata_(STRATA_MEDIUM), bIsTopLevel_(false),
+    region(pManager), pAddOn_(nullptr), iLevel_(0), mStrata_(frame_strata::MEDIUM), bIsTopLevel_(false),
     pTopLevelParent_(nullptr), bHasAllEventsRegistred_(false), bIsKeyboardEnabled_(false),
     bIsMouseEnabled_(false), bAllowWorldInput_(false), bIsMouseWheelEnabled_(false),
     bIsMovable_(false), bIsClampedToScreen_(false), bIsResizable_(false), bIsUserPlaced_(false),
@@ -83,15 +78,15 @@ std::string frame::serialize(const std::string& sTab) const
     sStr << sTab << "  # Strata      : ";
     switch (mStrata_)
     {
-        case STRATA_PARENT :            sStr << "PARENT\n"; break;
-        case STRATA_BACKGROUND :        sStr << "BACKGROUND\n"; break;
-        case STRATA_LOW :               sStr << "LOW\n"; break;
-        case STRATA_MEDIUM :            sStr << "MEDIUM\n"; break;
-        case STRATA_HIGH :              sStr << "HIGH\n"; break;
-        case STRATA_DIALOG :            sStr << "DIALOG\n"; break;
-        case STRATA_FULLSCREEN :        sStr << "FULLSCREEN\n"; break;
-        case STRATA_FULLSCREEN_DIALOG : sStr << "FULLSCREEN_DIALOG\n"; break;
-        case STRATA_TOOLTIP :           sStr << "TOOLTIP\n"; break;
+        case frame_strata::PARENT :            sStr << "PARENT\n"; break;
+        case frame_strata::BACKGROUND :        sStr << "BACKGROUND\n"; break;
+        case frame_strata::LOW :               sStr << "LOW\n"; break;
+        case frame_strata::MEDIUM :            sStr << "MEDIUM\n"; break;
+        case frame_strata::HIGH :              sStr << "HIGH\n"; break;
+        case frame_strata::DIALOG :            sStr << "DIALOG\n"; break;
+        case frame_strata::FULLSCREEN :        sStr << "FULLSCREEN\n"; break;
+        case frame_strata::FULLSCREEN_DIALOG : sStr << "FULLSCREEN_DIALOG\n"; break;
+        case frame_strata::TOOLTIP :           sStr << "TOOLTIP\n"; break;
     }
     sStr << sTab << "  # Level       : " << iLevel_ << "\n";
     sStr << sTab << "  # TopLevel    : " << bIsTopLevel_;
@@ -1378,14 +1373,14 @@ void frame::set_clamped_to_screen(bool bIsClampedToScreen)
 
 void frame::set_frame_strata(frame_strata mStrata)
 {
-    if (mStrata == STRATA_PARENT)
+    if (mStrata == frame_strata::PARENT)
     {
         if (!bVirtual_)
         {
             if (pParentFrame_)
                 mStrata = pParentFrame_->get_frame_strata();
             else
-                mStrata = STRATA_MEDIUM;
+                mStrata = frame_strata::MEDIUM;
         }
     }
 
@@ -1400,31 +1395,31 @@ void frame::set_frame_strata(const std::string& sStrata)
     frame_strata mStrata;
 
     if (sStrata == "BACKGROUND")
-        mStrata = STRATA_BACKGROUND;
+        mStrata = frame_strata::BACKGROUND;
     else if (sStrata == "LOW")
-        mStrata = STRATA_LOW;
+        mStrata = frame_strata::LOW;
     else if (sStrata == "MEDIUM")
-        mStrata = STRATA_MEDIUM;
+        mStrata = frame_strata::MEDIUM;
     else if (sStrata == "HIGH")
-        mStrata = STRATA_HIGH;
+        mStrata = frame_strata::HIGH;
     else if (sStrata == "DIALOG")
-        mStrata = STRATA_DIALOG;
+        mStrata = frame_strata::DIALOG;
     else if (sStrata == "FULLSCREEN")
-        mStrata = STRATA_FULLSCREEN;
+        mStrata = frame_strata::FULLSCREEN;
     else if (sStrata == "FULLSCREEN_DIALOG")
-        mStrata = STRATA_FULLSCREEN_DIALOG;
+        mStrata = frame_strata::FULLSCREEN_DIALOG;
     else if (sStrata == "TOOLTIP")
-        mStrata = STRATA_TOOLTIP;
+        mStrata = frame_strata::TOOLTIP;
     else if (sStrata == "PARENT")
     {
         if (bVirtual_)
-            mStrata = STRATA_PARENT;
+            mStrata = frame_strata::PARENT;
         else
         {
             if (pParentFrame_)
                 mStrata = pParentFrame_->get_frame_strata();
             else
-                mStrata = STRATA_MEDIUM;
+                mStrata = frame_strata::MEDIUM;
         }
     }
     else

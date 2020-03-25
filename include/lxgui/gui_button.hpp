@@ -25,11 +25,11 @@ namespace gui
     {
     public :
 
-        enum state
+        enum class state
         {
-            STATE_UP,
-            STATE_DOWN,
-            STATE_DISABLED
+            UP,
+            DOWN,
+            DISABLED
         };
 
         /// Constructor.

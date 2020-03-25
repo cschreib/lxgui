@@ -11,7 +11,7 @@ namespace gui
     {
     public :
 
-        enum orientation
+        enum class orientation
         {
             HORIZONTAL,
             VERTICAL

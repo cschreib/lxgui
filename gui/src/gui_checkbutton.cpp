@@ -82,7 +82,7 @@ void check_button::check()
 {
     if (!bChecked_)
     {
-        if (mState_ == STATE_DISABLED)
+        if (mState_ == state::DISABLED)
         {
             if (pDisabledCheckedTexture_)
                 pDisabledCheckedTexture_->show();

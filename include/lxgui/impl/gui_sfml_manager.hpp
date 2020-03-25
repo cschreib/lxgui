@@ -21,7 +21,7 @@ namespace sfml
     public :
 
         /// Constructor.
-        manager(sf::RenderWindow& mWindow);
+        explicit manager(sf::RenderWindow& mWindow);
 
         /// Destructor.
         ~manager();

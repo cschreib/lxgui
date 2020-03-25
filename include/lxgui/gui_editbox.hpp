@@ -23,14 +23,14 @@ namespace gui
     {
     public :
 
-        enum start_type
+        enum class start_type
         {
             /// The timer will start if you call Start()
-            START_PAUSED,
+            PAUSED,
             /// The timer starts immediatly after it is created
-            START_NOW,
+            NOW,
             /// The timer will start when you first call Ticks()
-            START_FIRST_TICK
+            FIRST_TICK
         };
 
         /// Default constructor

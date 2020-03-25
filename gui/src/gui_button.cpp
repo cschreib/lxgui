@@ -9,7 +9,7 @@
 namespace gui
 {
 button::button(manager* pManager) : frame(pManager),
-    mState_(STATE_UP), bHighlighted_(false), bLockHighlight_(false),
+    mState_(state::UP), bHighlighted_(false), bLockHighlight_(false),
     pNormalTexture_(nullptr), pPushedTexture_(nullptr), pDisabledTexture_(nullptr),
     pHighlightTexture_(nullptr), pNormalText_(nullptr), pHighlightText_(nullptr),
     pDisabledText_(nullptr), pCurrentFontString_(nullptr),
@@ -75,7 +75,7 @@ void button::on(const std::string& sScriptName, event* pEvent)
         {
             unlight();
 
-            if (mState_ == STATE_DOWN)
+            if (mState_ == state::DOWN)
                 release();
         }
 
@@ -474,7 +474,7 @@ void button::disable()
 {
     if (is_enabled())
     {
-        mState_ = STATE_DISABLED;
+        mState_ = state::DISABLED;
         if (pDisabledTexture_)
         {
             if (pNormalTexture_)
@@ -518,7 +518,7 @@ void button::enable()
 {
     if (!is_enabled())
     {
-        mState_ = STATE_UP;
+        mState_ = state::UP;
         if (pDisabledTexture_)
         {
             if (pNormalTexture_)
@@ -550,7 +550,7 @@ void button::enable()
 
 bool button::is_enabled() const
 {
-    return (mState_ != STATE_DISABLED);
+    return (mState_ != state::DISABLED);
 }
 
 void button::push()
@@ -569,7 +569,7 @@ void button::push()
         if (pNormalText_)
             pNormalText_->set_offsets(mPushedTextOffset_);
 
-        mState_ = STATE_DOWN;
+        mState_ = state::DOWN;
     }
 }
 
@@ -589,7 +589,7 @@ void button::release()
         if (pNormalText_)
             pNormalText_->set_offsets(0, 0);
 
-        mState_ = STATE_UP;
+        mState_ = state::UP;
     }
 }
 
@@ -630,9 +630,9 @@ void button::unlight()
 
             switch (mState_)
             {
-                case STATE_UP       : pCurrentFontString_ = pNormalText_; break;
-                case STATE_DOWN     : pCurrentFontString_ = pNormalText_; break;
-                case STATE_DISABLED : pCurrentFontString_ = pDisabledText_; break;
+                case state::UP       : pCurrentFontString_ = pNormalText_; break;
+                case state::DOWN     : pCurrentFontString_ = pNormalText_; break;
+                case state::DISABLED : pCurrentFontString_ = pDisabledText_; break;
             }
 
             if (pCurrentFontString_)

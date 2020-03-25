@@ -1,9 +1,3 @@
-/* ###################################### */
-/* ###     Frost Engine, by Kalith    ### */
-/* ###################################### */
-/*               Lua source               */
-/*                                        */
-
 #include "lxgui/luapp_state.hpp"
 #include "lxgui/luapp_function.hpp"
 #include <lxgui/utils_string.hpp>

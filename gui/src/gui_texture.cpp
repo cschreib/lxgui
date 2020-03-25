@@ -42,8 +42,8 @@ std::string texture::serialize(const std::string& sTab) const
         sStr << sTab << "  |   # orientation : ";
         switch (mGradient_.get_orientation())
         {
-            case gradient::HORIZONTAL : sStr << "HORIZONTAL\n"; break;
-            case gradient::VERTICAL :   sStr << "VERTICAL\n"; break;
+            case gradient::orientation::HORIZONTAL : sStr << "HORIZONTAL\n"; break;
+            case gradient::orientation::VERTICAL :   sStr << "VERTICAL\n"; break;
             default : sStr << "<error>\n"; break;
         }
         sStr << sTab << "  #-###\n";
@@ -284,7 +284,7 @@ void texture::set_gradient(const gradient& mGradient)
         pManager_->create_material(color::WHITE), 256, 256
     );
 
-    if (mGradient_.get_orientation() == gradient::HORIZONTAL)
+    if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
         pSprite_->set_color(mGradient_.get_min_color(), 0);
         pSprite_->set_color(mGradient_.get_min_color(), 3);

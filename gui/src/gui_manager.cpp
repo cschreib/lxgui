@@ -39,7 +39,7 @@ manager::manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::str
     pOveredFrame_(nullptr), bUpdateOveredFrame_(false), pFocusedFrame_(nullptr),
     pMovedObject_(nullptr), pSizedObject_(nullptr), fMouseMovementX_(0.0f),
     fMouseMovementY_(0.0f), pMovedAnchor_(nullptr), iMovementStartPositionX_(0),
-    iMovementStartPositionY_(0), mConstraint_(CONSTRAINT_NONE), uiResizeStartW_(0),
+    iMovementStartPositionY_(0), mConstraint_(constraint::NONE), uiResizeStartW_(0),
     uiResizeStartH_(0), bResizeWidth_(false), bResizeHeight_(false), bResizeFromRight_(false),
     bResizeFromBottom_(false), uiFrameNumber_(0), bEnableCaching_(true),
     pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(std::move(pImpl))
@@ -810,7 +810,7 @@ void manager::close_ui()
         fMouseMovementY_ = 0.0f;
         iMovementStartPositionX_ = 0;
         iMovementStartPositionY_ = 0;
-        mConstraint_ = CONSTRAINT_NONE;
+        mConstraint_ = constraint::NONE;
         uiResizeStartW_ = 0;
         uiResizeStartH_ = 0;
         bResizeWidth_ = false;
@@ -912,7 +912,7 @@ void manager::create_strata_render_target_(strata& mStrata)
         catch (const utils::exception& e)
         {
             gui::out << gui::error << "gui::manager : "
-                << "Unable to create render_target for strata " << mStrata.uiID << " :\n"
+                << "Unable to create render_target for strata " << static_cast<uint>(mStrata.mStrata) << " :\n"
                 << e.get_description() << std::endl;
 
             bEnableCaching_ = false;
@@ -977,19 +977,19 @@ void manager::update(float fDelta)
     {
         switch (mConstraint_)
         {
-            case CONSTRAINT_NONE :
+            case constraint::NONE :
                 pMovedAnchor_->set_abs_offset(
                     iMovementStartPositionX_ + int(fMouseMovementX_),
                     iMovementStartPositionY_ + int(fMouseMovementY_)
                 );
                 break;
-            case CONSTRAINT_X :
+            case constraint::X :
                 pMovedAnchor_->set_abs_offset(
                     iMovementStartPositionX_ + int(fMouseMovementX_),
                     iMovementStartPositionY_
                 );
                 break;
-            case CONSTRAINT_Y :
+            case constraint::Y :
                 pMovedAnchor_->set_abs_offset(
                     iMovementStartPositionX_,
                     iMovementStartPositionY_ + int(fMouseMovementY_)
@@ -1073,8 +1073,8 @@ void manager::update(float fDelta)
             if (pFrame->is_manually_rendered()) continue;
 
             strata& mStrata = lStrataList_[pFrame->get_frame_strata()];
+            mStrata.mStrata = pFrame->get_frame_strata();
             mStrata.lLevelList[pFrame->get_frame_level()].lFrameList.push_back(pFrame);
-            mStrata.uiID = pFrame->get_frame_strata();
         }
     }
 
@@ -1201,8 +1201,8 @@ void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstrai
         {
             pMovedObject_->clear_all_points();
             const quad2i& lBorders = pMovedObject_->get_borders();
-            pMovedObject_->set_abs_point(ANCHOR_TOPLEFT, "", ANCHOR_TOPLEFT, lBorders.top_left());
-            pMovedAnchor_ = pMovedObject_->modify_point(ANCHOR_TOPLEFT);
+            pMovedObject_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, lBorders.top_left());
+            pMovedAnchor_ = pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
             iMovementStartPositionX_ = lBorders.left;
             iMovementStartPositionY_ = lBorders.top;
@@ -1235,40 +1235,40 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
     {
         const quad2i& lBorders = pSizedObject_->get_borders();
 
-        anchor_point mOppositePoint = ANCHOR_CENTER;
+        anchor_point mOppositePoint = anchor_point::CENTER;
         vector2i mOffset;
 
         switch (mPoint)
         {
-            case ANCHOR_TOPLEFT :
-            case ANCHOR_TOP :
-                mOppositePoint = ANCHOR_BOTTOMRIGHT;
+            case anchor_point::TOPLEFT :
+            case anchor_point::TOP :
+                mOppositePoint = anchor_point::BOTTOMRIGHT;
                 mOffset = lBorders.bottom_right();
                 bResizeFromRight_  = false;
                 bResizeFromBottom_ = false;
                 break;
-            case ANCHOR_TOPRIGHT :
-            case ANCHOR_RIGHT :
-                mOppositePoint = ANCHOR_BOTTOMLEFT;
+            case anchor_point::TOPRIGHT :
+            case anchor_point::RIGHT :
+                mOppositePoint = anchor_point::BOTTOMLEFT;
                 mOffset = lBorders.bottom_left();
                 bResizeFromRight_  = true;
                 bResizeFromBottom_ = false;
                 break;
-            case ANCHOR_BOTTOMRIGHT :
-            case ANCHOR_BOTTOM :
-                mOppositePoint = ANCHOR_TOPLEFT;
+            case anchor_point::BOTTOMRIGHT :
+            case anchor_point::BOTTOM :
+                mOppositePoint = anchor_point::TOPLEFT;
                 mOffset = lBorders.top_left();
                 bResizeFromRight_  = true;
                 bResizeFromBottom_ = true;
                 break;
-            case ANCHOR_BOTTOMLEFT :
-            case ANCHOR_LEFT :
-                mOppositePoint = ANCHOR_TOPRIGHT;
+            case anchor_point::BOTTOMLEFT :
+            case anchor_point::LEFT :
+                mOppositePoint = anchor_point::TOPRIGHT;
                 mOffset = lBorders.top_right();
                 bResizeFromRight_  = false;
                 bResizeFromBottom_ = true;
                 break;
-            case ANCHOR_CENTER :
+            case anchor_point::CENTER :
                 gui::out << gui::error << "gui::manager : "
                     << "Cannot resize \"" <<  pObj->get_name() << "\" from its center." << std::endl;
                 pSizedObject_ = nullptr;
@@ -1276,17 +1276,17 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
         }
 
         pSizedObject_->clear_all_points();
-        pSizedObject_->set_abs_point(mOppositePoint, "", ANCHOR_TOPLEFT, mOffset);
+        pSizedObject_->set_abs_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
 
         uiResizeStartW_ = pSizedObject_->get_abs_width();
         uiResizeStartH_ = pSizedObject_->get_abs_height();
 
-        if (mPoint == ANCHOR_LEFT || mPoint == ANCHOR_RIGHT)
+        if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT)
         {
             bResizeWidth_  = true;
             bResizeHeight_ = false;
         }
-        else if (mPoint == ANCHOR_TOP || mPoint == ANCHOR_BOTTOM)
+        else if (mPoint == anchor_point::TOP || mPoint == anchor_point::BOTTOM)
         {
             bResizeWidth_  = false;
             bResizeHeight_ = true;
@@ -1590,7 +1590,7 @@ void manager::print_statistics()
     gui::out << "    strata redraw percent :" << std::endl;
     for (const auto& mStrata : utils::range::value(lStrataList_))
     {
-        gui::out << "     - [" << mStrata.uiID << "] : "
+        gui::out << "     - [" << static_cast<uint>(mStrata.mStrata) << "] : "
             << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_), 2, 1) << "%" << std::endl;
     }
 }
@@ -1687,7 +1687,7 @@ void manager_impl::set_parent(manager* pParent)
     pParent_ = pParent;
 }
 
-strata::strata() : uiID(uint(-1)), bRedraw(true), uiRedrawCount(0u)
+strata::strata() : mStrata(frame_strata::PARENT), bRedraw(true), uiRedrawCount(0u)
 {
 }
 

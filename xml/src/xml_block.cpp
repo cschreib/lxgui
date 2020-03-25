@@ -86,7 +86,7 @@ void block::check_attributes_def(const std::vector<std::string>& lAttribs)
             utils::trim(sDefault,'"');
         }
 
-        attribute_type mType = ATTR_TYPE_STRING;
+        attribute_type mType = attribute_type::STRING;
         std::vector<std::string> lCommands = utils::cut(sAttr, ":");
         sAttr = lCommands.back();
         lCommands.pop_back();
@@ -97,15 +97,15 @@ void block::check_attributes_def(const std::vector<std::string>& lAttribs)
             char cLetterCode = sCommand[0];
             if (cLetterCode == 's')
             {
-                mType = ATTR_TYPE_STRING;
+                mType = attribute_type::STRING;
             }
             else if (cLetterCode == 'n')
             {
-                mType = ATTR_TYPE_NUMBER;
+                mType = attribute_type::NUMBER;
             }
             else if (cLetterCode == 'b')
             {
-                mType = ATTR_TYPE_BOOL;
+                mType = attribute_type::BOOLEAN;
             }
             else if (cLetterCode == '-')
             {
@@ -173,7 +173,7 @@ bool block::check_attributes(const std::string& sAttributes)
                 if (iter != lAttributeList_.end())
                 {
                     attribute* pAttr = &iter->second;
-                    if (pAttr->mType == ATTR_TYPE_BOOL)
+                    if (pAttr->mType == attribute_type::BOOLEAN)
                     {
                         if (!utils::is_boolean(sAttrValue))
                         {
@@ -183,7 +183,7 @@ bool block::check_attributes(const std::string& sAttributes)
                             return false;
                         }
                     }
-                    else if (pAttr->mType == ATTR_TYPE_NUMBER)
+                    else if (pAttr->mType == attribute_type::NUMBER)
                     {
                         if (!utils::is_number(sAttrValue))
                         {

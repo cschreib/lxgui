@@ -10,14 +10,14 @@
 namespace gui
 {
 anchor::anchor() :
-    pObj_(nullptr), mParentPoint_(ANCHOR_TOPLEFT), mPoint_(ANCHOR_TOPLEFT),
-    mType_(ANCHOR_ABS), iAbsOffX_(0), iAbsOffY_(0), fRelOffX_(0.0f), fRelOffY_(0.0f),
+    pObj_(nullptr), mParentPoint_(anchor_point::TOPLEFT), mPoint_(anchor_point::TOPLEFT),
+    mType_(anchor_type::ABS), iAbsOffX_(0), iAbsOffY_(0), fRelOffX_(0.0f), fRelOffY_(0.0f),
     iParentWidth_(0u), iParentHeight_(0u), pParent_(nullptr), bParentUpdated_(false)
 {
 }
 
 anchor::anchor(uiobject* pObj, anchor_point mPoint, const std::string& sParent, anchor_point mParentPoint) :
-    pObj_(pObj), mParentPoint_(mParentPoint), mPoint_(mPoint), mType_(ANCHOR_ABS),
+    pObj_(pObj), mParentPoint_(mParentPoint), mPoint_(mPoint), mType_(anchor_type::ABS),
     iAbsOffX_(0), iAbsOffY_(0), fRelOffX_(0.0f), fRelOffY_(0.0f),
     iParentWidth_(0u), iParentHeight_(0u), pParent_(nullptr), sParent_(sParent),
     bParentUpdated_(false)
@@ -77,17 +77,17 @@ int anchor::get_abs_x() const
         }
 
         int iOffset;
-        if (mType_ == ANCHOR_ABS)
+        if (mType_ == anchor_type::ABS)
             iOffset = iAbsOffX_;
         else
             iOffset = fRelOffX_*iParentWidth_;
 
         int iParentOffset;
-        if ((mParentPoint_ == ANCHOR_TOPLEFT) || (mParentPoint_ == ANCHOR_LEFT) || (mParentPoint_ == ANCHOR_BOTTOMLEFT))
+        if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::BOTTOMLEFT))
             iParentOffset = 0;
-        else if ((mParentPoint_ == ANCHOR_TOP) || (mParentPoint_ == ANCHOR_CENTER) || (mParentPoint_ == ANCHOR_BOTTOM))
+        else if ((mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::BOTTOM))
             iParentOffset = iParentWidth_/2;
-        else if ((mParentPoint_ == ANCHOR_TOPRIGHT) || (mParentPoint_ == ANCHOR_RIGHT) || (mParentPoint_ == ANCHOR_BOTTOMRIGHT))
+        else if ((mParentPoint_ == anchor_point::TOPRIGHT) || (mParentPoint_ == anchor_point::RIGHT) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
             iParentOffset = iParentWidth_;
         else iParentOffset = 0;
 
@@ -116,17 +116,17 @@ int anchor::get_abs_y() const
         }
 
         int iOffset;
-        if (mType_ == ANCHOR_ABS)
+        if (mType_ == anchor_type::ABS)
             iOffset = iAbsOffY_;
         else
             iOffset = fRelOffY_*iParentHeight_;
 
         int iParentOffset;
-        if ((mParentPoint_ == ANCHOR_TOPLEFT) || (mParentPoint_ == ANCHOR_TOP) || (mParentPoint_ == ANCHOR_TOPRIGHT))
+        if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::TOPRIGHT))
             iParentOffset = 0;
-        else if ((mParentPoint_ == ANCHOR_LEFT) || (mParentPoint_ == ANCHOR_CENTER) || (mParentPoint_ == ANCHOR_RIGHT))
+        else if ((mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::RIGHT))
             iParentOffset = iParentHeight_/2;
-        else if ((mParentPoint_ == ANCHOR_BOTTOMLEFT) || (mParentPoint_ == ANCHOR_BOTTOM) || (mParentPoint_ == ANCHOR_BOTTOMRIGHT))
+        else if ((mParentPoint_ == anchor_point::BOTTOMLEFT) || (mParentPoint_ == anchor_point::BOTTOM) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
             iParentOffset = iParentHeight_;
         else iParentOffset = 0;
 
@@ -222,28 +222,28 @@ void anchor::set_abs_offset(int iX, int iY)
 {
     iAbsOffX_ = iX;
     iAbsOffY_ = iY;
-    mType_ = ANCHOR_ABS;
+    mType_ = anchor_type::ABS;
 }
 
 void anchor::set_abs_offset(const vector2i& mOffset)
 {
     iAbsOffX_ = mOffset.x;
     iAbsOffY_ = mOffset.y;
-    mType_ = ANCHOR_ABS;
+    mType_ = anchor_type::ABS;
 }
 
 void anchor::set_rel_offset(float fX, float fY)
 {
     fRelOffX_ = fX;
     fRelOffY_ = fY;
-    mType_ = ANCHOR_REL;
+    mType_ = anchor_type::REL;
 }
 
 void anchor::set_rel_offset(const vector2f& mOffset)
 {
     fRelOffX_ = mOffset.x;
     fRelOffY_ = mOffset.y;
-    mType_ = ANCHOR_REL;
+    mType_ = anchor_type::REL;
 }
 
 std::string anchor::serialize(const std::string& sTab) const
@@ -260,7 +260,7 @@ std::string anchor::serialize(const std::string& sTab) const
     else
     sStr << "\n";
     sStr << sTab << "  |   # Rel. point : " << get_string_point(mParentPoint_) << "\n";
-    if (mType_ == ANCHOR_ABS)
+    if (mType_ == anchor_type::ABS)
     {
     sStr << sTab << "  |   # Offset X   : " << iAbsOffX_ << "\n";
     sStr << sTab << "  |   # Offset Y   : " << iAbsOffY_ << "\n";
@@ -278,30 +278,30 @@ std::string anchor::get_string_point(anchor_point mPoint)
 {
     switch (mPoint)
     {
-        case ANCHOR_TOPLEFT :     return "TOPLEFT";
-        case ANCHOR_TOP :         return "TOP";
-        case ANCHOR_TOPRIGHT :    return "TOPRIGHT";
-        case ANCHOR_RIGHT :       return "RIGHT";
-        case ANCHOR_BOTTOMRIGHT : return "BOTTOMRIGHT";
-        case ANCHOR_BOTTOM :      return "BOTTOM";
-        case ANCHOR_BOTTOMLEFT :  return "BOTTOMLEFT";
-        case ANCHOR_LEFT :        return "LEFT";
-        case ANCHOR_CENTER :      return "CENTER";
+        case anchor_point::TOPLEFT :     return "TOPLEFT";
+        case anchor_point::TOP :         return "TOP";
+        case anchor_point::TOPRIGHT :    return "TOPRIGHT";
+        case anchor_point::RIGHT :       return "RIGHT";
+        case anchor_point::BOTTOMRIGHT : return "BOTTOMRIGHT";
+        case anchor_point::BOTTOM :      return "BOTTOM";
+        case anchor_point::BOTTOMLEFT :  return "BOTTOMLEFT";
+        case anchor_point::LEFT :        return "LEFT";
+        case anchor_point::CENTER :      return "CENTER";
     };
     return "";
 }
 
 anchor_point anchor::get_anchor_point(const std::string& sPoint)
 {
-    if (sPoint == "TOPLEFT")          return ANCHOR_TOPLEFT;
-    else if (sPoint == "TOP")         return ANCHOR_TOP;
-    else if (sPoint == "TOPRIGHT")    return ANCHOR_TOPRIGHT;
-    else if (sPoint == "RIGHT")       return ANCHOR_RIGHT;
-    else if (sPoint == "BOTTOMRIGHT") return ANCHOR_BOTTOMRIGHT;
-    else if (sPoint == "BOTTOM")      return ANCHOR_BOTTOM;
-    else if (sPoint == "BOTTOMLEFT")  return ANCHOR_BOTTOMLEFT;
-    else if (sPoint == "LEFT")        return ANCHOR_LEFT;
-    else if (sPoint == "CENTER")      return ANCHOR_CENTER;
-    return ANCHOR_TOPLEFT;
+    if (sPoint == "TOPLEFT")          return anchor_point::TOPLEFT;
+    else if (sPoint == "TOP")         return anchor_point::TOP;
+    else if (sPoint == "TOPRIGHT")    return anchor_point::TOPRIGHT;
+    else if (sPoint == "RIGHT")       return anchor_point::RIGHT;
+    else if (sPoint == "BOTTOMRIGHT") return anchor_point::BOTTOMRIGHT;
+    else if (sPoint == "BOTTOM")      return anchor_point::BOTTOM;
+    else if (sPoint == "BOTTOMLEFT")  return anchor_point::BOTTOMLEFT;
+    else if (sPoint == "LEFT")        return anchor_point::LEFT;
+    else if (sPoint == "CENTER")      return anchor_point::CENTER;
+    return anchor_point::TOPLEFT;
 }
 }

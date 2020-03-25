@@ -5,10 +5,14 @@ v1.3.0:
  - general: fixed various warnings and minor bugs detected by clang
  - general: moved away from using reference-counted smart pointers whenever possible
  - general: exceptions now inherit from std::exception
+ - general: moved all enums to C++11 enum class
+ - general: added C++11 noexcept specifiers where appropriate
+ - general: removed foreach() macro in favor of C++11 range-based for loop
  - lua: added support for Lua versions later than 5.1
  - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
  - gui: added a pure SFML implementation for the gui::manager
  - gui: fixed rare crash in editbox
+ - xml: now parsing standard XML comments
 
 v1.2.0:
  - added support for MSVC 2010
@@ -151,7 +155,7 @@ v1.0.11:
  - fixed new render strata not being rendered when caching is enabled
 
 v1.0.10:
- - fixed STRATA_HIGH being misspelled as STRATA_HPPIGH (careless find & replace)
+ - fixed frame_strata::HIGH being misspelled as frame_strata::HPPIGH (careless find & replace)
  - removed old and unused code in gui::backdrop
 
 v1.0.9:
