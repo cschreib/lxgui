@@ -735,8 +735,8 @@ uint state::get_top()
 
 type state::get_type(int iIndex)
 {
-    int type = lua_type(pLua_, iIndex);
-    switch (type)
+    int iType = lua_type(pLua_, iIndex);
+    switch (iType)
     {
         case LUA_TBOOLEAN :       return type::BOOLEAN;
         case LUA_TFUNCTION :      return type::FUNCTION;
