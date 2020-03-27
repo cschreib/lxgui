@@ -4,7 +4,7 @@
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
-* **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: only pure OpenGL for now, for input: SFML, GLFW, or OIS).
+* **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML, GLFW, or OIS).
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online here).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
