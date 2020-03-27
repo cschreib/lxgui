@@ -36,8 +36,8 @@ Here is a brief list of the available widgets:
 Setting up the GUI in C++ is rather straight forward:
 
 ```c++
-// Create an SFML window, for example
-sf::Window mWindow;
+// Create an SFML render window, for example
+sf::RenderWindow mWindow;
 
 // Define the language that will be used by the interface
 // (purely informative: it's always up to each addon to localize
