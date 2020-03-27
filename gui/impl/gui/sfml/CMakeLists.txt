@@ -8,6 +8,7 @@ add_library(lxgui-sfml STATIC
     ${SRCROOT}/gui_sfml_renderer.cpp
     ${SRCROOT}/gui_sfml_material.cpp
     ${SRCROOT}/gui_sfml_rendertarget.cpp
+    ${SRCROOT}/gui_sfml.cpp
 )
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml_*.hpp)

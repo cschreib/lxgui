@@ -21,7 +21,7 @@
 #include <lxgui/impl/gui_gl_renderer.hpp>
 #include <GL/gl.h>
 #else
-#include <lxgui/impl/gui_sfml_renderer.hpp>
+#include <lxgui/impl/gui_sfml.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #endif
 
@@ -84,6 +84,16 @@ int main(int argc, char* argv[])
         else
             mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test");
 
+
+        // Initialize the gui
+        std::cout << "Creating gui manager..." << std::endl;
+        std::unique_ptr<gui::manager> pManager;
+
+    #ifdef GL_GUI
+        // Define the GUI renderer
+        std::unique_ptr<gui::renderer_impl> pRendererImpl =
+            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
+
         // Define the input manager
         std::unique_ptr<input::manager_impl> pInputImpl;
     #ifdef OIS_INPUT
@@ -98,19 +108,7 @@ int main(int argc, char* argv[])
         pInputImpl = std::unique_ptr<input::manager_impl>(new input::sfml_manager(mWindow));
     #endif
 
-        // Define the GUI renderer
-        std::unique_ptr<gui::renderer_impl> pRendererImpl;
-    #ifdef GL_GUI
-        // Use pure OpenGL
-        pRendererImpl = std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
-    #else
-        // Use SFML
-        pRendererImpl = std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow));
-    #endif
-
-        // Initialize the gui
-        std::cout << "Creating gui manager..." << std::endl;
-        gui::manager mManager(
+        pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input manager implementation
             std::move(pInputImpl),
             // The locale
@@ -119,41 +117,45 @@ int main(int argc, char* argv[])
             mWindow.getSize().x, mWindow.getSize().y,
             // Provide the GUI renderer implementation
             std::move(pRendererImpl)
-        );
+        ));
+    #else
+        // Use full SFML implementation
+        pManager = gui::sfml::create_manager(mWindow, sLocale);
+    #endif
 
-        mManager.enable_caching(false);
+        pManager->enable_caching(false);
 
         // Load files :
         //  - first set the directory in which the interface is located
-        mManager.add_addon_directory("interface");
+        pManager->add_addon_directory("interface");
         //  - create the lua::state
         std::cout << " Creating lua..." << std::endl;
-        mManager.create_lua([&mManager](){
+        pManager->create_lua([&pManager](){
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
             //  - register the needed widgets
-            mManager.register_region_type<gui::texture>();
-            mManager.register_region_type<gui::font_string>();
-            mManager.register_frame_type<gui::button>();
-            mManager.register_frame_type<gui::slider>();
-            mManager.register_frame_type<gui::edit_box>();
-            mManager.register_frame_type<gui::scroll_frame>();
-            mManager.register_frame_type<gui::status_bar>();
+            pManager->register_region_type<gui::texture>();
+            pManager->register_region_type<gui::font_string>();
+            pManager->register_frame_type<gui::button>();
+            pManager->register_frame_type<gui::slider>();
+            pManager->register_frame_type<gui::edit_box>();
+            pManager->register_frame_type<gui::scroll_frame>();
+            pManager->register_frame_type<gui::status_bar>();
             //  - register additional lua functions
-            mManager.get_lua()->reg("get_folder_list", l_get_folder_list);
-            mManager.get_lua()->reg("get_file_list",   l_get_file_list);
-            mManager.get_lua()->reg("cut_file_path",   l_cut_file_path);
+            pManager->get_lua()->reg("get_folder_list", l_get_folder_list);
+            pManager->get_lua()->reg("get_file_list",   l_get_file_list);
+            pManager->get_lua()->reg("cut_file_path",   l_cut_file_path);
         });
 
         //  - and load all files
         std::cout << " Reading gui files..." << std::endl;
-        mManager.read_files();
+        pManager->read_files();
 
         // Create GUI by code :
 
         // Create the Frame
-        gui::frame* pFrame = mManager.create_frame<gui::frame>("FPSCounter");
+        gui::frame* pFrame = pManager->create_frame<gui::frame>("FPSCounter");
         pFrame->set_rel_dimensions(1.0f, 1.0f);
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
@@ -218,7 +220,7 @@ int main(int argc, char* argv[])
         sf::Clock mClock, mPerfClock;
         uint uiFrameCount = 0;
 
-        input::manager* pInputMgr = mManager.get_input_manager();
+        input::manager* pInputMgr = pManager->get_input_manager();
 
         std::cout << "Entering loop..." << std::endl;
         while (bRunning)
@@ -248,13 +250,13 @@ int main(int argc, char* argv[])
             if (pInputMgr->key_is_pressed(input::key::K_ESCAPE))
                 bRunning = false;
             else if (pInputMgr->key_is_pressed(input::key::K_P))
-                gui::out << mManager.print_ui() << std::endl;
+                gui::out << pManager->print_ui() << std::endl;
             else if (pInputMgr->key_is_pressed(input::key::K_K))
                 gui::out << "###" << std::endl;
             else if (pInputMgr->key_is_pressed(input::key::K_C))
-                mManager.enable_caching(!mManager.is_caching_enabled());
+                pManager->enable_caching(!pManager->is_caching_enabled());
             else if (pInputMgr->key_is_pressed(input::key::K_R))
-                mManager.reload_ui();
+                pManager->reload_ui();
 
             if (!bFocus)
             {
@@ -263,7 +265,7 @@ int main(int argc, char* argv[])
             }
 
             // Update the gui
-            mManager.update(fDelta);
+            pManager->update(fDelta);
 
             // Clear the window
         #ifdef GL_GUI
@@ -274,7 +276,7 @@ int main(int argc, char* argv[])
         #endif
 
             // Render the gui
-            mManager.render_ui();
+            pManager->render_ui();
 
             // Display the window
             mWindow.display();

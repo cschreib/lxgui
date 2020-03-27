@@ -1,5 +1,5 @@
-#ifndef GUI_GL_MANAGER_HPP
-#define GUI_GL_MANAGER_HPP
+#ifndef GUI_GL_RENDERER_HPP
+#define GUI_GL_RENDERER_HPP
 
 #include "lxgui/impl/gui_gl_matrix4.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"

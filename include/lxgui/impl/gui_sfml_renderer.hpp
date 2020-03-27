@@ -1,5 +1,5 @@
-#ifndef GUI_SFML_MANAGER_HPP
-#define GUI_SFML_MANAGER_HPP
+#ifndef GUI_SFML_RENDERER_HPP
+#define GUI_SFML_RENDERER_HPP
 
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 

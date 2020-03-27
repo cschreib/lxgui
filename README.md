@@ -39,46 +39,40 @@ Setting up the GUI in C++ is rather straight forward:
 // Create an SFML window, for example
 sf::Window mWindow;
 
+// Define the language that will be used by the interface
+// (purely informative: it's always up to each addon to localize
+// itself according to this value).
+const std::string sLocale = "enGB";
+
 // Initialize the GUI
-gui::manager mManager(
-    // Provide an input manager
-    std::unique_ptr<input::sfml_manager>(new input::sfml_manager(mWindow)),
-    // The language that will be used by the interface
-    // (purely informative: it's always up to each addon to localize
-    // itself according to this value)
-    "enGB",
-    // Dimensions of the render window
-    mWindow.getSize().x, mWindow.getSize().y,
-    // The OpenGL implementation of the GUI
-    std::unique_ptr<gui::manager_impl>(new gui::gl::manager())
-);
+std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow, sLocale);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
 input::sfml_manager* pSFMLInput = static_cast<input::sfml_manager*>(
-    mManager->get_input_manager()->get_impl()
+    pManager->get_input_manager()->get_impl()
 );
 
 // Load files:
 //  - first set the directory in which the interface is located
-mManager.add_addon_directory("interface");
+pManager->add_addon_directory("interface");
 //  - create the lua::state
-mManager.create_lua([&mManager](){
+pManager->create_lua([&pManager](){
     // This code might be called again later on, for example when one
     // reloads the GUI (the lua state is destroyed and created again).
     //  - register the needed widgets
-    mManager.register_region_type<gui::texture>();
-    mManager.register_region_type<gui::font_string>();
-    mManager.register_frame_type<gui::button>();
-    mManager.register_frame_type<gui::slider>();
-    mManager.register_frame_type<gui::edit_box>();
-    mManager.register_frame_type<gui::scroll_frame>();
-    mManager.register_frame_type<gui::status_bar>();
+    pManager->register_region_type<gui::texture>();
+    pManager->register_region_type<gui::font_string>();
+    pManager->register_frame_type<gui::button>();
+    pManager->register_frame_type<gui::slider>();
+    pManager->register_frame_type<gui::edit_box>();
+    pManager->register_frame_type<gui::scroll_frame>();
+    pManager->register_frame_type<gui::status_bar>();
     //  - register additional lua "glue" functions if needed
     // ...
 });
 
 //  - and eventually load all files
-mManager.read_files();
+pManager->read_files();
 
 // Start the main loop
 sf::Clock mClock;
@@ -99,10 +93,10 @@ while (true)
     mClock.restart();
 
     // Update the GUI
-    mManager.update(fDeltaTime);
+    pManager->update(fDeltaTime);
 
     // Render the GUI
-    mManager.render_ui();
+    pManager->render_ui();
 }
 
 // Resources are cleared up automatically on destruction
@@ -260,7 +254,7 @@ Doing the very same thing in C++ would give the following code :
 
 ```c++
 // Create the Frame
-gui::frame* pFrame = mManager.create_frame<gui::frame>("FPSCounter");
+gui::frame* pFrame = pManager->create_frame<gui::frame>("FPSCounter");
 pFrame->set_rel_dimensins(1.0f, 1.0f);
 pFrame->set_abs_point(gui::anchor_point::CENTER, "", gui::anchor_point::CENTER);
 
