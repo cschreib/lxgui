@@ -48,6 +48,7 @@ manager::manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::str
     event_receiver::set_event_manager(pEventManager_.get());
     pInputManager_->register_event_manager(pEventManager_.get());
     register_event("KEY_PRESSED");
+    register_event("WINDOW_RESIZED");
     pImpl_->set_parent(this);
 }
 
@@ -1565,6 +1566,16 @@ void manager::on_event(const event& mEvent)
             }
         }
     }
+    else if (mEvent.get_name() == "WINDOW_RESIZED")
+    {
+        uiScreenWidth_ = mEvent.get<uint>(0);
+        uiScreenHeight_ = mEvent.get<uint>(1);
+
+        for (auto* pObject : utils::range::value(lMainObjectList_))
+            pObject->fire_update_dimensions();
+
+        pImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
+    }
 }
 
 void manager::begin(utils::refptr<render_target> pTarget) const
@@ -1678,6 +1689,10 @@ std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMa
 void renderer_impl::set_parent(manager* pParent)
 {
     pParent_ = pParent;
+}
+
+void renderer_impl::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+{
 }
 
 strata::strata() : mStrata(frame_strata::PARENT), bRedraw(true), uiRedrawCount(0u)

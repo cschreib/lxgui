@@ -875,7 +875,7 @@ void uiobject::update_borders_() const
 
     if (bUpdateDimensions_)
     {
-        DEBUG_LOG("  Update dimentions");
+        DEBUG_LOG("  Update dimensions");
         update_dimensions_();
         bUpdateDimensions_ = false;
     }

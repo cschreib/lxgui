@@ -959,6 +959,12 @@ namespace gui
         */
         virtual utils::refptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
 
+        /// Notifies the renderer that the render window has been resized.
+        /** \param uiNewWidth  The new window width
+        *   \param uiNewHeight The new window height
+        */
+        virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
+
     protected :
 
         manager* pParent_;

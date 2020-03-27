@@ -198,5 +198,12 @@ utils::refptr<gui::font> renderer::create_font(const std::string& sFontFile, uin
     lFontList_[sFontName] = pFont;
     return pFont;
 }
+
+void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+{
+    sf::FloatRect mVisibleArea(0, 0, uiNewWidth, uiNewHeight);
+    mWindow_.setView(sf::View(mVisibleArea));
+}
+
 }
 }

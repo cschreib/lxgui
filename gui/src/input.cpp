@@ -41,6 +41,26 @@ const manager_impl::mouse_state& manager_impl::get_mouse_state() const
     return mMouse_;
 }
 
+bool manager_impl::has_window_resized() const
+{
+    return bWindowResized_;
+}
+
+void manager_impl::reset_window_resized()
+{
+    bWindowResized_ = false;
+}
+
+uint manager_impl::get_window_new_width() const
+{
+    return uiNewWindowWidth_;
+}
+
+uint manager_impl::get_window_new_height() const
+{
+    return uiNewWindowHeight_;
+}
+
 manager::manager(std::unique_ptr<manager_impl> pImpl) :
     bRemoveFocus_(false), bFocus_(false), pFocusReceiver_(nullptr), bCtrlPressed_(false),
     bShiftPressed_(false), bAltPressed_ (false), bKey_(false),
@@ -559,6 +579,15 @@ void manager::update(float fTempDelta)
         gui::event mMouseWheelEvent("MOUSE_WHEEL_SMOOTH", true);
         mMouseWheelEvent.add(fSmoothMWheel_);
         fire_event_(mMouseWheelEvent, true);
+    }
+
+    if (pImpl_->has_window_resized())
+    {
+        gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
+        mWindowResizedEvent.add(pImpl_->get_window_new_width());
+        mWindowResizedEvent.add(pImpl_->get_window_new_height());
+        fire_event_(mWindowResizedEvent, true);
+        pImpl_->reset_window_resized();
     }
 
     dTime_ += dDelta;

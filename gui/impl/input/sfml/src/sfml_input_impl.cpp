@@ -511,5 +511,11 @@ void sfml_manager::on_sfml_event(const sf::Event& mEvent)
     {
         fWheelCache_ += mEvent.mouseWheel.delta;
     }
+    else if (mEvent.type == sf::Event::Resized)
+    {
+        bWindowResized_ = true;
+        uiNewWindowWidth_ = mEvent.size.width;
+        uiNewWindowHeight_ = mEvent.size.height;
+    }
 }
 }

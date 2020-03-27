@@ -39,7 +39,7 @@ namespace sfml
         *   \note This function is meant to be called between begin() and
         *         end() only.
         */
-        virtual void render_quad(const quad& mQuad) const override;
+        void render_quad(const quad& mQuad) const override;
 
         /// Renders a set of quads.
         /** \param mQuad     The base quad to use for rendering (material, blending, ...)
@@ -49,7 +49,7 @@ namespace sfml
         *         than calling render_quad repeatedly, as it allows to batch
         *         count reduction.
         */
-        virtual void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const override;
+        void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const override;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
@@ -85,6 +85,12 @@ namespace sfml
         *         Bitmap fonts are not yet supported.
         */
         utils::refptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
+
+        /// Notifies the renderer that the render window has been resized.
+        /** \param uiNewWidth  The new window width
+        *   \param uiNewHeight The new window height
+        */
+        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
 
     private :
 

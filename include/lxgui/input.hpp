@@ -99,6 +99,24 @@ namespace input
         */
         virtual std::string get_key_name(key mKey) const = 0;
 
+        /// Checks if window has been resized.
+        /** \return true if the window has been resized
+        */
+        bool has_window_resized() const;
+
+        /// Resets the "window resized" flag.
+        void reset_window_resized();
+
+        /// Get the new window width
+        /** \return The new window width
+        */
+        uint get_window_new_width() const;
+
+        /// Get the new window height
+        /** \return The new window height
+        */
+        uint get_window_new_height() const;
+
     protected:
 
         /// Updates this implementation handler.
@@ -111,6 +129,10 @@ namespace input
         std::vector<char32_t> lCharsCache_;
 
         bool bManuallyUpdated_ = false;
+
+        bool bWindowResized_ = false;
+        uint uiNewWindowHeight_ = 0u;
+        uint uiNewWindowWidth_ = 0u;
     };
 
     /// Handles inputs (keyboard and mouse)
