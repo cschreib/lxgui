@@ -1,30 +1,25 @@
-#ifndef GUI_SFML_MANAGER_HPP
-#define GUI_SFML_MANAGER_HPP
+#ifndef GUI_GL_MANAGER_HPP
+#define GUI_GL_MANAGER_HPP
 
-#include "lxgui/impl/gui_sfml_rendertarget.hpp"
+#include "lxgui/impl/gui_gl_matrix4.hpp"
+#include "lxgui/impl/gui_gl_rendertarget.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_manager.hpp>
 
-namespace sf
-{
-    class RenderWindow;
-    class RenderTarget;
-}
-
 namespace gui {
-namespace sfml
+namespace gl
 {
-    /// SFML implementation of rendering
-    class manager : public gui::manager_impl
+    /// Open implementation of rendering
+    class renderer : public gui::renderer_impl
     {
     public :
 
         /// Constructor.
-        explicit manager(sf::RenderWindow& mWindow);
+        renderer(bool bInitGLEW = true);
 
         /// Destructor.
-        ~manager();
+        ~renderer();
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -86,15 +81,25 @@ namespace sfml
         */
         utils::refptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
+        /// Checks if a given OpenGL extension is supported by the machine.
+        /** \return 'true' if that is the case, 'false' else.
+        */
+        static bool is_gl_extension_supported(const std::string& sExtension);
+
     private :
 
-        sf::RenderWindow& mWindow_;
+        void update_view_matrix_() const;
+
+        utils::refptr<gui::material> create_material_png(const std::string& sFileName,
+            material::filter mFilter) const;
 
         mutable std::map<std::string, utils::wptr<gui::material>> lTextureList_;
         mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;
 
-        mutable utils::refptr<gui::sfml::render_target> pCurrentTarget_;
-        mutable sf::RenderTarget*                       pCurrentSFMLTarget_;
+        mutable bool    bUpdateViewMatrix_;
+        mutable matrix4 mViewMatrix_;
+
+        mutable utils::refptr<gui::gl::render_target> pCurrentTarget_;
     };
 }
 }

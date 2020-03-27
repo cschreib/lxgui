@@ -5,7 +5,7 @@ include_directories(${SFML_INCLUDE_DIR})
 
 add_library(lxgui-sfml STATIC
     ${SRCROOT}/gui_sfml_font.cpp
-    ${SRCROOT}/gui_sfml_manager.cpp
+    ${SRCROOT}/gui_sfml_renderer.cpp
     ${SRCROOT}/gui_sfml_material.cpp
     ${SRCROOT}/gui_sfml_rendertarget.cpp
 )

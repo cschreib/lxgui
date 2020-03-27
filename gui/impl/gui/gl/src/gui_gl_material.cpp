@@ -1,5 +1,5 @@
 #include "lxgui/impl/gui_gl_material.hpp"
-#include "lxgui/impl/gui_gl_manager.hpp"
+#include "lxgui/impl/gui_gl_renderer.hpp"
 #include <lxgui/gui_out.hpp>
 
 #include <lxgui/utils_string.hpp>
@@ -367,7 +367,7 @@ uint material::get_handle_()
 
 void material::check_availability()
 {
-    ONLY_POWER_OF_TWO = !manager::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
+    ONLY_POWER_OF_TWO = !renderer::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
     gui::out << "Note : non power of two textures are " << (ONLY_POWER_OF_TWO ? "not " : "") << "supported." << std::endl;
     int max;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max);

@@ -1,5 +1,5 @@
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
-#include "lxgui/impl/gui_gl_manager.hpp"
+#include "lxgui/impl/gui_gl_renderer.hpp"
 
 #ifdef WIN32
 #include <windows.h>
@@ -138,7 +138,7 @@ utils::wptr<gl::material> render_target::get_material()
 
 void render_target::check_availability()
 {
-    if (!manager::is_gl_extension_supported("GL_EXT_framebuffer_object"))
+    if (!renderer::is_gl_extension_supported("GL_EXT_framebuffer_object"))
     {
         throw gui::exception("render_target", "OpenGL extenion "
             "'GL_EXT_framebuffer_object' is not supported by your hardware.");

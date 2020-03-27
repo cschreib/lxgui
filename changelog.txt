@@ -12,6 +12,8 @@ v1.3.0:
  - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
  - gui: added a pure SFML implementation for the gui::manager
  - gui: fixed rare crash in editbox
+ - gui: renamed gui::manager_impl into gui::renderer_impl
+ - gui: renamed gui::gl::manager into gui::gl::renderer
  - xml: now parsing standard XML comments
 
 v1.2.0:

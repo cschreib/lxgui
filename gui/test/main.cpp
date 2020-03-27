@@ -18,10 +18,10 @@
 //#define GL_GUI
 
 #ifdef GL_GUI
-#include <lxgui/impl/gui_gl_manager.hpp>
+#include <lxgui/impl/gui_gl_renderer.hpp>
 #include <GL/gl.h>
 #else
-#include <lxgui/impl/gui_sfml_manager.hpp>
+#include <lxgui/impl/gui_sfml_renderer.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #endif
 
@@ -98,14 +98,14 @@ int main(int argc, char* argv[])
         pInputImpl = std::unique_ptr<input::manager_impl>(new input::sfml_manager(mWindow));
     #endif
 
-        // Define the GUI manager
-        std::unique_ptr<gui::manager_impl> pManagerImpl;
+        // Define the GUI renderer
+        std::unique_ptr<gui::renderer_impl> pRendererImpl;
     #ifdef GL_GUI
         // Use pure OpenGL
-        pManagerImpl = std::unique_ptr<gui::manager_impl>(new gui::gl::manager());
+        pRendererImpl = std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
     #else
         // Use SFML
-        pManagerImpl = std::unique_ptr<gui::manager_impl>(new gui::sfml::manager(mWindow));
+        pRendererImpl = std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow));
     #endif
 
         // Initialize the gui
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
             // Dimensions of the render window
             mWindow.getSize().x, mWindow.getSize().y,
             // Provide the GUI renderer implementation
-            std::move(pManagerImpl)
+            std::move(pRendererImpl)
         );
 
         mManager.enable_caching(false);

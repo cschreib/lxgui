@@ -29,7 +29,7 @@ int l_get_locale(lua_State* pLua);
 int l_log(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
-    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl) :
+    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl) :
     event_receiver(nullptr), sUIVersion_("0001"),
     uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     bClearFontsOnClose_(true), pLua_(nullptr), pLuaRegs_(nullptr), bClosed_(true),
@@ -59,12 +59,12 @@ manager::~manager()
     event_receiver::set_event_manager(nullptr);
 }
 
-manager_impl* manager::get_impl()
+renderer_impl* manager::get_renderer()
 {
     return pImpl_.get();
 }
 
-const manager_impl* manager::get_impl() const
+const renderer_impl* manager::get_renderer() const
 {
     return pImpl_.get();
 }
@@ -1651,31 +1651,31 @@ const std::string& manager::get_locale() const
     return sLocale_;
 }
 
-manager_impl::manager_impl()
+renderer_impl::renderer_impl()
 {
 }
 
-manager_impl::~manager_impl()
+renderer_impl::~renderer_impl()
 {
 }
 
-std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat) const
-{
-    return nullptr;
-}
-
-std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat) const
 {
     return nullptr;
 }
 
-std::unique_ptr<sprite> manager_impl::create_sprite(utils::refptr<material> pMat,
+std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+{
+    return nullptr;
+}
+
+std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
     return nullptr;
 }
 
-void manager_impl::set_parent(manager* pParent)
+void renderer_impl::set_parent(manager* pParent)
 {
     pParent_ = pParent;
 }

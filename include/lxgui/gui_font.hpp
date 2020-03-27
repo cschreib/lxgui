@@ -15,7 +15,7 @@ namespace gui
 
     /// A texture containing characters
     /** This class is purely virtual. It needs to be implemented
-    *   and created by the corresponding gui::manager_impl.
+    *   and created by the corresponding gui::renderer_impl.
     */
     class font
     {

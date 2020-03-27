@@ -10,8 +10,8 @@ include_directories(${GLEW_INCLUDE_DIR})
 
 add_library(lxgui-gl STATIC
     ${SRCROOT}/gui_gl_font.cpp
-    ${SRCROOT}/gui_gl_manager.cpp
-    ${SRCROOT}/gui_gl_manager_png.cpp
+    ${SRCROOT}/gui_gl_renderer.cpp
+    ${SRCROOT}/gui_gl_renderer_png.cpp
     ${SRCROOT}/gui_gl_material.cpp
     ${SRCROOT}/gui_gl_matrix4.cpp
     ${SRCROOT}/gui_gl_rendertarget.cpp

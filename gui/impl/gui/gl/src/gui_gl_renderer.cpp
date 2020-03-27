@@ -1,4 +1,4 @@
-#include "lxgui/impl/gui_gl_manager.hpp"
+#include "lxgui/impl/gui_gl_renderer.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
@@ -16,7 +16,7 @@
 namespace gui {
 namespace gl
 {
-manager::manager(bool bInitGLEW) :
+renderer::renderer(bool bInitGLEW) :
     bUpdateViewMatrix_(true)
 {
     if (bInitGLEW)
@@ -26,11 +26,11 @@ manager::manager(bool bInitGLEW) :
     material::check_availability();
 }
 
-manager::~manager()
+renderer::~renderer()
 {
 }
 
-void manager::begin(utils::refptr<gui::render_target> pTarget) const
+void renderer::begin(utils::refptr<gui::render_target> pTarget) const
 {
     if (pTarget)
     {
@@ -58,7 +58,7 @@ void manager::begin(utils::refptr<gui::render_target> pTarget) const
     }
 }
 
-void manager::update_view_matrix_() const
+void renderer::update_view_matrix_() const
 {
     float fWidth = pParent_->get_screen_width();
     float fHeight = pParent_->get_screen_height();
@@ -75,7 +75,7 @@ void manager::update_view_matrix_() const
     bUpdateViewMatrix_ = false;
 }
 
-void manager::end() const
+void renderer::end() const
 {
     if (pCurrentTarget_)
     {
@@ -84,7 +84,7 @@ void manager::end() const
     }
 }
 
-void manager::render_quad(const quad& mQuad) const
+void renderer::render_quad(const quad& mQuad) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
@@ -123,7 +123,7 @@ void manager::render_quad(const quad& mQuad) const
     }
 }
 
-void manager::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
@@ -168,7 +168,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     }
 }
 
-utils::refptr<gui::material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
+utils::refptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
     std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
@@ -184,28 +184,28 @@ utils::refptr<gui::material> manager::create_material(const std::string& sFileNa
         return create_material_png(sFileName, mFilter);
     else
     {
-        gui::out << gui::warning << "gui::gl::manager : Unsupported texture format '"
+        gui::out << gui::warning << "gui::gl::renderer : Unsupported texture format '"
             << sFileName << "'." << std::endl;
         return nullptr;
     }
 }
 
-utils::refptr<gui::material> manager::create_material(const color& mColor) const
+utils::refptr<gui::material> renderer::create_material(const color& mColor) const
 {
     return utils::refptr<material>(new material(mColor));
 }
 
-utils::refptr<gui::material> manager::create_material(utils::refptr<gui::render_target> pRenderTarget) const
+utils::refptr<gui::material> renderer::create_material(utils::refptr<gui::render_target> pRenderTarget) const
 {
     return utils::refptr<gl::render_target>::cast(pRenderTarget)->get_material().lock();
 }
 
-utils::refptr<gui::render_target> manager::create_render_target(uint uiWidth, uint uiHeight) const
+utils::refptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
     return utils::refptr<gui::render_target>(new gl::render_target(uiWidth, uiHeight));
 }
 
-utils::refptr<gui::font> manager::create_font(const std::string& sFontFile, uint uiSize) const
+utils::refptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
     std::map<std::string, utils::wptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
@@ -222,7 +222,7 @@ utils::refptr<gui::font> manager::create_font(const std::string& sFontFile, uint
     return pFont;
 }
 
-bool manager::is_gl_extension_supported(const std::string& sExtension)
+bool renderer::is_gl_extension_supported(const std::string& sExtension)
 {
     // Code taken from :
     // http://nehe.gamedev.net/tutorial/vertex_buffer_objects/22002/

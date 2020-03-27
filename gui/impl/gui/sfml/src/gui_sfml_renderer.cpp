@@ -1,4 +1,4 @@
-#include "lxgui/impl/gui_sfml_manager.hpp"
+#include "lxgui/impl/gui_sfml_renderer.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
@@ -13,18 +13,18 @@
 namespace gui {
 namespace sfml
 {
-manager::manager(sf::RenderWindow& mWindow) : mWindow_(mWindow), pCurrentSFMLTarget_(nullptr)
+renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow), pCurrentSFMLTarget_(nullptr)
 {
 }
 
-manager::~manager()
+renderer::~renderer()
 {
 }
 
-void manager::begin(utils::refptr<gui::render_target> pTarget) const
+void renderer::begin(utils::refptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)
-        throw gui::exception("gui::sfml::manager", "Missing call to end()");
+        throw gui::exception("gui::sfml::renderer", "Missing call to end()");
 
     if (pTarget)
     {
@@ -38,7 +38,7 @@ void manager::begin(utils::refptr<gui::render_target> pTarget) const
     }
 }
 
-void manager::end() const
+void renderer::end() const
 {
     if (pCurrentTarget_)
         pCurrentTarget_->end();
@@ -47,7 +47,7 @@ void manager::end() const
     pCurrentSFMLTarget_ = nullptr;
 }
 
-void manager::render_quad(const quad& mQuad) const
+void renderer::render_quad(const quad& mQuad) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
@@ -83,7 +83,7 @@ void manager::render_quad(const quad& mQuad) const
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-void manager::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
@@ -123,7 +123,7 @@ void manager::render_quads(const quad& mQuad, const std::vector<std::array<verte
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-utils::refptr<gui::material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
+utils::refptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
     std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
@@ -151,12 +151,12 @@ utils::refptr<gui::material> manager::create_material(const std::string& sFileNa
     }
 }
 
-utils::refptr<gui::material> manager::create_material(const color& mColor) const
+utils::refptr<gui::material> renderer::create_material(const color& mColor) const
 {
     return utils::refptr<material>(new material(mColor));
 }
 
-utils::refptr<gui::material> manager::create_material(utils::refptr<gui::render_target> pRenderTarget) const
+utils::refptr<gui::material> renderer::create_material(utils::refptr<gui::render_target> pRenderTarget) const
 {
     try
     {
@@ -169,7 +169,7 @@ utils::refptr<gui::material> manager::create_material(utils::refptr<gui::render_
     }
 }
 
-utils::refptr<gui::render_target> manager::create_render_target(uint uiWidth, uint uiHeight) const
+utils::refptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
     try
     {
@@ -182,7 +182,7 @@ utils::refptr<gui::render_target> manager::create_render_target(uint uiWidth, ui
     }
 }
 
-utils::refptr<gui::font> manager::create_font(const std::string& sFontFile, uint uiSize) const
+utils::refptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
     std::map<std::string, utils::wptr<gui::font>>::iterator iter = lFontList_.find(sFontName);

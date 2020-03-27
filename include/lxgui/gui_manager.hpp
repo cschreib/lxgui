@@ -39,7 +39,7 @@ namespace gui
     struct quad;
     struct vertex;
 
-    class manager_impl;
+    class renderer_impl;
 
     /// Exception to be thrown by GUI code.
     /** \note These exceptions should always be handled.<br>
@@ -136,10 +136,10 @@ namespace gui
         *   \param sLocale        The name of the game locale ("enGB", ...)
         *   \param uiScreenWidth  The width of the screen
         *   \param uiScreenHeight The height of the screen
-        *   \param pImpl          The implementation specific class
+        *   \param pImpl          The renderer implementation
         */
         manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
-                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<manager_impl> pImpl);
+                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl);
 
         /// Destructor.
         ~manager();
@@ -709,15 +709,15 @@ namespace gui
             region_type::register_glue(pLua_.get());
         }
 
-        /// Returns the implementation dependent manager_impl.
-        /** \return The implementation dependent manager_impl
+        /// Returns the renderer implementation.
+        /** \return The renderer implementation
         */
-        const manager_impl* get_impl() const;
+        const renderer_impl* get_renderer() const;
 
-        /// Returns the implementation dependent manager_impl.
-        /** \return The implementation dependent manager_impl
+        /// Returns the renderer implementation.
+        /** \return The renderer implementation
         */
-        manager_impl* get_impl();
+        renderer_impl* get_renderer();
 
         /// Returns the gui event manager.
         /** \return The gui event manager
@@ -831,19 +831,19 @@ namespace gui
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;
-        std::unique_ptr<manager_impl>  pImpl_;
+        std::unique_ptr<renderer_impl> pImpl_;
     };
 
     /// Abstract type for implementation specific management
-    class manager_impl
+    class renderer_impl
     {
     public :
 
         /// Constructor.
-        manager_impl();
+        renderer_impl();
 
         /// Destructor.
-        virtual ~manager_impl();
+        virtual ~renderer_impl();
 
         /// Gives a pointer to the base class.
         /** \note This function is automatically called by gui::manager

@@ -1,5 +1,5 @@
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
-#include "lxgui/impl/gui_sfml_manager.hpp"
+#include "lxgui/impl/gui_sfml_renderer.hpp"
 
 #include <iostream>
 

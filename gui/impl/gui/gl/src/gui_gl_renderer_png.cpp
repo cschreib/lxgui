@@ -1,4 +1,4 @@
-#include "lxgui/impl/gui_gl_manager.hpp"
+#include "lxgui/impl/gui_gl_renderer.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include <lxgui/gui_out.hpp>
 
@@ -21,7 +21,7 @@ void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
     ((std::ifstream*)p)->read((char*)pData, uiLength);
 }
 
-utils::refptr<gui::material> manager::create_material_png(const std::string& sFileName, material::filter mFilter) const
+utils::refptr<gui::material> renderer::create_material_png(const std::string& sFileName, material::filter mFilter) const
 {
     std::ifstream mFile(sFileName, std::ios::binary);
     if (!mFile.is_open())
