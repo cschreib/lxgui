@@ -44,10 +44,32 @@ GH_REPO_NAME=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 2`
 GH_REPO_REF="github.com/$GH_REPO_ORG/$GH_REPO_NAME.git"
 DOXYFILE=$TRAVIS_BUILD_DIR/gui/doc/dox.conf
 
+################################################################################
+##### Generate the Doxygen code documentation and log the output.          #####
+echo 'Generating Doxygen code documentation...'
+cd $(dirname $DOXYFILE)
+# Redirect both stderr and stdout to the log file AND the console.
+doxygen $($basename $DOXYFILE) 2>&1 | tee doxygen.log
+
+# Only upload if Doxygen successfully created the documentation.
+# Check this by verifying that the html directory and the file html/index.html
+# both exist. This is a good indication that Doxygen did it's work.
+if [ ! -d "html" ] || [ ! -f "html/index.html" ]; then
+    echo '' >&2
+    echo 'Warning: No documentation (html) files have been found!' >&2
+    echo 'Warning: Not going to push the documentation to GitHub!' >&2
+    exit 1
+fi
+
+################################################################################
+##### Upload the documentation to the gh-pages branch of the repository.   #####
 
 # Get the current gh-pages branch
 git clone -b gh-pages git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git code_docs
 cd code_docs
+
+# Copy doxygen output here
+cp -r ../html ../doxygen.log ./
 
 # Copy DoxygenLayout.xml here
 # cp $TRAVIS_BUILD_DIR/doc/DoxygenLayout.xml .
@@ -68,36 +90,18 @@ git reset --hard `git rev-list --max-parents=0 --abbrev-commit HEAD`
 # to NO, which it is by default. So creating the file just in case.
 echo "" > .nojekyll
 
-################################################################################
-##### Generate the Doxygen code documentation and log the output.          #####
-echo 'Generating Doxygen code documentation...'
-# Redirect both stderr and stdout to the log file AND the console.
-doxygen $DOXYFILE 2>&1 | tee doxygen.log
+echo 'Uploading documentation to the gh-pages branch...'
+# Add everything in this directory (the Doxygen code documentation) to the
+# gh-pages branch.
+# GitHub is smart enough to know which files have changed and which files have
+# stayed the same and will only update the changed files.
+git add --all
 
-################################################################################
-##### Upload the documentation to the gh-pages branch of the repository.   #####
-# Only upload if Doxygen successfully created the documentation.
-# Check this by verifying that the html directory and the file html/index.html
-# both exist. This is a good indication that Doxygen did it's work.
-if [ -d "html" ] && [ -f "html/index.html" ]; then
-    echo 'Uploading documentation to the gh-pages branch...'
-    # Add everything in this directory (the Doxygen code documentation) to the
-    # gh-pages branch.
-    # GitHub is smart enough to know which files have changed and which files have
-    # stayed the same and will only update the changed files.
-    git add --all
+# Commit the added files with a title and description containing the Travis CI
+# build number and the GitHub commit reference that issued this build.
+git commit -m "Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}" -m "Commit: ${TRAVIS_COMMIT}"
 
-    # Commit the added files with a title and description containing the Travis CI
-    # build number and the GitHub commit reference that issued this build.
-    git commit -m "Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}" -m "Commit: ${TRAVIS_COMMIT}"
-
-    # Force push to the remote gh-pages branch.
-    # The ouput is redirected to /dev/null to hide any sensitive credential data
-    # that might otherwise be exposed.
-    git push --force "git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git" > /dev/null 2>&1
-else
-    echo '' >&2
-    echo 'Warning: No documentation (html) files have been found!' >&2
-    echo 'Warning: Not going to push the documentation to GitHub!' >&2
-    exit 1
-fi
+# Force push to the remote gh-pages branch.
+# The ouput is redirected to /dev/null to hide any sensitive credential data
+# that might otherwise be exposed.
+git push --force "git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git" > /dev/null 2>&1
