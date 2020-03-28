@@ -3,10 +3,18 @@
 #include <lxgui/gui_out.hpp>
 
 #include <lxgui/utils_string.hpp>
+
 #ifdef WIN32
+#define NOMINMAX
 #include <windows.h>
 #endif
+
+#ifdef MACOSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 #include <cmath>
 
 #ifdef MSVC
@@ -15,7 +23,7 @@ T log2(T v)
 {
     return log(v)/log(2.0);
 }
-#endif // MSVC
+#endif
 
 namespace gui {
 namespace gl

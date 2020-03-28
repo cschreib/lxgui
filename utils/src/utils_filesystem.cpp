@@ -5,7 +5,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#ifdef LINUX
+#if defined(LINUX) || defined(MACOSX)
     // Emulate directory and file listing windows functions
     // Note : Taken directly from Ogre3D
     // http://www.ogre3d.org/
@@ -289,7 +289,7 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const s
 
 bool make_directory_(const std::string& sPath)
 {
-#ifdef LINUX
+#if defined(LINUX) || defined(MACOSX)
     return (mkdir(sPath.c_str(), 0775) == 0) || (errno == EEXIST);
 #else
     return (CreateDirectory(sPath.c_str(), 0) != 0) || (GetLastError() == ERROR_ALREADY_EXISTS);
@@ -305,7 +305,7 @@ bool make_directory(const std::string& sPath)
     sTemp = "";
 
     // Add back the root directory or drive
-#ifdef LINUX
+#if defined(LINUX) || defined(MACOSX)
     if (!sTemp.empty() && sTemp[0] == '/')
     {
         sTemp = "/";

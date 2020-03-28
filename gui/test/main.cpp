@@ -19,7 +19,11 @@
 
 #ifdef GL_GUI
 #include <lxgui/impl/gui_gl_renderer.hpp>
+#ifdef MACOSX
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 #else
 #include <lxgui/impl/gui_sfml.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

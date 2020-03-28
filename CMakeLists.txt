@@ -90,10 +90,11 @@ else()
 endif()
 
 # set OS preprocessor defines
-if (UNIX)
+if (APPLE)
+    add_definitions(-DMACOSX)
+elseif (UNIX)
     add_definitions(-DLINUX)
-endif()
-if (WINDOWS)
+elseif (WINDOWS)
     add_definitions(-DWIN32)
 endif()
 

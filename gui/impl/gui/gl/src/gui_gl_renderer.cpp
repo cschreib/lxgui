@@ -7,10 +7,18 @@
 #include <lxgui/utils_string.hpp>
 
 #ifdef WIN32
+#define NOMINMAX
 #include <windows.h>
 #endif
+
+#ifdef MACOSX
+#include <OpenGL/glew.h>
+#include <OpenGL/gl.h>
+#else
 #include <GL/glew.h>
 #include <GL/gl.h>
+#endif
+
 #include <cstring>
 
 namespace gui {

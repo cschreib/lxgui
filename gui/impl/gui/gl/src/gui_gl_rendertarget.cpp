@@ -2,10 +2,18 @@
 #include "lxgui/impl/gui_gl_renderer.hpp"
 
 #ifdef WIN32
+#define NOMINMAX
 #include <windows.h>
 #endif
+
+#ifdef MACOSX
+#include <OpenGL/glew.h>
+#include <OpenGL/gl.h>
+#else
 #include <GL/glew.h>
 #include <GL/gl.h>
+#endif
+
 
 #include <iostream>
 
