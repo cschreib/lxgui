@@ -9,8 +9,8 @@ compiler:
   - clang
 
 before_script:
-  - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev
-    liblua5.2-dev libglu1-mesa-dev
+  - if [ "$TRAVIS_OS_NAME" = "osx" ];   then brew install zlib libpng sfml freetype glew lua; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev; fi
   - mkdir build
   - cd build
   - cmake ..
