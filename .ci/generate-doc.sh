@@ -77,12 +77,9 @@ cp -rf ../html ../doxygen.log ./
 ##### Configure git.
 # Set the push default to simple i.e. push only the current branch.
 git config --global push.default simple
-# Pretend to be an user called Travis CI.
+# Pretend to be a user called Travis CI.
 git config user.name "Travis CI"
 git config user.email "travis@travis-ci.org"
-
-# go back to first commit
-git reset --hard `git rev-list --max-parents=0 --abbrev-commit HEAD`
 
 # Need to create a .nojekyll file to allow filenames starting with an underscore
 # to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
@@ -104,4 +101,4 @@ git commit -m "Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUM
 # Force push to the remote gh-pages branch.
 # The ouput is redirected to /dev/null to hide any sensitive credential data
 # that might otherwise be exposed.
-git push --force "git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git" > /dev/null 2>&1
+git push "git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git" > /dev/null 2>&1
