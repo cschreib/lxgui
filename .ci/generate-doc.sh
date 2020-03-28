@@ -69,7 +69,7 @@ git clone -b gh-pages git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git code_docs
 cd code_docs
 
 # Copy doxygen output here
-cp -r ../html ../doxygen.log ./
+cp -rf ../html ../doxygen.log ./
 
 # Copy DoxygenLayout.xml here
 # cp $TRAVIS_BUILD_DIR/doc/DoxygenLayout.xml .
