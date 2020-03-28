@@ -1,19 +1,26 @@
 os:
   - linux
+  - osx
+
 language: cpp
+
 compiler:
   - gcc
   - clang
+
 before_script:
   - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev
     liblua5.2-dev libglu1-mesa-dev
   - mkdir build
   - cd build
   - cmake ..
+
 script: sudo make install
+
 env:
   global:
     - secure: "IhIDd18aAy80xmR059CK0Mid/7HQDDJY1zUiq0yP5ZVmuZBh+Ui6jFaFqR3wD3C0GIFvTFGEVYiQYOX7BO7XFOhM0GIK/TOtsyamu3QuhZq0Tx0RrzQIP8giCcEe51j6/Y3LmuWaCLE9P1axn0ub8Nq0y0yhUaQ3H4SZ2fcIWKu8oaUk6FNDYwHA1ARhJCiBGQmSyYtRdAH4RABLL7G8GyS2f+cV529Jy/9w7QBT/x4Oy0fKKfWiCeThkN27apHR0ri7s+B5iA5AAF5erIQURH97qoTN0AzuBhj+mG17wTZ5E7GjshJh36yeIJVpBjaODx0I3M5kVSKaM3hCG0l8raRKq5i5eoyAs6NoV9d9vKARRVsi4XneZxkSDGSHivTsnfvXj6iVUfgp6WLwoZG4oQJ6h6M8g230PMrg7s+HxVd+mxgY8LG3ZJSPm9uWy9UJWlObu8bQUgML4PX0e2V53tsPuWSAKJ8lxGjjYISsqoxC4cBDxu5BOyYi+LqQiOB0eRUJkY3Fb3wKXAlZBOZ4orK3VRh6bL0KhZpYZDO1PgcBMJnCGag5djjblmj2bSiEfkJN0UX4rB69W+lwcZQ0wZ1HkpoXnQE9kVnhaJBighNQNJbrj+fpOQJMWZ+IsKEnCFdHnQ8XCOEBHVIV6dLvcxf1PtjwMh7vS1FQTXJhbyE="
+
 jobs:
   include:
     - stage: deploy
