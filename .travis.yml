@@ -4,16 +4,15 @@ language: cpp
 compiler:
   - gcc
   - clang
+before_script:
+  - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev
+    liblua5.2-dev libglu1-mesa-dev
+  - mkdir build
+  - cd build
+  - cmake ..
+script: sudo make install
 jobs:
   include:
-    - stage: compile
-      before_script:
-        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev
-          liblua5.2-dev libglu1-mesa-dev
-        - mkdir build
-        - cd build
-        - cmake ..
-      script: sudo make install
     - stage: deploy
       os: linux
       compiler: gcc
