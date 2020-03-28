@@ -49,7 +49,7 @@ DOXYFILE=$TRAVIS_BUILD_DIR/gui/doc/dox.conf
 echo 'Generating Doxygen code documentation...'
 cd $(dirname $DOXYFILE)
 # Redirect both stderr and stdout to the log file AND the console.
-doxygen $($basename $DOXYFILE) 2>&1 | tee doxygen.log
+doxygen $(basename $DOXYFILE) 2>&1 | tee doxygen.log
 
 # Only upload if Doxygen successfully created the documentation.
 # Check this by verifying that the html directory and the file html/index.html
