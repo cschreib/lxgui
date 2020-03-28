@@ -6,7 +6,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 * **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML, GLFW, or OIS).
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
-* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online here).
+* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html)).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 * **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
