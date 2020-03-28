@@ -6,11 +6,10 @@
 #include <windows.h>
 #endif
 
+#include <GL/glew.h>
 #ifdef MACOSX
-#include <OpenGL/glew.h>
 #include <OpenGL/gl.h>
 #else
-#include <GL/glew.h>
 #include <GL/gl.h>
 #endif
 
