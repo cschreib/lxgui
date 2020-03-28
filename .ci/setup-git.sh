@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z "$travis_key_password" ]; then
     echo "Variable travis_key_password not defined"
     exit 1
