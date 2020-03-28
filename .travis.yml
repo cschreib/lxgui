@@ -1,16 +1,16 @@
 os:
-  - linux
-
+- linux
 language: cpp
-
 compiler:
-  - gcc
-  - clang
-
+- gcc
+- clang
 before_script:
-  - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
-  - mkdir build
-  - cd build
-  - cmake ..
-
+- sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev
+  liblua5.2-dev libglu1-mesa-dev
+- mkdir build
+- cd build
+- cmake ..
 script: sudo make install
+env:
+  matrix:
+    secure: cNB3f3YnympMY5rIbfM4xTT+K7NMTiD5VfhXiWbZj3sg7WD1DYWZ89+GRGb220PkmMNKGuY9PzellTjuqCtDPdV64TXriozXUkt5HSZ6xb8y/ps2SepjInLIQY29jleXd50Y6bJyXqnAFCfiEpFZ4NUyuHQd01gxK5ASQ9ugi6DsvyyrAC+SvwUPo8veTcHNdCCnwokmYC4kyVer301W193peP4F1dxTKb9CMNLsYtAULCKLmljcN0kHwFPDIoyOV1OrmLBdhg2BrtCdp9fIqGXZFtbSXx5PfUaaichM++t4NWTWxuabJUCHnUtyuZA1/tBhMo7+LrXxTF4vOqhhW7tcSrIhFXFOxblVwNTxl5exM290zt09Ay1DCDP1d8Lh+tXNi6LyT4s0eurUwoNjk9tLPjMjSgqMfsnrU5bh3VnkH+pgwwLnld8vR1uQH/gVKzcFR2FOKL8dIn9CzLSa1rSdjldhrsnFcqDS53tdBNhFoWlo/nDH7bH/KH82GEnpmrbcrN/JG0ZLXJZCLSFY5yZRVq0ssUSOWsg980jvkIrchioYt96VGx5K3DEeHxI8D5t0SchEefBhv1XJ9mZBYR3vf13Kxj7Qro72/omkwpawhhfiBpJz249BMS6/pC4RUVRjN5KBz/nCPrlY2YoJkqzispqlCCUUuyemM1E/C0c=
