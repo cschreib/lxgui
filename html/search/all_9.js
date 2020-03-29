@@ -156,6 +156,6 @@ var searchData=
   ['key_5fnumber',['KEY_NUMBER',['../namespaceinput.html#a7c93b2fa27864447ce0194926355c801',1,'input']]],
   ['key_5frange',['key_range',['../structutils_1_1range_1_1key__range.html#a7e524b9adfbfd637ad242ec11ad23f42',1,'utils::range::key_range']]],
   ['key_5frange',['key_range',['../structutils_1_1range_1_1key__range.html',1,'utils::range']]],
-  ['key_5fstate',['key_state',['../structinput_1_1manager__impl_1_1key__state.html',1,'input::manager_impl']]],
+  ['key_5fstate',['key_state',['../structinput_1_1source__impl_1_1key__state.html',1,'input::source_impl']]],
   ['key_5ftype',['key_type',['../structutils_1_1range_1_1key__range.html#a20297f5978c4ab1f4e7e3fddc45e8a69',1,'utils::range::key_range::key_type()'],['../structutils_1_1range_1_1reverse__key__range.html#ab4dad49130b82069cd7059f1ac730f6a',1,'utils::range::reverse_key_range::key_type()']]]
 ];

@@ -21,7 +21,7 @@ var searchData=
   ['is_5fkeyboard_5fenabled',['is_keyboard_enabled',['../classgui_1_1frame.html#af89922bc6dac5ca45e930839a89532d0',1,'gui::frame']]],
   ['is_5floading_5fui',['is_loading_ui',['../classgui_1_1manager.html#a6adeb90cd7659374f8383d95554f12e5',1,'gui::manager']]],
   ['is_5fmanually_5frendered',['is_manually_rendered',['../classgui_1_1uiobject.html#a6692ee423f1becca93895cc59c65818d',1,'gui::uiobject']]],
-  ['is_5fmanually_5fupdated',['is_manually_updated',['../classinput_1_1manager__impl.html#aede0c7d0d888da84f93c88a8b391e0c0',1,'input::manager_impl']]],
+  ['is_5fmanually_5fupdated',['is_manually_updated',['../classinput_1_1source__impl.html#a642e132ef04006ff3d9afdc73ab7e4cb',1,'input::source_impl']]],
   ['is_5fmouse_5fenabled',['is_mouse_enabled',['../classgui_1_1frame.html#a8bd5573a1713ee7ee6c32b2fc93824de',1,'gui::frame']]],
   ['is_5fmouse_5fwheel_5fenabled',['is_mouse_wheel_enabled',['../classgui_1_1frame.html#ad89736d3861f69a48f36a794ed91f561',1,'gui::frame']]],
   ['is_5fmovable',['is_movable',['../classgui_1_1frame.html#a91c954a5215fea07dff46b15a9a18bf4',1,'gui::frame']]],

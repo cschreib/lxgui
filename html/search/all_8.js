@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['glfw',['glfw',['../namespaceinput_1_1glfw.html',1,'input']]],
   ['identity',['IDENTITY',['../classgui_1_1gl_1_1matrix4.html#a2239edd6a45f117921fa6035c2c68187',1,'gui::gl::matrix4']]],
   ['ihorizontalscroll_5f',['iHorizontalScroll_',['../classgui_1_1scroll__frame.html#af54dbddb9e2148f8e8e219e784d56cd2',1,'gui::scroll_frame']]],
   ['ihorizontalscrollrange_5f',['iHorizontalScrollRange_',['../classgui_1_1scroll__frame.html#a82d4b43984d4638bab65e882d6426cc1',1,'gui::scroll_frame']]],
@@ -9,7 +10,9 @@ var searchData=
   ['input',['input',['../namespaceinput.html',1,'']]],
   ['input_2ecpp',['input.cpp',['../input_8cpp.html',1,'']]],
   ['input_2ehpp',['input.hpp',['../input_8hpp.html',1,'']]],
+  ['input_5fglfw_5fsource_2ehpp',['input_glfw_source.hpp',['../input__glfw__source_8hpp.html',1,'']]],
   ['input_5fkeys_2ehpp',['input_keys.hpp',['../input__keys_8hpp.html',1,'']]],
+  ['input_5fsfml_5fsource_2ehpp',['input_sfml_source.hpp',['../input__sfml__source_8hpp.html',1,'']]],
   ['insert_5fafter_5fcursor',['insert_after_cursor',['../classgui_1_1edit__box.html#a4c9db3c7c649d2f2e8de7233e8631422',1,'gui::edit_box']]],
   ['invert',['invert',['../classgui_1_1gl_1_1matrix4.html#a41cb10a936b27494d0bd77eb5170c944',1,'gui::gl::matrix4::invert()'],['../classgui_1_1gl_1_1matrix4.html#a58116be57f5c992d7201ad00b80c3cd1',1,'gui::gl::matrix4::invert(const matrix4 &amp;m)']]],
   ['is_5fauto_5ffocus_5fenabled',['is_auto_focus_enabled',['../classgui_1_1focus__frame.html#a7543d8e31668202b7433ad22770fbc80',1,'gui::focus_frame']]],
@@ -31,7 +34,7 @@ var searchData=
   ['is_5fkeyboard_5fenabled',['is_keyboard_enabled',['../classgui_1_1frame.html#af89922bc6dac5ca45e930839a89532d0',1,'gui::frame']]],
   ['is_5floading_5fui',['is_loading_ui',['../classgui_1_1manager.html#a6adeb90cd7659374f8383d95554f12e5',1,'gui::manager']]],
   ['is_5fmanually_5frendered',['is_manually_rendered',['../classgui_1_1uiobject.html#a6692ee423f1becca93895cc59c65818d',1,'gui::uiobject']]],
-  ['is_5fmanually_5fupdated',['is_manually_updated',['../classinput_1_1manager__impl.html#aede0c7d0d888da84f93c88a8b391e0c0',1,'input::manager_impl']]],
+  ['is_5fmanually_5fupdated',['is_manually_updated',['../classinput_1_1source__impl.html#a642e132ef04006ff3d9afdc73ab7e4cb',1,'input::source_impl']]],
   ['is_5fmouse_5fenabled',['is_mouse_enabled',['../classgui_1_1frame.html#a8bd5573a1713ee7ee6c32b2fc93824de',1,'gui::frame']]],
   ['is_5fmouse_5fwheel_5fenabled',['is_mouse_wheel_enabled',['../classgui_1_1frame.html#ad89736d3861f69a48f36a794ed91f561',1,'gui::frame']]],
   ['is_5fmovable',['is_movable',['../classgui_1_1frame.html#a91c954a5215fea07dff46b15a9a18bf4',1,'gui::frame']]],
@@ -63,13 +66,14 @@ var searchData=
   ['is_5fword_5fwrap_5fenabled',['is_word_wrap_enabled',['../classgui_1_1text.html#a3729a8941fed8eb4b5cefa822c80bc66',1,'gui::text']]],
   ['is_5fworld_5finput_5fallowed',['is_world_input_allowed',['../classgui_1_1frame.html#acf1d566eddd38cc6c1e8bdf032bc73f8',1,'gui::frame']]],
   ['iter',['iter',['../structutils_1_1range_1_1iterator__adapter.html#a12b0443df43992f05d40ea8dad89d9dd',1,'utils::range::iterator_adapter::iter()'],['../structutils_1_1range_1_1value__iterator__adapter.html#a7b2e9c0d675e18abebc55f3194f7b9e6',1,'utils::range::value_iterator_adapter::iter()'],['../structutils_1_1range_1_1key__iterator__adapter.html#af4da2b1fb59420361ab1a35792d52e20',1,'utils::range::key_iterator_adapter::iter()']]],
-  ['iterator',['iterator',['../structxml_1_1block_1_1range__block_1_1iterator.html',1,'xml::block::range_block']]],
   ['iterator',['iterator',['../structutils_1_1range_1_1reverse__range.html#a208e102c328fdec68b9b4da8152caec3',1,'utils::range::reverse_range::iterator()'],['../structutils_1_1range_1_1iterator__range.html#a6d4db256c117faa6c5be1b4aeb984986',1,'utils::range::iterator_range::iterator()'],['../structutils_1_1range_1_1reverse__iterator__range.html#a0e4ff9996cd3fe987a70c9a080b6c998',1,'utils::range::reverse_iterator_range::iterator()'],['../structutils_1_1range_1_1value__range.html#ad0d8c3e712c91c725dc045a4cc3a02e8',1,'utils::range::value_range::iterator()'],['../structutils_1_1range_1_1reverse__value__range.html#a5cddeb953a8841ef227071a624e05b77',1,'utils::range::reverse_value_range::iterator()'],['../structutils_1_1range_1_1key__range.html#a8d422bd955fcd304dc33981248b7d4d1',1,'utils::range::key_range::iterator()'],['../structutils_1_1range_1_1reverse__key__range.html#a17e047dba3e24a983658e5015199a3c5',1,'utils::range::reverse_key_range::iterator()'],['../structxml_1_1block_1_1range__block_1_1iterator.html#a8761af76964459af7b331efd4ac2a714',1,'xml::block::range_block::iterator::iterator()=default'],['../structxml_1_1block_1_1range__block_1_1iterator.html#a823699ab2c8df5c431d35939d68a17d0',1,'xml::block::range_block::iterator::iterator(block *b, const std::string &amp;n)'],['../namespacegui.html#ae02232188ab8795ff7657b741f0cc9aa',1,'gui::iterator()'],['../namespaceutils_1_1range.html#aba08bf7932ee9b19bc6c13bae2ba3069',1,'utils::range::iterator()']]],
-  ['iterator_5fadapter',['iterator_adapter',['../structutils_1_1range_1_1iterator__adapter.html',1,'utils::range']]],
+  ['iterator',['iterator',['../structxml_1_1block_1_1range__block_1_1iterator.html',1,'xml::block::range_block']]],
   ['iterator_5fadapter',['iterator_adapter',['../structutils_1_1range_1_1iterator__adapter.html#a0d6426e9ef2260ac3909f2916790c91b',1,'utils::range::iterator_adapter']]],
+  ['iterator_5fadapter',['iterator_adapter',['../structutils_1_1range_1_1iterator__adapter.html',1,'utils::range']]],
   ['iterator_5frange',['iterator_range',['../structutils_1_1range_1_1iterator__range.html#aa691932752104115a43abf60caab846d',1,'utils::range::iterator_range']]],
   ['iterator_5frange',['iterator_range',['../structutils_1_1range_1_1iterator__range.html',1,'utils::range']]],
   ['itercarretpos_5f',['iterCarretPos_',['../classgui_1_1edit__box.html#a9f590b35d0d0ec172abd92a9bda404ba',1,'gui::edit_box']]],
   ['iverticalscroll_5f',['iVerticalScroll_',['../classgui_1_1scroll__frame.html#a8f317da894829ba33cd6d6cf318f9fb5',1,'gui::scroll_frame']]],
-  ['iverticalscrollrange_5f',['iVerticalScrollRange_',['../classgui_1_1scroll__frame.html#ab4d6866ad9ed01ac7ed49aba9cd03102',1,'gui::scroll_frame']]]
+  ['iverticalscrollrange_5f',['iVerticalScrollRange_',['../classgui_1_1scroll__frame.html#ab4d6866ad9ed01ac7ed49aba9cd03102',1,'gui::scroll_frame']]],
+  ['sfml',['sfml',['../namespaceinput_1_1sfml.html',1,'input']]]
 ];

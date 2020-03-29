@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['value_5fiterator_5fadapter',['value_iterator_adapter',['../structutils_1_1range_1_1value__iterator__adapter.html',1,'utils::range']]],
-  ['value_5frange',['value_range',['../structutils_1_1range_1_1value__range.html',1,'utils::range']]],
-  ['var',['var',['../classlua_1_1var.html',1,'lua']]],
-  ['vector2',['vector2',['../classgui_1_1vector2.html',1,'gui']]],
-  ['vector2_3c_20float_20_3e',['vector2&lt; float &gt;',['../classgui_1_1vector2.html',1,'gui']]],
-  ['vector2_3c_20int_20_3e',['vector2&lt; int &gt;',['../classgui_1_1vector2.html',1,'gui']]],
-  ['vertex',['vertex',['../structgui_1_1vertex.html',1,'gui']]]
+  ['wptr',['wptr',['../classutils_1_1wptr.html',1,'utils']]],
+  ['wptr_3c_20gui_3a_3agui_3a_3agl_3a_3afont_20_3e',['wptr&lt; gui::gui::gl::font &gt;',['../classutils_1_1wptr.html',1,'utils']]],
+  ['wptr_3c_20gui_3a_3agui_3a_3agl_3a_3amaterial_20_3e',['wptr&lt; gui::gui::gl::material &gt;',['../classutils_1_1wptr.html',1,'utils']]],
+  ['wptr_3c_20gui_3a_3agui_3a_3asfml_3a_3afont_20_3e',['wptr&lt; gui::gui::sfml::font &gt;',['../classutils_1_1wptr.html',1,'utils']]],
+  ['wptr_3c_20gui_3a_3agui_3a_3asfml_3a_3amaterial_20_3e',['wptr&lt; gui::gui::sfml::material &gt;',['../classutils_1_1wptr.html',1,'utils']]]
 ];

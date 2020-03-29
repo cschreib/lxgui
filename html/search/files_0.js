@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['glfw_5finput_5fimpl_2ehpp',['glfw_input_impl.hpp',['../glfw__input__impl_8hpp.html',1,'']]],
   ['gui_5fanchor_2ecpp',['gui_anchor.cpp',['../gui__anchor_8cpp.html',1,'']]],
   ['gui_5fanchor_2ehpp',['gui_anchor.hpp',['../gui__anchor_8hpp.html',1,'']]],
   ['gui_5fbackdrop_2ecpp',['gui_backdrop.cpp',['../gui__backdrop_8cpp.html',1,'']]],

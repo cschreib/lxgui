@@ -18,7 +18,7 @@ var searchData=
   ['bfocus_5f',['bFocus_',['../classgui_1_1focus__frame.html#a0740e26d4702d70ddb81dc9f56a4c438',1,'gui::focus_frame']]],
   ['bfound',['bFound',['../structxml_1_1attribute.html#a936b576bbdd259283616f15ca13bd224',1,'xml::attribute']]],
   ['bhasalleventsregistred_5f',['bHasAllEventsRegistred_',['../classgui_1_1frame.html#ac45cf7579c72e0b5e04ca457dacd1617',1,'gui::frame']]],
-  ['bhasdelta',['bHasDelta',['../structinput_1_1manager__impl_1_1mouse__state.html#a861919a54514272d3f9d304522d51b3b',1,'input::manager_impl::mouse_state']]],
+  ['bhasdelta',['bHasDelta',['../structinput_1_1source__impl_1_1mouse__state.html#a659a34251c79fad86c6f12795a4d8d03',1,'input::source_impl::mouse_state']]],
   ['bhighlighted_5f',['bHighlighted_',['../classgui_1_1button.html#afe26f332d55fbc05775a8e3c2276378b',1,'gui::button']]],
   ['bind',['bind',['../classgui_1_1gl_1_1material.html#aa9fc57850770b91127a54f98f16cf27c',1,'gui::gl::material']]],
   ['binherits_5f',['bInherits_',['../classgui_1_1uiobject.html#aa72d498c955f50d098c032b87c452a37',1,'gui::uiobject']]],
@@ -46,7 +46,7 @@ var searchData=
   ['blocks',['blocks',['../classxml_1_1block.html#ada84ebe9bad8c178df8978f536d0199d',1,'xml::block']]],
   ['blue',['BLUE',['../classgui_1_1color.html#a6b527b34e827b575f918f2e28314f037',1,'gui::color']]],
   ['bmanuallyrendered_5f',['bManuallyRendered_',['../classgui_1_1uiobject.html#a9f55b2d697790f560d4d46f0d65c9b78',1,'gui::uiobject']]],
-  ['bmanuallyupdated_5f',['bManuallyUpdated_',['../classinput_1_1manager__impl.html#a4183d1815ceaffa50f96807b776eada3',1,'input::manager_impl']]],
+  ['bmanuallyupdated_5f',['bManuallyUpdated_',['../classinput_1_1source__impl.html#ad800d151a9b530b3e7cd2511ec6b778d',1,'input::source_impl']]],
   ['bmousedragged_5f',['bMouseDragged_',['../classgui_1_1frame.html#a1c739d3832756694873529a46540b98a',1,'gui::frame']]],
   ['bmouseinframe_5f',['bMouseInFrame_',['../classgui_1_1frame.html#ad473cd8a1ed507e1c9b6b1baf8754452',1,'gui::frame']]],
   ['bmouseinscrolltexture_5f',['bMouseInScrollTexture_',['../classgui_1_1scroll__frame.html#a6aee774c3070b9fe7e3b13f94de95003',1,'gui::scroll_frame']]],
@@ -84,5 +84,5 @@ var searchData=
   ['button',['button',['../classgui_1_1button.html#a8f8794b9dd6695fcd8758fd40e940716',1,'gui::button']]],
   ['button',['button',['../classgui_1_1button.html',1,'gui']]],
   ['bvirtual_5f',['bVirtual_',['../classgui_1_1uiobject.html#afeb4d945672bc2c7aee7f7e6a3a3d9e0',1,'gui::uiobject']]],
-  ['bwindowresized_5f',['bWindowResized_',['../classinput_1_1manager__impl.html#a9ff97ef9e4dcde590c05ebb5b83b56ee',1,'input::manager_impl']]]
+  ['bwindowresized_5f',['bWindowResized_',['../classinput_1_1source__impl.html#af4d689e986fa7481c984dbbe6626e897',1,'input::source_impl']]]
 ];

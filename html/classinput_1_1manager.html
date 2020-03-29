@@ -102,9 +102,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5c628599433b4a701378fc75328a78c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#a5c628599433b4a701378fc75328a78c4">manager</a> (std::unique_ptr&lt; <a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> &gt; pImpl)</td></tr>
-<tr class="memdesc:a5c628599433b4a701378fc75328a78c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this manager with a chosen implementation.  <a href="#a5c628599433b4a701378fc75328a78c4">More...</a><br /></td></tr>
-<tr class="separator:a5c628599433b4a701378fc75328a78c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5942d28bde7da9b14e6a180afb67cf56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#a5942d28bde7da9b14e6a180afb67cf56">manager</a> (std::unique_ptr&lt; <a class="el" href="classinput_1_1source__impl.html">source_impl</a> &gt; pSource)</td></tr>
+<tr class="memdesc:a5942d28bde7da9b14e6a180afb67cf56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this manager with a chosen input source.  <a href="#a5942d28bde7da9b14e6a180afb67cf56">More...</a><br /></td></tr>
+<tr class="separator:a5942d28bde7da9b14e6a180afb67cf56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1cc4773aed4feb489d5a60a1ee69671"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#ac1cc4773aed4feb489d5a60a1ee69671">manager</a> (const <a class="el" href="classinput_1_1manager.html">manager</a> &amp;mMgr)=delete</td></tr>
 <tr class="memdesc:ac1cc4773aed4feb489d5a60a1ee69671"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is non copiable.  <a href="#ac1cc4773aed4feb489d5a60a1ee69671">More...</a><br /></td></tr>
 <tr class="separator:ac1cc4773aed4feb489d5a60a1ee69671"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,19 +276,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac428d27437dae23b2ef528f1a0ff87b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#ac428d27437dae23b2ef528f1a0ff87b0">unregister_event_manager</a> (<a class="el" href="classgui_1_1event__manager.html">gui::event_manager</a> *pManager)</td></tr>
 <tr class="memdesc:ac428d27437dae23b2ef528f1a0ff87b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters an event manager.  <a href="#ac428d27437dae23b2ef528f1a0ff87b0">More...</a><br /></td></tr>
 <tr class="separator:ac428d27437dae23b2ef528f1a0ff87b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b7506cd61a70ad07ba427f2ea87bda"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#a36b7506cd61a70ad07ba427f2ea87bda">get_impl</a> () const </td></tr>
-<tr class="memdesc:a36b7506cd61a70ad07ba427f2ea87bda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this manager's handler.  <a href="#a36b7506cd61a70ad07ba427f2ea87bda">More...</a><br /></td></tr>
-<tr class="separator:a36b7506cd61a70ad07ba427f2ea87bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f1953de5db271aead32458165ccd8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#ac2f1953de5db271aead32458165ccd8a">get_impl</a> ()</td></tr>
-<tr class="memdesc:ac2f1953de5db271aead32458165ccd8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this manager's handler.  <a href="#ac2f1953de5db271aead32458165ccd8a">More...</a><br /></td></tr>
-<tr class="separator:ac2f1953de5db271aead32458165ccd8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49856b758489061e0f53ad5f5ca034bb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classinput_1_1source__impl.html">source_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#a49856b758489061e0f53ad5f5ca034bb">get_source</a> () const </td></tr>
+<tr class="memdesc:a49856b758489061e0f53ad5f5ca034bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the input source.  <a href="#a49856b758489061e0f53ad5f5ca034bb">More...</a><br /></td></tr>
+<tr class="separator:a49856b758489061e0f53ad5f5ca034bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7430704dc884362548ea8ab031662dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classinput_1_1source__impl.html">source_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classinput_1_1manager.html#af7430704dc884362548ea8ab031662dd">get_source</a> ()</td></tr>
+<tr class="memdesc:af7430704dc884362548ea8ab031662dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the input source.  <a href="#af7430704dc884362548ea8ab031662dd">More...</a><br /></td></tr>
+<tr class="separator:af7430704dc884362548ea8ab031662dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles inputs (keyboard and mouse) </p>
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00139">139</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00134">134</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a5c628599433b4a701378fc75328a78c4"></a>
+<a class="anchor" id="a5942d28bde7da9b14e6a180afb67cf56"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -298,8 +298,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">input::manager::manager </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> &gt;&#160;</td>
-          <td class="paramname"><em>pImpl</em></td><td>)</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classinput_1_1source__impl.html">source_impl</a> &gt;&#160;</td>
+          <td class="paramname"><em>pSource</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -310,10 +310,10 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Initializes this manager with a chosen implementation. </p>
+<p>Initializes this manager with a chosen input source. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pImpl</td><td>The implementation class of the input manager </td></tr>
+    <tr><td class="paramname">pSource</td><td>The input source </td></tr>
   </table>
   </dd>
 </dl>
@@ -391,7 +391,7 @@ Public Member Functions</h2></td></tr>
 <p>Checks if Alt is beeing pressed. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if Alt is beeing pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00633">633</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00765">765</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -464,7 +464,7 @@ Public Member Functions</h2></td></tr>
 <p>Checks if Control (Ctrl) is beeing pressed. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if Control (Ctrl) is beeing pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00643">643</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00775">775</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -522,7 +522,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the UTF8 (multibyte) character that has been entered. </p>
 <dl class="section return"><dt>Returns</dt><dd>The multibyte UTF8 character just entered with the keyboard </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00252">252</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00384">384</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -542,47 +542,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the double click maximum time. </p>
 <dl class="section return"><dt>Returns</dt><dd>The double click maximum time </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00601">601</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a36b7506cd61a70ad07ba427f2ea87bda"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> * input::manager::get_impl </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns this manager's handler. </p>
-<dl class="section return"><dt>Returns</dt><dd>This manager's handler </dd></dl>
-
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00754">754</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac2f1953de5db271aead32458165ccd8a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classinput_1_1manager__impl.html">manager_impl</a> * input::manager::get_impl </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns this manager's handler. </p>
-<dl class="section return"><dt>Returns</dt><dd>This manager's handler </dd></dl>
-
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00759">759</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00733">733</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -635,6 +595,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The name of the provided key, as it appears on your keyboard </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This will only return English key names. </dd></dl>
 
 <p>Definition at line <a class="el" href="input_8cpp_source.html#l00122">122</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
@@ -673,8 +634,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The name of key combination, example : "Ctrl + A" </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This will only return English key names. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00127">127</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00259">259</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -718,8 +680,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The name of key combination, example : "Ctrl + Shift + A" </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This will only return English key names. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00155">155</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00287">287</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -746,7 +709,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Elapsed time since the key has been pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00231">231</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00363">363</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -766,7 +729,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the list of keys that have been pressed during this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of keys that have been pressed during this frame. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00205">205</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00337">337</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -786,7 +749,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the list of keys that have been released during this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of keys that have been released during this frame. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00210">210</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00342">342</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -806,7 +769,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the duration after which a key is considered as pressed for a long time. </p>
 <dl class="section return"><dt>Returns</dt><dd>The duration after which a key is considered as pressed for a long time </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00738">738</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00870">870</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -826,7 +789,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the ammount of mouse movement to be buffered. </p>
 <dl class="section return"><dt>Returns</dt><dd>The ammount of mouse movement to be buffered </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00611">611</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00743">743</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -853,7 +816,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The string associated with the mouse button </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00743">743</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00875">875</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -874,7 +837,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position variation of the mouse </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#a0c271b5a6ebb8776d51ee264a71fbf16" title="Returns the horizontal position variation of the mouse. ">get_mouse_raw_dx()</a>, but this time, the game's sensibility factor is applied. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00688">688</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00820">820</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -895,7 +858,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position variation of the mouse </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#a5eadc1f425aefad84baf14bc11e1e9b2" title="Returns the vertical position variation of the mouse. ">get_mouse_raw_dy()</a>, but this time, the game's sensibility factor is applied. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00693">693</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00825">825</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -922,7 +885,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Elapsed time since the mouse button has been pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00267">267</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00399">399</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -943,7 +906,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position variation of the mouse </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns values just as they are given by the mouse. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00678">678</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00810">810</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -964,7 +927,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position variation of the mouse </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns values just as they are given by the mouse. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00683">683</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00815">815</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -985,7 +948,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position variation of the mouse in window units </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#abb8de366710c63d71fe9a87268eabea9" title="Returns the horizontal position variation of the mouse. ">get_mouse_dx()</a>, but divided by the window's width </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00698">698</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00830">830</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1006,7 +969,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position variation of the mouse in window units </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#a3bbf96997ea358c032ad1b76673360d0" title="Returns the vertical position variation of the mouse. ">get_mouse_dy()</a>, but divided by the window's height </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00703">703</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00835">835</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +990,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of the mouse in window units </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#a620d072a58330333caf120ce249adbe6" title="Returns the horizontal position of the mouse. ">get_mouse_x()</a>, but divided by the window's width </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00668">668</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00800">800</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1048,7 +1011,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of the mouse in window units </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function returns the same thing as <a class="el" href="classinput_1_1manager.html#af7e3b25647eed6d8029e40db45dcfc07" title="Returns the vertical position of the mouse. ">get_mouse_y()</a>, but divided by the window's height </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00673">673</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00805">805</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1068,7 +1031,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the mouse movement factor. </p>
 <dl class="section return"><dt>Returns</dt><dd>The mouse movement factor </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00728">728</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00860">860</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1091,7 +1054,7 @@ Public Member Functions</h2></td></tr>
  If that's an issue for you, then use this function instead of <a class="el" href="classinput_1_1manager.html#abb8de366710c63d71fe9a87268eabea9" title="Returns the horizontal position variation of the mouse. ">get_mouse_dx()</a>.<br />
  Sensibility factor is applied on the result. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00708">708</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00840">840</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1077,7 @@ Public Member Functions</h2></td></tr>
  If that's an issue for you, then use this function instead of <a class="el" href="classinput_1_1manager.html#a3bbf96997ea358c032ad1b76673360d0" title="Returns the vertical position variation of the mouse. ">get_mouse_dy()</a>.<br />
  Sensibility factor is applied on the result. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00713">713</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00845">845</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1104,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The mouse button's state </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00653">653</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00785">785</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1161,7 +1124,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the rolling ammount of the mouse wheel. </p>
 <dl class="section return"><dt>Returns</dt><dd>The rolling ammount of the mouse wheel </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00718">718</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00850">850</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1181,7 +1144,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the horizontal position of the mouse. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of the mouse </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00658">658</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00790">790</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1201,7 +1164,47 @@ Public Member Functions</h2></td></tr>
 <p>Returns the vertical position of the mouse. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of the mouse </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00663">663</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00795">795</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a49856b758489061e0f53ad5f5ca034bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classinput_1_1source__impl.html">source_impl</a> * input::manager::get_source </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the input source. </p>
+<dl class="section return"><dt>Returns</dt><dd>The input source </dd></dl>
+
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00886">886</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af7430704dc884362548ea8ab031662dd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classinput_1_1source__impl.html">source_impl</a> * input::manager::get_source </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the input source. </p>
+<dl class="section return"><dt>Returns</dt><dd>The input source </dd></dl>
+
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00891">891</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1220,9 +1223,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Checks whether input is focused somewhere, to prevent multiple inputs. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if input is focused </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classinput_1_1manager.html#a14fc49b1be1b30292906e4b08068b5f6" title="Sets whether input should be stopped. ">set_focus()</a> for more information. If you use another input source than this manager, you should check the result of this function before actually using it. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classinput_1_1manager.html#a14fc49b1be1b30292906e4b08068b5f6" title="Sets whether input should be stopped. ">set_focus()</a> for more information. If you use some other source of input than this manager, you should check the result of this function before actually using it (if the manager is not focussed, it should not provide any input). </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00628">628</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00760">760</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1260,7 +1263,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the key is being pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00215">215</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00347">347</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1298,7 +1301,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the key is being pressed for a long time </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00223">223</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00355">355</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1337,7 +1340,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the key has been pressed </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Happens just when the key is pressed. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00236">236</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00368">368</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1376,7 +1379,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the key has been released </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Happens just when the key is released. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00244">244</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00376">376</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +1406,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse button has been double clicked </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00282">282</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00414">414</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1430,7 +1433,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse button is being pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00257">257</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00389">389</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1460,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse button is being pressed for a long time </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00262">262</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00394">394</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1485,7 +1488,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse button has been pressed </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Happens just when the mouse button is pressed. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00272">272</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00404">404</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1516,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse button has been released </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Happens just when the mouse button is released. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00277">277</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00409">409</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1533,7 +1536,7 @@ Public Member Functions</h2></td></tr>
 <p>Checks if the mouse has just started beeing dragged. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse has just started beeing dragged </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00648">648</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00780">780</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1586,7 +1589,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>There can be as many event managers connected to this input manager. If you need to remove one from the list, see remove_event_manager(). </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00764">764</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00896">896</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1612,7 +1615,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00596">596</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00728">728</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1652,7 +1655,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 Calling set_focus(false) doesn't immediately remove focus. You have to wait for the next <a class="el" href="classinput_1_1manager.html#a333f332462f7e3ec24c22d256ee49316" title="Updates input (keyboard and mouse). ">update()</a> call. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00616">616</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00748">748</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1679,7 +1682,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is used for key repeating for example. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00733">733</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00865">865</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1707,7 +1710,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 <dl class="section note"><dt>Note</dt><dd>If you experience jerky mouse movement, you can try to increase this value (default : 0.1s).<br />
  On the contrary, if you feel your mouse is not responsive enough, try to decrease it. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00606">606</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00738">738</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1734,7 +1737,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Increase this parameter to make mouse controlled movement faster. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00723">723</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00855">855</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1754,7 +1757,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 <p>Checks if Shift is beeing pressed. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if Shift is beeing pressed </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00638">638</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00770">770</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1781,7 +1784,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>For more details, see <a class="el" href="classinput_1_1manager.html#a65cc6b89524a6320827f02f688dc393a" title="Registers a new event manager that will listen to input events. ">register_event_manager()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00770">770</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00902">902</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1801,7 +1804,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 
 <p>Updates input (keyboard and mouse). </p>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00292">292</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00424">424</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1821,7 +1824,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 <p>Checks if the mouse wheel has been rolled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the mouse wheel has been rolled </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8cpp_source.html#l00287">287</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00419">419</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1832,7 +1835,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Mar 28 2020 13:07:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 29 2020 18:41:06 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

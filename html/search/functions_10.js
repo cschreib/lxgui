@@ -39,7 +39,7 @@ var searchData=
   ['renderer',['renderer',['../classgui_1_1gl_1_1renderer.html#a52cfaf6cca4367df24d3ea577c960d2e',1,'gui::gl::renderer::renderer()'],['../classgui_1_1sfml_1_1renderer.html#a24c263d35904e0772dd60d1046efc940',1,'gui::sfml::renderer::renderer()']]],
   ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html#ac9e5754bb2aaa7eb76451d02580647bb',1,'gui::renderer_impl']]],
   ['request_5ffocus',['request_focus',['../classgui_1_1manager.html#aaedbccc3dcc4e3ab839f645ed0bfc36b',1,'gui::manager']]],
-  ['reset_5fwindow_5fresized',['reset_window_resized',['../classinput_1_1manager__impl.html#aaf84b535b6b38a5f14be47876c856633',1,'input::manager_impl']]],
+  ['reset_5fwindow_5fresized',['reset_window_resized',['../classinput_1_1source__impl.html#a01148a9a3cf73297a60b825dc3bef222',1,'input::source_impl']]],
   ['reverse',['reverse',['../namespaceutils_1_1range.html#a2bd577a69b632ca9b51646130c0f567a',1,'utils::range']]],
   ['reverse_5fiterator',['reverse_iterator',['../namespaceutils_1_1range.html#a2ef3e044c4a001c6381cdff37c354636',1,'utils::range']]],
   ['reverse_5fiterator_5frange',['reverse_iterator_range',['../structutils_1_1range_1_1reverse__iterator__range.html#abe6198c4ef513742d0d7d8623cf980d0',1,'utils::range::reverse_iterator_range']]],

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['text',['text',['../classgui_1_1text.html',1,'gui']]],
-  ['texture',['texture',['../classgui_1_1texture.html',1,'gui']]]
+  ['ub32color',['ub32color',['../structgui_1_1gl_1_1ub32color.html',1,'gui::gl']]],
+  ['uiobject',['uiobject',['../classgui_1_1uiobject.html',1,'gui']]]
 ];

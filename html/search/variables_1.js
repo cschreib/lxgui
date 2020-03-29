@@ -12,7 +12,7 @@ var searchData=
   ['bfocus_5f',['bFocus_',['../classgui_1_1focus__frame.html#a0740e26d4702d70ddb81dc9f56a4c438',1,'gui::focus_frame']]],
   ['bfound',['bFound',['../structxml_1_1attribute.html#a936b576bbdd259283616f15ca13bd224',1,'xml::attribute']]],
   ['bhasalleventsregistred_5f',['bHasAllEventsRegistred_',['../classgui_1_1frame.html#ac45cf7579c72e0b5e04ca457dacd1617',1,'gui::frame']]],
-  ['bhasdelta',['bHasDelta',['../structinput_1_1manager__impl_1_1mouse__state.html#a861919a54514272d3f9d304522d51b3b',1,'input::manager_impl::mouse_state']]],
+  ['bhasdelta',['bHasDelta',['../structinput_1_1source__impl_1_1mouse__state.html#a659a34251c79fad86c6f12795a4d8d03',1,'input::source_impl::mouse_state']]],
   ['bhighlighted_5f',['bHighlighted_',['../classgui_1_1button.html#afe26f332d55fbc05775a8e3c2276378b',1,'gui::button']]],
   ['binherits_5f',['bInherits_',['../classgui_1_1uiobject.html#aa72d498c955f50d098c032b87c452a37',1,'gui::uiobject']]],
   ['bintegeronly_5f',['bIntegerOnly_',['../classgui_1_1edit__box.html#a5681d79b039b041faaf3eacd2f2341dc',1,'gui::edit_box']]],
@@ -34,7 +34,7 @@ var searchData=
   ['blockhighlight_5f',['bLockHighlight_',['../classgui_1_1button.html#a72acbda1b368a0a721119647a300f5c7',1,'gui::button']]],
   ['blue',['BLUE',['../classgui_1_1color.html#a6b527b34e827b575f918f2e28314f037',1,'gui::color']]],
   ['bmanuallyrendered_5f',['bManuallyRendered_',['../classgui_1_1uiobject.html#a9f55b2d697790f560d4d46f0d65c9b78',1,'gui::uiobject']]],
-  ['bmanuallyupdated_5f',['bManuallyUpdated_',['../classinput_1_1manager__impl.html#a4183d1815ceaffa50f96807b776eada3',1,'input::manager_impl']]],
+  ['bmanuallyupdated_5f',['bManuallyUpdated_',['../classinput_1_1source__impl.html#ad800d151a9b530b3e7cd2511ec6b778d',1,'input::source_impl']]],
   ['bmousedragged_5f',['bMouseDragged_',['../classgui_1_1frame.html#a1c739d3832756694873529a46540b98a',1,'gui::frame']]],
   ['bmouseinframe_5f',['bMouseInFrame_',['../classgui_1_1frame.html#ad473cd8a1ed507e1c9b6b1baf8754452',1,'gui::frame']]],
   ['bmouseinscrolltexture_5f',['bMouseInScrollTexture_',['../classgui_1_1scroll__frame.html#a6aee774c3070b9fe7e3b13f94de95003',1,'gui::scroll_frame']]],
@@ -64,5 +64,5 @@ var searchData=
   ['bupdatescrollrange_5f',['bUpdateScrollRange_',['../classgui_1_1scroll__frame.html#a456a5acc3544c6ead347c1f8836ca28b',1,'gui::scroll_frame']]],
   ['bupdatethumbtexture_5f',['bUpdateThumbTexture_',['../classgui_1_1slider.html#a43b9c8b6017aae6ab8bc11efd3b4f489',1,'gui::slider']]],
   ['bvirtual_5f',['bVirtual_',['../classgui_1_1uiobject.html#afeb4d945672bc2c7aee7f7e6a3a3d9e0',1,'gui::uiobject']]],
-  ['bwindowresized_5f',['bWindowResized_',['../classinput_1_1manager__impl.html#a9ff97ef9e4dcde590c05ebb5b83b56ee',1,'input::manager_impl']]]
+  ['bwindowresized_5f',['bWindowResized_',['../classinput_1_1source__impl.html#af4d689e986fa7481c984dbbe6626e897',1,'input::source_impl']]]
 ];
