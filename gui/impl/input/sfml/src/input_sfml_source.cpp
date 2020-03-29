@@ -1,4 +1,4 @@
-#include "lxgui/impl/sfml_input_impl.hpp"
+#include "lxgui/impl/input_sfml_source.hpp"
 #include <lxgui/utils_string.hpp>
 
 #include <SFML/Window/Window.hpp>
@@ -14,9 +14,10 @@ SFML doesn't provide keyboard layout independent key codes."
 using sf::Keyboard;
 using sf::Mouse;
 
-namespace input
+namespace input {
+namespace sfml
 {
-const sfml_manager::key_mapping sfml_manager::lKeyToSFML[100] =
+const source::key_mapping source::lKeyToSFML[100] =
 {
     {key::K_ESCAPE,Keyboard::Escape},
     {key::K_0,Keyboard::Num0},
@@ -124,7 +125,7 @@ const sfml_manager::key_mapping sfml_manager::lKeyToSFML[100] =
     {key::K_APPS,Keyboard::Menu}
 };
 
-sfml_manager::sfml_manager(const sf::Window& mWindow, bool bMouseGrab) :
+source::source(const sf::Window& mWindow, bool bMouseGrab) :
     mWindow_(mWindow), bMouseGrab_(bMouseGrab), bFirst_(true), fWheelCache_(0.0f)
 {
     if (bMouseGrab_)
@@ -136,7 +137,7 @@ sfml_manager::sfml_manager(const sf::Window& mWindow, bool bMouseGrab) :
     mMouse_.bHasDelta = true;
 }
 
-int sfml_manager::to_sfml_(key mKey) const
+int source::to_sfml_(key mKey) const
 {
     for (size_t i = 0; i < 100; ++i)
     {
@@ -147,7 +148,7 @@ int sfml_manager::to_sfml_(key mKey) const
     return Keyboard::Unknown;
 }
 
-void sfml_manager::toggle_mouse_grab()
+void source::toggle_mouse_grab()
 {
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
@@ -157,7 +158,8 @@ void sfml_manager::toggle_mouse_grab()
     }
 }
 
-#ifdef WIN32
+#if defined(WIN32)
+#define NOMINMAX
 #include <windows.h>
 
 #ifndef VK_OEM_COMMA
@@ -276,7 +278,7 @@ int to_vkey_(Keyboard::Key key)
     }
 }
 
-#else
+#elif defined(LINUX)
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
@@ -391,9 +393,9 @@ KeySym to_xkey_(Keyboard::Key key)
 
 #endif
 
-std::string sfml_manager::get_key_name(key mKey) const
+std::string source::get_key_name(key mKey) const
 {
-#ifdef WIN32
+#if defined(WIN32)
     int vkey = to_vkey_((sf::Keyboard::Key)to_sfml_(mKey));
     unsigned int code = MapVirtualKey(vkey, 0 /*MAPVK_VK_TO_VSC*/);
 
@@ -403,7 +405,7 @@ std::string sfml_manager::get_key_name(key mKey) const
     else
         return "Unknown";
 
-#else
+#elif defined(LINUX)
     // Get the corresponding X11 keysym
     KeySym keysym = to_xkey_((sf::Keyboard::Key)to_sfml_(mKey));
     if (keysym == 0)
@@ -444,7 +446,7 @@ std::string sfml_manager::get_key_name(key mKey) const
 #endif
 }
 
-void sfml_manager::update_()
+void source::update_()
 {
     for (int i = 0; i < 100; ++i)
         mKeyboard_.lKeyState[(uint)lKeyToSFML[i].mKey] = Keyboard::isKeyPressed((Keyboard::Key)lKeyToSFML[i].mSFKey);
@@ -498,7 +500,7 @@ void sfml_manager::update_()
         mMouse_.lButtonState[i] = Mouse::isButtonPressed(lMouseToSFML[i]);
 }
 
-void sfml_manager::on_sfml_event(const sf::Event& mEvent)
+void source::on_sfml_event(const sf::Event& mEvent)
 {
     if (mEvent.type == sf::Event::TextEntered)
     {
@@ -517,5 +519,6 @@ void sfml_manager::on_sfml_event(const sf::Event& mEvent)
         uiNewWindowWidth_ = mEvent.size.width;
         uiNewWindowHeight_ = mEvent.size.height;
     }
+}
 }
 }

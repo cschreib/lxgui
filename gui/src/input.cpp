@@ -9,66 +9,66 @@
 
 namespace input
 {
-void manager_impl::update()
+void source_impl::update()
 {
     update_();
     lChars_.clear();
     std::swap(lChars_, lCharsCache_);
 }
 
-bool manager_impl::is_manually_updated() const
+bool source_impl::is_manually_updated() const
 {
     return bManuallyUpdated_;
 }
 
-void manager_impl::set_manually_updated(bool bManuallyUpdated)
+void source_impl::set_manually_updated(bool bManuallyUpdated)
 {
     bManuallyUpdated_ = bManuallyUpdated;
 }
 
-const manager_impl::key_state& manager_impl::get_key_state() const
+const source_impl::key_state& source_impl::get_key_state() const
 {
     return mKeyboard_;
 }
 
-const std::vector<char32_t>& manager_impl::get_chars() const
+const std::vector<char32_t>& source_impl::get_chars() const
 {
     return lChars_;
 }
 
-const manager_impl::mouse_state& manager_impl::get_mouse_state() const
+const source_impl::mouse_state& source_impl::get_mouse_state() const
 {
     return mMouse_;
 }
 
-bool manager_impl::has_window_resized() const
+bool source_impl::has_window_resized() const
 {
     return bWindowResized_;
 }
 
-void manager_impl::reset_window_resized()
+void source_impl::reset_window_resized()
 {
     bWindowResized_ = false;
 }
 
-uint manager_impl::get_window_new_width() const
+uint source_impl::get_window_new_width() const
 {
     return uiNewWindowWidth_;
 }
 
-uint manager_impl::get_window_new_height() const
+uint source_impl::get_window_new_height() const
 {
     return uiNewWindowHeight_;
 }
 
-manager::manager(std::unique_ptr<manager_impl> pImpl) :
+manager::manager(std::unique_ptr<source_impl> pSource) :
     bRemoveFocus_(false), bFocus_(false), pFocusReceiver_(nullptr), bCtrlPressed_(false),
     bShiftPressed_(false), bAltPressed_ (false), bKey_(false),
     dDoubleClickTime_(0.25), fMX_(0.0f), fMY_(0.0f), fRelMX_(0.0f), fRelMY_(0.0f),
     fDMX_(0.0f), fDMY_(0.0f), fRelDMX_(0.0f), fRelDMY_(0.0f), fRawDMX_(0.0f), fRawDMY_(0.0f),
     fMouseSensibility_(1.0f), dMouseHistoryMaxLength_(0.1), dLongPressDelay_(0.7),
     fSmoothDMX_(0.0f), fSmoothDMY_(0.0f), fSmoothMWheel_(0.0f), fMWheel_(0.0f),
-    bWheelRolled_(false), bLastDragged_(false), dTime_(0.0), pImpl_(std::move(pImpl))
+    bWheelRolled_(false), bLastDragged_(false), dTime_(0.0), pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(false);
     lKeyLong_.fill(false);
@@ -121,7 +121,7 @@ bool manager::get_key(bool bForce) const
 
 std::string manager::get_key_name(key mKey) const
 {
-    return pImpl_->get_key_name(mKey);
+    return pSource_->get_key_name(mKey);
 }
 
 std::string manager::get_key_name(key mKey, key mModifier) const
@@ -298,10 +298,10 @@ void manager::update(float fTempDelta)
         bRemoveFocus_ = false;
     }
 
-    if (!pImpl_->is_manually_updated())
-        pImpl_->update();
+    if (!pSource_->is_manually_updated())
+        pSource_->update();
 
-    lChars_ = pImpl_->get_chars();
+    lChars_ = pSource_->get_chars();
 
     lDownStack_.clear();
     lUpStack_.clear();
@@ -335,7 +335,7 @@ void manager::update(float fTempDelta)
         }
 
         // Update state
-        lKeyBuf_[i] = pImpl_->get_key_state().lKeyState[i];
+        lKeyBuf_[i] = pSource_->get_key_state().lKeyState[i];
 
         if (lKeyBuf_[i])
         {
@@ -388,7 +388,7 @@ void manager::update(float fTempDelta)
     bShiftPressed_ = key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
     bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
 
-    const manager_impl::mouse_state& mMouseState = pImpl_->get_mouse_state();
+    const source_impl::mouse_state& mMouseState = pSource_->get_mouse_state();
     gui::event mMouseEvent;
     mMouseEvent.add(mouse_button::LEFT);
     mMouseEvent.add(mMouseState.fAbsX);
@@ -581,13 +581,13 @@ void manager::update(float fTempDelta)
         fire_event_(mMouseWheelEvent, true);
     }
 
-    if (pImpl_->has_window_resized())
+    if (pSource_->has_window_resized())
     {
         gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
-        mWindowResizedEvent.add(pImpl_->get_window_new_width());
-        mWindowResizedEvent.add(pImpl_->get_window_new_height());
+        mWindowResizedEvent.add(pSource_->get_window_new_width());
+        mWindowResizedEvent.add(pSource_->get_window_new_height());
         fire_event_(mWindowResizedEvent, true);
-        pImpl_->reset_window_resized();
+        pSource_->reset_window_resized();
     }
 
     dTime_ += dDelta;
@@ -751,14 +751,14 @@ std::string manager::get_mouse_button_string(mouse_button mID) const
     }
 }
 
-const manager_impl* manager::get_impl() const
+const source_impl* manager::get_source() const
 {
-    return pImpl_.get();
+    return pSource_.get();
 }
 
-manager_impl* manager::get_impl()
+source_impl* manager::get_source()
 {
-    return pImpl_.get();
+    return pSource_.get();
 }
 
 void manager::register_event_manager(gui::event_manager* pManager)

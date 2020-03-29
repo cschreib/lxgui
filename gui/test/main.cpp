@@ -14,7 +14,7 @@
 
 #include <SFML/Window.hpp>
 
-//#define OIS_INPUT
+//#define GLFW_INPUT
 //#define GL_GUI
 
 #ifdef GL_GUI
@@ -29,10 +29,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #endif
 
-#ifdef OIS_INPUT
-#include <lxgui/impl/ois_input_impl.hpp>
+#ifdef GLFW_INPUT
+#include <lxgui/impl/input_glfw_source.hpp>
 #else
-#include <lxgui/impl/sfml_input_impl.hpp>
+#include <lxgui/impl/input_sfml_source.hpp>
 #endif
 
 #ifdef WIN32
@@ -99,22 +99,20 @@ int main(int argc, char* argv[])
             std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
 
         // Define the input manager
-        std::unique_ptr<input::manager_impl> pInputImpl;
-    #ifdef OIS_INPUT
-        // OIS if available
-        pInputImpl = std::unique_ptr<input::manager_impl>(new input::ois_manager(
+        std::unique_ptr<input::source_impl> pInputSource;
+    #ifdef GLFW_INPUT
+        // Use GLFW
+        pInputSource = std::unique_ptr<input::source_impl>(new input::glfw::source(
             utils::to_string((uint)mWindow.getSystemHandle()), mWindow.getSize().x, mWindow.getSize().y
         ));
     #else
-        // Else fall back to SFML input.
-        // Note that the current SFML input handler is not fully functional,
-        // since SFML doesn't provide keyboard layout independent key codes.
-        pInputImpl = std::unique_ptr<input::manager_impl>(new input::sfml_manager(mWindow));
+        // Use SFML
+        pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
     #endif
 
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
-            // Provide the input manager implementation
-            std::move(pInputImpl),
+            // Provide the input source
+            std::move(pInputSource),
             // The locale
             sLocale,
             // Dimensions of the render window
@@ -240,8 +238,8 @@ int main(int argc, char* argv[])
                 else if (mEvent.type == sf::Event::GainedFocus)
                     bFocus = true;
 
-            #ifndef OIS_INPUT
-                static_cast<input::sfml_manager*>(pInputMgr->get_impl())->on_sfml_event(mEvent);
+            #ifndef GLFW_INPUT
+                static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
             #endif
             }
 

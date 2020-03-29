@@ -4,7 +4,7 @@
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
-* **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML, GLFW, or OIS).
+* **Platform independence**. The library is coded in standard C++11. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML, or GLFW).
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html)).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
@@ -48,8 +48,8 @@ const std::string sLocale = "enGB";
 std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow, sLocale);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
-input::sfml_manager* pSFMLInput = static_cast<input::sfml_manager*>(
-    pManager->get_input_manager()->get_impl()
+input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
+    pManager->get_input_manager()->get_source()
 );
 
 // Load files:

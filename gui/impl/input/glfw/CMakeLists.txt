@@ -5,9 +5,9 @@ include_directories(${LUA_INCLUDE_DIR})
 include_directories(${GLFW_INCLUDE_DIR})
 
 add_library(lxgui-input-glfw STATIC
-    ${SRCROOT}/glfw_input_impl
+    ${SRCROOT}/input_glfw_source
 )
 
-install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/glfw_input_impl.hpp DESTINATION include/lxgui/impl)
+install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/input_glfw_source.hpp DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-input-glfw ARCHIVE DESTINATION lib)
 

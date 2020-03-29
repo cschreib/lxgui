@@ -21,15 +21,15 @@ namespace input
     constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
     constexpr std::size_t KEY_NUMBER = static_cast<uint>(key::K_MAXKEY);
 
-    /// The base class for input manager implementation
-    /** \note In case you want to share the same implementation
-    *         for several input::managers, you have to call
+    /// The base class for input source implementation
+    /** \note In case you want to share the same source
+    *         for multiple input::manager, you have to call
     *         set_manually_updated(true), and update the
-    *         manager yourself. Else, it will be updated
+    *         source yourself. Else, it will be updated
     *         by each input::manager (which may not be
     *         desirable).
     */
-    class manager_impl
+    class source_impl
     {
     public :
 
@@ -48,41 +48,41 @@ namespace input
         };
 
         /// Constructor.
-        manager_impl() = default;
+        source_impl() = default;
 
         /// Destructor.
-        virtual ~manager_impl() = default;
+        virtual ~source_impl() = default;
 
-        /// Updates this handler.
+        /// Updates this input source.
         void update();
 
-        /// Checks if this handler is manually updated.
-        /** \return 'true' if this handler is manually updated
+        /// Checks if this source is manually updated.
+        /** \return 'true' if this source is manually updated
         *   \note See set_manually_updated().
         */
         bool is_manually_updated() const;
 
-        /// Marks this handler as manually updated.
-        /** \param bManuallyUpdated 'true' if this handler is manually updated
-        *   \note In case you want to share the same implementation
-        *         for several input::managers, you have to call
+        /// Marks this source as manually updated.
+        /** \param bManuallyUpdated 'true' if this source is manually updated
+        *   \note In case you want to share the same source
+        *         for several input::manager, you have to call
         *         set_manually_updated(true), and update the
-        *         manager yourself. Else, it will be updated
+        *         source yourself. Else, it will be updated
         *         by each input::manager (which may not be
         *         desirable).
         */
         void set_manually_updated(bool bManuallyUpdated);
 
-        /// Returns the keyboard state of this input handler.
-        const manager_impl::key_state& get_key_state() const;
+        /// Returns the keyboard state of this input source.
+        const key_state& get_key_state() const;
 
         /// Returns the unicode characters that have been entered.
         /** \return The unicode characters entered with the keyboard
         */
         const std::vector<char32_t>& get_chars() const;
 
-        /// Returns the mouse state of this input handler.
-        const manager_impl::mouse_state& get_mouse_state() const;
+        /// Returns the mouse state of this input source.
+        const mouse_state& get_mouse_state() const;
 
         /// Toggles mouse grab.
         /** When the mouse is grabbed, it is confined to the borders
@@ -119,7 +119,7 @@ namespace input
 
     protected:
 
-        /// Updates this implementation handler.
+        /// Updates this implementation input source.
         virtual void update_() = 0;
 
         key_state   mKeyboard_;
@@ -140,10 +140,10 @@ namespace input
     {
     public :
 
-        /// Initializes this manager with a chosen implementation.
-        /** \param pImpl The implementation class of the input manager
+        /// Initializes this manager with a chosen input source.
+        /** \param pSource The input source
         */
-        explicit manager(std::unique_ptr<manager_impl> pImpl);
+        explicit manager(std::unique_ptr<source_impl> pSource);
 
         /// This class is non copiable.
         manager(const manager& mMgr) = delete;
@@ -489,9 +489,10 @@ namespace input
 
         /// Checks whether input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
-        *   \note See set_focus() for more information. If you use another input
-        *         source than this manager, you should check the result of this
-        *         function before actually using it.
+        *   \note See set_focus() for more information. If you use some other source
+        *         of input than this manager, you should check the result of this
+        *         function before actually using it (if the manager is not focussed,
+        *         it should not provide any input).
         */
         bool is_focused() const;
 
@@ -509,15 +510,15 @@ namespace input
         */
         void unregister_event_manager(gui::event_manager* pManager);
 
-        /// Returns this manager's handler.
-        /** \return This manager's handler
+        /// Returns the input source.
+        /** \return The input source
         */
-        const manager_impl* get_impl() const;
+        const source_impl* get_source() const;
 
-        /// Returns this manager's handler.
-        /** \return This manager's handler
+        /// Returns the input source.
+        /** \return The input source
         */
-        manager_impl* get_impl();
+        source_impl* get_source();
 
     private :
 
@@ -573,7 +574,7 @@ namespace input
 
         double dTime_;
 
-        std::unique_ptr<manager_impl> pImpl_;
+        std::unique_ptr<source_impl> pSource_;
     };
 }
 

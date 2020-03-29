@@ -28,13 +28,13 @@ int l_delete_frame(lua_State* pLua);
 int l_get_locale(lua_State* pLua);
 int l_log(lua_State* pLua);
 
-manager::manager(std::unique_ptr<input::manager_impl> pInputImpl, const std::string& sLocale,
+manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
     uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl) :
     event_receiver(nullptr), sUIVersion_("0001"),
     uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     bClearFontsOnClose_(true), pLua_(nullptr), pLuaRegs_(nullptr), bClosed_(true),
     bLoadingUI_(false), bFirstIteration_(true), bInputEnabled_(true),
-    pInputManager_(new input::manager(std::move(pInputImpl))),
+    pInputManager_(new input::manager(std::move(pInputSource))),
     pCurrentAddOn_(nullptr), bBuildStrataList_(false), bObjectMoved_(false),
     pOveredFrame_(nullptr), bUpdateOveredFrame_(false), pFocusedFrame_(nullptr),
     pMovedObject_(nullptr), pSizedObject_(nullptr), fMouseMovementX_(0.0f),

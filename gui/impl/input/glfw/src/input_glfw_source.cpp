@@ -7,9 +7,10 @@
 GLFW doesn't provide keyboard layout independent key codes."
 #endif
 
-namespace input
+namespace input {
+namespace glfw
 {
-const int glfw_handler::lKeyToGLFW[106][2] =
+const int source::lKeyToGLFW[106][2] =
 {
     //{key::K_UNKNOWN, GLFW_KEY_UNKNOWN},
     {key::K_SPACE, GLFW_KEY_SPACE},
@@ -120,13 +121,13 @@ const int glfw_handler::lKeyToGLFW[106][2] =
     {key::K_APPS, GLFW_KEY_MENU}
 };
 
-glfw_handler::glfw_handler(bool bMouseGrab) :
+source::source(bool bMouseGrab) :
     bMouseGrab_(bMouseGrab), bFirst_(true)
 {
     mMouse.bHasDelta = true;
 }
 
-int glfw_handler::to_glfw_(key mKey) const
+int source::to_glfw_(key mKey) const
 {
     for (size_t i = 0; i < 106; ++i)
     {
@@ -137,7 +138,7 @@ int glfw_handler::to_glfw_(key mKey) const
     return GLFW_KEY_UNKNOWN;
 }
 
-void glfw_handler::toggle_mouse_grab()
+void source::toggle_mouse_grab()
 {
     bMouseGrab_ = !bMouseGrab_;
 #ifndef MSVC
@@ -381,7 +382,7 @@ KeySym to_xkey_(int key)
 
 #endif
 
-std::string glfw_handler::get_key_name(key mKey) const
+std::string source::get_key_name(key mKey) const
 {
 #ifdef WIN32
     int vkey = to_vkey_(to_glfw_(mKey));
@@ -434,7 +435,7 @@ std::string glfw_handler::get_key_name(key mKey) const
 #endif
 }
 
-void glfw_handler::update()
+void source::update()
 {
     for (int i = 0; i < 106; ++i)
         mKeyboard.lKeyState[lKeyToGLFW[i][0]] = glfwGetKey(lKeyToGLFW[i][1]);
@@ -482,5 +483,6 @@ void glfw_handler::update()
     static const int lMouseToGLFW[3] = {GLFW_MOUSE_BUTTON_LEFT, GLFW_MOUSE_BUTTON_RIGHT, GLFW_MOUSE_BUTTON_MIDDLE};
     for (int i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
         mMouse.lButtonState[i] = glfwGetMouseButton(lMouseToGLFW[i]) == GLFW_PRESS;
+}
 }
 }
