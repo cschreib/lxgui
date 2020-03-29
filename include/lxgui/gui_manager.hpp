@@ -132,7 +132,7 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param pInputSource     The input source to use
+        /** \param pInputSource   The input source to use
         *   \param sLocale        The name of the game locale ("enGB", ...)
         *   \param uiScreenWidth  The width of the screen
         *   \param uiScreenHeight The height of the screen

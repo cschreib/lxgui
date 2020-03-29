@@ -94,11 +94,6 @@ namespace input
         */
         virtual void toggle_mouse_grab() = 0;
 
-        /// Returns the name of the key as it appears on the keyboard.
-        /** \return The name of the key as it appears on the keyboard
-        */
-        virtual std::string get_key_name(key mKey) const = 0;
-
         /// Checks if window has been resized.
         /** \return true if the window has been resized
         */
@@ -228,6 +223,7 @@ namespace input
         /// Returns the name of the provided key, as it appears on your keyboard.
         /** \param mKey The key
         *   \return The name of the provided key, as it appears on your keyboard
+        *   \note This will only return English key names.
         */
         std::string get_key_name(key mKey) const;
 
@@ -235,6 +231,7 @@ namespace input
         /** \param mKey      The main key
         *   \param mModifier The modifier key (shift, ctrl, ...)
         *   \return The name of key combination, example : "Ctrl + A"
+        *   \note This will only return English key names.
         */
         std::string get_key_name(key mKey, key mModifier) const;
 
@@ -243,6 +240,7 @@ namespace input
         *   \param mModifier1 The first modifier key (shift, ctrl, ...)
         *   \param mModifier2 The second modifier key (shift, ctrl, ...)
         *   \return The name of key combination, example : "Ctrl + Shift + A"
+        *   \note This will only return English key names.
         */
         std::string get_key_name(key mKey, key mModifier1, key mModifier2) const;
 
