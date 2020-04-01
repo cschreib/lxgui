@@ -67,7 +67,7 @@ LUA_VERSION=5.3.0
 LUA_WEBSITE=http://www.lua.org/ftp/
 LUA_DL_FILE=lua-${LUA_VERSION}.tar.gz
 wget ${LUA_WEBSITE}${LUA_DL_FILE}
-tar -zvzf ${LUA_DL_FILE}
+tar -xvzf ${LUA_DL_FILE}
 LUA_DIR=lua-${LUA_VERSION}
 mkdir -p ${LUA_DIR}/build
 cp ../.ci/LuaCMakeLists.txt ${LUA_DIR}/CMakeLists.txt
