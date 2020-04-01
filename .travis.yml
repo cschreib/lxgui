@@ -1,21 +1,24 @@
-os:
-  - linux
-  - osx
+# os:
+#   - linux
+#   - osx
+#   - windows
 
 language: cpp
 
-compiler:
-  - gcc
-  - clang
+# compiler:
+#   - gcc
+#   - clang
 
-before_script:
-  - if [ "$TRAVIS_OS_NAME" = "osx" ];   then brew install zlib libpng sfml freetype glew lua; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev; fi
-  - mkdir build
-  - cd build
-  - cmake ..
+# before_script:
+#   - if [ "$TRAVIS_OS_NAME" = "osx" ];     then brew install zlib libpng sfml freetype glew lua; fi
+#   - if [ "$TRAVIS_OS_NAME" = "linux" ];   then sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev; fi
+#   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then .ci/windows-dependencies.sh; fi
+#   - mkdir build
+#   - cd build
+#   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cmake; fi
+#   - cmake ..
 
-script: sudo make install
+# script: sudo make install
 
 env:
   global:
@@ -23,6 +26,42 @@ env:
 
 jobs:
   include:
+    - stage: test
+      os: linux
+      compiler:
+        - gcc
+        - clang
+      before_script:
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
+        - mkdir build
+        - cd build
+        - cmake ..
+      script: sudo make install
+
+    - stage: test
+      os: osx
+      compiler:
+        - clang
+      before_script:
+        - brew install zlib libpng sfml freetype glew lua
+        - mkdir build
+        - cd build
+        - cmake ..
+      script: sudo make install
+
+    - stage: test
+      os: windows
+      compiler:
+        - gcc
+      before_script:
+        - .ci/windows-dependencies.sh
+        - mkdir build
+        - cd build
+        - cp ../.ci/WindowsSetup15.bat ./Setup.bat
+        - cp ../.ci/WindowsBuild15.bat ./Build.bat
+        - cmd.exe /C "Setup.bat"
+      script: cmd.exe /C "Build.bat"
+
     - stage: deploy
       os: linux
       compiler: gcc
