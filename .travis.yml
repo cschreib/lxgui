@@ -28,9 +28,17 @@ jobs:
   include:
     - stage: test
       os: linux
-      compiler:
-        - gcc
-        - clang
+      compiler: gcc
+      before_script:
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
+        - mkdir build
+        - cd build
+        - cmake ..
+      script: sudo make install
+
+    - stage: test
+      os: linux
+      compiler: clang
       before_script:
         - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
         - mkdir build
@@ -40,8 +48,7 @@ jobs:
 
     - stage: test
       os: osx
-      compiler:
-        - clang
+      compiler: clang
       before_script:
         - brew install zlib libpng sfml freetype glew lua
         - mkdir build
@@ -51,8 +58,7 @@ jobs:
 
     - stage: test
       os: windows
-      compiler:
-        - gcc
+      compiler: gcc
       before_script:
         - .ci/windows-dependencies.sh
         - mkdir build
