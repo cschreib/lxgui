@@ -47,7 +47,7 @@ jobs:
         - mkdir build
         - cd build
         - cmake .. -DCMAKE_PREFIX_PATH=${DEPENDENCIES_FOLDER}
-      script: make
+      script: MSBuild.exe lxgui.sln /p:Configuration=Release
 
     - stage: deploy
       os: linux
