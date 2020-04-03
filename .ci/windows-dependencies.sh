@@ -13,22 +13,27 @@ SCRIPT_ROOT_DIR=`pwd`
 
 VS_VERSION=15 # 2017
 choco install -y visualstudio2017-workload-vctools;
-VARSALL="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat"
 
 ARCH=64
 if [ ${ARCH} == "64" ]; then XARCH=x64; else XARCH=Win32; fi
 if [ ${ARCH} == "64" ]; then XARCH2=x64; else XARCH2=x86; fi
 
-# libpng + zlib
+# libpng
 LIBPNG_WEBSITE=http://downloads.sourceforge.net/gnuwin32/
 LIBPNG_VERSION=1.2.37
 wget "${LIBPNG_WEBSITE}libpng-${LIBPNG_VERSION}-bin.zip"
 wget "${LIBPNG_WEBSITE}libpng-${LIBPNG_VERSION}-lib.zip"
-wget "${LIBPNG_WEBSITE}libpng-${LIBPNG_VERSION}-dep.zip"
 unzip -o libpng-${LIBPNG_VERSION}-bin.zip
 unzip -o libpng-${LIBPNG_VERSION}-lib.zip
-unzip -o libpng-${LIBPNG_VERSION}-dep.zip
-rm *.zip
+rm -rf include/libpng12
+
+# zlib
+ZLIB_VERSION=1.2.3
+ZLIB_WEBISTE=https://sourceforge.net/projects/gnuwin32/files/zlib/${ZLIB_VERSION}/
+wget "${ZLIB_WEBISTE}zlib-${ZLIB_VERSION}-bin.zip"
+wget "${ZLIB_WEBISTE}zlib-${ZLIB_VERSION}-lib.zip"
+unzip -o zlib-${ZLIB_VERSION}-bin.zip
+unzip -o zlib-${ZLIB_VERSION}-lib.zip
 
 # SFML
 SFML_VERSION=2.5.1
@@ -41,7 +46,7 @@ mv ${SFML_DIR}/include/* include/
 mv ${SFML_DIR}/lib/* lib/
 mv ${SFML_DIR}/bin/* bin/
 rm ${SFML_DL_FILE}
-rm -rf ${SFML_DIR} ${SFML_DL_FILE}
+rm -rf ${SFML_DIR}
 
 # Freetype
 git clone https://github.com/ubawurinna/freetype-windows-binaries.git
@@ -60,7 +65,7 @@ GLEW_DIR=glew-${GLEW_VERSION}
 mv ${GLEW_DIR}/include/* include/
 mv ${GLEW_DIR}/lib/Release/${XARCH}/* lib/
 mv ${GLEW_DIR}/bin/Release/${XARCH}/*.dll bin/
-rm -rf ${GLEW_DIR} ${GLEW_DL_FILE}
+rm -rf ${GLEW_DIR}
 
 # Lua
 LUA_VERSION=5.3.0
@@ -80,3 +85,4 @@ cd ../../
 mv ${LUA_DIR}/src/*.h ${LUA_DIR}/src/*.hpp include/
 mv ${LUA_DIR}/build/*.lib lib/
 mv ${LUA_DIR}/build/*.dll bin/
+rm -rf ${LUA_DIR}
