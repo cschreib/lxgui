@@ -53,7 +53,7 @@ jobs:
         - cmake .. -DCMAKE_PREFIX_PATH=${DEPENDENCIES_FOLDER}
       script:
         - export PATH=$MSBUILD_PATH:$PATH
-        - MSBuild.exe lxgui.sln //nologo //p:Configuration=Release //p:Platform=x64
+        - MSBuild.exe lxgui.sln //nologo //p:Configuration=Release
 
     - stage: deploy
       os: linux
