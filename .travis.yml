@@ -1,24 +1,4 @@
-# os:
-#   - linux
-#   - osx
-#   - windows
-
 language: cpp
-
-# compiler:
-#   - gcc
-#   - clang
-
-# before_script:
-#   - if [ "$TRAVIS_OS_NAME" = "osx" ];     then brew install zlib libpng sfml freetype glew lua; fi
-#   - if [ "$TRAVIS_OS_NAME" = "linux" ];   then sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev; fi
-#   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then .ci/windows-dependencies.sh; fi
-#   - mkdir build
-#   - cd build
-#   - if [ "$TRAVIS_OS_NAME" = "windows" ]; then cmake; fi
-#   - cmake ..
-
-# script: sudo make install
 
 env:
   global:
@@ -60,13 +40,14 @@ jobs:
       os: windows
       compiler: gcc
       before_script:
-        - .ci/windows-dependencies.sh
+        - cd dependencies
+        - unzip windows-dependencies-vs2017.zip
+        - DEPENDENCIES_FOLDER=`pwd`
+        - cd ..
         - mkdir build
         - cd build
-        - cp ../.ci/WindowsSetup15.bat ./Setup.bat
-        - cp ../.ci/WindowsBuild15.bat ./Build.bat
-        - cmd.exe /C "Setup.bat"
-      script: cmd.exe /C "Build.bat"
+        - cmake .. -DCMAKE_PREFIX_PATH=${DEPENDENCIES_FOLDER}
+      script: make
 
     - stage: deploy
       os: linux

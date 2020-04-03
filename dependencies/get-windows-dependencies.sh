@@ -2,21 +2,20 @@
 
 set -e
 
-mkdir -p dependencies
-cd dependencies
+# Define which Visual Studio version and which CPU architecture
+VS_VERSION=15 # 2017
+ARCH=64
 
+# Automatic setup of architecture variables
+if [ ${ARCH} == "64" ]; then XARCH=x64; else XARCH=Win32; fi
+if [ ${ARCH} == "64" ]; then XARCH2=x64; else XARCH2=x86; fi
+
+# Setup folders
 mkdir -p include
 mkdir -p lib
 mkdir -p bin
 
 SCRIPT_ROOT_DIR=`pwd`
-
-VS_VERSION=15 # 2017
-choco install -y visualstudio2017-workload-vctools;
-
-ARCH=64
-if [ ${ARCH} == "64" ]; then XARCH=x64; else XARCH=Win32; fi
-if [ ${ARCH} == "64" ]; then XARCH2=x64; else XARCH2=x86; fi
 
 # libpng
 LIBPNG_WEBSITE=http://downloads.sourceforge.net/gnuwin32/
@@ -67,7 +66,7 @@ mv ${GLEW_DIR}/lib/Release/${XARCH}/* lib/
 mv ${GLEW_DIR}/bin/Release/${XARCH}/*.dll bin/
 rm -rf ${GLEW_DIR}
 
-# Lua
+# Lua (need to build from source)
 LUA_VERSION=5.3.0
 LUA_WEBSITE=http://www.lua.org/ftp/
 LUA_DL_FILE=lua-${LUA_VERSION}.tar.gz
@@ -75,9 +74,9 @@ wget ${LUA_WEBSITE}${LUA_DL_FILE}
 tar -xvzf ${LUA_DL_FILE}
 LUA_DIR=lua-${LUA_VERSION}
 mkdir -p ${LUA_DIR}/build
-cp ../.ci/LuaCMakeLists.txt ${LUA_DIR}/CMakeLists.txt
-cp ../.ci/WindowsSetup${VS_VERSION}.bat ${LUA_DIR}/build/Setup.bat
-cp ../.ci/WindowsBuild${VS_VERSION}.bat ${LUA_DIR}/build/Build.bat
+cp LuaCMakeLists.txt ${LUA_DIR}/CMakeLists.txt
+cp WindowsSetup${VS_VERSION}.bat ${LUA_DIR}/build/Setup.bat
+cp WindowsBuild${VS_VERSION}.bat ${LUA_DIR}/build/Build.bat
 cd ${LUA_DIR}/build
 cmd.exe /C "Setup.bat"
 cmd.exe /C "Build.bat"
