@@ -4,7 +4,7 @@ set -e
 
 # Define which Visual Studio version and which CPU architecture
 VS_VERSION=15 # 2017
-ARCH=64
+ARCH=32
 
 # Automatic setup of architecture variables
 if [ ${ARCH} == "64" ]; then XARCH=x64; else XARCH=Win32; fi
@@ -17,22 +17,46 @@ mkdir -p bin
 
 SCRIPT_ROOT_DIR=`pwd`
 
-# libpng
-LIBPNG_WEBSITE=http://downloads.sourceforge.net/gnuwin32/
-LIBPNG_VERSION=1.2.37
-wget "${LIBPNG_WEBSITE}libpng-${LIBPNG_VERSION}-bin.zip"
-wget "${LIBPNG_WEBSITE}libpng-${LIBPNG_VERSION}-lib.zip"
-unzip -o libpng-${LIBPNG_VERSION}-bin.zip
-unzip -o libpng-${LIBPNG_VERSION}-lib.zip
-rm -rf include/libpng12
+# libpng (need to build from source)
+PNG_VERSION=1.6.37
+PNG_VERSION_SHORT=${PNG_VERSION/.//}
+PNG_WEBSITE=https://download.sourceforge.net/libpng/
+PNG_DL_FILE=lpng${PNG_VERSION_SHORT}.zip
+wget ${PNG_WEBSITE}${PNG_DL_FILE}
+unzip ${PNG_DL_FILE}
+PNG_DIR=lpng${PNG_VERSION_SHORT}
+mkdir -p ${PNG_DIR}/build
+cp WindowsSetup${VS_VERSION}.bat ${PNG_DIR}/build/Setup.bat
+cp WindowsBuild${VS_VERSION}.bat ${PNG_DIR}/build/Build.bat
+cd ${PNG_DIR}/build
+cmd.exe /C "Setup.bat"
+cmd.exe /C "Build.bat"
+cd ../../
+mv ${PNG_DIR}/*.h include/
+mv ${PNG_DIR}/build/Release/libpng*.lib lib/
+mv ${PNG_DIR}/build/Release/libpng*.dll bin/
+rm -rf ${PNG_DIR}
 
-# zlib
-ZLIB_VERSION=1.2.3
-ZLIB_WEBISTE=https://sourceforge.net/projects/gnuwin32/files/zlib/${ZLIB_VERSION}/
-wget "${ZLIB_WEBISTE}zlib-${ZLIB_VERSION}-bin.zip"
-wget "${ZLIB_WEBISTE}zlib-${ZLIB_VERSION}-lib.zip"
-unzip -o zlib-${ZLIB_VERSION}-bin.zip
-unzip -o zlib-${ZLIB_VERSION}-lib.zip
+# zlib (need to build from source)
+ZLIB_VERSION=1.2.11
+ZLIB_VERSION_SHORT=${ZLIB_VERSION/.//}
+ZLIB_WEBSITE=https://www.zlib.net/
+ZLIB_DL_FILE=zlib${ZLIB_VERSION_SHORT}.zip
+wget ${ZLIB_WEBSITE}${ZLIB_DL_FILE}
+unzip ${ZLIB_DL_FILE}
+ZLIB_DIR=zlib-${ZLIB_VERSION}
+mkdir -p ${ZLIB_DIR}/build
+cp WindowsSetup${VS_VERSION}.bat ${ZLIB_DIR}/build/Setup.bat
+cp WindowsBuild${VS_VERSION}.bat ${ZLIB_DIR}/build/Build.bat
+cd ${ZLIB_DIR}/build
+cmd.exe /C "Setup.bat"
+cmd.exe /C "Build.bat"
+cd ../../
+mv ${ZLIB_DIR}/*.h include/
+mv ${ZLIB_DIR}/build/*.h include/ # for zconf.h
+mv ${ZLIB_DIR}/build/Release/zlib.lib lib/
+mv ${ZLIB_DIR}/build/Release/zlib.dll bin/
+rm -rf ${ZLIB_DIR}
 
 # SFML
 SFML_VERSION=2.5.1
