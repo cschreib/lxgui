@@ -45,7 +45,7 @@ jobs:
       before_script:
         - choco install -y visualstudio2017-workload-vctools
         - cd dependencies
-        - unzip windows-dependencies-vs2017.zip
+        - unzip windows-dependencies-vs2017-32.zip
         - DEPENDENCIES_FOLDER=`pwd`
         - cd ..
         - mkdir build
