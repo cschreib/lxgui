@@ -16,8 +16,6 @@ template<class> class wptr;
 template<class T>
 class refptr
 {
-    static constexpr bool NOEXCEPT_DESTRUCTOR = noexcept(std::declval<T>().~T());
-
 public :
 
     template<class> friend class refptr;
@@ -108,7 +106,7 @@ public :
     /** \note Can cause deletion of the contained
     *         pointer.
     */
-    ~refptr() noexcept(NOEXCEPT_DESTRUCTOR)
+    ~refptr()
     {
         decrement_();
     }
@@ -165,7 +163,7 @@ public :
     /** \note Can cause deletion of the contained
     *         pointer.
     */
-    void set_null() noexcept(NOEXCEPT_DESTRUCTOR)
+    void set_null()
     {
         decrement_();
 
@@ -217,7 +215,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (const refptr& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
+    refptr& operator = (const refptr& mValue)
     {
         if (&mValue != this)
         {
@@ -239,7 +237,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (const refptr<N>& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
+    refptr& operator = (const refptr<N>& mValue)
     {
         if (mValue.pValue_ != pValue_)
         {
@@ -260,7 +258,7 @@ public :
     *   \note Can cause deletion of the contained
     *         pointer.
     */
-    refptr& operator = (refptr&& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
+    refptr& operator = (refptr&& mValue)
     {
         if (&mValue != this)
         {
@@ -284,7 +282,7 @@ public :
     *         pointer.
     */
     template<class N>
-    refptr& operator = (refptr<N>&& mValue) noexcept(NOEXCEPT_DESTRUCTOR)
+    refptr& operator = (refptr<N>&& mValue)
     {
         if (mValue.pValue_ != pValue_)
         {
@@ -430,7 +428,7 @@ private :
             ++(*pCounter_);
     }
 
-    void decrement_() noexcept(NOEXCEPT_DESTRUCTOR)
+    void decrement_()
     {
         if (pCounter_)
         {
