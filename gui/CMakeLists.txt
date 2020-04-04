@@ -22,7 +22,6 @@ add_library(lxgui STATIC
     ${SRCROOT}/gui_focusframe.cpp
     ${SRCROOT}/gui_focusframe_glues.cpp
     ${SRCROOT}/gui_focusframe_parser.cpp
-    ${SRCROOT}/gui_font.cpp
     ${SRCROOT}/gui_fontstring.cpp
     ${SRCROOT}/gui_fontstring_glues.cpp
     ${SRCROOT}/gui_fontstring_parser.cpp
@@ -37,11 +36,9 @@ add_library(lxgui STATIC
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
     ${SRCROOT}/gui_manager_parser.cpp
-    ${SRCROOT}/gui_material.cpp
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp
     ${SRCROOT}/gui_region_parser.cpp
-    ${SRCROOT}/gui_rendertarget.cpp
     ${SRCROOT}/gui_scrollframe.cpp
     ${SRCROOT}/gui_scrollframe_glues.cpp
     ${SRCROOT}/gui_scrollframe_parser.cpp
