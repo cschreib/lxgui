@@ -113,7 +113,7 @@ var searchData=
   ['set_5fnon_5fspace_5fwrap',['set_non_space_wrap',['../classgui_1_1font__string.html#adae6e731d6b142337288dfe7b0efbad6',1,'gui::font_string']]],
   ['set_5fnormal_5ftext',['set_normal_text',['../classgui_1_1button.html#a582c7fcf309a71f71c068671e898aeba',1,'gui::button']]],
   ['set_5fnormal_5ftexture',['set_normal_texture',['../classgui_1_1button.html#a12b73fe2f0392d5b65758991e7181a6a',1,'gui::button']]],
-  ['set_5fnull',['set_null',['../classutils_1_1refptr.html#a88723c554694257c5dd79e2ea4391b58',1,'utils::refptr::set_null()'],['../classutils_1_1wptr.html#a83407103219b484bba0319cfb6e08ebb',1,'utils::wptr::set_null()']]],
+  ['set_5fnull',['set_null',['../classutils_1_1refptr.html#aff8ae31dbf4c7750cc8d3d88e3acfd48',1,'utils::refptr::set_null()'],['../classutils_1_1wptr.html#a83407103219b484bba0319cfb6e08ebb',1,'utils::wptr::set_null()']]],
   ['set_5fnumeric_5fonly',['set_numeric_only',['../classgui_1_1edit__box.html#a77e356d057410309589c914951c136a9',1,'gui::edit_box']]],
   ['set_5fobject',['set_object',['../classgui_1_1anchor.html#aa4ee4e0ab5b08bce075dfe2c21e64bfd',1,'gui::anchor']]],
   ['set_5foffsets',['set_offsets',['../classgui_1_1font__string.html#a02cf5917313f1e85471b3ef040f7f313',1,'gui::font_string::set_offsets(int iXOffset, int iYOffset)'],['../classgui_1_1font__string.html#a3eef122a312f18ca97b0bade8df8aafc',1,'gui::font_string::set_offsets(const vector2i &amp;mOffsets)']]],

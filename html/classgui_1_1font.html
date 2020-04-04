@@ -112,12 +112,12 @@ Inheritance diagram for gui::font:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4007876b54f14a7e6cb3475c5d23ef8c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1font.html#a4007876b54f14a7e6cb3475c5d23ef8c">font</a> ()</td></tr>
-<tr class="memdesc:a4007876b54f14a7e6cb3475c5d23ef8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a4007876b54f14a7e6cb3475c5d23ef8c">More...</a><br /></td></tr>
-<tr class="separator:a4007876b54f14a7e6cb3475c5d23ef8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42edce30e215316325afd5b3dfc320af"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1font.html#a42edce30e215316325afd5b3dfc320af">~font</a> ()</td></tr>
-<tr class="memdesc:a42edce30e215316325afd5b3dfc320af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a42edce30e215316325afd5b3dfc320af">More...</a><br /></td></tr>
-<tr class="separator:a42edce30e215316325afd5b3dfc320af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e090c85a652f95d0d69ff12ef60d7cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1font.html#a9e090c85a652f95d0d69ff12ef60d7cb">font</a> ()=default</td></tr>
+<tr class="memdesc:a9e090c85a652f95d0d69ff12ef60d7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a9e090c85a652f95d0d69ff12ef60d7cb">More...</a><br /></td></tr>
+<tr class="separator:a9e090c85a652f95d0d69ff12ef60d7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0a55ea361b12f6411a66ccda7ef64a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1font.html#a0d0a55ea361b12f6411a66ccda7ef64a">~font</a> ()=default</td></tr>
+<tr class="memdesc:a0d0a55ea361b12f6411a66ccda7ef64a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0d0a55ea361b12f6411a66ccda7ef64a">More...</a><br /></td></tr>
+<tr class="separator:a0d0a55ea361b12f6411a66ccda7ef64a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf67c7cbfa7add05e0bf35548c88ba3b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacegui.html#ac898e62fc90daa23ec4b9e6966ca7dfc">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1font.html#aaf67c7cbfa7add05e0bf35548c88ba3b">get_character_uvs</a> (char32_t uiChar) const =0</td></tr>
 <tr class="memdesc:aaf67c7cbfa7add05e0bf35548c88ba3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the uv coordinates of a character on the texture.  <a href="#aaf67c7cbfa7add05e0bf35548c88ba3b">More...</a><br /></td></tr>
 <tr class="separator:aaf67c7cbfa7add05e0bf35548c88ba3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,9 +143,12 @@ Public Member Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="gui__font_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a4007876b54f14a7e6cb3475c5d23ef8c"></a>
+<a class="anchor" id="a9e090c85a652f95d0d69ff12ef60d7cb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">gui::font::font </td>
@@ -154,15 +157,18 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="gui__font_8cpp_source.html#l00005">5</a> of file <a class="el" href="gui__font_8cpp_source.html">gui_font.cpp</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a42edce30e215316325afd5b3dfc320af"></a>
+<a class="anchor" id="a0d0a55ea361b12f6411a66ccda7ef64a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -170,7 +176,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">gui::font::~font </td>
+          <td class="memname">virtual gui::font::~font </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -178,16 +184,14 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Destructor. </p>
 
-<p>Reimplemented in <a class="el" href="classgui_1_1gl_1_1font.html#a74f2ac8fd3fd8aa74bb4a5c28cd55395">gui::gl::font</a>, and <a class="el" href="classgui_1_1sfml_1_1font.html#ab7deeae8b31c60e1bf7cbf564eefa594">gui::sfml::font</a>.</p>
-
-<p>Definition at line <a class="el" href="gui__font_8cpp_source.html#l00009">9</a> of file <a class="el" href="gui__font_8cpp_source.html">gui_font.cpp</a>.</p>
+<p>Reimplemented in <a class="el" href="classgui_1_1gl_1_1font.html#a34881411bce79597d9f0b7613f6e559c">gui::gl::font</a>, and <a class="el" href="classgui_1_1sfml_1_1font.html#ad291ce5c86987cae629fd145a10419a6">gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -408,14 +412,13 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/cschreib/lxgui/include/lxgui/<a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a></li>
-<li>/home/travis/build/cschreib/lxgui/gui/src/<a class="el" href="gui__font_8cpp_source.html">gui_font.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2020 18:41:06 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 4 2020 20:23:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

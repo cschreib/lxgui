@@ -103,6 +103,7 @@ var searchData=
   ['get_5fid',['get_id',['../classgui_1_1uiobject.html#a95399814eac4273e445455bc49acef97',1,'gui::uiobject']]],
   ['get_5findex',['get_index',['../classlua_1_1argument.html#a80694880193402148e04746b47a77289',1,'lua::argument']]],
   ['get_5finput_5fmanager',['get_input_manager',['../classgui_1_1manager.html#a006c55871d14b7cd8a1c36777cb07330',1,'gui::manager::get_input_manager() const '],['../classgui_1_1manager.html#a47e96c0886e36b1b8a5c2f73436cd5fb',1,'gui::manager::get_input_manager()']]],
+  ['get_5fint',['get_int',['../classlua_1_1argument.html#a959b739dce639563b470c8c8ba1bd287',1,'lua::argument']]],
   ['get_5fjustify_5fh',['get_justify_h',['../classgui_1_1font__string.html#aab423f0cbe584bbe8cc074859f61af80',1,'gui::font_string']]],
   ['get_5fjustify_5fv',['get_justify_v',['../classgui_1_1font__string.html#ade96bb44bffe3a4ee4dfc71703dc4299',1,'gui::font_string']]],
   ['get_5fkey',['get_key',['../classinput_1_1manager.html#a8ca11f1b11e158266e5110c607d0dc44',1,'input::manager']]],

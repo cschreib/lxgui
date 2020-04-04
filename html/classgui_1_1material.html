@@ -128,12 +128,12 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aedbc1b4f1fe530823b581fab6ac8580d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1material.html#aedbc1b4f1fe530823b581fab6ac8580d">material</a> ()</td></tr>
-<tr class="memdesc:aedbc1b4f1fe530823b581fab6ac8580d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#aedbc1b4f1fe530823b581fab6ac8580d">More...</a><br /></td></tr>
-<tr class="separator:aedbc1b4f1fe530823b581fab6ac8580d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a689b0b3dd02b95accc1164b92d1933be"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1material.html#a689b0b3dd02b95accc1164b92d1933be">~material</a> ()</td></tr>
-<tr class="memdesc:a689b0b3dd02b95accc1164b92d1933be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a689b0b3dd02b95accc1164b92d1933be">More...</a><br /></td></tr>
-<tr class="separator:a689b0b3dd02b95accc1164b92d1933be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561fd105728daa7a7158c77a8474e90a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1material.html#a561fd105728daa7a7158c77a8474e90a">material</a> ()=default</td></tr>
+<tr class="memdesc:a561fd105728daa7a7158c77a8474e90a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a561fd105728daa7a7158c77a8474e90a">More...</a><br /></td></tr>
+<tr class="separator:a561fd105728daa7a7158c77a8474e90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f6815628d130e570ab327ef94c1fe3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1material.html#a32f6815628d130e570ab327ef94c1fe3">~material</a> ()=default</td></tr>
+<tr class="memdesc:a32f6815628d130e570ab327ef94c1fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a32f6815628d130e570ab327ef94c1fe3">More...</a><br /></td></tr>
+<tr class="separator:a32f6815628d130e570ab327ef94c1fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30ee49bb0fd39461a211881a8c021163"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1material.html#a30ee49bb0fd39461a211881a8c021163">get_width</a> () const =0</td></tr>
 <tr class="memdesc:a30ee49bb0fd39461a211881a8c021163"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width of the underlying texture (if any).  <a href="#a30ee49bb0fd39461a211881a8c021163">More...</a><br /></td></tr>
 <tr class="separator:a30ee49bb0fd39461a211881a8c021163"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,9 +238,12 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="aedbc1b4f1fe530823b581fab6ac8580d"></a>
+<a class="anchor" id="a561fd105728daa7a7158c77a8474e90a"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">gui::material::material </td>
@@ -249,15 +252,18 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="gui__material_8cpp_source.html#l00005">5</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a689b0b3dd02b95accc1164b92d1933be"></a>
+<a class="anchor" id="a32f6815628d130e570ab327ef94c1fe3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -265,7 +271,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">gui::material::~material </td>
+          <td class="memname">virtual gui::material::~material </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -273,16 +279,14 @@ Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Destructor. </p>
 
-<p>Reimplemented in <a class="el" href="classgui_1_1gl_1_1material.html#a7323f5999c0efccd1920e2c06e03ecba">gui::gl::material</a>.</p>
-
-<p>Definition at line <a class="el" href="gui__material_8cpp_source.html#l00009">9</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
+<p>Reimplemented in <a class="el" href="classgui_1_1sfml_1_1material.html#ade2f13380425080cf5d3a18409dc3126">gui::sfml::material</a>, and <a class="el" href="classgui_1_1gl_1_1material.html#afb734ca1ce83489e3eebf3523c6562d6">gui::gl::material</a>.</p>
 
 </div>
 </div>
@@ -401,14 +405,13 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/cschreib/lxgui/include/lxgui/<a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a></li>
-<li>/home/travis/build/cschreib/lxgui/gui/src/<a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2020 18:41:06 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 4 2020 20:23:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

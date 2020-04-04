@@ -24,7 +24,7 @@ var searchData=
   ['font',['font',['../classgui_1_1font.html',1,'gui']]],
   ['font',['font',['../classgui_1_1sfml_1_1font.html',1,'gui::sfml']]],
   ['font',['font',['../classgui_1_1gl_1_1font.html',1,'gui::gl']]],
-  ['font',['font',['../classgui_1_1font.html#a4007876b54f14a7e6cb3475c5d23ef8c',1,'gui::font::font()'],['../classgui_1_1gl_1_1font.html#a1c420c2d8c922110587cd10542e44367',1,'gui::gl::font::font()'],['../classgui_1_1sfml_1_1font.html#a1d4d968db1c4b99c7d5948b1e298e062',1,'gui::sfml::font::font()']]],
+  ['font',['font',['../classgui_1_1font.html#a9e090c85a652f95d0d69ff12ef60d7cb',1,'gui::font::font()'],['../classgui_1_1gl_1_1font.html#a1c420c2d8c922110587cd10542e44367',1,'gui::gl::font::font()'],['../classgui_1_1sfml_1_1font.html#a1d4d968db1c4b99c7d5948b1e298e062',1,'gui::sfml::font::font()']]],
   ['font_5fstring',['font_string',['../classgui_1_1font__string.html',1,'gui']]],
   ['font_5fstring',['font_string',['../classgui_1_1font__string.html#afe2d346588e036c701d782885823d5e4',1,'gui::font_string']]],
   ['force_5finput_5fallowed',['force_input_allowed',['../classinput_1_1manager.html#aaaf42a255c0bfe0d1832db09b440b78d',1,'input::manager']]],
@@ -47,7 +47,7 @@ var searchData=
   ['fullscreen',['FULLSCREEN',['../namespacegui.html#a06c18a991d2896335961a7962df07a4cab89c3d897b196ffff1537331bc659a97',1,'gui']]],
   ['fullscreen_5fdialog',['FULLSCREEN_DIALOG',['../namespacegui.html#a06c18a991d2896335961a7962df07a4ca3658feec3406eaaa72719f83d84bd051',1,'gui']]],
   ['function',['function',['../classlua_1_1function.html',1,'lua']]],
-  ['function',['function',['../classlua_1_1argument.html#ae68431d57947868147860283a49e4c1b',1,'lua::argument::function()'],['../classlua_1_1function.html#a4b23af20a3bc88c02517c953061d3245',1,'lua::function::function(const std::string &amp;sName, lua_State *pLua, uint uiReturnNbr=0u)'],['../classlua_1_1function.html#a5e58f6acf7687837a19e615140264b0d',1,'lua::function::function(const std::string &amp;sName, state *pLua, uint uiReturnNbr=0u)'],['../namespacelua.html#afc96aaee4335c08bd268a5fc222756e3a6a72a6a776662a244f82d31e9274a07b',1,'lua::FUNCTION()']]],
+  ['function',['function',['../classlua_1_1argument.html#ae68431d57947868147860283a49e4c1b',1,'lua::argument::function()'],['../classlua_1_1function.html#a4b23af20a3bc88c02517c953061d3245',1,'lua::function::function(const std::string &amp;sName, lua_State *pLua, uint uiReturnNbr=0u)'],['../classlua_1_1function.html#a5e58f6acf7687837a19e615140264b0d',1,'lua::function::function(const std::string &amp;sName, state *pLua, uint uiReturnNbr=0u)'],['../classlua_1_1function.html#a94f81752c5ebefcdaf00ea8e9529bd4b',1,'lua::function::function(const function &amp;)=delete'],['../classlua_1_1function.html#a6eac334eb538a0e43ccaa0129713aa71',1,'lua::function::function(function &amp;&amp;)=delete'],['../namespacelua.html#afc96aaee4335c08bd268a5fc222756e3a6a72a6a776662a244f82d31e9274a07b',1,'lua::FUNCTION()']]],
   ['fvalue_5f',['fValue_',['../classgui_1_1slider.html#aae64376d8d91556b3b08767b774a2917',1,'gui::slider::fValue_()'],['../classgui_1_1status__bar.html#a7925f2a88170abe7a2db4132d603da44',1,'gui::status_bar::fValue_()']]],
   ['fvaluestep_5f',['fValueStep_',['../classgui_1_1slider.html#aba804d05233a636baacd9273ac288964',1,'gui::slider']]],
   ['fwidth',['fWidth',['../structgui_1_1text_1_1line.html#a531ba1f91a19472a45c00b303b001fce',1,'gui::text::line']]]

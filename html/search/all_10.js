@@ -52,7 +52,7 @@ var searchData=
   ['render_5ftarget',['render_target',['../classgui_1_1gl_1_1render__target.html',1,'gui::gl']]],
   ['render_5ftarget',['render_target',['../classgui_1_1render__target.html',1,'gui']]],
   ['render_5ftarget',['render_target',['../classgui_1_1sfml_1_1render__target.html',1,'gui::sfml']]],
-  ['render_5ftarget',['render_target',['../classgui_1_1render__target.html#a2ac6e533c0d33100c873b281c14c2ea2',1,'gui::render_target::render_target()'],['../classgui_1_1gl_1_1render__target.html#ac86693a4d614e7e399bd095d80833abb',1,'gui::gl::render_target::render_target()'],['../classgui_1_1sfml_1_1render__target.html#af594186960d57c276307e05880f22235',1,'gui::sfml::render_target::render_target()']]],
+  ['render_5ftarget',['render_target',['../classgui_1_1render__target.html#ad90d558674512ba1d608598ccddbb527',1,'gui::render_target::render_target()'],['../classgui_1_1gl_1_1render__target.html#ac86693a4d614e7e399bd095d80833abb',1,'gui::gl::render_target::render_target()'],['../classgui_1_1sfml_1_1render__target.html#af594186960d57c276307e05880f22235',1,'gui::sfml::render_target::render_target()']]],
   ['render_5fui',['render_ui',['../classgui_1_1manager.html#a7ce1ecd9ee65a623c5a22a028c261b00',1,'gui::manager']]],
   ['renderer',['renderer',['../classgui_1_1gl_1_1renderer.html#a52cfaf6cca4367df24d3ea577c960d2e',1,'gui::gl::renderer::renderer()'],['../classgui_1_1sfml_1_1renderer.html#a24c263d35904e0772dd60d1046efc940',1,'gui::sfml::renderer::renderer()']]],
   ['renderer',['renderer',['../classgui_1_1sfml_1_1renderer.html',1,'gui::sfml']]],
@@ -75,7 +75,7 @@ var searchData=
   ['reverse_5fvalue',['reverse_value',['../namespaceutils_1_1range.html#a8cfce96166dc56e80983dc11edf79603',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html#aa364751eaded1ecc1b13d3c01429230e',1,'utils::range::reverse_value_range']]],
-  ['right',['right',['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
+  ['right',['RIGHT',['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
   ['rotate',['rotate',['../classgui_1_1vector2.html#a3e7234b12d176fd5e85a4edc5ab337cd',1,'gui::vector2']]],
   ['rotation',['rotation',['../classgui_1_1gl_1_1matrix4.html#ac8dc291cb62ae3517fb1c7f772368d67',1,'gui::gl::matrix4']]]
 ];

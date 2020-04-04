@@ -108,9 +108,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5e58f6acf7687837a19e615140264b0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#a5e58f6acf7687837a19e615140264b0d">function</a> (const std::string &amp;sName, <a class="el" href="classlua_1_1state.html">state</a> *pLua, <a class="el" href="utils_8hpp.html#a91ad9478d81a7aaf2593e8d9c3d06a14">uint</a> uiReturnNbr=0u)</td></tr>
 <tr class="memdesc:a5e58f6acf7687837a19e615140264b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a5e58f6acf7687837a19e615140264b0d">More...</a><br /></td></tr>
 <tr class="separator:a5e58f6acf7687837a19e615140264b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5e651a476dcae4981bbba8b03c017b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#ae5e651a476dcae4981bbba8b03c017b0">~function</a> ()</td></tr>
-<tr class="memdesc:ae5e651a476dcae4981bbba8b03c017b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ae5e651a476dcae4981bbba8b03c017b0">More...</a><br /></td></tr>
-<tr class="separator:ae5e651a476dcae4981bbba8b03c017b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94f81752c5ebefcdaf00ea8e9529bd4b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#a94f81752c5ebefcdaf00ea8e9529bd4b">function</a> (const <a class="el" href="classlua_1_1function.html">function</a> &amp;)=delete</td></tr>
+<tr class="separator:a94f81752c5ebefcdaf00ea8e9529bd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eac334eb538a0e43ccaa0129713aa71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#a6eac334eb538a0e43ccaa0129713aa71">function</a> (<a class="el" href="classlua_1_1function.html">function</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:a6eac334eb538a0e43ccaa0129713aa71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae328b24c4dbd3af3609210eed96be7e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlua_1_1function.html">function</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#ae328b24c4dbd3af3609210eed96be7e8">operator=</a> (<a class="el" href="classlua_1_1function.html">function</a> &amp;)=delete</td></tr>
+<tr class="separator:ae328b24c4dbd3af3609210eed96be7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac251dbe7741943fa78a3791a236bc05d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlua_1_1function.html">function</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#ac251dbe7741943fa78a3791a236bc05d">operator=</a> (<a class="el" href="classlua_1_1function.html">function</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:ac251dbe7741943fa78a3791a236bc05d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d753105d4c56455a2157ca3da9bce8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlua_1_1function.html#a55d753105d4c56455a2157ca3da9bce8">add</a> (<a class="el" href="utils_8hpp.html#a91ad9478d81a7aaf2593e8d9c3d06a14">uint</a> uiIndex, const std::string &amp;sName, <a class="el" href="namespacelua.html#afc96aaee4335c08bd268a5fc222756e3">type</a> mLuaType, bool bOptional=false)</td></tr>
 <tr class="memdesc:a55d753105d4c56455a2157ca3da9bce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an argument to that function.  <a href="#a55d753105d4c56455a2157ca3da9bce8">More...</a><br /></td></tr>
 <tr class="separator:a55d753105d4c56455a2157ca3da9bce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,7 +177,7 @@ Public Member Functions</h2></td></tr>
  This is done quite easilly with this class.<br />
  Look at the source code for existing glues to see how things work (UIObject::_SetPoint() is a good example). </p>
 
-<p>Definition at line <a class="el" href="luapp__function_8hpp_source.html#l00173">173</a> of file <a class="el" href="luapp__function_8hpp_source.html">luapp_function.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__function_8hpp_source.html#l00186">186</a> of file <a class="el" href="luapp__function_8hpp_source.html">luapp_function.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4b23af20a3bc88c02517c953061d3245"></a>
 <div class="memitem">
@@ -260,20 +265,51 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae5e651a476dcae4981bbba8b03c017b0"></a>
+<a class="anchor" id="a94f81752c5ebefcdaf00ea8e9529bd4b"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">lua::function::~function </td>
+          <td class="memname">lua::function::function </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlua_1_1function.html">function</a> &amp;&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Destructor. </p>
+</div>
+</div>
+<a class="anchor" id="a6eac334eb538a0e43ccaa0129713aa71"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">lua::function::function </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlua_1_1function.html">function</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -535,6 +571,54 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae328b24c4dbd3af3609210eed96be7e8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlua_1_1function.html">function</a>&amp; lua::function::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlua_1_1function.html">function</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac251dbe7741943fa78a3791a236bc05d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlua_1_1function.html">function</a>&amp; lua::function::operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlua_1_1function.html">function</a> &amp;&amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="abb34ffeba1a2eed9cc2d84a9a30e2d4e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -764,7 +848,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 29 2020 18:41:06 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 4 2020 20:23:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
