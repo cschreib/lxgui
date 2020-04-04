@@ -162,7 +162,13 @@ struct argument_list
 {
     std::map<uint, std::unique_ptr<argument>> lArg_;
     std::map<uint, std::unique_ptr<argument>> lOptional_;
-    uint                                      uiRank_;
+    uint                                      uiRank_ = 0u;
+
+    argument_list() = default;
+    argument_list(const argument_list&) = delete;
+    argument_list(argument_list&&) = default;
+    argument_list& operator=(const argument_list&) = delete;
+    argument_list& operator=(argument_list&&) = default;
 };
 
 /// A helper to write Lua glues
