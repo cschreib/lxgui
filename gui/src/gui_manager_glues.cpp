@@ -114,7 +114,7 @@ int l_set_key_binding(lua_State* pLua)
         manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
         pState->pop();
 
-        input::key uiKey = static_cast<input::key>(mFunc.get(0)->get_number());
+        input::key uiKey = static_cast<input::key>(mFunc.get(0)->get_int());
 
         if (mFunc.get_param_set_rank() == 0)
         {
@@ -125,7 +125,7 @@ int l_set_key_binding(lua_State* pLua)
         }
         else if (mFunc.get_param_set_rank() == 1)
         {
-            input::key uiModifier = static_cast<input::key>(mFunc.get(1)->get_number());
+            input::key uiModifier = static_cast<input::key>(mFunc.get(1)->get_int());
 
             if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::STRING)
                 pGUIMgr->set_key_binding(uiKey, uiModifier, mFunc.get(2)->get_string());
@@ -134,8 +134,8 @@ int l_set_key_binding(lua_State* pLua)
         }
         else
         {
-            input::key uiModifier1 = static_cast<input::key>(mFunc.get(1)->get_number());
-            input::key uiModifier2 = static_cast<input::key>(mFunc.get(2)->get_number());
+            input::key uiModifier1 = static_cast<input::key>(mFunc.get(1)->get_int());
+            input::key uiModifier2 = static_cast<input::key>(mFunc.get(2)->get_int());
 
             if (mFunc.is_provided(3) && mFunc.get(3)->get_type() == lua::type::STRING)
                 pGUIMgr->set_key_binding(uiKey, uiModifier1, uiModifier2, mFunc.get(3)->get_string());

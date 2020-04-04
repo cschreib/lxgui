@@ -95,6 +95,11 @@ public :
     */
     float get_number() const;
 
+    /// Returns the value and converts it to an int.
+    /** \return The value and converts it to an int
+    */
+    int get_int() const;
+
     /// Returns the value and converts it to a bool.
     /** \return The value and converts it to a bool
     */

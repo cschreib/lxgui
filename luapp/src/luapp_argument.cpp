@@ -20,7 +20,12 @@ void argument::add(const std::string& sName, type mLuaType)
 
 float argument::get_number() const
 {
-    return pData_->get_value().get<double>();
+    return float(pData_->get_value().get<double>());
+}
+
+int argument::get_int() const
+{
+    return int(pData_->get_value().get<double>());
 }
 
 bool argument::get_bool() const
