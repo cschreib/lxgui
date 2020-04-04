@@ -18,10 +18,6 @@ function::function(const std::string& sName, state* pLua, uint uiReturnNbr) :
     new_param_set();
 }
 
-function::~function()
-{
-}
-
 void function::add(uint uiIndex, const std::string& sName, type mLuaType, bool bOptional)
 {
     if (bOptional)

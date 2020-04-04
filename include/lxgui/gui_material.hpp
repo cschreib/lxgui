@@ -32,10 +32,10 @@ namespace gui
         };
 
         /// Constructor.
-        material();
+        material() = default;
 
         /// Destructor.
-        virtual ~material();
+        virtual ~material() = default;
 
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)

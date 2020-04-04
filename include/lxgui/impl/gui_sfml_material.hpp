@@ -54,6 +54,9 @@ namespace sfml
         */
         material(const color& mColor);
 
+        /// Destructor.
+        ~material() override = default;
+
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)
         */

@@ -22,10 +22,10 @@ namespace gui
     public :
 
         /// Constructor.
-        font();
+        font() = default;
 
         /// Destructor.
-        virtual ~font();
+        virtual ~font() = default;
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character

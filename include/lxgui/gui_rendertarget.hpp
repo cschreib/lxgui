@@ -15,10 +15,10 @@ namespace gui
     public :
 
         /// Constructor.
-        render_target();
+        render_target() = default;
 
         /// Destructor.
-        virtual ~render_target();
+        virtual ~render_target() = default;
 
         /// Begins rendering on this target.
         virtual void begin() = 0;

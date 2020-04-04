@@ -22,7 +22,7 @@ namespace gl
         render_target(uint uiWidth, uint uiHeight);
 
         /// Destructor.
-        ~render_target();
+        ~render_target() override;
 
         /// Begins rendering on this target.
         void begin() override;

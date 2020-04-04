@@ -140,11 +140,10 @@ namespace input
         */
         explicit manager(std::unique_ptr<source_impl> pSource);
 
-        /// This class is non copiable.
         manager(const manager& mMgr) = delete;
-
-        /// This class is non copiable.
+        manager(manager&& mMgr) = delete;
         manager& operator = (const manager& mMgr) = delete;
+        manager& operator = (manager&& mMgr) = delete;
 
         /// Updates input (keyboard and mouse).
         void update(float fDelta);

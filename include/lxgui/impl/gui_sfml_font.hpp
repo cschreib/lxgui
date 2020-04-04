@@ -28,7 +28,7 @@ namespace sfml
         font(const std::string& sFontFile, uint uiSize);
 
         /// Destructor.
-        ~font();
+        ~font() override = default;
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character

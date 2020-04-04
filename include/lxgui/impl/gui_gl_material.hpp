@@ -44,7 +44,7 @@ namespace gl
         material(const color& mColor);
 
         /// Destructor.
-        ~material();
+        ~material() override;
 
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)

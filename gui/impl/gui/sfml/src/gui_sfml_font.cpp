@@ -26,10 +26,6 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), uiSizeS
     pTexture_ = utils::refptr<sfml::material>(new sfml::material(mData));
 }
 
-font::~font()
-{
-}
-
 quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return quad2f{};

@@ -25,6 +25,9 @@ namespace sfml
         */
         render_target(uint uiWidth, uint uiHeight);
 
+        /// Destructor.
+        ~render_target() override = default;
+
         /// Begins rendering on this target.
         void begin() override;
 

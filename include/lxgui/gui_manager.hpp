@@ -142,13 +142,12 @@ namespace gui
                 uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl);
 
         /// Destructor.
-        ~manager();
+        ~manager() override;
 
-        /// This class is non copiable.
         manager(const manager& mMgr) = delete;
-
-        /// This class is non copiable.
+        manager(manager&& mMgr) = delete;
         manager& operator = (const manager& mMgr) = delete;
+        manager& operator = (manager&& mMgr) = delete;
 
         /// Returns the "screen" width.
         /** \return The screen width

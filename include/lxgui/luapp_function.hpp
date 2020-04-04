@@ -74,6 +74,11 @@ public :
     */
     argument(const std::string& sName, type mLuaType, function* pParent);
 
+    argument(const argument&) = delete;
+    argument(argument&&) = delete;
+    argument& operator = (const argument&) = delete;
+    argument& operator = (argument&&) = delete;
+
     /// Adds an alternative to this argument.
     /** \param sName    The name of this alternative argument (used to print errors in the log)
     *   \param mLuaType The expected type in Lua
@@ -131,9 +136,6 @@ public :
 
 private :
 
-    argument(const argument&);
-    argument& operator = (const argument&);
-
     /// Checks if this argument has the expected type(s).
     /** \param pLua        The Lua state to use
     *   \param iIndex      The index to check
@@ -190,8 +192,10 @@ public :
     */
     function(const std::string& sName, state* pLua, uint uiReturnNbr = 0u);
 
-    /// Destructor.
-    ~function();
+    function(const function&) = delete;
+    function(function&&) = delete;
+    function& operator = (function&) = delete;
+    function& operator = (function&&) = delete;
 
     /// Adds an argument to that function.
     /** \param uiIndex    The index of this argument
@@ -364,9 +368,6 @@ public :
     state* get_state() const;
 
 private :
-
-    function(const function&);
-    function& operator = (function&);
 
     std::string                sName_;
     state*                     pLua_;
