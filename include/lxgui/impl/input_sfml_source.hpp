@@ -36,15 +36,7 @@ namespace input
 
         private :
 
-            int to_sfml_(key mKey) const;
-
-            struct key_mapping
-            {
-                input::key mKey;
-                int        mSFKey;
-            };
-
-            static const key_mapping lKeyToSFML[100];
+            input::key from_sfml_(int uiSFKey) const;
 
             const sf::Window& mWindow_;
 
