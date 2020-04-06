@@ -39,8 +39,6 @@ jobs:
     - stage: test
       os: windows
       compiler: gcc
-      env:
-        - MSBUILD_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin"
       script:
       before_script:
         - choco install -y visualstudio2017-workload-vctools
@@ -52,7 +50,7 @@ jobs:
         - cd build
         - cmake .. -DCMAKE_PREFIX_PATH=${DEPENDENCIES_FOLDER}
       script:
-        - export PATH=$MSBUILD_PATH:$PATH
+        - export PATH="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin;${PATH}"
         - MSBuild.exe lxgui.sln //nologo //p:Configuration=Release
 
     - stage: deploy
