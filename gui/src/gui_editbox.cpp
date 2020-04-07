@@ -930,35 +930,26 @@ void edit_box::update_carret_position_()
         else
             iterDisplayCarret = sDisplayedText_.begin() + (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
 
+
+        float fYOffset = (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing());
+
         const std::vector<text::letter>& lLetters = pText->get_letter_cache();
-        std::vector<text::letter>::const_iterator iterLetter = lLetters.begin();
+        auto iterLetter = lLetters.begin() + (iterDisplayCarret - sDisplayedText_.begin());
 
-        float fYOffset = 0.0f;
-
-        utils::ustring::const_iterator iter;
-        for (iter = sDisplayedText_.begin(); iter != iterDisplayCarret; ++iter)
-        {
-            float fLastY = iterLetter->mQuad.top;
-            ++iterLetter;
-            if (iterLetter != lLetters.end() && fLastY != iterLetter->mQuad.top)
-                fYOffset += iterLetter->mQuad.top - fLastY;
-        }
-
+        int iXOffset = 0;
         if (iterLetter == lLetters.begin())
         {
-            pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, anchor_point::LEFT,
-                lTextInsets_.left + int(iterLetter->mQuad.left) - 1, int(fYOffset)
-            );
+            iXOffset = int(iterLetter->mQuad.left);
         }
         else
         {
             --iterLetter;
-            pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, anchor_point::LEFT,
-                lTextInsets_.left + int(iterLetter->mQuad.right) - 1, int(fYOffset)
-            );
+            iXOffset = int(iterLetter->mQuad.right);
         }
+
+        pCarret_->set_abs_point(
+            anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left + iXOffset, int(fYOffset)
+        );
 
         mCarretTimer_.zero();
         pCarret_->show();
