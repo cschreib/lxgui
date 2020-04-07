@@ -171,24 +171,28 @@ namespace gui
         };
 
         /// Return the sprite for a given edge.
-        sprite* get_edge(edge_type mEdge) const;
+        sprite& get_edge(edge_type mEdge) const;
 
-        frame*      pParent_;
+        frame*      pParent_ = nullptr;
+
+        bool        bHasBackground_ = false;
         std::string sBackgroundFile_;
+        color       mBackgroundColor_ = color::EMPTY;
+
+        bool        bHasEdge_ = false;
         std::string sEdgeFile_;
-        color       mBackgroundColor_;
-        color       mEdgeColor_;
+        color       mEdgeColor_ = color::EMPTY;
 
-        mutable std::unique_ptr<sprite>               pBackground_;
-        mutable std::array<std::unique_ptr<sprite>,8> lEdgeList_;
+        mutable sprite               mBackground_;
+        mutable std::array<sprite,8> lEdgeList_;
 
-        bool   bBackgroundTilling_;
-        uint   uiTileSize_;
-        uint   uiOriginalTileSize_;
+        bool   bBackgroundTilling_ = false;
+        uint   uiTileSize_ = 0u;
+        uint   uiOriginalTileSize_ = 0u;
         quad2i lBackgroundInsets_;
         quad2i lEdgeInsets_;
-        uint   uiEdgeSize_;
-        uint   uiOriginalEdgeSize_;
+        uint   uiEdgeSize_ = 0u;
+        uint   uiOriginalEdgeSize_ = 0u;
     };
 }
 

@@ -29,7 +29,7 @@ namespace gui
         explicit texture(manager* pManager);
 
         /// Destructor.
-        virtual ~texture();
+        ~texture() override = default;
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -184,14 +184,14 @@ namespace gui
         void set_color(const color& mColor);
 
         /// Directly sets this texture's underlying sprite.
-        /** \param pSprite The new sprite to use
+        /** \param mSprite The new sprite to use
         *   \note The texture's dimensions will be adjusted to fit those
         *         of the provided sprite, and same goes for texture
         *         coordinates.
         *   \note Be sure to know what you're doing when you call this
         *         function.
         */
-        void set_sprite(std::unique_ptr<sprite> pSprite);
+        void set_sprite(sprite mSprite);
 
         /// Sets this texture's vertex color.
         /** \param mColor This textures's new vertex color
@@ -220,17 +220,18 @@ namespace gui
         void parse_tex_coords_block_(xml::block* pBlock);
         void parse_gradient_block_(xml::block* pBlock);
 
-        std::unique_ptr<sprite> pSprite_;
-        std::string             sTextureFile_;
+        bool        bHasSprite_ = false;
+        sprite      mSprite_;
+        std::string sTextureFile_;
 
-        blend_mode       mBlendMode_;
-        material::filter mFilter_;
-        bool             bIsDesaturated_;
+        blend_mode       mBlendMode_ = blend_mode::NONE;
+        material::filter mFilter_ = material::filter::NONE;
+        bool             bIsDesaturated_ = false;
         gradient         mGradient_;
-        color            mColor_;
+        color            mColor_ = color::WHITE;
 
         std::array<float,8> lTexCoord_;
-        bool                bTexCoordModifiesRect_;
+        bool                bTexCoordModifiesRect_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

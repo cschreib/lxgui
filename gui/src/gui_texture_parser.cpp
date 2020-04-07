@@ -25,8 +25,8 @@ void texture::parse_attributes_(xml::block* pBlock)
 
     set_filter_mode(pBlock->get_attribute("filter"));
     set_texture(pManager_->parse_file_name(pBlock->get_attribute("file")));
-    if (!pBlock->get_block("Size") && pSprite_)
-        set_abs_dimensions(pSprite_->get_width(), pSprite_->get_height());
+    if (!pBlock->get_block("Size") && bHasSprite_)
+        set_abs_dimensions(mSprite_.get_width(), mSprite_.get_height());
 }
 
 void texture::parse_tex_coords_block_(xml::block* pBlock)

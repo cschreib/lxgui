@@ -12,9 +12,12 @@ namespace gui
     {
     public :
 
-        vector2()
-        {
-        }
+        vector2() = default;
+        vector2(const vector2&) = default;
+        vector2(vector2&&) = default;
+
+        vector2& operator=(const vector2&) = default;
+        vector2& operator=(vector2&&) = default;
 
         vector2(T mX, T mY) : x(mX), y(mY)
         {
@@ -140,7 +143,7 @@ namespace gui
         static const vector2 X;
         static const vector2 Y;
 
-        T x, y;
+        T x = 0, y = 0;
     };
 
     template<class T>

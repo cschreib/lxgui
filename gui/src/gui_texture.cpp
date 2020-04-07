@@ -11,17 +11,11 @@
 
 namespace gui
 {
-texture::texture(manager* pManager) : layered_region(pManager),
-    mBlendMode_(blend_mode::NONE), mFilter_(material::filter::NONE),
-    bIsDesaturated_(false), mColor_(color::WHITE), bTexCoordModifiesRect_(false)
+texture::texture(manager* pManager) : layered_region(pManager)
 {
     lTexCoord_[0] = lTexCoord_[1] = lTexCoord_[3] = lTexCoord_[6] = 0.0f;
     lTexCoord_[2] = lTexCoord_[4] = lTexCoord_[5] = lTexCoord_[7] = 1.0f;
     lType_.push_back(CLASS_NAME);
-}
-
-texture::~texture()
-{
 }
 
 std::string texture::serialize(const std::string& sTab) const
@@ -88,9 +82,9 @@ std::string texture::serialize(const std::string& sTab) const
 
 void texture::render()
 {
-    if (pSprite_ && is_visible())
+    if (bHasSprite_ && is_visible())
     {
-        pSprite_->render_2v(
+        mSprite_.render_2v(
             lBorderList_.left,  lBorderList_.top,
             lBorderList_.right, lBorderList_.bottom
         );
@@ -166,8 +160,8 @@ const std::string& texture::get_texture() const
 
 color texture::get_vertex_color() const
 {
-    if (pSprite_)
-        return pSprite_->get_color();
+    if (bHasSprite_)
+        return mSprite_.get_color();
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
@@ -226,10 +220,10 @@ void texture::set_filter_mode(material::filter mFilter)
     {
         mFilter_ = mFilter;
 
-        if (!sTextureFile_.empty() && pSprite_)
+        if (!sTextureFile_.empty() && bHasSprite_)
         {
-            pSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
-            pSprite_->set_texture_coords(lTexCoord_, true);
+            mSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
+            mSprite_.set_texture_coords(lTexCoord_, true);
         }
 
         notify_renderer_need_redraw();
@@ -258,7 +252,7 @@ void texture::set_filter_mode(const std::string& sFilter)
 
 void texture::set_desaturated(bool bIsDesaturated)
 {
-    if (!pSprite_)
+    if (!bHasSprite_)
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to desaturate an uninitialized texture : " << sName_ << "." << std::endl;
@@ -269,7 +263,7 @@ void texture::set_desaturated(bool bIsDesaturated)
     if (bIsDesaturated_ != bIsDesaturated)
     {
         bIsDesaturated_ = bIsDesaturated;
-        pSprite_->set_desaturated(bIsDesaturated_);
+        mSprite_.set_desaturated(bIsDesaturated_);
 
         notify_renderer_need_redraw();
     }
@@ -280,23 +274,23 @@ void texture::set_gradient(const gradient& mGradient)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
     mGradient_ = mGradient;
-    pSprite_ = pManager_->create_sprite(
+    mSprite_ = pManager_->create_sprite(
         pManager_->create_material(color::WHITE), 256, 256
     );
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
-        pSprite_->set_color(mGradient_.get_min_color(), 0);
-        pSprite_->set_color(mGradient_.get_min_color(), 3);
-        pSprite_->set_color(mGradient_.get_max_color(), 1);
-        pSprite_->set_color(mGradient_.get_max_color(), 2);
+        mSprite_.set_color(mGradient_.get_min_color(), 0);
+        mSprite_.set_color(mGradient_.get_min_color(), 3);
+        mSprite_.set_color(mGradient_.get_max_color(), 1);
+        mSprite_.set_color(mGradient_.get_max_color(), 2);
     }
     else
     {
-        pSprite_->set_color(mGradient_.get_min_color(), 0);
-        pSprite_->set_color(mGradient_.get_min_color(), 1);
-        pSprite_->set_color(mGradient_.get_max_color(), 2);
-        pSprite_->set_color(mGradient_.get_max_color(), 3);
+        mSprite_.set_color(mGradient_.get_min_color(), 0);
+        mSprite_.set_color(mGradient_.get_min_color(), 1);
+        mSprite_.set_color(mGradient_.get_max_color(), 2);
+        mSprite_.set_color(mGradient_.get_max_color(), 3);
     }
 
     notify_renderer_need_redraw();
@@ -304,10 +298,10 @@ void texture::set_gradient(const gradient& mGradient)
 
 void texture::set_tex_coord(const std::array<float,4>& lCoordinates)
 {
-    if (pSprite_)
+    if (bHasSprite_)
     {
-        pSprite_->set_texture_rect(lCoordinates, true);
-        lTexCoord_ = pSprite_->get_texture_coords(true);
+        mSprite_.set_texture_rect(lCoordinates, true);
+        lTexCoord_ = mSprite_.get_texture_coords(true);
         notify_renderer_need_redraw();
     }
     else
@@ -319,9 +313,9 @@ void texture::set_tex_coord(const std::array<float,4>& lCoordinates)
 
 void texture::set_tex_coord(const std::array<float,8>& lCoordinates)
 {
-    if (pSprite_)
+    if (bHasSprite_)
     {
-        pSprite_->set_texture_coords(lCoordinates, true);
+        mSprite_.set_texture_coords(lCoordinates, true);
         lTexCoord_ = lCoordinates;
         notify_renderer_need_redraw();
     }
@@ -347,15 +341,15 @@ void texture::set_texture(const std::string& sFile)
     mColor_ = color::EMPTY;
     sTextureFile_ = sFile;
 
-    pSprite_ = nullptr;
+    bHasSprite_ = false;
 
     if (sTextureFile_.empty())
         return;
 
     if (utils::file_exists(sTextureFile_))
     {
-        pSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
-        pSprite_->set_texture_coords(lTexCoord_, true);
+        mSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
+        mSprite_.set_texture_coords(lTexCoord_, true);
     }
     else
     {
@@ -363,9 +357,10 @@ void texture::set_texture(const std::string& sFile)
             << "Cannot find file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
 
-        pSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
+        mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
     }
 
+    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -375,19 +370,18 @@ void texture::set_texture(utils::refptr<render_target> pRenderTarget)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
 
-    pSprite_ = nullptr;
-
     if (pRenderTarget)
-        pSprite_ = pManager_->create_sprite(pManager_->create_material(pRenderTarget));
+        mSprite_ = pManager_->create_sprite(pManager_->create_material(pRenderTarget));
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
             << "Cannot create a texture with a null RenterTarget.\n"
             "Using white texture instead." << std::endl;
 
-        pSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
+        mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
     }
 
+    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -397,30 +391,32 @@ void texture::set_color(const color& mColor)
     sTextureFile_ = "";
 
     mColor_ = mColor;
-    pSprite_ = pManager_->create_sprite(pManager_->create_material(mColor), 256, 256);
+    mSprite_ = pManager_->create_sprite(pManager_->create_material(mColor), 256, 256);
+    bHasSprite_ = true;
 
     notify_renderer_need_redraw();
 }
 
-void texture::set_sprite(std::unique_ptr<sprite> pSprite)
+void texture::set_sprite(sprite mSprite)
 {
     mGradient_ = gradient();
     sTextureFile_ = "";
 
-    pSprite_ = std::move(pSprite);
+    mSprite_ = std::move(mSprite);
 
-    set_abs_dimensions(pSprite_->get_width(), pSprite_->get_height());
+    set_abs_dimensions(mSprite_.get_width(), mSprite_.get_height());
 
-    lTexCoord_ = pSprite_->get_texture_coords(true);
+    lTexCoord_ = mSprite_.get_texture_coords(true);
 
+    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
 void texture::set_vertex_color(const color& mColor)
 {
-    if (pSprite_)
+    if (bHasSprite_)
     {
-        pSprite_->set_color(mColor);
+        mSprite_.set_color(mColor);
         notify_renderer_need_redraw();
     }
     else

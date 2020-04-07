@@ -1,6 +1,5 @@
 #include "lxgui/gui_text.hpp"
 #include "lxgui/gui_font.hpp"
-#include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -28,7 +27,7 @@ text::text(manager* pManager, const std::string& sFileName, float fSize) :
     }
 
     fSpaceWidth_ = pFont_->get_character_width(32);
-    pSprite_ = pManager_->create_sprite(pFont_->get_texture().lock());
+    mSprite_ = pManager_->create_sprite(pFont_->get_texture().lock());
 
     bReady_ = true;
 }
@@ -376,7 +375,7 @@ void text::render(float fX, float fY)
         bUpdateQuads_ = false;
     }
 
-    pSprite_->render_quads(lQuadList_);
+    mSprite_.render_quads(lQuadList_);
 }
 
 void text::update()
@@ -829,7 +828,7 @@ void text::update_cache_()
     }
 }
 
-std::unique_ptr<sprite> text::create_sprite(char32_t uiChar) const
+sprite text::create_sprite(char32_t uiChar) const
 {
     const quad2f lUVs = pFont_->get_character_uvs(uiChar);
 
@@ -837,11 +836,11 @@ std::unique_ptr<sprite> text::create_sprite(char32_t uiChar) const
     const float fWidth = mBounds.right - mBounds.left;
     const float fHeight = mBounds.bottom - mBounds.top;
 
-    std::unique_ptr<sprite> pSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
-    pSprite->set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
-    pSprite->set_color(mColor_);
+    sprite mSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
+    mSprite.set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
+    mSprite.set_color(mColor_);
 
-    return pSprite;
+    return mSprite;
 }
 
 const std::vector<text::letter>& text::get_letter_cache()

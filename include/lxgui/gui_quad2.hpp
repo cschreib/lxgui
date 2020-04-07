@@ -10,9 +10,12 @@ namespace gui
     {
     public :
 
-        quad2()
-        {
-        }
+        quad2() = default;
+        quad2(const quad2&) = default;
+        quad2(quad2&&) = default;
+
+        quad2& operator=(const quad2&) = default;
+        quad2& operator=(quad2&&) = default;
 
         quad2(T mLeft, T mRight, T mTop, T mBottom) : left(mLeft), right(mRight), top(mTop), bottom(mBottom)
         {
@@ -60,7 +63,7 @@ namespace gui
 
         static const quad2 ZERO;
 
-        T left, right, top, bottom;
+        T left = 0, right = 0, top = 0, bottom = 0;
     };
 
     template<class T>

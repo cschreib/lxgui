@@ -4,6 +4,7 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -108,7 +109,7 @@ namespace gui
         std::map<int, level>         lLevelList;
         mutable bool                 bRedraw;
         utils::refptr<render_target> pRenderTarget;
-        std::unique_ptr<sprite>      pSprite;
+        sprite                       mSprite;
         mutable uint                 uiRedrawCount;
     };
 
@@ -249,7 +250,7 @@ namespace gui
         /** \param pMat The material with which to create the sprite
         *   \return The new sprite
         */
-        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
+        sprite create_sprite(utils::refptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -262,7 +263,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        sprite create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -277,7 +278,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
+        sprite create_sprite(utils::refptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
@@ -823,7 +824,7 @@ namespace gui
         bool bEnableCaching_;
 
         utils::refptr<render_target> pRenderTarget_;
-        std::unique_ptr<sprite>      pSprite_;
+        sprite                       mSprite_;
 
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
@@ -874,53 +875,6 @@ namespace gui
         *         count reduction.
         */
         virtual void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
-
-        /// Creates a new sprite.
-        /** \param pMat The material with which to create the sprite
-        *   \return The new sprite
-        *   \note If you don't override this function, the gui::manager will
-        *         create gui::sprites. You can redefine the function if you
-        *         have created your own sprite class and want the gui to use
-        *         it instead of the default one.
-        */
-        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \return The new sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \note If you don't override this function, the gui::manager will
-        *         create gui::sprites. You can redefine the function if you
-        *         have created your own sprite class and want the gui to use
-        *         it instead of the default one.
-        */
-        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fU      The top left corner of the sprite in the material
-        *   \param fV      The top left corner of the sprite in the material
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \return The new sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \note If you don't override this function, the gui::manager will
-        *         create gui::sprites. You can redefine the function if you
-        *         have created your own sprite class and want the gui to use
-        *         it instead of the default one.
-        */
-        virtual std::unique_ptr<sprite> create_sprite(utils::refptr<material> pMat,
-            float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file

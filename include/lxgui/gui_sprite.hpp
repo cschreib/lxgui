@@ -28,12 +28,19 @@ namespace gui
 
     struct vertex
     {
-        vertex();
+        vertex() = default;
+
+        vertex(const vertex&) = default;
+        vertex(vertex&&) = default;
+
         vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol);
+
+        vertex& operator=(const vertex&) = default;
+        vertex& operator=(vertex&&) = default;
 
         vector2f pos;
         vector2f uvs;
-        color    col;
+        color    col = color::WHITE;
     };
 
     enum class blend_mode
@@ -57,13 +64,28 @@ namespace gui
     *   Thanks to this class, the only thing you have to do
     *   to acheive interesting effects is calling 2 or 3
     *   functions and let the magic do the rest.
-    *   \note This is a virtual class, that *can* be
+    *   \note This is a class, that *can* be
     *         inherited from if needed, and created by
     *         manager_impl.
     */
     class sprite
     {
     public :
+
+        /// Default constructor.
+        sprite() = default;
+
+        /// Copy constructor.
+        sprite(const sprite&) = default;
+
+        /// Move constructor.
+        sprite(sprite&&) = default;
+
+        /// Copy assignment.
+        sprite& operator=(const sprite&) = default;
+
+        /// Move assignment.
+        sprite& operator=(sprite&&) = default;
 
         /// Constructor.
         sprite(const manager* pManager, utils::refptr<material> pMat);
@@ -74,15 +96,12 @@ namespace gui
         /// Constructor.
         sprite(const manager* pManager, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
 
-        /// Destructor.
-        virtual ~sprite();
-
         /// Renders this sprite on the current render target.
         /** \param fX The horizontal position
         *   \param fY The vertical position
         *   \note Must be called between begin() and end().
         */
-        virtual void render(float fX, float fY) const;
+        void render(float fX, float fY) const;
 
         /// Deforms this sprite and render it on the current render target.
         /** \param fX      The horizontal position
@@ -93,7 +112,7 @@ namespace gui
         *   \note This function doesn't store the deformation.<br>
         *         Must be called between begin() and end().
         */
-        virtual void render_ex(float fX, float fY,
+        void render_ex(float fX, float fY,
                       float fRot,
                       float fHScale = 1.0f, float fVScale = 1.0f) const;
 
@@ -105,7 +124,7 @@ namespace gui
         *   \note This function doesn't store the deformation.<br>
         *         Must be called between begin() and end().
         */
-        virtual void render_2v(float fX1, float fY1,
+        void render_2v(float fX1, float fY1,
                       float fX3, float fY3);
 
         /// Stretches this this sprite and render it on the current render target.
@@ -120,7 +139,7 @@ namespace gui
         *   \note This function doesn't store the deformation.<br>
         *         Must be called between begin() and end().
         */
-        virtual void render_4v(float fX1, float fY1,
+        void render_4v(float fX1, float fY1,
                       float fX2, float fY2,
                       float fX3, float fY3,
                       float fX4, float fY4);
@@ -129,7 +148,7 @@ namespace gui
         /** \note This function is here for performance, when you want to set the
         *         internal quad once and for all.
         */
-        virtual void render_static() const;
+        void render_static() const;
 
         /// Renders a set of quads using this sprite's material.
         /** \param lQuadsArray The set of quads you want to render.
@@ -138,14 +157,14 @@ namespace gui
         *         allows for batch count reduction. The actual improvement
         *         depends on implementation.
         */
-        virtual void render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const;
+        void render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const;
 
         /// Sets this sprite's internal quad.
         /** \param lVertexArray The new quad
         *   \note This quad will be overwritten by any render_XXX() call.
         *         If you want to render it, call render_static().
         */
-        virtual void set_quad(const std::array<vertex,4>& lVertexArray);
+        void set_quad(const std::array<vertex,4>& lVertexArray);
 
         /// Changes the color of this sprite.
         /** \param mColor The new color
@@ -154,20 +173,20 @@ namespace gui
         *         a single vertex's color.<br>
         *         Index 0 is for top left, index 1 is for top right, ...
         */
-        virtual void set_color(const color& mColor, uint uiIndex = (uint)(-1));
+        void set_color(const color& mColor, uint uiIndex = (uint)(-1));
 
         /// Makes this sprite colorless.
         /** \param bDesaturated 'true' to desaturate the texture/color
         *   \note Depending on the implementation, this method may resort to
         *         using pixel shaders.
         */
-        virtual void set_desaturated(bool bDesaturated);
+        void set_desaturated(bool bDesaturated);
 
         /// Sets the blending mode of this sprite.
         /** \param mBlendMode The new blending mode
         *   \note See blend_mode.
         */
-        virtual void set_blend_mode(blend_mode mBlendMode);
+        void set_blend_mode(blend_mode mBlendMode);
 
         /// Changes this sprite's center.
         /** \param mHotSpot A 2D point containing the new center's position
@@ -175,7 +194,7 @@ namespace gui
         *         It is also considered as the reference point when you call render()
         *         (same goes for render_ex()).
         */
-        virtual void set_hot_spot(const vector2f& mHotSpot);
+        void set_hot_spot(const vector2f& mHotSpot);
 
         /// Changes this sprite's center.
         /** \param fX The new center's horizontal position
@@ -184,7 +203,7 @@ namespace gui
         *         It is also considered as the reference point when you call render()
         *         (same goes for render_ex()).
         */
-        virtual void set_hot_spot(float fX, float fY);
+        void set_hot_spot(float fX, float fY);
 
         /// Changes this sprite's texture rectangle.
         /** \param lTextureRect The new texture rect
@@ -193,7 +212,7 @@ namespace gui
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
-        virtual void set_texture_rect(const std::array<float,4>& lTextureRect, bool bNormalized = false);
+        void set_texture_rect(const std::array<float,4>& lTextureRect, bool bNormalized = false);
 
         /// Changes this sprite's texture rectangle.
         /** \param fX1 The rect's top left horizontal position
@@ -205,7 +224,7 @@ namespace gui
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
-        virtual void set_texture_rect(float fX1, float fY1, float fX3, float fY3, bool bNormalized = false);
+        void set_texture_rect(float fX1, float fY1, float fX3, float fY3, bool bNormalized = false);
 
         /// Changes this sprite's texture coordinates.
         /** \param lTextureCoords The new texture coordinates
@@ -214,7 +233,7 @@ namespace gui
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
-        virtual void set_texture_coords(const std::array<float,8>& lTextureCoords, bool bNormalized = false);
+        void set_texture_coords(const std::array<float,8>& lTextureCoords, bool bNormalized = false);
 
         /// Changes this sprite's texture coordinates.
         /** \param fX1 The sprites's top left horizontal position
@@ -230,7 +249,7 @@ namespace gui
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
-        virtual void set_texture_coords(float fX1, float fY1,
+        void set_texture_coords(float fX1, float fY1,
                               float fX2, float fY2,
                               float fX3, float fY3,
                               float fX4, float fY4,
@@ -242,46 +261,46 @@ namespace gui
         *   \note If you adjust texture coordinates, you texture won't be deformed.
         *         Else, it will be streched to fit the new dimensions.
         */
-        virtual void set_dimensions(float fWidth, float fHeight);
+        void set_dimensions(float fWidth, float fHeight);
 
         /// Returns this sprite's width.
         /** \return This sprite's width
         */
-        virtual float get_width() const;
+        float get_width() const;
 
         /// Returns this sprite's height.
         /** \return This sprite's height
         */
-        virtual float get_height() const;
+        float get_height() const;
 
         /// Returns this sprite's color.
         /** \return This sprite's color
         */
-        virtual color get_color() const;
+        color get_color() const;
 
         /// Returns this sprite's blend mode.
         /** \return This sprite's blend mode
         */
-        virtual blend_mode get_blend_mode() const;
+        blend_mode get_blend_mode() const;
 
         /// Returns this sprite's texture rectangle.
         /** \return This sprite's texture rectangle
         */
-        virtual std::array<float,4> get_texture_rect() const;
+        std::array<float,4> get_texture_rect() const;
 
         /// Returns this sprite's texture coordinates.
         /** \param bNormalized 'true' to get coordinates converted to texture space
         *   \return This sprite's texture coordinates
         */
-        virtual std::array<float,8> get_texture_coords(bool bNormalized = false) const;
+        std::array<float,8> get_texture_coords(bool bNormalized = false) const;
 
     private :
 
-        const manager* pManager_;
+        const manager* pManager_ = nullptr;
 
         mutable quad mQuad_;
         vector2f     mHotSpot_;
-        float        fWidth_, fHeight_;
+        float        fWidth_ = 0.0f, fHeight_ = 0.0f;
     };
 }
 

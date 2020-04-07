@@ -260,11 +260,11 @@ int main(int argc, char* argv[])
             else if (pInputMgr->key_is_pressed(input::key::K_R))
                 pManager->reload_ui();
 
-            if (!bFocus)
-            {
-                sf::sleep(sf::seconds(0.1f));
-                continue;
-            }
+            // if (!bFocus)
+            // {
+            //     sf::sleep(sf::seconds(0.1f));
+            //     continue;
+            // }
 
             // Update the gui
             pManager->update(fDelta);

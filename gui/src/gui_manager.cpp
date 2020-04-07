@@ -5,7 +5,6 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_font.hpp"
@@ -239,32 +238,20 @@ layered_region* manager::create_layered_region(const std::string& sClassName)
     return nullptr;
 }
 
-std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat) const
+sprite manager::create_sprite(utils::refptr<material> pMat) const
 {
-    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat);
-    if (pSprite)
-        return pSprite;
-    else
-        return std::unique_ptr<sprite>(new sprite(this, pMat));
+    return sprite(this, pMat);
 }
 
-std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+sprite manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
 {
-    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fWidth, fHeight);
-    if (pSprite)
-        return pSprite;
-    else
-        return std::unique_ptr<sprite>(new sprite(this, pMat, fWidth, fHeight));
+    return sprite(this, pMat, fWidth, fHeight);
 }
 
-std::unique_ptr<sprite> manager::create_sprite(utils::refptr<material> pMat,
+sprite manager::create_sprite(utils::refptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
-    std::unique_ptr<sprite> pSprite = pImpl_->create_sprite(pMat, fU, fV, fWidth, fHeight);
-    if (pSprite)
-        return pSprite;
-    else
-        return std::unique_ptr<sprite>(new sprite(this, pMat, fU, fV, fWidth, fHeight));
+    return sprite(this, pMat, fU, fV, fWidth, fHeight);
 }
 
 utils::refptr<material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
@@ -842,12 +829,9 @@ void manager::render_ui() const
 {
     if (bEnableCaching_)
     {
-        if (pSprite_)
-        {
-            begin();
-            pSprite_->render(0, 0);
-            end();
-        }
+        begin();
+        mSprite_.render(0, 0);
+        end();
     }
     else
     {
@@ -901,7 +885,7 @@ void manager::create_strata_render_target_(strata& mStrata)
             return;
         }
 
-        pSprite_ = create_sprite(create_material(pRenderTarget_));
+        mSprite_ = create_sprite(create_material(pRenderTarget_));
     }
 
     if (!mStrata.pRenderTarget)
@@ -920,7 +904,7 @@ void manager::create_strata_render_target_(strata& mStrata)
             return;
         }
 
-        mStrata.pSprite = create_sprite(create_material(mStrata.pRenderTarget));
+        mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
     }
 }
 
@@ -1101,8 +1085,7 @@ void manager::update(float fDelta)
 
             for (auto& mStrata : utils::range::value(lStrataList_))
             {
-                if (mStrata.pSprite)
-                    mStrata.pSprite->render(0, 0);
+                mStrata.mSprite.render(0, 0);
             }
 
             end();
@@ -1668,22 +1651,6 @@ renderer_impl::renderer_impl()
 
 renderer_impl::~renderer_impl()
 {
-}
-
-std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat) const
-{
-    return nullptr;
-}
-
-std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
-{
-    return nullptr;
-}
-
-std::unique_ptr<sprite> renderer_impl::create_sprite(utils::refptr<material> pMat,
-    float fU, float fV, float fWidth, float fHeight) const
-{
-    return nullptr;
 }
 
 void renderer_impl::set_parent(manager* pParent)
