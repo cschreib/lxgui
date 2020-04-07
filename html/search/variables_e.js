@@ -30,7 +30,6 @@ var searchData=
   ['pscrollchild_5f',['pScrollChild_',['../classgui_1_1scroll__frame.html#a9b00a0cfa5bf5c9004202d4d75de4faa',1,'gui::scroll_frame']]],
   ['pscrollrendertarget_5f',['pScrollRenderTarget_',['../classgui_1_1scroll__frame.html#a48d3e41ab34d2bf9cbda70d6b16f9ba4',1,'gui::scroll_frame']]],
   ['pscrolltexture_5f',['pScrollTexture_',['../classgui_1_1scroll__frame.html#a90a851dbd2f91e57b2b716ecb517ddc9',1,'gui::scroll_frame']]],
-  ['psprite',['pSprite',['../structgui_1_1strata.html#aa77963193ea30dc75afec129ae268d3c',1,'gui::strata']]],
   ['pthumbtexture_5f',['pThumbTexture_',['../classgui_1_1slider.html#a1b6fe1f06a606c84bc51c4d3106cb265',1,'gui::slider']]],
   ['ptitleregion_5f',['pTitleRegion_',['../classgui_1_1frame.html#a67c30ea7d96d2f3e452dd6c842dec37d',1,'gui::frame']]],
   ['ptoplevelparent_5f',['pTopLevelParent_',['../classgui_1_1frame.html#a673484a87185a21292480c145d968a51',1,'gui::frame']]]

@@ -22,12 +22,11 @@ var searchData=
   ['_7escroll_5fframe',['~scroll_frame',['../classgui_1_1scroll__frame.html#a242b845f493c28434f5bb420d8f66d30',1,'gui::scroll_frame']]],
   ['_7eslider',['~slider',['../classgui_1_1slider.html#aa61427df485f89e60c355dce2b738578',1,'gui::slider']]],
   ['_7esource_5fimpl',['~source_impl',['../classinput_1_1source__impl.html#ac811d485ffa8e3bf6766915746eb817b',1,'input::source_impl']]],
-  ['_7esprite',['~sprite',['../classgui_1_1sprite.html#a93d37353e61f9bfab8155a37602a4ce7',1,'gui::sprite']]],
   ['_7estate',['~state',['../classlua_1_1state.html#a7fa54bd579231ff91b175290930fe1a0',1,'lua::state']]],
   ['_7estatus_5fbar',['~status_bar',['../classgui_1_1status__bar.html#abd56d54d57c679893fcded3eb1d208a3',1,'gui::status_bar']]],
   ['_7estrata',['~strata',['../structgui_1_1strata.html#aeb18f27e97262ae68261807ccd280e17',1,'gui::strata']]],
   ['_7etext',['~text',['../classgui_1_1text.html#a4458e00b37c99de24518a663dfd9938e',1,'gui::text']]],
-  ['_7etexture',['~texture',['../classgui_1_1texture.html#a25582e370d35dfe76eb3bbc3ed109683',1,'gui::texture']]],
+  ['_7etexture',['~texture',['../classgui_1_1texture.html#a3540f59f6a320e6f2e4cc69c807145e4',1,'gui::texture']]],
   ['_7euiobject',['~uiobject',['../classgui_1_1uiobject.html#af2eda9c5954505db3f13a20d7da62feb',1,'gui::uiobject']]],
   ['_7ewptr',['~wptr',['../classutils_1_1wptr.html#a041c9ae97dfdb25168c2c82d576c575b',1,'utils::wptr']]]
 ];

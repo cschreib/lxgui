@@ -17,6 +17,7 @@ var searchData=
   ['mouse_5fbutton_5fnumber',['MOUSE_BUTTON_NUMBER',['../namespaceinput.html#a694d7ef497636b63493a84362e03fb87',1,'input']]],
   ['mpushedtextoffset_5f',['mPushedTextOffset_',['../classgui_1_1button.html#a20f2fe3adf478ca95b79a57d87039978',1,'gui::button']]],
   ['mquad',['mQuad',['../structgui_1_1text_1_1letter.html#ab63a00fdb635ec663b3527647b073a27',1,'gui::text::letter']]],
+  ['msprite',['mSprite',['../structgui_1_1strata.html#ad802e6b611df6bcb6242f7904ae4929c',1,'gui::strata']]],
   ['mstate_5f',['mState_',['../classgui_1_1button.html#a994118df32e13b1d3b613c836b3bce67',1,'gui::button']]],
   ['mstrata',['mStrata',['../structgui_1_1strata.html#a2ede58e1ae6d46cc03da5c89ce0401e0',1,'gui::strata']]],
   ['mstrata_5f',['mStrata_',['../classgui_1_1frame.html#ab42d57b68a93d57a1e31d08559d30e97',1,'gui::frame']]],

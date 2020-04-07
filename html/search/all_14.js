@@ -19,14 +19,14 @@ var searchData=
   ['var',['var',['../classlua_1_1var.html',1,'lua']]],
   ['var_5ftype',['var_type',['../namespacelua.html#a2bfd2e55fb888042941fecbefb73d510',1,'lua']]],
   ['vector2',['vector2',['../classgui_1_1vector2.html',1,'gui']]],
-  ['vector2',['vector2',['../classgui_1_1vector2.html#af2a804b55c7da15d0d5769f9ec4b2be4',1,'gui::vector2::vector2()'],['../classgui_1_1vector2.html#ae09359cc93dd2e8584b50371bb8d6ae7',1,'gui::vector2::vector2(T mX, T mY)']]],
+  ['vector2',['vector2',['../classgui_1_1vector2.html#a863c01313d11f249c702d077be1941f0',1,'gui::vector2::vector2()=default'],['../classgui_1_1vector2.html#a31d9d7495bff9881396cc0e3c075dd83',1,'gui::vector2::vector2(const vector2 &amp;)=default'],['../classgui_1_1vector2.html#a8ef04d86841dc89bb6483c00814430b7',1,'gui::vector2::vector2(vector2 &amp;&amp;)=default'],['../classgui_1_1vector2.html#ae09359cc93dd2e8584b50371bb8d6ae7',1,'gui::vector2::vector2(T mX, T mY)']]],
   ['vector2_3c_20float_20_3e',['vector2&lt; float &gt;',['../classgui_1_1vector2.html',1,'gui']]],
   ['vector2_3c_20int_20_3e',['vector2&lt; int &gt;',['../classgui_1_1vector2.html',1,'gui']]],
   ['vector2f',['vector2f',['../namespacegui.html#ab89a3516393e39aab7fa0e665244e020',1,'gui']]],
   ['vector2i',['vector2i',['../namespacegui.html#af08cddb2af876cb65aa75c5a8241e34f',1,'gui']]],
   ['vector2ui',['vector2ui',['../namespacegui.html#af92bdf0c57cfea1cdb6e1e230d46ac8e',1,'gui']]],
   ['vertex',['vertex',['../structgui_1_1vertex.html',1,'gui']]],
-  ['vertex',['vertex',['../structgui_1_1vertex.html#a7d5cb91f671cd6c777e1aea19cef1840',1,'gui::vertex::vertex()'],['../structgui_1_1vertex.html#a1b594b612787277e2ae7d16fa2f918cb',1,'gui::vertex::vertex(const vector2f &amp;mPos, const vector2f &amp;mUV, const color &amp;mCol)']]],
+  ['vertex',['vertex',['../structgui_1_1vertex.html#ae0215ed37aafb4dd97ebc8756564462e',1,'gui::vertex::vertex()=default'],['../structgui_1_1vertex.html#aacbf1baaf4fefc954a81f6cc9e171bab',1,'gui::vertex::vertex(const vertex &amp;)=default'],['../structgui_1_1vertex.html#ab0e5ed70e492c6942dbfdb65d3181e58',1,'gui::vertex::vertex(vertex &amp;&amp;)=default'],['../structgui_1_1vertex.html#a1b594b612787277e2ae7d16fa2f918cb',1,'gui::vertex::vertex(const vector2f &amp;mPos, const vector2f &amp;mUV, const color &amp;mCol)']]],
   ['vertical',['VERTICAL',['../classgui_1_1gradient.html#a39ca654b694af2eb2a3959c708855ac6a3e1b74251c07310c5f1b968145bf00dc',1,'gui::gradient::VERTICAL()'],['../classgui_1_1slider.html#a2768d5772e39e44bae608f34edb2b656a3e1b74251c07310c5f1b968145bf00dc',1,'gui::slider::VERTICAL()'],['../classgui_1_1status__bar.html#a880ba76f1b9df6466ab3b22f21125d60a3e1b74251c07310c5f1b968145bf00dc',1,'gui::status_bar::VERTICAL()']]],
   ['vertical_5falignment',['vertical_alignment',['../classgui_1_1text.html#afc04e0269e34fe88accfe408e06b40d4',1,'gui::text']]]
 ];

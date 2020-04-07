@@ -134,15 +134,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aba18d1b5bf176a96a2f0f07e7aa8b666"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1renderer__impl.html#aba18d1b5bf176a96a2f0f07e7aa8b666">render_quads</a> (const <a class="el" href="structgui_1_1quad.html">quad</a> &amp;mQuad, const std::vector&lt; std::array&lt; <a class="el" href="structgui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const =0</td></tr>
 <tr class="memdesc:aba18d1b5bf176a96a2f0f07e7aa8b666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="#aba18d1b5bf176a96a2f0f07e7aa8b666">More...</a><br /></td></tr>
 <tr class="separator:aba18d1b5bf176a96a2f0f07e7aa8b666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06bfd24376ca21d614b7c145b2054e97"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1renderer__impl.html#a06bfd24376ca21d614b7c145b2054e97">create_sprite</a> (<a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt; pMat) const </td></tr>
-<tr class="memdesc:a06bfd24376ca21d614b7c145b2054e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#a06bfd24376ca21d614b7c145b2054e97">More...</a><br /></td></tr>
-<tr class="separator:a06bfd24376ca21d614b7c145b2054e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf004195c681d82876a0f7ee4103f7ad"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1renderer__impl.html#abf004195c681d82876a0f7ee4103f7ad">create_sprite</a> (<a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt; pMat, float fWidth, float fHeight) const </td></tr>
-<tr class="memdesc:abf004195c681d82876a0f7ee4103f7ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#abf004195c681d82876a0f7ee4103f7ad">More...</a><br /></td></tr>
-<tr class="separator:abf004195c681d82876a0f7ee4103f7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30f0f075b0c3cd5a76a0e58e9c3fc84d"><td class="memItemLeft" align="right" valign="top">virtual std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1renderer__impl.html#a30f0f075b0c3cd5a76a0e58e9c3fc84d">create_sprite</a> (<a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt; pMat, float fU, float fV, float fWidth, float fHeight) const </td></tr>
-<tr class="memdesc:a30f0f075b0c3cd5a76a0e58e9c3fc84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#a30f0f075b0c3cd5a76a0e58e9c3fc84d">More...</a><br /></td></tr>
-<tr class="separator:a30f0f075b0c3cd5a76a0e58e9c3fc84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ec28bcd5c7328f452051ce09031609"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classgui_1_1renderer__impl.html#a70ec28bcd5c7328f452051ce09031609">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classgui_1_1material.html#a22f19bb5a4034f6a2434b7f31bf5a5d1">material::filter</a> mFilter=<a class="el" href="classgui_1_1material.html#a22f19bb5a4034f6a2434b7f31bf5a5d1ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const =0</td></tr>
 <tr class="memdesc:a70ec28bcd5c7328f452051ce09031609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="#a70ec28bcd5c7328f452051ce09031609">More...</a><br /></td></tr>
 <tr class="separator:a70ec28bcd5c7328f452051ce09031609"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,7 +161,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract type for implementation specific management. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00837">837</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00838">838</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ac9e5754bb2aaa7eb76451d02580647bb"></a>
 <div class="memitem">
@@ -187,7 +178,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01665">1665</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01648">1648</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -214,7 +205,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01669">1669</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01652">1652</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -460,170 +451,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a06bfd24376ca21d614b7c145b2054e97"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt; gui::renderer_impl::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If you don't override this function, the <a class="el" href="classgui_1_1manager.html" title="Manages the user interface. ">gui::manager</a> will create gui::sprites. You can redefine the function if you have created your own sprite class and want the gui to use it instead of the default one. </dd></dl>
-
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01673">1673</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abf004195c681d82876a0f7ee4103f7ad"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt; gui::renderer_impl::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-    <tr><td class="paramname">fWidth</td><td>The width of the sprite </td></tr>
-    <tr><td class="paramname">fHeight</td><td>The height of the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If the width and height you provide are smaller than the texture's ones, the texture will be cut on the right and bottom edges.<br />
- However, if they are larger than the texture's one, the texture will be tiled. </dd>
-<dd>
-If you don't override this function, the <a class="el" href="classgui_1_1manager.html" title="Manages the user interface. ">gui::manager</a> will create gui::sprites. You can redefine the function if you have created your own sprite class and want the gui to use it instead of the default one. </dd></dl>
-
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01678">1678</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a30f0f075b0c3cd5a76a0e58e9c3fc84d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classgui_1_1sprite.html">sprite</a> &gt; gui::renderer_impl::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classutils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classgui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fU</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fV</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-    <tr><td class="paramname">fU</td><td>The top left corner of the sprite in the material </td></tr>
-    <tr><td class="paramname">fV</td><td>The top left corner of the sprite in the material </td></tr>
-    <tr><td class="paramname">fWidth</td><td>The width of the sprite </td></tr>
-    <tr><td class="paramname">fHeight</td><td>The height of the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If the width and height you provide are smaller than the texture's ones, the texture will be cut on the right and bottom edges.<br />
- However, if they are larger than the texture's one, the texture will be tiled. </dd>
-<dd>
-If you don't override this function, the <a class="el" href="classgui_1_1manager.html" title="Manages the user interface. ">gui::manager</a> will create gui::sprites. You can redefine the function if you have created your own sprite class and want the gui to use it instead of the default one. </dd></dl>
-
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01683">1683</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
 <a class="anchor" id="aced080fce093210f267dac4743c9f211"></a>
 <div class="memitem">
 <div class="memproto">
@@ -694,7 +521,7 @@ If you don't override this function, the <a class="el" href="classgui_1_1manager
 
 <p>Reimplemented in <a class="el" href="classgui_1_1sfml_1_1renderer.html#a76786cd3d6168192abae8de093b7d103">gui::sfml::renderer</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01694">1694</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01661">1661</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -796,7 +623,7 @@ If you don't override this function, the <a class="el" href="classgui_1_1manager
 <p>Gives a pointer to the base class. </p>
 <dl class="section note"><dt>Note</dt><dd>This function is automatically called by <a class="el" href="classgui_1_1manager.html" title="Manages the user interface. ">gui::manager</a> on creation. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01689">1689</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01656">1656</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -819,7 +646,7 @@ If you don't override this function, the <a class="el" href="classgui_1_1manager
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00969">969</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00923">923</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -830,7 +657,7 @@ If you don't override this function, the <a class="el" href="classgui_1_1manager
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 7 2020 20:01:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 7 2020 20:48:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
