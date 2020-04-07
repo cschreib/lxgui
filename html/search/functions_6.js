@@ -165,6 +165,7 @@ var searchData=
   ['get_5fnormal_5ftexture',['get_normal_texture',['../classgui_1_1button.html#a30eb87895d925ba7e8f943b6f8a749f2',1,'gui::button']]],
   ['get_5fnum_5fchildren',['get_num_children',['../classgui_1_1frame.html#a29265f32feaf88e73b807414fe237b94',1,'gui::frame']]],
   ['get_5fnum_5fletters',['get_num_letters',['../classgui_1_1edit__box.html#a29c04e83c6d3b0d389b949cad346624a',1,'gui::edit_box']]],
+  ['get_5fnum_5flines',['get_num_lines',['../classgui_1_1text.html#afe2e4741c09db176d9ed85cf27eba75a',1,'gui::text']]],
   ['get_5fnum_5fparam',['get_num_param',['../classgui_1_1event.html#af1a4464cbd5f82bc25be8d18421556ab',1,'gui::event']]],
   ['get_5fnum_5fpoint',['get_num_point',['../classgui_1_1uiobject.html#a1d60a478e84f76eeaef32290ba85523a',1,'gui::uiobject']]],
   ['get_5fnum_5fregions',['get_num_regions',['../classgui_1_1frame.html#aacba9e097ad9244c2e43154b5e9bb6c1',1,'gui::frame']]],

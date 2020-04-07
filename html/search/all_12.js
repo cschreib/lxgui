@@ -6,7 +6,7 @@ var searchData=
   ['text',['text',['../classgui_1_1text.html#af416863d230314561c2d7b73a668a215',1,'gui::text']]],
   ['text',['text',['../classgui_1_1text.html',1,'gui']]],
   ['texture',['texture',['../classgui_1_1texture.html',1,'gui']]],
-  ['texture',['texture',['../classgui_1_1texture.html#a67494b90368b38c02e40627af8af0824',1,'gui::texture::texture()'],['../classgui_1_1material.html#a8582748e2d63e63be8b2f81e30ab4413a3f92f542bd9ec48f912b9350e22736ac',1,'gui::material::TEXTURE()']]],
+  ['texture',['TEXTURE',['../classgui_1_1material.html#a8582748e2d63e63be8b2f81e30ab4413a3f92f542bd9ec48f912b9350e22736ac',1,'gui::material::TEXTURE()'],['../classgui_1_1texture.html#a67494b90368b38c02e40627af8af0824',1,'gui::texture::texture()']]],
   ['thread',['THREAD',['../namespacelua.html#afc96aaee4335c08bd268a5fc222756e3a57f8b9e1bf05e9058d703c68ac2d53b0',1,'lua']]],
   ['ticks',['ticks',['../classgui_1_1periodic__timer.html#a6f123bc703eaefd0755159fe4534b47c',1,'gui::periodic_timer']]],
   ['to_5fhls',['to_hls',['../classgui_1_1color.html#aa2c4b77d8755545f134a0918374d477e',1,'gui::color']]],

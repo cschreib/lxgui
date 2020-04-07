@@ -75,7 +75,7 @@ var searchData=
   ['reverse_5fvalue',['reverse_value',['../namespaceutils_1_1range.html#a8cfce96166dc56e80983dc11edf79603',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html#aa364751eaded1ecc1b13d3c01429230e',1,'utils::range::reverse_value_range']]],
-  ['right',['RIGHT',['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
+  ['right',['right',['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
   ['rotate',['rotate',['../classgui_1_1vector2.html#a3e7234b12d176fd5e85a4edc5ab337cd',1,'gui::vector2']]],
   ['rotation',['rotation',['../classgui_1_1gl_1_1matrix4.html#ac8dc291cb62ae3517fb1c7f772368d67',1,'gui::gl::matrix4']]]
 ];
