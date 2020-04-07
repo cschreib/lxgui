@@ -103,7 +103,7 @@ ustring UTF8_to_unicode(const string& s)
     string::const_iterator iter;
     unsigned char cEscape = 0;
 
-    for (auto c : s)
+    for (unsigned char c : s)
     {
         if (c <= MAX_ANSI)
         {
