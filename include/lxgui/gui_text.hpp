@@ -173,6 +173,11 @@ namespace gui
         */
         float get_text_width() const;
 
+        /// Returns the number of text lines.
+        /** \return The number of text lines
+        */
+        uint get_num_lines() const;
+
         /// Returns the lenght of a provided string.
         /** \param sString The string to measure
         *   \return The lenght of the provided string

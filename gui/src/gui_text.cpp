@@ -154,6 +154,11 @@ float text::get_text_height() const
     return fHeight;
 }
 
+uint text::get_num_lines() const
+{
+    return lLineList_.size();
+}
+
 float text::get_string_width(const std::string& sString) const
 {
     return get_string_width(utils::UTF8_to_unicode(sString));
