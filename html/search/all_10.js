@@ -58,7 +58,7 @@ var searchData=
   ['renderer',['renderer',['../classgui_1_1gl_1_1renderer.html',1,'gui::gl']]],
   ['renderer',['renderer',['../classgui_1_1sfml_1_1renderer.html',1,'gui::sfml']]],
   ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html',1,'gui']]],
-  ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html#ac9e5754bb2aaa7eb76451d02580647bb',1,'gui::renderer_impl']]],
+  ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html#aa1699b4dc0a3ff1a35bd7a4b7bbf6958',1,'gui::renderer_impl']]],
   ['repeat',['REPEAT',['../classgui_1_1material.html#aa3331320bc3444c33ee53516c871b9a4a5be68175be14dfaa080165456c2e9555',1,'gui::material']]],
   ['request_5ffocus',['request_focus',['../classgui_1_1manager.html#aaedbccc3dcc4e3ab839f645ed0bfc36b',1,'gui::manager']]],
   ['reset',['RESET',['../classgui_1_1text.html#aa89f921526fd059d3f281cd1c6cf0128ab5859d8721cfdc0312b2838b9c985bc1',1,'gui::text']]],
@@ -75,7 +75,7 @@ var searchData=
   ['reverse_5fvalue',['reverse_value',['../namespaceutils_1_1range.html#a8cfce96166dc56e80983dc11edf79603',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html',1,'utils::range']]],
   ['reverse_5fvalue_5frange',['reverse_value_range',['../structutils_1_1range_1_1reverse__value__range.html#aa364751eaded1ecc1b13d3c01429230e',1,'utils::range::reverse_value_range']]],
-  ['right',['right',['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
+  ['right',['RIGHT',['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293ca21507b40c80068eda19865706fdc2403',1,'gui::text::RIGHT()'],['../classgui_1_1quad2.html#aaac790bdc651d285649d0d4f667719b9',1,'gui::quad2::right()'],['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cda21507b40c80068eda19865706fdc2403',1,'gui::RIGHT()'],['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24a21507b40c80068eda19865706fdc2403',1,'input::RIGHT()']]],
   ['rotate',['rotate',['../classgui_1_1vector2.html#a3e7234b12d176fd5e85a4edc5ab337cd',1,'gui::vector2']]],
   ['rotation',['rotation',['../classgui_1_1gl_1_1matrix4.html#ac8dc291cb62ae3517fb1c7f772368d67',1,'gui::gl::matrix4']]]
 ];

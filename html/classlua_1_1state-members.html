@@ -126,6 +126,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#ac67cedd7ce3df36c26129d027ce2211c">is_serializable</a>(int iIndex=-1)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#afad144a8af05bb1e87612e84c88eb408">new_table</a>()</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a7e62df6dc15432a16ae5e8293fb458c4">next</a>(int iIndex=-2)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#ac74aa4734f863ce21d41a372226291d3">operator=</a>(const state &amp;)=delete</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a5612e725f4881eca5b2add5d4cfd4c63">operator=</a>(state &amp;&amp;)=delete</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a29e1674d93cdff5dfa43c03354cdb37e">pop</a>(uint uiNumber=1)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#ac2b65babbe29d2c420ab7faaa9e273c2">print_error</a>(const std::string &amp;sError)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#aca62ca6ffdfcec89fb35ce4dad36c087">push</a>(const var &amp;vValue)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
@@ -133,7 +135,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a7df23fdefb2b34bdce7877d27969b0e5">push_global</a>(const std::string &amp;sName)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a4bec02eb0b53c6a2e5d053931727f125">push_new</a>()</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a5f46b154348f8e418261b285785d4dd4">push_nil</a>(uint uiNumber=1)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classlua_1_1state.html#ad8d99f0c4ea27508f7e9ebad483f589d">push_number</a>(const double &amp;dValue)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a173411f7aa3c56fcbc817a17d71477f2">push_number</a>(double dValue)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a1a128a45dbb5435245ea86ecde59d1f7">push_string</a>(const std::string &amp;sValue)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#afed5324e021b61d7fd4cfa999b920104">push_userdata</a>(T *pData)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a46ccd42cbf22522e05062bbe7f5e8b55">push_value</a>(int iIndex)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
@@ -157,12 +159,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#ad91489b8cb7fa0cb008126741b00425d">set_print_error_function</a>(print_function pFunc)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a452c7241dfc849dc21aaf00c1673a73a">set_top</a>(uint uiSize)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#aa19192e30e08c5fcf0e98b068a45b4ce">state</a>()</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classlua_1_1state.html#aae3628b84e3131e58e90fda8bb7d8341">state</a>(const state &amp;)=delete</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#ae1c356e2f30e6bc3fc742d57d8e2f5b5">state</a>(state &amp;&amp;)=delete</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlua_1_1state.html#a7735311bb5b077af96260e525cfcaa03">table_to_string</a>(const std::string &amp;sTable)</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlua_1_1state.html#a7fa54bd579231ff91b175290930fe1a0">~state</a>()</td><td class="entry"><a class="el" href="classlua_1_1state.html">lua::state</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 7 2020 20:48:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 16 2020 20:12:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

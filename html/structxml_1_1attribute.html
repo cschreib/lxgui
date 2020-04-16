@@ -103,8 +103,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1c27b7cca90a529032fad7166e90207f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a1c27b7cca90a529032fad7166e90207f">attribute</a> ()</td></tr>
-<tr class="separator:a1c27b7cca90a529032fad7166e90207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94206966951948fba5114916590e3ded"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a94206966951948fba5114916590e3ded">attribute</a> ()=default</td></tr>
+<tr class="separator:a94206966951948fba5114916590e3ded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a948cefbb4a306327a8de6182eae8467c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a948cefbb4a306327a8de6182eae8467c">attribute</a> (const std::string &amp;name, bool optional=false, const std::string &amp;def=&quot;&quot;, <a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42">attribute_type</a> type=<a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42a63b588d5559f64f89a416e656880b949">attribute_type::STRING</a>)</td></tr>
 <tr class="separator:a948cefbb4a306327a8de6182eae8467c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -116,11 +116,11 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a876c8d4c3bf4282e38fa488137529d87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2a58a0268e85105d92a883a26cedd33"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#ae2a58a0268e85105d92a883a26cedd33">sDefault</a></td></tr>
 <tr class="separator:ae2a58a0268e85105d92a883a26cedd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d3278f0ce4bcc9d0fc87de91f5c4ce0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a2d3278f0ce4bcc9d0fc87de91f5c4ce0">bOptional</a></td></tr>
+<tr class="memitem:a2d3278f0ce4bcc9d0fc87de91f5c4ce0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a2d3278f0ce4bcc9d0fc87de91f5c4ce0">bOptional</a> = false</td></tr>
 <tr class="separator:a2d3278f0ce4bcc9d0fc87de91f5c4ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a936b576bbdd259283616f15ca13bd224"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a936b576bbdd259283616f15ca13bd224">bFound</a></td></tr>
+<tr class="memitem:a936b576bbdd259283616f15ca13bd224"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a936b576bbdd259283616f15ca13bd224">bFound</a> = false</td></tr>
 <tr class="separator:a936b576bbdd259283616f15ca13bd224"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d855a2be9875c02909c21ed39f0dcc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42">attribute_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a4d855a2be9875c02909c21ed39f0dcc1">mType</a></td></tr>
+<tr class="memitem:a4d855a2be9875c02909c21ed39f0dcc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42">attribute_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structxml_1_1attribute.html#a4d855a2be9875c02909c21ed39f0dcc1">mType</a> = <a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42a63b588d5559f64f89a416e656880b949">attribute_type::STRING</a></td></tr>
 <tr class="separator:a4d855a2be9875c02909c21ed39f0dcc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -128,9 +128,12 @@ Public Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="xml__block_8hpp_source.html#l00022">22</a> of file <a class="el" href="xml__block_8hpp_source.html">xml_block.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a1c27b7cca90a529032fad7166e90207f"></a>
+<a class="anchor" id="a94206966951948fba5114916590e3ded"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">xml::attribute::attribute </td>
@@ -139,6 +142,11 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -195,7 +203,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool xml::attribute::bFound</td>
+          <td class="memname">bool xml::attribute::bFound = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -209,7 +217,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool xml::attribute::bOptional</td>
+          <td class="memname">bool xml::attribute::bOptional = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -223,7 +231,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42">attribute_type</a> xml::attribute::mType</td>
+          <td class="memname"><a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42">attribute_type</a> xml::attribute::mType = <a class="el" href="namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42a63b588d5559f64f89a416e656880b949">attribute_type::STRING</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -280,7 +288,7 @@ Public Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 7 2020 20:48:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 16 2020 20:12:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

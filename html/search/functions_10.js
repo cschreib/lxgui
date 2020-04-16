@@ -37,7 +37,7 @@ var searchData=
   ['render_5ftarget',['render_target',['../classgui_1_1render__target.html#ad90d558674512ba1d608598ccddbb527',1,'gui::render_target::render_target()'],['../classgui_1_1gl_1_1render__target.html#ac86693a4d614e7e399bd095d80833abb',1,'gui::gl::render_target::render_target()'],['../classgui_1_1sfml_1_1render__target.html#af594186960d57c276307e05880f22235',1,'gui::sfml::render_target::render_target()']]],
   ['render_5fui',['render_ui',['../classgui_1_1manager.html#a7ce1ecd9ee65a623c5a22a028c261b00',1,'gui::manager']]],
   ['renderer',['renderer',['../classgui_1_1gl_1_1renderer.html#a52cfaf6cca4367df24d3ea577c960d2e',1,'gui::gl::renderer::renderer()'],['../classgui_1_1sfml_1_1renderer.html#a24c263d35904e0772dd60d1046efc940',1,'gui::sfml::renderer::renderer()']]],
-  ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html#ac9e5754bb2aaa7eb76451d02580647bb',1,'gui::renderer_impl']]],
+  ['renderer_5fimpl',['renderer_impl',['../classgui_1_1renderer__impl.html#aa1699b4dc0a3ff1a35bd7a4b7bbf6958',1,'gui::renderer_impl']]],
   ['request_5ffocus',['request_focus',['../classgui_1_1manager.html#aaedbccc3dcc4e3ab839f645ed0bfc36b',1,'gui::manager']]],
   ['reset_5fwindow_5fresized',['reset_window_resized',['../classinput_1_1source__impl.html#a01148a9a3cf73297a60b825dc3bef222',1,'input::source_impl']]],
   ['reverse',['reverse',['../namespaceutils_1_1range.html#a2bd577a69b632ca9b51646130c0f567a',1,'utils::range']]],
