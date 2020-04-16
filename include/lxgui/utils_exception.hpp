@@ -14,7 +14,7 @@ public :
     /// Default exception.
     /** \note Reports : "Undefined exception."
     */
-    exception();
+    exception() = default;
 
     /// Copy constructor
     exception(const exception& mOther) = default;
@@ -47,7 +47,7 @@ public :
 
 protected :
 
-    std::string sMessage_;
+    std::string sMessage_ = "Undefined exception.";
 };
 }
 

@@ -13,11 +13,6 @@ namespace gui
     public :
 
         vector2() = default;
-        vector2(const vector2&) = default;
-        vector2(vector2&&) = default;
-
-        vector2& operator=(const vector2&) = default;
-        vector2& operator=(vector2&&) = default;
 
         vector2(T mX, T mY) : x(mX), y(mY)
         {

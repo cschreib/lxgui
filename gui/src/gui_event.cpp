@@ -2,10 +2,6 @@
 
 namespace gui
 {
-event::event() : bOncePerFrame_(false)
-{
-}
-
 event::event(const std::string& sName, bool bOncePerFrame) :
     sName_(sName), bOncePerFrame_(bOncePerFrame)
 {

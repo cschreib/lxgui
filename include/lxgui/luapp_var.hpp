@@ -27,7 +27,7 @@ class var
 public :
 
     /// Default constructor.
-    var();
+    var() = default;
 
     /// Value assignment constructor.
     /** \param mValue The value to assign
@@ -40,7 +40,14 @@ public :
     */
     var(const var& mVar);
 
+    /// Move constructor.
+    /** \param mVar The var to move from
+    */
+    var(var&& mVar) = default;
+
     var& operator = (const var& mVar);
+
+    var& operator = (var&& mVar) = default;
 
     bool operator == (const var& mVar) const;
 

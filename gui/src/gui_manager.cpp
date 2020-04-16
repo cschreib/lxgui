@@ -1645,28 +1645,12 @@ const std::string& manager::get_locale() const
     return sLocale_;
 }
 
-renderer_impl::renderer_impl()
-{
-}
-
-renderer_impl::~renderer_impl()
-{
-}
-
 void renderer_impl::set_parent(manager* pParent)
 {
     pParent_ = pParent;
 }
 
 void renderer_impl::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
-{
-}
-
-strata::strata() : mStrata(frame_strata::PARENT), bRedraw(true), uiRedrawCount(0u)
-{
-}
-
-strata::~strata()
 {
 }
 }

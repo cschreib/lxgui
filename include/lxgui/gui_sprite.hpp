@@ -75,18 +75,6 @@ namespace gui
         /// Default constructor.
         sprite() = default;
 
-        /// Copy constructor.
-        sprite(const sprite&) = default;
-
-        /// Move constructor.
-        sprite(sprite&&) = default;
-
-        /// Copy assignment.
-        sprite& operator=(const sprite&) = default;
-
-        /// Move assignment.
-        sprite& operator=(sprite&&) = default;
-
         /// Constructor.
         sprite(const manager* pManager, utils::refptr<material> pMat);
 

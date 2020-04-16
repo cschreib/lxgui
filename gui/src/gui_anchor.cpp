@@ -9,18 +9,8 @@
 
 namespace gui
 {
-anchor::anchor() :
-    pObj_(nullptr), mParentPoint_(anchor_point::TOPLEFT), mPoint_(anchor_point::TOPLEFT),
-    mType_(anchor_type::ABS), iAbsOffX_(0), iAbsOffY_(0), fRelOffX_(0.0f), fRelOffY_(0.0f),
-    iParentWidth_(0u), iParentHeight_(0u), pParent_(nullptr), bParentUpdated_(false)
-{
-}
-
 anchor::anchor(uiobject* pObj, anchor_point mPoint, const std::string& sParent, anchor_point mParentPoint) :
-    pObj_(pObj), mParentPoint_(mParentPoint), mPoint_(mPoint), mType_(anchor_type::ABS),
-    iAbsOffX_(0), iAbsOffY_(0), fRelOffX_(0.0f), fRelOffY_(0.0f),
-    iParentWidth_(0u), iParentHeight_(0u), pParent_(nullptr), sParent_(sParent),
-    bParentUpdated_(false)
+    pObj_(pObj), mParentPoint_(mParentPoint), mPoint_(mPoint), sParent_(sParent)
 {
 }
 

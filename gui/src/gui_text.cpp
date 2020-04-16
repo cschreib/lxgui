@@ -32,10 +32,6 @@ text::text(manager* pManager, const std::string& sFileName, float fSize) :
     bReady_ = true;
 }
 
-text::~text()
-{
-}
-
 const std::string& text::get_font_name() const
 {
     return sFileName_;

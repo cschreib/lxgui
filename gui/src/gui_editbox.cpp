@@ -472,7 +472,7 @@ uint edit_box::get_num_letters() const
     return uiNumLetters_;
 }
 
-void edit_box::set_blink_speed(const double& dBlinkSpeed)
+void edit_box::set_blink_speed(double dBlinkSpeed)
 {
     if (dBlinkSpeed_ != dBlinkSpeed)
     {
@@ -481,7 +481,7 @@ void edit_box::set_blink_speed(const double& dBlinkSpeed)
     }
 }
 
-const double& edit_box::get_blink_speed() const
+double edit_box::get_blink_speed() const
 {
     return dBlinkSpeed_;
 }
@@ -1224,7 +1224,7 @@ void edit_box::process_key_(key mKey)
     }
 }
 
-periodic_timer::periodic_timer(const double& dDuration, start_type mType, bool bTickFirst) :
+periodic_timer::periodic_timer(double dDuration, start_type mType, bool bTickFirst) :
     dElapsed_(bTickFirst ? dDuration : 0.0), dDuration_(dDuration), bPaused_(true),
     bFirstTick_(true), mType_(mType)
 {
@@ -1232,12 +1232,12 @@ periodic_timer::periodic_timer(const double& dDuration, start_type mType, bool b
         start();
 }
 
-const double& periodic_timer::get_elapsed()
+double periodic_timer::get_elapsed()
 {
     return dElapsed_;
 }
 
-const double& periodic_timer::get_period() const
+double periodic_timer::get_period() const
 {
     return dDuration_;
 }

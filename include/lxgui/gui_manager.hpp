@@ -64,14 +64,12 @@ namespace gui
     /// A piece of the user interface
     struct addon
     {
-        addon() : bEnabled(true) {}
-
         std::string sName;
         std::string sVersion;
         std::string sUIVersion;
         std::string sAuthor;
 
-        bool bEnabled;
+        bool bEnabled = true;
 
         std::string sMainDirectory;
         std::string sDirectory;
@@ -102,15 +100,12 @@ namespace gui
     /// Contains level
     struct strata
     {
-        strata();
-        ~strata();
-
-        frame_strata                 mStrata;
+        frame_strata                 mStrata = frame_strata::PARENT;
         std::map<int, level>         lLevelList;
-        mutable bool                 bRedraw;
+        mutable bool                 bRedraw = true;
         utils::refptr<render_target> pRenderTarget;
         sprite                       mSprite;
-        mutable uint                 uiRedrawCount;
+        mutable uint                 uiRedrawCount = 0u;
     };
 
     /// Manages the user interface
@@ -840,10 +835,10 @@ namespace gui
     public :
 
         /// Constructor.
-        renderer_impl();
+        renderer_impl() = default;
 
         /// Destructor.
-        virtual ~renderer_impl();
+        virtual ~renderer_impl() = default;
 
         /// Gives a pointer to the base class.
         /** \note This function is automatically called by gui::manager
@@ -920,7 +915,7 @@ namespace gui
 
     protected :
 
-        manager* pParent_;
+        manager* pParent_ = nullptr;
     };
 }
 

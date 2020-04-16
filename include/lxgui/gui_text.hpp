@@ -77,9 +77,6 @@ namespace gui
         */
         text(manager* pManager, const std::string& sFileName, float fSize);
 
-        /// Destructor.
-        ~text();
-
         /// Returns the path to the .ttf file.
         /** \return The path to the .ttf file
         */

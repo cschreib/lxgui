@@ -72,10 +72,6 @@ document::document(const std::string& sFileName, const std::string& sDefFileName
     }
 }
 
-document::~document()
-{
-}
-
 void document::set_file_name(const std::string& sFileName)
 {
     if (utils::file_exists(sFileName))

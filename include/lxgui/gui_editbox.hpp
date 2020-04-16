@@ -39,17 +39,17 @@ namespace gui
         *   \param mType     See TimerType
         *   \param bTicks    The timer ticks immediately
         */
-        periodic_timer(const double& dDuration, start_type mType, bool bTicks);
+        periodic_timer(double dDuration, start_type mType, bool bTicks);
 
         /// Returns the time elapsed since the last tick.
         /** \return The time elapsed since last tick
         */
-        const double& get_elapsed();
+        double get_elapsed();
 
         /// Returns the period of the periodic_timer.
         /** \return The period of the periodic_timer
         */
-        const double& get_period() const;
+        double get_period() const;
 
         /// Cheks if this periodic_timer is paused.
         /** \return 'true' if this periodic_timer is paused
@@ -178,12 +178,12 @@ namespace gui
         /// Sets the carret's blink speed.
         /** \param dBlinkSpeed The number of seconds to wait between each blink
         */
-        void set_blink_speed(const double& dBlinkSpeed);
+        void set_blink_speed(double dBlinkSpeed);
 
         /// Returns the carret's blink speed.
         /** \return the carret's blink speed (time in seconds between each blink)
         */
-        const double& get_blink_speed() const;
+        double get_blink_speed() const;
 
         /// Makes this edit_box allow numeric characters only.
         /** \param bNumericOnly 'true' to only allow numeric characters

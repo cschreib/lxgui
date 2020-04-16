@@ -11,11 +11,6 @@ namespace gui
     public :
 
         quad2() = default;
-        quad2(const quad2&) = default;
-        quad2(quad2&&) = default;
-
-        quad2& operator=(const quad2&) = default;
-        quad2& operator=(quad2&&) = default;
 
         quad2(T mLeft, T mRight, T mTop, T mBottom) : left(mLeft), right(mRight), top(mTop), bottom(mBottom)
         {

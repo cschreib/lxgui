@@ -14,10 +14,6 @@ const color color::GREEN(0.0f, 1.0f, 0.0f);
 const color color::BLUE (0.0f, 0.0f, 1.0f);
 const color color::GREY (0.5f, 0.5f, 0.5f);
 
-color::color()
-{
-}
-
 color::color(chanel nr, chanel ng, chanel nb, chanel na) :
     r(nr), g(ng), b(nb), a(na)
 {

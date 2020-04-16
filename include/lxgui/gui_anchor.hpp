@@ -41,7 +41,7 @@ namespace gui
     public :
 
         /// Default constructor.
-        anchor();
+        anchor() = default;
 
         /// Constructor.
         anchor(uiobject* pObj, anchor_point mPoint, const std::string& pParent, anchor_point mParentPoint);
@@ -179,19 +179,20 @@ namespace gui
 
     private :
 
-        const uiobject* pObj_;
-        anchor_point    mParentPoint_;
-        anchor_point    mPoint_;
-        anchor_type     mType_;
+        const uiobject* pObj_ = nullptr;
 
-        int   iAbsOffX_, iAbsOffY_;
-        float fRelOffX_, fRelOffY_;
+        anchor_point    mParentPoint_ = anchor_point::TOPLEFT;
+        anchor_point    mPoint_       = anchor_point::TOPLEFT;
+        anchor_type     mType_        = anchor_type::ABS;
 
-        mutable int iParentWidth_, iParentHeight_;
+        int   iAbsOffX_ = 0,    iAbsOffY_ = 0;
+        float fRelOffX_ = 0.0f, fRelOffY_ = 0.0f;
 
-        mutable const uiobject* pParent_;
+        mutable int iParentWidth_ = 0u, iParentHeight_ = 0u;
+
+        mutable const uiobject* pParent_ = nullptr;
         mutable std::string     sParent_;
-        mutable bool            bParentUpdated_;
+        mutable bool            bParentUpdated_ = false;
     };
 }
 

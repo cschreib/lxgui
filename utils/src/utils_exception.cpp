@@ -2,10 +2,6 @@
 
 namespace utils
 {
-exception::exception() : sMessage_("Undefined exception.")
-{
-}
-
 exception::exception(const std::string& sMessage) : sMessage_(sMessage)
 {
 }
