@@ -16,10 +16,6 @@ matrix4 build_identity()
 
 const matrix4 matrix4::IDENTITY = build_identity();
 
-matrix4::matrix4()
-{
-}
-
 matrix4::matrix4(std::initializer_list<T> mList)
 {
     int i = 0;
@@ -118,14 +114,12 @@ matrix4 matrix4::transformation(const vector2f& dx, const vector2f& scale, float
 
 matrix4 matrix4::transpose(const matrix4& m)
 {
-    float tmp[16] = {
+    return {
         m(0,0), m(1,0), m(2,0), m(3,0),
         m(0,1), m(1,1), m(2,1), m(3,1),
         m(0,2), m(1,2), m(2,2), m(3,2),
         m(0,3), m(1,3), m(2,3), m(3,3)
     };
-
-    return tmp;
 }
 
 matrix4 matrix4::invert(const matrix4& m)
@@ -183,14 +177,12 @@ matrix4 matrix4::invert(const matrix4& m)
     T d23 = -(v4*m00 - v2*m01 + v0*m03)*invDet;
     T d33 =  (v3*m00 - v1*m01 + v0*m02)*invDet;
 
-    float tmp[16] = {
+    return {
         d00, d01, d02, d03,
         d10, d11, d12, d13,
         d20, d21, d22, d23,
         d30, d31, d32, d33
     };
-
-    return tmp;
 }
 
 matrix4 matrix4::operator + (const matrix4& m)

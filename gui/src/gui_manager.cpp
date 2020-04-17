@@ -543,7 +543,6 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
 void manager::load_addon_files_(addon* pAddOn)
 {
     pCurrentAddOn_ = pAddOn;
-    std::vector<std::string>::iterator iterFile;
     for (const auto& sFile : pAddOn->lFileList)
     {
         if (sFile.find(".lua") != sFile.npos)

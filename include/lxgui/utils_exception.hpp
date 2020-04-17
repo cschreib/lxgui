@@ -32,9 +32,6 @@ public :
     */
     exception(const std::string& sClassName, const std::string& sMessage);
 
-    /// Destructor.
-    ~exception() noexcept override = default;
-
     /// Returns the message of the exception.
     /** \return The message of the exception
     */

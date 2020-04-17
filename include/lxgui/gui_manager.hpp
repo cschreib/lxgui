@@ -647,7 +647,7 @@ namespace gui
         /// Called whenever an Event occurs.
         /** \param mEvent The Event which has occured
         */
-        void on_event(const event& mEvent);
+        void on_event(const event& mEvent) override;
 
         /// Tells the underlying graphics engine to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)

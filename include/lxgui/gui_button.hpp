@@ -36,38 +36,38 @@ namespace gui
         explicit button(manager* pManager);
 
         /// Destructor.
-        virtual ~button();
+        ~button();
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Creates the associated Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Returns 'true' if this Button can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+        bool can_use_script(const std::string& sScriptName) const override;
 
         /// Calls a script.
         /** \param sScriptName The name of the script
         *   \param pEvent      Stores scripts arguments
         */
-        virtual void on(const std::string& sScriptName, event* pEvent = nullptr);
+        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
         */
-        virtual void on_event(const event& mEvent);
+        void on_event(const event& mEvent) override;
 
         /// Copies an uiobject's parameters into this Button (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Sets this button's text.
         /** \param sText The new text
@@ -220,7 +220,7 @@ namespace gui
         /// Parses data from an xml::block.
         /** \param pBlock The button's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);

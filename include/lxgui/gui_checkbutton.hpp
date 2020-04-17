@@ -18,18 +18,18 @@ namespace gui
         explicit check_button(manager* pManager);
 
         /// Destructor.
-        virtual ~check_button();
+        ~check_button();
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Copies an uiobject's parameters into this CheckButton (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Checks this button.
         virtual void check();
@@ -40,16 +40,16 @@ namespace gui
         /// Disables this CheckButton.
         /** \note A disabled button doesn't receive any input.
         */
-        virtual void disable();
+        void disable() override;
 
         /// Enables this CheckButton.
-        virtual void enable();
+        void enable() override;
 
         /// Releases this CheckButton.
         /** \note This function only has a visual impact :
         *         the OnClick() handler is not called.
         */
-        virtual void release();
+        void release() override;
 
         /// Checks if this CheckButton is checked :)
         /** \return ... well you get my point.
@@ -77,12 +77,12 @@ namespace gui
         void set_disabled_checked_texture(texture* pTexture);
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The Checkbutton's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);

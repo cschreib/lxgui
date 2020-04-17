@@ -34,19 +34,19 @@ namespace gui
         explicit frame(manager* pManager);
 
         /// Destructor.
-        virtual ~frame();
+        ~frame();
 
         /// Renders this widget on the current render target.
-        virtual void render();
+        void render() override;
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Returns 'true' if this frame can use a script.
         /** \param sScriptName The name of the script
@@ -60,7 +60,7 @@ namespace gui
         /// Copies an uiobject's parameters into this frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Creates a new title region for this frame.
         /** \note You can get it by calling get_title_region().
@@ -395,7 +395,7 @@ namespace gui
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
         */
-        virtual void on_event(const event& mEvent);
+        void on_event(const event& mEvent) override;
 
         /// Tells this frame to react to every event in the game.
         void register_all_events();
@@ -403,7 +403,7 @@ namespace gui
         /// Tells this frame to react to a certain event.
         /** \param sEventName The name of the event
         */
-        void register_event(const std::string& sEventName);
+        void register_event(const std::string& sEventName) override;
 
         /// Tells this frame to react to mouse drag.
         /** \param lButtonList The list of mouse button allowed
@@ -518,7 +518,7 @@ namespace gui
         *   \note Default is nullptr.<br>
         *         Overrides uiobject's implementation.
         */
-        void set_parent(uiobject* pParent);
+        void set_parent(uiobject* pParent) override;
 
         /// Sets if this frame can be resized by the user.
         /** \param bIsResizable 'true' to allow the user to resize this frame
@@ -564,13 +564,13 @@ namespace gui
         /** \note Its parent must be shown for it to appear on
         *         the screen.
         */
-        virtual void show();
+        void show() override;
 
         /// hides this widget.
         /** \note All its children won't be visible on the screen
         *         anymore, even if they are still marked as shown.
         */
-        virtual void hide();
+        void hide() override;
 
         /// shows/hides this widget.
         /** \param bIsShown 'true' if you want to show this widget
@@ -579,7 +579,7 @@ namespace gui
         *         trigger any event ("OnShow" or "OnHide"). It should
         *         only be used to set the initial state of the widget.
         */
-        virtual void set_shown(bool bIsShown);
+        void set_shown(bool bIsShown) override;
 
         /// Flags this object as "manually rendered".
         /** \param bManuallyRendered 'true' to flag it as manually rendered
@@ -591,23 +591,23 @@ namespace gui
         *   \note This function propagates the manually rendered flag to
         *         this frame's children.
         */
-        virtual void set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer = nullptr);
+        void set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer = nullptr) override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param uiAbsWidth  The new width
         *   \param uiAbsHeight The new height
         */
-        virtual void set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight);
+        void set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight) override;
 
         /// Changes this widget's absolute width (in pixels).
         /** \param uiAbsWidth The new width
         */
-        virtual void set_abs_width(uint uiAbsWidth);
+        void set_abs_width(uint uiAbsWidth) override;
 
         /// Changes this widget's absolute height (in pixels).
         /** \param uiAbsHeight The new height
         */
-        virtual void set_abs_height(uint uiAbsHeight);
+        void set_abs_height(uint uiAbsHeight) override;
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
@@ -629,12 +629,12 @@ namespace gui
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
-        virtual void notify_renderer_need_redraw() const;
+        void notify_renderer_need_redraw() const override;
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
         */
-        virtual void notify_loaded();
+        void notify_loaded() override;
 
         /// Tells this frame to rebuilt the layer list.
         /** \note Automatically called by add_region(), remove_region(), and
@@ -648,7 +648,7 @@ namespace gui
         /// Tells the frame not to react to a certain event.
         /** \param sEventName The name of the event
         */
-        void unregister_event(const std::string& sEventName);
+        void unregister_event(const std::string& sEventName) override;
 
         /// Sets the addon this frame belongs to.
         /** \param pAddOn The addon this frame belongs to
@@ -667,22 +667,22 @@ namespace gui
         *   \note Also clears children objects (see frame::clear_links()).
         *   \note Must be called before deleting the widget, except when closing the whole UI.
         */
-        virtual std::vector<uiobject*> clear_links();
+        std::vector<uiobject*> clear_links() override;
 
         /// Creates the associated Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The frame's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         static constexpr const char* CLASS_NAME = "Frame";
 
     protected :
 
         // XML parsing
-        virtual void parse_attributes_(xml::block* pBlock);
+        void parse_attributes_(xml::block* pBlock) override;
         virtual void parse_resize_bounds_block_(xml::block* pBlock);
         virtual void parse_title_region_block_(xml::block* pBlock);
         virtual void parse_backdrop_block_(xml::block* pBlock);
@@ -699,7 +699,7 @@ namespace gui
 
         void add_level_(int iAmount);
 
-        virtual void update_borders_() const;
+        void update_borders_() const override;
 
         struct script_info
         {

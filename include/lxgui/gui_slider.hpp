@@ -28,24 +28,24 @@ namespace gui
         explicit slider(manager* pManager);
 
         /// Destructor.
-        virtual ~slider();
+        ~slider();
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Returns 'true' if this slider can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+        bool can_use_script(const std::string& sScriptName) const override;
 
         /// Copies an uiobject's parameters into this slider (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Sets the texture to use for the thumb.
         /** \param pTexture The new texture
@@ -147,33 +147,33 @@ namespace gui
         *   \note The slider version of this function also checks if the
         *         mouse is over the thumb texture.
         */
-        virtual bool is_in_frame(int iX, int iY) const;
+        bool is_in_frame(int iX, int iY) const override;
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
         *   \param iX            The horizontal mouse coordinate
         *   \param iY            The vertical mouse coordinate
         */
-        virtual void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY);
+        void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
         */
-        virtual void on_event(const event& mEvent);
+        void on_event(const event& mEvent) override;
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The slider's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Tells this widget to update its borders.
-        virtual void fire_update_borders() const;
+        void fire_update_borders() const override;
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);

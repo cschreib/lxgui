@@ -155,7 +155,6 @@ void document::read_opening_tag_(std::string& sTagContent)
             if (uiStart != sTagContent.npos && uiEnd != sTagContent.npos && (uiStart < uiEnd) && (uiEnd-uiStart > 1))
             {
                 std::vector<std::string> lIDList = utils::cut(sTagContent.substr(uiStart+1, uiEnd-(uiStart+1)), ",");
-                std::vector<std::string>::iterator iterID;
                 for (auto& sID : lIDList)
                 {
                     utils::trim(sID, ' ');
@@ -514,11 +513,8 @@ bool document::check(const std::string& sPreProcCommands)
         pState_ = &mXMLState_;
         pState_->set_current_block(&mMainBlock_);
 
-        std::vector<std::string> lLines = utils::cut_each(sSourceString_, "\n");
-        std::vector<std::string>::iterator iterLine;
-
         // Start parsing line by line
-        for (const auto& sTempLine : lLines)
+        for (const auto& sTempLine : utils::cut_each(sSourceString_, "\n"))
         {
             sLine += sTempLine + "\n";
             ++uiCurrentLineNbr_;

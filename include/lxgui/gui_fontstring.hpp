@@ -19,24 +19,24 @@ namespace gui
         explicit font_string(manager* pManager);
 
         /// Destructor.
-        virtual ~font_string();
+        ~font_string();
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Renders this widget on the current render target.
-        virtual void render();
+        void render() override;
 
         /// Copies an uiobject's parameters into this font_string (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Returns the name of the font file.
         /** \return The name of the font file
@@ -237,12 +237,12 @@ namespace gui
         void set_text(const std::string& sText);
 
         /// Creates the associated Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The font_string's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Returns the text used to render this fontString.
         /** \return The text used to render this fontString
@@ -261,10 +261,10 @@ namespace gui
 
     private :
 
-        void parse_attributes_(xml::block* pBlock);
+        void parse_attributes_(xml::block* pBlock) override;
         void parse_shadow_block_(xml::block* pBlock);
 
-        void update_borders_() const;
+        void update_borders_() const override;
 
         mutable std::unique_ptr<text> pText_;
 

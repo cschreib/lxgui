@@ -33,10 +33,6 @@ renderer::renderer(bool bInitGLEW) :
     material::check_availability();
 }
 
-renderer::~renderer()
-{
-}
-
 void renderer::begin(utils::refptr<gui::render_target> pTarget) const
 {
     if (pTarget)
@@ -70,14 +66,12 @@ void renderer::update_view_matrix_() const
     float fWidth = pParent_->get_screen_width();
     float fHeight = pParent_->get_screen_height();
 
-    float tmp[16] = {
+    mViewMatrix_ = {
         2.0f/fWidth, 0.0f, -1.0f, -1.0f,
         0.0f, -2.0f/fHeight, 1.0f, 1.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     };
-
-    mViewMatrix_ = tmp;
 
     bUpdateViewMatrix_ = false;
 }

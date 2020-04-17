@@ -34,7 +34,7 @@ namespace utils
 
             T& container;
 
-            reverse_range(T& c) : container(c) {}
+            explicit reverse_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.rbegin()); }
             iterator end() { return iterator(container.rend()); }
@@ -49,7 +49,7 @@ namespace utils
         struct iterator_adapter
         {
             I iter;
-            iterator_adapter(I i) : iter(i) {}
+            explicit iterator_adapter(I i) : iter(i) {}
             I operator * () { return iter; }
             iterator_adapter& operator ++ () { ++iter; return *this; }
             iterator_adapter operator ++ (int) { return iter++; }
@@ -66,7 +66,7 @@ namespace utils
 
             T& container;
 
-            iterator_range(T& c) : container(c) {}
+            explicit iterator_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.begin()); }
             iterator end() { return iterator(container.end()); }
@@ -87,7 +87,7 @@ namespace utils
 
             T& container;
 
-            reverse_iterator_range(T& c) : container(c) {}
+            explicit reverse_iterator_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.rbegin()); }
             iterator end() { return iterator(container.rend()); }
@@ -102,7 +102,7 @@ namespace utils
         struct value_iterator_adapter
         {
             I iter;
-            value_iterator_adapter(I i) : iter(i) {}
+            explicit value_iterator_adapter(I i) : iter(i) {}
             V& operator * () { return iter->second; }
             value_iterator_adapter& operator ++ () { ++iter; return *this; }
             value_iterator_adapter operator ++ (int) { return iter++; }
@@ -121,7 +121,7 @@ namespace utils
 
             T& container;
 
-            value_range(T& c) : container(c) {}
+            explicit value_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.begin()); }
             iterator end() { return iterator(container.end()); }
@@ -144,7 +144,7 @@ namespace utils
 
             T& container;
 
-            reverse_value_range(T& c) : container(c) {}
+            explicit reverse_value_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.rbegin()); }
             iterator end() { return iterator(container.rend()); }
@@ -159,7 +159,7 @@ namespace utils
         struct key_iterator_adapter
         {
             I iter;
-            key_iterator_adapter(I i) : iter(i) {}
+            explicit key_iterator_adapter(I i) : iter(i) {}
             const K& operator * () { return iter->first; }
             key_iterator_adapter& operator ++ () { ++iter; return *this; }
             key_iterator_adapter operator ++ (int) { return iter++; }
@@ -177,7 +177,7 @@ namespace utils
 
             T& container;
 
-            key_range(T& c) : container(c) {}
+            explicit key_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.begin()); }
             iterator end() { return iterator(container.end()); }
@@ -199,7 +199,7 @@ namespace utils
 
             T& container;
 
-            reverse_key_range(T& c) : container(c) {}
+            explicit reverse_key_range(T& c) : container(c) {}
 
             iterator begin() { return iterator(container.rbegin()); }
             iterator end() { return iterator(container.rend()); }

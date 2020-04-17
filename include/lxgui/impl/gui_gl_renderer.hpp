@@ -16,10 +16,7 @@ namespace gl
     public :
 
         /// Constructor.
-        renderer(bool bInitGLEW = true);
-
-        /// Destructor.
-        ~renderer();
+        explicit renderer(bool bInitGLEW = true);
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)

@@ -25,7 +25,7 @@ namespace input
             source(const source&) = delete;
             source& operator = (const source&) = delete;
 
-            void toggle_mouse_grab();
+            void toggle_mouse_grab() override;
             std::string get_key_name(key mKey) const;
 
             void on_sfml_event(const sf::Event& mEvent);

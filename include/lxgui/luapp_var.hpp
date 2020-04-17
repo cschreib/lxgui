@@ -143,7 +143,7 @@ private :
 
         friend var;
 
-        value(const T& mT) : mT_(mT) {}
+        explicit value(const T& mT) : mT_(mT) {}
 
         value_base* clone() const
         {
