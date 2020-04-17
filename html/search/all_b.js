@@ -16,7 +16,7 @@ var searchData=
   ['material',['material',['../classgui_1_1sfml_1_1material.html',1,'gui::sfml']]],
   ['material',['material',['../classgui_1_1material.html',1,'gui']]],
   ['math',['math',['../namespacemath.html',1,'']]],
-  ['matrix4',['matrix4',['../classgui_1_1gl_1_1matrix4.html#a79f58a33645f802aae772e429a4c5a92',1,'gui::gl::matrix4::matrix4()'],['../classgui_1_1gl_1_1matrix4.html#a907b97388c06bc3fcc70499ca5f1d2c2',1,'gui::gl::matrix4::matrix4(std::initializer_list&lt; T &gt; mList)'],['../classgui_1_1gl_1_1matrix4.html#ae32d67559b878576e908731300ce9b02',1,'gui::gl::matrix4::matrix4(T *mat)']]],
+  ['matrix4',['matrix4',['../classgui_1_1gl_1_1matrix4.html#a87e964dd781fafcd3736f22ec0130051',1,'gui::gl::matrix4::matrix4()=default'],['../classgui_1_1gl_1_1matrix4.html#a907b97388c06bc3fcc70499ca5f1d2c2',1,'gui::gl::matrix4::matrix4(std::initializer_list&lt; T &gt; mList)'],['../classgui_1_1gl_1_1matrix4.html#ae32d67559b878576e908731300ce9b02',1,'gui::gl::matrix4::matrix4(T *mat)']]],
   ['matrix4',['matrix4',['../classgui_1_1gl_1_1matrix4.html',1,'gui::gl']]],
   ['mbarcolor_5f',['mBarColor_',['../classgui_1_1status__bar.html#a4a0048891215f7f42d144aa362144192',1,'gui::status_bar']]],
   ['mbarlayer_5f',['mBarLayer_',['../classgui_1_1status__bar.html#aa962d2de02077c67d4454a2bf353c591',1,'gui::status_bar']]],

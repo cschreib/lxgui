@@ -10,7 +10,7 @@ var searchData=
   ['has_5fshadow',['has_shadow',['../classgui_1_1font__string.html#abf0025baca87fee14f2cc4f7917ece4a',1,'gui::font_string']]],
   ['has_5fwindow_5fresized',['has_window_resized',['../classinput_1_1source__impl.html#a1049b70c8b8b123d94b9dd6d931f9961',1,'input::source_impl']]],
   ['height',['height',['../classgui_1_1quad2.html#a7b18cba5d0519c1560197ed9360dbb38',1,'gui::quad2']]],
-  ['hide',['hide',['../classgui_1_1frame.html#a50e762eb404461413b2bee13c72d39a0',1,'gui::frame::hide()'],['../classgui_1_1layered__region.html#a1d5d4fc80fc656f4ced3ca0c84b20575',1,'gui::layered_region::hide()'],['../classgui_1_1uiobject.html#a34ed00d0b649f51f2bf4f5c36e713a42',1,'gui::uiobject::hide()']]],
+  ['hide',['hide',['../classgui_1_1frame.html#ad6035dc41340e42685caf4dca8b6c81f',1,'gui::frame::hide()'],['../classgui_1_1layered__region.html#a16fa77d5a96b14992a333052b4c3e679',1,'gui::layered_region::hide()'],['../classgui_1_1uiobject.html#a34ed00d0b649f51f2bf4f5c36e713a42',1,'gui::uiobject::hide()']]],
   ['high',['HIGH',['../namespacegui.html#a06c18a991d2896335961a7962df07a4cab89de3b4b81c4facfac906edf29aec8c',1,'gui']]],
   ['highlight',['highlight',['../classgui_1_1button.html#a596c55449b9a9aae021ab4ebd53cded0',1,'gui::button::highlight()'],['../namespacegui.html#a43b495ff7e6ae0dcd1314526a4db08c0a57830ad692fb15d7a396d61f7bd9ccc7',1,'gui::HIGHLIGHT()']]],
   ['highlight_5ftext',['highlight_text',['../classgui_1_1edit__box.html#a38a91835dbf22d296b06184ef9ae2e51',1,'gui::edit_box']]],

@@ -516,19 +516,19 @@ Parsing file /home/travis/build/cschr/home/travis/build/cschreib/lxgui/gui/src/g
 /home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:259: warning: documented symbol `int gui::lua_uiobject::_get_parent' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:277: warning: documented symbol `int gui::lua_uiobject::_get_base' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:295: warning: documented symbol `int gui::lua_uiobject::_get_point' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:343: warning: documented symbol `int gui::lua_uiobject::_get_right' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:355: warning: documented symbol `int gui::lua_uiobject::_get_top' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:367: warning: documented symbol `int gui::lua_uiobject::_get_width' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:379: warning: documented symbol `int gui::lua_uiobject::_hide' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:391: warning: documented symbol `int gui::lua_uiobject::_is_shown' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:403: warning: documented symbol `int gui::lua_uiobject::_is_visible' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:415: warning: documented symbol `int gui::lua_uiobject::_set_all_points' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:446: warning: documented symbol `int gui::lua_uiobject::_set_height' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:459: warning: documented symbol `int gui::lua_uiobject::_set_parent' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:518: warning: documented symbol `int gui::lua_uiobject::_set_point' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:577: warning: documented symbol `int gui::lua_uiobject::_set_rel_point' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:636: warning: documented symbol `int gui::lua_uiobject::_set_width' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:649: warning: documented symbol `int gui::lua_uiobject::_show' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:345: warning: documented symbol `int gui::lua_uiobject::_get_right' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:357: warning: documented symbol `int gui::lua_uiobject::_get_top' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:369: warning: documented symbol `int gui::lua_uiobject::_get_width' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:381: warning: documented symbol `int gui::lua_uiobject::_hide' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:393: warning: documented symbol `int gui::lua_uiobject::_is_shown' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:405: warning: documented symbol `int gui::lua_uiobject::_is_visible' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:417: warning: documented symbol `int gui::lua_uiobject::_set_all_points' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:448: warning: documented symbol `int gui::lua_uiobject::_set_height' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:461: warning: documented symbol `int gui::lua_uiobject::_set_parent' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:520: warning: documented symbol `int gui::lua_uiobject::_set_point' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:579: warning: documented symbol `int gui::lua_uiobject::_set_rel_point' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:638: warning: documented symbol `int gui::lua_uiobject::_set_width' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_uiobject_glues.cpp:651: warning: documented symbol `int gui::lua_uiobject::_show' was not declared or defined.
 eib/lxgui/include/lxgui/luapp_exception.hpp...
 Preprocessing /home/travis/build/cschreib/lxgui/include/lxgui/luapp_function.hpp...
 Parsing file /home/travis/build/cschreib/lxgui/include/lxgui/luapp_function.hpp...
@@ -972,5 +972,5 @@ Generating file member index...
 Generating example index...
 finalizing index lists...
 writing tag file...
-lookup cache used 6892/65536 hits=74654 misses=7692
+lookup cache used 6881/65536 hits=74673 misses=7681
 finished...
