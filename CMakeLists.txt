@@ -23,8 +23,8 @@ lxgui_set_option(LXGUI_TEST_OPENGL FALSE BOOL "Use OpenGL gui implementation for
 project(lxgui)
 
 # setup version numbers
-set(VERSION_MAJOR 1)
-set(VERSION_MINOR 2)
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 0)
 
 # check compiler version for C++11 features
 if(CMAKE_COMPILER_IS_GNUCXX)

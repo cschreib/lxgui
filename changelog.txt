@@ -1,4 +1,4 @@
-v1.3.0:
+v2.0.0:
  - general: switched to MIT license
  - general: various fixes and improvements to the build system
  - general: dropped support for C++03
