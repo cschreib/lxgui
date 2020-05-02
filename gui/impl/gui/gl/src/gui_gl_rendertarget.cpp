@@ -72,14 +72,12 @@ void render_target::update_view_matrix_() const
     float fWidth = pTexture_->get_real_width();
     float fHeight = pTexture_->get_real_height();
 
-    float tmp[16] = {
+    mViewMatrix_ = {
         2.0f/fWidth, 0.0f, -1.0f, -1.0f,
         0.0f, 2.0f/fHeight, -1.0f, -1.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 1.0f
     };
-
-    mViewMatrix_ = tmp;
 
     bUpdateViewMatrix_ = false;
 }

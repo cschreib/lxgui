@@ -17,12 +17,12 @@ namespace gui
         explicit focus_frame(manager* pManager);
 
         /// Destructor.
-        virtual ~focus_frame();
+        ~focus_frame();
 
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Enables automatic focus for this focus_frame.
         /** \param bEnable 'true' to enable auto focus
@@ -51,12 +51,12 @@ namespace gui
         virtual void notify_focus(bool bFocus);
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The edit_box's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         static constexpr const char* CLASS_NAME = "FocusFrame";
 

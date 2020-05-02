@@ -12,10 +12,6 @@ const var_type& var::VALUE_BOOL    = typeid(bool);
 const var_type& var::VALUE_STRING  = typeid(std::string);
 const var_type& var::VALUE_POINTER = typeid(void*);
 
-var::var() : pValue_(nullptr)
-{
-}
-
 var::var(const var& mVar) : pValue_(mVar.pValue_ ? mVar.pValue_->clone() : nullptr)
 {
 }
@@ -27,6 +23,7 @@ var& var::operator = (const var& mVar)
         var mTemp(mVar);
         swap(mTemp);
     }
+
     return *this;
 }
 
@@ -92,7 +89,6 @@ bool var::is_empty() const
     return (pValue_ == nullptr);
 }
 
-
 const var_type& var::get_type() const
 {
     if (pValue_)
@@ -108,13 +104,14 @@ const var_type& var::get_type() const
 std::string var::to_string() const
 {
     const var_type& mType = get_type();
-    if (mType == VALUE_INT) return utils::to_string(get<int>());
-    else if (mType == VALUE_UINT) return utils::to_string(get<uint>())+"u";
-    else if (mType == VALUE_FLOAT) return utils::to_string(get<float>())+"f";
-    else if (mType == VALUE_DOUBLE) return utils::to_string(get<double>());
-    else if (mType == VALUE_BOOL) return utils::to_string(get<bool>());
-    else if (mType == VALUE_STRING) return "\""+get<std::string>()+"\"";
+
+    if (mType == VALUE_INT)          return utils::to_string(get<int>());
+    else if (mType == VALUE_UINT)    return utils::to_string(get<uint>())+"u";
+    else if (mType == VALUE_FLOAT)   return utils::to_string(get<float>())+"f";
+    else if (mType == VALUE_DOUBLE)  return utils::to_string(get<double>());
+    else if (mType == VALUE_BOOL)    return utils::to_string(get<bool>());
+    else if (mType == VALUE_STRING)  return "\""+get<std::string>()+"\"";
     else if (mType == VALUE_POINTER) return utils::to_string(get<void*>());
-    else return "<none>";
+    else                             return "<none>";
 }
 }

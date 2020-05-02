@@ -15,7 +15,7 @@ class data
 public :
 
     /// Default constructor
-    data();
+    data() = default;
 
     /// Main constructor
     /** \param sName    The name associated to this data
@@ -51,8 +51,8 @@ private :
 
     std::string sName_;
     var         mValue_;
-    type        mLuaType_;
-    argument*   pParent_;
+    type        mLuaType_ = type::NIL;
+    argument*   pParent_ = nullptr;
 };
 
 /// argument of a Lua glue
@@ -286,7 +286,7 @@ public :
     *         nil until the proper number of return values is reached when
     *         on_return() is called.
     */
-    void push(const double& dValue);
+    void push(double dValue);
 
     /// Adds a return value to the function.
     /** \param fValue The value

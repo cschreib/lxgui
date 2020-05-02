@@ -205,16 +205,21 @@ quad2f font::get_character_bounds(char32_t uiChar) const
 
 float font::get_character_width(char32_t uiChar) const
 {
+    if (uiChar < 32 || uiChar > 255) return 0.0f;
     return lCharacterList_[uiChar].mUVs.width()*fTextureWidth_;
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
+    if (uiChar < 32 || uiChar > 255) return 0.0f;
     return lCharacterList_[uiChar].mUVs.height()*fTextureHeight_;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 {
+    if (uiChar1 < 32 || uiChar1 > 255) return 0.0f;
+    if (uiChar2 < 32 || uiChar2 > 255) return 0.0f;
+
     if (bKerning_)
         return lCharacterList_[uiChar1].lKerningInfo[uiChar2].x;
     else

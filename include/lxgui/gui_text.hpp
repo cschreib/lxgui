@@ -5,6 +5,7 @@
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_quad2.hpp"
 #include "lxgui/gui_font.hpp"
+#include "lxgui/gui_sprite.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_refptr.hpp>
@@ -75,9 +76,6 @@ namespace gui
         *   \param fSize    The size of the font (in point)
         */
         text(manager* pManager, const std::string& sFileName, float fSize);
-
-        /// Destructor.
-        ~text();
 
         /// Returns the path to the .ttf file.
         /** \return The path to the .ttf file
@@ -172,6 +170,11 @@ namespace gui
         *   \note Ignores the text box, but not manual line jumps.
         */
         float get_text_width() const;
+
+        /// Returns the number of text lines.
+        /** \return The number of text lines
+        */
+        uint get_num_lines() const;
 
         /// Returns the lenght of a provided string.
         /** \param sString The string to measure
@@ -316,7 +319,7 @@ namespace gui
         /** \param uiChar The character to draw
         *   \note Uses this text's font texture.
         */
-        std::unique_ptr<sprite> create_sprite(char32_t uiChar) const;
+        sprite create_sprite(char32_t uiChar) const;
 
     private :
 
@@ -355,7 +358,7 @@ namespace gui
 
         bool                              bUpdateQuads_;
         std::vector<std::array<vertex,4>> lQuadList_;
-        std::unique_ptr<sprite>           pSprite_;
+        sprite                            mSprite_;
 
         utils::refptr<font> pFont_;
     };

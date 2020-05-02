@@ -100,10 +100,9 @@ ustring UTF8_to_unicode(const string& s)
 
     ustring sResult;
 
-    string::const_iterator iter;
     unsigned char cEscape = 0;
 
-    for (auto c : s)
+    for (unsigned char c : s)
     {
         if (c <= MAX_ANSI)
         {
@@ -157,8 +156,6 @@ string unicode_to_UTF8(const ustring& s)
     static uint ESC_C3   = 195;
 
     string sResult;
-
-    ustring::const_iterator iter;
 
     for (auto c : s)
     {

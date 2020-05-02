@@ -1,6 +1,5 @@
 #include "lxgui/gui_text.hpp"
 #include "lxgui/gui_font.hpp"
-#include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
@@ -28,13 +27,9 @@ text::text(manager* pManager, const std::string& sFileName, float fSize) :
     }
 
     fSpaceWidth_ = pFont_->get_character_width(32);
-    pSprite_ = pManager_->create_sprite(pFont_->get_texture().lock());
+    mSprite_ = pManager_->create_sprite(pFont_->get_texture().lock());
 
     bReady_ = true;
-}
-
-text::~text()
-{
 }
 
 const std::string& text::get_font_name() const
@@ -152,6 +147,11 @@ float text::get_text_height() const
     float fHeight = (1.0f + count*fLineSpacing_)*get_line_height();
 
     return fHeight;
+}
+
+uint text::get_num_lines() const
+{
+    return lLineList_.size();
 }
 
 float text::get_string_width(const std::string& sString) const
@@ -371,7 +371,7 @@ void text::render(float fX, float fY)
         bUpdateQuads_ = false;
     }
 
-    pSprite_->render_quads(lQuadList_);
+    mSprite_.render_quads(lQuadList_);
 }
 
 void text::update()
@@ -824,19 +824,19 @@ void text::update_cache_()
     }
 }
 
-std::unique_ptr<sprite> text::create_sprite(char32_t uiChar) const
+sprite text::create_sprite(char32_t uiChar) const
 {
-    quad2f lUVs = pFont_->get_character_uvs(uiChar);
+    const quad2f lUVs = pFont_->get_character_uvs(uiChar);
 
-    float fWidth = get_character_width(uiChar);
-    float fHeight = lUVs.height()*pFont_->get_texture()->get_height();
+    const quad2f mBounds = pFont_->get_character_bounds(uiChar);
+    const float fWidth = mBounds.right - mBounds.left;
+    const float fHeight = mBounds.bottom - mBounds.top;
 
-    std::unique_ptr<sprite> pSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
-    pSprite->set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
+    sprite mSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
+    mSprite.set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
+    mSprite.set_color(mColor_);
 
-    pSprite->set_color(mColor_);
-
-    return pSprite;
+    return mSprite;
 }
 
 const std::vector<text::letter>& text::get_letter_cache()

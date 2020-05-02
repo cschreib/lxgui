@@ -28,22 +28,19 @@ namespace gui
         /// Constructor.
         explicit texture(manager* pManager);
 
-        /// Destructor.
-        virtual ~texture();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Renders this widget on the current render target.
-        virtual void render();
+        void render() override;
 
         /// Copies an uiobject's parameters into this texture (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Returns this texture's blending mode.
         /** \return This texture's blending mode
@@ -184,14 +181,14 @@ namespace gui
         void set_color(const color& mColor);
 
         /// Directly sets this texture's underlying sprite.
-        /** \param pSprite The new sprite to use
+        /** \param mSprite The new sprite to use
         *   \note The texture's dimensions will be adjusted to fit those
         *         of the provided sprite, and same goes for texture
         *         coordinates.
         *   \note Be sure to know what you're doing when you call this
         *         function.
         */
-        void set_sprite(std::unique_ptr<sprite> pSprite);
+        void set_sprite(sprite mSprite);
 
         /// Sets this texture's vertex color.
         /** \param mColor This textures's new vertex color
@@ -202,12 +199,12 @@ namespace gui
         void set_vertex_color(const color& mColor);
 
         /// Creates the associated Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The texture's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);
@@ -216,21 +213,22 @@ namespace gui
 
     private :
 
-        virtual void parse_attributes_(xml::block* pBlock);
+        void parse_attributes_(xml::block* pBlock) override;
         void parse_tex_coords_block_(xml::block* pBlock);
         void parse_gradient_block_(xml::block* pBlock);
 
-        std::unique_ptr<sprite> pSprite_;
-        std::string             sTextureFile_;
+        bool        bHasSprite_ = false;
+        sprite      mSprite_;
+        std::string sTextureFile_;
 
-        blend_mode       mBlendMode_;
-        material::filter mFilter_;
-        bool             bIsDesaturated_;
+        blend_mode       mBlendMode_ = blend_mode::NONE;
+        material::filter mFilter_ = material::filter::NONE;
+        bool             bIsDesaturated_ = false;
         gradient         mGradient_;
-        color            mColor_;
+        color            mColor_ = color::WHITE;
 
         std::array<float,8> lTexCoord_;
-        bool                bTexCoordModifiesRect_;
+        bool                bTexCoordModifiesRect_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

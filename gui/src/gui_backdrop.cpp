@@ -8,11 +8,7 @@
 
 namespace gui
 {
-backdrop::backdrop(frame* pParent) :
-    pParent_(pParent), mBackgroundColor_(color::EMPTY), mEdgeColor_(color::EMPTY),
-    bBackgroundTilling_(false), uiTileSize_(0u), uiOriginalTileSize_(0u),
-    lBackgroundInsets_(quad2i::ZERO), lEdgeInsets_(quad2i::ZERO),
-    uiEdgeSize_(0u), uiOriginalEdgeSize_(0u)
+backdrop::backdrop(frame* pParent) : pParent_(pParent)
 {
 }
 
@@ -43,11 +39,12 @@ void backdrop::set_background(const std::string& sBackgroundFile)
         std::string sFile = pParent_->get_manager()->parse_file_name(sBackgroundFile);
         if (utils::file_exists(sFile))
         {
-            pBackground_ = pParent_->get_manager()->create_sprite(
+            mBackground_ = pParent_->get_manager()->create_sprite(
                 pParent_->get_manager()->create_material(sFile)
             );
-            uiTileSize_ = uiOriginalTileSize_ = pBackground_->get_width();
+            uiTileSize_ = uiOriginalTileSize_ = mBackground_.get_width();
             mBackgroundColor_ = color::EMPTY;
+            bHasBackground_ = true;
         }
         else
         {
@@ -57,11 +54,12 @@ void backdrop::set_background(const std::string& sBackgroundFile)
                 << "No background will be drawn." << std::endl;
 
             sBackgroundFile_ = "";
+            bHasBackground_ = false;
             return;
         }
     }
     else
-        pBackground_ = nullptr;
+        bHasBackground_ = false;
 
     sBackgroundFile_ = sBackgroundFile;
 }
@@ -77,9 +75,11 @@ void backdrop::set_background_color(const color& mColor)
     sBackgroundFile_ = "";
 
     uiTileSize_ = uiOriginalTileSize_ = 256;
-    pBackground_ = pParent_->get_manager()->create_sprite(
+    mBackground_ = pParent_->get_manager()->create_sprite(
         pParent_->get_manager()->create_material(mColor), 256, 256
     );
+
+    bHasBackground_ = true;
 }
 
 color backdrop::get_background_color() const
@@ -91,8 +91,8 @@ void backdrop::set_backgrond_tilling(bool bBackgroundTilling)
 {
     bBackgroundTilling_ = bBackgroundTilling;
 
-    if (!bBackgroundTilling_ && pBackground_)
-        pBackground_->set_texture_rect(0.0f, 0.0f, 1.0f, 1.0f, true);
+    if (!bBackgroundTilling_ && bHasBackground_)
+        mBackground_.set_texture_rect(0.0f, 0.0f, 1.0f, 1.0f, true);
 }
 
 bool backdrop::is_background_tilling() const
@@ -160,25 +160,26 @@ void backdrop::set_edge(const std::string& sEdgeFile)
                     );
                 }
 
-                get_edge(edge_type::TOPLEFT)->set_hot_spot(
+                get_edge(edge_type::TOPLEFT).set_hot_spot(
                     0.0f, 0.0f
                 );
-                get_edge(edge_type::TOPRIGHT)->set_hot_spot(
+                get_edge(edge_type::TOPRIGHT).set_hot_spot(
                     uiOriginalEdgeSize_, 0.0f
                 );
-                get_edge(edge_type::BOTTOMLEFT)->set_hot_spot(
+                get_edge(edge_type::BOTTOMLEFT).set_hot_spot(
                     0.0f, uiOriginalEdgeSize_
                 );
-                get_edge(edge_type::BOTTOMRIGHT)->set_hot_spot(
+                get_edge(edge_type::BOTTOMRIGHT).set_hot_spot(
                     uiOriginalEdgeSize_, uiOriginalEdgeSize_
                 );
 
+                bHasEdge_ = true;
                 sEdgeFile_ = sFile;
                 mEdgeColor_ = color::EMPTY;
             }
             else
             {
-                for (auto& pEdge : lEdgeList_) pEdge = nullptr;
+                bHasEdge_ = false;
                 sEdgeFile_ = "";
 
                 gui::out << gui::error << "backdrop : "
@@ -189,7 +190,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
         }
         else
         {
-            for (auto& pEdge : lEdgeList_) pEdge = nullptr;
+            bHasEdge_ = false;
             sEdgeFile_ = "";
 
             gui::out << gui::warning << "backdrop : "
@@ -199,10 +200,9 @@ void backdrop::set_edge(const std::string& sEdgeFile)
     }
     else
     {
-        for (auto& pEdge : lEdgeList_) pEdge = nullptr;
+        bHasEdge_ = false;
+        sEdgeFile_ = "";
     }
-
-    sEdgeFile_ = sEdgeFile;
 }
 
 const std::string& backdrop::get_edge_file() const
@@ -220,17 +220,17 @@ void backdrop::set_edge_color(const color& mColor)
 
     uiOriginalEdgeSize_ = 1;
 
-    for (auto& pEdge : lEdgeList_)
+    for (auto& mEdge : lEdgeList_)
     {
-        pEdge = pParent_->get_manager()->create_sprite(
+        mEdge = pParent_->get_manager()->create_sprite(
             pParent_->get_manager()->create_material(mColor), 1, 1
         );
     }
 
-    get_edge(edge_type::TOPLEFT)->set_hot_spot(0.0f, 0.0f);
-    get_edge(edge_type::TOPRIGHT)->set_hot_spot(1.0f, 0.0f);
-    get_edge(edge_type::BOTTOMLEFT)->set_hot_spot(0.0f, 1.0f);
-    get_edge(edge_type::BOTTOMRIGHT)->set_hot_spot(1.0f, 1.0f);
+    get_edge(edge_type::TOPLEFT).set_hot_spot(0.0f, 0.0f);
+    get_edge(edge_type::TOPRIGHT).set_hot_spot(1.0f, 0.0f);
+    get_edge(edge_type::BOTTOMLEFT).set_hot_spot(0.0f, 1.0f);
+    get_edge(edge_type::BOTTOMRIGHT).set_hot_spot(1.0f, 1.0f);
 }
 
 color backdrop::get_edge_color() const
@@ -250,12 +250,12 @@ uint backdrop::get_edge_size() const
 
 void backdrop::set_vertex_color(const color& mColor)
 {
-    if (pBackground_)
-        pBackground_->set_color(mColor);
+    if (bHasBackground_)
+        mBackground_.set_color(mColor);
 
-    if (lEdgeList_[0])
+    if (bHasEdge_)
     {
-        for (auto& pEdge : lEdgeList_) pEdge->set_color(mColor);
+        for (auto& mEdge : lEdgeList_) mEdge.set_color(mColor);
     }
 }
 
@@ -265,11 +265,11 @@ void backdrop::render() const
     {
         const quad2i& lParentBorders = pParent_->get_borders();
 
-        if (pBackground_)
+        if (bHasBackground_)
         {
             if (bBackgroundTilling_)
             {
-                pBackground_->set_texture_rect(
+                mBackground_.set_texture_rect(
                     0.0f, 0.0f,
                     (
                         lParentBorders.right + lBackgroundInsets_.right -
@@ -282,7 +282,7 @@ void backdrop::render() const
                 );
             }
 
-            pBackground_->render_2v(
+            mBackground_.render_2v(
                 lParentBorders.left   + lBackgroundInsets_.left,
                 lParentBorders.top    + lBackgroundInsets_.top,
                 lParentBorders.right  - lBackgroundInsets_.right,
@@ -290,30 +290,30 @@ void backdrop::render() const
             );
         }
 
-        if (lEdgeList_[0])
+        if (bHasEdge_)
         {
             float fEdgeScale = float(uiEdgeSize_)/float(uiOriginalEdgeSize_);
 
             // render corners
-            get_edge(edge_type::TOPLEFT)->render_ex(
+            get_edge(edge_type::TOPLEFT).render_ex(
                 lParentBorders.left + lEdgeInsets_.left,
                 lParentBorders.top  + lEdgeInsets_.top,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::TOPRIGHT)->render_ex(
+            get_edge(edge_type::TOPRIGHT).render_ex(
                 lParentBorders.right - lEdgeInsets_.right,
                 lParentBorders.top   + lEdgeInsets_.top,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::BOTTOMLEFT)->render_ex(
+            get_edge(edge_type::BOTTOMLEFT).render_ex(
                 lParentBorders.left   + lEdgeInsets_.left,
                 lParentBorders.bottom - lEdgeInsets_.bottom,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::BOTTOMRIGHT)->render_ex(
+            get_edge(edge_type::BOTTOMRIGHT).render_ex(
                 lParentBorders.right  - lEdgeInsets_.right,
                 lParentBorders.bottom - lEdgeInsets_.bottom,
                 0.0f, fEdgeScale, fEdgeScale
@@ -325,15 +325,15 @@ void backdrop::render() const
 
             if (fEdgeHeight > 0.0f)
             {
-                get_edge(edge_type::LEFT)->set_texture_rect(
+                get_edge(edge_type::LEFT).set_texture_rect(
                     0.0f, 0.0f, uiOriginalEdgeSize_, fEdgeHeight
                 );
 
-                get_edge(edge_type::RIGHT)->set_texture_rect(
+                get_edge(edge_type::RIGHT).set_texture_rect(
                     uiOriginalEdgeSize_, 0.0f, 2u*uiOriginalEdgeSize_, fEdgeHeight
                 );
 
-                get_edge(edge_type::LEFT)->render_2v(
+                get_edge(edge_type::LEFT).render_2v(
                     lParentBorders.left   + lEdgeInsets_.left,
                     lParentBorders.top    + lEdgeInsets_.top    + uiEdgeSize_,
 
@@ -341,7 +341,7 @@ void backdrop::render() const
                     lParentBorders.bottom - lEdgeInsets_.bottom - uiEdgeSize_
                 );
 
-                get_edge(edge_type::RIGHT)->render_2v(
+                get_edge(edge_type::RIGHT).render_2v(
                     lParentBorders.right  - lEdgeInsets_.right  - uiEdgeSize_,
                     lParentBorders.top    + lEdgeInsets_.top    + uiEdgeSize_,
 
@@ -355,15 +355,15 @@ void backdrop::render() const
 
             if (fEdgeWidth > 0.0f)
             {
-                get_edge(edge_type::TOP)->set_texture_rect(
+                get_edge(edge_type::TOP).set_texture_rect(
                     2u*uiOriginalEdgeSize_, 0.0f, 3u*uiOriginalEdgeSize_, fEdgeWidth
                 );
 
-                get_edge(edge_type::BOTTOM)->set_texture_rect(
+                get_edge(edge_type::BOTTOM).set_texture_rect(
                     3u*uiOriginalEdgeSize_, 0.0f, 4u*uiOriginalEdgeSize_, fEdgeWidth
                 );
 
-                get_edge(edge_type::TOP)->render_4v(
+                get_edge(edge_type::TOP).render_4v(
                     lParentBorders.right - lEdgeInsets_.right - uiEdgeSize_,
                     lParentBorders.top   + lEdgeInsets_.top,
 
@@ -377,7 +377,7 @@ void backdrop::render() const
                     lParentBorders.top   + lEdgeInsets_.top
                 );
 
-                get_edge(edge_type::BOTTOM)->render_4v(
+                get_edge(edge_type::BOTTOM).render_4v(
                     lParentBorders.right  - lEdgeInsets_.right  - uiEdgeSize_,
                     lParentBorders.bottom - lEdgeInsets_.bottom - uiEdgeSize_,
 
@@ -395,8 +395,8 @@ void backdrop::render() const
     }
 }
 
-sprite* backdrop::get_edge(edge_type mPoint) const
+sprite& backdrop::get_edge(edge_type mPoint) const
 {
-    return lEdgeList_[static_cast<uint>(mPoint)].get();
+    return lEdgeList_[static_cast<uint>(mPoint)];
 }
 }

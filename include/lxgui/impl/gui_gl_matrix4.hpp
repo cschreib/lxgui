@@ -14,9 +14,9 @@ namespace gl
 
         typedef float T;
 
-        matrix4();
+        matrix4() = default;
         matrix4(std::initializer_list<T> mList);
-        matrix4(T* mat);
+        explicit matrix4(T* mat);
 
         inline T& operator () (size_t i, size_t j)
         {

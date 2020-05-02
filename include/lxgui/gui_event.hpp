@@ -13,7 +13,7 @@ namespace gui
     public :
 
         /// Default constructor.
-        event();
+        event() = default;
 
         /// Constructor.
         /** \param sName         The name of this event
@@ -76,7 +76,7 @@ namespace gui
     private :
 
         std::string           sName_;
-        bool                  bOncePerFrame_;
+        bool                  bOncePerFrame_ = false;
         std::vector<lua::var> lArgList_;
     };
 }

@@ -31,24 +31,24 @@ namespace gui
         explicit status_bar(manager* pManager);
 
         /// Destructor.
-        virtual ~status_bar();
+        ~status_bar();
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
         */
-        virtual std::string serialize(const std::string& sTab) const;
+        std::string serialize(const std::string& sTab) const override;
 
         /// Returns 'true' if this status_bar can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+        bool can_use_script(const std::string& sScriptName) const override;
 
         /// Copies an uiobject's parameters into this status_bar (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Sets this status_bar's minimum value.
         /** \param fMin The minimum value
@@ -146,15 +146,15 @@ namespace gui
         bool is_reversed() const;
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The status_bar's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);

@@ -14,7 +14,7 @@ public :
     /// Default exception.
     /** \note Reports : "Undefined exception."
     */
-    exception();
+    exception() = default;
 
     /// Copy constructor
     exception(const exception& mOther) = default;
@@ -32,9 +32,6 @@ public :
     */
     exception(const std::string& sClassName, const std::string& sMessage);
 
-    /// Destructor.
-    ~exception() noexcept override = default;
-
     /// Returns the message of the exception.
     /** \return The message of the exception
     */
@@ -47,7 +44,7 @@ public :
 
 protected :
 
-    std::string sMessage_;
+    std::string sMessage_ = "Undefined exception.";
 };
 }
 

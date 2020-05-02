@@ -18,7 +18,7 @@ namespace gui
             chanel h, l, s, a;
         };
 
-        color();
+        color() = default;
         color(chanel nr, chanel ng, chanel nb, chanel na = 1.0f);
         explicit color(const std::string& s);
 

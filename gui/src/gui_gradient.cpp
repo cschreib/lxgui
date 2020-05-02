@@ -4,12 +4,6 @@ namespace gui
 {
 const gradient gradient::NONE = gradient();
 
-gradient::gradient() :
-    bIsEmpty_(true), mOrientation_(orientation::HORIZONTAL)
-{
-}
-
-
 gradient::gradient(orientation mOrientation, const color& mMinColor, const color& mMaxColor) :
     bIsEmpty_(false), mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor)
 {

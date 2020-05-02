@@ -20,7 +20,7 @@ namespace gui
         /// Default constructor.
         /** \note Makes an empty gradient.
         */
-        gradient();
+        gradient() = default;
 
         /// Constructor.
         /** \param mOrientation This gradient's orientation
@@ -57,8 +57,8 @@ namespace gui
 
     private :
 
-        bool        bIsEmpty_;
-        orientation mOrientation_;
+        bool        bIsEmpty_ = true;
+        orientation mOrientation_ = orientation::HORIZONTAL;
         color       mMinColor_, mMaxColor_;
 
     };

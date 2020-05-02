@@ -25,7 +25,7 @@ namespace input
             source(const source&) = delete;
             source& operator = (const source&) = delete;
 
-            void toggle_mouse_grab();
+            void toggle_mouse_grab() override;
             std::string get_key_name(key mKey) const;
 
             void on_sfml_event(const sf::Event& mEvent);
@@ -36,15 +36,7 @@ namespace input
 
         private :
 
-            int to_sfml_(key mKey) const;
-
-            struct key_mapping
-            {
-                input::key mKey;
-                int        mSFKey;
-            };
-
-            static const key_mapping lKeyToSFML[100];
+            input::key from_sfml_(int uiSFKey) const;
 
             const sf::Window& mWindow_;
 

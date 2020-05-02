@@ -21,27 +21,27 @@ namespace gui
         explicit scroll_frame(manager* pManager);
 
         /// Destructor.
-        virtual ~scroll_frame();
+        ~scroll_frame();
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Copies an uiobject's parameters into this scroll_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// Returns 'true' if this scroll_frame can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+        bool can_use_script(const std::string& sScriptName) const override;
 
         /// Calls a script.
         /** \param sScriptName The name of the script
         *   \param pEvent      Stores scripts arguments
         */
-        virtual void on(const std::string& sScriptName, event* pEvent = nullptr);
+        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child
@@ -94,17 +94,17 @@ namespace gui
         *   \note For scroll children to receive input, the scroll_frame must be
         *         keyboard/mouse/wheel enabled.
         */
-        virtual bool is_in_frame(int iX, int iY) const;
+        bool is_in_frame(int iX, int iY) const override;
 
         /// Tells this scroll_frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this scroll_frame
         *   \param iX            The horizontal mouse coordinate
         *   \param iY            The vertical mouse coordinate
         */
-        virtual void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY);
+        void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY) override;
 
         /// Tells this widget that a manually rendered widget requires redraw.
-        virtual void fire_redraw() const;
+        void fire_redraw() const override;
 
         /// Tells this scroll_frame that at least one of its children has modified its strata or level.
         /** \param pChild The child that has changed its strata (can also be a child of this child)
@@ -112,15 +112,15 @@ namespace gui
         *   \note If this scroll_frame has no parent, it calls manager::fire_build_strata_list(). Else it
         *         notifies its parent.
         */
-        virtual void notify_child_strata_changed(frame* pChild);
+        void notify_child_strata_changed(frame* pChild) override;
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The scroll_frame's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);
@@ -131,7 +131,7 @@ namespace gui
 
         virtual void parse_scroll_child_block_(xml::block* pBlock);
 
-        virtual void notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered);
+        void notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered) override;
 
         void add_to_scroll_child_list_(frame* pChild);
         void remove_from_scroll_child_list_(frame* pChild);
@@ -171,7 +171,7 @@ namespace gui
     {
     public :
 
-        lua_scroll_frame(lua_State* pLua);
+        explicit lua_scroll_frame(lua_State* pLua);
 
         // Glues
         int _get_horizontal_scroll(lua_State*);

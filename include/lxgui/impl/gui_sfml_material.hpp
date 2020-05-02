@@ -38,7 +38,7 @@ namespace sfml
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(const sf::Image& mData, wrap mWrap = wrap::REPEAT,
+        explicit material(const sf::Image& mData, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
         /// Constructor for textures.
@@ -46,16 +46,13 @@ namespace sfml
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
+        explicit material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
         /// Constructor for plain colors.
         /** \param mColor The plain color to use
         */
-        material(const color& mColor);
-
-        /// Destructor.
-        ~material() override = default;
+        explicit material(const color& mColor);
 
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)

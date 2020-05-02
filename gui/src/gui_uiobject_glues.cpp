@@ -310,7 +310,6 @@ int lua_uiobject::_get_point(lua_State* pLua)
 
             const anchor* pAnchor = nullptr;
             uint uiCounter = 1;
-            std::map<anchor_point, anchor>::const_iterator iter;
             for (const auto& mAnchor : utils::range::value(lAnchorList))
             {
                 if (uiCounter == uiAnchorID)
@@ -322,18 +321,21 @@ int lua_uiobject::_get_point(lua_State* pLua)
                     ++uiCounter;
             }
 
-            mFunc.push(anchor::get_string_point(pAnchor->get_point()));
-            if (pAnchor->get_parent())
+            if (pAnchor)
             {
-                pAnchor->get_parent()->push_on_lua(mFunc.get_state());
-                mFunc.notify_pushed();
-            }
-            else
-                mFunc.push_nil();
+                mFunc.push(anchor::get_string_point(pAnchor->get_point()));
+                if (pAnchor->get_parent())
+                {
+                    pAnchor->get_parent()->push_on_lua(mFunc.get_state());
+                    mFunc.notify_pushed();
+                }
+                else
+                    mFunc.push_nil();
 
-            mFunc.push(anchor::get_string_point(pAnchor->get_parent_point()));
-            mFunc.push(pAnchor->get_abs_offset_x());
-            mFunc.push(pAnchor->get_abs_offset_y());
+                mFunc.push(anchor::get_string_point(pAnchor->get_parent_point()));
+                mFunc.push(pAnchor->get_abs_offset_x());
+                mFunc.push(pAnchor->get_abs_offset_y());
+            }
         }
     }
 

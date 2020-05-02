@@ -39,6 +39,11 @@ public :
     */
     state();
 
+    state(const state&) = delete;
+    state(state&&) = delete;
+    state& operator = (const state&) = delete;
+    state& operator = (state&&) = delete;
+
     /// Destructor
     /** \note Definately closes the associated Lua state (all data will be lost).
     */
@@ -167,7 +172,7 @@ public :
     /// Puts a number on the stack.
     /** \param dValue The value to push on the stack (converted to float)
     */
-    void push_number(const double& dValue);
+    void push_number(double dValue);
 
     /// Puts a boolean on the stack.
     /** \param bValue The value to push on the stack
@@ -510,9 +515,6 @@ public :
     static state* get_state(lua_State* pLua);
 
 private :
-
-    state(const state&);
-    state& operator = (const state&);
 
     static std::map<lua_State*, state*> lLuaStateMap_;
 

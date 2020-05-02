@@ -13,7 +13,7 @@ namespace gl
     struct ub32color
     {
         typedef unsigned char chanel;
-        ub32color();
+        ub32color() = default;
         ub32color(chanel r, chanel g, chanel b, chanel a);
         chanel r, g, b, a;
     };
@@ -41,7 +41,7 @@ namespace gl
         /// Constructor for plain colors.
         /** \param mColor The plain color to use
         */
-        material(const color& mColor);
+        explicit material(const color& mColor);
 
         /// Destructor.
         ~material() override;

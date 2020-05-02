@@ -260,7 +260,7 @@ void function::push(const std::string& sValue)
     ++uiReturnCount_;
 }
 
-void function::push(const double& dValue)
+void function::push(double dValue)
 {
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;

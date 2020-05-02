@@ -21,27 +21,27 @@ namespace xml
     /// An attribute of an XML Block
     struct attribute
     {
-        attribute();
+        attribute() = default;
         explicit attribute(const std::string& name, bool optional = false, const std::string& def = "", attribute_type type = attribute_type::STRING);
 
         std::string    sName;
         std::string    sValue;
         std::string    sDefault;
-        bool           bOptional;
-        bool           bFound;
-        attribute_type mType;
+        bool           bOptional = false;
+        bool           bFound = false;
+        attribute_type mType = attribute_type::STRING;
     };
 
     /// A wrapped pointer to a pre-defined XML Block
     struct predefined_block
     {
-        predefined_block();
+        predefined_block() = default;
         predefined_block(block* block, uint min, uint max, uint radio_group = -1);
 
-        block* pBlock;
-        uint   uiMin;
-        uint   uiMax;
-        uint   uiRadioGroup;
+        block* pBlock = nullptr;
+        uint   uiMin = 0u;
+        uint   uiMax = 0u;
+        uint   uiRadioGroup = -1;
     };
 
     /// An element in an XML file
@@ -51,7 +51,7 @@ namespace xml
     public :
 
         /// Default constructor.
-        block();
+        block() = default;
 
         /// Definition constructor.
         /** \param sName         The name of this block
@@ -63,20 +63,8 @@ namespace xml
         */
         block(const std::string& sName, uint uiMinNbr, uint uiMaxNbr, const std::string& sFile, uint uiLineNbr, uint uiRadioGroup = -1);
 
-        /// Copy constructor
-        block(const block& mOther) = default;
-
-        /// Move constructor
-        block(block&& mOther) = default;
-
         /// Destructor.
         ~block();
-
-        /// Copy assignment operator
-        block& operator=(const block& mOther) = default;
-
-        /// Move assignment operator
-        block& operator=(block&& mOther) = default;
 
         /// Returns this Block's name.
         /** \return This Block's name
@@ -401,18 +389,18 @@ namespace xml
     private :
 
         std::string sName_;
-        uint        uiMaxNumber_;
-        uint        uiMinNumber_;
-        uint        uiRadioGroup_;
-        bool        bRadioChilds_;
+        uint        uiMaxNumber_ = 0u;
+        uint        uiMinNumber_ = 0u;
+        uint        uiRadioGroup_ = -1;
+        bool        bRadioChilds_ = false;
         std::string sValue_;
-        document*   pDoc_;
-        block*      pParent_;
-        block*      pNewBlock_;
-        bool        bCreating_;
+        document*   pDoc_ = nullptr;
+        block*      pParent_ = nullptr;
+        block*      pNewBlock_ = nullptr;
+        bool        bCreating_ = false;
 
         std::string sFile_;
-        uint        uiLineNbr_;
+        uint        uiLineNbr_ = 0u;
 
         typedef std::multimap<std::string, block*>::iterator found_block_iterator;
 

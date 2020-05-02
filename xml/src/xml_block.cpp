@@ -6,16 +6,8 @@
 
 namespace xml
 {
-attribute::attribute() : bOptional(false), bFound(false)
-{
-}
-
 attribute::attribute(const std::string& name, bool optional, const std::string& def, attribute_type type) :
-    sName(name), sDefault(def), bOptional(optional), bFound(false), mType(type)
-{
-}
-
-predefined_block::predefined_block() : pBlock(nullptr), uiMin(0), uiMax(0), uiRadioGroup(-1)
+    sName(name), sDefault(def), bOptional(optional), mType(type)
 {
 }
 
@@ -24,16 +16,10 @@ predefined_block::predefined_block(block* block, uint min, uint max, uint radio_
 {
 }
 
-block::block() : uiMaxNumber_(0), uiMinNumber_(0), uiRadioGroup_(-1), bRadioChilds_(false),
-    pDoc_(nullptr), pParent_(nullptr), pNewBlock_(nullptr), bCreating_(false), uiLineNbr_(0)
-{
-}
-
 block::block(const std::string& sName, uint uiMinNbr, uint uiMaxNbr, const std::string& sFile,
             uint uiLineNbr, uint uiRadioGroup) :
     sName_(sName), uiMaxNumber_(uiMaxNbr), uiMinNumber_(uiMinNbr), uiRadioGroup_(uiRadioGroup),
-    bRadioChilds_(false), pDoc_(nullptr), pParent_(nullptr), pNewBlock_(nullptr),
-    bCreating_(false), sFile_(sFile), uiLineNbr_(uiLineNbr)
+    sFile_(sFile), uiLineNbr_(uiLineNbr)
 {
 }
 

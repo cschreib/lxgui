@@ -30,8 +30,10 @@ namespace xml
         */
         document(const std::string& sFileName, const std::string& sDefFileName, std::ostream& mOut = std::cout);
 
-        /// Destructor.
-        ~document();
+        document(const document&) = delete;
+        document(document&&) = delete;
+        document& operator=(const document&) = delete;
+        document& operator=(document&&) = delete;
 
         /// Sets the file from which to read data from.
         /** \param sFileName The path to the file you want to parse

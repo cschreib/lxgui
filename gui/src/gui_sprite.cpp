@@ -4,10 +4,6 @@
 
 namespace gui
 {
-vertex::vertex() : col(color::WHITE)
-{
-}
-
 vertex::vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol) :
     pos(mPos), uvs(mUV), col(mCol)
 {
@@ -76,10 +72,6 @@ sprite::sprite(const manager* pManager, utils::refptr<material> pMat, float fU, 
     mQuad_.v[1].uvs = vector2f(u2, v1);
     mQuad_.v[2].uvs = vector2f(u2, v2);
     mQuad_.v[3].uvs = vector2f(u1, v2);
-}
-
-sprite::~sprite()
-{
 }
 
 void sprite::render(float fX, float fY) const
@@ -173,6 +165,7 @@ void sprite::set_color(const color& mColor, uint uiIndex)
 
 void sprite::set_desaturated(bool bDesaturated)
 {
+    // Not implemented
 }
 
 void sprite::set_blend_mode(blend_mode mBlendMode)

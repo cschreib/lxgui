@@ -15,7 +15,7 @@ class lua_manager
 {
 public :
 
-    lua_manager(lua_State* luaVM);
+    explicit lua_manager(lua_State* luaVM);
     virtual ~lua_manager();
 
     void set_manager(manager* pMgr);

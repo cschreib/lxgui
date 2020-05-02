@@ -20,12 +20,12 @@ namespace gui
         explicit region(manager* pManager);
 
         /// Destructor.
-        virtual ~region();
+        ~region();
 
         /// Renders this widget on the current render target.
         /** \note Does nothing.
         */
-        virtual void render();
+        void render() override;
 
         /// Checks if the provided coordinates are inside this region.
         /** \param iX The horizontal coordinate
@@ -35,12 +35,12 @@ namespace gui
         virtual bool is_in_region(int iX, int iY) const;
 
         /// Creates the associated Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The frame's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         static constexpr const char* CLASS_NAME = "Region";
 

@@ -472,7 +472,7 @@ uint edit_box::get_num_letters() const
     return uiNumLetters_;
 }
 
-void edit_box::set_blink_speed(const double& dBlinkSpeed)
+void edit_box::set_blink_speed(double dBlinkSpeed)
 {
     if (dBlinkSpeed_ != dBlinkSpeed)
     {
@@ -481,7 +481,7 @@ void edit_box::set_blink_speed(const double& dBlinkSpeed)
     }
 }
 
-const double& edit_box::get_blink_speed() const
+double edit_box::get_blink_speed() const
 {
     return dBlinkSpeed_;
 }
@@ -779,10 +779,10 @@ void edit_box::create_carret_()
         pCarret_->create_glue();
         add_region(pCarret_);
 
-        std::unique_ptr<sprite> pSprite = pFontString_->get_text_object()->create_sprite(U'|');
-        pSprite->set_color(pFontString_->get_text_color());
+        sprite mSprite = pFontString_->get_text_object()->create_sprite(U'|');
+        mSprite.set_color(pFontString_->get_text_color());
 
-        pCarret_->set_sprite(std::move(pSprite));
+        pCarret_->set_sprite(std::move(mSprite));
         pCarret_->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
 
         pCarret_->notify_loaded();
@@ -930,35 +930,26 @@ void edit_box::update_carret_position_()
         else
             iterDisplayCarret = sDisplayedText_.begin() + (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
 
+
+        float fYOffset = (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing());
+
         const std::vector<text::letter>& lLetters = pText->get_letter_cache();
-        std::vector<text::letter>::const_iterator iterLetter = lLetters.begin();
+        auto iterLetter = lLetters.begin() + (iterDisplayCarret - sDisplayedText_.begin());
 
-        float fYOffset = 0.0f;
-
-        utils::ustring::const_iterator iter;
-        for (iter = sDisplayedText_.begin(); iter != iterDisplayCarret; ++iter)
-        {
-            float fLastY = iterLetter->mQuad.top;
-            ++iterLetter;
-            if (iterLetter != lLetters.end() && fLastY != iterLetter->mQuad.top)
-                fYOffset += iterLetter->mQuad.top - fLastY;
-        }
-
+        int iXOffset = 0;
         if (iterLetter == lLetters.begin())
         {
-            pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, anchor_point::LEFT,
-                lTextInsets_.left + int(iterLetter->mQuad.left) - 1, int(fYOffset)
-            );
+            iXOffset = int(iterLetter->mQuad.left);
         }
         else
         {
             --iterLetter;
-            pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, anchor_point::LEFT,
-                lTextInsets_.left + int(iterLetter->mQuad.right) - 1, int(fYOffset)
-            );
+            iXOffset = int(iterLetter->mQuad.right);
         }
+
+        pCarret_->set_abs_point(
+            anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left + iXOffset, int(fYOffset)
+        );
 
         mCarretTimer_.zero();
         pCarret_->show();
@@ -1233,7 +1224,7 @@ void edit_box::process_key_(key mKey)
     }
 }
 
-periodic_timer::periodic_timer(const double& dDuration, start_type mType, bool bTickFirst) :
+periodic_timer::periodic_timer(double dDuration, start_type mType, bool bTickFirst) :
     dElapsed_(bTickFirst ? dDuration : 0.0), dDuration_(dDuration), bPaused_(true),
     bFirstTick_(true), mType_(mType)
 {
@@ -1241,12 +1232,12 @@ periodic_timer::periodic_timer(const double& dDuration, start_type mType, bool b
         start();
 }
 
-const double& periodic_timer::get_elapsed()
+double periodic_timer::get_elapsed()
 {
     return dElapsed_;
 }
 
-const double& periodic_timer::get_period() const
+double periodic_timer::get_period() const
 {
     return dDuration_;
 }

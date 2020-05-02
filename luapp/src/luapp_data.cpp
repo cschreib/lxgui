@@ -3,10 +3,6 @@
 
 namespace lua
 {
-data::data() : sName_(""), mLuaType_(type::NIL), pParent_(nullptr)
-{
-}
-
 data::data(const std::string& name, type mLuaType, argument* pParent) :
     sName_(name), mLuaType_(mLuaType), pParent_(pParent)
 {

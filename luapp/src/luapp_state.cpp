@@ -604,7 +604,7 @@ std::string state::serialize(const std::string& sTab, int iIndex)
     return sResult;
 }
 
-void state::push_number(const double& dValue)
+void state::push_number(double dValue)
 {
     lua_pushnumber(pLua_, dValue);
 }

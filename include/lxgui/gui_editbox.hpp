@@ -39,17 +39,17 @@ namespace gui
         *   \param mType     See TimerType
         *   \param bTicks    The timer ticks immediately
         */
-        periodic_timer(const double& dDuration, start_type mType, bool bTicks);
+        periodic_timer(double dDuration, start_type mType, bool bTicks);
 
         /// Returns the time elapsed since the last tick.
         /** \return The time elapsed since last tick
         */
-        const double& get_elapsed();
+        double get_elapsed();
 
         /// Returns the period of the periodic_timer.
         /** \return The period of the periodic_timer
         */
-        const double& get_period() const;
+        double get_period() const;
 
         /// Cheks if this periodic_timer is paused.
         /** \return 'true' if this periodic_timer is paused
@@ -97,37 +97,37 @@ namespace gui
         explicit edit_box(manager* pManager);
 
         /// Destructor.
-        virtual ~edit_box();
+        ~edit_box();
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        void copy_from(uiobject* pObj) override;
 
         /// updates this widget's logic.
-        virtual void update(float fDelta);
+        void update(float fDelta) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
         */
-        virtual void on_event(const event& mEvent);
+        void on_event(const event& mEvent) override;
 
         /// Calls a script.
         /** \param sScriptName The name of the script
         *   \param pEvent      Stores scripts arguments
         */
-        virtual void on(const std::string& sScriptName, event* pEvent = nullptr);
+        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script
         *   \note This method can be overriden if needed.
         */
-        virtual bool can_use_script(const std::string& sScriptName) const;
+        bool can_use_script(const std::string& sScriptName) const override;
 
         /// Sets if this edit_box can receive keyboard input.
         /** \param bIsKeyboardEnabled 'true' to enable
         */
-        virtual void enable_keyboard(bool bIsKeyboardEnabled);
+        void enable_keyboard(bool bIsKeyboardEnabled) override;
 
         /// Sets the content of this edit_box.
         /** \param sText The content of this edit_box
@@ -178,12 +178,12 @@ namespace gui
         /// Sets the carret's blink speed.
         /** \param dBlinkSpeed The number of seconds to wait between each blink
         */
-        void set_blink_speed(const double& dBlinkSpeed);
+        void set_blink_speed(double dBlinkSpeed);
 
         /// Returns the carret's blink speed.
         /** \return the carret's blink speed (time in seconds between each blink)
         */
-        const double& get_blink_speed() const;
+        double get_blink_speed() const;
 
         /// Makes this edit_box allow numeric characters only.
         /** \param bNumericOnly 'true' to only allow numeric characters
@@ -307,15 +307,15 @@ namespace gui
         /** \param bFocus 'true' if the edit_box has gained focus
         *   \note This function is called by manager.
         */
-        virtual void notify_focus(bool bFocus);
+        void notify_focus(bool bFocus) override;
 
         /// Returns this widget's Lua glue.
-        virtual void create_glue();
+        void create_glue() override;
 
         /// Parses data from an xml::block.
         /** \param pBlock The edit_box's xml::block
         */
-        virtual void parse_block(xml::block* pBlock);
+        void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state* pLua);
@@ -324,7 +324,7 @@ namespace gui
 
     protected :
 
-        void notify_invisible_(bool bTriggerEvents = true);
+        void notify_invisible_(bool bTriggerEvents = true) override;
 
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
