@@ -392,7 +392,7 @@ void state::call_function(const std::string& sFunctionName)
     lua_remove(pLua_, uiFuncPos);
 }
 
-void state::call_function(const std::string& sFunctionName, const std::vector<var>& lArgumentStack)
+void state::call_function(const std::string& sFunctionName, const std::vector<utils::any>& lArgumentStack)
 {
     lua_pushcfunction(pLua_, pErrorFunction_);
     uint uiFuncPos = get_top();
@@ -626,15 +626,15 @@ void state::push_nil(uint uiNumber)
         lua_pushnil(pLua_);
 }
 
-void state::push(const var& vValue)
+void state::push(const utils::any& vValue)
 {
-    const var_type& mType = vValue.get_type();
-    if      (mType == var::VALUE_INT)    push_number(vValue.get<int>());
-    else if (mType == var::VALUE_UINT)   push_number(vValue.get<uint>());
-    else if (mType == var::VALUE_FLOAT)  push_number(vValue.get<float>());
-    else if (mType == var::VALUE_DOUBLE) push_number(vValue.get<double>());
-    else if (mType == var::VALUE_STRING) push_string(vValue.get<std::string>());
-    else if (mType == var::VALUE_BOOL)   push_bool(vValue.get<bool>());
+    const utils::any_type& mType = vValue.get_type();
+    if      (mType == utils::any::VALUE_INT)    push_number(vValue.get<int>());
+    else if (mType == utils::any::VALUE_UINT)   push_number(vValue.get<uint>());
+    else if (mType == utils::any::VALUE_FLOAT)  push_number(vValue.get<float>());
+    else if (mType == utils::any::VALUE_DOUBLE) push_number(vValue.get<double>());
+    else if (mType == utils::any::VALUE_STRING) push_string(vValue.get<std::string>());
+    else if (mType == utils::any::VALUE_BOOL)   push_bool(vValue.get<bool>());
     else push_nil();
 }
 
@@ -717,7 +717,7 @@ std::string state::get_string(int iIndex)
     return lua_tostring(pLua_, iIndex);
 }
 
-var state::get_value(int iIndex)
+utils::any state::get_value(int iIndex)
 {
     int type = lua_type(pLua_, iIndex);
     switch (type)
@@ -725,7 +725,7 @@ var state::get_value(int iIndex)
         case LUA_TBOOLEAN : return get_bool(iIndex);
         case LUA_TNUMBER : return get_number(iIndex);
         case LUA_TSTRING : return get_string(iIndex);
-        default : return var();
+        default : return utils::any();
     }
 }
 

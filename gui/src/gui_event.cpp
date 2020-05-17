@@ -18,12 +18,12 @@ void event::set_once_per_frame(bool bOncePerFrame)
     bOncePerFrame_ = bOncePerFrame;
 }
 
-void event::add(const lua::var& mValue)
+void event::add(const utils::any& mValue)
 {
     lArgList_.push_back(mValue);
 }
 
-const lua::var* event::get(uint uiIndex) const
+const utils::any* event::get(uint uiIndex) const
 {
     return &lArgList_[uiIndex];
 }
@@ -43,12 +43,12 @@ bool event::is_once_per_frame() const
     return bOncePerFrame_;
 }
 
-lua::var& event::operator [] (uint uiIndex)
+utils::any& event::operator [] (uint uiIndex)
 {
     return lArgList_[uiIndex];
 }
 
-const lua::var& event::operator [] (uint uiIndex) const
+const utils::any& event::operator [] (uint uiIndex) const
 {
     return lArgList_[uiIndex];
 }

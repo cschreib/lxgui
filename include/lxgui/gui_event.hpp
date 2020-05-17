@@ -39,12 +39,12 @@ namespace gui
         /// Adds a parameter to this event.
         /** \param mValue The value
         */
-        void add(const lua::var& mValue);
+        void add(const utils::any& mValue);
 
         /// Returns a parameter of this event.
         /** \return A parameter of this event
         */
-        const lua::var* get(uint uiIndex) const;
+        const utils::any* get(uint uiIndex) const;
 
         /// Returns a parameter of this event.
         /** \return A parameter of this event
@@ -70,15 +70,15 @@ namespace gui
         */
         bool is_once_per_frame() const;
 
-        lua::var& operator [] (uint uiIndex);
+        utils::any& operator [] (uint uiIndex);
 
-        const lua::var& operator [] (uint uiIndex) const;
+        const utils::any& operator [] (uint uiIndex) const;
 
     private :
 
         std::string           sName_;
         bool                  bOncePerFrame_ = false;
-        std::vector<lua::var> lArgList_;
+        std::vector<utils::any> lArgList_;
     };
 }
 }

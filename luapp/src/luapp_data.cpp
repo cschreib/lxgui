@@ -24,7 +24,7 @@ void data::set(state* pLua, int iIndex)
     else if (mLuaType_ == type::USERDATA)
         mValue_ = iIndex;
     else if (mLuaType_ == type::NIL)
-        mValue_ = var();
+        mValue_ = utils::any();
 
     pParent_->set_data(this);
 }
@@ -34,7 +34,7 @@ const std::string& data::get_name() const
     return sName_;
 }
 
-const var& data::get_value() const
+const utils::any& data::get_value() const
 {
     return mValue_;
 }

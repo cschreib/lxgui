@@ -6,9 +6,9 @@
 #include <memory>
 
 namespace lxgui {
-namespace lua
+namespace utils
 {
-typedef std::type_info var_type;
+typedef std::type_info any_type;
 
 /// Base type : untyped variable
 /** The purpose of this class is to have an untyped
@@ -16,48 +16,48 @@ typedef std::type_info var_type;
 *   of events, and a lot of other things.<br><br>
 *   It uses a little bit more memory than a simple object :<br>
 *   sizeof(void*) + sizeof(T)<br>... and has the overhead of
-*   using the v-table (because of inheritance). At last, var
+*   using the v-table (because of inheritance). At last, 'any'
 *   does a dynamic_cast (which is not the fastest thing in the
 *   world) each time you call get().<br>
 *   So this class is definatly slower than base types : <b>use it
 *   wisely</b>.
 *   \note This class is highly inspired from boost::any.
 */
-class var
+class any
 {
 public :
 
     /// Default constructor.
-    var() = default;
+    any() = default;
 
     /// Value assignment constructor.
     /** \param mValue The value to assign
     */
     template <class T>
-    var(const T& mValue) : pValue_(new value<T>(mValue)) {}
+    any(const T& mValue) : pValue_(new value<T>(mValue)) {}
 
     /// Copy constructor.
-    /** \param mVar The var to copy
+    /** \param mAny The other 'any' to copy
     */
-    var(const var& mVar);
+    any(const any& mAny);
 
     /// Move constructor.
-    /** \param mVar The var to move from
+    /** \param mAny The any to move from
     */
-    var(var&& mVar) = default;
+    any(any&& mAny) = default;
 
-    var& operator = (const var& mVar);
+    any& operator= (const any& mAny);
 
-    var& operator = (var&& mVar) = default;
+    any& operator= (any&& mAny) = default;
 
-    bool operator == (const var& mVar) const;
+    bool operator== (const any& mAny) const;
 
-    bool operator != (const var& mVar) const;
+    bool operator!= (const any& mAny) const;
 
     /// Swaps this value with another.
-    /** \param mVar the value to swap with this one
+    /** \param mAny the value to swap with this one
     */
-    void swap(var& mVar);
+    void swap(any& mAny);
 
     /// Returns the contained value.
     /** \return The contained value
@@ -73,15 +73,15 @@ public :
         if (pValue)
             return pValue->mT_;
 
-        throw lua::exception("var",
+        throw utils::exception("any",
             "Conversion from "+std::string(pValue ? "type \""+std::string(pValue_->get_type().name())
-            +"\"" : "empty lua::var")+" to \""+typeid(T).name()+"\" failed."
+            +"\"" : "empty utils::any")+" to \""+typeid(T).name()+"\" failed."
         );
     }
 
     /// Checks if this variable is empty.
     /** \return 'true' if this variable is empty
-    *   \note Only the default constructor of var returns
+    *   \note Only the default constructor of any returns
     *         an empty variable.
     */
     bool is_empty() const;
@@ -90,7 +90,7 @@ public :
     /** \return The type of the contained value
     *   \note Returns typeid(void) if the variable is empty.
     */
-    const var_type& get_type() const;
+    const any_type& get_type() const;
 
     /// Checks the contained value's type.
     /** \return 'true' if the contained value's type is the one
@@ -114,14 +114,14 @@ public :
     */
     std::string to_string() const;
 
-    static const var_type& VALUE_NONE;
-    static const var_type& VALUE_INT;
-    static const var_type& VALUE_UINT;
-    static const var_type& VALUE_FLOAT;
-    static const var_type& VALUE_DOUBLE;
-    static const var_type& VALUE_BOOL;
-    static const var_type& VALUE_STRING;
-    static const var_type& VALUE_POINTER;
+    static const any_type& VALUE_NONE;
+    static const any_type& VALUE_INT;
+    static const any_type& VALUE_UINT;
+    static const any_type& VALUE_FLOAT;
+    static const any_type& VALUE_DOUBLE;
+    static const any_type& VALUE_BOOL;
+    static const any_type& VALUE_STRING;
+    static const any_type& VALUE_POINTER;
 
 private :
 
@@ -134,7 +134,7 @@ private :
 
         virtual ~value_base() {}
         virtual value_base* clone() const = 0;
-        virtual const var_type& get_type() const = 0;
+        virtual const any_type& get_type() const = 0;
     };
 
     template <class T>
@@ -142,7 +142,7 @@ private :
     {
     public :
 
-        friend var;
+        friend any;
 
         explicit value(const T& mT) : mT_(mT) {}
 
@@ -151,7 +151,7 @@ private :
             return new value(mT_);
         }
 
-        const var_type& get_type() const
+        const any_type& get_type() const
         {
             return typeid(T);
         }

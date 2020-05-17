@@ -41,7 +41,7 @@ public :
     /// Returns this argument's value.
     /** \return This argument's value
     */
-    const var& get_value() const;
+    const utils::any& get_value() const;
 
     /// Returns this argument's Lua type.
     /** \return This argument's Lua type
@@ -51,7 +51,7 @@ public :
 private :
 
     std::string sName_;
-    var         mValue_;
+    utils::any  mValue_;
     type        mLuaType_ = type::NIL;
     argument*   pParent_ = nullptr;
 };
@@ -351,7 +351,7 @@ public :
 
     /// Adds nil to the return values.
     /** \param uiNbr The number of nil to push
-    *   \note Calling push(var()) does exactly the same thing. But this
+    *   \note Calling push(utils::any()) does exactly the same thing. But this
     *         function is clearer.
     */
     void push_nil(uint uiNbr = 1);

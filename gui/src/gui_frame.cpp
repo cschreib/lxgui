@@ -1281,7 +1281,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
                 // Set arguments
                 for (uint i = 0; i < pEvent->get_num_param(); ++i)
                 {
-                    const lua::var* pArg = pEvent->get(i);
+                    const utils::any* pArg = pEvent->get(i);
                     pLua->push(*pArg);
                     pLua->set_global("arg"+utils::to_string(i+1));
                 }

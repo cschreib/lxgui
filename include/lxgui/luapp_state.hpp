@@ -7,10 +7,13 @@
 #include <map>
 
 namespace lxgui {
+namespace utils
+{
+class any;
+}
+
 namespace lua
 {
-class var;
-
 enum class type
 {
     NONE,
@@ -95,7 +98,7 @@ public :
     *   \note This function wil throw an exception if any error occurs.
     *         Don't forget to catch them.
     */
-    void call_function(const std::string& sFunctionName, const std::vector<var>& lArgumentStack);
+    void call_function(const std::string& sFunctionName, const std::vector<utils::any>& lArgumentStack);
 
     /// Binds a C++ function to a Lua function.
     /** \param sFunctionName The name of the Lua function
@@ -188,7 +191,7 @@ public :
     /// Puts a value on the stack.
     /** \param vValue The value to push on the stack
     */
-    void push(const var& vValue);
+    void push(const utils::any& vValue);
 
     /// pushes a copy of the value at the given index on the stack.
     /** \param iIndex The index of the value to push
@@ -267,7 +270,7 @@ public :
     /** \param iIndex The index at which to search for the value
     *   \return The value at the given index
     */
-    var get_value(int iIndex = -1);
+    utils::any get_value(int iIndex = -1);
 
     /// Returns the user data (C++ pointer) at the given index.
     template<class T>

@@ -2,95 +2,89 @@
 #include <lxgui/utils_string.hpp>
 
 namespace lxgui {
-namespace lua
+namespace utils
 {
-const var_type& var::VALUE_NONE    = typeid(void);
-const var_type& var::VALUE_INT     = typeid(int);
-const var_type& var::VALUE_UINT    = typeid(uint);
-const var_type& var::VALUE_FLOAT   = typeid(float);
-const var_type& var::VALUE_DOUBLE  = typeid(double);
-const var_type& var::VALUE_BOOL    = typeid(bool);
-const var_type& var::VALUE_STRING  = typeid(std::string);
-const var_type& var::VALUE_POINTER = typeid(void*);
+const any_type& any::VALUE_NONE    = typeid(void);
+const any_type& any::VALUE_INT     = typeid(int);
+const any_type& any::VALUE_UINT    = typeid(uint);
+const any_type& any::VALUE_FLOAT   = typeid(float);
+const any_type& any::VALUE_DOUBLE  = typeid(double);
+const any_type& any::VALUE_BOOL    = typeid(bool);
+const any_type& any::VALUE_STRING  = typeid(std::string);
+const any_type& any::VALUE_POINTER = typeid(void*);
 
-var::var(const var& mVar) : pValue_(mVar.pValue_ ? mVar.pValue_->clone() : nullptr)
+any::any(const any& mAny) : pValue_(mAny.pValue_ ? mAny.pValue_->clone() : nullptr)
 {
 }
 
-var& var::operator = (const var& mVar)
+any& any::operator = (const any& mAny)
 {
-    if (&mVar != this)
+    if (&mAny != this)
     {
-        var mTemp(mVar);
+        any mTemp(mAny);
         swap(mTemp);
     }
 
     return *this;
 }
 
-bool var::operator == (const var& mVar) const
+template<typename T>
+bool compare(const any& mAny1, const any& mAny2)
 {
-    if (get_type() == mVar.get_type())
+    return mAny1.get<T>() == mAny2.get<T>();
+}
+
+bool any::operator == (const any& mAny) const
+{
+    if (get_type() != mAny.get_type())
+        return false;
+
+    if (is_of_type<std::string>())
     {
-        if (is_of_type<std::string>())
-        {
-            std::string s1 = get<std::string>();
-            std::string s2 = mVar.get<std::string>();
-            return s1 == s2;
-        }
-        else if (is_of_type<float>())
-        {
-            float f1 = get<float>();
-            float f2 = mVar.get<float>();
-            return f1 == f2;
-        }
-        else if (is_of_type<double>())
-        {
-            double d1 = get<double>();
-            double d2 = mVar.get<double>();
-            return d1 == d2;
-        }
-        else if (is_of_type<int>())
-        {
-            int i1 = get<int>();
-            int i2 = mVar.get<int>();
-            return i1 == i2;
-        }
-        else if (is_of_type<uint>())
-        {
-            uint ui1 = get<uint>();
-            uint ui2 = mVar.get<uint>();
-            return ui1 == ui2;
-        }
-        else if (is_of_type<bool>())
-        {
-            bool b1 = get<bool>();
-            bool b2 = mVar.get<bool>();
-            return b1 == b2;
-        }
-        else if (is_of_type<void>())
-            return true;
+        return compare<std::string>(*this, mAny);
     }
-
-    return false;
+    else if (is_of_type<float>())
+    {
+        return compare<float>(*this, mAny);
+    }
+    else if (is_of_type<double>())
+    {
+        return compare<double>(*this, mAny);
+    }
+    else if (is_of_type<int>())
+    {
+        return compare<int>(*this, mAny);
+    }
+    else if (is_of_type<uint>())
+    {
+        return compare<uint>(*this, mAny);
+    }
+    else if (is_of_type<bool>())
+    {
+        return compare<bool>(*this, mAny);
+    }
+    else if (is_of_type<void>())
+        return true;
+    else
+        return false;
 }
 
-bool var::operator != (const var& mVar) const
+bool any::operator != (const any& mAny) const
 {
-    return !(operator == (mVar));
+    return !(operator == (mAny));
 }
 
-void var::swap(var& mVar)
+void any::swap(any& mAny)
 {
-    std::swap(pValue_, mVar.pValue_);
+    std::swap(pValue_, mAny.pValue_);
 }
 
-bool var::is_empty() const
+bool any::is_empty() const
 {
     return (pValue_ == nullptr);
 }
 
-const var_type& var::get_type() const
+const any_type& any::get_type() const
 {
     if (pValue_)
     {
@@ -102,9 +96,9 @@ const var_type& var::get_type() const
     }
 }
 
-std::string var::to_string() const
+std::string any::to_string() const
 {
-    const var_type& mType = get_type();
+    const any_type& mType = get_type();
 
     if (mType == VALUE_INT)          return utils::to_string(get<int>());
     else if (mType == VALUE_UINT)    return utils::to_string(get<uint>())+"u";
