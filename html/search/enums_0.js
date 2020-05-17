@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['alignment',['alignment',['../classgui_1_1text.html#abc25c30554e9d0e6954f50bbc6a9293c',1,'gui::text']]],
-  ['anchor_5fpoint',['anchor_point',['../namespacegui.html#a381657e8cc92a7f9935ff660c966d6cd',1,'gui']]],
-  ['anchor_5ftype',['anchor_type',['../namespacegui.html#a1a1ac5a9cb28fb126597a4764b81e087',1,'gui']]],
-  ['attribute_5ftype',['attribute_type',['../namespacexml.html#a6284f6f0c0774ebfd16d93985a24ca42',1,'xml']]]
+  ['alignment',['alignment',['../classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5',1,'lxgui::gui::text']]],
+  ['anchor_5fpoint',['anchor_point',['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4',1,'lxgui::gui']]],
+  ['anchor_5ftype',['anchor_type',['../namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbe',1,'lxgui::gui']]],
+  ['attribute_5ftype',['attribute_type',['../namespacelxgui_1_1xml.html#a1bcf42a37d7676a4751e73aee325716b',1,'lxgui::xml']]]
 ];

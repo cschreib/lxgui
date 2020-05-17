@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['mouse_5fbutton',['mouse_button',['../namespaceinput.html#a5106f01485094bcdc91dbd9d84e1bd24',1,'input']]],
-  ['mouse_5fstate',['mouse_state',['../namespaceinput.html#a7e87a643847fa4bfb5a0b3a9525ecfa7',1,'input']]]
+  ['mouse_5fbutton',['mouse_button',['../namespacelxgui_1_1input.html#a73db087bbe736e8e1604fa9b6adb7b43',1,'lxgui::input']]],
+  ['mouse_5fstate',['mouse_state',['../namespacelxgui_1_1input.html#ade8dc87d1330829b43300424689b3e89',1,'lxgui::input']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['g',['g',['../classgui_1_1color.html#a02459e7776d5660538931db5a9a5e847',1,'gui::color::g()'],['../structgui_1_1gl_1_1ub32color.html#a9524322a1ca8e828c0b49832bb2d6545',1,'gui::gl::ub32color::g()']]],
-  ['green',['GREEN',['../classgui_1_1color.html#a8277ae6178fcf35c89b2253494566954',1,'gui::color']]],
-  ['grey',['GREY',['../classgui_1_1color.html#a2331fb0d6ab059b85eacdd32c3ed87b0',1,'gui::color']]]
+  ['g',['g',['../classlxgui_1_1gui_1_1color.html#a7fd5b0879724547c64af79c9d6f02cb6',1,'lxgui::gui::color::g()'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#acad07de09d48955e92f4be14c239fd7c',1,'lxgui::gui::gl::ub32color::g()']]],
+  ['green',['GREEN',['../classlxgui_1_1gui_1_1color.html#a44ae1e195aaf26f53a65bb7110638638',1,'lxgui::gui::color']]],
+  ['grey',['GREY',['../classlxgui_1_1gui_1_1color.html#acb4249a5b307c1e41b71c0d5c947f12c',1,'lxgui::gui::color']]]
 ];

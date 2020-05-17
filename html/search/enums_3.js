@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['filter',['filter',['../classgui_1_1material.html#a22f19bb5a4034f6a2434b7f31bf5a5d1',1,'gui::material']]],
-  ['frame_5fstrata',['frame_strata',['../namespacegui.html#a06c18a991d2896335961a7962df07a4c',1,'gui']]]
+  ['filter',['filter',['../classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6',1,'lxgui::gui::material']]],
+  ['frame_5fstrata',['frame_strata',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6',1,'lxgui::gui']]]
 ];

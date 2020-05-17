@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['blend_5fmode',['blend_mode',['../classgui_1_1texture.html#a3cff462840d2bb2a27f5313797681f1e',1,'gui::texture::blend_mode()'],['../namespacegui.html#a97287d4c5a4873814c1cce2015954dd4',1,'gui::blend_mode()']]]
+  ['blend_5fmode',['blend_mode',['../classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036',1,'lxgui::gui::texture::blend_mode()'],['../namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f',1,'lxgui::gui::blend_mode()']]]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['start_5ftype',['start_type',['../classgui_1_1periodic__timer.html#a81558b142d47e124792128a54c1de9f9',1,'gui::periodic_timer']]],
-  ['state',['state',['../classgui_1_1button.html#ab50b80fc0acf22b6aa57008ee9e40b0c',1,'gui::button']]]
+  ['start_5ftype',['start_type',['../classlxgui_1_1gui_1_1periodic__timer.html#a031a8573b66178d62d1a16ec6339c15f',1,'lxgui::gui::periodic_timer']]],
+  ['state',['state',['../classlxgui_1_1gui_1_1button.html#a42d6442bdeb36a231bad4d5fbf1669b6',1,'lxgui::gui::button']]]
 ];

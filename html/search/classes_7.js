@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hls',['hls',['../structgui_1_1color_1_1hls.html',1,'gui::color']]]
+  ['hls',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]]
 ];

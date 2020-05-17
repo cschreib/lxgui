@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['empty',['EMPTY',['../classgui_1_1color.html#ab6cbcb23cf445f7cb0f42cf9d673fb96',1,'gui::color']]],
-  ['error',['error',['../namespacegui.html#a1cbadc6d772092f4d3a975eba6576da8',1,'gui']]]
+  ['empty',['EMPTY',['../classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75',1,'lxgui::gui::color']]],
+  ['error',['error',['../namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48',1,'lxgui::gui']]]
 ];

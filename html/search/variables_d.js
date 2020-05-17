@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['out',['out',['../classxml_1_1document.html#ab95d8cf6a485915fc1989ed30d8b39ed',1,'xml::document::out()'],['../namespacegui.html#a3cc79a67c5538a11b85d8c0a9eda58e0',1,'gui::out()']]],
-  ['outline_5fquality',['OUTLINE_QUALITY',['../namespacegui.html#a3afd09e5b47992537e011bc81cfd1162',1,'gui']]],
-  ['outline_5fthickness',['OUTLINE_THICKNESS',['../namespacegui.html#a9c816c45313c79a3e83d25e6231bb465',1,'gui']]]
+  ['out',['out',['../classlxgui_1_1xml_1_1document.html#a69043c7d2818aafd4a42fa89427f8574',1,'lxgui::xml::document::out()'],['../namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7',1,'lxgui::gui::out()']]],
+  ['outline_5fquality',['OUTLINE_QUALITY',['../namespacelxgui_1_1gui.html#a1d2ce4a22e7276b914d7a1279d966894',1,'lxgui::gui']]],
+  ['outline_5fthickness',['OUTLINE_THICKNESS',['../namespacelxgui_1_1gui.html#a0672436c6bcf231aef7a7528b16e0e6e',1,'lxgui::gui']]]
 ];

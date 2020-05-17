@@ -1,15 +1,15 @@
 var searchData=
 [
-  ['h2_5fto_5frgb',['h2_to_rgb',['../namespacegui.html#ab234f83e5fdaeddb18ba10d783887e7a',1,'gui']]],
-  ['has_5fblock',['has_block',['../classxml_1_1block.html#a10fddae94c10ff393ce5761a744a6465',1,'xml::block']]],
-  ['has_5fderivated',['has_derivated',['../classxml_1_1block.html#a1ccc72aa993562e8fece0f63a7815325',1,'xml::block']]],
-  ['has_5fradio_5fchildren',['has_radio_children',['../classxml_1_1block.html#aaa3fbaacf5387e415d501c794ec494ba',1,'xml::block']]],
-  ['has_5fscript',['has_script',['../classgui_1_1frame.html#a0dc0e80187d58ac94aa22a152b7986ef',1,'gui::frame']]],
-  ['has_5fshadow',['has_shadow',['../classgui_1_1font__string.html#abf0025baca87fee14f2cc4f7917ece4a',1,'gui::font_string']]],
-  ['has_5fwindow_5fresized',['has_window_resized',['../classinput_1_1source__impl.html#a1049b70c8b8b123d94b9dd6d931f9961',1,'input::source_impl']]],
-  ['height',['height',['../classgui_1_1quad2.html#a7b18cba5d0519c1560197ed9360dbb38',1,'gui::quad2']]],
-  ['hide',['hide',['../classgui_1_1frame.html#ad6035dc41340e42685caf4dca8b6c81f',1,'gui::frame::hide()'],['../classgui_1_1layered__region.html#a16fa77d5a96b14992a333052b4c3e679',1,'gui::layered_region::hide()'],['../classgui_1_1uiobject.html#a34ed00d0b649f51f2bf4f5c36e713a42',1,'gui::uiobject::hide()']]],
-  ['highlight',['highlight',['../classgui_1_1button.html#a596c55449b9a9aae021ab4ebd53cded0',1,'gui::button']]],
-  ['highlight_5ftext',['highlight_text',['../classgui_1_1edit__box.html#a38a91835dbf22d296b06184ef9ae2e51',1,'gui::edit_box']]],
-  ['hue',['hue',['../classgui_1_1color.html#a98d9a0ce5ddc302973ff2da2cc1a05de',1,'gui::color']]]
+  ['h2_5fto_5frgb',['h2_to_rgb',['../namespacelxgui_1_1gui.html#a5944b9b630452f07035db39fa8a31ac3',1,'lxgui::gui']]],
+  ['has_5fblock',['has_block',['../classlxgui_1_1xml_1_1block.html#ab8048bace2c3678c9384cfb9b6fcdf69',1,'lxgui::xml::block']]],
+  ['has_5fderivated',['has_derivated',['../classlxgui_1_1xml_1_1block.html#aa8a60ed90dca3c556f01264ed125c34f',1,'lxgui::xml::block']]],
+  ['has_5fradio_5fchildren',['has_radio_children',['../classlxgui_1_1xml_1_1block.html#aeb73745f47bcc6b53fdd4a54b0292922',1,'lxgui::xml::block']]],
+  ['has_5fscript',['has_script',['../classlxgui_1_1gui_1_1frame.html#ac71cb35bdacacd1e3598a8ec57f5e218',1,'lxgui::gui::frame']]],
+  ['has_5fshadow',['has_shadow',['../classlxgui_1_1gui_1_1font__string.html#a48276c974081111a0e983247f54defcf',1,'lxgui::gui::font_string']]],
+  ['has_5fwindow_5fresized',['has_window_resized',['../classlxgui_1_1input_1_1source__impl.html#ad3c52f233cbe788ff0cc0e592d436d0b',1,'lxgui::input::source_impl']]],
+  ['height',['height',['../classlxgui_1_1gui_1_1quad2.html#a367e62a084cc2dca40b9e50031fc16ee',1,'lxgui::gui::quad2']]],
+  ['hide',['hide',['../classlxgui_1_1gui_1_1frame.html#ab1c83c9960671fec365a2ab31659947b',1,'lxgui::gui::frame::hide()'],['../classlxgui_1_1gui_1_1layered__region.html#ae239f110c864bab9470644d9670c4224',1,'lxgui::gui::layered_region::hide()'],['../classlxgui_1_1gui_1_1uiobject.html#a98e6af6fd9584177f5bdf8823a1432d9',1,'lxgui::gui::uiobject::hide()']]],
+  ['highlight',['highlight',['../classlxgui_1_1gui_1_1button.html#a8d16306d9176c5c7c7838f1390004ca1',1,'lxgui::gui::button']]],
+  ['highlight_5ftext',['highlight_text',['../classlxgui_1_1gui_1_1edit__box.html#ada97df13a9111ded563852b1f93cf35a',1,'lxgui::gui::edit_box']]],
+  ['hue',['hue',['../classlxgui_1_1gui_1_1color.html#aa4e11fc07be85123c4b9cea688bd0c56',1,'lxgui::gui::color']]]
 ];

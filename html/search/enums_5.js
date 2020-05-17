@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['layer_5ftype',['layer_type',['../namespacegui.html#a43b495ff7e6ae0dcd1314526a4db08c0',1,'gui']]]
+  ['layer_5ftype',['layer_type',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85',1,'lxgui::gui']]]
 ];

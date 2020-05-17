@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['orientation',['orientation',['../classgui_1_1gradient.html#a39ca654b694af2eb2a3959c708855ac6',1,'gui::gradient::orientation()'],['../classgui_1_1slider.html#a2768d5772e39e44bae608f34edb2b656',1,'gui::slider::orientation()'],['../classgui_1_1status__bar.html#a880ba76f1b9df6466ab3b22f21125d60',1,'gui::status_bar::orientation()']]]
+  ['orientation',['orientation',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0',1,'lxgui::gui::gradient::orientation()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1',1,'lxgui::gui::slider::orientation()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45',1,'lxgui::gui::status_bar::orientation()']]]
 ];

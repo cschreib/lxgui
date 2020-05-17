@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['warning',['warning',['../namespacegui.html#a9b2d53a6f7912e0de3a8ec531cb9b202',1,'gui']]],
-  ['white',['WHITE',['../classgui_1_1color.html#abed8419e76deca07f2bc6aae560f7338',1,'gui::color']]]
+  ['warning',['warning',['../namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa',1,'lxgui::gui']]],
+  ['white',['WHITE',['../classlxgui_1_1gui_1_1color.html#a12be09afaca2d718d5be8c8db796feea',1,'lxgui::gui::color']]]
 ];

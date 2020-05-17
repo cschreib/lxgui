@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['quad2',['quad2',['../classgui_1_1quad2.html#a7134fa7c81575a0e5ecc99add8af6a55',1,'gui::quad2::quad2()=default'],['../classgui_1_1quad2.html#a021eeaa1ee7e7c680748fb18f927c61e',1,'gui::quad2::quad2(T mLeft, T mRight, T mTop, T mBottom)']]]
+  ['quad2',['quad2',['../classlxgui_1_1gui_1_1quad2.html#a584702f27e034bd8f258a2fdec8858d9',1,'lxgui::gui::quad2::quad2()=default'],['../classlxgui_1_1gui_1_1quad2.html#a2603d3492a482640627df4abea564078',1,'lxgui::gui::quad2::quad2(T mLeft, T mRight, T mTop, T mBottom)']]]
 ];

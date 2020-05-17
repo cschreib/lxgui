@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vertical_5falignment',['vertical_alignment',['../classgui_1_1text.html#afc04e0269e34fe88accfe408e06b40d4',1,'gui::text']]]
+  ['vertical_5falignment',['vertical_alignment',['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737f',1,'lxgui::gui::text']]]
 ];

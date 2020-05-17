@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x',['x',['../classgui_1_1vector2.html#a67ebaffa864e61413c2a47732a189984',1,'gui::vector2::x()'],['../classgui_1_1vector2.html#a7643e549d774632884d5004180e32425',1,'gui::vector2::X()']]]
+  ['x',['X',['../classlxgui_1_1gui_1_1vector2.html#af2ae46cfccebe0427d5ead2d2680efb3',1,'lxgui::gui::vector2::X()'],['../classlxgui_1_1gui_1_1vector2.html#ac037bb55646661432417761d9f096bcf',1,'lxgui::gui::vector2::x()']]]
 ];
