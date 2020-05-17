@@ -3,6 +3,7 @@
 
 #include <lxgui/utils.hpp>
 
+namespace lxgui {
 namespace gui
 {
     /// A class that holds rendering data
@@ -65,6 +66,7 @@ namespace gui
         */
         virtual float get_real_height() const = 0;
     };
+}
 }
 
 #endif

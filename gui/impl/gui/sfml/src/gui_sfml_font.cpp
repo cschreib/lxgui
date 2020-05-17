@@ -4,6 +4,7 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -77,6 +78,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 utils::wptr<gui::material> font::get_texture() const
 {
     return pTexture_;
+}
 }
 }
 }

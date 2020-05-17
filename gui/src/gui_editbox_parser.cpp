@@ -5,6 +5,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void edit_box::parse_block(xml::block* pBlock)
@@ -93,5 +94,6 @@ void edit_box::parse_text_insets_block_(xml::block* pBlock)
             utils::string_to_int(pTextInsetsBlock->get_attribute("bottom"))
         );
     }
+}
 }
 }

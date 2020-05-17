@@ -11,6 +11,7 @@
 
 #include <vector>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -202,6 +203,7 @@ namespace sfml
 
         static const uint MAXIMUM_SIZE;
     };
+}
 }
 }
 

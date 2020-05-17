@@ -7,6 +7,7 @@
 
 #include <vector>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -208,6 +209,7 @@ namespace gl
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;
     };
+}
 }
 }
 

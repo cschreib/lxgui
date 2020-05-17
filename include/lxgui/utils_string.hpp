@@ -11,6 +11,7 @@
 
 /** \cond NOT_REMOVE_FROM_DOC
 */
+namespace lxgui {
 namespace utils
 {
 typedef std::string                 string;
@@ -288,6 +289,7 @@ string to_string(T* p)
         return to_string(reinterpret_cast<std::size_t>(p));
     else
         return "NULL";
+}
 }
 }
 

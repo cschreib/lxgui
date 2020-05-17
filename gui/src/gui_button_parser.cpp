@@ -6,6 +6,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void button::parse_block(xml::block* pBlock)
@@ -97,5 +98,6 @@ void button::parse_block(xml::block* pBlock)
 
     if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
         set_text(pBlock->get_attribute("text"));
+}
 }
 }

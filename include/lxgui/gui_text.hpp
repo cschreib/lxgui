@@ -12,6 +12,7 @@
 #include <map>
 #include <array>
 
+namespace lxgui {
 namespace gui
 {
     class  manager;
@@ -362,6 +363,7 @@ namespace gui
 
         utils::refptr<font> pFont_;
     };
+}
 }
 
 #endif

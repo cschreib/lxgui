@@ -3,6 +3,7 @@
 
 #include <lxgui/utils_exception.hpp>
 
+namespace lxgui {
 namespace lua
 {
 class exception : public utils::exception
@@ -17,6 +18,7 @@ public :
     {
     }
 };
+}
 }
 
 #endif

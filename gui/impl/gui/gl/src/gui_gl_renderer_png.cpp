@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -116,6 +117,7 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
 
         return nullptr;
     }
+}
 }
 }
 }

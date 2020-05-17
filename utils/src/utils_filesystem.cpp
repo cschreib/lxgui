@@ -16,6 +16,8 @@
     #include <cstring>
     #include <cstdio>
 
+namespace
+{
     struct _finddata_t
     {
         char *name;
@@ -146,12 +148,14 @@
 
         return ret;
     }
+}
 #else
     #include <windows.h>
     #include <direct.h>
     #include <io.h>
 #endif
 
+namespace lxgui {
 namespace utils
 {
 bool file_exists(const std::string& file)
@@ -334,5 +338,6 @@ bool make_directory(const std::string& sPath)
     }
 
     return true;
+}
 }
 }

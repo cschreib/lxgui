@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -14,6 +15,7 @@ std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow, const st
         sLocale, mWindow.getSize().x, mWindow.getSize().y,
         std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow))
     ));
+}
 }
 }
 }

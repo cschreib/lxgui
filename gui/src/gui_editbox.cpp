@@ -7,8 +7,9 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input.hpp"
 
-using namespace input;
+using namespace lxgui::input;
 
+namespace lxgui {
 namespace gui
 {
 edit_box::edit_box(manager* pManager) : focus_frame(pManager),
@@ -1290,5 +1291,6 @@ void periodic_timer::zero()
 void periodic_timer::update(double dDelta)
 {
     dElapsed_ += dDelta;
+}
 }
 }

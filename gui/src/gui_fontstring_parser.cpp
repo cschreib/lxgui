@@ -3,6 +3,7 @@
 
 #include <lxgui/xml_document.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void font_string::parse_block(xml::block* pBlock)
@@ -101,5 +102,6 @@ void font_string::parse_shadow_block_(xml::block* pBlock)
             );
         }
     }
+}
 }
 }

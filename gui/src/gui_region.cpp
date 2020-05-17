@@ -1,5 +1,6 @@
 #include "lxgui/gui_region.hpp"
 
+namespace lxgui {
 namespace gui
 {
 region::region(manager* pManager) : uiobject(pManager)
@@ -24,5 +25,6 @@ bool region::is_in_region(int iX, int iY) const
 {
     return ((lBorderList_.left <= iX && iX <= lBorderList_.right  - 1) &&
             (lBorderList_.top  <= iY && iY <= lBorderList_.bottom - 1));
+}
 }
 }

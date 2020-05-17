@@ -3,6 +3,7 @@
 
 #include "lxgui/utils.hpp"
 
+namespace lxgui {
 namespace utils
 {
 template<class> class wptr;
@@ -453,6 +454,7 @@ private :
     uint* pCounter_ = nullptr;
     uint* pWCounter_ = nullptr;
 };
+}
 }
 
 #endif

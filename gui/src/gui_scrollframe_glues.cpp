@@ -4,6 +4,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void scroll_frame::register_glue(lua::state* pLua)
@@ -159,5 +160,6 @@ int lua_scroll_frame::_set_vertical_scroll(lua_State* pLua)
     }
 
     return mFunc.on_return();
+}
 }
 }

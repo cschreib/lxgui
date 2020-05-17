@@ -5,6 +5,7 @@
 #include <string>
 #include "lxgui/gui_vector2.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class uiobject;
@@ -194,6 +195,7 @@ namespace gui
         mutable std::string     sParent_;
         mutable bool            bParentUpdated_ = false;
     };
+}
 }
 
 #endif

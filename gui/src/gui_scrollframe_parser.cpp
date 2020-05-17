@@ -3,6 +3,7 @@
 
 #include <lxgui/xml_document.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void scroll_frame::parse_block(xml::block* pBlock)
@@ -55,5 +56,6 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
             }
         }
     }
+}
 }
 }

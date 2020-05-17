@@ -5,6 +5,7 @@
 #include <iosfwd>
 #include <lxgui/utils.hpp>
 
+namespace lxgui {
 namespace gui
 {
     template<class T>
@@ -168,6 +169,7 @@ namespace gui
     {
         return mStream << mV.x << ", " << mV.y;
     }
+}
 }
 
 #endif

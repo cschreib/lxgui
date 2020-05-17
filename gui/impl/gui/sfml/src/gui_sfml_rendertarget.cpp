@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -62,6 +63,7 @@ utils::wptr<sfml::material> render_target::get_material()
 sf::RenderTexture* render_target::get_render_texture()
 {
     return pRenderTexture_;
+}
 }
 }
 }

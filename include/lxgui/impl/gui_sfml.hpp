@@ -3,6 +3,7 @@
 
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -12,6 +13,7 @@ namespace sfml
     *   \return The new gui::manager instance
     */
     std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow, const std::string& sLocale);
+}
 }
 }
 

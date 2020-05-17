@@ -4,6 +4,7 @@
 #include "lxgui/luapp_var.hpp"
 #include <map>
 
+namespace lxgui {
 namespace lua
 {
 class argument;
@@ -388,6 +389,7 @@ private :
     std::vector<argument_list> lArgListStack_;
     argument_list*             pArgList_;
 };
+}
 }
 
 #endif

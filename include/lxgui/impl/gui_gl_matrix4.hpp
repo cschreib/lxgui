@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <iosfwd>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -65,6 +66,7 @@ namespace gl
     };
 
     std::ostream& operator << (std::ostream& o, const matrix4& m);
+}
 }
 }
 

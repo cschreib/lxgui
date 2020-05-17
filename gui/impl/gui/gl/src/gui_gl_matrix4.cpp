@@ -1,6 +1,7 @@
 #include "lxgui/impl/gui_gl_matrix4.hpp"
 #include <iostream>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -285,6 +286,7 @@ std::ostream& operator << (std::ostream& o, const matrix4& m)
       << "(" << m(1,0) << ", " << m(1,1) << ", " << m(1,2) << ", " << m(1,3) << ")\n"
       << "(" << m(2,0) << ", " << m(2,1) << ", " << m(2,2) << ", " << m(2,3) << ")\n"
       << "(" << m(3,0) << ", " << m(3,1) << ", " << m(3,2) << ", " << m(3,3) << ")\n";
+}
 }
 }
 }

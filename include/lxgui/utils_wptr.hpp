@@ -3,6 +3,7 @@
 
 #include "lxgui/utils.hpp"
 
+namespace lxgui {
 namespace utils
 {
 template<class T>
@@ -557,6 +558,7 @@ private :
     uint* pCounter_ = nullptr;
     uint* pWCounter_ = nullptr;
 };
+}
 }
 
 

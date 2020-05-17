@@ -3,6 +3,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 lua_layered_region::lua_layered_region(lua_State* pLua) : lua_uiobject(pLua)
@@ -43,5 +44,6 @@ int lua_layered_region::_get_draw_layer(lua_State* pLua)
     }
 
     return mFunc.on_return();
+}
 }
 }

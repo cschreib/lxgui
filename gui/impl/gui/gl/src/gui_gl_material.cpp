@@ -25,6 +25,7 @@ T log2(T v)
 }
 #endif
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -377,6 +378,7 @@ void material::check_availability()
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max);
     MAXIMUM_SIZE = max;
     gui::out << "Note : maximum texture size is " << MAXIMUM_SIZE << "." << std::endl;
+}
 }
 }
 }

@@ -9,6 +9,7 @@
 #include <lxgui/utils_filesystem.hpp>
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 texture::texture(manager* pManager) : layered_region(pManager)
@@ -424,5 +425,6 @@ void texture::set_vertex_color(const color& mColor)
         gui::out << gui::error << "gui::" << lType_.back() << " : "
             << "Trying to set vertex color of an uninitialized texture : " << sName_ << "." << std::endl;
     }
+}
 }
 }

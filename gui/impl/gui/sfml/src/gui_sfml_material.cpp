@@ -3,6 +3,7 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -296,6 +297,7 @@ const sf::Texture* material::get_texture() const
         return &pTexData_->mRenderTexture_.getTexture();
     else
         return &pTexData_->mTexture_;
+}
 }
 }
 }

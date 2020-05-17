@@ -11,6 +11,7 @@
 #include <sstream>
 #include <functional>
 
+namespace lxgui {
 namespace gui
 {
 int l_xml_error(lua_State*);
@@ -1924,5 +1925,6 @@ layer_type layer::get_layer_type(const std::string& sLayer)
 
         return layer_type::ARTWORK;
     }
+}
 }
 }

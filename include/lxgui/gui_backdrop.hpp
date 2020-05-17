@@ -5,6 +5,7 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_quad2.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class frame;
@@ -194,6 +195,7 @@ namespace gui
         uint   uiEdgeSize_ = 0u;
         uint   uiOriginalEdgeSize_ = 0u;
     };
+}
 }
 
 #endif

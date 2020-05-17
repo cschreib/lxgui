@@ -8,6 +8,7 @@ typedef unsigned long ulong;
 typedef unsigned int  uint;
 typedef unsigned char uchar;
 
+namespace lxgui {
 namespace math
 {
     #ifdef MSVC
@@ -210,6 +211,7 @@ namespace utils
             return reverse_key_range<T>(container);
         }
     }
+}
 }
 
 #endif

@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_button.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// A button with two additional states : checked and unchecked
@@ -120,7 +121,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_check_button>::RegType methods[];
+        static lua::Lunar<lua_check_button>::RegType methods[];
 
     protected :
 
@@ -129,6 +130,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

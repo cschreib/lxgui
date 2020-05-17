@@ -2,6 +2,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void edit_box::register_glue(lua::state* pLua)
@@ -318,5 +319,6 @@ int lua_edit_box::_set_text_insets(lua_State* pLua)
     }
 
     return mFunc.on_return();
+}
 }
 }

@@ -9,44 +9,45 @@ namespace sf {
     class Event;
 }
 
-namespace input
+namespace lxgui {
+namespace input {
+namespace sfml
 {
-    namespace sfml
+    class source : public source_impl
     {
-        class source : public source_impl
-        {
-        public :
+    public :
 
-            /// Initializes this input source.
-            /** \param pWindow The window from which to receive input
-            */
-            explicit source(const sf::Window& pWindow, bool bMouseGrab = false);
+        /// Initializes this input source.
+        /** \param pWindow The window from which to receive input
+        */
+        explicit source(const sf::Window& pWindow, bool bMouseGrab = false);
 
-            source(const source&) = delete;
-            source& operator = (const source&) = delete;
+        source(const source&) = delete;
+        source& operator = (const source&) = delete;
 
-            void toggle_mouse_grab() override;
-            std::string get_key_name(key mKey) const;
+        void toggle_mouse_grab() override;
+        std::string get_key_name(key mKey) const;
 
-            void on_sfml_event(const sf::Event& mEvent);
+        void on_sfml_event(const sf::Event& mEvent);
 
-        protected :
+    protected :
 
-            void update_() override;
+        void update_() override;
 
-        private :
+    private :
 
-            input::key from_sfml_(int uiSFKey) const;
+        input::key from_sfml_(int uiSFKey) const;
 
-            const sf::Window& mWindow_;
+        const sf::Window& mWindow_;
 
-            bool bMouseGrab_;
-            bool bFirst_;
+        bool bMouseGrab_;
+        bool bFirst_;
 
-            float fOldMouseX_, fOldMouseY_;
-            float fWheelCache_;
-        };
-    }
+        float fOldMouseX_, fOldMouseY_;
+        float fWheelCache_;
+    };
+}
+}
 }
 
 #endif

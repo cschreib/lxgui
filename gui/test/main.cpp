@@ -44,6 +44,8 @@
 
 #include <fstream>
 
+using namespace lxgui;
+
 int l_get_folder_list(lua_State* pLua);
 int l_get_file_list(lua_State* pLua);
 int l_cut_file_path(lua_State* pLua);

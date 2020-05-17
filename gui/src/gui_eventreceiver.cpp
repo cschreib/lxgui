@@ -1,6 +1,7 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 
+namespace lxgui {
 namespace gui
 {
 event_receiver::event_receiver(event_manager* pManager) :
@@ -32,5 +33,6 @@ void event_receiver::set_event_manager(event_manager* pManager)
         pEventManager_->unregister_receiver(this);
 
     pEventManager_ = pManager;
+}
 }
 }

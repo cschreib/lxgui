@@ -7,6 +7,7 @@
 #include <iostream>
 #include <deque>
 
+namespace lxgui {
 namespace lua
 {
 const luaL_Reg lualibs[] = {
@@ -1116,5 +1117,6 @@ void state::set_field_bool(int iID, bool bValue)
 void state::set_top(uint uiSize)
 {
     lua_settop(pLua_, uiSize);
+}
 }
 }

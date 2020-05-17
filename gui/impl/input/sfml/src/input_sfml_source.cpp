@@ -9,6 +9,7 @@
 using sf::Keyboard;
 using sf::Mouse;
 
+namespace lxgui {
 namespace input {
 namespace sfml
 {
@@ -233,6 +234,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mouse_button mButton = lMouseFromSFML[mEvent.mouseButton.button];
         mMouse_.lButtonState[(uint)mButton] = false;
     }
+}
 }
 }
 }

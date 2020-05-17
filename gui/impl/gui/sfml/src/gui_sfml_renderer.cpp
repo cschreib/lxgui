@@ -10,6 +10,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -205,5 +206,6 @@ void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
     mWindow_.setView(sf::View(mVisibleArea));
 }
 
+}
 }
 }

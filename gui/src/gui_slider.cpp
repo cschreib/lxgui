@@ -7,6 +7,7 @@
 
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 #ifdef MSVC
@@ -505,5 +506,6 @@ void slider::create_glue()
 void slider::fire_update_thumb_texture_() const
 {
     bUpdateThumbTexture_ = true;
+}
 }
 }

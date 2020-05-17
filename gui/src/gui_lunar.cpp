@@ -23,11 +23,12 @@
 
 #define method(widget, function) {#function, &lua_##widget::_##function}
 
+namespace lxgui {
 namespace gui
 {
     const char lua_virtual_glue::className[] = "VirtualGlue";
     const char* lua_virtual_glue::classList[] = {"VirtualGlue", 0};
-    Lunar<lua_virtual_glue>::RegType lua_virtual_glue::methods[] = {
+    lua::Lunar<lua_virtual_glue>::RegType lua_virtual_glue::methods[] = {
         {"dt", &lua_virtual_glue::get_data_table},
 
         // VirtualGlue
@@ -43,7 +44,7 @@ namespace gui
         "Frame", "FocusFrame", "Button", "CheckButton", "EditBox", "ScrollFrame",
         "Slider", "StatusBar", "LayeredRegion", "Texture", "FontString", 0
     };
-    Lunar<lua_uiobject>::RegType lua_uiobject::methods[] = {
+    lua::Lunar<lua_uiobject>::RegType lua_uiobject::methods[] = {
         {"dt", &lua_uiobject::get_data_table},
 
         // uiobject
@@ -83,7 +84,7 @@ namespace gui
         "FocusFrame", "Button", "CheckButton", "EditBox", "ScrollFrame",
         "Slider", "StatusBar", 0
     };
-    Lunar<lua_frame>::RegType lua_frame::methods[] = {
+    lua::Lunar<lua_frame>::RegType lua_frame::methods[] = {
         {"dt", &lua_frame::get_data_table},
 
         // uiobject (inherited)
@@ -187,7 +188,7 @@ namespace gui
 
     const char  lua_check_button::className[] = "CheckButton";
     const char* lua_check_button::classList[] = {"CheckButton", 0};
-    Lunar<lua_check_button>::RegType lua_check_button::methods[] = {
+    lua::Lunar<lua_check_button>::RegType lua_check_button::methods[] = {
         {"dt", &lua_check_button::get_data_table},
 
         // uiobject (inherited)
@@ -334,7 +335,7 @@ namespace gui
 
     const char  lua_status_bar::className[] = "StatusBar";
     const char* lua_status_bar::classList[] = {"StatusBar", 0};
-    Lunar<lua_status_bar>::RegType lua_status_bar::methods[] = {
+    lua::Lunar<lua_status_bar>::RegType lua_status_bar::methods[] = {
         {"dt", &lua_status_bar::get_data_table},
 
         // uiobject (inherited)
@@ -452,7 +453,7 @@ namespace gui
 
     const char  lua_focus_frame::className[] = "FocusFrame";
     const char* lua_focus_frame::classList[] = {"FocusFrame", "EditBox", 0};
-    Lunar<lua_focus_frame>::RegType lua_focus_frame::methods[] = {
+    lua::Lunar<lua_focus_frame>::RegType lua_focus_frame::methods[] = {
         {"dt", &lua_focus_frame::get_data_table},
 
         // uiobject (inherited)
@@ -562,7 +563,7 @@ namespace gui
 
     const char  lua_edit_box::className[] = "EditBox";
     const char* lua_edit_box::classList[] = {"EditBox", 0};
-    Lunar<lua_edit_box>::RegType lua_edit_box::methods[] = {
+    lua::Lunar<lua_edit_box>::RegType lua_edit_box::methods[] = {
         {"dt", &lua_edit_box::get_data_table},
 
         // uiobject (inherited)
@@ -696,7 +697,7 @@ namespace gui
 
     const char  lua_scroll_frame::className[] = "ScrollFrame";
     const char* lua_scroll_frame::classList[] = {"ScrollFrame", 0};
-    Lunar<lua_scroll_frame>::RegType lua_scroll_frame::methods[] = {
+    lua::Lunar<lua_scroll_frame>::RegType lua_scroll_frame::methods[] = {
         {"dt", &lua_scroll_frame::get_data_table},
 
         // uiobject (inherited)
@@ -810,7 +811,7 @@ namespace gui
 
     const char  lua_button::className[] = "Button";
     const char* lua_button::classList[] = {"Button", "CheckButton", 0};
-    Lunar<lua_button>::RegType lua_button::methods[] = {
+    lua::Lunar<lua_button>::RegType lua_button::methods[] = {
         {"dt", &lua_button::get_data_table},
 
         // uiobject (inherited)
@@ -949,7 +950,7 @@ namespace gui
 
     const char  lua_slider::className[] = "Slider";
     const char* lua_slider::classList[] = {"Slider", 0};
-    Lunar<lua_slider>::RegType lua_slider::methods[] = {
+    lua::Lunar<lua_slider>::RegType lua_slider::methods[] = {
         {"dt", &lua_slider::get_data_table},
 
         // uiobject (inherited)
@@ -1072,14 +1073,14 @@ namespace gui
     const char* lua_layered_region::classList[] = {"LayeredRegion",
         "Texture", "FontString", 0
     };
-    Lunar<lua_layered_region>::RegType lua_layered_region::methods[] = {
+    lua::Lunar<lua_layered_region>::RegType lua_layered_region::methods[] = {
         {"dt", &lua_layered_region::get_data_table},
         {0,0}
     };
 
     const char  lua_texture::className[] = "Texture";
     const char* lua_texture::classList[] = {"Texture", 0};
-    Lunar<lua_texture>::RegType lua_texture::methods[] = {
+    lua::Lunar<lua_texture>::RegType lua_texture::methods[] = {
         {"dt", &lua_texture::get_data_table},
 
         // uiobject (inherited)
@@ -1139,7 +1140,7 @@ namespace gui
 
     const char  lua_font_string::className[] = "FontString";
     const char* lua_font_string::classList[] = {"FontString", 0};
-    Lunar<lua_font_string>::RegType lua_font_string::methods[] = {
+    lua::Lunar<lua_font_string>::RegType lua_font_string::methods[] = {
         {"dt", &lua_font_string::get_data_table},
 
         // uiobject (inherited)
@@ -1204,4 +1205,5 @@ namespace gui
 
         {0,0}
     };
+}
 }

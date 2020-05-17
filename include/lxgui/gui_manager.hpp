@@ -18,6 +18,7 @@
 #include <array>
 #include <functional>
 
+namespace lxgui {
 namespace lua {
     class state;
 }
@@ -917,6 +918,7 @@ namespace gui
 
         manager* pParent_ = nullptr;
     };
+}
 }
 
 

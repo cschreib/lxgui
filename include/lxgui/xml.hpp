@@ -8,8 +8,10 @@
 *           xml_document.hpp
 */
 
+namespace lxgui {
 namespace xml
 {
     class document;
     class block;
+}
 }

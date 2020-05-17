@@ -5,6 +5,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_color.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class texture;
@@ -206,7 +207,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_status_bar>::RegType methods[];
+        static lua::Lunar<lua_status_bar>::RegType methods[];
 
     protected :
 
@@ -215,6 +216,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

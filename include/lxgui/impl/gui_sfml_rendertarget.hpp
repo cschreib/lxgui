@@ -11,6 +11,7 @@ namespace sf
     class RenderTexture;
 }
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -94,6 +95,7 @@ namespace sfml
         utils::refptr<sfml::material> pTexture_;
         sf::RenderTexture*            pRenderTexture_;
     };
+}
 }
 }
 

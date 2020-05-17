@@ -4,6 +4,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void texture::parse_block(xml::block* pBlock)
@@ -70,5 +71,6 @@ void texture::parse_gradient_block_(xml::block* pBlock)
             parse_color_block_(pMaxColorBlock)
         ));
     }
+}
 }
 }

@@ -6,6 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 
+namespace lxgui {
 namespace gui
 {
 button::button(manager* pManager) : frame(pManager),
@@ -672,5 +673,6 @@ void button::set_pushed_text_offset(const vector2i& mOffset)
 const vector2i& button::get_pushed_text_offset() const
 {
     return mPushedTextOffset_;
+}
 }
 }

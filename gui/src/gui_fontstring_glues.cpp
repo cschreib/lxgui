@@ -5,6 +5,7 @@
 #include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void font_string::register_glue(lua::state* pLua)
@@ -496,5 +497,6 @@ int lua_font_string::_set_text(lua_State* pLua)
     }
 
     return mFunc.on_return();
+}
 }
 }

@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include <memory>
 
+namespace lxgui {
 namespace lua
 {
 typedef std::type_info var_type;
@@ -165,6 +166,7 @@ private :
 
     std::unique_ptr<value_base> pValue_;
 };
+}
 }
 
 #endif

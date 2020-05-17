@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_region.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// Abstract GUI renderable.
@@ -101,7 +102,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_layered_region>::RegType methods[];
+        static lua::Lunar<lua_layered_region>::RegType methods[];
 
     protected :
 
@@ -110,6 +111,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

@@ -5,6 +5,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void status_bar::parse_block(xml::block* pBlock)
@@ -50,5 +51,6 @@ void status_bar::parse_block(xml::block* pBlock)
         else
             set_bar_color(parse_color_block_(pBarBlock));
     }
+}
 }
 }

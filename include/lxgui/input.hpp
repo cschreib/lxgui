@@ -9,6 +9,7 @@
 #include <map>
 #include "lxgui/input_keys.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class event;
@@ -573,6 +574,7 @@ namespace input
 
         std::unique_ptr<source_impl> pSource_;
     };
+}
 }
 
 #endif

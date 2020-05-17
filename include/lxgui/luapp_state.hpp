@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 
+namespace lxgui {
 namespace lua
 {
 class var;
@@ -523,6 +524,7 @@ private :
     c_function pErrorFunction_;
     print_function pPrintFunction_;
 };
+}
 }
 
 #endif

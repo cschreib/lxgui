@@ -6,6 +6,7 @@
 #include "lxgui/gui_gradient.hpp"
 #include "lxgui/gui_sprite.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// The base of the GUI's appearence
@@ -260,7 +261,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_texture>::RegType methods[];
+        static lua::Lunar<lua_texture>::RegType methods[];
 
     protected :
 
@@ -269,6 +270,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

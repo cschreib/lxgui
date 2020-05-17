@@ -12,6 +12,7 @@ namespace sf
     class RenderTarget;
 }
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -102,6 +103,7 @@ namespace sfml
         mutable utils::refptr<gui::sfml::render_target> pCurrentTarget_;
         mutable sf::RenderTarget*                       pCurrentSFMLTarget_;
     };
+}
 }
 }
 

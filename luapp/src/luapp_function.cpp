@@ -2,6 +2,7 @@
 #include "lxgui/luapp_function.hpp"
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace lua
 {
 function::function(const std::string& sName, lua_State* pLua, uint uiReturnNbr) :
@@ -344,5 +345,6 @@ int function::on_return()
 state* function::get_state() const
 {
     return pLua_;
+}
 }
 }

@@ -7,6 +7,7 @@
 #include <lxgui/utils_string.hpp>
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 anchor::anchor(uiobject* pObj, anchor_point mPoint, const std::string& sParent, anchor_point mParentPoint) :
@@ -293,5 +294,6 @@ anchor_point anchor::get_anchor_point(const std::string& sPoint)
     else if (sPoint == "LEFT")        return anchor_point::LEFT;
     else if (sPoint == "CENTER")      return anchor_point::CENTER;
     return anchor_point::TOPLEFT;
+}
 }
 }

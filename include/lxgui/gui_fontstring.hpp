@@ -5,6 +5,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_text.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// The GUI class used to draw text on the screen
@@ -327,7 +328,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_font_string>::RegType methods[];
+        static lua::Lunar<lua_font_string>::RegType methods[];
 
     protected :
 
@@ -336,6 +337,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

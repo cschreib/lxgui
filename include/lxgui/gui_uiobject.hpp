@@ -11,6 +11,7 @@
 
 #include <array>
 
+namespace lxgui {
 namespace gui
 {
     /** \cond NOT_REMOVE_FROM_DOC
@@ -50,7 +51,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_virtual_glue>::RegType methods[];
+        static lua::Lunar<lua_virtual_glue>::RegType methods[];
 
     protected :
 
@@ -692,7 +693,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_uiobject>::RegType methods[];
+        static lua::Lunar<lua_uiobject>::RegType methods[];
 
     protected :
 
@@ -704,6 +705,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

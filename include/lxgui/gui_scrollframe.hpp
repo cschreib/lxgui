@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class texture;
@@ -185,7 +186,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_scroll_frame>::RegType methods[];
+        static lua::Lunar<lua_scroll_frame>::RegType methods[];
 
     protected :
 
@@ -194,6 +195,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

@@ -9,6 +9,7 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_exception.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
@@ -79,5 +80,6 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
             }
         }
     }
+}
 }
 }

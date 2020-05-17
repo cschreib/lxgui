@@ -7,6 +7,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
@@ -1232,5 +1233,6 @@ int lua_frame::_unregister_event(lua_State* pLua)
         pFrameParent_->unregister_event(mFunc.get(0)->get_string());
 
     return mFunc.on_return();
+}
 }
 }

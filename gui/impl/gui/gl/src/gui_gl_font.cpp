@@ -9,6 +9,7 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -229,6 +230,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 utils::wptr<gui::material> font::get_texture() const
 {
     return pTexture_;
+}
 }
 }
 }

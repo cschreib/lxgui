@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include <string>
 
+namespace lxgui {
 namespace gui
 {
     /// A simple color class (float RGBA)
@@ -56,6 +57,7 @@ namespace gui
 
     std::ostream& operator << (std::ostream& mStream, const color& mColor);
     std::istream& operator >> (std::istream& mStream, color& mColor);
+}
 }
 
 #endif

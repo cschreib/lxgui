@@ -4,6 +4,7 @@
 #include "lxgui/xml_block.hpp"
 #include <iostream>
 
+namespace lxgui {
 namespace xml
 {
     /// Parses an XML file
@@ -216,6 +217,7 @@ namespace xml
 
         std::map<std::string, block> lPredefinedBlockList_;
     };
+}
 }
 
 #endif

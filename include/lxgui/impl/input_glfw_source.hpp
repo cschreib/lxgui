@@ -4,35 +4,36 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>
 
-namespace input
+namespace lxgui {
+namespace input {
+namespace glfw
 {
-    namespace glfw
+    class source : public source_impl
     {
-        class source : public source_impl
-        {
-        public :
+    public :
 
-            /// Initializes this handler.
-            /** \param pWindow The window from which to receive input
-            */
-            explicit source(bool bMouseGrab = false);
+        /// Initializes this handler.
+        /** \param pWindow The window from which to receive input
+        */
+        explicit source(bool bMouseGrab = false);
 
-            void toggle_mouse_grab();
-            std::string get_key_name(key mKey) const;
+        void toggle_mouse_grab();
+        std::string get_key_name(key mKey) const;
 
-            void update();
+        void update();
 
-        private :
+    private :
 
-            int to_glfw_(key mKey) const;
+        int to_glfw_(key mKey) const;
 
-            static const int lKeyToGLFW[106][2];
+        static const int lKeyToGLFW[106][2];
 
-            bool bMouseGrab_;
-            bool bFirst_;
-            float fOldMouseX_, fOldMouseY_, fOldWheel_;
-        };
-    }
+        bool bMouseGrab_;
+        bool bFirst_;
+        float fOldMouseX_, fOldMouseY_, fOldWheel_;
+    };
+}
+}
 }
 
 #endif

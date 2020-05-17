@@ -7,6 +7,7 @@
 #include <lxgui/gui_font.hpp>
 #include <vector>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -85,6 +86,7 @@ namespace gl
         uint uiSize_;
         bool bKerning_;
     };
+}
 }
 }
 

@@ -10,6 +10,7 @@
 
 #include <deque>
 
+namespace lxgui {
 namespace gui
 {
     class font_string;
@@ -420,7 +421,7 @@ namespace gui
 
         static const char  className[];
         static const char* classList[];
-        static Lunar<lua_edit_box>::RegType methods[];
+        static lua::Lunar<lua_edit_box>::RegType methods[];
 
     protected :
 
@@ -429,6 +430,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

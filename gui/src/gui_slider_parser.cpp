@@ -5,6 +5,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void slider::parse_block(xml::block* pBlock)
@@ -49,5 +50,6 @@ void slider::parse_block(xml::block* pBlock)
             get_orientation() == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
     }
+}
 }
 }

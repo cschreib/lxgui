@@ -6,6 +6,7 @@
 
 #include <lxgui/utils_filesystem.hpp>
 
+namespace lxgui {
 namespace gui
 {
 backdrop::backdrop(frame* pParent) : pParent_(pParent)
@@ -398,5 +399,6 @@ void backdrop::render() const
 sprite& backdrop::get_edge(edge_type mPoint) const
 {
     return lEdgeList_[static_cast<uint>(mPoint)];
+}
 }
 }

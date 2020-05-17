@@ -20,6 +20,7 @@
 
 #include <cstring>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -259,6 +260,7 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
     }
 
     return false;
+}
 }
 }
 }

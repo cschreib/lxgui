@@ -6,6 +6,7 @@
 
 typedef unsigned char uchar;
 
+namespace lxgui {
 namespace gui
 {
 text::text(manager* pManager, const std::string& sFileName, float fSize) :
@@ -843,5 +844,6 @@ const std::vector<text::letter>& text::get_letter_cache()
 {
     update();
     return lLetterCache_;
+}
 }
 }

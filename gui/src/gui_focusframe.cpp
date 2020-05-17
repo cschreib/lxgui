@@ -1,8 +1,9 @@
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_manager.hpp"
 
-using namespace input;
+using namespace lxgui::input;
 
+namespace lxgui {
 namespace gui
 {
 focus_frame::focus_frame(manager* pManager) : frame(pManager),
@@ -52,5 +53,6 @@ void focus_frame::set_focus(bool bFocus)
 void focus_frame::notify_focus(bool bFocus)
 {
     bFocus_ = bFocus;
+}
 }
 }

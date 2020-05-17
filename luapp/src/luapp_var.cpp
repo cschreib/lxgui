@@ -1,6 +1,7 @@
 #include "lxgui/luapp_var.hpp"
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace lua
 {
 const var_type& var::VALUE_NONE    = typeid(void);
@@ -113,5 +114,6 @@ std::string var::to_string() const
     else if (mType == VALUE_STRING)  return "\""+get<std::string>()+"\"";
     else if (mType == VALUE_POINTER) return utils::to_string(get<void*>());
     else                             return "<none>";
+}
 }
 }

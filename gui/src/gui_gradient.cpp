@@ -1,5 +1,6 @@
 #include "lxgui/gui_gradient.hpp"
 
+namespace lxgui {
 namespace gui
 {
 const gradient gradient::NONE = gradient();
@@ -27,5 +28,6 @@ gradient::orientation gradient::get_orientation() const
 bool gradient::is_empty() const
 {
     return bIsEmpty_;
+}
 }
 }

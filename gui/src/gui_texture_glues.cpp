@@ -4,6 +4,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void texture::register_glue(lua::state* pLua)
@@ -496,5 +497,6 @@ int lua_texture::_set_vertex_color(lua_State* pLua)
     }
 
     return mFunc.on_return();
+}
 }
 }

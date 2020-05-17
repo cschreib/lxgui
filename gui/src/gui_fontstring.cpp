@@ -6,6 +6,7 @@
 
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 const uint  OUTLINE_QUALITY   = 10;
@@ -560,5 +561,6 @@ void font_string::update_borders_() const
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  @");
+}
 }
 }

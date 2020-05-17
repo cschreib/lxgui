@@ -1,5 +1,6 @@
 #include "lxgui/gui_event.hpp"
 
+namespace lxgui {
 namespace gui
 {
 event::event(const std::string& sName, bool bOncePerFrame) :
@@ -50,5 +51,6 @@ lua::var& event::operator [] (uint uiIndex)
 const lua::var& event::operator [] (uint uiIndex) const
 {
     return lArgList_[uiIndex];
+}
 }
 }

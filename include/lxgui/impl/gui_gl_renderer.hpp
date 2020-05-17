@@ -7,6 +7,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_manager.hpp>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -98,6 +99,7 @@ namespace gl
 
         mutable utils::refptr<gui::gl::render_target> pCurrentTarget_;
     };
+}
 }
 }
 

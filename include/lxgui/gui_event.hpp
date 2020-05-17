@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+namespace lxgui {
 namespace gui
 {
     /// Contains an event informations
@@ -79,6 +80,7 @@ namespace gui
         bool                  bOncePerFrame_ = false;
         std::vector<lua::var> lArgList_;
     };
+}
 }
 
 #endif

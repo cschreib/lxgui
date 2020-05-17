@@ -7,6 +7,7 @@
 
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 layered_region::layered_region(manager* pManager) : region(pManager),
@@ -126,5 +127,6 @@ void layered_region::notify_renderer_need_redraw() const
         else if (pFrameParent_)
             pFrameParent_->notify_renderer_need_redraw();
     }
+}
 }
 }

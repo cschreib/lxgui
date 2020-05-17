@@ -8,6 +8,7 @@
 //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
+namespace lxgui {
 namespace gui
 {
 typedef std::multimap<std::string, event_receiver*>::iterator iterator;
@@ -94,5 +95,6 @@ void event_manager::fire_event(const event& mEvent)
 void event_manager::frame_ended()
 {
     lFiredEventList_.clear();
+}
 }
 }

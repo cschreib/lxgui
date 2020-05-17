@@ -7,6 +7,7 @@
 #include <lxgui/utils_string.hpp>
 #include <iostream>
 
+namespace lxgui {
 namespace input
 {
 void source_impl::update()
@@ -915,5 +916,6 @@ void manager::fire_event_(const gui::event& mEvent, bool bForce)
         for (auto* pManager : lEventManagerList_)
             pManager->fire_event(mEvent);
     }
+}
 }
 }

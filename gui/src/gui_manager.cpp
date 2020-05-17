@@ -19,6 +19,7 @@
 #include <fstream>
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 int l_set_key_binding(lua_State* pLua);
@@ -1651,5 +1652,6 @@ void renderer_impl::set_parent(manager* pParent)
 
 void renderer_impl::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
 {
+}
 }
 }

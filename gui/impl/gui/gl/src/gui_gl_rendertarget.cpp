@@ -16,6 +16,7 @@
 
 #include <iostream>
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -148,6 +149,7 @@ void render_target::check_availability()
         throw gui::exception("render_target", "OpenGL extenion "
             "'GL_EXT_framebuffer_object' is not supported by your hardware.");
     }
+}
 }
 }
 }

@@ -7,6 +7,7 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_matrix4.hpp"
 
+namespace lxgui {
 namespace gui {
 namespace gl
 {
@@ -90,6 +91,7 @@ namespace gl
         mutable bool    bUpdateViewMatrix_;
         mutable matrix4 mViewMatrix_;
     };
+}
 }
 }
 

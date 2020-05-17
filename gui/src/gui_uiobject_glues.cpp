@@ -8,6 +8,7 @@
 #include <lxgui/utils_string.hpp>
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 lua_glue::lua_glue(lua_State* pLua)
@@ -658,5 +659,6 @@ int lua_uiobject::_show(lua_State* pLua)
     pParent_->show();
 
     return mFunc.on_return();
+}
 }
 }

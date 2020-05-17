@@ -5,6 +5,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
 
+namespace lxgui {
 namespace gui
 {
 scroll_frame::scroll_frame(manager* pManager) : frame(pManager),
@@ -437,5 +438,6 @@ void scroll_frame::notify_manually_rendered_object_(uiobject* pObject, bool bMan
 
         bRebuildScrollStrataList_ = true;
     }
+}
 }
 }

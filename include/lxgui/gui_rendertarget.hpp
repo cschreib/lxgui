@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// A place to render things (the screen, a texture, ...)
@@ -67,6 +68,7 @@ namespace gui
         */
         virtual uint get_real_height() const = 0;
     };
+}
 }
 
 #endif

@@ -20,6 +20,7 @@
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_material.hpp"
 
+namespace lxgui {
 namespace gui
 {
     class manager;
@@ -290,6 +291,7 @@ namespace gui
         vector2f     mHotSpot_;
         float        fWidth_ = 0.0f, fHeight_ = 0.0f;
     };
+}
 }
 
 #endif

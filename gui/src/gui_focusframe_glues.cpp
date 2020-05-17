@@ -2,6 +2,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 lua_focus_frame::lua_focus_frame(lua_State* pLua) : lua_frame(pLua)
@@ -58,5 +59,6 @@ int lua_focus_frame::_set_focus(lua_State* pLua)
     pFocusFrameParent_->set_focus(true);
 
     return mFunc.on_return();
+}
 }
 }

@@ -2,6 +2,7 @@
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"
 
+namespace lxgui {
 namespace gui
 {
 vertex::vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol) :
@@ -329,5 +330,6 @@ std::array<float,8> sprite::get_texture_coords(bool bNormalized) const
     }
 
     return mCoords;
+}
 }
 }

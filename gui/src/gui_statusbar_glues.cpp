@@ -4,6 +4,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void status_bar::register_glue(lua::state* pLua)
@@ -238,5 +239,6 @@ int lua_status_bar::_set_reversed(lua_State* pLua)
         pStatusBarParent_->set_reversed(mFunc.get(0)->get_bool());
 
     return mFunc.on_return();
+}
 }
 }

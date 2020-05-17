@@ -5,6 +5,7 @@
 
 /** \cond NOT_REMOVE_FROM_DOC
 */
+namespace lxgui {
 namespace utils
 {
 typedef std::stringstream string_stream;
@@ -639,5 +640,6 @@ string to_string(double f, uint uiIntCharNbr, uint uiFracCharNbr)
 string to_string(bool b)
 {
     return b ? "true" : "false";
+}
 }
 }

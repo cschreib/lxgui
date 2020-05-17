@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include <string>
 
+namespace lxgui {
 namespace gui
 {
     class event;
@@ -52,6 +53,7 @@ namespace gui
 
         event_manager* pEventManager_;
     };
+}
 }
 
 #endif

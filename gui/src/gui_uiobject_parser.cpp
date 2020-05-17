@@ -7,6 +7,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 color uiobject::parse_color_block_(xml::block* pBlock)
@@ -128,5 +129,6 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
             }
         }
     }
+}
 }
 }

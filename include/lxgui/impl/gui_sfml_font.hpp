@@ -10,6 +10,7 @@
 
 #include <vector>
 
+namespace lxgui {
 namespace gui {
 namespace sfml
 {
@@ -76,6 +77,7 @@ namespace sfml
         uint                          uiSizeSFML_;
         utils::refptr<sfml::material> pTexture_;
     };
+}
 }
 }
 

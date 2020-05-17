@@ -7,6 +7,7 @@
 #include <set>
 #include <functional>
 
+namespace lxgui {
 namespace gui
 {
     class backdrop;
@@ -841,7 +842,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static Lunar<lua_frame>::RegType methods[];
+        static lua::Lunar<lua_frame>::RegType methods[];
 
     protected :
 
@@ -850,6 +851,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

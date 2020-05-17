@@ -9,6 +9,9 @@ extern "C" {
 
 #include <string>
 
+namespace lxgui {
+namespace lua
+{
 template <typename T> class Lunar {
   typedef struct { T *pT; } userdataType;
 public:
@@ -282,5 +285,7 @@ private:
     return ud;
   }
 };
+}
+}
 
 # endif

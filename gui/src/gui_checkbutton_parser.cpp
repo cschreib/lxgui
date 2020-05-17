@@ -3,6 +3,7 @@
 #include <lxgui/xml_document.hpp>
 #include "lxgui/gui_texture.hpp"
 
+namespace lxgui {
 namespace gui
 {
 void check_button::parse_block(xml::block* pBlock)
@@ -27,5 +28,6 @@ void check_button::parse_block(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
     }
+}
 }
 }

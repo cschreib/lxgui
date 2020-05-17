@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// Abstract gui widget that can receive and loose focus
@@ -83,7 +84,7 @@ namespace gui
 
         static const char  className[];
         static const char* classList[];
-        static Lunar<lua_focus_frame>::RegType methods[];
+        static lua::Lunar<lua_focus_frame>::RegType methods[];
 
     protected :
 
@@ -92,6 +93,7 @@ namespace gui
 
     /** \endcond
     */
+}
 }
 
 #endif

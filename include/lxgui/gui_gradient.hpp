@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// An helper to make gradients
@@ -62,6 +63,7 @@ namespace gui
         color       mMinColor_, mMaxColor_;
 
     };
+}
 }
 
 #endif

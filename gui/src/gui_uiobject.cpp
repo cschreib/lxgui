@@ -8,6 +8,7 @@
 #include <lxgui/utils_string.hpp>
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 uiobject::uiobject(manager* pManager) :
@@ -1173,5 +1174,6 @@ std::vector<uiobject*> uiobject::clear_links()
 void uiobject::notify_loaded()
 {
     bLoaded_ = true;
+}
 }
 }

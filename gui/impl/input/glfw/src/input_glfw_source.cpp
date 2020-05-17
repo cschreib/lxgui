@@ -7,6 +7,7 @@
 GLFW doesn't provide keyboard layout independent key codes."
 #endif
 
+namespace lxgui {
 namespace input {
 namespace glfw
 {
@@ -196,6 +197,7 @@ void source::update()
     static const int lMouseToGLFW[3] = {GLFW_MOUSE_BUTTON_LEFT, GLFW_MOUSE_BUTTON_RIGHT, GLFW_MOUSE_BUTTON_MIDDLE};
     for (int i = 0; i < INPUT_MOUSE_BUTTON_NUMBER; ++i)
         mMouse.lButtonState[i] = glfwGetMouseButton(lMouseToGLFW[i]) == GLFW_PRESS;
+}
 }
 }
 }

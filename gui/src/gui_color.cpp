@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 const color color::EMPTY(0.0f, 0.0f, 0.0f, 0.0f);
@@ -220,5 +221,6 @@ std::istream& operator >> (std::istream& mStream, color& mColor)
     }
 
     return mStream;
+}
 }
 }

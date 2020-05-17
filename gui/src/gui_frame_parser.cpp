@@ -6,6 +6,7 @@
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void frame::parse_block(xml::block* pBlock)
@@ -444,5 +445,6 @@ void frame::parse_scripts_block_(xml::block* pBlock)
             );
         }
     }
+}
 }
 }

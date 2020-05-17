@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 
+namespace lxgui {
 namespace gui
 {
     class event_receiver;
@@ -49,7 +50,7 @@ namespace gui
         std::multimap<std::string, event_receiver*> lReceiverList_;
         std::vector<std::string>                    lFiredEventList_;
     };
-
+}
 }
 
 #endif

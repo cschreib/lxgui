@@ -7,6 +7,7 @@
 
 #include <fstream>
 
+namespace lxgui {
 namespace xml
 {
 document::document(const std::string& sDefFileName, std::ostream& mOut) :
@@ -1217,5 +1218,6 @@ void document::def_state::read_opening_tag(const std::string& sTagContent)
 
         pCurrentParentBlock_ = pCurrentBlock_;
     }
+}
 }
 }

@@ -4,6 +4,7 @@
 #include "lxgui/utils.hpp"
 #include <string>
 
+namespace lxgui {
 namespace utils
 {
 /// Exception class.
@@ -46,6 +47,7 @@ protected :
 
     std::string sMessage_ = "Undefined exception.";
 };
+}
 }
 
 #endif

@@ -7,6 +7,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 void button::register_glue(lua::state* pLua)
@@ -663,5 +664,6 @@ int lua_button::_unlock_highlight(lua_State* pLua)
     pButtonParent_->unlock_highlight();
 
     return mFunc.on_return();
+}
 }
 }

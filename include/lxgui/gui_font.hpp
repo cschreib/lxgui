@@ -9,6 +9,7 @@
 
 #include <array>
 
+namespace lxgui {
 namespace gui
 {
     class material;
@@ -69,6 +70,7 @@ namespace gui
         */
         virtual utils::wptr<material> get_texture() const = 0;
     };
+}
 }
 
 #endif

@@ -4,6 +4,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 
+namespace lxgui {
 namespace gui
 {
 check_button::check_button(manager* pManager) : button(pManager),
@@ -203,5 +204,6 @@ texture* check_button::create_disabled_checked_texture_()
     }
 
     return pDisabledCheckedTexture_;
+}
 }
 }

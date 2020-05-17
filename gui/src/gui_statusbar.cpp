@@ -6,6 +6,7 @@
 
 #include <sstream>
 
+namespace lxgui {
 namespace gui
 {
 std::array<float,4> select_uvs(const std::array<float,8>& uvs)
@@ -352,5 +353,6 @@ void status_bar::update(float fDelta)
 void status_bar::fire_update_bar_texture_()
 {
     bUpdateBarTexture_ = true;
+}
 }
 }

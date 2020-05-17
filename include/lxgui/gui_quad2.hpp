@@ -3,6 +3,7 @@
 
 #include "lxgui/gui_vector2.hpp"
 
+namespace lxgui {
 namespace gui
 {
     template<class T>
@@ -99,6 +100,7 @@ namespace gui
 
     typedef quad2<float> quad2f;
     typedef quad2<int>   quad2i;
+}
 }
 
 #endif

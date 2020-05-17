@@ -6,6 +6,7 @@
 #include <map>
 #include <lxgui/utils.hpp>
 
+namespace lxgui {
 namespace xml
 {
     class document;
@@ -420,6 +421,7 @@ namespace xml
         std::vector<found_block_iterator>                        lFoundBlockStack_;
         std::map<std::string, std::vector<found_block_iterator>> lFoundBlockSortedStacks_;
     };
+}
 }
 
 #endif

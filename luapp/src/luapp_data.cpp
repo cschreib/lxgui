@@ -1,6 +1,7 @@
 #include "lxgui/luapp_state.hpp"
 #include "lxgui/luapp_function.hpp"
 
+namespace lxgui {
 namespace lua
 {
 data::data(const std::string& name, type mLuaType, argument* pParent) :
@@ -41,5 +42,6 @@ const var& data::get_value() const
 type data::get_type() const
 {
     return mLuaType_;
+}
 }
 }

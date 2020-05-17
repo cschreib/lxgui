@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_uiobject.hpp"
 
+namespace lxgui {
 namespace gui
 {
     /// Simple GUI region (not renderable).
@@ -48,6 +49,7 @@ namespace gui
 
         virtual void parse_attributes_(xml::block* pBlock);
     };
+}
 }
 
 #endif

@@ -6,6 +6,7 @@
 
 #include <lxgui/luapp_function.hpp>
 
+namespace lxgui {
 namespace gui
 {
 /** \cond NOT_REMOVE_FROM_DOC
@@ -25,7 +26,7 @@ public :
 
     static const char className[];
     static const char* classList[];
-    static Lunar<lua_manager>::RegType methods[];
+    static lua::Lunar<lua_manager>::RegType methods[];
 
 protected :
 
@@ -84,7 +85,7 @@ int lua_manager::get_data_table(lua_State* pLua)
 
 const char lua_manager::className[] = "manager";
 const char* lua_manager::classList[] = {"manager", 0};
-Lunar<lua_manager>::RegType lua_manager::methods[] = {
+lua::Lunar<lua_manager>::RegType lua_manager::methods[] = {
     {"dt", &lua_manager::get_data_table},
     {0,0}
 };
@@ -262,5 +263,6 @@ int l_log(lua_State* pLua)
         gui::out << mFunc.get(0)->get_string() << std::endl;
 
     return mFunc.on_return();
+}
 }
 }

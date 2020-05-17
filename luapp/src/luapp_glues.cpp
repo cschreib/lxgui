@@ -5,6 +5,7 @@
 /** \cond NOT_REMOVE_FROM_DOC
 */
 
+namespace lxgui {
 namespace lua
 {
 int glue_send_string( lua_State* pLua )
@@ -29,6 +30,7 @@ int glue_table_to_string( lua_State* pLua )
     lua_pushstring(pLua, s.c_str());
 
     return 1;
+}
 }
 }
 

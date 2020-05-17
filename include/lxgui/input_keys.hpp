@@ -1,6 +1,7 @@
 #ifndef KEYS_HPP
 #define KEYS_HPP
 
+namespace lxgui {
 namespace input
 {
     enum class mouse_state
@@ -169,6 +170,7 @@ namespace input
         K_MEDIASELECT = 0xED,    /// Media Select
         K_MAXKEY      = 0xFF
     };
+}
 }
 
 #endif

@@ -2,6 +2,7 @@
 #include "lxgui/luapp_function.hpp"
 #include <lxgui/utils_string.hpp>
 
+namespace lxgui {
 namespace lua
 {
 argument::argument(const std::string& sName, type mLuaType, function* pParent) :
@@ -118,5 +119,6 @@ void argument::set_data(data* pData)
 data* argument::get_data() const
 {
     return pData_;
+}
 }
 }

@@ -4,6 +4,7 @@
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_exception.hpp>
 
+namespace lxgui {
 namespace xml
 {
 attribute::attribute(const std::string& name, bool optional, const std::string& def, attribute_type type) :
@@ -729,5 +730,6 @@ void block::set_file(const std::string& sFile)
 void block::set_line_nbr(uint uiLineNbr)
 {
     uiLineNbr_ = uiLineNbr;
+}
 }
 }
