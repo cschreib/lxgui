@@ -7,6 +7,7 @@
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
 
+#include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
 #include <sstream>
 #include <functional>

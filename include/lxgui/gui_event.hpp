@@ -1,7 +1,7 @@
 #ifndef GUI_EVENT_HPP
 #define GUI_EVENT_HPP
 
-#include <lxgui/luapp_var.hpp>
+#include <lxgui/utils_any.hpp>
 #include <string>
 #include <vector>
 
@@ -76,8 +76,8 @@ namespace gui
 
     private :
 
-        std::string           sName_;
-        bool                  bOncePerFrame_ = false;
+        std::string             sName_;
+        bool                    bOncePerFrame_ = false;
         std::vector<utils::any> lArgList_;
     };
 }

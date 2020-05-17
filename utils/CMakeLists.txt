@@ -6,6 +6,7 @@ add_library(lxgui-utils STATIC
     ${SRCROOT}/utils_exception.cpp
     ${SRCROOT}/utils_filesystem.cpp
     ${SRCROOT}/utils_string.cpp
+    ${SRCROOT}/utils_any.cpp
 )
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)

@@ -1,7 +1,7 @@
 #ifndef LUAPP_FUNCTION_HPP
 #define LUAPP_FUNCTION_HPP
 
-#include "lxgui/luapp_var.hpp"
+#include <lxgui/utils_any.hpp>
 #include <map>
 
 namespace lxgui {

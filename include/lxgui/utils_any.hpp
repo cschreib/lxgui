@@ -1,7 +1,7 @@
-#ifndef LUAPP_VAR_HPP
-#define LUAPP_VAR_HPP
+#ifndef UTILS_ANY_HPP
+#define UTILS_ANY_HPP
 
-#include "lxgui/luapp_exception.hpp"
+#include "lxgui/utils_exception.hpp"
 #include <typeinfo>
 #include <memory>
 

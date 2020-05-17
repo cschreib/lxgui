@@ -9,7 +9,6 @@ add_library(lxgui-luapp STATIC
     ${SRCROOT}/luapp_function.cpp
     ${SRCROOT}/luapp_glues.cpp
     ${SRCROOT}/luapp_state.cpp
-    ${SRCROOT}/luapp_var.cpp
 )
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/lu*.hpp)

@@ -13,6 +13,7 @@
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/input.hpp"
 
+#include <lxgui/luapp_exception.hpp>
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
