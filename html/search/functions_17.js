@@ -1,9 +1,7 @@
 var searchData=
 [
   ['_7eblock',['~block',['../classlxgui_1_1xml_1_1block.html#a2bb9465125fc3d42f7cd8897101b5286',1,'lxgui::xml::block']]],
-  ['_7ebutton',['~button',['../classlxgui_1_1gui_1_1button.html#a4d8f0c68280e44156c03c50923f0df56',1,'lxgui::gui::button']]],
   ['_7echeck_5fbutton',['~check_button',['../classlxgui_1_1gui_1_1check__button.html#ae1b8981a76d5ddb68d3ccc11acc85ca4',1,'lxgui::gui::check_button']]],
-  ['_7eedit_5fbox',['~edit_box',['../classlxgui_1_1gui_1_1edit__box.html#a650230a1505a4bfb0c9ebed6c2c19013',1,'lxgui::gui::edit_box']]],
   ['_7eevent_5freceiver',['~event_receiver',['../classlxgui_1_1gui_1_1event__receiver.html#a1b18b71a7d96719923b647396e3679f6',1,'lxgui::gui::event_receiver']]],
   ['_7efocus_5fframe',['~focus_frame',['../classlxgui_1_1gui_1_1focus__frame.html#afd5151fc4e5d74e5afdf246a7dd612f2',1,'lxgui::gui::focus_frame']]],
   ['_7efont',['~font',['../classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0',1,'lxgui::gui::font']]],
@@ -15,13 +13,10 @@ var searchData=
   ['_7erefptr',['~refptr',['../classlxgui_1_1utils_1_1refptr.html#a703525bfd5f993ef4c6f4897eb82e8c5',1,'lxgui::utils::refptr']]],
   ['_7eregion',['~region',['../classlxgui_1_1gui_1_1region.html#a594d4507211c588825f853d2ac43e5f2',1,'lxgui::gui::region']]],
   ['_7erender_5ftarget',['~render_target',['../classlxgui_1_1gui_1_1render__target.html#a0dc82748740006f2579a386c208576db',1,'lxgui::gui::render_target::~render_target()'],['../classlxgui_1_1gui_1_1gl_1_1render__target.html#a5d9c13c0305b99b5d982435e6ec7e5cb',1,'lxgui::gui::gl::render_target::~render_target()']]],
-  ['_7erenderer',['~renderer',['../classlxgui_1_1gui_1_1sfml_1_1renderer.html#a1c5faee6a7194809760274fa3a61ada0',1,'lxgui::gui::sfml::renderer']]],
   ['_7erenderer_5fimpl',['~renderer_impl',['../classlxgui_1_1gui_1_1renderer__impl.html#a336793c4dee799ba320cb625e1ea4e04',1,'lxgui::gui::renderer_impl']]],
   ['_7escroll_5fframe',['~scroll_frame',['../classlxgui_1_1gui_1_1scroll__frame.html#affecbf5877503be6197bd028bafc40a4',1,'lxgui::gui::scroll_frame']]],
-  ['_7eslider',['~slider',['../classlxgui_1_1gui_1_1slider.html#aa993b3a0340ee7c0e5f38e3d5d143de8',1,'lxgui::gui::slider']]],
   ['_7esource_5fimpl',['~source_impl',['../classlxgui_1_1input_1_1source__impl.html#a5027ce79368e75d4938541ff1897308e',1,'lxgui::input::source_impl']]],
   ['_7estate',['~state',['../classlxgui_1_1lua_1_1state.html#a4df22ce511718a641c15f5b042181d53',1,'lxgui::lua::state']]],
-  ['_7estatus_5fbar',['~status_bar',['../classlxgui_1_1gui_1_1status__bar.html#aeacba5e12c62d9e5e4259b2fa6f7d57e',1,'lxgui::gui::status_bar']]],
   ['_7euiobject',['~uiobject',['../classlxgui_1_1gui_1_1uiobject.html#a3f1b15166eef3a3f3e7a05b342aa9688',1,'lxgui::gui::uiobject']]],
   ['_7ewptr',['~wptr',['../classlxgui_1_1utils_1_1wptr.html#a7c3d829b35c638c304c5941920986e94',1,'lxgui::utils::wptr']]]
 ];

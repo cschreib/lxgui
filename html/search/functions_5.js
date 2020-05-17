@@ -14,7 +14,6 @@ var searchData=
   ['font',['font',['../classlxgui_1_1gui_1_1font.html#a84cbb12a499689e54d67cbb4b982f381',1,'lxgui::gui::font::font()'],['../classlxgui_1_1gui_1_1gl_1_1font.html#ac3158dcfc266bba66c670a9c3982239a',1,'lxgui::gui::gl::font::font()'],['../classlxgui_1_1gui_1_1sfml_1_1font.html#a83da0089a6fd405ed64a4fe6ee8be656',1,'lxgui::gui::sfml::font::font()']]],
   ['font_5fstring',['font_string',['../classlxgui_1_1gui_1_1font__string.html#a26e7b0ac32e07a774932682851f1a01b',1,'lxgui::gui::font_string']]],
   ['force_5finput_5fallowed',['force_input_allowed',['../classlxgui_1_1input_1_1manager.html#aaa2417e67750dc6ada64a6c9eb91855b',1,'lxgui::input::manager']]],
-  ['format',['format',['../structlxgui_1_1gui_1_1text_1_1format.html#ad5785f33876c2da8fb394117206e9453',1,'lxgui::gui::text::format']]],
   ['format_5ferror',['format_error',['../classlxgui_1_1lua_1_1state.html#ac70951d3b386a5261c6b72a25cdc53a3',1,'lxgui::lua::state']]],
   ['frame',['frame',['../classlxgui_1_1gui_1_1frame.html#a572b07b681c82ae970aaa342b68288b0',1,'lxgui::gui::frame']]],
   ['frame_5fended',['frame_ended',['../classlxgui_1_1gui_1_1event__manager.html#a91a4141152c74e49f54025f88c5b8e9d',1,'lxgui::gui::event_manager']]],

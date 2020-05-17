@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_5ffunction',['c_function',['../namespacelxgui_1_1lua.html#abe6ce8017f1847cf58681280f7d42e90',1,'lxgui::lua']]],
+  ['c_5ffunction',['c_function',['../namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117',1,'lxgui::lua']]],
   ['call',['call',['../classlxgui_1_1lua_1_1Lunar.html#ab51e9697136f8301b866f3fc0b04e458',1,'lxgui::lua::Lunar']]],
   ['call_5ffunction',['call_function',['../classlxgui_1_1lua_1_1state.html#a833e181a7be76eb18400ddd355fedf4d',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName)'],['../classlxgui_1_1lua_1_1state.html#abd77ebb8c56f96266b7aafd4bad5426d',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName, const std::vector&lt; utils::any &gt; &amp;lArgumentStack)']]],
   ['can_5fhave_5fblock',['can_have_block',['../classlxgui_1_1xml_1_1block.html#ad8373cea68d375d94f81bfc02ee426af',1,'lxgui::xml::block']]],
@@ -10,7 +10,7 @@ var searchData=
   ['can_5fword_5fwrap',['can_word_wrap',['../classlxgui_1_1gui_1_1font__string.html#ab79c23859d782aa25ce6dafdc03c322f',1,'lxgui::gui::font_string']]],
   ['cast',['cast',['../classlxgui_1_1utils_1_1refptr.html#a1cb942f4cc3d823c6bffd376133f421f',1,'lxgui::utils::refptr::cast()'],['../classlxgui_1_1utils_1_1wptr.html#a69b24a23fb94f05b489ceaa96679476e',1,'lxgui::utils::wptr::cast()']]],
   ['center',['CENTER',['../classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5ac397289ee45877be0cd49811fe245b4e',1,'lxgui::gui::text::CENTER()'],['../classlxgui_1_1gui_1_1quad2.html#a223f800048acfda98244bad67b2e6172',1,'lxgui::gui::quad2::center()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4ac397289ee45877be0cd49811fe245b4e',1,'lxgui::gui::CENTER()']]],
-  ['chanel',['chanel',['../classlxgui_1_1gui_1_1color.html#a662e183ca5575ceae104eab7112241de',1,'lxgui::gui::color::chanel()'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a01e6e169fccc570765c7ff7e1508062e',1,'lxgui::gui::gl::ub32color::chanel()']]],
+  ['chanel',['chanel',['../classlxgui_1_1gui_1_1color.html#a662e183ca5575ceae104eab7112241de',1,'lxgui::gui::color::chanel()'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a88a27d4792682dc3556edafe38c5f980',1,'lxgui::gui::gl::ub32color::chanel()']]],
   ['character_5finfo',['character_info',['../structlxgui_1_1gui_1_1gl_1_1character__info.html',1,'lxgui::gui::gl']]],
   ['check',['check',['../classlxgui_1_1gui_1_1check__button.html#a8ba399ea0d5bb99439d790faea573521',1,'lxgui::gui::check_button::check()'],['../classlxgui_1_1lua_1_1function.html#a347b53a69e0c486c9fa87f89eff9ca7c',1,'lxgui::lua::function::check()'],['../classlxgui_1_1lua_1_1Lunar.html#aee74a3b6b66c275d66b95725b1348318',1,'lxgui::lua::Lunar::check()'],['../classlxgui_1_1xml_1_1document.html#ab0b647b9d817dbdb98de6c0876132a2e',1,'lxgui::xml::document::check()']]],
   ['check_5fattributes',['check_attributes',['../classlxgui_1_1xml_1_1block.html#aaf06c53a9762ed0797bb3f3244905c3a',1,'lxgui::xml::block']]],

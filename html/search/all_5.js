@@ -28,7 +28,6 @@ var searchData=
   ['font_5fstring',['font_string',['../classlxgui_1_1gui_1_1font__string.html',1,'lxgui::gui']]],
   ['font_5fstring',['font_string',['../classlxgui_1_1gui_1_1font__string.html#a26e7b0ac32e07a774932682851f1a01b',1,'lxgui::gui::font_string']]],
   ['force_5finput_5fallowed',['force_input_allowed',['../classlxgui_1_1input_1_1manager.html#aaa2417e67750dc6ada64a6c9eb91855b',1,'lxgui::input::manager']]],
-  ['format',['format',['../structlxgui_1_1gui_1_1text_1_1format.html#ad5785f33876c2da8fb394117206e9453',1,'lxgui::gui::text::format']]],
   ['format',['format',['../structlxgui_1_1gui_1_1text_1_1format.html',1,'lxgui::gui::text']]],
   ['format_5ferror',['format_error',['../classlxgui_1_1lua_1_1state.html#ac70951d3b386a5261c6b72a25cdc53a3',1,'lxgui::lua::state']]],
   ['frame',['frame',['../classlxgui_1_1gui_1_1frame.html#a572b07b681c82ae970aaa342b68288b0',1,'lxgui::gui::frame']]],
@@ -46,8 +45,8 @@ var searchData=
   ['fscale_5f',['fScale_',['../classlxgui_1_1gui_1_1frame.html#a9b8df9bb2ce04ee33f76608c8350d68f',1,'lxgui::gui::frame']]],
   ['fullscreen',['FULLSCREEN',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ab89c3d897b196ffff1537331bc659a97',1,'lxgui::gui']]],
   ['fullscreen_5fdialog',['FULLSCREEN_DIALOG',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a3658feec3406eaaa72719f83d84bd051',1,'lxgui::gui']]],
-  ['function',['function',['../classlxgui_1_1lua_1_1function.html',1,'lxgui::lua']]],
   ['function',['function',['../classlxgui_1_1lua_1_1argument.html#ae68431d57947868147860283a49e4c1b',1,'lxgui::lua::argument::function()'],['../classlxgui_1_1lua_1_1function.html#ab811f2689f41cadb3387ae0859ae7c71',1,'lxgui::lua::function::function(const std::string &amp;sName, lua_State *pLua, uint uiReturnNbr=0u)'],['../classlxgui_1_1lua_1_1function.html#aad4fe48002142615f4d09d2541435392',1,'lxgui::lua::function::function(const std::string &amp;sName, state *pLua, uint uiReturnNbr=0u)'],['../classlxgui_1_1lua_1_1function.html#a0f581043783e8e8a184149a8db03c1a6',1,'lxgui::lua::function::function(const function &amp;)=delete'],['../classlxgui_1_1lua_1_1function.html#a1b1ca2cd692b8c65b0ae92f5d69e878d',1,'lxgui::lua::function::function(function &amp;&amp;)=delete'],['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba6a72a6a776662a244f82d31e9274a07b',1,'lxgui::lua::FUNCTION()']]],
+  ['function',['function',['../classlxgui_1_1lua_1_1function.html',1,'lxgui::lua']]],
   ['fvalue_5f',['fValue_',['../classlxgui_1_1gui_1_1slider.html#a69f5c99e68bb1f88cf956fe01ecc1143',1,'lxgui::gui::slider::fValue_()'],['../classlxgui_1_1gui_1_1status__bar.html#a2ce60c1d33248464634c8c544e0a6106',1,'lxgui::gui::status_bar::fValue_()']]],
   ['fvaluestep_5f',['fValueStep_',['../classlxgui_1_1gui_1_1slider.html#a71f89ba0a086c17d79ab2c834ba308fd',1,'lxgui::gui::slider']]],
   ['fwidth',['fWidth',['../structlxgui_1_1gui_1_1text_1_1line.html#a1c293ce1345c5a9d32a2b828b04565f6',1,'lxgui::gui::text::line']]]
