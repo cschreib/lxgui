@@ -26,17 +26,10 @@ void step_value(float& fValue, float fStep)
         fValue = round(fValue/fStep)*fStep;
 }
 
-slider::slider(manager* pManager) : frame(pManager),
-    bUpdateThumbTexture_(false), mOrientation_(orientation::VERTICAL), fValue_(0.0f),
-    fMinValue_(0.0f), fMaxValue_(1.0f), fValueStep_(0.1f), bAllowClicksOutsideThumb_(true),
-    mThumbLayer_(layer_type::OVERLAY), pThumbTexture_(nullptr), bThumbMoved_(false), bMouseInThumb_(false)
+slider::slider(manager* pManager) : frame(pManager)
 {
     enable_mouse(true);
     lType_.push_back(CLASS_NAME);
-}
-
-slider::~slider()
-{
 }
 
 std::string slider::serialize(const std::string& sTab) const

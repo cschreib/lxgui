@@ -31,19 +31,9 @@ int l_log(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
     uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl) :
-    event_receiver(nullptr), sUIVersion_("0001"),
-    uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
-    bClearFontsOnClose_(true), pLua_(nullptr), pLuaRegs_(nullptr), bClosed_(true),
-    bLoadingUI_(false), bFirstIteration_(true), bInputEnabled_(true),
-    pInputManager_(new input::manager(std::move(pInputSource))),
-    pCurrentAddOn_(nullptr), bBuildStrataList_(false), bObjectMoved_(false),
-    pOveredFrame_(nullptr), bUpdateOveredFrame_(false), pFocusedFrame_(nullptr),
-    pMovedObject_(nullptr), pSizedObject_(nullptr), fMouseMovementX_(0.0f),
-    fMouseMovementY_(0.0f), pMovedAnchor_(nullptr), iMovementStartPositionX_(0),
-    iMovementStartPositionY_(0), mConstraint_(constraint::NONE), uiResizeStartW_(0),
-    uiResizeStartH_(0), bResizeWidth_(false), bResizeHeight_(false), bResizeFromRight_(false),
-    bResizeFromBottom_(false), uiFrameNumber_(0), bEnableCaching_(true),
-    pRenderTarget_(nullptr), sLocale_(sLocale), pImpl_(std::move(pImpl))
+    event_receiver(nullptr), uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
+    pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
+    pImpl_(std::move(pImpl))
 {
     pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
     event_receiver::set_event_manager(pEventManager_.get());
@@ -788,8 +778,8 @@ void manager::close_ui()
 
         pLua_ = nullptr;
 
-        pOveredFrame_ = nullptr;
-        bUpdateOveredFrame_ = false;
+        pHoveredFrame_ = nullptr;
+        bUpdateHoveredFrame_ = false;
         pFocusedFrame_ = nullptr;
         pMovedObject_ = nullptr;
         pSizedObject_ = nullptr;
@@ -1096,15 +1086,15 @@ void manager::update(float fDelta)
     if (bBuildStrataList_ || bObjectMoved_ ||
         (pInputManager_->get_mouse_raw_dx() != 0.0f) ||
         (pInputManager_->get_mouse_raw_dy() != 0.0f))
-        bUpdateOveredFrame_ = true;
+        bUpdateHoveredFrame_ = true;
 
-    if (bUpdateOveredFrame_ && bInputEnabled_)
+    if (bUpdateHoveredFrame_ && bInputEnabled_)
     {
         DEBUG_LOG(" Update overed frame...");
         int iX = pInputManager_->get_mouse_x();
         int iY = pInputManager_->get_mouse_y();
 
-        frame* pOveredFrame = nullptr;
+        frame* pHoveredFrame = nullptr;
 
         // Iterate through the frames in reverse order from rendering (frame on top goes first)
         for (const auto& mStrata : utils::range::reverse_value(lStrataList_))
@@ -1115,21 +1105,21 @@ void manager::update(float fDelta)
                 {
                     if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
                     {
-                        pOveredFrame = pFrame;
+                        pHoveredFrame = pFrame;
                         break;
                     }
                 }
 
-                if (pOveredFrame) break;
+                if (pHoveredFrame) break;
 
             }
 
-            if (pOveredFrame) break;
+            if (pHoveredFrame) break;
         }
 
-        set_overed_frame_(pOveredFrame, iX, iY);
+        set_overed_frame_(pHoveredFrame, iX, iY);
 
-        bUpdateOveredFrame_ = false;
+        bUpdateHoveredFrame_ = false;
     }
 
     bObjectMoved_ = false;
@@ -1153,16 +1143,16 @@ void manager::set_overed_frame_(frame* pFrame, int iX, int iY)
     else
         pInputManager_->allow_input("WORLD");
 
-    if (pFrame != pOveredFrame_)
+    if (pFrame != pHoveredFrame_)
     {
-        if (pOveredFrame_)
-            pOveredFrame_->notify_mouse_in_frame(false, iX, iY);
+        if (pHoveredFrame_)
+            pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
 
-        pOveredFrame_ = pFrame;
+        pHoveredFrame_ = pFrame;
     }
 
-    if (pOveredFrame_)
-        pOveredFrame_->notify_mouse_in_frame(true, iX, iY);
+    if (pHoveredFrame_)
+        pHoveredFrame_->notify_mouse_in_frame(true, iX, iY);
 }
 
 void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstraint, std::function<void()> pApplyConstraintFunc)
@@ -1351,7 +1341,7 @@ void manager::toggle_input()
 
     if (bInputEnabled_)
     {
-        bUpdateOveredFrame_ = true;
+        bUpdateHoveredFrame_ = true;
 
         if (pFocusedFrame_)
             pInputManager_->set_focus(true, pFocusedFrame_);
@@ -1377,7 +1367,7 @@ void manager::clear_fonts_on_close(bool bClear)
 
 const frame* manager::get_overed_frame() const
 {
-    return pOveredFrame_;
+    return pHoveredFrame_;
 }
 
 void manager::request_focus(focus_frame* pFocusFrame)

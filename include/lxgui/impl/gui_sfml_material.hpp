@@ -180,12 +180,12 @@ namespace sfml
 
         struct texture_data
         {
-            uint   uiWidth_, uiHeight_;
-            uint   uiRealWidth_, uiRealHeight_;
-            wrap   mWrap_;
-            filter mFilter_;
+            uint   uiWidth_ = 0u, uiHeight_ = 0u;
+            uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+            wrap   mWrap_ = wrap::REPEAT;
+            filter mFilter_ = filter::NONE;
 
-            bool              bRenderTarget_;
+            bool              bRenderTarget_ = false;
             sf::RenderTexture mRenderTexture_;
             sf::Texture       mTexture_;
             sf::Image         mData_;

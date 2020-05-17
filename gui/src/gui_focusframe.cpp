@@ -6,8 +6,7 @@ using namespace lxgui::input;
 namespace lxgui {
 namespace gui
 {
-focus_frame::focus_frame(manager* pManager) : frame(pManager),
-    bFocus_(false), bAutoFocus_(false)
+focus_frame::focus_frame(manager* pManager) : frame(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

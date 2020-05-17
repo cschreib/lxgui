@@ -28,9 +28,9 @@ namespace glfw
 
         static const int lKeyToGLFW[106][2];
 
-        bool bMouseGrab_;
-        bool bFirst_;
-        float fOldMouseX_, fOldMouseY_, fOldWheel_;
+        bool bMouseGrab_ = false;
+        bool bFirst_ = true;
+        float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f, fOldWheel_ = 0.0f;
     };
 }
 }

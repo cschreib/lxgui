@@ -13,15 +13,8 @@ namespace lxgui {
 namespace gui
 {
 edit_box::edit_box(manager* pManager) : focus_frame(pManager),
-    uiDisplayPos_(0), uiNumLetters_(0), uiMaxLetters_(-1), bNumericOnly_(false),
-    bPositiveOnly_(false), bIntegerOnly_(false), bPasswordMode_(false),
-    bMultiLine_(false), bArrowsIgnored_(false),
-    pHighlight_(nullptr), mHighlightColor_(1.0f, 1.0f, 1.0f, 0.35f),
-    uiSelectionStartPos_(0), uiSelectionEndPos_(0), bSelectedText_(false),
-    pCarret_(nullptr), dBlinkSpeed_(0.5),
     mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
-    uiMaxHistoryLines_(uint(-1)), pFontString_(nullptr),
-    lTextInsets_(quad2i::ZERO), mLastKeyPressed_(key::K_UNASSIGNED), dKeyRepeatSpeed_(0.03),
+    mLastKeyPressed_(key::K_UNASSIGNED),
     mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
 {
     lType_.push_back(CLASS_NAME);
@@ -30,11 +23,6 @@ edit_box::edit_box(manager* pManager) : focus_frame(pManager),
 
     std::vector<std::string> lRegs; lRegs.push_back("LeftButton");
     register_for_drag(lRegs);
-}
-
-edit_box::~edit_box()
-{
-    set_focus(false);
 }
 
 bool edit_box::can_use_script(const std::string& sScriptName) const
@@ -1226,8 +1214,7 @@ void edit_box::process_key_(key mKey)
 }
 
 periodic_timer::periodic_timer(double dDuration, start_type mType, bool bTickFirst) :
-    dElapsed_(bTickFirst ? dDuration : 0.0), dDuration_(dDuration), bPaused_(true),
-    bFirstTick_(true), mType_(mType)
+    dElapsed_(bTickFirst ? dDuration : 0.0), dDuration_(dDuration), mType_(mType)
 {
     if (mType == start_type::NOW)
         start();

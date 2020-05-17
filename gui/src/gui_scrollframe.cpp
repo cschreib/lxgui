@@ -8,13 +8,7 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager* pManager) : frame(pManager),
-    iHorizontalScroll_(0), iHorizontalScrollRange_(0), iVerticalScroll_(0),
-    iVerticalScrollRange_(0), pScrollChild_(nullptr),
-    bRebuildScrollRenderTarget_(false), bRedrawScrollRenderTarget_(false),
-    bUpdateScrollRange_(false), pScrollRenderTarget_(nullptr),
-    pScrollTexture_(nullptr), bRebuildScrollStrataList_(false),
-    bMouseInScrollTexture_(false), pOveredScrollChild_(nullptr)
+scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
 {
 
     lType_.push_back(CLASS_NAME);
@@ -279,7 +273,7 @@ void scroll_frame::update_scroll_child_input_()
 
     if (bMouseInScrollTexture_)
     {
-        frame* pOveredFrame = nullptr;
+        frame* pHoveredFrame = nullptr;
         for (const auto& mStrata : utils::range::reverse_value(lScrollStrataList_))
         {
             for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
@@ -288,33 +282,33 @@ void scroll_frame::update_scroll_child_input_()
                 {
                     if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
                     {
-                        pOveredFrame = pFrame;
+                        pHoveredFrame = pFrame;
                         break;
                     }
                 }
 
-                if (pOveredFrame) break;
+                if (pHoveredFrame) break;
 
             }
 
-            if (pOveredFrame) break;
+            if (pHoveredFrame) break;
         }
 
-        if (pOveredFrame != pOveredScrollChild_)
+        if (pHoveredFrame != pHoveredScrollChild_)
         {
-            if (pOveredScrollChild_)
-                pOveredScrollChild_->notify_mouse_in_frame(false, iX, iY);
+            if (pHoveredScrollChild_)
+                pHoveredScrollChild_->notify_mouse_in_frame(false, iX, iY);
 
-            pOveredScrollChild_ = pOveredFrame;
+            pHoveredScrollChild_ = pHoveredFrame;
         }
 
-        if (pOveredScrollChild_)
-            pOveredScrollChild_->notify_mouse_in_frame(true, iX, iY);
+        if (pHoveredScrollChild_)
+            pHoveredScrollChild_->notify_mouse_in_frame(true, iX, iY);
     }
-    else if (pOveredScrollChild_)
+    else if (pHoveredScrollChild_)
     {
-        pOveredScrollChild_->notify_mouse_in_frame(false, iX, iY);
-        pOveredScrollChild_ = nullptr;
+        pHoveredScrollChild_->notify_mouse_in_frame(false, iX, iY);
+        pHoveredScrollChild_ = nullptr;
     }
 }
 

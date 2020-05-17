@@ -18,10 +18,6 @@ renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow), pCurrentSFMLT
 {
 }
 
-renderer::~renderer()
-{
-}
-
 void renderer::begin(utils::refptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)

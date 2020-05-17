@@ -20,8 +20,7 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-render_target::render_target(uint uiWidth, uint uiHeight) :
-    uiFBOHandle_(0), bUpdateViewMatrix_(true)
+render_target::render_target(uint uiWidth, uint uiHeight)
 {
     pTexture_ = utils::refptr<gl::material>(new gl::material(
         uiWidth, uiHeight, material::wrap::REPEAT, material::filter::NONE, true

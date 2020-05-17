@@ -151,11 +151,11 @@ private :
     */
     bool test(state* pLua, int iIndex, bool bPrintError = true);
 
-    bool              bSet_;
-    data*             pData_;
+    bool              bSet_ = false;
+    data*             pData_ = nullptr;
     std::vector<data> lData_;
-    function*         pParent_;
-    state*            pLua_;
+    function*         pParent_ = nullptr;
+    state*            pLua_ = nullptr;
 };
 
 /// Holds all possible arguments of a Lua function's argument set.
@@ -382,12 +382,12 @@ public :
 private :
 
     std::string                sName_;
-    state*                     pLua_;
-    uint                       uiArgumentCount_;
-    uint                       uiReturnNbr_;
-    uint                       uiReturnCount_;
+    state*                     pLua_ = nullptr;
+    uint                       uiArgumentCount_ = 0u;
+    uint                       uiReturnNbr_ = 0u;
+    uint                       uiReturnCount_ = 0u;
     std::vector<argument_list> lArgListStack_;
-    argument_list*             pArgList_;
+    argument_list*             pArgList_ = nullptr;
 };
 }
 }

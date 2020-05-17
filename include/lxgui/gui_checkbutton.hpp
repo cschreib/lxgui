@@ -95,10 +95,10 @@ namespace gui
         texture* create_checked_texture_();
         texture* create_disabled_checked_texture_();
 
-        bool bChecked_;
+        bool bChecked_ = false;
 
-        texture* pCheckedTexture_;
-        texture* pDisabledCheckedTexture_;
+        texture* pCheckedTexture_ = nullptr;
+        texture* pDisabledCheckedTexture_ = nullptr;
 
     };
 

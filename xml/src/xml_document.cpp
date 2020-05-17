@@ -11,64 +11,56 @@ namespace lxgui {
 namespace xml
 {
 document::document(const std::string& sDefFileName, std::ostream& mOut) :
-    out(mOut.rdbuf()), sDefFileName_(sDefFileName), uiCurrentLineNbr_(0),
-    bValid_(true), pState_(nullptr), bSmartComment_(false),
-    uiSmartCommentCount_(0), bMultilineComment_(false),
-    bPreProcessor_(false), uiPreProcessorCount_(0), uiSkippedPreProcessorCount_(0)
+    out(mOut.rdbuf()), sDefFileName_(sDefFileName)
 {
     mXMLState_.set_document(this);
     mDefState_.set_document(this);
 
-    if (utils::file_exists(sDefFileName_))
-    {
-        mMainBlock_.set_document(this);
-        bValid_ = true;
-
-        try { load_definition_(); }
-        catch (const utils::exception& e)
-        {
-            out << e.get_description() << std::endl;
-            bValid_ = false;
-        }
-    }
-    else
+    if (!utils::file_exists(sDefFileName_))
     {
         out << "# Error # : xml::document : Can't find \"" << sDefFileName_ << "\"." << std::endl;
+        bValid_ = false;
+        return;
+    }
+
+    mMainBlock_.set_document(this);
+    bValid_ = true;
+
+    try { load_definition_(); }
+    catch (const utils::exception& e)
+    {
+        out << e.get_description() << std::endl;
         bValid_ = false;
     }
 }
 
 document::document(const std::string& sFileName, const std::string& sDefFileName, std::ostream& mOut) :
-    out(mOut.rdbuf()),sFileName_(sFileName), sDefFileName_(sDefFileName), uiCurrentLineNbr_(0),
-    bValid_(true), pState_(nullptr), bSmartComment_(false), uiSmartCommentCount_(0),
-    bMultilineComment_(false), bPreProcessor_(false),
-    uiPreProcessorCount_(0), uiSkippedPreProcessorCount_(0)
+    out(mOut.rdbuf()),sFileName_(sFileName), sDefFileName_(sDefFileName)
 {
     mXMLState_.set_document(this);
     mDefState_.set_document(this);
-    if (utils::file_exists(sFileName_))
-    {
-        if (utils::file_exists(sDefFileName_))
-        {
-            mMainBlock_.set_document(this);
-            bValid_ = true;
 
-            try { load_definition_(); }
-            catch (const utils::exception& e)
-            {
-                out << e.get_description() << std::endl;
-                bValid_ = false;
-            }
-        }
-        else
-        {
-            out << "# Error # : xml::document : Can't find \"" << sDefFileName_ << "\"." << std::endl;
-            bValid_ = false;
-        }
-    }
-    else
+    if (!utils::file_exists(sFileName_))
     {
         out << "# Error # : xml::document : Can't find \"" << sFileName_ << "\"." << std::endl;
+        bValid_ = false;
+        return;
+    }
+
+    if (!utils::file_exists(sDefFileName_))
+    {
+        out << "# Error # : xml::document : Can't find \"" << sDefFileName_ << "\"." << std::endl;
+        bValid_ = false;
+        return;
+    }
+
+    mMainBlock_.set_document(this);
+    bValid_ = true;
+
+    try { load_definition_(); }
+    catch (const utils::exception& e)
+    {
+        out << e.get_description() << std::endl;
         bValid_ = false;
     }
 }

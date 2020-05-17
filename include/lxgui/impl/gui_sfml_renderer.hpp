@@ -24,9 +24,6 @@ namespace sfml
         /// Constructor.
         explicit renderer(sf::RenderWindow& mWindow);
 
-        /// Destructor.
-        ~renderer();
-
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
@@ -101,7 +98,7 @@ namespace sfml
         mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;
 
         mutable utils::refptr<gui::sfml::render_target> pCurrentTarget_;
-        mutable sf::RenderTarget*                       pCurrentSFMLTarget_;
+        mutable sf::RenderTarget*                       pCurrentSFMLTarget_ = nullptr;
     };
 }
 }

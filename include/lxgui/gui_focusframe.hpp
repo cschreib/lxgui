@@ -63,8 +63,8 @@ namespace gui
 
     protected :
 
-        bool bFocus_;
-        bool bAutoFocus_;
+        bool bFocus_ = false;
+        bool bAutoFocus_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

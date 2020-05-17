@@ -6,7 +6,7 @@ namespace lxgui {
 namespace lua
 {
 argument::argument(const std::string& sName, type mLuaType, function* pParent) :
-    bSet_(false), pParent_(pParent), pLua_(pParent_->get_state())
+    pParent_(pParent), pLua_(pParent_->get_state())
 {
     lData_.push_back(data(sName, mLuaType, this));
     pData_ = &lData_[0];

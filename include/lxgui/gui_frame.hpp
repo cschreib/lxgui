@@ -719,49 +719,49 @@ namespace gui
 
         std::map<std::string, handler> lDefinedHandlerList_;
 
-        addon* pAddOn_;
+        addon* pAddOn_ = nullptr;
 
-        int iLevel_;
+        int iLevel_ = 0;
 
-        frame_strata mStrata_;
-        bool         bIsTopLevel_;
-        frame*       pTopLevelParent_;
+        frame_strata mStrata_ = frame_strata::MEDIUM;
+        bool         bIsTopLevel_ = false;
+        frame*       pTopLevelParent_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 
-        bool bHasAllEventsRegistred_;
+        bool bHasAllEventsRegistred_ = false;
 
-        bool bIsKeyboardEnabled_;
-        bool bIsMouseEnabled_;
-        bool bAllowWorldInput_;
-        bool bIsMouseWheelEnabled_;
-        bool bIsMovable_;
-        bool bIsClampedToScreen_;
-        bool bIsResizable_;
-        bool bIsUserPlaced_;
+        bool bIsKeyboardEnabled_ = false;
+        bool bIsMouseEnabled_ = false;
+        bool bAllowWorldInput_ = false;
+        bool bIsMouseWheelEnabled_ = false;
+        bool bIsMovable_ = false;
+        bool bIsClampedToScreen_ = false;
+        bool bIsResizable_ = false;
+        bool bIsUserPlaced_ = false;
 
-        bool bBuildLayerList_;
+        bool bBuildLayerList_ = false;
 
-        quad2i lAbsHitRectInsetList_;
-        quad2f lRelHitRectInsetList_;
+        quad2i lAbsHitRectInsetList_ = quad2i::ZERO;
+        quad2f lRelHitRectInsetList_ = quad2f::ZERO;
 
-        uint uiMinWidth_;
-        uint uiMaxWidth_;
-        uint uiMinHeight_;
-        uint uiMaxHeight_;
+        uint uiMinWidth_ = 0u;
+        uint uiMaxWidth_ = uint(-1);
+        uint uiMinHeight_ = 0u;
+        uint uiMaxHeight_ = uint(-1);
 
-        float fScale_;
+        float fScale_ = 1.0f;
 
-        bool bMouseInFrame_;
-        bool bMouseInTitleRegion_;
-        int  iMousePosX_, iMousePosY_;
+        bool bMouseInFrame_ = false;
+        bool bMouseInTitleRegion_ = false;
+        int  iMousePosX_ = 0, iMousePosY_ = 0;
 
-        region* pTitleRegion_;
+        region* pTitleRegion_ = nullptr;
 
-        frame* pParentFrame_;
+        frame* pParentFrame_ = nullptr;
 
         std::vector<std::string> lMouseButtonList_;
-        bool                     bMouseDragged_;
+        bool                     bMouseDragged_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

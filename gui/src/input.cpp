@@ -62,14 +62,7 @@ uint source_impl::get_window_new_height() const
     return uiNewWindowHeight_;
 }
 
-manager::manager(std::unique_ptr<source_impl> pSource) :
-    bRemoveFocus_(false), bFocus_(false), pFocusReceiver_(nullptr), bCtrlPressed_(false),
-    bShiftPressed_(false), bAltPressed_ (false), bKey_(false),
-    dDoubleClickTime_(0.25), fMX_(0.0f), fMY_(0.0f), fRelMX_(0.0f), fRelMY_(0.0f),
-    fDMX_(0.0f), fDMY_(0.0f), fRelDMX_(0.0f), fRelDMY_(0.0f), fRawDMX_(0.0f), fRawDMY_(0.0f),
-    fMouseSensibility_(1.0f), dMouseHistoryMaxLength_(0.1), dLongPressDelay_(0.7),
-    fSmoothDMX_(0.0f), fSmoothDMY_(0.0f), fSmoothMWheel_(0.0f), fMWheel_(0.0f),
-    bWheelRolled_(false), bLastDragged_(false), dTime_(0.0), pSource_(std::move(pSource))
+manager::manager(std::unique_ptr<source_impl> pSource) : pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(false);
     lKeyLong_.fill(false);
@@ -622,10 +615,10 @@ void manager::update(float fTempDelta)
     fRelMX_ = mMouseState.fRelX;
     fRelMY_ = mMouseState.fRelY;
 
-    fDMX_ *= fMouseSensibility_;
-    fDMY_ *= fMouseSensibility_;
-    fRelDMX_ *= fMouseSensibility_;
-    fRelDMY_ *= fMouseSensibility_;
+    fDMX_ *= fMouseSensitivity_;
+    fDMY_ *= fMouseSensitivity_;
+    fRelDMX_ *= fMouseSensitivity_;
+    fRelDMY_ *= fMouseSensitivity_;
 
     fMWheel_ = mMouseState.fRelWheel;
     if (fMWheel_ == 0.0f)
@@ -853,14 +846,14 @@ float manager::get_mouse_wheel() const
     return fMWheel_;
 }
 
-void manager::set_mouse_sensibility(float fMouseSensibility)
+void manager::set_mouse_sensibility(float fMouseSensitivity)
 {
-    fMouseSensibility_ = fMouseSensibility;
+    fMouseSensitivity_ = fMouseSensitivity;
 }
 
 float manager::get_mouse_sensibility() const
 {
-    return fMouseSensibility_;
+    return fMouseSensitivity_;
 }
 
 void manager::set_long_press_delay(double dLongPressDelay)

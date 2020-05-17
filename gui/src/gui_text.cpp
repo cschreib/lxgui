@@ -10,14 +10,7 @@ namespace lxgui {
 namespace gui
 {
 text::text(manager* pManager, const std::string& sFileName, float fSize) :
-    pManager_(pManager), sFileName_(sFileName), bReady_(false), fSize_(fSize), fTracking_(0.0f),
-    fLineSpacing_(1.5f), fSpaceWidth_(0.0f), bRemoveStartingSpaces_(false), bWordWrap_(true),
-    bAddEllipsis_(false), mColor_(color::WHITE), bForceColor_(false), bFormattingEnabled_(false),
-    fW_(0.0f), fH_(0.0f), fX_(std::numeric_limits<float>::infinity()),
-    fY_(std::numeric_limits<float>::infinity()), fBoxW_(std::numeric_limits<float>::infinity()),
-    fBoxH_(std::numeric_limits<float>::infinity()), mAlign_(alignment::LEFT), mVertAlign_(vertical_alignment::MIDDLE),
-    bUpdateCache_(false), bUpdateQuads_(false)
-
+    pManager_(pManager), sFileName_(sFileName), fSize_(fSize)
 {
     pFont_ = pManager_->create_font(sFileName_, fSize_);
     if (!pFont_)

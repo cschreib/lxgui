@@ -28,9 +28,6 @@ namespace gui
         /// Constructor.
         explicit slider(manager* pManager);
 
-        /// Destructor.
-        ~slider();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
@@ -188,21 +185,21 @@ namespace gui
         texture* create_thumb_texture_();
         void     fire_update_thumb_texture_() const;
 
-        mutable bool bUpdateThumbTexture_;
+        mutable bool bUpdateThumbTexture_ = false;
 
-        orientation mOrientation_;
+        orientation mOrientation_ = orientation::VERTICAL;
 
-        float fValue_;
-        float fMinValue_;
-        float fMaxValue_;
-        float fValueStep_;
+        float fValue_ = 0.0f;
+        float fMinValue_ = 0.0f;
+        float fMaxValue_ = 1.0f;
+        float fValueStep_ = 0.1f;
 
-        bool bAllowClicksOutsideThumb_;
+        bool bAllowClicksOutsideThumb_ = true;
 
-        layer_type mThumbLayer_;
-        texture*   pThumbTexture_;
-        bool       bThumbMoved_;
-        bool       bMouseInThumb_;
+        layer_type mThumbLayer_ = layer_type::OVERLAY;
+        texture*   pThumbTexture_ = nullptr;
+        bool       bThumbMoved_ = false;
+        bool       bMouseInThumb_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

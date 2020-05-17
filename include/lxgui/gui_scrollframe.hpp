@@ -143,26 +143,26 @@ namespace gui
         void rebuild_scroll_strata_list_();
         void render_scroll_strata_list_();
 
-        int iHorizontalScroll_;
-        int iHorizontalScrollRange_;
-        int iVerticalScroll_;
-        int iVerticalScrollRange_;
+        int iHorizontalScroll_ = 0;
+        int iHorizontalScrollRange_ = 0;
+        int iVerticalScroll_ = 0;
+        int iVerticalScrollRange_ = 0;
 
-        frame* pScrollChild_;
+        frame* pScrollChild_ = nullptr;
 
-        mutable bool bRebuildScrollRenderTarget_;
-        mutable bool bRedrawScrollRenderTarget_;
-        mutable bool bUpdateScrollRange_;
+        mutable bool bRebuildScrollRenderTarget_ = false;
+        mutable bool bRedrawScrollRenderTarget_ = false;
+        mutable bool bUpdateScrollRange_ = false;
         utils::refptr<render_target> pScrollRenderTarget_;
 
-        texture* pScrollTexture_;
+        texture* pScrollTexture_ = nullptr;
 
-        mutable bool                   bRebuildScrollStrataList_;
+        mutable bool                   bRebuildScrollStrataList_ = false;
         std::map<uint, frame*>         lScrollChildList_;
         std::map<frame_strata, strata> lScrollStrataList_;
 
-        bool   bMouseInScrollTexture_;
-        frame* pOveredScrollChild_;
+        bool   bMouseInScrollTexture_ = false;
+        frame* pHoveredScrollChild_ = nullptr;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

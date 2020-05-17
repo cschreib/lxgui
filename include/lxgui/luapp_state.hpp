@@ -28,8 +28,8 @@ enum class type
     USERDATA
 };
 
-typedef int (*c_function) (lua_State *L);
-typedef void (*print_function) (const std::string& s);
+using c_function = int (*)(lua_State *L);
+using print_function = void (*)(const std::string& s);
 
 /// Lua wrapper
 /** Wraps the Lua api into a single class.
@@ -49,7 +49,7 @@ public :
     state& operator = (state&&) = delete;
 
     /// Destructor
-    /** \note Definately closes the associated Lua state (all data will be lost).
+    /** \note Definitely closes the associated Lua state (all data will be lost).
     */
     ~state();
 
@@ -522,10 +522,10 @@ private :
 
     static std::map<lua_State*, state*> lLuaStateMap_;
 
-    lua_State* pLua_;
+    lua_State* pLua_ = nullptr;
 
-    c_function pErrorFunction_;
-    print_function pPrintFunction_;
+    c_function pErrorFunction_ = nullptr;
+    print_function pPrintFunction_ = nullptr;
 };
 }
 }

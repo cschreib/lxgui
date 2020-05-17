@@ -84,8 +84,8 @@ namespace gui
 
         void parse_attributes_(xml::block* pBlock) override;
 
-        layer_type mLayer_;
-        frame*     pFrameParent_;
+        layer_type mLayer_ = layer_type::ARTWORK;
+        frame*     pFrameParent_ = nullptr;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

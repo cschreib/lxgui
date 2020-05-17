@@ -7,8 +7,7 @@
 namespace lxgui {
 namespace gui
 {
-check_button::check_button(manager* pManager) : button(pManager),
-    bChecked_(false), pCheckedTexture_(nullptr), pDisabledCheckedTexture_(nullptr)
+check_button::check_button(manager* pManager) : button(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

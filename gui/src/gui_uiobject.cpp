@@ -11,15 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-uiobject::uiobject(manager* pManager) :
-    pManager_(pManager), uiID_(uint(-1)), pParent_(nullptr), pInheritance_(nullptr),
-    bSpecial_(false), bManuallyRendered_(false), bNewlyCreated_(false),
-    pRenderer_(nullptr), bInherits_(false), bVirtual_(false), bLoaded_(false),
-    bReady_(true), lGlue_(nullptr), lDefinedBorderList_(false, false, false, false),
-    lBorderList_(quad2i::ZERO), fAlpha_(1.0f), bIsShown_(true), bIsVisible_(true),
-    bIsWidthAbs_(true), bIsHeightAbs_(true), uiAbsWidth_(0u), uiAbsHeight_(0u),
-    fRelWidth_ (0.0f), fRelHeight_(0.0f), bUpdateAnchors_(false),
-    bUpdateBorders_(true), bUpdateDimensions_(false)
+uiobject::uiobject(manager* pManager) : pManager_(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

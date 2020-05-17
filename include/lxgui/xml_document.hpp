@@ -196,22 +196,22 @@ namespace xml
         std::string  sSourceString_;
         std::string  sDefFileName_;
         std::string  sCurrentFileName_;
-        uint         uiCurrentLineNbr_;
-        bool         bValid_;
+        uint         uiCurrentLineNbr_ = 0;
+        bool         bValid_ = true;
 
         xml_state mXMLState_;
         def_state mDefState_;
-        state*    pState_;
+        state*    pState_ = nullptr;
 
         // Load state
         std::vector<std::string> lPreProcessorCommands_;
-        bool        bSmartComment_;
+        bool        bSmartComment_ = false;
         std::string sSmartCommentTag_;
-        uint        uiSmartCommentCount_;
-        bool        bMultilineComment_;
-        bool        bPreProcessor_;
-        uint        uiPreProcessorCount_;
-        uint        uiSkippedPreProcessorCount_;
+        uint        uiSmartCommentCount_ = 0u;
+        bool        bMultilineComment_ = false;
+        bool        bPreProcessor_ = false;
+        uint        uiPreProcessorCount_ = 0u;
+        uint        uiSkippedPreProcessorCount_ = 0u;
 
         block mMainBlock_;
 

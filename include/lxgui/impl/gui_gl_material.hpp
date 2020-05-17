@@ -13,7 +13,8 @@ namespace gl
 {
     struct ub32color
     {
-        typedef unsigned char chanel;
+        using chanel = unsigned char;
+
         ub32color() = default;
         ub32color(chanel r, chanel g, chanel b, chanel a);
         chanel r, g, b, a;
@@ -187,11 +188,11 @@ namespace gl
 
         struct texture_data
         {
-            uint   uiWidth_, uiHeight_;
-            uint   uiRealWidth_, uiRealHeight_;
-            wrap   mWrap_;
-            filter mFilter_;
-            uint   uiTextureHandle_;
+            uint   uiWidth_ = 0u, uiHeight_ = 0u;
+            uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+            wrap   mWrap_ = wrap::REPEAT;
+            filter mFilter_ = filter::NONE;
+            uint   uiTextureHandle_ = 0u;
 
             std::vector<ub32color> pData_;
         };

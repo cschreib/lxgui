@@ -93,7 +93,7 @@ namespace sfml
         void update_view_matrix_() const;
 
         utils::refptr<sfml::material> pTexture_;
-        sf::RenderTexture*            pRenderTexture_;
+        sf::RenderTexture*            pRenderTexture_ = nullptr;
     };
 }
 }

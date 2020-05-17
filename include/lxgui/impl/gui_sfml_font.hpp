@@ -73,8 +73,8 @@ namespace sfml
     private :
 
         sf::Font                      mFont_;
-        uint                          uiSize_;
-        uint                          uiSizeSFML_;
+        uint                          uiSize_ = 0u;
+        uint                          uiSizeSFML_ = 0u;
         utils::refptr<sfml::material> pTexture_;
     };
 }

@@ -24,8 +24,7 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-renderer::renderer(bool bInitGLEW) :
-    bUpdateViewMatrix_(true)
+renderer::renderer(bool bInitGLEW)
 {
     if (bInitGLEW)
         glewInit();

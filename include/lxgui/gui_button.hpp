@@ -36,9 +36,6 @@ namespace gui
         /// Constructor.
         explicit button(manager* pManager);
 
-        /// Destructor.
-        ~button();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
@@ -238,23 +235,23 @@ namespace gui
         font_string* create_highlight_text_();
         font_string* create_disabled_text_();
 
-        state     mState_;
-        bool      bHighlighted_;
-        bool      bLockHighlight_;
+        state     mState_ = state::UP;
+        bool      bHighlighted_ = false;
+        bool      bLockHighlight_ = false;
 
         std::string sText_;
 
-        texture* pNormalTexture_;
-        texture* pPushedTexture_;
-        texture* pDisabledTexture_;
-        texture* pHighlightTexture_;
+        texture* pNormalTexture_ = nullptr;
+        texture* pPushedTexture_ = nullptr;
+        texture* pDisabledTexture_ = nullptr;
+        texture* pHighlightTexture_ = nullptr;
 
-        font_string* pNormalText_;
-        font_string* pHighlightText_;
-        font_string* pDisabledText_;
-        font_string* pCurrentFontString_;
+        font_string* pNormalText_ = nullptr;
+        font_string* pHighlightText_ = nullptr;
+        font_string* pDisabledText_ = nullptr;
+        font_string* pCurrentFontString_ = nullptr;
 
-        vector2i mPushedTextOffset_;
+        vector2i mPushedTextOffset_ = vector2i::ZERO;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

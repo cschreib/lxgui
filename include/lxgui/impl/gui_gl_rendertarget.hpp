@@ -85,10 +85,10 @@ namespace gl
 
         void update_view_matrix_() const;
 
-        uint                        uiFBOHandle_;
+        uint                        uiFBOHandle_ = 0;
         utils::refptr<gl::material> pTexture_;
 
-        mutable bool    bUpdateViewMatrix_;
+        mutable bool    bUpdateViewMatrix_ = true;
         mutable matrix4 mViewMatrix_;
     };
 }

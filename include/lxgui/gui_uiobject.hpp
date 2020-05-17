@@ -55,8 +55,8 @@ namespace gui
 
     protected :
 
-        uint      uiID_;
-        uiobject* pParent_;
+        uint      uiID_ = 0u;
+        uiobject* pParent_ = nullptr;
     };
 
     /** \endcond
@@ -600,25 +600,25 @@ namespace gui
             pLua->pop();
         }
 
-        manager* pManager_;
+        manager* pManager_ = nullptr;
 
         std::string sName_;
         std::string sRawName_;
         std::string sLuaName_;
-        uint        uiID_;
-        uiobject*   pParent_;
-        uiobject*   pInheritance_;
-        bool        bSpecial_;
-        bool        bManuallyRendered_;
-        bool        bNewlyCreated_;
-        uiobject*   pRenderer_;
-        bool        bInherits_;
+        uint        uiID_ = uint(-1);
+        uiobject*   pParent_ = nullptr;
+        uiobject*   pInheritance_ = nullptr;
+        bool        bSpecial_ = false;
+        bool        bManuallyRendered_ = false;
+        bool        bNewlyCreated_ = false;
+        uiobject*   pRenderer_ = nullptr;
+        bool        bInherits_ = false;
 
-        bool         bVirtual_;
-        bool         bLoaded_;
-        mutable bool bReady_;
+        bool         bVirtual_ = false;
+        bool         bLoaded_ = false;
+        mutable bool bReady_ = true;
 
-        lua_glue*                lGlue_;
+        lua_glue*                lGlue_ = nullptr;
         std::vector<std::string> lCopyList_;
 
         std::vector<std::string> lType_;
@@ -628,20 +628,20 @@ namespace gui
         quad2<bool>                    lDefinedBorderList_;
         mutable quad2i                 lBorderList_;
 
-        float fAlpha_;
-        bool  bIsShown_;
-        bool  bIsVisible_;
+        float fAlpha_ = 1.0f;
+        bool  bIsShown_ = true;
+        bool  bIsVisible_ = true;
 
-        mutable bool  bIsWidthAbs_;
-        mutable bool  bIsHeightAbs_;
-        mutable uint  uiAbsWidth_;
-        mutable uint  uiAbsHeight_;
-        mutable float fRelWidth_;
-        mutable float fRelHeight_;
+        mutable bool  bIsWidthAbs_ = true;
+        mutable bool  bIsHeightAbs_ = true;
+        mutable uint  uiAbsWidth_ = 0u;
+        mutable uint  uiAbsHeight_ = 0u;
+        mutable float fRelWidth_ = 0.0f;
+        mutable float fRelHeight_ = 0.0f;
 
-        mutable bool bUpdateAnchors_;
-        mutable bool bUpdateBorders_;
-        mutable bool bUpdateDimensions_;
+        mutable bool bUpdateAnchors_ = false;
+        mutable bool bUpdateBorders_ = true;
+        mutable bool bUpdateDimensions_ = false;
 
         mutable std::map<uint, uiobject*> lAnchoredObjectList_;
     };

@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), bKerning_(false)
+font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org

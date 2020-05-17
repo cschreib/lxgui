@@ -31,9 +31,6 @@ namespace gui
         /// Constructor.
         explicit status_bar(manager* pManager);
 
-        /// Destructor.
-        ~status_bar();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
@@ -167,18 +164,18 @@ namespace gui
         texture* create_bar_texture_();
         void     fire_update_bar_texture_();
 
-        bool bUpdateBarTexture_;
+        bool bUpdateBarTexture_ = false;
 
-        orientation mOrientation_;
-        bool        bReversed_;
+        orientation mOrientation_ = orientation::HORIZONTAL;
+        bool        bReversed_ = false;
 
-        float fValue_;
-        float fMinValue_;
-        float fMaxValue_;
+        float fValue_ = 0.0f;
+        float fMinValue_ = 0.0f;
+        float fMaxValue_ = 1.0f;
 
-        color      mBarColor_;
-        layer_type mBarLayer_;
-        texture*   pBarTexture_;
+        color      mBarColor_ = color::WHITE;
+        layer_type mBarLayer_ = layer_type::ARTWORK;
+        texture*   pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_;
     };
 

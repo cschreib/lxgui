@@ -10,8 +10,7 @@
 namespace lxgui {
 namespace gui
 {
-layered_region::layered_region(manager* pManager) : region(pManager),
-    mLayer_(layer_type::ARTWORK), pFrameParent_(nullptr)
+layered_region::layered_region(manager* pManager) : region(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

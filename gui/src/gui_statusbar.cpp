@@ -16,18 +16,11 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
     return u;
 }
 
-status_bar::status_bar(manager* pManager) : frame(pManager),
-    bUpdateBarTexture_(false), mOrientation_(orientation::HORIZONTAL), bReversed_(false),
-    fValue_(0.0f), fMinValue_(0.0f), fMaxValue_(1.0f), mBarLayer_(layer_type::ARTWORK),
-    pBarTexture_(nullptr)
+status_bar::status_bar(manager* pManager) : frame(pManager)
 {
     lInitialTextCoords_[0] = lInitialTextCoords_[1] = 0.0f;
     lInitialTextCoords_[2] = lInitialTextCoords_[3] = 1.0f;
     lType_.push_back(CLASS_NAME);
-}
-
-status_bar::~status_bar()
-{
 }
 
 std::string status_bar::serialize(const std::string& sTab) const

@@ -77,14 +77,14 @@ namespace gl
 
     private :
 
-        float fTextureWidth_;
-        float fTextureHeight_;
+        float fTextureWidth_ = 0.0f;
+        float fTextureHeight_ = 0.0f;
 
         utils::refptr<gl::material> pTexture_;
         std::vector<character_info> lCharacterList_;
 
-        uint uiSize_;
-        bool bKerning_;
+        uint uiSize_ = 0u;
+        bool bKerning_ = false;
     };
 }
 }

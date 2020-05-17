@@ -21,16 +21,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
-    region(pManager), pAddOn_(nullptr), iLevel_(0), mStrata_(frame_strata::MEDIUM), bIsTopLevel_(false),
-    pTopLevelParent_(nullptr), bHasAllEventsRegistred_(false), bIsKeyboardEnabled_(false),
-    bIsMouseEnabled_(false), bAllowWorldInput_(false), bIsMouseWheelEnabled_(false),
-    bIsMovable_(false), bIsClampedToScreen_(false), bIsResizable_(false), bIsUserPlaced_(false),
-    bBuildLayerList_(false), lAbsHitRectInsetList_(quad2i::ZERO),
-    lRelHitRectInsetList_(quad2f::ZERO), uiMinWidth_(0u), uiMaxWidth_(uint(-1)),
-    uiMinHeight_(0u), uiMaxHeight_(uint(-1)), fScale_(1.0f), bMouseInFrame_(false),
-    bMouseInTitleRegion_(false), iMousePosX_(0), iMousePosY_(0), pTitleRegion_(nullptr),
-    pParentFrame_(nullptr), bMouseDragged_(false)
+frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()), region(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

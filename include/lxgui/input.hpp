@@ -398,7 +398,7 @@ namespace input
         *         disturbing if you need a continuous movement.<br>
         *         If that's an issue for you, then use this function
         *         instead of get_mouse_dx().<br>
-        *         Sensibility factor is applied on the result.
+        *         Sensitivity factor is applied on the result.
         */
         float get_mouse_smooth_dx() const;
 
@@ -411,7 +411,7 @@ namespace input
         *         disturbing if you need a continuous movement.<br>
         *         If that's an issue for you, then use this function
         *         instead of get_mouse_dy().<br>
-        *         Sensibility factor is applied on the result.
+        *         Sensitivity factor is applied on the result.
         */
         float get_mouse_smooth_dy() const;
 
@@ -450,10 +450,10 @@ namespace input
         double get_mouse_buffer_duration() const;
 
         /// Sets the mouse movement factor.
-        /** \param fMouseSensibility The new movement factor
+        /** \param fMouseSensitivity The new movement factor
         *   \note Increase this parameter to make mouse controlled movement faster.
         */
-        void set_mouse_sensibility(float fMouseSensibility);
+        void set_mouse_sensibility(float fMouseSensitivity);
 
         /// Returns the mouse movement factor.
         /** \return The mouse movement factor
@@ -522,9 +522,9 @@ namespace input
 
         void fire_event_(const gui::event& mEvent, bool bForce = false);
 
-        bool bRemoveFocus_;
-        bool bFocus_;
-        gui::event_receiver* pFocusReceiver_;
+        bool bRemoveFocus_ = false;
+        bool bFocus_ = false;
+        gui::event_receiver* pFocusReceiver_ = nullptr;
 
         std::vector<gui::event_manager*> lEventManagerList_;
 
@@ -534,43 +534,43 @@ namespace input
         std::array<bool,   KEY_NUMBER> lKeyBuf_;
         std::array<bool,   KEY_NUMBER> lKeyBufOld_;
 
-        bool bCtrlPressed_;
-        bool bShiftPressed_;
-        bool bAltPressed_;
-        bool bKey_;
+        bool bCtrlPressed_ = false;
+        bool bShiftPressed_ = false;
+        bool bAltPressed_ = false;
+        bool bKey_ = false;
         std::vector<char32_t> lChars_;
 
         std::deque<key> lDownStack_;
         std::deque<key> lUpStack_;
 
         // Mouse
-        double                                              dDoubleClickTime_;
-        std::array<double, MOUSE_BUTTON_NUMBER>       lDoubleClickDelay_;
-        std::array<double, MOUSE_BUTTON_NUMBER>       lMouseDelay_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseLong_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseBuf_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>         lMouseBufOld_;
+        double                                       dDoubleClickTime_ = 0.25;
+        std::array<double, MOUSE_BUTTON_NUMBER>      lDoubleClickDelay_;
+        std::array<double, MOUSE_BUTTON_NUMBER>      lMouseDelay_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseLong_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseBuf_;
+        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseBufOld_;
         std::array<mouse_state, MOUSE_BUTTON_NUMBER> lMouseState_;
 
         std::map<std::string, bool> lClickGroupList_;
         std::map<std::string, bool> lForcedClickGroupList_;
 
-        float       fMX_, fMY_;
-        float       fRelMX_, fRelMY_;
-        float       fDMX_, fDMY_;
-        float       fRelDMX_, fRelDMY_;
-        float       fRawDMX_, fRawDMY_;
-        float       fMouseSensibility_;
-        double      dMouseHistoryMaxLength_;
-        double      dLongPressDelay_;
+        float       fMX_ = 0.0f, fMY_ = 0.0f;
+        float       fRelMX_ = 0.0f, fRelMY_ = 0.0f;
+        float       fDMX_ = 0.0f, fDMY_ = 0.0f;
+        float       fRelDMX_ = 0.0f, fRelDMY_ = 0.0f;
+        float       fRawDMX_ = 0.0f, fRawDMY_ = 0.0f;
+        float       fMouseSensitivity_ = 1.0f;
+        double      dMouseHistoryMaxLength_ = 0.1;
+        double      dLongPressDelay_ = 0.7;
         std::deque<std::pair<double, std::array<float,3>>> lMouseHistory_;
-        float       fSmoothDMX_, fSmoothDMY_, fSmoothMWheel_;
-        float       fMWheel_;
-        bool        bWheelRolled_;
+        float       fSmoothDMX_ = 0.0f, fSmoothDMY_ = 0.0f, fSmoothMWheel_ = 0.0f;
+        float       fMWheel_ = 0.0f;
+        bool        bWheelRolled_ = false;
         std::string sMouseButton_;
-        bool        bLastDragged_;
+        bool        bLastDragged_ = false;
 
-        double dTime_;
+        double dTime_ = false;
 
         std::unique_ptr<source_impl> pSource_;
     };

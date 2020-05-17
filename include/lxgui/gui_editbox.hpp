@@ -81,12 +81,12 @@ namespace gui
 
     private :
 
-        double dElapsed_;
-        double dDuration_;
-        bool   bPaused_;
-        bool   bFirstTick_;
+        double dElapsed_ = 0.0;
+        double dDuration_ = 0.0;
+        bool   bPaused_ = true;
+        bool   bFirstTick_ = true;
 
-        start_type mType_;
+        start_type mType_ = start_type::PAUSED;
     };
 
     /// An editable text box.
@@ -96,9 +96,6 @@ namespace gui
 
         /// Constructor.
         explicit edit_box(manager* pManager);
-
-        /// Destructor.
-        ~edit_box();
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param pObj The uiobject to copy
@@ -353,36 +350,36 @@ namespace gui
         utils::ustring           sDisplayedText_;
         utils::ustring::iterator iterCarretPos_;
 
-        uint uiDisplayPos_;
-        uint uiNumLetters_;
-        uint uiMaxLetters_;
-        bool bNumericOnly_;
-        bool bPositiveOnly_;
-        bool bIntegerOnly_;
-        bool bPasswordMode_;
-        bool bMultiLine_;
-        bool bArrowsIgnored_;
+        uint uiDisplayPos_ = 0;
+        uint uiNumLetters_ = 0;
+        uint uiMaxLetters_ = uint(-1);
+        bool bNumericOnly_ = false;
+        bool bPositiveOnly_ = false;
+        bool bIntegerOnly_ = false;
+        bool bPasswordMode_ = false;
+        bool bMultiLine_ = false;
+        bool bArrowsIgnored_ = false;
 
         std::string sComboKey_;
 
-        texture* pHighlight_;
-        color    mHighlightColor_;
-        uint     uiSelectionStartPos_;
-        uint     uiSelectionEndPos_;
-        bool     bSelectedText_;
+        texture* pHighlight_ = nullptr;
+        color    mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
+        uint     uiSelectionStartPos_ = 0u;
+        uint     uiSelectionEndPos_ = 0u;
+        bool     bSelectedText_ = false;
 
-        texture*       pCarret_;
-        double         dBlinkSpeed_;
+        texture*       pCarret_ = nullptr;
+        double         dBlinkSpeed_ = 0.5;
         periodic_timer mCarretTimer_;
 
         std::deque<std::string> lHistoryLineList_;
-        uint                    uiMaxHistoryLines_;
+        uint                    uiMaxHistoryLines_ = uint(-1);
 
-        font_string* pFontString_;
-        quad2i       lTextInsets_;
+        font_string* pFontString_ = nullptr;
+        quad2i       lTextInsets_ = quad2i::ZERO;
 
         input::key     mLastKeyPressed_;
-        double         dKeyRepeatSpeed_;
+        double         dKeyRepeatSpeed_ = 0.03;
         periodic_timer mKeyRepeatTimer_;
     };
 

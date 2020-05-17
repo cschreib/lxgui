@@ -94,7 +94,7 @@ namespace gl
         mutable std::map<std::string, utils::wptr<gui::material>> lTextureList_;
         mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;
 
-        mutable bool    bUpdateViewMatrix_;
+        mutable bool    bUpdateViewMatrix_ = true;
         mutable matrix4 mViewMatrix_;
 
         mutable utils::refptr<gui::gl::render_target> pCurrentTarget_;

@@ -51,7 +51,7 @@ namespace gui
 
     private :
 
-        event_manager* pEventManager_;
+        event_manager* pEventManager_ = nullptr;
     };
 }
 }

@@ -30,7 +30,7 @@ namespace gui
         struct line
         {
             utils::ustring sCaption;
-            float          fWidth;
+            float          fWidth = 0.0f;
         };
 
         enum class color_action
@@ -43,10 +43,8 @@ namespace gui
         /// Contains information about the text at a given position
         struct format
         {
-            format() : mColorAction(color_action::NONE) {}
-
-            color        mColor;
-            color_action mColorAction;
+            color        mColor = color::WHITE;
+            color_action mColorAction = color_action::NONE;
         };
 
         enum class alignment
@@ -68,8 +66,8 @@ namespace gui
         {
             quad2f mQuad;
             quad2f mUVs;
-            color  mColor;
-            bool   bNoRender;
+            color  mColor = color::WHITE;
+            bool   bNoRender = false;
         };
 
         /// Constructor.
@@ -327,37 +325,40 @@ namespace gui
         void update_lines_();
         void update_cache_();
 
-        manager* pManager_;
+        manager* pManager_ = nullptr;
 
         std::string sFileName_;
 
-        bool  bReady_;
-        float fSize_;
-        float fTracking_;
-        float fLineSpacing_;
-        float fSpaceWidth_;
-        bool  bRemoveStartingSpaces_;
-        bool  bWordWrap_;
-        bool  bAddEllipsis_;
-        color mColor_;
-        bool  bForceColor_;
-        bool  bFormattingEnabled_;
-        float fW_, fH_;
-        float fX_, fY_;
-        float fBoxW_, fBoxH_;
+        bool  bReady_ = false;
+        float fSize_ = 0.0f;
+        float fTracking_ = 0.0f;
+        float fLineSpacing_ = 1.5f;
+        float fSpaceWidth_ = 0.0f;
+        bool  bRemoveStartingSpaces_ = false;
+        bool  bWordWrap_ = true;
+        bool  bAddEllipsis_ = false;
+        color mColor_ = color::WHITE;
+        bool  bForceColor_ = false;
+        bool  bFormattingEnabled_ = false;
+        float fW_ = 0.0f, fH_ = 0.0f;
+        float fX_ = std::numeric_limits<float>::infinity();
+        float fY_ = std::numeric_limits<float>::infinity();
+        float fBoxW_ = std::numeric_limits<float>::infinity();
+        float fBoxH_ = std::numeric_limits<float>::infinity();
 
         std::string        sText_;
         utils::ustring     sUnicodeText_;
-        alignment          mAlign_;
-        vertical_alignment mVertAlign_;
+
+        alignment          mAlign_ = alignment::LEFT;
+        vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
 
         std::vector<line>      lLineList_;
         std::map<uint, format> lFormatList_;
 
-        bool                bUpdateCache_;
+        bool                bUpdateCache_ = false;
         std::vector<letter> lLetterCache_;
 
-        bool                              bUpdateQuads_;
+        bool                              bUpdateQuads_ = false;
         std::vector<std::array<vertex,4>> lQuadList_;
         sprite                            mSprite_;
 

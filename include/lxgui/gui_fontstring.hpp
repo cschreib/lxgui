@@ -271,25 +271,25 @@ namespace gui
 
         std::string sText_;
         std::string sFontName_;
-        uint        uiHeight_;
+        uint        uiHeight_ = 0;
 
-        float                    fSpacing_;
-        text::alignment          mJustifyH_;
-        text::vertical_alignment mJustifyV_;
-        int                      iXOffset_;
-        int                      iYOffset_;
+        float                    fSpacing_ = 0.0f;
+        text::alignment          mJustifyH_ = text::alignment::CENTER;
+        text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
+        int                      iXOffset_ = 0;
+        int                      iYOffset_ = 0;
 
-        bool  bIsOutlined_;
-        bool  bCanNonSpaceWrap_;
-        bool  bCanWordWrap_;
-        bool  bAddEllipsis_;
-        bool  bFormattingEnabled_;
-        color mTextColor_;
+        bool  bIsOutlined_ = false;
+        bool  bCanNonSpaceWrap_ = false;
+        bool  bCanWordWrap_ = true;
+        bool  bAddEllipsis_ = true;
+        bool  bFormattingEnabled_ = true;
+        color mTextColor_ = color::WHITE;
 
-        bool  bHasShadow_;
-        color mShadowColor_;
-        int   iShadowXOffset_;
-        int   iShadowYOffset_;
+        bool  bHasShadow_ = false;
+        color mShadowColor_ = color::BLACK;
+        int   iShadowXOffset_ = 0;
+        int   iShadowYOffset_ = 0;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

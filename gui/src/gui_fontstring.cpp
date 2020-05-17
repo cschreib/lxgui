@@ -12,13 +12,7 @@ namespace gui
 const uint  OUTLINE_QUALITY   = 10;
 const float OUTLINE_THICKNESS = 2.0f;
 
-font_string::font_string(manager* pManager) : layered_region(pManager),
-    uiHeight_(0), fSpacing_(0.0f), mJustifyH_(text::alignment::CENTER),
-    mJustifyV_(text::vertical_alignment::MIDDLE), iXOffset_(0), iYOffset_(0),
-    bIsOutlined_(false), bCanNonSpaceWrap_(false), bCanWordWrap_(true),
-    bAddEllipsis_(true), bFormattingEnabled_(true), mTextColor_(color::WHITE),
-    bHasShadow_(false), mShadowColor_(color::BLACK), iShadowXOffset_(0),
-    iShadowYOffset_(0)
+font_string::font_string(manager* pManager) : layered_region(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }

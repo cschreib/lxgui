@@ -40,11 +40,11 @@ namespace sfml
 
         const sf::Window& mWindow_;
 
-        bool bMouseGrab_;
-        bool bFirst_;
+        bool bMouseGrab_ = false;
+        bool bFirst_ = true;
 
-        float fOldMouseX_, fOldMouseY_;
-        float fWheelCache_;
+        float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
+        float fWheelCache_ = 0.0f;
     };
 }
 }

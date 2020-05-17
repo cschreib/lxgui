@@ -6,15 +6,13 @@ namespace lxgui {
 namespace lua
 {
 function::function(const std::string& sName, lua_State* pLua, uint uiReturnNbr) :
-    sName_(sName), pLua_(state::get_state(pLua)), uiArgumentCount_(0u),
-    uiReturnNbr_(uiReturnNbr), uiReturnCount_(0u), pArgList_(nullptr)
+    sName_(sName), pLua_(state::get_state(pLua)), uiReturnNbr_(uiReturnNbr)
 {
     new_param_set();
 }
 
 function::function(const std::string& sName, state* pLua, uint uiReturnNbr) :
-    sName_(sName), pLua_(pLua), uiArgumentCount_(0u),
-    uiReturnNbr_(uiReturnNbr), uiReturnCount_(0u), pArgList_(nullptr)
+    sName_(sName), pLua_(pLua), uiReturnNbr_(uiReturnNbr)
 {
     new_param_set();
 }

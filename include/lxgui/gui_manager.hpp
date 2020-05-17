@@ -762,20 +762,19 @@ namespace gui
 
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 
-        std::string sUIVersion_;
-        uint        uiScreenWidth_;
-        uint        uiScreenHeight_;
+        std::string sUIVersion_ = "0001";
+        uint        uiScreenWidth_ = 0u;
+        uint        uiScreenHeight_=  0u;
 
-
-        bool bClearFontsOnClose_;
+        bool bClearFontsOnClose_ = true;
 
         std::unique_ptr<lua::state> pLua_;
         std::function<void()>       pLuaRegs_;
-        bool                        bClosed_;
-        bool                        bLoadingUI_;
-        bool                        bFirstIteration_;
+        bool                        bClosed_ = true;
+        bool                        bLoadingUI_ = false;
+        bool                        bFirstIteration_ = true;
 
-        bool                            bInputEnabled_;
+        bool                            bInputEnabled_ = true;
         std::unique_ptr<input::manager> pInputManager_;
         std::map<input::key, std::map<input::key, std::map<input::key, std::string>>> lKeyBindingList_;
 
@@ -786,38 +785,38 @@ namespace gui
         std::map<uint, uiobject*> lMainObjectList_;
 
         std::vector<std::string> lGUIDirectoryList_;
-        addon*                   pCurrentAddOn_;
+        addon*                   pCurrentAddOn_ = nullptr;
         std::map<std::string, std::map<std::string, addon>> lAddOnList_;
 
         std::map<uint, frame*>         lFrameList_;
         std::map<frame_strata, strata> lStrataList_;
-        bool                           bBuildStrataList_;
-        bool                           bObjectMoved_;
-        frame*                         pOveredFrame_;
-        bool                           bUpdateOveredFrame_;
-        focus_frame*                   pFocusedFrame_;
+        bool                           bBuildStrataList_ = false;
+        bool                           bObjectMoved_ = false;
+        frame*                         pHoveredFrame_ = nullptr;
+        bool                           bUpdateHoveredFrame_ = false;
+        focus_frame*                   pFocusedFrame_ = nullptr;
 
-        uiobject* pMovedObject_;
-        uiobject* pSizedObject_;
-        float     fMouseMovementX_;
-        float     fMouseMovementY_;
+        uiobject* pMovedObject_ = nullptr;
+        uiobject* pSizedObject_ = nullptr;
+        float     fMouseMovementX_ = 0.0f;
+        float     fMouseMovementY_ = 0.0f;
 
-        anchor*    pMovedAnchor_;
-        int        iMovementStartPositionX_;
-        int        iMovementStartPositionY_;
-        constraint mConstraint_;
+        anchor*    pMovedAnchor_ = nullptr;
+        int        iMovementStartPositionX_ = 0;
+        int        iMovementStartPositionY_ = 0;
+        constraint mConstraint_ = constraint::NONE;
         std::function<void()> pApplyConstraintFunc_;
 
-        uint uiResizeStartW_;
-        uint uiResizeStartH_;
-        bool bResizeWidth_;
-        bool bResizeHeight_;
-        bool bResizeFromRight_;
-        bool bResizeFromBottom_;
+        uint uiResizeStartW_ = 0u;
+        uint uiResizeStartH_ = 0u;
+        bool bResizeWidth_ = false;
+        bool bResizeHeight_ = false;
+        bool bResizeFromRight_ = false;
+        bool bResizeFromBottom_ = false;
 
-        uint uiFrameNumber_;
+        uint uiFrameNumber_ = 0u;
 
-        bool bEnableCaching_;
+        bool bEnableCaching_= true;
 
         utils::refptr<render_target> pRenderTarget_;
         sprite                       mSprite_;

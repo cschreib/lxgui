@@ -9,19 +9,10 @@
 namespace lxgui {
 namespace gui
 {
-button::button(manager* pManager) : frame(pManager),
-    mState_(state::UP), bHighlighted_(false), bLockHighlight_(false),
-    pNormalTexture_(nullptr), pPushedTexture_(nullptr), pDisabledTexture_(nullptr),
-    pHighlightTexture_(nullptr), pNormalText_(nullptr), pHighlightText_(nullptr),
-    pDisabledText_(nullptr), pCurrentFontString_(nullptr),
-    mPushedTextOffset_(0, 0)
+button::button(manager* pManager) : frame(pManager)
 {
     enable_mouse(true);
     lType_.push_back(CLASS_NAME);
-}
-
-button::~button()
-{
 }
 
 std::string button::serialize(const std::string& sTab) const
