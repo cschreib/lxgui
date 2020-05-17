@@ -976,9 +976,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
             {
                 // Inheritance
                 if (pDoc_->get_predefined_block(sParent))
-                {
                     pCurrentBlock_->copy(pDoc_->get_predefined_block(sParent));
-                }
                 else
                 {
                     pDoc_->out << "# Error # : " << pDoc_->get_current_location()

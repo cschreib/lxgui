@@ -403,7 +403,7 @@ namespace xml
         std::string sFile_;
         uint        uiLineNbr_ = 0u;
 
-        typedef std::multimap<std::string, block*>::iterator found_block_iterator;
+        using found_block_iterator = std::multimap<std::string, block*>::iterator;
 
         std::vector<found_block_iterator>::iterator mCurrIter_;
         std::vector<found_block_iterator>::iterator mEndIter_;

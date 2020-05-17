@@ -395,18 +395,12 @@ void block::add_derivated(const std::string& sName)
 bool block::has_derivated(const std::string& sName) const
 {
     if (utils::find(lDerivatedList_, sName) != lDerivatedList_.end())
-    {
         return true;
-    }
-    else
+
+    for (const auto& sDerivated : lDerivatedList_)
     {
-        for (const auto& sDerivated : lDerivatedList_)
-        {
-            if (pDoc_->get_predefined_block(sDerivated)->has_derivated(sName))
-            {
-                return true;
-            }
-        }
+        if (pDoc_->get_predefined_block(sDerivated)->has_derivated(sName))
+            return true;
     }
 
     return false;
@@ -444,8 +438,7 @@ bool block::has_radio_children() const
 
 void block::set_radio_group_optional(uint uiGroup)
 {
-    if (utils::find(lOptionalRadioGroupList_, uiGroup)
-        == lOptionalRadioGroupList_.end())
+    if (utils::find(lOptionalRadioGroupList_, uiGroup) == lOptionalRadioGroupList_.end())
     {
         lOptionalRadioGroupList_.push_back(uiGroup);
     }
@@ -519,7 +512,7 @@ block* block::next()
 
 std::string block::get_attribute(const std::string& sName)
 {
-    std::map<std::string, attribute>::iterator iter = lAttributeList_.find(sName);
+    auto iter = lAttributeList_.find(sName);
     if (iter != lAttributeList_.end())
     {
         return iter->second.sValue;
@@ -540,7 +533,7 @@ std::string block::get_attribute(const std::string& sName)
 
 bool block::is_provided(const std::string& sName)
 {
-    std::map<std::string, attribute>::iterator iter = lAttributeList_.find(sName);
+    auto iter = lAttributeList_.find(sName);
     if (iter != lAttributeList_.end())
         return iter->second.bFound;
     else
@@ -549,7 +542,7 @@ bool block::is_provided(const std::string& sName)
 
 block* block::get_block(const std::string& sName)
 {
-    std::multimap< std::string, block* >::iterator iter = lFoundBlockList_.find(sName);
+    auto iter = lFoundBlockList_.find(sName);
     if (iter != lFoundBlockList_.end())
         return iter->second;
     else
@@ -603,43 +596,42 @@ bool block::can_have_block(const std::string& sName)
 
 block* block::create_block(const std::string& sName)
 {
-    if (!bCreating_)
-    {
-        std::map<std::string, block>::iterator iter = lDefBlockList_.find(sName);
-        if (iter != lDefBlockList_.end())
-            pNewBlock_ = new block(iter->second);
-        else
-            pNewBlock_ = new block(*pDoc_->get_predefined_block(sName));
-
-        pNewBlock_->set_file(pDoc_->get_current_file_name());
-        pNewBlock_->set_line_nbr(pDoc_->get_current_line_nbr());
-        pNewBlock_->set_parent(this);
-        pNewBlock_->set_document(pDoc_);
-        bCreating_ = true;
-        return pNewBlock_;
-    }
-    else
+    if (bCreating_)
     {
         pDoc_->out << "# Error # : xml::block : Already creating a block." << std::endl;
         return nullptr;
     }
+
+    auto iter = lDefBlockList_.find(sName);
+    if (iter != lDefBlockList_.end())
+        pNewBlock_ = new block(iter->second);
+    else
+        pNewBlock_ = new block(*pDoc_->get_predefined_block(sName));
+
+    pNewBlock_->set_file(pDoc_->get_current_file_name());
+    pNewBlock_->set_line_nbr(pDoc_->get_current_line_nbr());
+    pNewBlock_->set_parent(this);
+    pNewBlock_->set_document(pDoc_);
+    bCreating_ = true;
+
+    return pNewBlock_;
 }
 
 void block::add_block()
 {
-    if (bCreating_)
-    {
-        found_block_iterator iterAdded;
-        // Store the new block
-        iterAdded = lFoundBlockList_.insert(std::make_pair(pNewBlock_->get_name(), pNewBlock_));
-        // Position it on the global stack
-        lFoundBlockStack_.push_back(iterAdded);
-        // Position it on the sorted stack
-        lFoundBlockSortedStacks_[pNewBlock_->get_name()].push_back(iterAdded);
+    if (!bCreating_)
+        return;
 
-        pNewBlock_ = nullptr;
-        bCreating_ = false;
-    }
+    found_block_iterator iterAdded;
+    // Store the new block
+    iterAdded = lFoundBlockList_.insert(std::make_pair(pNewBlock_->get_name(), pNewBlock_));
+    // Position it on the global stack
+    lFoundBlockStack_.push_back(iterAdded);
+    // Position it on the sorted stack
+    lFoundBlockSortedStacks_[pNewBlock_->get_name()].push_back(iterAdded);
+
+    pNewBlock_ = nullptr;
+    bCreating_ = false;
 }
 
 block* block::create_def_block(const std::string& sName, uint uiMinNbr, uint uiMaxNbr)
@@ -653,58 +645,53 @@ block* block::create_def_block(const std::string& sName, uint uiMinNbr, uint uiM
 
 block* block::create_radio_def_block(const std::string& sName, uint uiRadioGroup)
 {
-    if (!has_block(sName))
-    {
-        bRadioChilds_ = true;
-        lRadioBlockList_[uiRadioGroup] = nullptr;
-        lDefBlockList_[sName] = block(sName, 0, 1, pDoc_->get_current_file_name(), pDoc_->get_current_line_nbr(), uiRadioGroup);
-        block* pBlock = &lDefBlockList_[sName];
-        pBlock->set_parent(this);
-        pBlock->set_document(pDoc_);
-        return pBlock;
-    }
-    else
+    if (has_block(sName))
     {
         throw utils::exception(
             pDoc_->get_current_file_name()+":"+utils::to_string(pDoc_->get_current_line_nbr())+" : "+sName_,
             "There is already a \""+sName+"\" block defined."
         );
     }
+
+    bRadioChilds_ = true;
+    lRadioBlockList_[uiRadioGroup] = nullptr;
+    lDefBlockList_[sName] = block(sName, 0, 1, pDoc_->get_current_file_name(), pDoc_->get_current_line_nbr(), uiRadioGroup);
+    block* pBlock = &lDefBlockList_[sName];
+    pBlock->set_parent(this);
+    pBlock->set_document(pDoc_);
+
+    return pBlock;
 }
 
 predefined_block* block::add_predefined_block(block* pBlock, uint uiMinNbr, uint uiMaxNbr)
 {
-    if (!has_block(pBlock->get_name()))
-    {
-        lPreDefBlockList_[pBlock->get_name()] = predefined_block(pBlock, uiMinNbr, uiMaxNbr);
-        return &lPreDefBlockList_[pBlock->get_name()];
-    }
-    else
+    if (has_block(pBlock->get_name()))
     {
         throw utils::exception(
             pDoc_->get_current_file_name()+":"+utils::to_string(pDoc_->get_current_line_nbr())+" : "+sName_,
             "There is already a \""+pBlock->get_name()+"\" block defined."
         );
     }
+
+    lPreDefBlockList_[pBlock->get_name()] = predefined_block(pBlock, uiMinNbr, uiMaxNbr);
+    return &lPreDefBlockList_[pBlock->get_name()];
 }
 
 predefined_block* block::add_predefined_radio_block(block* pBlock, uint uiRadioGroup)
 {
-    if (!has_block(pBlock->get_name()))
-    {
-        bRadioChilds_ = true;
-        lRadioBlockList_[uiRadioGroup] = nullptr;
-        lPreDefBlockList_[pBlock->get_name()] = predefined_block(pBlock, 0, 1, uiRadioGroup);
-
-        return &lPreDefBlockList_[pBlock->get_name()];
-    }
-    else
+    if (has_block(pBlock->get_name()))
     {
         throw utils::exception(
             pDoc_->get_current_file_name()+":"+utils::to_string(pDoc_->get_current_line_nbr())+" : "+sName_,
             "There is already a \""+pBlock->get_name()+"\" block defined."
         );
     }
+
+    bRadioChilds_ = true;
+    lRadioBlockList_[uiRadioGroup] = nullptr;
+    lPreDefBlockList_[pBlock->get_name()] = predefined_block(pBlock, 0, 1, uiRadioGroup);
+
+    return &lPreDefBlockList_[pBlock->get_name()];
 }
 
 const std::string& block::get_file() const
