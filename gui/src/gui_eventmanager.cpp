@@ -11,90 +11,95 @@
 namespace lxgui {
 namespace gui
 {
-typedef std::multimap<std::string, event_receiver*>::iterator iterator;
-
 void event_manager::register_event(event_receiver* pReceiver, const std::string& sEventName)
 {
-    if (lReceiverList_.find(sEventName) != lReceiverList_.end())
+    auto mIterEvent = lRegisteredEventList_.find(sEventName);
+    if (mIterEvent != lRegisteredEventList_.end())
     {
-        // This event is already registered to one or more event_receivers.
-        // Check the provided event_receiver isn't one of them :
-        auto mRange = lReceiverList_.equal_range(sEventName);
-        for (iterator iterReceiver = mRange.first; iterReceiver != mRange.second; ++iterReceiver)
+        auto mIter = std::find(mIterEvent->lReceiverList.begin(), mIterEvent->lReceiverList.end(), pReceiver);
+        if (mIter != mIterEvent->lReceiverList.end())
         {
-            if (iterReceiver->second == pReceiver)
-            {
-                gui::out << gui::warning << "event_manager : "
-                    << "Event \"" << sEventName << "\" is already registered to this event_receiver "
-                    << "(event_receiver : " << pReceiver << ")." << std::endl;
-                return;
-            }
+            gui::out << gui::warning << "event_manager : "
+                << "Event \"" << sEventName << "\" is already registered to this event_receiver "
+                << "(event_receiver : " << pReceiver << ")." << std::endl;
+            return;
         }
-    }
 
-    lReceiverList_.insert(std::make_pair(sEventName, pReceiver));
+        mIterEvent->lReceiverList.push_back(pReceiver);
+    }
+    else
+    {
+        registered_event mEvent;
+        mEvent.sName = sEventName;
+        mEvent.lReceiverList.push_back(pReceiver);
+        lRegisteredEventList_.insert(std::move(mEvent));
+    }
 }
 
 void event_manager::unregister_event(event_receiver* pReceiver, const std::string& sEventName)
 {
-    // This event is registered to one or more event_receivers.
-    // Check the provided event_receiver is one of them :
-    auto mRange = lReceiverList_.equal_range(sEventName);
-    for (iterator iterReceiver = mRange.first; iterReceiver != mRange.second; ++iterReceiver)
+    auto mIterEvent = lRegisteredEventList_.find(sEventName);
+    if (mIterEvent == lRegisteredEventList_.end())
     {
-        if (iterReceiver->second == pReceiver)
-        {
-            lReceiverList_.erase(iterReceiver);
-            return;
-        }
+        gui::out << gui::warning << "event_manager : "
+            << "Event \"" << sEventName << "\" is not registered to this event_receiver "
+            << "(event_receiver : " << pReceiver << ")." << std::endl;
+
+        return;
     }
 
-    gui::out << gui::warning << "event_manager : "
-        << "Event \"" << sEventName << "\" is not registered to this event_receiver "
-        << "(event_receiver : " << pReceiver << ")." << std::endl;
+    auto mIter = std::find(mIterEvent->lReceiverList.begin(), mIterEvent->lReceiverList.end(), pReceiver);
+    if (mIter == mIterEvent->lReceiverList.end())
+    {
+        gui::out << gui::warning << "event_manager : "
+            << "Event \"" << sEventName << "\" is not registered to this event_receiver "
+            << "(event_receiver : " << pReceiver << ")." << std::endl;
+
+        return;
+    }
+
+    mIterEvent->lReceiverList.erase(mIter);
 }
 
 void event_manager::unregister_receiver(event_receiver* pReceiver)
 {
-    iterator iterReceiver = lReceiverList_.begin();
-    while (iterReceiver != lReceiverList_.end())
+    for (auto& mEvent : lRegisteredEventList_)
     {
-        if (iterReceiver->second == pReceiver)
-            iterReceiver = lReceiverList_.erase(iterReceiver);
-        else
-            ++iterReceiver;
+        auto mIter = std::find(mEvent.lReceiverList.begin(), mEvent.lReceiverList.end(), pReceiver);
+        if (mIter != mEvent.lReceiverList.end())
+            mEvent.lReceiverList.erase(mIter);
     }
 }
 
 void event_manager::fire_event(const event& mEvent)
 {
     DEBUG_LOG(mEvent.get_name());
-    if (lReceiverList_.find(mEvent.get_name()) != lReceiverList_.end())
+    auto mIter = lRegisteredEventList_.find(mEvent.get_name());
+    if (mIter == lRegisteredEventList_.end())
+        return;
+
+    // This event is registered to one or more event_receivers.
+    // Check if this event should only be fired once per frame.
+    if (mIter->bFired)
+        return;
+
+    DEBUG_LOG(mEvent.get_name()+"!");
+
+    // Now, tell all the event_receivers that this Event has occured.
+    for (auto* lReceiver : mIter->lReceiverList)
     {
-        DEBUG_LOG(mEvent.get_name()+"!");
-        // This event is registered to one or more event_receivers.
-        // Check if this event should only be fired once per frame.
-        if (utils::find(lFiredEventList_, mEvent.get_name()) == lFiredEventList_.end())
-        {
-            std::pair<iterator, iterator> mRange = lReceiverList_.equal_range(mEvent.get_name());
-
-            // Now, tell all these event_receivers that this Event has occured.
-            for (iterator iterReceiver = mRange.first; iterReceiver != mRange.second; ++iterReceiver)
-            {
-                DEBUG_LOG(std::string(" ") + utils::to_string(iterReceiver->second));
-                iterReceiver->second->on_event(mEvent);
-            }
-
-
-            if (mEvent.is_once_per_frame())
-                lFiredEventList_.push_back(mEvent.get_name());
-        }
+        DEBUG_LOG(std::string(" ") + utils::to_string(iterReceiver->second));
+        lReceiver->on_event(mEvent);
     }
+
+    if (mEvent.is_once_per_frame())
+        mIter->bFired = true;
 }
 
 void event_manager::frame_ended()
 {
-    lFiredEventList_.clear();
+    for (auto& mEvent : lRegisteredEventList_)
+        mEvent.bFired = false;
 }
 }
 }

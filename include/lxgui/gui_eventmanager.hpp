@@ -2,8 +2,8 @@
 #define GUI_EVENTMANAGER_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_sorted_vector.hpp>
 #include <string>
-#include <map>
 #include <vector>
 
 namespace lxgui {
@@ -47,8 +47,26 @@ namespace gui
 
     private :
 
-        std::multimap<std::string, event_receiver*> lReceiverList_;
-        std::vector<std::string>                    lFiredEventList_;
+        struct registered_event
+        {
+            std::string                  sName;
+            bool                         bFired = false;
+            std::vector<event_receiver*> lReceiverList;
+
+            struct comparator {
+                bool operator() (const registered_event& mEvent1, const registered_event& mEvent2) const {
+                    return mEvent1.sName < mEvent2.sName;
+                }
+                bool operator() (const registered_event& mEvent1, const std::string& sEventName) const {
+                    return mEvent1.sName < sEventName;
+                }
+                bool operator() (const std::string& sEventName, const registered_event& mEvent2) const {
+                    return sEventName < mEvent2.sName;
+                }
+            };
+        };
+
+        utils::sorted_vector<registered_event, registered_event::comparator> lRegisteredEventList_;
     };
 }
 }
