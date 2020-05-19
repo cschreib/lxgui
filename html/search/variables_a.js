@@ -18,7 +18,7 @@ var searchData=
   ['lfilelist',['lFileList',['../structlxgui_1_1gui_1_1addon.html#a895cdff4190477d44925c2820c3f5f9e',1,'lxgui::gui::addon']]],
   ['lframelist',['lFrameList',['../structlxgui_1_1gui_1_1level.html#aa63cf2bee6f73121f684ce4ab3f30ef3',1,'lxgui::gui::level']]],
   ['lglue_5f',['lGlue_',['../classlxgui_1_1gui_1_1uiobject.html#ad5ce91e310761dc36b64ef1729ff9f30',1,'lxgui::gui::uiobject']]],
-  ['lhistorylinelist_5f',['lHistoryLineList_',['../classlxgui_1_1gui_1_1edit__box.html#af84838759ca2c709bf4b1cdc55fed296',1,'lxgui::gui::edit_box']]],
+  ['lhistorylinelist_5f',['lHistoryLineList_',['../classlxgui_1_1gui_1_1edit__box.html#aa93d9dbb360db1fc673556d7377b4f90',1,'lxgui::gui::edit_box']]],
   ['linitialtextcoords_5f',['lInitialTextCoords_',['../classlxgui_1_1gui_1_1status__bar.html#a478bd55e9945a30a989edebc3fa4acb0',1,'lxgui::gui::status_bar']]],
   ['lkerninginfo',['lKerningInfo',['../structlxgui_1_1gui_1_1gl_1_1character__info.html#af128556c872c5855d27832a85bf15282',1,'lxgui::gui::gl::character_info']]],
   ['lkeystate',['lKeyState',['../structlxgui_1_1input_1_1source__impl_1_1key__state.html#ade5b906b8ac0b02b8f363d9c0126fda8',1,'lxgui::input::source_impl::key_state']]],

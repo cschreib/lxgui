@@ -35,7 +35,7 @@ var searchData=
   ['lfilelist',['lFileList',['../structlxgui_1_1gui_1_1addon.html#a895cdff4190477d44925c2820c3f5f9e',1,'lxgui::gui::addon']]],
   ['lframelist',['lFrameList',['../structlxgui_1_1gui_1_1level.html#aa63cf2bee6f73121f684ce4ab3f30ef3',1,'lxgui::gui::level']]],
   ['lglue_5f',['lGlue_',['../classlxgui_1_1gui_1_1uiobject.html#ad5ce91e310761dc36b64ef1729ff9f30',1,'lxgui::gui::uiobject']]],
-  ['lhistorylinelist_5f',['lHistoryLineList_',['../classlxgui_1_1gui_1_1edit__box.html#af84838759ca2c709bf4b1cdc55fed296',1,'lxgui::gui::edit_box']]],
+  ['lhistorylinelist_5f',['lHistoryLineList_',['../classlxgui_1_1gui_1_1edit__box.html#aa93d9dbb360db1fc673556d7377b4f90',1,'lxgui::gui::edit_box']]],
   ['lightuserdata',['LIGHTUSERDATA',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba5c49c7f9ee78711a65e6ac8682bbff10',1,'lxgui::lua']]],
   ['line',['line',['../structlxgui_1_1gui_1_1text_1_1line.html',1,'lxgui::gui::text']]],
   ['linear',['LINEAR',['../classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046',1,'lxgui::gui::material']]],

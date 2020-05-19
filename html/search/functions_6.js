@@ -97,7 +97,7 @@ var searchData=
   ['get_5fhighest_5flevel',['get_highest_level',['../classlxgui_1_1gui_1_1manager.html#a4d0a0c35e85b75bdd944aa670f670be2',1,'lxgui::gui::manager']]],
   ['get_5fhighlight_5ftext',['get_highlight_text',['../classlxgui_1_1gui_1_1button.html#ae8d58e7c27920b5350e105054bf60516',1,'lxgui::gui::button']]],
   ['get_5fhighlight_5ftexture',['get_highlight_texture',['../classlxgui_1_1gui_1_1button.html#a717550f0386473a660ecb32614264c7a',1,'lxgui::gui::button']]],
-  ['get_5fhistory_5flines',['get_history_lines',['../classlxgui_1_1gui_1_1edit__box.html#a25d3332398618a93cbfaff352b1153fa',1,'lxgui::gui::edit_box']]],
+  ['get_5fhistory_5flines',['get_history_lines',['../classlxgui_1_1gui_1_1edit__box.html#aeef78eb33fe4aef720469d9ad11c0c77',1,'lxgui::gui::edit_box']]],
   ['get_5fhorizontal_5fscroll',['get_horizontal_scroll',['../classlxgui_1_1gui_1_1scroll__frame.html#a085228c40da8d34383dc70ad925fd669',1,'lxgui::gui::scroll_frame']]],
   ['get_5fhorizontal_5fscroll_5frange',['get_horizontal_scroll_range',['../classlxgui_1_1gui_1_1scroll__frame.html#ae26f6bad1bdb97ca54919e8739d36372',1,'lxgui::gui::scroll_frame']]],
   ['get_5fid',['get_id',['../classlxgui_1_1gui_1_1uiobject.html#a92f880635a499573732465e3001e3306',1,'lxgui::gui::uiobject']]],

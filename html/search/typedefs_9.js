@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['string_5fvector',['string_vector',['../namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c',1,'lxgui::utils']]]
+  ['reverse_5fiterator',['reverse_iterator',['../classlxgui_1_1utils_1_1sorted__vector.html#a4d554a742ee0790a1399fe2cef2908a6',1,'lxgui::utils::sorted_vector']]]
 ];

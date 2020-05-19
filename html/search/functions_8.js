@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['insert',['insert',['../classlxgui_1_1utils_1_1sorted__vector.html#af699b99d67f0b66669145915dadcf088',1,'lxgui::utils::sorted_vector::insert(const T &amp;t)'],['../classlxgui_1_1utils_1_1sorted__vector.html#a4a9291480bde814e5280babe89bf3890',1,'lxgui::utils::sorted_vector::insert(T &amp;&amp;t)']]],
   ['insert_5fafter_5fcursor',['insert_after_cursor',['../classlxgui_1_1gui_1_1edit__box.html#a9454da3bd668795c0f3495e873d5eca8',1,'lxgui::gui::edit_box']]],
   ['invert',['invert',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#adf92ed6fc3e3149548b2dded58342948',1,'lxgui::gui::gl::matrix4::invert()'],['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#abb51a260eaa7f6ecf510c8ebd54b5f33',1,'lxgui::gui::gl::matrix4::invert(const matrix4 &amp;m)']]],
   ['is_5fauto_5ffocus_5fenabled',['is_auto_focus_enabled',['../classlxgui_1_1gui_1_1focus__frame.html#a738b1d99c6261e85076266b4e0ddd565',1,'lxgui::gui::focus_frame']]],
