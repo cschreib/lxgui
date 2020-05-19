@@ -588,8 +588,13 @@ void edit_box::set_max_history_lines(uint uiMaxHistoryLines)
     {
         uiMaxHistoryLines_ = uiMaxHistoryLines;
 
-        while (lHistoryLineList_.size() > uiMaxHistoryLines_)
-            lHistoryLineList_.pop_front();
+        if (lHistoryLineList_.size() > uiMaxHistoryLines_)
+        {
+            lHistoryLineList_.erase(
+                lHistoryLineList_.begin(),
+                lHistoryLineList_.begin() + (lHistoryLineList_.size() - uiMaxHistoryLines_)
+            );
+        }
     }
 }
 
@@ -602,11 +607,16 @@ void edit_box::add_history_line(const std::string& sHistoryLine)
 {
     lHistoryLineList_.push_back(sHistoryLine);
 
-    while (lHistoryLineList_.size() > uiMaxHistoryLines_)
-        lHistoryLineList_.pop_front();
+    if (lHistoryLineList_.size() > uiMaxHistoryLines_)
+    {
+        lHistoryLineList_.erase(
+            lHistoryLineList_.begin(),
+            lHistoryLineList_.begin() + (lHistoryLineList_.size() - uiMaxHistoryLines_)
+        );
+    }
 }
 
-const std::deque<std::string>& edit_box::get_history_lines() const
+const std::vector<std::string>& edit_box::get_history_lines() const
 {
     return lHistoryLineList_;
 }

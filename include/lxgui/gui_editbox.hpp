@@ -262,7 +262,7 @@ namespace gui
         /** \return The history line list
         *   \note This list will always be empty for multi line edit_boxes.
         */
-        const std::deque<std::string>& get_history_lines() const;
+        const std::vector<std::string>& get_history_lines() const;
 
         /// Sets whether keyboard arrows move the carret or not.
         /** \param bArrowsIgnored 'true' to ignore arrow keys
@@ -372,8 +372,8 @@ namespace gui
         double         dBlinkSpeed_ = 0.5;
         periodic_timer mCarretTimer_;
 
-        std::deque<std::string> lHistoryLineList_;
-        uint                    uiMaxHistoryLines_ = uint(-1);
+        std::vector<std::string> lHistoryLineList_;
+        uint                     uiMaxHistoryLines_ = uint(-1);
 
         font_string* pFontString_ = nullptr;
         quad2i       lTextInsets_ = quad2i::ZERO;

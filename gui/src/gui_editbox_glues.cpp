@@ -44,7 +44,7 @@ int lua_edit_box::_get_blink_speed(lua_State* pLua)
 
 int lua_edit_box::_get_history_lines(lua_State* pLua)
 {
-    const std::deque<std::string>& lHistoryLine = pEditBoxParent_->get_history_lines();
+    const auto& lHistoryLine = pEditBoxParent_->get_history_lines();
     if (!check_parent_())
         return 0;
 
