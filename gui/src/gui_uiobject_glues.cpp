@@ -304,7 +304,7 @@ int lua_uiobject::_get_point(lua_State* pLua)
     {
         anchor_point mPoint = anchor_point::TOPLEFT;
         if (mFunc.is_provided(0))
-            mPoint = static_cast<anchor_point>(mFunc.get(0)->get_number());
+            mPoint = static_cast<anchor_point>(mFunc.get(0)->get_int());
 
         const anchor* pAnchor = pParent_->get_point(mPoint);
         if (pAnchor)
