@@ -4,7 +4,6 @@
 #include "lxgui/utils.hpp"
 #include <string>
 #include <vector>
-#include <deque>
 #include <array>
 #include <iostream>
 #include <algorithm>
@@ -311,22 +310,6 @@ ostream& operator << (ostream& o, const array<T, N>& a)
 
 template<class T>
 ostream& operator << (ostream& o, const vector<T>& a)
-{
-    o << "(";
-    const size_t N = a.size();
-    for (size_t i = 0; i < N; ++i)
-    {
-        if (i != N-1)
-            o << a[i] << ", ";
-        else
-            o << a[i];
-    }
-    o << ")";
-    return o;
-}
-
-template<class T>
-ostream& operator << (ostream& o, const deque<T>& a)
 {
     o << "(";
     const size_t N = a.size();

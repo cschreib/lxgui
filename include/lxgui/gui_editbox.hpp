@@ -8,8 +8,6 @@
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_quad2.hpp"
 
-#include <deque>
-
 namespace lxgui {
 namespace gui
 {

@@ -5,7 +5,6 @@
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <iostream>
-#include <deque>
 
 namespace lxgui {
 namespace lua

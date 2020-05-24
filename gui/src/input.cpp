@@ -328,12 +328,12 @@ std::string manager::get_key_name(key mKey, key mModifier1, key mModifier2) cons
     return sString + get_key_name(mKey);
 }
 
-const std::deque<key>& manager::get_key_press_stack() const
+const std::vector<key>& manager::get_key_press_stack() const
 {
     return lDownStack_;
 }
 
-const std::deque<key>& manager::get_key_release_stack() const
+const std::vector<key>& manager::get_key_release_stack() const
 {
     return lUpStack_;
 }
@@ -636,30 +636,27 @@ void manager::update(float fTempDelta)
     {
         std::array<float,3> data;
         data[0] = fDMX_; data[1] = fDMY_; data[2] = fMWheel_;
-        lMouseHistory_.push_front(std::make_pair(dTime_, data));
-
-        double dHistoryLength = lMouseHistory_.front().first - lMouseHistory_.back().first;
-        while (dHistoryLength > dMouseHistoryMaxLength_ && (lMouseHistory_.size() > 1))
-        {
-            lMouseHistory_.pop_back();
-            dHistoryLength = lMouseHistory_.front().first - lMouseHistory_.back().first;
-        }
+        lMouseHistory_.push_back(std::make_pair(dDelta, data));
 
         fSmoothDMX_ = fSmoothDMY_ = fSmoothMWheel_ = 0.0f;
-        float fHistoryWeight = 0.0f;
-        float fWeight = 1.0f/lMouseHistory_.size();
-        for (auto mHistory : lMouseHistory_)
+        double dHistoryLength = 0.0;
+        for (auto mIter : utils::range::reverse_iterator(lMouseHistory_))
         {
-            fSmoothDMX_    += mHistory.second[0]*fWeight;
-            fSmoothDMY_    += mHistory.second[1]*fWeight;
-            fSmoothMWheel_ += mHistory.second[2]*fWeight;
+            dHistoryLength += mIter->first;
+            fSmoothDMX_    += mIter->second[0]*mIter->first;
+            fSmoothDMY_    += mIter->second[1]*mIter->first;
+            fSmoothMWheel_ += mIter->second[2]*mIter->first;
 
-            fHistoryWeight += fWeight;
+            if (dHistoryLength > dMouseHistoryMaxLength_)
+            {
+                lMouseHistory_.erase(lMouseHistory_.begin(), mIter.base());
+                break;
+            }
         }
 
-        fSmoothDMX_    /= fHistoryWeight;
-        fSmoothDMY_    /= fHistoryWeight;
-        fSmoothMWheel_ /= fHistoryWeight;
+        fSmoothDMX_ /= dHistoryLength;
+        fSmoothDMY_ /= dHistoryLength;
+        fSmoothMWheel_ /= dHistoryLength;
     }
 
     // Send movement event

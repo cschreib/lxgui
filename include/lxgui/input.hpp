@@ -4,7 +4,6 @@
 #include <lxgui/utils.hpp>
 #include <string>
 #include <vector>
-#include <deque>
 #include <array>
 #include <map>
 #include "lxgui/input_keys.hpp"
@@ -247,12 +246,12 @@ namespace input
         /// Returns the list of keys that have been released during this frame.
         /** \return The list of keys that have been released during this frame.
         */
-        const std::deque<key>& get_key_release_stack() const;
+        const std::vector<key>& get_key_release_stack() const;
 
         /// Returns the list of keys that have been pressed during this frame.
         /** \return The list of keys that have been pressed during this frame.
         */
-        const std::deque<key>& get_key_press_stack() const;
+        const std::vector<key>& get_key_press_stack() const;
 
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
@@ -540,8 +539,8 @@ namespace input
         bool bKey_ = false;
         std::vector<char32_t> lChars_;
 
-        std::deque<key> lDownStack_;
-        std::deque<key> lUpStack_;
+        std::vector<key> lDownStack_;
+        std::vector<key> lUpStack_;
 
         // Mouse
         double                                       dDoubleClickTime_ = 0.25;
@@ -563,14 +562,14 @@ namespace input
         float       fMouseSensitivity_ = 1.0f;
         double      dMouseHistoryMaxLength_ = 0.1;
         double      dLongPressDelay_ = 0.7;
-        std::deque<std::pair<double, std::array<float,3>>> lMouseHistory_;
+        std::vector<std::pair<double, std::array<float,3>>> lMouseHistory_;
         float       fSmoothDMX_ = 0.0f, fSmoothDMY_ = 0.0f, fSmoothMWheel_ = 0.0f;
         float       fMWheel_ = 0.0f;
         bool        bWheelRolled_ = false;
         std::string sMouseButton_;
         bool        bLastDragged_ = false;
 
-        double dTime_ = false;
+        double dTime_ = 0.0;
 
         std::unique_ptr<source_impl> pSource_;
     };
