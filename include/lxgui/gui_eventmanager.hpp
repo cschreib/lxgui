@@ -52,6 +52,7 @@ namespace gui
             std::string                  sName;
             bool                         bFired = false;
             std::vector<event_receiver*> lReceiverList;
+            std::vector<event_receiver*> lNewReceiverList;
 
             struct comparator {
                 bool operator() (const registered_event& mEvent1, const registered_event& mEvent2) const {
