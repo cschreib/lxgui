@@ -2,6 +2,7 @@
 #define GUI_UIOBJECT_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_optional.hpp>
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_manager.hpp"
 #include <lxgui/luapp_state.hpp>
@@ -426,7 +427,7 @@ namespace gui
         /// Returns all of this widgets's anchors.
         /** \return All of this widgets's anchors
         */
-        const std::map<anchor_point, anchor>& get_point_list() const;
+        const std::array<utils::optional<anchor>,9>& get_point_list() const;
 
         /// Notifies this widget that another one is anchored to it.
         /** \param pObj      The anchored widget
@@ -623,10 +624,10 @@ namespace gui
 
         std::vector<std::string> lType_;
 
-        std::map<anchor_point, anchor> lAnchorList_;
-        std::vector<const uiobject*>   lPreviousAnchorParentList_;
-        quad2<bool>                    lDefinedBorderList_;
-        mutable quad2i                 lBorderList_;
+        std::array<utils::optional<anchor>,9> lAnchorList_;
+        std::vector<const uiobject*>          lPreviousAnchorParentList_;
+        quad2<bool>                           lDefinedBorderList_;
+        mutable quad2i                        lBorderList_;
 
         float fAlpha_ = 1.0f;
         bool  bIsShown_ = true;

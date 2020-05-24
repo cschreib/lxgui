@@ -302,41 +302,25 @@ int lua_uiobject::_get_point(lua_State* pLua)
     mFunc.add(0, "point ID", lua::type::NUMBER, true);
     if (mFunc.check())
     {
-        const std::map<anchor_point, anchor>& lAnchorList = pParent_->get_point_list();
-        if (!lAnchorList.empty())
+        anchor_point mPoint = anchor_point::TOPLEFT;
+        if (mFunc.is_provided(0))
+            mPoint = static_cast<anchor_point>(mFunc.get(0)->get_number());
+
+        const anchor* pAnchor = pParent_->get_point(mPoint);
+        if (pAnchor)
         {
-            uint uiAnchorID = 1;
-            if (mFunc.is_provided(0))
-                uiAnchorID = uint(mFunc.get(0)->get_number());
-
-            const anchor* pAnchor = nullptr;
-            uint uiCounter = 1;
-            for (const auto& mAnchor : utils::range::value(lAnchorList))
+            mFunc.push(anchor::get_string_point(pAnchor->get_point()));
+            if (pAnchor->get_parent())
             {
-                if (uiCounter == uiAnchorID)
-                {
-                    pAnchor = &mAnchor;
-                    break;
-                }
-                else
-                    ++uiCounter;
+                pAnchor->get_parent()->push_on_lua(mFunc.get_state());
+                mFunc.notify_pushed();
             }
+            else
+                mFunc.push_nil();
 
-            if (pAnchor)
-            {
-                mFunc.push(anchor::get_string_point(pAnchor->get_point()));
-                if (pAnchor->get_parent())
-                {
-                    pAnchor->get_parent()->push_on_lua(mFunc.get_state());
-                    mFunc.notify_pushed();
-                }
-                else
-                    mFunc.push_nil();
-
-                mFunc.push(anchor::get_string_point(pAnchor->get_parent_point()));
-                mFunc.push(pAnchor->get_abs_offset_x());
-                mFunc.push(pAnchor->get_abs_offset_y());
-            }
+            mFunc.push(anchor::get_string_point(pAnchor->get_parent_point()));
+            mFunc.push(pAnchor->get_abs_offset_x());
+            mFunc.push(pAnchor->get_abs_offset_y());
         }
     }
 

@@ -50,13 +50,14 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  # Parent      : " << pParent_->get_name() << "\n";
     else
     sStr << sTab << "  # Parent      : none\n";
-    sStr << sTab << "  # Num anchors : " << lAnchorList_.size() << "\n";
+    sStr << sTab << "  # Num anchors : " << get_num_point() << "\n";
     if (!lAnchorList_.empty())
     {
         sStr << sTab << "  |-###\n";
-        for (const auto& mAnchor : utils::range::value(lAnchorList_))
+        for (const auto& mAnchor : lAnchorList_)
         {
-            sStr << mAnchor.serialize(sTab);
+            if (mAnchor)
+                sStr << mAnchor->serialize(sTab);
             sStr << sTab << "  |-###\n";
         }
     }
@@ -125,26 +126,29 @@ void uiobject::copy_from(uiobject* pObj)
         else
             this->set_rel_height(pObj->get_rel_height());
 
-        for (const auto& mAnchor : utils::range::value(pObj->get_point_list()))
+        for (const auto& mAnchor : pObj->get_point_list())
         {
-            if (mAnchor.get_type() == anchor_type::ABS)
+            if (!mAnchor)
+                continue;
+
+            if (mAnchor->get_type() == anchor_type::ABS)
             {
                 this->set_abs_point(
-                    mAnchor.get_point(),
-                    mAnchor.get_parent_raw_name(),
-                    mAnchor.get_parent_point(),
-                    mAnchor.get_abs_offset_x(),
-                    mAnchor.get_abs_offset_y()
+                    mAnchor->get_point(),
+                    mAnchor->get_parent_raw_name(),
+                    mAnchor->get_parent_point(),
+                    mAnchor->get_abs_offset_x(),
+                    mAnchor->get_abs_offset_y()
                 );
             }
             else
             {
                 this->set_rel_point(
-                    mAnchor.get_point(),
-                    mAnchor.get_parent_raw_name(),
-                    mAnchor.get_parent_point(),
-                    mAnchor.get_rel_offset_x(),
-                    mAnchor.get_rel_offset_y()
+                    mAnchor->get_point(),
+                    mAnchor->get_parent_raw_name(),
+                    mAnchor->get_parent_point(),
+                    mAnchor->get_rel_offset_x(),
+                    mAnchor->get_rel_offset_y()
                 );
             }
         }
@@ -429,10 +433,18 @@ const quad2i& uiobject::get_borders() const
 
 void uiobject::clear_all_points()
 {
-    if (lAnchorList_.size() != 0)
+    bool bHadAnchors = false;
+    for (auto& mAnchor : lAnchorList_)
     {
-        lAnchorList_.clear();
+        if (mAnchor)
+        {
+            mAnchor.reset();
+            bHadAnchors = true;
+        }
+    }
 
+    if (bHadAnchors)
+    {
         lDefinedBorderList_ = quad2<bool>(false, false, false, false);
 
         bUpdateAnchors_ = true;
@@ -447,11 +459,11 @@ void uiobject::set_all_points(const std::string& sObjName)
     if (sObjName != sName_)
     {
         clear_all_points();
-        anchor mAnchor = anchor(this, anchor_point::TOPLEFT, sObjName, anchor_point::TOPLEFT);
-        lAnchorList_[anchor_point::TOPLEFT] = mAnchor;
 
-        mAnchor = anchor(this, anchor_point::BOTTOMRIGHT, sObjName, anchor_point::BOTTOMRIGHT);
-        lAnchorList_[anchor_point::BOTTOMRIGHT] = mAnchor;
+        lAnchorList_[static_cast<int>(anchor_point::TOPLEFT)].emplace(
+            this, anchor_point::TOPLEFT,     sObjName, anchor_point::TOPLEFT);
+        lAnchorList_[static_cast<int>(anchor_point::BOTTOMRIGHT)].emplace(
+            this, anchor_point::BOTTOMRIGHT, sObjName, anchor_point::BOTTOMRIGHT);
 
         lDefinedBorderList_ = quad2<bool>(true, true, true, true);
 
@@ -468,19 +480,7 @@ void uiobject::set_all_points(uiobject* pObj)
 {
     if (pObj != this)
     {
-        clear_all_points();
-        anchor mAnchor = anchor(this, anchor_point::TOPLEFT, pObj ? pObj->get_name() : "", anchor_point::TOPLEFT);
-        lAnchorList_[anchor_point::TOPLEFT] = mAnchor;
-
-        mAnchor = anchor(this, anchor_point::BOTTOMRIGHT, pObj ? pObj->get_name() : "", anchor_point::BOTTOMRIGHT);
-        lAnchorList_[anchor_point::BOTTOMRIGHT] = mAnchor;
-
-        lDefinedBorderList_ = quad2<bool>(true, true, true, true);
-
-        bUpdateAnchors_ = true;
-        fire_update_borders();
-        notify_renderer_need_redraw();
-        pManager_->notify_object_moved();
+        set_all_points(pObj ? pObj->get_name() : "");
     }
     else
         gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_all_points(this)." << std::endl;
@@ -493,20 +493,10 @@ void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName
 
 void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, const vector2i& mOffset)
 {
-    std::map<anchor_point, anchor>::iterator iterAnchor = lAnchorList_.find(mPoint);
-    if (iterAnchor == lAnchorList_.end())
-    {
-        anchor mAnchor = anchor(this, mPoint, sParentName, mRelativePoint);
-        mAnchor.set_abs_offset(mOffset);
-        lAnchorList_[mPoint] = mAnchor;
-    }
-    else
-    {
-        anchor* pAnchor = &iterAnchor->second;
-        pAnchor->set_parent_raw_name(sParentName);
-        pAnchor->set_parent_point(mRelativePoint);
-        pAnchor->set_abs_offset(mOffset);
-    }
+    auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)].emplace(
+        this, mPoint, sParentName, mRelativePoint);
+
+    mAnchor.set_abs_offset(mOffset);
 
     switch (mPoint)
     {
@@ -554,20 +544,10 @@ void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName
 
 void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, const vector2f& mOffset)
 {
-    std::map<anchor_point, anchor>::iterator iterAnchor = lAnchorList_.find(mPoint);
-    if (iterAnchor == lAnchorList_.end())
-    {
-        anchor mAnchor = anchor(this, mPoint, sParentName, mRelativePoint);
-        mAnchor.set_rel_offset(mOffset);
-        lAnchorList_[mPoint] = mAnchor;
-    }
-    else
-    {
-        anchor* pAnchor = &iterAnchor->second;
-        pAnchor->set_parent_raw_name(sParentName);
-        pAnchor->set_parent_point(mRelativePoint);
-        pAnchor->set_rel_offset(mOffset);
-    }
+    auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)].emplace(
+        this, mPoint, sParentName, mRelativePoint);
+
+    mAnchor.set_rel_offset(mOffset);
 
     switch (mPoint)
     {
@@ -610,7 +590,7 @@ void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName
 
 void uiobject::set_point(const anchor& mAnchor)
 {
-    lAnchorList_[mAnchor.get_point()] = mAnchor;
+    lAnchorList_[static_cast<int>(mAnchor.get_point())].emplace(mAnchor);
 
     switch (mAnchor.get_point())
     {
@@ -655,9 +635,12 @@ bool uiobject::depends_on(uiobject* pObj) const
 {
     if (pObj)
     {
-        for (const auto& mAnchor : utils::range::value(lAnchorList_))
+        for (const auto& mAnchor : lAnchorList_)
         {
-            const uiobject* pParent = mAnchor.get_parent();
+            if (!mAnchor)
+                continue;
+
+            const uiobject* pParent = mAnchor->get_parent();
             if (pParent == pObj)
                 return true;
 
@@ -671,7 +654,14 @@ bool uiobject::depends_on(uiobject* pObj) const
 
 uint uiobject::get_num_point() const
 {
-    return lAnchorList_.size();
+    uint uiNumAnchors = 0u;
+    for (const auto& mAnchor : lAnchorList_)
+    {
+        if (mAnchor)
+            ++uiNumAnchors;
+    }
+
+    return uiNumAnchors;
 }
 
 anchor* uiobject::modify_point(anchor_point mPoint)
@@ -680,23 +670,23 @@ anchor* uiobject::modify_point(anchor_point mPoint)
 
     fire_update_borders();
 
-    std::map<anchor_point, anchor>::iterator iterAnchor = lAnchorList_.find(mPoint);
-    if (iterAnchor != lAnchorList_.end())
-        return &iterAnchor->second;
+    auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
+    if (mAnchor)
+        return &(*mAnchor);
     else
         return nullptr;
 }
 
 const anchor* uiobject::get_point(anchor_point mPoint) const
 {
-    std::map<anchor_point, anchor>::const_iterator iterAnchor = lAnchorList_.find(mPoint);
-    if (iterAnchor != lAnchorList_.end())
-        return &iterAnchor->second;
+    const auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
+    if (mAnchor)
+        return &(*mAnchor);
     else
         return nullptr;
 }
 
-const std::map<anchor_point, anchor>& uiobject::get_point_list() const
+const std::array<utils::optional<anchor>,9>& uiobject::get_point_list() const
 {
     return lAnchorList_;
 }
@@ -806,8 +796,13 @@ void uiobject::read_anchors_(float& iLeft, float& iRight, float& iTop,
     iTop    = +std::numeric_limits<float>::infinity();
     iBottom = -std::numeric_limits<float>::infinity();
 
-    for (const auto& mAnchor : utils::range::value(lAnchorList_))
+    for (const auto& mOptAnchor : lAnchorList_)
     {
+        if (!mOptAnchor)
+            continue;
+
+        const anchor& mAnchor = mOptAnchor.value();
+
         // Make sure the anchored object has its borders updated
         const uiobject* pObj = mAnchor.get_parent();
         if (pObj)
@@ -873,7 +868,7 @@ void uiobject::update_borders_() const
         bUpdateDimensions_ = false;
     }
 
-    if (!lAnchorList_.empty())
+    if (get_num_point() > 0u)
     {
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
         float fXCenter = 0.0f, fYCenter = 0.0f;
@@ -923,49 +918,48 @@ void uiobject::update_borders_() const
 
 void uiobject::update_anchors()
 {
-    if (bUpdateAnchors_)
+    if (!bUpdateAnchors_)
+        return;
+
+    std::vector<const uiobject*> lAnchorParentList;
+    for (auto& mAnchor : lAnchorList_)
     {
-        std::vector<std::map<anchor_point, anchor>::iterator> lEraseList;
-        for (auto iterAnchor : utils::range::iterator(lAnchorList_))
+        if (!mAnchor)
+            continue;
+
+        const uiobject* pObj = mAnchor->get_parent();
+        if (pObj)
         {
-            const uiobject* pObj = iterAnchor->second.get_parent();
-            if (pObj && pObj->depends_on(this))
+            if (pObj->depends_on(this))
             {
                 gui::out << gui::error << "gui::" << lType_.back() << " : Cyclic anchor dependency !"
                     << "\"" << sName_ << "\" and \"" << pObj->get_name() << "\" depend on"
                     "eachothers (directly or indirectly).\n\""
-                    << anchor::get_string_point(iterAnchor->first) << "\" anchor removed." << std::endl;
+                    << anchor::get_string_point(mAnchor->get_point()) << "\" anchor removed." << std::endl;
 
-                lEraseList.push_back(iterAnchor);
+                mAnchor.reset();
+                continue;
             }
+
+            if (utils::find(lAnchorParentList, pObj) == lAnchorParentList.end())
+                lAnchorParentList.push_back(pObj);
         }
-
-        for (auto iterErase : lEraseList)
-            lAnchorList_.erase(iterErase);
-
-        std::vector<const uiobject*> lAnchorParentList;
-        for (const auto& mAnchor : utils::range::value(lAnchorList_))
-        {
-            const uiobject* pParent = mAnchor.get_parent();
-            if (pParent && utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
-                lAnchorParentList.push_back(pParent);
-        }
-
-        for (const auto* pParent : lPreviousAnchorParentList_)
-        {
-            if (utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
-                pParent->notify_anchored_object(this, false);
-        }
-
-        for (const auto* pParent : lAnchorParentList)
-        {
-            if (utils::find(lPreviousAnchorParentList_, pParent) == lPreviousAnchorParentList_.end())
-                pParent->notify_anchored_object(this, true);
-        }
-
-        lPreviousAnchorParentList_ = std::move(lAnchorParentList);
-        bUpdateAnchors_ = false;
     }
+
+    for (const auto* pParent : lPreviousAnchorParentList_)
+    {
+        if (utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
+            pParent->notify_anchored_object(this, false);
+    }
+
+    for (const auto* pParent : lAnchorParentList)
+    {
+        if (utils::find(lPreviousAnchorParentList_, pParent) == lPreviousAnchorParentList_.end())
+            pParent->notify_anchored_object(this, true);
+    }
+
+    lPreviousAnchorParentList_ = std::move(lAnchorParentList);
+    bUpdateAnchors_ = false;
 }
 
 void uiobject::fire_update_borders() const
@@ -1110,13 +1104,13 @@ std::vector<uiobject*> uiobject::clear_links()
         pRenderer_->notify_manually_rendered_object_(this, false);
 
     // Tell this widget's anchor parents that it is no longer anchored to them
-    for (auto& mAnchor : utils::range::value(lAnchorList_))
+    for (auto& mAnchor : lAnchorList_)
     {
-        if (mAnchor.get_parent())
-            mAnchor.get_parent()->notify_anchored_object(this, false);
-    }
+        if (mAnchor && mAnchor->get_parent())
+            mAnchor->get_parent()->notify_anchored_object(this, false);
 
-    lAnchorList_.clear();
+        mAnchor.reset();
+    }
 
     // Replace anchors pointing to this widget by absolute anchors
     // (need to copy the anchored object list, because the objects will attempt to modify it when
@@ -1125,10 +1119,10 @@ std::vector<uiobject*> uiobject::clear_links()
     for (auto* pObj : utils::range::value(lTempAnchoredObjectList))
     {
         std::vector<anchor_point> lAnchoredPointList;
-        for (const auto& mAnchor : utils::range::value(pObj->get_point_list()))
+        for (const auto& mAnchor : pObj->get_point_list())
         {
-            if (mAnchor.get_parent() == this)
-                lAnchoredPointList.push_back(mAnchor.get_point());
+            if (mAnchor && mAnchor->get_parent() == this)
+                lAnchoredPointList.push_back(mAnchor->get_point());
         }
 
         for (const auto& mPoint : lAnchoredPointList)
