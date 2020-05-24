@@ -25,5 +25,7 @@ var searchData=
   ['notify_5fvisible_5f',['notify_visible_',['../classlxgui_1_1gui_1_1frame.html#a6bf0c46f9e048f7028e44b0994a7935b',1,'lxgui::gui::frame']]],
   ['notify_5fwindow_5fresized',['notify_window_resized',['../classlxgui_1_1gui_1_1renderer__impl.html#a51c333dfacd37d9ada5c43dc28e24cad',1,'lxgui::gui::renderer_impl::notify_window_resized()'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63',1,'lxgui::gui::sfml::renderer::notify_window_resized()']]],
   ['now',['NOW',['../classlxgui_1_1gui_1_1periodic__timer.html#a031a8573b66178d62d1a16ec6339c15fa3dce1fce9ac06d1349dfbd9186289385',1,'lxgui::gui::periodic_timer']]],
+  ['nullopt',['nullopt',['../namespacelxgui_1_1utils.html#a020415dbf8d948fcfbe750d69c580570',1,'lxgui::utils']]],
+  ['nullopt_5ft',['nullopt_t',['../structlxgui_1_1utils_1_1nullopt__t.html',1,'lxgui::utils']]],
   ['number',['NUMBER',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::lua::NUMBER()'],['../namespacelxgui_1_1xml.html#a1bcf42a37d7676a4751e73aee325716ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::xml::NUMBER()']]]
 ];

@@ -2,6 +2,7 @@ var searchData=
 [
   ['make_5fborders_5f',['make_borders_',['../classlxgui_1_1gui_1_1uiobject.html#a397589f212b9cff8fd48b09f34a84765',1,'lxgui::gui::uiobject']]],
   ['make_5fdirectory',['make_directory',['../namespacelxgui_1_1utils.html#aee2ae6b72cee11741449155f6e105f1c',1,'lxgui::utils']]],
+  ['make_5foptional',['make_optional',['../namespacelxgui_1_1utils.html#adb6e6cd52a8ce3d255cefe93b15897be',1,'lxgui::utils']]],
   ['make_5frotation',['make_rotation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a6e3c03b92ee822423a41cfc123596046',1,'lxgui::gui::gl::matrix4']]],
   ['make_5fscaling',['make_scaling',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#aa899bb8da7968efccd2647d79d803c3e',1,'lxgui::gui::gl::matrix4']]],
   ['make_5ftransformation',['make_transformation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#aca661ce4d1b25bf71fad15769c15580f',1,'lxgui::gui::gl::matrix4']]],
@@ -44,8 +45,8 @@ var searchData=
   ['mouse_5fis_5fpressed',['mouse_is_pressed',['../classlxgui_1_1input_1_1manager.html#a5a7c3f256d73fc0616e68adb903051e3',1,'lxgui::input::manager']]],
   ['mouse_5fis_5freleased',['mouse_is_released',['../classlxgui_1_1input_1_1manager.html#a55c149fe532d8743b71ef49cdfa6b21d',1,'lxgui::input::manager']]],
   ['mouse_5flast_5fdragged',['mouse_last_dragged',['../classlxgui_1_1input_1_1manager.html#a847be507f2f8a3900ae6f3688488cc3e',1,'lxgui::input::manager']]],
-  ['mouse_5fstate',['mouse_state',['../structlxgui_1_1input_1_1source__impl_1_1mouse__state.html',1,'lxgui::input::source_impl']]],
   ['mouse_5fstate',['mouse_state',['../namespacelxgui_1_1input.html#ade8dc87d1330829b43300424689b3e89',1,'lxgui::input']]],
+  ['mouse_5fstate',['mouse_state',['../structlxgui_1_1input_1_1source__impl_1_1mouse__state.html',1,'lxgui::input::source_impl']]],
   ['move_5fcarret_5fat_5f',['move_carret_at_',['../classlxgui_1_1gui_1_1edit__box.html#a7570b610a2b55dd0d8c37add92ac7276',1,'lxgui::gui::edit_box']]],
   ['move_5fcarret_5fhorizontally_5f',['move_carret_horizontally_',['../classlxgui_1_1gui_1_1edit__box.html#ae17576be42d6f8752d5de8581952b715',1,'lxgui::gui::edit_box']]],
   ['move_5fcarret_5fvertically_5f',['move_carret_vertically_',['../classlxgui_1_1gui_1_1edit__box.html#a8b52c336b6e55f41a6cb88b101c1a012',1,'lxgui::gui::edit_box']]],

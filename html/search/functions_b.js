@@ -2,6 +2,7 @@ var searchData=
 [
   ['make_5fborders_5f',['make_borders_',['../classlxgui_1_1gui_1_1uiobject.html#a397589f212b9cff8fd48b09f34a84765',1,'lxgui::gui::uiobject']]],
   ['make_5fdirectory',['make_directory',['../namespacelxgui_1_1utils.html#aee2ae6b72cee11741449155f6e105f1c',1,'lxgui::utils']]],
+  ['make_5foptional',['make_optional',['../namespacelxgui_1_1utils.html#adb6e6cd52a8ce3d255cefe93b15897be',1,'lxgui::utils']]],
   ['make_5frotation',['make_rotation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a6e3c03b92ee822423a41cfc123596046',1,'lxgui::gui::gl::matrix4']]],
   ['make_5fscaling',['make_scaling',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#aa899bb8da7968efccd2647d79d803c3e',1,'lxgui::gui::gl::matrix4']]],
   ['make_5ftransformation',['make_transformation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#aca661ce4d1b25bf71fad15769c15580f',1,'lxgui::gui::gl::matrix4']]],

@@ -89,7 +89,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::utils Namespace Reference</div>  </div>
 </div><!--header-->
@@ -107,6 +108,13 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1exception.html">exception</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class.  <a href="classlxgui_1_1utils_1_1exception.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1utils_1_1in__place__t.html">in_place_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1utils_1_1nullopt__t.html">nullopt_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1optional.html">optional</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of std::optional from C++17.  <a href="classlxgui_1_1utils_1_1optional.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">refptr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference counting pointer.  <a href="classlxgui_1_1utils_1_1refptr.html#details">More...</a><br /></td></tr>
@@ -137,6 +145,17 @@ Functions</h2></td></tr>
 <tr class="separator:ab8c6a43eab66fbcc950718764e0a83f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a77cd117aa0e72eb8cb3e6069e93f1079">get_file_list</a> (const std::string &amp;sRelPath, bool bWithPath, const std::string &amp;sExtensions)</td></tr>
 <tr class="separator:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb6e6cd52a8ce3d255cefe93b15897be"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:adb6e6cd52a8ce3d255cefe93b15897be"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1optional.html">optional</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#adb6e6cd52a8ce3d255cefe93b15897be">make_optional</a> (Args &amp;&amp;...args)</td></tr>
+<tr class="memdesc:adb6e6cd52a8ce3d255cefe93b15897be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new optional containing an object.  <a href="#adb6e6cd52a8ce3d255cefe93b15897be">More...</a><br /></td></tr>
+<tr class="separator:adb6e6cd52a8ce3d255cefe93b15897be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a020415dbf8d948fcfbe750d69c580570"><td class="memItemLeft" align="right" valign="top">constexpr struct <a class="el" href="structlxgui_1_1utils_1_1nullopt__t.html">lxgui::utils::nullopt_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a020415dbf8d948fcfbe750d69c580570">nullopt</a></td></tr>
+<tr class="separator:a020415dbf8d948fcfbe750d69c580570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abeb1d13133697485ea4fcf9811f6321b"><td class="memItemLeft" align="right" valign="top">constexpr struct <a class="el" href="structlxgui_1_1utils_1_1in__place__t.html">lxgui::utils::in_place_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#abeb1d13133697485ea4fcf9811f6321b">in_place</a></td></tr>
+<tr class="separator:abeb1d13133697485ea4fcf9811f6321b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="a33a052593dcbdb48daca34ce5622495e"></a>
@@ -274,10 +293,58 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="adb6e6cd52a8ce3d255cefe93b15897be"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1optional.html">optional</a>&lt;T&gt; lxgui::utils::make_optional </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Create a new optional containing an object. </p>
+<p>The new object is constructed in the optional with the provided arguments. </p>
+
+<p>Definition at line <a class="el" href="utils__optional_8hpp_source.html#l00252">252</a> of file <a class="el" href="utils__optional_8hpp_source.html">utils_optional.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="abeb1d13133697485ea4fcf9811f6321b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr struct <a class="el" href="structlxgui_1_1utils_1_1in__place__t.html">lxgui::utils::in_place_t</a>  lxgui::utils::in_place</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a020415dbf8d948fcfbe750d69c580570"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr struct <a class="el" href="structlxgui_1_1utils_1_1nullopt__t.html">lxgui::utils::nullopt_t</a>  lxgui::utils::nullopt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue May 19 2020 20:19:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun May 24 2020 17:16:45 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

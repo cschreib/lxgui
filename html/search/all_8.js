@@ -6,6 +6,8 @@ var searchData=
   ['ilevel_5f',['iLevel_',['../classlxgui_1_1gui_1_1frame.html#a57a145939ce3c2a7eddde83a0bb0897d',1,'lxgui::gui::frame']]],
   ['imouseposx_5f',['iMousePosX_',['../classlxgui_1_1gui_1_1frame.html#abe38afae83ed5df056a13ebbca752c8f',1,'lxgui::gui::frame']]],
   ['imouseposy_5f',['iMousePosY_',['../classlxgui_1_1gui_1_1frame.html#a5d1ae4db9c97f3a473e10a9a0226eb30',1,'lxgui::gui::frame']]],
+  ['in_5fplace',['in_place',['../namespacelxgui_1_1utils.html#abeb1d13133697485ea4fcf9811f6321b',1,'lxgui::utils']]],
+  ['in_5fplace_5ft',['in_place_t',['../structlxgui_1_1utils_1_1in__place__t.html',1,'lxgui::utils']]],
   ['input_2ecpp',['input.cpp',['../input_8cpp.html',1,'']]],
   ['input_2ehpp',['input.hpp',['../input_8hpp.html',1,'']]],
   ['input_5fglfw_5fsource_2ehpp',['input_glfw_source.hpp',['../input__glfw__source_8hpp.html',1,'']]],
@@ -69,8 +71,8 @@ var searchData=
   ['iterator',['iterator',['../structlxgui_1_1xml_1_1block_1_1range__block_1_1iterator.html',1,'lxgui::xml::block::range_block']]],
   ['iterator_5fadapter',['iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1iterator__adapter.html',1,'lxgui::utils::range']]],
   ['iterator_5fadapter',['iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1iterator__adapter.html#a01bf2b4b160eb9bd489af219c8d70b90',1,'lxgui::utils::range::iterator_adapter']]],
-  ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html',1,'lxgui::utils::range']]],
   ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html#acc5ce4177bf6d493edf2849b4d607691',1,'lxgui::utils::range::iterator_range']]],
+  ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html',1,'lxgui::utils::range']]],
   ['itercarretpos_5f',['iterCarretPos_',['../classlxgui_1_1gui_1_1edit__box.html#ac36b507a7fcf4b6be631fc150aebf25b',1,'lxgui::gui::edit_box']]],
   ['iverticalscroll_5f',['iVerticalScroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a2e5a0f44c46364ff53774c7e81edca40',1,'lxgui::gui::scroll_frame']]],
   ['iverticalscrollrange_5f',['iVerticalScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#adf50a69def72400de60639c8ec81cb53',1,'lxgui::gui::scroll_frame']]]
