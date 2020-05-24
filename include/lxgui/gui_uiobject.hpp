@@ -530,7 +530,7 @@ namespace gui
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one
         */
-        std::map<uint, uiobject*> get_anchored_objects() const;
+        const std::vector<uiobject*>& get_anchored_objects() const;
 
         /// Notifies this widget that it has been fully loaded.
         virtual void notify_loaded();
@@ -644,7 +644,7 @@ namespace gui
         mutable bool bUpdateBorders_ = true;
         mutable bool bUpdateDimensions_ = false;
 
-        mutable std::map<uint, uiobject*> lAnchoredObjectList_;
+        mutable std::vector<uiobject*> lAnchoredObjectList_;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

@@ -719,13 +719,17 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     if (!pObj)
         return;
 
+    auto mIter = utils::find(lAnchoredObjectList_, pObj);
     if (bAnchored)
     {
-        if (lAnchoredObjectList_.find(pObj->get_id()) == lAnchoredObjectList_.end())
-            lAnchoredObjectList_[pObj->get_id()] = pObj;
+        if (mIter == lAnchoredObjectList_.end())
+            lAnchoredObjectList_.push_back(pObj);
     }
     else
-        lAnchoredObjectList_.erase(pObj->get_id());
+    {
+        if (mIter != lAnchoredObjectList_.end())
+            lAnchoredObjectList_.erase(mIter);
+    }
 }
 
 void uiobject::update_dimensions_() const
@@ -966,7 +970,7 @@ void uiobject::fire_update_borders() const
 {
     bUpdateBorders_ = true;
 
-    for (auto* pObject : utils::range::value(lAnchoredObjectList_))
+    for (auto* pObject : lAnchoredObjectList_)
         pObject->fire_update_borders();
 }
 
@@ -1074,7 +1078,7 @@ void uiobject::mark_for_copy(const std::string& sVariable)
     }
 }
 
-std::map<uint, uiobject*> uiobject::get_anchored_objects() const
+const std::vector<uiobject*>& uiobject::get_anchored_objects() const
 {
     return lAnchoredObjectList_;
 }
@@ -1115,8 +1119,8 @@ std::vector<uiobject*> uiobject::clear_links()
     // Replace anchors pointing to this widget by absolute anchors
     // (need to copy the anchored object list, because the objects will attempt to modify it when
     // un-anchored, which would invalidate our iteration)
-    std::map<uint, uiobject*> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
-    for (auto* pObj : utils::range::value(lTempAnchoredObjectList))
+    std::vector<uiobject*> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
+    for (auto* pObj : lTempAnchoredObjectList)
     {
         std::vector<anchor_point> lAnchoredPointList;
         for (const auto& mAnchor : pObj->get_point_list())
