@@ -295,10 +295,10 @@ int lua_frame::_get_children(lua_State* pLua)
     if (!check_parent_())
         return 0;
 
-    const std::map<uint, frame* >& lChildList = pFrameParent_->get_children();
+    const auto& lChildList = pFrameParent_->get_children();
     lua::function mFunc("Frame:get_children", pLua, lChildList.size());
 
-    for (auto* pChild : utils::range::value(lChildList))
+    for (auto* pChild : lChildList)
     {
         pChild->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();

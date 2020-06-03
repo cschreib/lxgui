@@ -54,14 +54,18 @@ namespace gui
             std::vector<event_receiver*> lReceiverList;
             std::vector<event_receiver*> lNewReceiverList;
 
-            struct comparator {
-                bool operator() (const registered_event& mEvent1, const registered_event& mEvent2) const {
+            struct comparator
+            {
+                bool operator() (const registered_event& mEvent1, const registered_event& mEvent2) const
+                {
                     return mEvent1.sName < mEvent2.sName;
                 }
-                bool operator() (const registered_event& mEvent1, const std::string& sEventName) const {
+                bool operator() (const registered_event& mEvent1, const std::string& sEventName) const
+                {
                     return mEvent1.sName < sEventName;
                 }
-                bool operator() (const std::string& sEventName, const registered_event& mEvent2) const {
+                bool operator() (const std::string& sEventName, const registered_event& mEvent2) const
+                {
                     return sEventName < mEvent2.sName;
                 }
             };

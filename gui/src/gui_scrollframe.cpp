@@ -409,14 +409,14 @@ void scroll_frame::create_glue()
 void scroll_frame::add_to_scroll_child_list_(frame* pChild)
 {
     lScrollChildList_[pChild->get_id()] = pChild;
-    for (auto* pSubChild : utils::range::value(pChild->get_children()))
+    for (auto* pSubChild : pChild->get_children())
         add_to_scroll_child_list_(pSubChild);
 }
 
 void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
 {
     lScrollChildList_.erase(pChild->get_id());
-    for (auto* pSubChild : utils::range::value(pChild->get_children()))
+    for (auto* pSubChild : pChild->get_children())
         remove_from_scroll_child_list_(pSubChild);
 }
 

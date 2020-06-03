@@ -2,6 +2,7 @@
 #define GUI_FRAME_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_sorted_vector.hpp>
 #include "lxgui/gui_region.hpp"
 
 #include <set>
@@ -30,6 +31,22 @@ namespace gui
     class frame : public event_receiver, public region
     {
     public :
+
+        struct id_comparator
+        {
+            bool operator() (const frame* pFrame1, const frame* pFrame2) const
+            {
+                return pFrame1->get_id() < pFrame2->get_id();
+            }
+            bool operator() (const frame* pFrame1, uint uiID) const
+            {
+                return pFrame1->get_id() < uiID;
+            }
+            bool operator() (uint uiID, const frame* pFrame2) const
+            {
+                return uiID < pFrame2->get_id();
+            }
+        };
 
         /// Constructor.
         explicit frame(manager* pManager);
@@ -186,7 +203,7 @@ namespace gui
         /// Returns the child list.
         /** \return The child list
         */
-        const std::map<uint, frame*>& get_children() const;
+        const utils::sorted_vector<frame*,id_comparator>& get_children() const;
 
         /// Returns one of this frame's children.
         /** \param sName The name of the child
@@ -708,14 +725,14 @@ namespace gui
             uint        uiLineNbr;
         };
 
-        std::map<uint, frame*>             lChildList_;
-        std::map<uint, layered_region*>    lRegionList_;
-        std::map<layer_type, layer>        lLayerList_;
-        std::map<std::string, std::string> lDefinedScriptList_;
-        std::map<std::string, script_info> lXMLScriptInfoList_;
-        std::vector<std::string>           lQueuedEventList_;
-        std::set<std::string>              lRegEventList_;
-        std::set<std::string>              lRegDragList_;
+        utils::sorted_vector<frame*,id_comparator> lChildList_;
+        std::map<uint, layered_region*>            lRegionList_;
+        std::map<layer_type, layer>                lLayerList_;
+        std::map<std::string, std::string>         lDefinedScriptList_;
+        std::map<std::string, script_info>         lXMLScriptInfoList_;
+        std::vector<std::string>                   lQueuedEventList_;
+        std::set<std::string>                      lRegEventList_;
+        std::set<std::string>                      lRegDragList_;
 
         std::map<std::string, handler> lDefinedHandlerList_;
 

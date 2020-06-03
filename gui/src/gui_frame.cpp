@@ -31,7 +31,7 @@ frame::~frame()
     for (auto* pRegion : utils::range::value(lRegionList_))
         delete pRegion;
 
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
         delete pChild;
 
     delete pTitleRegion_;
@@ -168,7 +168,7 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (auto* pChild : utils::range::value(lChildList_))
+        for (auto* pChild : lChildList_)
         {
             sStr << pChild->serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
@@ -260,7 +260,7 @@ void frame::copy_from(uiobject* pObj)
 
         this->set_scale(pFrame->get_scale());
 
-        for (auto* pChild : utils::range::value(pFrame->lChildList_))
+        for (auto* pChild : pFrame->lChildList_)
         {
             if (!pChild->is_special())
             {
@@ -369,14 +369,11 @@ void frame::create_title_region()
 
 frame* frame::get_child(const std::string& sName)
 {
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
     {
         if (pChild->get_name() == sName)
             return pChild;
-    }
 
-    for (auto* pChild : utils::range::value(lChildList_))
-    {
         const std::string& sRawName = pChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
             return pChild;
@@ -717,69 +714,67 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
 
 void frame::add_child(frame* pChild)
 {
-    if (pChild)
+    if (!pChild)
+        return;
+
+    if (lChildList_.find(pChild->get_id()) != lChildList_.end())
     {
-        if (lChildList_.find(pChild->get_id()) == lChildList_.end())
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
+            << "\"'s children, but it was already one of this frame's children." << std::endl;
+        return;
+    }
+
+    if (bIsTopLevel_)
+        pChild->notify_top_level_parent_(true, this);
+
+    if (pTopLevelParent_)
+        pChild->notify_top_level_parent_(true, pTopLevelParent_);
+
+    if (is_visible() && pChild->is_shown())
+        pChild->notify_visible_(!pManager_->is_loading_ui());
+    else
+        pChild->notify_invisible_(!pManager_->is_loading_ui());
+
+    pChild->set_manually_rendered(bManuallyRendered_, pRenderer_);
+
+    lChildList_.insert(pChild);
+
+    notify_strata_changed_();
+
+    if (!bVirtual_)
+    {
+        std::string sRawName = pChild->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
         {
-            if (bIsTopLevel_)
-                pChild->notify_top_level_parent_(true, this);
+            sRawName.erase(0, 7);
 
-            if (pTopLevelParent_)
-                pChild->notify_top_level_parent_(true, pTopLevelParent_);
-
-            if (is_visible() && pChild->is_shown())
-                pChild->notify_visible_(!pManager_->is_loading_ui());
-            else
-                pChild->notify_invisible_(!pManager_->is_loading_ui());
-
-            pChild->set_manually_rendered(bManuallyRendered_, pRenderer_);
-
-            lChildList_[pChild->get_id()] = pChild;
-
-            notify_strata_changed_();
-
-            if (!bVirtual_)
-            {
-                std::string sRawName = pChild->get_raw_name();
-                if (utils::starts_with(sRawName, "$parent"))
-                {
-                    sRawName.erase(0, 7);
-
-                    lua::state* pLua = pManager_->get_lua();
-                    pLua->get_global(pChild->get_lua_name());
-                    pLua->set_global(sLuaName_+"."+sRawName);
-                }
-            }
-        }
-        else
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-                << "\"'s children, but it was already one of this frame's children." << std::endl;
+            lua::state* pLua = pManager_->get_lua();
+            pLua->get_global(pChild->get_lua_name());
+            pLua->set_global(sLuaName_+"."+sRawName);
         }
     }
 }
 
 void frame::remove_child(frame* pChild)
 {
-    if (pChild)
+    if (!pChild)
+        return;
+
+    auto iter = lChildList_.find(pChild->get_id());
+    if (iter == lChildList_.end())
     {
-        std::map<uint, frame*>::iterator iter = lChildList_.find(pChild->get_id());
-        if (iter != lChildList_.end())
-        {
-            lChildList_.erase(iter);
-            notify_strata_changed_();
-        }
-        else
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to remove \"" << pChild->get_name() << "\" from \"" << sName_
-                << "\"'s children, but it was not one of this frame's children." << std::endl;
-        }
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "Trying to remove \"" << pChild->get_name() << "\" from \"" << sName_
+            << "\"'s children, but it was not one of this frame's children." << std::endl;
+        return;
     }
+
+    lChildList_.erase(iter);
+    notify_strata_changed_();
 }
 
-const std::map<uint, frame*>& frame::get_children() const
+const utils::sorted_vector<frame*,frame::id_comparator>& frame::get_children() const
 {
     return lChildList_;
 }
@@ -1563,41 +1558,41 @@ void frame::set_scale(float fScale)
 
 void frame::set_top_level(bool bIsTopLevel)
 {
-    if (bIsTopLevel_ != bIsTopLevel)
-    {
-        bIsTopLevel_ = bIsTopLevel;
+    if (bIsTopLevel_ == bIsTopLevel)
+        return;
 
-        for (auto* pChild : utils::range::value(lChildList_))
-            pChild->notify_top_level_parent_(bIsTopLevel_, this);
-    }
+    bIsTopLevel_ = bIsTopLevel;
+
+    for (auto* pChild : lChildList_)
+        pChild->notify_top_level_parent_(bIsTopLevel_, this);
 }
 
 void frame::raise()
 {
-    if (bIsTopLevel_)
+    if (!bIsTopLevel_)
+        return;
+
+    int iOldLevel = iLevel_;
+    iLevel_ = pManager_->get_highest_level(mStrata_) + 1;
+
+    if (iLevel_ > iOldLevel)
     {
-        int iOldLevel = iLevel_;
-        iLevel_ = pManager_->get_highest_level(mStrata_) + 1;
+        int iAmount = iLevel_ - iOldLevel;
 
-        if (iLevel_ > iOldLevel)
-        {
-            int iAmount = iLevel_ - iOldLevel;
+        for (auto* pChild : lChildList_)
+            pChild->add_level_(iAmount);
 
-            for (auto* pChild : utils::range::value(lChildList_))
-                pChild->add_level_(iAmount);
-
-            notify_strata_changed_();
-        }
-        else
-            iLevel_ = iOldLevel;
+        notify_strata_changed_();
     }
+    else
+        iLevel_ = iOldLevel;
 }
 
 void frame::add_level_(int iAmount)
 {
     iLevel_ += iAmount;
 
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
         pChild->add_level_(iAmount);
 
     notify_strata_changed_();
@@ -1637,7 +1632,7 @@ void frame::set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer)
 
     uiobject::set_manually_rendered(bManuallyRendered, pRenderer);
 
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
         pChild->set_manually_rendered(bManuallyRendered, pRenderer);
 }
 
@@ -1660,7 +1655,7 @@ void frame::notify_strata_changed_()
 void frame::notify_visible_(bool bTriggerEvents)
 {
     bIsVisible_ = true;
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
     {
         if (pChild->is_shown())
             pChild->notify_visible_(bTriggerEvents);
@@ -1676,7 +1671,7 @@ void frame::notify_visible_(bool bTriggerEvents)
 void frame::notify_invisible_(bool bTriggerEvents)
 {
     bIsVisible_ = false;
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
     {
         if (pChild->is_shown())
             pChild->notify_invisible_(bTriggerEvents);
@@ -1696,7 +1691,7 @@ void frame::notify_top_level_parent_(bool bTopLevel, frame* pParent)
     else
         pTopLevelParent_ = nullptr;
 
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
         pChild->notify_top_level_parent_(bTopLevel, pParent);
 }
 
@@ -1863,7 +1858,7 @@ void frame::update(float fDelta)
     // Update children
     DEBUG_LOG("   Update children");
     std::map<uint, frame*>::iterator iterChild;
-    for (auto* pChild : utils::range::value(lChildList_))
+    for (auto* pChild : lChildList_)
         pChild->update(fDelta);
 
     if (uiOldWidth != uiAbsWidth_ || uiOldHeight != uiAbsHeight_)
@@ -1887,8 +1882,8 @@ std::vector<uiobject*> frame::clear_links()
             lList.push_back(pObject);
     }
 
-    std::map<uint, frame*> lTempChildList = lChildList_;
-    for (auto* pChild : utils::range::value(lTempChildList))
+    auto lTempChildList = lChildList_;
+    for (auto* pChild : lTempChildList)
     {
         std::vector<uiobject*> lTempList = pChild->clear_links();
         for (auto* pObject : lTempList)
