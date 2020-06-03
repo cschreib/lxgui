@@ -4,11 +4,12 @@
 #include <cmath>
 #include <memory>
 
+namespace lxgui {
+
 typedef unsigned long ulong;
 typedef unsigned int  uint;
 typedef unsigned char uchar;
 
-namespace lxgui {
 namespace math
 {
     #ifdef MSVC
