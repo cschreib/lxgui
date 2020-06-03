@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['id_5fcomparator',['id_comparator',['../structlxgui_1_1gui_1_1frame_1_1id__comparator.html',1,'lxgui::gui::frame']]],
   ['identity',['IDENTITY',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a7408859314eca9388cfd4db865afc66f',1,'lxgui::gui::gl::matrix4']]],
   ['ihorizontalscroll_5f',['iHorizontalScroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a43350179e811c89eb66816d7bd8e3584',1,'lxgui::gui::scroll_frame']]],
   ['ihorizontalscrollrange_5f',['iHorizontalScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#addded385808a42d7785eacb016508798',1,'lxgui::gui::scroll_frame']]],
@@ -71,8 +72,8 @@ var searchData=
   ['iterator',['iterator',['../structlxgui_1_1xml_1_1block_1_1range__block_1_1iterator.html',1,'lxgui::xml::block::range_block']]],
   ['iterator_5fadapter',['iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1iterator__adapter.html',1,'lxgui::utils::range']]],
   ['iterator_5fadapter',['iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1iterator__adapter.html#a01bf2b4b160eb9bd489af219c8d70b90',1,'lxgui::utils::range::iterator_adapter']]],
-  ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html#acc5ce4177bf6d493edf2849b4d607691',1,'lxgui::utils::range::iterator_range']]],
   ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html',1,'lxgui::utils::range']]],
+  ['iterator_5frange',['iterator_range',['../structlxgui_1_1utils_1_1range_1_1iterator__range.html#acc5ce4177bf6d493edf2849b4d607691',1,'lxgui::utils::range::iterator_range']]],
   ['itercarretpos_5f',['iterCarretPos_',['../classlxgui_1_1gui_1_1edit__box.html#ac36b507a7fcf4b6be631fc150aebf25b',1,'lxgui::gui::edit_box']]],
   ['iverticalscroll_5f',['iVerticalScroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a2e5a0f44c46364ff53774c7e81edca40',1,'lxgui::gui::scroll_frame']]],
   ['iverticalscrollrange_5f',['iVerticalScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#adf50a69def72400de60639c8ec81cb53',1,'lxgui::gui::scroll_frame']]]
