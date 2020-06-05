@@ -115,7 +115,7 @@ namespace gui
         /// Returns the currently displayed text object.
         /** \return The currently displayed text object
         */
-        font_string* get_CurrentFontString();
+        font_string* get_current_font_string();
 
         /// Sets this button's normal texture.
         /** \param pTexture The new texture
@@ -227,13 +227,13 @@ namespace gui
 
     protected :
 
-        texture*     create_normal_texture_();
-        texture*     create_pushed_texture_();
-        texture*     create_disabled_texture_();
-        texture*     create_highlight_texture_();
-        font_string* create_normal_text_();
-        font_string* create_highlight_text_();
-        font_string* create_disabled_text_();
+        std::unique_ptr<texture>     create_normal_texture_();
+        std::unique_ptr<texture>     create_pushed_texture_();
+        std::unique_ptr<texture>     create_disabled_texture_();
+        std::unique_ptr<texture>     create_highlight_texture_();
+        std::unique_ptr<font_string> create_normal_text_();
+        std::unique_ptr<font_string> create_highlight_text_();
+        std::unique_ptr<font_string> create_disabled_text_();
 
         state     mState_ = state::UP;
         bool      bHighlighted_ = false;

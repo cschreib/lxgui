@@ -26,17 +26,6 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
     lType_.push_back(CLASS_NAME);
 }
 
-frame::~frame()
-{
-    for (auto* pRegion : utils::range::value(lRegionList_))
-        delete pRegion;
-
-    for (auto* pChild : lChildList_)
-        delete pChild;
-
-    delete pTitleRegion_;
-}
-
 void frame::render()
 {
     if (bIsVisible_ && bReady_)
@@ -168,7 +157,7 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (auto* pChild : lChildList_)
+        for (const auto& pChild : lChildList_)
         {
             sStr << pChild->serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
@@ -260,33 +249,32 @@ void frame::copy_from(uiobject* pObj)
 
         this->set_scale(pFrame->get_scale());
 
-        for (auto* pChild : pFrame->lChildList_)
+        for (const auto& pChild : pFrame->lChildList_)
         {
-            if (!pChild->is_special())
-            {
-                frame* pNewChild = pManager_->create_frame(pChild->get_object_type());
-                if (pNewChild)
-                {
-                    pNewChild->set_parent(this);
-                    if (this->is_virtual())
-                        pNewChild->set_virtual();
-                    pNewChild->set_name(pChild->get_raw_name());
-                    if (!pManager_->add_uiobject(pNewChild))
-                    {
-                        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                            << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-                            << "\", but its name was already taken : \"" << pNewChild->get_name()
-                            << "\". Skipped." << std::endl;
+            if (pChild->is_special()) continue;
 
-                        delete pNewChild;
-                        continue;
-                    }
-                    pNewChild->create_glue();
-                    this->add_child(pNewChild);
-                    pNewChild->copy_from(pChild);
-                    pNewChild->notify_loaded();
-                }
+            std::unique_ptr<frame> pNewChild = pManager_->create_frame(pChild->get_object_type());
+            if (!pNewChild) continue;
+
+            pNewChild->set_parent(this);
+            if (this->is_virtual())
+                pNewChild->set_virtual();
+
+            pNewChild->set_name(pChild->get_raw_name());
+            if (!pManager_->add_uiobject(pNewChild.get()))
+            {
+                gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                    << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
+                    << "\", but its name was already taken : \"" << pNewChild->get_name()
+                    << "\". Skipped." << std::endl;
+
+                continue;
             }
+
+            pNewChild->create_glue();
+            auto* pAddedChild = this->add_child(std::move(pNewChild));
+            pAddedChild->copy_from(pChild);
+            pAddedChild->notify_loaded();
         }
 
         if (pFrame->pBackdrop_)
@@ -306,31 +294,32 @@ void frame::copy_from(uiobject* pObj)
         {
             if (pArt->is_special()) continue;
 
-            layered_region* pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+            std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
             if (!pNewArt) continue;
 
             pNewArt->set_parent(this);
             if (this->is_virtual())
                 pNewArt->set_virtual();
+
             pNewArt->set_name(pArt->get_raw_name());
-            if (!pManager_->add_uiobject(pNewArt))
+            if (!pManager_->add_uiobject(pNewArt.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
                     << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
                     << "\", but its name was already taken : \"" << pNewArt->get_name()
                     << "\". Skipped." << std::endl;
 
-                delete pNewArt;
                 continue;
             }
+
             if (!pNewArt->is_virtual())
                 pNewArt->create_glue();
 
             pNewArt->set_draw_layer(pArt->get_draw_layer());
 
-            this->add_region(pNewArt);
-            pNewArt->copy_from(pArt);
-            pNewArt->notify_loaded();
+            auto* pAddedArt = this->add_region(std::move(pNewArt));
+            pAddedArt->copy_from(pArt);
+            pAddedArt->notify_loaded();
         }
 
         bBuildLayerList_ = true;
@@ -339,32 +328,33 @@ void frame::copy_from(uiobject* pObj)
 
 void frame::create_title_region()
 {
-    if (!pTitleRegion_)
+    if (pTitleRegion_)
     {
-        pTitleRegion_ = new region(pManager_);
-        if (this->is_virtual())
-            pTitleRegion_->set_virtual();
-        pTitleRegion_->set_special();
-        pTitleRegion_->set_parent(this);
-        pTitleRegion_->set_name(sName_+"TitleRegion");
-
-        if (!pManager_->add_uiobject(pTitleRegion_))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-                "already took its name : \"" << pTitleRegion_->get_name() << "\"." << std::endl;
-
-            delete pTitleRegion_; pTitleRegion_ = nullptr;
-            return;
-        }
-
-        if (!pTitleRegion_->is_virtual())
-            pTitleRegion_->create_glue();
-
-        pTitleRegion_->notify_loaded();
-    }
-    else
         gui::out << gui::warning << "gui::" << lType_.back() << " : \""+sName_+"\" already has a title region." << std::endl;
+        return;
+    }
+
+    pTitleRegion_ = std::unique_ptr<region>(new region(pManager_));
+    if (this->is_virtual())
+        pTitleRegion_->set_virtual();
+    pTitleRegion_->set_special();
+    pTitleRegion_->set_parent(this);
+    pTitleRegion_->set_name(sName_+"TitleRegion");
+
+    if (!pManager_->add_uiobject(pTitleRegion_))
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
+            "already took its name : \"" << pTitleRegion_->get_name() << "\"." << std::endl;
+
+        pTitleRegion_ = nullptr;
+        return;
+    }
+
+    if (!pTitleRegion_->is_virtual())
+        pTitleRegion_->create_glue();
+
+    pTitleRegion_->notify_loaded();
 }
 
 frame* frame::get_child(const std::string& sName)
@@ -600,34 +590,33 @@ bool frame::has_script(const std::string& sScriptName) const
 
 void frame::add_region(layered_region* pRegion)
 {
-    if (pRegion)
+    if (!pRegion)
+        return;
+
+    if (lRegionList_.find(pRegion->get_id()) != lRegionList_.end())
     {
-        if (lRegionList_.find(pRegion->get_id()) == lRegionList_.end())
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "Trying to add \"" << pRegion->get_name() << "\" to \"" << sName_ << "\"'s children, "
+            "but it was already one of this frame's children." << std::endl;
+        return;
+    }
+
+    lRegionList_[pRegion->get_id()] = pRegion;
+
+    fire_build_layer_list();
+    notify_renderer_need_redraw();
+
+    if (!bVirtual_)
+    {
+        const std::string& sRawName = pRegion->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
         {
-            lRegionList_[pRegion->get_id()] = pRegion;
+            std::string sTempName = pRegion->get_name();
+            sTempName.erase(0, sName_.size());
 
-            fire_build_layer_list();
-            notify_renderer_need_redraw();
-
-            if (!bVirtual_)
-            {
-                const std::string& sRawName = pRegion->get_raw_name();
-                if (utils::starts_with(sRawName, "$parent"))
-                {
-                    std::string sTempName = pRegion->get_name();
-                    sTempName.erase(0, sName_.size());
-
-                    lua::state* pLua = pManager_->get_lua();
-                    pLua->get_global(pRegion->get_name());
-                    pLua->set_global(sName_+"."+sTempName);
-                }
-            }
-        }
-        else
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to add \"" << pRegion->get_name() << "\" to \"" << sName_ << "\"'s children, "
-                "but it was already one of this frame's children." << std::endl;
+            lua::state* pLua = pManager_->get_lua();
+            pLua->get_global(pRegion->get_name());
+            pLua->set_global(sName_+"."+sTempName);
         }
     }
 }

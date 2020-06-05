@@ -17,65 +17,86 @@ void button::parse_block(xml::block* pBlock)
     pSpecialBlock = pBlock->get_block("NormalTexture");
     if (pSpecialBlock)
     {
-        texture* pTexture = create_normal_texture_();
+        std::unique_ptr<texture> pTexture = create_normal_texture_();
         pTexture->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_normal_texture(pTexture.get());
+        add_region(std::move(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("PushedTexture");
     if (pSpecialBlock)
     {
-        texture* pTexture = create_pushed_texture_();
+        std::unique_ptr<texture> pTexture = create_pushed_texture_();
         pTexture->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_pushed_texture(pTexture.get());
+        add_region(std::move(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("DisabledTexture");
     if (pSpecialBlock)
     {
-        texture* pTexture = create_disabled_texture_();
+        std::unique_ptr<texture> pTexture = create_disabled_texture_();
         pTexture->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_disabled_texture(pTexture.get());
+        add_region(std::move(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("HighlightTexture");
     if (pSpecialBlock)
     {
-        texture* pTexture = create_highlight_texture_();
+        std::unique_ptr<texture> pTexture = create_highlight_texture_();
         pTexture->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_highlight_texture(pTexture.get());
+        add_region(std::move(pTexture));
     }
 
 
     pSpecialBlock = pBlock->get_block("NormalText");
     if (pSpecialBlock)
     {
-        font_string* pFontString = create_normal_text_();
+        std::unique_ptr<font_string> pFontString = create_normal_text_();
         pFontString->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_normal_text(pFontString.get());
+        add_region(std::move(pFontString));
     }
 
     pSpecialBlock = pBlock->get_block("HighlightText");
     if (pSpecialBlock)
     {
-        font_string* pFontString = create_highlight_text_();
+        std::unique_ptr<font_string> pFontString = create_highlight_text_();
         pFontString->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_highlight_text(pFontString.get());
+        add_region(std::move(pFontString));
     }
 
     pSpecialBlock = pBlock->get_block("DisabledText");
     if (pSpecialBlock)
     {
-        font_string* pFontString = create_disabled_text_();
+        std::unique_ptr<font_string> pFontString = create_disabled_text_();
         pFontString->parse_block(pSpecialBlock);
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+
+        set_disabled_text(pFontString.get());
+        add_region(std::move(pFontString));
     }
 
     xml::block* pOffsetBlock = pBlock->get_block("PushedTextOffset");

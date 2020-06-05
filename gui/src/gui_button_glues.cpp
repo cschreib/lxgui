@@ -287,7 +287,7 @@ int lua_button::_get_text_height(lua_State* pLua)
 
     lua::function mFunc("Button:get_text_height", pLua, 1);
 
-    font_string* pCurrentFont = pButtonParent_->get_CurrentFontString();
+    font_string* pCurrentFont = pButtonParent_->get_current_font_string();
     if (pCurrentFont)
         mFunc.push(pCurrentFont->get_string_height());
     else
@@ -303,7 +303,7 @@ int lua_button::_get_text_width(lua_State* pLua)
 
     lua::function mFunc("Button:get_text_width", pLua, 1);
 
-    font_string* pCurrentFont = pButtonParent_->get_CurrentFontString();
+    font_string* pCurrentFont = pButtonParent_->get_current_font_string();
     if (pCurrentFont)
         mFunc.push(pCurrentFont->get_string_width());
     else

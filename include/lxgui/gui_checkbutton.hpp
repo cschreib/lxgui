@@ -92,8 +92,8 @@ namespace gui
 
     protected :
 
-        texture* create_checked_texture_();
-        texture* create_disabled_checked_texture_();
+        std::unique_ptr<texture> create_checked_texture_();
+        std::unique_ptr<texture> create_disabled_checked_texture_();
 
         bool bChecked_ = false;
 

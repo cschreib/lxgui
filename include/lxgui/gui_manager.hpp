@@ -188,7 +188,7 @@ namespace gui
         *   \note You have the responsability to detroy and initialize the created
         *         uiobject by yourself.
         */
-        uiobject* create_uiobject(const std::string& sClassName);
+        std::unique_ptr<uiobject> create_uiobject(const std::string& sClassName);
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
@@ -196,7 +196,7 @@ namespace gui
         *   \note You have the responsability to detroy and initialize the created
         *         frame by yourself.
         */
-        frame* create_frame(const std::string& sClassName);
+        std::unique_ptr<frame> create_frame(const std::string& sClassName);
 
         /// Creates a new frame, ready for use.
         /** \param sClassName   The sub class of the frame (Button, ...)
@@ -211,7 +211,7 @@ namespace gui
         *   \note This function takes care of the basic initializing : the
         *         frame is directly usable.
         */
-        frame* create_frame(
+        std::unique_ptr<frame> create_frame(
             const std::string& sClassName, const std::string& sName,
             frame* pParent = nullptr, const std::string& sInheritance = ""
         );
@@ -229,7 +229,7 @@ namespace gui
         *         frame is directly usable.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* create_frame(const std::string& sName, frame* pParent = nullptr, const std::string& sInheritance = "")
+        std::unique_ptr<frame> create_frame(const std::string& sName, frame* pParent = nullptr, const std::string& sInheritance = "")
         {
             return dynamic_cast<frame_type*>(create_frame(frame_type::CLASS_NAME, sName, pParent, sInheritance));
         }
@@ -240,7 +240,7 @@ namespace gui
         *   \note You have the responsability to detroy and initialize the created
         *         layered_region by yourself.
         */
-        layered_region* create_layered_region(const std::string& sClassName);
+        std::unique_ptr<layered_region> create_layered_region(const std::string& sClassName);
 
         /// Creates a new sprite.
         /** \param pMat The material with which to create the sprite

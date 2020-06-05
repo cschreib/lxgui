@@ -43,6 +43,7 @@
 #endif
 
 #include <fstream>
+#include <chrono>
 
 using namespace lxgui;
 
@@ -90,6 +91,10 @@ int main(int argc, char* argv[])
         else
             mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test");
 
+
+        using clock = std::chrono::high_resolution_clock;
+
+        auto t0 = clock::now();
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
@@ -226,6 +231,10 @@ int main(int argc, char* argv[])
 
         input::manager* pInputMgr = pManager->get_input_manager();
 
+        auto t1 = clock::now();
+        std::chrono::duration<double> dinit = t1 - t0;
+        std::cout << "GUI initialized in " << dinit.count()/1000.0 << std::endl;
+
         std::cout << "Entering loop..." << std::endl;
         while (bRunning)
         {
@@ -244,6 +253,9 @@ int main(int argc, char* argv[])
                 static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
             #endif
             }
+
+
+            auto t2 = clock::now();
 
             // Check if WORLD input is allowed
             if (pInputMgr->can_receive_input("WORLD"))
@@ -271,6 +283,8 @@ int main(int argc, char* argv[])
             // Update the gui
             pManager->update(fDelta);
 
+            auto t3 = clock::now();
+
             // Clear the window
         #ifdef GL_GUI
             glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -281,6 +295,12 @@ int main(int argc, char* argv[])
 
             // Render the gui
             pManager->render_ui();
+
+            auto t4 = clock::now();
+
+            std::chrono::duration<double> dupd = t3 - t2;
+            std::chrono::duration<double> drend = t4 - t3;
+            std::cout << "update: " << dupd.count()/1000.0 << ", render: " << drend.count()/1000.0 << std::endl;
 
             // Display the window
             mWindow.display();

@@ -120,7 +120,13 @@ namespace gui
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
-        void add_region(layered_region* pRegion);
+        layered_region* add_region(std::unique_ptr<layered_region> pRegion);
+
+        /// Adds a layered_region to this frame's children.
+        /** \param pRegion The layered_region to add
+        */
+        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        region_type* add_region(std::unique_ptr<region_type> pRegion) { return dynamic_cast<region_type*>(add_region(std::unique_ptr<layered_region>(pRegion.release()))); }
 
         /// Removes a layered_region from this frame's children.
         /** \param pRegion The layered_region to remove
@@ -193,7 +199,13 @@ namespace gui
         /// Adds a frame to this frame's children.
         /** \param pChild The frame to add
         */
-        void add_child(frame* pChild);
+        frame* add_child(std::unique_ptr<frame> pChild);
+
+        /// Adds a frame to this frame's children.
+        /** \param pChild The frame to add
+        */
+        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        frame_type* add_child(std::unique_ptr<frame_type> pChild) { return dynamic_cast<frame_type*>(add_child(std::unique_ptr<frame>(pChild.release()))); }
 
         /// Removes a frame from this frame's children.
         /** \param pChild The frame to remove
@@ -203,7 +215,7 @@ namespace gui
         /// Returns the child list.
         /** \return The child list
         */
-        const utils::sorted_vector<frame*,id_comparator>& get_children() const;
+        const utils::sorted_vector<std::unique_ptr<frame>,id_comparator>& get_children() const;
 
         /// Returns one of this frame's children.
         /** \param sName The name of the child
@@ -725,7 +737,7 @@ namespace gui
             uint        uiLineNbr;
         };
 
-        utils::sorted_vector<frame*,id_comparator> lChildList_;
+        utils::sorted_vector<std::unique_ptr<frame>,id_comparator> lChildList_;
         std::map<uint, layered_region*>            lRegionList_;
         std::map<layer_type, layer>                lLayerList_;
         std::map<std::string, std::string>         lDefinedScriptList_;
@@ -773,7 +785,7 @@ namespace gui
         bool bMouseInTitleRegion_ = false;
         int  iMousePosX_ = 0, iMousePosY_ = 0;
 
-        region* pTitleRegion_ = nullptr;
+        std::unique_ptr<region> pTitleRegion_ = nullptr;
 
         frame* pParentFrame_ = nullptr;
 

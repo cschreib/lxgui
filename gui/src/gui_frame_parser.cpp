@@ -103,10 +103,7 @@ void frame::parse_attributes_(xml::block* pBlock)
     create_glue();
 
     if (pParentFrame_)
-    {
-        pParentFrame_->add_child(this);
         set_level(pParentFrame_->get_frame_level() + 1);
-    }
     else
         set_level(0);
 
