@@ -44,37 +44,38 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
             }
             else
             {
-                uiobject* pUIObject = create_uiobject(pElemBlock->get_name());
-
+                std::unique_ptr<uiobject> pUIObject = create_uiobject(pElemBlock->get_name());
                 if (!pUIObject)
                     return;
 
                 try
                 {
-                    frame* pFrame = dynamic_cast<frame*>(pUIObject);
+                    std::unique_ptr<frame> pFrame(dynamic_cast<frame*>(pUIObject.release()));
 
                     if (pFrame)
                     {
                         pFrame->set_addon(get_current_addon());
                         pFrame->parse_block(pElemBlock);
                         pFrame->notify_loaded();
+
+                        if (pFrame->get_parent())
+                            dynamic_cast<frame*>(pFrame->get_parent())->add_child(std::move(pFrame));
+                        else
+                            add_root_uiobject(std::move(pFrame));
                     }
                     else
                     {
                         // TODO : Allow virtual regions to be created at root
                         gui::out << gui::warning << "gui::manager : " "Creating elements other than Frames at root "
                             "level is forbidden. Skipped." << std::endl;
-                        delete pUIObject;
                     }
                 }
                 catch (const exception& e)
                 {
-                    delete pUIObject;
                     gui::out << gui::error << e.get_description() << std::endl;
                 }
                 catch (...)
                 {
-                    delete pUIObject;
                     throw;
                 }
             }

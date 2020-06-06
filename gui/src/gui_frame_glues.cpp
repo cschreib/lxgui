@@ -295,10 +295,9 @@ int lua_frame::_get_children(lua_State* pLua)
     if (!check_parent_())
         return 0;
 
-    const auto& lChildList = pFrameParent_->get_children();
-    lua::function mFunc("Frame:get_children", pLua, lChildList.size());
+    lua::function mFunc("Frame:get_children", pLua, pFrameParent_->get_num_children());
 
-    for (auto* pChild : lChildList)
+    for (auto* pChild : pFrameParent_->get_children())
     {
         pChild->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
@@ -338,7 +337,7 @@ int lua_frame::_get_frame_level(lua_State* pLua)
 
     lua::function mFunc("Frame:get_frame_level", pLua, 1);
 
-    mFunc.push(pFrameParent_->get_frame_level());
+    mFunc.push(pFrameParent_->get_level());
 
     return mFunc.on_return();
 }

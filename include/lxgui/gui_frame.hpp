@@ -3,7 +3,10 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_sorted_vector.hpp>
+#include <lxgui/utils_view.hpp>
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_backdrop.hpp"
+#include "lxgui/gui_layeredregion.hpp"
 
 #include <set>
 #include <functional>
@@ -11,8 +14,6 @@
 namespace lxgui {
 namespace gui
 {
-    class backdrop;
-
     /// Contains layered_region
     struct layer
     {
@@ -32,27 +33,33 @@ namespace gui
     {
     public :
 
+        /// Comparator for sorting objects by ID
+        template<typename ObjectType>
         struct id_comparator
         {
-            bool operator() (const frame* pFrame1, const frame* pFrame2) const
+            bool operator() (const std::unique_ptr<ObjectType>& pObject1, const std::unique_ptr<ObjectType>& pObject2) const
             {
-                return pFrame1->get_id() < pFrame2->get_id();
+                return pObject1->get_id() < pObject2->get_id();
             }
-            bool operator() (const frame* pFrame1, uint uiID) const
+            bool operator() (const std::unique_ptr<ObjectType>& pObject1, uint uiID) const
             {
-                return pFrame1->get_id() < uiID;
+                return pObject1->get_id() < uiID;
             }
-            bool operator() (uint uiID, const frame* pFrame2) const
+            bool operator() (uint uiID, const std::unique_ptr<ObjectType>& pObject2) const
             {
-                return uiID < pFrame2->get_id();
+                return uiID < pObject2->get_id();
             }
         };
 
+        /// Type of the frame child list.
+        using child_list = utils::sorted_vector<std::unique_ptr<frame>,id_comparator<frame>>;
+        using child_list_view = utils::view::adaptor<child_list, utils::view::unique_ptr_dereferencer>;
+        /// Type of the region list.
+        using region_list = utils::sorted_vector<std::unique_ptr<layered_region>,id_comparator<layered_region>>;
+        using region_list_view = utils::view::adaptor<region_list, utils::view::unique_ptr_dereferencer>;
+
         /// Constructor.
         explicit frame(manager* pManager);
-
-        /// Destructor.
-        ~frame();
 
         /// Renders this widget on the current render target.
         void render() override;
@@ -215,7 +222,7 @@ namespace gui
         /// Returns the child list.
         /** \return The child list
         */
-        const utils::sorted_vector<std::unique_ptr<frame>,id_comparator>& get_children() const;
+        child_list_view get_children() const;
 
         /// Returns one of this frame's children.
         /** \param sName The name of the child
@@ -240,6 +247,11 @@ namespace gui
         {
             return dynamic_cast<frame_type*>(get_child(sName));
         }
+
+        /// Returns the region list.
+        /** \return The region list
+        */
+        region_list_view get_regions() const;
 
         /// Returns one of this frame's region.
         /** \param sName The name of the region
@@ -278,7 +290,7 @@ namespace gui
         /// Returns this frame's level.
         /** \return This frame's level
         */
-        int get_frame_level() const;
+        int get_level() const;
 
         /// Returns this frame's strata.
         /** \return This frame's strata
@@ -737,8 +749,9 @@ namespace gui
             uint        uiLineNbr;
         };
 
-        utils::sorted_vector<std::unique_ptr<frame>,id_comparator> lChildList_;
-        std::map<uint, layered_region*>            lRegionList_;
+        child_list  lChildList_;
+        region_list lRegionList_;
+
         std::map<layer_type, layer>                lLayerList_;
         std::map<std::string, std::string>         lDefinedScriptList_;
         std::map<std::string, script_info>         lXMLScriptInfoList_;

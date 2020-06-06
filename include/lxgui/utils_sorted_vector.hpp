@@ -180,16 +180,13 @@ namespace utils
         **/
         template<typename Key>
         iterator find(const Key& k) {
-            if (empty()) {
-                return end();
-            } else {
+            if (!empty()) {
                 auto iter = std::lower_bound(begin(), end(), k, compare);
                 if (iter != end() && !compare(k, *iter)) {
                     return iter;
-                } else {
-                    return end();
                 }
             }
+            return end();
         }
 
         /// Find an object in this vector by its key.
@@ -198,16 +195,13 @@ namespace utils
         **/
         template<typename Key>
         const_iterator find(const Key& k) const {
-            if (empty()) {
-                return end();
-            } else {
+            if (!empty()) {
                 auto iter = std::lower_bound(begin(), end(), k, compare);
                 if (iter != end() && !compare(k, *iter)) {
                     return iter;
-                } else {
-                    return end();
                 }
             }
+            return end();
         }
 
         using base::front;

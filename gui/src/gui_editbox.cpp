@@ -65,31 +65,31 @@ void edit_box::copy_from(uiobject* pObj)
         font_string* pFS = pEditBox->get_font_string();
         if (pFS)
         {
-            this->create_font_string_();
+            std::unique_ptr<font_string> pText = this->create_font_string_();
 
             if (this->is_virtual())
-                pFontString_->set_virtual();
+                pText->set_virtual();
 
-            pFontString_->set_name(pFS->get_name());
-            if (!pManager_->add_uiobject(pFontString_))
+            pText->set_name(pFS->get_name());
+            if (!pManager_->add_uiobject(pText.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
                     "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\",\n"
-                    "but its name was already taken : \""+pFontString_->get_name()+"\". Skipped." << std::endl;
-                delete pFontString_; pFontString_ = nullptr;
+                    "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
             }
             else
             {
                 if (!is_virtual())
-                    pFontString_->create_glue();
+                    pText->create_glue();
 
-                this->add_region(pFontString_);
-                pFontString_->copy_from(pFS);
+                pText->copy_from(pFS);
 
                 if (!is_virtual())
-                    pFontString_->enable_formatting(false);
+                    pText->enable_formatting(false);
 
-                pFontString_->notify_loaded();
+                pText->notify_loaded();
+                this->set_font_string(pText.get());
+                this->add_region(std::move(pText));
             }
         }
     }
@@ -697,95 +697,94 @@ font_string* edit_box::get_font_string()
 void edit_box::set_font_string(font_string* pFont)
 {
     pFontString_ = pFont;
-    if (pFontString_)
-    {
-        pFontString_->set_special();
-        pFontString_->set_parent(this);
-        pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
+    if (!pFontString_)
+        return;
 
-        pFontString_->set_abs_dimensions(0u, 0u);
-        pFontString_->clear_all_points();
-        pFontString_->set_abs_point(
-            anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
-        );
-        pFontString_->set_abs_point(
-            anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
-        );
+    pFontString_->set_special();
+    pFontString_->set_parent(this);
+    pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
 
-        pFontString_->enable_formatting(false);
-    }
+    pFontString_->set_abs_dimensions(0u, 0u);
+    pFontString_->clear_all_points();
+    pFontString_->set_abs_point(
+        anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
+    );
+    pFontString_->set_abs_point(
+        anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
+    );
+
+    pFontString_->enable_formatting(false);
 }
 
-font_string* edit_box::create_font_string_()
+std::unique_ptr<font_string> edit_box::create_font_string_()
 {
-    font_string* pFont = new font_string(pManager_);
+    std::unique_ptr<font_string> pFont(new font_string(pManager_));
     pFont->set_draw_layer(layer_type::ARTWORK);
-    set_font_string(pFont);
 
-    return pFontString_;
+    return pFont;
 }
 
 void edit_box::create_highlight_()
 {
-    pHighlight_ = new texture(pManager_);
-    pHighlight_->set_special();
-    pHighlight_->set_parent(this);
-    pHighlight_->set_draw_layer(layer_type::HIGHLIGHT);
-    pHighlight_->set_name("$parentHighlight");
+    std::unique_ptr<texture> pHighlight(new texture(pManager_));
+    pHighlight->set_special();
+    pHighlight->set_parent(this);
+    pHighlight->set_draw_layer(layer_type::HIGHLIGHT);
+    pHighlight->set_name("$parentHighlight");
 
-    if (!pManager_->add_uiobject(pHighlight_))
+    if (!pManager_->add_uiobject(pHighlight.get()))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Trying to create highlight texture for \""+sName_+"\",\n"
-            "but its name was already taken : \""+pHighlight_->get_name()+"\". Skipped." << std::endl;
-        delete pHighlight_; pHighlight_ = nullptr;
+            "but its name was already taken : \""+pHighlight->get_name()+"\". Skipped." << std::endl;
         return;
     }
 
-    pHighlight_->create_glue();
-    add_region(pHighlight_);
+    pHighlight->create_glue();
 
-    pHighlight_->set_abs_point(
+    pHighlight->set_abs_point(
         anchor_point::TOP,    sName_, anchor_point::TOP,    0,  lTextInsets_.top
     );
-    pHighlight_->set_abs_point(
+    pHighlight->set_abs_point(
         anchor_point::BOTTOM, sName_, anchor_point::BOTTOM, 0, -lTextInsets_.bottom
     );
 
-    pHighlight_->set_color(mHighlightColor_);
-    pHighlight_->notify_loaded();
+    pHighlight->set_color(mHighlightColor_);
+    pHighlight->notify_loaded();
+    pHighlight_ = pHighlight.get();
+    add_region(std::move(pHighlight));
 }
 
 void edit_box::create_carret_()
 {
-    if (pFontString_ && pFontString_->get_text_object())
+    if (!pFontString_ || !pFontString_->get_text_object())
+        return;
+
+    std::unique_ptr<texture> pCarret(new texture(pManager_));
+    pCarret->set_special();
+    pCarret->set_parent(this);
+    pCarret->set_draw_layer(layer_type::HIGHLIGHT);
+    pCarret->set_name("$parentCarret");
+
+    if (!pManager_->add_uiobject(pCarret.get()))
     {
-        pCarret_ = new texture(pManager_);
-        pCarret_->set_special();
-        pCarret_->set_parent(this);
-        pCarret_->set_draw_layer(layer_type::HIGHLIGHT);
-        pCarret_->set_name("$parentCarret");
-
-        if (!pManager_->add_uiobject(pCarret_))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to create carret texture for \""+sName_+"\",\n"
-                "but its name was already taken : \""+pCarret_->get_name()+"\". Skipped." << std::endl;
-            delete pCarret_; pCarret_ = nullptr;
-            return;
-        }
-
-        pCarret_->create_glue();
-        add_region(pCarret_);
-
-        sprite mSprite = pFontString_->get_text_object()->create_sprite(U'|');
-        mSprite.set_color(pFontString_->get_text_color());
-
-        pCarret_->set_sprite(std::move(mSprite));
-        pCarret_->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
-
-        pCarret_->notify_loaded();
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            "Trying to create carret texture for \""+sName_+"\",\n"
+            "but its name was already taken : \""+pCarret->get_name()+"\". Skipped." << std::endl;
+        return;
     }
+
+    pCarret->create_glue();
+
+    sprite mSprite = pFontString_->get_text_object()->create_sprite(U'|');
+    mSprite.set_color(pFontString_->get_text_color());
+
+    pCarret->set_sprite(std::move(mSprite));
+    pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
+
+    pCarret->notify_loaded();
+    pCarret_ = pCarret.get();
+    add_region(std::move(pCarret));
 }
 
 void edit_box::check_text_()

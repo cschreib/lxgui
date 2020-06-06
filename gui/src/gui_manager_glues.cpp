@@ -187,7 +187,15 @@ int l_create_frame(lua_State* pLua)
         if (mFunc.get(3)->is_provided())
             sInheritance = mFunc.get(3)->get_string();
 
-        frame* pNewFrame = pGUIMgr->create_frame(sType, sName, pParent, sInheritance);
+        frame* pNewFrame = nullptr;
+        if (pParent)
+            pNewFrame = pParent->create_child(sType, sName, sInheritance);
+        else
+        {
+            std::unique_ptr<frame> pFrame = pGUIMgr->create_frame(sType, sName, sInheritance);
+            pNewFrame = pFrame.get();
+            pGUIMgr->add_root_uiobject(std::move(pFrame));
+        }
 
         if (pNewFrame)
         {

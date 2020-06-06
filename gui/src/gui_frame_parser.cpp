@@ -103,7 +103,7 @@ void frame::parse_attributes_(xml::block* pBlock)
     create_glue();
 
     if (pParentFrame_)
-        set_level(pParentFrame_->get_frame_level() + 1);
+        set_level(pParentFrame_->get_level() + 1);
     else
         set_level(0);
 
@@ -372,25 +372,24 @@ void frame::parse_layers_block_(xml::block* pBlock)
             std::string sLevel = pLayerBlock->get_attribute("level");
             for (auto* pRegionBlock : pLayerBlock->blocks())
             {
-                layered_region* pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
-                if (pRegion)
+                std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
+                if (!pRegion)
+                    continue;
+
+                try
                 {
-                    try
-                    {
-                        pRegion->set_parent(this);
-                        pRegion->set_draw_layer(sLevel);
-                        pRegion->parse_block(pRegionBlock);
-                    }
-                    catch (const exception& e)
-                    {
-                        delete pRegion;
-                        gui::out << gui::error << e.get_description();
-                    }
-                    catch (...)
-                    {
-                        delete pRegion;
-                        throw;
-                    }
+                    pRegion->set_parent(this);
+                    pRegion->set_draw_layer(sLevel);
+                    pRegion->parse_block(pRegionBlock);
+                    add_region(std::move(pRegion));
+                }
+                catch (const exception& e)
+                {
+                    gui::out << gui::error << e.get_description();
+                }
+                catch (...)
+                {
+                    throw;
                 }
             }
         }
@@ -404,26 +403,25 @@ void frame::parse_frames_block_(xml::block* pBlock)
     {
         for (auto* pElemBlock : pFramesBlock->blocks())
         {
-            frame* pFrame = pManager_->create_frame(pElemBlock->get_name());
-            if (pFrame)
+            std::unique_ptr<frame> pFrame = pManager_->create_frame(pElemBlock->get_name());
+            if (!pFrame)
+                continue;
+
+            try
             {
-                try
-                {
-                    pFrame->set_addon(pManager_->get_current_addon());
-                    pFrame->set_parent(this);
-                    pFrame->parse_block(pElemBlock);
-                    pFrame->notify_loaded();
-                }
-                catch (const exception& e)
-                {
-                    delete pFrame;
-                    gui::out << gui::error << e.get_description();
-                }
-                catch (...)
-                {
-                    delete pFrame;
-                    throw;
-                }
+                pFrame->set_addon(pManager_->get_current_addon());
+                pFrame->set_parent(this);
+                pFrame->parse_block(pElemBlock);
+                pFrame->notify_loaded();
+                add_child(std::move(pFrame));
+            }
+            catch (const exception& e)
+            {
+                gui::out << gui::error << e.get_description();
+            }
+            catch (...)
+            {
+                throw;
             }
         }
     }

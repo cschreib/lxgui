@@ -115,75 +115,65 @@ bool manager::check_uiobject_name(const std::string& sName) const
     return true;
 }
 
-uiobject* manager::create_uiobject(const std::string& sClassName)
+std::unique_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return new frame(this);
+        return std::unique_ptr<uiobject>(new frame(this));
     else if (sClassName == "FocusFrame")
-        return new focus_frame(this);
+        return std::unique_ptr<uiobject>(new focus_frame(this));
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
         if (iterFrame != lCustomFrameList_.end())
-            return (*iterFrame->second)(this);
+            return std::unique_ptr<uiobject>((*iterFrame->second)(this));
 
         auto iterRegion = lCustomRegionList_.find(sClassName);
         if (iterRegion != lCustomRegionList_.end())
-            return (*iterRegion->second)(this);
+            return std::unique_ptr<uiobject>((*iterRegion->second)(this));
 
         gui::out << gui::warning << "gui::manager : Unknown uiobject class : \"" << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
 
-frame* manager::create_frame(const std::string& sClassName)
+std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return new frame(this);
+        return std::unique_ptr<frame>(new frame(this));
     else if (sClassName == "FocusFrame")
-        return new focus_frame(this);
+        return std::unique_ptr<frame>(new focus_frame(this));
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
         if (iterFrame != lCustomFrameList_.end())
-            return (*iterFrame->second)(this);
+            return std::unique_ptr<frame>((*iterFrame->second)(this));
 
         gui::out << gui::warning << "gui::manager : Unknown Frame class : \"" << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
 
-frame* manager::create_frame(const std::string& sClassName, const std::string& sName,
-                            frame* pParent, const std::string& sInheritance)
+std::unique_ptr<frame> manager::create_frame(const std::string& sClassName, const std::string& sName,
+                                             const std::string& sInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
 
-    frame* pNewFrame = create_frame(sClassName);
+    std::unique_ptr<frame> pNewFrame = create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_parent(pParent);
     pNewFrame->set_name(sName);
 
-    if (get_uiobject_by_name(pNewFrame->get_name()))
+    if (!add_uiobject(pNewFrame.get()))
     {
         gui::out << gui::error << "gui::manager : "
             << "An object with the name \"" << pNewFrame->get_name() << "\" already exists." << std::endl;
-        delete pNewFrame;
         return nullptr;
     }
 
-    add_uiobject(pNewFrame);
     pNewFrame->create_glue();
-
-    if (pParent)
-    {
-        pParent->add_child(pNewFrame);
-        pNewFrame->set_level(pParent->get_frame_level() + 1);
-    }
-    else
-        pNewFrame->set_level(0);
+    pNewFrame->set_level(0);
 
     if (!utils::has_no_content(sInheritance))
     {
@@ -220,11 +210,11 @@ frame* manager::create_frame(const std::string& sClassName, const std::string& s
     return pNewFrame;
 }
 
-layered_region* manager::create_layered_region(const std::string& sClassName)
+std::unique_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
 {
     auto iterRegion = lCustomRegionList_.find(sClassName);
     if (iterRegion != lCustomRegionList_.end())
-        return (*iterRegion->second)(this);
+        return std::unique_ptr<layered_region>((*iterRegion->second)(this));
 
     gui::out << gui::warning << "gui::manager : Unknown layered_region class : \"" << sClassName << "\"." << std::endl;
     return nullptr;
@@ -315,12 +305,6 @@ bool manager::add_uiobject(uiobject* pObj)
 
             if (!pObj->is_virtual())
             {
-                if (!pObj->get_parent())
-                {
-                    lMainObjectList_[i] = pObj;
-                    fire_build_strata_list();
-                }
-
                 frame* pFrame = dynamic_cast<frame*>(pObj);
                 if (pFrame)
                     lFrameList_[i] = pFrame;
@@ -341,6 +325,22 @@ bool manager::add_uiobject(uiobject* pObj)
         gui::out << gui::error << "gui::manager : Adding a null widget." << std::endl;
         return false;
     }
+}
+
+uiobject* manager::add_root_uiobject(std::unique_ptr<uiobject> pObj)
+{
+    uiobject* pAddedObj = pObj.release();
+    if (!pObj->is_virtual())
+    {
+        lMainObjectList_[pObj->get_id()] = pAddedObj;
+        fire_build_strata_list();
+    }
+    else
+    {
+        // TODO
+    }
+
+    return pAddedObj;
 }
 
 void manager::remove_uiobject(uiobject* pObj)
@@ -1050,7 +1050,7 @@ void manager::update(float fDelta)
 
             strata& mStrata = lStrataList_[pFrame->get_frame_strata()];
             mStrata.mStrata = pFrame->get_frame_strata();
-            mStrata.lLevelList[pFrame->get_frame_level()].lFrameList.push_back(pFrame);
+            mStrata.lLevelList[pFrame->get_level()].lFrameList.push_back(pFrame);
         }
     }
 

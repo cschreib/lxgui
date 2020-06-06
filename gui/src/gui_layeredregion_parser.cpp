@@ -55,9 +55,6 @@ void layered_region::parse_attributes_(xml::block* pBlock)
     if (!bVirtual_)
         create_glue();
 
-    if (pFrameParent)
-        pFrameParent->add_region(this);
-
     std::string sInheritance = pBlock->get_attribute("inherits");
     if (!utils::has_no_content(sInheritance))
     {

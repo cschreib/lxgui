@@ -325,9 +325,9 @@ namespace gui
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
 
-        font_string* create_font_string_();
-        void         create_highlight_();
-        void         create_carret_();
+        std::unique_ptr<font_string> create_font_string_();
+        void                         create_highlight_();
+        void                         create_carret_();
 
         void check_text_();
         void update_displayed_text_();

@@ -52,7 +52,7 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
     xml::block* pFontStringBlock = pBlock->get_block("FontString");
     if (pFontStringBlock)
     {
-        font_string* pFontString = create_font_string_();
+        std::unique_ptr<font_string> pFontString = create_font_string_();
         pFontString->parse_block(pFontStringBlock);
 
         xml::block* pErrorBlock = pFontStringBlock->get_block("Anchors");
@@ -69,16 +69,8 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
                 << "edit_box : font_string's Size is ignored." << std::endl;
         }
 
-        pFontString->set_abs_dimensions(0u, 0u);
-        pFontString->clear_all_points();
-        pFontString->set_abs_point(
-            anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
-        );
-        pFontString->set_abs_point(
-            anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
-        );
-
-        pFontString->enable_formatting(false);
+        set_font_string(pFontString.get());
+        add_region(std::move(pFontString));
     }
 }
 

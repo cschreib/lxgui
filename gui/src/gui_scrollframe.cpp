@@ -343,7 +343,7 @@ void scroll_frame::rebuild_scroll_strata_list_()
     for (auto* pFrame : utils::range::value(lScrollChildList_))
     {
         lScrollStrataList_[pFrame->get_frame_strata()].
-            lLevelList[pFrame->get_frame_level()].
+            lLevelList[pFrame->get_level()].
                 lFrameList.push_back(pFrame);
     }
 }

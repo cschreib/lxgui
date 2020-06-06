@@ -185,53 +185,40 @@ namespace gui
         /// Creates a new uiobject.
         /** \param sClassName The class of the uiobject (Frame, fontString, Button, ...)
         *   \return The new uiobject
-        *   \note You have the responsability to detroy and initialize the created
-        *         uiobject by yourself.
         */
         std::unique_ptr<uiobject> create_uiobject(const std::string& sClassName);
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
         *   \return The new frame
-        *   \note You have the responsability to detroy and initialize the created
-        *         frame by yourself.
         */
         std::unique_ptr<frame> create_frame(const std::string& sClassName);
 
         /// Creates a new frame, ready for use.
         /** \param sClassName   The sub class of the frame (Button, ...)
         *   \param sName        The name of this frame
-        *   \param pParent      The parent of the created frame (can be nullptr)
         *   \param sInheritance The name of the frame that should be inherited
         *                       (empty if none)
         *   \return The new frame
-        *   \note You don't have the responsability to detroy the created
-        *         frame, it will be done automatically, either by its parent
-        *         or by this manager.
-        *   \note This function takes care of the basic initializing : the
+        *   \note This function takes care of the basic initializing: the
         *         frame is directly usable.
         */
         std::unique_ptr<frame> create_frame(
-            const std::string& sClassName, const std::string& sName,
-            frame* pParent = nullptr, const std::string& sInheritance = ""
+            const std::string& sClassName, const std::string& sName, const std::string& sInheritance = ""
         );
 
         /// Creates a new frame, ready for use.
         /** \param sName        The name of this frame
-        *   \param pParent      The parent of the created frame (can be nullptr)
         *   \param sInheritance The name of the frame that should be inherited
         *                       (empty if none)
         *   \return The new frame
-        *   \note You don't have the responsability to detroy the created
-        *         frame, it will be done automatically, either by its parent
-        *         or by this manager.
-        *   \note This function takes care of the basic initializing : the
+        *   \note This function takes care of the basic initializing: the
         *         frame is directly usable.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        std::unique_ptr<frame> create_frame(const std::string& sName, frame* pParent = nullptr, const std::string& sInheritance = "")
+        std::unique_ptr<frame> create_frame(const std::string& sName, const std::string& sInheritance = "")
         {
-            return dynamic_cast<frame_type*>(create_frame(frame_type::CLASS_NAME, sName, pParent, sInheritance));
+            return dynamic_cast<frame_type*>(create_frame(frame_type::CLASS_NAME, sName, sInheritance));
         }
 
         /// Creates a new layered_region.
@@ -319,6 +306,13 @@ namespace gui
         *   \return 'false' if the name of the widget was already taken
         */
         bool add_uiobject(uiobject* pObj);
+
+        /// Make an uiobject owned by this manager.
+        /** \param pObj The object to add
+        *   \return Raw pointer to the object, or nullptr if the name of the widget was already taken
+        *   \note You also need to call add_uiobject().
+        */
+        uiobject* add_root_uiobject(std::unique_ptr<uiobject> pObj);
 
         /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
