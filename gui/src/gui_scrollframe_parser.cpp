@@ -19,7 +19,7 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
     if (pScrollChildBlock)
     {
         xml::block* pChildBlock = pScrollChildBlock->first();
-        frame* pScrollChild = pManager_->create_frame(pChildBlock->get_name());
+        std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pChildBlock->get_name());
         if (pScrollChild)
         {
             try
@@ -42,17 +42,12 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
                         "Scroll child needs its size to be defined in a Size block." << std::endl;
                 }
 
-                set_scroll_child(pScrollChild);
+                set_scroll_child(pScrollChild.get());
+                add_child(std::move(pScrollChild));
             }
             catch (const exception& e)
             {
-                delete pScrollChild;
                 gui::out << gui::error << e.get_description() << std::endl;
-            }
-            catch (...)
-            {
-                delete pScrollChild;
-                throw;
             }
         }
     }

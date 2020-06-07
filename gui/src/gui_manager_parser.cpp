@@ -74,10 +74,6 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 {
                     gui::out << gui::error << e.get_description() << std::endl;
                 }
-                catch (...)
-                {
-                    throw;
-                }
             }
         }
     }

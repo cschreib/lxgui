@@ -10,12 +10,7 @@ namespace gui
 {
 scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
 {
-
     lType_.push_back(CLASS_NAME);
-}
-
-scroll_frame::~scroll_frame()
-{
 }
 
 bool scroll_frame::can_use_script(const std::string& sScriptName) const
@@ -51,28 +46,27 @@ void scroll_frame::copy_from(uiobject* pObj)
 
         if (pScrollFrame->get_scroll_child())
         {
-            frame* pScrollChild = pManager_->create_frame(pScrollFrame->get_scroll_child()->get_object_type());
+            std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pScrollFrame->get_scroll_child()->get_object_type());
             if (pScrollChild)
             {
                 pScrollChild->set_parent(this);
                 if (this->is_virtual())
                     pScrollChild->set_virtual();
                 pScrollChild->set_name(pScrollFrame->get_scroll_child()->get_raw_name());
-                if (!pManager_->add_uiobject(pScrollChild))
+                if (!pManager_->add_uiobject(pScrollChild.get()))
                 {
                     gui::out << gui::warning << "gui::" << lType_.back() << " : "
                         "Trying to add \""+pScrollChild->get_name()+"\" to \""+sName_+
                         "\", but its name was already taken : \""+pScrollChild->get_name()+"\". Skipped." << std::endl;
-                    delete pScrollChild;
                 }
                 else
                 {
                     pScrollChild->create_glue();
-                    this->add_child(pScrollChild);
                     pScrollChild->copy_from(pScrollFrame->get_scroll_child());
                     pScrollChild->notify_loaded();
 
-                    this->set_scroll_child(pScrollChild);
+                    this->set_scroll_child(pScrollChild.get());
+                    this->add_child(std::move(pScrollChild));
                 }
             }
         }
@@ -94,30 +88,29 @@ void scroll_frame::set_scroll_child(frame* pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // create_ the scroll texture
-        pScrollTexture_ = new texture(pManager_);
-        pScrollTexture_->set_special();
-        pScrollTexture_->set_parent(this);
-        pScrollTexture_->set_draw_layer("ARTWORK");
-        pScrollTexture_->set_name("$parentScrollTexture");
+        std::unique_ptr<texture> pScrollTexture(new texture(pManager_));
+        pScrollTexture->set_special();
+        pScrollTexture->set_parent(this);
+        pScrollTexture->set_draw_layer("ARTWORK");
+        pScrollTexture->set_name("$parentScrollTexture");
 
-        if (!pManager_->add_uiobject(pScrollTexture_))
+        if (!pManager_->add_uiobject(pScrollTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to create scroll texture for \""+sName_+"\",\n"
-                "but its name was already taken : \""+pScrollTexture_->get_name()+"\". Skipped." << std::endl;
-            delete pScrollTexture_; pScrollTexture_ = nullptr;
+                "but its name was already taken : \""+pScrollTexture->get_name()+"\". Skipped." << std::endl;
             return;
         }
 
-        pScrollTexture_->create_glue();
-        add_region(pScrollTexture_);
-
-        pScrollTexture_->set_all_points(this);
+        pScrollTexture->create_glue();
+        pScrollTexture->set_all_points(this);
 
         if (pScrollRenderTarget_)
-            pScrollTexture_->set_texture(pScrollRenderTarget_);
+            pScrollTexture->set_texture(pScrollRenderTarget_);
 
-        pScrollTexture_->notify_loaded();
+        pScrollTexture->notify_loaded();
+        pScrollTexture_ = pScrollTexture.get();
+        add_region(std::move(pScrollTexture));
 
         bRebuildScrollRenderTarget_ = true;
     }
@@ -128,8 +121,10 @@ void scroll_frame::set_scroll_child(frame* pFrame)
     {
         if (pScrollChild_->get_parent() != this)
         {
-            pScrollChild_->set_parent(this);
-            add_child(pScrollChild_);
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "The parent of a scroll child parent must be the associated scroll frame \""+sName_+"\"." << std::endl;
+            pScrollChild_ = nullptr;
+            return;
         }
 
         pScrollChild_->set_manually_rendered(true, this);

@@ -419,10 +419,6 @@ void frame::parse_frames_block_(xml::block* pBlock)
             {
                 gui::out << gui::error << e.get_description();
             }
-            catch (...)
-            {
-                throw;
-            }
         }
     }
 }
