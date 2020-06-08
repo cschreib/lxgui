@@ -630,10 +630,10 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     return pAddedRegion;
 }
 
-void frame::remove_region(layered_region* pRegion)
+std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
 {
     if (!pRegion)
-        return;
+        return nullptr;
 
     auto iter = lRegionList_.find(pRegion->get_id());
     if (iter == lRegionList_.end())
@@ -641,12 +641,14 @@ void frame::remove_region(layered_region* pRegion)
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to remove \"" << pRegion->get_name() << "\" from \"" << sName_ << "\"'s children, "
             "but it was not one of this frame's children." << std::endl;
-        return;
+        return nullptr;
     }
 
+    std::unique_ptr<layered_region> pRemovedRegion = std::move(*iter);
     lRegionList_.erase(iter);
     fire_build_layer_list();
     notify_renderer_need_redraw();
+    return pRemovedRegion;
 }
 
 layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName, const std::string& sName, const std::string& sInheritance)
@@ -799,10 +801,10 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     return pAddedChild;
 }
 
-void frame::remove_child(frame* pChild)
+std::unique_ptr<frame> frame::remove_child(frame* pChild)
 {
     if (!pChild)
-        return;
+        return nullptr;
 
     auto iter = lChildList_.find(pChild->get_id());
     if (iter == lChildList_.end())
@@ -810,11 +812,13 @@ void frame::remove_child(frame* pChild)
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to remove \"" << pChild->get_name() << "\" from \"" << sName_
             << "\"'s children, but it was not one of this frame's children." << std::endl;
-        return;
+        return nullptr;
     }
 
+    std::unique_ptr<frame> pRemovedChild = std::move(*iter);
     lChildList_.erase(iter);
     notify_strata_changed_();
+    return pRemovedChild;
 }
 
 frame::child_list_view frame::get_children() const
@@ -1572,19 +1576,16 @@ void frame::set_parent(uiobject* pParent)
         return;
     }
 
-    if (pParent != pParent_)
-    {
-        if (!pParentFrame_ && uiID_ != uint(-1))
-            pManager_->notify_object_has_parent(this);
+    if (pParent == pParent_)
+        return;
 
-        pParent_ = pParent;
-        pParentFrame_ = dynamic_cast<frame*>(pParent);
+    pParent_ = pParent;
+    pParentFrame_ = dynamic_cast<frame*>(pParent);
 
-        if (!pAddOn_ && pParentFrame_)
-            pAddOn_ = pParentFrame_->get_addon();
+    if (!pAddOn_ && pParentFrame_)
+        pAddOn_ = pParentFrame_->get_addon();
 
-        fire_update_dimensions();
-    }
+    fire_update_dimensions();
 }
 
 void frame::set_resizable(bool bIsResizable)
@@ -1911,35 +1912,6 @@ void frame::update(float fDelta)
     }
 
     DEBUG_LOG("   .");
-}
-
-std::vector<uiobject*> frame::clear_links()
-{
-    std::vector<uiobject*> lList = uiobject::clear_links();
-
-    std::vector<std::unique_ptr<layered_region>> lTempRegionList;
-    for (auto& lRegion : lRegionList_)
-        lTempRegionList.emplace_back(std::move(lRegion));
-
-    for (auto& pRegion : lTempRegionList)
-    {
-        std::vector<uiobject*> lTempList = pRegion->clear_links();
-        for (auto* pObject : lTempList)
-            lList.push_back(pObject);
-    }
-
-    std::vector<std::unique_ptr<frame>> lTempChildList;
-    for (auto& lChild : lChildList_)
-        lTempChildList.emplace_back(std::move(lChild));
-
-    for (auto& pChild : lTempChildList)
-    {
-        std::vector<uiobject*> lTempList = pChild->clear_links();
-        for (auto* pObject : lTempList)
-            lList.push_back(pObject);
-    }
-
-    return lList;
 }
 
 layer_type layer::get_layer_type(const std::string& sLayer)

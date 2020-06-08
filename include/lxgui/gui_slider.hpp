@@ -182,8 +182,8 @@ namespace gui
 
         void constrain_thumb_();
 
-        texture* create_thumb_texture_();
-        void     fire_update_thumb_texture_() const;
+        std::unique_ptr<texture> create_thumb_texture_();
+        void                     fire_update_thumb_texture_() const;
 
         mutable bool bUpdateThumbTexture_ = false;
 

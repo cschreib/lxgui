@@ -217,31 +217,28 @@ int l_delete_frame(lua_State* pLua)
     if (mFunc.check())
     {
         lua_uiobject* pLuaObj = mFunc.get(0)->get<lua_uiobject>();
-        if (pLuaObj)
-        {
-            frame* pFrame = dynamic_cast<frame*>(pLuaObj->get_parent());
-            if (pFrame)
-            {
-                std::vector<uiobject*> lList = pFrame->clear_links();
-
-                lua::state* pState = mFunc.get_state();
-                pState->get_global("_MGR");
-                manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
-                pState->pop();
-
-                for (auto* pObject : lList)
-                    pGUIMgr->remove_uiobject(pObject);
-            }
-            else
-            {
-                gui::out << gui::error << mFunc.get_name() << "Argument 1 must be a frame." << std::endl;
-                return mFunc.on_return();
-            }
-        }
-        else
+        if (!pLuaObj)
         {
             gui::out << gui::error << mFunc.get_name() << "Argument 1 must be a frame." << std::endl;
             return mFunc.on_return();
+        }
+
+        frame* pFrame = dynamic_cast<frame*>(pLuaObj->get_parent());
+        if (!pFrame)
+        {
+            gui::out << gui::error << mFunc.get_name() << "Argument 1 must be a frame." << std::endl;
+            return mFunc.on_return();
+        }
+
+        frame* pParentFrame = dynamic_cast<frame*>(pFrame->get_parent());
+        if (pParentFrame)
+        {
+            pParentFrame->remove_child(pFrame);
+        }
+        else
+        {
+            manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
+            pGUIMgr->remove_root_uiobject(pFrame);
         }
     }
 

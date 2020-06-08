@@ -44,9 +44,10 @@ void status_bar::parse_block(xml::block* pBlock)
     {
         if (pBarBlock->get_name() == "BarTexture")
         {
-            texture* pBarTexture = create_bar_texture_();
+            std::unique_ptr<texture> pBarTexture = create_bar_texture_();
             pBarTexture->parse_block(pBarBlock);
-            set_bar_texture(pBarTexture);
+            set_bar_texture(pBarTexture.get());
+            add_region(std::move(pBarTexture));
         }
         else
             set_bar_color(parse_color_block_(pBarBlock));

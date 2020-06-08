@@ -71,28 +71,27 @@ void status_bar::copy_from(uiobject* pObj)
         texture* pBar = pStatusBar->get_bar_texture();
         if (pBar)
         {
-            texture* pBarTexture = this->create_bar_texture_();
+            std::unique_ptr<texture> pBarTexture = this->create_bar_texture_();
 
             if (this->is_virtual())
                 pBarTexture->set_virtual();
 
             pBarTexture->set_name(pBar->get_name());
-            if (!pManager_->add_uiobject(pBarTexture))
+            if (!pManager_->add_uiobject(pBarTexture.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
                     "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\",\n"
                     "but its name was already taken : \""+pBarTexture->get_name()+"\". Skipped." << std::endl;
-                delete pBarTexture; pBarTexture = nullptr;
             }
             else
             {
                 if (!is_virtual())
                     pBarTexture->create_glue();
 
-                this->add_region(pBarTexture);
                 pBarTexture->copy_from(pBar);
                 pBarTexture->notify_loaded();
-                this->set_bar_texture(pBarTexture);
+                this->set_bar_texture(pBarTexture.get());
+                this->add_region(std::move(pBarTexture));
             }
         }
     }
@@ -175,41 +174,40 @@ void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
 void status_bar::set_bar_texture(texture* pBarTexture)
 {
     pBarTexture_ = pBarTexture;
-    if (pBarTexture_)
-    {
-        pBarTexture_->clear_all_points();
+    if (!pBarTexture_)
+        return;
 
-        if (bReversed_)
-            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
-        else
-            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
+    pBarTexture_->clear_all_points();
 
-        lInitialTextCoords_ = select_uvs(pBarTexture_->get_tex_coord());
-        fire_update_bar_texture_();
-    }
+    if (bReversed_)
+        pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
+    else
+        pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
+
+    lInitialTextCoords_ = select_uvs(pBarTexture_->get_tex_coord());
+    fire_update_bar_texture_();
 }
 
 void status_bar::set_bar_color(const color& mBarColor)
 {
     if (!pBarTexture_)
     {
-        texture* pBarTexture = create_bar_texture_();
+        std::unique_ptr<texture> pBarTexture = create_bar_texture_();
         pBarTexture->set_name("$parentBarTexture");
-        if (!pManager_->add_uiobject(pBarTexture))
+        if (!pManager_->add_uiobject(pBarTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to create bar texture for \""+sName_+"\",\n"
                 "but the name was already taken : \""+pBarTexture->get_name()+"\". Skipped." << std::endl;
-            delete pBarTexture; pBarTexture = nullptr;
             return;
         }
 
         if (!bVirtual_)
             pBarTexture->create_glue();
 
-        add_region(pBarTexture);
         pBarTexture->notify_loaded();
-        set_bar_texture(pBarTexture);
+        set_bar_texture(pBarTexture.get());
+        add_region(std::move(pBarTexture));
     }
 
     mBarColor_ = mBarColor;
@@ -283,9 +281,9 @@ bool status_bar::is_reversed() const
     return bReversed_;
 }
 
-texture* status_bar::create_bar_texture_()
+std::unique_ptr<texture> status_bar::create_bar_texture_()
 {
-    texture* pBarTexture = new texture(pManager_);
+    std::unique_ptr<texture> pBarTexture(new texture(pManager_));
     pBarTexture->set_special();
     pBarTexture->set_parent(this);
     pBarTexture->set_draw_layer(mBarLayer_);

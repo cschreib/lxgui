@@ -41,14 +41,17 @@ void slider::parse_block(xml::block* pBlock)
     xml::block* pThumbBlock = pBlock->get_block("ThumbTexture");
     if (pThumbBlock)
     {
-        create_thumb_texture_();
+        std::unique_ptr<texture> pTexture = create_thumb_texture_();
 
-        pThumbTexture_->parse_block(pThumbBlock);
-        pThumbTexture_->clear_all_points();
-        pThumbTexture_->set_point(anchor(
-            pThumbTexture_, anchor_point::CENTER, "$parent",
+        pTexture->parse_block(pThumbBlock);
+        pTexture->clear_all_points();
+        pTexture->set_point(anchor(
+            pTexture.get(), anchor_point::CENTER, "$parent",
             get_orientation() == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
+
+        pThumbTexture_ = pTexture.get();
+        add_region(std::move(pTexture));
     }
 }
 }

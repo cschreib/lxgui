@@ -218,7 +218,8 @@ namespace gui
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         std::unique_ptr<frame> create_frame(const std::string& sName, const std::string& sInheritance = "")
         {
-            return dynamic_cast<frame_type*>(create_frame(frame_type::CLASS_NAME, sName, sInheritance));
+            return std::unique_ptr<frame>(dynamic_cast<frame_type*>(
+                create_frame(frame_type::CLASS_NAME, sName, sInheritance).release()));
         }
 
         /// Creates a new layered_region.
@@ -314,21 +315,11 @@ namespace gui
         */
         uiobject* add_root_uiobject(std::unique_ptr<uiobject> pObj);
 
-        /// Removes an uiobject from this manager.
-        /** \param pObj The object to remove
-        *   \note Only call this function if you have to delete an object
-        *         manually (instead of waiting for the UI to close).
+        /// Remove an object from the list of objects owned by this manager.
+        /** \param pObj The object to be released
+        *   \return A unique_ptr to the previously owned object, ignore it to destroy it.
         */
-        void remove_uiobject(uiobject* pObj);
-
-        /// Tells this manager that the provided object now has a parent.
-        /** \param pObj The object that has recently been given a parent
-        *   \note When the GUI closes, the manager deletes all objects
-        *         that have no parents first, which then delete all their
-        *         children. This function is just here to prevent double
-        *         deleting of widgets that once were orphans.
-        */
-        void notify_object_has_parent(uiobject* pObj);
+        std::unique_ptr<uiobject> remove_root_uiobject(uiobject* pObj);
 
         /// Returns the uiobject associated with the given ID.
         /** \param uiID The unique ID representing the widget

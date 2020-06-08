@@ -484,15 +484,29 @@ int lua_uiobject::_set_parent(lua_State* pLua)
             {
                 frame* pThisFrame = dynamic_cast<frame*>(pParent_);
                 if (pOldParent)
-                    pOldParent->remove_child(pThisFrame);
-                pFrame->add_child(pThisFrame);
+                {
+                    pFrame->add_child(pOldParent->remove_child(pThisFrame));
+                }
+                else
+                {
+                    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
+                    pFrame->add_child(std::unique_ptr<frame>(dynamic_cast<frame*>(
+                        pGUIMgr->remove_root_uiobject(pThisFrame).release())));
+                }
             }
             else
             {
                 layered_region* pThisRegion = dynamic_cast<layered_region*>(pParent_);
                 if (pOldParent)
-                    pOldParent->remove_region(pThisRegion);
-                pFrame->add_region(pThisRegion);
+                {
+                    pFrame->add_region(pOldParent->remove_region(pThisRegion));
+                }
+                else
+                {
+                    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
+                    pFrame->add_region(std::unique_ptr<layered_region>(dynamic_cast<layered_region*>(
+                        pGUIMgr->remove_root_uiobject(pThisRegion).release())));
+                }
             }
         }
         else

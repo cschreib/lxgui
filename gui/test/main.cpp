@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
         // Create GUI by code :
 
         // Create the Frame
-        gui::frame* pFrame = pManager->create_frame<gui::frame>("FPSCounter");
+        std::unique_ptr<gui::frame> pFrame = pManager->create_frame<gui::frame>("FPSCounter");
         pFrame->set_rel_dimensions(1.0f, 1.0f);
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 

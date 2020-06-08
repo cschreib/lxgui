@@ -137,8 +137,9 @@ namespace gui
 
         /// Removes a layered_region from this frame's children.
         /** \param pRegion The layered_region to remove
+        *   \return A unique_ptr to the region, ignore it to destroy the region.
         */
-        void remove_region(layered_region* pRegion);
+        std::unique_ptr<layered_region> remove_region(layered_region* pRegion);
 
         /// Creates a new region as child of this frame.
         /** \param mLayer       The layer on which to create the region
@@ -216,8 +217,9 @@ namespace gui
 
         /// Removes a frame from this frame's children.
         /** \param pChild The frame to remove
+            \return A unique_ptr to the child, ignore it to destroy the child.
         */
-        void remove_child(frame* pChild);
+        std::unique_ptr<frame> remove_child(frame* pChild);
 
         /// Returns the child list.
         /** \return The child list
@@ -703,13 +705,6 @@ namespace gui
         *         by Lua code and wasn't assigned a parent.
         */
         addon* get_addon() const;
-
-        /// Removes all anchors that point to this widget and all other kind of links.
-        /** \return The list of all widgets that have been cleared
-        *   \note Also clears children objects (see frame::clear_links()).
-        *   \note Must be called before deleting the widget, except when closing the whole UI.
-        */
-        std::vector<uiobject*> clear_links() override;
 
         /// Creates the associated Lua glue.
         void create_glue() override;
