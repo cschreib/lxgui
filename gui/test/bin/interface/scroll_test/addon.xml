@@ -20,7 +20,7 @@
 
                 self.Title.TitleString:set_text("File browser");
                 self:set_min_width(225);
-                
+
                 self:show();
                 self:raise();
                 self:init_root_folder();
@@ -161,9 +161,7 @@
                                 <HitRectInsets>
                                     <AbsInset left="-5" right="-5" top="-8" bottom="-8"/>
                                 </HitRectInsets>
-                                <Backdrop edgeFile="|border_1px.png">
-                                    <!BackgroundColor/>
-                                </Backdrop>
+                                <Backdrop edgeFile="|border_1px.png"/>
                                 <ThumbTexture file="|slider_thumb.png">
                                     <Size>
                                         <AbsDimension x="8" y="8"/>
@@ -226,9 +224,7 @@
                                 <HitRectInsets>
                                     <AbsInset left="-5" right="-5" top="-5" bottom="-5"/>
                                 </HitRectInsets>
-                                <Backdrop edgeFile="|border_1px.png">
-                                    <!BackgroundColor />
-                                </Backdrop>
+                                <Backdrop edgeFile="|border_1px.png"/>
                                 <ThumbTexture file="|slider_thumb.png">
                                     <Size>
                                         <AbsDimension x="8" y="8"/>
