@@ -45,7 +45,7 @@ namespace gui
         /** \param pFrame The scroll child
         *   \note Creates the render_target and the associated sprite.
         */
-        void set_scroll_child(frame* pFrame);
+        void set_scroll_child(std::unique_ptr<frame> pFrame);
 
         /// Returns this scroll_frame's scroll child.
         /** \return This scroll_frame's scroll child

@@ -65,15 +65,14 @@ void scroll_frame::copy_from(uiobject* pObj)
                     pScrollChild->copy_from(pScrollFrame->get_scroll_child());
                     pScrollChild->notify_loaded();
 
-                    this->set_scroll_child(pScrollChild.get());
-                    this->add_child(std::move(pScrollChild));
+                    this->set_scroll_child(std::move(pScrollChild));
                 }
             }
         }
     }
 }
 
-void scroll_frame::set_scroll_child(frame* pFrame)
+void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
 {
     if (pScrollChild_)
     {
@@ -87,7 +86,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
     }
     else if (!is_virtual() && !pScrollTexture_)
     {
-        // create_ the scroll texture
+        // Create the scroll texture
         std::unique_ptr<texture> pScrollTexture(new texture(pManager_));
         pScrollTexture->set_special();
         pScrollTexture->set_parent(this);
@@ -115,7 +114,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
         bRebuildScrollRenderTarget_ = true;
     }
 
-    pScrollChild_ = pFrame;
+    pScrollChild_ = pFrame.get();
 
     if (pScrollChild_)
     {
@@ -126,6 +125,8 @@ void scroll_frame::set_scroll_child(frame* pFrame)
             pScrollChild_ = nullptr;
             return;
         }
+
+        add_child(std::move(pFrame));
 
         pScrollChild_->set_renderer(this);
         pScrollChild_->clear_all_points();

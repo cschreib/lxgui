@@ -42,8 +42,7 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
                         "Scroll child needs its size to be defined in a Size block." << std::endl;
                 }
 
-                set_scroll_child(pScrollChild.get());
-                add_child(std::move(pScrollChild));
+                set_scroll_child(std::move(pScrollChild));
             }
             catch (const exception& e)
             {
