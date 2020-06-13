@@ -180,7 +180,10 @@ void uiobject::set_name(const std::string& sName)
             if (pParent_)
                 utils::replace(sLuaName_, "$parent", pParent_->get_lua_name());
             else
+            {
+                gui::out << gui::warning << "gui::" << lType_.back() << " : \"" << sName_ << "\" has no parent" << std::endl;
                 utils::replace(sLuaName_, "$parent", "");
+            }
         }
 
         if (!bVirtual_)
