@@ -15,10 +15,6 @@ layered_region::layered_region(manager* pManager) : region(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
-layered_region::~layered_region()
-{
-}
-
 std::string layered_region::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;

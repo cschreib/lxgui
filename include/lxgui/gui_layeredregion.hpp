@@ -18,9 +18,6 @@ namespace gui
         /// Constructor.
         explicit layered_region(manager* pManager);
 
-        /// Destructor.
-        ~layered_region();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget
