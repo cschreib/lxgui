@@ -77,7 +77,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
 {
     if (pScrollChild_)
     {
-        pScrollChild_->set_manually_rendered(false);
+        pScrollChild_->set_renderer(nullptr);
         pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(
             lBorderList_.top_left() - vector2i(iHorizontalScroll_, iVerticalScroll_)
         );
@@ -127,7 +127,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
             return;
         }
 
-        pScrollChild_->set_manually_rendered(true, this);
+        pScrollChild_->set_renderer(this);
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
 

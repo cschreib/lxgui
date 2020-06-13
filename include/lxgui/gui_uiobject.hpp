@@ -477,21 +477,26 @@ namespace gui
         */
         bool is_special() const;
 
-        /// Flags this object as "manually rendered".
-        /** \param bManuallyRendered 'true' to flag it as manually rendered
-        *   \param pRenderer         The uiobject that will take care of
-        *                            rendering this widget
+        /// Flags this object as "manually rendered" by another object.
+        /** \param pRenderer The uiobject that will take care of rendering this widget
         *   \note Manually rendered objects are not automatically rendered
         *         by their parent (for layered_regions) or the manager
-        *         (for frames). They also don't receive input automatically.
+        *         (for frames). They also don't receive automatic input.
+        *   \note Set the argument to nullptr to use the standard renderer.
         */
-        virtual void set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer = nullptr);
+        virtual void set_renderer(uiobject* pRenderer);
 
         /// Checks if this object is manually rendered.
         /** \return 'true' if this object is manually rendered
-        *   \note For more informations, see set_manually_rendered().
+        *   \note For more informations, see set_renderer().
         */
         bool is_manually_rendered() const;
+
+        /// Returns the renderer of this object, nullptr if none.
+        /** \return The renderer of this object, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        const uiobject* get_renderer() const;
 
         /// Flags this object as newly created.
         /** \note Newly created objects aren't rendered.
@@ -614,7 +619,6 @@ namespace gui
         uiobject*   pParent_ = nullptr;
         uiobject*   pInheritance_ = nullptr;
         bool        bSpecial_ = false;
-        bool        bManuallyRendered_ = false;
         bool        bNewlyCreated_ = false;
         uiobject*   pRenderer_ = nullptr;
         bool        bInherits_ = false;

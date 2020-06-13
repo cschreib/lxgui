@@ -40,7 +40,7 @@ void frame::render()
 
             for (auto* pRegion : mLayer.lRegionList)
             {
-                if (pRegion->is_shown() && !pRegion->is_manually_rendered() && !pRegion->is_newly_created())
+                if (pRegion->is_shown() && pRegion->get_renderer() != this && !pRegion->is_newly_created())
                     pRegion->render();
             }
         }
@@ -778,8 +778,6 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
         pChild->notify_visible_(!pManager_->is_loading_ui());
     else
         pChild->notify_invisible_(!pManager_->is_loading_ui());
-
-    pChild->set_manually_rendered(bManuallyRendered_, pRenderer_);
 
     frame* pAddedChild = pChild.get();
     lChildList_.insert(std::move(pChild));
@@ -1678,15 +1676,12 @@ void frame::stop_sizing()
     pManager_->stop_sizing(this);
 }
 
-void frame::set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer)
+void frame::set_renderer(uiobject* pRenderer)
 {
-    if (bManuallyRendered_ != bManuallyRendered)
+    if (pRenderer != pRenderer_)
         notify_strata_changed_();
 
-    uiobject::set_manually_rendered(bManuallyRendered, pRenderer);
-
-    for (auto* pChild : get_children())
-        pChild->set_manually_rendered(bManuallyRendered, pRenderer);
+    uiobject::set_renderer(pRenderer);
 }
 
 void frame::notify_child_strata_changed(frame* pChild)

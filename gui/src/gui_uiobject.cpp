@@ -46,8 +46,8 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  # Lua name    : " << sLuaName_ << "\n";
     sStr << sTab << "  # ID          : " << uiID_ << "\n";
     sStr << sTab << "  # Type        : " << lType_.back() << "\n";
-    if (bManuallyRendered_)
-    sStr << sTab << "  # Man. render : " << (pRenderer_ ? pRenderer_->get_name() : "none") << "\n";
+    if (pRenderer_)
+    sStr << sTab << "  # Man. render : " << pRenderer_->get_name() << "\n";
     if (pParent_)
     sStr << sTab << "  # Parent      : " << pParent_->get_name() << "\n";
     else
@@ -1029,30 +1029,37 @@ bool uiobject::is_special() const
     return bSpecial_;
 }
 
-void uiobject::set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer)
+void uiobject::set_renderer(uiobject* pRenderer)
 {
-    uiobject* pOldrenderer = pRenderer_;
+    if (pRenderer == pRenderer_)
+        return;
 
-    if (pOldrenderer && pOldrenderer != pRenderer)
-        pOldrenderer->notify_manually_rendered_object_(this, false);
+    if (pRenderer_)
+    {
+        pRenderer_->notify_manually_rendered_object_(this, false);
+        notify_renderer_need_redraw();
+    }
 
-    notify_renderer_need_redraw();
+    pRenderer_ = pRenderer;
 
-    bManuallyRendered_ = bManuallyRendered;
-    if (bManuallyRendered_)
-        pRenderer_ = pRenderer;
-    else
-        pRenderer_ = nullptr;
-
-    if (pRenderer_ && pRenderer_ != pOldrenderer && bManuallyRendered_)
+    if (pRenderer_)
+    {
         pRenderer_->notify_manually_rendered_object_(this, true);
-
-    notify_renderer_need_redraw();
+        notify_renderer_need_redraw();
+    }
 }
 
 bool uiobject::is_manually_rendered() const
 {
-    return bManuallyRendered_;
+    if (pRenderer_ != nullptr)
+        return true;
+
+    return pParent_ && pParent_->is_manually_rendered();
+}
+
+const uiobject* uiobject::get_renderer() const
+{
+    return pRenderer_;
 }
 
 void uiobject::set_newly_created()
@@ -1097,7 +1104,7 @@ void uiobject::clear_links()
 {
     // Tell the renderer to no longer render this widget
     notify_renderer_need_redraw();
-    if (bManuallyRendered_ && pRenderer_)
+    if (pRenderer_)
         pRenderer_->notify_manually_rendered_object_(this, false);
 
     // Tell this widget's anchor parents that it is no longer anchored to them

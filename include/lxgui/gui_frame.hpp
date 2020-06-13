@@ -630,17 +630,14 @@ namespace gui
         */
         void set_shown(bool bIsShown) override;
 
-        /// Flags this object as "manually rendered".
-        /** \param bManuallyRendered 'true' to flag it as manually rendered
-        *   \param pRenderer         The uiobject that will take care of
-        *                            rendering this widget
+        /// Flags this object as "manually rendered" by another object.
+        /** \param pRenderer The uiobject that will take care of rendering this widget
         *   \note Manually rendered objects are not automatically rendered
         *         by their parent (for layered_regions) or the manager
         *         (for frames). They also don't receive automatic input.
-        *   \note This function propagates the manually rendered flag to
-        *         this frame's children.
+        *   \note Set the argument to nullptr to use the standard renderer.
         */
-        void set_manually_rendered(bool bManuallyRendered, uiobject* pRenderer = nullptr) override;
+        void set_renderer(uiobject* pRenderer) override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param uiAbsWidth  The new width
