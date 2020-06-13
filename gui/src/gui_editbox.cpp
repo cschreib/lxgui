@@ -719,6 +719,8 @@ void edit_box::set_font_string(font_string* pFont)
 std::unique_ptr<font_string> edit_box::create_font_string_()
 {
     std::unique_ptr<font_string> pFont(new font_string(pManager_));
+    pFont->set_special();
+    pFont->set_parent(this);
     pFont->set_draw_layer(layer_type::ARTWORK);
 
     return pFont;
