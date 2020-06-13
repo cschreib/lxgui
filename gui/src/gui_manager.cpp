@@ -926,8 +926,8 @@ void manager::fire_build_strata_list()
 
 void manager::update(float fDelta)
 {
-    #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    // #define DEBUG_LOG(msg)
+    // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+    #define DEBUG_LOG(msg)
 
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
