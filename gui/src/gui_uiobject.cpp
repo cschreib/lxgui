@@ -1104,57 +1104,60 @@ const std::vector<uiobject*>& uiobject::get_anchored_objects() const
 
 void uiobject::clear_links()
 {
-    // Tell the renderer to no longer render this widget
-    notify_renderer_need_redraw();
-    if (pRenderer_)
-        pRenderer_->notify_manually_rendered_object_(this, false);
-
-    // Tell this widget's anchor parents that it is no longer anchored to them
-    for (auto& mAnchor : lAnchorList_)
+    if (!bVirtual_)
     {
-        if (mAnchor && mAnchor->get_parent())
-            mAnchor->get_parent()->notify_anchored_object(this, false);
+        // Tell the renderer to no longer render this widget
+        notify_renderer_need_redraw();
+        if (pRenderer_)
+            pRenderer_->notify_manually_rendered_object_(this, false);
 
-        mAnchor.reset();
-    }
-
-    // Replace anchors pointing to this widget by absolute anchors
-    // (need to copy the anchored object list, because the objects will attempt to modify it when
-    // un-anchored, which would invalidate our iteration)
-    std::vector<uiobject*> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
-    for (auto* pObj : lTempAnchoredObjectList)
-    {
-        std::vector<anchor_point> lAnchoredPointList;
-        for (const auto& mAnchor : pObj->get_point_list())
+        // Tell this widget's anchor parents that it is no longer anchored to them
+        for (auto& mAnchor : lAnchorList_)
         {
-            if (mAnchor && mAnchor->get_parent() == this)
-                lAnchoredPointList.push_back(mAnchor->get_point());
+            if (mAnchor && mAnchor->get_parent())
+                mAnchor->get_parent()->notify_anchored_object(this, false);
+
+            mAnchor.reset();
         }
 
-        for (const auto& mPoint : lAnchoredPointList)
+        // Replace anchors pointing to this widget by absolute anchors
+        // (need to copy the anchored object list, because the objects will attempt to modify it when
+        // un-anchored, which would invalidate our iteration)
+        std::vector<uiobject*> lTempAnchoredObjectList = std::move(lAnchoredObjectList_);
+        for (auto* pObj : lTempAnchoredObjectList)
         {
-            const anchor* pAnchor = pObj->get_point(mPoint);
-            anchor mNewAnchor = anchor(pObj, mPoint, "", anchor_point::TOPLEFT);
-            vector2i mOffset = pAnchor->get_abs_offset();
-
-            switch (pAnchor->get_parent_point())
+            std::vector<anchor_point> lAnchoredPointList;
+            for (const auto& mAnchor : pObj->get_point_list())
             {
-                case anchor_point::TOPLEFT :     mOffset   += lBorderList_.top_left();     break;
-                case anchor_point::TOP :         mOffset.y += lBorderList_.top;            break;
-                case anchor_point::TOPRIGHT :    mOffset   += lBorderList_.top_right();    break;
-                case anchor_point::RIGHT :       mOffset.x += lBorderList_.right;          break;
-                case anchor_point::BOTTOMRIGHT : mOffset   += lBorderList_.bottom_right(); break;
-                case anchor_point::BOTTOM :      mOffset.y += lBorderList_.bottom;         break;
-                case anchor_point::BOTTOMLEFT :  mOffset   += lBorderList_.bottom_left();  break;
-                case anchor_point::LEFT :        mOffset.x += lBorderList_.left;           break;
-                case anchor_point::CENTER :      mOffset   += lBorderList_.center();       break;
+                if (mAnchor && mAnchor->get_parent() == this)
+                    lAnchoredPointList.push_back(mAnchor->get_point());
             }
 
-            mNewAnchor.set_abs_offset(mOffset);
-            pObj->set_point(mNewAnchor);
-        }
+            for (const auto& mPoint : lAnchoredPointList)
+            {
+                const anchor* pAnchor = pObj->get_point(mPoint);
+                anchor mNewAnchor = anchor(pObj, mPoint, "", anchor_point::TOPLEFT);
+                vector2i mOffset = pAnchor->get_abs_offset();
 
-        pObj->update_anchors();
+                switch (pAnchor->get_parent_point())
+                {
+                    case anchor_point::TOPLEFT :     mOffset   += lBorderList_.top_left();     break;
+                    case anchor_point::TOP :         mOffset.y += lBorderList_.top;            break;
+                    case anchor_point::TOPRIGHT :    mOffset   += lBorderList_.top_right();    break;
+                    case anchor_point::RIGHT :       mOffset.x += lBorderList_.right;          break;
+                    case anchor_point::BOTTOMRIGHT : mOffset   += lBorderList_.bottom_right(); break;
+                    case anchor_point::BOTTOM :      mOffset.y += lBorderList_.bottom;         break;
+                    case anchor_point::BOTTOMLEFT :  mOffset   += lBorderList_.bottom_left();  break;
+                    case anchor_point::LEFT :        mOffset.x += lBorderList_.left;           break;
+                    case anchor_point::CENTER :      mOffset   += lBorderList_.center();       break;
+                }
+
+                mNewAnchor.set_abs_offset(mOffset);
+                pObj->set_point(mNewAnchor);
+            }
+
+            pObj->update_anchors();
+        }
     }
 
     // Unregister this object from the GUI manager
