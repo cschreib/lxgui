@@ -103,7 +103,6 @@ void event_manager::fire_event(const event& mEvent)
     mIter->lNewReceiverList.clear();
 
     // Now, tell all the event_receivers that this Event has occured.
-    auto lList = mIter->lReceiverList;
     for (auto* lReceiver : mIter->lReceiverList)
     {
         DEBUG_LOG(std::string(" ") + utils::to_string(iterReceiver->second));
