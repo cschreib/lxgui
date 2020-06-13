@@ -707,6 +707,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     if (!pNewFrame)
         return nullptr;
 
+    pNewFrame->set_parent(this);
     pNewFrame->set_name(sName);
 
     if (!pManager_->add_uiobject(pNewFrame.get()))
