@@ -303,7 +303,7 @@ std::unique_ptr<texture> button::create_normal_texture_()
     std::unique_ptr<texture> pNormalTexture(new texture(pManager_));
     pNormalTexture->set_special();
     pNormalTexture->set_parent(this);
-    pNormalTexture->set_draw_layer("BORDER");
+    pNormalTexture->set_draw_layer(layer_type::BORDER);
 
     return pNormalTexture;
 }
@@ -313,7 +313,7 @@ std::unique_ptr<texture> button::create_pushed_texture_()
     std::unique_ptr<texture> pPushedTexture(new texture(pManager_));
     pPushedTexture->set_special();
     pPushedTexture->set_parent(this);
-    pPushedTexture->set_draw_layer("BORDER");
+    pPushedTexture->set_draw_layer(layer_type::BORDER);
 
     return pPushedTexture;
 }
@@ -323,7 +323,7 @@ std::unique_ptr<texture> button::create_disabled_texture_()
     std::unique_ptr<texture> pDisabledTexture(new texture(pManager_));
     pDisabledTexture->set_special();
     pDisabledTexture->set_parent(this);
-    pDisabledTexture->set_draw_layer("BORDER");
+    pDisabledTexture->set_draw_layer(layer_type::BORDER);
 
     return pDisabledTexture;
 }
@@ -333,7 +333,7 @@ std::unique_ptr<texture> button::create_highlight_texture_()
     std::unique_ptr<texture> pHighlightTexture(new texture(pManager_));
     pHighlightTexture->set_special();
     pHighlightTexture->set_parent(this);
-    pHighlightTexture->set_draw_layer("HIGHLIGHT");
+    pHighlightTexture->set_draw_layer(layer_type::HIGHLIGHT);
 
     return pHighlightTexture;
 }
@@ -343,7 +343,7 @@ std::unique_ptr<font_string> button::create_normal_text_()
     std::unique_ptr<font_string> pNormalText(new font_string(pManager_));
     pNormalText->set_special();
     pNormalText->set_parent(this);
-    pNormalText->set_draw_layer("ARTWORK");
+    pNormalText->set_draw_layer(layer_type::ARTWORK);
 
     return pNormalText;
 }
@@ -353,7 +353,7 @@ std::unique_ptr<font_string> button::create_highlight_text_()
     std::unique_ptr<font_string> pHighlightText(new font_string(pManager_));
     pHighlightText->set_special();
     pHighlightText->set_parent(this);
-    pHighlightText->set_draw_layer("ARTWORK");
+    pHighlightText->set_draw_layer(layer_type::ARTWORK);
 
     return pHighlightText;
 }
@@ -363,7 +363,7 @@ std::unique_ptr<font_string> button::create_disabled_text_()
     std::unique_ptr<font_string> pDisabledText(new font_string(pManager_));
     pDisabledText->set_special();
     pDisabledText->set_parent(this);
-    pDisabledText->set_draw_layer("BORDER");
+    pDisabledText->set_draw_layer(layer_type::BORDER);
 
     return pDisabledText;
 }

@@ -186,7 +186,7 @@ std::unique_ptr<texture> check_button::create_checked_texture_()
     std::unique_ptr<texture> pCheckedTexture(new texture(pManager_));
     pCheckedTexture->set_special();
     pCheckedTexture->set_parent(this);
-    pCheckedTexture->set_draw_layer("ARTWORK");
+    pCheckedTexture->set_draw_layer(layer_type::ARTWORK);
 
     return pCheckedTexture;
 }
@@ -196,7 +196,7 @@ std::unique_ptr<texture> check_button::create_disabled_checked_texture_()
     std::unique_ptr<texture> pDisabledCheckedTexture(new texture(pManager_));
     pDisabledCheckedTexture->set_special();
     pDisabledCheckedTexture->set_parent(this);
-    pDisabledCheckedTexture->set_draw_layer("ARTWORK");
+    pDisabledCheckedTexture->set_draw_layer(layer_type::ARTWORK);
 
     return pDisabledCheckedTexture;
 }
