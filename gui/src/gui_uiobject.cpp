@@ -59,8 +59,10 @@ std::string uiobject::serialize(const std::string& sTab) const
         for (const auto& mAnchor : lAnchorList_)
         {
             if (mAnchor)
+            {
                 sStr << mAnchor->serialize(sTab);
-            sStr << sTab << "  |-###\n";
+                sStr << sTab << "  |-###\n";
+            }
         }
     }
     sStr << sTab << "  # Borders :\n";
