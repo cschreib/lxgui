@@ -123,13 +123,13 @@ void layered_region::set_draw_layer(const std::string& sLayer)
 
 void layered_region::notify_renderer_need_redraw() const
 {
-    if (!bVirtual_)
-    {
-        if (pRenderer_)
-            pRenderer_->fire_redraw();
-        else if (pFrameParent_)
-            pFrameParent_->notify_renderer_need_redraw();
-    }
+    if (bVirtual_)
+        return;
+
+    if (pRenderer_)
+        pRenderer_->fire_redraw();
+    else if (pParent_)
+        pParent_->notify_renderer_need_redraw();
 }
 }
 }

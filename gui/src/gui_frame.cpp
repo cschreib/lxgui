@@ -1745,46 +1745,48 @@ void frame::notify_top_level_parent_(bool bTopLevel, frame* pParent)
 
 void frame::notify_renderer_need_redraw() const
 {
-    if (!bVirtual_)
-    {
-        if (pRenderer_)
-            pRenderer_->fire_redraw();
-        else
-            pManager_->fire_redraw(mStrata_);
-    }
+    if (bVirtual_)
+        return;
+
+    if (pRenderer_)
+        pRenderer_->fire_redraw();
+    else if (pParent_)
+        pParent_->notify_renderer_need_redraw();
+    else
+        pManager_->fire_redraw(mStrata_);
 }
 
 void frame::show()
 {
-    if (!bIsShown_)
-    {
-        uiobject::show();
+    if (bIsShown_)
+        return;
 
-        if (!pParent_ || pParent_->is_visible())
-            notify_visible_();
-    }
+    uiobject::show();
+
+    if (!pParent_ || pParent_->is_visible())
+        notify_visible_();
 }
 
 void frame::hide()
 {
-    if (bIsShown_)
-    {
-        uiobject::hide();
+    if (!bIsShown_)
+        return;
 
-        if (bIsVisible_)
-            notify_invisible_();
-    }
+    uiobject::hide();
+
+    if (bIsVisible_)
+        notify_invisible_();
 }
 
 void frame::set_shown(bool bIsShown)
 {
-    if (bIsShown_ != bIsShown)
-    {
-        bIsShown_ = bIsShown;
+    if (bIsShown_ == bIsShown)
+        return;
 
-        if (!bIsShown_)
-            notify_invisible_(false);
-    }
+    bIsShown_ = bIsShown;
+
+    if (!bIsShown_)
+        notify_invisible_(false);
 }
 
 void frame::unregister_all_events()
