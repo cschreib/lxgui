@@ -222,6 +222,9 @@ int main(int argc, char* argv[])
         // Tell the Frame is has been fully loaded, and call "OnLoad"
         pFrame->notify_loaded();
 
+        // Transfer ownership to the GUI manager
+        pManager->add_root_uiobject(std::move(pFrame));
+
         // Start the main loop
         bool bRunning = true;
         bool bFocus = true;
