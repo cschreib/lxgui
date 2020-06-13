@@ -1277,7 +1277,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
                 (sScriptName == "KeyUp"))
             {
                 // Set key name
-                pLua->push_number(pEvent->get<uint>(0));
+                pLua->push_number(static_cast<uint>(pEvent->get<input::key>(0)));
                 pLua->set_global("arg1");
                 pLua->push_string(pEvent->get<std::string>(1));
                 pLua->set_global("arg2");
