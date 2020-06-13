@@ -615,14 +615,14 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
 
     if (!bVirtual_)
     {
-        const std::string& sRawName = pRegion->get_raw_name();
+        const std::string& sRawName = pAddedRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
-            std::string sTempName = pRegion->get_name();
+            std::string sTempName = pAddedRegion->get_name();
             sTempName.erase(0, sName_.size());
 
             lua::state* pLua = pManager_->get_lua();
-            pLua->get_global(pRegion->get_name());
+            pLua->get_global(pAddedRegion->get_name());
             pLua->set_global(sName_+"."+sTempName);
         }
     }
@@ -787,13 +787,13 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
 
     if (!bVirtual_)
     {
-        std::string sRawName = pChild->get_raw_name();
+        std::string sRawName = pAddedChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, 7);
 
             lua::state* pLua = pManager_->get_lua();
-            pLua->get_global(pChild->get_lua_name());
+            pLua->get_global(pAddedChild->get_lua_name());
             pLua->set_global(sLuaName_+"."+sRawName);
         }
     }
