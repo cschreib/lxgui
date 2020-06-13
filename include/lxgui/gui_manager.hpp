@@ -315,6 +315,12 @@ namespace gui
         */
         uiobject* add_root_uiobject(std::unique_ptr<uiobject> pObj);
 
+         /// Removes an uiobject from this manager.
+        /** \param pObj The object to remove
+        *   \note Called automatically by uiobject destructor.
+        */
+        void remove_uiobject(uiobject* pObj);
+
         /// Remove an object from the list of objects owned by this manager.
         /** \param pObj The object to be released
         *   \return A unique_ptr to the previously owned object, ignore it to destroy it.

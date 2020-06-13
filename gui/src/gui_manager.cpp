@@ -330,17 +330,39 @@ bool manager::add_uiobject(uiobject* pObj)
 uiobject* manager::add_root_uiobject(std::unique_ptr<uiobject> pObj)
 {
     uiobject* pAddedObj = pObj.release();
-    if (!pObj->is_virtual())
-    {
-        lMainObjectList_[pObj->get_id()] = pAddedObj;
+    lMainObjectList_[pAddedObj->get_id()] = pAddedObj;
+    if (!pAddedObj->is_virtual())
         fire_build_strata_list();
-    }
-    else
-    {
-        // TODO
-    }
 
     return pAddedObj;
+}
+
+void manager::remove_uiobject(uiobject* pObj)
+{
+    if (!pObj)
+        return;
+
+    lObjectList_.erase(pObj->get_id());
+
+    if (!pObj->is_virtual())
+    {
+        lNamedObjectList_.erase(pObj->get_name());
+
+        frame* pFrame = dynamic_cast<frame*>(pObj);
+        if (pFrame)
+            lFrameList_.erase(pObj->get_id());
+    }
+    else
+        lNamedVirtualObjectList_.erase(pObj->get_name());
+
+    if (!pObj->is_manually_rendered())
+        fire_build_strata_list();
+
+    if (pMovedObject_ == pObj)
+        stop_moving(pObj);
+
+    if (pSizedObject_ == pObj)
+        stop_sizing(pObj);
 }
 
 std::unique_ptr<uiobject> manager::remove_root_uiobject(uiobject* pObj)
