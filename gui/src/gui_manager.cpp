@@ -261,20 +261,33 @@ utils::refptr<font> manager::create_font(const std::string& sFontFile, uint uiSi
     return pImpl_->create_font(sFontFile, uiSize);
 }
 
+uint manager::get_new_object_id_() const
+{
+    uint i = 0;
+    auto iterObj = lObjectList_.find(i);
+    while (iterObj != lObjectList_.end())
+    {
+        ++i;
+        iterObj = lObjectList_.find(i);
+    }
+
+    return i;
+}
+
 bool manager::add_uiobject(uiobject* pObj)
 {
+    if (!pObj)
+    {
+        gui::out << gui::error << "gui::manager : Adding a null widget." << std::endl;
+        return false;
+    }
+
     std::map<std::string, uiobject*>* lNamedList;
     if (pObj->is_virtual())
     {
         if (pObj->get_parent())
         {
-            uint i = 0;
-            std::map<uint, uiobject*>::iterator iterObj = lObjectList_.find(i);
-            while (iterObj != lObjectList_.end())
-            {
-                ++i;
-                iterObj = lObjectList_.find(i);
-            }
+            const uint i = get_new_object_id_();
             lObjectList_[i] = pObj;
             pObj->set_id(i);
 
@@ -286,43 +299,29 @@ bool manager::add_uiobject(uiobject* pObj)
     else
         lNamedList = &lNamedObjectList_;
 
-    if (pObj)
+    std::map<std::string, uiobject*>::iterator iterNamedObj = lNamedList->find(pObj->get_name());
+    if (iterNamedObj == lNamedList->end())
     {
-        std::map<std::string, uiobject*>::iterator iterNamedObj = lNamedList->find(pObj->get_name());
-        if (iterNamedObj == lNamedList->end())
+        const uint i = get_new_object_id_();
+        lObjectList_[i] = pObj;
+        pObj->set_id(i);
+
+        (*lNamedList)[pObj->get_name()] = pObj;
+
+        if (!pObj->is_virtual())
         {
-            uint i = 0;
-            std::map<uint, uiobject*>::iterator iterObj = lObjectList_.find(i);
-            while (iterObj != lObjectList_.end())
-            {
-                ++i;
-                iterObj = lObjectList_.find(i);
-            }
-
-            lObjectList_[i] = pObj;
-            (*lNamedList)[pObj->get_name()] = pObj;
-            pObj->set_id(i);
-
-            if (!pObj->is_virtual())
-            {
-                frame* pFrame = dynamic_cast<frame*>(pObj);
-                if (pFrame)
-                    lFrameList_[i] = pFrame;
-            }
-
-            return true;
+            frame* pFrame = dynamic_cast<frame*>(pObj);
+            if (pFrame)
+                lFrameList_[i] = pFrame;
         }
-        else
-        {
-            gui::out << gui::warning << "gui::manager : "
-                << "A " << std::string(pObj->is_virtual() ? "virtual" : "") << " widget with the name \""
-                << pObj->get_name() << "\" already exists." << std::endl;
-            return false;
-        }
+
+        return true;
     }
     else
     {
-        gui::out << gui::error << "gui::manager : Adding a null widget." << std::endl;
+        gui::out << gui::warning << "gui::manager : "
+            << "A " << std::string(pObj->is_virtual() ? "virtual" : "") << " widget with the name \""
+            << pObj->get_name() << "\" already exists." << std::endl;
         return false;
     }
 }
@@ -752,10 +751,6 @@ void manager::close_ui()
         lMainObjectList_.clear();
         lObjectList_.clear();
         lNamedObjectList_.clear();
-
-        for (auto* pObject : utils::range::value(lNamedVirtualObjectList_))
-            delete pObject;
-
         lNamedVirtualObjectList_.clear();
 
         lFrameList_.clear();
@@ -931,8 +926,8 @@ void manager::fire_build_strata_list()
 
 void manager::update(float fDelta)
 {
-    //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
+    #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+    // #define DEBUG_LOG(msg)
 
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
@@ -1541,7 +1536,10 @@ void manager::on_event(const event& mEvent)
         uiScreenHeight_ = mEvent.get<uint>(1);
 
         for (auto* pObject : utils::range::value(lMainObjectList_))
-            pObject->fire_update_dimensions();
+        {
+            if (!pObject->is_virtual())
+                pObject->fire_update_dimensions();
+        }
 
         pImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
     }

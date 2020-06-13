@@ -746,6 +746,8 @@ namespace gui
 
         void save_variables_(const addon* pAddOn);
 
+        uint get_new_object_id_() const;
+
         void set_overed_frame_(frame* pFrame, int iX = 0, int iY = 0);
 
         void create_strata_render_target_(strata& mStrata);
