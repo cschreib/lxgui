@@ -38,7 +38,7 @@ void check_button::copy_from(uiobject* pObj)
             if (!pManager_->add_uiobject(pTexture.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pButton->get_checked_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                    "Trying to add \""+pButton->get_checked_texture()->get_name()+"\" to \""+sName_+"\", "
                     "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
             }
             else
@@ -62,7 +62,7 @@ void check_button::copy_from(uiobject* pObj)
             if (!pManager_->add_uiobject(pTexture.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pButton->get_disabled_checked_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                    "Trying to add \""+pButton->get_disabled_checked_texture()->get_name()+"\" to \""+sName_+"\", "
                     "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
             }
             else

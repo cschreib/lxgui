@@ -385,7 +385,7 @@ void frame::parse_layers_block_(xml::block* pBlock)
                 }
                 catch (const exception& e)
                 {
-                    gui::out << gui::error << e.get_description();
+                    gui::out << gui::error << e.get_description() << std::endl;
                 }
                 catch (...)
                 {
@@ -417,7 +417,7 @@ void frame::parse_frames_block_(xml::block* pBlock)
             }
             catch (const exception& e)
             {
-                gui::out << gui::error << e.get_description();
+                gui::out << gui::error << e.get_description() << std::endl;
             }
         }
     }

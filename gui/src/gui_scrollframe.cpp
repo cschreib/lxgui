@@ -97,7 +97,7 @@ void scroll_frame::set_scroll_child(frame* pFrame)
         if (!pManager_->add_uiobject(pScrollTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to create scroll texture for \""+sName_+"\",\n"
+                "Trying to create scroll texture for \""+sName_+"\", "
                 "but its name was already taken : \""+pScrollTexture->get_name()+"\". Skipped." << std::endl;
             return;
         }

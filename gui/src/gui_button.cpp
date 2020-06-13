@@ -112,7 +112,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_normal_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_normal_texture()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -136,7 +136,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_pushed_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_pushed_texture()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -160,7 +160,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_highlight_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_highlight_texture()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -184,7 +184,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pTexture.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_disabled_texture()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_disabled_texture()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -209,7 +209,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pText.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_normal_text()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_normal_text()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -233,7 +233,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pText.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_highlight_text()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_highlight_text()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
         }
         else
@@ -257,7 +257,7 @@ void button::copy_from(uiobject* pObj)
         if (!pManager_->add_uiobject(pText.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pButton->get_disabled_text()->get_name()+"\" to \""+sName_+"\",\n"
+                "Trying to add \""+pButton->get_disabled_text()->get_name()+"\" to \""+sName_+"\", "
                 "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
         }
         else

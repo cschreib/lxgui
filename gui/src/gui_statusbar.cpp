@@ -80,7 +80,7 @@ void status_bar::copy_from(uiobject* pObj)
             if (!pManager_->add_uiobject(pBarTexture.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\",\n"
+                    "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\", "
                     "but its name was already taken : \""+pBarTexture->get_name()+"\". Skipped." << std::endl;
             }
             else

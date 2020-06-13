@@ -74,7 +74,7 @@ void edit_box::copy_from(uiobject* pObj)
             if (!pManager_->add_uiobject(pText.get()))
             {
                 gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\",\n"
+                    "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\", "
                     "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
             }
             else
@@ -735,7 +735,7 @@ void edit_box::create_highlight_()
     if (!pManager_->add_uiobject(pHighlight.get()))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Trying to create highlight texture for \""+sName_+"\",\n"
+            "Trying to create highlight texture for \""+sName_+"\", "
             "but its name was already taken : \""+pHighlight->get_name()+"\". Skipped." << std::endl;
         return;
     }
@@ -769,7 +769,7 @@ void edit_box::create_carret_()
     if (!pManager_->add_uiobject(pCarret.get()))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Trying to create carret texture for \""+sName_+"\",\n"
+            "Trying to create carret texture for \""+sName_+"\", "
             "but its name was already taken : \""+pCarret->get_name()+"\". Skipped." << std::endl;
         return;
     }
