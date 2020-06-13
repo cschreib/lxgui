@@ -1589,6 +1589,14 @@ void frame::set_parent(uiobject* pParent)
     fire_update_dimensions();
 }
 
+std::unique_ptr<uiobject> frame::release_from_parent()
+{
+    if (pParentFrame_)
+        return pParentFrame_->remove_child(this);
+    else
+        return pManager_->remove_root_uiobject(this);
+}
+
 void frame::set_resizable(bool bIsResizable)
 {
     bIsResizable_ = bIsResizable;

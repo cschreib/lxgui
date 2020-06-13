@@ -564,6 +564,11 @@ namespace gui
         */
         void set_parent(uiobject* pParent) override;
 
+        /// Removes this widget from its parent and return an owning pointer.
+        /** \return An owning pointer to this widget
+        */
+        std::unique_ptr<uiobject> release_from_parent() override;
+
         /// Sets if this frame can be resized by the user.
         /** \param bIsResizable 'true' to allow the user to resize this frame
         */

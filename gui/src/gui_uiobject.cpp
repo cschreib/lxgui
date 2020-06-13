@@ -396,6 +396,11 @@ uiobject* uiobject::get_parent()
     return pParent_;
 }
 
+std::unique_ptr<uiobject> uiobject::release_from_parent()
+{
+    return nullptr;
+}
+
 uiobject* uiobject::get_base()
 {
     return pInheritance_;

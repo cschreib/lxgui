@@ -50,6 +50,14 @@ void layered_region::set_parent(uiobject* pParent)
     uiobject::set_parent(pParent);
 }
 
+std::unique_ptr<uiobject> layered_region::release_from_parent()
+{
+    if (pFrameParent_)
+        return pFrameParent_->remove_region(this);
+    else
+        return pManager_->remove_root_uiobject(this);
+}
+
 void layered_region::show()
 {
     if (!bIsShown_)

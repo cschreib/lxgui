@@ -230,16 +230,7 @@ int l_delete_frame(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        frame* pParentFrame = dynamic_cast<frame*>(pFrame->get_parent());
-        if (pParentFrame)
-        {
-            pParentFrame->remove_child(pFrame);
-        }
-        else
-        {
-            manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
-            pGUIMgr->remove_root_uiobject(pFrame);
-        }
+        pFrame->release_from_parent();
     }
 
     return mFunc.on_return();

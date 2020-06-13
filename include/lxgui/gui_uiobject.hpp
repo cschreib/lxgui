@@ -161,6 +161,11 @@ namespace gui
         */
         uiobject* get_parent();
 
+        /// Removes this widget from its parent and return an owning pointer.
+        /** \return An owning pointer to this widget
+        */
+        virtual std::unique_ptr<uiobject> release_from_parent();
+
         /// Returns the widget this one inherits from.
         /** \return The widget this one inherits from
         */

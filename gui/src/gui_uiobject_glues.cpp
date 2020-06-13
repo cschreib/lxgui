@@ -454,59 +454,40 @@ int lua_uiobject::_set_parent(lua_State* pLua)
     if (mFunc.check())
     {
         lua::argument* pArg = mFunc.get(0);
-        uiobject* pParent = nullptr;
+        uiobject* pNewParent = nullptr;
 
         if (pArg->is_provided())
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                pParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
-                if (!pParent)
+                pNewParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                if (!pNewParent)
                     return mFunc.on_return();
             }
             else
             {
                 lua_uiobject* pObj = pArg->get<lua_uiobject>();
                 if (pObj)
-                    pParent = pObj->get_parent();
+                    pNewParent = pObj->get_parent();
                 else
                     return mFunc.on_return();
             }
         }
 
-        frame* pFrame = dynamic_cast<frame*>(pParent);
-        if (pFrame)
+        frame* pNewParentFrame = dynamic_cast<frame*>(pNewParent);
+        if (pNewParentFrame)
         {
-            frame* pOldParent = dynamic_cast<frame*>(pParent_->get_parent());
-            pParent_->set_parent(pParent);
+            pParent_->set_parent(pNewParent);
 
             if (pParent_->is_object_type("Frame"))
             {
-                frame* pThisFrame = dynamic_cast<frame*>(pParent_);
-                if (pOldParent)
-                {
-                    pFrame->add_child(pOldParent->remove_child(pThisFrame));
-                }
-                else
-                {
-                    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
-                    pFrame->add_child(std::unique_ptr<frame>(dynamic_cast<frame*>(
-                        pGUIMgr->remove_root_uiobject(pThisFrame).release())));
-                }
+                pNewParentFrame->add_child(std::unique_ptr<frame>(dynamic_cast<frame*>(
+                    pParent_->release_from_parent().release())));
             }
             else
             {
-                layered_region* pThisRegion = dynamic_cast<layered_region*>(pParent_);
-                if (pOldParent)
-                {
-                    pFrame->add_region(pOldParent->remove_region(pThisRegion));
-                }
-                else
-                {
-                    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
-                    pFrame->add_region(std::unique_ptr<layered_region>(dynamic_cast<layered_region*>(
-                        pGUIMgr->remove_root_uiobject(pThisRegion).release())));
-                }
+                pNewParentFrame->add_region(std::unique_ptr<layered_region>(dynamic_cast<layered_region*>(
+                    pParent_->release_from_parent().release())));
             }
         }
         else
