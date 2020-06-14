@@ -530,12 +530,6 @@ namespace gui
         */
         void mark_for_copy(const std::string& sVariable);
 
-
-        /// Removes all anchors that point to this widget and all other kind of links.
-        /** \note Will be called by the destructor.
-        */
-        virtual void clear_links();
-
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one
         */
