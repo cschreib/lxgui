@@ -26,6 +26,9 @@ v2.0.0:
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
+ - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
+ - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
+ - gui: migrated most usage of std::(multi)map to sorted std::vector for performance
  - xml: now parsing standard XML comments
 
 v1.2.0:
