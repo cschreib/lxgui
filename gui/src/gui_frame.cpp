@@ -782,6 +782,13 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     frame* pAddedChild = pChild.get();
     lChildList_.insert(std::move(pChild));
 
+    if (!pAddedChild->get_renderer())
+    {
+        frame* pTopLevelRenderer = get_top_level_renderer();
+        if (pTopLevelRenderer)
+            pTopLevelRenderer->notify_manually_rendered_object(pAddedChild, true);
+    }
+
     notify_strata_changed_();
 
     if (!bVirtual_)
@@ -816,7 +823,16 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
 
     std::unique_ptr<frame> pRemovedChild = std::move(*iter);
     lChildList_.erase(iter);
+
+    if (!pChild->get_renderer())
+    {
+        frame* pTopLevelRenderer = get_top_level_renderer();
+        if (pTopLevelRenderer)
+            pTopLevelRenderer->notify_manually_rendered_object(pChild, false);
+    }
+
     notify_strata_changed_();
+
     return pRemovedChild;
 }
 
@@ -1676,12 +1692,20 @@ void frame::stop_sizing()
     pManager_->stop_sizing(this);
 }
 
-void frame::set_renderer(uiobject* pRenderer)
+void frame::set_renderer(frame* pRenderer)
 {
     if (pRenderer != pRenderer_)
         notify_strata_changed_();
 
     uiobject::set_renderer(pRenderer);
+}
+
+void frame::fire_redraw() const
+{
+}
+
+void frame::notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered)
+{
 }
 
 void frame::notify_child_strata_changed(frame* pChild)

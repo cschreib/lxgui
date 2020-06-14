@@ -20,10 +20,10 @@ uiobject::~uiobject()
 {
     if (!bVirtual_)
     {
-        // Tell the renderer to no longer render this widget
-        notify_renderer_need_redraw();
-        if (pRenderer_)
-            pRenderer_->notify_manually_rendered_object_(this, false);
+        // Tell the renderer to no longer render this widget and its children
+        frame* pTopLevelRenderer = get_top_level_renderer();
+        if (pTopLevelRenderer)
+            pTopLevelRenderer->notify_manually_rendered_object(this, false);
 
         notify_renderer_need_redraw();
 
@@ -1090,14 +1090,14 @@ bool uiobject::is_special() const
     return bSpecial_;
 }
 
-void uiobject::set_renderer(uiobject* pRenderer)
+void uiobject::set_renderer(frame* pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
 
     if (pRenderer_)
     {
-        pRenderer_->notify_manually_rendered_object_(this, false);
+        pRenderer_->notify_manually_rendered_object(this, false);
         notify_renderer_need_redraw();
     }
 
@@ -1105,7 +1105,7 @@ void uiobject::set_renderer(uiobject* pRenderer)
 
     if (pRenderer_)
     {
-        pRenderer_->notify_manually_rendered_object_(this, true);
+        pRenderer_->notify_manually_rendered_object(this, true);
         notify_renderer_need_redraw();
     }
 }
@@ -1118,9 +1118,19 @@ bool uiobject::is_manually_rendered() const
     return pParent_ && pParent_->is_manually_rendered();
 }
 
-const uiobject* uiobject::get_renderer() const
+const frame* uiobject::get_renderer() const
 {
     return pRenderer_;
+}
+
+frame* uiobject::get_top_level_renderer()
+{
+    if (pRenderer_)
+        return pRenderer_;
+    else if (pParent_)
+        return pParent_->get_top_level_renderer();
+    else
+        return nullptr;
 }
 
 void uiobject::set_newly_created()
@@ -1134,14 +1144,6 @@ bool uiobject::is_newly_created() const
 }
 
 void uiobject::notify_renderer_need_redraw() const
-{
-}
-
-void uiobject::fire_redraw() const
-{
-}
-
-void uiobject::notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered)
 {
 }
 

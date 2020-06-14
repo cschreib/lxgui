@@ -637,7 +637,7 @@ namespace gui
         *         (for frames). They also don't receive automatic input.
         *   \note Set the argument to nullptr to use the standard renderer.
         */
-        void set_renderer(uiobject* pRenderer) override;
+        void set_renderer(frame* pRenderer) override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param uiAbsWidth  The new width
@@ -676,6 +676,18 @@ namespace gui
         /** \note Automatically called by any shape changing function.
         */
         void notify_renderer_need_redraw() const override;
+
+        /// Tells this widget that a manually rendered widget requires redraw.
+        /** \note This function does nothing by default.
+        */
+        virtual void fire_redraw() const;
+
+        /// Tells this widget that it should (or not) render another object.
+        /** \param pObject           The object to render
+        *   \param bManuallyRendered 'true' if this widget needs to render that new object
+        *   \note Called automatically by add_child(), remove_child(), and destructors.
+        */
+        virtual void notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered);
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
@@ -733,6 +745,8 @@ namespace gui
         virtual void notify_visible_(bool bTriggerEvents = true);
         virtual void notify_invisible_(bool bTriggerEvents = true);
         virtual void notify_strata_changed_();
+        void notify_renderer_add_frame_(frame* pChild);
+        void notify_renderer_remove_frame_(frame* pChild);
 
         virtual void notify_top_level_parent_(bool bTopLevel, frame* pParent);
 

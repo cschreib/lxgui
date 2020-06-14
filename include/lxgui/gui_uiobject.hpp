@@ -73,6 +73,8 @@ namespace gui
         SPECIALHIGH
     };
 
+    class frame;
+
     /// The base of the GUI
     /** This widget (GUI element) is a virtual base.
     *   It doesn't display anything on its own and must
@@ -478,13 +480,13 @@ namespace gui
         bool is_special() const;
 
         /// Flags this object as "manually rendered" by another object.
-        /** \param pRenderer The uiobject that will take care of rendering this widget
+        /** \param pRenderer The frame that will take care of rendering this widget
         *   \note Manually rendered objects are not automatically rendered
         *         by their parent (for layered_regions) or the manager
         *         (for frames). They also don't receive automatic input.
         *   \note Set the argument to nullptr to use the standard renderer.
         */
-        virtual void set_renderer(uiobject* pRenderer);
+        virtual void set_renderer(frame* pRenderer);
 
         /// Checks if this object is manually rendered.
         /** \return 'true' if this object is manually rendered
@@ -496,7 +498,13 @@ namespace gui
         /** \return The renderer of this object, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const uiobject* get_renderer() const;
+        const frame* get_renderer() const;
+
+        /// Returns the renderer of this object or its parents, nullptr if none.
+        /** \return The renderer of this object or its parents, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        frame* get_top_level_renderer();
 
         /// Flags this object as newly created.
         /** \note Newly created objects aren't rendered.
@@ -515,11 +523,6 @@ namespace gui
         /** \note Automatically called by any shape changing function.
         */
         virtual void notify_renderer_need_redraw() const;
-
-        /// Tells this widget that a manually rendered widget requires redraw.
-        /** \note This function does nothing by default.
-        */
-        virtual void fire_redraw() const;
 
         /// Adds a Lua variable to copy when derivating.
         /** \param sVariable The name of the variable
@@ -580,8 +583,6 @@ namespace gui
         virtual void update_borders_() const;
         virtual void update_dimensions_() const;
 
-        virtual void notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered);
-
         template<typename T>
         void create_glue_()
         {
@@ -614,7 +615,7 @@ namespace gui
         uiobject*   pInheritance_ = nullptr;
         bool        bSpecial_ = false;
         bool        bNewlyCreated_ = false;
-        uiobject*   pRenderer_ = nullptr;
+        frame*      pRenderer_ = nullptr;
         bool        bInherits_ = false;
 
         bool         bVirtual_ = false;

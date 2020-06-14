@@ -416,7 +416,7 @@ void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
         remove_from_scroll_child_list_(pSubChild);
 }
 
-void scroll_frame::notify_manually_rendered_object_(uiobject* pObject, bool bManuallyRendered)
+void scroll_frame::notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered)
 {
     frame* pFrame = dynamic_cast<frame*>(pObject);
     if (pFrame)
