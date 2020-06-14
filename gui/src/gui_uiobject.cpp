@@ -264,7 +264,7 @@ const std::string& uiobject::get_object_type() const
     return lType_.back();
 }
 
-const std::vector<std::string>& uiobject::get_object_typeList() const
+const std::vector<std::string>& uiobject::get_object_type_list() const
 {
     return lType_;
 }

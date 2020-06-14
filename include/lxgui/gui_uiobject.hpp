@@ -313,7 +313,7 @@ namespace gui
         /// Returns an array containing all the types of this widget.
         /** \return  An array containing all the types of this widget
         */
-        const std::vector<std::string>& get_object_typeList() const;
+        const std::vector<std::string>& get_object_type_list() const;
 
         /// Returns the vertical position of this widget's bottom border.
         /** \return The vertical position of this widget's bottom border
