@@ -13,9 +13,12 @@ void slider::register_glue(lua::state* pLua)
 
 lua_slider::lua_slider(lua_State* pLua) : lua_frame(pLua)
 {
-    pSliderParent_ = dynamic_cast<slider*>(pParent_);
-    if (pParent_ && !pSliderParent_)
-        throw exception("lua_slider", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pSliderParent_ = pParent_->down_cast<slider>();
+        if (!pSliderParent_)
+            throw exception("lua_slider", "Dynamic cast failed !");
+    }
 }
 
 int lua_slider::_allow_clicks_outside_thumb(lua_State* pLua)
@@ -201,7 +204,7 @@ int lua_slider::_set_thumb_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pSliderParent_->set_thumb_texture(pTexture);
         }
     }

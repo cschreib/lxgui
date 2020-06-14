@@ -194,136 +194,135 @@ void frame::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    frame* pFrame = dynamic_cast<frame*>(pObj);
+    frame* pFrame = pObj->down_cast<frame>();
+    if (!pFrame)
+        return;
 
-    if (pFrame)
+    for (const auto& mScript : pFrame->lDefinedScriptList_)
     {
-        for (const auto& mScript : pFrame->lDefinedScriptList_)
-        {
-            if (mScript.second.empty()) continue;
+        if (mScript.second.empty()) continue;
 
-            const script_info& mInfo = pFrame->lXMLScriptInfoList_[mScript.first];
-            this->define_script(
-                "On"+mScript.first, mScript.second,
-                mInfo.sFile, mInfo.uiLineNbr
-            );
-        }
-
-        for (const auto& mHandler : pFrame->lDefinedHandlerList_)
-        {
-            if (mHandler.second)
-                this->define_script("On"+mHandler.first, mHandler.second);
-        }
-
-        this->set_frame_strata(pFrame->get_frame_strata());
-
-        uiobject* pHighParent = this;
-        for (int i = 0; i < pFrame->get_level(); ++i)
-        {
-            if (pHighParent->get_parent())
-                pHighParent = pHighParent->get_parent();
-            else
-                break;
-        }
-
-        this->set_level(
-            dynamic_cast<frame*>(pHighParent)->get_level()+
-            pFrame->get_level()
+        const script_info& mInfo = pFrame->lXMLScriptInfoList_[mScript.first];
+        this->define_script(
+            "On"+mScript.first, mScript.second,
+            mInfo.sFile, mInfo.uiLineNbr
         );
-
-        this->set_top_level(pFrame->is_top_level());
-
-        this->enable_keyboard(pFrame->is_keyboard_enabled());
-        this->enable_mouse(pFrame->is_mouse_enabled(), pFrame->is_world_input_allowed());
-        this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
-
-        this->set_movable(pFrame->is_movable());
-        this->set_clamped_to_screen(pFrame->is_clamped_to_screen());
-        this->set_resizable(pFrame->is_resizable());
-
-        this->set_abs_hit_rect_insets(pFrame->get_abs_hit_rect_insets());
-        this->set_rel_hit_rect_insets(pFrame->get_rel_hit_rect_insets());
-
-        this->set_max_resize(pFrame->get_max_resize());
-        this->set_min_resize(pFrame->get_min_resize());
-
-        this->set_scale(pFrame->get_scale());
-
-        for (auto* pChild : pFrame->get_children())
-        {
-            if (pChild->is_special()) continue;
-
-            std::unique_ptr<frame> pNewChild = pManager_->create_frame(pChild->get_object_type());
-            if (!pNewChild) continue;
-
-            pNewChild->set_parent(this);
-            if (this->is_virtual())
-                pNewChild->set_virtual();
-
-            pNewChild->set_name(pChild->get_raw_name());
-            if (!pManager_->add_uiobject(pNewChild.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-                    << "\", but its name was already taken : \"" << pNewChild->get_name()
-                    << "\". Skipped." << std::endl;
-
-                continue;
-            }
-
-            pNewChild->create_glue();
-            pNewChild->copy_from(pChild);
-            pNewChild->notify_loaded();
-            this->add_child(std::move(pNewChild));
-        }
-
-        if (pFrame->pBackdrop_)
-        {
-            pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
-            pBackdrop_->copy_from(*pFrame->pBackdrop_);
-        }
-
-        if (pFrame->pTitleRegion_)
-        {
-            this->create_title_region();
-            if (pTitleRegion_)
-                pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
-        }
-
-        for (auto* pArt : pFrame->get_regions())
-        {
-            if (pArt->is_special()) continue;
-
-            std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
-            if (!pNewArt) continue;
-
-            pNewArt->set_parent(this);
-            if (this->is_virtual())
-                pNewArt->set_virtual();
-
-            pNewArt->set_name(pArt->get_raw_name());
-            if (!pManager_->add_uiobject(pNewArt.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
-                    << "\", but its name was already taken : \"" << pNewArt->get_name()
-                    << "\". Skipped." << std::endl;
-
-                continue;
-            }
-
-            if (!pNewArt->is_virtual())
-                pNewArt->create_glue();
-
-            pNewArt->set_draw_layer(pArt->get_draw_layer());
-
-            auto* pAddedArt = this->add_region(std::move(pNewArt));
-            pAddedArt->copy_from(pArt);
-            pAddedArt->notify_loaded();
-        }
-
-        bBuildLayerList_ = true;
     }
+
+    for (const auto& mHandler : pFrame->lDefinedHandlerList_)
+    {
+        if (mHandler.second)
+            this->define_script("On"+mHandler.first, mHandler.second);
+    }
+
+    this->set_frame_strata(pFrame->get_frame_strata());
+
+    uiobject* pHighParent = this;
+    for (int i = 0; i < pFrame->get_level(); ++i)
+    {
+        if (pHighParent->get_parent())
+            pHighParent = pHighParent->get_parent();
+        else
+            break;
+    }
+
+    this->set_level(
+        pHighParent->down_cast<frame>()->get_level()+
+        pFrame->get_level()
+    );
+
+    this->set_top_level(pFrame->is_top_level());
+
+    this->enable_keyboard(pFrame->is_keyboard_enabled());
+    this->enable_mouse(pFrame->is_mouse_enabled(), pFrame->is_world_input_allowed());
+    this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
+
+    this->set_movable(pFrame->is_movable());
+    this->set_clamped_to_screen(pFrame->is_clamped_to_screen());
+    this->set_resizable(pFrame->is_resizable());
+
+    this->set_abs_hit_rect_insets(pFrame->get_abs_hit_rect_insets());
+    this->set_rel_hit_rect_insets(pFrame->get_rel_hit_rect_insets());
+
+    this->set_max_resize(pFrame->get_max_resize());
+    this->set_min_resize(pFrame->get_min_resize());
+
+    this->set_scale(pFrame->get_scale());
+
+    for (auto* pChild : pFrame->get_children())
+    {
+        if (pChild->is_special()) continue;
+
+        std::unique_ptr<frame> pNewChild = pManager_->create_frame(pChild->get_object_type());
+        if (!pNewChild) continue;
+
+        pNewChild->set_parent(this);
+        if (this->is_virtual())
+            pNewChild->set_virtual();
+
+        pNewChild->set_name(pChild->get_raw_name());
+        if (!pManager_->add_uiobject(pNewChild.get()))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
+                << "\", but its name was already taken : \"" << pNewChild->get_name()
+                << "\". Skipped." << std::endl;
+
+            continue;
+        }
+
+        pNewChild->create_glue();
+        pNewChild->copy_from(pChild);
+        pNewChild->notify_loaded();
+        this->add_child(std::move(pNewChild));
+    }
+
+    if (pFrame->pBackdrop_)
+    {
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
+        pBackdrop_->copy_from(*pFrame->pBackdrop_);
+    }
+
+    if (pFrame->pTitleRegion_)
+    {
+        this->create_title_region();
+        if (pTitleRegion_)
+            pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
+    }
+
+    for (auto* pArt : pFrame->get_regions())
+    {
+        if (pArt->is_special()) continue;
+
+        std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+        if (!pNewArt) continue;
+
+        pNewArt->set_parent(this);
+        if (this->is_virtual())
+            pNewArt->set_virtual();
+
+        pNewArt->set_name(pArt->get_raw_name());
+        if (!pManager_->add_uiobject(pNewArt.get()))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
+                << "\", but its name was already taken : \"" << pNewArt->get_name()
+                << "\". Skipped." << std::endl;
+
+            continue;
+        }
+
+        if (!pNewArt->is_virtual())
+            pNewArt->create_glue();
+
+        pNewArt->set_draw_layer(pArt->get_draw_layer());
+
+        auto* pAddedArt = this->add_region(std::move(pNewArt));
+        pAddedArt->copy_from(pArt);
+        pAddedArt->notify_loaded();
+    }
+
+    bBuildLayerList_ = true;
 }
 
 void frame::create_title_region()
@@ -1595,7 +1594,7 @@ void frame::set_parent(uiobject* pParent)
         return;
 
     pParent_ = pParent;
-    pParentFrame_ = dynamic_cast<frame*>(pParent);
+    pParentFrame_ = pParent->down_cast<frame>();
 
     if (!pAddOn_ && pParentFrame_)
         pAddOn_ = pParentFrame_->get_addon();

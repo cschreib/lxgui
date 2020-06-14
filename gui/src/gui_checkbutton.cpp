@@ -25,57 +25,56 @@ void check_button::copy_from(uiobject* pObj)
 {
     button::copy_from(pObj);
 
-    check_button* pButton = dynamic_cast<check_button*>(pObj);
+    check_button* pButton = pObj->down_cast<check_button>();
+    if (!pButton)
+        return;
 
-    if (pButton)
+    if (pButton->get_checked_texture())
     {
-        if (pButton->get_checked_texture())
+        std::unique_ptr<texture> pTexture = this->create_checked_texture_();
+        if (this->is_virtual())
+            pTexture->set_virtual();
+        pTexture->set_name(pButton->get_checked_texture()->get_name());
+        if (!pManager_->add_uiobject(pTexture.get()))
         {
-            std::unique_ptr<texture> pTexture = this->create_checked_texture_();
-            if (this->is_virtual())
-                pTexture->set_virtual();
-            pTexture->set_name(pButton->get_checked_texture()->get_name());
-            if (!pManager_->add_uiobject(pTexture.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pButton->get_checked_texture()->get_name()+"\" to \""+sName_+"\", "
-                    "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                if (!is_virtual())
-                    pTexture->create_glue();
-                pTexture->set_draw_layer(pButton->get_checked_texture()->get_draw_layer());
-                pTexture->copy_from(pButton->get_checked_texture());
-                pTexture->notify_loaded();
-
-                this->set_checked_texture(pTexture.get());
-                this->add_region(std::move(pTexture));
-            }
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \""+pButton->get_checked_texture()->get_name()+"\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
         }
-        if (pButton->get_disabled_checked_texture())
+        else
         {
-            std::unique_ptr<texture> pTexture = this->create_disabled_checked_texture_();
-            if (this->is_virtual())
-                pTexture->set_virtual();
-            pTexture->set_name(pButton->get_disabled_checked_texture()->get_name());
-            if (!pManager_->add_uiobject(pTexture.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pButton->get_disabled_checked_texture()->get_name()+"\" to \""+sName_+"\", "
-                    "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                if (!is_virtual())
-                    pTexture->create_glue();
-                pTexture->set_draw_layer(pButton->get_disabled_checked_texture()->get_draw_layer());
-                pTexture->copy_from(pButton->get_disabled_checked_texture());
-                pTexture->notify_loaded();
+            if (!is_virtual())
+                pTexture->create_glue();
+            pTexture->set_draw_layer(pButton->get_checked_texture()->get_draw_layer());
+            pTexture->copy_from(pButton->get_checked_texture());
+            pTexture->notify_loaded();
 
-                this->set_disabled_checked_texture(pTexture.get());
-                this->add_region(std::move(pTexture));
-            }
+            this->set_checked_texture(pTexture.get());
+            this->add_region(std::move(pTexture));
+        }
+    }
+    if (pButton->get_disabled_checked_texture())
+    {
+        std::unique_ptr<texture> pTexture = this->create_disabled_checked_texture_();
+        if (this->is_virtual())
+            pTexture->set_virtual();
+        pTexture->set_name(pButton->get_disabled_checked_texture()->get_name());
+        if (!pManager_->add_uiobject(pTexture.get()))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \""+pButton->get_disabled_checked_texture()->get_name()+"\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
+        }
+        else
+        {
+            if (!is_virtual())
+                pTexture->create_glue();
+            pTexture->set_draw_layer(pButton->get_disabled_checked_texture()->get_draw_layer());
+            pTexture->copy_from(pButton->get_disabled_checked_texture());
+            pTexture->notify_loaded();
+
+            this->set_disabled_checked_texture(pTexture.get());
+            this->add_region(std::move(pTexture));
         }
     }
 }

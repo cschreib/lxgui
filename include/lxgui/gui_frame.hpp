@@ -133,7 +133,10 @@ namespace gui
         /** \param pRegion The layered_region to add
         */
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* add_region(std::unique_ptr<region_type> pRegion) { return dynamic_cast<region_type*>(add_region(std::unique_ptr<layered_region>(pRegion.release()))); }
+        region_type* add_region(std::unique_ptr<region_type> pRegion)
+        {
+            return static_cast<region_type*>(add_region(std::unique_ptr<layered_region>(pRegion.release())));
+        }
 
         /// Removes a layered_region from this frame's children.
         /** \param pRegion The layered_region to remove
@@ -172,7 +175,7 @@ namespace gui
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
         region_type* create_region(layer_type mLayer, const std::string& sName, const std::string& sInheritance = "")
         {
-            return dynamic_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, sInheritance));
+            return static_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, sInheritance));
         }
 
         /// Creates a new frame as child of this frame.
@@ -201,7 +204,7 @@ namespace gui
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         frame_type* create_child(const std::string& sName, const std::string& sInheritance = "")
         {
-            return dynamic_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, sInheritance));
+            return static_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, sInheritance));
         }
 
         /// Adds a frame to this frame's children.
@@ -213,7 +216,10 @@ namespace gui
         /** \param pChild The frame to add
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* add_child(std::unique_ptr<frame_type> pChild) { return dynamic_cast<frame_type*>(add_child(std::unique_ptr<frame>(pChild.release()))); }
+        frame_type* add_child(std::unique_ptr<frame_type> pChild)
+        {
+            return static_cast<frame_type*>(add_child(std::unique_ptr<frame>(pChild.release())));
+        }
 
         /// Removes a frame from this frame's children.
         /** \param pChild The frame to remove
@@ -247,7 +253,7 @@ namespace gui
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         frame_type* get_child(const std::string& sName)
         {
-            return dynamic_cast<frame_type*>(get_child(sName));
+            return get_child(sName)->down_cast<frame_type>();
         }
 
         /// Returns the region list.
@@ -276,7 +282,7 @@ namespace gui
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
         region_type* get_region(const std::string& sName)
         {
-            return dynamic_cast<region_type*>(get_region(sName));
+            return get_region(sName)->down_cast<region_type>();
         }
 
         /// Calculates effective alpha.

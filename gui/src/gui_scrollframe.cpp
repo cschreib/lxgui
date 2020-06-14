@@ -37,36 +37,35 @@ void scroll_frame::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    scroll_frame* pScrollFrame = dynamic_cast<scroll_frame*>(pObj);
+    scroll_frame* pScrollFrame = pObj->down_cast<scroll_frame>();
+    if (!pScrollFrame)
+        return;
 
-    if (pScrollFrame)
+    this->set_horizontal_scroll(pScrollFrame->get_horizontal_scroll());
+    this->set_vertical_scroll(pScrollFrame->get_vertical_scroll());
+
+    if (pScrollFrame->get_scroll_child())
     {
-        this->set_horizontal_scroll(pScrollFrame->get_horizontal_scroll());
-        this->set_vertical_scroll(pScrollFrame->get_vertical_scroll());
-
-        if (pScrollFrame->get_scroll_child())
+        std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pScrollFrame->get_scroll_child()->get_object_type());
+        if (pScrollChild)
         {
-            std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pScrollFrame->get_scroll_child()->get_object_type());
-            if (pScrollChild)
+            pScrollChild->set_parent(this);
+            if (this->is_virtual())
+                pScrollChild->set_virtual();
+            pScrollChild->set_name(pScrollFrame->get_scroll_child()->get_raw_name());
+            if (!pManager_->add_uiobject(pScrollChild.get()))
             {
-                pScrollChild->set_parent(this);
-                if (this->is_virtual())
-                    pScrollChild->set_virtual();
-                pScrollChild->set_name(pScrollFrame->get_scroll_child()->get_raw_name());
-                if (!pManager_->add_uiobject(pScrollChild.get()))
-                {
-                    gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                        "Trying to add \""+pScrollChild->get_name()+"\" to \""+sName_+
-                        "\", but its name was already taken : \""+pScrollChild->get_name()+"\". Skipped." << std::endl;
-                }
-                else
-                {
-                    pScrollChild->create_glue();
-                    pScrollChild->copy_from(pScrollFrame->get_scroll_child());
-                    pScrollChild->notify_loaded();
+                gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                    "Trying to add \""+pScrollChild->get_name()+"\" to \""+sName_+
+                    "\", but its name was already taken : \""+pScrollChild->get_name()+"\". Skipped." << std::endl;
+            }
+            else
+            {
+                pScrollChild->create_glue();
+                pScrollChild->copy_from(pScrollFrame->get_scroll_child());
+                pScrollChild->notify_loaded();
 
-                    this->set_scroll_child(std::move(pScrollChild));
-                }
+                this->set_scroll_child(std::move(pScrollChild));
             }
         }
     }
@@ -418,16 +417,27 @@ void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
 
 void scroll_frame::notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered)
 {
-    frame* pFrame = dynamic_cast<frame*>(pObject);
-    if (pFrame)
-    {
-        if (bManuallyRendered)
-            add_to_scroll_child_list_(pFrame);
-        else
-            remove_from_scroll_child_list_(pFrame);
+    if (!pObject)
+        return;
 
-        bRebuildScrollStrataList_ = true;
+    if (bManuallyRendered)
+    {
+        frame* pFrame = pObject->down_cast<frame>();
+        if (!pFrame)
+            return;
+
+        add_to_scroll_child_list_(pFrame);
     }
+    else
+    {
+        // NB: cannot use down_cast() here, as the frame destructor
+        // may have already been called.
+        // FIXME: not OK; this function needs the frame to still be alive!
+        if (pObject->is_object_type<frame>())
+            remove_from_scroll_child_list_(static_cast<frame*>(pObject));
+    }
+
+    bRebuildScrollStrataList_ = true;
 }
 }
 }

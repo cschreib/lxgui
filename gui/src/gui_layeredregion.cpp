@@ -42,7 +42,7 @@ void layered_region::create_glue()
 
 void layered_region::set_parent(uiobject* pParent)
 {
-    pFrameParent_ = dynamic_cast<frame*>(pParent);
+    pFrameParent_ = pParent->down_cast<frame>();
     uiobject::set_parent(pParent);
 }
 

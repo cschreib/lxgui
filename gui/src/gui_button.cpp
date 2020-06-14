@@ -97,7 +97,7 @@ void button::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    button* pButton = dynamic_cast<button*>(pObj);
+    button* pButton = pObj->down_cast<button>();
     if (!pButton)
         return;
 

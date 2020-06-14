@@ -12,9 +12,12 @@ void edit_box::register_glue(lua::state* pLua)
 
 lua_edit_box::lua_edit_box(lua_State* pLua) : lua_focus_frame(pLua)
 {
-    pEditBoxParent_ = dynamic_cast<edit_box*>(pParent_);
-    if (pParent_ && !pEditBoxParent_)
-        throw exception("lua_edit_box", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pEditBoxParent_ = pParent_->down_cast<edit_box>();
+        if (!pEditBoxParent_)
+            throw exception("lua_edit_box", "Dynamic cast failed !");
+    }
 }
 
 int lua_edit_box::_add_history_line(lua_State* pLua)

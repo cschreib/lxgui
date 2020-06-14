@@ -15,9 +15,12 @@ void check_button::register_glue(lua::state* pLua)
 
 lua_check_button::lua_check_button(lua_State* pLua) : lua_button(pLua)
 {
-    pCheckButtonParent_ = dynamic_cast<check_button*>(pParent_);
-    if (pParent_ && !pCheckButtonParent_)
-        throw exception("lua_check_button", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pCheckButtonParent_ = pParent_->down_cast<check_button>();
+        if (!pCheckButtonParent_)
+            throw exception("lua_check_button", "Dynamic cast failed !");
+    }
 }
 
 int lua_check_button::_is_checked(lua_State* pLua)
@@ -104,7 +107,7 @@ int lua_check_button::_set_checked_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pCheckButtonParent_->set_checked_texture(pTexture);
         }
     }
@@ -124,7 +127,7 @@ int lua_check_button::_set_disabled_checked_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pCheckButtonParent_->set_disabled_checked_texture(pTexture);
         }
     }

@@ -14,9 +14,12 @@ void texture::register_glue(lua::state* pLua)
 
 lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)
 {
-    pTextureParent_ = dynamic_cast<texture*>(pParent_);
-    if (pParent_ && !pTextureParent_)
-        throw exception("lua_texture", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pTextureParent_ = pParent_->down_cast<texture>();
+        if (!pTextureParent_)
+            throw exception("lua_texture", "Dynamic cast failed !");
+    }
 }
 
 int lua_texture::_get_blend_mode(lua_State* pLua)

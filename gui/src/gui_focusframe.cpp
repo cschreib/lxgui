@@ -20,10 +20,11 @@ void focus_frame::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    focus_frame* pFocusFrame = dynamic_cast<focus_frame*>(pObj);
+    focus_frame* pFocusFrame = pObj->down_cast<focus_frame>();
+    if (!pFocusFrame)
+        return;
 
-    if (pFocusFrame)
-        this->enable_auto_focus(pFocusFrame->is_auto_focus_enabled());
+    this->enable_auto_focus(pFocusFrame->is_auto_focus_enabled());
 }
 
 void focus_frame::create_glue()

@@ -170,16 +170,29 @@ int l_create_frame(lua_State* pLua)
         frame* pParent = nullptr;
         if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::USERDATA)
         {
-            lua_uiobject* pObj = mFunc.get(2)->get<lua_uiobject>();
-            if (pObj)
+            lua_frame* pFrameObj = mFunc.get(2)->get<lua_frame>();
+            if (pFrameObj)
             {
-                pParent = dynamic_cast<frame*>(pObj->get_parent());
-                if (!pParent)
+                pParent = pFrameObj->get_parent()->down_cast<frame>();
+            }
+            else
+            {
+                lua_uiobject* pObj = mFunc.get(2)->get<lua_uiobject>();
+                if (pObj)
                 {
-                    gui::out << gui::warning << mFunc.get_name()
+                    gui::out << gui::error << mFunc.get_name()
                         << "The second argument of " << mFunc.get_name() << " must be a frame "
                         << "(got a " << pObj->get_parent()->get_object_type() << ")." << std::endl;
                 }
+                else
+                {
+                    gui::out << gui::error << mFunc.get_name()
+                        << "The second argument of " << mFunc.get_name() << " must be a frame."
+                        << std::endl;
+
+                }
+
+                return mFunc.on_return();
             }
         }
 
@@ -216,21 +229,28 @@ int l_delete_frame(lua_State* pLua)
 
     if (mFunc.check())
     {
-        lua_uiobject* pLuaObj = mFunc.get(0)->get<lua_uiobject>();
-        if (!pLuaObj)
+        lua_frame* pFrameObj = mFunc.get(0)->get<lua_frame>();
+        if (!pFrameObj)
         {
-            gui::out << gui::error << mFunc.get_name() << "Argument 1 must be a frame." << std::endl;
+            lua_uiobject* pObj = mFunc.get(0)->get<lua_uiobject>();
+            if (pObj)
+            {
+                gui::out << gui::error << mFunc.get_name()
+                    << "The first argument of " << mFunc.get_name() << " must be a frame "
+                    << "(got a " << pObj->get_parent()->get_object_type() << ")." << std::endl;
+            }
+            else
+            {
+                gui::out << gui::error << mFunc.get_name()
+                    << "The first argument of " << mFunc.get_name() << " must be a frame."
+                    << std::endl;
+
+            }
+
             return mFunc.on_return();
         }
 
-        frame* pFrame = dynamic_cast<frame*>(pLuaObj->get_parent());
-        if (!pFrame)
-        {
-            gui::out << gui::error << mFunc.get_name() << "Argument 1 must be a frame." << std::endl;
-            return mFunc.on_return();
-        }
-
-        pFrame->release_from_parent();
+        pFrameObj->get_parent()->down_cast<frame>()->release_from_parent();
     }
 
     return mFunc.on_return();

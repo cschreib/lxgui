@@ -462,36 +462,42 @@ int lua_uiobject::_set_parent(lua_State* pLua)
             {
                 pNewParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
                 if (!pNewParent)
+                {
+                    gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()
+                        +"\" does not exist." << std::endl;
                     return mFunc.on_return();
+                }
             }
             else
             {
                 lua_uiobject* pObj = pArg->get<lua_uiobject>();
-                if (pObj)
-                    pNewParent = pObj->get_parent();
-                else
+                if (!pObj)
+                {
+                    gui::out << gui::error << mFunc.get_name() << " : Argument 1 must be a frame." << std::endl;
                     return mFunc.on_return();
+                }
+
+                pNewParent = pObj->get_parent();
             }
         }
 
-        frame* pNewParentFrame = dynamic_cast<frame*>(pNewParent);
-        if (pNewParentFrame)
+        frame* pNewParentFrame = pNewParent->down_cast<frame>();
+        if (!pNewParentFrame)
         {
-            pParent_->set_parent(pNewParent);
+            gui::out << gui::error << mFunc.get_name() << " : Argument 1 must be a frame." << std::endl;
+            return mFunc.on_return();
+        }
 
-            if (pParent_->is_object_type("Frame"))
-            {
-                pNewParentFrame->add_child(std::unique_ptr<frame>(dynamic_cast<frame*>(
-                    pParent_->release_from_parent().release())));
-            }
-            else
-            {
-                pNewParentFrame->add_region(std::unique_ptr<layered_region>(dynamic_cast<layered_region*>(
-                    pParent_->release_from_parent().release())));
-            }
+        pParent_->set_parent(pNewParent);
+
+        if (pParent_->is_object_type<frame>())
+        {
+            pNewParentFrame->add_child(down_cast<frame>(pParent_->release_from_parent()));
         }
         else
-            gui::out << gui::error << mFunc.get_name() << " : Argument 1 must be a frame." << std::endl;
+        {
+            pNewParentFrame->add_region(down_cast<layered_region>(pParent_->release_from_parent()));
+        }
     }
 
     return mFunc.on_return();

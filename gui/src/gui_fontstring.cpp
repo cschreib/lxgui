@@ -146,29 +146,28 @@ void font_string::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    font_string* pFontString = dynamic_cast<font_string*>(pObj);
+    font_string* pFontString = pObj->down_cast<font_string>();
+    if (!pFontString)
+        return;
 
-    if (pFontString)
+    std::string sFontName = pFontString->get_font_name();
+    uint uiHeight = pFontString->get_font_height();
+    if (!sFontName.empty() && uiHeight != 0)
+        this->set_font(sFontName, uiHeight);
+
+    this->set_justify_h(pFontString->get_justify_h());
+    this->set_justify_v(pFontString->get_justify_v());
+    this->set_spacing(pFontString->get_spacing());
+    this->set_text(pFontString->get_text());
+    this->set_outlined(pFontString->is_outlined());
+    if (pFontString->has_shadow())
     {
-        std::string sFontName = pFontString->get_font_name();
-        uint uiHeight = pFontString->get_font_height();
-        if (!sFontName.empty() && uiHeight != 0)
-            this->set_font(sFontName, uiHeight);
-
-        this->set_justify_h(pFontString->get_justify_h());
-        this->set_justify_v(pFontString->get_justify_v());
-        this->set_spacing(pFontString->get_spacing());
-        this->set_text(pFontString->get_text());
-        this->set_outlined(pFontString->is_outlined());
-        if (pFontString->has_shadow())
-        {
-            this->set_shadow(true);
-            this->set_shadow_color(pFontString->get_shadow_color());
-            this->set_shadow_offsets(pFontString->get_shadow_offsets());
-        }
-        this->set_text_color(pFontString->get_text_color());
-        this->set_non_space_wrap(pFontString->can_non_space_wrap());
+        this->set_shadow(true);
+        this->set_shadow_color(pFontString->get_shadow_color());
+        this->set_shadow_offsets(pFontString->get_shadow_offsets());
     }
+    this->set_text_color(pFontString->get_text_color());
+    this->set_non_space_wrap(pFontString->can_non_space_wrap());
 }
 
 const std::string& font_string::get_font_name() const

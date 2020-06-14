@@ -218,7 +218,7 @@ namespace gui
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         std::unique_ptr<frame> create_frame(const std::string& sName, const std::string& sInheritance = "")
         {
-            return std::unique_ptr<frame>(dynamic_cast<frame_type*>(
+            return std::unique_ptr<frame>(static_cast<frame_type*>(
                 create_frame(frame_type::CLASS_NAME, sName, sInheritance).release()));
         }
 

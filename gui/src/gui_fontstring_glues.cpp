@@ -15,9 +15,12 @@ void font_string::register_glue(lua::state* pLua)
 
 lua_font_string::lua_font_string(lua_State* pLua) : lua_layered_region(pLua)
 {
-    pFontStringParent_ = dynamic_cast<font_string*>(pParent_);
-    if (pParent_ && !pFontStringParent_)
-        throw exception("lua_font_string", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pFontStringParent_ = pParent_->down_cast<font_string>();
+        if (!pFontStringParent_)
+            throw exception("lua_font_string", "Dynamic cast failed !");
+    }
 }
 
 int lua_font_string::_get_font(lua_State* pLua)

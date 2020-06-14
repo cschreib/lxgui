@@ -7,9 +7,12 @@ namespace gui
 {
 lua_focus_frame::lua_focus_frame(lua_State* pLua) : lua_frame(pLua)
 {
-    pFocusFrameParent_ = dynamic_cast<focus_frame*>(pParent_);
-    if (pParent_ && !pFocusFrameParent_)
-        throw exception("lua_focus_frame", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pFocusFrameParent_ = pParent_->down_cast<focus_frame>();
+        if (!pFocusFrameParent_)
+            throw exception("lua_focus_frame", "Dynamic cast failed !");
+    }
 }
 
 int lua_focus_frame::_clear_focus(lua_State* pLua)

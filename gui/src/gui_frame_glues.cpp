@@ -12,9 +12,12 @@ namespace gui
 {
 lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
 {
-    pFrameParent_ = dynamic_cast<frame*>(pParent_);
-    if (pParent_ && !pFrameParent_)
-        throw exception("lua_frame", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pFrameParent_ = pParent_->down_cast<frame>();
+        if (!pFrameParent_)
+            throw exception("lua_frame", "Dynamic cast failed !");
+    }
 }
 
 int lua_frame::_create_font_string(lua_State* pLua)

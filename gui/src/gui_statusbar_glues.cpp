@@ -14,9 +14,12 @@ void status_bar::register_glue(lua::state* pLua)
 
 lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
 {
-    pStatusBarParent_ = dynamic_cast<status_bar*>(pParent_);
-    if (pParent_ && !pStatusBarParent_)
-        throw exception("lua_status_bar", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pStatusBarParent_ = pParent_->down_cast<status_bar>();
+        if (!pStatusBarParent_)
+            throw exception("lua_status_bar", "Dynamic cast failed !");
+    }
 }
 
 int lua_status_bar::_get_min_max_values(lua_State* pLua)
@@ -207,7 +210,7 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pStatusBarParent_->set_bar_texture(pTexture);
         }
     }

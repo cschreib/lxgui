@@ -48,49 +48,48 @@ void edit_box::copy_from(uiobject* pObj)
 {
     focus_frame::copy_from(pObj);
 
-    edit_box* pEditBox = dynamic_cast<edit_box*>(pObj);
+    edit_box* pEditBox = pObj->down_cast<edit_box>();
+    if (!pEditBox)
+        return;
 
-    if (pEditBox)
+    this->set_max_letters(pEditBox->get_max_letters());
+    this->set_blink_speed(pEditBox->get_blink_speed());
+    this->set_numeric_only(pEditBox->is_numeric_only());
+    this->set_positive_only(pEditBox->is_positive_only());
+    this->set_integer_only(pEditBox->is_integer_only());
+    this->enable_password_mode(pEditBox->is_password_mode_enabled());
+    this->set_multi_line(pEditBox->is_multi_line());
+    this->set_max_history_lines(pEditBox->get_max_history_lines());
+    this->set_text_insets(pEditBox->get_text_insets());
+
+    font_string* pFS = pEditBox->get_font_string();
+    if (pFS)
     {
-        this->set_max_letters(pEditBox->get_max_letters());
-        this->set_blink_speed(pEditBox->get_blink_speed());
-        this->set_numeric_only(pEditBox->is_numeric_only());
-        this->set_positive_only(pEditBox->is_positive_only());
-        this->set_integer_only(pEditBox->is_integer_only());
-        this->enable_password_mode(pEditBox->is_password_mode_enabled());
-        this->set_multi_line(pEditBox->is_multi_line());
-        this->set_max_history_lines(pEditBox->get_max_history_lines());
-        this->set_text_insets(pEditBox->get_text_insets());
+        std::unique_ptr<font_string> pText = this->create_font_string_();
 
-        font_string* pFS = pEditBox->get_font_string();
-        if (pFS)
+        if (this->is_virtual())
+            pText->set_virtual();
+
+        pText->set_name(pFS->get_name());
+        if (!pManager_->add_uiobject(pText.get()))
         {
-            std::unique_ptr<font_string> pText = this->create_font_string_();
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
+        }
+        else
+        {
+            if (!is_virtual())
+                pText->create_glue();
 
-            if (this->is_virtual())
-                pText->set_virtual();
+            pText->copy_from(pFS);
 
-            pText->set_name(pFS->get_name());
-            if (!pManager_->add_uiobject(pText.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\", "
-                    "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                if (!is_virtual())
-                    pText->create_glue();
+            if (!is_virtual())
+                pText->enable_formatting(false);
 
-                pText->copy_from(pFS);
-
-                if (!is_virtual())
-                    pText->enable_formatting(false);
-
-                pText->notify_loaded();
-                this->set_font_string(pText.get());
-                this->add_region(std::move(pText));
-            }
+            pText->notify_loaded();
+            this->set_font_string(pText.get());
+            this->add_region(std::move(pText));
         }
     }
 }

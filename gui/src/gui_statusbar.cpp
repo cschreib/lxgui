@@ -57,42 +57,41 @@ void status_bar::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    status_bar* pStatusBar = dynamic_cast<status_bar*>(pObj);
+    status_bar* pStatusBar = pObj->down_cast<status_bar>();
+    if (!pStatusBar)
+        return;
 
-    if (pStatusBar)
+    this->set_min_value(pStatusBar->get_min_value());
+    this->set_max_value(pStatusBar->get_max_value());
+    this->set_value(pStatusBar->get_value());
+    this->set_bar_draw_layer(pStatusBar->get_bar_draw_layer());
+    this->set_orientation(pStatusBar->get_orientation());
+    this->set_reversed(pStatusBar->is_reversed());
+
+    texture* pBar = pStatusBar->get_bar_texture();
+    if (pBar)
     {
-        this->set_min_value(pStatusBar->get_min_value());
-        this->set_max_value(pStatusBar->get_max_value());
-        this->set_value(pStatusBar->get_value());
-        this->set_bar_draw_layer(pStatusBar->get_bar_draw_layer());
-        this->set_orientation(pStatusBar->get_orientation());
-        this->set_reversed(pStatusBar->is_reversed());
+        std::unique_ptr<texture> pBarTexture = this->create_bar_texture_();
 
-        texture* pBar = pStatusBar->get_bar_texture();
-        if (pBar)
+        if (this->is_virtual())
+            pBarTexture->set_virtual();
+
+        pBarTexture->set_name(pBar->get_name());
+        if (!pManager_->add_uiobject(pBarTexture.get()))
         {
-            std::unique_ptr<texture> pBarTexture = this->create_bar_texture_();
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pBarTexture->get_name()+"\". Skipped." << std::endl;
+        }
+        else
+        {
+            if (!is_virtual())
+                pBarTexture->create_glue();
 
-            if (this->is_virtual())
-                pBarTexture->set_virtual();
-
-            pBarTexture->set_name(pBar->get_name());
-            if (!pManager_->add_uiobject(pBarTexture.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\", "
-                    "but its name was already taken : \""+pBarTexture->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                if (!is_virtual())
-                    pBarTexture->create_glue();
-
-                pBarTexture->copy_from(pBar);
-                pBarTexture->notify_loaded();
-                this->set_bar_texture(pBarTexture.get());
-                this->add_region(std::move(pBarTexture));
-            }
+            pBarTexture->copy_from(pBar);
+            pBarTexture->notify_loaded();
+            this->set_bar_texture(pBarTexture.get());
+            this->add_region(std::move(pBarTexture));
         }
     }
 }

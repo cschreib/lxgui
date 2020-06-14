@@ -310,10 +310,53 @@ namespace gui
         */
         bool is_object_type(const std::string& sType) const;
 
+        /// Checks if this widget is of the provided type.
+        /** \return 'true' if this widget is of the provided type
+        */
+        template<typename ObjectType>
+        bool is_object_type() const
+        {
+            return is_object_type(ObjectType::CLASS_NAME);
+        }
+
         /// Returns an array containing all the types of this widget.
-        /** \return  An array containing all the types of this widget
+        /** \return An array containing all the types of this widget
         */
         const std::vector<std::string>& get_object_type_list() const;
+
+        /// Obtain a pointer to a derived class.
+        /** \return A pointer to a derived class
+        *   \note Like dynamic_cast(), this will return nullptr if this widget
+        *         is not of the requested type. However, it will throw if the cast
+        *         failed because the derived class destructor has already been
+        *         called. This indicates a programming error.
+        */
+        template<typename ObjectType>
+        const ObjectType* down_cast() const
+        {
+            const ObjectType* pObject = dynamic_cast<const ObjectType*>(this);
+            if (!pObject && is_object_type(ObjectType::CLASS_NAME))
+            {
+                throw gui::exception(lType_.back(),
+                    "cannot use down_cast() to "+std::string(ObjectType::CLASS_NAME)+
+                    " as object is being destroyed");
+            }
+            return pObject;
+        }
+
+        /// Obtain a pointer to a derived class.
+        /** \return A pointer to a derived class
+        *   \note Like dynamic_cast(), this will return nullptr if this widget
+        *         is not of the requested type. However, it will throw if the cast
+        *         failed because the derived class destructor has already been
+        *         called. This indicates a programming error.
+        */
+        template<typename ObjectType>
+        ObjectType* down_cast()
+        {
+            return const_cast<ObjectType*>(
+                const_cast<const uiobject*>(this)->down_cast<ObjectType>());
+        }
 
         /// Returns the vertical position of this widget's bottom border.
         /** \return The vertical position of this widget's bottom border
@@ -649,6 +692,19 @@ namespace gui
 
         mutable std::vector<uiobject*> lAnchoredObjectList_;
     };
+
+    /// Perform a down cast on an owning pointer.
+    /** \param pObject The owning pointer to down cast
+    *   \return The down casted pointer.
+    *   \note See uiobject::down_cast() for more information.
+    */
+    template<typename ObjectType>
+    std::unique_ptr<ObjectType> down_cast(std::unique_ptr<uiobject> pObject)
+    {
+        ObjectType* pCasted = pObject->template down_cast<ObjectType>();
+        pObject.release();
+        return std::unique_ptr<ObjectType>(pCasted);
+    }
 
     /** \cond NOT_REMOVE_FROM_DOC
     */

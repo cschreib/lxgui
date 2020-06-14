@@ -27,7 +27,7 @@ void layered_region::parse_attributes_(xml::block* pBlock)
     }
 
     bool bVirtual = utils::string_to_bool(pBlock->get_attribute("virtual"));
-    frame* pFrameParent = dynamic_cast<frame*>(pParent_);
+    frame* pFrameParent = pParent_->down_cast<frame>();
     if (!utils::has_no_content(sName))
     {
         if (bVirtual || (pFrameParent && pFrameParent->is_virtual()))

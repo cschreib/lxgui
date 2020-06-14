@@ -14,9 +14,12 @@ void scroll_frame::register_glue(lua::state* pLua)
 
 lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)
 {
-    pScrollFrameParent_ = dynamic_cast<scroll_frame*>(pParent_);
-    if (pParent_ && !pScrollFrameParent_)
-        throw exception("lua_scroll_frame", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pScrollFrameParent_ = pParent_->down_cast<scroll_frame>();
+        if (!pScrollFrameParent_)
+            throw exception("lua_scroll_frame", "Dynamic cast failed !");
+    }
 }
 
 int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
@@ -118,30 +121,50 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
             if (pArg->get_type() == lua::type::STRING)
             {
                 uiobject* pObj = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
-                pChild = dynamic_cast<frame*>(pObj);
-
-                if (!pChild && pObj)
+                if (!pObj)
                 {
-                    gui::out << gui::warning << mFunc.get_name() << " : "
-                        "\""+pObj->get_name()+"\" is not a frame uiobject." << std::endl;
+                    gui::out << gui::error << mFunc.get_name() << " : "
+                        "\""+pObj->get_name()+"\" does not exist." << std::endl;
+
+                    return mFunc.on_return();
+                }
+
+                pChild = pObj->down_cast<frame>();
+                if (!pChild)
+                {
+                    gui::out << gui::error << mFunc.get_name() << " : "
+                        "\""+pObj->get_name()+"\" is not a frame." << std::endl;
+
+                    return mFunc.on_return();
                 }
             }
             else
             {
-                lua_uiobject* pObj = pArg->get<lua_uiobject>();
-                lua_frame* pFrame = dynamic_cast<lua_frame*>(pObj);
-
+                lua_frame* pFrame = pArg->get<lua_frame>();
                 if (pFrame)
-                    pChild = dynamic_cast<frame*>(pFrame->get_parent());
-                else if (pObj)
                 {
-                    gui::out << gui::warning << mFunc.get_name() << " : "
-                        "\""+pObj->get_parent()->get_name()+"\" is not a frame uiobject." << std::endl;
+                    pChild = dynamic_cast<frame*>(pFrame->get_parent());
+                }
+                else
+                {
+                    lua_uiobject* pObj = pArg->get<lua_uiobject>();
+                    if (pObj)
+                    {
+                        gui::out << gui::error << mFunc.get_name() << " : "
+                            "\""+pObj->get_parent()->get_name()+"\" is not a frame." << std::endl;
+                    }
+                    else
+                    {
+                        gui::out << gui::error << mFunc.get_name() << " : "
+                            "first argument is not a frame." << std::endl;
+                    }
+
+                    return mFunc.on_return();
                 }
             }
         }
 
-        std::unique_ptr<frame> pScrollChild(dynamic_cast<frame*>(pChild->release_from_parent().release()));
+        std::unique_ptr<frame> pScrollChild = down_cast<frame>(pChild->release_from_parent());
         pScrollChild->set_parent(pScrollFrameParent_);
         pScrollFrameParent_->set_scroll_child(std::move(pScrollChild));
     }

@@ -310,7 +310,7 @@ bool manager::add_uiobject(uiobject* pObj)
 
         if (!pObj->is_virtual())
         {
-            frame* pFrame = dynamic_cast<frame*>(pObj);
+            frame* pFrame = pObj->down_cast<frame>();
             if (pFrame)
                 lFrameList_[i] = pFrame;
         }
@@ -347,8 +347,9 @@ void manager::remove_uiobject(uiobject* pObj)
     {
         lNamedObjectList_.erase(pObj->get_name());
 
-        frame* pFrame = dynamic_cast<frame*>(pObj);
-        if (pFrame)
+        // NB: cannot use down_cast() here, as the frame destructor
+        // may have already been called.
+        if (pObj->is_object_type<frame>())
             lFrameList_.erase(pObj->get_id());
     }
     else

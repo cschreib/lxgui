@@ -101,27 +101,26 @@ void texture::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    texture* pTexture = dynamic_cast<texture*>(pObj);
+    texture* pTexture = pObj->down_cast<texture>();
+    if (!pTexture)
+        return;
 
-    if (pTexture)
+    std::string sTexture = pTexture->get_texture();
+    if (sTexture.empty())
     {
-        std::string sTexture = pTexture->get_texture();
-        if (sTexture.empty())
-        {
-            const gradient& mGradient = pTexture->get_gradient();
-            if (!mGradient.is_empty())
-                this->set_gradient(mGradient);
-            else
-                this->set_color(pTexture->get_color());
-        }
+        const gradient& mGradient = pTexture->get_gradient();
+        if (!mGradient.is_empty())
+            this->set_gradient(mGradient);
         else
-            this->set_texture(sTexture);
-
-        this->set_blend_mode(pTexture->get_blend_mode());
-        this->set_tex_coord(pTexture->get_tex_coord());
-        this->set_tex_coord_modifies_rect(pTexture->get_tex_coord_modifies_rect());
-        this->set_desaturated(pTexture->is_desaturated());
+            this->set_color(pTexture->get_color());
     }
+    else
+        this->set_texture(sTexture);
+
+    this->set_blend_mode(pTexture->get_blend_mode());
+    this->set_tex_coord(pTexture->get_tex_coord());
+    this->set_tex_coord_modifies_rect(pTexture->get_tex_coord_modifies_rect());
+    this->set_desaturated(pTexture->is_desaturated());
 }
 
 texture::blend_mode texture::get_blend_mode() const

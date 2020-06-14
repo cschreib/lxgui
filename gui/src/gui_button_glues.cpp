@@ -17,9 +17,12 @@ void button::register_glue(lua::state* pLua)
 
 lua_button::lua_button(lua_State* pLua) : lua_frame(pLua)
 {
-    pButtonParent_ = dynamic_cast<button*>(pParent_);
-    if (pParent_ && !pButtonParent_)
-        throw exception("lua_button", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pButtonParent_ = pParent_->down_cast<button>();
+        if (!pButtonParent_)
+            throw exception("lua_button", "Dynamic cast failed !");
+    }
 }
 
 int lua_button::_click(lua_State* pLua)
@@ -380,7 +383,7 @@ int lua_button::_set_disabled_font_object(lua_State* pLua)
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
         if (plua_font_string)
         {
-            font_string* pFontString = dynamic_cast<font_string*>(plua_font_string->get_parent());
+            font_string* pFontString = plua_font_string->get_parent()->down_cast<font_string>();
             pButtonParent_->set_disabled_text(pFontString);
         }
     }
@@ -438,7 +441,7 @@ int lua_button::_set_disabled_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pButtonParent_->set_disabled_texture(pTexture);
         }
     }
@@ -458,7 +461,7 @@ int lua_button::_set_highlight_font_object(lua_State* pLua)
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
         if (plua_font_string)
         {
-            font_string* pFontString = dynamic_cast<font_string*>(plua_font_string->get_parent());
+            font_string* pFontString = plua_font_string->get_parent()->down_cast<font_string>();
             pButtonParent_->set_highlight_text(pFontString);
         }
     }
@@ -516,7 +519,7 @@ int lua_button::_set_highlight_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pButtonParent_->set_highlight_texture(pTexture);
         }
     }
@@ -537,7 +540,7 @@ int lua_button::_set_normal_font_object(lua_State* pLua)
         lua_font_string* plua_font_string = mFunc.get_state()->get<lua_font_string>();
         if (plua_font_string)
         {
-            font_string* pFontString = dynamic_cast<font_string*>(plua_font_string->get_parent());
+            font_string* pFontString = plua_font_string->get_parent()->down_cast<font_string>();
             pButtonParent_->set_normal_text(pFontString);
         }
     }
@@ -595,7 +598,7 @@ int lua_button::_set_normal_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pButtonParent_->set_normal_texture(pTexture);
         }
     }
@@ -633,7 +636,7 @@ int lua_button::_set_pushed_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = dynamic_cast<texture*>(pLuaTexture->get_parent());
+            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
             pButtonParent_->set_pushed_texture(pTexture);
         }
     }

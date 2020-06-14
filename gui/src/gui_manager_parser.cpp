@@ -50,7 +50,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
 
                 try
                 {
-                    std::unique_ptr<frame> pFrame(dynamic_cast<frame*>(pUIObject.release()));
+                    std::unique_ptr<frame> pFrame = down_cast<frame>(std::move(pUIObject));
 
                     if (pFrame)
                     {
@@ -59,7 +59,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                         pFrame->notify_loaded();
 
                         if (pFrame->get_parent())
-                            dynamic_cast<frame*>(pFrame->get_parent())->add_child(std::move(pFrame));
+                            pFrame->get_parent()->down_cast<frame>()->add_child(std::move(pFrame));
                         else
                             add_root_uiobject(std::move(pFrame));
                     }

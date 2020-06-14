@@ -67,41 +67,40 @@ void slider::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    slider* pSlider = dynamic_cast<slider*>(pObj);
+    slider* pSlider = pObj->down_cast<slider>();
+    if (!pSlider)
+        return;
 
-    if (pSlider)
+    this->set_value_step(pSlider->get_value_step());
+    this->set_min_value(pSlider->get_min_value());
+    this->set_max_value(pSlider->get_max_value());
+    this->set_value(pSlider->get_value());
+    this->set_thumb_draw_layer(pSlider->get_thumb_draw_layer());
+    this->set_orientation(pSlider->get_orientation());
+    this->set_allow_clicks_outside_thumb(pSlider->are_clicks_outside_thumb_allowed());
+
+    texture* pThumb = pSlider->get_thumb_texture();
+    if (pThumb)
     {
-        this->set_value_step(pSlider->get_value_step());
-        this->set_min_value(pSlider->get_min_value());
-        this->set_max_value(pSlider->get_max_value());
-        this->set_value(pSlider->get_value());
-        this->set_thumb_draw_layer(pSlider->get_thumb_draw_layer());
-        this->set_orientation(pSlider->get_orientation());
-        this->set_allow_clicks_outside_thumb(pSlider->are_clicks_outside_thumb_allowed());
-
-        texture* pThumb = pSlider->get_thumb_texture();
-        if (pThumb)
+        std::unique_ptr<texture> pTexture = this->create_thumb_texture_();
+        if (this->is_virtual())
+            pTexture->set_virtual();
+        pTexture->set_name(pThumb->get_name());
+        if (!pManager_->add_uiobject(pTexture.get()))
         {
-            std::unique_ptr<texture> pTexture = this->create_thumb_texture_();
-            if (this->is_virtual())
-                pTexture->set_virtual();
-            pTexture->set_name(pThumb->get_name());
-            if (!pManager_->add_uiobject(pTexture.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pThumb->get_name()+"\" to \""+sName_+"\", "
-                    "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                if (!is_virtual())
-                    pTexture->create_glue();
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \""+pThumb->get_name()+"\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
+        }
+        else
+        {
+            if (!is_virtual())
+                pTexture->create_glue();
 
-                pTexture->copy_from(pThumb);
-                pTexture->notify_loaded();
-                pThumbTexture_ = pTexture.get();
-                this->add_region(std::move(pTexture));
-            }
+            pTexture->copy_from(pThumb);
+            pTexture->notify_loaded();
+            pThumbTexture_ = pTexture.get();
+            this->add_region(std::move(pTexture));
         }
     }
 }

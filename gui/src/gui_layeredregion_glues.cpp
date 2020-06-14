@@ -8,9 +8,12 @@ namespace gui
 {
 lua_layered_region::lua_layered_region(lua_State* pLua) : lua_uiobject(pLua)
 {
-    pLayeredRegionParent_ = dynamic_cast<layered_region*>(pParent_);
-    if (pParent_ && !pLayeredRegionParent_)
-        throw exception("lua_layered_region", "Dynamic cast failed !");
+    if (pParent_)
+    {
+        pLayeredRegionParent_ = pParent_->down_cast<layered_region>();
+        if (!pLayeredRegionParent_)
+            throw exception("lua_layered_region", "Dynamic cast failed !");
+    }
 }
 
 int lua_layered_region::_set_draw_layer(lua_State* pLua)
