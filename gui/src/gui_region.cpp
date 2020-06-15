@@ -1,4 +1,5 @@
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 namespace lxgui {
 namespace gui

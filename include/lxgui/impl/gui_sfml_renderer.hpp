@@ -3,8 +3,12 @@
 
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 
+#include <lxgui/gui_renderer_impl.hpp>
 #include <lxgui/utils.hpp>
-#include <lxgui/gui_manager.hpp>
+#include <lxgui/utils_refptr.hpp>
+#include <lxgui/utils_wptr.hpp>
+
+#include <map>
 
 namespace sf
 {

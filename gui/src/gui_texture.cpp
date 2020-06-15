@@ -5,6 +5,7 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/utils_filesystem.hpp>
 #include <sstream>

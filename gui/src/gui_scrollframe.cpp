@@ -4,6 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 namespace lxgui {
 namespace gui

@@ -1,6 +1,8 @@
 #include "lxgui/impl/gui_gl_renderer.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
+
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_exception.hpp>
 
 #include <png.h>
 #include <fstream>
@@ -13,7 +15,7 @@ namespace gl
 {
 void raise_error(png_struct* png, char const* message)
 {
-    throw utils::exception(message);
+    throw gui::exception("gui::gl::manager", message);
 }
 
 void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
@@ -55,7 +57,7 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
 
         pInfoStruct = png_create_info_struct(pReadStruct);
         if (!pInfoStruct)
-            throw utils::exception("'png_create_info_struct' failed.");
+            throw gui::exception("gui::gl::manager", "'png_create_info_struct' failed.");
 
         png_set_read_fn(pReadStruct, (png_voidp)(&mFile), read_data);
 
@@ -65,12 +67,12 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
         png_uint_32 uiDepth = png_get_bit_depth(pReadStruct, pInfoStruct);
 
         if (uiDepth != 8)
-            throw utils::exception("only 8 bit color chanels are supported for PNG images.");
+            throw gui::exception("gui::gl::manager", "only 8 bit color chanels are supported for PNG images.");
 
         png_uint_32 uiChannels = png_get_channels(pReadStruct, pInfoStruct);
 
         if (uiChannels != 4 && uiChannels != 3)
-            throw utils::exception("only RGB or RGBA is supported for PNG images.");
+            throw gui::exception("gui::gl::manager", "only RGB or RGBA is supported for PNG images.");
 
         png_uint_32 uiColorType = png_get_color_type(pReadStruct, pInfoStruct);
 
@@ -79,7 +81,7 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
             png_set_filler(pReadStruct, 0xff, PNG_FILLER_AFTER);
         }
         else if (uiColorType != PNG_COLOR_TYPE_RGBA)
-            throw utils::exception("only RGB or RGBA is supported for PNG images.");
+            throw gui::exception("gui::gl::manager", "only RGB or RGBA is supported for PNG images.");
 
         png_uint_32 uiWidth  = png_get_image_width(pReadStruct, pInfoStruct);
         png_uint_32 uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
@@ -105,7 +107,7 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
 
         return pTex;
     }
-    catch (const utils::exception& e)
+    catch (const gui::exception& e)
     {
         gui::out << gui::error << "gui::gl::manager : Parsing " << sFileName << " :\n"
             << e.get_description() << std::endl;

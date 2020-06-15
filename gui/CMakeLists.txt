@@ -39,6 +39,7 @@ add_library(lxgui STATIC
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp
     ${SRCROOT}/gui_region_parser.cpp
+    ${SRCROOT}/gui_renderer_impl.cpp
     ${SRCROOT}/gui_scrollframe.cpp
     ${SRCROOT}/gui_scrollframe_glues.cpp
     ${SRCROOT}/gui_scrollframe_parser.cpp

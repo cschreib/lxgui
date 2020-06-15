@@ -3,6 +3,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
+#include <lxgui/luapp_state.hpp>
 
 namespace lxgui {
 namespace gui

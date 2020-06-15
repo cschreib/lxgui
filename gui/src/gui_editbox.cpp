@@ -5,7 +5,9 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/input.hpp"
+#include <lxgui/luapp_state.hpp>
 
 using namespace lxgui::input;
 

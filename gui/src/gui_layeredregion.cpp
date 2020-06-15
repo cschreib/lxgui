@@ -4,6 +4,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
 
@@ -51,7 +52,7 @@ std::unique_ptr<uiobject> layered_region::release_from_parent()
     if (pFrameParent_)
         return pFrameParent_->remove_region(this);
     else
-        return pManager_->remove_root_uiobject(this);
+        return nullptr;
 }
 
 void layered_region::show()

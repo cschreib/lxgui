@@ -4,17 +4,28 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_optional.hpp>
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_manager.hpp"
-#include <lxgui/luapp_state.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_color.hpp"
+#include "lxgui/gui_strata.hpp"
+#include "lxgui/gui_exception.hpp"
+
 #include <lxgui/xml.hpp>
+#include <lxgui/luapp_lua_fwd.hpp>
 
 #include <array>
 
 namespace lxgui {
+namespace lua
+{
+    class state;
+}
+
 namespace gui
 {
+    struct addon;
+    class manager;
+
     /** \cond NOT_REMOVE_FROM_DOC
     */
 
@@ -52,7 +63,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static lua::Lunar<lua_virtual_glue>::RegType methods[];
+        static lua::lunar_binding<lua_virtual_glue> methods[];
 
     protected :
 
@@ -89,6 +100,24 @@ namespace gui
     {
     friend manager;
     public :
+
+        /// Comparator for sorting objects by ID
+        template<typename ObjectType>
+        struct id_comparator
+        {
+            bool operator() (const std::unique_ptr<ObjectType>& pObject1, const std::unique_ptr<ObjectType>& pObject2) const
+            {
+                return pObject1->get_id() < pObject2->get_id();
+            }
+            bool operator() (const std::unique_ptr<ObjectType>& pObject1, uint uiID) const
+            {
+                return pObject1->get_id() < uiID;
+            }
+            bool operator() (uint uiID, const std::unique_ptr<ObjectType>& pObject2) const
+            {
+                return uiID < pObject2->get_id();
+            }
+        };
 
         /// Contructor.
         explicit uiobject(manager* pManager);
@@ -599,27 +628,10 @@ namespace gui
         virtual void update_borders_() const;
         virtual void update_dimensions_() const;
 
+        lua::state*  get_lua_();
+
         template<typename T>
-        void create_glue_()
-        {
-            if (lGlue_) return;
-
-            lua::state* pLua = pManager_->get_lua();
-
-            if (bVirtual_)
-            {
-                pLua->push_number(uiID_);
-                lGlue_ = pLua->push_new<lua_virtual_glue>();
-            }
-            else
-            {
-                pLua->push_string(sLuaName_);
-                lGlue_ = pLua->push_new<T>();
-            }
-
-            pLua->set_global(sLuaName_);
-            pLua->pop();
-        }
+        void create_glue_();
 
         manager* pManager_ = nullptr;
 
@@ -725,7 +737,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static lua::Lunar<lua_uiobject>::RegType methods[];
+        static lua::lunar_binding<lua_uiobject> methods[];
 
     protected :
 

@@ -1,6 +1,7 @@
 #include "lxgui/impl/gui_sfml.hpp"
 
 #include <lxgui/impl/input_sfml_source.hpp>
+#include <lxgui/gui_manager.hpp>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

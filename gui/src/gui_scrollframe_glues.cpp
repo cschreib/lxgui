@@ -1,7 +1,9 @@
 #include "lxgui/gui_scrollframe.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_manager.hpp"
 
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
 namespace lxgui {

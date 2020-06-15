@@ -4,6 +4,7 @@
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
 #include <SFML/Graphics/RenderWindow.hpp>

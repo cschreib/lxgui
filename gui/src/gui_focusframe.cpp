@@ -1,5 +1,8 @@
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
+
+#include <lxgui/luapp_state.hpp>
 
 using namespace lxgui::input;
 

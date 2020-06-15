@@ -3,6 +3,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
 

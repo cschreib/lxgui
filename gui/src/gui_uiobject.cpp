@@ -1,4 +1,5 @@
 #include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
@@ -6,6 +7,7 @@
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
+#include <lxgui/luapp_state.hpp>
 #include <sstream>
 
 namespace lxgui {
@@ -1056,6 +1058,11 @@ void uiobject::update(float fDelta)
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  +");
+}
+
+lua::state* uiobject::get_lua_()
+{
+    return pManager_->get_lua();
 }
 
 void uiobject::push_on_lua(lua::state* pLua) const

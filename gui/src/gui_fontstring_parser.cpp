@@ -1,5 +1,6 @@
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_manager.hpp"
 
 #include <lxgui/xml_document.hpp>
 

@@ -7,6 +7,8 @@ extern "C" {
 #include <lualib.h>
 }
 
+#include "lxgui/luapp_lua_fwd.hpp"
+
 #include <string>
 
 namespace lxgui {
@@ -15,8 +17,6 @@ namespace lua
 template <typename T> class Lunar {
   typedef struct { T *pT; } userdataType;
 public:
-  typedef int (T::*mfp)(lua_State *L);
-  typedef struct { const char *name; mfp mfunc; } RegType;
 
   static void reg(lua_State *L) {
     lua_newtable(L);
@@ -73,7 +73,7 @@ public:
     lua_setmetatable(L, methods);
 
     // fill method table with methods from class T
-    for (RegType *l = T::methods; l->name; l++) {
+    for (lunar_binding<T> *l = T::methods; l->name; l++) {
       lua_pushstring(L, l->name);
       lua_pushlightuserdata(L, (void*)l);
       lua_pushcclosure(L, thunk, 1);
@@ -207,7 +207,7 @@ private:
     T *obj = check(L, 1);  // get 'self', or if you prefer, 'this'
     lua_remove(L, 1);  // remove self so member function args start at index 1
     // get member function from upvalue
-    RegType *l = static_cast<RegType*>(lua_touserdata(L, lua_upvalueindex(1)));
+    lunar_binding<T> *l = static_cast<lunar_binding<T>*>(lua_touserdata(L, lua_upvalueindex(1)));
     return (obj->*(l->mfunc))(L);  // call member function
   }
 

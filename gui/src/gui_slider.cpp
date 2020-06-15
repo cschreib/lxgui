@@ -4,6 +4,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
 

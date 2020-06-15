@@ -2,6 +2,7 @@
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_manager.hpp"
 
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>

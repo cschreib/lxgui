@@ -6,9 +6,12 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/luapp_state.hpp>
+
 #include <sstream>
 #include <functional>
 
@@ -1620,7 +1623,7 @@ std::unique_ptr<uiobject> frame::release_from_parent()
     if (pParentFrame_)
         return pParentFrame_->remove_child(this);
     else
-        return pManager_->remove_root_uiobject(this);
+        return pManager_->remove_root_frame(this);
 }
 
 void frame::set_resizable(bool bIsResizable)

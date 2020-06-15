@@ -4,6 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input.hpp"
 
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
 namespace lxgui {
@@ -26,7 +27,7 @@ public :
 
     static const char className[];
     static const char* classList[];
-    static lua::Lunar<lua_manager>::RegType methods[];
+    static lua::lunar_binding<lua_manager> methods[];
 
 protected :
 
@@ -85,7 +86,7 @@ int lua_manager::get_data_table(lua_State* pLua)
 
 const char lua_manager::className[] = "manager";
 const char* lua_manager::classList[] = {"manager", 0};
-lua::Lunar<lua_manager>::RegType lua_manager::methods[] = {
+lua::lunar_binding<lua_manager> lua_manager::methods[] = {
     {"dt", &lua_manager::get_data_table},
     {0,0}
 };
@@ -204,11 +205,7 @@ int l_create_frame(lua_State* pLua)
         if (pParent)
             pNewFrame = pParent->create_child(sType, sName, sInheritance);
         else
-        {
-            std::unique_ptr<frame> pFrame = pGUIMgr->create_frame(sType, sName, sInheritance);
-            pNewFrame = pFrame.get();
-            pGUIMgr->add_root_uiobject(std::move(pFrame));
-        }
+            pNewFrame = pGUIMgr->create_root_frame(sType, sName, sInheritance);
 
         if (pNewFrame)
         {

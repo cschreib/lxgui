@@ -1,12 +1,14 @@
 #ifndef GUI_FRAME_HPP
 #define GUI_FRAME_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_sorted_vector.hpp>
-#include <lxgui/utils_view.hpp>
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_eventreceiver.hpp"
+
+#include <lxgui/utils.hpp>
+#include <lxgui/utils_sorted_vector.hpp>
+#include <lxgui/utils_view.hpp>
 
 #include <set>
 #include <functional>
@@ -33,29 +35,11 @@ namespace gui
     {
     public :
 
-        /// Comparator for sorting objects by ID
-        template<typename ObjectType>
-        struct id_comparator
-        {
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, const std::unique_ptr<ObjectType>& pObject2) const
-            {
-                return pObject1->get_id() < pObject2->get_id();
-            }
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, uint uiID) const
-            {
-                return pObject1->get_id() < uiID;
-            }
-            bool operator() (uint uiID, const std::unique_ptr<ObjectType>& pObject2) const
-            {
-                return uiID < pObject2->get_id();
-            }
-        };
-
         /// Type of the frame child list.
-        using child_list = utils::sorted_vector<std::unique_ptr<frame>,id_comparator<frame>>;
+        using child_list = utils::sorted_vector<std::unique_ptr<frame>,uiobject::id_comparator<frame>>;
         using child_list_view = utils::view::adaptor<child_list, utils::view::unique_ptr_dereferencer>;
         /// Type of the region list.
-        using region_list = utils::sorted_vector<std::unique_ptr<layered_region>,id_comparator<layered_region>>;
+        using region_list = utils::sorted_vector<std::unique_ptr<layered_region>,uiobject::id_comparator<layered_region>>;
         using region_list_view = utils::view::adaptor<region_list, utils::view::unique_ptr_dereferencer>;
 
         /// Constructor.
@@ -923,7 +907,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static lua::Lunar<lua_frame>::RegType methods[];
+        static lua::lunar_binding<lua_frame> methods[];
 
     protected :
 

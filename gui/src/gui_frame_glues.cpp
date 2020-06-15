@@ -5,6 +5,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
 namespace lxgui {

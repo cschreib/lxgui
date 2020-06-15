@@ -5,6 +5,8 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
+#include <lxgui/luapp_state.hpp>
 
 namespace lxgui {
 namespace gui
@@ -22,23 +24,7 @@ std::string button::serialize(const std::string& sTab) const
 
 void button::create_glue()
 {
-    if (lGlue_) return;
-
-    lua::state* pLua = pManager_->get_lua();
-
-    if (bVirtual_)
-    {
-        pLua->push_number(uiID_);
-        lGlue_ = pLua->push_new<lua_virtual_glue>();
-    }
-    else
-    {
-        pLua->push_string(sName_);
-        lGlue_ = pLua->push_new<lua_button>();
-    }
-
-    pLua->set_global(sLuaName_);
-    pLua->pop();
+    create_glue_<lua_button>();
 }
 
 bool button::can_use_script(const std::string& sScriptName) const

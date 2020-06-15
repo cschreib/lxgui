@@ -121,7 +121,7 @@ namespace gui
 
         static const char className[];
         static const char* classList[];
-        static lua::Lunar<lua_check_button>::RegType methods[];
+        static lua::lunar_binding<lua_check_button> methods[];
 
     protected :
 

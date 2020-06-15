@@ -1,6 +1,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_uiobject.hpp"
 
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
 namespace lxgui {

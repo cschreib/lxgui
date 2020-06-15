@@ -8,6 +8,7 @@
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
@@ -158,7 +159,9 @@ int main(int argc, char* argv[])
         // Create GUI by code :
 
         // Create the Frame
-        std::unique_ptr<gui::frame> pFrame = pManager->create_frame<gui::frame>("FPSCounter");
+        // A "root" frame has no parent and is directly owned by the gui::manager.
+        // A "child" frame is owned by another frame.
+        gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
         pFrame->set_rel_dimensions(1.0f, 1.0f);
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
@@ -215,9 +218,6 @@ int main(int argc, char* argv[])
 
         // Tell the Frame is has been fully loaded, and call "OnLoad"
         pFrame->notify_loaded();
-
-        // Transfer ownership to the GUI manager
-        pManager->add_root_uiobject(std::move(pFrame));
 
         // Start the main loop
         bool bRunning = true;

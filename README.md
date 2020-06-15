@@ -254,7 +254,7 @@ Doing the very same thing in C++ would give the following code :
 
 ```c++
 // Create the Frame
-std::unique_ptr<gui::frame> pFrame = pManager->create_frame<gui::frame>("FPSCounter");
+gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
 pFrame->set_rel_dimensins(1.0f, 1.0f);
 pFrame->set_abs_point(gui::anchor_point::CENTER, "", gui::anchor_point::CENTER);
 
@@ -290,9 +290,6 @@ pFrame->define_script("OnUpdate",
 
 // Tell the Frame is has been fully loaded.
 pFrame->notify_loaded();
-
-// Give ownership to the GUI manager.
-pManager->add_root_uiobject(std::move(pFrame));
 ```
 
 As you can see from the screenshot above, this system can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.

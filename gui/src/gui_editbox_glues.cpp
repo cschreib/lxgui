@@ -1,5 +1,6 @@
 #include "lxgui/gui_editbox.hpp"
 
+#include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
 namespace lxgui {

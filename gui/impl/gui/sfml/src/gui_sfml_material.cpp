@@ -1,6 +1,7 @@
 #include "lxgui/impl/gui_sfml_material.hpp"
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
 namespace lxgui {

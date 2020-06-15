@@ -4,8 +4,12 @@
 #include "lxgui/impl/gui_gl_matrix4.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 
+#include <lxgui/gui_renderer_impl.hpp>
 #include <lxgui/utils.hpp>
-#include <lxgui/gui_manager.hpp>
+#include <lxgui/utils_refptr.hpp>
+#include <lxgui/utils_wptr.hpp>
+
+#include <map>
 
 namespace lxgui {
 namespace gui {

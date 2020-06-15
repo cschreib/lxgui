@@ -2,9 +2,12 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
+
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_manager.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_wptr.hpp>
 
 #ifdef WIN32
 #define NOMINMAX

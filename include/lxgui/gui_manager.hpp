@@ -2,13 +2,17 @@
 #define GUI_MANAGER_HPP
 
 #include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
+#include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_rendertarget.hpp"
+#include "lxgui/gui_strata.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_exception.hpp>
+#include <lxgui/utils_sorted_vector.hpp>
+#include <lxgui/utils_view.hpp>
 #include <lxgui/utils_refptr.hpp>
 #include <lxgui/utils_wptr.hpp>
 
@@ -30,84 +34,15 @@ namespace input {
 
 namespace gui
 {
-    class uiobject;
     class region;
     class layered_region;
     class frame;
     class focus_frame;
-    class sprite;
     class font;
     class color;
+    class renderer_impl;
     struct quad;
     struct vertex;
-
-    class renderer_impl;
-
-    /// Exception to be thrown by GUI code.
-    /** \note These exceptions should always be handled.<br>
-    *         The GUI is not a critical part of the Engine, so
-    *         whatever happens there <b>musn't</b> close the
-    *         program.
-    */
-    class exception : public utils::exception
-    {
-    public :
-
-        explicit exception(const std::string& sMessage) : utils::exception(sMessage)
-        {
-        }
-
-        exception(const std::string& sClassName, const std::string& sMessage) : utils::exception(sClassName, sMessage)
-        {
-        }
-    };
-
-    /// A piece of the user interface
-    struct addon
-    {
-        std::string sName;
-        std::string sVersion;
-        std::string sUIVersion;
-        std::string sAuthor;
-
-        bool bEnabled = true;
-
-        std::string sMainDirectory;
-        std::string sDirectory;
-
-        std::vector<std::string> lFileList;
-        std::vector<std::string> lSavedVariableList;
-    };
-
-    enum class frame_strata
-    {
-        PARENT,
-        BACKGROUND,
-        LOW,
-        MEDIUM,
-        HIGH,
-        DIALOG,
-        FULLSCREEN,
-        FULLSCREEN_DIALOG,
-        TOOLTIP
-    };
-
-    /// Contains frame
-    struct level
-    {
-        std::vector<frame*> lFrameList;
-    };
-
-    /// Contains level
-    struct strata
-    {
-        frame_strata                 mStrata = frame_strata::PARENT;
-        std::map<int, level>         lLevelList;
-        mutable bool                 bRedraw = true;
-        utils::refptr<render_target> pRenderTarget;
-        sprite                       mSprite;
-        mutable uint                 uiRedrawCount = 0u;
-    };
 
     /// Manages the user interface
     class manager : public event_receiver
@@ -127,6 +62,10 @@ namespace gui
         }
 
     public :
+
+        /// Type of the root frame list.
+        using root_frame_list = utils::sorted_vector<std::unique_ptr<frame>,uiobject::id_comparator<frame>>;
+        using root_frame_list_view = utils::view::adaptor<root_frame_list, utils::view::unique_ptr_dereferencer>;
 
         /// Constructor.
         /** \param pInputSource   The input source to use
@@ -185,16 +124,23 @@ namespace gui
         /// Creates a new uiobject.
         /** \param sClassName The class of the uiobject (Frame, fontString, Button, ...)
         *   \return The new uiobject
+        *   \note This is a low level function; the returned object only has the bare
+        *         minimum initialization. Use create_root_frame() or frame::create_child()
+        *         to get a fully-functional frame object, or frame::create_region() for
+        *         region objects.
         */
         std::unique_ptr<uiobject> create_uiobject(const std::string& sClassName);
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
         *   \return The new frame
+        *   \note This is a low level function; the returned frame only has the bare
+        *         minimum initialization. Use create_root_frame() or frame::create_child()
+        *         to get a fully-functional frame object.
         */
         std::unique_ptr<frame> create_frame(const std::string& sClassName);
 
-        /// Creates a new frame, ready for use.
+        /// Creates a new frame, ready for use, and owned by this manager.
         /** \param sClassName   The sub class of the frame (Button, ...)
         *   \param sName        The name of this frame
         *   \param sInheritance The name of the frame that should be inherited
@@ -203,9 +149,8 @@ namespace gui
         *   \note This function takes care of the basic initializing: the
         *         frame is directly usable.
         */
-        std::unique_ptr<frame> create_frame(
-            const std::string& sClassName, const std::string& sName, const std::string& sInheritance = ""
-        );
+        frame* create_root_frame(const std::string& sClassName, const std::string& sName,
+            const std::string& sInheritance = "");
 
         /// Creates a new frame, ready for use.
         /** \param sName        The name of this frame
@@ -216,17 +161,18 @@ namespace gui
         *         frame is directly usable.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        std::unique_ptr<frame> create_frame(const std::string& sName, const std::string& sInheritance = "")
+        frame* create_root_frame(const std::string& sName, const std::string& sInheritance = "")
         {
-            return std::unique_ptr<frame>(static_cast<frame_type*>(
-                create_frame(frame_type::CLASS_NAME, sName, sInheritance).release()));
+            return static_cast<frame_type*>(
+                create_root_frame(frame_type::CLASS_NAME, sName, sInheritance));
         }
 
         /// Creates a new layered_region.
         /** \param sClassName The sub class of the layered_region (FontString or texture)
         *   \return The new layered_region
-        *   \note You have the responsability to detroy and initialize the created
-        *         layered_region by yourself.
+        *   \note This is a low level function; the returned region only has the bare
+        *         minimum initialization. Use frame::create_region() to get a fully-functional
+        *         region object.
         */
         std::unique_ptr<layered_region> create_layered_region(const std::string& sClassName);
 
@@ -308,12 +254,11 @@ namespace gui
         */
         bool add_uiobject(uiobject* pObj);
 
-        /// Make an uiobject owned by this manager.
-        /** \param pObj The object to add
-        *   \return Raw pointer to the object, or nullptr if the name of the widget was already taken
-        *   \note You also need to call add_uiobject().
+        /// Make a frame owned by this manager.
+        /** \param pFrame The frame to add to the root frame list
+        *   \return Raw pointer to the frame
         */
-        uiobject* add_root_uiobject(std::unique_ptr<uiobject> pObj);
+        frame* add_root_frame(std::unique_ptr<frame> pFrame);
 
          /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
@@ -321,11 +266,16 @@ namespace gui
         */
         void remove_uiobject(uiobject* pObj);
 
-        /// Remove an object from the list of objects owned by this manager.
-        /** \param pObj The object to be released
-        *   \return A unique_ptr to the previously owned object, ignore it to destroy it.
+        /// Remove a frame from the list of frames owned by this manager.
+        /** \param pFrame The frame to be released
+        *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
         */
-        std::unique_ptr<uiobject> remove_root_uiobject(uiobject* pObj);
+        std::unique_ptr<frame> remove_root_frame(frame* pObj);
+
+        /// Returns the root frame list.
+        /** \return The root frame list
+        */
+        root_frame_list_view get_root_frames() const;
 
         /// Returns the uiobject associated with the given ID.
         /** \param uiID The unique ID representing the widget
@@ -775,7 +725,7 @@ namespace gui
         std::map<std::string, uiobject*> lNamedVirtualObjectList_;
 
         std::map<uint, uiobject*> lObjectList_;
-        std::map<uint, uiobject*> lMainObjectList_;
+        root_frame_list           lRootFrameList_;
 
         std::vector<std::string> lGUIDirectoryList_;
         addon*                   pCurrentAddOn_ = nullptr;
@@ -820,95 +770,6 @@ namespace gui
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;
         std::unique_ptr<renderer_impl> pImpl_;
-    };
-
-    /// Abstract type for implementation specific management
-    class renderer_impl
-    {
-    public :
-
-        /// Constructor.
-        renderer_impl() = default;
-
-        /// Destructor.
-        virtual ~renderer_impl() = default;
-
-        /// Gives a pointer to the base class.
-        /** \note This function is automatically called by gui::manager
-        *         on creation.
-        */
-        void set_parent(manager* pParent);
-
-        /// Begins rendering on a particular render target.
-        /** \param pTarget The render target (main screen if nullptr)
-        */
-        virtual void begin(utils::refptr<render_target> pTarget = nullptr) const = 0;
-
-        /// Ends rendering.
-        virtual void end() const = 0;
-
-        /// Renders a quad.
-        /** \param mQuad The quad to render on the current render target
-        *   \note This function is meant to be called between begin() and
-        *         end() only.
-        */
-        virtual void render_quad(const quad& mQuad) const = 0;
-
-        /// Renders a set of quads.
-        /** \param mQuad     The base quad to use for rendering (material, blending, ...)
-        *   \param lQuadList The list of the quads you want to render
-        *   \note This function is meant to be called between begin() and
-        *         end() only. It is always more efficient to call this method
-        *         than calling render_quad repeatedly, as it allows to batch
-        *         count reduction.
-        */
-        virtual void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
-
-        /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file
-        *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
-        */
-        virtual utils::refptr<material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const = 0;
-
-        /// Creates a new material from a plain color.
-        /** \param mColor The color to use
-        *   \return The new material
-        */
-        virtual utils::refptr<material> create_material(const color& mColor) const = 0;
-
-        /// Creates a new material from a render target.
-        /** \param pRenderTarget The render target from which to read the pixels
-        *   \return The new material
-        */
-        virtual utils::refptr<material> create_material(utils::refptr<render_target> pRenderTarget) const = 0;
-
-        /// Creates a new render target.
-        /** \param uiWidth  The width of the render target
-        *   \param uiHeight The height of the render target
-        */
-        virtual utils::refptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const = 0;
-
-        /// Creates a new font.
-        /** \param sFontFile The file from which to read the font
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \note Even though the gui has been designed to use vector fonts files
-        *         (such as .ttf or .otf font formats), nothing prevents the implementation
-        *         from using any other font type, including bitmap fonts.
-        */
-        virtual utils::refptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
-
-        /// Notifies the renderer that the render window has been resized.
-        /** \param uiNewWidth  The new window width
-        *   \param uiNewHeight The new window height
-        */
-        virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
-
-    protected :
-
-        manager* pParent_ = nullptr;
     };
 }
 }

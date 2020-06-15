@@ -1,6 +1,8 @@
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_renderer.hpp"
 
+#include <lxgui/gui_exception.hpp>
+
 #ifdef WIN32
 #define NOMINMAX
 #include <windows.h>
@@ -12,9 +14,6 @@
 #else
 #include <GL/gl.h>
 #endif
-
-
-#include <iostream>
 
 namespace lxgui {
 namespace gui {

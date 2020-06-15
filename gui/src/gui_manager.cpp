@@ -11,6 +11,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/luapp_exception.hpp>
@@ -153,8 +154,8 @@ std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
     }
 }
 
-std::unique_ptr<frame> manager::create_frame(const std::string& sClassName, const std::string& sName,
-                                             const std::string& sInheritance)
+frame* manager::create_root_frame(const std::string& sClassName, const std::string& sName,
+                                  const std::string& sInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
@@ -207,7 +208,7 @@ std::unique_ptr<frame> manager::create_frame(const std::string& sClassName, cons
     pNewFrame->set_newly_created();
     pNewFrame->notify_loaded();
 
-    return pNewFrame;
+    return add_root_frame(std::move(pNewFrame));
 }
 
 std::unique_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
@@ -326,14 +327,14 @@ bool manager::add_uiobject(uiobject* pObj)
     }
 }
 
-uiobject* manager::add_root_uiobject(std::unique_ptr<uiobject> pObj)
+frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 {
-    uiobject* pAddedObj = pObj.release();
-    lMainObjectList_[pAddedObj->get_id()] = pAddedObj;
-    if (!pAddedObj->is_virtual())
+    frame* pAddedFrame = pFrame.get();
+    lRootFrameList_.insert(std::move(pFrame));
+    if (!pAddedFrame->is_virtual())
         fire_build_strata_list();
 
-    return pAddedObj;
+    return pAddedFrame;
 }
 
 void manager::remove_uiobject(uiobject* pObj)
@@ -368,15 +369,20 @@ void manager::remove_uiobject(uiobject* pObj)
         stop_sizing(pObj);
 }
 
-std::unique_ptr<uiobject> manager::remove_root_uiobject(uiobject* pObj)
+std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
 {
-    auto iter = lMainObjectList_.find(pObj->get_id());
-    if (iter == lMainObjectList_.end())
+    auto iter = lRootFrameList_.find(pFrame->get_id());
+    if (iter == lRootFrameList_.end())
         return nullptr;
 
-    std::unique_ptr<uiobject> pRemovedObject(iter->second);
-    lMainObjectList_.erase(iter);
+    std::unique_ptr<frame> pRemovedObject(std::move(*iter));
+    lRootFrameList_.erase(iter);
     return pRemovedObject;
+}
+
+manager::root_frame_list_view manager::get_root_frames() const
+{
+    return root_frame_list_view(lRootFrameList_);
 }
 
 const uiobject* manager::get_uiobject(uint uiID) const
@@ -749,10 +755,7 @@ void manager::close_ui()
                 save_variables_(&mAddOn);
         }
 
-        for (auto* pObject : utils::range::value(lMainObjectList_))
-            delete pObject;
-
-        lMainObjectList_.clear();
+        lRootFrameList_.clear();
         lObjectList_.clear();
         lNamedObjectList_.clear();
         lNamedVirtualObjectList_.clear();
@@ -1023,7 +1026,7 @@ void manager::update(float fDelta)
 
     DEBUG_LOG(" Update widgets...");
     // ... then update logics on main widgets from parent to children.
-    for (auto* pObject : utils::range::value(lMainObjectList_))
+    for (auto* pObject : get_root_frames())
     {
         if (!pObject->is_virtual())
             pObject->update(fDelta);
@@ -1539,7 +1542,7 @@ void manager::on_event(const event& mEvent)
         uiScreenWidth_ = mEvent.get<uint>(0);
         uiScreenHeight_ = mEvent.get<uint>(1);
 
-        for (auto* pObject : utils::range::value(lMainObjectList_))
+        for (auto* pObject : get_root_frames())
         {
             if (!pObject->is_virtual())
                 pObject->fire_update_dimensions();
@@ -1631,15 +1634,6 @@ input::manager* manager::get_input_manager()
 const std::string& manager::get_locale() const
 {
     return sLocale_;
-}
-
-void renderer_impl::set_parent(manager* pParent)
-{
-    pParent_ = pParent;
-}
-
-void renderer_impl::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
-{
 }
 }
 }
