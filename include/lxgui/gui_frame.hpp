@@ -61,6 +61,9 @@ namespace gui
         /// Constructor.
         explicit frame(manager* pManager);
 
+        /// Destructor.
+        ~frame();
+
         /// Renders this widget on the current render target.
         void render() override;
 
@@ -637,13 +640,36 @@ namespace gui
         void set_shown(bool bIsShown) override;
 
         /// Flags this object as "manually rendered" by another object.
-        /** \param pRenderer The uiobject that will take care of rendering this widget
+        /** \param pRenderer The frame that will take care of rendering this widget
         *   \note Manually rendered objects are not automatically rendered
         *         by their parent (for layered_regions) or the manager
         *         (for frames). They also don't receive automatic input.
         *   \note Set the argument to nullptr to use the standard renderer.
         */
-        void set_renderer(frame* pRenderer) override;
+        void set_renderer(frame* pRenderer);
+
+        /// Checks if this object is manually rendered.
+        /** \return 'true' if this object is manually rendered
+        *   \note For more informations, see set_renderer().
+        */
+        bool is_manually_rendered() const;
+
+        /// Returns the renderer of this object, nullptr if none.
+        /** \return The renderer of this object, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        const frame* get_renderer() const;
+
+        /// Returns the renderer of this object or its parents, nullptr if none.
+        /** \return The renderer of this object or its parents, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        frame* get_top_level_renderer();
+
+        /// Notifies the renderer of this widget that it needs to be redrawn.
+        /** \note Automatically called by any shape changing function.
+        */
+        void notify_renderer_need_redraw() const override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param uiAbsWidth  The new width
@@ -678,22 +704,17 @@ namespace gui
         */
         virtual void notify_child_strata_changed(frame* pChild);
 
-        /// Notifies the renderer of this widget that it needs to be redrawn.
-        /** \note Automatically called by any shape changing function.
-        */
-        void notify_renderer_need_redraw() const override;
-
         /// Tells this widget that a manually rendered widget requires redraw.
         /** \note This function does nothing by default.
         */
         virtual void fire_redraw() const;
 
-        /// Tells this widget that it should (or not) render another object.
-        /** \param pObject           The object to render
+        /// Tells this widget that it should (or not) render another frame.
+        /** \param pFrame            The frame to render
         *   \param bManuallyRendered 'true' if this widget needs to render that new object
         *   \note Called automatically by add_child(), remove_child(), and destructors.
         */
-        virtual void notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered);
+        virtual void notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered);
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
@@ -785,6 +806,7 @@ namespace gui
         frame_strata mStrata_ = frame_strata::MEDIUM;
         bool         bIsTopLevel_ = false;
         frame*       pTopLevelParent_ = nullptr;
+        frame*       pRenderer_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 

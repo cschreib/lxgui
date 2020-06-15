@@ -104,12 +104,12 @@ namespace gui
         /// Tells this widget that a manually rendered widget requires redraw.
         void fire_redraw() const override;
 
-        /// Tells this widget that it should (or not) render another object.
-        /** \param pObject           The object to render
+        /// Tells this widget that it should (or not) render another frame.
+        /** \param pFrame            The frame to render
         *   \param bManuallyRendered 'true' if this widget needs to render that new object
         *   \note Called automatically by add_child(), remove_child(), and destructors.
         */
-        void notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered) override;
+        void notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered) override;
 
         /// Tells this scroll_frame that at least one of its children has modified its strata or level.
         /** \param pChild The child that has changed its strata (can also be a child of this child)

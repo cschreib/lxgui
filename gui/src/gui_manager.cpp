@@ -355,7 +355,10 @@ void manager::remove_uiobject(uiobject* pObj)
     else
         lNamedVirtualObjectList_.erase(pObj->get_name());
 
-    if (!pObj->is_manually_rendered())
+    // NB: cannot use down_cast() here, as the frame destructor
+    // may have already been called.
+    // TODO: reintroduce the check for manually rendered
+    if (pObj->is_object_type<frame>())
         fire_build_strata_list();
 
     if (pMovedObject_ == pObj)

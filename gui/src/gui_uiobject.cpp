@@ -20,13 +20,6 @@ uiobject::~uiobject()
 {
     if (!bVirtual_)
     {
-        // Tell the renderer to no longer render this widget and its children
-        frame* pTopLevelRenderer = get_top_level_renderer();
-        if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_object(this, false);
-
-        notify_renderer_need_redraw();
-
         // Tell this widget's anchor parents that it is no longer anchored to them
         for (auto& mAnchor : lAnchorList_)
         {
@@ -105,8 +98,6 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  # Lua name    : " << sLuaName_ << "\n";
     sStr << sTab << "  # ID          : " << uiID_ << "\n";
     sStr << sTab << "  # Type        : " << lType_.back() << "\n";
-    if (pRenderer_)
-    sStr << sTab << "  # Man. render : " << pRenderer_->get_name() << "\n";
     if (pParent_)
     sStr << sTab << "  # Parent      : " << pParent_->get_name() << "\n";
     else
@@ -1090,47 +1081,8 @@ bool uiobject::is_special() const
     return bSpecial_;
 }
 
-void uiobject::set_renderer(frame* pRenderer)
+void uiobject::notify_renderer_need_redraw() const
 {
-    if (pRenderer == pRenderer_)
-        return;
-
-    if (pRenderer_)
-    {
-        pRenderer_->notify_manually_rendered_object(this, false);
-        notify_renderer_need_redraw();
-    }
-
-    pRenderer_ = pRenderer;
-
-    if (pRenderer_)
-    {
-        pRenderer_->notify_manually_rendered_object(this, true);
-        notify_renderer_need_redraw();
-    }
-}
-
-bool uiobject::is_manually_rendered() const
-{
-    if (pRenderer_ != nullptr)
-        return true;
-
-    return pParent_ && pParent_->is_manually_rendered();
-}
-
-const frame* uiobject::get_renderer() const
-{
-    return pRenderer_;
-}
-
-frame* uiobject::get_top_level_renderer()
-{
-    if (pRenderer_)
-        return pRenderer_;
-    else if (pParent_)
-        return pParent_->get_top_level_renderer();
-    else
-        return nullptr;
 }
 
 void uiobject::set_newly_created()
@@ -1141,10 +1093,6 @@ void uiobject::set_newly_created()
 bool uiobject::is_newly_created() const
 {
     return bNewlyCreated_;
-}
-
-void uiobject::notify_renderer_need_redraw() const
-{
 }
 
 void uiobject::mark_for_copy(const std::string& sVariable)

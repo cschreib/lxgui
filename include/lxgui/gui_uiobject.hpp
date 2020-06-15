@@ -522,33 +522,6 @@ namespace gui
         */
         bool is_special() const;
 
-        /// Flags this object as "manually rendered" by another object.
-        /** \param pRenderer The frame that will take care of rendering this widget
-        *   \note Manually rendered objects are not automatically rendered
-        *         by their parent (for layered_regions) or the manager
-        *         (for frames). They also don't receive automatic input.
-        *   \note Set the argument to nullptr to use the standard renderer.
-        */
-        virtual void set_renderer(frame* pRenderer);
-
-        /// Checks if this object is manually rendered.
-        /** \return 'true' if this object is manually rendered
-        *   \note For more informations, see set_renderer().
-        */
-        bool is_manually_rendered() const;
-
-        /// Returns the renderer of this object, nullptr if none.
-        /** \return The renderer of this object, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        const frame* get_renderer() const;
-
-        /// Returns the renderer of this object or its parents, nullptr if none.
-        /** \return The renderer of this object or its parents, nullptr if none
-        *   \note For more informations, see set_renderer().
-        */
-        frame* get_top_level_renderer();
-
         /// Flags this object as newly created.
         /** \note Newly created objects aren't rendered.
         *         They unflag themselves after the first update() call.
@@ -563,7 +536,7 @@ namespace gui
         bool is_newly_created() const;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
-        /** \note Automatically called by any shape changing function.
+        /** \note Automatically called by any shape-changing function.
         */
         virtual void notify_renderer_need_redraw() const;
 
@@ -658,7 +631,6 @@ namespace gui
         uiobject*   pInheritance_ = nullptr;
         bool        bSpecial_ = false;
         bool        bNewlyCreated_ = false;
-        frame*      pRenderer_ = nullptr;
         bool        bInherits_ = false;
 
         bool         bVirtual_ = false;

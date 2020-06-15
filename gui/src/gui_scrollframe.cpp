@@ -415,27 +415,15 @@ void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
         remove_from_scroll_child_list_(pSubChild);
 }
 
-void scroll_frame::notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered)
+void scroll_frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered)
 {
-    if (!pObject)
+    if (!pFrame)
         return;
 
     if (bManuallyRendered)
-    {
-        frame* pFrame = pObject->down_cast<frame>();
-        if (!pFrame)
-            return;
-
         add_to_scroll_child_list_(pFrame);
-    }
     else
-    {
-        // NB: cannot use down_cast() here, as the frame destructor
-        // may have already been called.
-        // FIXME: not OK; this function needs the frame to still be alive!
-        if (pObject->is_object_type<frame>())
-            remove_from_scroll_child_list_(static_cast<frame*>(pObject));
-    }
+        remove_from_scroll_child_list_(pFrame);
 
     bRebuildScrollStrataList_ = true;
 }

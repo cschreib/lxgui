@@ -26,6 +26,19 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
     lType_.push_back(CLASS_NAME);
 }
 
+frame::~frame()
+{
+    if (!bVirtual_)
+    {
+        // Tell the renderer to no longer render this widget and its children
+        frame* pTopLevelRenderer = get_top_level_renderer();
+        if (pTopLevelRenderer)
+            pTopLevelRenderer->notify_manually_rendered_frame(this, false);
+
+        notify_renderer_need_redraw();
+    }
+}
+
 void frame::render()
 {
     if (bIsVisible_ && bReady_)
@@ -40,7 +53,7 @@ void frame::render()
 
             for (auto* pRegion : mLayer.lRegionList)
             {
-                if (pRegion->is_shown() && pRegion->get_renderer() != this && !pRegion->is_newly_created())
+                if (pRegion->is_shown() && !pRegion->is_newly_created())
                     pRegion->render();
             }
         }
@@ -57,6 +70,8 @@ std::string frame::serialize(const std::string& sTab) const
     std::ostringstream sStr;
 
     sStr << region::serialize(sTab);
+    if (pRenderer_)
+    sStr << sTab << "  # Man. render : " << pRenderer_->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
     switch (mStrata_)
     {
@@ -785,7 +800,7 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     {
         frame* pTopLevelRenderer = get_top_level_renderer();
         if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_object(pAddedChild, true);
+            pTopLevelRenderer->notify_manually_rendered_frame(pAddedChild, true);
     }
 
     notify_strata_changed_();
@@ -827,7 +842,7 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     {
         frame* pTopLevelRenderer = get_top_level_renderer();
         if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_object(pChild, false);
+            pTopLevelRenderer->notify_manually_rendered_frame(pChild, false);
     }
 
     notify_strata_changed_();
@@ -1693,18 +1708,56 @@ void frame::stop_sizing()
 
 void frame::set_renderer(frame* pRenderer)
 {
-    if (pRenderer != pRenderer_)
-        notify_strata_changed_();
+    if (pRenderer == pRenderer_)
+        return;
 
-    uiobject::set_renderer(pRenderer);
+    notify_strata_changed_();
+
+    if (pRenderer_)
+    {
+        pRenderer_->notify_manually_rendered_frame(this, false);
+        notify_renderer_need_redraw();
+    }
+
+    pRenderer_ = pRenderer;
+
+    if (pRenderer_)
+    {
+        pRenderer_->notify_manually_rendered_frame(this, true);
+        notify_renderer_need_redraw();
+    }
+}
+
+bool frame::is_manually_rendered() const
+{
+    if (pRenderer_ != nullptr)
+        return true;
+
+    return pParent_ && pParent_->down_cast<frame>()->is_manually_rendered();
+}
+
+const frame* frame::get_renderer() const
+{
+    return pRenderer_;
+}
+
+frame* frame::get_top_level_renderer()
+{
+    if (pRenderer_)
+        return pRenderer_;
+    else if (pParent_)
+        return pParent_->down_cast<frame>()->get_top_level_renderer();
+    else
+        return nullptr;
 }
 
 void frame::fire_redraw() const
 {
 }
 
-void frame::notify_manually_rendered_object(uiobject* pObject, bool bManuallyRendered)
+void frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered)
 {
+    throw gui::exception(lType_.back(), "this class has no mechanism for manual rendering");
 }
 
 void frame::notify_child_strata_changed(frame* pChild)

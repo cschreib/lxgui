@@ -126,9 +126,7 @@ void layered_region::notify_renderer_need_redraw() const
     if (bVirtual_)
         return;
 
-    if (pRenderer_)
-        pRenderer_->fire_redraw();
-    else if (pParent_)
+    if (pParent_)
         pParent_->notify_renderer_need_redraw();
 }
 }
