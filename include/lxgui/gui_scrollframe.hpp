@@ -21,6 +21,9 @@ namespace gui
         /// Constructor.
         explicit scroll_frame(manager* pManager);
 
+        /// Destructor.
+        ~scroll_frame();
+
         /// updates this widget's logic.
         void update(float fDelta) override;
 

@@ -13,6 +13,16 @@ scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
+scroll_frame::~scroll_frame()
+{
+    // Make sure the scroll child is destroyed before this object.
+    // This is needed because, otherwise, this destructor gets
+    // called before the frame destructor, which then destroys
+    // the children frames.
+    if (pScrollChild_)
+        remove_child(pScrollChild_);
+}
+
 bool scroll_frame::can_use_script(const std::string& sScriptName) const
 {
     if (frame::can_use_script(sScriptName))
@@ -120,7 +130,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         if (pScrollChild_->get_parent() != this)
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "The parent of a scroll child parent must be the associated scroll frame \""+sName_+"\"." << std::endl;
+                "The parent of a scroll child must be the associated scroll frame \""+sName_+"\"." << std::endl;
             pScrollChild_ = nullptr;
             return;
         }
