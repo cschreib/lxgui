@@ -136,9 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a070fa344ec59a0b62b2e96f21e011f3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a070fa344ec59a0b62b2e96f21e011f3f">on</a> (const std::string &amp;sScriptName, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a> *pEvent=nullptr) override</td></tr>
 <tr class="memdesc:a070fa344ec59a0b62b2e96f21e011f3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls a script.  <a href="#a070fa344ec59a0b62b2e96f21e011f3f">More...</a><br /></td></tr>
 <tr class="separator:a070fa344ec59a0b62b2e96f21e011f3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73011e44f807601b9093544f1e2ff5bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a73011e44f807601b9093544f1e2ff5bb">set_scroll_child</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
-<tr class="memdesc:a73011e44f807601b9093544f1e2ff5bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child.  <a href="#a73011e44f807601b9093544f1e2ff5bb">More...</a><br /></td></tr>
-<tr class="separator:a73011e44f807601b9093544f1e2ff5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85ebe090b7922b15e5357357438fbb7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a85ebe090b7922b15e5357357438fbb7c">set_scroll_child</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; pFrame)</td></tr>
+<tr class="memdesc:a85ebe090b7922b15e5357357438fbb7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child.  <a href="#a85ebe090b7922b15e5357357438fbb7c">More...</a><br /></td></tr>
+<tr class="separator:a85ebe090b7922b15e5357357438fbb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4a3eba7388bbe98bd5dca42675b621e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ac4a3eba7388bbe98bd5dca42675b621e">get_scroll_child</a> ()</td></tr>
 <tr class="memdesc:ac4a3eba7388bbe98bd5dca42675b621e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child.  <a href="#ac4a3eba7388bbe98bd5dca42675b621e">More...</a><br /></td></tr>
 <tr class="separator:ac4a3eba7388bbe98bd5dca42675b621e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +169,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3fded17f29ff75bcbd14edae37c90d25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a3fded17f29ff75bcbd14edae37c90d25">fire_redraw</a> () const override</td></tr>
 <tr class="memdesc:a3fded17f29ff75bcbd14edae37c90d25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that a manually rendered widget requires redraw.  <a href="#a3fded17f29ff75bcbd14edae37c90d25">More...</a><br /></td></tr>
 <tr class="separator:a3fded17f29ff75bcbd14edae37c90d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a735a84acaa8b8acb52ff3f1a19d043b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a735a84acaa8b8acb52ff3f1a19d043b6">notify_manually_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bManuallyRendered) override</td></tr>
+<tr class="memdesc:a735a84acaa8b8acb52ff3f1a19d043b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that it should (or not) render another frame.  <a href="#a735a84acaa8b8acb52ff3f1a19d043b6">More...</a><br /></td></tr>
+<tr class="separator:a735a84acaa8b8acb52ff3f1a19d043b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5865714c7f9afc7e3dec66c18d786b96"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5865714c7f9afc7e3dec66c18d786b96">notify_child_strata_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild) override</td></tr>
 <tr class="memdesc:a5865714c7f9afc7e3dec66c18d786b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a> that at least one of its children has modified its strata or level.  <a href="#a5865714c7f9afc7e3dec66c18d786b96">More...</a><br /></td></tr>
 <tr class="separator:a5865714c7f9afc7e3dec66c18d786b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,12 +218,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac71cb35bdacacd1e3598a8ec57f5e218 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac71cb35bdacacd1e3598a8ec57f5e218">has_script</a> (const std::string &amp;sScriptName) const </td></tr>
 <tr class="memdesc:ac71cb35bdacacd1e3598a8ec57f5e218 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this frame has a script defined.  <a href="#ac71cb35bdacacd1e3598a8ec57f5e218">More...</a><br /></td></tr>
 <tr class="separator:ac71cb35bdacacd1e3598a8ec57f5e218 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb66fce9499b3c056334091ca6db2954 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#adb66fce9499b3c056334091ca6db2954">add_region</a> (<a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *pRegion)</td></tr>
-<tr class="memdesc:adb66fce9499b3c056334091ca6db2954 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> to this frame's children.  <a href="#adb66fce9499b3c056334091ca6db2954">More...</a><br /></td></tr>
-<tr class="separator:adb66fce9499b3c056334091ca6db2954 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e115edb26df5cbcc69427488bce1c2b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a4e115edb26df5cbcc69427488bce1c2b">remove_region</a> (<a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *pRegion)</td></tr>
-<tr class="memdesc:a4e115edb26df5cbcc69427488bce1c2b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> from this frame's children.  <a href="#a4e115edb26df5cbcc69427488bce1c2b">More...</a><br /></td></tr>
-<tr class="separator:a4e115edb26df5cbcc69427488bce1c2b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58cc214303b29cfea9b49f148a8d0aac inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a58cc214303b29cfea9b49f148a8d0aac">add_region</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> &gt; pRegion)</td></tr>
+<tr class="memdesc:a58cc214303b29cfea9b49f148a8d0aac inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> to this frame's children.  <a href="#a58cc214303b29cfea9b49f148a8d0aac">More...</a><br /></td></tr>
+<tr class="separator:a58cc214303b29cfea9b49f148a8d0aac inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a917b187862d03cddfe5e5fb49f54a1d7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplParams" colspan="2">template&lt;typename region_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a917b187862d03cddfe5e5fb49f54a1d7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplItemLeft" align="right" valign="top">region_type *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a917b187862d03cddfe5e5fb49f54a1d7">add_region</a> (std::unique_ptr&lt; region_type &gt; pRegion)</td></tr>
+<tr class="memdesc:a917b187862d03cddfe5e5fb49f54a1d7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> to this frame's children.  <a href="#a917b187862d03cddfe5e5fb49f54a1d7">More...</a><br /></td></tr>
+<tr class="separator:a917b187862d03cddfe5e5fb49f54a1d7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b4d88093d2b57bd36ed3f80098a3125 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a3b4d88093d2b57bd36ed3f80098a3125">remove_region</a> (<a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *pRegion)</td></tr>
+<tr class="memdesc:a3b4d88093d2b57bd36ed3f80098a3125 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> from this frame's children.  <a href="#a3b4d88093d2b57bd36ed3f80098a3125">More...</a><br /></td></tr>
+<tr class="separator:a3b4d88093d2b57bd36ed3f80098a3125 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaa343fe3e83f2af54055249aeb458fe inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aeaa343fe3e83f2af54055249aeb458fe">create_region</a> (<a class="el" href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85">layer_type</a> mLayer, const std::string &amp;sClassName, const std::string &amp;sName, const std::string &amp;sInheritance=&quot;&quot;)</td></tr>
 <tr class="memdesc:aeaa343fe3e83f2af54055249aeb458fe inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new region as child of this frame.  <a href="#aeaa343fe3e83f2af54055249aeb458fe">More...</a><br /></td></tr>
 <tr class="separator:aeaa343fe3e83f2af54055249aeb458fe inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,15 +242,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01c1e8f2301babc63ec9b8c67f185f6b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplItemLeft" align="right" valign="top">frame_type *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a01c1e8f2301babc63ec9b8c67f185f6b">create_child</a> (const std::string &amp;sName, const std::string &amp;sInheritance=&quot;&quot;)</td></tr>
 <tr class="memdesc:a01c1e8f2301babc63ec9b8c67f185f6b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new frame as child of this frame.  <a href="#a01c1e8f2301babc63ec9b8c67f185f6b">More...</a><br /></td></tr>
 <tr class="separator:a01c1e8f2301babc63ec9b8c67f185f6b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeca203ea85c789a51b735f882c85dbb8 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aeca203ea85c789a51b735f882c85dbb8">add_child</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
-<tr class="memdesc:aeca203ea85c789a51b735f882c85dbb8 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a frame to this frame's children.  <a href="#aeca203ea85c789a51b735f882c85dbb8">More...</a><br /></td></tr>
-<tr class="separator:aeca203ea85c789a51b735f882c85dbb8 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb72c68fbb724d6ff5fd2b367f28d757 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aeb72c68fbb724d6ff5fd2b367f28d757">remove_child</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
-<tr class="memdesc:aeb72c68fbb724d6ff5fd2b367f28d757 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a frame from this frame's children.  <a href="#aeb72c68fbb724d6ff5fd2b367f28d757">More...</a><br /></td></tr>
-<tr class="separator:aeb72c68fbb724d6ff5fd2b367f28d757 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab71c55e9836c159539a1afda54836bd7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1id__comparator.html">id_comparator</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ab71c55e9836c159539a1afda54836bd7">get_children</a> () const </td></tr>
-<tr class="memdesc:ab71c55e9836c159539a1afda54836bd7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the child list.  <a href="#ab71c55e9836c159539a1afda54836bd7">More...</a><br /></td></tr>
-<tr class="separator:ab71c55e9836c159539a1afda54836bd7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11696bb40f1505fc18757bd1154f271a inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a11696bb40f1505fc18757bd1154f271a">add_child</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt; pChild)</td></tr>
+<tr class="memdesc:a11696bb40f1505fc18757bd1154f271a inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a frame to this frame's children.  <a href="#a11696bb40f1505fc18757bd1154f271a">More...</a><br /></td></tr>
+<tr class="separator:a11696bb40f1505fc18757bd1154f271a inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd33a52af55464aeb287f966ddc5f1c5 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplParams" colspan="2">template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:acd33a52af55464aeb287f966ddc5f1c5 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplItemLeft" align="right" valign="top">frame_type *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#acd33a52af55464aeb287f966ddc5f1c5">add_child</a> (std::unique_ptr&lt; frame_type &gt; pChild)</td></tr>
+<tr class="memdesc:acd33a52af55464aeb287f966ddc5f1c5 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a frame to this frame's children.  <a href="#acd33a52af55464aeb287f966ddc5f1c5">More...</a><br /></td></tr>
+<tr class="separator:acd33a52af55464aeb287f966ddc5f1c5 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d3206132256833afadd8512edaed5f6 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a6d3206132256833afadd8512edaed5f6">remove_child</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
+<tr class="memdesc:a6d3206132256833afadd8512edaed5f6 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a frame from this frame's children.  <a href="#a6d3206132256833afadd8512edaed5f6">More...</a><br /></td></tr>
+<tr class="separator:a6d3206132256833afadd8512edaed5f6 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2c54ce39aeae59336d87a1b47166404 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aaf80525ba248fdfe97e4bdf7a1ee600b">child_list_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ae2c54ce39aeae59336d87a1b47166404">get_children</a> () const </td></tr>
+<tr class="memdesc:ae2c54ce39aeae59336d87a1b47166404 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the child list.  <a href="#ae2c54ce39aeae59336d87a1b47166404">More...</a><br /></td></tr>
+<tr class="separator:ae2c54ce39aeae59336d87a1b47166404 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36dbc38ed2354ecce2815e2a9a500588 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a36dbc38ed2354ecce2815e2a9a500588">get_child</a> (const std::string &amp;sName)</td></tr>
 <tr class="memdesc:a36dbc38ed2354ecce2815e2a9a500588 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this frame's children.  <a href="#a36dbc38ed2354ecce2815e2a9a500588">More...</a><br /></td></tr>
 <tr class="separator:a36dbc38ed2354ecce2815e2a9a500588 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +262,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8887286a43883f162a9e7d8cecc22ea7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memTemplItemLeft" align="right" valign="top">frame_type *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a8887286a43883f162a9e7d8cecc22ea7">get_child</a> (const std::string &amp;sName)</td></tr>
 <tr class="memdesc:a8887286a43883f162a9e7d8cecc22ea7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this frame's children.  <a href="#a8887286a43883f162a9e7d8cecc22ea7">More...</a><br /></td></tr>
 <tr class="separator:a8887286a43883f162a9e7d8cecc22ea7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afac4ab0d756a521a1c255cd98ac6fa58 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa9b34456fb4180a06c551b9348e64c90">region_list_view</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#afac4ab0d756a521a1c255cd98ac6fa58">get_regions</a> () const </td></tr>
+<tr class="memdesc:afac4ab0d756a521a1c255cd98ac6fa58 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the region list.  <a href="#afac4ab0d756a521a1c255cd98ac6fa58">More...</a><br /></td></tr>
+<tr class="separator:afac4ab0d756a521a1c255cd98ac6fa58 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51094e9e561b1b8020924d2c903032dc inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a51094e9e561b1b8020924d2c903032dc">get_region</a> (const std::string &amp;sName)</td></tr>
 <tr class="memdesc:a51094e9e561b1b8020924d2c903032dc inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns one of this frame's region.  <a href="#a51094e9e561b1b8020924d2c903032dc">More...</a><br /></td></tr>
 <tr class="separator:a51094e9e561b1b8020924d2c903032dc inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,9 +278,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab27d05c78b869e24383392858f06531f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ab27d05c78b869e24383392858f06531f">get_effective_scale</a> () const </td></tr>
 <tr class="memdesc:ab27d05c78b869e24383392858f06531f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates effective scale.  <a href="#ab27d05c78b869e24383392858f06531f">More...</a><br /></td></tr>
 <tr class="separator:ab27d05c78b869e24383392858f06531f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59521b061ab49f4345fed287108abd4c inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a59521b061ab49f4345fed287108abd4c">get_frame_level</a> () const </td></tr>
-<tr class="memdesc:a59521b061ab49f4345fed287108abd4c inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this frame's level.  <a href="#a59521b061ab49f4345fed287108abd4c">More...</a><br /></td></tr>
-<tr class="separator:a59521b061ab49f4345fed287108abd4c inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3957cde4922df03eb9b5d59b79075c53 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a3957cde4922df03eb9b5d59b79075c53">get_level</a> () const </td></tr>
+<tr class="memdesc:a3957cde4922df03eb9b5d59b79075c53 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this frame's level.  <a href="#a3957cde4922df03eb9b5d59b79075c53">More...</a><br /></td></tr>
+<tr class="separator:a3957cde4922df03eb9b5d59b79075c53 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a580869dd2f2aae5f1f03cdb804ca88f7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a580869dd2f2aae5f1f03cdb804ca88f7">get_frame_strata</a> () const </td></tr>
 <tr class="memdesc:a580869dd2f2aae5f1f03cdb804ca88f7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this frame's strata.  <a href="#a580869dd2f2aae5f1f03cdb804ca88f7">More...</a><br /></td></tr>
 <tr class="separator:a580869dd2f2aae5f1f03cdb804ca88f7 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,6 +422,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a030e2f13bd0c589eb39a3066796cc00f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a030e2f13bd0c589eb39a3066796cc00f">set_parent</a> (<a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pParent) override</td></tr>
 <tr class="memdesc:a030e2f13bd0c589eb39a3066796cc00f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's parent.  <a href="#a030e2f13bd0c589eb39a3066796cc00f">More...</a><br /></td></tr>
 <tr class="separator:a030e2f13bd0c589eb39a3066796cc00f inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1071a06de1ebb358572382747ff0de9 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ad1071a06de1ebb358572382747ff0de9">release_from_parent</a> () override</td></tr>
+<tr class="memdesc:ad1071a06de1ebb358572382747ff0de9 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes this widget from its parent and return an owning pointer.  <a href="#ad1071a06de1ebb358572382747ff0de9">More...</a><br /></td></tr>
+<tr class="separator:ad1071a06de1ebb358572382747ff0de9 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a910ebd29935d46c4aaedaeb5c7f9ae11 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a910ebd29935d46c4aaedaeb5c7f9ae11">set_resizable</a> (bool bIsResizable)</td></tr>
 <tr class="memdesc:a910ebd29935d46c4aaedaeb5c7f9ae11 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets if this frame can be resized by the user.  <a href="#a910ebd29935d46c4aaedaeb5c7f9ae11">More...</a><br /></td></tr>
 <tr class="separator:a910ebd29935d46c4aaedaeb5c7f9ae11 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -444,9 +461,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a763deea9d70159df2d843816b86c5708 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a763deea9d70159df2d843816b86c5708">set_shown</a> (bool bIsShown) override</td></tr>
 <tr class="memdesc:a763deea9d70159df2d843816b86c5708 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows/hides this widget.  <a href="#a763deea9d70159df2d843816b86c5708">More...</a><br /></td></tr>
 <tr class="separator:a763deea9d70159df2d843816b86c5708 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a322df5e2b1958dc6dd62ac373650a790 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a322df5e2b1958dc6dd62ac373650a790">set_manually_rendered</a> (bool bManuallyRendered, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pRenderer=nullptr) override</td></tr>
-<tr class="memdesc:a322df5e2b1958dc6dd62ac373650a790 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as "manually rendered".  <a href="#a322df5e2b1958dc6dd62ac373650a790">More...</a><br /></td></tr>
-<tr class="separator:a322df5e2b1958dc6dd62ac373650a790 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac43a76a8d9f5cd927c2408870e161fa1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac43a76a8d9f5cd927c2408870e161fa1">set_renderer</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pRenderer)</td></tr>
+<tr class="memdesc:ac43a76a8d9f5cd927c2408870e161fa1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as "manually rendered" by another object.  <a href="#ac43a76a8d9f5cd927c2408870e161fa1">More...</a><br /></td></tr>
+<tr class="separator:ac43a76a8d9f5cd927c2408870e161fa1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9234ca0c08c7ab6c9febffd00e411200 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9234ca0c08c7ab6c9febffd00e411200">is_manually_rendered</a> () const </td></tr>
+<tr class="memdesc:a9234ca0c08c7ab6c9febffd00e411200 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is manually rendered.  <a href="#a9234ca0c08c7ab6c9febffd00e411200">More...</a><br /></td></tr>
+<tr class="separator:a9234ca0c08c7ab6c9febffd00e411200 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42a2f96cd89276d2561a1eb81c6a8f91 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a42a2f96cd89276d2561a1eb81c6a8f91">get_renderer</a> () const </td></tr>
+<tr class="memdesc:a42a2f96cd89276d2561a1eb81c6a8f91 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object, nullptr if none.  <a href="#a42a2f96cd89276d2561a1eb81c6a8f91">More...</a><br /></td></tr>
+<tr class="separator:a42a2f96cd89276d2561a1eb81c6a8f91 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b7e98ed073cdde2f7c06c361bf63f1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa9b7e98ed073cdde2f7c06c361bf63f1">get_top_level_renderer</a> ()</td></tr>
+<tr class="memdesc:aa9b7e98ed073cdde2f7c06c361bf63f1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer of this object or its parents, nullptr if none.  <a href="#aa9b7e98ed073cdde2f7c06c361bf63f1">More...</a><br /></td></tr>
+<tr class="separator:aa9b7e98ed073cdde2f7c06c361bf63f1 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a0431d207f6880e4f74c23c890dff895d">notify_renderer_need_redraw</a> () const override</td></tr>
+<tr class="memdesc:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer of this widget that it needs to be redrawn.  <a href="#a0431d207f6880e4f74c23c890dff895d">More...</a><br /></td></tr>
+<tr class="separator:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c662ecb2c46f5614c827d90b2aaaef4 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a6c662ecb2c46f5614c827d90b2aaaef4">set_abs_dimensions</a> (<a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiAbsWidth, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiAbsHeight) override</td></tr>
 <tr class="memdesc:a6c662ecb2c46f5614c827d90b2aaaef4 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute dimensions (in pixels).  <a href="#a6c662ecb2c46f5614c827d90b2aaaef4">More...</a><br /></td></tr>
 <tr class="separator:a6c662ecb2c46f5614c827d90b2aaaef4 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -456,9 +485,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a27f9e194af3168d4b9b2ce7201d68398 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a27f9e194af3168d4b9b2ce7201d68398">set_abs_height</a> (<a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiAbsHeight) override</td></tr>
 <tr class="memdesc:a27f9e194af3168d4b9b2ce7201d68398 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute height (in pixels).  <a href="#a27f9e194af3168d4b9b2ce7201d68398">More...</a><br /></td></tr>
 <tr class="separator:a27f9e194af3168d4b9b2ce7201d68398 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a0431d207f6880e4f74c23c890dff895d">notify_renderer_need_redraw</a> () const override</td></tr>
-<tr class="memdesc:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer of this widget that it needs to be redrawn.  <a href="#a0431d207f6880e4f74c23c890dff895d">More...</a><br /></td></tr>
-<tr class="separator:a0431d207f6880e4f74c23c890dff895d inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba96b4404ecd847ce9df743aa68aa046 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046">notify_loaded</a> () override</td></tr>
 <tr class="memdesc:aba96b4404ecd847ce9df743aa68aa046 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies this widget that it has been fully loaded.  <a href="#aba96b4404ecd847ce9df743aa68aa046">More...</a><br /></td></tr>
 <tr class="separator:aba96b4404ecd847ce9df743aa68aa046 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -477,9 +503,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6307613dac191f7aae79aaca4e9415b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1addon.html">addon</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ab6307613dac191f7aae79aaca4e9415b">get_addon</a> () const </td></tr>
 <tr class="memdesc:ab6307613dac191f7aae79aaca4e9415b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this frame's addon.  <a href="#ab6307613dac191f7aae79aaca4e9415b">More...</a><br /></td></tr>
 <tr class="separator:ab6307613dac191f7aae79aaca4e9415b inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b6e819b51ab9b141e3f8d5626760478 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a4b6e819b51ab9b141e3f8d5626760478">clear_links</a> () override</td></tr>
-<tr class="memdesc:a4b6e819b51ab9b141e3f8d5626760478 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all anchors that point to this widget and all other kind of links.  <a href="#a4b6e819b51ab9b141e3f8d5626760478">More...</a><br /></td></tr>
-<tr class="separator:a4b6e819b51ab9b141e3f8d5626760478 inherit pub_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlxgui_1_1gui_1_1event__receiver"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlxgui_1_1gui_1_1event__receiver')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html">lxgui::gui::event_receiver</a></td></tr>
 <tr class="memitem:a6f4bf54e29735c9c04277bff27264415 inherit pub_methods_classlxgui_1_1gui_1_1event__receiver"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a6f4bf54e29735c9c04277bff27264415">event_receiver</a> (<a class="el" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a> *pManager=nullptr)</td></tr>
 <tr class="memdesc:a6f4bf54e29735c9c04277bff27264415 inherit pub_methods_classlxgui_1_1gui_1_1event__receiver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a6f4bf54e29735c9c04277bff27264415">More...</a><br /></td></tr>
@@ -588,9 +611,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aafe98651b20d9cbabc9daf5ef7888086">is_object_type</a> (const std::string &amp;sType) const </td></tr>
 <tr class="memdesc:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this widget is of the provided type.  <a href="#aafe98651b20d9cbabc9daf5ef7888086">More...</a><br /></td></tr>
 <tr class="separator:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa24da273fed585e847efe5c9b81ad9d8">get_object_typeList</a> () const </td></tr>
-<tr class="memdesc:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this widget.  <a href="#aa24da273fed585e847efe5c9b81ad9d8">More...</a><br /></td></tr>
-<tr class="separator:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a571564579e18bf981bdeacc2c1be8c7d">is_object_type</a> () const </td></tr>
+<tr class="memdesc:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this widget is of the provided type.  <a href="#a571564579e18bf981bdeacc2c1be8c7d">More...</a><br /></td></tr>
+<tr class="separator:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a49b2ebebbfbb0913809823d32bbc0529">get_object_type_list</a> () const </td></tr>
+<tr class="memdesc:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this widget.  <a href="#a49b2ebebbfbb0913809823d32bbc0529">More...</a><br /></td></tr>
+<tr class="separator:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">const ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af274199d8663b079122e26890e13c187">down_cast</a> () const </td></tr>
+<tr class="memdesc:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="#af274199d8663b079122e26890e13c187">More...</a><br /></td></tr>
+<tr class="separator:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5">down_cast</a> ()</td></tr>
+<tr class="memdesc:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="#a0c09d849f88675b6809662075443cca5">More...</a><br /></td></tr>
+<tr class="separator:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0bca2aa4e555e1d76be39d7af6ad0e0f">get_bottom</a> () const </td></tr>
 <tr class="memdesc:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's bottom border.  <a href="#a0bca2aa4e555e1d76be39d7af6ad0e0f">More...</a><br /></td></tr>
 <tr class="separator:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -669,9 +704,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0770f71a2ef3c1fff2ab514fcf2aeba1">is_special</a> () const </td></tr>
 <tr class="memdesc:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is special.  <a href="#a0770f71a2ef3c1fff2ab514fcf2aeba1">More...</a><br /></td></tr>
 <tr class="separator:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#abec1731e90473eb3b26dfbb3bfb29b7e">is_manually_rendered</a> () const </td></tr>
-<tr class="memdesc:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is manually rendered.  <a href="#abec1731e90473eb3b26dfbb3bfb29b7e">More...</a><br /></td></tr>
-<tr class="separator:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae130e3bf75a41ff0893bd2ecec33cdc9">set_newly_created</a> ()</td></tr>
 <tr class="memdesc:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as newly created.  <a href="#ae130e3bf75a41ff0893bd2ecec33cdc9">More...</a><br /></td></tr>
 <tr class="separator:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -721,8 +753,6 @@ Static Public Attributes</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9a348fce600186c2263fff7d73170306"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a9a348fce600186c2263fff7d73170306">parse_scroll_child_block_</a> (<a class="el" href="classlxgui_1_1xml_1_1block.html">xml::block</a> *pBlock)</td></tr>
 <tr class="separator:a9a348fce600186c2263fff7d73170306"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a992d591e05e996404177e3d1f0a8f2e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a992d591e05e996404177e3d1f0a8f2e0">notify_manually_rendered_object_</a> (<a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pObject, bool bManuallyRendered) override</td></tr>
-<tr class="separator:a992d591e05e996404177e3d1f0a8f2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c2c433326efacf47b5114c3a75362ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a1c2c433326efacf47b5114c3a75362ad">add_to_scroll_child_list_</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
 <tr class="separator:a1c2c433326efacf47b5114c3a75362ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe0e58db00114867a0185874abdf4a51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#abe0e58db00114867a0185874abdf4a51">remove_from_scroll_child_list_</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
@@ -760,6 +790,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ad053d918706016043fc15046c198a289 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adab2be1b214af3180135590e2c6a5656 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#adab2be1b214af3180135590e2c6a5656">notify_strata_changed_</a> ()</td></tr>
 <tr class="separator:adab2be1b214af3180135590e2c6a5656 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bac554bc10c166b760a5c352bd119d1 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9bac554bc10c166b760a5c352bd119d1">notify_renderer_add_frame_</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
+<tr class="separator:a9bac554bc10c166b760a5c352bd119d1 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4a8858b670c207fa2499742c26bbbc5 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac4a8858b670c207fa2499742c26bbbc5">notify_renderer_remove_frame_</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pChild)</td></tr>
+<tr class="separator:ac4a8858b670c207fa2499742c26bbbc5 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab13332a0bf485c32d1496362cd3702d2 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ab13332a0bf485c32d1496362cd3702d2">notify_top_level_parent_</a> (bool bTopLevel, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pParent)</td></tr>
 <tr class="separator:ab13332a0bf485c32d1496362cd3702d2 inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c10a73bf4e981a24218b6fc19fcd0be inherit pro_methods_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a8c10a73bf4e981a24218b6fc19fcd0be">add_level_</a> (int iAmount)</td></tr>
@@ -819,10 +853,10 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a803304bee1304a30b13cbb2c1beb40bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a803304bee1304a30b13cbb2c1beb40bb">pHoveredScrollChild_</a> = nullptr</td></tr>
 <tr class="separator:a803304bee1304a30b13cbb2c1beb40bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classlxgui_1_1gui_1_1frame"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classlxgui_1_1gui_1_1frame')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classlxgui_1_1gui_1_1frame.html">lxgui::gui::frame</a></td></tr>
-<tr class="memitem:a9622a80532adb1510106538b33c932da inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1id__comparator.html">id_comparator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9622a80532adb1510106538b33c932da">lChildList_</a></td></tr>
-<tr class="separator:a9622a80532adb1510106538b33c932da inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1003376c80580033301c450d6fe92b59 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>, <a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a1003376c80580033301c450d6fe92b59">lRegionList_</a></td></tr>
-<tr class="separator:a1003376c80580033301c450d6fe92b59 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6338e61054c2debe279ba018b138944f inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a58950cd424c12fc5d2f5212c54b6bd4f">child_list</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a6338e61054c2debe279ba018b138944f">lChildList_</a></td></tr>
+<tr class="separator:a6338e61054c2debe279ba018b138944f inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25db7e94f873f5fbd600d34305aa3f15 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9a0a3256d981159df28ab2ace5232a32">region_list</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a25db7e94f873f5fbd600d34305aa3f15">lRegionList_</a></td></tr>
+<tr class="separator:a25db7e94f873f5fbd600d34305aa3f15 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1e71bc1d25822d95500e1eb559178a6 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85">layer_type</a>, <a class="el" href="structlxgui_1_1gui_1_1layer.html">layer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac1e71bc1d25822d95500e1eb559178a6">lLayerList_</a></td></tr>
 <tr class="separator:ac1e71bc1d25822d95500e1eb559178a6 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a714f0fa8940081e1728acd8a5a31246b inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a714f0fa8940081e1728acd8a5a31246b">lDefinedScriptList_</a></td></tr>
@@ -847,6 +881,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a67e4888afed0ace1a1ce9975e9736b09 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47291ba56fdf4b8717e01bf81c84e428 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a47291ba56fdf4b8717e01bf81c84e428">pTopLevelParent_</a> = nullptr</td></tr>
 <tr class="separator:a47291ba56fdf4b8717e01bf81c84e428 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacc789ec6de8880d9723bd722147483c inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aacc789ec6de8880d9723bd722147483c">pRenderer_</a> = nullptr</td></tr>
+<tr class="separator:aacc789ec6de8880d9723bd722147483c inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a268b01e2d4bc98c749342597199d8326 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1backdrop.html">backdrop</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a268b01e2d4bc98c749342597199d8326">pBackdrop_</a></td></tr>
 <tr class="separator:a268b01e2d4bc98c749342597199d8326 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefdccf8ab395cc1c3f454a55c7e2715a inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aefdccf8ab395cc1c3f454a55c7e2715a">bHasAllEventsRegistred_</a> = false</td></tr>
@@ -891,8 +927,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:abe38afae83ed5df056a13ebbca752c8f inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d1ae4db9c97f3a473e10a9a0226eb30 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a5d1ae4db9c97f3a473e10a9a0226eb30">iMousePosY_</a> = 0</td></tr>
 <tr class="separator:a5d1ae4db9c97f3a473e10a9a0226eb30 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7accf1eb880c59f84f49bb2ade32229c inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a7accf1eb880c59f84f49bb2ade32229c">pTitleRegion_</a> = nullptr</td></tr>
-<tr class="separator:a7accf1eb880c59f84f49bb2ade32229c inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adacaddbf6322ccf458893162f95b8f98 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#adacaddbf6322ccf458893162f95b8f98">pTitleRegion_</a> = nullptr</td></tr>
+<tr class="separator:adacaddbf6322ccf458893162f95b8f98 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a356294ae68636cb879e5ccdb4108721a inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a356294ae68636cb879e5ccdb4108721a">pParentFrame_</a> = nullptr</td></tr>
 <tr class="separator:a356294ae68636cb879e5ccdb4108721a inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19a8565d79a7835d611c15a8853ff728 inherit pro_attribs_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a19a8565d79a7835d611c15a8853ff728">lMouseButtonList_</a></td></tr>
@@ -916,12 +952,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ac123cbf269320314d1232cda3df910c6 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafc5ddaec258c84253290b261aa123ce inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aafc5ddaec258c84253290b261aa123ce">bSpecial_</a> = false</td></tr>
 <tr class="separator:aafc5ddaec258c84253290b261aa123ce inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63d19b60e7c1c22666d0b510dddc0867 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a63d19b60e7c1c22666d0b510dddc0867">bManuallyRendered_</a> = false</td></tr>
-<tr class="separator:a63d19b60e7c1c22666d0b510dddc0867 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05c427f81749830f69442cc3d79dfdc5 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a05c427f81749830f69442cc3d79dfdc5">bNewlyCreated_</a> = false</td></tr>
 <tr class="separator:a05c427f81749830f69442cc3d79dfdc5 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87f3635d94216f4de52ab934dcd9278b inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a87f3635d94216f4de52ab934dcd9278b">pRenderer_</a> = nullptr</td></tr>
-<tr class="separator:a87f3635d94216f4de52ab934dcd9278b inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2294c87e31fdbe1031bebc5e1ba54afd inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a2294c87e31fdbe1031bebc5e1ba54afd">bInherits_</a> = false</td></tr>
 <tr class="separator:a2294c87e31fdbe1031bebc5e1ba54afd inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0779b64cd085c299e478dfaf6212f11 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ad0779b64cd085c299e478dfaf6212f11">bVirtual_</a> = false</td></tr>
@@ -974,6 +1006,16 @@ Protected Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classlxgui_1_1gui_1_1frame"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classlxgui_1_1gui_1_1frame')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classlxgui_1_1gui_1_1frame.html">lxgui::gui::frame</a></td></tr>
+<tr class="memitem:a58950cd424c12fc5d2f5212c54b6bd4f inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a58950cd424c12fc5d2f5212c54b6bd4f">child_list</a> = <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt; std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1id__comparator.html">id_comparator</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&gt;</td></tr>
+<tr class="memdesc:a58950cd424c12fc5d2f5212c54b6bd4f inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the frame child list.  <a href="#a58950cd424c12fc5d2f5212c54b6bd4f">More...</a><br /></td></tr>
+<tr class="separator:a58950cd424c12fc5d2f5212c54b6bd4f inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf80525ba248fdfe97e4bdf7a1ee600b inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aaf80525ba248fdfe97e4bdf7a1ee600b">child_list_view</a> = <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">utils::view::adaptor</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html#a58950cd424c12fc5d2f5212c54b6bd4f">child_list</a>, <a class="el" href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html">utils::view::unique_ptr_dereferencer</a> &gt;</td></tr>
+<tr class="separator:aaf80525ba248fdfe97e4bdf7a1ee600b inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a0a3256d981159df28ab2ace5232a32 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9a0a3256d981159df28ab2ace5232a32">region_list</a> = <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html">utils::sorted_vector</a>&lt; std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> &gt;, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1id__comparator.html">id_comparator</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1layered__region.html">layered_region</a> &gt;&gt;</td></tr>
+<tr class="memdesc:a9a0a3256d981159df28ab2ace5232a32 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the region list.  <a href="#a9a0a3256d981159df28ab2ace5232a32">More...</a><br /></td></tr>
+<tr class="separator:a9a0a3256d981159df28ab2ace5232a32 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9b34456fb4180a06c551b9348e64c90 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa9b34456fb4180a06c551b9348e64c90">region_list_view</a> = <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">utils::view::adaptor</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html#a9a0a3256d981159df28ab2ace5232a32">region_list</a>, <a class="el" href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html">utils::view::unique_ptr_dereferencer</a> &gt;</td></tr>
+<tr class="separator:aa9b34456fb4180a06c551b9348e64c90 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26480ea9a512453abfeab4f7d8d56395 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a> *)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a26480ea9a512453abfeab4f7d8d56395">handler</a></td></tr>
 <tr class="separator:a26480ea9a512453abfeab4f7d8d56395 inherit pub_types_classlxgui_1_1gui_1_1frame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -1026,7 +1068,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00017">17</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00016">16</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1095,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00409">409</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00414">414</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1090,7 +1132,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a8c035be3b2e726a612ae0679eccfcd00">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00021">21</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00026">26</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1168,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a828a6a2bf34dc73473d8b25c756769b5">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00041">41</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00046">46</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1155,7 +1197,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#aedfaea68f92fbb37101aed8bfce97b73">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00404">404</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00409">409</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1182,9 +1224,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Tells this widget that a manually rendered widget requires redraw. </p>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5ea5f66afb205a07fc5c537a768f7a33">lxgui::gui::uiobject</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a28f0741fb3cd239742becd17e15bb82a">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00385">385</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00390">390</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1204,7 +1246,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the horizontal offset of the scroll child. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal offset of the scroll child </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00173">173</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00178">178</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1224,7 +1266,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the maximum horizontal offset of the scroll child. </p>
 <dl class="section return"><dt>Returns</dt><dd>The maximum horizontal offset of the scroll child </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00178">178</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00183">183</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1244,7 +1286,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child. </p>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00156">156</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00161">161</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1306,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the vertical offset of the scroll child. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical offset of the scroll child </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00195">195</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00200">200</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1284,7 +1326,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the maximum vertical offset of the scroll child. </p>
 <dl class="section return"><dt>Returns</dt><dd>The maximum vertical offset of the scroll child </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00200">200</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00205">205</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1335,7 +1377,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#acc3e427753d473616a5878acc3b6c9d8">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00371">371</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00376">376</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1374,11 +1416,11 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#aebb63e4b52c0abd5c02d6459c789f301">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00391">391</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00396">396</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a992d591e05e996404177e3d1f0a8f2e0"></a>
+<a class="anchor" id="a735a84acaa8b8acb52ff3f1a19d043b6"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1386,10 +1428,10 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::scroll_frame::notify_manually_rendered_object_ </td>
+          <td class="memname">void lxgui::gui::scroll_frame::notify_manually_rendered_frame </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *&#160;</td>
-          <td class="paramname"><em>pObject</em>, </td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
+          <td class="paramname"><em>pFrame</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1405,14 +1447,24 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aeb67c4c94afe632f79333f9db975cd20">lxgui::gui::uiobject</a>.</p>
+<p>Tells this widget that it should (or not) render another frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pFrame</td><td>The frame to render </td></tr>
+    <tr><td class="paramname">bManuallyRendered</td><td>'true' if this widget needs to render that new object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Called automatically by <a class="el" href="classlxgui_1_1gui_1_1frame.html#a11696bb40f1505fc18757bd1154f271a" title="Adds a frame to this frame&#39;s children. ">add_child()</a>, <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6d3206132256833afadd8512edaed5f6" title="Removes a frame from this frame&#39;s children. ">remove_child()</a>, and destructors. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00423">423</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a5d476a9f9d145e6482761f648790eafd">lxgui::gui::frame</a>.</p>
+
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00428">428</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1518,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#adb149905012f66d0eacdb66686995f14">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00379">379</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00384">384</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1565,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a9078b9f5b538db7a1e2f7376363ee3cb">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00033">33</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00038">38</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1600,7 +1652,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00315">315</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00320">320</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1625,7 +1677,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00339">339</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00344">344</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1679,7 +1731,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00416">416</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00421">421</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1704,7 +1756,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00351">351</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00356">356</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1730,18 +1782,18 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00161">161</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00166">166</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a73011e44f807601b9093544f1e2ff5bb"></a>
+<a class="anchor" id="a85ebe090b7922b15e5357357438fbb7c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void lxgui::gui::scroll_frame::set_scroll_child </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &gt;&#160;</td>
           <td class="paramname"><em>pFrame</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1757,7 +1809,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Creates the <a class="el" href="classlxgui_1_1gui_1_1render__target.html" title="A place to render things (the screen, a texture, ...) ">render_target</a> and the associated sprite. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00082">82</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00084">84</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1783,7 +1835,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00183">183</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00188">188</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1813,7 +1865,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#a8b2266d230a6e194a57f87169eee5e2e">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00205">205</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00210">210</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1838,7 +1890,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00269">269</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00274">274</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1863,7 +1915,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00258">258</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00263">263</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1886,7 +1938,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00164">164</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00169">169</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1908,7 +1960,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00153">153</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00158">158</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1930,7 +1982,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00160">160</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00165">165</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1952,7 +2004,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00154">154</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00159">159</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1974,7 +2026,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00155">155</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00160">160</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1996,7 +2048,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00129">129</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00136">136</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2018,7 +2070,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00146">146</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00151">151</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2040,7 +2092,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00147">147</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00152">152</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2062,7 +2114,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00148">148</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00153">153</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2084,7 +2136,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00149">149</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00154">154</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2106,7 +2158,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00161">161</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00166">166</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2128,7 +2180,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00162">162</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00167">167</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2150,7 +2202,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00165">165</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00170">170</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2172,7 +2224,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00151">151</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00156">156</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2194,7 +2246,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00156">156</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00161">161</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2216,7 +2268,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00158">158</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00163">163</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2229,7 +2281,7 @@ If this <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A fr
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 3 2020 20:22:44 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 15 2020 18:21:49 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

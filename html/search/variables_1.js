@@ -33,7 +33,6 @@ var searchData=
   ['bloaded_5f',['bLoaded_',['../classlxgui_1_1gui_1_1uiobject.html#aadc4aa00d83f64743f22c7aa58d9a4dc',1,'lxgui::gui::uiobject']]],
   ['blockhighlight_5f',['bLockHighlight_',['../classlxgui_1_1gui_1_1button.html#af89e8d2a63a62953bcfe350f1e9bd2ab',1,'lxgui::gui::button']]],
   ['blue',['BLUE',['../classlxgui_1_1gui_1_1color.html#a757b270292a587b4ade4acc5ecb137e0',1,'lxgui::gui::color']]],
-  ['bmanuallyrendered_5f',['bManuallyRendered_',['../classlxgui_1_1gui_1_1uiobject.html#a63d19b60e7c1c22666d0b510dddc0867',1,'lxgui::gui::uiobject']]],
   ['bmanuallyupdated_5f',['bManuallyUpdated_',['../classlxgui_1_1input_1_1source__impl.html#a6b0efe213a1039dfd8414084ff17906c',1,'lxgui::input::source_impl']]],
   ['bmousedragged_5f',['bMouseDragged_',['../classlxgui_1_1gui_1_1frame.html#a5a6974710a8c9e64ddc643c3b4c40295',1,'lxgui::gui::frame']]],
   ['bmouseinframe_5f',['bMouseInFrame_',['../classlxgui_1_1gui_1_1frame.html#ae68ad04f5634ef88ac6bc84de3780e26',1,'lxgui::gui::frame']]],

@@ -30,6 +30,7 @@ var searchData=
   ['uiselectionstartpos_5f',['uiSelectionStartPos_',['../classlxgui_1_1gui_1_1edit__box.html#a5051bb1516506505aad7594ddcb134c5',1,'lxgui::gui::edit_box']]],
   ['ulong',['ulong',['../namespacelxgui.html#aca4909ac1e257f38f0a0ced675aef0c9',1,'lxgui']]],
   ['uncheck',['uncheck',['../classlxgui_1_1gui_1_1check__button.html#a5e120a0d1e8bd2c84343c5047e7016a4',1,'lxgui::gui::check_button']]],
+  ['unique_5fptr_5fdereferencer',['unique_ptr_dereferencer',['../structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html',1,'lxgui::utils::view']]],
   ['unit',['UNIT',['../classlxgui_1_1gui_1_1vector2.html#a6c32432f2a27b52c279f4936a0e5f5c8',1,'lxgui::gui::vector2']]],
   ['unlight',['unlight',['../classlxgui_1_1gui_1_1button.html#ae6d91d2b8db3c1d08a62bcb76992185f',1,'lxgui::gui::button']]],
   ['unlight_5ftext',['unlight_text',['../classlxgui_1_1gui_1_1edit__box.html#ac1c4b35f7dd285e81955412c627d0f26',1,'lxgui::gui::edit_box']]],
@@ -60,6 +61,7 @@ var searchData=
   ['utils_5frefptr_2ehpp',['utils_refptr.hpp',['../utils__refptr_8hpp.html',1,'']]],
   ['utils_5fsorted_5fvector_2ehpp',['utils_sorted_vector.hpp',['../utils__sorted__vector_8hpp.html',1,'']]],
   ['utils_5fstring_2ehpp',['utils_string.hpp',['../utils__string_8hpp.html',1,'']]],
+  ['utils_5fview_2ehpp',['utils_view.hpp',['../utils__view_8hpp.html',1,'']]],
   ['utils_5fwptr_2ehpp',['utils_wptr.hpp',['../utils__wptr_8hpp.html',1,'']]],
   ['uvs',['uvs',['../structlxgui_1_1gui_1_1vertex.html#a7d8815687319ceff8a6c2c3bb1d7ec8c',1,'lxgui::gui::vertex']]]
 ];

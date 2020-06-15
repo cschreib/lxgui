@@ -334,6 +334,10 @@ Functions</h2></td></tr>
 <tr class="memitem:aef60b1b129949e610e530a662a364990"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aef60b1b129949e610e530a662a364990"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#aef60b1b129949e610e530a662a364990">operator-</a> (const <a class="el" href="classlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt; &amp;mQuad, const <a class="el" href="classlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;mOffset)</td></tr>
 <tr class="separator:aef60b1b129949e610e530a662a364990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1f52b500e065c49ab56e0de2f002700"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:ae1f52b500e065c49ab56e0de2f002700"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; ObjectType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ae1f52b500e065c49ab56e0de2f002700">down_cast</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt; pObject)</td></tr>
+<tr class="memdesc:ae1f52b500e065c49ab56e0de2f002700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a down cast on an owning pointer.  <a href="#ae1f52b500e065c49ab56e0de2f002700">More...</a><br /></td></tr>
+<tr class="separator:ae1f52b500e065c49ab56e0de2f002700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafb916df6bb7c81f9f6885d7b4629a70"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aafb916df6bb7c81f9f6885d7b4629a70"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#aafb916df6bb7c81f9f6885d7b4629a70">operator*</a> (T mValue, const <a class="el" href="classlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;mV)</td></tr>
 <tr class="separator:aafb916df6bb7c81f9f6885d7b4629a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -635,6 +639,36 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ae1f52b500e065c49ab56e0de2f002700"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt;ObjectType&gt; lxgui::gui::down_cast </td>
+          <td>(</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt;&#160;</td>
+          <td class="paramname"><em>pObject</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Perform a down cast on an owning pointer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pObject</td><td>The owning pointer to down cast </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5" title="Obtain a pointer to a derived class. ">uiobject::down_cast()</a> for more information. </dd></dl>
+
+<p>Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00674">674</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="af749d682026492c53f1f34559aaca8a8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -677,7 +711,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00679">679</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00677">677</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -747,7 +781,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00204">204</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00225">225</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -765,7 +799,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00243">243</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00259">259</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +817,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00257">257</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00273">273</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -819,7 +853,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01161">1161</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01237">1237</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1303,7 +1337,7 @@ template&lt;class T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 3 2020 20:22:44 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 15 2020 18:21:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

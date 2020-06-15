@@ -8,8 +8,9 @@ var searchData=
   ['lxgui',['lxgui',['../namespacelxgui.html',1,'']]],
   ['math',['math',['../namespacelxgui_1_1math.html',1,'lxgui']]],
   ['range',['range',['../namespacelxgui_1_1utils_1_1range.html',1,'lxgui::utils']]],
-  ['sfml',['sfml',['../namespacelxgui_1_1input_1_1sfml.html',1,'lxgui::input']]],
   ['sfml',['sfml',['../namespacelxgui_1_1gui_1_1sfml.html',1,'lxgui::gui']]],
+  ['sfml',['sfml',['../namespacelxgui_1_1input_1_1sfml.html',1,'lxgui::input']]],
   ['utils',['utils',['../namespacelxgui_1_1utils.html',1,'lxgui']]],
+  ['view',['view',['../namespacelxgui_1_1utils_1_1view.html',1,'lxgui::utils']]],
   ['xml',['xml',['../namespacelxgui_1_1xml.html',1,'lxgui']]]
 ];

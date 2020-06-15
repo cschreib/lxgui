@@ -7,7 +7,6 @@ var searchData=
   ['_7efont',['~font',['../classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0',1,'lxgui::gui::font']]],
   ['_7efont_5fstring',['~font_string',['../classlxgui_1_1gui_1_1font__string.html#a55de72be0b62bcccbbf169ef587d72d2',1,'lxgui::gui::font_string']]],
   ['_7eframe',['~frame',['../classlxgui_1_1gui_1_1frame.html#a70eae6ff16abcac8ffe6afb12675bff8',1,'lxgui::gui::frame']]],
-  ['_7elayered_5fregion',['~layered_region',['../classlxgui_1_1gui_1_1layered__region.html#a0606e9044e6f573c6bfdaf1a1eba1d24',1,'lxgui::gui::layered_region']]],
   ['_7emanager',['~manager',['../classlxgui_1_1gui_1_1manager.html#ac8d73bfae7f1364771fc9822573591d3',1,'lxgui::gui::manager']]],
   ['_7ematerial',['~material',['../classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6',1,'lxgui::gui::material::~material()'],['../classlxgui_1_1gui_1_1gl_1_1material.html#a7958e67d50a019eed39aa41364002353',1,'lxgui::gui::gl::material::~material()']]],
   ['_7eoptional',['~optional',['../classlxgui_1_1utils_1_1optional.html#aac8021c9511381213bd53f1d9fed71f5',1,'lxgui::utils::optional']]],

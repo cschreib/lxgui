@@ -120,9 +120,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f24b302933694a5c1e0b95090f5221c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a5f24b302933694a5c1e0b95090f5221c">layered_region</a> (<a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *pManager)</td></tr>
 <tr class="memdesc:a5f24b302933694a5c1e0b95090f5221c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5f24b302933694a5c1e0b95090f5221c">More...</a><br /></td></tr>
 <tr class="separator:a5f24b302933694a5c1e0b95090f5221c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0606e9044e6f573c6bfdaf1a1eba1d24"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a0606e9044e6f573c6bfdaf1a1eba1d24">~layered_region</a> ()</td></tr>
-<tr class="memdesc:a0606e9044e6f573c6bfdaf1a1eba1d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a0606e9044e6f573c6bfdaf1a1eba1d24">More...</a><br /></td></tr>
-<tr class="separator:a0606e9044e6f573c6bfdaf1a1eba1d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62461b33dba6904ba6d33ef4b54574e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a62461b33dba6904ba6d33ef4b54574e8">serialize</a> (const std::string &amp;sTab) const override</td></tr>
 <tr class="memdesc:a62461b33dba6904ba6d33ef4b54574e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints all relevant information about this widget in a string.  <a href="#a62461b33dba6904ba6d33ef4b54574e8">More...</a><br /></td></tr>
 <tr class="separator:a62461b33dba6904ba6d33ef4b54574e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afcca4e475b47ada3a76e0f59668c6338"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#afcca4e475b47ada3a76e0f59668c6338">set_parent</a> (<a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pParent) override</td></tr>
 <tr class="memdesc:afcca4e475b47ada3a76e0f59668c6338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's parent.  <a href="#afcca4e475b47ada3a76e0f59668c6338">More...</a><br /></td></tr>
 <tr class="separator:afcca4e475b47ada3a76e0f59668c6338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e64d58b76b466747f68d2a60456fc8a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a2e64d58b76b466747f68d2a60456fc8a">release_from_parent</a> () override</td></tr>
+<tr class="memdesc:a2e64d58b76b466747f68d2a60456fc8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes this widget from its parent and return an owning pointer.  <a href="#a2e64d58b76b466747f68d2a60456fc8a">More...</a><br /></td></tr>
+<tr class="separator:a2e64d58b76b466747f68d2a60456fc8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0aa1eea006ce0c1649790e603e49ae3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3">show</a> () override</td></tr>
 <tr class="memdesc:ad0aa1eea006ce0c1649790e603e49ae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows this widget.  <a href="#ad0aa1eea006ce0c1649790e603e49ae3">More...</a><br /></td></tr>
 <tr class="separator:ad0aa1eea006ce0c1649790e603e49ae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,9 +278,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aafe98651b20d9cbabc9daf5ef7888086">is_object_type</a> (const std::string &amp;sType) const </td></tr>
 <tr class="memdesc:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this widget is of the provided type.  <a href="#aafe98651b20d9cbabc9daf5ef7888086">More...</a><br /></td></tr>
 <tr class="separator:aafe98651b20d9cbabc9daf5ef7888086 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa24da273fed585e847efe5c9b81ad9d8">get_object_typeList</a> () const </td></tr>
-<tr class="memdesc:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this widget.  <a href="#aa24da273fed585e847efe5c9b81ad9d8">More...</a><br /></td></tr>
-<tr class="separator:aa24da273fed585e847efe5c9b81ad9d8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a571564579e18bf981bdeacc2c1be8c7d">is_object_type</a> () const </td></tr>
+<tr class="memdesc:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this widget is of the provided type.  <a href="#a571564579e18bf981bdeacc2c1be8c7d">More...</a><br /></td></tr>
+<tr class="separator:a571564579e18bf981bdeacc2c1be8c7d inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a49b2ebebbfbb0913809823d32bbc0529">get_object_type_list</a> () const </td></tr>
+<tr class="memdesc:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this widget.  <a href="#a49b2ebebbfbb0913809823d32bbc0529">More...</a><br /></td></tr>
+<tr class="separator:a49b2ebebbfbb0913809823d32bbc0529 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">const ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af274199d8663b079122e26890e13c187">down_cast</a> () const </td></tr>
+<tr class="memdesc:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="#af274199d8663b079122e26890e13c187">More...</a><br /></td></tr>
+<tr class="separator:af274199d8663b079122e26890e13c187 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5">down_cast</a> ()</td></tr>
+<tr class="memdesc:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="#a0c09d849f88675b6809662075443cca5">More...</a><br /></td></tr>
+<tr class="separator:a0c09d849f88675b6809662075443cca5 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0bca2aa4e555e1d76be39d7af6ad0e0f">get_bottom</a> () const </td></tr>
 <tr class="memdesc:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's bottom border.  <a href="#a0bca2aa4e555e1d76be39d7af6ad0e0f">More...</a><br /></td></tr>
 <tr class="separator:a0bca2aa4e555e1d76be39d7af6ad0e0f inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -359,27 +371,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0770f71a2ef3c1fff2ab514fcf2aeba1">is_special</a> () const </td></tr>
 <tr class="memdesc:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is special.  <a href="#a0770f71a2ef3c1fff2ab514fcf2aeba1">More...</a><br /></td></tr>
 <tr class="separator:a0770f71a2ef3c1fff2ab514fcf2aeba1 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ee3730eb103bc61f8ce8486fc74c4a8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a9ee3730eb103bc61f8ce8486fc74c4a8">set_manually_rendered</a> (bool bManuallyRendered, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pRenderer=nullptr)</td></tr>
-<tr class="memdesc:a9ee3730eb103bc61f8ce8486fc74c4a8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as "manually rendered".  <a href="#a9ee3730eb103bc61f8ce8486fc74c4a8">More...</a><br /></td></tr>
-<tr class="separator:a9ee3730eb103bc61f8ce8486fc74c4a8 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#abec1731e90473eb3b26dfbb3bfb29b7e">is_manually_rendered</a> () const </td></tr>
-<tr class="memdesc:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object is manually rendered.  <a href="#abec1731e90473eb3b26dfbb3bfb29b7e">More...</a><br /></td></tr>
-<tr class="separator:abec1731e90473eb3b26dfbb3bfb29b7e inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae130e3bf75a41ff0893bd2ecec33cdc9">set_newly_created</a> ()</td></tr>
 <tr class="memdesc:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags this object as newly created.  <a href="#ae130e3bf75a41ff0893bd2ecec33cdc9">More...</a><br /></td></tr>
 <tr class="separator:ae130e3bf75a41ff0893bd2ecec33cdc9 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f9cb24cc663db38502b68cccfa73db inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a09f9cb24cc663db38502b68cccfa73db">is_newly_created</a> () const </td></tr>
 <tr class="memdesc:a09f9cb24cc663db38502b68cccfa73db inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this object has been newly created.  <a href="#a09f9cb24cc663db38502b68cccfa73db">More...</a><br /></td></tr>
 <tr class="separator:a09f9cb24cc663db38502b68cccfa73db inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea5f66afb205a07fc5c537a768f7a33 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5ea5f66afb205a07fc5c537a768f7a33">fire_redraw</a> () const </td></tr>
-<tr class="memdesc:a5ea5f66afb205a07fc5c537a768f7a33 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that a manually rendered widget requires redraw.  <a href="#a5ea5f66afb205a07fc5c537a768f7a33">More...</a><br /></td></tr>
-<tr class="separator:a5ea5f66afb205a07fc5c537a768f7a33 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaaaa26cdf01071016f956d5e4850d1b inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#afaaaa26cdf01071016f956d5e4850d1b">mark_for_copy</a> (const std::string &amp;sVariable)</td></tr>
 <tr class="memdesc:afaaaa26cdf01071016f956d5e4850d1b inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a Lua variable to copy when derivating.  <a href="#afaaaa26cdf01071016f956d5e4850d1b">More...</a><br /></td></tr>
 <tr class="separator:afaaaa26cdf01071016f956d5e4850d1b inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0d11d90dfb578ed6b4862825f770e76 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af0d11d90dfb578ed6b4862825f770e76">clear_links</a> ()</td></tr>
-<tr class="memdesc:af0d11d90dfb578ed6b4862825f770e76 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all anchors that point to this widget and all other kind of links.  <a href="#af0d11d90dfb578ed6b4862825f770e76">More...</a><br /></td></tr>
-<tr class="separator:af0d11d90dfb578ed6b4862825f770e76 inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7ce6b1cbb1a4851a357851d9850f67a inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ac7ce6b1cbb1a4851a357851d9850f67a">get_anchored_objects</a> () const </td></tr>
 <tr class="memdesc:ac7ce6b1cbb1a4851a357851d9850f67a inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the list of all objects that are anchored to this one.  <a href="#ac7ce6b1cbb1a4851a357851d9850f67a">More...</a><br /></td></tr>
 <tr class="separator:ac7ce6b1cbb1a4851a357851d9850f67a inherit pub_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -429,8 +429,6 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a3858acc6344e606193ad1c2d8fb2fd3f inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f22e3e4b9733b15a6a28d69dd649f4b inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a1f22e3e4b9733b15a6a28d69dd649f4b">update_dimensions_</a> () const </td></tr>
 <tr class="separator:a1f22e3e4b9733b15a6a28d69dd649f4b inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb67c4c94afe632f79333f9db975cd20 inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aeb67c4c94afe632f79333f9db975cd20">notify_manually_rendered_object_</a> (<a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pObject, bool bManuallyRendered)</td></tr>
-<tr class="separator:aeb67c4c94afe632f79333f9db975cd20 inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a552a96e89ef29c5a752614f8aef94116 inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a552a96e89ef29c5a752614f8aef94116 inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a552a96e89ef29c5a752614f8aef94116">create_glue_</a> ()</td></tr>
 <tr class="separator:a552a96e89ef29c5a752614f8aef94116 inherit pro_methods_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -458,12 +456,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ac123cbf269320314d1232cda3df910c6 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafc5ddaec258c84253290b261aa123ce inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aafc5ddaec258c84253290b261aa123ce">bSpecial_</a> = false</td></tr>
 <tr class="separator:aafc5ddaec258c84253290b261aa123ce inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63d19b60e7c1c22666d0b510dddc0867 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a63d19b60e7c1c22666d0b510dddc0867">bManuallyRendered_</a> = false</td></tr>
-<tr class="separator:a63d19b60e7c1c22666d0b510dddc0867 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05c427f81749830f69442cc3d79dfdc5 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a05c427f81749830f69442cc3d79dfdc5">bNewlyCreated_</a> = false</td></tr>
 <tr class="separator:a05c427f81749830f69442cc3d79dfdc5 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87f3635d94216f4de52ab934dcd9278b inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a87f3635d94216f4de52ab934dcd9278b">pRenderer_</a> = nullptr</td></tr>
-<tr class="separator:a87f3635d94216f4de52ab934dcd9278b inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2294c87e31fdbe1031bebc5e1ba54afd inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a2294c87e31fdbe1031bebc5e1ba54afd">bInherits_</a> = false</td></tr>
 <tr class="separator:a2294c87e31fdbe1031bebc5e1ba54afd inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0779b64cd085c299e478dfaf6212f11 inherit pro_attribs_classlxgui_1_1gui_1_1uiobject"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ad0779b64cd085c299e478dfaf6212f11">bVirtual_</a> = false</td></tr>
@@ -548,25 +542,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a0606e9044e6f573c6bfdaf1a1eba1d24"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">lxgui::gui::layered_region::~layered_region </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destructor. </p>
-
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00018">18</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a6e5d8c6faf675fb0fdff30888d281534"></a>
 <div class="memitem">
@@ -595,7 +570,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1texture.html#a3b4ed3008aaa789f0cecf4636d3ad33b">lxgui::gui::texture</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00042">42</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00038">38</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -615,7 +590,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a>'s draw layer. </p>
 <dl class="section return"><dt>Returns</dt><dd>this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a>'s draw layer </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00076">76</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00080">80</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -645,7 +620,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a98e6af6fd9584177f5bdf8823a1432d9">lxgui::gui::uiobject</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00062">62</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00066">66</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -675,7 +650,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a4c207bed0d2de204462a84ba660c2f5a">lxgui::gui::uiobject</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00071">71</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00075">75</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -705,7 +680,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a933bb25c231a4a5fe3ec32659424f2f7">lxgui::gui::uiobject</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00120">120</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -775,6 +750,36 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a2e64d58b76b466747f68d2a60456fc8a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt; lxgui::gui::layered_region::release_from_parent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes this widget from its parent and return an owning pointer. </p>
+<dl class="section return"><dt>Returns</dt><dd>An owning pointer to this widget </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a395ae6dd405107c1cc31fb07a11da1de">lxgui::gui::uiobject</a>.</p>
+
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00049">49</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a62461b33dba6904ba6d33ef4b54574e8"></a>
 <div class="memitem">
 <div class="memproto">
@@ -810,7 +815,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1texture.html#a4b08babd3cc3994ecba3115735d3538c">lxgui::gui::texture</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00022">22</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00018">18</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -844,7 +849,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00081">81</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00085">85</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -878,7 +883,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00091">91</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00095">95</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -915,7 +920,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a09ababdc45b0ecd79e7d52ee76f2d4b0">lxgui::gui::uiobject</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00047">47</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00043">43</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -945,7 +950,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c70259c29d6a03ebb9e6d">lxgui::gui::uiobject</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00053">53</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8cpp_source.html#l00057">57</a> of file <a class="el" href="gui__layeredregion_8cpp_source.html">gui_layeredregion.cpp</a>.</p>
 
 </div>
 </div>
@@ -968,7 +973,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00081">81</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00083">83</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
 
 </div>
 </div>
@@ -990,7 +995,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00087">87</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00089">89</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
 
 </div>
 </div>
@@ -1012,7 +1017,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00088">88</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__layeredregion_8hpp_source.html#l00090">90</a> of file <a class="el" href="gui__layeredregion_8hpp_source.html">gui_layeredregion.hpp</a>.</p>
 
 </div>
 </div>
@@ -1024,7 +1029,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 3 2020 20:22:44 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 15 2020 18:21:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
