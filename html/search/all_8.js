@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['id_5fcomparator',['id_comparator',['../structlxgui_1_1gui_1_1frame_1_1id__comparator.html',1,'lxgui::gui::frame']]],
+  ['id_5fcomparator',['id_comparator',['../structlxgui_1_1gui_1_1uiobject_1_1id__comparator.html',1,'lxgui::gui::uiobject']]],
   ['identity',['IDENTITY',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a7408859314eca9388cfd4db865afc66f',1,'lxgui::gui::gl::matrix4']]],
   ['ihorizontalscroll_5f',['iHorizontalScroll_',['../classlxgui_1_1gui_1_1scroll__frame.html#a43350179e811c89eb66816d7bd8e3584',1,'lxgui::gui::scroll_frame']]],
   ['ihorizontalscrollrange_5f',['iHorizontalScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#addded385808a42d7785eacb016508798',1,'lxgui::gui::scroll_frame']]],

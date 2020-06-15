@@ -113,13 +113,16 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1Lunar.html">Lunar</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1lua_1_1lunar__binding.html">lunar_binding</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds a C++ member function to a Lua function.  <a href="structlxgui_1_1lua_1_1lunar__binding.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html">state</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lua wrapper.  <a href="classlxgui_1_1lua_1_1state.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aa2be8ed785b171b4c5b815f38abfd117"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117">c_function</a> = int(*)(lua_State *L)</td></tr>
+<tr class="memitem:aa2be8ed785b171b4c5b815f38abfd117"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117">c_function</a> = int(*)(<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *L)</td></tr>
 <tr class="separator:aa2be8ed785b171b4c5b815f38abfd117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a194bf0aaeab358a5ac86ce185f8408c4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#a194bf0aaeab358a5ac86ce185f8408c4">print_function</a> = void(*)(const std::string &amp;s)</td></tr>
 <tr class="separator:a194bf0aaeab358a5ac86ce185f8408c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,11 +148,11 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa4fd30744559fb91a57afb61cf7ca656"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#aa4fd30744559fb91a57afb61cf7ca656">glue_send_string</a> (lua_State *pLua)</td></tr>
+<tr class="memitem:aa4fd30744559fb91a57afb61cf7ca656"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#aa4fd30744559fb91a57afb61cf7ca656">glue_send_string</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:aa4fd30744559fb91a57afb61cf7ca656"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37540df96d8fc7b9fcd48074b1d0cff3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#a37540df96d8fc7b9fcd48074b1d0cff3">glue_empty_string</a> (lua_State *pLua)</td></tr>
+<tr class="memitem:a37540df96d8fc7b9fcd48074b1d0cff3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#a37540df96d8fc7b9fcd48074b1d0cff3">glue_empty_string</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:a37540df96d8fc7b9fcd48074b1d0cff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81d56f9a7be0a5dd2c213573b848674f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#a81d56f9a7be0a5dd2c213573b848674f">glue_table_to_string</a> (lua_State *pLua)</td></tr>
+<tr class="memitem:a81d56f9a7be0a5dd2c213573b848674f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html#a81d56f9a7be0a5dd2c213573b848674f">glue_table_to_string</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:a81d56f9a7be0a5dd2c213573b848674f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -158,7 +161,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117">lxgui::lua::c_function</a> = typedef int (*)(lua_State *L)</td>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117">lxgui::lua::c_function</a> = typedef int (*)(<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *L)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -234,7 +237,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int lxgui::lua::glue_empty_string </td>
           <td>(</td>
-          <td class="paramtype">lua_State *&#160;</td>
+          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
           <td class="paramname"><em>pLua</em></td><td>)</td>
           <td></td>
         </tr>
@@ -250,7 +253,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int lxgui::lua::glue_send_string </td>
           <td>(</td>
-          <td class="paramtype">lua_State *&#160;</td>
+          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
           <td class="paramname"><em>pLua</em></td><td>)</td>
           <td></td>
         </tr>
@@ -266,7 +269,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int lxgui::lua::glue_table_to_string </td>
           <td>(</td>
-          <td class="paramtype">lua_State *&#160;</td>
+          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
           <td class="paramname"><em>pLua</em></td><td>)</td>
           <td></td>
         </tr>
@@ -278,7 +281,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jun 15 2020 18:50:23 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 15 2020 20:51:12 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

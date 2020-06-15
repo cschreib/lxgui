@@ -12,7 +12,7 @@ var searchData=
   ['add_5fpredefined_5fblock',['add_predefined_block',['../classlxgui_1_1xml_1_1block.html#ad1fac1fc9cea821d30f98b2d6b576bbe',1,'lxgui::xml::block']]],
   ['add_5fpredefined_5fradio_5fblock',['add_predefined_radio_block',['../classlxgui_1_1xml_1_1block.html#a9620bda9cf7f055c21565f97d34a5864',1,'lxgui::xml::block']]],
   ['add_5fregion',['add_region',['../classlxgui_1_1gui_1_1frame.html#a58cc214303b29cfea9b49f148a8d0aac',1,'lxgui::gui::frame::add_region(std::unique_ptr&lt; layered_region &gt; pRegion)'],['../classlxgui_1_1gui_1_1frame.html#a917b187862d03cddfe5e5fb49f54a1d7',1,'lxgui::gui::frame::add_region(std::unique_ptr&lt; region_type &gt; pRegion)']]],
-  ['add_5froot_5fuiobject',['add_root_uiobject',['../classlxgui_1_1gui_1_1manager.html#afb3d90e3eeae042b7f130be2dd95f976',1,'lxgui::gui::manager']]],
+  ['add_5froot_5fframe',['add_root_frame',['../classlxgui_1_1gui_1_1manager.html#aa2886e85d42fe3c73be0d9284568ea12',1,'lxgui::gui::manager']]],
   ['add_5fto_5fscroll_5fchild_5flist_5f',['add_to_scroll_child_list_',['../classlxgui_1_1gui_1_1scroll__frame.html#a1c2c433326efacf47b5114c3a75362ad',1,'lxgui::gui::scroll_frame']]],
   ['add_5fuiobject',['add_uiobject',['../classlxgui_1_1gui_1_1manager.html#a1755c8ee2b9d1c4afe3340f402cc8a29',1,'lxgui::gui::manager']]],
   ['add_5fvalue',['add_value',['../classlxgui_1_1xml_1_1block.html#ace4fcaca0952727071e51e71dc6e7ab5',1,'lxgui::xml::block']]],

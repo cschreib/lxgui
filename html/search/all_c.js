@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name',['name',['../structlxgui_1_1lua_1_1Lunar_1_1RegType.html#a7c6341777b951a5b76b10e824419301a',1,'lxgui::lua::Lunar::RegType']]],
+  ['name',['name',['../structlxgui_1_1lua_1_1lunar__binding.html#a058c3b721421412f414f473848aa46dc',1,'lxgui::lua::lunar_binding']]],
   ['new_5fparam_5fset',['new_param_set',['../classlxgui_1_1lua_1_1function.html#a97ca75bd23ae70ca068b03434bc31fbb',1,'lxgui::lua::function']]],
   ['new_5ftable',['new_table',['../classlxgui_1_1lua_1_1state.html#a16397ad13b7cd95fd315c063a8e762f6',1,'lxgui::lua::state']]],
   ['next',['next',['../classlxgui_1_1lua_1_1state.html#a52e31b637e18b2e73c14c69e1b8274a1',1,'lxgui::lua::state::next()'],['../classlxgui_1_1xml_1_1block.html#a985df3092f96fc36ad3110c28851c5fd',1,'lxgui::xml::block::next()']]],

@@ -6,7 +6,7 @@ var searchData=
   ['mcarrettimer_5f',['mCarretTimer_',['../classlxgui_1_1gui_1_1edit__box.html#ad12aa638233d9a768f3aaa88f6adff2f',1,'lxgui::gui::edit_box']]],
   ['mcolor',['mColor',['../structlxgui_1_1gui_1_1text_1_1format.html#ad7098d28fcb5e1e7619fea3323a8a529',1,'lxgui::gui::text::format::mColor()'],['../structlxgui_1_1gui_1_1text_1_1letter.html#a75c48ba085beadb0b4530c3f9c57c95b',1,'lxgui::gui::text::letter::mColor()']]],
   ['mcoloraction',['mColorAction',['../structlxgui_1_1gui_1_1text_1_1format.html#a1f07d6bbaa70236ec8c8c0cd09552e4e',1,'lxgui::gui::text::format']]],
-  ['mfunc',['mfunc',['../structlxgui_1_1lua_1_1Lunar_1_1RegType.html#a82b0eadb9511c99edbefe7d67fd28897',1,'lxgui::lua::Lunar::RegType']]],
+  ['mfunc',['mfunc',['../structlxgui_1_1lua_1_1lunar__binding.html#a486072451e21dce57a42e6a536d563d8',1,'lxgui::lua::lunar_binding']]],
   ['mhighlightcolor_5f',['mHighlightColor_',['../classlxgui_1_1gui_1_1edit__box.html#a8942a88d3d4a5aa791db589d14193d18',1,'lxgui::gui::edit_box']]],
   ['mkeyboard_5f',['mKeyboard_',['../classlxgui_1_1input_1_1source__impl.html#a4238fbc52131f18cb346ac7b4fdafe97',1,'lxgui::input::source_impl']]],
   ['mkeyrepeattimer_5f',['mKeyRepeatTimer_',['../classlxgui_1_1gui_1_1edit__box.html#a2f4ccf581e9e823552546138b99d89ae',1,'lxgui::gui::edit_box']]],
