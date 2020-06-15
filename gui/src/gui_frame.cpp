@@ -740,26 +740,24 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
         {
             utils::trim(sParent, ' ');
             uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
-            if (pObj)
-            {
-                if (pNewFrame->is_object_type(pObj->get_object_type()))
-                {
-                    // Inherit from the other frame
-                    pNewFrame->copy_from(pObj);
-                }
-                else
-                {
-                    gui::out << gui::warning << "gui::manager : "
-                        << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                        << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
-                        << "). Inheritance skipped." << std::endl;
-                }
-            }
-            else
+            if (!pObj)
             {
                 gui::out << gui::warning << "gui::manager : "
                     << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
+                continue;
             }
+
+            if (!pNewFrame->is_object_type(pObj->get_object_type()))
+            {
+                gui::out << gui::warning << "gui::manager : "
+                    << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
+                    << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
+                    << "). Inheritance skipped." << std::endl;
+                continue;
+            }
+
+            // Inherit from the other frame
+            pNewFrame->copy_from(pObj);
         }
     }
 
