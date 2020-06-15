@@ -43,7 +43,6 @@
 #endif
 
 #include <fstream>
-#include <chrono>
 
 using namespace lxgui;
 
