@@ -174,7 +174,7 @@ int l_create_frame(lua_State* pLua)
             lua_frame* pFrameObj = mFunc.get(2)->get<lua_frame>();
             if (pFrameObj)
             {
-                pParent = pFrameObj->get_parent()->down_cast<frame>();
+                pParent = pFrameObj->get_parent();
             }
             else
             {

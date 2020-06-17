@@ -24,6 +24,11 @@ lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)
     }
 }
 
+scroll_frame* lua_scroll_frame::get_parent()
+{
+    return pScrollFrameParent_;
+}
+
 int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
 {
     if (!check_parent_())
@@ -145,7 +150,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
                 lua_frame* pFrame = pArg->get<lua_frame>();
                 if (pFrame)
                 {
-                    pChild = dynamic_cast<frame*>(pFrame->get_parent());
+                    pChild = pFrame->get_parent();
                 }
                 else
                 {

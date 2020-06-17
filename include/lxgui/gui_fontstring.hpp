@@ -300,6 +300,7 @@ namespace gui
     public :
 
         explicit lua_font_string(lua_State* pLua);
+        font_string* get_parent();
 
         int _get_font(lua_State*);
         int _get_justify_h(lua_State*);

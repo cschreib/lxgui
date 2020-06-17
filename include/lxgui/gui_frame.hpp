@@ -837,7 +837,7 @@ namespace gui
     public :
 
         explicit lua_frame(lua_State* pLua);
-        virtual ~lua_frame() {}
+        frame* get_parent();
 
         int _create_font_string(lua_State*);
         int _create_texture(lua_State*);

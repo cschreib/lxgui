@@ -23,6 +23,11 @@ lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
     }
 }
 
+status_bar* lua_status_bar::get_parent()
+{
+    return pStatusBarParent_;
+}
+
 int lua_status_bar::_get_min_max_values(lua_State* pLua)
 {
     if (!check_parent_())
@@ -211,8 +216,7 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
-            pStatusBarParent_->set_bar_texture(pTexture);
+            pStatusBarParent_->set_bar_texture(pLuaTexture->get_parent());
         }
     }
 

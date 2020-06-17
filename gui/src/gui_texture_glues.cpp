@@ -24,6 +24,11 @@ lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)
     }
 }
 
+texture* lua_texture::get_parent()
+{
+    return pTextureParent_;
+}
+
 int lua_texture::_get_blend_mode(lua_State* pLua)
 {
     if (!check_parent_())

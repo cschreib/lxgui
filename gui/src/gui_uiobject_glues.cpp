@@ -486,7 +486,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
                     return mFunc.on_return();
                 }
 
-                pNewParentFrame = pObj->get_parent()->down_cast<frame>();
+                pNewParentFrame = pObj->get_parent();
             }
         }
 

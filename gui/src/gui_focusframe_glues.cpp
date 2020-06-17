@@ -16,6 +16,11 @@ lua_focus_frame::lua_focus_frame(lua_State* pLua) : lua_frame(pLua)
     }
 }
 
+focus_frame* lua_focus_frame::get_parent()
+{
+    return pFocusFrameParent_;
+}
+
 int lua_focus_frame::_clear_focus(lua_State* pLua)
 {
     if (!check_parent_())

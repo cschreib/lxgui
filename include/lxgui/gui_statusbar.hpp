@@ -187,6 +187,7 @@ namespace gui
     public :
 
         explicit lua_status_bar(lua_State* pLua);
+        status_bar* get_parent();
 
         // Glues
         int _get_min_max_values(lua_State*);

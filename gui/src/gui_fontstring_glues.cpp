@@ -24,6 +24,11 @@ lua_font_string::lua_font_string(lua_State* pLua) : lua_layered_region(pLua)
     }
 }
 
+font_string* lua_font_string::get_parent()
+{
+    return pFontStringParent_;
+}
+
 int lua_font_string::_get_font(lua_State* pLua)
 {
     if (!check_parent_())

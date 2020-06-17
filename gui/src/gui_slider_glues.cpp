@@ -22,6 +22,11 @@ lua_slider::lua_slider(lua_State* pLua) : lua_frame(pLua)
     }
 }
 
+slider* lua_slider::get_parent()
+{
+    return pSliderParent_;
+}
+
 int lua_slider::_allow_clicks_outside_thumb(lua_State* pLua)
 {
     if (!check_parent_())
@@ -205,8 +210,7 @@ int lua_slider::_set_thumb_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
-            pSliderParent_->set_thumb_texture(pTexture);
+            pSliderParent_->set_thumb_texture(pLuaTexture->get_parent());
         }
     }
 

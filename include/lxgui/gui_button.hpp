@@ -262,7 +262,7 @@ namespace gui
     public :
 
         explicit lua_button(lua_State* pLua);
-        virtual ~lua_button() {}
+        button* get_parent();
 
         // Glues
         int _click(lua_State*);

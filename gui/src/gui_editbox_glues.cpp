@@ -21,6 +21,11 @@ lua_edit_box::lua_edit_box(lua_State* pLua) : lua_focus_frame(pLua)
     }
 }
 
+edit_box* lua_edit_box::get_parent()
+{
+    return pEditBoxParent_;
+}
+
 int lua_edit_box::_add_history_line(lua_State* pLua)
 {
     if (!check_parent_())

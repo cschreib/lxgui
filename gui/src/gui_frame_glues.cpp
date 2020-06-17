@@ -21,6 +21,11 @@ lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
     }
 }
 
+frame* lua_frame::get_parent()
+{
+    return pFrameParent_;
+}
+
 int lua_frame::_create_font_string(lua_State* pLua)
 {
     if (!check_parent_())

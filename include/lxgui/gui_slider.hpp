@@ -210,6 +210,7 @@ namespace gui
     public :
 
         explicit lua_slider(lua_State* pLua);
+        slider* get_parent();
 
         // Glues
         int _allow_clicks_outside_thumb(lua_State*);

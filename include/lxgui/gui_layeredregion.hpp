@@ -91,6 +91,7 @@ namespace gui
     public :
 
         explicit lua_layered_region(lua_State* pLua);
+        layered_region* get_parent();
 
         int _get_draw_layer(lua_State*);
         int _set_draw_layer(lua_State*);

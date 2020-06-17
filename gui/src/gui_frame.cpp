@@ -1730,7 +1730,7 @@ bool frame::is_manually_rendered() const
     if (pRenderer_ != nullptr)
         return true;
 
-    return pParent_ && pParent_->down_cast<frame>()->is_manually_rendered();
+    return pParent_ && pParent_->is_manually_rendered();
 }
 
 const frame* frame::get_renderer() const

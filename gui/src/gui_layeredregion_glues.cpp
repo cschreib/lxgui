@@ -17,6 +17,11 @@ lua_layered_region::lua_layered_region(lua_State* pLua) : lua_uiobject(pLua)
     }
 }
 
+layered_region* lua_layered_region::get_parent()
+{
+    return pLayeredRegionParent_;
+}
+
 int lua_layered_region::_set_draw_layer(lua_State* pLua)
 {
     if (!check_parent_())

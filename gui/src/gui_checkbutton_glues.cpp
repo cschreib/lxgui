@@ -24,6 +24,11 @@ lua_check_button::lua_check_button(lua_State* pLua) : lua_button(pLua)
     }
 }
 
+check_button* lua_check_button::get_parent()
+{
+    return pCheckButtonParent_;
+}
+
 int lua_check_button::_is_checked(lua_State* pLua)
 {
     if (!check_parent_())
@@ -108,8 +113,7 @@ int lua_check_button::_set_checked_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
-            pCheckButtonParent_->set_checked_texture(pTexture);
+            pCheckButtonParent_->set_checked_texture(pLuaTexture->get_parent());
         }
     }
 
@@ -128,8 +132,7 @@ int lua_check_button::_set_disabled_checked_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
         if (pLuaTexture)
         {
-            texture* pTexture = pLuaTexture->get_parent()->down_cast<texture>();
-            pCheckButtonParent_->set_disabled_checked_texture(pTexture);
+            pCheckButtonParent_->set_disabled_checked_texture(pLuaTexture->get_parent());
         }
     }
 

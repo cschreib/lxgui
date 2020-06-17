@@ -110,6 +110,7 @@ namespace gui
     public :
 
         explicit lua_check_button(lua_State* pLua);
+        check_button* get_parent();
 
         // Glues
         int _is_checked(lua_State*);

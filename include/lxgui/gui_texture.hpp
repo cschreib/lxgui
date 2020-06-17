@@ -240,6 +240,7 @@ namespace gui
     public :
 
         explicit lua_texture(lua_State* pLua);
+        texture* get_parent();
 
         // texture
         int _set_vertex_color(lua_State*);

@@ -178,6 +178,7 @@ namespace gui
     public :
 
         explicit lua_scroll_frame(lua_State* pLua);
+        scroll_frame* get_parent();
 
         // Glues
         int _get_horizontal_scroll(lua_State*);

@@ -389,6 +389,7 @@ namespace gui
     public :
 
         explicit lua_edit_box(lua_State* pLua);
+        edit_box* get_parent();
 
         // Glues
         int _add_history_line(lua_State*);

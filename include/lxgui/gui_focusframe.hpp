@@ -75,6 +75,7 @@ namespace gui
     public :
 
         explicit lua_focus_frame(lua_State* pLua);
+        focus_frame* get_parent();
 
         // Glues
         int _clear_focus(lua_State*);
