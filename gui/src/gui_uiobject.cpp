@@ -425,7 +425,7 @@ float uiobject::get_rel_height() const
     return fRelHeight_;
 }
 
-void uiobject::set_parent(uiobject* pParent)
+void uiobject::set_parent(frame* pParent)
 {
     if (pParent == this)
     {
@@ -440,12 +440,12 @@ void uiobject::set_parent(uiobject* pParent)
     }
 }
 
-const uiobject* uiobject::get_parent() const
+const frame* uiobject::get_parent() const
 {
     return pParent_;
 }
 
-uiobject* uiobject::get_parent()
+frame* uiobject::get_parent()
 {
     return pParent_;
 }

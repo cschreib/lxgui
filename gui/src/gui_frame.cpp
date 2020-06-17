@@ -235,7 +235,7 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_frame_strata(pFrame->get_frame_strata());
 
-    uiobject* pHighParent = this;
+    frame* pHighParent = this;
     for (int i = 0; i < pFrame->get_level(); ++i)
     {
         if (pHighParent->get_parent())
@@ -244,10 +244,7 @@ void frame::copy_from(uiobject* pObj)
             break;
     }
 
-    this->set_level(
-        pHighParent->down_cast<frame>()->get_level()+
-        pFrame->get_level()
-    );
+    this->set_level(pHighParent->get_level() + pFrame->get_level());
 
     this->set_top_level(pFrame->is_top_level());
 
@@ -859,7 +856,7 @@ frame::child_list_view frame::get_children() const
 float frame::get_effective_alpha() const
 {
     if (pParent_)
-        return fAlpha_*pParentFrame_->get_effective_alpha();
+        return fAlpha_*pParent_->get_effective_alpha();
     else
         return fAlpha_;
 }
@@ -867,7 +864,7 @@ float frame::get_effective_alpha() const
 float frame::get_effective_scale() const
 {
     if (pParent_)
-        return fScale_*pParentFrame_->get_effective_scale();
+        return fScale_*pParent_->get_effective_scale();
     else
         return fScale_;
 }
@@ -1442,8 +1439,8 @@ void frame::set_frame_strata(frame_strata mStrata)
     {
         if (!bVirtual_)
         {
-            if (pParentFrame_)
-                mStrata = pParentFrame_->get_frame_strata();
+            if (pParent_)
+                mStrata = pParent_->get_frame_strata();
             else
                 mStrata = frame_strata::MEDIUM;
         }
@@ -1481,8 +1478,8 @@ void frame::set_frame_strata(const std::string& sStrata)
             mStrata = frame_strata::PARENT;
         else
         {
-            if (pParentFrame_)
-                mStrata = pParentFrame_->get_frame_strata();
+            if (pParent_)
+                mStrata = pParent_->get_frame_strata();
             else
                 mStrata = frame_strata::MEDIUM;
         }
@@ -1598,7 +1595,7 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-void frame::set_parent(uiobject* pParent)
+void frame::set_parent(frame* pParent)
 {
     if (pParent == this)
     {
@@ -1610,18 +1607,17 @@ void frame::set_parent(uiobject* pParent)
         return;
 
     pParent_ = pParent;
-    pParentFrame_ = pParent->down_cast<frame>();
 
-    if (!pAddOn_ && pParentFrame_)
-        pAddOn_ = pParentFrame_->get_addon();
+    if (!pAddOn_ && pParent_)
+        pAddOn_ = pParent_->get_addon();
 
     fire_update_dimensions();
 }
 
 std::unique_ptr<uiobject> frame::release_from_parent()
 {
-    if (pParentFrame_)
-        return pParentFrame_->remove_child(this);
+    if (pParent_)
+        return pParent_->remove_child(this);
     else
         return pManager_->remove_root_frame(this);
 }
@@ -1747,7 +1743,7 @@ frame* frame::get_top_level_renderer()
     if (pRenderer_)
         return pRenderer_;
     else if (pParent_)
-        return pParent_->down_cast<frame>()->get_top_level_renderer();
+        return pParent_->get_top_level_renderer();
     else
         return nullptr;
 }
@@ -1763,16 +1759,16 @@ void frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered
 
 void frame::notify_child_strata_changed(frame* pChild)
 {
-    if (pParentFrame_)
-        pParentFrame_->notify_child_strata_changed(this);
+    if (pParent_)
+        pParent_->notify_child_strata_changed(this);
     else
         pManager_->fire_build_strata_list();
 }
 
 void frame::notify_strata_changed_()
 {
-    if (pParentFrame_)
-        pParentFrame_->notify_child_strata_changed(this);
+    if (pParent_)
+        pParent_->notify_child_strata_changed(this);
     else
         pManager_->fire_build_strata_list();
 }

@@ -35,8 +35,13 @@ void frame::parse_attributes_(xml::block* pBlock)
     {
         if (!pParent_)
         {
-            uiobject* pParent = pManager_->get_uiobject_by_name(sParent);
             std::string sName = pBlock->get_attribute("name");
+            if (utils::has_no_content(sName))
+            {
+                throw exception(pBlock->get_location(),
+                    "Cannot create an uiobject with a blank name. Skipped."
+                );
+            }
             if (!pManager_->check_uiobject_name(sName))
             {
                 throw exception(pBlock->get_location(),
@@ -44,31 +49,23 @@ void frame::parse_attributes_(xml::block* pBlock)
                 );
             }
 
-            if (!utils::has_no_content(sName))
+            frame* pParent = pManager_->get_uiobject_by_name(sParent)->down_cast<frame>();
+            if (pParent)
             {
-                if (pParent)
-                {
-                    set_parent(pParent);
-                    if (bVirtual || pParent->is_virtual())
-                        set_virtual();
-                    set_name(sName);
-                }
-                else
-                {
-                    if (bVirtual)
-                        set_virtual();
-                    set_name(sName);
-
-                    gui::out << gui::warning << pBlock->get_location() << " : "
-                        << "Cannot find \"" << get_name() << "\"'s parent : \"" << sParent << "\". "
-                        "No parent given to that widget." << std::endl;
-                }
+                set_parent(pParent);
+                if (bVirtual || pParent->is_virtual())
+                    set_virtual();
+                set_name(sName);
             }
             else
             {
-                throw exception(pBlock->get_location(),
-                    "Cannot create an uiobject with a blank name. Skipped."
-                );
+                if (bVirtual)
+                    set_virtual();
+                set_name(sName);
+
+                gui::out << gui::warning << pBlock->get_location() << " : "
+                    << "Cannot find \"" << get_name() << "\"'s parent : \"" << sParent << "\". "
+                    "No parent given to that widget." << std::endl;
             }
         }
         else

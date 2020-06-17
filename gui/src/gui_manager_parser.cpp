@@ -55,7 +55,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                     pFrame->notify_loaded();
 
                     if (pFrame->get_parent())
-                        pFrame->get_parent()->down_cast<frame>()->add_child(std::move(pFrame));
+                        pFrame->get_parent()->add_child(std::move(pFrame));
                     else
                         add_root_frame(std::move(pFrame));
                 }

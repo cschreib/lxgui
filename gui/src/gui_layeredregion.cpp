@@ -41,16 +41,10 @@ void layered_region::create_glue()
     create_glue_<lua_layered_region>();
 }
 
-void layered_region::set_parent(uiobject* pParent)
-{
-    pFrameParent_ = pParent->down_cast<frame>();
-    uiobject::set_parent(pParent);
-}
-
 std::unique_ptr<uiobject> layered_region::release_from_parent()
 {
-    if (pFrameParent_)
-        return pFrameParent_->remove_region(this);
+    if (pParent_)
+        return pParent_->remove_region(this);
     else
         return nullptr;
 }
@@ -89,7 +83,7 @@ void layered_region::set_draw_layer(layer_type mLayer)
     {
         mLayer_ = mLayer;
         notify_renderer_need_redraw();
-        pFrameParent_->fire_build_layer_list();
+        pParent_->fire_build_layer_list();
     }
 }
 
@@ -118,7 +112,7 @@ void layered_region::set_draw_layer(const std::string& sLayer)
     {
         mLayer_ = mLayer;
         notify_renderer_need_redraw();
-        pFrameParent_->fire_build_layer_list();
+        pParent_->fire_build_layer_list();
     }
 }
 

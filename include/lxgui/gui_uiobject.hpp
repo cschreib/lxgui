@@ -180,17 +180,17 @@ namespace gui
         /** \param pParent The new parent
         *   \note Default is nullptr.
         */
-        virtual void set_parent(uiobject* pParent);
+        virtual void set_parent(frame* pParent);
 
         /// Returns this widget's parent.
         /** \return This widget's parent
         */
-        const uiobject* get_parent() const;
+        const frame* get_parent() const;
 
         /// Returns this widget's parent.
         /** \return This widget's parent
         */
-        uiobject* get_parent();
+        frame* get_parent();
 
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
@@ -639,7 +639,7 @@ namespace gui
         std::string sRawName_;
         std::string sLuaName_;
         uint        uiID_ = uint(-1);
-        uiobject*   pParent_ = nullptr;
+        frame*      pParent_ = nullptr;
         uiobject*   pInheritance_ = nullptr;
         bool        bSpecial_ = false;
         bool        bNewlyCreated_ = false;

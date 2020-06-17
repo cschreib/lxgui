@@ -27,12 +27,6 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Changes this widget's parent.
-        /** \param pParent The new parent
-        *   \note Default is nullptr.
-        */
-        void set_parent(uiobject* pParent) override;
-
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
@@ -87,7 +81,6 @@ namespace gui
         void parse_attributes_(xml::block* pBlock) override;
 
         layer_type mLayer_ = layer_type::ARTWORK;
-        frame*     pFrameParent_ = nullptr;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

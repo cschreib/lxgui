@@ -455,41 +455,42 @@ int lua_uiobject::_set_parent(lua_State* pLua)
     if (mFunc.check())
     {
         lua::argument* pArg = mFunc.get(0);
-        uiobject* pNewParent = nullptr;
+        frame* pNewParentFrame = nullptr;
 
         if (pArg->is_provided())
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                pNewParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                uiobject* pNewParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
                 if (!pNewParent)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()
                         +"\" does not exist." << std::endl;
                     return mFunc.on_return();
                 }
+
+                pNewParentFrame = pNewParent->down_cast<frame>();
+                if (!pNewParentFrame)
+                {
+                    gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()
+                        +"\" is not a frame." << std::endl;
+                    return mFunc.on_return();
+                }
             }
             else
             {
-                lua_uiobject* pObj = pArg->get<lua_uiobject>();
+                lua_frame* pObj = pArg->get<lua_frame>();
                 if (!pObj)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : Argument 1 must be a frame." << std::endl;
                     return mFunc.on_return();
                 }
 
-                pNewParent = pObj->get_parent();
+                pNewParentFrame = pObj->get_parent()->down_cast<frame>();
             }
         }
 
-        frame* pNewParentFrame = pNewParent->down_cast<frame>();
-        if (!pNewParentFrame)
-        {
-            gui::out << gui::error << mFunc.get_name() << " : Argument 1 must be a frame." << std::endl;
-            return mFunc.on_return();
-        }
-
-        pParent_->set_parent(pNewParent);
+        pParent_->set_parent(pNewParentFrame);
 
         if (pParent_->is_object_type<frame>())
         {

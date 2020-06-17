@@ -20,6 +20,13 @@ void layered_region::parse_block(xml::block* pBlock)
 void layered_region::parse_attributes_(xml::block* pBlock)
 {
     std::string sName = pBlock->get_attribute("name");
+    if (utils::has_no_content(sName))
+    {
+        throw exception(pBlock->get_location(),
+            "Cannot create an uiobject with a blank name. Skipped."
+        );
+    }
+
     if (!pManager_->check_uiobject_name(sName))
     {
         throw exception(pBlock->get_location(),
@@ -28,20 +35,10 @@ void layered_region::parse_attributes_(xml::block* pBlock)
     }
 
     bool bVirtual = utils::string_to_bool(pBlock->get_attribute("virtual"));
-    frame* pFrameParent = pParent_->down_cast<frame>();
-    if (!utils::has_no_content(sName))
-    {
-        if (bVirtual || (pFrameParent && pFrameParent->is_virtual()))
-            set_virtual();
+    if (bVirtual || (pParent_ && pParent_->is_virtual()))
+        set_virtual();
 
-        set_name(sName);
-    }
-    else
-    {
-        throw exception(pBlock->get_location(),
-            "Cannot create an uiobject with a blank name. Skipped."
-        );
-    }
+    set_name(sName);
 
     if (pManager_->get_uiobject_by_name(sName_))
     {
