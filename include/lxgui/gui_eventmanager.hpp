@@ -1,5 +1,5 @@
-#ifndef GUI_EVENTMANAGER_HPP
-#define GUI_EVENTMANAGER_HPP
+#ifndef LXGUI_GUI_EVENTMANAGER_HPP
+#define LXGUI_GUI_EVENTMANAGER_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_sorted_vector.hpp>

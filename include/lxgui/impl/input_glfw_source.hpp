@@ -1,5 +1,5 @@
-#ifndef INPUT_GLFW_SOURCE_HPP
-#define INPUT_GLFW_SOURCE_HPP
+#ifndef LXGUI_INPUT_GLFW_SOURCE_HPP
+#define LXGUI_INPUT_GLFW_SOURCE_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>

@@ -1,5 +1,5 @@
-#ifndef GUI_FOCUSFRAME_HPP
-#define GUI_FOCUSFRAME_HPP
+#ifndef LXGUI_GUI_FOCUSFRAME_HPP
+#define LXGUI_GUI_FOCUSFRAME_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"

@@ -1,5 +1,5 @@
-#ifndef GUI_TEXT_HPP
-#define GUI_TEXT_HPP
+#ifndef LXGUI_GUI_TEXT_HPP
+#define LXGUI_GUI_TEXT_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"

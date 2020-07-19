@@ -1,5 +1,5 @@
-#ifndef GUI_BUTTON_HPP
-#define GUI_BUTTON_HPP
+#ifndef LXGUI_GUI_BUTTON_HPP
+#define LXGUI_GUI_BUTTON_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"

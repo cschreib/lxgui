@@ -1,4 +1,4 @@
-#ifndef GUI_UIOBJECT_TPL_HPP
+#ifndef LXGUI_GUI_UIOBJECT_TPL_HPP
 
 #include <lxgui/luapp_state.hpp>
 

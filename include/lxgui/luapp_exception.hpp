@@ -1,5 +1,5 @@
-#ifndef LUAPP_EXCEPTION_HPP
-#define LUAPP_EXCEPTION_HPP
+#ifndef LXGUI_LUAPP_EXCEPTION_HPP
+#define LXGUI_LUAPP_EXCEPTION_HPP
 
 #include <lxgui/utils_exception.hpp>
 

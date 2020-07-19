@@ -1,5 +1,5 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef LXGUI_UTILS_HPP
+#define LXGUI_UTILS_HPP
 
 #include <cmath>
 #include <memory>

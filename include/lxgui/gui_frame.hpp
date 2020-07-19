@@ -1,5 +1,5 @@
-#ifndef GUI_FRAME_HPP
-#define GUI_FRAME_HPP
+#ifndef LXGUI_GUI_FRAME_HPP
+#define LXGUI_GUI_FRAME_HPP
 
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_backdrop.hpp"

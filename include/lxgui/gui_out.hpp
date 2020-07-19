@@ -1,5 +1,5 @@
-#ifndef GUI_OUT_HPP
-#define GUI_OUT_HPP
+#ifndef LXGUI_GUI_OUT_HPP
+#define LXGUI_GUI_OUT_HPP
 
 #include <iostream>
 

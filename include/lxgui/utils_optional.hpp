@@ -1,5 +1,5 @@
-#ifndef OPTIONAL_HPP
-#define OPTIONAL_HPP
+#ifndef LXGUI_OPTIONAL_HPP
+#define LXGUI_OPTIONAL_HPP
 
 #include <utility>
 #include "utils_exception.hpp"

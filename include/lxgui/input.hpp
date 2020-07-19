@@ -1,5 +1,5 @@
-#ifndef INPUT_HPP
-#define INPUT_HPP
+#ifndef LXGUI_INPUT_HPP
+#define LXGUI_INPUT_HPP
 
 #include <lxgui/utils.hpp>
 #include <string>

@@ -1,5 +1,5 @@
-#ifndef GUI_MATERIAL_HPP
-#define GUI_MATERIAL_HPP
+#ifndef LXGUI_GUI_MATERIAL_HPP
+#define LXGUI_GUI_MATERIAL_HPP
 
 #include <lxgui/utils.hpp>
 

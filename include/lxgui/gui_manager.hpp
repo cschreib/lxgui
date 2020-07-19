@@ -1,5 +1,5 @@
-#ifndef GUI_MANAGER_HPP
-#define GUI_MANAGER_HPP
+#ifndef LXGUI_GUI_MANAGER_HPP
+#define LXGUI_GUI_MANAGER_HPP
 
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_addon.hpp"

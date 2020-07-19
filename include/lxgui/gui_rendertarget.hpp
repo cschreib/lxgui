@@ -1,5 +1,5 @@
-#ifndef GUI_RENDERTARGET_HPP
-#define GUI_RENDERTARGET_HPP
+#ifndef LXGUI_GUI_RENDERTARGET_HPP
+#define LXGUI_GUI_RENDERTARGET_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"

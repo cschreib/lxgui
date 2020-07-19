@@ -1,5 +1,5 @@
-#ifndef UTILS_STRING_HPP
-#define UTILS_STRING_HPP
+#ifndef LXGUI_UTILS_STRING_HPP
+#define LXGUI_UTILS_STRING_HPP
 
 #include "lxgui/utils.hpp"
 #include <string>

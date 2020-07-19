@@ -1,5 +1,5 @@
-#ifndef GUI_GL_MATRIX4_HPP
-#define GUI_GL_MATRIX4_HPP
+#ifndef LXGUI_GUI_GL_MATRIX4_HPP
+#define LXGUI_GUI_GL_MATRIX4_HPP
 
 #include <lxgui/gui_vector2.hpp>
 #include <initializer_list>

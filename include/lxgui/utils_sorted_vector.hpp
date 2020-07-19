@@ -1,5 +1,5 @@
-#ifndef SORTED_VECTOR_HPP
-#define SORTED_VECTOR_HPP
+#ifndef LXGUI_SORTED_VECTOR_HPP
+#define LXGUI_SORTED_VECTOR_HPP
 
 #include <vector>
 #include <algorithm>

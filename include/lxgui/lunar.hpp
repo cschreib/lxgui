@@ -1,5 +1,5 @@
-#ifndef lunar_h
-#define lunar_h
+#ifndef LXGUI_lunar_h
+#define LXGUI_lunar_h
 
 extern "C" {
 #include <lua.h>

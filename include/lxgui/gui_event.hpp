@@ -1,5 +1,5 @@
-#ifndef GUI_EVENT_HPP
-#define GUI_EVENT_HPP
+#ifndef LXGUI_GUI_EVENT_HPP
+#define LXGUI_GUI_EVENT_HPP
 
 #include <lxgui/utils_any.hpp>
 #include <string>

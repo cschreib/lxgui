@@ -7,8 +7,8 @@
 // More infos about HGE :
 // http://hge.relishgames.com/
 
-#ifndef GUI_SPRITE_HPP
-#define GUI_SPRITE_HPP
+#ifndef LXGUI_GUI_SPRITE_HPP
+#define LXGUI_GUI_SPRITE_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_refptr.hpp>

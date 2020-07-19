@@ -1,5 +1,5 @@
-#ifndef GUI_BACKDROP_HPP
-#define GUI_BACKDROP_HPP
+#ifndef LXGUI_GUI_BACKDROP_HPP
+#define LXGUI_GUI_BACKDROP_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_sprite.hpp"

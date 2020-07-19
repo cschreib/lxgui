@@ -1,5 +1,5 @@
-#ifndef LUAPP_FUNCTION_HPP
-#define LUAPP_FUNCTION_HPP
+#ifndef LXGUI_LUAPP_FUNCTION_HPP
+#define LXGUI_LUAPP_FUNCTION_HPP
 
 #include <lxgui/utils_any.hpp>
 #include <map>

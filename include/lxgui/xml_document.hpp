@@ -1,5 +1,5 @@
-#ifndef XML_DOCUMENT_HPP
-#define XML_DOCUMENT_HPP
+#ifndef LXGUI_XML_DOCUMENT_HPP
+#define LXGUI_XML_DOCUMENT_HPP
 
 #include "lxgui/xml_block.hpp"
 #include <iostream>

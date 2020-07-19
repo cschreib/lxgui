@@ -1,5 +1,5 @@
-#ifndef GUI_SFML_FONT_HPP
-#define GUI_SFML_FONT_HPP
+#ifndef LXGUI_GUI_SFML_FONT_HPP
+#define LXGUI_GUI_SFML_FONT_HPP
 
 #include "lxgui/impl/gui_sfml_material.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef GUI_SLIDER_HPP
-#define GUI_SLIDER_HPP
+#ifndef LXGUI_GUI_SLIDER_HPP
+#define LXGUI_GUI_SLIDER_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"

@@ -1,5 +1,5 @@
-#ifndef GUI_FONTSTRING_HPP
-#define GUI_FONTSTRING_HPP
+#ifndef LXGUI_GUI_FONTSTRING_HPP
+#define LXGUI_GUI_FONTSTRING_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_layeredregion.hpp"

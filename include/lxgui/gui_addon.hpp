@@ -1,5 +1,5 @@
-#ifndef GUI_ADDON_HPP
-#define GUI_ADDON_HPP
+#ifndef LXGUI_GUI_ADDON_HPP
+#define LXGUI_GUI_ADDON_HPP
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef UTILS_REFPTR_HPP
-#define UTILS_REFPTR_HPP
+#ifndef LXGUI_UTILS_REFPTR_HPP
+#define LXGUI_UTILS_REFPTR_HPP
 
 #include "lxgui/utils.hpp"
 

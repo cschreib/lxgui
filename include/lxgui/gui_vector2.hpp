@@ -1,5 +1,5 @@
-#ifndef GUI_VECTOR2_HPP
-#define GUI_VECTOR2_HPP
+#ifndef LXGUI_GUI_VECTOR2_HPP
+#define LXGUI_GUI_VECTOR2_HPP
 
 #include <cmath>
 #include <iosfwd>

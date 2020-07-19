@@ -1,5 +1,5 @@
-#ifndef LUAPP_LUA_FWD_HPP
-#define LUAPP_LUA_FWD_HPP
+#ifndef LXGUI_LUAPP_LUA_FWD_HPP
+#define LXGUI_LUAPP_LUA_FWD_HPP
 
 extern "C"
 {

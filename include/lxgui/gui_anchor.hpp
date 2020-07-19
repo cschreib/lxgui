@@ -1,5 +1,5 @@
-#ifndef GUI_ANCHOR_HPP
-#define GUI_ANCHOR_HPP
+#ifndef LXGUI_GUI_ANCHOR_HPP
+#define LXGUI_GUI_ANCHOR_HPP
 
 #include <lxgui/utils.hpp>
 #include <string>

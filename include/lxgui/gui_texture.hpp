@@ -1,5 +1,5 @@
-#ifndef GUI_TEXTURE_HPP
-#define GUI_TEXTURE_HPP
+#ifndef LXGUI_GUI_TEXTURE_HPP
+#define LXGUI_GUI_TEXTURE_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_layeredregion.hpp"

@@ -1,5 +1,5 @@
-#ifndef GUI_QUAD2_HPP
-#define GUI_QUAD2_HPP
+#ifndef LXGUI_GUI_QUAD2_HPP
+#define LXGUI_GUI_QUAD2_HPP
 
 #include "lxgui/gui_vector2.hpp"
 

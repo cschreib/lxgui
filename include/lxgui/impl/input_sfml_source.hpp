@@ -1,5 +1,5 @@
-#ifndef INPUT_SFML_SOURCE_HPP
-#define INPUT_SFML_SOURCE_HPP
+#ifndef LXGUI_INPUT_SFML_SOURCE_HPP
+#define LXGUI_INPUT_SFML_SOURCE_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>

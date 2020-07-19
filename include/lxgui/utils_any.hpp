@@ -1,5 +1,5 @@
-#ifndef UTILS_ANY_HPP
-#define UTILS_ANY_HPP
+#ifndef LXGUI_UTILS_ANY_HPP
+#define LXGUI_UTILS_ANY_HPP
 
 #include "lxgui/utils_exception.hpp"
 #include <typeinfo>

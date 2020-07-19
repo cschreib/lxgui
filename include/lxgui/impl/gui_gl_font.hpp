@@ -1,5 +1,5 @@
-#ifndef GUI_GL_FONT_HPP
-#define GUI_GL_FONT_HPP
+#ifndef LXGUI_GUI_GL_FONT_HPP
+#define LXGUI_GUI_GL_FONT_HPP
 
 #include "lxgui/impl/gui_gl_material.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef GUI_CHECKBUTTON_HPP
-#define GUI_CHECKBUTTON_HPP
+#ifndef LXGUI_GUI_CHECKBUTTON_HPP
+#define LXGUI_GUI_CHECKBUTTON_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_button.hpp"

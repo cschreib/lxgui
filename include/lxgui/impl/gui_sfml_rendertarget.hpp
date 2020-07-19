@@ -1,5 +1,5 @@
-#ifndef GUI_SFML_RENDERTARGET_HPP
-#define GUI_SFML_RENDERTARGET_HPP
+#ifndef LXGUI_GUI_SFML_RENDERTARGET_HPP
+#define LXGUI_GUI_SFML_RENDERTARGET_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_refptr.hpp>

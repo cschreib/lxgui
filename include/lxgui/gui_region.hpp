@@ -1,5 +1,5 @@
-#ifndef GUI_REGION_HPP
-#define GUI_REGION_HPP
+#ifndef LXGUI_GUI_REGION_HPP
+#define LXGUI_GUI_REGION_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_uiobject.hpp"

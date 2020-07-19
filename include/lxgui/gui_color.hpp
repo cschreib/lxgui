@@ -1,5 +1,5 @@
-#ifndef GUI_COLOR_HPP
-#define GUI_COLOR_HPP
+#ifndef LXGUI_GUI_COLOR_HPP
+#define LXGUI_GUI_COLOR_HPP
 
 #include <iosfwd>
 #include <string>

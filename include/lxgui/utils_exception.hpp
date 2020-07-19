@@ -1,5 +1,5 @@
-#ifndef UTILS_EXCEPTION_HPP
-#define UTILS_EXCEPTION_HPP
+#ifndef LXGUI_UTILS_EXCEPTION_HPP
+#define LXGUI_UTILS_EXCEPTION_HPP
 
 #include "lxgui/utils.hpp"
 #include <string>

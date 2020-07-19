@@ -1,5 +1,5 @@
-#ifndef GUI_STATUSBAR_HPP
-#define GUI_STATUSBAR_HPP
+#ifndef LXGUI_GUI_STATUSBAR_HPP
+#define LXGUI_GUI_STATUSBAR_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"

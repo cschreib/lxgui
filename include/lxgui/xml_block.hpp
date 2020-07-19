@@ -1,5 +1,5 @@
-#ifndef XML_BLOCK_HPP
-#define XML_BLOCK_HPP
+#ifndef LXGUI_XML_BLOCK_HPP
+#define LXGUI_XML_BLOCK_HPP
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef GUI_SCROLLFRAME_HPP
-#define GUI_SCROLLFRAME_HPP
+#ifndef LXGUI_GUI_SCROLLFRAME_HPP
+#define LXGUI_GUI_SCROLLFRAME_HPP
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"

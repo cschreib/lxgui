@@ -1,5 +1,5 @@
-#ifndef GUI_EVENTRECEIVER_HPP
-#define GUI_EVENTRECEIVER_HPP
+#ifndef LXGUI_GUI_EVENTRECEIVER_HPP
+#define LXGUI_GUI_EVENTRECEIVER_HPP
 
 #include <lxgui/utils.hpp>
 #include <string>

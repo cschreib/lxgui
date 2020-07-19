@@ -1,5 +1,5 @@
-#ifndef UTILS_WPTR_HPP
-#define UTILS_WPTR_HPP
+#ifndef LXGUI_UTILS_WPTR_HPP
+#define LXGUI_UTILS_WPTR_HPP
 
 #include "lxgui/utils.hpp"
 

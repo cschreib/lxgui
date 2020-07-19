@@ -1,5 +1,5 @@
-#ifndef GUI_EDITBOX_HPP
-#define GUI_EDITBOX_HPP
+#ifndef LXGUI_GUI_EDITBOX_HPP
+#define LXGUI_GUI_EDITBOX_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>

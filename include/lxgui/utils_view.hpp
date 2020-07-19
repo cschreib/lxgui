@@ -1,5 +1,5 @@
-#ifndef UTILS_VIEW_HPP
-#define UTILS_VIEW_HPP
+#ifndef LXGUI_UTILS_VIEW_HPP
+#define LXGUI_UTILS_VIEW_HPP
 
 #include <utility>
 

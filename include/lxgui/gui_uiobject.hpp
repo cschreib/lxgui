@@ -1,5 +1,5 @@
-#ifndef GUI_UIOBJECT_HPP
-#define GUI_UIOBJECT_HPP
+#ifndef LXGUI_GUI_UIOBJECT_HPP
+#define LXGUI_GUI_UIOBJECT_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_optional.hpp>

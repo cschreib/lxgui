@@ -1,5 +1,5 @@
-#ifndef GUI_FONT_HPP
-#define GUI_FONT_HPP
+#ifndef LXGUI_GUI_FONT_HPP
+#define LXGUI_GUI_FONT_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_refptr.hpp>

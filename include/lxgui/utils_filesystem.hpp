@@ -1,5 +1,5 @@
-#ifndef UTILS_FILESYSTEM_HPP
-#define UTILS_FILESYSTEM_HPP
+#ifndef LXGUI_UTILS_FILESYSTEM_HPP
+#define LXGUI_UTILS_FILESYSTEM_HPP
 
 #include "lxgui/utils.hpp"
 #include <string>
