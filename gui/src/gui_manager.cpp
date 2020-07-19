@@ -358,7 +358,9 @@ void manager::remove_uiobject(uiobject* pObj)
 
     // NB: cannot use down_cast() here, as the frame destructor
     // may have already been called.
-    // TODO: reintroduce the check for manually rendered
+    // TODO: reintroduce the check for manually rendered.
+    // Currently, if a frame was manually rendered and is destroyed,
+    // it will trigger a rebuild of the GUI strata list. This could be avoided.
     if (pObj->is_object_type<frame>())
         fire_build_strata_list();
 
