@@ -11,7 +11,7 @@ add_library(lxgui-sfml STATIC
     ${SRCROOT}/gui_sfml.cpp
 )
 
-file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml_*.hpp)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml*.hpp)
 install(FILES ${files} DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-sfml ARCHIVE DESTINATION lib)
 
