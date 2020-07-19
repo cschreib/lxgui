@@ -64,7 +64,7 @@ var searchData=
   ['renderer_5fimpl',['renderer_impl',['../classlxgui_1_1gui_1_1renderer__impl.html#a13a22c03b908e052d03c7ce683cff1fb',1,'lxgui::gui::renderer_impl']]],
   ['repeat',['REPEAT',['../classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555',1,'lxgui::gui::material']]],
   ['request_5ffocus',['request_focus',['../classlxgui_1_1gui_1_1manager.html#a6fb8a942de07f4c7a6f34256d121f5fc',1,'lxgui::gui::manager']]],
-  ['reset',['RESET',['../classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2ab5859d8721cfdc0312b2838b9c985bc1',1,'lxgui::gui::text::RESET()'],['../classlxgui_1_1utils_1_1optional.html#a5f3105521f2c6df1e3d72ca6fddcec9a',1,'lxgui::utils::optional::reset()']]],
+  ['reset',['reset',['../classlxgui_1_1utils_1_1optional.html#a5f3105521f2c6df1e3d72ca6fddcec9a',1,'lxgui::utils::optional::reset()'],['../classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2ab5859d8721cfdc0312b2838b9c985bc1',1,'lxgui::gui::text::RESET()']]],
   ['reset_5fwindow_5fresized',['reset_window_resized',['../classlxgui_1_1input_1_1source__impl.html#a28a7863c4cdf1d6cb06f9598aff00da9',1,'lxgui::input::source_impl']]],
   ['reverse',['reverse',['../namespacelxgui_1_1utils_1_1range.html#a9e38d6e0651c1c0ec1564ff339cc6ba9',1,'lxgui::utils::range']]],
   ['reverse_5fiterator',['reverse_iterator',['../classlxgui_1_1utils_1_1sorted__vector.html#a4d554a742ee0790a1399fe2cef2908a6',1,'lxgui::utils::sorted_vector::reverse_iterator()'],['../namespacelxgui_1_1utils_1_1range.html#ada41e4b0c4fdd78c810318f3c8d9d833',1,'lxgui::utils::range::reverse_iterator()']]],
