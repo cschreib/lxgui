@@ -858,44 +858,45 @@ void manager::create_strata_render_target(frame_strata mframe_strata)
     create_strata_render_target_(lStrataList_[mframe_strata]);
 }
 
+void manager::create_caching_render_target_()
+{
+    if (pRenderTarget_) return;
+
+    try
+    {
+        pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
+    }
+    catch (const utils::exception& e)
+    {
+        gui::out << gui::error << "gui::manager : "
+            << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
+
+        bEnableCaching_ = false;
+        return;
+    }
+
+    mSprite_ = create_sprite(create_material(pRenderTarget_));
+}
+
 void manager::create_strata_render_target_(strata& mStrata)
 {
-    if (!pRenderTarget_)
+    if (mStrata.pRenderTarget) return;
+
+    try
     {
-        try
-        {
-            pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
-        }
-        catch (const utils::exception& e)
-        {
-            gui::out << gui::error << "gui::manager : "
-                << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
+        mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
+    }
+    catch (const utils::exception& e)
+    {
+        gui::out << gui::error << "gui::manager : "
+            << "Unable to create render_target for strata " << static_cast<uint>(mStrata.mStrata) << " :\n"
+            << e.get_description() << std::endl;
 
-            bEnableCaching_ = false;
-            return;
-        }
-
-        mSprite_ = create_sprite(create_material(pRenderTarget_));
+        bEnableCaching_ = false;
+        return;
     }
 
-    if (!mStrata.pRenderTarget)
-    {
-        try
-        {
-            mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
-        }
-        catch (const utils::exception& e)
-        {
-            gui::out << gui::error << "gui::manager : "
-                << "Unable to create render_target for strata " << static_cast<uint>(mStrata.mStrata) << " :\n"
-                << e.get_description() << std::endl;
-
-            bEnableCaching_ = false;
-            return;
-        }
-
-        mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
-    }
+    mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
 }
 
 void manager::render_strata_(strata& mStrata)
@@ -1056,6 +1057,7 @@ void manager::update(float fDelta)
     if (bEnableCaching_)
     {
         DEBUG_LOG(" Redraw strata...");
+
         bool bRedraw = false;
         for (auto& mStrata : utils::range::value(lStrataList_))
         {
@@ -1067,6 +1069,8 @@ void manager::update(float fDelta)
 
             mStrata.bRedraw = false;
         }
+
+        create_caching_render_target_();
 
         if (bRedraw && pRenderTarget_)
         {
