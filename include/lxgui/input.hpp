@@ -452,12 +452,12 @@ namespace input
         /** \param fMouseSensitivity The new movement factor
         *   \note Increase this parameter to make mouse controlled movement faster.
         */
-        void set_mouse_sensibility(float fMouseSensitivity);
+        void set_mouse_sensitivity(float fMouseSensitivity);
 
         /// Returns the mouse movement factor.
         /** \return The mouse movement factor
         */
-        float get_mouse_sensibility() const;
+        float get_mouse_sensitivity() const;
 
         /// Sets the duration after which a key is considered as pressed for a long time.
         /** \param dLongPressDelay The "long pressed" duration

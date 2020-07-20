@@ -843,12 +843,12 @@ float manager::get_mouse_wheel() const
     return fMWheel_;
 }
 
-void manager::set_mouse_sensibility(float fMouseSensitivity)
+void manager::set_mouse_sensitivity(float fMouseSensitivity)
 {
     fMouseSensitivity_ = fMouseSensitivity;
 }
 
-float manager::get_mouse_sensibility() const
+float manager::get_mouse_sensitivity() const
 {
     return fMouseSensitivity_;
 }
