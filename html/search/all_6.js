@@ -151,7 +151,7 @@ var searchData=
   ['get_5fmouse_5frel_5fdy',['get_mouse_rel_dy',['../classlxgui_1_1input_1_1manager.html#aaf7fd0fe23d2b107988bcf2a37f843f0',1,'lxgui::input::manager']]],
   ['get_5fmouse_5frel_5fx',['get_mouse_rel_x',['../classlxgui_1_1input_1_1manager.html#a61a8d5d3b8a7603b105f429d73f28b2a',1,'lxgui::input::manager']]],
   ['get_5fmouse_5frel_5fy',['get_mouse_rel_y',['../classlxgui_1_1input_1_1manager.html#a98a287d97b2927394b5cd80257452e55',1,'lxgui::input::manager']]],
-  ['get_5fmouse_5fsensibility',['get_mouse_sensibility',['../classlxgui_1_1input_1_1manager.html#aa47aee8584825e5c0d50d20037af94b8',1,'lxgui::input::manager']]],
+  ['get_5fmouse_5fsensitivity',['get_mouse_sensitivity',['../classlxgui_1_1input_1_1manager.html#a653f9abd7daa70596ddf23f705815bcb',1,'lxgui::input::manager']]],
   ['get_5fmouse_5fsmooth_5fdx',['get_mouse_smooth_dx',['../classlxgui_1_1input_1_1manager.html#a3ca7a75aaa013d45763c4733fa72df45',1,'lxgui::input::manager']]],
   ['get_5fmouse_5fsmooth_5fdy',['get_mouse_smooth_dy',['../classlxgui_1_1input_1_1manager.html#a6857fb8b2ad85ac53b9bd579a576ba18',1,'lxgui::input::manager']]],
   ['get_5fmouse_5fstate',['get_mouse_state',['../classlxgui_1_1input_1_1source__impl.html#a5f48f040bf5684cd6f16559af1c5dd10',1,'lxgui::input::source_impl::get_mouse_state()'],['../classlxgui_1_1input_1_1manager.html#a8da1f2b2d350d5ca8331229f080966d6',1,'lxgui::input::manager::get_mouse_state()']]],
