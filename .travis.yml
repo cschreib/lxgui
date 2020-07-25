@@ -8,22 +8,13 @@ jobs:
   include:
     - stage: test
       os: linux
-      dist: xenial
+      dist: bionic
       compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - gcc-6
-            - g++-6
-            - libstdc++-9-dev
-            - libstdc++6
       before_script:
         - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
         - mkdir build
         - cd build
-        - cmake .. -DCMAKE_C_COMPILER=gcc-6 -DCMAKE_CXX_COMPILER=g++-6
+        - cmake ..
       script: sudo make install
 
     - stage: test
