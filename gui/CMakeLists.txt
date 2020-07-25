@@ -1,6 +1,7 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui)
 set(SRCROOT ${TARGET_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/sol2/include)
 include_directories(${LUA_INCLUDE_DIR})
 
 add_library(lxgui STATIC
@@ -67,6 +68,8 @@ file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
+file(GLOB_RECURSE files ${PROJECT_SOURCE_DIR}/sol2/include/sol/*)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/sol2/include/sol DESTINATION include)
 install(FILES ${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
 install(TARGETS lxgui ARCHIVE DESTINATION lib)
 

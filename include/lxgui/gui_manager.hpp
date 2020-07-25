@@ -22,6 +22,10 @@
 #include <array>
 #include <functional>
 
+namespace sol {
+    class state;
+}
+
 namespace lxgui {
 namespace lua {
     class state;
@@ -385,11 +389,21 @@ namespace gui
         */
         const lua::state& get_lua() const;
 
+        /// Returns the GUI Lua state (sol wrapper).
+        /** \return The GUI Lua state
+        */
+        sol::state& get_sol();
+
+        /// Returns the GUI Lua state (sol wrapper).
+        /** \return The GUI Lua state
+        */
+        const sol::state& get_sol() const;
+
         /// Creates the lua::State that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
         *                   state is created
         *   \note This function is usefull if you need to create additionnal
-        *         resources on the lua::State before the GUI files are loaded.
+        *         resources on the Lua state before the GUI files are loaded.
         *         You need to do this inside the provided argument function,
         *         because this code will need to be called again in case the GUI
         *         is reloaded (see reload_ui()).
@@ -713,6 +727,7 @@ namespace gui
         bool bClearFontsOnClose_ = true;
 
         std::unique_ptr<lua::state> pLua_;
+        std::unique_ptr<sol::state> pSol_;
         std::function<void()>       pLuaRegs_;
         bool                        bClosed_ = true;
         bool                        bLoadingUI_ = false;

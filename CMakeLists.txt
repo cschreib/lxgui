@@ -38,7 +38,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     list(GET GCC_VERSION_COMPONENTS 1 GCC_MINOR)
     set(GCC_VERSION ${GCC_MAJOR}.${GCC_MINOR})
 
-    add_definitions(-std=c++11)
+    add_definitions(-std=c++17)
 
     if(GCC_VERSION VERSION_LESS 4.8)
         message(ERROR ": lxgui requires advanced features from the C++11 norm that are only available with gcc 4.8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
@@ -83,7 +83,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}
     add_definitions(-Wno-reserved-id-macro)
     add_definitions(-Wno-old-style-cast)
     add_definitions(-Wno-double-promotion)
-    add_definitions(-std=c++11)
+    add_definitions(-std=c++17)
 else()
     message(WARNING "Warning: your compiler has not been setup by the CMake script, do not expect it to work")
 endif()

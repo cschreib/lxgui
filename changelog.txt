@@ -1,7 +1,7 @@
 v2.0.0:
  - general: switched to MIT license
  - general: various fixes and improvements to the build system
- - general: dropped support for C++03
+ - general: dropped support for C++ version less than C++17
  - general: fixed various warnings and minor bugs detected by clang
  - general: moved away from using reference-counted smart pointers whenever possible
  - general: moved all code into the lxgui namespace
@@ -9,13 +9,15 @@ v2.0.0:
  - general: moved all enums to C++11 enum class
  - general: added C++11 noexcept specifiers where appropriate
  - general: removed foreach() macro in favor of C++11 range-based for loop
- - general: use override instead of virtual
+ - general: use override instead of virtual whenever applicable
  - general: made all single argument constructors explicit where appropriate
  - general: renamed lua::var into utils::any
  - general: renamed "sensibility" to "sensitivity"
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
  - lua: added support for Lua versions later than 5.1
+ - lua: removed unusual constructs to serialize a table
+ - lua: starting switching to sol2 to manage the Lua state
  - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
  - input: vastly improved performance of SFML input implementation
  - input: get_key_name() is now platform-independent, and only returns English
@@ -29,7 +31,7 @@ v2.0.0:
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: renderer is now always a frame rather than a uiobject
- - gui: from now only frames can be flagged as manually rendered
+ - gui: only frames can now be flagged as manually rendered
  - gui: migrated most usage of std::(multi)map to sorted std::vector for performance
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers

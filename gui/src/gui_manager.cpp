@@ -18,6 +18,9 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
+
+#include <sol/state.hpp>
+
 #include <fstream>
 #include <sstream>
 
@@ -447,12 +450,22 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
 
 lua::state& manager::get_lua()
 {
-    return *pLua_.get();
+    return *pLua_;
 }
 
 const lua::state& manager::get_lua() const
 {
-    return *pLua_.get();
+    return *pLua_;
+}
+
+sol::state& manager::get_sol()
+{
+    return *pSol_;
+}
+
+const sol::state& manager::get_sol() const
+{
+    return *pSol_;
 }
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
@@ -691,7 +704,11 @@ void manager::create_lua(std::function<void()> pLuaRegs)
 {
     if (!pLua_)
     {
-        pLua_ = std::unique_ptr<lua::state>(new lua::state());
+        pSol_ = std::unique_ptr<sol::state>(new sol::state());
+        pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
+            sol::lib::os, sol::lib::string, sol::lib::math, sol::lib::debug);
+
+        pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
         pLua_->set_print_error_function(gui_out);
 
         register_lua_manager_();

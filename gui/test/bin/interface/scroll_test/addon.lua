@@ -31,7 +31,7 @@ function ScrollTest:init_root_folder()
             return;
         end
 
-        local folderList = {get_folder_list("")};
+        local folderList = get_folder_list("");
 
         if (#folderList ~= 0) then
             rootFolder.Develop.Minus:show();
@@ -86,7 +86,7 @@ function ScrollTest:develop_folder(id, toggle)
             parentFolder.Develop.Plus:hide();
             parentFolder.developed = true;
 
-            local folderList = {get_folder_list(parentFolder.folder)};
+            local folderList = get_folder_list(parentFolder.folder);
 
             if (#folderList == 0) then
                 parentFolder.isEmpty = true;
@@ -238,7 +238,7 @@ function ScrollTest:set_folder(id)
 
         self.File:set_text(parentFolder.folder);
 
-        local fileList = {get_file_list(parentFolder.folder)};
+        local fileList = get_file_list(parentFolder.folder);
 
         if (self.currentFolder) then
             self.currentFolder:set_backdrop(nil);
@@ -346,90 +346,6 @@ function ScrollTest:set_file(id)
                 self.File:set_text(file.file);
             else
                 self.File:set_text("");
-            end
-        end
-    end
-end
-
-function ScrollTest:select_folder(folderName)
-    local info = cut_file_path(folderName);
-
-    self.error = nil;
-    local currentFolder = self.folders[1];
-    self:develop_folder(currentFolder.id, false);
-    for i, folder in pairs(info.folders) do
-        self:develop_folder(currentFolder.id, false);
-        local nextFolder = nil;
-        for j, subFolder in pairs(currentFolder.folders) do
-            if (subFolder.name == folder) then
-                nextFolder = subFolder;
-                break;
-            end
-        end
-        if (nextFolder) then
-            currentFolder = nextFolder;
-        else
-            local location;
-            if (#currentFolder.folder == 0) then
-                location = folder;
-            else
-                location = currentFolder.folder.."/"..folder;
-            end
-            break;
-        end
-    end
-
-    if (not self.error) then
-        self:set_folder(currentFolder.id);
-    end
-end
-
-function ScrollTest:select_file(fileName)
-    self:init_root_folder();
-    local info = cut_file_path(fileName);
-
-    self.error = nil;
-    local currentFolder = self.folders[1];
-    for i, folder in pairs(info.folders) do
-        self:develop_folder(currentFolder.id, false);
-        local nextFolder = nil;
-        for j, subFolder in pairs(currentFolder.folders) do
-            if (subFolder.name == folder) then
-                nextFolder = subFolder;
-                break;
-            end
-        end
-        if (nextFolder) then
-            currentFolder = nextFolder;
-        else
-            local location;
-            if (#currentFolder.folder == 0) then
-                location = folder;
-            else
-                location = currentFolder.folder.."/"..folder;
-            end
-            break;
-        end
-    end
-
-    if (not self.error) then
-        self:set_folder(currentFolder.id);
-
-        local found = false;
-        for i, file in pairs(self.files) do
-            if (file.name == info.file) then
-                self:set_file(file.id);
-                found = true;
-                break;
-            end
-        end
-
-        if (not found) then
-            local location;
-            if (#self.currentFolder.folder == 0) then
-                location = info.file;
-            else
-                location = self.currentFolder.folder.."/"..info.file;
             end
         end
     end

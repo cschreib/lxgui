@@ -13,6 +13,8 @@
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
 
+#include <sol/state.hpp>
+
 #include <SFML/Window.hpp>
 
 //#define GLFW_INPUT
@@ -46,10 +48,6 @@
 #include <fstream>
 
 using namespace lxgui;
-
-int l_get_folder_list(lua_State* pLua);
-int l_get_file_list(lua_State* pLua);
-int l_cut_file_path(lua_State* pLua);
 
 int main(int argc, char* argv[])
 {
@@ -147,9 +145,13 @@ int main(int argc, char* argv[])
             pManager->register_frame_type<gui::scroll_frame>();
             pManager->register_frame_type<gui::status_bar>();
             //  - register additional lua functions
-            pManager->get_lua().reg("get_folder_list", l_get_folder_list);
-            pManager->get_lua().reg("get_file_list",   l_get_file_list);
-            pManager->get_lua().reg("cut_file_path",   l_cut_file_path);
+            sol::state& mSol = pManager->get_sol();
+            mSol.set_function("get_folder_list", [](const std::string& sDir) {
+                return utils::get_directory_list(sDir);
+            });
+            mSol.set_function("get_file_list", [](const std::string& sDir) {
+                return utils::get_file_list(sDir);
+            });
         });
 
         //  - and load all files
@@ -308,92 +310,4 @@ int main(int argc, char* argv[])
     std::cout << "End of program." << std::endl;
 
     return 0;
-}
-
-int l_get_folder_list(lua_State* pLua)
-{
-    lua::function mFunc("get_folder_list", pLua);
-    mFunc.add(0, "folder", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        const std::string sDir = mFunc.get(0)->get_string();
-        for (const auto& sSubDir : utils::get_directory_list(sDir))
-            mFunc.push(sSubDir);
-    }
-
-    return mFunc.on_return();
-}
-
-int l_get_file_list(lua_State* pLua)
-{
-    lua::function mFunc("get_file_list", pLua);
-    mFunc.add(0, "folder", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        const std::string sDir = mFunc.get(0)->get_string();
-        for (const auto& sFile : utils::get_file_list(sDir))
-            mFunc.push(sFile);
-    }
-
-    return mFunc.on_return();
-}
-
-int l_cut_file_path(lua_State* pLua)
-{
-    lua::function mFunc("cut_file_path", pLua, 1);
-    mFunc.add(0, "path", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        std::string sPath = mFunc.get(0)->get_string();
-        std::vector<std::string> lWords = utils::cut(sPath, "/");
-
-        for (auto iter = lWords.begin(); iter != lWords.end(); ++iter)
-        {
-            std::vector<std::string> lSubWords = utils::cut(*iter, "\\");
-            if (lSubWords.size() > 1)
-            {
-                iter = lWords.erase(iter);
-                for (const auto& sSubWord : lSubWords)
-                    iter = lWords.insert(iter, sSubWord);
-            }
-        }
-
-        std::string sFile = lWords.back();
-        if (sFile.find(".") != sFile.npos)
-            lWords.pop_back();
-        else
-            sFile = "";
-
-        std::string sFolder;
-        for (const auto& sWord : lWords)
-        {
-            if (sFolder.empty())
-                sFolder += sWord;
-            else
-                sFolder += "/" + sWord;
-        }
-
-        lua::state& mState = mFunc.get_state();
-        mState.new_table();
-        mState.set_field_string("file", sFile);
-        mState.set_field_string("folder", sFolder);
-        mState.new_table();
-        mState.set_field("folders");
-        mState.get_field("folders");
-
-        uint i = 1;
-        for (const auto& sWord : lWords)
-        {
-            mState.set_field_string(i, sWord);
-            ++i;
-        }
-
-        mState.pop();
-        mFunc.notify_pushed();
-    }
-
-    return mFunc.on_return();
 }

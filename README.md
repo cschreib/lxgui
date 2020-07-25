@@ -55,7 +55,7 @@ input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
 // Load files:
 //  - first set the directory in which the interface is located
 pManager->add_addon_directory("interface");
-//  - create the lua::state
+//  - create the Lua state
 pManager->create_lua([&pManager](){
     // This code might be called again later on, for example when one
     // reloads the GUI (the lua state is destroyed and created again).

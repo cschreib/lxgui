@@ -24,7 +24,7 @@
                 self:show();
                 self:raise();
                 self:init_root_folder();
-                self:select_folder("");
+                self:set_folder(1);
             </OnLoad>
             <OnShow>
                 self.Splitter.FolderFrame:on("size_changed");
