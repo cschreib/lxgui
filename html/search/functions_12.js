@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['table_5fto_5fstring',['table_to_string',['../classlxgui_1_1lua_1_1state.html#a516da98aac3de949ee437b98af45e2e7',1,'lxgui::lua::state']]],
   ['text',['text',['../classlxgui_1_1gui_1_1text.html#a5845ab01f6f600cb099b8ea11fb9e1f6',1,'lxgui::gui::text']]],
   ['texture',['texture',['../classlxgui_1_1gui_1_1texture.html#a56705d0abbc7d2f86ae471861a124b87',1,'lxgui::gui::texture']]],
   ['ticks',['ticks',['../classlxgui_1_1gui_1_1periodic__timer.html#ae3b1e1d8f75de7577842d88e87245501',1,'lxgui::gui::periodic_timer']]],

@@ -108,9 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd97865fc23cbe1230cff2afae5fc82d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1data.html#afd97865fc23cbe1230cff2afae5fc82d">data</a> (const std::string &amp;sName, <a class="el" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1b">type</a> mLuaType, <a class="el" href="classlxgui_1_1lua_1_1argument.html">argument</a> *pParent)</td></tr>
 <tr class="memdesc:afd97865fc23cbe1230cff2afae5fc82d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main constructor.  <a href="#afd97865fc23cbe1230cff2afae5fc82d">More...</a><br /></td></tr>
 <tr class="separator:afd97865fc23cbe1230cff2afae5fc82d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78c9718d2229ed1bcca11f669d93142b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1data.html#a78c9718d2229ed1bcca11f669d93142b">set</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> *pLua, int iIndex)</td></tr>
-<tr class="memdesc:a78c9718d2229ed1bcca11f669d93142b"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets data from Lua  <a href="#a78c9718d2229ed1bcca11f669d93142b">More...</a><br /></td></tr>
-<tr class="separator:a78c9718d2229ed1bcca11f669d93142b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f845f4319c41e57456dc11cf473bc00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1data.html#a3f845f4319c41e57456dc11cf473bc00">set</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;mLua, int iIndex)</td></tr>
+<tr class="memdesc:a3f845f4319c41e57456dc11cf473bc00"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets data from Lua  <a href="#a3f845f4319c41e57456dc11cf473bc00">More...</a><br /></td></tr>
+<tr class="separator:a3f845f4319c41e57456dc11cf473bc00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16a1431ef624773a4dd9b5692e7c948d"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1data.html#a16a1431ef624773a4dd9b5692e7c948d">get_name</a> () const </td></tr>
 <tr class="memdesc:a16a1431ef624773a4dd9b5692e7c948d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this argument's name.  <a href="#a16a1431ef624773a4dd9b5692e7c948d">More...</a><br /></td></tr>
 <tr class="separator:a16a1431ef624773a4dd9b5692e7c948d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,15 +249,15 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a78c9718d2229ed1bcca11f669d93142b"></a>
+<a class="anchor" id="a3f845f4319c41e57456dc11cf473bc00"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void lxgui::lua::data::set </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> *&#160;</td>
-          <td class="paramname"><em>pLua</em>, </td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;&#160;</td>
+          <td class="paramname"><em>mLua</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -276,7 +276,7 @@ Public Member Functions</h2></td></tr>
 <p>gets data from Lua </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pLua</td><td>The Lua state to use </td></tr>
+    <tr><td class="paramname">mLua</td><td>The Lua state to use </td></tr>
     <tr><td class="paramname">iIndex</td><td>The index at which to get the value </td></tr>
   </table>
   </dd>
@@ -291,7 +291,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 20 2020 18:03:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 25 2020 11:18:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

@@ -247,12 +247,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7dc3523c76f85a2b109a119596d800f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a7dc3523c76f85a2b109a119596d800f0">remove_key_binding</a> (<a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">input::key</a> uiKey, <a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">input::key</a> uiModifier1=<a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada87f2610857a54776758cf52c5e09c697">input::key::K_UNASSIGNED</a>, <a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">input::key</a> uiModifier2=<a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada87f2610857a54776758cf52c5e09c697">input::key::K_UNASSIGNED</a>)</td></tr>
 <tr class="memdesc:a7dc3523c76f85a2b109a119596d800f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unbinds a key.  <a href="#a7dc3523c76f85a2b109a119596d800f0">More...</a><br /></td></tr>
 <tr class="separator:a7dc3523c76f85a2b109a119596d800f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dd23a50abab311655c10563125da844"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a3dd23a50abab311655c10563125da844">get_lua</a> ()</td></tr>
-<tr class="memdesc:a3dd23a50abab311655c10563125da844"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state.  <a href="#a3dd23a50abab311655c10563125da844">More...</a><br /></td></tr>
-<tr class="separator:a3dd23a50abab311655c10563125da844"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76bbfc78e1e2a417fdbc19674d74ef9c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a76bbfc78e1e2a417fdbc19674d74ef9c">get_lua</a> () const </td></tr>
-<tr class="memdesc:a76bbfc78e1e2a417fdbc19674d74ef9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state.  <a href="#a76bbfc78e1e2a417fdbc19674d74ef9c">More...</a><br /></td></tr>
-<tr class="separator:a76bbfc78e1e2a417fdbc19674d74ef9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae7e63731648957e0f76e36716d9548"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#abae7e63731648957e0f76e36716d9548">get_lua</a> ()</td></tr>
+<tr class="memdesc:abae7e63731648957e0f76e36716d9548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state.  <a href="#abae7e63731648957e0f76e36716d9548">More...</a><br /></td></tr>
+<tr class="separator:abae7e63731648957e0f76e36716d9548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28bfb7b5610eeca264a280e1b656ec3f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a28bfb7b5610eeca264a280e1b656ec3f">get_lua</a> () const </td></tr>
+<tr class="memdesc:a28bfb7b5610eeca264a280e1b656ec3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state.  <a href="#a28bfb7b5610eeca264a280e1b656ec3f">More...</a><br /></td></tr>
+<tr class="separator:a28bfb7b5610eeca264a280e1b656ec3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad881809398dc3302afa2ac1c469d8f9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ad881809398dc3302afa2ac1c469d8f9a">create_lua</a> (std::function&lt; void()&gt; pLuaRegs=nullptr)</td></tr>
 <tr class="memdesc:ad881809398dc3302afa2ac1c469d8f9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the lua::State that will be used to communicate with the GUI.  <a href="#ad881809398dc3302afa2ac1c469d8f9a">More...</a><br /></td></tr>
 <tr class="separator:ad881809398dc3302afa2ac1c469d8f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,9 +408,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3fc1f6da557447a6e43e4dbee870357d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fc1f6da557447a6e43e4dbee870357d">get_manager</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> *pState)</td></tr>
-<tr class="memdesc:a3fc1f6da557447a6e43e4dbee870357d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gui manager associated to the provided <a class="el" href="classlxgui_1_1lua_1_1state.html" title="Lua wrapper. ">lua::state</a>.  <a href="#a3fc1f6da557447a6e43e4dbee870357d">More...</a><br /></td></tr>
-<tr class="separator:a3fc1f6da557447a6e43e4dbee870357d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b3c78e25f2c2ff6ce1f09e705468c4c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a5b3c78e25f2c2ff6ce1f09e705468c4c">get_manager</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp;mState)</td></tr>
+<tr class="memdesc:a5b3c78e25f2c2ff6ce1f09e705468c4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gui manager associated to the provided <a class="el" href="classlxgui_1_1lua_1_1state.html" title="Lua wrapper. ">lua::state</a>.  <a href="#a5b3c78e25f2c2ff6ce1f09e705468c4c">More...</a><br /></td></tr>
+<tr class="separator:a5b3c78e25f2c2ff6ce1f09e705468c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -1577,12 +1577,12 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 
 </div>
 </div>
-<a class="anchor" id="a3dd23a50abab311655c10563125da844"></a>
+<a class="anchor" id="abae7e63731648957e0f76e36716d9548"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> * lxgui::gui::manager::get_lua </td>
+          <td class="memname"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp; lxgui::gui::manager::get_lua </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1597,12 +1597,12 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 
 </div>
 </div>
-<a class="anchor" id="a76bbfc78e1e2a417fdbc19674d74ef9c"></a>
+<a class="anchor" id="a28bfb7b5610eeca264a280e1b656ec3f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> * lxgui::gui::manager::get_lua </td>
+          <td class="memname">const <a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp; lxgui::gui::manager::get_lua </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1617,7 +1617,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 
 </div>
 </div>
-<a class="anchor" id="a3fc1f6da557447a6e43e4dbee870357d"></a>
+<a class="anchor" id="a5b3c78e25f2c2ff6ce1f09e705468c4c"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -1627,8 +1627,8 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
         <tr>
           <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> * lxgui::gui::manager::get_manager </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> *&#160;</td>
-          <td class="paramname"><em>pState</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp;&#160;</td>
+          <td class="paramname"><em>mState</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1642,7 +1642,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the gui manager associated to the provided <a class="el" href="classlxgui_1_1lua_1_1state.html" title="Lua wrapper. ">lua::state</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pState</td><td>The <a class="el" href="classlxgui_1_1lua_1_1state.html" title="Lua wrapper. ">lua::state</a> </td></tr>
+    <tr><td class="paramname">mState</td><td>The <a class="el" href="classlxgui_1_1lua_1_1state.html" title="Lua wrapper. ">lua::state</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -3009,7 +3009,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a6563611883152546b8654
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 20 2020 18:03:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 25 2020 11:18:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

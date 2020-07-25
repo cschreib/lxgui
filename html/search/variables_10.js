@@ -4,7 +4,6 @@ var searchData=
   ['sauthor',['sAuthor',['../structlxgui_1_1gui_1_1addon.html#ab684aef54c16a9ee4df83db487d2f311',1,'lxgui::gui::addon']]],
   ['scaption',['sCaption',['../structlxgui_1_1gui_1_1text_1_1line.html#a5719c99659efaba8bf482521ff8582bc',1,'lxgui::gui::text::line']]],
   ['scombokey_5f',['sComboKey_',['../classlxgui_1_1gui_1_1edit__box.html#acfaa73d45dc220e8dee1fa7b522cb151',1,'lxgui::gui::edit_box']]],
-  ['scomstring',['sComString',['../classlxgui_1_1lua_1_1state.html#a6d6a877fb98128e832e8acd7ff7cd1e0',1,'lxgui::lua::state']]],
   ['sdefault',['sDefault',['../structlxgui_1_1xml_1_1attribute.html#ac8a04b040255c328e6f70e40d6af81fc',1,'lxgui::xml::attribute']]],
   ['sdirectory',['sDirectory',['../structlxgui_1_1gui_1_1addon.html#a06808d1a6b2231a8faef4fe220931e14',1,'lxgui::gui::addon']]],
   ['sdisplayedtext_5f',['sDisplayedText_',['../classlxgui_1_1gui_1_1edit__box.html#af4208d8dc9791f70fe48bd7e5b1305c0',1,'lxgui::gui::edit_box']]],

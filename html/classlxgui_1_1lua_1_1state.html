@@ -89,8 +89,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classlxgui_1_1lua_1_1state-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::lua::state Class Reference</div>  </div>
@@ -105,8 +103,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a141de99cc2dd20bb87894309ba76b2d8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a141de99cc2dd20bb87894309ba76b2d8">state</a> ()</td></tr>
-<tr class="memdesc:a141de99cc2dd20bb87894309ba76b2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a141de99cc2dd20bb87894309ba76b2d8">More...</a><br /></td></tr>
+<tr class="memdesc:a141de99cc2dd20bb87894309ba76b2d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Owning constructor.  <a href="#a141de99cc2dd20bb87894309ba76b2d8">More...</a><br /></td></tr>
 <tr class="separator:a141de99cc2dd20bb87894309ba76b2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab08c08cfb484d734cd91981450f04154"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#ab08c08cfb484d734cd91981450f04154">state</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
+<tr class="memdesc:ab08c08cfb484d734cd91981450f04154"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-owning constructor.  <a href="#ab08c08cfb484d734cd91981450f04154">More...</a><br /></td></tr>
+<tr class="separator:ab08c08cfb484d734cd91981450f04154"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad802f9c939c4b7efe2296c92a477e50a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#ad802f9c939c4b7efe2296c92a477e50a">state</a> (const <a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;)=delete</td></tr>
 <tr class="separator:ad802f9c939c4b7efe2296c92a477e50a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c7fb66fe08b04a31cf9216784061bc8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a0c7fb66fe08b04a31cf9216784061bc8">state</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;&amp;)=delete</td></tr>
@@ -121,12 +122,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a20082c99abaa19df6ff79c5845e10f4f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a20082c99abaa19df6ff79c5845e10f4f">get_state</a> ()</td></tr>
 <tr class="memdesc:a20082c99abaa19df6ff79c5845e10f4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the associated Lua state.  <a href="#a20082c99abaa19df6ff79c5845e10f4f">More...</a><br /></td></tr>
 <tr class="separator:a20082c99abaa19df6ff79c5845e10f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a516da98aac3de949ee437b98af45e2e7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a516da98aac3de949ee437b98af45e2e7">table_to_string</a> (const std::string &amp;sTable)</td></tr>
-<tr class="memdesc:a516da98aac3de949ee437b98af45e2e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concatenates a Lua table into a string.  <a href="#a516da98aac3de949ee437b98af45e2e7">More...</a><br /></td></tr>
-<tr class="separator:a516da98aac3de949ee437b98af45e2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf5d20e893f1af1f7972f2743a48e207"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#acf5d20e893f1af1f7972f2743a48e207">copy_table</a> (<a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;mLua, const std::string &amp;sSrcName, const std::string &amp;sDestName=&quot;&quot;)</td></tr>
-<tr class="memdesc:acf5d20e893f1af1f7972f2743a48e207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the content of a table from one Lua state to another.  <a href="#acf5d20e893f1af1f7972f2743a48e207">More...</a><br /></td></tr>
-<tr class="separator:acf5d20e893f1af1f7972f2743a48e207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe7180e72afcca7f17c899c6310d627c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#afe7180e72afcca7f17c899c6310d627c">do_file</a> (const std::string &amp;sFile)</td></tr>
 <tr class="memdesc:afe7180e72afcca7f17c899c6310d627c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes a Lua file.  <a href="#afe7180e72afcca7f17c899c6310d627c">More...</a><br /></td></tr>
 <tr class="separator:afe7180e72afcca7f17c899c6310d627c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,16 +301,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afea4c7b456593233b58335a360ecaf13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#afea4c7b456593233b58335a360ecaf13">set_top</a> (<a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiSize)</td></tr>
 <tr class="memdesc:afea4c7b456593233b58335a360ecaf13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the stack size.  <a href="#afea4c7b456593233b58335a360ecaf13">More...</a><br /></td></tr>
 <tr class="separator:afea4c7b456593233b58335a360ecaf13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a348f4fa064f70cae3fc33d5e01540e2d"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a348f4fa064f70cae3fc33d5e01540e2d">get_state</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
-<tr class="separator:a348f4fa064f70cae3fc33d5e01540e2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a6d6a877fb98128e832e8acd7ff7cd1e0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1lua_1_1state.html#a6d6a877fb98128e832e8acd7ff7cd1e0">sComString</a></td></tr>
-<tr class="separator:a6d6a877fb98128e832e8acd7ff7cd1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lua wrapper. </p>
@@ -336,8 +321,35 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<dl class="section note"><dt>Note</dt><dd>Opens a new Lua state and registers all base functions. </dd></dl>
+<p>Owning constructor. </p>
+<dl class="section note"><dt>Note</dt><dd>Opens a new Lua state and registers all base functions. The Lua state is owned by this object, and will be closed when the object is destroyed. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ab08c08cfb484d734cd91981450f04154"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">lxgui::lua::state::state </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
+          <td class="paramname"><em>pLua</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Non-owning constructor. </p>
+<dl class="section note"><dt>Note</dt><dd>Wraps an existing Lua state. The Lua state is not owned by this object, and will not be closed when the object is destroyed. </dd></dl>
 
 </div>
 </div>
@@ -469,49 +481,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acf5d20e893f1af1f7972f2743a48e207"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::lua::state::copy_table </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1lua_1_1state.html">state</a> &amp;&#160;</td>
-          <td class="paramname"><em>mLua</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sSrcName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sDestName</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Copy the content of a table from one Lua state to another. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mLua</td><td>The other Lua state into wich the table will be copied </td></tr>
-    <tr><td class="paramname">sSrcName</td><td>The name of the table in the source state </td></tr>
-    <tr><td class="paramname">sDestName</td><td>The name of the table in the destination state </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>If sDestName is ommited, the table will have the same name in both Lua states. </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="afe7180e72afcca7f17c899c6310d627c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -621,7 +590,7 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classlxgui_1_1lua_1_1Lunar.html">Lunar</a> object at the given index </dd></dl>
 
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00287">287</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00283">283</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
 
 </div>
 </div>
@@ -1187,30 +1156,6 @@ This method is mostly usefull if you want to save the current error function, us
 
 </div>
 </div>
-<a class="anchor" id="a348f4fa064f70cae3fc33d5e01540e2d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="classlxgui_1_1lua_1_1state.html">state</a>* lxgui::lua::state::get_state </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
-          <td class="paramname"><em>pLua</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="abe8b0a84df78a318ddfcb847ea0db4ec"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1330,7 +1275,7 @@ template&lt;class T &gt; </div>
 
 <p>Returns the user data (C++ pointer) at the given index. </p>
 
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00277">277</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00273">273</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
 
 </div>
 </div>
@@ -1622,7 +1567,7 @@ template&lt;class T &gt; </div>
 <p>pushes a new <a class="el" href="classlxgui_1_1lua_1_1Lunar.html">Lunar</a> object on the stack. </p>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the <a class="el" href="classlxgui_1_1lua_1_1Lunar.html">Lunar</a> object </dd></dl>
 
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00224">224</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00220">220</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
 
 </div>
 </div>
@@ -1730,7 +1675,7 @@ template&lt;class T &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00215">215</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00211">211</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
 
 </div>
 </div>
@@ -1818,7 +1763,7 @@ template&lt;class T &gt; </div>
 
 <p>regs a <a class="el" href="classlxgui_1_1lua_1_1Lunar.html">Lunar</a> class to be used on this state. </p>
 
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00111">111</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
+<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00107">107</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
 
 </div>
 </div>
@@ -2333,52 +2278,13 @@ See <a class="el" href="classlxgui_1_1lua_1_1state.html#ac70951d3b386a5261c6b72a
 
 </div>
 </div>
-<a class="anchor" id="a516da98aac3de949ee437b98af45e2e7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string lxgui::lua::state::table_to_string </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sTable</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Concatenates a Lua table into a string. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sTable</td><td>The name of the table in Lua </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a6d6a877fb98128e832e8acd7ff7cd1e0"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string lxgui::lua::state::sComString</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="luapp__state_8hpp_source.html#l00517">517</a> of file <a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/travis/build/cschreib/lxgui/include/lxgui/<a class="el" href="luapp__state_8hpp_source.html">luapp_state.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 20 2020 18:03:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 25 2020 11:18:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
