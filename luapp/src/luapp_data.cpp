@@ -9,14 +9,14 @@ data::data(const std::string& name, type mLuaType, argument* pParent) :
 {
 }
 
-void data::set(state* pLua, int iIndex)
+void data::set(state& mLua, int iIndex)
 {
     if (mLuaType_ == type::BOOLEAN)
-        mValue_ = pLua->get_bool(iIndex);
+        mValue_ = mLua.get_bool(iIndex);
     else if (mLuaType_ == type::NUMBER)
-        mValue_ = pLua->get_number(iIndex);
+        mValue_ = mLua.get_number(iIndex);
     else if (mLuaType_ == type::STRING)
-        mValue_ = pLua->get_string(iIndex);
+        mValue_ = mLua.get_string(iIndex);
     else if (mLuaType_ == type::TABLE)
         mValue_ = iIndex;
     else if (mLuaType_ == type::FUNCTION)

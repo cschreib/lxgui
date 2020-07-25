@@ -635,9 +635,9 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
             std::string sTempName = pAddedRegion->get_name();
             sTempName.erase(0, sName_.size());
 
-            lua::state* pLua = pManager_->get_lua();
-            pLua->get_global(pAddedRegion->get_name());
-            pLua->set_global(sName_+"."+sTempName);
+            lua::state& mLua = pManager_->get_lua();
+            mLua.get_global(pAddedRegion->get_name());
+            mLua.set_global(sName_+"."+sTempName);
         }
     }
 
@@ -810,9 +810,9 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
         {
             sRawName.erase(0, 7);
 
-            lua::state* pLua = pManager_->get_lua();
-            pLua->get_global(pAddedChild->get_lua_name());
-            pLua->set_global(sLuaName_+"."+sRawName);
+            lua::state& mLua = pManager_->get_lua();
+            mLua.get_global(pAddedChild->get_lua_name());
+            mLua.set_global(sLuaName_+"."+sRawName);
         }
     }
 
@@ -1019,20 +1019,20 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     sStr += "function " + sLuaName_ + ":" + sAdjustedName + "() " + sContent + " end";
 
     // Use XML specific error handling
-    lua::state* pLua = pManager_->get_lua();
+    lua::state& mLua = pManager_->get_lua();
 
-    std::string     sOldFile     = pLua->get_global_string("_xml_file_name", false, "");
-    uint            uiOldLineNbr = pLua->get_global_int("_xml_line_nbr", false, 0);
-    lua::c_function pErrorFunc   = pLua->get_lua_error_function();
+    std::string     sOldFile     = mLua.get_global_string("_xml_file_name", false, "");
+    uint            uiOldLineNbr = mLua.get_global_int("_xml_line_nbr", false, 0);
+    lua::c_function pErrorFunc   = mLua.get_lua_error_function();
 
-    pLua->push_string(sFile);     pLua->set_global("_xml_file_name");
-    pLua->push_number(uiLineNbr); pLua->set_global("_xml_line_nbr");
-    pLua->set_lua_error_function(l_xml_error);
+    mLua.push_string(sFile);     mLua.set_global("_xml_file_name");
+    mLua.push_number(uiLineNbr); mLua.set_global("_xml_line_nbr");
+    mLua.set_lua_error_function(l_xml_error);
 
     // Actually register the function
     try
     {
-        pLua->do_string(sStr);
+        mLua.do_string(sStr);
         lDefinedScriptList_[sCutScriptName] = sContent;
         lXMLScriptInfoList_[sCutScriptName].sFile = sFile;
         lXMLScriptInfoList_[sCutScriptName].uiLineNbr = uiLineNbr;
@@ -1065,9 +1065,9 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         pManager_->get_event_manager()->fire_event(mEvent);
     }
 
-    pLua->push_string(sOldFile);     pLua->set_global("_xml_file_name");
-    pLua->push_number(uiOldLineNbr); pLua->set_global("_xml_line_nbr");
-    pLua->set_lua_error_function(pErrorFunc);
+    mLua.push_string(sOldFile);     mLua.set_global("_xml_file_name");
+    mLua.push_number(uiOldLineNbr); mLua.set_global("_xml_line_nbr");
+    mLua.set_lua_error_function(pErrorFunc);
 }
 
 void frame::define_script(const std::string& sScriptName, handler mHandler)
@@ -1279,24 +1279,24 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
     if (iter != lDefinedScriptList_.end())
     {
-        lua::state* pLua = pManager_->get_lua();
+        lua::state& mLua = pManager_->get_lua();
 
         // Reset all arg* to nil
         {
             uint i = 1;
-            pLua->get_global("arg"+utils::to_string(i));
+            mLua.get_global("arg"+utils::to_string(i));
 
-            while (pLua->get_type() != lua::type::NIL)
+            while (mLua.get_type() != lua::type::NIL)
             {
-                pLua->pop();
-                pLua->push_nil();
-                pLua->set_global("arg"+utils::to_string(i));
+                mLua.pop();
+                mLua.push_nil();
+                mLua.set_global("arg"+utils::to_string(i));
 
                 ++i;
-                pLua->get_global("arg"+utils::to_string(i));
+                mLua.get_global("arg"+utils::to_string(i));
             }
 
-            pLua->pop();
+            mLua.pop();
         }
 
         if (pEvent)
@@ -1305,46 +1305,46 @@ void frame::on(const std::string& sScriptName, event* pEvent)
                 (sScriptName == "KeyUp"))
             {
                 // Set key name
-                pLua->push_number(static_cast<uint>(pEvent->get<input::key>(0)));
-                pLua->set_global("arg1");
-                pLua->push_string(pEvent->get<std::string>(1));
-                pLua->set_global("arg2");
+                mLua.push_number(static_cast<uint>(pEvent->get<input::key>(0)));
+                mLua.set_global("arg1");
+                mLua.push_string(pEvent->get<std::string>(1));
+                mLua.set_global("arg2");
             }
             else if (sScriptName == "MouseDown")
             {
                 // Set mouse button
-                pLua->push_string(pEvent->get<std::string>(0));
-                pLua->set_global("arg1");
+                mLua.push_string(pEvent->get<std::string>(0));
+                mLua.set_global("arg1");
             }
             else if (sScriptName == "MouseUp")
             {
                 // Set mouse button
-                pLua->push_string(pEvent->get<std::string>(0));
-                pLua->set_global("arg1");
+                mLua.push_string(pEvent->get<std::string>(0));
+                mLua.set_global("arg1");
             }
             else if (sScriptName == "MouseWheel")
             {
-                pLua->push_number(pEvent->get<float>(0));
-                pLua->set_global("arg1");
+                mLua.push_number(pEvent->get<float>(0));
+                mLua.set_global("arg1");
             }
             else if (sScriptName == "Update")
             {
                 // Set delta time
-                pLua->push_number(pEvent->get<float>(0));
-                pLua->set_global("arg1");
+                mLua.push_number(pEvent->get<float>(0));
+                mLua.set_global("arg1");
             }
             else if (sScriptName == "Event")
             {
                 // Set event name
-                pLua->push_string(pEvent->get_name());
-                pLua->set_global("event");
+                mLua.push_string(pEvent->get_name());
+                mLua.set_global("event");
 
                 // Set arguments
                 for (uint i = 0; i < pEvent->get_num_param(); ++i)
                 {
                     const utils::any* pArg = pEvent->get(i);
-                    pLua->push(*pArg);
-                    pLua->set_global("arg"+utils::to_string(i+1));
+                    mLua.push(*pArg);
+                    mLua.set_global("arg"+utils::to_string(i+1));
                 }
             }
         }
@@ -1367,18 +1367,18 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         {
             // The script comes from an XML file, use another lua error function
             // that will print the actual line numbers in the XML file.
-            pErrorFunc = pLua->get_lua_error_function();
+            pErrorFunc = mLua.get_lua_error_function();
 
             std::map<std::string, script_info>::const_iterator iter2 = lXMLScriptInfoList_.find(sScriptName);
             if (iter2 != lXMLScriptInfoList_.end())
             {
-                sFile     = pLua->get_global_string("_xml_file_name", false, "");
-                uiLineNbr = pLua->get_global_int("_xml_line_nbr", false, 0);
+                sFile     = mLua.get_global_string("_xml_file_name", false, "");
+                uiLineNbr = mLua.get_global_int("_xml_line_nbr", false, 0);
 
-                pLua->push_string(iter2->second.sFile);     pLua->set_global("_xml_file_name");
-                pLua->push_number(iter2->second.uiLineNbr); pLua->set_global("_xml_line_nbr");
+                mLua.push_string(iter2->second.sFile);     mLua.set_global("_xml_file_name");
+                mLua.push_number(iter2->second.uiLineNbr); mLua.set_global("_xml_line_nbr");
 
-                pLua->set_lua_error_function(l_xml_error);
+                mLua.set_lua_error_function(l_xml_error);
             }
         }
 
@@ -1386,7 +1386,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
         try
         {
-            pLua->call_function(sName_+":on"+sAdjustedName);
+            mLua.call_function(sName_+":on"+sAdjustedName);
         }
         catch (const lua::exception& e)
         {
@@ -1401,10 +1401,10 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
         if (!iter->second.empty())
         {
-            pLua->push_string(sFile);     pLua->set_global("_xml_file_name");
-            pLua->push_number(uiLineNbr); pLua->set_global("_xml_line_nbr");
+            mLua.push_string(sFile);     mLua.set_global("_xml_file_name");
+            mLua.push_number(uiLineNbr); mLua.set_global("_xml_line_nbr");
 
-            pLua->set_lua_error_function(pErrorFunc);
+            mLua.set_lua_error_function(pErrorFunc);
         }
     }
 }

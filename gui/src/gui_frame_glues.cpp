@@ -227,27 +227,27 @@ int lua_frame::_get_backdrop(lua_State* pLua)
     backdrop* pBackdrop = pFrameParent_->get_backdrop();
     if (pBackdrop)
     {
-        lua::state* pState = mFunc.get_state();
+        lua::state& mState = mFunc.get_state();
 
-        pState->new_table();
-        pState->set_field_string("bgFile", pBackdrop->get_background_file());
-        pState->set_field_string("edgeFile", pBackdrop->get_edge_file());
-        pState->set_field_bool("tile", pBackdrop->is_background_tilling());
+        mState.new_table();
+        mState.set_field_string("bgFile", pBackdrop->get_background_file());
+        mState.set_field_string("edgeFile", pBackdrop->get_edge_file());
+        mState.set_field_bool("tile", pBackdrop->is_background_tilling());
 
-        pState->set_field_int("tileSize", pBackdrop->get_tile_size());
-        pState->set_field_int("edgeSize", pBackdrop->get_edge_size());
+        mState.set_field_int("tileSize", pBackdrop->get_tile_size());
+        mState.set_field_int("edgeSize", pBackdrop->get_edge_size());
 
-        pState->new_table();
-        pState->set_field("insets");
-        pState->get_field("insets");
+        mState.new_table();
+        mState.set_field("insets");
+        mState.get_field("insets");
 
         const quad2i& lInsets = pBackdrop->get_background_insets();
-        pState->set_field_int("left",   lInsets.left);
-        pState->set_field_int("right",  lInsets.right);
-        pState->set_field_int("top",    lInsets.top);
-        pState->set_field_int("bottom", lInsets.bottom);
+        mState.set_field_int("left",   lInsets.left);
+        mState.set_field_int("right",  lInsets.right);
+        mState.set_field_int("top",    lInsets.top);
+        mState.set_field_int("bottom", lInsets.bottom);
 
-        pState->pop();
+        mState.pop();
 
         mFunc.notify_pushed();
     }
@@ -770,29 +770,29 @@ int lua_frame::_set_backdrop(lua_State* pLua)
         {
             std::unique_ptr<backdrop> pBackdrop(new backdrop(pFrameParent_));
 
-            lua::state* pState = mFunc.get_state();
+            lua::state& mState = mFunc.get_state();
 
-            pBackdrop->set_background(pState->get_field_string("bgFile", false, ""));
-            pBackdrop->set_edge(pState->get_field_string("edgeFile", false, ""));
-            pBackdrop->set_backgrond_tilling(pState->get_field_bool("tile", false, false));
+            pBackdrop->set_background(mState.get_field_string("bgFile", false, ""));
+            pBackdrop->set_edge(mState.get_field_string("edgeFile", false, ""));
+            pBackdrop->set_backgrond_tilling(mState.get_field_bool("tile", false, false));
 
-            uint uiTileSize = uint(pState->get_field_int("tileSize", false, 0));
+            uint uiTileSize = uint(mState.get_field_int("tileSize", false, 0));
             if (uiTileSize != 0)
                 pBackdrop->set_tile_size(uiTileSize);
 
-            uint uiEdgeSize = uint(pState->get_field_int("edgeSize", false, 0));
+            uint uiEdgeSize = uint(mState.get_field_int("edgeSize", false, 0));
             if (uiEdgeSize != 0)
                 pBackdrop->set_edge_size(uiEdgeSize);
 
-            pState->get_field("insets");
+            mState.get_field("insets");
 
-            if (pState->get_type() == lua::type::TABLE)
+            if (mState.get_type() == lua::type::TABLE)
             {
                 pBackdrop->set_background_insets(quad2i(
-                    pState->get_field_int("left",   false, 0),
-                    pState->get_field_int("right",  false, 0),
-                    pState->get_field_int("top",    false, 0),
-                    pState->get_field_int("bottom", false, 0)
+                    mState.get_field_int("left",   false, 0),
+                    mState.get_field_int("right",  false, 0),
+                    mState.get_field_int("top",    false, 0),
+                    mState.get_field_int("bottom", false, 0)
                 ));
             }
 
@@ -1129,18 +1129,18 @@ int lua_frame::_set_script(lua_State* pLua)
         std::string sScriptName = mFunc.get(0)->get_string();
         if (pFrameParent_->can_use_script(sScriptName))
         {
-            lua::state* pState = mFunc.get_state();
+            lua::state& mState = mFunc.get_state();
             lua::argument* pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
-                pState->push_value(pArg->get_index());
-                pState->set_global(pFrameParent_->get_name() + ":" + sScriptName);
+                mState.push_value(pArg->get_index());
+                mState.set_global(pFrameParent_->get_name() + ":" + sScriptName);
                 pFrameParent_->notify_script_defined(sScriptName, true);
             }
             else
             {
-                pState->push_nil();
-                pState->set_global(pFrameParent_->get_name() + ":" + sScriptName);
+                mState.push_nil();
+                mState.set_global(pFrameParent_->get_name() + ":" + sScriptName);
                 pFrameParent_->notify_script_defined(sScriptName, false);
             }
         }

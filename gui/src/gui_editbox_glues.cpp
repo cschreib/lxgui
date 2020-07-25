@@ -6,9 +6,9 @@
 namespace lxgui {
 namespace gui
 {
-void edit_box::register_glue(lua::state* pLua)
+void edit_box::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_edit_box>();
+    mLua.reg<lua_edit_box>();
 }
 
 lua_edit_box::lua_edit_box(lua_State* pLua) : lua_focus_frame(pLua)

@@ -38,10 +38,19 @@ class state
 {
 public :
 
-    /// Constructor
+    /// Owning constructor
     /** \note Opens a new Lua state and registers all base functions.
+              The Lua state is owned by this object, and will be closed
+              when the object is destroyed.
     */
     state();
+
+    /// Non-owning constructor
+    /** \note Wraps an existing Lua state. The Lua state is not owned by
+              this object, and will not be closed when the object is
+              destroyed.
+    */
+    explicit state(lua_State* pLua);
 
     state(const state&) = delete;
     state(state&&) = delete;
@@ -57,19 +66,6 @@ public :
     /** \return The associated Lua state
     */
     lua_State* get_state();
-
-    /// Concatenates a Lua table into a string.
-    /** \param sTable The name of the table in Lua
-    */
-    std::string table_to_string(const std::string& sTable);
-
-    /// Copy the content of a table from one Lua state to another.
-    /** \param mLua      The other Lua state into wich the table will be copied
-    *   \param sSrcName  The name of the table in the source state
-    *   \param sDestName The name of the table in the destination state
-    *   \note If sDestName is ommited, the table will have the same name in both Lua states.
-    */
-    void copy_table(state& mLua, const std::string& sSrcName, const std::string& sDestName = "");
 
     /// Executes a Lua file.
     /** \param sFile The name of the file
@@ -514,15 +510,10 @@ public :
     */
     void set_top(uint uiSize);
 
-    std::string sComString;
-
-    static state* get_state(lua_State* pLua);
-
 private :
 
-    static std::map<lua_State*, state*> lLuaStateMap_;
-
     lua_State* pLua_ = nullptr;
+    bool bOwning_ = false;
 
     c_function pErrorFunction_ = nullptr;
     print_function pPrintFunction_ = nullptr;

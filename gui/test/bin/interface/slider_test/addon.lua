@@ -17,7 +17,7 @@ function ColorSelector:update_HSL_sliders()
     self.SliderH.Slider:set_value(self.currentColor.h,       true);
     self.SliderS.Slider:set_value(self.currentColor.s*100.0, true);
     self.SliderL.Slider:set_value(self.currentColor.l*100.0, true);
-    
+
     self.SliderH.ValueString:set_text(math.floor(self.currentColor.h));
     self.SliderS.ValueString:set_text(math.floor(self.currentColor.s*100.0));
     self.SliderL.ValueString:set_text(math.floor(self.currentColor.l*100.0));
@@ -29,13 +29,13 @@ function ColorSelector:set_color(color)
     -- Set the value of classic color sliders
     self:update_A_slider();
     self:update_RGB_sliders();
-    
+
     self.Swatch.ColorZone:set_backdrop_color(self.currentColor:unpack());
-    
+
     -- Calculate HSV values
     self.currentColor:make_HSL_from_RGB();
     self:update_HSL_sliders();
-    
+
     -- Update the swatch color
     self.Swatch.ColorZone:set_backdrop_color(self.currentColor:unpack());
 end

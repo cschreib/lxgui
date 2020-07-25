@@ -131,7 +131,7 @@ namespace gui
         void parse_block(xml::block* pBlock) override;
 
         /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state* pLua);
+        static void register_glue(lua::state& mLua);
 
         static constexpr const char* CLASS_NAME = "ScrollFrame";
 

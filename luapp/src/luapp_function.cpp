@@ -6,13 +6,7 @@ namespace lxgui {
 namespace lua
 {
 function::function(const std::string& sName, lua_State* pLua, uint uiReturnNbr) :
-    sName_(sName), pLua_(state::get_state(pLua)), uiReturnNbr_(uiReturnNbr)
-{
-    new_param_set();
-}
-
-function::function(const std::string& sName, state* pLua, uint uiReturnNbr) :
-    sName_(sName), pLua_(pLua), uiReturnNbr_(uiReturnNbr)
+    sName_(sName), mLua_(pLua), uiReturnNbr_(uiReturnNbr)
 {
     new_param_set();
 }
@@ -78,7 +72,7 @@ uint function::get_argument_count() const
 
 bool function::check(bool bPrintError)
 {
-    uiArgumentCount_ = pLua_->get_top();
+    uiArgumentCount_ = mLua_.get_top();
 
     // Check if that's enough
     std::vector<argument_list*> lValidArgList;
@@ -125,13 +119,13 @@ bool function::check(bool bPrintError)
 
             if (lArgListStack_.size() == 1)
             {
-                pLua_->print_error(
+                mLua_.print_error(
                     "Too few arguments in \""+sName_+"\". Expected :"+sError
                 );
             }
             else
             {
-                pLua_->print_error(
+                mLua_.print_error(
                     "Too few arguments in \""+sName_+"\". Expected either :"+sError
                 );
             }
@@ -151,7 +145,7 @@ bool function::check(bool bPrintError)
             bool bValid = true;
             for (auto& mArg : pArgList->lArg_)
             {
-                if (!mArg.second->test(pLua_, i, false))
+                if (!mArg.second->test(mLua_, i, false))
                 {
                     bValid = false;
                     break;
@@ -201,7 +195,7 @@ bool function::check(bool bPrintError)
                     sError += sArguments;
                 }
 
-                pLua_->print_error(
+                mLua_.print_error(
                     "Wrong arguments provided to \""+sName_+"\". Expected either :"+sError
                 );
             }
@@ -215,7 +209,7 @@ bool function::check(bool bPrintError)
         bool bValid = true;
         for (auto& mArg : pArgList_->lArg_)
         {
-            if (!mArg.second->test(pLua_, i, bPrintError))
+            if (!mArg.second->test(mLua_, i, bPrintError))
                 bValid = false;
             ++i;
         }
@@ -227,15 +221,15 @@ bool function::check(bool bPrintError)
     // We fill the stack with nil value until there are enough for optional arguments
     uint uiMaxArgs = pArgList_->lArg_.size() + pArgList_->lOptional_.size();
     if (uiArgumentCount_ < uiMaxArgs)
-        pLua_->push_nil(uiMaxArgs - uiArgumentCount_);
+        mLua_.push_nil(uiMaxArgs - uiArgumentCount_);
 
     // And we check optional arguments
     bool bValid = true;
     for (auto& mArg : pArgList_->lOptional_)
     {
-        if (pLua_->get_type(i) != type::NIL)
+        if (mLua_.get_type(i) != type::NIL)
         {
-            if (!mArg.second->test(pLua_, i, bPrintError))
+            if (!mArg.second->test(mLua_, i, bPrintError))
                 bValid = false;
         }
         ++i;
@@ -254,7 +248,7 @@ void function::push(const std::string& sValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_string(sValue);
+    mLua_.push_string(sValue);
 
     ++uiReturnCount_;
 }
@@ -264,7 +258,7 @@ void function::push(double dValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_number(dValue);
+    mLua_.push_number(dValue);
 
     ++uiReturnCount_;
 }
@@ -274,7 +268,7 @@ void function::push(float fValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_number(fValue);
+    mLua_.push_number(fValue);
 
     ++uiReturnCount_;
 }
@@ -284,7 +278,7 @@ void function::push(int iValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_number(iValue);
+    mLua_.push_number(iValue);
 
     ++uiReturnCount_;
 }
@@ -294,7 +288,7 @@ void function::push(uint uiValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_number(uiValue);
+    mLua_.push_number(uiValue);
 
     ++uiReturnCount_;
 }
@@ -304,7 +298,7 @@ void function::push(bool bValue)
     if (uiReturnCount_ == uiReturnNbr_)
         ++uiReturnNbr_;
 
-    pLua_->push_bool(bValue);
+    mLua_.push_bool(bValue);
 
     ++uiReturnCount_;
 }
@@ -316,7 +310,7 @@ void function::push_nil(uint uiNbr)
         if (uiReturnCount_ == uiReturnNbr_)
             ++uiReturnNbr_;
 
-        pLua_->push_nil();
+        mLua_.push_nil();
 
         ++uiReturnCount_;
     }
@@ -334,15 +328,15 @@ int function::on_return()
 {
     // Fill with nil value
     if (uiReturnCount_ < uiReturnNbr_)
-        pLua_->push_nil(uiReturnNbr_ - uiReturnCount_);
+        mLua_.push_nil(uiReturnNbr_ - uiReturnCount_);
 
     // Return the number of returned value
     return uiReturnNbr_;
 }
 
-state* function::get_state() const
+state& function::get_state()
 {
-    return pLua_;
+    return mLua_;
 }
 }
 }

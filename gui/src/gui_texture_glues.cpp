@@ -9,9 +9,9 @@
 namespace lxgui {
 namespace gui
 {
-void texture::register_glue(lua::state* pLua)
+void texture::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_texture>();
+    mLua.reg<lua_texture>();
 }
 
 lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)

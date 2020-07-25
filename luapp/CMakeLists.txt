@@ -7,7 +7,6 @@ add_library(lxgui-luapp STATIC
     ${SRCROOT}/luapp_argument.cpp
     ${SRCROOT}/luapp_data.cpp
     ${SRCROOT}/luapp_function.cpp
-    ${SRCROOT}/luapp_glues.cpp
     ${SRCROOT}/luapp_state.cpp
 )
 

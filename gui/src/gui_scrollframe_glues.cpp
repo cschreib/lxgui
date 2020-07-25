@@ -9,9 +9,9 @@
 namespace lxgui {
 namespace gui
 {
-void scroll_frame::register_glue(lua::state* pLua)
+void scroll_frame::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_scroll_frame>();
+    mLua.reg<lua_scroll_frame>();
 }
 
 lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)

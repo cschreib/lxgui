@@ -378,12 +378,12 @@ namespace gui
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
         */
-        lua::state* get_lua();
+        lua::state& get_lua();
 
         /// Returns the GUI Lua state.
         /** \return The GUI Lua state
         */
-        const lua::state* get_lua() const;
+        const lua::state& get_lua() const;
 
         /// Creates the lua::State that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
@@ -611,7 +611,7 @@ namespace gui
         void register_frame_type(const std::string&)
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_.get());
+            frame_type::register_glue(*pLua_);
         }
 
         /// Registers a new frame type.
@@ -621,7 +621,7 @@ namespace gui
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(pLua_.get());
+            frame_type::register_glue(*pLua_);
         }
 
         /// Registers a new layered_region type.
@@ -633,7 +633,7 @@ namespace gui
         void register_region_type(const std::string&)
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_.get());
+            region_type::register_glue(*pLua_);
         }
 
         /// Registers a new layered_region type.
@@ -643,7 +643,7 @@ namespace gui
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(pLua_.get());
+            region_type::register_glue(*pLua_);
         }
 
         /// Returns the renderer implementation.
@@ -682,9 +682,9 @@ namespace gui
         const std::string& get_locale() const;
 
         /// Returns the gui manager associated to the provided lua::state.
-        /** \param pState The lua::state
+        /** \param mState The lua::state
         */
-        static manager* get_manager(lua::state* pState);
+        static manager* get_manager(lua::state& mState);
 
     private :
 

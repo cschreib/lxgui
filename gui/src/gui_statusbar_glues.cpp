@@ -8,9 +8,9 @@
 namespace lxgui {
 namespace gui
 {
-void status_bar::register_glue(lua::state* pLua)
+void status_bar::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_status_bar>();
+    mLua.reg<lua_status_bar>();
 }
 
 lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
@@ -213,7 +213,7 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
     mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
-        lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
+        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
         if (pLuaTexture)
         {
             pStatusBarParent_->set_bar_texture(pLuaTexture->get_parent());

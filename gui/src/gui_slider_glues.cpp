@@ -7,9 +7,9 @@
 namespace lxgui {
 namespace gui
 {
-void slider::register_glue(lua::state* pLua)
+void slider::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_slider>();
+    mLua.reg<lua_slider>();
 }
 
 lua_slider::lua_slider(lua_State* pLua) : lua_frame(pLua)
@@ -207,7 +207,7 @@ int lua_slider::_set_thumb_texture(lua_State* pLua)
     mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
-        lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
+        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
         if (pLuaTexture)
         {
             pSliderParent_->set_thumb_texture(pLuaTexture->get_parent());

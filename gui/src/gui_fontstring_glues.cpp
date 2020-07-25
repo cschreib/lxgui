@@ -9,9 +9,9 @@
 namespace lxgui {
 namespace gui
 {
-void font_string::register_glue(lua::state* pLua)
+void font_string::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_font_string>();
+    mLua.reg<lua_font_string>();
 }
 
 lua_font_string::lua_font_string(lua_State* pLua) : lua_layered_region(pLua)

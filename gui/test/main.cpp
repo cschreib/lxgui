@@ -147,9 +147,9 @@ int main(int argc, char* argv[])
             pManager->register_frame_type<gui::scroll_frame>();
             pManager->register_frame_type<gui::status_bar>();
             //  - register additional lua functions
-            pManager->get_lua()->reg("get_folder_list", l_get_folder_list);
-            pManager->get_lua()->reg("get_file_list",   l_get_file_list);
-            pManager->get_lua()->reg("cut_file_path",   l_cut_file_path);
+            pManager->get_lua().reg("get_folder_list", l_get_folder_list);
+            pManager->get_lua().reg("get_file_list",   l_get_file_list);
+            pManager->get_lua().reg("cut_file_path",   l_cut_file_path);
         });
 
         //  - and load all files
@@ -376,22 +376,22 @@ int l_cut_file_path(lua_State* pLua)
                 sFolder += "/" + sWord;
         }
 
-        lua::state* pState = mFunc.get_state();
-        pState->new_table();
-        pState->set_field_string("file", sFile);
-        pState->set_field_string("folder", sFolder);
-        pState->new_table();
-        pState->set_field("folders");
-        pState->get_field("folders");
+        lua::state& mState = mFunc.get_state();
+        mState.new_table();
+        mState.set_field_string("file", sFile);
+        mState.set_field_string("folder", sFolder);
+        mState.new_table();
+        mState.set_field("folders");
+        mState.get_field("folders");
 
         uint i = 1;
         for (const auto& sWord : lWords)
         {
-            pState->set_field_string(i, sWord);
+            mState.set_field_string(i, sWord);
             ++i;
         }
 
-        pState->pop();
+        mState.pop();
         mFunc.notify_pushed();
     }
 

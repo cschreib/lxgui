@@ -48,11 +48,11 @@ void manager::register_lua_manager_()
     pLua_->set_global("_MGR");
 }
 
-manager* manager::get_manager(lua::state* pState)
+manager* manager::get_manager(lua::state& mState)
 {
-    pState->get_global("_MGR");
-    manager* pMgr = pState->get<lua_manager>()->get_manager();
-    pState->pop();
+    mState.get_global("_MGR");
+    manager* pMgr = mState.get<lua_manager>()->get_manager();
+    mState.pop();
     return pMgr;
 }
 
@@ -111,10 +111,10 @@ int l_set_key_binding(lua_State* pLua)
 
     if (mFunc.check())
     {
-        lua::state* pState = mFunc.get_state();
-        pState->get_global("_MGR");
-        manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
-        pState->pop();
+        lua::state& mState = mFunc.get_state();
+        mState.get_global("_MGR");
+        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+        mState.pop();
 
         input::key uiKey = static_cast<input::key>(mFunc.get(0)->get_int());
 
@@ -160,13 +160,13 @@ int l_create_frame(lua_State* pLua)
 
     if (mFunc.check())
     {
-        lua::state* pState = mFunc.get_state();
+        lua::state& mState = mFunc.get_state();
         std::string sType = mFunc.get(0)->get_string();
         std::string sName = mFunc.get(1)->get_string();
 
-        pState->get_global("_MGR");
-        manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
-        pState->pop();
+        mState.get_global("_MGR");
+        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+        mState.pop();
 
         frame* pParent = nullptr;
         if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::USERDATA)
@@ -209,7 +209,7 @@ int l_create_frame(lua_State* pLua)
 
         if (pNewFrame)
         {
-            pNewFrame->push_on_lua(pState);
+            pNewFrame->push_on_lua(mState);
             mFunc.notify_pushed();
         }
         else
@@ -257,10 +257,10 @@ int l_get_locale(lua_State* pLua)
 {
     lua::function mFunc("get_locale", pLua, 1);
 
-    lua::state* pState = mFunc.get_state();
-    pState->get_global("_MGR");
-    manager* pGUIMgr = pState->get<lua_manager>()->get_manager();
-    pState->pop();
+    lua::state& mState = mFunc.get_state();
+    mState.get_global("_MGR");
+    manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+    mState.pop();
 
     mFunc.push(pGUIMgr->get_locale());
 

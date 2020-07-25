@@ -27,7 +27,8 @@ lua_glue::~lua_glue()
 lua_virtual_glue::lua_virtual_glue(lua_State* pLua) : lua_glue(pLua)
 {
     uiID_ = lua_tonumber(pLua, -1);
-    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
+    lua::state mState(pLua);
+    manager* pGUIMgr = manager::get_manager(mState);
     pParent_ = pGUIMgr->get_uiobject(uiID_);
 
     if (!pParent_)
@@ -80,7 +81,8 @@ int lua_virtual_glue::_get_base(lua_State* pLua)
 lua_uiobject::lua_uiobject(lua_State* pLua) : lua_glue(pLua)
 {
     sName_ = lua_tostring(pLua, -1);
-    manager* pGUIMgr = manager::get_manager(lua::state::get_state(pLua));
+    lua::state mState(pLua);
+    manager* pGUIMgr = manager::get_manager(mState);
     pParent_ = pGUIMgr->get_uiobject_by_name(sName_);
 
     if (!pParent_)

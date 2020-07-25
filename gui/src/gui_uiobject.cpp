@@ -149,22 +149,22 @@ void uiobject::copy_from(uiobject* pObj)
                     lCopyList_.push_back(mMember);
             }
 
-            lua::state* pLua = pManager_->get_lua();
-            pLua->get_global(pObj->get_lua_name());
-            if (pLua->get_type() != lua::type::NIL)
+            lua::state& mLua = pManager_->get_lua();
+            mLua.get_global(pObj->get_lua_name());
+            if (mLua.get_type() != lua::type::NIL)
             {
-                pLua->get_global(sLuaName_);
-                if (pLua->get_type() != lua::type::NIL)
+                mLua.get_global(sLuaName_);
+                if (mLua.get_type() != lua::type::NIL)
                 {
                     for (const auto& mMember : pObj->lCopyList_)
                     {
-                        pLua->get_field(mMember, -2);
-                        pLua->set_field(mMember);
+                        mLua.get_field(mMember, -2);
+                        mLua.set_field(mMember);
                     }
                 }
-                pLua->pop();
+                mLua.pop();
             }
-            pLua->pop();
+            mLua.pop();
         }
 
         bInherits_ = true;
@@ -1060,21 +1060,21 @@ void uiobject::update(float fDelta)
     DEBUG_LOG("  +");
 }
 
-lua::state* uiobject::get_lua_()
+lua::state& uiobject::get_lua_()
 {
     return pManager_->get_lua();
 }
 
-void uiobject::push_on_lua(lua::state* pLua) const
+void uiobject::push_on_lua(lua::state& mLua) const
 {
-    pLua->push_global(sLuaName_);
+    mLua.push_global(sLuaName_);
 }
 
 void uiobject::remove_glue()
 {
-    lua::state* pLua = pManager_->get_lua();
-    pLua->push_nil();
-    pLua->set_global(sLuaName_);
+    lua::state& mLua = pManager_->get_lua();
+    mLua.push_nil();
+    mLua.set_global(sLuaName_);
     lGlue_ = nullptr;
 }
 

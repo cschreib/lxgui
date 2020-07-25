@@ -27,11 +27,11 @@ public :
     data(const std::string& sName, type mLuaType, argument* pParent);
 
     /// gets data from Lua
-    /** \param pLua   The Lua state to use
+    /** \param mLua   The Lua state to use
     *   \param iIndex The index at which to get the value
     *   \note Only called on a valid data (expected type is found).
     */
-    void set(state* pLua, int iIndex);
+    void set(state& mLua, int iIndex);
 
     /// Returns this argument's name.
     /** \return This argument's name
@@ -117,7 +117,7 @@ public :
     template<class T>
     T* get() const
     {
-        return pLua_->get<T>(pData_->get_value().get<int>());
+        return mLua_.get<T>(pData_->get_value().get<int>());
     }
 
     /// Returns the value and converts it to an int.
@@ -143,19 +143,19 @@ public :
 private :
 
     /// Checks if this argument has the expected type(s).
-    /** \param pLua        The Lua state to use
+    /** \param mLua        The Lua state to use
     *   \param iIndex      The index to check
     *   \param bPrintError Set to 'false' if you don't want that function
     *                      to print errors in the log
     *   \return 'true' if everything went fine
     */
-    bool test(state* pLua, int iIndex, bool bPrintError = true);
+    bool test(state& mLua, int iIndex, bool bPrintError = true);
 
     bool              bSet_ = false;
     data*             pData_ = nullptr;
     std::vector<data> lData_;
     function*         pParent_ = nullptr;
-    state*            pLua_ = nullptr;
+    state&            mLua_;
 };
 
 /// Holds all possible arguments of a Lua function's argument set.
@@ -179,10 +179,7 @@ struct argument_list
 *   if you check every argument's type, or if you
 *   allow optional arguments, or even two possible
 *   types for a single argument.<br>
-*   This is done quite easilly with this class.<br>
-*   Look at the source code for existing glues to see
-*   how things work (UIObject::_SetPoint() is a good
-*   example).
+*   This is done quite easilly with this class.
 */
 class function
 {
@@ -195,14 +192,6 @@ public :
     *   \note Call this at the beginning of your glue
     */
     function(const std::string& sName, lua_State* pLua, uint uiReturnNbr = 0u);
-
-    /// Default constructor.
-    /** \param sName       The name of your function (used to print errors in the log)
-    *   \param pLua        The Lua state to use
-    *   \param uiReturnNbr The maximum number of returned values
-    *   \note Call this at the beginning of your glue
-    */
-    function(const std::string& sName, state* pLua, uint uiReturnNbr = 0u);
 
     function(const function&) = delete;
     function(function&&) = delete;
@@ -377,12 +366,12 @@ public :
     /// Returns the state used by this function.
     /** \return The state used by this function
     */
-    state* get_state() const;
+    state& get_state();
 
 private :
 
     std::string                sName_;
-    state*                     pLua_ = nullptr;
+    state                      mLua_;
     uint                       uiArgumentCount_ = 0u;
     uint                       uiReturnNbr_ = 0u;
     uint                       uiReturnCount_ = 0u;

@@ -6,7 +6,7 @@ namespace lxgui {
 namespace lua
 {
 argument::argument(const std::string& sName, type mLuaType, function* pParent) :
-    pParent_(pParent), pLua_(pParent_->get_state())
+    pParent_(pParent), mLua_(pParent_->get_state())
 {
     lData_.push_back(data(sName, mLuaType, this));
     pData_ = &lData_[0];
@@ -54,27 +54,27 @@ bool argument::is_provided() const
     return bSet_;
 }
 
-bool argument::test(state* pLua, int iIndex, bool bPrintError)
+bool argument::test(state& mLua, int iIndex, bool bPrintError)
 {
     bool bSeveralChoices = (lData_.size() > 1);
 
-    type mType = pLua->get_type(iIndex);
+    type mType = mLua.get_type(iIndex);
     for (auto& mData : lData_)
     {
         if (mType != mData.get_type())
         {
             if (bPrintError && !bSeveralChoices)
             {
-                pLua->print_error(
+                mLua.print_error(
                     "argument "+utils::to_string(iIndex)+" of \""+pParent_->get_name()+"\" "
-                    "must be a "+pLua->get_type_name(mData.get_type())+" "
-                    "("+mData.get_name()+") (got a "+pLua->get_type_name(mType)+")."
+                    "must be a "+mLua.get_type_name(mData.get_type())+" "
+                    "("+mData.get_name()+") (got a "+mLua.get_type_name(mType)+")."
                 );
             }
         }
         else
         {
-            mData.set(pLua, iIndex);
+            mData.set(mLua, iIndex);
             break;
         }
     }
@@ -97,12 +97,12 @@ bool argument::test(state* pLua, int iIndex, bool bPrintError)
                         sEnum += ", a ";
                 }
 
-                sEnum += pLua->get_type_name(mData.get_type())+" ("+mData.get_name()+")";
+                sEnum += mLua.get_type_name(mData.get_type())+" ("+mData.get_name()+")";
                 ++i;
             }
-            pLua->print_error(
+            mLua.print_error(
                 "argument "+utils::to_string(iIndex)+" of \""+pParent_->get_name()+"\" "
-                "must be "+sEnum+" (got a "+pLua->get_type_name(mType)+")."
+                "must be "+sEnum+" (got a "+mLua.get_type_name(mType)+")."
             );
         }
     }

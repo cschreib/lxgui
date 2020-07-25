@@ -605,9 +605,9 @@ namespace gui
         void remove_glue();
 
         /// Pushes this uiobject on the provided lua::State.
-        /** \param pLua The lua::State on which to push the glue
+        /** \param mLua The lua::State on which to push the glue
         */
-        virtual void push_on_lua(lua::state* pLua) const;
+        virtual void push_on_lua(lua::state& mLua) const;
 
         /// Parses data from an xml::block.
         /** \param pBlock The uiobject's xml::block
@@ -628,7 +628,7 @@ namespace gui
         virtual void update_borders_() const;
         virtual void update_dimensions_() const;
 
-        lua::state*  get_lua_();
+        lua::state&  get_lua_();
 
         template<typename T>
         void create_glue_();

@@ -10,21 +10,21 @@ namespace gui
     {
         if (lGlue_) return;
 
-        lua::state* pLua = get_lua_();
+        lua::state& mLua = get_lua_();
 
         if (bVirtual_)
         {
-            pLua->push_number(uiID_);
-            lGlue_ = pLua->push_new<lua_virtual_glue>();
+            mLua.push_number(uiID_);
+            lGlue_ = mLua.push_new<lua_virtual_glue>();
         }
         else
         {
-            pLua->push_string(sLuaName_);
-            lGlue_ = pLua->push_new<T>();
+            mLua.push_string(sLuaName_);
+            lGlue_ = mLua.push_new<T>();
         }
 
-        pLua->set_global(sLuaName_);
-        pLua->pop();
+        mLua.set_global(sLuaName_);
+        mLua.pop();
     }
 }
 }

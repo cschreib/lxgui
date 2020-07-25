@@ -1,5 +1,4 @@
 #include "lxgui/luapp_state.hpp"
-#include "lxgui/luapp_glues.hpp"
 #include "lxgui/luapp_exception.hpp"
 #include <lxgui/utils_any.hpp>
 #include <lxgui/utils_string.hpp>
@@ -20,8 +19,6 @@ const luaL_Reg lualibs[] = {
     {LUA_DBLIBNAME,   luaopen_debug},
     {nullptr,         nullptr}
 };
-
-std::map<lua_State*, state*> state::lLuaStateMap_;
 
 void open_libs(lua_State* pLua_)
 {
@@ -46,179 +43,34 @@ state::state()
     pErrorFunction_ = &l_treat_error;
     pPrintFunction_ = &default_print_function;
 
+    bOwning_ = true;
     pLua_ = luaL_newstate();
     if (!pLua_)
         throw lua::exception("state", "Error while initializing Lua.");
 
     open_libs(pLua_);
+}
 
-    reg("SendString",  glue_send_string);
-    reg("EmptyString", glue_empty_string);
-    reg("ConcTable",   glue_table_to_string);
+state::state(lua_State* pLua)
+{
+    pErrorFunction_ = &l_treat_error;
+    pPrintFunction_ = &default_print_function;
 
-    lLuaStateMap_[pLua_] = this;
+    bOwning_ = false;
+    pLua_ = pLua;
+    if (!pLua_)
+        throw lua::exception("state", "Cannot wrap an invalid Lua state.");
 }
 
 state::~state()
 {
-    if (pLua_)
+    if (pLua_ && bOwning_)
         lua_close(pLua_);
-
-    lLuaStateMap_.erase(pLua_);
-}
-
-state* state::get_state(lua_State* pLua)
-{
-    std::map<lua_State*, state*>::iterator iter = lLuaStateMap_.find(pLua);
-    if (iter != lLuaStateMap_.end())
-        return iter->second;
-    else
-        return nullptr;
 }
 
 lua_State* state::get_state()
 {
     return pLua_;
-}
-
-std::string state::table_to_string(const std::string& sTable)
-{
-    /* [#] This function converts a Lua table into a formated string. It is used
-    *  to save the content of the table in the SavedVariables.
-    */
-    std::string s = "tbl = \"" + sTable + "\";\n"
-              "temp = \"\";\n"
-              "for k, v in pairs (" + sTable + ") do\n"
-                  "local s, t;\n"
-                  "if (type(k) == \"number\") then\ns = k;\nend\n"
-                  "if (type(k) == \"string\") then\ns = \"\\\"\"..k..\"\\\"\";\nend\n"
-                  "if (type(v) == \"number\") then\nt = v;\nend\n"
-                  "if (type(v) == \"string\") then\nt = \"\\\"\"..v..\"\\\"\";\nend\n"
-                  "if (type(v) == \"boolean\") then\nif v then\nt = \"'true'\";\nelse\nt = \"'false'\";\nend\nend\n"
-                  "if (type(v) == \"table\") then\n"
-                      "t = \"'table'\";\nSendString(s..\" \"..t..\" \");\nConcTable(temp, tbl..\"[\"..s..\"]\");\n"
-                  "else\n"
-                      "SendString(s..\" \"..t..\" \");\n"
-                  "end\n"
-              "end\n"
-              "SendString(\"'end' \");\n";
-
-    luaL_dostring(pLua_, s.c_str());
-
-    return sComString;
-}
-
-void state::copy_table(state& mLua, const std::string& sSrcName, const std::string& sDestName)
-{
-    std::string sNewName;
-    if (sDestName == "") sNewName = sSrcName;
-    else                 sNewName = sDestName;
-
-    sComString = "";
-    try
-    {
-        mLua.do_string("str = \"\";\nstr = ConcTable(str, \"" + sSrcName + "\");\n");
-    }
-    catch (const exception& e)
-    {
-        throw lua::exception("state", "copy_table : "+e.get_description());
-    }
-
-    std::string s = sComString;
-
-    if (s != "")
-    {
-        std::string sTab = "    ";
-        std::string sTable;
-        sTable = sNewName + " = {\n";
-        uint uiTableIndent = 1u;
-        bool bTableEnded = false;
-        uint uiLineNbr = 0u;
-        while (!bTableEnded)
-        {
-            if (uiLineNbr > 1000u)
-                break;
-
-            if (uiTableIndent == 0)
-            {
-                bTableEnded = true;
-            }
-            else
-            {
-                size_t i = s.find(" ");
-                std::string sKey = s.substr(0, i);
-                ++i;
-                s.erase(0, i);
-                if (sKey == "'end'")
-                {
-                    --uiTableIndent;
-                    sTab = sTab.substr(0, sTab.size() - 4u);
-                    if (uiTableIndent == 0)
-                        sTable += "}\n";
-                    else
-                        sTable += sTab + "},\n";
-                }
-                else
-                {
-                    sKey = "[" + sKey + "]";
-
-                    i = s.find(" ");
-                    std::string sValue = s.substr(0, i);
-                    ++i;
-                    s.erase(0, i);
-
-                    type mType;
-                    if (sValue == "'table'")
-                        mType = type::TABLE;
-                    else
-                    {
-                        mType = type::NUMBER;
-                        if (sValue.find("\"") != std::string::npos)
-                        {
-                            mType = type::STRING;
-                        }
-                        else
-                        {
-                            if (sValue.find("'") != std::string::npos)
-                            {
-                                mType = type::BOOLEAN;
-                                utils::trim(sValue, '\'');
-                            }
-                        }
-                    }
-
-                    if (mType == type::NUMBER)
-                    {
-                        sTable += sTab + sKey + " = " + sValue + ";\n";
-                    }
-                    else if (mType == type::NIL)
-                    {
-                        sTable += sTab + sKey + " = nil;\n";
-                    }
-                    else if (mType == type::BOOLEAN)
-                    {
-                        sTable += sTab + sKey + " = " + sValue + ";\n";
-                    }
-                    else if (mType == type::STRING)
-                    {
-                        sTable += sTab + sKey + " = " + sValue + ";\n";
-                    }
-                    else if (mType == type::TABLE)
-                    {
-                        sTable += sTab + sKey + " = {\n";
-                        sTab += "    ";
-                    }
-                }
-            }
-        }
-
-        mLua.do_string(sTable);
-    }
-    else
-    {
-        mLua.new_table();
-        mLua.set_global(sNewName);
-    }
 }
 
 int l_treat_error(lua_State* pLua)

@@ -277,9 +277,9 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
             // Set key name
             if (pEvent)
             {
-                lua::state* pLua = pManager_->get_lua();
-                pLua->push_string(pEvent->get<std::string>(0));
-                pLua->set_global("arg1");
+                lua::state& mLua = pManager_->get_lua();
+                mLua.push_string(pEvent->get<std::string>(0));
+                mLua.set_global("arg1");
             }
         }
     }

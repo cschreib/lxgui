@@ -9,9 +9,9 @@
 namespace lxgui {
 namespace gui
 {
-void check_button::register_glue(lua::state* pLua)
+void check_button::register_glue(lua::state& mLua)
 {
-    pLua->reg<lua_check_button>();
+    mLua.reg<lua_check_button>();
 }
 
 lua_check_button::lua_check_button(lua_State* pLua) : lua_button(pLua)
@@ -110,7 +110,7 @@ int lua_check_button::_set_checked_texture(lua_State* pLua)
     mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
-        lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
+        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
         if (pLuaTexture)
         {
             pCheckButtonParent_->set_checked_texture(pLuaTexture->get_parent());
@@ -129,7 +129,7 @@ int lua_check_button::_set_disabled_checked_texture(lua_State* pLua)
     mFunc.add(0, "texture", lua::type::USERDATA);
     if (mFunc.check())
     {
-        lua_texture* pLuaTexture = mFunc.get_state()->get<lua_texture>();
+        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
         if (pLuaTexture)
         {
             pCheckButtonParent_->set_disabled_checked_texture(pLuaTexture->get_parent());

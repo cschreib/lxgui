@@ -445,14 +445,14 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
     }
 }
 
-lua::state* manager::get_lua()
+lua::state& manager::get_lua()
 {
-    return pLua_.get();
+    return *pLua_.get();
 }
 
-const lua::state* manager::get_lua() const
+const lua::state& manager::get_lua() const
 {
-    return pLua_.get();
+    return *pLua_.get();
 }
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
