@@ -8,6 +8,7 @@ jobs:
   include:
     - stage: test
       os: linux
+      dist: xenial
       compiler: gcc
       addons:
         apt:
