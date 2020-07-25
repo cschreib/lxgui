@@ -26,7 +26,7 @@ project(lxgui)
 set(VERSION_MAJOR 2)
 set(VERSION_MINOR 0)
 
-# check compiler version for C++11 features
+# check compiler version for C++17 features
 if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wall)
 
@@ -40,23 +40,23 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
     add_definitions(-std=c++17)
 
-    if(GCC_VERSION VERSION_LESS 4.8)
-        message(ERROR ": lxgui requires advanced features from the C++11 norm that are only available with gcc 4.8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
+    if(GCC_VERSION VERSION_LESS 6.0)
+        message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with gcc 6 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
     endif()
 elseif(MSVC)
     add_definitions(/DMSVC)
     add_definitions(/W4)
     add_definitions(/GR)
     add_definitions(/EHs)
-
+    add_definitions(/std:c++17)
     add_definitions(/D_CRT_SECURE_NO_DEPRECATE)
 
-    if(MSVC_VERSION VERSION_LESS 1900)
-        message(ERROR ": lxgui requires advanced features from the C++11 norm that are only available with MSVC 2015 or higher (version 1900, your version: ${MSVC_VERSION}). Please upgrade your compiler.")
+    if(MSVC_VERSION VERSION_LESS 1910)
+        message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with MSVC 2017 or higher (version 1910, your version: ${MSVC_VERSION}). Please upgrade your compiler.")
     endif()
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.3)
-        message(ERROR ": lxgui requires advanced features from the C++11 norm that are only available with clang 3.3 or higher (your version: ${CMAKE_CXX_COMPILER_VERSION}). Please upgrade your compiler.")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5)
+        message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with clang 5 or higher (your version: ${CMAKE_CXX_COMPILER_VERSION}). Please upgrade your compiler.")
     endif()
 
     add_definitions(-Weverything)
