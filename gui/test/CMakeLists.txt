@@ -1,5 +1,6 @@
 set(SRCROOT ${PROJECT_SOURCE_DIR}/gui/test)
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/sol2/include)
 include_directories(${SFML_INCLUDE_DIR})
 include_directories(${LUA_INCLUDE_DIR})
 if(LXGUI_TEST_OPENGL)
