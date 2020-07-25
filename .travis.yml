@@ -42,8 +42,8 @@ jobs:
         - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
         - mkdir build
         - cd build
-        - cmake ..
-      script: sudo make install -DCMAKE_C_COMPILER=clang-6 -DCMAKE_CXX_COMPILER=clang++-6
+        - cmake .. -DCMAKE_C_COMPILER=clang-6 -DCMAKE_CXX_COMPILER=clang++-6
+      script: sudo make install
 
     - stage: test
       os: osx
@@ -52,8 +52,8 @@ jobs:
         - brew install zlib libpng sfml freetype glew lua llvm
         - mkdir build
         - cd build
-        - cmake ..
-      script: sudo make install -DCMAKE_C_COMPILER=/usr/local/opt/llvm/bin/clang -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
+        - cmake .. -DCMAKE_C_COMPILER=/usr/local/opt/llvm/bin/clang -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
+      script: sudo make install
 
     - stage: test
       os: windows
