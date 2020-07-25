@@ -215,6 +215,7 @@ var searchData=
   ['get_5fshadow_5foffsets',['get_shadow_offsets',['../classlxgui_1_1gui_1_1font__string.html#aceee9ba78c98d9b158870daee8043c6f',1,'lxgui::gui::font_string']]],
   ['get_5fshadow_5fx_5foffset',['get_shadow_x_offset',['../classlxgui_1_1gui_1_1font__string.html#aa5d0d3180349a688a22c78d68fd77ff9',1,'lxgui::gui::font_string']]],
   ['get_5fshadow_5fy_5foffset',['get_shadow_y_offset',['../classlxgui_1_1gui_1_1font__string.html#a501bf5d3ad85d5daa56c124f174be831',1,'lxgui::gui::font_string']]],
+  ['get_5fsol',['get_sol',['../classlxgui_1_1gui_1_1manager.html#abd32ffa3ed30df1a41be5bbae776035f',1,'lxgui::gui::manager::get_sol()'],['../classlxgui_1_1gui_1_1manager.html#a4ea9f7bf0b53d7e4da94b194877ea7f1',1,'lxgui::gui::manager::get_sol() const ']]],
   ['get_5fsource',['get_source',['../classlxgui_1_1input_1_1manager.html#a56571584b3bfcbdc42ff30986087ae06',1,'lxgui::input::manager::get_source() const '],['../classlxgui_1_1input_1_1manager.html#abd0e049620b5790d2ce2f4c2aa13bdb7',1,'lxgui::input::manager::get_source()']]],
   ['get_5fspacing',['get_spacing',['../classlxgui_1_1gui_1_1font__string.html#ad58f06839f3e8f666dafefd4cfe91efb',1,'lxgui::gui::font_string']]],
   ['get_5fstate',['get_state',['../classlxgui_1_1lua_1_1function.html#ab6896f5c4e3c52507908652ffc2693b9',1,'lxgui::lua::function::get_state()'],['../classlxgui_1_1lua_1_1state.html#a20082c99abaa19df6ff79c5845e10f4f',1,'lxgui::lua::state::get_state()']]],

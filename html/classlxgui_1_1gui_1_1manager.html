@@ -253,6 +253,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a28bfb7b5610eeca264a280e1b656ec3f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1lua_1_1state.html">lua::state</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a28bfb7b5610eeca264a280e1b656ec3f">get_lua</a> () const </td></tr>
 <tr class="memdesc:a28bfb7b5610eeca264a280e1b656ec3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state.  <a href="#a28bfb7b5610eeca264a280e1b656ec3f">More...</a><br /></td></tr>
 <tr class="separator:a28bfb7b5610eeca264a280e1b656ec3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd32ffa3ed30df1a41be5bbae776035f"><td class="memItemLeft" align="right" valign="top">sol::state &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#abd32ffa3ed30df1a41be5bbae776035f">get_sol</a> ()</td></tr>
+<tr class="memdesc:abd32ffa3ed30df1a41be5bbae776035f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state (sol wrapper).  <a href="#abd32ffa3ed30df1a41be5bbae776035f">More...</a><br /></td></tr>
+<tr class="separator:abd32ffa3ed30df1a41be5bbae776035f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ea9f7bf0b53d7e4da94b194877ea7f1"><td class="memItemLeft" align="right" valign="top">const sol::state &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a4ea9f7bf0b53d7e4da94b194877ea7f1">get_sol</a> () const </td></tr>
+<tr class="memdesc:a4ea9f7bf0b53d7e4da94b194877ea7f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the GUI Lua state (sol wrapper).  <a href="#a4ea9f7bf0b53d7e4da94b194877ea7f1">More...</a><br /></td></tr>
+<tr class="separator:a4ea9f7bf0b53d7e4da94b194877ea7f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad881809398dc3302afa2ac1c469d8f9a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ad881809398dc3302afa2ac1c469d8f9a">create_lua</a> (std::function&lt; void()&gt; pLuaRegs=nullptr)</td></tr>
 <tr class="memdesc:ad881809398dc3302afa2ac1c469d8f9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the lua::State that will be used to communicate with the GUI.  <a href="#ad881809398dc3302afa2ac1c469d8f9a">More...</a><br /></td></tr>
 <tr class="separator:ad881809398dc3302afa2ac1c469d8f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -421,7 +427,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages the user interface. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00048">48</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00052">52</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a class="anchor" id="a0d440906512d03044a85bc2bf85b6243"></a>
 <div class="memitem">
@@ -435,7 +441,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Type of the root frame list. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00067">67</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00071">71</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +455,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00068">68</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00072">72</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -508,7 +514,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00033">33</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00036">36</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -535,7 +541,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00047">47</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00050">50</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -610,7 +616,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00075">75</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -637,7 +643,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Raw pointer to the frame </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00330">330</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00333">333</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -664,7 +670,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'false' if the name of the widget was already taken </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00278">278</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00281">281</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -690,7 +696,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01561">1561</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01578">1578</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -717,7 +723,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the provided string can be the name of a widget </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00086">86</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00089">89</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -737,7 +743,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Clears the addon directory list. </p>
 <dl class="section note"><dt>Note</dt><dd>This is usefull whenever you need to reload a completely different UI (for example, when switching from your game's main menu to the real game). </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00081">81</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00084">84</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -764,7 +770,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Enabled by default. Note that when enabled, it will also clear fonts when the UI is reloaded, and load them once again. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01366">1366</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01383">1383</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +789,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Closes the UI, deletes widgets. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00750">750</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00767">767</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -821,7 +827,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Even though the gui has been designed to use vector fonts files (such as .ttf or .otf font formats), nothing prevents the implementation from using any other font type, including bitmap fonts. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00260">260</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00263">263</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -849,7 +855,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned frame only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1effad1ab21a7dcd03a99abcb8ba620f" title="Creates a new frame, ready for use, and owned by this manager. ">create_root_frame()</a> or <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7fd513e3f1f425a843dedb3e15d108ca" title="Creates a new frame as child of this frame. ">frame::create_child()</a> to get a fully-functional frame object. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00140">140</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -877,7 +883,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned region only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1frame.html#aeaa343fe3e83f2af54055249aeb458fe" title="Creates a new region as child of this frame. ">frame::create_region()</a> to get a fully-functional region object. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00214">214</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00217">217</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -902,9 +908,9 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is usefull if you need to create additionnal resources on the lua::State before the GUI files are loaded. You need to do this inside the provided argument function, because this code will need to be called again in case the GUI is reloaded (see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the current UI and load it again. ">reload_ui()</a>). Else, you can simply use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI. ">load_ui()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is usefull if you need to create additionnal resources on the Lua state before the GUI files are loaded. You need to do this inside the provided argument function, because this code will need to be called again in case the GUI is reloaded (see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the current UI and load it again. ">reload_ui()</a>). Else, you can simply use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI. ">load_ui()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00690">690</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00703">703</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -943,7 +949,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00240">240</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00243">243</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -970,7 +976,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00248">248</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -997,7 +1003,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00250">250</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00253">253</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +1040,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00255">255</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00258">258</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1080,7 +1086,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function takes care of the basic initializing: the frame is directly usable. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00157">157</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00160">160</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1135,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function takes care of the basic initializing: the frame is directly usable. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00164">164</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00168">168</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1156,7 +1162,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00224">224</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00227">227</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1203,7 +1209,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
  However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00229">229</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00232">232</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1264,7 +1270,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
  However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00234">234</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00237">237</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1291,7 +1297,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Creating a render target can take some times. To avoid GUI hangs during creation, the manager automatically creates the render targets when <a class="el" href="classlxgui_1_1gui_1_1manager.html#aadf3a3ba84f97b89ac7f4001e26294f3" title="Reads GUI files in the directory list. ">read_files()</a> is called, but only for strata that already contain frames when all .xml files are loaded. Other ones are created when needed, just before rendering on them. If you know that one of them is empty at load time, and is going to be filled later during run time, you can call this function to ensure the render target will be created at load time, causing no GUI hangs. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00856">856</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00873">873</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1319,7 +1325,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The new uiobject </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned object only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1effad1ab21a7dcd03a99abcb8ba620f" title="Creates a new frame, ready for use, and owned by this manager. ">create_root_frame()</a> or <a class="el" href="classlxgui_1_1gui_1_1frame.html#a7fd513e3f1f425a843dedb3e15d108ca" title="Creates a new frame as child of this frame. ">frame::create_child()</a> to get a fully-functional frame object, or <a class="el" href="classlxgui_1_1gui_1_1frame.html#aeaa343fe3e83f2af54055249aeb458fe" title="Creates a new region as child of this frame. ">frame::create_region()</a> for region objects. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00119">119</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00122">122</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1346,7 +1352,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles render caching. ">toggle_caching()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01324">1324</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01341">1341</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1367,7 +1373,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Enables/disables input response for all widgets. </p>
 <p>bEnable 'true' to enable input </p><dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211" title="Toggles input response for all widgets. ">toggle_input()</a> and <a class="el" href="classlxgui_1_1gui_1_1manager.html#a6563611883152546b8654a7847c82017" title="Checks if input response is enabled for all widgets. ">is_input_enabled()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01335">1335</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01352">1352</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1393,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Tells the underlying graphics engine we're done rendering. </p>
 <dl class="section note"><dt>Note</dt><dd>For most engines, this is when the rendering is actually done, so don't forget to call it ! </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01566">1566</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01583">1583</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1406,7 +1412,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 
 <p>Tells this manager it must rebuild its strata list. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00932">932</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00949">949</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1426,7 +1432,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 
 <p>Tells this manager to redraw the UI. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01306">1306</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01323">1323</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1446,7 +1452,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the addon that is being parsed. </p>
 <dl class="section return"><dt>Returns</dt><dd>The addon that is being parsed </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01449">1449</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01466">1466</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1466,7 +1472,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the gui event manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>The gui event manager </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01620">1620</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01637">1637</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1486,7 +1492,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the gui event manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>The gui event manager </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01625">1625</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01642">1642</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1519,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest level on the provided strata </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01433">1433</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01450">1450</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1533,7 +1539,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01630">1630</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01647">1647</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1559,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01635">1635</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01652">1652</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1573,7 +1579,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the current game locale ("enGB", ...). </p>
 <dl class="section return"><dt>Returns</dt><dd>The current game locale </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01640">1640</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01657">1657</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1593,7 +1599,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the GUI Lua state. </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00448">448</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00451">451</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1613,7 +1619,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the GUI Lua state. </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00453">453</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00456">456</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1674,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The cumuled horizontal mouse movement </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This value is reset to zero whenever <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1839bce5ea7026bb726dc219b4148825" title="Ask this manager for movement management. ">start_moving()</a> or <a class="el" href="classlxgui_1_1gui_1_1manager.html#a683835e09588fd6e5c0cda567354a065" title="Starts resizing a widget. ">start_sizing()</a> is called. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01291">1291</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01308">1308</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1689,7 +1695,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The cumuled vertical mouse movement </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This value is reset to zero whenever <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1839bce5ea7026bb726dc219b4148825" title="Ask this manager for movement management. ">start_moving()</a> or <a class="el" href="classlxgui_1_1gui_1_1manager.html#a683835e09588fd6e5c0cda567354a065" title="Starts resizing a widget. ">start_sizing()</a> is called. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01296">1296</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01313">1313</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1709,7 +1715,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the frame under the mouse. </p>
 <dl class="section return"><dt>Returns</dt><dd>The frame under the mouse (nullptr if none) </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01371">1371</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01388">1388</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1729,7 +1735,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the renderer implementation. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer implementation </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00060">60</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00063">63</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1749,7 +1755,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the renderer implementation. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer implementation </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00055">55</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00058">58</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1769,7 +1775,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the root frame list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root frame list </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00385">385</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00388">388</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1790,7 +1796,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The screen height </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is not necessarily the real screen height. If the GUI is rendered into a small render target that takes only a portion of the real screen, then this function returns the height of the render target. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00070">70</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00073">73</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1811,7 +1817,47 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The screen width </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is not necessarily the real screen width. If the GUI is rendered into a small render target that takes only a portion of the real screen, then this function returns the width of the render target. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00065">65</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00068">68</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abd32ffa3ed30df1a41be5bbae776035f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sol::state &amp; lxgui::gui::manager::get_sol </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the GUI Lua state (sol wrapper). </p>
+<dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
+
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00461">461</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ea9f7bf0b53d7e4da94b194877ea7f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const sol::state &amp; lxgui::gui::manager::get_sol </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the GUI Lua state (sol wrapper). </p>
+<dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
+
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00466">466</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1838,7 +1884,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given ID </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00390">390</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00393">393</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1911,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given ID </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00399">399</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00402">402</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1903,7 +1949,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given name </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00408">408</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00411">411</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1941,7 +1987,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given name </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00428">428</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00431">431</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1961,7 +2007,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Checks if GUI caching is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if GUI caching is enabled </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01330">1330</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01347">1347</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1984,7 +2030,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211" title="Toggles input response for all widgets. ">toggle_input()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01361">1361</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01378">1378</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2004,7 +2050,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Checks if the UI is currently being loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the UI is currently being loaded </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00927">927</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00944">944</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2031,7 +2077,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to move </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01200">1200</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01217">1217</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2058,7 +2104,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to be resized </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01286">1286</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01303">1303</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2078,7 +2124,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Loads the UI. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad881809398dc3302afa2ac1c469d8f9a" title="Creates the lua::State that will be used to communicate with the GUI. ">create_lua()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#aadf3a3ba84f97b89ac7f4001e26294f3" title="Reads GUI files in the directory list. ">read_files()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00744">744</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00761">761</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2097,7 +2143,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Tells this manager an object has moved. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01301">1301</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01318">1318</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2133,7 +2179,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a62700a1784f8bb5b09f01b10e0fb92d3">lxgui::gui::event_receiver</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01475">1475</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01492">1492</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2209,7 +2255,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <dl class="section return"><dt>Returns</dt><dd>The modified file name </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>All file names are relative to the Engine's executable path, but sometimes you'd like to use a path that is relative to your addon directory for example. To do so, you need to append "|" in front of your file name. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01459">1459</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01476">1476</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2228,7 +2274,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Prints in the log several performance statistics. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01571">1571</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01588">1588</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2248,7 +2294,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Prints debug informations in the log file. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0befd8889782892c2560df7d622c7131" title="Prints all relevant information about this widget in a string. ">uiobject::serialize()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01582">1582</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01599">1599</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2272,7 +2318,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad881809398dc3302afa2ac1c469d8f9a" title="Creates the lua::State that will be used to communicate with the GUI. ">create_lua()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00716">716</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00733">733</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2305,7 +2351,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00611">611</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00625">625</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -2335,7 +2381,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Registers a new frame type. </p>
 <dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this frame. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00621">621</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00635">635</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -2368,7 +2414,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00633">633</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00647">647</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -2398,7 +2444,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a> type. </p>
 <dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="Abstract GUI renderable. ">layered_region</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00643">643</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00657">657</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -2418,7 +2464,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Closes the current UI and load it again. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d" title="Closes the UI, deletes widgets. ">close_ui()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI. ">load_ui()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00809">809</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00826">826</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2462,7 +2508,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01410">1410</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01427">1427</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2489,7 +2535,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the previously owned frame, ignore it to destroy it. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00374">374</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00377">377</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2516,7 +2562,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Called automatically by uiobject destructor. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00340">340</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00343">343</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2543,7 +2589,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1manager.html#a5f6e41b4a79c8d2d1da838094b5c439b" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1manager.html#a50f8ff666d37956d2e01c25ee8c292ef" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00846">846</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00863">863</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2581,7 +2627,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1manager.html#a5f6e41b4a79c8d2d1da838094b5c439b" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1manager.html#a50f8ff666d37956d2e01c25ee8c292ef" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00851">851</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00868">868</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2600,7 +2646,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Renders the UI into the current render target. </p>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00818">818</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00835">835</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2626,7 +2672,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01376">1376</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01393">1393</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2653,7 +2699,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The current addon is used when parsing file names. See <a class="el" href="classlxgui_1_1gui_1_1manager.html#af730f10de9b47559c7be2172c8056131" title="Reads a file address and completes it to make a working address. ">parse_file_name()</a> for more information. For uiobjects that are created manually after the loading stage, one needs to specify the addon that is actually creating the widget, and that is the purpose of this method. It is called by frame automatically, before each call to handler functions. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01454">1454</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01471">1471</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2690,7 +2736,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01395">1395</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01412">1412</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2734,7 +2780,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01400">1400</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01417">1417</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2785,7 +2831,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01405">1405</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01422">1422</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2836,7 +2882,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Movement is handled by the manager itself, you don't need to do anything. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01161">1161</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01178">1178</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2874,7 +2920,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Resizing is handled by the manager itself, you don't need to do anything. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01205">1205</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01222">1222</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2900,7 +2946,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01191">1191</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01208">1208</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2926,7 +2972,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01280">1280</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01297">1297</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2948,7 +2994,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 Enabling this will most likely improve performances. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01313">1313</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01330">1330</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2970,7 +3016,7 @@ Enabling this will most likely improve performances. </dd></dl>
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a6563611883152546b8654a7847c82017" title="Checks if input response is enabled for all widgets. ">is_input_enabled()</a>. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01341">1341</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01358">1358</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2996,7 +3042,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a6563611883152546b8654
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00937">937</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00954">954</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3009,7 +3055,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a6563611883152546b8654
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 25 2020 11:18:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 25 2020 20:27:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
