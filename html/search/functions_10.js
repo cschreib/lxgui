@@ -22,6 +22,7 @@ var searchData=
   ['remove_5fattribute',['remove_attribute',['../classlxgui_1_1xml_1_1block.html#a9733bbf4f4f51fcad9910e4fba91ed5f',1,'lxgui::xml::block']]],
   ['remove_5fchar_5f',['remove_char_',['../classlxgui_1_1gui_1_1edit__box.html#acf06e65b134ae95c4b9e14c8b9f8cf0d',1,'lxgui::gui::edit_box']]],
   ['remove_5fchild',['remove_child',['../classlxgui_1_1gui_1_1frame.html#a6d3206132256833afadd8512edaed5f6',1,'lxgui::gui::frame']]],
+  ['remove_5fframe',['remove_frame',['../classlxgui_1_1gui_1_1manager.html#af84e38fa876336d67b284e9b562349c9',1,'lxgui::gui::manager']]],
   ['remove_5ffrom_5fscroll_5fchild_5flist_5f',['remove_from_scroll_child_list_',['../classlxgui_1_1gui_1_1scroll__frame.html#abe0e58db00114867a0185874abdf4a51',1,'lxgui::gui::scroll_frame']]],
   ['remove_5fglue',['remove_glue',['../classlxgui_1_1gui_1_1uiobject.html#ac85cef80e2d74cba21251efb2979a6b7',1,'lxgui::gui::uiobject']]],
   ['remove_5fkey_5fbinding',['remove_key_binding',['../classlxgui_1_1gui_1_1manager.html#a7dc3523c76f85a2b109a119596d800f0',1,'lxgui::gui::manager']]],
