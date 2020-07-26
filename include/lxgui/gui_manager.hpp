@@ -718,7 +718,7 @@ namespace gui
 
         uint get_new_object_id_() const;
 
-        void set_overed_frame_(frame* pFrame, int iX = 0, int iY = 0);
+        void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
 
         void create_caching_render_target_();
         void create_strata_render_target_(strata& mStrata);

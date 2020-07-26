@@ -1129,7 +1129,7 @@ void manager::update(float fDelta)
             if (pHoveredFrame) break;
         }
 
-        set_overed_frame_(pHoveredFrame, iX, iY);
+        set_hovered_frame_(pHoveredFrame, iX, iY);
 
         bUpdateHoveredFrame_ = false;
     }
@@ -1148,7 +1148,7 @@ void manager::update(float fDelta)
     pEventManager_->frame_ended();
 }
 
-void manager::set_overed_frame_(frame* pFrame, int iX, int iY)
+void manager::set_hovered_frame_(frame* pFrame, int iX, int iY)
 {
     if (pFrame && !pFrame->is_world_input_allowed())
         pInputManager_->block_input("WORLD");
@@ -1360,7 +1360,7 @@ void manager::toggle_input()
     }
     else
     {
-        set_overed_frame_(nullptr);
+        set_hovered_frame_(nullptr);
 
         if (pFocusedFrame_)
             pInputManager_->set_focus(false);
