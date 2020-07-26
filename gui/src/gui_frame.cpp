@@ -40,6 +40,9 @@ frame::~frame()
 
         notify_renderer_need_redraw();
     }
+
+    // Unregister this frame from the GUI manager
+    pManager_->remove_frame(this);
 }
 
 void frame::render()

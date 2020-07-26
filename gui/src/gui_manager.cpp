@@ -342,36 +342,28 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 
 void manager::remove_uiobject(uiobject* pObj)
 {
-    if (!pObj)
-        return;
+    if (!pObj) return;
 
     lObjectList_.erase(pObj->get_id());
 
     if (!pObj->is_virtual())
-    {
         lNamedObjectList_.erase(pObj->get_name());
-
-        // NB: cannot use down_cast() here, as the frame destructor
-        // may have already been called.
-        if (pObj->is_object_type<frame>())
-            lFrameList_.erase(pObj->get_id());
-    }
     else
         lNamedVirtualObjectList_.erase(pObj->get_name());
-
-    // NB: cannot use down_cast() here, as the frame destructor
-    // may have already been called.
-    // TODO: reintroduce the check for manually rendered.
-    // Currently, if a frame was manually rendered and is destroyed,
-    // it will trigger a rebuild of the GUI strata list. This could be avoided.
-    if (pObj->is_object_type<frame>())
-        fire_build_strata_list();
 
     if (pMovedObject_ == pObj)
         stop_moving(pObj);
 
     if (pSizedObject_ == pObj)
         stop_sizing(pObj);
+}
+
+void manager::remove_frame(frame* pObj)
+{
+    if (!pObj) return;
+
+    if (!pObj->is_virtual())
+        lFrameList_.erase(pObj->get_id());
 }
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
