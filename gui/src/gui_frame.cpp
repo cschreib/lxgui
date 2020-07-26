@@ -178,7 +178,7 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (const auto& pChild : get_children())
+        for (const auto* pChild : get_children())
         {
             sStr << pChild->serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
@@ -1248,7 +1248,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         // Reset all arg* to nil
         for (uint i = 1; i < 9; ++i)
         {
-            mLua["arg"+utils::to_string(i)] = sol::nil;
+            mLua["arg"+utils::to_string(i)] = sol::lua_nil;
         }
 
         if (pEvent)
@@ -1296,7 +1296,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
                     else if (mType == utils::any::VALUE_DOUBLE) mProxy = pArg->get<double>();
                     else if (mType == utils::any::VALUE_STRING) mProxy = pArg->get<std::string>();
                     else if (mType == utils::any::VALUE_BOOL)   mProxy = pArg->get<bool>();
-                    else mProxy = sol::nil;
+                    else mProxy = sol::lua_nil;
                 }
             }
         }

@@ -1074,7 +1074,7 @@ void uiobject::push_on_lua(lua::state& mLua) const
 
 void uiobject::remove_glue()
 {
-    pManager_->get_lua()[sLuaName_] = sol::nil;
+    pManager_->get_lua()[sLuaName_] = sol::lua_nil;
     lGlue_ = nullptr;
 }
 
