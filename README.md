@@ -15,7 +15,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
 
-The only rendering back end available uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). For the input back end, you can use SFML2, GLFW, or OIS.
+The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). The second available rendering backend uses SFML2 for everything, and thus only depends on SFML. For the input back end, your only choice at the moment is to use SFML2.
 
 Here is a brief list of the available widgets:
 
@@ -162,7 +162,7 @@ Now, within the Frame, we create a FontString object, that can render text:
     </Frame>
 ```
 
-We've named our FontString "$parentText": "$parent" gets replaced by it's parent name, so in the end it is called "FPSCounterText". Intuitively, the "font" attribute specifies which font file to use for rendering (can be a .ttf or .otf file), "fontHeight" the size of the font, "justifyH" and "justifyV" gives the horizontal and vertical justification, and "outline" creates a black border around the letters, so that it is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset, and give it a green color.
+We've named our FontString "$parentText": "$parent" gets replaced by it's parent name, so in the end it is called "FPSCounterText". Intuitively, the "font" attribute specifies which font file to use for rendering (can be a .ttf or .otf file), "fontHeight" the size of the font, "justifyH" and "justifyV" gives the horizontal and vertical alignment, and "outline" creates a black border around the letters, so that it is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset, and give it a green color.
 
 Now that the GUI structure is in place, we still need to display the number of frame per second. To do so, we will define two "scripts" for the "FPSCounter" Frame:
 
