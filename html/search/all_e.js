@@ -40,6 +40,7 @@ var searchData=
   ['pmanager_5f',['pManager_',['../classlxgui_1_1gui_1_1uiobject.html#a95e9a730010e95373b68bc4f8b95a545',1,'lxgui::gui::uiobject']]],
   ['pnormaltext_5f',['pNormalText_',['../classlxgui_1_1gui_1_1button.html#a31669ab7cfe8cd4d034754882e03472e',1,'lxgui::gui::button']]],
   ['pnormaltexture_5f',['pNormalTexture_',['../classlxgui_1_1gui_1_1button.html#a05962f91ffc6f2236f3c0dfbaf700cf6',1,'lxgui::gui::button']]],
+  ['poll_5fevents',['poll_events',['../classlxgui_1_1input_1_1source__impl.html#aaa25338fb9f00edd0248b133be2e6e78',1,'lxgui::input::source_impl']]],
   ['pop',['pop',['../classlxgui_1_1lua_1_1state.html#acca32da593d68d0f41284f9b880b3931',1,'lxgui::lua::state']]],
   ['pos',['pos',['../structlxgui_1_1gui_1_1vertex.html#a1df4c9b0475a5a8ecdad5dc87a4a2ddf',1,'lxgui::gui::vertex']]],
   ['pparent',['pParent',['../structlxgui_1_1xml_1_1block_1_1range__block_1_1iterator.html#a80fc3097f94adbdde869373641255062',1,'lxgui::xml::block::range_block::iterator::pParent()'],['../structlxgui_1_1xml_1_1block_1_1range__block.html#a302f705e7c96cb419a299281a68b87c1',1,'lxgui::xml::block::range_block::pParent()']]],
