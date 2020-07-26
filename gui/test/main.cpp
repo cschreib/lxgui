@@ -17,7 +17,6 @@
 
 #include <SFML/Window.hpp>
 
-//#define GLFW_INPUT
 //#define GL_GUI
 
 #ifdef GL_GUI
@@ -32,11 +31,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #endif
 
-#ifdef GLFW_INPUT
-#include <lxgui/impl/input_glfw_source.hpp>
-#else
 #include <lxgui/impl/input_sfml_source.hpp>
-#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -100,15 +95,8 @@ int main(int argc, char* argv[])
 
         // Define the input manager
         std::unique_ptr<input::source_impl> pInputSource;
-    #ifdef GLFW_INPUT
-        // Use GLFW
-        pInputSource = std::unique_ptr<input::source_impl>(new input::glfw::source(
-            utils::to_string((uint)mWindow.getSystemHandle()), mWindow.getSize().x, mWindow.getSize().y
-        ));
-    #else
-        // Use SFML
+        // Use SFML (only implementation available for now)
         pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
-    #endif
 
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input source
