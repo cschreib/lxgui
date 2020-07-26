@@ -448,24 +448,24 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
     }
 }
 
-lua::state& manager::get_lua()
-{
-    return *pLua_;
-}
-
-const lua::state& manager::get_lua() const
-{
-    return *pLua_;
-}
-
-sol::state& manager::get_sol()
+sol::state& manager::get_lua()
 {
     return *pSol_;
 }
 
-const sol::state& manager::get_sol() const
+const sol::state& manager::get_lua() const
 {
     return *pSol_;
+}
+
+lua::state& manager::get_luapp()
+{
+    return *pLua_;
+}
+
+const lua::state& manager::get_luapp() const
+{
+    return *pLua_;
 }
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
@@ -700,34 +700,33 @@ void gui_out(const std::string& sMessage)
     gui::out << sMessage << std::endl;
 }
 
-void manager::create_lua(std::function<void()> pLuaRegs)
+void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 {
-    if (!pLua_)
-    {
-        pSol_ = std::unique_ptr<sol::state>(new sol::state());
-        pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
-            sol::lib::os, sol::lib::string, sol::lib::math, sol::lib::debug);
+    if (pLua_) return;
 
-        pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
-        pLua_->set_print_error_function(gui_out);
+    pSol_ = std::unique_ptr<sol::state>(new sol::state());
+    pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
+        sol::lib::os, sol::lib::string, sol::lib::math, sol::lib::debug);
 
-        register_lua_manager_();
-        pLua_->reg<lua_virtual_glue>();
-        pLua_->reg<lua_uiobject>();
-        pLua_->reg<lua_frame>();
-        pLua_->reg<lua_focus_frame>();
-        pLua_->reg<lua_layered_region>();
+    pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
+    pLua_->set_print_error_function(gui_out);
 
-        pLua_->reg("set_key_binding", l_set_key_binding);
-        pLua_->reg("create_frame",    l_create_frame);
-        pLua_->reg("delete_frame",    l_delete_frame);
-        pLua_->reg("get_locale",      l_get_locale);
-        pLua_->reg("log",             l_log);
+    register_lua_manager_();
+    pLua_->reg<lua_virtual_glue>();
+    pLua_->reg<lua_uiobject>();
+    pLua_->reg<lua_frame>();
+    pLua_->reg<lua_focus_frame>();
+    pLua_->reg<lua_layered_region>();
 
-        pLuaRegs_ = pLuaRegs;
-        if (pLuaRegs_)
-            pLuaRegs_();
-    }
+    pLua_->reg("set_key_binding", l_set_key_binding);
+    pLua_->reg("create_frame",    l_create_frame);
+    pLua_->reg("delete_frame",    l_delete_frame);
+    pLua_->reg("get_locale",      l_get_locale);
+    pLua_->reg("log",             l_log);
+
+    pLuaRegs_ = pLuaRegs;
+    if (pLuaRegs_)
+        pLuaRegs_(*this);
 }
 
 void manager::read_files()
@@ -793,6 +792,7 @@ void manager::close_ui()
         bBuildStrataList_ = true;
 
         pLua_ = nullptr;
+        pSol_ = nullptr;
 
         pHoveredFrame_ = nullptr;
         bUpdateHoveredFrame_ = false;

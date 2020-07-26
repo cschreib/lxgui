@@ -7,7 +7,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/input.hpp"
-#include <lxgui/luapp_state.hpp>
+#include <sol/state.hpp>
 
 using namespace lxgui::input;
 
@@ -277,9 +277,7 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
             // Set key name
             if (pEvent)
             {
-                lua::state& mLua = pManager_->get_lua();
-                mLua.push_string(pEvent->get<std::string>(0));
-                mLua.set_global("arg1");
+                pManager_->get_lua()["arg1"] = pEvent->get<std::string>(0);
             }
         }
     }

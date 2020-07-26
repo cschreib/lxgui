@@ -15,6 +15,11 @@
 
 #include <array>
 
+namespace sol
+{
+    class state;
+}
+
 namespace lxgui {
 namespace lua
 {
@@ -604,10 +609,15 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Pushes this uiobject on the provided lua::State.
-        /** \param mLua The lua::State on which to push the glue
+        /// Pushes this uiobject on the provided lua state.
+        /** \param mLua The lua state on which to push the glue
         */
-        virtual void push_on_lua(lua::state& mLua) const;
+        void push_on_lua(sol::state& mLua) const;
+
+        /// Pushes this uiobject on the provided lua State.
+        /** \param mLua The lua state on which to push the glue
+        */
+        void push_on_lua(lua::state& mLua) const;
 
         /// Parses data from an xml::block.
         /** \param pBlock The uiobject's xml::block
@@ -628,7 +638,8 @@ namespace gui
         virtual void update_borders_() const;
         virtual void update_dimensions_() const;
 
-        lua::state&  get_lua_();
+        sol::state&  get_lua_();
+        lua::state&  get_luapp_();
 
         template<typename T>
         void create_glue_();

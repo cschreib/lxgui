@@ -10,7 +10,7 @@ namespace gui
     {
         if (lGlue_) return;
 
-        lua::state& mLua = get_lua_();
+        lua::state& mLua = get_luapp_();
 
         if (bVirtual_)
         {

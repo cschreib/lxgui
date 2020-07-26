@@ -7,7 +7,7 @@
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
-#include <lxgui/luapp_state.hpp>
+#include <sol/state.hpp>
 #include <sstream>
 
 namespace lxgui {
@@ -149,22 +149,14 @@ void uiobject::copy_from(uiobject* pObj)
                     lCopyList_.push_back(mMember);
             }
 
-            lua::state& mLua = pManager_->get_lua();
-            mLua.get_global(pObj->get_lua_name());
-            if (mLua.get_type() != lua::type::NIL)
-            {
-                mLua.get_global(sLuaName_);
-                if (mLua.get_type() != lua::type::NIL)
-                {
-                    for (const auto& mMember : pObj->lCopyList_)
-                    {
-                        mLua.get_field(mMember, -2);
-                        mLua.set_field(mMember);
-                    }
+            sol::state& mLua = pManager_->get_lua();
+            auto mOrig = mLua[pObj->get_lua_name()];
+            auto mNew = mLua[this->get_lua_name()];
+            if (mOrig.valid() && mNew.valid()) {
+                for (const auto& mMember : pObj->lCopyList_) {
+                    mNew[mMember] = mOrig[mMember];
                 }
-                mLua.pop();
             }
-            mLua.pop();
         }
 
         bInherits_ = true;
@@ -1060,9 +1052,19 @@ void uiobject::update(float fDelta)
     DEBUG_LOG("  +");
 }
 
-lua::state& uiobject::get_lua_()
+sol::state& uiobject::get_lua_()
 {
     return pManager_->get_lua();
+}
+
+lua::state& uiobject::get_luapp_()
+{
+    return pManager_->get_luapp();
+}
+
+void uiobject::push_on_lua(sol::state& mLua) const
+{
+    sol::stack::push(mLua.lua_state(), mLua[sLuaName_]);
 }
 
 void uiobject::push_on_lua(lua::state& mLua) const
@@ -1072,9 +1074,7 @@ void uiobject::push_on_lua(lua::state& mLua) const
 
 void uiobject::remove_glue()
 {
-    lua::state& mLua = pManager_->get_lua();
-    mLua.push_nil();
-    mLua.set_global(sLuaName_);
+    pManager_->get_lua()[sLuaName_] = sol::nil;
     lGlue_ = nullptr;
 }
 

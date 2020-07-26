@@ -379,25 +379,25 @@ namespace gui
             input::key uiModifier2 = input::key::K_UNASSIGNED
         );
 
-        /// Returns the GUI Lua state.
+        /// Returns the GUI Lua state (sol wrapper).
         /** \return The GUI Lua state
         */
-        lua::state& get_lua();
-
-        /// Returns the GUI Lua state.
-        /** \return The GUI Lua state
-        */
-        const lua::state& get_lua() const;
+        sol::state& get_lua();
 
         /// Returns the GUI Lua state (sol wrapper).
         /** \return The GUI Lua state
         */
-        sol::state& get_sol();
+        const sol::state& get_lua() const;
 
-        /// Returns the GUI Lua state (sol wrapper).
+        /// Returns the GUI Lua state (luapp wrapper).
         /** \return The GUI Lua state
         */
-        const sol::state& get_sol() const;
+        lua::state& get_luapp();
+
+        /// Returns the GUI Lua state (luapp wrapper).
+        /** \return The GUI Lua state
+        */
+        const lua::state& get_luapp() const;
 
         /// Creates the lua::State that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
@@ -409,7 +409,7 @@ namespace gui
         *         is reloaded (see reload_ui()).
         *         Else, you can simply use load_ui().
         */
-        void create_lua(std::function<void()> pLuaRegs = nullptr);
+        void create_lua(std::function<void(gui::manager&)> pLuaRegs = nullptr);
 
         /// Reads GUI files in the directory list.
         /** \note See add_addon_directory().
@@ -726,12 +726,13 @@ namespace gui
 
         bool bClearFontsOnClose_ = true;
 
-        std::unique_ptr<lua::state> pLua_;
-        std::unique_ptr<sol::state> pSol_;
-        std::function<void()>       pLuaRegs_;
-        bool                        bClosed_ = true;
-        bool                        bLoadingUI_ = false;
-        bool                        bFirstIteration_ = true;
+        std::unique_ptr<lua::state>        pLua_;
+        std::unique_ptr<sol::state>        pSol_;
+        std::function<void(gui::manager&)> pLuaRegs_;
+
+        bool bClosed_ = true;
+        bool bLoadingUI_ = false;
+        bool bFirstIteration_ = true;
 
         bool                            bInputEnabled_ = true;
         std::unique_ptr<input::manager> pInputManager_;

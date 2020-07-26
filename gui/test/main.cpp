@@ -132,20 +132,20 @@ int main(int argc, char* argv[])
         pManager->add_addon_directory("interface");
         //  - create the lua::state
         std::cout << " Creating lua..." << std::endl;
-        pManager->create_lua([&pManager](){
+        pManager->create_lua([](gui::manager& mManager) {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
             //  - register the needed widgets
-            pManager->register_region_type<gui::texture>();
-            pManager->register_region_type<gui::font_string>();
-            pManager->register_frame_type<gui::button>();
-            pManager->register_frame_type<gui::slider>();
-            pManager->register_frame_type<gui::edit_box>();
-            pManager->register_frame_type<gui::scroll_frame>();
-            pManager->register_frame_type<gui::status_bar>();
+            mManager.register_region_type<gui::texture>();
+            mManager.register_region_type<gui::font_string>();
+            mManager.register_frame_type<gui::button>();
+            mManager.register_frame_type<gui::slider>();
+            mManager.register_frame_type<gui::edit_box>();
+            mManager.register_frame_type<gui::scroll_frame>();
+            mManager.register_frame_type<gui::status_bar>();
             //  - register additional lua functions
-            sol::state& mSol = pManager->get_sol();
+            sol::state& mSol = mManager.get_lua();
             mSol.set_function("get_folder_list", [](const std::string& sDir) {
                 return utils::get_directory_list(sDir);
             });
