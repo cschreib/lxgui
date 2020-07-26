@@ -1,4 +1,5 @@
 #include "lxgui/impl/input_sfml_source.hpp"
+#include <lxgui/gui_event.hpp>
 #include <lxgui/utils_string.hpp>
 
 #include <SFML/Window/Window.hpp>
@@ -218,21 +219,53 @@ void source::on_sfml_event(const sf::Event& mEvent)
     {
         key mKey = from_sfml_(mEvent.key.code);
         mKeyboard_.lKeyState[(uint)mKey] = true;
+
+        gui::event mKeyboardEvent("KEY_PRESSED");
+        mKeyboardEvent.add(mKey);
+        lEvents_.push_back(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::KeyReleased)
     {
         key mKey = from_sfml_(mEvent.key.code);
         mKeyboard_.lKeyState[(uint)mKey] = false;
+
+        gui::event mKeyboardEvent("KEY_RELEASED");
+        mKeyboardEvent.add(mKey);
+        lEvents_.push_back(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::MouseButtonPressed)
     {
         mouse_button mButton = lMouseFromSFML[mEvent.mouseButton.button];
         mMouse_.lButtonState[(uint)mButton] = true;
+
+        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
+
+        gui::event mMouseEvent("MOUSE_PRESSED");
+        mMouseEvent.add(mButton);
+        mMouseEvent.add((float)mMousePos.x);
+        mMouseEvent.add((float)mMousePos.y);
+        lEvents_.push_back(mMouseEvent);
+
+        if ((double)lLastClickClock_[(uint)mButton].getElapsedTime().asSeconds() < dDoubleClickTime_)
+        {
+            mMouseEvent.set_name("MOUSE_DOUBLE_CLICKED");
+            lEvents_.push_back(mMouseEvent);
+        }
+
+        lLastClickClock_[(uint)mButton].restart();
     }
     else if (mEvent.type == sf::Event::MouseButtonReleased)
     {
         mouse_button mButton = lMouseFromSFML[mEvent.mouseButton.button];
         mMouse_.lButtonState[(uint)mButton] = false;
+
+        const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
+
+        gui::event mMouseEvent("MOUSE_RELEASED");
+        mMouseEvent.add(mButton);
+        mMouseEvent.add((float)mMousePos.x);
+        mMouseEvent.add((float)mMousePos.y);
+        lEvents_.push_back(mMouseEvent);
     }
 }
 }

@@ -1,12 +1,13 @@
 #ifndef LXGUI_INPUT_HPP
 #define LXGUI_INPUT_HPP
 
-#include <lxgui/utils.hpp>
+#include "lxgui/utils.hpp"
+#include "lxgui/gui_event.hpp"
+#include "lxgui/input_keys.hpp"
 #include <string>
 #include <vector>
 #include <array>
 #include <map>
-#include "lxgui/input_keys.hpp"
 
 namespace lxgui {
 namespace gui
@@ -81,6 +82,9 @@ namespace input
         */
         const std::vector<char32_t>& get_chars() const;
 
+        /// Return the accumulated events since last frame and clear the cache in the input source.
+        std::vector<gui::event> poll_events();
+
         /// Returns the mouse state of this input source.
         const mouse_state& get_mouse_state() const;
 
@@ -112,6 +116,16 @@ namespace input
         */
         uint get_window_new_height() const;
 
+        /// Sets the double click maximum time.
+        /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
+        */
+        void set_doubleclick_time(double dDoubleClickTime);
+
+        /// Returns the double click maximum time.
+        /** \return The double click maximum time
+        */
+        double get_doubleclick_time() const;
+
     protected:
 
         /// Updates this implementation input source.
@@ -123,11 +137,15 @@ namespace input
         std::vector<char32_t> lChars_;
         std::vector<char32_t> lCharsCache_;
 
+        std::vector<gui::event> lEvents_;
+
         bool bManuallyUpdated_ = false;
 
         bool bWindowResized_ = false;
         uint uiNewWindowHeight_ = 0u;
         uint uiNewWindowWidth_ = 0u;
+
+        double dDoubleClickTime_ = 0.25;
     };
 
     /// Handles inputs (keyboard and mouse)
@@ -196,23 +214,7 @@ namespace input
         /** \param mKey The ID code of the key you're interested in
         *   \return Elapsed time since the key has been pressed
         */
-        double get_key_press_duration(key mKey) const;
-
-        /// Checks if a key has been pressed.
-        /** \param mKey   The ID code of the key you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if the key has been pressed
-        *   \note Happens just when the key is pressed.
-        */
-        bool key_is_pressed(key mKey, bool bForce = false) const;
-
-        /// Checks if a key has been released.
-        /** \param mKey   The ID code of the key you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if the key has been released
-        *   \note Happens just when the key is released.
-        */
-        bool key_is_released(key mKey, bool bForce = false) const;
+        double get_key_down_duration(key mKey) const;
 
         /// Returns the UTF8 (multibyte) character that has been entered.
         /** \return The multibyte UTF8 character just entered with the keyboard
@@ -242,16 +244,6 @@ namespace input
         *   \note This will only return English key names.
         */
         std::string get_key_name(key mKey, key mModifier1, key mModifier2) const;
-
-        /// Returns the list of keys that have been released during this frame.
-        /** \return The list of keys that have been released during this frame.
-        */
-        const std::vector<key>& get_key_release_stack() const;
-
-        /// Returns the list of keys that have been pressed during this frame.
-        /** \return The list of keys that have been pressed during this frame.
-        */
-        const std::vector<key>& get_key_press_stack() const;
 
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
@@ -284,43 +276,12 @@ namespace input
         /** \param mKey The ID code of the mouse button you're interested in
         *   \return Elapsed time since the mouse button has been pressed
         */
-        double get_mouse_press_duration(mouse_button mKey) const;
-
-        /// Checks if a mouse button has been pressed.
-        /** \param mID    The ID code of the mouse button you're interested in
-        *   \return 'true' if the mouse button has been pressed
-        *   \note Happens just when the mouse button is pressed.
-        */
-        bool mouse_is_pressed(mouse_button mID) const;
-
-        /// Checks if a mouse button has been released.
-        /** \param mID    The ID code of the mouse button you're interested in
-        *   \return 'true' if the mouse button has been released
-        *   \note Happens just when the mouse button is released.
-        */
-        bool mouse_is_released(mouse_button mID) const;
-
-        /// Checks if a mouse button has been double clicked.
-        /** \param mID    The ID code of the mouse button you're interested in
-        *   \return 'true' if the mouse button has been double clicked
-        */
-        bool mouse_is_doubleclicked(mouse_button mID) const;
+        double get_mouse_down_duration(mouse_button mKey) const;
 
         /// Checks if the mouse wheel has been rolled.
         /** \return 'true' if the mouse wheel has been rolled
         */
         bool wheel_is_rolled() const;
-
-        /// Checks if the mouse has just started beeing dragged.
-        /** \return 'true' if the mouse has just started beeing dragged
-        */
-        bool mouse_last_dragged() const;
-
-        /// Returns a mouse button's state.
-        /** \param mID The ID code of the mouse button you're interested in
-        *   \return The mouse button's state
-        */
-        mouse_state get_mouse_state(mouse_button mID) const;
 
         /// Returns the horizontal position of the mouse.
         /** \return The horizontal position of the mouse
@@ -345,20 +306,6 @@ namespace input
         *         but divided by the window's height
         */
         float get_mouse_rel_y() const;
-
-        /// Returns the horizontal position variation of the mouse.
-        /** \return The horizontal position variation of the mouse
-        *   \note This function returns values just as they are given
-        *         by the mouse.
-        */
-        float get_mouse_raw_dx() const;
-
-        /// Returns the vertical position variation of the mouse.
-        /** \return The vertical position variation of the mouse
-        *   \note This function returns values just as they are given
-        *         by the mouse.
-        */
-        float get_mouse_raw_dy() const;
 
         /// Returns the horizontal position variation of the mouse.
         /** \return The horizontal position variation of the mouse
@@ -388,32 +335,6 @@ namespace input
         */
         float get_mouse_rel_dy() const;
 
-        /// Returns the horizontal position variation of the mouse.
-        /** \return The horizontal position variation of the mouse
-        *   \note A common mouse's update rate is 125Hz
-        *         (it will report its movement every 8ms). In the cases
-        *         where the game updates faster, the mouse will just
-        *         report zero movement for some frames, which can be
-        *         disturbing if you need a continuous movement.<br>
-        *         If that's an issue for you, then use this function
-        *         instead of get_mouse_dx().<br>
-        *         Sensitivity factor is applied on the result.
-        */
-        float get_mouse_smooth_dx() const;
-
-        /// Returns the vertical position variation of the mouse.
-        /** \return The vertical position variation of the mouse
-        *   \note A common mouse's update rate is 125Hz
-        *         (it will report its movement every 8ms). In the cases
-        *         where the game updates faster, the mouse will just
-        *         report zero movement for some frames, which can be
-        *         disturbing if you need a continuous movement.<br>
-        *         If that's an issue for you, then use this function
-        *         instead of get_mouse_dy().<br>
-        *         Sensitivity factor is applied on the result.
-        */
-        float get_mouse_smooth_dy() const;
-
         /// Returns the rolling ammount of the mouse wheel.
         /** \return The rolling ammount of the mouse wheel
         */
@@ -434,30 +355,6 @@ namespace input
         /** \return The double click maximum time
         */
         double get_doubleclick_time() const;
-
-        /// Sets the ammount of mouse movement to be buffered.
-        /** \param dMouseHistoryMaxLength The maximum buffer length (in seconds)
-        *   \note If you experience jerky mouse movement, you can try to increase
-        *         this value (default : 0.1s).<br> On the contrary, if you feel
-        *         your mouse is not responsive enough, try to decrease it.
-        */
-        void set_mouse_buffer_duration(double dMouseHistoryMaxLength);
-
-        /// Returns the ammount of mouse movement to be buffered.
-        /** \return The ammount of mouse movement to be buffered
-        */
-        double get_mouse_buffer_duration() const;
-
-        /// Sets the mouse movement factor.
-        /** \param fMouseSensitivity The new movement factor
-        *   \note Increase this parameter to make mouse controlled movement faster.
-        */
-        void set_mouse_sensitivity(float fMouseSensitivity);
-
-        /// Returns the mouse movement factor.
-        /** \return The mouse movement factor
-        */
-        float get_mouse_sensitivity() const;
 
         /// Sets the duration after which a key is considered as pressed for a long time.
         /** \param dLongPressDelay The "long pressed" duration
@@ -528,10 +425,9 @@ namespace input
         std::vector<gui::event_manager*> lEventManagerList_;
 
         // Keyboard
+        double                         dLongPressDelay_ = 0.7;
         std::array<double, KEY_NUMBER> lKeyDelay_;
         std::array<bool,   KEY_NUMBER> lKeyLong_;
-        std::array<bool,   KEY_NUMBER> lKeyBuf_;
-        std::array<bool,   KEY_NUMBER> lKeyBufOld_;
 
         bool bCtrlPressed_ = false;
         bool bShiftPressed_ = false;
@@ -539,17 +435,9 @@ namespace input
         bool bKey_ = false;
         std::vector<char32_t> lChars_;
 
-        std::vector<key> lDownStack_;
-        std::vector<key> lUpStack_;
-
         // Mouse
-        double                                       dDoubleClickTime_ = 0.25;
-        std::array<double, MOUSE_BUTTON_NUMBER>      lDoubleClickDelay_;
-        std::array<double, MOUSE_BUTTON_NUMBER>      lMouseDelay_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseLong_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseBuf_;
-        std::array<bool, MOUSE_BUTTON_NUMBER>        lMouseBufOld_;
-        std::array<mouse_state, MOUSE_BUTTON_NUMBER> lMouseState_;
+        std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_;
+        std::array<bool,   MOUSE_BUTTON_NUMBER> lMouseLong_;
 
         std::map<std::string, bool> lClickGroupList_;
         std::map<std::string, bool> lForcedClickGroupList_;
@@ -558,16 +446,8 @@ namespace input
         float       fRelMX_ = 0.0f, fRelMY_ = 0.0f;
         float       fDMX_ = 0.0f, fDMY_ = 0.0f;
         float       fRelDMX_ = 0.0f, fRelDMY_ = 0.0f;
-        float       fRawDMX_ = 0.0f, fRawDMY_ = 0.0f;
-        float       fMouseSensitivity_ = 1.0f;
-        double      dMouseHistoryMaxLength_ = 0.1;
-        double      dLongPressDelay_ = 0.7;
-        std::vector<std::pair<double, std::array<float,3>>> lMouseHistory_;
-        float       fSmoothDMX_ = 0.0f, fSmoothDMY_ = 0.0f, fSmoothMWheel_ = 0.0f;
         float       fMWheel_ = 0.0f;
         bool        bWheelRolled_ = false;
-        std::string sMouseButton_;
-        bool        bLastDragged_ = false;
 
         double dTime_ = 0.0;
 

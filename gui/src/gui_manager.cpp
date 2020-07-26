@@ -954,8 +954,8 @@ void manager::update(float fDelta)
     if (pMovedObject_ || pSizedObject_)
     {
         DEBUG_LOG(" Moved object...");
-        fMouseMovementX_ += pInputManager_->get_mouse_raw_dx();
-        fMouseMovementY_ += pInputManager_->get_mouse_raw_dy();
+        fMouseMovementX_ += pInputManager_->get_mouse_dx();
+        fMouseMovementY_ += pInputManager_->get_mouse_dy();
     }
 
     if (pMovedObject_)
@@ -1096,8 +1096,8 @@ void manager::update(float fDelta)
     }
 
     if (bBuildStrataList_ || bObjectMoved_ ||
-        (pInputManager_->get_mouse_raw_dx() != 0.0f) ||
-        (pInputManager_->get_mouse_raw_dy() != 0.0f))
+        (pInputManager_->get_mouse_dx() != 0.0f) ||
+        (pInputManager_->get_mouse_dy() != 0.0f))
         bUpdateHoveredFrame_ = true;
 
     if (bUpdateHoveredFrame_ && bInputEnabled_)

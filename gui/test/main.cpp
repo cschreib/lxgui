@@ -231,10 +231,31 @@ int main(int argc, char* argv[])
                     bFocus = false;
                 else if (mEvent.type == sf::Event::GainedFocus)
                     bFocus = true;
+                else if (mEvent.type == sf::Event::KeyReleased)
+                {
+                    switch (mEvent.key.code)
+                    {
+                        case sf::Keyboard::Key::Escape:
+                            bRunning = false;
+                            break;
+                        case sf::Keyboard::Key::P:
+                            gui::out << pManager->print_ui() << std::endl;
+                            break;
+                        case sf::Keyboard::Key::K:
+                            gui::out << "###" << std::endl;
+                            break;
+                        case sf::Keyboard::Key::C:
+                            pManager->enable_caching(!pManager->is_caching_enabled());
+                            break;
+                        case sf::Keyboard::Key::R:
+                            pManager->reload_ui();
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
-            #ifndef GLFW_INPUT
                 static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
-            #endif
             }
 
             // Check if WORLD input is allowed
@@ -242,17 +263,6 @@ int main(int argc, char* argv[])
             {
                 // Process mouse and click events in the game...
             }
-
-            if (pInputMgr->key_is_pressed(input::key::K_ESCAPE))
-                bRunning = false;
-            else if (pInputMgr->key_is_pressed(input::key::K_P))
-                gui::out << pManager->print_ui() << std::endl;
-            else if (pInputMgr->key_is_pressed(input::key::K_K))
-                gui::out << "###" << std::endl;
-            else if (pInputMgr->key_is_pressed(input::key::K_C))
-                pManager->enable_caching(!pManager->is_caching_enabled());
-            else if (pInputMgr->key_is_pressed(input::key::K_R))
-                pManager->reload_ui();
 
             if (!bFocus)
             {

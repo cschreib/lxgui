@@ -37,6 +37,13 @@ const std::vector<char32_t>& source_impl::get_chars() const
     return lChars_;
 }
 
+std::vector<gui::event> source_impl::poll_events()
+{
+    std::vector<gui::event> lTemp;
+    std::swap(lTemp, lEvents_);
+    return lTemp;
+}
+
 const source_impl::mouse_state& source_impl::get_mouse_state() const
 {
     return mMouse_;
@@ -62,19 +69,23 @@ uint source_impl::get_window_new_height() const
     return uiNewWindowHeight_;
 }
 
+void source_impl::set_doubleclick_time(double dDoubleClickTime)
+{
+    dDoubleClickTime_ = dDoubleClickTime;
+}
+
+double source_impl::get_doubleclick_time() const
+{
+    return dDoubleClickTime_;
+}
+
 manager::manager(std::unique_ptr<source_impl> pSource) : pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(false);
     lKeyLong_.fill(false);
-    lKeyBuf_.fill(false);
-    lKeyBufOld_.fill(false);
 
-    lDoubleClickDelay_.fill(0.0);
     lMouseDelay_.fill(0.0);
     lMouseLong_.fill(false);
-    lMouseBuf_.fill(false);
-    lMouseBufOld_.fill(false);
-    lMouseState_.fill(mouse_state::UP);
 }
 
 void manager::allow_input(const std::string& sGroupName)
@@ -328,22 +339,12 @@ std::string manager::get_key_name(key mKey, key mModifier1, key mModifier2) cons
     return sString + get_key_name(mKey);
 }
 
-const std::vector<key>& manager::get_key_press_stack() const
-{
-    return lDownStack_;
-}
-
-const std::vector<key>& manager::get_key_release_stack() const
-{
-    return lUpStack_;
-}
-
 bool manager::key_is_down(key mKey, bool bForce) const
 {
     if (!bForce && bFocus_)
         return false;
     else
-        return lKeyBuf_[(uint)mKey];
+        return pSource_->get_key_state().lKeyState[(uint)mKey];
 }
 
 bool manager::key_is_down_long(key mKey, bool bForce) const
@@ -351,28 +352,12 @@ bool manager::key_is_down_long(key mKey, bool bForce) const
     if (!bForce && bFocus_)
         return false;
     else
-        return (lKeyBuf_[(uint)mKey] && lKeyLong_[(uint)mKey]);
+        return lKeyLong_[(uint)mKey];
 }
 
-double manager::get_key_press_duration(key mKey) const
+double manager::get_key_down_duration(key mKey) const
 {
     return lKeyDelay_[(uint)mKey];
-}
-
-bool manager::key_is_pressed(key mKey, bool bForce) const
-{
-    if (!bForce && bFocus_)
-        return false;
-    else
-        return (lKeyBuf_[(uint)mKey] && !lKeyBufOld_[(uint)mKey]);
-}
-
-bool manager::key_is_released(key mKey, bool bForce) const
-{
-    if (!bForce && bFocus_)
-        return false;
-    else
-        return (!lKeyBuf_[(uint)mKey] && lKeyBufOld_[(uint)mKey]);
 }
 
 std::vector<char32_t> manager::get_chars() const
@@ -382,32 +367,17 @@ std::vector<char32_t> manager::get_chars() const
 
 bool manager::mouse_is_down(mouse_button mID) const
 {
-    return lMouseBuf_[(uint)mID];
+    return pSource_->get_mouse_state().lButtonState[(uint)mID];
 }
 
 bool manager::mouse_is_down_long(mouse_button mID) const
 {
-    return (lMouseBuf_[(uint)mID] && lMouseLong_[(uint)mID]);
+    return lMouseLong_[(uint)mID];
 }
 
-double manager::get_mouse_press_duration(mouse_button mID) const
+double manager::get_mouse_down_duration(mouse_button mID) const
 {
     return lMouseDelay_[(uint)mID];
-}
-
-bool manager::mouse_is_pressed(mouse_button mID) const
-{
-    return (lMouseBuf_[(uint)mID] && !lMouseBufOld_[(uint)mID]);
-}
-
-bool manager::mouse_is_released(mouse_button mID) const
-{
-    return (!lMouseBuf_[(uint)mID] && lMouseBufOld_[(uint)mID]);
-}
-
-bool manager::mouse_is_doubleclicked(mouse_button mID) const
-{
-    return (mouse_is_pressed(mID) && lDoubleClickDelay_[(uint)mID] > 0.0);
 }
 
 bool manager::wheel_is_rolled() const
@@ -427,29 +397,20 @@ void manager::update(float fTempDelta)
     if (!pSource_->is_manually_updated())
         pSource_->update();
 
-    lChars_ = pSource_->get_chars();
-
-    lDownStack_.clear();
-    lUpStack_.clear();
-
     // Control extreme delta time after loading/at startup etc
     double dDelta = fTempDelta;
     if ((dDelta < 0.0) || (dDelta > 1.0))
         dDelta = 0.05;
 
-    gui::event mKeyboardEvent;
-    mKeyboardEvent.add(key::K_UNASSIGNED);
-    mKeyboardEvent.add(std::string());
-
     // Update keys
+    const source_impl::key_state& mKeyState = pSource_->get_key_state();
     bKey_ = false;
     for (uint i = 0; i < KEY_NUMBER; ++i)
     {
-        lKeyBufOld_[i] = lKeyBuf_[i];
-
         // Update delays
-        if (lKeyBufOld_[i])
+        if (mKeyState.lKeyState[i])
         {
+            bKey_ = true;
             lKeyDelay_[i] += dDelta;
             if (lKeyDelay_[i] >= dLongPressDelay_)
                 lKeyLong_[i] = true;
@@ -459,45 +420,51 @@ void manager::update(float fTempDelta)
             lKeyDelay_[i] = 0.0;
             lKeyLong_[i] = false;
         }
+    }
 
-        // Update state
-        lKeyBuf_[i] = pSource_->get_key_state().lKeyState[i];
+    // Handle modifier keys
+    bCtrlPressed_  = key_is_down(key::K_LCONTROL, true) || key_is_down(key::K_RCONTROL, true);
+    bShiftPressed_ = key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
+    bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
 
-        if (lKeyBuf_[i])
+    // Update mouse state
+    const source_impl::mouse_state& mMouseState = pSource_->get_mouse_state();
+    for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
+    {
+        // Update delays
+        if (mMouseState.lButtonState[i])
         {
-            bKey_ = true;
-            if (!lKeyBufOld_[i])
-            {
-                // Key is pressed
-                lDownStack_.push_back((key)i);
-            }
+            lMouseDelay_[i] += dDelta;
+            if (lMouseDelay_[i] >= dLongPressDelay_)
+                lMouseLong_[i] = true;
         }
-        else if (lKeyBufOld_[i])
+        else
         {
-            // Key is released
-            lUpStack_.push_back((key)i);
-        }
-
-        // Send events
-        if (lKeyBuf_[i])
-        {
-            if (!lKeyBufOld_[i])
-            {
-                mKeyboardEvent.set_name("KEY_PRESSED");
-                mKeyboardEvent[0] = (key)i;
-                mKeyboardEvent[1] = get_key_name((key)i);
-                fire_event_(mKeyboardEvent);
-            }
-        }
-        else if (lKeyBufOld_[i])
-        {
-            mKeyboardEvent.set_name("KEY_RELEASED");
-            mKeyboardEvent[0] = (key)i;
-            mKeyboardEvent[1] = get_key_name((key)i);
-            fire_event_(mKeyboardEvent);
+            lMouseDelay_[i] = 0.0;
+            lMouseLong_[i] = false;
         }
     }
 
+    // Send events
+    for (auto& mEvent : pSource_->poll_events())
+    {
+        if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
+        {
+            // Add key name to the event
+            mEvent.add(get_key_name(mEvent.get<key>(0)));
+        }
+        else if (mEvent.get_name() == "MOUSE_PRESSED" ||
+                 mEvent.get_name() == "MOUSE_RELEASED" ||
+                 mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
+        {
+            // Add button name to the event
+            mEvent.add(get_mouse_button_string(mEvent.get<mouse_button>(0)));
+        }
+
+        fire_event_(mEvent);
+    }
+
+    lChars_ = pSource_->get_chars();
     if (!lChars_.empty())
     {
         gui::event mCharEvent("TEXT_ENTERED");
@@ -509,103 +476,18 @@ void manager::update(float fTempDelta)
         }
     }
 
-    // Handle modifier keys
-    bCtrlPressed_  = key_is_down(key::K_LCONTROL, true) || key_is_down(key::K_RCONTROL, true);
-    bShiftPressed_ = key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
-    bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
-
-    const source_impl::mouse_state& mMouseState = pSource_->get_mouse_state();
-    gui::event mMouseEvent;
-    mMouseEvent.add(mouse_button::LEFT);
-    mMouseEvent.add(mMouseState.fAbsX);
-    mMouseEvent.add(mMouseState.fAbsY);
-    mMouseEvent.add(std::string());
-
-    // Update mouse state
-    bLastDragged_ = false;
-    for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
-    {
-        bool bOldMouseState = lMouseBufOld_[i] = lMouseBuf_[i];
-
-        // Handle double clicking
-        lDoubleClickDelay_[i] -= dDelta;
-
-        if (bOldMouseState)
-            lDoubleClickDelay_[i] = dDoubleClickTime_;
-
-        // Update delays
-        if (bOldMouseState)
-        {
-            lMouseDelay_[i] += dDelta;
-            if (lMouseDelay_[i] >= dLongPressDelay_)
-                lMouseLong_[i] = true;
-        }
-        else
-        {
-            lMouseDelay_[i] = 0.0;
-            lMouseLong_[i] = false;
-        }
-
-        // Update state
-        bool bMouseState = lMouseBuf_[i] = mMouseState.lButtonState[i];
-
-        // Handle dragging
-        if (bMouseState)
-        {
-            if (!bOldMouseState)
-            {
-                lMouseState_[i] = mouse_state::CLICKED; // single pressed
-
-                if (lDoubleClickDelay_[i] > 0.0)
-                    lMouseState_[i] = mouse_state::DOUBLE; // double clicked
-            }
-            else
-            {
-                bLastDragged_ = true;
-                lMouseState_[i] = mouse_state::DRAGGED; // dragged
-            }
-        }
-        else if (bOldMouseState)
-            lMouseState_[i] = mouse_state::RELEASED; // released
-        else
-            lMouseState_[i] = mouse_state::UP; // no input
-
-        // Send events
-        mMouseEvent[0] = (mouse_button)i;
-        mMouseEvent[3] = get_mouse_button_string((mouse_button)i);
-        if (bMouseState)
-        {
-            if (!bOldMouseState)
-            {
-                mMouseEvent.set_name("MOUSE_PRESSED");
-                fire_event_(mMouseEvent, true);
-
-                if (lDoubleClickDelay_[i] > 0.0)
-                {
-                    mMouseEvent.set_name("MOUSE_DOUBLE_CLICKED");
-                    fire_event_(mMouseEvent, true);
-                }
-            }
-        }
-        else if (bOldMouseState)
-        {
-            mMouseEvent.set_name("MOUSE_RELEASED");
-            fire_event_(mMouseEvent, true);
-        }
-    }
-
     // Update mouse position
     if (mMouseState.bHasDelta)
     {
-        fRawDMX_ = fDMX_ = mMouseState.fDX;
-        fRawDMY_ = fDMY_ = mMouseState.fDY;
+        fDMX_    = mMouseState.fDX;
+        fDMY_    = mMouseState.fDY;
         fRelDMX_ = mMouseState.fRelDX;
         fRelDMY_ = mMouseState.fRelDY;
     }
     else
     {
-        fRawDMX_ = fDMX_ = mMouseState.fAbsX - fMX_;
-        fRawDMY_ = fDMY_ = mMouseState.fAbsY - fMY_;
+        fDMX_    = mMouseState.fAbsX - fMX_;
+        fDMY_    = mMouseState.fAbsY - fMY_;
         fRelDMX_ = mMouseState.fRelX - fRelMX_;
         fRelDMY_ = mMouseState.fRelY - fRelMY_;
     }
@@ -615,49 +497,11 @@ void manager::update(float fTempDelta)
     fRelMX_ = mMouseState.fRelX;
     fRelMY_ = mMouseState.fRelY;
 
-    fDMX_ *= fMouseSensitivity_;
-    fDMY_ *= fMouseSensitivity_;
-    fRelDMX_ *= fMouseSensitivity_;
-    fRelDMY_ *= fMouseSensitivity_;
-
     fMWheel_ = mMouseState.fRelWheel;
     if (fMWheel_ == 0.0f)
         bWheelRolled_ = false;
     else
         bWheelRolled_ = true;
-
-    if (dMouseHistoryMaxLength_ == 0.0)
-    {
-        fSmoothDMX_    = fDMX_;
-        fSmoothDMY_    = fDMY_;
-        fSmoothMWheel_ = fMWheel_;
-    }
-    else
-    {
-        std::array<float,3> data;
-        data[0] = fDMX_; data[1] = fDMY_; data[2] = fMWheel_;
-        lMouseHistory_.push_back(std::make_pair(dDelta, data));
-
-        fSmoothDMX_ = fSmoothDMY_ = fSmoothMWheel_ = 0.0f;
-        double dHistoryLength = 0.0;
-        for (auto mIter : utils::range::reverse_iterator(lMouseHistory_))
-        {
-            dHistoryLength += mIter->first;
-            fSmoothDMX_    += mIter->second[0]*mIter->first;
-            fSmoothDMY_    += mIter->second[1]*mIter->first;
-            fSmoothMWheel_ += mIter->second[2]*mIter->first;
-
-            if (dHistoryLength > dMouseHistoryMaxLength_)
-            {
-                lMouseHistory_.erase(lMouseHistory_.begin(), mIter.base());
-                break;
-            }
-        }
-
-        fSmoothDMX_ /= dHistoryLength;
-        fSmoothDMY_ /= dHistoryLength;
-        fSmoothMWheel_ /= dHistoryLength;
-    }
 
     // Send movement event
     if (fDMX_ != 0.0 || fDMY_ != 0.0)
@@ -670,37 +514,10 @@ void manager::update(float fTempDelta)
         fire_event_(mMouseMovedEvent, true);
     }
 
-    if (fDMX_ != 0.0 || fDMY_ != 0.0)
-    {
-        gui::event mMouseMovedEvent("MOUSE_MOVED_RAW", true);
-        mMouseMovedEvent.add(fRawDMX_);
-        mMouseMovedEvent.add(fRawDMY_);
-        mMouseMovedEvent.add(fRawDMX_*mMouseState.fRelX/mMouseState.fAbsX);
-        mMouseMovedEvent.add(fRawDMY_*mMouseState.fRelY/mMouseState.fAbsY);
-        fire_event_(mMouseMovedEvent, true);
-    }
-
-    if (fSmoothDMX_ != 0.0 || fSmoothDMY_ != 0.0)
-    {
-        gui::event mMouseMovedEvent("MOUSE_MOVED_SMOOTH", true);
-        mMouseMovedEvent.add(fSmoothDMX_);
-        mMouseMovedEvent.add(fSmoothDMY_);
-        mMouseMovedEvent.add(fSmoothDMX_*mMouseState.fRelX/mMouseState.fAbsX);
-        mMouseMovedEvent.add(fSmoothDMY_*mMouseState.fRelY/mMouseState.fAbsY);
-        fire_event_(mMouseMovedEvent, true);
-    }
-
     if (bWheelRolled_)
     {
         gui::event mMouseWheelEvent("MOUSE_WHEEL", true);
         mMouseWheelEvent.add(fMWheel_);
-        fire_event_(mMouseWheelEvent, true);
-    }
-
-    if (fSmoothMWheel_ != 0.0)
-    {
-        gui::event mMouseWheelEvent("MOUSE_WHEEL_SMOOTH", true);
-        mMouseWheelEvent.add(fSmoothMWheel_);
         fire_event_(mMouseWheelEvent, true);
     }
 
@@ -718,22 +535,12 @@ void manager::update(float fTempDelta)
 
 void manager::set_doubleclick_time(double dDoubleClickTime)
 {
-    dDoubleClickTime_ = dDoubleClickTime;
+    pSource_->set_doubleclick_time(dDoubleClickTime);
 }
 
 double manager::get_doubleclick_time() const
 {
-    return dDoubleClickTime_;
-}
-
-void manager::set_mouse_buffer_duration(double dMouseHistoryMaxLength)
-{
-    dMouseHistoryMaxLength_ = dMouseHistoryMaxLength;
-}
-
-double manager::get_mouse_buffer_duration() const
-{
-    return dMouseHistoryMaxLength_;
+    return pSource_->get_doubleclick_time();
 }
 
 void manager::set_focus(bool bFocus, gui::event_receiver* pReceiver)
@@ -768,16 +575,6 @@ bool manager::ctrl_is_pressed() const
     return bCtrlPressed_;
 }
 
-bool manager::mouse_last_dragged() const
-{
-    return bLastDragged_;
-}
-
-mouse_state manager::get_mouse_state(mouse_button mID) const
-{
-    return lMouseState_[(uint)mID];
-}
-
 float manager::get_mouse_x() const
 {
     return fMX_;
@@ -796,16 +593,6 @@ float manager::get_mouse_rel_x() const
 float manager::get_mouse_rel_y() const
 {
     return fRelMY_;
-}
-
-float manager::get_mouse_raw_dx() const
-{
-    return fRawDMX_;
-}
-
-float manager::get_mouse_raw_dy() const
-{
-    return fRawDMY_;
 }
 
 float manager::get_mouse_dx() const
@@ -828,29 +615,9 @@ float manager::get_mouse_rel_dy() const
     return fRelDMY_;
 }
 
-float manager::get_mouse_smooth_dx() const
-{
-    return fSmoothDMX_;
-}
-
-float manager::get_mouse_smooth_dy() const
-{
-    return fSmoothDMY_;
-}
-
 float manager::get_mouse_wheel() const
 {
     return fMWheel_;
-}
-
-void manager::set_mouse_sensitivity(float fMouseSensitivity)
-{
-    fMouseSensitivity_ = fMouseSensitivity;
-}
-
-float manager::get_mouse_sensitivity() const
-{
-    return fMouseSensitivity_;
 }
 
 void manager::set_long_press_delay(double dLongPressDelay)

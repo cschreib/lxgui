@@ -3,6 +3,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace sf {
     class Window;
@@ -45,6 +46,8 @@ namespace sfml
 
         float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
         float fWheelCache_ = 0.0f;
+
+        std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
     };
 }
 }
