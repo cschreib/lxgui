@@ -14,7 +14,6 @@ lxgui_set_option(CMAKE_BUILD_TYPE Release STRING "Choose the type of build (Debu
 lxgui_set_option(LXGUI_BUILD_GUI_GL_IMPL TRUE BOOL "Build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_GUI_SFML_IMPL TRUE BOOL "Build the SFML gui implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
-lxgui_set_option(LXGUI_BUILD_INPUT_GLFW_IMPL FALSE BOOL "Build the GLFW input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
 lxgui_set_option(LXGUI_TEST_SFML TRUE BOOL "Use SFML gui implementation for the test program")
 lxgui_set_option(LXGUI_TEST_OPENGL FALSE BOOL "Use OpenGL gui implementation for the test program")
