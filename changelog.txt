@@ -22,8 +22,11 @@ v2.0.0:
  - input: vastly improved performance of SFML input implementation
  - input: get_key_name() is now platform-independent, and only returns English
  - input: removed OIS input implementation
+ - input: removed GLFW input implementation
  - gui: added a pure SFML implementation for the gui::manager
  - gui: fixed rare crash in editbox
+ - gui: fixed crash when calling Lua delete_frame() twice on same frame
+ - gui: fixed Lua get_width()/get_height() returning incorrect values
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: sprite is now a value type
