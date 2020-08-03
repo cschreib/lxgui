@@ -187,7 +187,7 @@ namespace gui
     public :
 
         explicit lua_status_bar(lua_State* pLua);
-        status_bar* get_parent();
+        status_bar* get_object() { return static_cast<status_bar*>(pObject_); }
 
         // Glues
         int _get_min_max_values(lua_State*);
@@ -206,10 +206,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_status_bar> methods[];
-
-    protected :
-
-        status_bar* pStatusBarParent_;
     };
 
     /** \endcond

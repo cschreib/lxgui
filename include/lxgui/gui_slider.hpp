@@ -210,7 +210,7 @@ namespace gui
     public :
 
         explicit lua_slider(lua_State* pLua);
-        slider* get_parent();
+        slider* get_object() { return static_cast<slider*>(pObject_); }
 
         // Glues
         int _allow_clicks_outside_thumb(lua_State*);
@@ -232,10 +232,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_slider> methods[];
-
-    protected :
-
-        slider* pSliderParent_;
     };
 
     /** \endcond

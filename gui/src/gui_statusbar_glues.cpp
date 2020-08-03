@@ -15,40 +15,29 @@ void status_bar::register_glue(lua::state& mLua)
 
 lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
 {
-    if (pParent_)
-    {
-        pStatusBarParent_ = pParent_->down_cast<status_bar>();
-        if (!pStatusBarParent_)
-            throw exception("lua_status_bar", "Dynamic cast failed !");
-    }
-}
-
-status_bar* lua_status_bar::get_parent()
-{
-    return pStatusBarParent_;
 }
 
 int lua_status_bar::_get_min_max_values(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:get_min_max_values", pLua, 2);
 
-    mFunc.push(pStatusBarParent_->get_min_value());
-    mFunc.push(pStatusBarParent_->get_max_value());
+    mFunc.push(get_object()->get_min_value());
+    mFunc.push(get_object()->get_max_value());
 
     return mFunc.on_return();
 }
 
 int lua_status_bar::_get_orientation(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:get_orientation", pLua, 1);
 
-    switch (pStatusBarParent_->get_orientation())
+    switch (get_object()->get_orientation())
     {
         case status_bar::orientation::HORIZONTAL : mFunc.push(std::string("HORIZONTAL")); break;
         case status_bar::orientation::VERTICAL   : mFunc.push(std::string("VERTICAL")); break;
@@ -59,12 +48,12 @@ int lua_status_bar::_get_orientation(lua_State* pLua)
 
 int lua_status_bar::_get_status_bar_color(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:get_status_bar_color", pLua, 4);
 
-    const color& mColor = pStatusBarParent_->get_bar_color();
+    const color& mColor = get_object()->get_bar_color();
 
     mFunc.push(mColor.r);
     mFunc.push(mColor.g);
@@ -76,12 +65,12 @@ int lua_status_bar::_get_status_bar_color(lua_State* pLua)
 
 int lua_status_bar::_get_status_bar_texture(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:get_status_bar_texture", pLua, 1);
 
-    texture* pTexture = pStatusBarParent_->get_bar_texture();
+    texture* pTexture = get_object()->get_bar_texture();
     if (pTexture)
     {
         pTexture->push_on_lua(mFunc.get_state());
@@ -93,31 +82,31 @@ int lua_status_bar::_get_status_bar_texture(lua_State* pLua)
 
 int lua_status_bar::_get_value(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:get_value", pLua, 1);
 
-    mFunc.push(pStatusBarParent_->get_value());
+    mFunc.push(get_object()->get_value());
 
     return mFunc.on_return();
 }
 
 int lua_status_bar::_is_reversed(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:is_reversed", pLua, 1);
 
-    mFunc.push(pStatusBarParent_->is_reversed());
+    mFunc.push(get_object()->is_reversed());
 
     return mFunc.on_return();
 }
 
 int lua_status_bar::_set_min_max_values(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_min_max_values", pLua);
@@ -125,7 +114,7 @@ int lua_status_bar::_set_min_max_values(lua_State* pLua)
     mFunc.add(1, "max", lua::type::NUMBER);
     if (mFunc.check())
     {
-        pStatusBarParent_->set_min_max_values(
+        get_object()->set_min_max_values(
             mFunc.get(0)->get_number(),
             mFunc.get(1)->get_number()
         );
@@ -136,7 +125,7 @@ int lua_status_bar::_set_min_max_values(lua_State* pLua)
 
 int lua_status_bar::_set_orientation(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_orientation", pLua);
@@ -146,9 +135,9 @@ int lua_status_bar::_set_orientation(lua_State* pLua)
     {
         std::string sOrient = mFunc.get(0)->get_string();
         if (sOrient == "HORIZONTAL")
-            pStatusBarParent_->set_orientation(status_bar::orientation::HORIZONTAL);
+            get_object()->set_orientation(status_bar::orientation::HORIZONTAL);
         else if (sOrient == "VERTICAL")
-            pStatusBarParent_->set_orientation(status_bar::orientation::VERTICAL);
+            get_object()->set_orientation(status_bar::orientation::VERTICAL);
         else
         {
             gui::out << gui::warning << mFunc.get_name()
@@ -161,7 +150,7 @@ int lua_status_bar::_set_orientation(lua_State* pLua)
 
 int lua_status_bar::_set_status_bar_color(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_status_bar_color", pLua);
@@ -198,7 +187,7 @@ int lua_status_bar::_set_status_bar_color(lua_State* pLua)
         else
             mColor = color(mFunc.get(0)->get_string());
 
-        pStatusBarParent_->set_bar_color(mColor);
+        get_object()->set_bar_color(mColor);
     }
 
     return mFunc.on_return();
@@ -206,7 +195,7 @@ int lua_status_bar::_set_status_bar_color(lua_State* pLua)
 
 int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_status_bar_texture", pLua);
@@ -216,7 +205,7 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
         lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
         if (pLuaTexture)
         {
-            pStatusBarParent_->set_bar_texture(pLuaTexture->get_parent());
+            get_object()->set_bar_texture(pLuaTexture->get_object());
         }
     }
 
@@ -225,26 +214,26 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
 
 int lua_status_bar::_set_value(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_value", pLua);
     mFunc.add(0, "value", lua::type::NUMBER);
     if (mFunc.check())
-        pStatusBarParent_->set_value(mFunc.get(0)->get_number());
+        get_object()->set_value(mFunc.get(0)->get_number());
 
     return mFunc.on_return();
 }
 
 int lua_status_bar::_set_reversed(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("StatusBar:set_reversed", pLua);
     mFunc.add(0, "reversed", lua::type::BOOLEAN);
     if (mFunc.check())
-        pStatusBarParent_->set_reversed(mFunc.get(0)->get_bool());
+        get_object()->set_reversed(mFunc.get(0)->get_bool());
 
     return mFunc.on_return();
 }

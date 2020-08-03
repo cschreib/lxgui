@@ -178,7 +178,7 @@ namespace gui
     public :
 
         explicit lua_scroll_frame(lua_State* pLua);
-        scroll_frame* get_parent();
+        scroll_frame* get_object() { return static_cast<scroll_frame*>(pObject_); }
 
         // Glues
         int _get_horizontal_scroll(lua_State*);
@@ -193,10 +193,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_scroll_frame> methods[];
-
-    protected :
-
-        scroll_frame* pScrollFrameParent_;
     };
 
     /** \endcond

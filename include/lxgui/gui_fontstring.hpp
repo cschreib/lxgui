@@ -300,7 +300,7 @@ namespace gui
     public :
 
         explicit lua_font_string(lua_State* pLua);
-        font_string* get_parent();
+        font_string* get_object() { return static_cast<font_string*>(pObject_); }
 
         int _get_font(lua_State*);
         int _get_justify_h(lua_State*);
@@ -330,10 +330,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_font_string> methods[];
-
-    protected :
-
-        font_string* pFontStringParent_;
     };
 
     /** \endcond

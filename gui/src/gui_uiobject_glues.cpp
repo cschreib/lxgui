@@ -29,9 +29,9 @@ lua_virtual_glue::lua_virtual_glue(lua_State* pLua) : lua_glue(pLua)
     uiID_ = lua_tonumber(pLua, -1);
     lua::state mState(pLua);
     manager* pGUIMgr = manager::get_manager(mState);
-    pParent_ = pGUIMgr->get_uiobject(uiID_);
+    pObject_ = pGUIMgr->get_uiobject(uiID_);
 
-    if (!pParent_)
+    if (!pObject_)
         throw exception("lua_virtual_glue", "Glue missing its parent (\""+utils::to_string(uiID_)+"\") !");
 }
 
@@ -41,7 +41,7 @@ lua_virtual_glue::~lua_virtual_glue()
 
 void lua_virtual_glue::notify_deleted()
 {
-    pParent_ = nullptr;
+    pObject_ = nullptr;
 }
 
 int lua_virtual_glue::_mark_for_copy(lua_State* pLua)
@@ -49,7 +49,7 @@ int lua_virtual_glue::_mark_for_copy(lua_State* pLua)
     lua::function mFunc("VirtualGlue:mark_for_copy", pLua, 1);
     mFunc.add(0, "variable", lua::type::STRING);
     if (mFunc.check())
-        pParent_->mark_for_copy(mFunc.get(0)->get_string());
+        pObject_->mark_for_copy(mFunc.get(0)->get_string());
 
     return mFunc.on_return();
 }
@@ -58,7 +58,7 @@ int lua_virtual_glue::_get_name(lua_State* pLua)
 {
     lua::function mFunc("VirtualGlue:get_name", pLua, 1);
 
-    mFunc.push(pParent_->get_lua_name());
+    mFunc.push(pObject_->get_lua_name());
 
     return mFunc.on_return();
 }
@@ -67,9 +67,9 @@ int lua_virtual_glue::_get_base(lua_State* pLua)
 {
     lua::function mFunc("VirtualGlue:get_base", pLua, 1);
 
-    if (pParent_->get_base())
+    if (pObject_->get_base())
     {
-        pParent_->get_base()->push_on_lua(mFunc.get_state());
+        pObject_->get_base()->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
     }
     else
@@ -83,10 +83,10 @@ lua_uiobject::lua_uiobject(lua_State* pLua) : lua_glue(pLua)
     sName_ = lua_tostring(pLua, -1);
     lua::state mState(pLua);
     manager* pGUIMgr = manager::get_manager(mState);
-    pParent_ = pGUIMgr->get_uiobject_by_name(sName_);
+    pObject_ = pGUIMgr->get_uiobject_by_name(sName_);
 
-    if (!pParent_)
-        throw exception("lua_uiobject", "Glue missing its parent (\""+sName_+"\") !");
+    if (!pObject_)
+        throw exception("lua_uiobject", "Glue missing its object (\""+sName_+"\") !");
 }
 
 lua_uiobject::~lua_uiobject()
@@ -95,19 +95,29 @@ lua_uiobject::~lua_uiobject()
 
 void lua_uiobject::notify_deleted()
 {
-    pParent_ = nullptr;
+    pObject_ = nullptr;
 }
 
-uiobject* lua_uiobject::get_parent()
+uiobject* lua_uiobject::get_object()
 {
-    return pParent_;
+    return pObject_;
 }
 
-bool lua_uiobject::check_parent_()
+const std::string& lua_uiobject::get_name() const
 {
-    if (!pParent_)
+    return sName_;
+}
+
+void lua_uiobject::clear_object()
+{
+    pObject_ = nullptr;
+}
+
+bool lua_uiobject::check_object_()
+{
+    if (!pObject_)
     {
-        gui::out << gui::warning << sName_ << " : This widget has been deleted and can no longer be used." << std::endl;
+        gui::out << gui::warning << " : " << sName_ << " : This widget has been deleted and can no longer be used." << std::endl;
         return false;
     }
 
@@ -122,50 +132,50 @@ int lua_glue::get_data_table(lua_State * pLua)
 
 int lua_uiobject::_get_alpha(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_alpha", pLua, 1);
 
-    mFunc.push(pParent_->get_alpha());
+    mFunc.push(pObject_->get_alpha());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_name(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_name", pLua, 1);
 
-    mFunc.push(pParent_->get_name());
+    mFunc.push(pObject_->get_name());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_object_type(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_object_type", pLua, 1);
 
-    mFunc.push(pParent_->get_object_type());
+    mFunc.push(pObject_->get_object_type());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_is_object_type(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:is_object_type", pLua, 1);
     mFunc.add(0, "object type", lua::type::STRING);
     if (mFunc.check())
     {
-        mFunc.push(pParent_->is_object_type(mFunc.get(0)->get_string()));
+        mFunc.push(pObject_->is_object_type(mFunc.get(0)->get_string()));
     }
 
     return mFunc.on_return();
@@ -173,14 +183,14 @@ int lua_uiobject::_is_object_type(lua_State* pLua)
 
 int lua_uiobject::_set_alpha(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_alpha", pLua);
     mFunc.add(0, "alpha", lua::type::NUMBER);
     if (mFunc.check())
     {
-        pParent_->set_alpha(mFunc.get(0)->get_number());
+        pObject_->set_alpha(mFunc.get(0)->get_number());
     }
 
     return mFunc.on_return();
@@ -188,36 +198,36 @@ int lua_uiobject::_set_alpha(lua_State* pLua)
 
 int lua_uiobject::_clear_all_points(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:clear_all_points", pLua);
 
-    pParent_->clear_all_points();
+    pObject_->clear_all_points();
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_bottom(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_bottom", pLua, 1);
 
-    mFunc.push(pParent_->get_bottom());
+    mFunc.push(pObject_->get_bottom());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_center(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_center", pLua, 2);
 
-    vector2<int> mP = pParent_->get_center();
+    vector2<int> mP = pObject_->get_center();
     mFunc.push(mP.x);
     mFunc.push(mP.y);
 
@@ -226,50 +236,50 @@ int lua_uiobject::_get_center(lua_State* pLua)
 
 int lua_uiobject::_get_height(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_height", pLua, 1);
 
-    mFunc.push(pParent_->get_apparent_height());
+    mFunc.push(pObject_->get_apparent_height());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_left(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_left", pLua, 1);
 
-    mFunc.push(pParent_->get_left());
+    mFunc.push(pObject_->get_left());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_num_point(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_num_point", pLua, 1);
 
-    mFunc.push(pParent_->get_num_point());
+    mFunc.push(pObject_->get_num_point());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_parent(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_parent", pLua, 1);
 
-    if (pParent_->get_parent())
+    if (pObject_->get_parent())
     {
-        pParent_->get_parent()->push_on_lua(mFunc.get_state());
+        pObject_->get_parent()->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
     }
     else
@@ -280,14 +290,14 @@ int lua_uiobject::_get_parent(lua_State* pLua)
 
 int lua_uiobject::_get_base(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_base", pLua, 1);
 
-    if (pParent_->get_base())
+    if (pObject_->get_base())
     {
-        pParent_->get_base()->push_on_lua(mFunc.get_state());
+        pObject_->get_base()->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
     }
     else
@@ -298,7 +308,7 @@ int lua_uiobject::_get_base(lua_State* pLua)
 
 int lua_uiobject::_get_point(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_point", pLua, 5);
@@ -309,7 +319,7 @@ int lua_uiobject::_get_point(lua_State* pLua)
         if (mFunc.is_provided(0))
             mPoint = static_cast<anchor_point>(mFunc.get(0)->get_int());
 
-        const anchor* pAnchor = pParent_->get_point(mPoint);
+        const anchor* pAnchor = pObject_->get_point(mPoint);
         if (pAnchor)
         {
             mFunc.push(anchor::get_string_point(pAnchor->get_point()));
@@ -332,79 +342,79 @@ int lua_uiobject::_get_point(lua_State* pLua)
 
 int lua_uiobject::_get_right(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_right", pLua, 1);
 
-    mFunc.push(pParent_->get_right());
+    mFunc.push(pObject_->get_right());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_top(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_top", pLua, 1);
 
-    mFunc.push(pParent_->get_top());
+    mFunc.push(pObject_->get_top());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_get_width(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:get_width", pLua, 1);
 
-    mFunc.push(pParent_->get_apparent_width());
+    mFunc.push(pObject_->get_apparent_width());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_hide(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:hide", pLua);
 
-    pParent_->hide();
+    pObject_->hide();
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_is_shown(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:is_shown", pLua, 1);
 
-    mFunc.push(pParent_->is_shown());
+    mFunc.push(pObject_->is_shown());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_is_visible(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:is_visible", pLua, 1);
 
-    mFunc.push(pParent_->is_visible());
+    mFunc.push(pObject_->is_visible());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_set_all_points(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_all_points", pLua);
@@ -417,17 +427,17 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
         {
             uiobject* pFrame = nullptr;
             if (pArg->get_type() == lua::type::STRING)
-                pFrame = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                pFrame = pObject_->get_manager()->get_uiobject_by_name(pArg->get_string());
             else
             {
                 lua_uiobject* pObj = pArg->get<lua_uiobject>();
                 if (pObj)
-                    pFrame = pObj->get_parent();
+                    pFrame = pObj->get_object();
             }
-            pParent_->set_all_points(pFrame);
+            pObject_->set_all_points(pFrame);
         }
         else
-            pParent_->set_all_points(nullptr);
+            pObject_->set_all_points(nullptr);
     }
 
     return mFunc.on_return();
@@ -435,20 +445,20 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
 
 int lua_uiobject::_set_height(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_height", pLua);
     mFunc.add(0, "height", lua::type::NUMBER);
     if (mFunc.check())
-        pParent_->set_abs_height(uint(mFunc.get(0)->get_number()));
+        pObject_->set_abs_height(uint(mFunc.get(0)->get_number()));
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_set_parent(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_parent", pLua);
@@ -463,7 +473,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                uiobject* pNewParent = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                uiobject* pNewParent = pObject_->get_manager()->get_uiobject_by_name(pArg->get_string());
                 if (!pNewParent)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()
@@ -488,19 +498,19 @@ int lua_uiobject::_set_parent(lua_State* pLua)
                     return mFunc.on_return();
                 }
 
-                pNewParentFrame = pObj->get_parent();
+                pNewParentFrame = pObj->get_object();
             }
         }
 
-        pParent_->set_parent(pNewParentFrame);
+        pObject_->set_parent(pNewParentFrame);
 
-        if (pParent_->is_object_type<frame>())
+        if (pObject_->is_object_type<frame>())
         {
-            pNewParentFrame->add_child(down_cast<frame>(pParent_->release_from_parent()));
+            pNewParentFrame->add_child(down_cast<frame>(pObject_->release_from_parent()));
         }
         else
         {
-            pNewParentFrame->add_region(down_cast<layered_region>(pParent_->release_from_parent()));
+            pNewParentFrame->add_region(down_cast<layered_region>(pObject_->release_from_parent()));
         }
     }
 
@@ -509,7 +519,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
 
 int lua_uiobject::_set_point(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_point", pLua);
@@ -533,17 +543,17 @@ int lua_uiobject::_set_point(lua_State* pLua)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
-                    pParent = pParent_->get_manager()->get_uiobject_by_name(sParent);
+                    pParent = pObject_->get_manager()->get_uiobject_by_name(sParent);
             }
             else
             {
                 lua_uiobject* pLuaObj = pArg->get<lua_uiobject>();
                 if (pLuaObj)
-                    pParent = pLuaObj->get_parent();
+                    pParent = pLuaObj->get_object();
             }
         }
         else
-            pParent = pParent_->get_parent();
+            pParent = pObject_->get_parent();
 
         // relativePoint
         anchor_point mParentPoint = mPoint;
@@ -560,7 +570,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
         if (mFunc.is_provided(4))
             iAbsY = int(mFunc.get(4)->get_number());
 
-        pParent_->set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, iAbsX, iAbsY);
+        pObject_->set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, iAbsX, iAbsY);
     }
 
     return mFunc.on_return();
@@ -568,7 +578,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
 
 int lua_uiobject::_set_rel_point(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_rel_point", pLua);
@@ -592,17 +602,17 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
-                    pParent = pParent_->get_manager()->get_uiobject_by_name(sParent);
+                    pParent = pObject_->get_manager()->get_uiobject_by_name(sParent);
             }
             else
             {
                 lua_uiobject* pLuaObj = pArg->get<lua_uiobject>();
                 if (pLuaObj)
-                    pParent = pLuaObj->get_parent();
+                    pParent = pLuaObj->get_object();
             }
         }
         else
-            pParent = pParent_->get_parent();
+            pParent = pObject_->get_parent();
 
         // relativePoint
         anchor_point mParentPoint = mPoint;
@@ -619,7 +629,7 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
         if (mFunc.is_provided(4))
             fRelY = mFunc.get(4)->get_number();
 
-        pParent_->set_rel_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fRelX, fRelY);
+        pObject_->set_rel_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fRelX, fRelY);
     }
 
     return mFunc.on_return();
@@ -627,25 +637,25 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
 
 int lua_uiobject::_set_width(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:set_width", pLua);
     mFunc.add(0, "width", lua::type::NUMBER);
     if (mFunc.check())
-        pParent_->set_abs_width(mFunc.get(0)->get_number());
+        pObject_->set_abs_width(mFunc.get(0)->get_number());
 
     return mFunc.on_return();
 }
 
 int lua_uiobject::_show(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("UIObject:show", pLua);
 
-    pParent_->show();
+    pObject_->show();
 
     return mFunc.on_return();
 }

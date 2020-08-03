@@ -75,7 +75,7 @@ namespace gui
     public :
 
         explicit lua_focus_frame(lua_State* pLua);
-        focus_frame* get_parent();
+        focus_frame* get_object() { return static_cast<focus_frame*>(pObject_); }
 
         // Glues
         int _clear_focus(lua_State*);
@@ -86,10 +86,6 @@ namespace gui
         static const char  className[];
         static const char* classList[];
         static lua::lunar_binding<lua_focus_frame> methods[];
-
-    protected :
-
-        focus_frame* pFocusFrameParent_;
     };
 
     /** \endcond

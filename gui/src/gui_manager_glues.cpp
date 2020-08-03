@@ -174,7 +174,7 @@ int l_create_frame(lua_State* pLua)
             lua_frame* pFrameObj = mFunc.get(2)->get<lua_frame>();
             if (pFrameObj)
             {
-                pParent = pFrameObj->get_parent();
+                pParent = pFrameObj->get_object();
             }
             else
             {
@@ -182,13 +182,13 @@ int l_create_frame(lua_State* pLua)
                 if (pObj)
                 {
                     gui::out << gui::error << mFunc.get_name()
-                        << "The second argument of " << mFunc.get_name() << " must be a frame "
-                        << "(got a " << pObj->get_parent()->get_object_type() << ")." << std::endl;
+                        << " : The second argument of " << mFunc.get_name() << " must be a frame "
+                        << "(got a " << pObj->get_object()->get_object_type() << ")." << std::endl;
                 }
                 else
                 {
                     gui::out << gui::error << mFunc.get_name()
-                        << "The second argument of " << mFunc.get_name() << " must be a frame."
+                        << " : The second argument of " << mFunc.get_name() << " must be a frame."
                         << std::endl;
 
                 }
@@ -233,13 +233,13 @@ int l_delete_frame(lua_State* pLua)
             if (pObj)
             {
                 gui::out << gui::error << mFunc.get_name()
-                    << "The first argument of " << mFunc.get_name() << " must be a frame "
-                    << "(got a " << pObj->get_parent()->get_object_type() << ")." << std::endl;
+                    << " : The first argument of " << mFunc.get_name() << " must be a frame "
+                    << "(got a " << pObj->get_object()->get_object_type() << ")." << std::endl;
             }
             else
             {
                 gui::out << gui::error << mFunc.get_name()
-                    << "The first argument of " << mFunc.get_name() << " must be a frame."
+                    << " : The first argument of " << mFunc.get_name() << " must be a frame."
                     << std::endl;
 
             }
@@ -247,7 +247,17 @@ int l_delete_frame(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        pFrameObj->get_parent()->release_from_parent();
+        frame* pFrame = pFrameObj->get_object();
+        if (!pFrame)
+        {
+            gui::out << gui::error << mFunc.get_name()
+                << " : Frame '" << pFrameObj->get_name() << "' is already deleted." << std::endl;
+
+            return mFunc.on_return();
+        }
+
+        pFrame->release_from_parent();
+        pFrameObj->clear_object();
     }
 
     return mFunc.on_return();

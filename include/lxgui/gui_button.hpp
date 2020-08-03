@@ -262,7 +262,7 @@ namespace gui
     public :
 
         explicit lua_button(lua_State* pLua);
-        button* get_parent();
+        button* get_object() { return static_cast<button*>(pObject_); }
 
         // Glues
         int _click(lua_State*);
@@ -303,10 +303,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_button> methods[];
-
-    protected :
-
-        button* pButtonParent_;
     };
 
     /** \endcond

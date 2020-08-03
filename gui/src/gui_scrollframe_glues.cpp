@@ -16,53 +16,42 @@ void scroll_frame::register_glue(lua::state& mLua)
 
 lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)
 {
-    if (pParent_)
-    {
-        pScrollFrameParent_ = pParent_->down_cast<scroll_frame>();
-        if (!pScrollFrameParent_)
-            throw exception("lua_scroll_frame", "Dynamic cast failed !");
-    }
-}
-
-scroll_frame* lua_scroll_frame::get_parent()
-{
-    return pScrollFrameParent_;
 }
 
 int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:get_horizontal_scroll", pLua, 1);
 
-    mFunc.push(pScrollFrameParent_->get_horizontal_scroll());
+    mFunc.push(get_object()->get_horizontal_scroll());
 
     return mFunc.on_return();
 }
 
 int lua_scroll_frame::_get_horizontal_scroll_range(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:get_horizontal_scroll_range", pLua, 1);
 
-    mFunc.push(pScrollFrameParent_->get_horizontal_scroll_range());
+    mFunc.push(get_object()->get_horizontal_scroll_range());
 
     return mFunc.on_return();
 }
 
 int lua_scroll_frame::_get_scroll_child(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:get_scroll_child", pLua, 1);
 
-    if (pScrollFrameParent_->get_scroll_child())
+    if (get_object()->get_scroll_child())
     {
-        pScrollFrameParent_->get_scroll_child()->push_on_lua(mFunc.get_state());
+        get_object()->get_scroll_child()->push_on_lua(mFunc.get_state());
         mFunc.notify_pushed();
     }
     else
@@ -73,38 +62,38 @@ int lua_scroll_frame::_get_scroll_child(lua_State* pLua)
 
 int lua_scroll_frame::_get_vertical_scroll(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:get_vertical_scroll", pLua, 1);
 
-    mFunc.push(pScrollFrameParent_->get_vertical_scroll());
+    mFunc.push(get_object()->get_vertical_scroll());
 
     return mFunc.on_return();
 }
 
 int lua_scroll_frame::_get_vertical_scroll_range(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:get_vertical_scroll_range", pLua, 1);
 
-    mFunc.push(pScrollFrameParent_->get_vertical_scroll_range());
+    mFunc.push(get_object()->get_vertical_scroll_range());
 
     return mFunc.on_return();
 }
 
 int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:set_horizontal_scroll", pLua);
     mFunc.add(0, "horizontal scroll", lua::type::NUMBER);
     if (mFunc.check())
     {
-        pScrollFrameParent_->set_horizontal_scroll(int(mFunc.get(0)->get_number()));
+        get_object()->set_horizontal_scroll(int(mFunc.get(0)->get_number()));
     }
 
     return mFunc.on_return();
@@ -112,7 +101,7 @@ int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
 
 int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:set_scroll_child", pLua);
@@ -127,7 +116,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                uiobject* pObj = pParent_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                uiobject* pObj = get_object()->get_manager()->get_uiobject_by_name(pArg->get_string());
                 if (!pObj)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : "
@@ -150,7 +139,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
                 lua_frame* pFrame = pArg->get<lua_frame>();
                 if (pFrame)
                 {
-                    pChild = pFrame->get_parent();
+                    pChild = pFrame->get_object();
                 }
                 else
                 {
@@ -158,7 +147,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
                     if (pObj)
                     {
                         gui::out << gui::error << mFunc.get_name() << " : "
-                            "\""+pObj->get_parent()->get_name()+"\" is not a frame." << std::endl;
+                            "\""+pObj->get_name()+"\" is not a frame." << std::endl;
                     }
                     else
                     {
@@ -172,8 +161,8 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
         }
 
         std::unique_ptr<frame> pScrollChild = down_cast<frame>(pChild->release_from_parent());
-        pScrollChild->set_parent(pScrollFrameParent_);
-        pScrollFrameParent_->set_scroll_child(std::move(pScrollChild));
+        pScrollChild->set_parent(get_object());
+        get_object()->set_scroll_child(std::move(pScrollChild));
     }
 
     return mFunc.on_return();
@@ -181,14 +170,14 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
 
 int lua_scroll_frame::_set_vertical_scroll(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("ScrollFrame:set_vertical_scroll", pLua);
     mFunc.add(0, "vertical scroll", lua::type::NUMBER);
     if (mFunc.check())
     {
-        pScrollFrameParent_->set_vertical_scroll(int(mFunc.get(0)->get_number()));
+        get_object()->set_vertical_scroll(int(mFunc.get(0)->get_number()));
     }
 
     return mFunc.on_return();

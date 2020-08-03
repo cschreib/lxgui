@@ -91,7 +91,7 @@ namespace gui
     public :
 
         explicit lua_layered_region(lua_State* pLua);
-        layered_region* get_parent();
+        layered_region* get_object() { return static_cast<layered_region*>(pObject_); }
 
         int _get_draw_layer(lua_State*);
         int _set_draw_layer(lua_State*);
@@ -99,10 +99,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_layered_region> methods[];
-
-    protected :
-
-        layered_region* pLayeredRegionParent_;
     };
 
     /** \endcond

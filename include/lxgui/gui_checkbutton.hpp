@@ -110,7 +110,7 @@ namespace gui
     public :
 
         explicit lua_check_button(lua_State* pLua);
-        check_button* get_parent();
+        check_button* get_object() { return static_cast<check_button*>(pObject_); }
 
         // Glues
         int _is_checked(lua_State*);
@@ -123,10 +123,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_check_button> methods[];
-
-    protected :
-
-        check_button* pCheckButtonParent_;
     };
 
     /** \endcond

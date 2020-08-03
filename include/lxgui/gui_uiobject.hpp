@@ -73,7 +73,7 @@ namespace gui
     protected :
 
         uint      uiID_ = 0u;
-        uiobject* pParent_ = nullptr;
+        uiobject* pObject_ = nullptr;
     };
 
     /** \endcond
@@ -714,7 +714,9 @@ namespace gui
 
         virtual void notify_deleted();
 
-        uiobject* get_parent();
+        uiobject* get_object();
+        const std::string& get_name() const;
+        void clear_object();
 
         // uiobject
         int _get_alpha(lua_State*);
@@ -752,10 +754,10 @@ namespace gui
 
     protected :
 
-        bool check_parent_();
+        bool check_object_();
 
         std::string sName_;
-        uiobject*   pParent_;
+        uiobject*   pObject_;
     };
 
     /** \endcond

@@ -837,7 +837,7 @@ namespace gui
     public :
 
         explicit lua_frame(lua_State* pLua);
-        frame* get_parent();
+        frame* get_object() { return static_cast<frame*>(pObject_); }
 
         int _create_font_string(lua_State*);
         int _create_texture(lua_State*);
@@ -908,10 +908,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_frame> methods[];
-
-    protected :
-
-        frame* pFrameParent_;
     };
 
     /** \endcond

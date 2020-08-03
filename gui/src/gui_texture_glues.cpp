@@ -16,27 +16,16 @@ void texture::register_glue(lua::state& mLua)
 
 lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)
 {
-    if (pParent_)
-    {
-        pTextureParent_ = pParent_->down_cast<texture>();
-        if (!pTextureParent_)
-            throw exception("lua_texture", "Dynamic cast failed !");
-    }
-}
-
-texture* lua_texture::get_parent()
-{
-    return pTextureParent_;
 }
 
 int lua_texture::_get_blend_mode(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_blend_mode", pLua, 1);
 
-    texture::blend_mode mBlend = pTextureParent_->get_blend_mode();
+    texture::blend_mode mBlend = get_object()->get_blend_mode();
 
     std::string sBlend;
     switch (mBlend)
@@ -55,12 +44,12 @@ int lua_texture::_get_blend_mode(lua_State* pLua)
 
 int lua_texture::_get_filter_mode(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_filter_mode", pLua, 1);
 
-    material::filter mFilter = pTextureParent_->get_filter_mode();
+    material::filter mFilter = get_object()->get_filter_mode();
 
     std::string sFilter;
     switch (mFilter)
@@ -76,12 +65,12 @@ int lua_texture::_get_filter_mode(lua_State* pLua)
 
 int lua_texture::_get_tex_coord(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_tex_coord", pLua, 8);
 
-    const std::array<float,8>& lCoords = pTextureParent_->get_tex_coord();
+    const std::array<float,8>& lCoords = get_object()->get_tex_coord();
 
     for (uint i = 0; i < 8; ++i)
         mFunc.push(lCoords[i]);
@@ -91,36 +80,36 @@ int lua_texture::_get_tex_coord(lua_State* pLua)
 
 int lua_texture::_get_tex_coord_modifies_rect(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_tex_coord_modifies_rect", pLua, 1);
 
-    mFunc.push(pTextureParent_->get_tex_coord_modifies_rect());
+    mFunc.push(get_object()->get_tex_coord_modifies_rect());
 
     return mFunc.on_return();
 }
 
 int lua_texture::_get_texture(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_texture", pLua, 1);
 
-    mFunc.push(pTextureParent_->get_texture());
+    mFunc.push(get_object()->get_texture());
 
     return mFunc.on_return();
 }
 
 int lua_texture::_get_vertex_color(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:get_vertex_color", pLua, 4);
 
-    color mColor = pTextureParent_->get_vertex_color();
+    color mColor = get_object()->get_vertex_color();
 
     mFunc.push(mColor.r);
     mFunc.push(mColor.g);
@@ -132,19 +121,19 @@ int lua_texture::_get_vertex_color(lua_State* pLua)
 
 int lua_texture::_is_desaturated(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:is_desaturated", pLua, 1);
 
-    mFunc.push(pTextureParent_->is_desaturated());
+    mFunc.push(get_object()->is_desaturated());
 
     return mFunc.on_return();
 }
 
 int lua_texture::_set_blend_mode(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_blend_mode", pLua);
@@ -170,7 +159,7 @@ int lua_texture::_set_blend_mode(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        pTextureParent_->set_blend_mode(mBlend);
+        get_object()->set_blend_mode(mBlend);
     }
 
     return mFunc.on_return();
@@ -178,7 +167,7 @@ int lua_texture::_set_blend_mode(lua_State* pLua)
 
 int lua_texture::_set_filter_mode(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_filter_mode", pLua);
@@ -198,7 +187,7 @@ int lua_texture::_set_filter_mode(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        pTextureParent_->set_filter_mode(mFilter);
+        get_object()->set_filter_mode(mFilter);
     }
 
     return mFunc.on_return();
@@ -206,13 +195,13 @@ int lua_texture::_set_filter_mode(lua_State* pLua)
 
 int lua_texture::_set_desaturated(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_desaturated", pLua, 1);
     mFunc.add(0, "is desaturated", lua::type::BOOLEAN);
     if (mFunc.check())
-        pTextureParent_->set_desaturated(mFunc.get(0)->get_bool());
+        get_object()->set_desaturated(mFunc.get(0)->get_bool());
 
     mFunc.push(true);
 
@@ -221,7 +210,7 @@ int lua_texture::_set_desaturated(lua_State* pLua)
 
 int lua_texture::_set_gradient(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_gradient", pLua);
@@ -253,7 +242,7 @@ int lua_texture::_set_gradient(lua_State* pLua)
 
         if (mFunc.get_param_set_rank() == 0)
         {
-            pTextureParent_->set_gradient(gradient(
+            get_object()->set_gradient(gradient(
                 mOrientation,
                 color(
                     mFunc.get(1)->get_number(),
@@ -269,7 +258,7 @@ int lua_texture::_set_gradient(lua_State* pLua)
         }
         else
         {
-            pTextureParent_->set_gradient(gradient(
+            get_object()->set_gradient(gradient(
                 mOrientation,
                 color(mFunc.get(0)->get_string()),
                 color(mFunc.get(1)->get_string())
@@ -282,7 +271,7 @@ int lua_texture::_set_gradient(lua_State* pLua)
 
 int lua_texture::_set_gradient_alpha(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_gradient_alpha", pLua);
@@ -316,7 +305,7 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
 
         if (mFunc.get_param_set_rank() == 0)
         {
-            pTextureParent_->set_gradient(gradient(
+            get_object()->set_gradient(gradient(
                 mOrientation,
                 color(
                     mFunc.get(1)->get_number(),
@@ -334,7 +323,7 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
         }
         else
         {
-            pTextureParent_->set_gradient(gradient(
+            get_object()->set_gradient(gradient(
                 mOrientation,
                 color(mFunc.get(0)->get_string()),
                 color(mFunc.get(1)->get_string())
@@ -347,7 +336,7 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
 
 int lua_texture::_set_tex_coord(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_tex_coord", pLua);
@@ -374,7 +363,7 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
             for (uint i = 0; i < 4; ++i)
                 mRect[i] = mFunc.get(i)->get_number();
 
-            pTextureParent_->set_tex_coord(mRect);
+            get_object()->set_tex_coord(mRect);
         }
         else
         {
@@ -383,7 +372,7 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
             for (uint i = 0; i < 8; ++i)
                 mCoords[i] = mFunc.get(i)->get_number();
 
-            pTextureParent_->set_tex_coord(mCoords);
+            get_object()->set_tex_coord(mCoords);
         }
     }
 
@@ -392,20 +381,20 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
 
 int lua_texture::_set_tex_coord_modifies_rect(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_tex_coord_modifies_rect", pLua);
     mFunc.add(0, "does set_tex_coord modifies size", lua::type::BOOLEAN);
     if (mFunc.check())
-        pTextureParent_->set_tex_coord_modifies_rect(mFunc.get(0)->get_bool());
+        get_object()->set_tex_coord_modifies_rect(mFunc.get(0)->get_bool());
 
     return mFunc.on_return();
 }
 
 int lua_texture::_set_texture(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_texture", pLua);
@@ -426,13 +415,13 @@ int lua_texture::_set_texture(lua_State* pLua)
             if (!sTexture.empty() && sTexture[0] == '#')
             {
                 // #RRGGBBAA color
-                pTextureParent_->set_color(color(sTexture));
+                get_object()->set_color(color(sTexture));
             }
             else
             {
                 // texture name
-                pTextureParent_->set_texture(
-                    pTextureParent_->get_manager()->parse_file_name(sTexture)
+                get_object()->set_texture(
+                    get_object()->get_manager()->parse_file_name(sTexture)
                 );
             }
         }
@@ -457,7 +446,7 @@ int lua_texture::_set_texture(lua_State* pLua)
                     mFunc.get(2)->get_number()
                 );
             }
-            pTextureParent_->set_color(mColor);
+            get_object()->set_color(mColor);
         }
     }
 
@@ -466,7 +455,7 @@ int lua_texture::_set_texture(lua_State* pLua)
 
 int lua_texture::_set_vertex_color(lua_State* pLua)
 {
-    if (!check_parent_())
+    if (!check_object_())
         return 0;
 
     lua::function mFunc("Texture:set_vertex_color", pLua);
@@ -503,7 +492,7 @@ int lua_texture::_set_vertex_color(lua_State* pLua)
         else
             mColor = color(mFunc.get(0)->get_string());
 
-        pTextureParent_->set_vertex_color(mColor);
+        get_object()->set_vertex_color(mColor);
     }
 
     return mFunc.on_return();

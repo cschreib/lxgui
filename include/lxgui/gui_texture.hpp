@@ -240,7 +240,7 @@ namespace gui
     public :
 
         explicit lua_texture(lua_State* pLua);
-        texture* get_parent();
+        texture* get_object() { return static_cast<texture*>(pObject_); }
 
         // texture
         int _set_vertex_color(lua_State*);
@@ -263,10 +263,6 @@ namespace gui
         static const char className[];
         static const char* classList[];
         static lua::lunar_binding<lua_texture> methods[];
-
-    protected :
-
-        texture* pTextureParent_;
     };
 
     /** \endcond

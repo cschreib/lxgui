@@ -389,7 +389,7 @@ namespace gui
     public :
 
         explicit lua_edit_box(lua_State* pLua);
-        edit_box* get_parent();
+        edit_box* get_object() { return static_cast<edit_box*>(pObject_); }
 
         // Glues
         int _add_history_line(lua_State*);
@@ -418,10 +418,6 @@ namespace gui
         static const char  className[];
         static const char* classList[];
         static lua::lunar_binding<lua_edit_box> methods[];
-
-    protected :
-
-        edit_box* pEditBoxParent_;
     };
 
     /** \endcond
