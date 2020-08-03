@@ -231,7 +231,7 @@ int lua_uiobject::_get_height(lua_State* pLua)
 
     lua::function mFunc("UIObject:get_height", pLua, 1);
 
-    mFunc.push(pParent_->get_abs_height());
+    mFunc.push(pParent_->get_apparent_height());
 
     return mFunc.on_return();
 }
@@ -361,7 +361,7 @@ int lua_uiobject::_get_width(lua_State* pLua)
 
     lua::function mFunc("UIObject:get_width", pLua, 1);
 
-    mFunc.push(pParent_->get_abs_width());
+    mFunc.push(pParent_->get_apparent_width());
 
     return mFunc.on_return();
 }
