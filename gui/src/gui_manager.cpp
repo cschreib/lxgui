@@ -364,6 +364,11 @@ void manager::remove_frame(frame* pObj)
 
     if (!pObj->is_virtual())
         lFrameList_.erase(pObj->get_id());
+
+    if (pHoveredFrame_ == pObj)
+        set_hovered_frame_(nullptr);
+    if (pFocusedFrame_ == pObj)
+        request_focus(nullptr);
 }
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
