@@ -661,6 +661,7 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     lRegionList_.erase(iter);
     fire_build_layer_list();
     notify_renderer_need_redraw();
+    pRemovedRegion->set_parent(nullptr);
     return pRemovedRegion;
 }
 
@@ -840,6 +841,8 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     }
 
     notify_strata_changed_();
+
+    pRemovedChild->set_parent(nullptr);
 
     return pRemovedChild;
 }
