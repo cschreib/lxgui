@@ -18,10 +18,6 @@ font_string::font_string(manager* pManager) : layered_region(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
-font_string::~font_string()
-{
-}
-
 void font_string::render()
 {
     if (pText_ && is_visible())

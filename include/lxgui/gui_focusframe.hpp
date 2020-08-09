@@ -17,9 +17,6 @@ namespace gui
         /// Constructor.
         explicit focus_frame(manager* pManager);
 
-        /// Destructor.
-        ~focus_frame();
-
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param pObj The uiobject to copy
         */

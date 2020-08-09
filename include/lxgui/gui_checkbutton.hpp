@@ -18,9 +18,6 @@ namespace gui
         /// Constructor.
         explicit check_button(manager* pManager);
 
-        /// Destructor.
-        ~check_button();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget

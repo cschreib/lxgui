@@ -19,9 +19,6 @@ namespace gui
         /// Constructor.
         explicit font_string(manager* pManager);
 
-        /// Destructor.
-        ~font_string();
-
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
         *   \return All relevant information about this widget

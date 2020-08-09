@@ -14,10 +14,6 @@ check_button::check_button(manager* pManager) : button(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
-check_button::~check_button()
-{
-}
-
 std::string check_button::serialize(const std::string& sTab) const
 {
     return button::serialize(sTab);

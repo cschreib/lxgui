@@ -9,10 +9,6 @@ region::region(manager* pManager) : uiobject(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
-region::~region()
-{
-}
-
 void region::render()
 {
 }

@@ -20,9 +20,6 @@ namespace gui
         /// Constructor.
         explicit region(manager* pManager);
 
-        /// Destructor.
-        ~region();
-
         /// Renders this widget on the current render target.
         /** \note Does nothing.
         */

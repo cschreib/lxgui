@@ -14,11 +14,6 @@ focus_frame::focus_frame(manager* pManager) : frame(pManager)
     lType_.push_back(CLASS_NAME);
 }
 
-focus_frame::~focus_frame()
-{
-    set_focus(false);
-}
-
 void focus_frame::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
