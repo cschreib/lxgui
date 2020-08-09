@@ -5,7 +5,7 @@
 
 #include <lxgui/utils_string.hpp>
 
-//#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+// #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
 
 namespace lxgui {
@@ -93,31 +93,14 @@ void event_manager::fire_event(const event& mEvent)
 
     DEBUG_LOG(mEvent.get_name()+"!");
 
-    // Add newly registered receivers.
-    for (auto* lReceiver : mIter->lNewReceiverList)
-    {
-        if (lReceiver)
-            mIter->lReceiverList.push_back(lReceiver);
-    }
-
-    mIter->lNewReceiverList.clear();
 
     // Now, tell all the event_receivers that this Event has occured.
     for (auto* lReceiver : mIter->lReceiverList)
     {
-        DEBUG_LOG(std::string(" ") + utils::to_string(iterReceiver->second));
+        DEBUG_LOG(std::string(" ") + utils::to_string(lReceiver));
         if (lReceiver)
             lReceiver->on_event(mEvent);
     }
-
-    // Remove receivers that have been disconnected.
-    auto mIterRem = std::remove_if(mIter->lReceiverList.begin(), mIter->lReceiverList.end(),
-        [](event_receiver* pReceiver) {
-            return pReceiver == nullptr;
-        }
-    );
-
-    mIter->lReceiverList.erase(mIterRem, mIter->lReceiverList.end());
 
     // Notify the event has been fired this frame.
     if (mEvent.is_once_per_frame())
@@ -126,8 +109,28 @@ void event_manager::fire_event(const event& mEvent)
 
 void event_manager::frame_ended()
 {
-    for (auto& mEvent : lRegisteredEventList_)
+    for (auto& mEvent : lRegisteredEventList_) {
+        // Clear "fired" state
         mEvent.bFired = false;
+
+        // Remove receivers that have been disconnected.
+        auto mIterRem = std::remove_if(mEvent.lReceiverList.begin(), mEvent.lReceiverList.end(),
+            [](event_receiver* pReceiver) {
+                return pReceiver == nullptr;
+            }
+        );
+
+        mEvent.lReceiverList.erase(mIterRem, mEvent.lReceiverList.end());
+
+        // Add newly registered receivers.
+        for (auto* lReceiver : mEvent.lNewReceiverList)
+        {
+            if (lReceiver)
+                mEvent.lReceiverList.push_back(lReceiver);
+        }
+
+        mEvent.lNewReceiverList.clear();
+    }
 }
 }
 }
