@@ -399,6 +399,12 @@ namespace gui
         */
         bool is_user_placed() const;
 
+        /// Returns the "adjusted" script name: "OnEvent" becomes "on_event"
+        /** \param sScriptName The CamelCase name of the script
+        *   \return the snake_case name of the script
+        */
+        static std::string get_adjusted_script_name(const std::string& sScriptName);
+
         /// Registers a handler script to this frame.
         /** \param sScriptName The name of the script
         *   \param sContent    The content ot the script

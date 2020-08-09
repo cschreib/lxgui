@@ -991,15 +991,8 @@ bool frame::is_user_placed() const
     return bIsUserPlaced_;
 }
 
-void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
+std::string frame::get_adjusted_script_name(const std::string& sScriptName)
 {
-    std::string sCutScriptName = sScriptName;
-    sCutScriptName.erase(0, 2);
-
-    std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sCutScriptName);
-    if (iterH != lDefinedHandlerList_.end())
-        lDefinedHandlerList_.erase(iterH);
-
     std::string sAdjustedName = sScriptName;
     for (auto iter = sAdjustedName.begin(); iter != sAdjustedName.end(); ++iter)
     {
@@ -1010,6 +1003,20 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
                 iter = sAdjustedName.insert(iter, '_');
         }
     }
+
+    return sAdjustedName;
+}
+
+void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
+{
+    std::string sCutScriptName = sScriptName;
+    sCutScriptName.erase(0, 2);
+
+    std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sCutScriptName);
+    if (iterH != lDefinedHandlerList_.end())
+        lDefinedHandlerList_.erase(iterH);
+
+    std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
     std::string sStr;
     sStr += "function " + sLuaName_ + ":" + sAdjustedName + "() " + sContent + " end";

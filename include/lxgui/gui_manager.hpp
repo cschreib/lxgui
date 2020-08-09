@@ -271,7 +271,7 @@ namespace gui
         void remove_uiobject(uiobject* pObj);
 
          /// Removes a frame from this manager.
-        /** \param pObj The fra,e to remove
+        /** \param pObj The frame to remove
         *   \note Called automatically by frame destructor.
         */
         void remove_frame(frame* pObj);
