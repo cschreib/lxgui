@@ -745,6 +745,12 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
+        /// Removes any reference to this widgets from its parents or related objects.
+        /** \note This is automatically called by the destructor and other
+        *         functions that remove frames (i.e., the Lua API).
+        */
+        void clear_links() override;
+
         static constexpr const char* CLASS_NAME = "Frame";
 
     protected :
@@ -770,6 +776,8 @@ namespace gui
         void add_level_(int iAmount);
 
         void update_borders_() const override;
+
+        void clear_links_();
 
         struct script_info
         {
