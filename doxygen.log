@@ -427,13 +427,13 @@ Computing/home/travis/build/cschreib/lxgui/gui/src/gui_button_glues.cpp:19: warn
 /home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1081: warning: documented symbol `int lxgui::gui::lua_frame::_set_resizable' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1094: warning: documented symbol `int lxgui::gui::lua_frame::_set_scale' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1107: warning: documented symbol `int lxgui::gui::lua_frame::_set_script' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1146: warning: documented symbol `int lxgui::gui::lua_frame::_set_top_level' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1159: warning: documented symbol `int lxgui::gui::lua_frame::_set_user_placed' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1172: warning: documented symbol `int lxgui::gui::lua_frame::_start_moving' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1184: warning: documented symbol `int lxgui::gui::lua_frame::_start_sizing' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1197: warning: documented symbol `int lxgui::gui::lua_frame::_stop_moving_or_sizing' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1210: warning: documented symbol `int lxgui::gui::lua_frame::_unregister_all_events' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1222: warning: documented symbol `int lxgui::gui::lua_frame::_unregister_event' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1147: warning: documented symbol `int lxgui::gui::lua_frame::_set_top_level' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1160: warning: documented symbol `int lxgui::gui::lua_frame::_set_user_placed' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1173: warning: documented symbol `int lxgui::gui::lua_frame::_start_moving' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1185: warning: documented symbol `int lxgui::gui::lua_frame::_start_sizing' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1198: warning: documented symbol `int lxgui::gui::lua_frame::_stop_moving_or_sizing' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1211: warning: documented symbol `int lxgui::gui::lua_frame::_unregister_all_events' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_frame_glues.cpp:1223: warning: documented symbol `int lxgui::gui::lua_frame::_unregister_event' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_layeredregion_glues.cpp:10: warning: documented symbol `lxgui::gui::lua_layered_region::lua_layered_region' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_layeredregion_glues.cpp:14: warning: documented symbol `int lxgui::gui::lua_layered_region::_set_draw_layer' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_layeredregion_glues.cpp:27: warning: documented symbol `int lxgui::gui::lua_layered_region::_get_draw_layer' was not declared or defined.
@@ -890,11 +890,11 @@ Generating docs for compound lxgui::gui::anchor...
 Generating docs for compound lxgui::gui::backdrop...
 Generating docs for compound lxgui::gui::button...
 Generating docs for compound lxgui::gui::check_button...
-Generating docs for compound lxgui::/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:545: warning: Found unknown command `\parem'
-/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:280: warning: argument 'pFrame' of command @param is not found in the argument list of lxgui::gui::manager::remove_root_frame(frame *pObj)
-/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:283: warning: The following parameters of lxgui::gui::manager::remove_root_frame(frame *pObj) are not documented:
+Generating docs for compound lxgui::/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:562: warning: Found unknown command `\parem'
+/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:297: warning: argument 'pFrame' of command @param is not found in the argument list of lxgui::gui::manager::remove_root_frame(frame *pObj)
+/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:300: warning: The following parameters of lxgui::gui::manager::remove_root_frame(frame *pObj) are not documented:
   parameter 'pObj'
-/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:472: warning: The following parameters of lxgui::gui::manager::start_moving(uiobject *pObj, anchor *pAnchor=nullptr, constraint mConstraint=constraint::NONE, std::function< void()> pApplyConstraintFunc=nullptr) are not documented:
+/home/travis/build/cschreib/lxgui/include/lxgui/gui_manager.hpp:489: warning: The following parameters of lxgui::gui::manager::start_moving(uiobject *pObj, anchor *pAnchor=nullptr, constraint mConstraint=constraint::NONE, std::function< void()> pApplyConstraintFunc=nullptr) are not documented:
   parameter 'pApplyConstraintFunc'
 /home/travis/build/cschreib/lxgui/include/lxgui/gui_renderer_impl.hpp:69: warning: The following parameters of lxgui::gui::renderer_impl::create_material(const std::string &sFileName, material::filter mFilter=material::filter::NONE) const =0 are not documented:
   parameter 'mFilter'
@@ -1029,5 +1029,5 @@ Generating file member index...
 Generating example index...
 finalizing index lists...
 writing tag file...
-lookup cache used 7490/65536 hits=86773 misses=8431
+lookup cache used 7500/65536 hits=86915 misses=8447
 finished...

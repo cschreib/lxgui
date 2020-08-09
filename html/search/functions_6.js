@@ -10,6 +10,7 @@ var searchData=
   ['get_5fabs_5fx',['get_abs_x',['../classlxgui_1_1gui_1_1anchor.html#af2bd9e071831eea665f5c27900fb290d',1,'lxgui::gui::anchor']]],
   ['get_5fabs_5fy',['get_abs_y',['../classlxgui_1_1gui_1_1anchor.html#a02f578d69a7504894b986cfc3b662c1b',1,'lxgui::gui::anchor']]],
   ['get_5faddon',['get_addon',['../classlxgui_1_1gui_1_1frame.html#ab6307613dac191f7aae79aaca4e9415b',1,'lxgui::gui::frame']]],
+  ['get_5fadjusted_5fscript_5fname',['get_adjusted_script_name',['../classlxgui_1_1gui_1_1frame.html#a134967db9e94b900b272a8fa0eaf1ea2',1,'lxgui::gui::frame']]],
   ['get_5falignment',['get_alignment',['../classlxgui_1_1gui_1_1text.html#abd5d89130658d58ab38b4f51979a4f1c',1,'lxgui::gui::text']]],
   ['get_5falpha',['get_alpha',['../classlxgui_1_1gui_1_1uiobject.html#aac55d87e016f17b656b686714ac7d8f2',1,'lxgui::gui::uiobject']]],
   ['get_5fanchor_5fpoint',['get_anchor_point',['../classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce',1,'lxgui::gui::anchor']]],
