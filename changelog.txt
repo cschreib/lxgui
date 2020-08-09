@@ -40,7 +40,6 @@ v2.0.0:
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added uiobject::down_cast for safer down casting
- - gui: removed clear_links() in favor of destructors
  - xml: now parsing standard XML comments
 
 v1.2.0:

@@ -256,7 +256,13 @@ int l_delete_frame(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        pFrame->release_from_parent();
+
+        lua::state& mState = mFunc.get_state();
+        mState.get_global("_MGR");
+        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+        mState.pop();
+
+        pGUIMgr->delayed_delete_frame(down_cast<frame>(pFrame->release_from_parent()));
         pFrameObj->clear_object();
     }
 

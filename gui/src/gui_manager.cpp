@@ -371,6 +371,36 @@ void manager::remove_frame(frame* pObj)
         request_focus(nullptr);
 }
 
+void manager::delayed_delete_region(std::unique_ptr<layered_region> pObj)
+{
+    pObj->clear_links();
+    lDeletedObjectList_.push_back(std::move(pObj));
+}
+
+void manager::delayed_delete_frame(std::unique_ptr<frame> pObj)
+{
+    while (true)
+    {
+        auto mView = pObj->get_children();
+        if (mView.begin() == mView.end()) break;
+
+        auto* pChild = *mView.begin();
+        delayed_delete_frame(pObj->remove_child(pChild));
+    }
+
+    while (true)
+    {
+        auto mView = pObj->get_regions();
+        if (mView.begin() == mView.end()) break;
+
+        auto* pReg = *mView.begin();
+        delayed_delete_region(pObj->remove_region(pReg));
+    }
+
+    pObj->clear_links();
+    lDeletedObjectList_.push_back(std::move(pObj));
+}
+
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
 {
     auto iter = lRootFrameList_.find(pFrame->get_id());
@@ -1141,6 +1171,9 @@ void manager::update(float fDelta)
 
     bObjectMoved_ = false;
     bBuildStrataList_ = false;
+
+    // Clear objects marked as deleted
+    lDeletedObjectList_.clear();
 
     if (bFirstIteration_)
     {

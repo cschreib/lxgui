@@ -276,6 +276,23 @@ namespace gui
         */
         void remove_frame(frame* pObj);
 
+         /// Marks a region for safe destruction.
+        /** \param pObj The region to destroy
+        *   \note See delayed_delete_frame().
+        */
+        void delayed_delete_region(std::unique_ptr<layered_region> pObj);
+
+         /// Marks a frame for safe destruction.
+        /** \param pObj The frame to destroy
+        *   \note This is called by the Lua function delete_frame(). The frame is not destroyed
+        *         immediately, but only at the end of the next update(). This prevents too early
+        *         destruction, when delete_frame() is called by a callback originating from
+        *         the frame itself. In the mean time, the frame in un-registered from this manager
+        *         so it will appear to other elements as if it did not exist.
+        *         This function will similarly mark all children frames and all regions.
+        */
+        void delayed_delete_frame(std::unique_ptr<frame> pObj);
+
         /// Remove a frame from the list of frames owned by this manager.
         /** \param pFrame The frame to be released
         *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
@@ -761,6 +778,8 @@ namespace gui
         frame*                         pHoveredFrame_ = nullptr;
         bool                           bUpdateHoveredFrame_ = false;
         focus_frame*                   pFocusedFrame_ = nullptr;
+
+        std::vector<std::unique_ptr<uiobject>> lDeletedObjectList_;
 
         uiobject* pMovedObject_ = nullptr;
         uiobject* pSizedObject_ = nullptr;
