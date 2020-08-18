@@ -904,11 +904,16 @@ void manager::create_strata_render_target(frame_strata mframe_strata)
 
 void manager::create_caching_render_target_()
 {
-    if (pRenderTarget_) return;
-
     try
     {
-        pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
+        if (pRenderTarget_)
+        {
+            pRenderTarget_->set_dimensions(uiScreenWidth_, uiScreenHeight_);
+        }
+        else
+        {
+            pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
+        }
     }
     catch (const utils::exception& e)
     {
@@ -924,11 +929,16 @@ void manager::create_caching_render_target_()
 
 void manager::create_strata_render_target_(strata& mStrata)
 {
-    if (mStrata.pRenderTarget) return;
-
     try
     {
-        mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
+        if (mStrata.pRenderTarget)
+        {
+            mStrata.pRenderTarget->set_dimensions(uiScreenWidth_, uiScreenHeight_);
+        }
+        else
+        {
+            mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
+        }
     }
     catch (const utils::exception& e)
     {
@@ -1114,7 +1124,8 @@ void manager::update(float fDelta)
             mStrata.bRedraw = false;
         }
 
-        create_caching_render_target_();
+        if (!pRenderTarget_)
+            create_caching_render_target_();
 
         if (bRedraw && pRenderTarget_)
         {
@@ -1592,16 +1603,33 @@ void manager::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "WINDOW_RESIZED")
     {
+        // Update internal window size
         uiScreenWidth_ = mEvent.get<uint>(0);
         uiScreenHeight_ = mEvent.get<uint>(1);
 
+        // Notify all frames anchored to the window edges
         for (auto* pObject : get_root_frames())
         {
             if (!pObject->is_virtual())
+            {
                 pObject->fire_update_dimensions();
+                pObject->notify_renderer_need_redraw();
+            }
         }
 
+        notify_object_moved();
+
         pImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
+
+        // Resize caching render targets
+        if (pRenderTarget_)
+            create_caching_render_target_();
+
+        for (auto& mStrata : utils::range::value(lStrataList_))
+        {
+            if (mStrata.pRenderTarget)
+                create_strata_render_target_(mStrata);
+        }
     }
 }
 
