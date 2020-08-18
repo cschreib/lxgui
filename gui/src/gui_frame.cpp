@@ -1307,16 +1307,15 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
         pManager_->set_current_addon(pAddOn_);
 
-        try
+        sol::table mSelf = mLua[sLuaName_];
+        sol::protected_function mCallback = mSelf[sAdjustedName];
+        auto mResult = mCallback(mSelf);
+        if (!mResult.valid())
         {
-            sol::table mSelf = mLua[sLuaName_];
-            sol::protected_function mCallback = mSelf[sAdjustedName];
-            mCallback(mSelf);
-        }
-        catch (const sol::error& e)
-        {
+            sol::error mError = mResult;
+
             // TODO: show file/line number from lXMLScriptInfoList_
-            std::string sError = e.what();
+            std::string sError = mError.what();
 
             gui::out << gui::error << sError << std::endl;
 
