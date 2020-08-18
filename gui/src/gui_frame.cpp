@@ -1288,33 +1288,30 @@ void frame::on(const std::string& sScriptName, event* pEvent)
                 {
                     const utils::any* pArg = pEvent->get(i);
                     const utils::any_type& mType = pArg->get_type();
-                    auto mProxy = mLua["arg"+utils::to_string(i+1)];
-                    if      (mType == utils::any::VALUE_INT)    mProxy = pArg->get<int>();
-                    else if (mType == utils::any::VALUE_UINT)   mProxy = pArg->get<uint>();
-                    else if (mType == utils::any::VALUE_FLOAT)  mProxy = pArg->get<float>();
-                    else if (mType == utils::any::VALUE_DOUBLE) mProxy = pArg->get<double>();
-                    else if (mType == utils::any::VALUE_STRING) mProxy = pArg->get<std::string>();
-                    else if (mType == utils::any::VALUE_BOOL)   mProxy = pArg->get<bool>();
-                    else mProxy = sol::lua_nil;
+
+                    sol::object mObject;
+                    if      (mType == utils::any::VALUE_INT)    mObject = sol::make_object(mLua.lua_state(), pArg->get<int>());
+                    else if (mType == utils::any::VALUE_UINT)   mObject = sol::make_object(mLua.lua_state(), pArg->get<uint>());
+                    else if (mType == utils::any::VALUE_FLOAT)  mObject = sol::make_object(mLua.lua_state(), pArg->get<float>());
+                    else if (mType == utils::any::VALUE_DOUBLE) mObject = sol::make_object(mLua.lua_state(), pArg->get<double>());
+                    else if (mType == utils::any::VALUE_STRING) mObject = sol::make_object(mLua.lua_state(), pArg->get<std::string>());
+                    else if (mType == utils::any::VALUE_BOOL)   mObject = sol::make_object(mLua.lua_state(), pArg->get<bool>());
+                    else                                        mObject = sol::make_object(mLua.lua_state(), sol::lua_nil);
+
+                    mLua["arg"+utils::to_string(i+1)] = mObject;
                 }
             }
         }
 
-        std::string sAdjustedName = sScriptName;
-        for (std::string::iterator iterStr = sAdjustedName.begin(); iterStr != sAdjustedName.end(); ++iterStr)
-        {
-            if ('A' <= *iterStr && *iterStr <= 'Z')
-            {
-                *iterStr = tolower(*iterStr);
-                iterStr  = sAdjustedName.insert(iterStr, '_');
-            }
-        }
+        std::string sAdjustedName = get_adjusted_script_name("On"+sScriptName);
 
         pManager_->set_current_addon(pAddOn_);
 
         try
         {
-            mLua.script(sName_+":on"+sAdjustedName+"()", sol::script_default_on_error);
+            sol::table mSelf = mLua[sLuaName_];
+            sol::protected_function mCallback = mSelf[sAdjustedName];
+            mCallback(mSelf);
         }
         catch (const sol::error& e)
         {
