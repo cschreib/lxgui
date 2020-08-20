@@ -11,10 +11,10 @@ jobs:
       dist: bionic
       compiler: gcc
       before_script:
-        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev g++-8
         - mkdir build
         - cd build
-        - cmake ..
+        - cmake .. -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8
       script: sudo make install
 
     - stage: test
@@ -26,19 +26,19 @@ jobs:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - gcc-6
-            - g++-6
+            - gcc-9
+            - g++-9
             - libstdc++-9-dev
-            - libstdc++6
       before_script:
-        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-6.0
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-7.0
         - mkdir build
         - cd build
-        - cmake .. -DCMAKE_C_COMPILER=clang-6.0 -DCMAKE_CXX_COMPILER=clang++-6.0
+        - cmake .. -DCMAKE_C_COMPILER=clang-7.0 -DCMAKE_CXX_COMPILER=clang++-7.0
       script: sudo make install
 
     - stage: test
       os: osx
+      osx_image: xcode11.6
       compiler: clang
       before_script:
         - brew install zlib libpng sfml freetype glew lua llvm
