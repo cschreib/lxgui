@@ -10,7 +10,7 @@ namespace utils
 {
 typedef std::vector<std::string> string_vector;
 
-bool file_exists(const std::string& file);
+bool file_exists(const std::string& sFile);
 
 bool make_directory(const std::string& sPath);
 string_vector get_directory_list(const std::string& sRelPath);
