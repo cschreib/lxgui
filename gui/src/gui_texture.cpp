@@ -347,15 +347,19 @@ void texture::set_texture(const std::string& sFile)
     if (sTextureFile_.empty())
         return;
 
+    utils::refptr<gui::material> pMat;
     if (utils::file_exists(sTextureFile_))
+        pMat = pManager_->create_material(sTextureFile_, mFilter_);
+
+    if (pMat)
     {
-        mSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
+        mSprite_ = pManager_->create_sprite(pMat);
         mSprite_.set_texture_coords(lTexCoord_, true);
     }
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Cannot find file \"" << sFile << "\" for \"" << sName_
+            << "Cannot load file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
 
         mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
@@ -371,12 +375,18 @@ void texture::set_texture(utils::refptr<render_target> pRenderTarget)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
 
+    utils::refptr<gui::material> pMat;
     if (pRenderTarget)
-        mSprite_ = pManager_->create_sprite(pManager_->create_material(pRenderTarget));
+        pMat = pManager_->create_material(pRenderTarget);
+
+    if (pMat)
+    {
+        mSprite_ = pManager_->create_sprite(pMat);
+    }
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Cannot create a texture with a null RenterTarget.\n"
+            << "Cannot create a texture from render target.\n"
             "Using white texture instead." << std::endl;
 
         mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
