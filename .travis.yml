@@ -30,10 +30,10 @@ jobs:
             - g++-9
             - libstdc++-9-dev
       before_script:
-        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-7.0
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-7
         - mkdir build
         - cd build
-        - cmake .. -DCMAKE_C_COMPILER=clang-7.0 -DCMAKE_CXX_COMPILER=clang++-7.0
+        - cmake .. -DCMAKE_C_COMPILER=clang-7 -DCMAKE_CXX_COMPILER=clang++-7
       script: sudo make install
 
     - stage: test
