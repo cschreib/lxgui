@@ -50,7 +50,7 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const s
     {
         if (mEntry.is_regular_file())
         {
-            if (utils::find(lExtensions, std::string(mEntry.path().extension())) != lExtensions.end())
+            if (utils::find(lExtensions, mEntry.path().extension().u8string()) != lExtensions.end())
             {
                 if (bWithPath)
                     lFileList.push_back(mEntry.path().relative_path().u8string());
