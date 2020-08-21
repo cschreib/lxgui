@@ -16,7 +16,7 @@ string_vector get_directory_list(const std::string& sRelPath)
     for (auto& mEntry : std::filesystem::directory_iterator(sRelPath))
     {
         if (mEntry.is_directory())
-            lDirList.push_back(mEntry.path().filename());
+            lDirList.push_back(mEntry.path().filename().u8string());
     }
 
     return lDirList;
@@ -28,7 +28,12 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath)
     for (auto& mEntry : std::filesystem::directory_iterator(sRelPath))
     {
         if (mEntry.is_regular_file())
-            lFileList.push_back(bWithPath ? mEntry.path().relative_path() : mEntry.path().filename());
+        {
+            if (bWithPath)
+                lFileList.push_back(mEntry.path().relative_path().u8string());
+            else
+                lFileList.push_back(mEntry.path().filename().u8string());
+        }
     }
 
     return lFileList;
@@ -47,7 +52,10 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const s
         {
             if (utils::find(lExtensions, std::string(mEntry.path().extension())) != lExtensions.end())
             {
-                lFileList.push_back(bWithPath ? mEntry.path().relative_path() : mEntry.path().filename());
+                if (bWithPath)
+                    lFileList.push_back(mEntry.path().relative_path().u8string());
+                else
+                    lFileList.push_back(mEntry.path().filename().u8string());
             }
         }
     }
