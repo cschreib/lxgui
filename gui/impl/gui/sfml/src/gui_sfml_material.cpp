@@ -8,8 +8,6 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-const uint material::MAXIMUM_SIZE = sf::Texture::getMaximumSize();
-
 material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, filter mFilter) :
     mType_(type::TEXTURE)
 {
@@ -21,7 +19,8 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
     pTexData_->uiRealWidth_ = uiWidth;
     pTexData_->uiRealHeight_ = uiHeight;
 
-    if (pTexData_->uiRealWidth_ > MAXIMUM_SIZE || pTexData_->uiRealHeight_ > MAXIMUM_SIZE)
+    if (pTexData_->uiRealWidth_ > sf::Texture::getMaximumSize() ||
+        pTexData_->uiRealHeight_ > sf::Texture::getMaximumSize())
     {
         throw gui::exception("gui::sfml::material", "Texture dimensions not supported by graphics card : ("+
             utils::to_string(pTexData_->uiRealWidth_)+" x "+
@@ -232,7 +231,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     if (!pTexData_) return false;
     if (!pTexData_->bRenderTarget_) return false;
 
-    if (uiWidth > MAXIMUM_SIZE || uiHeight > MAXIMUM_SIZE)
+    if (uiWidth > sf::Texture::getMaximumSize() || uiHeight > sf::Texture::getMaximumSize())
         return false;
 
     if (uiWidth > pTexData_->uiRealWidth_ || uiHeight > pTexData_->uiRealHeight_)
