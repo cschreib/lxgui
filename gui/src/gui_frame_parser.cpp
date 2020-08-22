@@ -100,8 +100,8 @@ void frame::parse_attributes_(xml::block* pBlock)
 
     create_glue();
 
-    if (pParentFrame_)
-        set_level(pParentFrame_->get_level() + 1);
+    if (pParent_)
+        set_level(pParent_->get_level() + 1);
     else
         set_level(0);
 

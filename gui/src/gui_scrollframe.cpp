@@ -400,8 +400,8 @@ void scroll_frame::notify_child_strata_changed(frame* pChild)
         bRebuildScrollStrataList_ = true;
     else
     {
-        if (pParentFrame_)
-            pParentFrame_->notify_child_strata_changed(this);
+        if (pParent_)
+            pParent_->notify_child_strata_changed(this);
         else
             pManager_->fire_build_strata_list();
     }

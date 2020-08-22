@@ -837,8 +837,6 @@ namespace gui
 
         std::unique_ptr<region> pTitleRegion_ = nullptr;
 
-        frame* pParentFrame_ = nullptr;
-
         std::vector<std::string> lMouseButtonList_;
         bool                     bMouseDragged_ = false;
     };
