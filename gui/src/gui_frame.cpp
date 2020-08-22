@@ -550,14 +550,14 @@ void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
     {
         if (bIsMouseEnabled && !bIsMouseEnabled_)
         {
-            event_receiver::register_event("MOUSE_MOVED_RAW");
+            event_receiver::register_event("MOUSE_MOVED");
             event_receiver::register_event("MOUSE_PRESSED");
             event_receiver::register_event("MOUSE_DOUBLE_CLICKED");
             event_receiver::register_event("MOUSE_RELEASED");
         }
         else if (!bIsMouseEnabled && bIsMouseEnabled_)
         {
-            event_receiver::unregister_event("MOUSE_MOVED_RAW");
+            event_receiver::unregister_event("MOUSE_MOVED");
             event_receiver::unregister_event("MOUSE_PRESSED");
             event_receiver::unregister_event("MOUSE_DOUBLE_CLICKED");
             event_receiver::unregister_event("MOUSE_RELEASED");
@@ -1086,9 +1086,7 @@ void frame::on_event(const event& mEvent)
 
     if (bIsMouseEnabled_ && bIsVisible_)
     {
-        if (mEvent.get_name() == "MOUSE_MOVED_RAW" ||
-            mEvent.get_name() == "MOUSE_MOVED" ||
-            mEvent.get_name() == "MOUSE_MOVED_SMOOTH")
+        if (mEvent.get_name() == "MOUSE_MOVED")
         {
             if (!lMouseButtonList_.empty() && !bMouseDragged_)
             {
