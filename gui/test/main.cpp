@@ -47,6 +47,7 @@ using namespace lxgui;
 int main(int argc, char* argv[])
 {
     std::fstream mLogCout("cout.txt", std::ios::out);
+    auto* pOldBuffer = std::cout.rdbuf();
     std::cout.rdbuf(mLogCout.rdbuf());
 
     try
@@ -306,6 +307,8 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "End of program." << std::endl;
+
+    std::cout.rdbuf(pOldBuffer);
 
     return 0;
 }
