@@ -3,7 +3,7 @@ var searchData=
   ['_7eblock',['~block',['../classlxgui_1_1xml_1_1block.html#a2bb9465125fc3d42f7cd8897101b5286',1,'lxgui::xml::block']]],
   ['_7eevent_5freceiver',['~event_receiver',['../classlxgui_1_1gui_1_1event__receiver.html#a1b18b71a7d96719923b647396e3679f6',1,'lxgui::gui::event_receiver']]],
   ['_7efont',['~font',['../classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0',1,'lxgui::gui::font']]],
-  ['_7eframe',['~frame',['../classlxgui_1_1gui_1_1frame.html#a70eae6ff16abcac8ffe6afb12675bff8',1,'lxgui::gui::frame']]],
+  ['_7eframe',['~frame',['../classlxgui_1_1gui_1_1frame.html#a1516c4a54c6b4da89e272d67f5b0e02c',1,'lxgui::gui::frame']]],
   ['_7emanager',['~manager',['../classlxgui_1_1gui_1_1manager.html#ac8d73bfae7f1364771fc9822573591d3',1,'lxgui::gui::manager']]],
   ['_7ematerial',['~material',['../classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6',1,'lxgui::gui::material::~material()'],['../classlxgui_1_1gui_1_1gl_1_1material.html#a7958e67d50a019eed39aa41364002353',1,'lxgui::gui::gl::material::~material()']]],
   ['_7eoptional',['~optional',['../classlxgui_1_1utils_1_1optional.html#aac8021c9511381213bd53f1d9fed71f5',1,'lxgui::utils::optional']]],

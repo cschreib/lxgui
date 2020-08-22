@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ub32color',['ub32color',['../structlxgui_1_1gui_1_1gl_1_1ub32color.html',1,'lxgui::gui::gl']]],
-  ['ub32color',['ub32color',['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#aba2013063baf6227d76dfad50b1db151',1,'lxgui::gui::gl::ub32color::ub32color()=default'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a90f514adb8a00fcfe45a8a3c6b051263',1,'lxgui::gui::gl::ub32color::ub32color(chanel r, chanel g, chanel b, chanel a)']]],
+  ['ub32color',['ub32color',['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#aba2013063baf6227d76dfad50b1db151',1,'lxgui::gui::gl::ub32color::ub32color()=default'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a37fda768001881d3bee2b86bf6a6c267',1,'lxgui::gui::gl::ub32color::ub32color(chanel tr, chanel tg, chanel tb, chanel ta)']]],
   ['uchar',['uchar',['../gui__text_8cpp.html#a65f85814a8290f9797005d3b28e7e5fc',1,'uchar():&#160;gui_text.cpp'],['../namespacelxgui.html#a1e4a5b5b8b4cea3dcf812d234b89ee3f',1,'lxgui::uchar()']]],
   ['uiabsheight_5f',['uiAbsHeight_',['../classlxgui_1_1gui_1_1uiobject.html#af4508554b4127cf3263576501e78dd67',1,'lxgui::gui::uiobject']]],
   ['uiabswidth_5f',['uiAbsWidth_',['../classlxgui_1_1gui_1_1uiobject.html#a5bdd4b4ed0e1895dc2e931e14d4d9166',1,'lxgui::gui::uiobject']]],

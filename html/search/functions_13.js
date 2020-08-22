@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ub32color',['ub32color',['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#aba2013063baf6227d76dfad50b1db151',1,'lxgui::gui::gl::ub32color::ub32color()=default'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a90f514adb8a00fcfe45a8a3c6b051263',1,'lxgui::gui::gl::ub32color::ub32color(chanel r, chanel g, chanel b, chanel a)']]],
+  ['ub32color',['ub32color',['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#aba2013063baf6227d76dfad50b1db151',1,'lxgui::gui::gl::ub32color::ub32color()=default'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a37fda768001881d3bee2b86bf6a6c267',1,'lxgui::gui::gl::ub32color::ub32color(chanel tr, chanel tg, chanel tb, chanel ta)']]],
   ['uiobject',['uiobject',['../classlxgui_1_1gui_1_1uiobject.html#a439db5d0bf0a297a2bac46d1345f2409',1,'lxgui::gui::uiobject']]],
   ['uncheck',['uncheck',['../classlxgui_1_1gui_1_1check__button.html#a5e120a0d1e8bd2c84343c5047e7016a4',1,'lxgui::gui::check_button']]],
   ['unlight',['unlight',['../classlxgui_1_1gui_1_1button.html#ae6d91d2b8db3c1d08a62bcb76992185f',1,'lxgui::gui::button']]],
