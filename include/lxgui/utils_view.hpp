@@ -43,10 +43,10 @@ namespace view
 
         explicit adaptor(const ContainerType& mCollection) : mCollection_(mCollection) {}
 
-        adaptor(const adaptor& mOther) : mCollection_(mOther.mCollection_) {};
-        adaptor(adaptor&& mOther) : mCollection_(mOther.mCollection_) {};
+        adaptor(const adaptor& mOther) : mCollection_(mOther.mCollection_) {}
+        adaptor(adaptor&& mOther) : mCollection_(mOther.mCollection_) {}
         adaptor& operator=(const adaptor& mOther) { mCollection_ = mOther.mCollection_; return *this; }
-        adaptor& operator=(adaptor&& mOther) { mCollection_ = mOther.mCollection_; return *this; };
+        adaptor& operator=(adaptor&& mOther) { mCollection_ = mOther.mCollection_; return *this; }
 
         class iterator
         {

@@ -297,7 +297,7 @@ namespace gui
         /** \param pFrame The frame to be released
         *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
         */
-        std::unique_ptr<frame> remove_root_frame(frame* pObj);
+        std::unique_ptr<frame> remove_root_frame(frame* pFrame);
 
         /// Returns the root frame list.
         /** \return The root frame list

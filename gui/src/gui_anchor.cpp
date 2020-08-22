@@ -278,7 +278,7 @@ std::string anchor::get_string_point(anchor_point mPoint)
         case anchor_point::BOTTOMLEFT :  return "BOTTOMLEFT";
         case anchor_point::LEFT :        return "LEFT";
         case anchor_point::CENTER :      return "CENTER";
-    };
+    }
     return "";
 }
 

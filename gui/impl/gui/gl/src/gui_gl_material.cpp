@@ -33,7 +33,7 @@ namespace gl
 bool material::ONLY_POWER_OF_TWO = true;
 uint material::MAXIMUM_SIZE = 128;
 
-ub32color::ub32color(chanel r, chanel g, chanel b, chanel a) : r(r), g(g), b(b), a(a)
+ub32color::ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta)
 {
 }
 

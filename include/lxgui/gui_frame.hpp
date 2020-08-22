@@ -46,7 +46,7 @@ namespace gui
         explicit frame(manager* pManager);
 
         /// Destructor.
-        ~frame();
+        ~frame() override;
 
         /// Renders this widget on the current render target.
         void render() override;
