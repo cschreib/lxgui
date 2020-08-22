@@ -14,7 +14,7 @@ function ScrollTest:init_root_folder()
             rootFolder.developed = true;
             rootFolder.parent = nil;
             rootFolder.name = "";
-            rootFolder.folder = "";
+            rootFolder.folder = ".";
             rootFolder.level = 0;
             rootFolder.folders = {};
             rootFolder.folderNum = 0;
@@ -31,7 +31,7 @@ function ScrollTest:init_root_folder()
             return;
         end
 
-        local folderList = get_folder_list("");
+        local folderList = get_folder_list(".");
 
         if (#folderList ~= 0) then
             rootFolder.Develop.Minus:show();
