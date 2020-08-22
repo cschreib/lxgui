@@ -45,7 +45,6 @@ var searchData=
   ['pos',['pos',['../structlxgui_1_1gui_1_1vertex.html#a1df4c9b0475a5a8ecdad5dc87a4a2ddf',1,'lxgui::gui::vertex']]],
   ['pparent',['pParent',['../structlxgui_1_1xml_1_1block_1_1range__block_1_1iterator.html#a80fc3097f94adbdde869373641255062',1,'lxgui::xml::block::range_block::iterator::pParent()'],['../structlxgui_1_1xml_1_1block_1_1range__block.html#a302f705e7c96cb419a299281a68b87c1',1,'lxgui::xml::block::range_block::pParent()']]],
   ['pparent_5f',['pParent_',['../classlxgui_1_1gui_1_1renderer__impl.html#a0c018fd4208b36fd75573948043f4b48',1,'lxgui::gui::renderer_impl::pParent_()'],['../classlxgui_1_1gui_1_1uiobject.html#a24f0764c8d755d6e6b353373046f11bc',1,'lxgui::gui::uiobject::pParent_()']]],
-  ['pparentframe_5f',['pParentFrame_',['../classlxgui_1_1gui_1_1frame.html#a356294ae68636cb879e5ccdb4108721a',1,'lxgui::gui::frame']]],
   ['ppushedtexture_5f',['pPushedTexture_',['../classlxgui_1_1gui_1_1button.html#ae69413c804f463d74a6206ac6b978341',1,'lxgui::gui::button']]],
   ['predefined_5fblock',['predefined_block',['../structlxgui_1_1xml_1_1predefined__block.html',1,'lxgui::xml']]],
   ['predefined_5fblock',['predefined_block',['../structlxgui_1_1xml_1_1predefined__block.html#acb688962f2364bc6476a285e73cf1a70',1,'lxgui::xml::predefined_block::predefined_block()=default'],['../structlxgui_1_1xml_1_1predefined__block.html#ad18c00e922bf5c0813bea360033cb94d',1,'lxgui::xml::predefined_block::predefined_block(block *block, uint min, uint max, uint radio_group=-1)']]],
