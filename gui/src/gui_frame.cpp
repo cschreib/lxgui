@@ -1238,89 +1238,113 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     }
 
     std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
-    if (iter != lDefinedScriptList_.end())
+    if (iter == lDefinedScriptList_.end())
+        return;
+
+    sol::state& mLua = pManager_->get_lua();
+
+    // Reset all arg* to nil
+    for (uint i = 1; i < 9; ++i)
     {
-        sol::state& mLua = pManager_->get_lua();
+        mLua["arg"+utils::to_string(i)] = sol::lua_nil;
+    }
 
-        // Reset all arg* to nil
-        for (uint i = 1; i < 9; ++i)
+    if (pEvent)
+    {
+        if ((sScriptName == "KeyDown") ||
+            (sScriptName == "KeyUp"))
         {
-            mLua["arg"+utils::to_string(i)] = sol::lua_nil;
+            // Set key name
+            mLua["arg1"] = static_cast<uint>(pEvent->get<input::key>(0));
+            mLua["arg2"] = pEvent->get<std::string>(1);
         }
-
-        if (pEvent)
+        else if (sScriptName == "MouseDown")
         {
-            if ((sScriptName == "KeyDown") ||
-                (sScriptName == "KeyUp"))
-            {
-                // Set key name
-                mLua["arg1"] = static_cast<uint>(pEvent->get<input::key>(0));
-                mLua["arg2"] = pEvent->get<std::string>(1);
-            }
-            else if (sScriptName == "MouseDown")
-            {
-                // Set mouse button
-                mLua["arg1"] = pEvent->get<std::string>(0);
-            }
-            else if (sScriptName == "MouseUp")
-            {
-                // Set mouse button
-                mLua["arg1"] = pEvent->get<std::string>(0);
-            }
-            else if (sScriptName == "MouseWheel")
-            {
-                mLua["arg1"] = pEvent->get<float>(0);
-            }
-            else if (sScriptName == "Update")
-            {
-                // Set delta time
-                mLua["arg1"] = pEvent->get<float>(0);
-            }
-            else if (sScriptName == "Event")
-            {
-                // Set event name
-                mLua["event"] = pEvent->get_name();
+            // Set mouse button
+            mLua["arg1"] = pEvent->get<std::string>(0);
+        }
+        else if (sScriptName == "MouseUp")
+        {
+            // Set mouse button
+            mLua["arg1"] = pEvent->get<std::string>(0);
+        }
+        else if (sScriptName == "MouseWheel")
+        {
+            mLua["arg1"] = pEvent->get<float>(0);
+        }
+        else if (sScriptName == "Update")
+        {
+            // Set delta time
+            mLua["arg1"] = pEvent->get<float>(0);
+        }
+        else if (sScriptName == "Event")
+        {
+            // Set event name
+            mLua["event"] = pEvent->get_name();
 
-                // Set arguments
-                for (uint i = 0; i < pEvent->get_num_param(); ++i)
-                {
-                    const utils::any* pArg = pEvent->get(i);
-                    const utils::any_type& mType = pArg->get_type();
+            // Set arguments
+            for (uint i = 0; i < pEvent->get_num_param(); ++i)
+            {
+                const utils::any* pArg = pEvent->get(i);
+                const utils::any_type& mType = pArg->get_type();
 
-                    sol::object mObject;
-                    if      (mType == utils::any::VALUE_INT)    mObject = sol::make_object(mLua.lua_state(), pArg->get<int>());
-                    else if (mType == utils::any::VALUE_UINT)   mObject = sol::make_object(mLua.lua_state(), pArg->get<uint>());
-                    else if (mType == utils::any::VALUE_FLOAT)  mObject = sol::make_object(mLua.lua_state(), pArg->get<float>());
-                    else if (mType == utils::any::VALUE_DOUBLE) mObject = sol::make_object(mLua.lua_state(), pArg->get<double>());
-                    else if (mType == utils::any::VALUE_STRING) mObject = sol::make_object(mLua.lua_state(), pArg->get<std::string>());
-                    else if (mType == utils::any::VALUE_BOOL)   mObject = sol::make_object(mLua.lua_state(), pArg->get<bool>());
-                    else                                        mObject = sol::make_object(mLua.lua_state(), sol::lua_nil);
+                sol::object mObject;
+                if      (mType == utils::any::VALUE_INT)    mObject = sol::make_object(mLua.lua_state(), pArg->get<int>());
+                else if (mType == utils::any::VALUE_UINT)   mObject = sol::make_object(mLua.lua_state(), pArg->get<uint>());
+                else if (mType == utils::any::VALUE_FLOAT)  mObject = sol::make_object(mLua.lua_state(), pArg->get<float>());
+                else if (mType == utils::any::VALUE_DOUBLE) mObject = sol::make_object(mLua.lua_state(), pArg->get<double>());
+                else if (mType == utils::any::VALUE_STRING) mObject = sol::make_object(mLua.lua_state(), pArg->get<std::string>());
+                else if (mType == utils::any::VALUE_BOOL)   mObject = sol::make_object(mLua.lua_state(), pArg->get<bool>());
+                else                                        mObject = sol::make_object(mLua.lua_state(), sol::lua_nil);
 
-                    mLua["arg"+utils::to_string(i+1)] = mObject;
-                }
+                mLua["arg"+utils::to_string(i+1)] = mObject;
             }
         }
+    }
 
-        std::string sAdjustedName = get_adjusted_script_name("On"+sScriptName);
+    std::string sAdjustedName = get_adjusted_script_name("On"+sScriptName);
 
-        pManager_->set_current_addon(pAddOn_);
+    pManager_->set_current_addon(pAddOn_);
 
-        sol::table mSelf = mLua[sLuaName_];
-        sol::protected_function mCallback = mSelf[sAdjustedName];
-        auto mResult = mCallback(mSelf);
-        if (!mResult.valid())
-        {
-            sol::error mError = mResult;
+    sol::table mSelf = mLua[sLuaName_];
+    if (mSelf == sol::nil)
+    {
+        std::string sError = "Lua glue object is nil";
+        gui::out << gui::error << sError << std::endl;
 
-            // TODO: show file/line number from lXMLScriptInfoList_
-            std::string sError = mError.what();
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        pManager_->get_event_manager()->fire_event(mEvent);
 
-            gui::out << gui::error << sError << std::endl;
+        return;
+    }
 
-            event mEvent("LUA_ERROR");
-            mEvent.add(sError);
-            pManager_->get_event_manager()->fire_event(mEvent);
-        }
+    sol::protected_function mCallback = mSelf[sAdjustedName];
+    if (mCallback == sol::nil)
+    {
+        std::string sError = "Lua callback "+sAdjustedName+" is nil";
+        gui::out << gui::error << sError << std::endl;
+
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        pManager_->get_event_manager()->fire_event(mEvent);
+
+        return;
+    }
+
+    auto mResult = mCallback(mSelf);
+    if (!mResult.valid())
+    {
+        sol::error mError = mResult;
+
+        // TODO: show file/line number from lXMLScriptInfoList_
+        std::string sError = mError.what();
+
+        gui::out << gui::error << sError << std::endl;
+
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        pManager_->get_event_manager()->fire_event(mEvent);
     }
 }
 
