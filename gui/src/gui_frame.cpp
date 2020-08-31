@@ -1933,8 +1933,8 @@ void frame::clear_links()
 {
     if (bLinksCleared_) return;
 
-    region::clear_links_();
     frame::clear_links_();
+    region::clear_links_();
 
     bLinksCleared_ = true;
 }
