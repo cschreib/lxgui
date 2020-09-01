@@ -1307,7 +1307,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     pManager_->set_current_addon(pAddOn_);
 
     sol::table mSelf = mLua[sLuaName_];
-    if (mSelf == sol::nil)
+    if (mSelf == sol::lua_nil)
     {
         std::string sError = "Lua glue object is nil";
         gui::out << gui::error << sError << std::endl;
@@ -1320,7 +1320,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
     }
 
     sol::protected_function mCallback = mSelf[sAdjustedName];
-    if (mCallback == sol::nil)
+    if (mCallback == sol::lua_nil)
     {
         std::string sError = "Lua callback "+sAdjustedName+" is nil";
         gui::out << gui::error << sError << std::endl;
