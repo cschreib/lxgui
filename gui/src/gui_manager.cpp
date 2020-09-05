@@ -800,7 +800,19 @@ void manager::close_ui()
                 save_variables_(&mAddOn);
         }
 
+        // Delete frames.
+        // This is done using delayed_delete_frame() so that children are always
+        // destroyed before their parents. Otherwise, the frame destructor
+        // (which destroys children) could be called after the derived class
+        // destructor.
+        for (auto& pFrame : lRootFrameList_)
+        {
+            delayed_delete_frame(std::move(pFrame));
+            lDeletedObjectList_.clear();
+        }
+
         lRootFrameList_.clear();
+
         lObjectList_.clear();
         lNamedObjectList_.clear();
         lNamedVirtualObjectList_.clear();
