@@ -16,12 +16,7 @@ scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
 
 scroll_frame::~scroll_frame()
 {
-    // Make sure the scroll child is destroyed before this object.
-    // This is needed because, otherwise, this destructor gets
-    // called before the frame destructor, which then destroys
-    // the children frames.
-    if (pScrollChild_)
-        remove_child(pScrollChild_);
+    clear_links_();
 }
 
 bool scroll_frame::can_use_script(const std::string& sScriptName) const
@@ -439,5 +434,22 @@ void scroll_frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyR
 
     bRebuildScrollStrataList_ = true;
 }
+
+void scroll_frame::clear_links()
+{
+    if (bLinksCleared_) return;
+
+    scroll_frame::clear_links_();
+    frame::clear_links_();
+
+    bLinksCleared_ = true;
+}
+
+void scroll_frame::clear_links_()
+{
+    if (!bVirtual_ && pScrollChild_)
+        pScrollChild_->set_renderer(nullptr);
+}
+
 }
 }

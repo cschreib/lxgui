@@ -130,6 +130,12 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
+        /// Removes any reference to this widgets from its parents or related objects.
+        /** \note This is automatically called by the destructor and other
+        *         functions that remove frames (i.e., the Lua API).
+        */
+        void clear_links() override;
+
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state& mLua);
 
@@ -147,6 +153,8 @@ namespace gui
         void rebuild_scroll_render_target_();
         void rebuild_scroll_strata_list_();
         void render_scroll_strata_list_();
+
+        void clear_links_();
 
         int iHorizontalScroll_ = 0;
         int iHorizontalScrollRange_ = 0;
