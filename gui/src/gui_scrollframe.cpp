@@ -138,6 +138,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
 
         add_child(std::move(pFrame));
 
+        pScrollChild_->set_special();
         pScrollChild_->set_renderer(this);
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
