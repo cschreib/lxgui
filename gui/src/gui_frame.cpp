@@ -1687,6 +1687,16 @@ frame* frame::get_top_level_renderer()
         return nullptr;
 }
 
+const frame* frame::get_top_level_renderer() const
+{
+    if (pRenderer_)
+        return pRenderer_;
+    else if (pParent_)
+        return pParent_->get_top_level_renderer();
+    else
+        return nullptr;
+}
+
 void frame::fire_redraw() const
 {
 }

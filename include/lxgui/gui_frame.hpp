@@ -654,7 +654,13 @@ namespace gui
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        frame* get_top_level_renderer();
+        frame* get_top_level_renderer() override;
+
+        /// Returns the renderer of this object or its parents, nullptr if none.
+        /** \return The renderer of this object or its parents, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        const frame* get_top_level_renderer() const override;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
