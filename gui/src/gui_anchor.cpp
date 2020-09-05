@@ -17,36 +17,45 @@ anchor::anchor(uiobject* pObj, anchor_point mPoint, const std::string& sParent, 
 
 void anchor::update_parent() const
 {
-    if (!bParentUpdated_)
+    if (bParentUpdated_) return;
+
+    pParent_ = nullptr;
+    bParentUpdated_ = true;
+
+    if (sParent_.empty()) return;
+
+    const uiobject* pObjParent = pObj_->get_parent();
+
+    if (pObjParent)
     {
-        if (!sParent_.empty())
-        {
-            const uiobject* pObjParent = pObj_->get_parent();
-
-            if (pObjParent)
-            {
-                utils::replace(sParent_, "$parent", pObjParent->get_lua_name());
-            }
-            else if (sParent_.find("$parent") != sParent_.npos)
-            {
-                pParent_ = nullptr;
-                bParentUpdated_ = true;
-                return;
-            }
-
-            pParent_ = pObj_->get_manager()->get_uiobject_by_name(sParent_);
-            if (!pParent_)
-            {
-                gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
-                    << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
-                    << sParent_ << "\" but this widget does not exist." << std::endl;
-            }
-        }
-        else
-            pParent_ = nullptr;
-
-        bParentUpdated_ = true;
+        utils::replace(sParent_, "$parent", pObjParent->get_lua_name());
     }
+    else if (sParent_.find("$parent") != sParent_.npos)
+    {
+        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+            << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
+            << sParent_ << "\", but '$parent' does not exist." << std::endl;
+        return;
+    }
+
+    const uiobject* pNewParent = pObj_->get_manager()->get_uiobject_by_name(sParent_);
+    if (!pNewParent)
+    {
+        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+            << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
+            << sParent_ << "\" but this widget does not exist." << std::endl;
+        return;
+    }
+
+    if (pObj_->get_top_level_renderer() != pNewParent->get_top_level_renderer())
+    {
+        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+            << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
+            << sParent_ << "\" which is in another renderer." << std::endl;
+        return;
+    }
+
+    pParent_ = pNewParent;
 }
 
 int anchor::get_abs_x() const
