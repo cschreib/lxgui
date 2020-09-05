@@ -324,7 +324,7 @@ bool manager::add_uiobject(uiobject* pObj)
     else
     {
         gui::out << gui::warning << "gui::manager : "
-            << "A " << std::string(pObj->is_virtual() ? "virtual" : "") << " widget with the name \""
+            << "A" << std::string(pObj->is_virtual() ? " virtual" : "") << " widget with the name \""
             << pObj->get_name() << "\" already exists." << std::endl;
         return false;
     }
