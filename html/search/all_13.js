@@ -23,6 +23,8 @@ var searchData=
   ['uinumletters_5f',['uiNumLetters_',['../classlxgui_1_1gui_1_1edit__box.html#a9adafb9c86baaa2983b63a3622ccefe6',1,'lxgui::gui::edit_box']]],
   ['uiobject',['uiobject',['../classlxgui_1_1gui_1_1uiobject.html',1,'lxgui::gui']]],
   ['uiobject',['uiobject',['../classlxgui_1_1gui_1_1uiobject.html#a439db5d0bf0a297a2bac46d1345f2409',1,'lxgui::gui::uiobject']]],
+  ['uioldheight_5f',['uiOldHeight_',['../classlxgui_1_1gui_1_1frame.html#aafac4169f3fd52eadf41737a53ae9d9a',1,'lxgui::gui::frame']]],
+  ['uioldwidth_5f',['uiOldWidth_',['../classlxgui_1_1gui_1_1frame.html#a9a6be4dc4e40353b9474774e46058284',1,'lxgui::gui::frame']]],
   ['uiradiogroup',['uiRadioGroup',['../structlxgui_1_1xml_1_1predefined__block.html#ad7c15c02b4375d9bb85ce7124d168410',1,'lxgui::xml::predefined_block']]],
   ['uirank_5f',['uiRank_',['../structlxgui_1_1lua_1_1argument__list.html#a294a6725e40d1cd36b494410b0b2a012',1,'lxgui::lua::argument_list']]],
   ['uiredrawcount',['uiRedrawCount',['../structlxgui_1_1gui_1_1strata.html#a81fbe29ef0f97d310c618855ed45a467',1,'lxgui::gui::strata']]],
