@@ -32,7 +32,7 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
 
     if (pTexData_->bRenderTarget_)
     {
-        if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_, false))
+        if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_))
         {
             throw gui::exception("gui::sfml::material", "Could not create render target with dimensions "+
                 utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
@@ -245,7 +245,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         if (uiHeight > pTexData_->uiRealHeight_)
             pTexData_->uiRealHeight_ = uiHeight + uiHeight/2;
 
-        if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_, false))
+        if (!pTexData_->mRenderTexture_.create(pTexData_->uiRealWidth_, pTexData_->uiRealHeight_))
         {
             throw gui::exception("gui::sfml::material", "Could not create render target with dimensions "+
                 utils::to_string(pTexData_->uiRealWidth_)+" x "+utils::to_string(pTexData_->uiRealHeight_)+".");
