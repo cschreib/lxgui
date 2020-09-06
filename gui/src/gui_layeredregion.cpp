@@ -31,7 +31,7 @@ std::string layered_region::serialize(const std::string& sTab) const
         case layer_type::HIGHLIGHT : sStr << "HIGHLIGHT\n"; break;
         case layer_type::SPECIALHIGH : sStr << "SPECIALHIGH\n"; break;
         default : sStr << "<error>\n"; break;
-    };
+    }
 
     return sStr.str();
 }
