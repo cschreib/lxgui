@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-void raise_error(png_struct* png, char const* message)
+[[noreturn]] void raise_error(png_struct* png, char const* message)
 {
     throw gui::exception("gui::gl::manager", message);
 }
