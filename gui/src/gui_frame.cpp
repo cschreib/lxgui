@@ -1873,9 +1873,6 @@ void frame::update(float fDelta)
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
-    uint uiOldWidth  = uiAbsWidth_;
-    uint uiOldHeight = uiAbsHeight_;
-
     DEBUG_LOG("  ~");
     uiobject::update(fDelta);
     DEBUG_LOG("   #");
@@ -1933,10 +1930,13 @@ void frame::update(float fDelta)
     for (auto* pChild : get_children())
         pChild->update(fDelta);
 
-    if (uiOldWidth != uiAbsWidth_ || uiOldHeight != uiAbsHeight_)
+    if (uiOldWidth_ != uiAbsWidth_ || uiOldHeight_ != uiAbsHeight_)
     {
         DEBUG_LOG("   On size changed");
         on("SizeChanged");
+
+        uiOldWidth_  = uiAbsWidth_;
+        uiOldHeight_ = uiAbsHeight_;
     }
 
     DEBUG_LOG("   .");

@@ -29,6 +29,7 @@ v2.0.0:
  - gui: fixed Lua get_width()/get_height() returning incorrect values
  - gui: fixed crash when currently hovered/focussed frame is deleted
  - gui: fixed virtual gui::scroll_frame not able to be inherited from
+ - gui: fixed frame OnSizeChanged not always triggered
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: renamed gui::manager_impl into gui::renderer_impl

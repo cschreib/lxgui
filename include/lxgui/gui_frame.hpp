@@ -835,6 +835,9 @@ namespace gui
         uint uiMinHeight_ = 0u;
         uint uiMaxHeight_ = uint(-1);
 
+        uint uiOldWidth_ = 0u;
+        uint uiOldHeight_ = 0u;
+
         float fScale_ = 1.0f;
 
         bool bMouseInFrame_ = false;
