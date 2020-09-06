@@ -54,6 +54,9 @@ namespace xml
         /// Default constructor.
         block() = default;
 
+        /// Default copy constructor.
+        block(const block&) = default;
+
         /// Definition constructor.
         /** \param sName         The name of this block
         *   \param uiMinNbr      The minimum number of occurences
@@ -66,6 +69,9 @@ namespace xml
 
         /// Destructor.
         ~block();
+
+        /// Default copy assignment constructor.
+        block& operator=(const block&) = default;
 
         /// Returns this Block's name.
         /** \return This Block's name

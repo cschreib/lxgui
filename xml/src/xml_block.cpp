@@ -117,32 +117,34 @@ bool block::check_attributes(const std::string& sAttributes)
     if (!sAttributes.empty())
     {
         std::vector<std::string> lAttribs;
-        std::string sAttr;
-        bool bString = false;
-        for (auto cChar : sAttributes)
         {
-            if (cChar == '"')
+            std::string sAttr;
+            bool bString = false;
+            for (auto cChar : sAttributes)
             {
-                sAttr += cChar;
-                bString = !bString;
-            }
-            else if (cChar == ' ')
-            {
-                if (!bString)
+                if (cChar == '"')
                 {
-                    if (!sAttr.empty())
-                        lAttribs.push_back(sAttr);
-                    sAttr = "";
+                    sAttr += cChar;
+                    bString = !bString;
+                }
+                else if (cChar == ' ')
+                {
+                    if (!bString)
+                    {
+                        if (!sAttr.empty())
+                            lAttribs.push_back(sAttr);
+                        sAttr = "";
+                    }
+                    else
+                        sAttr += cChar;
                 }
                 else
                     sAttr += cChar;
             }
-            else
-                sAttr += cChar;
-        }
 
-        if (!sAttr.empty())
-            lAttribs.push_back(sAttr);
+            if (!sAttr.empty())
+                lAttribs.push_back(sAttr);
+        }
 
         for (const auto& sAttr : lAttribs)
         {
