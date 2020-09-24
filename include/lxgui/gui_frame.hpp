@@ -804,6 +804,7 @@ namespace gui
         std::map<std::string, handler> lDefinedHandlerList_;
 
         addon* pAddOn_ = nullptr;
+        bool bLinksClearedFrame_ = false;
 
         int iLevel_ = 0;
 

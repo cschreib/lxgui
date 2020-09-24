@@ -1965,16 +1965,15 @@ layer_type layer::get_layer_type(const std::string& sLayer)
 
 void frame::clear_links()
 {
-    if (bLinksCleared_) return;
-
     frame::clear_links_();
     region::clear_links_();
-
-    bLinksCleared_ = true;
 }
 
 void frame::clear_links_()
 {
+    if (bLinksClearedFrame_) return;
+    bLinksClearedFrame_ = true;
+
     if (!bVirtual_)
     {
         // Tell the renderer to no longer render this widget and its children

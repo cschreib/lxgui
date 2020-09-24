@@ -1079,14 +1079,14 @@ const frame* uiobject::get_top_level_renderer() const
 
 void uiobject::clear_links()
 {
-    if (bLinksCleared_) return;
-
     clear_links_();
-    bLinksCleared_ = true;
 }
 
 void uiobject::clear_links_()
 {
+    if (bLinksCleared_) return;
+    bLinksCleared_ = true;
+
     if (!bVirtual_)
     {
         // Tell this widget's anchor parents that it is no longer anchored to them

@@ -437,16 +437,15 @@ void scroll_frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyR
 
 void scroll_frame::clear_links()
 {
-    if (bLinksCleared_) return;
-
     scroll_frame::clear_links_();
     frame::clear_links_();
-
-    bLinksCleared_ = true;
 }
 
 void scroll_frame::clear_links_()
 {
+    if (bLinksClearedScrollFrame_) return;
+    bLinksClearedScrollFrame_ = true;
+
     if (!bVirtual_ && pScrollChild_)
         pScrollChild_->set_renderer(nullptr);
 }

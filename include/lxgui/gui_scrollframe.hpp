@@ -156,6 +156,8 @@ namespace gui
 
         void clear_links_();
 
+        bool bLinksClearedScrollFrame_ = false;
+
         int iHorizontalScroll_ = 0;
         int iHorizontalScrollRange_ = 0;
         int iVerticalScroll_ = 0;
