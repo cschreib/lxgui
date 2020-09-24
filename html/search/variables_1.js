@@ -31,6 +31,8 @@ var searchData=
   ['black',['BLACK',['../classlxgui_1_1gui_1_1color.html#a2dabec68926b66bba2a93472d8b275a3',1,'lxgui::gui::color']]],
   ['blend',['blend',['../structlxgui_1_1gui_1_1quad.html#a07f0afcc50b7bea0172c44a7464c2d26',1,'lxgui::gui::quad']]],
   ['blinkscleared_5f',['bLinksCleared_',['../classlxgui_1_1gui_1_1uiobject.html#a3f9fdcc7115fa52b225b18bf5ee68e23',1,'lxgui::gui::uiobject']]],
+  ['blinksclearedframe_5f',['bLinksClearedFrame_',['../classlxgui_1_1gui_1_1frame.html#abaf9398c510ede39c0586ccedfd16367',1,'lxgui::gui::frame']]],
+  ['blinksclearedscrollframe_5f',['bLinksClearedScrollFrame_',['../classlxgui_1_1gui_1_1scroll__frame.html#a60b5b504ff6c07f71963b1c476485793',1,'lxgui::gui::scroll_frame']]],
   ['bloaded_5f',['bLoaded_',['../classlxgui_1_1gui_1_1uiobject.html#aadc4aa00d83f64743f22c7aa58d9a4dc',1,'lxgui::gui::uiobject']]],
   ['blockhighlight_5f',['bLockHighlight_',['../classlxgui_1_1gui_1_1button.html#af89e8d2a63a62953bcfe350f1e9bd2ab',1,'lxgui::gui::button']]],
   ['blue',['BLUE',['../classlxgui_1_1gui_1_1color.html#a757b270292a587b4ade4acc5ecb137e0',1,'lxgui::gui::color']]],
