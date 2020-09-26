@@ -280,12 +280,13 @@ string to_string(double f, uint uiDigitNbr);
 string to_string(double f, uint uiIntCharNbr, uint uiFraCharNbr);
 
 string to_string(bool b);
+string to_string(void* p);
 
 template<class T>
 string to_string(T* p)
 {
     if (p != nullptr)
-        return to_string(reinterpret_cast<std::size_t>(p));
+        return to_string(static_cast<void*>(p));
     else
         return "NULL";
 }

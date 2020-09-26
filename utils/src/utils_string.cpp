@@ -641,5 +641,12 @@ string to_string(bool b)
 {
     return b ? "true" : "false";
 }
+
+string to_string(void* p)
+{
+    string_stream sStream;
+    sStream << p;
+    return sStream.str();
+}
 }
 }
