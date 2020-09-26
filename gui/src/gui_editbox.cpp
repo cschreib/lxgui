@@ -5,6 +5,7 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/input.hpp"
 #include <sol/state.hpp>
@@ -156,7 +157,11 @@ void edit_box::update(float fDelta)
 
 void edit_box::on_event(const event& mEvent)
 {
+    alive_checker mChecker(this);
+
     frame::on_event(mEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (!pManager_->is_input_enabled())
         return;
@@ -169,6 +174,8 @@ void edit_box::on_event(const event& mEvent)
             event mKeyEvent;
             mKeyEvent.add(utils::unicode_to_UTF8(utils::ustring(1, c)));
             on("Char", &mKeyEvent);
+            if (!mChecker.is_alive())
+                return;
         }
         return;
     }
@@ -186,7 +193,11 @@ void edit_box::on_event(const event& mEvent)
     {
         key mKey = mEvent[0].get<key>();
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
+        {
             on("EnterPressed");
+            if (!mChecker.is_alive())
+                return;
+        }
         else if (mKey == key::K_END)
         {
             uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
@@ -226,9 +237,17 @@ void edit_box::on_event(const event& mEvent)
             return;
         }
         else if (mKey == key::K_TAB)
+        {
             on("TabPressed");
+            if (!mChecker.is_alive())
+                return;
+        }
         else if (mKey == key::K_SPACE)
+        {
             on("SpacePressed");
+            if (!mChecker.is_alive())
+                return;
+        }
 
         mLastKeyPressed_ = mKey;
 

@@ -6,6 +6,7 @@ include_directories(${LUA_INCLUDE_DIR})
 
 add_library(lxgui STATIC
     ${SRCROOT}/gui_anchor.cpp
+    ${SRCROOT}/gui_alive_checker.cpp
     ${SRCROOT}/gui_backdrop.cpp
     ${SRCROOT}/gui_button.cpp
     ${SRCROOT}/gui_button_glues.cpp
@@ -40,6 +41,7 @@ add_library(lxgui STATIC
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp
     ${SRCROOT}/gui_region_parser.cpp
+    ${SRCROOT}/gui_renderer.cpp
     ${SRCROOT}/gui_renderer_impl.cpp
     ${SRCROOT}/gui_scrollframe.cpp
     ${SRCROOT}/gui_scrollframe_glues.cpp

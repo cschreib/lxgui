@@ -4,6 +4,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
@@ -141,7 +142,11 @@ void slider::constrain_thumb_()
 
 void slider::on_event(const event& mEvent)
 {
+    alive_checker mChecker(this);
+
     frame::on_event(mEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (bIsMouseEnabled_ && pManager_->is_input_enabled())
     {

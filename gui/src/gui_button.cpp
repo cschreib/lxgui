@@ -6,6 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include <lxgui/luapp_state.hpp>
 
 namespace lxgui {
@@ -70,7 +71,11 @@ void button::on(const std::string& sScriptName, event* pEvent)
 
 void button::on_event(const event& mEvent)
 {
+    alive_checker mChecker(this);
+
     frame::on_event(mEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (!pManager_->is_input_enabled())
         return;
