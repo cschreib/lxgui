@@ -1065,15 +1065,15 @@ void uiobject::notify_loaded()
     bLoaded_ = true;
 }
 
-frame* uiobject::get_top_level_renderer()
+renderer* uiobject::get_top_level_renderer()
 {
-    if (!pParent_) return nullptr;
+    if (!pParent_) return pManager_;
     return pParent_->get_top_level_renderer();
 }
 
-const frame* uiobject::get_top_level_renderer() const
+const renderer* uiobject::get_top_level_renderer() const
 {
-    if (!pParent_) return nullptr;
+    if (!pParent_) return pManager_;
     return pParent_->get_top_level_renderer();
 }
 

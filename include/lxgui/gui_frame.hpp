@@ -16,6 +16,8 @@
 namespace lxgui {
 namespace gui
 {
+    class renderer;
+
     /// Contains layered_region
     struct layer
     {
@@ -135,63 +137,59 @@ namespace gui
         /** \param mLayer       The layer on which to create the region
         *   \param sClassName   The name of the region class ("FontString", ...)
         *   \param sName        The name of the region
-        *   \param sInheritance The name of the region to inherit from
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The created region.
-        *   \note You don't have the reponsability to delete this region.
+        *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
         layered_region* create_region(
             layer_type mLayer, const std::string& sClassName,
-            const std::string& sName, const std::string& sInheritance = ""
+            const std::string& sName, const std::vector<uiobject*>& lInheritance = {}
         );
 
         /// Creates a new region as child of this frame.
         /** \param mLayer       The layer on which to create the region
         *   \param sName        The name of the region
-        *   \param sInheritance The name of the region to inherit from
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The created region.
-        *   \note You don't have the reponsability to delete this region.
+        *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* create_region(layer_type mLayer, const std::string& sName, const std::string& sInheritance = "")
+        region_type* create_region(layer_type mLayer, const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
         {
-            return static_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, sInheritance));
+            return static_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, lInheritance));
         }
 
         /// Creates a new frame as child of this frame.
         /** \param sClassName   The name of the frame class ("Button", ...)
         *   \param sName        The name of the frame
-        *   \param sInheritance The name of the frame to inherit from
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The created frame.
-        *   \note You don't have the reponsability to delete this frame.
+        *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created frame.
         */
-        frame* create_child(const std::string& sClassName, const std::string& sName, const std::string& sInheritance = "");
+        frame* create_child(const std::string& sClassName, const std::string& sName, const std::vector<uiobject*>& lInheritance = {});
 
         /// Creates a new frame as child of this frame.
         /** \param sName        The name of the frame
-        *   \param sInheritance The name of the frame to inherit from
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The created frame.
-        *   \note You don't have the reponsability to delete this frame.
+        *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created frame.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* create_child(const std::string& sName, const std::string& sInheritance = "")
+        frame_type* create_child(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
         {
-            return static_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, sInheritance));
+            return static_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, lInheritance));
         }
 
         /// Adds a frame to this frame's children.
@@ -629,38 +627,32 @@ namespace gui
         */
         void set_shown(bool bIsShown) override;
 
-        /// Flags this object as "manually rendered" by another object.
-        /** \param pRenderer The frame that will take care of rendering this widget
-        *   \note Manually rendered objects are not automatically rendered
-        *         by their parent (for layered_regions) or the manager
-        *         (for frames). They also don't receive automatic input.
-        *   \note Set the argument to nullptr to use the standard renderer.
+        /// Flags this object as rendered by another object.
+        /** \param pRenderer The object that will take care of rendering this widget
+        *   \note By default, objects are rendered by the gui::manager.
+        *   \note The renderer also takes care of providing inputs.
+        *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
+        *         parent. If the frame has no parent, this will default to the gui::manager.
         */
-        void set_renderer(frame* pRenderer);
-
-        /// Checks if this object is manually rendered.
-        /** \return 'true' if this object is manually rendered
-        *   \note For more informations, see set_renderer().
-        */
-        bool is_manually_rendered() const;
+        void set_renderer(renderer* pRenderer);
 
         /// Returns the renderer of this object, nullptr if none.
         /** \return The renderer of this object, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const frame* get_renderer() const;
+        const renderer* get_renderer() const;
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        frame* get_top_level_renderer() override;
+        renderer* get_top_level_renderer() override;
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const frame* get_top_level_renderer() const override;
+        const renderer* get_top_level_renderer() const override;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
@@ -692,25 +684,6 @@ namespace gui
         *         can be an offset to apply (for example with ScrollFrame).
         */
         virtual void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY);
-
-        /// Tells this frame that at least one of its children has modified its strata or level.
-        /** \param pChild The child that has changed its strata (can also be a child of this child)
-        *   \note If this frame has no parent, it calls manager::fire_build_strata_list(). Else it
-        *         notifies its parent.
-        */
-        virtual void notify_child_strata_changed(frame* pChild);
-
-        /// Tells this widget that a manually rendered widget requires redraw.
-        /** \note This function does nothing by default.
-        */
-        virtual void fire_redraw() const;
-
-        /// Tells this widget that it should (or not) render another frame.
-        /** \param pFrame            The frame to render
-        *   \param bManuallyRendered 'true' if this widget needs to render that new object
-        *   \note Called automatically by add_child(), remove_child(), and destructors.
-        */
-        virtual void notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered);
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
@@ -773,9 +746,6 @@ namespace gui
 
         virtual void notify_visible_(bool bTriggerEvents = true);
         virtual void notify_invisible_(bool bTriggerEvents = true);
-        virtual void notify_strata_changed_();
-        void notify_renderer_add_frame_(frame* pChild);
-        void notify_renderer_remove_frame_(frame* pChild);
 
         virtual void notify_top_level_parent_(bool bTopLevel, frame* pParent);
 
@@ -811,7 +781,7 @@ namespace gui
         frame_strata mStrata_ = frame_strata::MEDIUM;
         bool         bIsTopLevel_ = false;
         frame*       pTopLevelParent_ = nullptr;
-        frame*       pRenderer_ = nullptr;
+        renderer*    pRenderer_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 

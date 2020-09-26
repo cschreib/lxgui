@@ -3,6 +3,7 @@
 
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_renderer.hpp"
 
 namespace lxgui {
 namespace gui
@@ -14,7 +15,7 @@ namespace gui
     *   The scroll child is rendered on a render_target, which is
     *   then rendered on the screen.
     */
-    class scroll_frame : public frame
+    class scroll_frame : public frame, public renderer
     {
     public :
 
@@ -104,23 +105,14 @@ namespace gui
         */
         void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY) override;
 
-        /// Tells this widget that a manually rendered widget requires redraw.
-        void fire_redraw() const override;
+        /// Tells this renderer that one of its widget requires redraw.
+        void fire_redraw(frame_strata mStrata) const override;
 
-        /// Tells this widget that it should (or not) render another frame.
-        /** \param pFrame            The frame to render
-        *   \param bManuallyRendered 'true' if this widget needs to render that new object
-        *   \note Called automatically by add_child(), remove_child(), and destructors.
+        /// Tells this renderer that it should (or not) render another frame.
+        /** \param pFrame    The frame to render
+        *   \param bRendered 'true' if this renderer needs to render that new object
         */
-        void notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered) override;
-
-        /// Tells this scroll_frame that at least one of its children has modified its strata or level.
-        /** \param pChild The child that has changed its strata (can also be a child of this child)
-        *   \note If pChild is the scroll child, it only rebuilds its internal strata list.
-        *   \note If this scroll_frame has no parent, it calls manager::fire_build_strata_list(). Else it
-        *         notifies its parent.
-        */
-        void notify_child_strata_changed(frame* pChild) override;
+        void notify_rendered_frame(frame* pFrame, bool bRendered) override;
 
         /// Returns this widget's Lua glue.
         void create_glue() override;
@@ -151,7 +143,6 @@ namespace gui
         void update_scroll_range_();
         void update_scroll_child_input_();
         void rebuild_scroll_render_target_();
-        void rebuild_scroll_strata_list_();
         void render_scroll_strata_list_();
 
         void clear_links_();
@@ -172,9 +163,7 @@ namespace gui
 
         texture* pScrollTexture_ = nullptr;
 
-        mutable bool                   bRebuildScrollStrataList_ = false;
-        std::map<uint, frame*>         lScrollChildList_;
-        std::map<frame_strata, strata> lScrollStrataList_;
+        std::map<uint, frame*> lScrollChildList_;
 
         bool   bMouseInScrollTexture_ = false;
         frame* pHoveredScrollChild_ = nullptr;

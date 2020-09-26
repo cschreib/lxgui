@@ -9,7 +9,7 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
+scroll_frame::scroll_frame(manager* pManager) : frame(pManager), renderer(pManager->get_renderer())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -87,7 +87,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         );
 
         lScrollChildList_.clear();
-        lScrollStrataList_.clear();
+        clear_strata_list_();
     }
     else if (!is_virtual() && !pScrollTexture_)
     {
@@ -151,8 +151,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         bUpdateScrollRange_ = false;
     }
 
-    bRebuildScrollStrataList_ = true;
-    fire_redraw();
+    bRedrawScrollRenderTarget_ = true;
 }
 
 frame* scroll_frame::get_scroll_child()
@@ -168,7 +167,7 @@ void scroll_frame::set_horizontal_scroll(int iHorizontalScroll)
         lQueuedEventList_.push_back("HorizontalScroll");
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
-        fire_redraw();
+        bRedrawScrollRenderTarget_ = true;
     }
 }
 
@@ -190,7 +189,7 @@ void scroll_frame::set_vertical_scroll(int iVerticalScroll)
         lQueuedEventList_.push_back("VerticalScroll");
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
-        fire_redraw();
+        bRedrawScrollRenderTarget_ = true;
     }
 }
 
@@ -221,7 +220,7 @@ void scroll_frame::update(float fDelta)
         uiOldChildHeight != pScrollChild_->get_abs_height()))
     {
         bUpdateScrollRange_ = true;
-        fire_redraw();
+        bRedrawScrollRenderTarget_ = true;
     }
 
     if (is_visible())
@@ -230,20 +229,13 @@ void scroll_frame::update(float fDelta)
         {
             rebuild_scroll_render_target_();
             bRebuildScrollRenderTarget_ = false;
-            fire_redraw();
+            bRedrawScrollRenderTarget_ = true;
         }
 
         if (bUpdateScrollRange_)
         {
             update_scroll_range_();
             bUpdateScrollRange_ = false;
-        }
-
-        if (bRebuildScrollStrataList_)
-        {
-            rebuild_scroll_strata_list_();
-            bRebuildScrollStrataList_ = false;
-            fire_redraw();
         }
 
         if (pScrollChild_)
@@ -275,26 +267,7 @@ void scroll_frame::update_scroll_child_input_()
 
     if (bMouseInScrollTexture_)
     {
-        frame* pHoveredFrame = nullptr;
-        for (const auto& mStrata : utils::range::reverse_value(lScrollStrataList_))
-        {
-            for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
-            {
-                for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
-                {
-                    if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
-                    {
-                        pHoveredFrame = pFrame;
-                        break;
-                    }
-                }
-
-                if (pHoveredFrame) break;
-
-            }
-
-            if (pHoveredFrame) break;
-        }
+        frame* pHoveredFrame = find_hovered_frame_(iX, iY);
 
         if (pHoveredFrame != pHoveredScrollChild_)
         {
@@ -338,33 +311,14 @@ void scroll_frame::rebuild_scroll_render_target_()
     }
 }
 
-void scroll_frame::rebuild_scroll_strata_list_()
-{
-    lScrollStrataList_.clear();
-
-    for (auto* pFrame : utils::range::value(lScrollChildList_))
-    {
-        lScrollStrataList_[pFrame->get_frame_strata()].
-            lLevelList[pFrame->get_level()].
-                lFrameList.push_back(pFrame);
-    }
-}
-
 void scroll_frame::render_scroll_strata_list_()
 {
     pManager_->begin(pScrollRenderTarget_);
     pScrollRenderTarget_->clear(color::EMPTY);
 
-    for (const auto& mStrata : utils::range::value(lScrollStrataList_))
+    for (const auto& mStrata : lStrataList_)
     {
-        for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
-        {
-            for (auto* pFrame : mLevel.lFrameList)
-            {
-                if (!pFrame->is_newly_created())
-                    pFrame->render();
-            }
-        }
+        render_strata_(mStrata);
     }
 
     pManager_->end();
@@ -384,23 +338,12 @@ void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY)
     bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(iX, iY));
 }
 
-void scroll_frame::fire_redraw() const
+void scroll_frame::fire_redraw(frame_strata mStrata) const
 {
+    renderer::fire_redraw(mStrata);
+
     bRedrawScrollRenderTarget_ = true;
     notify_renderer_need_redraw();
-}
-
-void scroll_frame::notify_child_strata_changed(frame* pChild)
-{
-    if (pChild == pScrollChild_)
-        bRebuildScrollStrataList_ = true;
-    else
-    {
-        if (pParent_)
-            pParent_->notify_child_strata_changed(this);
-        else
-            pManager_->fire_build_strata_list();
-    }
 }
 
 void scroll_frame::create_glue()
@@ -422,17 +365,19 @@ void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
         remove_from_scroll_child_list_(pSubChild);
 }
 
-void scroll_frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered)
+void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
 {
     if (!pFrame)
         return;
 
-    if (bManuallyRendered)
+    renderer::notify_rendered_frame(pFrame, bRendered);
+
+    if (bRendered)
         add_to_scroll_child_list_(pFrame);
     else
         remove_from_scroll_child_list_(pFrame);
 
-    bRebuildScrollStrataList_ = true;
+    bRedrawScrollRenderTarget_ = true;
 }
 
 void scroll_frame::clear_links()

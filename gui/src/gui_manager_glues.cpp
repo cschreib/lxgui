@@ -201,11 +201,13 @@ int l_create_frame(lua_State* pLua)
         if (mFunc.get(3)->is_provided())
             sInheritance = mFunc.get(3)->get_string();
 
+        auto lInheritance = pGUIMgr->get_virtual_uiobject_list(sInheritance);
+
         frame* pNewFrame = nullptr;
         if (pParent)
-            pNewFrame = pParent->create_child(sType, sName, sInheritance);
+            pNewFrame = pParent->create_child(sType, sName, lInheritance);
         else
-            pNewFrame = pGUIMgr->create_root_frame(sType, sName, sInheritance);
+            pNewFrame = pGUIMgr->create_root_frame(sType, sName, lInheritance);
 
         if (pNewFrame)
         {

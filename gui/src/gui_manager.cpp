@@ -34,17 +34,18 @@ int l_get_locale(lua_State* pLua);
 int l_log(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
-    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl) :
-    event_receiver(nullptr), uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
+    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pRendererImpl) :
+    event_receiver(nullptr), renderer(pRendererImpl.get()),
+    uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
-    pImpl_(std::move(pImpl))
+    pRendererImpl_(std::move(pRendererImpl))
 {
     pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
     event_receiver::set_event_manager(pEventManager_.get());
     pInputManager_->register_event_manager(pEventManager_.get());
     register_event("KEY_PRESSED");
     register_event("WINDOW_RESIZED");
-    pImpl_->set_parent(this);
+    pRendererImpl_->set_parent(this);
 }
 
 manager::~manager()
@@ -57,12 +58,12 @@ manager::~manager()
 
 renderer_impl* manager::get_renderer()
 {
-    return pImpl_.get();
+    return pRendererImpl_.get();
 }
 
 const renderer_impl* manager::get_renderer() const
 {
-    return pImpl_.get();
+    return pRendererImpl_.get();
 }
 
 uint manager::get_screen_width() const
@@ -158,7 +159,7 @@ std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
 }
 
 frame* manager::create_root_frame(const std::string& sClassName, const std::string& sName,
-                                  const std::string& sInheritance)
+                                  const std::vector<uiobject*>& lInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
@@ -179,33 +180,19 @@ frame* manager::create_root_frame(const std::string& sClassName, const std::stri
     pNewFrame->create_glue();
     pNewFrame->set_level(0);
 
-    if (!utils::has_no_content(sInheritance))
+    for (auto* pObj : lInheritance)
     {
-        for (auto sParent : utils::cut(sInheritance, ","))
+        if (!pNewFrame->is_object_type(pObj->get_object_type()))
         {
-            utils::trim(sParent, ' ');
-            uiobject* pObj = get_uiobject_by_name(sParent, true);
-            if (pObj)
-            {
-                if (pNewFrame->is_object_type(pObj->get_object_type()))
-                {
-                    // Inherit from the other frame
-                    pNewFrame->copy_from(pObj);
-                }
-                else
-                {
-                    gui::out << gui::warning << "gui::manager : "
-                        << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                        << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
-                        << "). Inheritance skipped." << std::endl;
-                }
-            }
-            else
-            {
-                gui::out << gui::warning << "gui::manager : "
-                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
-            }
+            gui::out << gui::warning << "gui::manager : "
+                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
+                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
+                << "). Inheritance skipped." << std::endl;
+            continue;
         }
+
+        // Inherit from the other frame
+        pNewFrame->copy_from(pObj);
     }
 
     pNewFrame->set_newly_created();
@@ -222,47 +209,6 @@ std::unique_ptr<layered_region> manager::create_layered_region(const std::string
 
     gui::out << gui::warning << "gui::manager : Unknown layered_region class : \"" << sClassName << "\"." << std::endl;
     return nullptr;
-}
-
-sprite manager::create_sprite(utils::refptr<material> pMat) const
-{
-    return sprite(this, pMat);
-}
-
-sprite manager::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
-{
-    return sprite(this, pMat, fWidth, fHeight);
-}
-
-sprite manager::create_sprite(utils::refptr<material> pMat,
-    float fU, float fV, float fWidth, float fHeight) const
-{
-    return sprite(this, pMat, fU, fV, fWidth, fHeight);
-}
-
-utils::refptr<material> manager::create_material(const std::string& sFileName, material::filter mFilter) const
-{
-    return pImpl_->create_material(sFileName, mFilter);
-}
-
-utils::refptr<material> manager::create_material(const color& mColor) const
-{
-    return pImpl_->create_material(mColor);
-}
-
-utils::refptr<material> manager::create_material(utils::refptr<render_target> pRenderTarget) const
-{
-    return pImpl_->create_material(pRenderTarget);
-}
-
-utils::refptr<render_target> manager::create_render_target(uint uiWidth, uint uiHeight) const
-{
-    return pImpl_->create_render_target(uiWidth, uiHeight);
-}
-
-utils::refptr<font> manager::create_font(const std::string& sFontFile, uint uiSize) const
-{
-    return pImpl_->create_font(sFontFile, uiSize);
 }
 
 uint manager::get_new_object_id_() const
@@ -334,8 +280,11 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 {
     frame* pAddedFrame = pFrame.get();
     lRootFrameList_.insert(std::move(pFrame));
-    if (!pAddedFrame->is_virtual())
-        fire_build_strata_list();
+
+    if (!pAddedFrame->is_virtual() && (!pAddedFrame->get_renderer() || pAddedFrame->get_renderer() != this))
+    {
+        notify_rendered_frame(pAddedFrame, true);
+    }
 
     return pAddedFrame;
 }
@@ -433,6 +382,29 @@ uiobject* manager::get_uiobject(uint uiID)
         return iter->second;
     else
         return nullptr;
+}
+
+std::vector<uiobject*> manager::get_virtual_uiobject_list(const std::string& sNames)
+{
+    std::vector<uiobject*> lInheritance;
+    if (!utils::has_no_content(sNames))
+    {
+        for (auto sParent : utils::cut(sNames, ","))
+        {
+            utils::trim(sParent, ' ');
+            uiobject* pObj = get_uiobject_by_name(sParent, true);
+            if (!pObj)
+            {
+                gui::out << gui::warning << "gui::manager : "
+                    << "Cannot find virtual object \"" << sParent << "\". Inheritance skipped." << std::endl;
+                continue;
+            }
+
+            lInheritance.push_back(pObj);
+        }
+    }
+
+    return lInheritance;
 }
 
 const uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual) const
@@ -765,20 +737,6 @@ void manager::read_files()
         for (const auto& sDirectory : lGUIDirectoryList_)
             this->load_addon_directory_(sDirectory);
 
-        if (bEnableCaching_)
-        {
-            // Get the active strata list
-            for (auto* pFrame : utils::range::value(lFrameList_))
-            {
-                if (!pFrame->is_manually_rendered())
-                    lStrataList_[pFrame->get_frame_strata()];
-            }
-
-            // Create their render target
-            for (auto& mStrata : utils::range::value(lStrataList_))
-                create_strata_render_target_(mStrata);
-        }
-
         bLoadingUI_ = false;
         bClosed_ = false;
     }
@@ -819,16 +777,11 @@ void manager::close_ui()
 
         lFrameList_.clear();
 
-        for (auto& mStrata : utils::range::value(lStrataList_))
-        {
-            mStrata.lLevelList.clear();
-            mStrata.bRedraw = true;
-        }
+        clear_strata_list_();
 
         lAddOnList_.clear();
 
-        lStrataList_.clear();
-        bBuildStrataList_ = true;
+        bStrataListUpdated_ = true;
 
         pLua_ = nullptr;
         pSol_ = nullptr;
@@ -882,36 +835,12 @@ void manager::render_ui() const
     else
     {
         begin();
-        for (const auto& mStrata : utils::range::value(lStrataList_))
+        for (const auto& mStrata : lStrataList_)
         {
-            for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
-            {
-                for (auto* pFrame : mLevel.lFrameList)
-                {
-                    if (!pFrame->is_newly_created())
-                        pFrame->render();
-                }
-            }
-
-            ++mStrata.uiRedrawCount;
+            render_strata_(mStrata);
         }
         end();
     }
-}
-
-void manager::render_quad(const quad& mQuad) const
-{
-    pImpl_->render_quad(mQuad);
-}
-
-void manager::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
-{
-    pImpl_->render_quads(mQuad, lQuadList);
-}
-
-void manager::create_strata_render_target(frame_strata mframe_strata)
-{
-    create_strata_render_target_(lStrataList_[mframe_strata]);
 }
 
 void manager::create_caching_render_target_()
@@ -939,65 +868,10 @@ void manager::create_caching_render_target_()
     mSprite_ = create_sprite(create_material(pRenderTarget_));
 }
 
-void manager::create_strata_render_target_(strata& mStrata)
-{
-    try
-    {
-        if (mStrata.pRenderTarget)
-        {
-            mStrata.pRenderTarget->set_dimensions(uiScreenWidth_, uiScreenHeight_);
-        }
-        else
-        {
-            mStrata.pRenderTarget = create_render_target(uiScreenWidth_, uiScreenHeight_);
-        }
-    }
-    catch (const utils::exception& e)
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "Unable to create render_target for strata " << static_cast<uint>(mStrata.mStrata) << " :\n"
-            << e.get_description() << std::endl;
-
-        bEnableCaching_ = false;
-        return;
-    }
-
-    mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
-}
-
-void manager::render_strata_(strata& mStrata)
-{
-    if (!mStrata.pRenderTarget)
-        create_strata_render_target_(mStrata);
-
-    if (mStrata.pRenderTarget)
-    {
-        begin(mStrata.pRenderTarget);
-        mStrata.pRenderTarget->clear(color::EMPTY);
-
-        for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
-        {
-            for (auto* pFrame : mLevel.lFrameList)
-            {
-                if (!pFrame->is_newly_created())
-                    pFrame->render();
-            }
-        }
-
-        end();
-
-        ++mStrata.uiRedrawCount;
-    }
-}
 
 bool manager::is_loading_ui() const
 {
     return bLoadingUI_;
-}
-
-void manager::fire_build_strata_list()
-{
-    bBuildStrataList_ = true;
 }
 
 void manager::update(float fDelta)
@@ -1101,99 +975,79 @@ void manager::update(float fDelta)
             pObject->update(fDelta);
     }
 
-    if (bBuildStrataList_)
-    {
-        DEBUG_LOG(" Build strata...");
-        for (auto& mStrata : utils::range::value(lStrataList_))
-        {
-            mStrata.lLevelList.clear();
-            mStrata.bRedraw = true;
-        }
-
-        for (auto* pFrame : utils::range::value(lFrameList_))
-        {
-            if (pFrame->is_manually_rendered()) continue;
-
-            strata& mStrata = lStrataList_[pFrame->get_frame_strata()];
-            mStrata.mStrata = pFrame->get_frame_strata();
-            mStrata.lLevelList[pFrame->get_level()].lFrameList.push_back(pFrame);
-        }
-    }
-
     if (bEnableCaching_)
     {
         DEBUG_LOG(" Redraw strata...");
 
-        bool bRedraw = false;
-        for (auto& mStrata : utils::range::value(lStrataList_))
+        try
         {
-            if (mStrata.bRedraw)
+            bool bRedraw = false;
+            for (auto& mStrata : lStrataList_)
             {
-                render_strata_(mStrata);
-                bRedraw = true;
+                if (mStrata.bRedraw)
+                {
+                    if (!mStrata.pRenderTarget)
+                        create_strata_render_target_(mStrata, uiScreenWidth_, uiScreenHeight_);
+
+                    if (mStrata.pRenderTarget)
+                    {
+                        begin(mStrata.pRenderTarget);
+                        mStrata.pRenderTarget->clear(color::EMPTY);
+                        render_strata_(mStrata);
+                        end();
+                    }
+
+                    bRedraw = true;
+                }
+
+                mStrata.bRedraw = false;
             }
 
-            mStrata.bRedraw = false;
+            if (!pRenderTarget_)
+                create_caching_render_target_();
+
+            if (bRedraw && pRenderTarget_)
+            {
+                begin(pRenderTarget_);
+                pRenderTarget_->clear(color::EMPTY);
+
+                for (auto& mStrata : lStrataList_)
+                {
+                    mStrata.mSprite.render(0, 0);
+                }
+
+                end();
+            }
         }
-
-        if (!pRenderTarget_)
-            create_caching_render_target_();
-
-        if (bRedraw && pRenderTarget_)
+        catch (const utils::exception& e)
         {
-            begin(pRenderTarget_);
-            pRenderTarget_->clear(color::EMPTY);
+            gui::out << gui::error << "gui::manager : "
+                << "Unable to create render_target for strata :\n"
+                << e.get_description() << std::endl;
 
-            for (auto& mStrata : utils::range::value(lStrataList_))
-            {
-                mStrata.mSprite.render(0, 0);
-            }
-
-            end();
+            bEnableCaching_ = false;
         }
     }
 
-    if (bBuildStrataList_ || bObjectMoved_ ||
+    if (has_strata_list_changed_() || bObjectMoved_ ||
         (pInputManager_->get_mouse_dx() != 0.0f) ||
         (pInputManager_->get_mouse_dy() != 0.0f))
         bUpdateHoveredFrame_ = true;
 
     if (bUpdateHoveredFrame_ && bInputEnabled_)
     {
-        DEBUG_LOG(" Update overed frame...");
+        DEBUG_LOG(" Update hovered frame...");
         int iX = pInputManager_->get_mouse_x();
         int iY = pInputManager_->get_mouse_y();
 
-        frame* pHoveredFrame = nullptr;
-
-        // Iterate through the frames in reverse order from rendering (frame on top goes first)
-        for (const auto& mStrata : utils::range::reverse_value(lStrataList_))
-        {
-            for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
-            {
-                for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
-                {
-                    if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
-                    {
-                        pHoveredFrame = pFrame;
-                        break;
-                    }
-                }
-
-                if (pHoveredFrame) break;
-
-            }
-
-            if (pHoveredFrame) break;
-        }
-
+        frame* pHoveredFrame = find_hovered_frame_(iX, iY);
         set_hovered_frame_(pHoveredFrame, iX, iY);
 
         bUpdateHoveredFrame_ = false;
     }
 
     bObjectMoved_ = false;
-    bBuildStrataList_ = false;
+    reset_strata_list_changed_flag_();
 
     // Clear objects marked as deleted
     lDeletedObjectList_.clear();
@@ -1373,20 +1227,13 @@ void manager::notify_object_moved()
     bObjectMoved_ = true;
 }
 
-void manager::fire_redraw(frame_strata mStrata) const
-{
-    std::map<frame_strata, strata>::const_iterator iter = lStrataList_.find(mStrata);
-    if (iter != lStrataList_.end())
-        iter->second.bRedraw = true;
-}
-
 void manager::toggle_caching()
 {
     bEnableCaching_ = !bEnableCaching_;
 
     if (bEnableCaching_)
     {
-        for (auto& mStrata : utils::range::value(lStrataList_))
+        for (auto& mStrata : lStrataList_)
             mStrata.bRedraw = true;
     }
 }
@@ -1502,16 +1349,9 @@ void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::
 
 int manager::get_highest_level(frame_strata mFrameStrata) const
 {
-    std::map<frame_strata, strata>::const_iterator iterStrata = lStrataList_.find(mFrameStrata);
-    if (iterStrata != lStrataList_.end())
-    {
-        if (!iterStrata->second.lLevelList.empty())
-        {
-            std::map<int, level>::const_iterator iterLevel = iterStrata->second.lLevelList.end();
-            --iterLevel;
-            return iterLevel->first;
-        }
-    }
+    auto& mStrata = lStrataList_[(uint)mFrameStrata];
+    if (!mStrata.lLevelList.empty())
+        return mStrata.lLevelList.rbegin()->first;
 
     return 0;
 }
@@ -1631,35 +1471,35 @@ void manager::on_event(const event& mEvent)
 
         notify_object_moved();
 
-        pImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
+        pRendererImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
 
         // Resize caching render targets
         if (pRenderTarget_)
             create_caching_render_target_();
 
-        for (auto& mStrata : utils::range::value(lStrataList_))
+        for (auto& mStrata : lStrataList_)
         {
             if (mStrata.pRenderTarget)
-                create_strata_render_target_(mStrata);
+                create_strata_render_target_(mStrata, uiScreenWidth_, uiScreenHeight_);
         }
     }
 }
 
 void manager::begin(utils::refptr<render_target> pTarget) const
 {
-    pImpl_->begin(pTarget);
+    pRendererImpl_->begin(pTarget);
 }
 
 void manager::end() const
 {
-    pImpl_->end();
+    pRendererImpl_->end();
 }
 
 void manager::print_statistics()
 {
     gui::out << "GUI Statistics :" << std::endl;
     gui::out << "    strata redraw percent :" << std::endl;
-    for (const auto& mStrata : utils::range::value(lStrataList_))
+    for (const auto& mStrata : lStrataList_)
     {
         gui::out << "     - [" << static_cast<uint>(mStrata.mStrata) << "] : "
             << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_), 2, 1) << "%" << std::endl;

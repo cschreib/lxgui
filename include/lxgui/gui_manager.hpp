@@ -5,9 +5,7 @@
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_material.hpp"
-#include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_strata.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_exception.hpp>
@@ -42,14 +40,12 @@ namespace gui
     class layered_region;
     class frame;
     class focus_frame;
-    class font;
-    class color;
     class renderer_impl;
     struct quad;
     struct vertex;
 
     /// Manages the user interface
-    class manager : public event_receiver
+    class manager : public event_receiver, public renderer
     {
     private :
 
@@ -76,10 +72,10 @@ namespace gui
         *   \param sLocale        The name of the game locale ("enGB", ...)
         *   \param uiScreenWidth  The width of the screen
         *   \param uiScreenHeight The height of the screen
-        *   \param pImpl          The renderer implementation
+        *   \param pRendererImpl  The renderer implementation
         */
         manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
-                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pImpl);
+                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pRendererImpl);
 
         /// Destructor.
         ~manager() override;
@@ -147,28 +143,26 @@ namespace gui
         /// Creates a new frame, ready for use, and owned by this manager.
         /** \param sClassName   The sub class of the frame (Button, ...)
         *   \param sName        The name of this frame
-        *   \param sInheritance The name of the frame that should be inherited
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
         *         frame is directly usable.
         */
         frame* create_root_frame(const std::string& sClassName, const std::string& sName,
-            const std::string& sInheritance = "");
+            const std::vector<uiobject*>& lInheritance = {});
 
         /// Creates a new frame, ready for use.
         /** \param sName        The name of this frame
-        *   \param sInheritance The name of the frame that should be inherited
-        *                       (empty if none)
+        *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
         *         frame is directly usable.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame* create_root_frame(const std::string& sName, const std::string& sInheritance = "")
+        frame* create_root_frame(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
         {
             return static_cast<frame_type*>(
-                create_root_frame(frame_type::CLASS_NAME, sName, sInheritance));
+                create_root_frame(frame_type::CLASS_NAME, sName, lInheritance));
         }
 
         /// Creates a new layered_region.
@@ -179,78 +173,6 @@ namespace gui
         *         region object.
         */
         std::unique_ptr<layered_region> create_layered_region(const std::string& sClassName);
-
-        /// Creates a new sprite.
-        /** \param pMat The material with which to create the sprite
-        *   \return The new sprite
-        */
-        sprite create_sprite(utils::refptr<material> pMat) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \return The new sprite
-        */
-        sprite create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fU      The top left corner of the sprite in the material
-        *   \param fV      The top left corner of the sprite in the material
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \return The new sprite
-        */
-        sprite create_sprite(utils::refptr<material> pMat,
-            float fU, float fV, float fWidth, float fHeight) const;
-
-        /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file
-        *   \param mFilter   The filtering to apply to the texture
-        *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
-        */
-        utils::refptr<material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const;
-
-        /// Creates a new material from a plain color.
-        /** \param mColor The color to use
-        *   \return The new material
-        */
-        utils::refptr<material> create_material(const color& mColor) const;
-
-        /// Creates a new material from a render target.
-        /** \param pRenderTarget The render target from which to read the pixels
-        *   \return The new material
-        */
-        utils::refptr<material> create_material(utils::refptr<render_target> pRenderTarget) const;
-
-        /// Creates a new render target.
-        /** \param uiWidth  The width of the render target
-        *   \param uiHeight The height of the render target
-        */
-        utils::refptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const;
-
-        /// Creates a new font.
-        /** \param sFontFile The file from which to read the font
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \note Even though the gui has been designed to use vector fonts files
-        *         (such as .ttf or .otf font formats), nothing prevents the implementation
-        *         from using any other font type, including bitmap fonts.
-        */
-        utils::refptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
 
         /// Adds an uiobject to be handled by this manager.
         /** \param pObj The object to add
@@ -306,27 +228,33 @@ namespace gui
 
         /// Returns the uiobject associated with the given ID.
         /** \param uiID The unique ID representing the widget
-        *   \return The uiobject associated with the given ID
+        *   \return The uiobject associated with the given ID, or nullptr if not found
         */
         const uiobject* get_uiobject(uint uiID) const;
 
         /// Returns the uiobject associated with the given ID.
         /** \param uiID The unique ID representing the widget
-        *   \return The uiobject associated with the given ID
+        *   \return The uiobject associated with the given ID, or nullptr if not found
         */
         uiobject* get_uiobject(uint uiID);
+
+        /// Return a list of virtual uiobjects matching the provided comma-separated list.
+        /** \param sNames Comma-separated list of object names
+        *   \return A vector of objects matching the list. Objects not found will be excluded.
+        */
+        std::vector<uiobject*> get_virtual_uiobject_list(const std::string& sNames);
 
         /// Returns the uiobject associated with the given name.
         /** \param sName    The name of the widget you're after
         *   \param bVirtual 'true' to search for a virtual frame
-        *   \return The uiobject associated with the given name
+        *   \return The uiobject associated with the given name, or nullptr if not found
         */
         const uiobject* get_uiobject_by_name(const std::string& sName, bool bVirtual = false) const;
 
         /// Returns the uiobject associated with the given name.
         /** \param sName    The name of the widget you're after
         *   \param bVirtual 'true' to search for a virtual frame
-        *   \return The uiobject associated with the given name
+        *   \return The uiobject associated with the given name, or nullptr if not found
         */
         uiobject* get_uiobject_by_name(const std::string& sName, bool bVirtual = false);
 
@@ -457,23 +385,6 @@ namespace gui
         /// Renders the UI into the current render target.
         void render_ui() const;
 
-        /// Renders a quad.
-        /** \param mQuad The quad to render on the current render target
-        *   \note This function is meant to be called between begin() and
-        *         end() only.
-        */
-        void render_quad(const quad& mQuad) const;
-
-        /// Renders a set of quads.
-        /** \param mQuad     The base quad to use for rendering (material, blending, ...)
-        *   \param lQuadList The list of the quads you want to render
-        *   \note This function is meant to be called between begin() and
-        *         end() only. It is always more efficient to call this method
-        *         than calling render_quad repeatedly, as it allows to batch
-        *         count reduction.
-        */
-        void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const;
-
         /// Checks if the UI is currently being loaded.
         /** \return 'true' if the UI is currently being loaded
         */
@@ -537,9 +448,6 @@ namespace gui
 
         /// Tells this manager an object has moved.
         void notify_object_moved();
-
-        /// Tells this manager to redraw the UI.
-        void fire_redraw(frame_strata mStrata) const;
 
         /// Enables/disables GUI caching.
         /** \param bEnable 'true' to enable
@@ -738,8 +646,6 @@ namespace gui
         void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
 
         void create_caching_render_target_();
-        void create_strata_render_target_(strata& mStrata);
-        void render_strata_(strata& mStrata);
 
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 
@@ -772,8 +678,6 @@ namespace gui
         std::map<std::string, std::map<std::string, addon>> lAddOnList_;
 
         std::map<uint, frame*>         lFrameList_;
-        std::map<frame_strata, strata> lStrataList_;
-        bool                           bBuildStrataList_ = false;
         bool                           bObjectMoved_ = false;
         frame*                         pHoveredFrame_ = nullptr;
         bool                           bUpdateHoveredFrame_ = false;
@@ -811,7 +715,7 @@ namespace gui
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;
-        std::unique_ptr<renderer_impl> pImpl_;
+        std::unique_ptr<renderer_impl> pRendererImpl_;
     };
 }
 }

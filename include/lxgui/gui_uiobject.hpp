@@ -90,6 +90,7 @@ namespace gui
     };
 
     class frame;
+    class renderer;
 
     /// The base of the GUI
     /** This widget (GUI element) is a virtual base.
@@ -569,17 +570,17 @@ namespace gui
         */
         bool is_newly_created() const;
 
-        /// Returns the renderer of this object or its parents, nullptr if none.
-        /** \return The renderer of this object or its parents, nullptr if none
-        *   \note For more informations, see set_renderer().
+        /// Returns the renderer of this object or its parents.
+        /** \return The renderer of this object or its parents
+        *   \note For more informations, see frame::set_renderer().
         */
-        virtual frame* get_top_level_renderer();
+        virtual renderer* get_top_level_renderer();
 
-        /// Returns the renderer of this object or its parents, nullptr if none.
-        /** \return The renderer of this object or its parents, nullptr if none
-        *   \note For more informations, see set_renderer().
+        /// Returns the renderer of this object or its parents.
+        /** \return The renderer of this object or its parents
+        *   \note For more informations, see frame::set_renderer().
         */
-        virtual const frame* get_top_level_renderer() const;
+        virtual const renderer* get_top_level_renderer() const;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape-changing function.

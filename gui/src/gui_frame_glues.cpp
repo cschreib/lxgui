@@ -3,6 +3,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
+#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/luapp_state.hpp>
@@ -40,7 +41,8 @@ int lua_frame::_create_font_string(lua_State* pLua)
             sInheritance = mFunc.get(2)->get_string();
 
         region* pRegion = get_object()->create_region(
-            mLayer, "FontString", sName, sInheritance
+            mLayer, "FontString", sName,
+            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
         );
 
         if (pRegion)
@@ -80,7 +82,8 @@ int lua_frame::_create_texture(lua_State* pLua)
             sInheritance = mFunc.get(2)->get_string();
 
         region* pRegion = get_object()->create_region(
-            mLayer, "Texture", sName, sInheritance
+            mLayer, "Texture", sName,
+            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
         );
 
         if (pRegion)

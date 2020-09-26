@@ -17,8 +17,8 @@ namespace gui
 
     enum class frame_strata
     {
-        PARENT,
-        BACKGROUND,
+        PARENT = -1,
+        BACKGROUND = 0,
         LOW,
         MEDIUM,
         HIGH,
@@ -28,10 +28,13 @@ namespace gui
         TOOLTIP
     };
 
+    struct strata;
+
     /// Contains frame
     struct level
     {
         std::vector<frame*> lFrameList;
+        strata*             pStrata = nullptr;
     };
 
     /// Contains level

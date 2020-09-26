@@ -23,7 +23,7 @@
 namespace lxgui {
 namespace gui
 {
-    class manager;
+    class renderer;
     class render_target;
     class material;
 
@@ -77,13 +77,13 @@ namespace gui
         sprite() = default;
 
         /// Constructor.
-        sprite(const manager* pManager, utils::refptr<material> pMat);
+        sprite(const renderer* pRenderer, utils::refptr<material> pMat);
 
         /// Constructor.
-        sprite(const manager* pManager, utils::refptr<material> pMat, float fWidth, float fHeight);
+        sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fWidth, float fHeight);
 
         /// Constructor.
-        sprite(const manager* pManager, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
+        sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
 
         /// Renders this sprite on the current render target.
         /** \param fX The horizontal position
@@ -285,7 +285,7 @@ namespace gui
 
     private :
 
-        const manager* pManager_ = nullptr;
+        const renderer* pRenderer_ = nullptr;
 
         mutable quad mQuad_;
         vector2f     mHotSpot_;

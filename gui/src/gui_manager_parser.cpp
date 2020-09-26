@@ -44,6 +44,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
             }
             else
             {
+                // TODO: make that use create_root_frame and create_child
                 std::unique_ptr<frame> pFrame = create_frame(pElemBlock->get_name());
                 if (!pFrame)
                     continue;

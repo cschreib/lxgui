@@ -401,6 +401,7 @@ void frame::parse_frames_block_(xml::block* pBlock)
     {
         for (auto* pElemBlock : pFramesBlock->blocks())
         {
+            // TODO: make that use create_root_frame and create_child
             std::unique_ptr<frame> pFrame = pManager_->create_frame(pElemBlock->get_name());
             if (!pFrame)
                 continue;

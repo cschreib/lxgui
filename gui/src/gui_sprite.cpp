@@ -10,8 +10,8 @@ vertex::vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol) :
 {
 }
 
-sprite::sprite(const manager* pManager, utils::refptr<material> pMat) :
-    pManager_(pManager), mHotSpot_(vector2f::ZERO)
+sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat) :
+    pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
     fWidth_  = pMat->get_width();
@@ -31,8 +31,8 @@ sprite::sprite(const manager* pManager, utils::refptr<material> pMat) :
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const manager* pManager, utils::refptr<material> pMat, float fWidth, float fHeight) :
-    pManager_(pManager), mHotSpot_(vector2f::ZERO)
+sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fWidth, float fHeight) :
+    pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
     fWidth_  = fWidth;
@@ -52,8 +52,8 @@ sprite::sprite(const manager* pManager, utils::refptr<material> pMat, float fWid
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const manager* pManager, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
-    pManager_(pManager), mHotSpot_(vector2f::ZERO)
+sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
+    pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
     fWidth_  = fWidth;
@@ -82,7 +82,7 @@ void sprite::render(float fX, float fY) const
     mQuad_.v[2].pos = vector2f(fX+fWidth_, fY+fHeight_) - mHotSpot_;
     mQuad_.v[3].pos = vector2f(fX,         fY+fHeight_) - mHotSpot_;
 
-    pManager_->render_quad(mQuad_);
+    pRenderer_->render_quad(mQuad_);
 }
 
 void sprite::render_ex(float fX, float fY, float fRot, float fHScale, float fVScale) const
@@ -110,7 +110,7 @@ void sprite::render_ex(float fX, float fY, float fRot, float fHScale, float fVSc
         mQuad_.v[3].pos = vector2f(x1 + fX, y2 + fY);
     }
 
-    pManager_->render_quad(mQuad_);
+    pRenderer_->render_quad(mQuad_);
 }
 
 void sprite::render_2v(float fX1, float fY1, float fX3, float fY3)
@@ -120,7 +120,7 @@ void sprite::render_2v(float fX1, float fY1, float fX3, float fY3)
     mQuad_.v[2].pos = vector2f(fX3, fY3);
     mQuad_.v[3].pos = vector2f(fX1, fY3);
 
-    pManager_->render_quad(mQuad_);
+    pRenderer_->render_quad(mQuad_);
 }
 
 void sprite::render_4v(float fX1, float fY1,
@@ -133,17 +133,17 @@ void sprite::render_4v(float fX1, float fY1,
     mQuad_.v[2].pos = vector2f(fX3, fY3);
     mQuad_.v[3].pos = vector2f(fX4, fY4);
 
-    pManager_->render_quad(mQuad_);
+    pRenderer_->render_quad(mQuad_);
 }
 
 void sprite::render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const
 {
-    pManager_->render_quads(mQuad_, lQuadsArray);
+    pRenderer_->render_quads(mQuad_, lQuadsArray);
 }
 
 void sprite::render_static() const
 {
-    pManager_->render_quad(mQuad_);
+    pRenderer_->render_quad(mQuad_);
 }
 
 void sprite::set_quad(const std::array<vertex,4>& lVertexArray)

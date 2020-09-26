@@ -6,6 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/luapp_exception.hpp>
@@ -65,8 +66,8 @@ std::string frame::serialize(const std::string& sTab) const
     std::ostringstream sStr;
 
     sStr << region::serialize(sTab);
-    if (pRenderer_)
-    sStr << sTab << "  # Man. render : " << pRenderer_->get_name() << "\n";
+    if (pRenderer_ && pRenderer_ != pManager_)
+    sStr << sTab << "  # Man. render : " << dynamic_cast<frame*>(pRenderer_)->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
     switch (mStrata_)
     {
@@ -260,28 +261,7 @@ void frame::copy_from(uiobject* pObj)
     {
         if (pChild->is_special()) continue;
 
-        std::unique_ptr<frame> pNewChild = pManager_->create_frame(pChild->get_object_type());
-        if (!pNewChild) continue;
-
-        pNewChild->set_parent(this);
-        if (this->is_virtual())
-            pNewChild->set_virtual();
-
-        pNewChild->set_name(pChild->get_raw_name());
-        if (!pManager_->add_uiobject(pNewChild.get()))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-                << "\", but its name was already taken : \"" << pNewChild->get_name()
-                << "\". Skipped." << std::endl;
-
-            continue;
-        }
-
-        pNewChild->create_glue();
-        pNewChild->copy_from(pChild);
-        pNewChild->notify_loaded();
-        this->add_child(std::move(pNewChild));
+        create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
     }
 
     if (pFrame->pBackdrop_)
@@ -654,7 +634,8 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     return pRemovedRegion;
 }
 
-layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName, const std::string& sName, const std::string& sInheritance)
+layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName,
+    const std::string& sName, const std::vector<uiobject*>& lInheritance)
 {
     std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(sClassName);
     pRegion->set_parent(this);
@@ -671,40 +652,26 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
 
     pRegion->create_glue();
 
-    if (!utils::has_no_content(sInheritance))
+    for (auto* pObj : lInheritance)
     {
-        for (auto sParent : utils::cut(sInheritance, ","))
+        if (!pRegion->is_object_type(pObj->get_object_type()))
         {
-            utils::trim(sParent, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
-            if (pObj)
-            {
-                if (pRegion->is_object_type(pObj->get_object_type()))
-                {
-                    // Inherit from the other region
-                    pRegion->copy_from(pObj);
-                }
-                else
-                {
-                    gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                        << "\"" << pRegion->get_name() << "\" (" << pRegion->get_object_type()
-                        << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
-                        << "). Inheritance skipped." << std::endl;
-                }
-            }
-            else
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
-            }
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                << "\"" << pRegion->get_name() << "\" (" << pRegion->get_object_type()
+                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
+                << "). Inheritance skipped." << std::endl;
+            continue;
         }
+
+        // Inherit from the other region
+        pRegion->copy_from(pObj);
     }
 
     return add_region(std::move(pRegion));
 }
 
-
-frame* frame::create_child(const std::string& sClassName, const std::string& sName, const std::string& sInheritance)
+frame* frame::create_child(const std::string& sClassName, const std::string& sName,
+    const std::vector<uiobject*>& lInheritance)
 {
     std::unique_ptr<frame> pNewFrame = pManager_->create_frame(sClassName);
     if (!pNewFrame)
@@ -712,6 +679,9 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
 
     pNewFrame->set_parent(this);
     pNewFrame->set_name(sName);
+
+    if (this->is_virtual())
+        pNewFrame->set_virtual();
 
     if (!pManager_->add_uiobject(pNewFrame.get()))
     {
@@ -723,31 +693,19 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     pNewFrame->create_glue();
     pNewFrame->set_level(get_level() + 1);
 
-    if (!utils::has_no_content(sInheritance))
+    for (auto* pObj : lInheritance)
     {
-        for (auto sParent : utils::cut(sInheritance, ","))
+        if (!pNewFrame->is_object_type(pObj->get_object_type()))
         {
-            utils::trim(sParent, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
-            if (!pObj)
-            {
-                gui::out << gui::warning << "gui::manager : "
-                    << "Cannot find inherited object \"" << sParent << "\". Inheritance skipped." << std::endl;
-                continue;
-            }
-
-            if (!pNewFrame->is_object_type(pObj->get_object_type()))
-            {
-                gui::out << gui::warning << "gui::manager : "
-                    << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                    << ") cannot inherit from \"" << sParent << "\" (" << pObj->get_object_type()
-                    << "). Inheritance skipped." << std::endl;
-                continue;
-            }
-
-            // Inherit from the other frame
-            pNewFrame->copy_from(pObj);
+            gui::out << gui::warning << "gui::manager : "
+                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
+                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
+                << "). Inheritance skipped." << std::endl;
+            continue;
         }
+
+        // Inherit from the other frame
+        pNewFrame->copy_from(pObj);
     }
 
     pNewFrame->set_newly_created();
@@ -783,14 +741,12 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     frame* pAddedChild = pChild.get();
     lChildList_.insert(std::move(pChild));
 
-    if (!pAddedChild->get_renderer())
+    renderer* pTopLevelRenderer = get_top_level_renderer();
+    if (!pAddedChild->get_renderer() && pTopLevelRenderer != pManager_)
     {
-        frame* pTopLevelRenderer = get_top_level_renderer();
-        if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_frame(pAddedChild, true);
+        pManager_->notify_rendered_frame(pAddedChild, false);
+        pTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
     }
-
-    notify_strata_changed_();
 
     if (!bVirtual_)
     {
@@ -822,14 +778,12 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     std::unique_ptr<frame> pRemovedChild = std::move(*iter);
     lChildList_.erase(iter);
 
-    if (!pChild->get_renderer())
+    renderer* pTopLevelRenderer = get_top_level_renderer();
+    if (!pChild->get_renderer() && pTopLevelRenderer != pManager_)
     {
-        frame* pTopLevelRenderer = get_top_level_renderer();
-        if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_frame(pChild, false);
+        pTopLevelRenderer->notify_rendered_frame(pChild, false);
+        pManager_->notify_rendered_frame(pChild, true);
     }
-
-    notify_strata_changed_();
 
     pRemovedChild->set_parent(nullptr);
 
@@ -1021,10 +975,10 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         lXMLScriptInfoList_[sCutScriptName].sFile = sFile;
         lXMLScriptInfoList_[sCutScriptName].uiLineNbr = uiLineNbr;
     }
-    catch (const sol::error& e)
+    catch (const sol::error& mError)
     {
         // TODO: show file/line number from lXMLScriptInfoList_
-        std::string sError = e.what();
+        std::string sError = mError.what();
         gui::out << gui::error << sError << std::endl;
 
         event mEvent("LUA_ERROR");
@@ -1094,8 +1048,8 @@ void frame::on_event(const event& mEvent)
                 {
                     if (lRegDragList_.find(sButton) != lRegDragList_.end())
                     {
-                        on("DragStart");
                         bMouseDragged_ = true;
+                        on("DragStart");
                         break;
                     }
                 }
@@ -1115,12 +1069,12 @@ void frame::on_event(const event& mEvent)
                     pTopLevelParent_->raise();
 
                 std::string sMouseButton = mEvent[3].get<std::string>();
+                lMouseButtonList_.push_back(sMouseButton);
 
                 event mEvent2;
                 mEvent2.add(sMouseButton);
 
                 on("MouseDown", &mEvent2);
-                lMouseButtonList_.push_back(sMouseButton);
             }
         }
         else if (mEvent.get_name() == "MOUSE_RELEASED")
@@ -1156,8 +1110,8 @@ void frame::on_event(const event& mEvent)
 
                 if (!bDrag)
                 {
-                    on("DragStop");
                     bMouseDragged_ = false;
+                    on("DragStop");
                 }
             }
         }
@@ -1385,10 +1339,10 @@ void frame::set_frame_strata(frame_strata mStrata)
         }
     }
 
-    if (mStrata_ != mStrata && !bVirtual_)
-        notify_strata_changed_();
+    std::swap(mStrata_, mStrata);
 
-    mStrata_ = mStrata;
+    if (mStrata_ != mStrata && !bVirtual_ && bLoaded_)
+        get_top_level_renderer()->notify_frame_strata_changed(this, mStrata, mStrata_);
 }
 
 void frame::set_frame_strata(const std::string& sStrata)
@@ -1462,10 +1416,10 @@ void frame::set_level(int iLevel)
 {
     if (iLevel != iLevel_)
     {
-        iLevel_ = iLevel;
+        std::swap(iLevel, iLevel_);
 
-        if (!bVirtual_)
-            notify_strata_changed_();
+        if (!bVirtual_ && bLoaded_)
+            get_top_level_renderer()->notify_frame_level_changed(this, iLevel, iLevel_);
     }
 }
 
@@ -1594,12 +1548,13 @@ void frame::raise()
 
     if (iLevel_ > iOldLevel)
     {
+        if (!is_virtual() && bLoaded_)
+            get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
+
         int iAmount = iLevel_ - iOldLevel;
 
         for (auto* pChild : get_children())
             pChild->add_level_(iAmount);
-
-        notify_strata_changed_();
     }
     else
         iLevel_ = iOldLevel;
@@ -1607,12 +1562,14 @@ void frame::raise()
 
 void frame::add_level_(int iAmount)
 {
+    int iOldLevel = iLevel_;
     iLevel_ += iAmount;
+
+    if (!is_virtual() && bLoaded_)
+        get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
 
     for (auto* pChild : get_children())
         pChild->add_level_(iAmount);
-
-    notify_strata_changed_();
 }
 
 void frame::set_user_placed(bool bIsUserPlaced)
@@ -1642,84 +1599,41 @@ void frame::stop_sizing()
     pManager_->stop_sizing(this);
 }
 
-void frame::set_renderer(frame* pRenderer)
+void frame::set_renderer(renderer* pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
 
-    notify_strata_changed_();
-
-    if (pRenderer_)
-    {
-        pRenderer_->notify_manually_rendered_frame(this, false);
-        notify_renderer_need_redraw();
-    }
+    get_top_level_renderer()->notify_rendered_frame(this, false);
 
     pRenderer_ = pRenderer;
 
-    if (pRenderer_)
-    {
-        pRenderer_->notify_manually_rendered_frame(this, true);
-        notify_renderer_need_redraw();
-    }
+    get_top_level_renderer()->notify_rendered_frame(this, true);
 }
 
-bool frame::is_manually_rendered() const
-{
-    if (pRenderer_ != nullptr)
-        return true;
-
-    return pParent_ && pParent_->is_manually_rendered();
-}
-
-const frame* frame::get_renderer() const
+const renderer* frame::get_renderer() const
 {
     return pRenderer_;
 }
 
-frame* frame::get_top_level_renderer()
+renderer* frame::get_top_level_renderer()
 {
     if (pRenderer_)
         return pRenderer_;
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return nullptr;
+        return pManager_;
 }
 
-const frame* frame::get_top_level_renderer() const
+const renderer* frame::get_top_level_renderer() const
 {
     if (pRenderer_)
         return pRenderer_;
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return nullptr;
-}
-
-void frame::fire_redraw() const
-{
-}
-
-void frame::notify_manually_rendered_frame(frame* pFrame, bool bManuallyRendered)
-{
-    throw gui::exception(lType_.back(), "this class has no mechanism for manual rendering");
-}
-
-void frame::notify_child_strata_changed(frame* pChild)
-{
-    if (pParent_)
-        pParent_->notify_child_strata_changed(this);
-    else
-        pManager_->fire_build_strata_list();
-}
-
-void frame::notify_strata_changed_()
-{
-    if (pParent_)
-        pParent_->notify_child_strata_changed(this);
-    else
-        pManager_->fire_build_strata_list();
+        return pManager_;
 }
 
 void frame::notify_visible_(bool bTriggerEvents)
@@ -1770,12 +1684,7 @@ void frame::notify_renderer_need_redraw() const
     if (bVirtual_)
         return;
 
-    if (pRenderer_)
-        pRenderer_->fire_redraw();
-    else if (pParent_)
-        pParent_->notify_renderer_need_redraw();
-    else
-        pManager_->fire_redraw(mStrata_);
+    get_top_level_renderer()->fire_redraw(mStrata_);
 }
 
 void frame::show()
@@ -1976,12 +1885,8 @@ void frame::clear_links_()
 
     if (!bVirtual_)
     {
-        // Tell the renderer to no longer render this widget and its children
-        frame* pTopLevelRenderer = get_top_level_renderer();
-        if (pTopLevelRenderer)
-            pTopLevelRenderer->notify_manually_rendered_frame(this, false);
-
-        notify_renderer_need_redraw();
+        // Tell the renderer to no longer render this widget
+        get_top_level_renderer()->notify_rendered_frame(this, false);
     }
 
     // Unregister this frame from the GUI manager
