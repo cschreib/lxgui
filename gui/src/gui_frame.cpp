@@ -1265,6 +1265,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
     std::string sAdjustedName = get_adjusted_script_name("On"+sScriptName);
 
+    auto* pOldAddOn = pManager_->get_current_addon();
     pManager_->set_current_addon(pAddOn_);
 
     sol::table mSelf = mLua[sLuaName_];
@@ -1276,7 +1277,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
         pManager_->get_event_manager()->fire_event(mEvent);
-
+        pManager_->set_current_addon(pOldAddOn);
         return;
     }
 
@@ -1289,6 +1290,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
         pManager_->get_event_manager()->fire_event(mEvent);
+        pManager_->set_current_addon(pOldAddOn);
 
         return;
     }
@@ -1307,6 +1309,8 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         mEvent.add(sError);
         pManager_->get_event_manager()->fire_event(mEvent);
     }
+
+    pManager_->set_current_addon(pOldAddOn);
 }
 
 void frame::register_all_events()
