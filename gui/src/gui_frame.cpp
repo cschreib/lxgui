@@ -32,6 +32,7 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
 
 frame::~frame()
 {
+    // Children must be destroyed first
     lChildList_.clear();
     lRegionList_.clear();
 
