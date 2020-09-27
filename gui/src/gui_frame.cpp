@@ -1501,9 +1501,6 @@ void frame::set_parent(frame* pParent)
 
     pParent_ = pParent;
 
-    if (!pAddOn_ && pParent_)
-        pAddOn_ = pParent_->get_addon();
-
     fire_update_dimensions();
 }
 
@@ -1741,7 +1738,10 @@ void frame::set_addon(addon* pAddOn)
 
 addon* frame::get_addon() const
 {
-    return pAddOn_;
+    if (!pAddOn_ && pParent_)
+        return pParent_->get_addon();
+    else
+        return pAddOn_;
 }
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
