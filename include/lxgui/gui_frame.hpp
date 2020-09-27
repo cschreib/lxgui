@@ -751,6 +751,8 @@ namespace gui
 
         void add_level_(int iAmount);
 
+        void propagate_renderer_(bool bRendered);
+
         void update_borders_() const override;
 
         void clear_links_();
