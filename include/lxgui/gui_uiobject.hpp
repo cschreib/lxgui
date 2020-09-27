@@ -370,7 +370,7 @@ namespace gui
         const ObjectType* down_cast() const
         {
             const ObjectType* pObject = dynamic_cast<const ObjectType*>(this);
-            if (!pObject && is_object_type(ObjectType::CLASS_NAME))
+            if (this && !pObject && is_object_type(ObjectType::CLASS_NAME))
             {
                 throw gui::exception(lType_.back(),
                     "cannot use down_cast() to "+std::string(ObjectType::CLASS_NAME)+
