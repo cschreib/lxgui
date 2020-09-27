@@ -118,7 +118,8 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         add_child(std::move(pFrame));
 
         pScrollChild_->set_special();
-        pScrollChild_->set_renderer(this);
+        if (!is_virtual())
+            pScrollChild_->set_renderer(this);
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
 
@@ -130,7 +131,8 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         iVerticalScrollRange_ = int(pScrollChild_->get_abs_height()) - int(uiAbsHeight_);
         if (iVerticalScrollRange_ < 0) iVerticalScrollRange_ = 0;
 
-        on("ScrollRangeChanged");
+        if (!is_virtual())
+            on("ScrollRangeChanged");
 
         bUpdateScrollRange_ = false;
     }
@@ -241,7 +243,8 @@ void scroll_frame::update_scroll_range_()
     iVerticalScrollRange_ = int(pScrollChild_->get_abs_height()) - int(uiAbsHeight_);
     if (iVerticalScrollRange_ < 0) iVerticalScrollRange_ = 0;
 
-    on("ScrollRangeChanged");
+    if (!is_virtual())
+        on("ScrollRangeChanged");
 }
 
 void scroll_frame::update_scroll_child_input_()
