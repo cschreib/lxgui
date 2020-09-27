@@ -38,11 +38,10 @@ void backdrop::set_background(const std::string& sBackgroundFile)
 {
     if (!sBackgroundFile.empty())
     {
-        std::string sFile = pParent_->get_manager()->parse_file_name(sBackgroundFile);
-        if (utils::file_exists(sFile))
+        if (utils::file_exists(sBackgroundFile))
         {
             mBackground_ = pParent_->get_manager()->create_sprite(
-                pParent_->get_manager()->create_material(sFile)
+                pParent_->get_manager()->create_material(sBackgroundFile)
             );
             uiTileSize_ = uiOriginalTileSize_ = mBackground_.get_width();
             mBackgroundColor_ = color::EMPTY;
@@ -51,7 +50,7 @@ void backdrop::set_background(const std::string& sBackgroundFile)
         else
         {
             gui::out << gui::warning << "backdrop : "
-                << "Cannot find file : \"" << sFile << "\" for "
+                << "Cannot find file : \"" << sBackgroundFile << "\" for "
                 << pParent_->get_name() << "'s backdrop background file.\n"
                 << "No background will be drawn." << std::endl;
 
@@ -146,10 +145,9 @@ void backdrop::set_edge(const std::string& sEdgeFile)
 {
     if (!sEdgeFile.empty())
     {
-        std::string sFile = pParent_->get_manager()->parse_file_name(sEdgeFile);
-        if (utils::file_exists(sFile))
+        if (utils::file_exists(sEdgeFile))
         {
-            utils::refptr<material> pMat = pParent_->get_manager()->create_material(sFile);
+            utils::refptr<material> pMat = pParent_->get_manager()->create_material(sEdgeFile);
 
             if (pMat->get_width()/pMat->get_height() == 8.0f)
             {
@@ -176,7 +174,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
                 );
 
                 bHasEdge_ = true;
-                sEdgeFile_ = sFile;
+                sEdgeFile_ = sEdgeFile;
                 mEdgeColor_ = color::EMPTY;
             }
             else
@@ -186,7 +184,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
 
                 gui::out << gui::error << "backdrop : "
                     << "An edge file's width must be exactly 8 times greater than its height "
-                    << "(in " << sFile << ").\nNo edge will be drawn for "
+                    << "(in " << sEdgeFile << ").\nNo edge will be drawn for "
                     << pParent_->get_name() << "'s backdrop." << std::endl;
             }
         }

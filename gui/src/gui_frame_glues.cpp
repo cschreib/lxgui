@@ -763,9 +763,10 @@ int lua_frame::_set_backdrop(lua_State* pLua)
             std::unique_ptr<backdrop> pBackdrop(new backdrop(get_object()));
 
             lua::state& mState = mFunc.get_state();
+            manager* pManager = manager::get_manager(mState);
 
-            pBackdrop->set_background(mState.get_field_string("bgFile", false, ""));
-            pBackdrop->set_edge(mState.get_field_string("edgeFile", false, ""));
+            pBackdrop->set_background(pManager->parse_file_name(mState.get_field_string("bgFile", false, "")));
+            pBackdrop->set_edge(pManager->parse_file_name(mState.get_field_string("edgeFile", false, "")));
             pBackdrop->set_backgrond_tilling(mState.get_field_bool("tile", false, false));
 
             uint uiTileSize = uint(mState.get_field_int("tileSize", false, 0));
