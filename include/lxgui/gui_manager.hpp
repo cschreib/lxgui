@@ -536,17 +536,6 @@ namespace gui
         */
         void on_event(const event& mEvent) override;
 
-        /// Tells the underlying graphics engine to start rendering into a new target.
-        /** \param pTarget The target to render to (nullptr to render to the screen)
-        */
-        void begin(utils::refptr<render_target> pTarget = nullptr) const;
-
-        /// Tells the underlying graphics engine we're done rendering.
-        /** \note For most engines, this is when the rendering is actually
-        *         done, so don't forget to call it !
-        */
-        void end() const;
-
         /// Registers a new frame type.
         /** \note Use as template argument the C++ type of this frame.
         *   \note The string parameter is not used anymore (still here for

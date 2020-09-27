@@ -51,6 +51,17 @@ namespace gui
         */
         virtual void notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel);
 
+        /// Tells the underlying graphics engine to start rendering into a new target.
+        /** \param pTarget The target to render to (nullptr to render to the screen)
+        */
+        void begin(utils::refptr<render_target> pTarget = nullptr) const;
+
+        /// Tells the underlying graphics engine we're done rendering.
+        /** \note For most engines, this is when the rendering is actually
+        *         done, so don't forget to call it !
+        */
+        void end() const;
+
         /// Renders a quad.
         /** \param mQuad The quad to render on the current render target
         *   \note This function is meant to be called between begin() and

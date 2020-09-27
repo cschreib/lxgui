@@ -90,6 +90,16 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
     add_to_level_list_(mIterNew->second, pFrame);
 }
 
+void renderer::begin(utils::refptr<render_target> pTarget) const
+{
+    pImpl_->begin(pTarget);
+}
+
+void renderer::end() const
+{
+    pImpl_->end();
+}
+
 void renderer::render_quad(const quad& mQuad) const
 {
     pImpl_->render_quad(mQuad);

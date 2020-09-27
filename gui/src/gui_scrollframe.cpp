@@ -304,7 +304,7 @@ void scroll_frame::rebuild_scroll_render_target_()
     }
     else
     {
-        pScrollRenderTarget_ = pManager_->create_render_target(uiAbsWidth_, uiAbsHeight_);
+        pScrollRenderTarget_ = create_render_target(uiAbsWidth_, uiAbsHeight_);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -313,7 +313,7 @@ void scroll_frame::rebuild_scroll_render_target_()
 
 void scroll_frame::render_scroll_strata_list_()
 {
-    pManager_->begin(pScrollRenderTarget_);
+    begin(pScrollRenderTarget_);
     pScrollRenderTarget_->clear(color::EMPTY);
 
     for (const auto& mStrata : lStrataList_)
@@ -321,7 +321,7 @@ void scroll_frame::render_scroll_strata_list_()
         render_strata_(mStrata);
     }
 
-    pManager_->end();
+    end();
 }
 
 bool scroll_frame::is_in_frame(int iX, int iY) const

@@ -1486,16 +1486,6 @@ void manager::on_event(const event& mEvent)
     }
 }
 
-void manager::begin(utils::refptr<render_target> pTarget) const
-{
-    pRendererImpl_->begin(pTarget);
-}
-
-void manager::end() const
-{
-    pRendererImpl_->end();
-}
-
 void manager::print_statistics()
 {
     gui::out << "GUI Statistics :" << std::endl;
