@@ -89,6 +89,13 @@ void manager::clear_addon_directory_list()
 
 bool manager::check_uiobject_name(const std::string& sName) const
 {
+    if (utils::has_no_content(sName))
+    {
+        gui::out << gui::error << "gui::manager : "
+            << "Cannot create a uiobject with a blank name." << std::endl;
+        return false;
+    }
+
     if (utils::is_number(sName[0]))
     {
         gui::out << gui::error << "gui::manager : "
