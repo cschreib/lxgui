@@ -1742,7 +1742,11 @@ void frame::unregister_event(const std::string& sEvent)
 void frame::set_addon(addon* pAddOn)
 {
     if (!pAddOn_)
+    {
         pAddOn_ = pAddOn;
+        for (auto* pChild : get_children())
+            pChild->set_addon(pAddOn);
+    }
     else
         gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
 }
