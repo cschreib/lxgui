@@ -165,8 +165,8 @@ std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
     }
 }
 
-frame* manager::create_root_frame(const std::string& sClassName, const std::string& sName,
-                                  const std::vector<uiobject*>& lInheritance)
+frame* manager::create_root_frame_(const std::string& sClassName, const std::string& sName,
+                                  bool bVirtual, const std::vector<uiobject*>& lInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
@@ -176,6 +176,9 @@ frame* manager::create_root_frame(const std::string& sClassName, const std::stri
         return nullptr;
 
     pNewFrame->set_name(sName);
+
+    if (bVirtual)
+        pNewFrame->set_virtual();
 
     if (!add_uiobject(pNewFrame.get()))
     {

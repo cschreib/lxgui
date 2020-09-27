@@ -28,119 +28,6 @@ void frame::parse_block(xml::block* pBlock)
 
 void frame::parse_attributes_(xml::block* pBlock)
 {
-    std::string sParent = pBlock->get_attribute("parent");
-    bool bVirtual = utils::string_to_bool(pBlock->get_attribute("virtual"));
-
-    if (!sParent.empty())
-    {
-        if (!pParent_)
-        {
-            std::string sName = pBlock->get_attribute("name");
-            if (utils::has_no_content(sName))
-            {
-                throw exception(pBlock->get_location(),
-                    "Cannot create an uiobject with a blank name. Skipped."
-                );
-            }
-            if (!pManager_->check_uiobject_name(sName))
-            {
-                throw exception(pBlock->get_location(),
-                    "Cannot create an uiobject with an incorrect name. Skipped."
-                );
-            }
-
-            frame* pParent = pManager_->get_uiobject_by_name(sParent)->down_cast<frame>();
-            if (pParent)
-            {
-                set_parent(pParent);
-                if (bVirtual || pParent->is_virtual())
-                    set_virtual();
-                set_name(sName);
-            }
-            else
-            {
-                if (bVirtual)
-                    set_virtual();
-                set_name(sName);
-
-                gui::out << gui::warning << pBlock->get_location() << " : "
-                    << "Cannot find \"" << get_name() << "\"'s parent : \"" << sParent << "\". "
-                    "No parent given to that widget." << std::endl;
-            }
-        }
-        else
-        {
-            if (bVirtual || pParent_->is_virtual())
-                set_virtual();
-
-            set_name(pBlock->get_attribute("name"));
-
-            gui::out << gui::warning << pBlock->get_location() << " : "
-                << "Cannot use the \"parent\" attribute on \"" << get_name() << "\", "
-                "because it is a nested uiobject. Attribute ignored." << std::endl;
-        }
-    }
-    else
-    {
-        if (bVirtual  || (pParent_ && pParent_->is_virtual()))
-            set_virtual();
-
-        set_name(pBlock->get_attribute("name"));
-    }
-
-    if (pManager_->get_uiobject_by_name(sName_))
-    {
-        throw exception(pBlock->get_location(),
-            std::string(bVirtual ? "A virtual" : "An")+" object with the name \""+
-            sName_+"\" already exists. Skipped."
-        );
-    }
-
-    pManager_->add_uiobject(this);
-
-    create_glue();
-
-    if (pParent_)
-        set_level(pParent_->get_level() + 1);
-    else
-        set_level(0);
-
-    std::string sInheritance = pBlock->get_attribute("inherits");
-    if (!utils::has_no_content(sInheritance))
-    {
-        for (auto sParent : utils::cut(sInheritance, ","))
-        {
-            utils::trim(sParent, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
-            if (pObj)
-            {
-                if (is_object_type(pObj->get_object_type()))
-                {
-                    // Inherit from the other frame
-                    copy_from(pObj);
-                }
-                else
-                {
-                    gui::out << gui::warning << pBlock->get_location() << " : "
-                        << "\"" << sName_ << "\" (" << "gui::" << lType_.back() << ") cannot inherit "
-                        << "from \"" << sParent << "\" (" << pObj->get_object_type()
-                        << "). Inheritance skipped." << std::endl;
-                }
-            }
-            else
-            {
-                bool bNonVirtual = false;
-                if (pManager_->get_uiobject_by_name(sParent))
-                    bNonVirtual = true;
-
-                gui::out << gui::warning << pBlock->get_location() << " : "
-                    << "Cannot find inherited object \"" << sParent << "\""
-                    << std::string(bNonVirtual ? " (object is not virtual)" : "")
-                    << ". Inheritance skipped." << std::endl;
-            }
-        }
-    }
-
     if (pBlock->is_provided("hidden") || !bInherits_)
         set_shown(!utils::string_to_bool(pBlock->get_attribute("hidden")));
 
@@ -401,18 +288,17 @@ void frame::parse_frames_block_(xml::block* pBlock)
     {
         for (auto* pElemBlock : pFramesBlock->blocks())
         {
-            // TODO: make that use create_root_frame and create_child
-            std::unique_ptr<frame> pFrame = pManager_->create_frame(pElemBlock->get_name());
-            if (!pFrame)
-                continue;
-
             try
             {
+                auto mAttr = pManager_->parse_core_attributes(pElemBlock, this);
+
+                frame* pFrame = create_child(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+                if (!pFrame)
+                    continue;
+
                 pFrame->set_addon(pManager_->get_current_addon());
-                pFrame->set_parent(this);
                 pFrame->parse_block(pElemBlock);
                 pFrame->notify_loaded();
-                add_child(std::move(pFrame));
             }
             catch (const exception& e)
             {

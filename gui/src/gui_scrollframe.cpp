@@ -50,30 +50,23 @@ void scroll_frame::copy_from(uiobject* pObj)
     this->set_horizontal_scroll(pScrollFrame->get_horizontal_scroll());
     this->set_vertical_scroll(pScrollFrame->get_vertical_scroll());
 
-    if (pScrollFrame->get_scroll_child())
+    auto* pOtherChild = pScrollFrame->get_scroll_child();
+    if (pOtherChild)
     {
-        std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pScrollFrame->get_scroll_child()->get_object_type());
-        if (pScrollChild)
+        frame* pScrollChild = nullptr;
+        if (is_virtual())
         {
-            pScrollChild->set_parent(this);
-            if (this->is_virtual())
-                pScrollChild->set_virtual();
-            pScrollChild->set_name(pScrollFrame->get_scroll_child()->get_raw_name());
-            if (!pManager_->add_uiobject(pScrollChild.get()))
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                    "Trying to add \""+pScrollChild->get_name()+"\" to \""+sName_+
-                    "\", but its name was already taken : \""+pScrollChild->get_name()+"\". Skipped." << std::endl;
-            }
-            else
-            {
-                pScrollChild->create_glue();
-                pScrollChild->copy_from(pScrollFrame->get_scroll_child());
-                pScrollChild->notify_loaded();
-
-                this->set_scroll_child(std::move(pScrollChild));
-            }
+            pScrollChild = pManager_->create_virtual_root_frame(pOtherChild->get_object_type(),
+                pOtherChild->get_raw_name(), {pOtherChild});
         }
+        else
+        {
+            pScrollChild = pManager_->create_root_frame(pOtherChild->get_object_type(),
+                pOtherChild->get_raw_name(), {pOtherChild});
+        }
+
+        if (pScrollChild)
+            this->set_scroll_child(pManager_->remove_root_frame(pScrollChild));
     }
 }
 

@@ -20,35 +20,47 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
     if (pScrollChildBlock)
     {
         xml::block* pChildBlock = pScrollChildBlock->first();
-        std::unique_ptr<frame> pScrollChild = pManager_->create_frame(pChildBlock->get_name());
-        if (pScrollChild)
+        try
         {
-            try
+            auto mAttr = pManager_->parse_core_attributes(pChildBlock, this);
+
+            frame* pScrollChild = nullptr;
+            if (is_virtual())
             {
-                pScrollChild->set_addon(pManager_->get_current_addon());
-                pScrollChild->set_parent(this);
-                pScrollChild->parse_block(pChildBlock);
-                pScrollChild->notify_loaded();
-
-                xml::block* pAnchors = pChildBlock->get_block("anchors");
-                if (pAnchors)
-                {
-                    gui::out << gui::warning << pAnchors->get_location() << " : "
-                        << "Scroll child's anchors are ignored." << std::endl;
-                }
-
-                if (!pChildBlock->get_block("Size"))
-                {
-                    gui::out << gui::warning << pChildBlock->get_location() << " : "
-                        "Scroll child needs its size to be defined in a Size block." << std::endl;
-                }
-
-                set_scroll_child(std::move(pScrollChild));
+                pScrollChild = pManager_->create_virtual_root_frame(mAttr.sFrameType, mAttr.sName,
+                    mAttr.lInheritance);
             }
-            catch (const exception& e)
+            else
             {
-                gui::out << gui::error << e.get_description() << std::endl;
+                pScrollChild = pManager_->create_root_frame(mAttr.sFrameType, mAttr.sName,
+                    mAttr.lInheritance);
             }
+
+            if (!pScrollChild)
+                return;
+
+            this->set_scroll_child(pManager_->remove_root_frame(pScrollChild));
+
+            pScrollChild->set_addon(pManager_->get_current_addon());
+            pScrollChild->parse_block(pChildBlock);
+            pScrollChild->notify_loaded();
+
+            xml::block* pAnchors = pChildBlock->get_block("anchors");
+            if (pAnchors)
+            {
+                gui::out << gui::warning << pAnchors->get_location() << " : "
+                    << "Scroll child's anchors are ignored." << std::endl;
+            }
+
+            if (!pChildBlock->get_block("Size"))
+            {
+                gui::out << gui::warning << pChildBlock->get_location() << " : "
+                    "Scroll child needs its size to be defined in a Size block." << std::endl;
+            }
+        }
+        catch (const exception& e)
+        {
+            gui::out << gui::error << e.get_description() << std::endl;
         }
     }
 }

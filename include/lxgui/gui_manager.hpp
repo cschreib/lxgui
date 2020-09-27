@@ -149,9 +149,28 @@ namespace gui
         *         frame is directly usable.
         */
         frame* create_root_frame(const std::string& sClassName, const std::string& sName,
-            const std::vector<uiobject*>& lInheritance = {});
+            const std::vector<uiobject*>& lInheritance = {})
+        {
+            return create_root_frame_(sClassName, sName, false, lInheritance);
+        }
 
-        /// Creates a new frame, ready for use.
+        /// Creates a new virtual frame, ready for use, and owned by this manager.
+        /** \param sClassName   The sub class of the frame (Button, ...)
+        *   \param sName        The name of this frame
+        *   \param lInheritance The objects to inherit from
+        *   \return The new frame
+        *   \note This function takes care of the basic initializing: the
+        *         frame is directly usable.
+        *   \note Virtual frames are not displayed, but they can be used as templates
+        *         to create other frames through inheritance.
+        */
+        frame* create_virtual_root_frame(const std::string& sClassName, const std::string& sName,
+            const std::vector<uiobject*>& lInheritance = {})
+        {
+            return create_root_frame_(sClassName, sName, true, lInheritance);
+        }
+
+        /// Creates a new frame, ready for use, and owned by this manager.
         /** \param sName        The name of this frame
         *   \param lInheritance The objects to inherit from
         *   \return The new frame
@@ -162,7 +181,22 @@ namespace gui
         frame* create_root_frame(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
         {
             return static_cast<frame_type*>(
-                create_root_frame(frame_type::CLASS_NAME, sName, lInheritance));
+                create_root_frame_(frame_type::CLASS_NAME, sName, false, lInheritance));
+        }
+        /// Creates a new virtual frame, ready for use, and owned by this manager.
+        /** \param sName        The name of this frame
+        *   \param lInheritance The objects to inherit from
+        *   \return The new frame
+        *   \note This function takes care of the basic initializing: the
+        *         frame is directly usable.
+        *   \note Virtual frames are not displayed, but they can be used as templates
+        *         to create other frames through inheritance.
+        */
+        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        frame* create_virtual_root_frame(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
+        {
+            return static_cast<frame_type*>(
+                create_root_frame_(frame_type::CLASS_NAME, sName, true, lInheritance));
         }
 
         /// Creates a new layered_region.
@@ -615,6 +649,23 @@ namespace gui
         */
         const std::string& get_locale() const;
 
+        /// Struct holding core information about a frame, parsed from XML.
+        struct xml_core_attributes
+        {
+            std::string            sFrameType;
+            std::string            sName;
+            frame*                 pParent = nullptr;
+            bool                   bVirtual = false;
+            std::vector<uiobject*> lInheritance;
+        };
+
+        /// Parse "core" attributes from an XML block, before creating a frame.
+        /** \param pBlock     The XML block to parse from
+        *   \param pXMLParent The current XML parent frame of this block (nullptr if none)
+        *   \return Filled in core attributes structure.
+        */
+        xml_core_attributes parse_core_attributes(xml::block* pBlock, frame* pXMLParent);
+
         /// Returns the gui manager associated to the provided lua::state.
         /** \param mState The lua::state
         */
@@ -633,6 +684,9 @@ namespace gui
         uint get_new_object_id_() const;
 
         void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
+
+        frame* create_root_frame_(const std::string& sClassName, const std::string& sName,
+            bool bVirtual, const std::vector<uiobject*>& lInheritance);
 
         void create_caching_render_target_();
 
