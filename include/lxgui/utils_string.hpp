@@ -170,16 +170,16 @@ std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::
 bool starts_with(const string& s, const string& sPattern);
 bool ends_with(const string& s, const string& sPattern);
 
-template<class T>
-typename std::vector<T>::iterator find(std::vector<T>& v, const T& s)
+template<typename C, typename T>
+auto find(C& v, const T& s)
 {
     return std::find(v.begin(), v.end(), s);
 }
 
-template<class T>
-typename std::vector<T>::const_iterator find(const std::vector<T>& v, const T& s)
+template<typename C, typename T>
+auto find_if(C& v, T&& f)
 {
-    return std::find(v.begin(), v.end(), s);
+    return std::find_if(v.begin(), v.end(), std::forward<T>(f));
 }
 
 bool has_no_content(const std::string& s);

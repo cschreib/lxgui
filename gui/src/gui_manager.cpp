@@ -340,8 +340,8 @@ void manager::remove_frame(frame* pObj)
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
 {
-    auto mIter = std::find_if(lRootFrameList_.begin(), lRootFrameList_.end(), [&](auto& pObj) {
-        return pObj->get_id() == pFrame->get_id();
+    auto mIter = utils::find_if(lRootFrameList_, [&](auto& pObj) {
+        return pObj && pObj->get_id() == pFrame->get_id();
     });
 
     if (mIter == lRootFrameList_.end())
@@ -959,6 +959,15 @@ void manager::update(float fDelta)
     {
         if (pObject && !pObject->is_virtual())
             pObject->update(fDelta);
+    }
+
+    // Removed destroyed frames
+    {
+        auto mIterRemove = std::remove_if(lRootFrameList_.begin(), lRootFrameList_.end(), [](auto& pObj) {
+            return pObj == nullptr;
+        });
+
+        lRootFrameList_.erase(mIterRemove, lRootFrameList_.end());
     }
 
     if (bEnableCaching_)

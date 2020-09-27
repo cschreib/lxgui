@@ -7,10 +7,10 @@
 #include "lxgui/gui_eventreceiver.hpp"
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_sorted_vector.hpp>
 #include <lxgui/utils_view.hpp>
 
 #include <set>
+#include <list>
 #include <functional>
 
 namespace lxgui {
@@ -38,11 +38,30 @@ namespace gui
     public :
 
         /// Type of the frame child list.
-        using child_list = utils::sorted_vector<std::unique_ptr<frame>,uiobject::id_comparator<frame>>;
-        using child_list_view = utils::view::adaptor<child_list, utils::view::unique_ptr_dereferencer>;
+        /** \note Constraints on the choice container type:
+        *          - must not invalidate iterators on back insertion
+        *          - must allow forward iteration
+        *          - iterators can be invalidated on removal
+        *          - most common use is iteration, not addition or removal
+        *          - ordering of elements is irrelevant
+        */
+        using child_list = std::list<std::unique_ptr<frame>>;
+        using child_list_view = utils::view::adaptor<child_list,
+            utils::view::unique_ptr_dereferencer,
+            utils::view::non_null_filter>;
+
         /// Type of the region list.
-        using region_list = utils::sorted_vector<std::unique_ptr<layered_region>,uiobject::id_comparator<layered_region>>;
-        using region_list_view = utils::view::adaptor<region_list, utils::view::unique_ptr_dereferencer>;
+        /** \note Constraints on the choice container type:
+        *          - must not invalidate iterators on back insertion
+        *          - must allow forward iteration
+        *          - iterators can be invalidated on removal
+        *          - most common use is iteration, not addition or removal
+        *          - ordering of elements is irrelevant
+        */
+        using region_list = std::list<std::unique_ptr<layered_region>>;
+        using region_list_view = utils::view::adaptor<region_list,
+            utils::view::unique_ptr_dereferencer,
+            utils::view::non_null_filter>;
 
         /// Constructor.
         explicit frame(manager* pManager);

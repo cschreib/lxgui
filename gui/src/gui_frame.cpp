@@ -603,7 +603,11 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     if (!pRegion)
         return nullptr;
 
-    if (lRegionList_.find(pRegion->get_id()) != lRegionList_.end())
+    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
+        return pObj->get_id() == pRegion->get_id();
+    });
+
+    if (mIter != lRegionList_.end())
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to add \"" << pRegion->get_name() << "\" to \"" << sName_ << "\"'s children, "
@@ -612,7 +616,7 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     }
 
     layered_region* pAddedRegion = pRegion.get();
-    lRegionList_.insert(std::move(pRegion));
+    lRegionList_.push_back(std::move(pRegion));
 
     fire_build_layer_list();
     notify_renderer_need_redraw();
@@ -635,8 +639,11 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     if (!pRegion)
         return nullptr;
 
-    auto iter = lRegionList_.find(pRegion->get_id());
-    if (iter == lRegionList_.end())
+    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
+        return pObj->get_id() == pRegion->get_id();
+    });
+
+    if (mIter == lRegionList_.end())
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to remove \"" << pRegion->get_name() << "\" from \"" << sName_ << "\"'s children, "
@@ -644,11 +651,12 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
         return nullptr;
     }
 
-    std::unique_ptr<layered_region> pRemovedRegion = std::move(*iter);
-    lRegionList_.erase(iter);
+    std::unique_ptr<layered_region> pRemovedRegion = std::move(*mIter);
+
     fire_build_layer_list();
     notify_renderer_need_redraw();
     pRemovedRegion->set_parent(nullptr);
+
     return pRemovedRegion;
 }
 
@@ -743,7 +751,11 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     if (!pChild)
         return nullptr;
 
-    if (lChildList_.find(pChild->get_id()) != lChildList_.end())
+    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
+        return pObj && pObj->get_id() == pChild->get_id();
+    });
+
+    if (mIter != lChildList_.end())
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
@@ -763,7 +775,7 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
         pChild->notify_invisible_(!pManager_->is_loading_ui());
 
     frame* pAddedChild = pChild.get();
-    lChildList_.insert(std::move(pChild));
+    lChildList_.push_back(std::move(pChild));
 
     if (!bVirtual_)
     {
@@ -791,8 +803,11 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     if (!pChild)
         return nullptr;
 
-    auto iter = lChildList_.find(pChild->get_id());
-    if (iter == lChildList_.end())
+    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
+        return pObj && pObj->get_id() == pChild->get_id();
+    });
+
+    if (mIter == lChildList_.end())
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Trying to remove \"" << pChild->get_name() << "\" from \"" << sName_
@@ -800,8 +815,8 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
         return nullptr;
     }
 
-    std::unique_ptr<frame> pRemovedChild = std::move(*iter);
-    lChildList_.erase(iter);
+    // NB: the iterator is not removed yet; it will be removed later in update().
+    std::unique_ptr<frame> pRemovedChild = std::move(*mIter);
 
     renderer* pTopLevelRenderer = get_top_level_renderer();
     bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
@@ -1926,6 +1941,14 @@ void frame::update(float fDelta)
     for (auto* pRegion : get_regions())
         pRegion->update(fDelta);
 
+    {
+        auto mIterRemove = std::remove_if(lRegionList_.begin(), lRegionList_.end(), [](auto& pObj) {
+            return pObj == nullptr;
+        });
+
+        lRegionList_.erase(mIterRemove, lRegionList_.end());
+    }
+
     // Update children
     DEBUG_LOG("   Update children");
     std::map<uint, frame*>::iterator iterChild;
@@ -1934,6 +1957,14 @@ void frame::update(float fDelta)
         pChild->update(fDelta);
         if (!mChecker.is_alive())
             return;
+    }
+
+    {
+        auto mIterRemove = std::remove_if(lChildList_.begin(), lChildList_.end(), [](auto& pObj) {
+            return pObj == nullptr;
+        });
+
+        lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
     if (uiOldWidth_ != uiAbsWidth_ || uiOldHeight_ != uiAbsHeight_)

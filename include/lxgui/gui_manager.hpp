@@ -64,15 +64,17 @@ namespace gui
     public :
 
         /// Type of the root frame list.
-        /** \note Constraints on the container type:
+        /** \note Constraints on the choice container type:
         *          - must not invalidate iterators on back insertion
         *          - must allow forward iteration
-        *          - iterators can be invalidated on removal; this is treated internally
-        *            by setting removed objects to nullptr, and removing them manually
-        *            in a separate iteration.
+        *          - iterators can be invalidated on removal
+        *          - most common use is iteration, not addition or removal
+        *          - ordering of elements is irrelevant
         */
         using root_frame_list = std::list<std::unique_ptr<frame>>;
-        using root_frame_list_view = utils::view::adaptor<root_frame_list, utils::view::unique_ptr_dereferencer>;
+        using root_frame_list_view = utils::view::adaptor<root_frame_list,
+            utils::view::unique_ptr_dereferencer,
+            utils::view::non_null_filter>;
 
         /// Constructor.
         /** \param pInputSource   The input source to use
@@ -247,8 +249,6 @@ namespace gui
 
         /// Returns the root frame list.
         /** \return The root frame list
-        *   \note The returned list may contain null pointers, make sure to check for
-        *         validity before use.
         */
         root_frame_list_view get_root_frames() const;
 

@@ -31,14 +31,29 @@ namespace view
         static data_type dereference(const BaseIterator& mIter) { return **mIter; }
     };
 
+    /// No filtering
+    template<typename BaseIterator>
+    struct no_filter
+    {
+        static bool is_included(const BaseIterator&) { return true; }
+    };
+
+    /// Filter non-null
+    template<typename BaseIterator>
+    struct non_null_filter
+    {
+        static bool is_included(const BaseIterator& mIter) { return *mIter != nullptr; }
+    };
+
     /// Allow iterating over a container without access to the container itself
-    template<typename ContainerType, template<typename> class Dereferencer>
+    template<typename ContainerType, template<typename> class Dereferencer, template<typename> class Filter>
     class adaptor
     {
     public:
 
         using base_iterator = typename ContainerType::const_iterator;
         using dereferencer = Dereferencer<base_iterator>;
+        using filter = Filter<base_iterator>;
         using data_type = typename dereferencer::data_type;
 
         explicit adaptor(const ContainerType& mCollection) : mCollection_(mCollection) {}
@@ -51,10 +66,25 @@ namespace view
         class iterator
         {
         public:
-            explicit iterator(base_iterator mIter) : mIter_(mIter) {}
+            explicit iterator(const ContainerType& mCollection, base_iterator mIter) :
+                mCollection_(mCollection), mIter_(mIter) {}
 
-            iterator& operator++() { ++mIter_; return *this; }
-            iterator operator++(int) { return iterator(mIter_++); }
+            iterator& operator++()
+            {
+                do
+                {
+                    ++mIter_;
+                } while (mIter_ != mCollection_.end() && !filter::is_included(mIter_));
+
+                return *this;
+            }
+
+            iterator operator++(int)
+            {
+                iterator mOld = *this;
+                this->operator++();
+                return mOld;
+            }
 
             bool operator == (const iterator& mOther) const { return mIter_ == mOther.mIter_; }
             bool operator != (const iterator& mOther) const { return mIter_ != mOther.mIter_; }
@@ -64,17 +94,21 @@ namespace view
 
         private:
 
+            const ContainerType& mCollection_;
             base_iterator mIter_;
         };
 
         iterator begin() const
         {
-            return iterator(mCollection_.begin());
+            iterator mIter(mCollection_, mCollection_.begin());
+            if (!filter::is_included(mCollection_.begin()))
+                ++mIter;
+            return mIter;
         }
 
         iterator end() const
         {
-            return iterator(mCollection_.end());
+            return iterator(mCollection_, mCollection_.end());
         }
 
     private:

@@ -13,7 +13,10 @@ namespace gui
 {
 void event_manager::register_event(event_receiver* pReceiver, const std::string& sEventName)
 {
-    auto mIterEvent = lRegisteredEventList_.find(sEventName);
+    auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj) {
+        return mObj.sName == sEventName;
+    });
+
     if (mIterEvent != lRegisteredEventList_.end())
     {
         auto mIter = utils::find(mIterEvent->lReceiverList, pReceiver);
@@ -25,20 +28,22 @@ void event_manager::register_event(event_receiver* pReceiver, const std::string&
             return;
         }
 
-        mIterEvent->lNewReceiverList.push_back(pReceiver);
+        mIterEvent->lReceiverList.push_back(pReceiver);
     }
     else
     {
-        registered_event mEvent;
+        auto& mEvent = lRegisteredEventList_.emplace_back();
         mEvent.sName = sEventName;
-        mEvent.lNewReceiverList.push_back(pReceiver);
-        lRegisteredEventList_.insert(std::move(mEvent));
+        mEvent.lReceiverList.push_back(pReceiver);
     }
 }
 
 void event_manager::unregister_event(event_receiver* pReceiver, const std::string& sEventName)
 {
-    auto mIterEvent = lRegisteredEventList_.find(sEventName);
+    auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj) {
+        return mObj.sName == sEventName;
+    });
+
     if (mIterEvent == lRegisteredEventList_.end())
     {
         gui::out << gui::warning << "event_manager : "
@@ -61,10 +66,6 @@ void event_manager::unregister_event(event_receiver* pReceiver, const std::strin
     DEBUG_LOG("unregister " + utils::to_string(pReceiver) + " for " + sEventName);
 
     *mIter = nullptr;
-
-    mIter = utils::find(mIterEvent->lNewReceiverList, pReceiver);
-    if (mIter != mIterEvent->lReceiverList.end())
-        *mIter = nullptr;
 }
 
 void event_manager::unregister_receiver(event_receiver* pReceiver)
@@ -75,17 +76,16 @@ void event_manager::unregister_receiver(event_receiver* pReceiver)
         auto mIter = utils::find(mEvent.lReceiverList, pReceiver);
         if (mIter != mEvent.lReceiverList.end())
             *mIter = nullptr;
-
-        mIter = utils::find(mEvent.lNewReceiverList, pReceiver);
-        if (mIter != mEvent.lNewReceiverList.end())
-            *mIter = nullptr;
     }
 }
 
 void event_manager::fire_event(const event& mEvent)
 {
     DEBUG_LOG(mEvent.get_name());
-    auto mIter = lRegisteredEventList_.find(mEvent.get_name());
+    auto mIter = utils::find_if(lRegisteredEventList_, [&](auto& mObj) {
+        return mObj.sName == mEvent.get_name();
+    });
+
     if (mIter == lRegisteredEventList_.end())
         return;
 
@@ -113,7 +113,8 @@ void event_manager::fire_event(const event& mEvent)
 
 void event_manager::frame_ended()
 {
-    for (auto& mEvent : lRegisteredEventList_) {
+    for (auto& mEvent : lRegisteredEventList_)
+    {
         // Clear "fired" state
         mEvent.bFired = false;
 
@@ -125,15 +126,6 @@ void event_manager::frame_ended()
         );
 
         mEvent.lReceiverList.erase(mIterRem, mEvent.lReceiverList.end());
-
-        // Add newly registered receivers.
-        for (auto* lReceiver : mEvent.lNewReceiverList)
-        {
-            if (lReceiver)
-                mEvent.lReceiverList.push_back(lReceiver);
-        }
-
-        mEvent.lNewReceiverList.clear();
     }
 }
 }
