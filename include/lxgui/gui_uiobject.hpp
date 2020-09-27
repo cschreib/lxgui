@@ -139,7 +139,9 @@ namespace gui
         */
         virtual void update_anchors();
 
-        /// updates this widget's logic.
+        /// Updates this widget's logic.
+        /** \param fDelta Time spent since last update
+        */
         virtual void update(float fDelta);
 
         /// Prints all relevant information about this widget in a string.

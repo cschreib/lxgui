@@ -33,7 +33,9 @@ namespace gui
         */
         void copy_from(uiobject* pObj) override;
 
-        /// updates this widget's logic.
+        /// Updates this widget's logic.
+        /** \param fDelta Time spent since last update
+        */
         void update(float fDelta) override;
 
         /// Returns the name of the font file.

@@ -100,17 +100,28 @@ namespace gui
         */
         void copy_from(uiobject* pObj) override;
 
-        /// updates this widget's logic.
+        /// Updates this widget's logic.
+        /** \param fDelta Time spent since last update
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
+        */
         void update(float fDelta) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
         */
         void on_event(const event& mEvent) override;
 
         /// Calls a script.
         /** \param sScriptName The name of the script
         *   \param pEvent      Stores scripts arguments
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
         */
         void on(const std::string& sScriptName, event* pEvent = nullptr) override;
 

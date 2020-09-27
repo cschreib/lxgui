@@ -156,6 +156,9 @@ namespace gui
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
         */
         void on_event(const event& mEvent) override;
 
@@ -170,7 +173,12 @@ namespace gui
         /// Tells this widget to update its borders.
         void fire_update_borders() const override;
 
-        /// updates this widget's logic.
+        /// Updates this widget's logic.
+        /** \param fDelta Time spent since last update
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
+        */
         void update(float fDelta) override;
 
         /// Registers this widget to the provided lua::state
