@@ -23,6 +23,23 @@ uint count_frames(const std::array<strata,8>& lStrataList)
     return uiCount;
 }
 
+// For debugging only
+void print_frames(const std::array<strata,8>& lStrataList)
+{
+    for (uint uiStrata = 0; uiStrata < lStrataList.size(); ++uiStrata)
+    {
+        if (lStrataList[uiStrata].lLevelList.empty()) continue;
+        gui::out << "strata[" << uiStrata << "]" << std::endl;
+        for (const auto& mLevel : lStrataList[uiStrata].lLevelList)
+        {
+            if (mLevel.second.lFrameList.empty()) continue;
+            gui::out << "  level[" << mLevel.first << "]" << std::endl;
+            for (const auto* pFrame : mLevel.second.lFrameList)
+                gui::out << "    " << pFrame << " " << pFrame->get_name() << std::endl;
+        }
+    }
+}
+
 renderer::renderer(renderer_impl* pImpl) : pImpl_(pImpl)
 {
     for (uint uiStrata = 0; uiStrata < lStrataList_.size(); ++uiStrata)
@@ -78,7 +95,11 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
 
     auto mIterOld = lLevelList.find(iOldLevel);
     if (mIterOld != lLevelList.end())
+    {
         remove_from_level_list_(mIterOld->second, pFrame);
+        if (mIterOld->second.lFrameList.empty())
+            mStrata.lLevelList.erase(mIterOld);
+    }
 
     auto mIterNew = lLevelList.find(iNewLevel);
     if (mIterNew == lLevelList.end())
@@ -173,6 +194,9 @@ void renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
     }
 
     remove_from_level_list_(mIter->second, pFrame);
+
+    if (mIter->second.lFrameList.empty())
+        mStrata.lLevelList.erase(mIter);
 }
 
 void renderer::add_to_level_list_(level& mLevel, frame* pFrame)
