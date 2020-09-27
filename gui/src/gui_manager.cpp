@@ -166,7 +166,7 @@ std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
 }
 
 frame* manager::create_root_frame_(const std::string& sClassName, const std::string& sName,
-                                  bool bVirtual, const std::vector<uiobject*>& lInheritance)
+                                   bool bVirtual, const std::vector<uiobject*>& lInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
@@ -336,36 +336,6 @@ void manager::remove_frame(frame* pObj)
         set_hovered_frame_(nullptr);
     if (pFocusedFrame_ == pObj)
         request_focus(nullptr);
-}
-
-void manager::delayed_delete_region(std::unique_ptr<layered_region> pObj)
-{
-    pObj->clear_links();
-    lDeletedObjectList_.push_back(std::move(pObj));
-}
-
-void manager::delayed_delete_frame(std::unique_ptr<frame> pObj)
-{
-    while (true)
-    {
-        auto mView = pObj->get_children();
-        if (mView.begin() == mView.end()) break;
-
-        auto* pChild = *mView.begin();
-        delayed_delete_frame(pObj->remove_child(pChild));
-    }
-
-    while (true)
-    {
-        auto mView = pObj->get_regions();
-        if (mView.begin() == mView.end()) break;
-
-        auto* pReg = *mView.begin();
-        delayed_delete_region(pObj->remove_region(pReg));
-    }
-
-    pObj->clear_links();
-    lDeletedObjectList_.push_back(std::move(pObj));
 }
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
@@ -783,17 +753,6 @@ void manager::close_ui()
                 save_variables_(&mAddOn);
         }
 
-        // Delete frames.
-        // This is done using delayed_delete_frame() so that children are always
-        // destroyed before their parents. Otherwise, the frame destructor
-        // (which destroys children) could be called after the derived class
-        // destructor.
-        for (auto& pFrame : lRootFrameList_)
-        {
-            delayed_delete_frame(std::move(pFrame));
-            lDeletedObjectList_.clear();
-        }
-
         lRootFrameList_.clear();
 
         lObjectList_.clear();
@@ -1073,9 +1032,6 @@ void manager::update(float fDelta)
 
     bObjectMoved_ = false;
     reset_strata_list_changed_flag_();
-
-    // Clear objects marked as deleted
-    lDeletedObjectList_.clear();
 
     if (bFirstIteration_)
     {

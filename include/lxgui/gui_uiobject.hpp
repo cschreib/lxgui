@@ -637,12 +637,6 @@ namespace gui
         */
         virtual void parse_block(xml::block* pBlock) = 0;
 
-        /// Removes any reference to this widgets from its parents or related objects.
-        /** \note This is automatically called by the destructor and other
-        *         functions that remove frames (i.e., the Lua API).
-        */
-        virtual void clear_links();
-
         static constexpr const char* CLASS_NAME = "UIObject";
 
     protected :
@@ -659,8 +653,6 @@ namespace gui
 
         sol::state&  get_lua_();
         lua::state&  get_luapp_();
-
-        void clear_links_();
 
         template<typename T>
         void create_glue_();
@@ -705,8 +697,6 @@ namespace gui
         mutable bool bUpdateAnchors_ = false;
         mutable bool bUpdateBorders_ = true;
         mutable bool bUpdateDimensions_ = false;
-
-        bool bLinksCleared_ = false;
 
         mutable std::vector<uiobject*> lAnchoredObjectList_;
     };

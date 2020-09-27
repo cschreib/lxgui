@@ -32,7 +32,18 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
 
 frame::~frame()
 {
-    clear_links_();
+    lChildList_.clear();
+    lRegionList_.clear();
+
+    if (!bVirtual_)
+    {
+        // Tell the renderer to no longer render this widget
+        get_top_level_renderer()->notify_rendered_frame(this, false);
+        pRenderer_ = nullptr;
+    }
+
+    // Unregister this frame from the GUI manager
+    pManager_->remove_frame(this);
 }
 
 void frame::render()
@@ -1907,27 +1918,5 @@ layer_type layer::get_layer_type(const std::string& sLayer)
         return layer_type::ARTWORK;
     }
 }
-
-void frame::clear_links()
-{
-    frame::clear_links_();
-    region::clear_links_();
-}
-
-void frame::clear_links_()
-{
-    if (bLinksClearedFrame_) return;
-    bLinksClearedFrame_ = true;
-
-    if (!bVirtual_)
-    {
-        // Tell the renderer to no longer render this widget
-        get_top_level_renderer()->notify_rendered_frame(this, false);
-    }
-
-    // Unregister this frame from the GUI manager
-    pManager_->remove_frame(this);
-}
-
 }
 }

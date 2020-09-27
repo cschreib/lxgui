@@ -16,7 +16,13 @@ scroll_frame::scroll_frame(manager* pManager) : frame(pManager), renderer(pManag
 
 scroll_frame::~scroll_frame()
 {
-    clear_links_();
+    // Make sure the scroll child is destroyed now.
+    // It relies on this scroll_frame still being alive
+    // when being destroyed, but the scroll_frame destructor
+    // would be called before its inherited frame destructor
+    // (which would otherwise take care of destroying the scroll child).
+    if (pScrollChild_)
+        remove_child(pScrollChild_);
 }
 
 bool scroll_frame::can_use_script(const std::string& sScriptName) const
@@ -357,21 +363,5 @@ void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
 
     bRedrawScrollRenderTarget_ = true;
 }
-
-void scroll_frame::clear_links()
-{
-    scroll_frame::clear_links_();
-    frame::clear_links_();
-}
-
-void scroll_frame::clear_links_()
-{
-    if (bLinksClearedScrollFrame_) return;
-    bLinksClearedScrollFrame_ = true;
-
-    if (!bVirtual_ && pScrollChild_)
-        pScrollChild_->set_renderer(nullptr);
-}
-
 }
 }
