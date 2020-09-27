@@ -747,15 +747,16 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     frame* pAddedChild = pChild.get();
     lChildList_.insert(std::move(pChild));
 
-    renderer* pTopLevelRenderer = get_top_level_renderer();
-    if (!pAddedChild->get_renderer() && pTopLevelRenderer != pManager_)
-    {
-        pManager_->notify_rendered_frame(pAddedChild, false);
-        pTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
-    }
-
     if (!bVirtual_)
     {
+        renderer* pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
+        renderer* pNewTopLevelRenderer = get_top_level_renderer();
+        if (pOldTopLevelRenderer != pNewTopLevelRenderer)
+        {
+            pOldTopLevelRenderer->notify_rendered_frame(pAddedChild, false);
+            pNewTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
+        }
+
         std::string sRawName = pAddedChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {

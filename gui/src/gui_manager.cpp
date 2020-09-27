@@ -294,9 +294,14 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
     frame* pAddedFrame = pFrame.get();
     lRootFrameList_.insert(std::move(pFrame));
 
-    if (!pAddedFrame->is_virtual() && (!pAddedFrame->get_renderer() || pAddedFrame->get_renderer() != this))
+    if (!pAddedFrame->is_virtual())
     {
-        notify_rendered_frame(pAddedFrame, true);
+        renderer* pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
+        if (pOldTopLevelRenderer != this)
+        {
+            pOldTopLevelRenderer->notify_rendered_frame(pAddedFrame, false);
+            notify_rendered_frame(pAddedFrame, true);
+        }
     }
 
     return pAddedFrame;
