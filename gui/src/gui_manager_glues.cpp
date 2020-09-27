@@ -211,6 +211,7 @@ int l_create_frame(lua_State* pLua)
 
         if (pNewFrame)
         {
+            pNewFrame->set_addon(pGUIMgr->get_current_addon());
             pNewFrame->push_on_lua(mState);
             mFunc.notify_pushed();
         }
