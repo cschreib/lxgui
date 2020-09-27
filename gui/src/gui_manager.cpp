@@ -828,7 +828,6 @@ void manager::render_ui() const
 {
     if (bEnableCaching_)
     {
-        // TODO: move begin()/end() to renderer
         begin();
         mSprite_.render(0, 0);
         end();
