@@ -116,13 +116,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
 
     if (pScrollChild_)
     {
-        if (pScrollChild_->get_parent() != this)
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "The parent of a scroll child must be the associated scroll frame \""+sName_+"\"." << std::endl;
-            pScrollChild_ = nullptr;
-            return;
-        }
+        pScrollChild_->set_parent(this);
 
         add_child(std::move(pFrame));
 

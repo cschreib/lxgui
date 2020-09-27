@@ -24,22 +24,13 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
         {
             auto mAttr = pManager_->parse_core_attributes(pChildBlock, this);
 
-            frame* pScrollChild = nullptr;
-            if (is_virtual())
-            {
-                pScrollChild = pManager_->create_virtual_root_frame(mAttr.sFrameType, mAttr.sName,
+            frame* pScrollChild = create_child(mAttr.sFrameType, mAttr.sName,
                     mAttr.lInheritance);
-            }
-            else
-            {
-                pScrollChild = pManager_->create_root_frame(mAttr.sFrameType, mAttr.sName,
-                    mAttr.lInheritance);
-            }
 
             if (!pScrollChild)
                 return;
 
-            this->set_scroll_child(pManager_->remove_root_frame(pScrollChild));
+            this->set_scroll_child(remove_child(pScrollChild));
 
             pScrollChild->set_addon(pManager_->get_current_addon());
             pScrollChild->parse_block(pChildBlock);
