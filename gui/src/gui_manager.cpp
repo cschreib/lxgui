@@ -292,7 +292,7 @@ bool manager::add_uiobject(uiobject* pObj)
 frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 {
     frame* pAddedFrame = pFrame.get();
-    lRootFrameList_.insert(std::move(pFrame));
+    lRootFrameList_.push_back(std::move(pFrame));
 
     if (!pAddedFrame->is_virtual())
     {
@@ -340,13 +340,15 @@ void manager::remove_frame(frame* pObj)
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
 {
-    auto iter = lRootFrameList_.find(pFrame->get_id());
-    if (iter == lRootFrameList_.end())
+    auto mIter = std::find_if(lRootFrameList_.begin(), lRootFrameList_.end(), [&](auto& pObj) {
+        return pObj->get_id() == pFrame->get_id();
+    });
+
+    if (mIter == lRootFrameList_.end())
         return nullptr;
 
-    std::unique_ptr<frame> pRemovedObject(std::move(*iter));
-    lRootFrameList_.erase(iter);
-    return pRemovedObject;
+    // NB: the iterator is not removed yet; it will be removed later in update().
+    return std::move(*mIter);
 }
 
 manager::root_frame_list_view manager::get_root_frames() const
@@ -356,18 +358,18 @@ manager::root_frame_list_view manager::get_root_frames() const
 
 const uiobject* manager::get_uiobject(uint uiID) const
 {
-    std::map<uint, uiobject*>::const_iterator iter = lObjectList_.find(uiID);
-    if (iter != lObjectList_.end())
-        return iter->second;
+    std::map<uint, uiobject*>::const_iterator mIter = lObjectList_.find(uiID);
+    if (mIter != lObjectList_.end())
+        return mIter->second;
     else
         return nullptr;
 }
 
 uiobject* manager::get_uiobject(uint uiID)
 {
-    std::map<uint, uiobject*>::iterator iter = lObjectList_.find(uiID);
-    if (iter != lObjectList_.end())
-        return iter->second;
+    std::map<uint, uiobject*>::iterator mIter = lObjectList_.find(uiID);
+    if (mIter != lObjectList_.end())
+        return mIter->second;
     else
         return nullptr;
 }
@@ -955,7 +957,7 @@ void manager::update(float fDelta)
     // ... then update logics on main widgets from parent to children.
     for (auto* pObject : get_root_frames())
     {
-        if (!pObject->is_virtual())
+        if (pObject && !pObject->is_virtual())
             pObject->update(fDelta);
     }
 
@@ -1443,7 +1445,7 @@ void manager::on_event(const event& mEvent)
         // Notify all frames anchored to the window edges
         for (auto* pObject : get_root_frames())
         {
-            if (!pObject->is_virtual())
+            if (pObject && !pObject->is_virtual())
             {
                 pObject->fire_update_dimensions();
                 pObject->notify_renderer_need_redraw();

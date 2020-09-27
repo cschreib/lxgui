@@ -9,13 +9,13 @@
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_exception.hpp>
-#include <lxgui/utils_sorted_vector.hpp>
 #include <lxgui/utils_view.hpp>
 #include <lxgui/utils_refptr.hpp>
 #include <lxgui/utils_wptr.hpp>
 
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include <array>
 #include <functional>
@@ -64,7 +64,14 @@ namespace gui
     public :
 
         /// Type of the root frame list.
-        using root_frame_list = utils::sorted_vector<std::unique_ptr<frame>,uiobject::id_comparator<frame>>;
+        /** \note Constraints on the container type:
+        *          - must not invalidate iterators on back insertion
+        *          - must allow forward iteration
+        *          - iterators can be invalidated on removal; this is treated internally
+        *            by setting removed objects to nullptr, and removing them manually
+        *            in a separate iteration.
+        */
+        using root_frame_list = std::list<std::unique_ptr<frame>>;
         using root_frame_list_view = utils::view::adaptor<root_frame_list, utils::view::unique_ptr_dereferencer>;
 
         /// Constructor.
@@ -240,6 +247,8 @@ namespace gui
 
         /// Returns the root frame list.
         /** \return The root frame list
+        *   \note The returned list may contain null pointers, make sure to check for
+        *         validity before use.
         */
         root_frame_list_view get_root_frames() const;
 
