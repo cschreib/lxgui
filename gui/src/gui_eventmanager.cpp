@@ -58,6 +58,8 @@ void event_manager::unregister_event(event_receiver* pReceiver, const std::strin
         return;
     }
 
+    DEBUG_LOG("unregister " + utils::to_string(pReceiver) + " for " + sEventName);
+
     *mIter = nullptr;
 
     mIter = utils::find(mIterEvent->lNewReceiverList, pReceiver);
@@ -67,6 +69,7 @@ void event_manager::unregister_event(event_receiver* pReceiver, const std::strin
 
 void event_manager::unregister_receiver(event_receiver* pReceiver)
 {
+    DEBUG_LOG("unregister " + utils::to_string(pReceiver));
     for (auto& mEvent : lRegisteredEventList_)
     {
         auto mIter = utils::find(mEvent.lReceiverList, pReceiver);
@@ -91,16 +94,17 @@ void event_manager::fire_event(const event& mEvent)
     if (mIter->bFired)
         return;
 
-    DEBUG_LOG(mEvent.get_name()+"!");
-
+    DEBUG_LOG(mEvent.get_name()+" started");
 
     // Now, tell all the event_receivers that this Event has occured.
-    for (auto* lReceiver : mIter->lReceiverList)
+    for (auto* pReceiver : mIter->lReceiverList)
     {
-        DEBUG_LOG(std::string(" ") + utils::to_string(lReceiver));
-        if (lReceiver)
-            lReceiver->on_event(mEvent);
+        DEBUG_LOG(std::string(" ") + utils::to_string(pReceiver));
+        if (pReceiver)
+            pReceiver->on_event(mEvent);
     }
+
+    DEBUG_LOG(mEvent.get_name()+" finished");
 
     // Notify the event has been fired this frame.
     if (mEvent.is_once_per_frame())
