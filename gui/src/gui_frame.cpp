@@ -786,13 +786,20 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     lChildList_.erase(iter);
 
     renderer* pTopLevelRenderer = get_top_level_renderer();
-    if (!pChild->get_renderer() && pTopLevelRenderer != pManager_)
+    bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
+    if (bNotifyRenderer)
     {
         pTopLevelRenderer->notify_rendered_frame(pChild, false);
-        pManager_->notify_rendered_frame(pChild, true);
+        pChild->propagate_renderer_(false);
     }
 
     pRemovedChild->set_parent(nullptr);
+
+    if (bNotifyRenderer)
+    {
+        pManager_->notify_rendered_frame(pChild, true);
+        pChild->propagate_renderer_(true);
+    }
 
     return pRemovedChild;
 }
