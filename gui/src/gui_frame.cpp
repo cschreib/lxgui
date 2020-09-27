@@ -7,6 +7,7 @@
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/luapp_exception.hpp>
@@ -576,7 +577,12 @@ void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 void frame::notify_loaded()
 {
     if (!bVirtual_)
+    {
+        alive_checker mChecker(this);
         on("Load");
+        if (!mChecker.is_alive())
+            return;
+    }
 
     uiobject::notify_loaded();
 }
@@ -1047,6 +1053,8 @@ void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
 
 void frame::on_event(const event& mEvent)
 {
+    alive_checker mChecker(this);
+
     if (has_script("Event") &&
         (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
     {
@@ -1059,6 +1067,8 @@ void frame::on_event(const event& mEvent)
 
         event mTemp = mEvent;
         on("Event", &mTemp);
+        if (!mChecker.is_alive())
+            return;
     }
 
     if (!pManager_->is_input_enabled())
@@ -1076,6 +1086,9 @@ void frame::on_event(const event& mEvent)
                     {
                         bMouseDragged_ = true;
                         on("DragStart");
+                        if (!mChecker.is_alive())
+                            return;
+
                         break;
                     }
                 }
@@ -1101,6 +1114,8 @@ void frame::on_event(const event& mEvent)
                 mEvent2.add(sMouseButton);
 
                 on("MouseDown", &mEvent2);
+                if (!mChecker.is_alive())
+                    return;
             }
         }
         else if (mEvent.get_name() == "MOUSE_RELEASED")
@@ -1116,6 +1131,8 @@ void frame::on_event(const event& mEvent)
                 mEvent2.add(sMouseButton);
 
                 on("MouseUp", &mEvent2);
+                if (!mChecker.is_alive())
+                    return;
             }
 
             std::vector<std::string>::iterator iter = utils::find(lMouseButtonList_, sMouseButton);
@@ -1138,6 +1155,8 @@ void frame::on_event(const event& mEvent)
                 {
                     bMouseDragged_ = false;
                     on("DragStop");
+                    if (!mChecker.is_alive())
+                        return;
                 }
             }
         }
@@ -1148,6 +1167,8 @@ void frame::on_event(const event& mEvent)
                 event mEvent2;
                 mEvent2.add(mEvent[0].get<float>());
                 on("MouseWheel", &mEvent2);
+                if (!mChecker.is_alive())
+                    return;
             }
         }
     }
@@ -1161,6 +1182,8 @@ void frame::on_event(const event& mEvent)
             mKeyEvent.add(mEvent[1].get<std::string>());
 
             on("KeyDown", &mKeyEvent);
+            if (!mChecker.is_alive())
+                return;
         }
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
@@ -1169,6 +1192,8 @@ void frame::on_event(const event& mEvent)
             mKeyEvent.add(mEvent[1].get<std::string>());
 
             on("KeyUp", &mKeyEvent);
+            if (!mChecker.is_alive())
+                return;
         }
     }
 }
@@ -1798,10 +1823,16 @@ addon* frame::get_addon() const
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
 {
+    alive_checker mChecker(this);
+
     if (bMouseInframe)
     {
         if (!bMouseInFrame_)
+        {
             on("Enter");
+            if (!mChecker.is_alive())
+                return;
+        }
 
         bMouseInFrame_ = true;
 
@@ -1813,7 +1844,11 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
     else
     {
         if (bMouseInFrame_)
+        {
             on("Leave");
+            if (!mChecker.is_alive())
+                return;
+        }
 
         bMouseInTitleRegion_ = false;
         bMouseInFrame_ = false;
@@ -1834,6 +1869,8 @@ void frame::update(float fDelta)
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
+    alive_checker mChecker(this);
+
     DEBUG_LOG("  ~");
     uiobject::update(fDelta);
     DEBUG_LOG("   #");
@@ -1842,6 +1879,8 @@ void frame::update(float fDelta)
     {
         DEBUG_LOG("   Event " + *iterEvent);
         on(sEvent);
+        if (!mChecker.is_alive())
+            return;
     }
 
     lQueuedEventList_.clear();
@@ -1875,6 +1914,8 @@ void frame::update(float fDelta)
         event mEvent;
         mEvent.add(fDelta);
         on("Update", &mEvent);
+        if (!mChecker.is_alive())
+            return;
     }
 
     if (pTitleRegion_)
@@ -1889,12 +1930,18 @@ void frame::update(float fDelta)
     DEBUG_LOG("   Update children");
     std::map<uint, frame*>::iterator iterChild;
     for (auto* pChild : get_children())
+    {
         pChild->update(fDelta);
+        if (!mChecker.is_alive())
+            return;
+    }
 
     if (uiOldWidth_ != uiAbsWidth_ || uiOldHeight_ != uiAbsHeight_)
     {
         DEBUG_LOG("   On size changed");
         on("SizeChanged");
+        if (!mChecker.is_alive())
+            return;
 
         uiOldWidth_  = uiAbsWidth_;
         uiOldHeight_ = uiAbsHeight_;

@@ -438,7 +438,10 @@ void slider::notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY)
 
 void slider::update(float fDelta)
 {
+    alive_checker mChecker(this);
     frame::update(fDelta);
+    if (!mChecker.is_alive())
+        return;
 
     if ((bUpdateThumbTexture_ || bThumbMoved_) && pThumbTexture_)
     {

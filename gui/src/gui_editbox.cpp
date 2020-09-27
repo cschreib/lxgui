@@ -99,7 +99,10 @@ void edit_box::copy_from(uiobject* pObj)
 
 void edit_box::update(float fDelta)
 {
+    alive_checker mChecker(this);
     frame::update(fDelta);
+    if (!mChecker.is_alive())
+        return;
 
     if (bMouseDragged_)
     {
@@ -151,7 +154,12 @@ void edit_box::update(float fDelta)
         mKeyRepeatTimer_.update(fDelta);
 
         if (mKeyRepeatTimer_.ticks())
+        {
+            alive_checker mChecker(this);
             process_key_(mLastKeyPressed_);
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 }
 
@@ -171,6 +179,12 @@ void edit_box::on_event(const event& mEvent)
         char32_t c = mEvent.get<char32_t>(0);
         if (add_char_(c))
         {
+            alive_checker mChecker(this);
+
+            on("TextChanged");
+            if (!mChecker.is_alive())
+                return;
+
             event mKeyEvent;
             mKeyEvent.add(utils::unicode_to_UTF8(utils::ustring(1, c)));
             on("Char", &mKeyEvent);
@@ -252,6 +266,8 @@ void edit_box::on_event(const event& mEvent)
         mLastKeyPressed_ = mKey;
 
         process_key_(mKey);
+        if (!mChecker.is_alive())
+            return;
     }
     else if (mEvent.get_name() == "KEY_RELEASED")
     {
@@ -301,7 +317,10 @@ void edit_box::on(const std::string& sScriptName, event* pEvent)
         }
     }
 
+    alive_checker mChecker(this);
     frame::on(sScriptName, pEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (sScriptName == "SizeChanged")
     {
@@ -330,8 +349,16 @@ void edit_box::set_text(const std::string& sText)
         iterCarretPos_ = sUnicodeText_.end();
         update_font_string_();
         update_carret_position_();
+
+        alive_checker mChecker(this);
+
         on("TextSet");
+        if (!mChecker.is_alive())
+            return;
+
         on("TextChanged");
+        if (!mChecker.is_alive())
+            return;
     }
 }
 
@@ -1019,13 +1046,13 @@ bool edit_box::add_char_(char32_t sUnicode)
 
     mCarretTimer_.zero();
 
-    on("TextChanged");
-
     return true;
 }
 
 bool edit_box::remove_char_()
 {
+    alive_checker mChecker(this);
+
     if (bSelectedText_)
     {
         if (uiSelectionStartPos_ != uiSelectionEndPos_)
@@ -1038,7 +1065,10 @@ bool edit_box::remove_char_()
             uiNumLetters_ = sUnicodeText_.size();
 
             iterCarretPos_ = sUnicodeText_.begin() + uiLeft;
+
             on("TextChanged");
+            if (!mChecker.is_alive())
+                return false;
         }
 
         unlight_text();
@@ -1051,7 +1081,10 @@ bool edit_box::remove_char_()
         iterCarretPos_ = sUnicodeText_.erase(iterCarretPos_);
         sText_ = utils::unicode_to_UTF8(sUnicodeText_);
         --uiNumLetters_;
+
         on("TextChanged");
+        if (!mChecker.is_alive())
+            return false;
     }
 
     update_displayed_text_();
@@ -1196,9 +1229,17 @@ void edit_box::process_key_(key mKey)
         {
             if (add_char_(U'\n'))
             {
+                alive_checker mChecker(this);
+
+                on("TextChanged");
+                if (!mChecker.is_alive())
+                    return;
+
                 event mKeyEvent;
                 mKeyEvent.add(std::string("\n"));
-                on("OnChar", &mKeyEvent);
+                on("Char", &mKeyEvent);
+                if (!mChecker.is_alive())
+                    return;
             }
         }
     }

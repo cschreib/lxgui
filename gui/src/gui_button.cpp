@@ -43,7 +43,10 @@ bool button::can_use_script(const std::string& sScriptName) const
 
 void button::on(const std::string& sScriptName, event* pEvent)
 {
+    alive_checker mChecker(this);
     frame::on(sScriptName, pEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (is_enabled())
     {
@@ -65,6 +68,8 @@ void button::on(const std::string& sScriptName, event* pEvent)
         {
             release();
             on("Click");
+            if (!mChecker.is_alive())
+                return;
         }
     }
 }
@@ -81,7 +86,11 @@ void button::on_event(const event& mEvent)
         return;
 
     if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED" && bMouseInFrame_)
+    {
         on("DoubleClicked");
+        if (!mChecker.is_alive())
+            return;
+    }
 }
 
 void button::copy_from(uiobject* pObj)
@@ -477,7 +486,10 @@ void button::disable()
 
         unlight();
 
+        alive_checker mChecker(this);
         on("Disable");
+        if (!mChecker.is_alive())
+            return;
     }
 }
 
@@ -511,7 +523,10 @@ void button::enable()
         if (pDisabledText_)
             pDisabledText_->hide();
 
+        alive_checker mChecker(this);
         on("Enable");
+        if (!mChecker.is_alive())
+            return;
     }
 }
 

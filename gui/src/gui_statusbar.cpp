@@ -3,6 +3,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
@@ -338,7 +339,10 @@ void status_bar::update(float fDelta)
         bUpdateBarTexture_ = false;
     }
 
+    alive_checker mChecker(this);
     frame::update(fDelta);
+    if (!mChecker.is_alive())
+        return;
 }
 
 void status_bar::fire_update_bar_texture_()

@@ -4,6 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 namespace lxgui {
@@ -39,7 +40,10 @@ bool scroll_frame::can_use_script(const std::string& sScriptName) const
 
 void scroll_frame::on(const std::string& sScriptName, event* pEvent)
 {
+    alive_checker mChecker(this);
     frame::on(sScriptName, pEvent);
+    if (!mChecker.is_alive())
+        return;
 
     if (sScriptName == "SizeChanged")
         bRebuildScrollRenderTarget_ = true;
@@ -132,7 +136,12 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         if (iVerticalScrollRange_ < 0) iVerticalScrollRange_ = 0;
 
         if (!is_virtual())
+        {
+            alive_checker mChecker(this);
             on("ScrollRangeChanged");
+            if (!mChecker.is_alive())
+                return;
+        }
 
         bUpdateScrollRange_ = false;
     }
@@ -200,7 +209,10 @@ void scroll_frame::update(float fDelta)
         uiOldChildHeight = pScrollChild_->get_abs_height();
     }
 
+    alive_checker mChecker(this);
     frame::update(fDelta);
+    if (!mChecker.is_alive())
+        return;
 
     if (pScrollChild_ && (uiOldChildWidth != pScrollChild_->get_abs_width() ||
         uiOldChildHeight != pScrollChild_->get_abs_height()))
@@ -244,7 +256,12 @@ void scroll_frame::update_scroll_range_()
     if (iVerticalScrollRange_ < 0) iVerticalScrollRange_ = 0;
 
     if (!is_virtual())
+    {
+        alive_checker mChecker(this);
         on("ScrollRangeChanged");
+        if (!mChecker.is_alive())
+            return;
+    }
 }
 
 void scroll_frame::update_scroll_child_input_()
