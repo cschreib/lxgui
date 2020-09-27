@@ -53,20 +53,11 @@ void scroll_frame::copy_from(uiobject* pObj)
     auto* pOtherChild = pScrollFrame->get_scroll_child();
     if (pOtherChild)
     {
-        frame* pScrollChild = nullptr;
-        if (is_virtual())
-        {
-            pScrollChild = pManager_->create_virtual_root_frame(pOtherChild->get_object_type(),
+        frame* pScrollChild = create_child(pOtherChild->get_object_type(),
                 pOtherChild->get_raw_name(), {pOtherChild});
-        }
-        else
-        {
-            pScrollChild = pManager_->create_root_frame(pOtherChild->get_object_type(),
-                pOtherChild->get_raw_name(), {pOtherChild});
-        }
 
         if (pScrollChild)
-            this->set_scroll_child(pManager_->remove_root_frame(pScrollChild));
+            this->set_scroll_child(remove_child(pScrollChild));
     }
 }
 
