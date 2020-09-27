@@ -673,6 +673,9 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
 frame* frame::create_child(const std::string& sClassName, const std::string& sName,
     const std::vector<uiobject*>& lInheritance)
 {
+    if (!pManager_->check_uiobject_name(sName))
+        return nullptr;
+
     std::unique_ptr<frame> pNewFrame = pManager_->create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
