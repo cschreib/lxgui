@@ -402,8 +402,15 @@ std::vector<uiobject*> manager::get_virtual_uiobject_list(const std::string& sNa
             uiobject* pObj = get_uiobject_by_name(sParent, true);
             if (!pObj)
             {
+                bool bNonVirtual = false;
+                if (get_uiobject_by_name(sParent))
+                    bNonVirtual = true;
+
                 gui::out << gui::warning << "gui::manager : "
-                    << "Cannot find virtual object \"" << sParent << "\". Inheritance skipped." << std::endl;
+                    << "Cannot find inherited object \"" << sParent << "\""
+                    << std::string(bNonVirtual ? " (object is not virtual)" : "")
+                    << ". Inheritance skipped." << std::endl;
+
                 continue;
             }
 
