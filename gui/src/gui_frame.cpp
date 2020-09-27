@@ -711,6 +711,9 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
         pNewFrame->copy_from(pObj);
     }
 
+    if (!pNewFrame->is_virtual())
+        get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
+
     pNewFrame->set_newly_created();
     pNewFrame->notify_loaded();
 

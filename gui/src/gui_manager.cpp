@@ -205,6 +205,9 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
         pNewFrame->copy_from(pObj);
     }
 
+    if (!pNewFrame->is_virtual())
+        notify_rendered_frame(pNewFrame.get(), true);
+
     pNewFrame->set_newly_created();
     pNewFrame->notify_loaded();
 
