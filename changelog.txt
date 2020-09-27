@@ -38,12 +38,12 @@ v2.0.0:
  - gui: the GUI will now properly handle render window being resized
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
- - gui: renderer is now always a frame rather than a uiobject
- - gui: only frames can now be flagged as manually rendered
- - gui: migrated most usage of std::(multi)map to sorted std::vector for performance
+ - gui: added renderer class interface to clarify the frame class
+ - gui: only frames can now be flagged as having a renderer
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added uiobject::down_cast for safer down casting
+ - gui: removed clear_links() in favor of using destructors
  - xml: now parsing standard XML comments
 
 v1.2.0:
