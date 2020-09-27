@@ -1607,16 +1607,30 @@ void frame::stop_sizing()
     pManager_->stop_sizing(this);
 }
 
+void frame::propagate_renderer_(bool bRendered)
+{
+    auto* pTopLevelRenderer = get_top_level_renderer();
+    for (auto* pChild : get_children())
+    {
+        if (!pChild->get_renderer())
+            pTopLevelRenderer->notify_rendered_frame(pChild, bRendered);
+
+        pChild->propagate_renderer_(bRendered);
+    }
+}
+
 void frame::set_renderer(renderer* pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
 
     get_top_level_renderer()->notify_rendered_frame(this, false);
+    propagate_renderer_(false);
 
     pRenderer_ = pRenderer;
 
     get_top_level_renderer()->notify_rendered_frame(this, true);
+    propagate_renderer_(true);
 }
 
 const renderer* frame::get_renderer() const
