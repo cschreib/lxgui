@@ -1,7 +1,7 @@
 #include "lxgui/gui_texture.hpp"
 
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
@@ -223,7 +223,9 @@ void texture::set_filter_mode(material::filter mFilter)
 
         if (!sTextureFile_.empty() && bHasSprite_)
         {
-            mSprite_ = pManager_->create_sprite(pManager_->create_material(sTextureFile_, mFilter_));
+            auto* pTopLevelRenderer = get_top_level_renderer();
+            mSprite_ = pTopLevelRenderer->create_sprite(
+                pTopLevelRenderer->create_material(sTextureFile_, mFilter_));
             mSprite_.set_texture_coords(lTexCoord_, true);
         }
 
@@ -275,9 +277,9 @@ void texture::set_gradient(const gradient& mGradient)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
     mGradient_ = mGradient;
-    mSprite_ = pManager_->create_sprite(
-        pManager_->create_material(color::WHITE), 256, 256
-    );
+    auto* pTopLevelRenderer = get_top_level_renderer();
+    mSprite_ = pTopLevelRenderer->create_sprite(
+        pTopLevelRenderer->create_material(color::WHITE), 256, 256);
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
@@ -347,13 +349,15 @@ void texture::set_texture(const std::string& sFile)
     if (sTextureFile_.empty())
         return;
 
+    auto* pTopLevelRenderer = get_top_level_renderer();
+
     utils::refptr<gui::material> pMat;
     if (utils::file_exists(sTextureFile_))
-        pMat = pManager_->create_material(sTextureFile_, mFilter_);
+        pMat = pTopLevelRenderer->create_material(sTextureFile_, mFilter_);
 
     if (pMat)
     {
-        mSprite_ = pManager_->create_sprite(pMat);
+        mSprite_ = pTopLevelRenderer->create_sprite(pMat);
         mSprite_.set_texture_coords(lTexCoord_, true);
     }
     else
@@ -362,7 +366,8 @@ void texture::set_texture(const std::string& sFile)
             << "Cannot load file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
 
-        mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
+        mSprite_ = pTopLevelRenderer->create_sprite(
+            pTopLevelRenderer->create_material(color::WHITE), 256, 256);
     }
 
     bHasSprite_ = true;
@@ -375,13 +380,15 @@ void texture::set_texture(utils::refptr<render_target> pRenderTarget)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
 
+    auto* pTopLevelRenderer = get_top_level_renderer();
+
     utils::refptr<gui::material> pMat;
     if (pRenderTarget)
-        pMat = pManager_->create_material(pRenderTarget);
+        pMat = pTopLevelRenderer->create_material(pRenderTarget);
 
     if (pMat)
     {
-        mSprite_ = pManager_->create_sprite(pMat);
+        mSprite_ = pTopLevelRenderer->create_sprite(pMat);
     }
     else
     {
@@ -389,7 +396,8 @@ void texture::set_texture(utils::refptr<render_target> pRenderTarget)
             << "Cannot create a texture from render target.\n"
             "Using white texture instead." << std::endl;
 
-        mSprite_ = pManager_->create_sprite(pManager_->create_material(color::WHITE), 256, 256);
+        mSprite_ = pTopLevelRenderer->create_sprite(
+            pTopLevelRenderer->create_material(color::WHITE), 256, 256);
     }
 
     bHasSprite_ = true;
@@ -402,7 +410,9 @@ void texture::set_color(const color& mColor)
     sTextureFile_ = "";
 
     mColor_ = mColor;
-    mSprite_ = pManager_->create_sprite(pManager_->create_material(mColor), 256, 256);
+    auto* pTopLevelRenderer = get_top_level_renderer();
+    mSprite_ = pTopLevelRenderer->create_sprite(
+        pTopLevelRenderer->create_material(mColor), 256, 256);
     bHasSprite_ = true;
 
     notify_renderer_need_redraw();
@@ -433,7 +443,8 @@ void texture::set_vertex_color(const color& mColor)
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Trying to set vertex color of an uninitialized texture : " << sName_ << "." << std::endl;
+            << "Trying to set vertex color of an uninitialized texture : "
+            << sName_ << "." << std::endl;
     }
 }
 }

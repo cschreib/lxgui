@@ -241,7 +241,7 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
     sFontName_ = sFontName;
     uiHeight_ = uiHeight;
 
-    pText_ = std::unique_ptr<text>(new text(pManager_, sFontName, uiHeight));
+    pText_ = std::unique_ptr<text>(new text(get_top_level_renderer(), sFontName, uiHeight));
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);

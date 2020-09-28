@@ -15,7 +15,7 @@
 namespace lxgui {
 namespace gui
 {
-    class  manager;
+    class  renderer;
     class  sprite;
     struct vertex;
 
@@ -71,10 +71,11 @@ namespace gui
         };
 
         /// Constructor.
-        /** \param sFileName The path to the .ttf file to use
-        *   \param fSize    The size of the font (in point)
+        /** \param pRenderer The renderer instance to use
+        *   \param sFileName The path to the .ttf file to use
+        *   \param fSize     The size of the font (in point)
         */
-        text(manager* pManager, const std::string& sFileName, float fSize);
+        explicit text(const renderer* pRenderer, const std::string& sFileName, float fSize);
 
         /// Returns the path to the .ttf file.
         /** \return The path to the .ttf file
@@ -325,7 +326,7 @@ namespace gui
         void update_lines_();
         void update_cache_();
 
-        manager* pManager_ = nullptr;
+        const renderer* pRenderer_ = nullptr;
 
         std::string sFileName_;
 

@@ -3,7 +3,7 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_renderer.hpp"
 
 #include <lxgui/utils_filesystem.hpp>
 
@@ -40,8 +40,8 @@ void backdrop::set_background(const std::string& sBackgroundFile)
     {
         if (utils::file_exists(sBackgroundFile))
         {
-            mBackground_ = pParent_->get_manager()->create_sprite(
-                pParent_->get_manager()->create_material(sBackgroundFile)
+            mBackground_ = pParent_->get_top_level_renderer()->create_sprite(
+                pParent_->get_top_level_renderer()->create_material(sBackgroundFile)
             );
             uiTileSize_ = uiOriginalTileSize_ = mBackground_.get_width();
             mBackgroundColor_ = color::EMPTY;
@@ -76,8 +76,8 @@ void backdrop::set_background_color(const color& mColor)
     sBackgroundFile_ = "";
 
     uiTileSize_ = uiOriginalTileSize_ = 256;
-    mBackground_ = pParent_->get_manager()->create_sprite(
-        pParent_->get_manager()->create_material(mColor), 256, 256
+    mBackground_ = pParent_->get_top_level_renderer()->create_sprite(
+        pParent_->get_top_level_renderer()->create_material(mColor), 256, 256
     );
 
     bHasBackground_ = true;
@@ -147,7 +147,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
     {
         if (utils::file_exists(sEdgeFile))
         {
-            utils::refptr<material> pMat = pParent_->get_manager()->create_material(sEdgeFile);
+            utils::refptr<material> pMat = pParent_->get_top_level_renderer()->create_material(sEdgeFile);
 
             if (pMat->get_width()/pMat->get_height() == 8.0f)
             {
@@ -155,7 +155,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
 
                 for (uint i = 0; i < 8; ++i)
                 {
-                    lEdgeList_[i] = pParent_->get_manager()->create_sprite(
+                    lEdgeList_[i] = pParent_->get_top_level_renderer()->create_sprite(
                         pMat, pMat->get_height()*i, 0.0f, uiEdgeSize_, uiEdgeSize_
                     );
                 }
@@ -222,8 +222,8 @@ void backdrop::set_edge_color(const color& mColor)
 
     for (auto& mEdge : lEdgeList_)
     {
-        mEdge = pParent_->get_manager()->create_sprite(
-            pParent_->get_manager()->create_material(mColor), 1, 1
+        mEdge = pParent_->get_top_level_renderer()->create_sprite(
+            pParent_->get_top_level_renderer()->create_material(mColor), 1, 1
         );
     }
 

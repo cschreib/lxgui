@@ -1,7 +1,7 @@
 #include "lxgui/gui_text.hpp"
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 
 typedef unsigned char uchar;
@@ -9,10 +9,10 @@ typedef unsigned char uchar;
 namespace lxgui {
 namespace gui
 {
-text::text(manager* pManager, const std::string& sFileName, float fSize) :
-    pManager_(pManager), sFileName_(sFileName), fSize_(fSize)
+text::text(const renderer* pRenderer, const std::string& sFileName, float fSize) :
+    pRenderer_(pRenderer), sFileName_(sFileName), fSize_(fSize)
 {
-    pFont_ = pManager_->create_font(sFileName_, fSize_);
+    pFont_ = pRenderer_->create_font(sFileName_, fSize_);
     if (!pFont_)
     {
         gui::out << gui::error << "gui::text : "
@@ -21,7 +21,7 @@ text::text(manager* pManager, const std::string& sFileName, float fSize) :
     }
 
     fSpaceWidth_ = pFont_->get_character_width(32);
-    mSprite_ = pManager_->create_sprite(pFont_->get_texture().lock());
+    mSprite_ = pRenderer_->create_sprite(pFont_->get_texture().lock());
 
     bReady_ = true;
 }
@@ -826,7 +826,7 @@ sprite text::create_sprite(char32_t uiChar) const
     const float fWidth = mBounds.right - mBounds.left;
     const float fHeight = mBounds.bottom - mBounds.top;
 
-    sprite mSprite = pManager_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
+    sprite mSprite = pRenderer_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
     mSprite.set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
     mSprite.set_color(mColor_);
 
