@@ -651,6 +651,7 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
         return nullptr;
     }
 
+    // NB: the iterator is not removed yet; it will be removed later in update().
     std::unique_ptr<layered_region> pRemovedRegion = std::move(*mIter);
 
     fire_build_layer_list();
@@ -1941,6 +1942,7 @@ void frame::update(float fDelta)
     for (auto* pRegion : get_regions())
         pRegion->update(fDelta);
 
+    // Remove deleted regions
     {
         auto mIterRemove = std::remove_if(lRegionList_.begin(), lRegionList_.end(), [](auto& pObj) {
             return pObj == nullptr;
@@ -1951,7 +1953,6 @@ void frame::update(float fDelta)
 
     // Update children
     DEBUG_LOG("   Update children");
-    std::map<uint, frame*>::iterator iterChild;
     for (auto* pChild : get_children())
     {
         pChild->update(fDelta);
@@ -1959,6 +1960,7 @@ void frame::update(float fDelta)
             return;
     }
 
+    // Remove deleted children
     {
         auto mIterRemove = std::remove_if(lChildList_.begin(), lChildList_.end(), [](auto& pObj) {
             return pObj == nullptr;
