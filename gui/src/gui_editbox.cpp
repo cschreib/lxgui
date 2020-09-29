@@ -1051,8 +1051,6 @@ bool edit_box::add_char_(char32_t sUnicode)
 
 bool edit_box::remove_char_()
 {
-    alive_checker mChecker(this);
-
     if (bSelectedText_)
     {
         if (uiSelectionStartPos_ != uiSelectionEndPos_)
@@ -1065,10 +1063,6 @@ bool edit_box::remove_char_()
             uiNumLetters_ = sUnicodeText_.size();
 
             iterCarretPos_ = sUnicodeText_.begin() + uiLeft;
-
-            on("TextChanged");
-            if (!mChecker.is_alive())
-                return false;
         }
 
         unlight_text();
@@ -1081,10 +1075,6 @@ bool edit_box::remove_char_()
         iterCarretPos_ = sUnicodeText_.erase(iterCarretPos_);
         sText_ = utils::unicode_to_UTF8(sUnicodeText_);
         --uiNumLetters_;
-
-        on("TextChanged");
-        if (!mChecker.is_alive())
-            return false;
     }
 
     update_displayed_text_();
@@ -1223,14 +1213,14 @@ bool edit_box::move_carret_vertically_(bool bDown)
 
 void edit_box::process_key_(key mKey)
 {
+    alive_checker mChecker(this);
+
     if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
     {
         if (bMultiLine_)
         {
             if (add_char_(U'\n'))
             {
-                alive_checker mChecker(this);
-
                 on("TextChanged");
                 if (!mChecker.is_alive())
                     return;
@@ -1243,18 +1233,16 @@ void edit_box::process_key_(key mKey)
             }
         }
     }
-    else if (mKey == key::K_BACK)
+    else if (mKey == key::K_BACK || mKey == key::K_DELETE)
     {
-        if (!bSelectedText_)
+        if (bSelectedText_ || mKey == key::K_DELETE || move_carret_horizontally_(false))
         {
-            if (move_carret_horizontally_(false))
-                remove_char_();
-        }
-        else
             remove_char_();
+            on("TextChanged");
+            if (!mChecker.is_alive())
+                return;
+        }
     }
-    else if (mKey == key::K_DELETE)
-        remove_char_();
     else if (mKey == key::K_LEFT || mKey == key::K_RIGHT || mKey == key::K_UP || mKey == key::K_DOWN)
     {
         if (!bArrowsIgnored_)
