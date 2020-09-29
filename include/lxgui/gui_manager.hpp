@@ -195,6 +195,7 @@ namespace gui
             return static_cast<frame_type*>(
                 create_root_frame_(frame_type::CLASS_NAME, sName, false, lInheritance));
         }
+
         /// Creates a new virtual frame, ready for use, and owned by this manager.
         /** \param sName        The name of this frame
         *   \param lInheritance The objects to inherit from

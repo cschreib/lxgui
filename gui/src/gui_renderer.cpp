@@ -69,6 +69,8 @@ void renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
         add_to_strata_list_(mStrata, pFrame);
     else
         remove_from_strata_list_(mStrata, pFrame);
+
+    fire_redraw(mStrata.mStrata);
 }
 
 void renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
@@ -81,6 +83,9 @@ void renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrat
 
     remove_from_strata_list_(lStrataList_[(uint)mOldStrata], pFrame);
     add_to_strata_list_(lStrataList_[(uint)mNewStrata], pFrame);
+
+    fire_redraw(mOldStrata);
+    fire_redraw(mNewStrata);
 }
 
 void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
@@ -109,6 +114,8 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
     }
 
     add_to_level_list_(mIterNew->second, pFrame);
+
+    fire_redraw(mStrata.mStrata);
 }
 
 void renderer::begin(utils::refptr<render_target> pTarget) const
