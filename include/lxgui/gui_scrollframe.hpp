@@ -139,9 +139,6 @@ namespace gui
 
         virtual void parse_scroll_child_block_(xml::block* pBlock);
 
-        void add_to_scroll_child_list_(frame* pChild);
-        void remove_from_scroll_child_list_(frame* pChild);
-
         void update_scroll_range_();
         void update_scroll_child_input_();
         void rebuild_scroll_render_target_();
@@ -160,8 +157,6 @@ namespace gui
         utils::refptr<render_target> pScrollRenderTarget_;
 
         texture* pScrollTexture_ = nullptr;
-
-        std::map<uint, frame*> lScrollChildList_;
 
         bool   bMouseInScrollTexture_ = false;
         frame* pHoveredScrollChild_ = nullptr;

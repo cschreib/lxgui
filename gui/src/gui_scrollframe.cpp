@@ -81,7 +81,6 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
             lBorderList_.top_left() - vector2i(iHorizontalScroll_, iVerticalScroll_)
         );
 
-        lScrollChildList_.clear();
         clear_strata_list_();
     }
     else if (!is_virtual() && !pScrollTexture_)
@@ -127,8 +126,6 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
             pScrollChild_->set_renderer(this);
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -iHorizontalScroll_, -iVerticalScroll_);
-
-        add_to_scroll_child_list_(pScrollChild_);
 
         iHorizontalScrollRange_ = int(pScrollChild_->get_abs_width()) - int(uiAbsWidth_);
         if (iHorizontalScrollRange_ < 0) iHorizontalScrollRange_ = 0;
@@ -356,31 +353,12 @@ void scroll_frame::create_glue()
     create_glue_<lua_scroll_frame>();
 }
 
-void scroll_frame::add_to_scroll_child_list_(frame* pChild)
-{
-    lScrollChildList_[pChild->get_id()] = pChild;
-    for (auto* pSubChild : pChild->get_children())
-        add_to_scroll_child_list_(pSubChild);
-}
-
-void scroll_frame::remove_from_scroll_child_list_(frame* pChild)
-{
-    lScrollChildList_.erase(pChild->get_id());
-    for (auto* pSubChild : pChild->get_children())
-        remove_from_scroll_child_list_(pSubChild);
-}
-
 void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
 {
     if (!pFrame)
         return;
 
     renderer::notify_rendered_frame(pFrame, bRendered);
-
-    if (bRendered)
-        add_to_scroll_child_list_(pFrame);
-    else
-        remove_from_scroll_child_list_(pFrame);
 
     bRedrawScrollRenderTarget_ = true;
 }
