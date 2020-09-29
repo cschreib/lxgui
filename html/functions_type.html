@@ -82,6 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
       <li><a href="#index_d"><span>d</span></a></li>
+      <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_k"><span>k</span></a></li>
@@ -126,7 +127,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="structlxgui_1_1utils_1_1range_1_1reverse__key__range.html#a2a85783680c8c2e51e77fd6f08051723">lxgui::utils::range::reverse_key_range&lt; T &gt;</a>
 , <a class="el" href="structlxgui_1_1utils_1_1range_1_1reverse__value__range.html#ab9dfbe186a1b3d9f8db513b8652605fd">lxgui::utils::range::reverse_value_range&lt; T &gt;</a>
 , <a class="el" href="structlxgui_1_1utils_1_1range_1_1value__range.html#ac8430514c20acf9a334a23033570b0aa">lxgui::utils::range::value_range&lt; T &gt;</a>
-, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a74b2c7b684ae5d181f49d1c01594d9b0">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer &gt;</a>
+, <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a93616e3a8d276952e588fb79eb2218c5">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</a>
 </li>
 </ul>
 
@@ -137,10 +138,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="structlxgui_1_1gui_1_1gl_1_1ub32color.html#a88a27d4792682dc3556edafe38c5f980">lxgui::gui::gl::ub32color</a>
 </li>
 <li>child_list
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a452fca2fe34948803a2ec9a006cad424">lxgui::gui::frame</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae85fcdca391b85e27dd55867fc402fc1">lxgui::gui::frame</a>
 </li>
 <li>child_list_view
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaf80525ba248fdfe97e4bdf7a1ee600b">lxgui::gui::frame</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a079c25eaaed005e851b258d378340d84">lxgui::gui::frame</a>
 </li>
 <li>const_iterator
 : <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#a8ea79fd8c8d75b153fa8ff98fefc6b23">lxgui::utils::sorted_vector&lt; T, Cmp &gt;</a>
@@ -153,13 +154,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
 <li>data_type
-: <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a3a0cd639a91306bc8564f612a4ff5eeb">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer &gt;</a>
+: <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ae874448a0869d50397ace0f88d135a2f">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</a>
 , <a class="el" href="structlxgui_1_1utils_1_1view_1_1ptr__dereferencer.html#a5189f2a4333edbb0a7ac411ba9955a22">lxgui::utils::view::ptr_dereferencer&lt; BaseIterator &gt;</a>
 , <a class="el" href="structlxgui_1_1utils_1_1view_1_1standard__dereferencer.html#a785ab5beb76643fb14d0d589788f6c79">lxgui::utils::view::standard_dereferencer&lt; BaseIterator &gt;</a>
 , <a class="el" href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html#a24a207064c3eed8fd187133ef8302fa8">lxgui::utils::view::unique_ptr_dereferencer&lt; BaseIterator &gt;</a>
 </li>
 <li>dereferencer
-: <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a72a9b2afa706e5081c5a354efc030700">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer &gt;</a>
+: <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ac2525cbf7a90acc30126ceedc3e7902a">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_f"></a>- f -</h3><ul>
+<li>filter
+: <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893">lxgui::utils::view::adaptor&lt; ContainerType, Dereferencer, Filter &gt;</a>
 </li>
 </ul>
 
@@ -202,19 +210,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>region_list
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#accb0b0b0e24951a7dacec91f74c0ad5c">lxgui::gui::frame</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a974c524145af40e61a6f2a1c778104b5">lxgui::gui::frame</a>
 </li>
 <li>region_list_view
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#aa9b34456fb4180a06c551b9348e64c90">lxgui::gui::frame</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a43e0b162e288f70795aa592937e03429">lxgui::gui::frame</a>
 </li>
 <li>reverse_iterator
 : <a class="el" href="classlxgui_1_1utils_1_1sorted__vector.html#a4d554a742ee0790a1399fe2cef2908a6">lxgui::utils::sorted_vector&lt; T, Cmp &gt;</a>
 </li>
 <li>root_frame_list
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a0d440906512d03044a85bc2bf85b6243">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a508ffdca938306d3b9ed16e78a3af80f">lxgui::gui::manager</a>
 </li>
 <li>root_frame_list_view
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a9455dc3edfb2322447cd496cfd17911d">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a96ba024db64d25f88e518a81ddbfae79">lxgui::gui::manager</a>
 </li>
 </ul>
 
@@ -235,7 +243,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 24 2020 19:46:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Sep 29 2020 20:51:34 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

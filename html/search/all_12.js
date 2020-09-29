@@ -2,7 +2,7 @@ var searchData=
 [
   ['t',['T',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a3d21457b1ab887efdaa74c167493b07f',1,'lxgui::gui::gl::matrix4']]],
   ['table',['TABLE',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34bbae0aee41ddd6a73697584a20afc6',1,'lxgui::lua']]],
-  ['text',['text',['../classlxgui_1_1gui_1_1text.html#a5845ab01f6f600cb099b8ea11fb9e1f6',1,'lxgui::gui::text']]],
+  ['text',['text',['../classlxgui_1_1gui_1_1text.html#acca535386746c17c977a50f4fb8f236e',1,'lxgui::gui::text']]],
   ['text',['text',['../classlxgui_1_1gui_1_1text.html',1,'lxgui::gui']]],
   ['texture',['texture',['../classlxgui_1_1gui_1_1texture.html',1,'lxgui::gui']]],
   ['texture',['texture',['../classlxgui_1_1gui_1_1texture.html#a56705d0abbc7d2f86ae471861a124b87',1,'lxgui::gui::texture::texture()'],['../classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2a3f92f542bd9ec48f912b9350e22736ac',1,'lxgui::gui::material::TEXTURE()']]],

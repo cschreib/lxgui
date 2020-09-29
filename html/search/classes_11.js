@@ -4,7 +4,6 @@ var searchData=
   ['scroll_5fframe',['scroll_frame',['../classlxgui_1_1gui_1_1scroll__frame.html',1,'lxgui::gui']]],
   ['slider',['slider',['../classlxgui_1_1gui_1_1slider.html',1,'lxgui::gui']]],
   ['sorted_5fvector',['sorted_vector',['../classlxgui_1_1utils_1_1sorted__vector.html',1,'lxgui::utils']]],
-  ['sorted_5fvector_3c_20registered_5fevent_2c_20registered_5fevent_3a_3acomparator_20_3e',['sorted_vector&lt; registered_event, registered_event::comparator &gt;',['../classlxgui_1_1utils_1_1sorted__vector.html',1,'lxgui::utils']]],
   ['source',['source',['../classlxgui_1_1input_1_1sfml_1_1source.html',1,'lxgui::input::sfml']]],
   ['source',['source',['../classlxgui_1_1input_1_1glfw_1_1source.html',1,'lxgui::input::glfw']]],
   ['source_5fimpl',['source_impl',['../classlxgui_1_1input_1_1source__impl.html',1,'lxgui::input']]],

@@ -2,10 +2,11 @@ var searchData=
 [
   ['file_5fexists',['file_exists',['../namespacelxgui_1_1utils.html#a05939b9f42c273e2b7fd5d81848d9b95',1,'lxgui::utils']]],
   ['find',['find',['../classlxgui_1_1utils_1_1sorted__vector.html#a3ef5dc9241a362c84a645604134be02d',1,'lxgui::utils::sorted_vector::find(const Key &amp;k)'],['../classlxgui_1_1utils_1_1sorted__vector.html#ada05a1c637c824e0b934cb049fd2761e',1,'lxgui::utils::sorted_vector::find(const Key &amp;k) const ']]],
+  ['find_5fhovered_5fframe_5f',['find_hovered_frame_',['../classlxgui_1_1gui_1_1renderer.html#a5221093cbcd3b30d2662e8aa445c2027',1,'lxgui::gui::renderer']]],
   ['fire_5fbuild_5flayer_5flist',['fire_build_layer_list',['../classlxgui_1_1gui_1_1frame.html#ad6fc5e7b68377fdf30cc86197e088f4d',1,'lxgui::gui::frame']]],
   ['fire_5fbuild_5fstrata_5flist',['fire_build_strata_list',['../classlxgui_1_1gui_1_1manager.html#a5200c57d1ef442000814341214f15f8f',1,'lxgui::gui::manager']]],
   ['fire_5fevent',['fire_event',['../classlxgui_1_1gui_1_1event__manager.html#afe177d2e51c81a01f6b43a6a7cef185c',1,'lxgui::gui::event_manager']]],
-  ['fire_5fredraw',['fire_redraw',['../classlxgui_1_1gui_1_1frame.html#a28f0741fb3cd239742becd17e15bb82a',1,'lxgui::gui::frame::fire_redraw()'],['../classlxgui_1_1gui_1_1manager.html#abefd8a33fbf1108685951653f8586679',1,'lxgui::gui::manager::fire_redraw()'],['../classlxgui_1_1gui_1_1scroll__frame.html#a3fded17f29ff75bcbd14edae37c90d25',1,'lxgui::gui::scroll_frame::fire_redraw()']]],
+  ['fire_5fredraw',['fire_redraw',['../classlxgui_1_1gui_1_1renderer.html#a474e76dada44d682ca751f4607054201',1,'lxgui::gui::renderer::fire_redraw()'],['../classlxgui_1_1gui_1_1scroll__frame.html#a07b24c168c08625ebf4c5cff29a8a10f',1,'lxgui::gui::scroll_frame::fire_redraw()']]],
   ['fire_5fupdate_5fbar_5ftexture_5f',['fire_update_bar_texture_',['../classlxgui_1_1gui_1_1status__bar.html#a481716de4d0252db4997423142ada11c',1,'lxgui::gui::status_bar']]],
   ['fire_5fupdate_5fborders',['fire_update_borders',['../classlxgui_1_1gui_1_1slider.html#a9f97bc5ffe4f486c396d969d7fcb5b2a',1,'lxgui::gui::slider::fire_update_borders()'],['../classlxgui_1_1gui_1_1uiobject.html#ab4dc19f5fb0e7ed83d8ddbc5648a7920',1,'lxgui::gui::uiobject::fire_update_borders()']]],
   ['fire_5fupdate_5fdimensions',['fire_update_dimensions',['../classlxgui_1_1gui_1_1uiobject.html#ab15ee0f8a909ff551091cbb14ae0f611',1,'lxgui::gui::uiobject']]],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['text',['text',['../classlxgui_1_1gui_1_1text.html#a5845ab01f6f600cb099b8ea11fb9e1f6',1,'lxgui::gui::text']]],
+  ['text',['text',['../classlxgui_1_1gui_1_1text.html#acca535386746c17c977a50f4fb8f236e',1,'lxgui::gui::text']]],
   ['texture',['texture',['../classlxgui_1_1gui_1_1texture.html#a56705d0abbc7d2f86ae471861a124b87',1,'lxgui::gui::texture']]],
   ['ticks',['ticks',['../classlxgui_1_1gui_1_1periodic__timer.html#ae3b1e1d8f75de7577842d88e87245501',1,'lxgui::gui::periodic_timer']]],
   ['to_5fhls',['to_hls',['../classlxgui_1_1gui_1_1color.html#a282daf1b346faeca502da1e4eb40c360',1,'lxgui::gui::color']]],

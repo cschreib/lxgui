@@ -109,6 +109,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1addon.html">addon</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A piece of the user interface.  <a href="structlxgui_1_1gui_1_1addon.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1alive__checker.html">alive_checker</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class for safe checking of widget validity.  <a href="classlxgui_1_1gui_1_1alive__checker.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1anchor.html">anchor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stores a position for a UI widget.  <a href="classlxgui_1_1gui_1_1anchor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +184,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A place to render things (the screen, a texture, ...)  <a href="classlxgui_1_1gui_1_1render__target.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GUI renderer.  <a href="classlxgui_1_1gui_1_1renderer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract type for implementation specific management.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#details">More...</a><br /></td></tr>
@@ -259,8 +265,8 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:a246cb1ee567c201f149a8765e79c0b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f62faad68736da3e6df7e8d92c293a6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> { <br />
-&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a654549fd15738332e933b52baf3cbc65">frame_strata::PARENT</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a87ed58ce5596142e11cb65deb049bb4b">frame_strata::BACKGROUND</a>, 
+&#160;&#160;<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a654549fd15738332e933b52baf3cbc65">frame_strata::PARENT</a> = -1, 
+<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a87ed58ce5596142e11cb65deb049bb4b">frame_strata::BACKGROUND</a> = 0, 
 <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a41bc94cbd8eebea13ce0491b2ac11b88">frame_strata::LOW</a>, 
 <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ac87f3be66ffc3c0d4249f1c2cc5f3cce">frame_strata::MEDIUM</a>, 
 <br />
@@ -319,6 +325,10 @@ Functions</h2></td></tr>
 <tr class="separator:a85f1fa969196a912c2dc021f849acde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3fee86ac72f2202cd1ac4925fc0f057"><td class="memItemLeft" align="right" valign="top">std::ostream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">out</a> (std::cout.rdbuf())</td></tr>
 <tr class="separator:ad3fee86ac72f2202cd1ac4925fc0f057"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7883b791709545509a95db5de251f57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#af7883b791709545509a95db5de251f57">count_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
+<tr class="separator:af7883b791709545509a95db5de251f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1417131ce04efe31b8e95d581499167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">print_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
+<tr class="separator:a1417131ce04efe31b8e95d581499167b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb2351f51365c9fbf555f43851a3d0aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#afb2351f51365c9fbf555f43851a3d0aa">step_value</a> (float &amp;fValue, float fStep)</td></tr>
 <tr class="separator:afb2351f51365c9fbf555f43851a3d0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e37025213ed926fae068855e825705"><td class="memItemLeft" align="right" valign="top">std::array&lt; float, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a21e37025213ed926fae068855e825705">select_uvs</a> (const std::array&lt; float, 8 &gt; &amp;uvs)</td></tr>
@@ -639,6 +649,24 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="af7883b791709545509a95db5de251f57"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> lxgui::gui::count_frames </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lStrataList</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00012">12</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae1f52b500e065c49ab56e0de2f002700"></a>
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +693,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5" title="Obtain a pointer to a derived class. ">uiobject::down_cast()</a> for more information. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00719">719</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00712">712</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -711,7 +739,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00725">725</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00692">692</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -781,7 +809,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00222">222</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00226">226</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -799,7 +827,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00272">272</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00269">269</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -817,7 +845,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00286">286</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00283">283</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -853,7 +881,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01196">1196</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01218">1218</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1219,6 +1247,24 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a1417131ce04efe31b8e95d581499167b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::print_frames </td>
+          <td>(</td>
+          <td class="paramtype">const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lStrataList</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00027">27</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a21e37025213ed926fae068855e825705"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1233,7 +1279,7 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__statusbar_8cpp_source.html#l00013">13</a> of file <a class="el" href="gui__statusbar_8cpp_source.html">gui_statusbar.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__statusbar_8cpp_source.html#l00014">14</a> of file <a class="el" href="gui__statusbar_8cpp_source.html">gui_statusbar.cpp</a>.</p>
 
 </div>
 </div>
@@ -1261,7 +1307,7 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__slider_8cpp_source.html#l00022">22</a> of file <a class="el" href="gui__slider_8cpp_source.html">gui_slider.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__slider_8cpp_source.html#l00023">23</a> of file <a class="el" href="gui__slider_8cpp_source.html">gui_slider.cpp</a>.</p>
 
 </div>
 </div>
@@ -1337,7 +1383,7 @@ template&lt;class T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 24 2020 19:46:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Sep 29 2020 20:51:33 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

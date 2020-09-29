@@ -1,6 +1,8 @@
 var searchData=
 [
   ['gui_5faddon_2ehpp',['gui_addon.hpp',['../gui__addon_8hpp.html',1,'']]],
+  ['gui_5falive_5fchecker_2ecpp',['gui_alive_checker.cpp',['../gui__alive__checker_8cpp.html',1,'']]],
+  ['gui_5falive_5fchecker_2ehpp',['gui_alive_checker.hpp',['../gui__alive__checker_8hpp.html',1,'']]],
   ['gui_5fanchor_2ecpp',['gui_anchor.cpp',['../gui__anchor_8cpp.html',1,'']]],
   ['gui_5fanchor_2ehpp',['gui_anchor.hpp',['../gui__anchor_8hpp.html',1,'']]],
   ['gui_5fbackdrop_2ecpp',['gui_backdrop.cpp',['../gui__backdrop_8cpp.html',1,'']]],
@@ -62,6 +64,8 @@ var searchData=
   ['gui_5fregion_2ecpp',['gui_region.cpp',['../gui__region_8cpp.html',1,'']]],
   ['gui_5fregion_2ehpp',['gui_region.hpp',['../gui__region_8hpp.html',1,'']]],
   ['gui_5fregion_5fparser_2ecpp',['gui_region_parser.cpp',['../gui__region__parser_8cpp.html',1,'']]],
+  ['gui_5frenderer_2ecpp',['gui_renderer.cpp',['../gui__renderer_8cpp.html',1,'']]],
+  ['gui_5frenderer_2ehpp',['gui_renderer.hpp',['../gui__renderer_8hpp.html',1,'']]],
   ['gui_5frenderer_5fimpl_2ecpp',['gui_renderer_impl.cpp',['../gui__renderer__impl_8cpp.html',1,'']]],
   ['gui_5frenderer_5fimpl_2ehpp',['gui_renderer_impl.hpp',['../gui__renderer__impl_8hpp.html',1,'']]],
   ['gui_5frendertarget_2ehpp',['gui_rendertarget.hpp',['../gui__rendertarget_8hpp.html',1,'']]],

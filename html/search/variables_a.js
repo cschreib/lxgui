@@ -20,6 +20,7 @@ var searchData=
   ['lframelist',['lFrameList',['../structlxgui_1_1gui_1_1level.html#aa63cf2bee6f73121f684ce4ab3f30ef3',1,'lxgui::gui::level']]],
   ['lglue_5f',['lGlue_',['../classlxgui_1_1gui_1_1uiobject.html#ad5ce91e310761dc36b64ef1729ff9f30',1,'lxgui::gui::uiobject']]],
   ['lhistorylinelist_5f',['lHistoryLineList_',['../classlxgui_1_1gui_1_1edit__box.html#aa93d9dbb360db1fc673556d7377b4f90',1,'lxgui::gui::edit_box']]],
+  ['linheritance',['lInheritance',['../structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#a768c8a953c333370fecd90034bfc3d0e',1,'lxgui::gui::manager::xml_core_attributes']]],
   ['linitialtextcoords_5f',['lInitialTextCoords_',['../classlxgui_1_1gui_1_1status__bar.html#a478bd55e9945a30a989edebc3fa4acb0',1,'lxgui::gui::status_bar']]],
   ['lkerninginfo',['lKerningInfo',['../structlxgui_1_1gui_1_1gl_1_1character__info.html#af128556c872c5855d27832a85bf15282',1,'lxgui::gui::gl::character_info']]],
   ['lkeystate',['lKeyState',['../structlxgui_1_1input_1_1source__impl_1_1key__state.html#ade5b906b8ac0b02b8f363d9c0126fda8',1,'lxgui::input::source_impl::key_state']]],
@@ -35,8 +36,7 @@ var searchData=
   ['lregionlist_5f',['lRegionList_',['../classlxgui_1_1gui_1_1frame.html#a25db7e94f873f5fbd600d34305aa3f15',1,'lxgui::gui::frame']]],
   ['lrelhitrectinsetlist_5f',['lRelHitRectInsetList_',['../classlxgui_1_1gui_1_1frame.html#ab56fdfc72577a5e3af7f676755a124aa',1,'lxgui::gui::frame']]],
   ['lsavedvariablelist',['lSavedVariableList',['../structlxgui_1_1gui_1_1addon.html#a4344f07e6aa767da7997028319c8dfeb',1,'lxgui::gui::addon']]],
-  ['lscrollchildlist_5f',['lScrollChildList_',['../classlxgui_1_1gui_1_1scroll__frame.html#a59a605b793665cc43ab7045b87560ca0',1,'lxgui::gui::scroll_frame']]],
-  ['lscrollstratalist_5f',['lScrollStrataList_',['../classlxgui_1_1gui_1_1scroll__frame.html#a0db39bd25d8b1c53d1da1ff7682aa7fa',1,'lxgui::gui::scroll_frame']]],
+  ['lstratalist_5f',['lStrataList_',['../classlxgui_1_1gui_1_1renderer.html#a704f875b2ca7cae3b83286c1eb9f9859',1,'lxgui::gui::renderer']]],
   ['ltextinsets_5f',['lTextInsets_',['../classlxgui_1_1gui_1_1edit__box.html#a6cbf65100e92a1806d7d2eee6b7dd93a',1,'lxgui::gui::edit_box']]],
   ['ltype_5f',['lType_',['../classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587',1,'lxgui::gui::uiobject']]],
   ['lxmlscriptinfolist_5f',['lXMLScriptInfoList_',['../classlxgui_1_1gui_1_1frame.html#a460f345dc38cd57d3b39d46b054bb8a7',1,'lxgui::gui::frame']]]

@@ -9,6 +9,7 @@ var searchData=
   ['_7eoptional',['~optional',['../classlxgui_1_1utils_1_1optional.html#aac8021c9511381213bd53f1d9fed71f5',1,'lxgui::utils::optional']]],
   ['_7erefptr',['~refptr',['../classlxgui_1_1utils_1_1refptr.html#a703525bfd5f993ef4c6f4897eb82e8c5',1,'lxgui::utils::refptr']]],
   ['_7erender_5ftarget',['~render_target',['../classlxgui_1_1gui_1_1render__target.html#a0dc82748740006f2579a386c208576db',1,'lxgui::gui::render_target::~render_target()'],['../classlxgui_1_1gui_1_1gl_1_1render__target.html#a5d9c13c0305b99b5d982435e6ec7e5cb',1,'lxgui::gui::gl::render_target::~render_target()']]],
+  ['_7erenderer',['~renderer',['../classlxgui_1_1gui_1_1renderer.html#a6b57849f7aa18f86df985bb13b27d07a',1,'lxgui::gui::renderer']]],
   ['_7erenderer_5fimpl',['~renderer_impl',['../classlxgui_1_1gui_1_1renderer__impl.html#a336793c4dee799ba320cb625e1ea4e04',1,'lxgui::gui::renderer_impl']]],
   ['_7escroll_5fframe',['~scroll_frame',['../classlxgui_1_1gui_1_1scroll__frame.html#a416bf4823061e4868dca55c7a47aa0ad',1,'lxgui::gui::scroll_frame']]],
   ['_7esource_5fimpl',['~source_impl',['../classlxgui_1_1input_1_1source__impl.html#a5027ce79368e75d4938541ff1897308e',1,'lxgui::input::source_impl']]],
