@@ -40,8 +40,9 @@ void backdrop::set_background(const std::string& sBackgroundFile)
     {
         if (utils::file_exists(sBackgroundFile))
         {
-            mBackground_ = pParent_->get_top_level_renderer()->create_sprite(
-                pParent_->get_top_level_renderer()->create_material(sBackgroundFile)
+            auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
+            mBackground_ = pTopLevelRenderer->create_sprite(
+                pTopLevelRenderer->create_material(sBackgroundFile)
             );
             uiTileSize_ = uiOriginalTileSize_ = mBackground_.get_width();
             mBackgroundColor_ = color::EMPTY;
@@ -76,8 +77,9 @@ void backdrop::set_background_color(const color& mColor)
     sBackgroundFile_ = "";
 
     uiTileSize_ = uiOriginalTileSize_ = 256;
-    mBackground_ = pParent_->get_top_level_renderer()->create_sprite(
-        pParent_->get_top_level_renderer()->create_material(mColor), 256, 256
+    auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
+    mBackground_ = pTopLevelRenderer->create_sprite(
+        pTopLevelRenderer->create_material(mColor), 256, 256
     );
 
     bHasBackground_ = true;
@@ -147,7 +149,8 @@ void backdrop::set_edge(const std::string& sEdgeFile)
     {
         if (utils::file_exists(sEdgeFile))
         {
-            utils::refptr<material> pMat = pParent_->get_top_level_renderer()->create_material(sEdgeFile);
+            auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
+            utils::refptr<material> pMat = pTopLevelRenderer->create_material(sEdgeFile);
 
             if (pMat->get_width()/pMat->get_height() == 8.0f)
             {
@@ -155,7 +158,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
 
                 for (uint i = 0; i < 8; ++i)
                 {
-                    lEdgeList_[i] = pParent_->get_top_level_renderer()->create_sprite(
+                    lEdgeList_[i] = pTopLevelRenderer->create_sprite(
                         pMat, pMat->get_height()*i, 0.0f, uiEdgeSize_, uiEdgeSize_
                     );
                 }
@@ -222,8 +225,9 @@ void backdrop::set_edge_color(const color& mColor)
 
     for (auto& mEdge : lEdgeList_)
     {
-        mEdge = pParent_->get_top_level_renderer()->create_sprite(
-            pParent_->get_top_level_renderer()->create_material(mColor), 1, 1
+        auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
+        mEdge = pTopLevelRenderer->create_sprite(
+            pTopLevelRenderer->create_material(mColor), 1, 1
         );
     }
 
