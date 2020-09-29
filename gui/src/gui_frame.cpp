@@ -274,7 +274,8 @@ void frame::copy_from(uiobject* pObj)
     {
         if (pChild->is_special()) continue;
 
-        create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        pNewChild->notify_loaded();
     }
 
     if (pFrame->pBackdrop_)
@@ -576,6 +577,8 @@ void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 
 void frame::notify_loaded()
 {
+    uiobject::notify_loaded();
+
     if (!bVirtual_)
     {
         alive_checker mChecker(this);
@@ -583,8 +586,6 @@ void frame::notify_loaded()
         if (!mChecker.is_alive())
             return;
     }
-
-    uiobject::notify_loaded();
 }
 
 void frame::fire_build_layer_list()
@@ -721,6 +722,10 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     }
 
     pNewFrame->create_glue();
+
+    if (!pNewFrame->is_virtual())
+        get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
+
     pNewFrame->set_level(get_level() + 1);
 
     for (auto* pObj : lInheritance)
@@ -738,11 +743,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
         pNewFrame->copy_from(pObj);
     }
 
-    if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
-
     pNewFrame->set_newly_created();
-    pNewFrame->notify_loaded();
 
     return add_child(std::move(pNewFrame));
 }
@@ -1416,7 +1417,7 @@ void frame::set_frame_strata(frame_strata mStrata)
 
     std::swap(mStrata_, mStrata);
 
-    if (mStrata_ != mStrata && !bVirtual_ && bLoaded_)
+    if (mStrata_ != mStrata && !bVirtual_)
         get_top_level_renderer()->notify_frame_strata_changed(this, mStrata, mStrata_);
 }
 
@@ -1493,7 +1494,7 @@ void frame::set_level(int iLevel)
     {
         std::swap(iLevel, iLevel_);
 
-        if (!bVirtual_ && bLoaded_)
+        if (!bVirtual_)
             get_top_level_renderer()->notify_frame_level_changed(this, iLevel, iLevel_);
     }
 }
@@ -1620,7 +1621,7 @@ void frame::raise()
 
     if (iLevel_ > iOldLevel)
     {
-        if (!is_virtual() && bLoaded_)
+        if (!is_virtual())
             get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
 
         int iAmount = iLevel_ - iOldLevel;
@@ -1637,7 +1638,7 @@ void frame::add_level_(int iAmount)
     int iOldLevel = iLevel_;
     iLevel_ += iAmount;
 
-    if (!is_virtual() && bLoaded_)
+    if (!is_virtual())
         get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
 
     for (auto* pChild : get_children())

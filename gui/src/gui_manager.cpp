@@ -188,7 +188,9 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
     }
 
     pNewFrame->create_glue();
-    pNewFrame->set_level(0);
+
+    if (!pNewFrame->is_virtual())
+        notify_rendered_frame(pNewFrame.get(), true);
 
     for (auto* pObj : lInheritance)
     {
@@ -205,11 +207,7 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
         pNewFrame->copy_from(pObj);
     }
 
-    if (!pNewFrame->is_virtual())
-        notify_rendered_frame(pNewFrame.get(), true);
-
     pNewFrame->set_newly_created();
-    pNewFrame->notify_loaded();
 
     return add_root_frame(std::move(pNewFrame));
 }

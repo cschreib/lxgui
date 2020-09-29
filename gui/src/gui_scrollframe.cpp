@@ -65,6 +65,7 @@ void scroll_frame::copy_from(uiobject* pObj)
     {
         frame* pScrollChild = create_child(pOtherChild->get_object_type(),
                 pOtherChild->get_raw_name(), {pOtherChild});
+        pScrollChild->notify_loaded();
 
         if (pScrollChild)
             this->set_scroll_child(remove_child(pScrollChild));

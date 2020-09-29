@@ -155,7 +155,10 @@ namespace gui
         *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable.
+        *         frame is directly usable. However, you still need to call
+        *         notify_loaded() when you are done with any extra initialization
+        *         you require on this frame. If you do not, the frame's OnLoad
+        *         callback will not fire.
         */
         frame* create_root_frame(const std::string& sClassName, const std::string& sName,
             const std::vector<uiobject*>& lInheritance = {})

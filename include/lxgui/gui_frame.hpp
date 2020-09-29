@@ -197,7 +197,10 @@ namespace gui
         *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame.
+        *         you can directly use the created frame. However, you still
+        *         need to call notify_loaded() when you are done with any extra
+        *         initialization you require on this frame. If you do not,
+        *         the frame's OnLoad callback will not fire.
         */
         frame* create_child(const std::string& sClassName, const std::string& sName, const std::vector<uiobject*>& lInheritance = {});
 
