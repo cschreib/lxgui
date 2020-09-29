@@ -957,7 +957,7 @@ void manager::update(float fDelta)
     // ... then update logics on main widgets from parent to children.
     for (auto* pObject : get_root_frames())
     {
-        if (pObject && !pObject->is_virtual())
+        if (!pObject->is_virtual())
             pObject->update(fDelta);
     }
 
@@ -1454,7 +1454,7 @@ void manager::on_event(const event& mEvent)
         // Notify all frames anchored to the window edges
         for (auto* pObject : get_root_frames())
         {
-            if (pObject && !pObject->is_virtual())
+            if (!pObject->is_virtual())
             {
                 pObject->fire_update_dimensions();
                 pObject->notify_renderer_need_redraw();
