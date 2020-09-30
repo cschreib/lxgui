@@ -765,8 +765,6 @@ void manager::close_ui()
 
         lAddOnList_.clear();
 
-        bStrataListUpdated_ = true;
-
         pLua_ = nullptr;
         pSol_ = nullptr;
 
@@ -974,7 +972,7 @@ void manager::update(float fDelta)
 
         try
         {
-            bool bRedraw = false;
+            bool bRedraw = has_strata_list_changed_();
             for (auto& mStrata : lStrataList_)
             {
                 if (mStrata.bRedraw)

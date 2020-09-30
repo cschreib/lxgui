@@ -261,7 +261,7 @@ void renderer::clear_strata_list_()
         mStrata.lLevelList.clear();
         mStrata.pRenderTarget = nullptr;
         mStrata.uiRedrawCount = 0u;
-        mStrata.bRedraw = false;
+        mStrata.bRedraw = true;
     }
 
     bStrataListUpdated_ = true;
