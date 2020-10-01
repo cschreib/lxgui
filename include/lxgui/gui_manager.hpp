@@ -172,7 +172,7 @@ namespace gui
         *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable.
+        *         frame is directly usable for inheritance.
         *   \note Virtual frames are not displayed, but they can be used as templates
         *         to create other frames through inheritance.
         */
@@ -187,7 +187,10 @@ namespace gui
         *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable.
+        *         frame is directly usable. However, you still need to call
+        *         notify_loaded() when you are done with any extra initialization
+        *         you require on this frame. If you do not, the frame's OnLoad
+        *         callback will not fire.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         frame* create_root_frame(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
@@ -201,7 +204,7 @@ namespace gui
         *   \param lInheritance The objects to inherit from
         *   \return The new frame
         *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable.
+        *         frame is directly usable for inheritance.
         *   \note Virtual frames are not displayed, but they can be used as templates
         *         to create other frames through inheritance.
         */
@@ -380,7 +383,7 @@ namespace gui
         */
         const lua::state& get_luapp() const;
 
-        /// Creates the lua::State that will be used to communicate with the GUI.
+        /// Creates the lua::state that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
         *                   state is created
         *   \note This function is usefull if you need to create additionnal
