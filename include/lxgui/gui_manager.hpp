@@ -524,22 +524,6 @@ namespace gui
         */
         void clear_fonts_on_close(bool bClear);
 
-        /// Manually create a strata's render target.
-        /** \param mframe_strata The strata to create the render target for
-        *   \note Creating a render target can take some times. To
-        *         avoid GUI hangs during creation, the manager
-        *         automatically creates the render targets when
-        *         read_files() is called, but only for strata that
-        *         already contain frames when all .xml files are loaded.
-        *         Other ones are created when needed, just before
-        *         rendering on them. If you know that one of them is
-        *         empty at load time, and is going to be filled later
-        *         during run time, you can call this function to ensure
-        *         the render target will be created at load time,
-        *         causing no GUI hangs.
-        */
-        void create_strata_render_target(frame_strata mframe_strata);
-
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)
         */
