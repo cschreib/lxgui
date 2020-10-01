@@ -162,7 +162,7 @@ namespace gui
         void reset_strata_list_changed_flag_();
 
         void render_strata_(const strata& mStrata) const;
-        void create_strata_render_target_(strata& mStrata, uint uiWidth, uint uiHeight);
+        void create_strata_cache_render_target_(strata& mStrata, uint uiWidth, uint uiHeight);
 
         frame* find_hovered_frame_(int iX, int iY);
 

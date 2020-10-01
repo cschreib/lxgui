@@ -240,7 +240,7 @@ void renderer::render_strata_(const strata& mStrata) const
     ++mStrata.uiRedrawCount;
 }
 
-void renderer::create_strata_render_target_(strata& mStrata, uint uiWidth, uint uiHeight)
+void renderer::create_strata_cache_render_target_(strata& mStrata, uint uiWidth, uint uiHeight)
 {
     if (mStrata.pRenderTarget)
     {
