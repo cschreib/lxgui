@@ -992,8 +992,8 @@ void uiobject::update_anchors()
         {
             if (pObj->depends_on(this))
             {
-                gui::out << gui::error << "gui::" << lType_.back() << " : Cyclic anchor dependency !"
-                    << "\"" << sName_ << "\" and \"" << pObj->get_name() << "\" depend on"
+                gui::out << gui::error << "gui::" << lType_.back() << " : Cyclic anchor dependency ! "
+                    << "\"" << sName_ << "\" and \"" << pObj->get_name() << "\" depend on "
                     "eachothers (directly or indirectly).\n\""
                     << anchor::get_string_point(mAnchor->get_point()) << "\" anchor removed." << std::endl;
 

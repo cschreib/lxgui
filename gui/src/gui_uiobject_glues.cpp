@@ -555,6 +555,15 @@ int lua_uiobject::_set_point(lua_State* pLua)
         else
             pParent = pObject_->get_parent();
 
+        if (pParent && pParent->depends_on(pObject_))
+        {
+            gui::out << gui::error << mFunc.get_name() << " : Cyclic anchor dependency ! "
+                << "\"" << pObject_->get_name() << "\" and \"" << pParent->get_name() << "\" depend on "
+                "eachothers (directly or indirectly).\n\""
+                << anchor::get_string_point(mPoint) << "\" anchor not added." << std::endl;
+            return mFunc.on_return();
+        }
+
         // relativePoint
         anchor_point mParentPoint = mPoint;
         if (mFunc.is_provided(2))
