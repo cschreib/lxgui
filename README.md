@@ -127,25 +127,20 @@ Then, within this tag, we need to create a frame (which is more or less a GUI co
 
 ```xml
     <Frame name="FPSCounter">
-        <Size>
-            <RelDimension x="1.0" y="1.0"/>
-        </Size>
         <Anchors>
-            <Anchor point="CENTER"/>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
         </Anchors>
     </Frame>
 ```
 
-This creates a Frame named "FPSCounter" that fills the whole screen: the <Size> tag gives it relative size of "1.0" (relative to the parent frame, but since there is none, it is relative to the screen size), and the <Anchor> tag positions the frame in the middle of the screen.
-Now, within the Frame, we create a FontString object, that can render text:
+This creates a Frame named "FPSCounter" that fills the whole screen: the <Anchor> tags forces the top-left and bottom-right corners to match the screen's top-left and bottom-right corners. Now, within the Frame, we create a FontString object, that can render text:
 
 ```xml
     <Frame name="FPSCounter">
-        <Size>
-            <RelDimension x="1.0" y="1.0"/>
-        </Size>
         <Anchors>
-            <Anchor point="CENTER"/>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
@@ -198,11 +193,9 @@ Once this is done, we have the full .xml file:
 ```xml
 <Ui>
     <Frame name="FPSCounter">
-        <Size>
-            <RelDimension x="1.0" y="1.0"/>
-        </Size>
         <Anchors>
-            <Anchor point="CENTER"/>
+            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
@@ -255,8 +248,8 @@ Doing the very same thing in C++ would give the following code :
 ```c++
 // Create the Frame
 gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
-pFrame->set_rel_dimensins(1.0f, 1.0f);
-pFrame->set_abs_point(gui::anchor_point::CENTER, "", gui::anchor_point::CENTER);
+pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
+pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "", gui::anchor_point::BOTTOMRIGHT);
 
 // Create the FontString
 gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");

@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
         // A "root" frame has no parent and is directly owned by the gui::manager.
         // A "child" frame is owned by another frame.
         gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
-        pFrame->set_rel_dimensions(1.0f, 1.0f);
+        pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
         // Create the FontString
