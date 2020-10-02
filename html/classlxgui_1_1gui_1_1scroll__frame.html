@@ -173,6 +173,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1204a5bafe152d2ecbc721f80426b4d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a1204a5bafe152d2ecbc721f80426b4d4">notify_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bRendered) override</td></tr>
 <tr class="memdesc:a1204a5bafe152d2ecbc721f80426b4d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="#a1204a5bafe152d2ecbc721f80426b4d4">More...</a><br /></td></tr>
 <tr class="separator:a1204a5bafe152d2ecbc721f80426b4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d528a89e3684c2fb0197d8b16d589f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a3d528a89e3684c2fb0197d8b16d589f5">get_target_width</a> () const override</td></tr>
+<tr class="memdesc:a3d528a89e3684c2fb0197d8b16d589f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width of of this renderer's main render target (e.g., screen).  <a href="#a3d528a89e3684c2fb0197d8b16d589f5">More...</a><br /></td></tr>
+<tr class="separator:a3d528a89e3684c2fb0197d8b16d589f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ddb128e66e34d4e9d5b5727f577cae4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a8ddb128e66e34d4e9d5b5727f577cae4">get_target_height</a> () const override</td></tr>
+<tr class="memdesc:a8ddb128e66e34d4e9d5b5727f577cae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the height of this renderer's main render target (e.g., screen).  <a href="#a8ddb128e66e34d4e9d5b5727f577cae4">More...</a><br /></td></tr>
+<tr class="separator:a8ddb128e66e34d4e9d5b5727f577cae4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef8739f54922b0cdbf6b4d460bd34a9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#aef8739f54922b0cdbf6b4d460bd34a9f">create_glue</a> () override</td></tr>
 <tr class="memdesc:aef8739f54922b0cdbf6b4d460bd34a9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's Lua glue.  <a href="#aef8739f54922b0cdbf6b4d460bd34a9f">More...</a><br /></td></tr>
 <tr class="separator:aef8739f54922b0cdbf6b4d460bd34a9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -864,8 +870,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a592320e159b227a6f1787fdfe273cecb inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f496e24160c0a5d8f4b4c8f2acd647e inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5f496e24160c0a5d8f4b4c8f2acd647e">render_strata_</a> (const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata) const </td></tr>
 <tr class="separator:a5f496e24160c0a5d8f4b4c8f2acd647e inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb226b829072de2754de257d85144c09 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#acb226b829072de2754de257d85144c09">create_strata_cache_render_target_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiHeight)</td></tr>
-<tr class="separator:acb226b829072de2754de257d85144c09 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea4ceb577fd478bc0197f1a43ea1db4 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aeea4ceb577fd478bc0197f1a43ea1db4">create_strata_cache_render_target_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata)</td></tr>
+<tr class="separator:aeea4ceb577fd478bc0197f1a43ea1db4 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5221093cbcd3b30d2662e8aa445c2027 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5221093cbcd3b30d2662e8aa445c2027">find_hovered_frame_</a> (int iX, int iY)</td></tr>
 <tr class="separator:a5221093cbcd3b30d2662e8aa445c2027 inherit pro_methods_classlxgui_1_1gui_1_1renderer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -1312,6 +1318,66 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html" title="A frame with scrollable content. ">scroll_frame</a>'s scroll child </dd></dl>
 
 <p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00150">150</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8ddb128e66e34d4e9d5b5727f577cae4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> lxgui::gui::scroll_frame::get_target_height </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the height of this renderer's main render target (e.g., screen). </p>
+<dl class="section return"><dt>Returns</dt><dd>The render target height </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac8f87a747d27b9c00e34e02af5b66423">lxgui::gui::renderer</a>.</p>
+
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00371">371</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3d528a89e3684c2fb0197d8b16d589f5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> lxgui::gui::scroll_frame::get_target_width </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the width of of this renderer's main render target (e.g., screen). </p>
+<dl class="section return"><dt>Returns</dt><dd>The render target width </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6381197a122a69c42ec1ee299789584c">lxgui::gui::renderer</a>.</p>
+
+<p>Definition at line <a class="el" href="gui__scrollframe_8cpp_source.html#l00366">366</a> of file <a class="el" href="gui__scrollframe_8cpp_source.html">gui_scrollframe.cpp</a>.</p>
 
 </div>
 </div>
@@ -1880,7 +1946,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00161">161</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00171">171</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1902,7 +1968,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00154">154</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00164">164</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1924,7 +1990,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00155">155</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00165">165</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +2012,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00156">156</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00166">166</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1968,7 +2034,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00136">136</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00146">146</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -1990,7 +2056,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00147">147</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00157">157</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2012,7 +2078,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00148">148</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00158">158</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2034,7 +2100,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00149">149</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00159">159</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2056,7 +2122,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00150">150</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00160">160</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2078,7 +2144,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00162">162</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00172">172</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2100,7 +2166,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00152">152</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00162">162</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2122,7 +2188,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00157">157</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00167">167</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2144,7 +2210,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00159">159</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__scrollframe_8hpp_source.html#l00169">169</a> of file <a class="el" href="gui__scrollframe_8hpp_source.html">gui_scrollframe.hpp</a>.</p>
 
 </div>
 </div>
@@ -2157,7 +2223,7 @@ For scroll children to receive input, the <a class="el" href="classlxgui_1_1gui_
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 2 2020 16:08:52 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 2 2020 17:44:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
