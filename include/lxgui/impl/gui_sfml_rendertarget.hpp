@@ -1,10 +1,12 @@
 #ifndef LXGUI_GUI_SFML_RENDERTARGET_HPP
 #define LXGUI_GUI_SFML_RENDERTARGET_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
 #include <lxgui/gui_rendertarget.hpp>
 #include "lxgui/impl/gui_sfml_material.hpp"
+
+#include <lxgui/utils.hpp>
+
+#include <memory>
 
 namespace sf
 {
@@ -76,7 +78,7 @@ namespace sfml
         /// Returns the associated texture for rendering.
         /** \return The underlying pixel buffer, that you can use to render its content
         */
-        utils::wptr<sfml::material> get_material();
+        std::weak_ptr<sfml::material> get_material();
 
         /// Checks if the machine is capable of using render targets.
         /** \note If not, this function throws a gui::exception.
@@ -92,8 +94,8 @@ namespace sfml
 
         void update_view_matrix_() const;
 
-        utils::refptr<sfml::material> pTexture_;
-        sf::RenderTexture*            pRenderTexture_ = nullptr;
+        std::shared_ptr<sfml::material> pTexture_;
+        sf::RenderTexture*              pRenderTexture_ = nullptr;
     };
 }
 }

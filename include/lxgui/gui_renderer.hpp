@@ -64,7 +64,7 @@ namespace gui
         /// Tells the underlying graphics engine to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)
         */
-        void begin(utils::refptr<render_target> pTarget = nullptr) const;
+        void begin(std::shared_ptr<render_target> pTarget = nullptr) const;
 
         /// Tells the underlying graphics engine we're done rendering.
         /** \note For most engines, this is when the rendering is actually
@@ -93,7 +93,7 @@ namespace gui
         /** \param pMat The material with which to create the sprite
         *   \return The new sprite
         */
-        sprite create_sprite(utils::refptr<material> pMat) const;
+        sprite create_sprite(std::shared_ptr<material> pMat) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -106,7 +106,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        sprite create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const;
+        sprite create_sprite(std::shared_ptr<material> pMat, float fWidth, float fHeight) const;
 
         /// Creates a new sprite.
         /** \param pMat    The material with which to create the sprite
@@ -121,7 +121,7 @@ namespace gui
         *         texture will be tiled.
         *   \return The new sprite
         */
-        sprite create_sprite(utils::refptr<material> pMat,
+        sprite create_sprite(std::shared_ptr<material> pMat,
             float fU, float fV, float fWidth, float fHeight) const;
 
         /// Creates a new material from a texture file.
@@ -131,26 +131,26 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        utils::refptr<material> create_material(const std::string& sFileName,
+        std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use
         *   \return The new material
         */
-        utils::refptr<material> create_material(const color& mColor) const;
+        std::shared_ptr<material> create_material(const color& mColor) const;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
-        utils::refptr<material> create_material(utils::refptr<render_target> pRenderTarget) const;
+        std::shared_ptr<material> create_material(std::shared_ptr<render_target> pRenderTarget) const;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
         */
-        utils::refptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const;
+        std::shared_ptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -159,7 +159,7 @@ namespace gui
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
-        utils::refptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
+        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
 
     protected :
 

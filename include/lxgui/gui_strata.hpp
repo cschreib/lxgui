@@ -5,10 +5,10 @@
 #include "lxgui/gui_sprite.hpp"
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
 
 #include <vector>
 #include <map>
+#include <memory>
 
 namespace lxgui {
 namespace gui
@@ -40,12 +40,12 @@ namespace gui
     /// Contains level
     struct strata
     {
-        frame_strata                 mStrata = frame_strata::PARENT;
-        std::map<int, level>         lLevelList;
-        mutable bool                 bRedraw = true;
-        utils::refptr<render_target> pRenderTarget;
-        sprite                       mSprite;
-        mutable uint                 uiRedrawCount = 0u;
+        frame_strata                   mStrata = frame_strata::PARENT;
+        std::map<int, level>           lLevelList;
+        mutable bool                   bRedraw = true;
+        std::shared_ptr<render_target> pRenderTarget;
+        sprite                         mSprite;
+        mutable uint                   uiRedrawCount = 0u;
     };
 }
 }

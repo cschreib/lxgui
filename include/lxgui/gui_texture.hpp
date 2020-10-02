@@ -172,7 +172,7 @@ namespace gui
         *   \note This function is not compatible with set_color() : only the latest
         *         you have called will apply.
         */
-        void set_texture(utils::refptr<render_target> pRenderTarget);
+        void set_texture(std::shared_ptr<render_target> pRenderTarget);
 
         /// Sets this texture's color.
         /** \param mColor The color to use

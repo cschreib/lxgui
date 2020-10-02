@@ -351,7 +351,7 @@ void texture::set_texture(const std::string& sFile)
 
     auto* pTopLevelRenderer = get_top_level_renderer();
 
-    utils::refptr<gui::material> pMat;
+    std::shared_ptr<gui::material> pMat;
     if (utils::file_exists(sTextureFile_))
         pMat = pTopLevelRenderer->create_material(sTextureFile_, mFilter_);
 
@@ -374,7 +374,7 @@ void texture::set_texture(const std::string& sFile)
     notify_renderer_need_redraw();
 }
 
-void texture::set_texture(utils::refptr<render_target> pRenderTarget)
+void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
 {
     mGradient_ = gradient();
     mColor_ = color::EMPTY;
@@ -382,7 +382,7 @@ void texture::set_texture(utils::refptr<render_target> pRenderTarget)
 
     auto* pTopLevelRenderer = get_top_level_renderer();
 
-    utils::refptr<gui::material> pMat;
+    std::shared_ptr<gui::material> pMat;
     if (pRenderTarget)
         pMat = pTopLevelRenderer->create_material(pRenderTarget);
 

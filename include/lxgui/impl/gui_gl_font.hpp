@@ -73,14 +73,14 @@ namespace gl
         /// Returns the underlying material to use for rendering.
         /** \return The underlying material to use for rendering
         */
-        utils::wptr<gui::material> get_texture() const override;
+        std::weak_ptr<gui::material> get_texture() const override;
 
     private :
 
         float fTextureWidth_ = 0.0f;
         float fTextureHeight_ = 0.0f;
 
-        utils::refptr<gl::material> pTexture_;
+        std::shared_ptr<gl::material> pTexture_;
         std::vector<character_info> lCharacterList_;
 
         uint uiSize_ = 0u;

@@ -68,14 +68,14 @@ namespace sfml
         /// Returns the underlying material to use for rendering.
         /** \return The underlying material to use for rendering
         */
-        utils::wptr<gui::material> get_texture() const override;
+        std::weak_ptr<gui::material> get_texture() const override;
 
     private :
 
-        sf::Font                      mFont_;
-        uint                          uiSize_ = 0u;
-        uint                          uiSizeSFML_ = 0u;
-        utils::refptr<sfml::material> pTexture_;
+        sf::Font                        mFont_;
+        uint                            uiSize_ = 0u;
+        uint                            uiSizeSFML_ = 0u;
+        std::shared_ptr<sfml::material> pTexture_;
     };
 }
 }

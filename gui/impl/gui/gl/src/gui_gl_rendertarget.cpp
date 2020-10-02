@@ -21,9 +21,9 @@ namespace gl
 {
 render_target::render_target(uint uiWidth, uint uiHeight)
 {
-    pTexture_ = utils::refptr<gl::material>(new gl::material(
+    pTexture_ = std::make_shared<gl::material>(
         uiWidth, uiHeight, material::wrap::REPEAT, material::filter::NONE, true
-    ));
+    );
 
     glGenFramebuffers(1, &uiFBOHandle_);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
@@ -135,7 +135,7 @@ bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
     return false;
 }
 
-utils::wptr<gl::material> render_target::get_material()
+std::weak_ptr<gl::material> render_target::get_material()
 {
     return pTexture_;
 }

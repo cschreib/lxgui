@@ -24,7 +24,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), uiSizeS
 
     sf::Image mData = mFont_.getTexture(uiSizeSFML_).copyToImage();
     sfml::material::premultiply_alpha(mData);
-    pTexture_ = utils::refptr<sfml::material>(new sfml::material(mData));
+    pTexture_ = std::make_shared<sfml::material>(mData);
 }
 
 quad2f font::get_character_uvs(char32_t uiChar) const
@@ -75,7 +75,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
     return mFont_.getKerning(uiChar1, uiChar2, uiSizeSFML_);
 }
 
-utils::wptr<gui::material> font::get_texture() const
+std::weak_ptr<gui::material> font::get_texture() const
 {
     return pTexture_;
 }

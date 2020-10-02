@@ -2,12 +2,11 @@
 #define LXGUI_GUI_FONT_HPP
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_quad2.hpp"
 
 #include <array>
+#include <memory>
 
 namespace lxgui {
 namespace gui
@@ -68,7 +67,7 @@ namespace gui
         /// Returns the underlying material to use for rendering.
         /** \return The underlying material to use for rendering
         */
-        virtual utils::wptr<material> get_texture() const = 0;
+        virtual std::weak_ptr<material> get_texture() const = 0;
     };
 }
 }

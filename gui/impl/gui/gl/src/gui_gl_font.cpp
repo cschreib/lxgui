@@ -104,7 +104,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     fTextureWidth_ = static_cast<float>(uiFinalWidth);
     fTextureHeight_ = static_cast<float>(uiFinalHeight);
 
-    pTexture_ = utils::refptr<gl::material>(new material(uiFinalWidth, uiFinalHeight));
+    pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
     std::fill(pTexture_->get_data().begin(), pTexture_->get_data().end(), ub32color(0, 0, 0, 0));
 
     lCharacterList_.resize(256);
@@ -227,7 +227,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
         return 0.0f;
 }
 
-utils::wptr<gui::material> font::get_texture() const
+std::weak_ptr<gui::material> font::get_texture() const
 {
     return pTexture_;
 }

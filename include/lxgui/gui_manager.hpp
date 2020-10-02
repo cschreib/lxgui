@@ -10,8 +10,6 @@
 
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_view.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
 
 #include <string>
 #include <vector>
@@ -19,6 +17,7 @@
 #include <map>
 #include <array>
 #include <functional>
+#include <memory>
 
 namespace sol {
     class state;
@@ -723,8 +722,8 @@ namespace gui
 
         bool bEnableCaching_= true;
 
-        utils::refptr<render_target> pRenderTarget_;
-        sprite                       mSprite_;
+        std::shared_ptr<render_target> pRenderTarget_;
+        sprite                         mSprite_;
 
         std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
         std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;

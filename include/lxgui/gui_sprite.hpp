@@ -11,14 +11,14 @@
 #define LXGUI_GUI_SPRITE_HPP
 
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
-#include <array>
-#include <vector>
 
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_material.hpp"
+
+#include <array>
+#include <vector>
+#include <memory>
 
 namespace lxgui {
 namespace gui
@@ -53,9 +53,9 @@ namespace gui
 
     struct quad
     {
-        std::array<vertex, 4>   v;
-        utils::refptr<material> mat;
-        blend_mode              blend;
+        std::array<vertex, 4>     v;
+        std::shared_ptr<material> mat;
+        blend_mode                blend;
     };
 
     /// Use to draw a texture on the screen
@@ -77,13 +77,13 @@ namespace gui
         sprite() = default;
 
         /// Constructor.
-        sprite(const renderer* pRenderer, utils::refptr<material> pMat);
+        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat);
 
         /// Constructor.
-        sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fWidth, float fHeight);
+        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight);
 
         /// Constructor.
-        sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
+        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
 
         /// Renders this sprite on the current render target.
         /** \param fX The horizontal position

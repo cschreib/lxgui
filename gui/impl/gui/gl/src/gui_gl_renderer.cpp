@@ -36,11 +36,11 @@ renderer::renderer(bool bInitGLEW)
     material::check_availability();
 }
 
-void renderer::begin(utils::refptr<gui::render_target> pTarget) const
+void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pTarget)
     {
-        pCurrentTarget_ = utils::refptr<gl::render_target>::cast(pTarget);
+        pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
     }
     else
@@ -94,7 +94,7 @@ void renderer::render_quad(const quad& mQuad) const
 
     glColor4ub(255, 255, 255, 255);
 
-    utils::refptr<gl::material> pMat = utils::refptr<gl::material>::cast(mQuad.mat);
+    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
     if (pMat->get_type() == material::type::TEXTURE)
     {
         pMat->bind();
@@ -133,7 +133,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
 
     glColor4ub(255, 255, 255, 255);
 
-    utils::refptr<gl::material> pMat = utils::refptr<gl::material>::cast(mQuad.mat);
+    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
     if (pMat->get_type() == material::type::TEXTURE)
     {
         pMat->bind();
@@ -172,13 +172,13 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
     }
 }
 
-utils::refptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
+    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
     if (iter != lTextureList_.end())
     {
-        if (utils::refptr<gui::material> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
             return pLock;
         else
             lTextureList_.erase(iter);
@@ -194,34 +194,34 @@ utils::refptr<gui::material> renderer::create_material(const std::string& sFileN
     }
 }
 
-utils::refptr<gui::material> renderer::create_material(const color& mColor) const
+std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
 {
-    return utils::refptr<material>(new material(mColor));
+    return std::make_shared<material>(mColor);
 }
 
-utils::refptr<gui::material> renderer::create_material(utils::refptr<gui::render_target> pRenderTarget) const
+std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
 {
-    return utils::refptr<gl::render_target>::cast(pRenderTarget)->get_material().lock();
+    return std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
 }
 
-utils::refptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
-    return utils::refptr<gui::render_target>(new gl::render_target(uiWidth, uiHeight));
+    return std::make_shared<render_target>(uiWidth, uiHeight);
 }
 
-utils::refptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, utils::wptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
+    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
     if (iter != lFontList_.end())
     {
-        if (utils::refptr<gui::font> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
             return pLock;
         else
             lFontList_.erase(iter);
     }
 
-    utils::refptr<gui::font> pFont(new gl::font(sFontFile, uiSize));
+    std::shared_ptr<gui::font> pFont = std::make_shared<gl::font>(sFontFile, uiSize);
     lFontList_[sFontName] = pFont;
     return pFont;
 }

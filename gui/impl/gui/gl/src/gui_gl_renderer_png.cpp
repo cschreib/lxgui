@@ -24,7 +24,7 @@ void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
     ((std::ifstream*)p)->read((char*)pData, uiLength);
 }
 
-utils::refptr<gui::material> renderer::create_material_png(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_png(const std::string& sFileName, material::filter mFilter) const
 {
     std::ifstream mFile(sFileName, std::ios::binary);
     if (!mFile.is_open())
@@ -87,9 +87,9 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
         png_uint_32 uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
 
         std::unique_ptr<png_bytep[]> pRows(new png_bytep[uiHeight]);
-        utils::refptr<material>  pTex(new gui::gl::material(
+        std::shared_ptr<material>  pTex = std::make_shared<gui::gl::material>(
             uiWidth, uiHeight, material::wrap::REPEAT, mFilter
-        ));
+        );
 
         png_bytep* pTempRows = pRows.get();
         ub32color* pTempData = pTex->get_data().data();
@@ -105,7 +105,7 @@ utils::refptr<gui::material> renderer::create_material_png(const std::string& sF
         pTex->clear_cache_data_();
         lTextureList_[sFileName] = pTex;
 
-        return pTex;
+        return std::move(pTex);
     }
     catch (const gui::exception& e)
     {

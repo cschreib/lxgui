@@ -5,10 +5,9 @@
 
 #include <lxgui/gui_renderer_impl.hpp>
 #include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/utils_wptr.hpp>
 
 #include <map>
+#include <memory>
 
 namespace sf
 {
@@ -31,7 +30,7 @@ namespace sfml
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        void begin(utils::refptr<gui::render_target> pTarget = nullptr) const override;
+        void begin(std::shared_ptr<gui::render_target> pTarget = nullptr) const override;
 
         /// Ends rendering.
         void end() const override;
@@ -59,26 +58,26 @@ namespace sfml
         *   \return The new material
         *   \note Only PNG textures are supported by this implementation (parsed by libpng).
         */
-        utils::refptr<gui::material> create_material(const std::string& sFileName,
+        std::shared_ptr<gui::material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const override;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use
         *   \return The new material
         */
-        utils::refptr<gui::material> create_material(const color& mColor) const override;
+        std::shared_ptr<gui::material> create_material(const color& mColor) const override;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
-        utils::refptr<gui::material> create_material(utils::refptr<gui::render_target> pRenderTarget) const override;
+        std::shared_ptr<gui::material> create_material(std::shared_ptr<gui::render_target> pRenderTarget) const override;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
         */
-        utils::refptr<gui::render_target> create_render_target(uint uiWidth, uint uiHeight) const override;
+        std::shared_ptr<gui::render_target> create_render_target(uint uiWidth, uint uiHeight) const override;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -86,7 +85,7 @@ namespace sfml
         *   \note This implementation uses FreeType to load vector fonts and rasterize them.
         *         Bitmap fonts are not yet supported.
         */
-        utils::refptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
+        std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width
@@ -98,11 +97,11 @@ namespace sfml
 
         sf::RenderWindow& mWindow_;
 
-        mutable std::map<std::string, utils::wptr<gui::material>> lTextureList_;
-        mutable std::map<std::string, utils::wptr<gui::font>>     lFontList_;
+        mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        mutable utils::refptr<gui::sfml::render_target> pCurrentTarget_;
-        mutable sf::RenderTarget*                       pCurrentSFMLTarget_ = nullptr;
+        mutable std::shared_ptr<gui::sfml::render_target> pCurrentTarget_;
+        mutable sf::RenderTarget*                         pCurrentSFMLTarget_ = nullptr;
     };
 }
 }

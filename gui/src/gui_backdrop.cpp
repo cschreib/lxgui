@@ -150,7 +150,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
         if (utils::file_exists(sEdgeFile))
         {
             auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
-            utils::refptr<material> pMat = pTopLevelRenderer->create_material(sEdgeFile);
+            std::shared_ptr<material> pMat = pTopLevelRenderer->create_material(sEdgeFile);
 
             if (pMat->get_width()/pMat->get_height() == 8.0f)
             {

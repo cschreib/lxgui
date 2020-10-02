@@ -19,14 +19,14 @@ renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow), pCurrentSFMLT
 {
 }
 
-void renderer::begin(utils::refptr<gui::render_target> pTarget) const
+void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)
         throw gui::exception("gui::sfml::renderer", "Missing call to end()");
 
     if (pTarget)
     {
-        pCurrentTarget_ = utils::refptr<sfml::render_target>::cast(pTarget);
+        pCurrentTarget_ = std::static_pointer_cast<sfml::render_target>(pTarget);
         pCurrentTarget_->begin();
         pCurrentSFMLTarget_ = pCurrentTarget_->get_render_texture();
     }
@@ -50,7 +50,7 @@ void renderer::render_quad(const quad& mQuad) const
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
 
-    utils::refptr<sfml::material> pMat = utils::refptr<sfml::material>::cast(mQuad.mat);
+    std::shared_ptr<sfml::material> pMat = std::static_pointer_cast<sfml::material>(mQuad.mat);
 
     const float fTexWidth = pMat->get_real_width();
     const float fTexHeight = pMat->get_real_height();
@@ -86,7 +86,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
 
-    utils::refptr<sfml::material> pMat = utils::refptr<sfml::material>::cast(mQuad.mat);
+    std::shared_ptr<sfml::material> pMat = std::static_pointer_cast<sfml::material>(mQuad.mat);
 
     const float fTexWidth = pMat->get_real_width();
     const float fTexHeight = pMat->get_real_height();
@@ -121,13 +121,13 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-utils::refptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, utils::wptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
+    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
     if (iter != lTextureList_.end())
     {
-        if (utils::refptr<gui::material> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
             return pLock;
         else
             lTextureList_.erase(iter);
@@ -135,12 +135,12 @@ utils::refptr<gui::material> renderer::create_material(const std::string& sFileN
 
     try
     {
-        utils::refptr<sfml::material> pTex = utils::refptr<sfml::material>(new sfml::material(
+        std::shared_ptr<sfml::material> pTex = std::make_shared<sfml::material>(
             sFileName, material::wrap::REPEAT, mFilter
-        ));
+        );
 
         lTextureList_[sFileName] = pTex;
-        return pTex;
+        return std::move(pTex);
     }
     catch (const std::exception& e)
     {
@@ -149,29 +149,16 @@ utils::refptr<gui::material> renderer::create_material(const std::string& sFileN
     }
 }
 
-utils::refptr<gui::material> renderer::create_material(const color& mColor) const
+std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
 {
-    return utils::refptr<material>(new material(mColor));
+    return std::make_shared<material>(mColor);
 }
 
-utils::refptr<gui::material> renderer::create_material(utils::refptr<gui::render_target> pRenderTarget) const
-{
-    try
-    {
-        return utils::refptr<sfml::render_target>::cast(pRenderTarget)->get_material().lock();
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
-}
-
-utils::refptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
 {
     try
     {
-        return utils::refptr<gui::render_target>(new sfml::render_target(uiWidth, uiHeight));
+        return std::static_pointer_cast<sfml::render_target>(pRenderTarget)->get_material().lock();
     }
     catch (const std::exception& e)
     {
@@ -180,19 +167,32 @@ utils::refptr<gui::render_target> renderer::create_render_target(uint uiWidth, u
     }
 }
 
-utils::refptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+{
+    try
+    {
+        return std::make_shared<render_target>(uiWidth, uiHeight);
+    }
+    catch (const std::exception& e)
+    {
+        gui::out << gui::warning << e.what() << std::endl;
+        return nullptr;
+    }
+}
+
+std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, utils::wptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
+    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
     if (iter != lFontList_.end())
     {
-        if (utils::refptr<gui::font> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
             return pLock;
         else
             lFontList_.erase(iter);
     }
 
-    utils::refptr<gui::font> pFont(new sfml::font(sFontFile, uiSize));
+    std::shared_ptr<gui::font> pFont = std::make_shared<sfml::font>(sFontFile, uiSize);
     lFontList_[sFontName] = pFont;
     return pFont;
 }

@@ -10,7 +10,7 @@ vertex::vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol) :
 {
 }
 
-sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat) :
+sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
@@ -31,7 +31,7 @@ sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat) :
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fWidth, float fHeight) :
+sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
@@ -52,7 +52,7 @@ sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fW
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const renderer* pRenderer, utils::refptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
+sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;

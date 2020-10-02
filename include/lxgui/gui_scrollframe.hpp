@@ -164,7 +164,7 @@ namespace gui
         mutable bool bRebuildScrollRenderTarget_ = false;
         mutable bool bRedrawScrollRenderTarget_ = false;
         mutable bool bUpdateScrollRange_ = false;
-        utils::refptr<render_target> pScrollRenderTarget_;
+        std::shared_ptr<render_target> pScrollRenderTarget_;
 
         texture* pScrollTexture_ = nullptr;
 

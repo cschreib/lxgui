@@ -1,16 +1,17 @@
 #ifndef LXGUI_GUI_TEXT_HPP
 #define LXGUI_GUI_TEXT_HPP
 
-#include <lxgui/utils.hpp>
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_quad2.hpp"
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_sprite.hpp"
 
+#include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
-#include <lxgui/utils_refptr.hpp>
+
 #include <map>
 #include <array>
+#include <memory>
 
 namespace lxgui {
 namespace gui
@@ -363,7 +364,7 @@ namespace gui
         std::vector<std::array<vertex,4>> lQuadList_;
         sprite                            mSprite_;
 
-        utils::refptr<font> pFont_;
+        std::shared_ptr<font> pFont_;
     };
 }
 }

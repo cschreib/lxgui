@@ -118,7 +118,7 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
     fire_redraw(mStrata.mStrata);
 }
 
-void renderer::begin(utils::refptr<render_target> pTarget) const
+void renderer::begin(std::shared_ptr<render_target> pTarget) const
 {
     pImpl_->begin(pTarget);
 }
@@ -138,43 +138,43 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
     pImpl_->render_quads(mQuad, lQuadList);
 }
 
-sprite renderer::create_sprite(utils::refptr<material> pMat) const
+sprite renderer::create_sprite(std::shared_ptr<material> pMat) const
 {
     return sprite(this, pMat);
 }
 
-sprite renderer::create_sprite(utils::refptr<material> pMat, float fWidth, float fHeight) const
+sprite renderer::create_sprite(std::shared_ptr<material> pMat, float fWidth, float fHeight) const
 {
     return sprite(this, pMat, fWidth, fHeight);
 }
 
-sprite renderer::create_sprite(utils::refptr<material> pMat,
+sprite renderer::create_sprite(std::shared_ptr<material> pMat,
     float fU, float fV, float fWidth, float fHeight) const
 {
     return sprite(this, pMat, fU, fV, fWidth, fHeight);
 }
 
-utils::refptr<material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     return pImpl_->create_material(sFileName, mFilter);
 }
 
-utils::refptr<material> renderer::create_material(const color& mColor) const
+std::shared_ptr<material> renderer::create_material(const color& mColor) const
 {
     return pImpl_->create_material(mColor);
 }
 
-utils::refptr<material> renderer::create_material(utils::refptr<render_target> pRenderTarget) const
+std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> pRenderTarget) const
 {
     return pImpl_->create_material(pRenderTarget);
 }
 
-utils::refptr<render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
     return pImpl_->create_render_target(uiWidth, uiHeight);
 }
 
-utils::refptr<font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     return pImpl_->create_font(sFontFile, uiSize);
 }

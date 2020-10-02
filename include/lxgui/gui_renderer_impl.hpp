@@ -3,9 +3,8 @@
 
 #include "lxgui/gui_material.hpp"
 
-#include <lxgui/utils_refptr.hpp>
-
 #include <vector>
+#include <memory>
 
 namespace lxgui {
 namespace gui
@@ -38,7 +37,7 @@ namespace gui
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        virtual void begin(utils::refptr<render_target> pTarget = nullptr) const = 0;
+        virtual void begin(std::shared_ptr<render_target> pTarget = nullptr) const = 0;
 
         /// Ends rendering.
         virtual void end() const = 0;
@@ -66,26 +65,26 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        virtual utils::refptr<material> create_material(const std::string& sFileName,
+        virtual std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new material from a plain color.
         /** \param mColor The color to use
         *   \return The new material
         */
-        virtual utils::refptr<material> create_material(const color& mColor) const = 0;
+        virtual std::shared_ptr<material> create_material(const color& mColor) const = 0;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
-        virtual utils::refptr<material> create_material(utils::refptr<render_target> pRenderTarget) const = 0;
+        virtual std::shared_ptr<material> create_material(std::shared_ptr<render_target> pRenderTarget) const = 0;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
         */
-        virtual utils::refptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const = 0;
+        virtual std::shared_ptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const = 0;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -94,7 +93,7 @@ namespace gui
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
-        virtual utils::refptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
+        virtual std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width

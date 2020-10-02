@@ -9,9 +9,9 @@ namespace sfml
 {
 render_target::render_target(uint uiWidth, uint uiHeight)
 {
-    pTexture_ = utils::refptr<sfml::material>(new sfml::material(
+    pTexture_ = std::make_shared<sfml::material>(
         uiWidth, uiHeight, true, material::wrap::REPEAT, material::filter::NONE
-    ));
+    );
 
     pRenderTexture_ = pTexture_->get_render_texture();
 }
@@ -55,7 +55,7 @@ bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
     return pTexture_->set_dimensions(uiWidth, uiHeight);
 }
 
-utils::wptr<sfml::material> render_target::get_material()
+std::weak_ptr<sfml::material> render_target::get_material()
 {
     return pTexture_;
 }

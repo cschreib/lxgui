@@ -1,11 +1,13 @@
 #ifndef LXGUI_GUI_GL_RENDERTARGET_HPP
 #define LXGUI_GUI_GL_RENDERTARGET_HPP
 
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_refptr.hpp>
-#include <lxgui/gui_rendertarget.hpp>
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_matrix4.hpp"
+
+#include <lxgui/gui_rendertarget.hpp>
+#include <lxgui/utils.hpp>
+
+#include <memory>
 
 namespace lxgui {
 namespace gui {
@@ -74,7 +76,7 @@ namespace gl
         /// Returns the associated texture for rendering.
         /** \return The underlying pixel buffer, that you can use to render its content
         */
-        utils::wptr<gl::material> get_material();
+        std::weak_ptr<gl::material> get_material();
 
         /// Checks if the machine is capable of using render targets.
         /** \note If not, this function throws a gui::exception.
@@ -85,8 +87,8 @@ namespace gl
 
         void update_view_matrix_() const;
 
-        uint                        uiFBOHandle_ = 0;
-        utils::refptr<gl::material> pTexture_;
+        uint                          uiFBOHandle_ = 0;
+        std::shared_ptr<gl::material> pTexture_;
 
         mutable bool    bUpdateViewMatrix_ = true;
         mutable matrix4 mViewMatrix_;
