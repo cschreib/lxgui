@@ -9,7 +9,6 @@ var searchData=
   ['fire_5fredraw',['fire_redraw',['../classlxgui_1_1gui_1_1renderer.html#a474e76dada44d682ca751f4607054201',1,'lxgui::gui::renderer::fire_redraw()'],['../classlxgui_1_1gui_1_1scroll__frame.html#a07b24c168c08625ebf4c5cff29a8a10f',1,'lxgui::gui::scroll_frame::fire_redraw()']]],
   ['fire_5fupdate_5fbar_5ftexture_5f',['fire_update_bar_texture_',['../classlxgui_1_1gui_1_1status__bar.html#a481716de4d0252db4997423142ada11c',1,'lxgui::gui::status_bar']]],
   ['fire_5fupdate_5fborders',['fire_update_borders',['../classlxgui_1_1gui_1_1slider.html#a9f97bc5ffe4f486c396d969d7fcb5b2a',1,'lxgui::gui::slider::fire_update_borders()'],['../classlxgui_1_1gui_1_1uiobject.html#ab4dc19f5fb0e7ed83d8ddbc5648a7920',1,'lxgui::gui::uiobject::fire_update_borders()']]],
-  ['fire_5fupdate_5fdimensions',['fire_update_dimensions',['../classlxgui_1_1gui_1_1uiobject.html#ab15ee0f8a909ff551091cbb14ae0f611',1,'lxgui::gui::uiobject']]],
   ['fire_5fupdate_5fthumb_5ftexture_5f',['fire_update_thumb_texture_',['../classlxgui_1_1gui_1_1slider.html#a938e2f08917d91079db689e71a2faee6',1,'lxgui::gui::slider']]],
   ['first',['first',['../classlxgui_1_1xml_1_1block.html#a955376a45dc5544dd0fda28f41649409',1,'lxgui::xml::block']]],
   ['focus_5fframe',['focus_frame',['../classlxgui_1_1gui_1_1focus__frame.html#a91e22523ac69f995b5552c0ad4a324af',1,'lxgui::gui::focus_frame']]],

@@ -15,7 +15,6 @@ var searchData=
   ['update_5fanchors',['update_anchors',['../classlxgui_1_1gui_1_1uiobject.html#a80535b6c38ae24ae940d81d05fd44199',1,'lxgui::gui::uiobject']]],
   ['update_5fborders_5f',['update_borders_',['../classlxgui_1_1gui_1_1frame.html#a6f63e66f4df6972e1a9667d135661630',1,'lxgui::gui::frame::update_borders_()'],['../classlxgui_1_1gui_1_1uiobject.html#a3858acc6344e606193ad1c2d8fb2fd3f',1,'lxgui::gui::uiobject::update_borders_()']]],
   ['update_5fcarret_5fposition_5f',['update_carret_position_',['../classlxgui_1_1gui_1_1edit__box.html#ab68064ef3a2c609ee231a558326091cd',1,'lxgui::gui::edit_box']]],
-  ['update_5fdimensions_5f',['update_dimensions_',['../classlxgui_1_1gui_1_1uiobject.html#a1f22e3e4b9733b15a6a28d69dd649f4b',1,'lxgui::gui::uiobject']]],
   ['update_5fdisplayed_5ftext_5f',['update_displayed_text_',['../classlxgui_1_1gui_1_1edit__box.html#a05f6199758c9c013a30820cd3e537d70',1,'lxgui::gui::edit_box']]],
   ['update_5ffont_5fstring_5f',['update_font_string_',['../classlxgui_1_1gui_1_1edit__box.html#aed99f0303065b45e4281bd9c4326e134',1,'lxgui::gui::edit_box']]],
   ['update_5fparent',['update_parent',['../classlxgui_1_1gui_1_1anchor.html#a70b8fe03932e8b6b8f7a5a5df05d87fa',1,'lxgui::gui::anchor']]],
