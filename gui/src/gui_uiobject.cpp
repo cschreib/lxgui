@@ -335,7 +335,7 @@ void uiobject::set_rel_width(float fRelWidth)
     if (pParent_)
         set_abs_width(fRelWidth*pParent_->get_apparent_width());
     else
-        set_abs_width(fRelWidth*pManager_->get_screen_width());
+        set_abs_width(fRelWidth*get_top_level_renderer()->get_target_width());
 }
 
 void uiobject::set_rel_height(float fRelHeight)
@@ -343,7 +343,7 @@ void uiobject::set_rel_height(float fRelHeight)
     if (pParent_)
         set_abs_height(fRelHeight*pParent_->get_apparent_height());
     else
-        set_abs_height(fRelHeight*pManager_->get_screen_height());
+        set_abs_height(fRelHeight*get_top_level_renderer()->get_target_height());
 }
 
 uint uiobject::get_abs_width() const

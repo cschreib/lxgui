@@ -94,23 +94,15 @@ namespace gui
         manager& operator = (const manager& mMgr) = delete;
         manager& operator = (manager&& mMgr) = delete;
 
-        /// Returns the "screen" width.
-        /** \return The screen width
-        *   \note This is not necessarily the real screen width.
-        *         If the GUI is rendered into a small render target
-        *         that takes only a portion of the real screen, then
-        *         this function returns the width of the render target.
+        /// Returns the width of of this renderer's main render target (e.g., screen).
+        /** \return The render target width
         */
-        uint get_screen_width() const;
+        uint get_target_width() const override;
 
-        /// Returns the "screen" height.
-        /** \return The screen height
-        *   \note This is not necessarily the real screen height.
-        *         If the GUI is rendered into a small render target
-        *         that takes only a portion of the real screen, then
-        *         this function returns the height of the render target.
+        /// Returns the height of this renderer's main render target (e.g., screen).
+        /** \return The render target height
         */
-        uint get_screen_height() const;
+        uint get_target_height() const override;
 
         /// Adds a new directory to be parsed for UI addons.
         /** \param sDirectory The new directory

@@ -122,6 +122,16 @@ namespace gui
         */
         void notify_rendered_frame(frame* pFrame, bool bRendered) override;
 
+        /// Returns the width of of this renderer's main render target (e.g., screen).
+        /** \return The render target width
+        */
+        uint get_target_width() const override;
+
+        /// Returns the height of this renderer's main render target (e.g., screen).
+        /** \return The render target height
+        */
+        uint get_target_height() const override;
+
         /// Returns this widget's Lua glue.
         void create_glue() override;
 

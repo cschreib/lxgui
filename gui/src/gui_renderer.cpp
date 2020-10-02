@@ -240,15 +240,15 @@ void renderer::render_strata_(const strata& mStrata) const
     ++mStrata.uiRedrawCount;
 }
 
-void renderer::create_strata_cache_render_target_(strata& mStrata, uint uiWidth, uint uiHeight)
+void renderer::create_strata_cache_render_target_(strata& mStrata)
 {
     if (mStrata.pRenderTarget)
     {
-        mStrata.pRenderTarget->set_dimensions(uiWidth, uiHeight);
+        mStrata.pRenderTarget->set_dimensions(get_target_width(), get_target_height());
     }
     else
     {
-        mStrata.pRenderTarget = create_render_target(uiWidth, uiHeight);
+        mStrata.pRenderTarget = create_render_target(get_target_width(), get_target_height());
     }
 
     mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));

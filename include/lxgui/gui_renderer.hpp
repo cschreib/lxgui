@@ -51,6 +51,16 @@ namespace gui
         */
         virtual void notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel);
 
+        /// Returns the width of of this renderer's main render target (e.g., screen).
+        /** \return The render target width
+        */
+        virtual uint get_target_width() const = 0;
+
+        /// Returns the height of this renderer's main render target (e.g., screen).
+        /** \return The render target height
+        */
+        virtual uint get_target_height() const = 0;
+
         /// Tells the underlying graphics engine to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)
         */
@@ -162,7 +172,7 @@ namespace gui
         void reset_strata_list_changed_flag_();
 
         void render_strata_(const strata& mStrata) const;
-        void create_strata_cache_render_target_(strata& mStrata, uint uiWidth, uint uiHeight);
+        void create_strata_cache_render_target_(strata& mStrata);
 
         frame* find_hovered_frame_(int iX, int iY);
 

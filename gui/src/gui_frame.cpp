@@ -440,8 +440,8 @@ void frame::check_position() const
 
     if (bIsClampedToScreen_)
     {
-        uint uiScreenW = pManager_->get_screen_width();
-        uint uiScreenH = pManager_->get_screen_height();
+        uint uiScreenW = get_top_level_renderer()->get_target_width();
+        uint uiScreenH = get_top_level_renderer()->get_target_height();
 
         if (lBorderList_.right > int(uiScreenW))
         {

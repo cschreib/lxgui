@@ -48,7 +48,7 @@ void renderer::begin(utils::refptr<gui::render_target> pTarget) const
         if (bUpdateViewMatrix_)
             update_view_matrix_();
 
-        glViewport(0.0f, 0.0f, pParent_->get_screen_width(), pParent_->get_screen_height());
+        glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
@@ -66,8 +66,8 @@ void renderer::begin(utils::refptr<gui::render_target> pTarget) const
 
 void renderer::update_view_matrix_() const
 {
-    float fWidth = pParent_->get_screen_width();
-    float fHeight = pParent_->get_screen_height();
+    float fWidth = pParent_->get_target_width();
+    float fHeight = pParent_->get_target_height();
 
     mViewMatrix_ = {
         2.0f/fWidth, 0.0f, -1.0f, -1.0f,

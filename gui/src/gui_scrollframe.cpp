@@ -362,5 +362,15 @@ void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
 
     bRedrawScrollRenderTarget_ = true;
 }
+
+uint scroll_frame::get_target_width() const
+{
+    return get_apparent_width();
+}
+
+uint scroll_frame::get_target_height() const
+{
+    return get_apparent_height();
+}
 }
 }

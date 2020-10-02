@@ -73,7 +73,7 @@ int anchor::get_abs_x() const
         else
         {
             iParentX = 0;
-            iParentWidth_ = pObj_->get_manager()->get_screen_width();
+            iParentWidth_ = pObj_->get_top_level_renderer()->get_target_width();
         }
 
         int iOffset;
@@ -112,7 +112,7 @@ int anchor::get_abs_y() const
         else
         {
             iParentY = 0;
-            iParentHeight_ = pObj_->get_manager()->get_screen_height();
+            iParentHeight_ = pObj_->get_top_level_renderer()->get_target_height();
         }
 
         int iOffset;

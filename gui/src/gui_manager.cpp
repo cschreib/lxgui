@@ -66,12 +66,12 @@ const renderer_impl* manager::get_renderer() const
     return pRendererImpl_.get();
 }
 
-uint manager::get_screen_width() const
+uint manager::get_target_width() const
 {
     return uiScreenWidth_;
 }
 
-uint manager::get_screen_height() const
+uint manager::get_target_height() const
 {
     return uiScreenHeight_;
 }
@@ -978,7 +978,7 @@ void manager::update(float fDelta)
                 if (mStrata.bRedraw)
                 {
                     if (!mStrata.pRenderTarget)
-                        create_strata_cache_render_target_(mStrata, uiScreenWidth_, uiScreenHeight_);
+                        create_strata_cache_render_target_(mStrata);
 
                     if (mStrata.pRenderTarget)
                     {
@@ -1468,7 +1468,7 @@ void manager::on_event(const event& mEvent)
         for (auto& mStrata : lStrataList_)
         {
             if (mStrata.pRenderTarget)
-                create_strata_cache_render_target_(mStrata, uiScreenWidth_, uiScreenHeight_);
+                create_strata_cache_render_target_(mStrata);
         }
     }
 }
