@@ -45,6 +45,7 @@ v2.0.0:
  - gui: added uiobject::down_cast for safer down casting
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
+ - gui: relative sizing is now only applicable to XML <Size>
  - xml: now parsing standard XML comments
 
 v1.2.0:

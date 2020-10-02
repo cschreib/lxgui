@@ -128,8 +128,6 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  # Shown       : " << bIsShown_ << "\n";
     sStr << sTab << "  # Abs width   : " << uiAbsWidth_ << "\n";
     sStr << sTab << "  # Abs height  : " << uiAbsHeight_ << "\n";
-    sStr << sTab << "  # Rel width   : " << fRelWidth_ << "\n";
-    sStr << sTab << "  # Rel height  : " << fRelHeight_ << "\n";
 
     return sStr.str();
 }
@@ -165,14 +163,8 @@ void uiobject::copy_from(uiobject* pObj)
         // Inherit properties
         this->set_alpha(pObj->get_alpha());
         this->set_shown(pObj->is_shown());
-        if (pObj->is_width_absolute())
-            this->set_abs_width(pObj->get_abs_width());
-        else
-            this->set_rel_width(pObj->get_rel_width());
-        if (pObj->is_height_absolute())
-            this->set_abs_height(pObj->get_abs_height());
-        else
-            this->set_rel_height(pObj->get_rel_height());
+        this->set_abs_width(pObj->get_abs_width());
+        this->set_abs_height(pObj->get_abs_height());
 
         for (const auto& mAnchor : pObj->get_point_list())
         {
@@ -300,89 +292,58 @@ bool uiobject::is_visible() const
 
 void uiobject::set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight)
 {
-    if (uiAbsWidth_  != uiAbsWidth  || !bIsWidthAbs_ ||
-        uiAbsHeight_ != uiAbsHeight || !bIsHeightAbs_)
+    if (uiAbsWidth_  != uiAbsWidth || uiAbsHeight_ != uiAbsHeight)
     {
         pManager_->notify_object_moved();
-        bIsWidthAbs_ = true;
-        bIsHeightAbs_ = true;
         uiAbsWidth_ = uiAbsWidth;
         uiAbsHeight_ = uiAbsHeight;
-        fire_update_dimensions();
+        fire_update_borders();
         notify_renderer_need_redraw();
     }
 }
 
 void uiobject::set_abs_width(uint uiAbsWidth)
 {
-    if (uiAbsWidth_ != uiAbsWidth || !bIsWidthAbs_)
+    if (uiAbsWidth_ != uiAbsWidth)
     {
         pManager_->notify_object_moved();
-        bIsWidthAbs_ = true;
         uiAbsWidth_ = uiAbsWidth;
-        fire_update_dimensions();
+        fire_update_borders();
         notify_renderer_need_redraw();
     }
 }
 
 void uiobject::set_abs_height(uint uiAbsHeight)
 {
-    if (uiAbsHeight_ != uiAbsHeight || !bIsWidthAbs_)
+    if (uiAbsHeight_ != uiAbsHeight)
     {
         pManager_->notify_object_moved();
-        bIsHeightAbs_ = true;
         uiAbsHeight_ = uiAbsHeight;
-        fire_update_dimensions();
+        fire_update_borders();
         notify_renderer_need_redraw();
     }
-}
-
-bool uiobject::is_width_absolute() const
-{
-    return bIsWidthAbs_;
-}
-
-bool uiobject::is_height_absolute() const
-{
-    return bIsHeightAbs_;
 }
 
 void uiobject::set_rel_dimensions(float fRelWidth, float fRelHeight)
 {
-    if (fRelWidth_ != fRelWidth || bIsWidthAbs_ || fRelHeight_ != fRelHeight || bIsHeightAbs_)
-    {
-        pManager_->notify_object_moved();
-        bIsWidthAbs_ = false;
-        bIsHeightAbs_ = false;
-        fRelWidth_ = fRelWidth;
-        fRelHeight_ = fRelHeight;
-        fire_update_dimensions();
-        notify_renderer_need_redraw();
-    }
+    set_rel_width(fRelWidth);
+    set_rel_height(fRelHeight);
 }
 
 void uiobject::set_rel_width(float fRelWidth)
 {
-    if (fRelWidth_ != fRelWidth || bIsWidthAbs_)
-    {
-        pManager_->notify_object_moved();
-        bIsWidthAbs_ = false;
-        fRelWidth_ = fRelWidth;
-        fire_update_dimensions();
-        notify_renderer_need_redraw();
-    }
+    if (pParent_)
+        set_abs_width(fRelWidth*pParent_->get_apparent_width());
+    else
+        set_abs_width(fRelWidth*pManager_->get_screen_width());
 }
 
 void uiobject::set_rel_height(float fRelHeight)
 {
-    if (fRelHeight_ != fRelHeight || bIsHeightAbs_)
-    {
-        pManager_->notify_object_moved();
-        bIsHeightAbs_ = false;
-        fRelHeight_ = fRelHeight;
-        fire_update_dimensions();
-        notify_renderer_need_redraw();
-    }
+    if (pParent_)
+        set_abs_height(fRelHeight*pParent_->get_apparent_height());
+    else
+        set_abs_height(fRelHeight*pManager_->get_screen_height());
 }
 
 uint uiobject::get_abs_width() const
@@ -407,16 +368,6 @@ uint uiobject::get_apparent_height() const
     return lBorderList_.height();
 }
 
-float uiobject::get_rel_width() const
-{
-    return fRelWidth_;
-}
-
-float uiobject::get_rel_height() const
-{
-    return fRelHeight_;
-}
-
 void uiobject::set_parent(frame* pParent)
 {
     if (pParent == this)
@@ -428,7 +379,7 @@ void uiobject::set_parent(frame* pParent)
     if (pParent_ != pParent)
     {
         pParent_ = pParent;
-        fire_update_dimensions();
+        fire_update_borders();
     }
 }
 
@@ -788,34 +739,6 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     }
 }
 
-void uiobject::update_dimensions_() const
-{
-    if (pParent_)
-    {
-        if (bIsHeightAbs_)
-            fRelHeight_ = float(uiAbsHeight_)/float(pParent_->get_apparent_height());
-        else
-            uiAbsHeight_ = fRelHeight_*pParent_->get_apparent_height();
-
-        if (bIsWidthAbs_)
-            fRelWidth_ = float(uiAbsWidth_)/float(pParent_->get_apparent_width());
-        else
-            uiAbsWidth_ = fRelWidth_*pParent_->get_apparent_width();
-    }
-    else
-    {
-        if (bIsHeightAbs_)
-            fRelHeight_ = float(uiAbsHeight_)/float(pManager_->get_screen_height());
-        else
-            uiAbsHeight_ = fRelHeight_*pManager_->get_screen_height();
-
-        if (bIsWidthAbs_)
-            fRelWidth_ = float(uiAbsWidth_)/float(pManager_->get_screen_width());
-        else
-            uiAbsWidth_ = fRelWidth_*pManager_->get_screen_width();
-    }
-}
-
 void uiobject::make_borders_(float& iMin, float& iMax, float iCenter, float iSize) const
 {
     if (math::isinf(iMin) && math::isinf(iMax))
@@ -921,13 +844,6 @@ void uiobject::update_borders_() const
     bool bOldReady = bReady_;
     bReady_ = true;
 
-    if (bUpdateDimensions_)
-    {
-        DEBUG_LOG("  Update dimensions");
-        update_dimensions_();
-        bUpdateDimensions_ = false;
-    }
-
     if (get_num_point() > 0u)
     {
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
@@ -951,14 +867,8 @@ void uiobject::update_borders_() const
 
             lBorderList_ = quad2i(iLeft, iRight, iTop, iBottom);
 
-            bIsWidthAbs_ = true;
             uiAbsWidth_  = iRight - iLeft;
-
-            bIsHeightAbs_ = true;
             uiAbsHeight_  = iBottom - iTop;
-
-            DEBUG_LOG("  Update dimentions");
-            update_dimensions_();
         }
         else
             lBorderList_ = quad2i::ZERO;
@@ -1028,12 +938,6 @@ void uiobject::fire_update_borders() const
 
     for (auto* pObject : lAnchoredObjectList_)
         pObject->fire_update_borders();
-}
-
-void uiobject::fire_update_dimensions() const
-{
-    fire_update_borders();
-    bUpdateDimensions_ = true;
 }
 
 void uiobject::update(float fDelta)

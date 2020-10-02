@@ -158,9 +158,6 @@ namespace gui
         /// Tells this widget to update its borders.
         virtual void fire_update_borders() const;
 
-        /// Tells this widget to update its dimensions.
-        void fire_update_dimensions() const;
-
         /// Returns this widget's name.
         /** \return This widget's name
         */
@@ -268,16 +265,6 @@ namespace gui
         */
         virtual void set_abs_height(uint uiAbsHeight);
 
-        /// Checks if this widget's width has been defined as absolute.
-        /** \return 'true' if this widget's width has been defined as absolute
-        */
-        bool is_width_absolute() const;
-
-        /// Checks if this widget's height has been defined as absolute.
-        /** \return 'true' if this widget's height has been defined as absolute
-        */
-        bool is_height_absolute() const;
-
         /// Changes this widget's dimensions (relative to its parent).
         /** \param fRelWidth  The new width
         *   \param fRelHeight The new height
@@ -325,16 +312,6 @@ namespace gui
         *         some widgets can have an infinite or undefined height.
         */
         uint get_apparent_height() const;
-
-        /// Returns this widget's width (relative to its parent).
-        /** \return This widget's width (relative to its parent)
-        */
-        float get_rel_width() const;
-
-        /// Returns this widget's height (relative to its parent).
-        /** \return This widget's height (relative to its parent)
-        */
-        float get_rel_height() const;
 
         /// Returns the type of this widget.
         /** \return The type of this widget
@@ -651,7 +628,6 @@ namespace gui
         void         read_anchors_(float& iLeft, float& iRight, float& iTop, float& iBottom, float& iXCenter, float& iYCenter) const;
         void         make_borders_(float& iMin, float& iMax, float iCenter, float iSize) const;
         virtual void update_borders_() const;
-        virtual void update_dimensions_() const;
 
         sol::state&  get_lua_();
         lua::state&  get_luapp_();
@@ -689,16 +665,11 @@ namespace gui
         bool  bIsShown_ = true;
         bool  bIsVisible_ = true;
 
-        mutable bool  bIsWidthAbs_ = true;
-        mutable bool  bIsHeightAbs_ = true;
-        mutable uint  uiAbsWidth_ = 0u;
-        mutable uint  uiAbsHeight_ = 0u;
-        mutable float fRelWidth_ = 0.0f;
-        mutable float fRelHeight_ = 0.0f;
+        mutable uint uiAbsWidth_ = 0u;
+        mutable uint uiAbsHeight_ = 0u;
 
         mutable bool bUpdateAnchors_ = false;
         mutable bool bUpdateBorders_ = true;
-        mutable bool bUpdateDimensions_ = false;
 
         mutable std::vector<uiobject*> lAnchoredObjectList_;
     };

@@ -1452,7 +1452,7 @@ void manager::on_event(const event& mEvent)
         {
             if (!pObject->is_virtual())
             {
-                pObject->fire_update_dimensions();
+                pObject->fire_update_borders();
                 pObject->notify_renderer_need_redraw();
             }
         }

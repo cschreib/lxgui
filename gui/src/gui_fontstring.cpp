@@ -474,13 +474,6 @@ void font_string::update_borders_() const
     bool bOldReady = bReady_;
     bReady_ = true;
 
-    if (bUpdateDimensions_)
-    {
-        DEBUG_LOG("  Update dimentions");
-        update_dimensions_();
-        bUpdateDimensions_ = false;
-    }
-
     if (!lAnchorList_.empty())
     {
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
@@ -533,9 +526,6 @@ void font_string::update_borders_() const
             lBorderList_.right  = iRight;
             lBorderList_.top    = iTop;
             lBorderList_.bottom = iBottom;
-
-            DEBUG_LOG("  Update dimentions");
-            update_dimensions_();
         }
         else
             lBorderList_ = quad2i::ZERO;

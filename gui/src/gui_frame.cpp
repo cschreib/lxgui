@@ -1529,7 +1529,7 @@ void frame::set_max_height(uint uiMaxHeight)
         uiMaxHeight_ = uiMaxHeight;
 
     if (uiMaxHeight_ != uiMaxHeight)
-        fire_update_dimensions();
+        fire_update_borders();
 }
 
 void frame::set_max_width(uint uiMaxWidth)
@@ -1538,7 +1538,7 @@ void frame::set_max_width(uint uiMaxWidth)
         uiMaxWidth_ = uiMaxWidth;
 
     if (uiMaxWidth_ != uiMaxWidth)
-        fire_update_dimensions();
+        fire_update_borders();
 }
 
 void frame::set_min_height(uint uiMinHeight)
@@ -1547,7 +1547,7 @@ void frame::set_min_height(uint uiMinHeight)
         uiMinHeight_ = uiMinHeight;
 
     if (uiMinHeight_ != uiMinHeight)
-        fire_update_dimensions();
+        fire_update_borders();
 }
 
 void frame::set_min_width(uint uiMinWidth)
@@ -1556,7 +1556,7 @@ void frame::set_min_width(uint uiMinWidth)
         uiMinWidth_ = uiMinWidth;
 
     if (uiMinWidth_ != uiMinWidth)
-        fire_update_dimensions();
+        fire_update_borders();
 }
 
 void frame::set_movable(bool bIsMovable)
@@ -1577,7 +1577,7 @@ void frame::set_parent(frame* pParent)
 
     pParent_ = pParent;
 
-    fire_update_dimensions();
+    fire_update_borders();
 }
 
 std::unique_ptr<uiobject> frame::release_from_parent()
