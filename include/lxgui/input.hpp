@@ -4,10 +4,12 @@
 #include "lxgui/utils.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/input_keys.hpp"
+
 #include <string>
 #include <vector>
 #include <array>
 #include <map>
+#include <memory>
 
 namespace lxgui {
 namespace gui

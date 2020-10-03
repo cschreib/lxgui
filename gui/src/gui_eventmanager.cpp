@@ -3,7 +3,7 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
 
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)

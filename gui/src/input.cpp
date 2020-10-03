@@ -3,8 +3,11 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
+
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
+
 #include <iostream>
 
 namespace lxgui {
@@ -451,7 +454,7 @@ void manager::update(float fTempDelta)
         if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
         {
             // Add key name to the event
-            mEvent.add(get_key_name(mEvent.get<key>(0)));
+            mEvent.add(get_key_name(utils::get<key>(mEvent.get(0))));
         }
         else if (mEvent.get_name() == "MOUSE_PRESSED" ||
                  mEvent.get_name() == "MOUSE_RELEASED" ||
@@ -468,7 +471,7 @@ void manager::update(float fTempDelta)
     if (!lChars_.empty())
     {
         gui::event mCharEvent("TEXT_ENTERED");
-        mCharEvent.add(char32_t(0));
+        mCharEvent.add(std::uint32_t{});
         for (auto cChar : lChars_)
         {
             mCharEvent[0] = cChar;

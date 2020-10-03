@@ -12,6 +12,9 @@
 
 #include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
+#include <lxgui/utils_range.hpp>
+
 #include <sol/state.hpp>
 
 #include <sstream>
@@ -1124,7 +1127,7 @@ void frame::on_event(const event& mEvent)
                 if (pTopLevelParent_)
                     pTopLevelParent_->raise();
 
-                std::string sMouseButton = mEvent[3].get<std::string>();
+                std::string sMouseButton = mEvent.get<std::string>(3);
                 lMouseButtonList_.push_back(sMouseButton);
 
                 event mEvent2;
@@ -1140,7 +1143,7 @@ void frame::on_event(const event& mEvent)
             if (bIsMovable_)
                 stop_moving();
 
-            std::string sMouseButton = mEvent[3].get<std::string>();
+            std::string sMouseButton = mEvent.get<std::string>(3);
 
             if (bMouseInFrame_)
             {
@@ -1182,7 +1185,7 @@ void frame::on_event(const event& mEvent)
             if (bMouseInFrame_)
             {
                 event mEvent2;
-                mEvent2.add(mEvent[0].get<float>());
+                mEvent2.add(mEvent.get(0));
                 on("MouseWheel", &mEvent2);
                 if (!mChecker.is_alive())
                     return;
@@ -1195,8 +1198,8 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0].get<input::key>());
-            mKeyEvent.add(mEvent[1].get<std::string>());
+            mKeyEvent.add(mEvent[0]);
+            mKeyEvent.add(mEvent[1]);
 
             on("KeyDown", &mKeyEvent);
             if (!mChecker.is_alive())
@@ -1205,8 +1208,8 @@ void frame::on_event(const event& mEvent)
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0].get<input::key>());
-            mKeyEvent.add(mEvent[1].get<std::string>());
+            mKeyEvent.add(mEvent[0]);
+            mKeyEvent.add(mEvent[1]);
 
             on("KeyUp", &mKeyEvent);
             if (!mChecker.is_alive())
@@ -1307,19 +1310,11 @@ void frame::on(const std::string& sScriptName, event* pEvent)
             // Set arguments
             for (uint i = 0; i < pEvent->get_num_param(); ++i)
             {
-                const utils::any* pArg = pEvent->get(i);
-                const utils::any_type& mType = pArg->get_type();
-
-                sol::object mObject;
-                if      (mType == utils::any::VALUE_INT)    mObject = sol::make_object(mLua.lua_state(), pArg->get<int>());
-                else if (mType == utils::any::VALUE_UINT)   mObject = sol::make_object(mLua.lua_state(), pArg->get<uint>());
-                else if (mType == utils::any::VALUE_FLOAT)  mObject = sol::make_object(mLua.lua_state(), pArg->get<float>());
-                else if (mType == utils::any::VALUE_DOUBLE) mObject = sol::make_object(mLua.lua_state(), pArg->get<double>());
-                else if (mType == utils::any::VALUE_STRING) mObject = sol::make_object(mLua.lua_state(), pArg->get<std::string>());
-                else if (mType == utils::any::VALUE_BOOL)   mObject = sol::make_object(mLua.lua_state(), pArg->get<bool>());
-                else                                        mObject = sol::make_object(mLua.lua_state(), sol::lua_nil);
-
-                mLua["arg"+utils::to_string(i+1)] = mObject;
+                const utils::variant& mArg = pEvent->get(i);
+                if (std::holds_alternative<utils::empty>(mArg))
+                    mLua["arg"+utils::to_string(i+1)] = sol::lua_nil;
+                else
+                    mLua["arg"+utils::to_string(i+1)] = mArg;
             }
         }
     }

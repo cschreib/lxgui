@@ -239,33 +239,11 @@ double string_to_float(const ustring& s)
     return string_to_float(unicode_to_UTF8(s));
 }
 
-string int_to_string(const long& i)
+template<typename T>
+string value_to_string(T mValue)
 {
     string_stream sStream;
-    sStream << i;
-    return sStream.str();
-}
-
-string uint_to_string(const unsigned long& ui)
-{
-    string_stream sStream;
-    sStream << ui;
-    return sStream.str();
-}
-
-string float_to_string(float f)
-{
-    string_stream sStream;
-    //sStream.precision(s_float_t<T>::DIGIT);
-    sStream << f;
-    return sStream.str();
-}
-
-string double_to_string(double d)
-{
-    string_stream sStream;
-    //sStream.precision(s_float_t<T>::DIGIT);
-    sStream << d;
+    sStream << mValue;
     return sStream.str();
 }
 
@@ -357,7 +335,7 @@ string to_string(char c, uint uiNbr)
 
 string to_string(int i)
 {
-    return int_to_string(i);
+    return value_to_string(i);
 }
 
 string to_string(int i, uint uiCharNbr)
@@ -386,7 +364,7 @@ string to_string(int i, uint uiCharNbr)
 
 string to_string(uint ui)
 {
-    return uint_to_string(ui);
+    return value_to_string(ui);
 }
 
 string to_string(uint ui, uint uiCharNbr)
@@ -401,7 +379,7 @@ string to_string(uint ui, uint uiCharNbr)
 
 string to_string(long i)
 {
-    return int_to_string(i);
+    return value_to_string(i);
 }
 
 string to_string(long i, uint uiCharNbr)
@@ -430,7 +408,7 @@ string to_string(long i, uint uiCharNbr)
 
 string to_string(ulong ui)
 {
-    return uint_to_string(ui);
+    return value_to_string(ui);
 }
 
 string to_string(ulong ui, uint uiCharNbr)
@@ -445,7 +423,7 @@ string to_string(ulong ui, uint uiCharNbr)
 
 string to_string(float f)
 {
-    return float_to_string(f);
+    return value_to_string(f);
 }
 
 string to_string(float f, uint uiDigitNbr)
@@ -542,7 +520,7 @@ string to_string(float f, uint uiIntCharNbr, uint uiFracCharNbr)
 
 string to_string(double f)
 {
-    return double_to_string(f);
+    return value_to_string(f);
 }
 
 string to_string(double f, uint uiDigitNbr)
@@ -647,6 +625,20 @@ string to_string(void* p)
     string_stream sStream;
     sStream << p;
     return sStream.str();
+}
+
+std::string to_string(const utils::variant& mValue)
+{
+    return std::visit([&](const auto& mInnerValue) -> std::string
+    {
+        using inner_type = std::decay_t<decltype(mInnerValue)>;
+        if constexpr (std::is_same_v<inner_type, utils::empty>)
+            return "<none>";
+        else if constexpr (std::is_same_v<inner_type, bool>)
+            return to_string(mInnerValue);
+        else
+            return value_to_string(mInnerValue);
+    }, mValue);
 }
 }
 }

@@ -221,7 +221,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mKeyboard_.lKeyState[(uint)mKey] = true;
 
         gui::event mKeyboardEvent("KEY_PRESSED");
-        mKeyboardEvent.add(mKey);
+        mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
         lEvents_.push_back(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::KeyReleased)
@@ -230,7 +230,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mKeyboard_.lKeyState[(uint)mKey] = false;
 
         gui::event mKeyboardEvent("KEY_RELEASED");
-        mKeyboardEvent.add(mKey);
+        mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
         lEvents_.push_back(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::MouseButtonPressed)
@@ -241,7 +241,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
 
         gui::event mMouseEvent("MOUSE_PRESSED");
-        mMouseEvent.add(mButton);
+        mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
         mMouseEvent.add((float)mMousePos.x);
         mMouseEvent.add((float)mMousePos.y);
         lEvents_.push_back(mMouseEvent);
@@ -262,7 +262,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
         const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
 
         gui::event mMouseEvent("MOUSE_RELEASED");
-        mMouseEvent.add(mButton);
+        mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
         mMouseEvent.add((float)mMousePos.x);
         mMouseEvent.add((float)mMousePos.y);
         lEvents_.push_back(mMouseEvent);

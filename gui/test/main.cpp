@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
         int frames = 0;
         pFrame->define_script("OnUpdate",
             [=](gui::frame* self, gui::event* event) mutable {
-                float delta = event->get(0)->get<float>();
+                float delta = event->get<float>(0);
                 timer += delta;
                 ++frames;
 

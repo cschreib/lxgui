@@ -1,7 +1,8 @@
 #ifndef LXGUI_GUI_EVENT_HPP
 #define LXGUI_GUI_EVENT_HPP
 
-#include <lxgui/utils_any.hpp>
+#include <lxgui/utils_variant.hpp>
+
 #include <string>
 #include <vector>
 
@@ -39,12 +40,12 @@ namespace gui
         /// Adds a parameter to this event.
         /** \param mValue The value
         */
-        void add(const utils::any& mValue);
+        void add(const utils::variant& mValue);
 
         /// Returns a parameter of this event.
         /** \return A parameter of this event
         */
-        const utils::any* get(uint uiIndex) const;
+        const utils::variant& get(uint uiIndex) const;
 
         /// Returns a parameter of this event.
         /** \return A parameter of this event
@@ -52,7 +53,7 @@ namespace gui
         template<typename T>
         const T& get(uint uiIndex) const
         {
-            return get(uiIndex)->get<T>();
+            return utils::get<T>(this->get(uiIndex));
         }
 
         /// Returns the number of parameter.
@@ -70,15 +71,15 @@ namespace gui
         */
         bool is_once_per_frame() const;
 
-        utils::any& operator [] (uint uiIndex);
+        utils::variant& operator [] (uint uiIndex);
 
-        const utils::any& operator [] (uint uiIndex) const;
+        const utils::variant& operator [] (uint uiIndex) const;
 
     private :
 
-        std::string             sName_;
-        bool                    bOncePerFrame_ = false;
-        std::vector<utils::any> lArgList_;
+        std::string                 sName_;
+        bool                        bOncePerFrame_ = false;
+        std::vector<utils::variant> lArgList_;
     };
 }
 }

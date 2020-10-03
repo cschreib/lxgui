@@ -7,7 +7,10 @@
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
+
 #include <sol/state.hpp>
+
 #include <sstream>
 
 namespace lxgui {
@@ -693,7 +696,7 @@ const anchor* uiobject::get_point(anchor_point mPoint) const
         return nullptr;
 }
 
-const std::array<utils::optional<anchor>,9>& uiobject::get_point_list() const
+const std::array<std::optional<anchor>,9>& uiobject::get_point_list() const
 {
     return lAnchorList_;
 }
@@ -741,9 +744,9 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
 
 void uiobject::make_borders_(float& iMin, float& iMax, float iCenter, float iSize) const
 {
-    if (math::isinf(iMin) && math::isinf(iMax))
+    if (std::isinf(iMin) && std::isinf(iMax))
     {
-        if (!math::isinf(iSize) && iSize != 0 && !math::isinf(iCenter))
+        if (!std::isinf(iSize) && iSize != 0 && !std::isinf(iCenter))
         {
             iMin = iCenter - iSize/2.0f;
             iMax = iCenter + iSize/2.0f;
@@ -751,20 +754,20 @@ void uiobject::make_borders_(float& iMin, float& iMax, float iCenter, float iSiz
         else
             bReady_ = false;
     }
-    else if (math::isinf(iMax))
+    else if (std::isinf(iMax))
     {
-        if (!math::isinf(iSize) && iSize != 0)
+        if (!std::isinf(iSize) && iSize != 0)
             iMax = iMin + iSize;
-        else if (!math::isinf(iCenter))
+        else if (!std::isinf(iCenter))
             iMax = iMin + 2.0f*(iCenter - iMin);
         else
             bReady_ = false;
     }
-    else if (math::isinf(iMin))
+    else if (std::isinf(iMin))
     {
-        if (!math::isinf(iSize) && iSize != 0)
+        if (!std::isinf(iSize) && iSize != 0)
             iMin = iMax - iSize;
-        else if (!math::isinf(iCenter))
+        else if (!std::isinf(iCenter))
             iMin = iMax - 2.0f*(iMax - iCenter);
         else
             bReady_ = false;

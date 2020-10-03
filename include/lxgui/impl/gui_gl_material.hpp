@@ -6,6 +6,7 @@
 #include <lxgui/gui_color.hpp>
 
 #include <vector>
+#include <memory>
 
 namespace lxgui {
 namespace gui {

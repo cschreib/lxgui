@@ -5,6 +5,8 @@
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_out.hpp"
 
+#include <lxgui/utils_range.hpp>
+
 namespace lxgui {
 namespace gui
 {

@@ -2,7 +2,10 @@
 #define LXGUI_LUAPP_STATE_HPP
 
 #include "lxgui/lunar.hpp"
+
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_variant.hpp>
+
 #include <vector>
 #include <map>
 
@@ -94,7 +97,7 @@ public :
     *   \note This function wil throw an exception if any error occurs.
     *         Don't forget to catch them.
     */
-    void call_function(const std::string& sFunctionName, const std::vector<utils::any>& lArgumentStack);
+    void call_function(const std::string& sFunctionName, const std::vector<utils::variant>& lArgumentStack);
 
     /// Binds a C++ function to a Lua function.
     /** \param sFunctionName The name of the Lua function
@@ -187,7 +190,7 @@ public :
     /// Puts a value on the stack.
     /** \param vValue The value to push on the stack
     */
-    void push(const utils::any& vValue);
+    void push(const utils::variant& vValue);
 
     /// pushes a copy of the value at the given index on the stack.
     /** \param iIndex The index of the value to push
@@ -266,7 +269,7 @@ public :
     /** \param iIndex The index at which to search for the value
     *   \return The value at the given index
     */
-    utils::any get_value(int iIndex = -1);
+    utils::variant get_value(int iIndex = -1);
 
     /// Returns the user data (C++ pointer) at the given index.
     template<class T>

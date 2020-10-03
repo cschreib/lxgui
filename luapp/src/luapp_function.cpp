@@ -1,6 +1,9 @@
 #include "lxgui/luapp_state.hpp"
 #include "lxgui/luapp_function.hpp"
+
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
+#include <lxgui/utils_range.hpp>
 
 namespace lxgui {
 namespace lua
