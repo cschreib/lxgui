@@ -1,7 +1,6 @@
 var searchData=
 [
   ['edit_5fbox',['edit_box',['../classlxgui_1_1gui_1_1edit__box.html#a33ef3a33e87d65b61b6a4e57fa03a4f3',1,'lxgui::gui::edit_box']]],
-  ['emplace',['emplace',['../classlxgui_1_1utils_1_1optional.html#a3c0f89aadf723ae83152209f017f4a53',1,'lxgui::utils::optional']]],
   ['enable',['enable',['../classlxgui_1_1gui_1_1button.html#aa476c85e074c2d1db5284482300356ab',1,'lxgui::gui::button::enable()'],['../classlxgui_1_1gui_1_1check__button.html#aa758118429da387334ec596175e07200',1,'lxgui::gui::check_button::enable()']]],
   ['enable_5fauto_5ffocus',['enable_auto_focus',['../classlxgui_1_1gui_1_1focus__frame.html#a86145c96133f9be02d2c00f08f3712f1',1,'lxgui::gui::focus_frame']]],
   ['enable_5fcaching',['enable_caching',['../classlxgui_1_1gui_1_1manager.html#ae5164395601170140a0516cbaf518234',1,'lxgui::gui::manager']]],

@@ -190,8 +190,8 @@ var searchData=
   ['source_5fimpl',['source_impl',['../classlxgui_1_1input_1_1source__impl.html#a886b16d4066e140c5736d1133e1db7ba',1,'lxgui::input::source_impl']]],
   ['source_5fimpl',['source_impl',['../classlxgui_1_1input_1_1source__impl.html',1,'lxgui::input']]],
   ['specialhigh',['SPECIALHIGH',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a841aec84bf090420c8d26d53615fe672',1,'lxgui::gui']]],
-  ['sprite',['sprite',['../classlxgui_1_1gui_1_1sprite.html',1,'lxgui::gui']]],
   ['sprite',['sprite',['../classlxgui_1_1gui_1_1sprite.html#af1fbed2682bf3dfcbc0bcfefd1f0a776',1,'lxgui::gui::sprite::sprite()=default'],['../classlxgui_1_1gui_1_1sprite.html#adc819387e28c92f019e9e81f809cc8df',1,'lxgui::gui::sprite::sprite(const renderer *pRenderer, std::shared_ptr&lt; material &gt; pMat)'],['../classlxgui_1_1gui_1_1sprite.html#ab9933807685cbe8430d6c9197b783dc2',1,'lxgui::gui::sprite::sprite(const renderer *pRenderer, std::shared_ptr&lt; material &gt; pMat, float fWidth, float fHeight)'],['../classlxgui_1_1gui_1_1sprite.html#afec412a9e59d3db377c1b2897ef56f38',1,'lxgui::gui::sprite::sprite(const renderer *pRenderer, std::shared_ptr&lt; material &gt; pMat, float fU, float fV, float fWidth, float fHeight)']]],
+  ['sprite',['sprite',['../classlxgui_1_1gui_1_1sprite.html',1,'lxgui::gui']]],
   ['srawname_5f',['sRawName_',['../classlxgui_1_1gui_1_1uiobject.html#ab41094515f5fcf4723fa90c7eb1e2e93',1,'lxgui::gui::uiobject']]],
   ['standard_5fdereferencer',['standard_dereferencer',['../structlxgui_1_1utils_1_1view_1_1standard__dereferencer.html',1,'lxgui::utils::view']]],
   ['start',['start',['../classlxgui_1_1gui_1_1periodic__timer.html#a8160b2b464d183c1fe372cf0d08dcba5',1,'lxgui::gui::periodic_timer']]],
@@ -213,6 +213,5 @@ var searchData=
   ['suiversion',['sUIVersion',['../structlxgui_1_1gui_1_1addon.html#ae13f973860598a320c8059d0d6537fc0',1,'lxgui::gui::addon']]],
   ['sunicodetext_5f',['sUnicodeText_',['../classlxgui_1_1gui_1_1edit__box.html#a4b428a41a0c5566c553631e071d575a2',1,'lxgui::gui::edit_box']]],
   ['svalue',['sValue',['../structlxgui_1_1xml_1_1attribute.html#af6ca212af05f5238b9d2462be91a1600',1,'lxgui::xml::attribute']]],
-  ['sversion',['sVersion',['../structlxgui_1_1gui_1_1addon.html#a55243db710fe4f815f1f70ed84e6f754',1,'lxgui::gui::addon']]],
-  ['swap',['swap',['../classlxgui_1_1utils_1_1any.html#a26d978bdc9c8255543deef9d486b08cc',1,'lxgui::utils::any']]]
+  ['sversion',['sVersion',['../structlxgui_1_1gui_1_1addon.html#a55243db710fe4f815f1f70ed84e6f754',1,'lxgui::gui::addon']]]
 ];

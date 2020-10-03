@@ -2,7 +2,7 @@ var searchData=
 [
   ['edit_5fbox',['edit_box',['../classlxgui_1_1gui_1_1edit__box.html',1,'lxgui::gui']]],
   ['edit_5fbox',['edit_box',['../classlxgui_1_1gui_1_1edit__box.html#a33ef3a33e87d65b61b6a4e57fa03a4f3',1,'lxgui::gui::edit_box']]],
-  ['emplace',['emplace',['../classlxgui_1_1utils_1_1optional.html#a3c0f89aadf723ae83152209f017f4a53',1,'lxgui::utils::optional']]],
+  ['empty',['empty',['../structlxgui_1_1utils_1_1empty.html',1,'lxgui::utils']]],
   ['empty',['EMPTY',['../classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75',1,'lxgui::gui::color']]],
   ['enable',['enable',['../classlxgui_1_1gui_1_1button.html#aa476c85e074c2d1db5284482300356ab',1,'lxgui::gui::button::enable()'],['../classlxgui_1_1gui_1_1check__button.html#aa758118429da387334ec596175e07200',1,'lxgui::gui::check_button::enable()']]],
   ['enable_5fauto_5ffocus',['enable_auto_focus',['../classlxgui_1_1gui_1_1focus__frame.html#a86145c96133f9be02d2c00f08f3712f1',1,'lxgui::gui::focus_frame']]],
@@ -23,8 +23,8 @@ var searchData=
   ['event_5fmanager',['event_manager',['../classlxgui_1_1gui_1_1event__manager.html',1,'lxgui::gui']]],
   ['event_5freceiver',['event_receiver',['../classlxgui_1_1gui_1_1event__receiver.html',1,'lxgui::gui']]],
   ['event_5freceiver',['event_receiver',['../classlxgui_1_1gui_1_1event__receiver.html#a6f4bf54e29735c9c04277bff27264415',1,'lxgui::gui::event_receiver']]],
+  ['exception',['exception',['../classlxgui_1_1lua_1_1exception.html',1,'lxgui::lua']]],
   ['exception',['exception',['../classlxgui_1_1gui_1_1exception.html',1,'lxgui::gui']]],
-  ['exception',['exception',['../classlxgui_1_1utils_1_1exception.html',1,'lxgui::utils']]],
   ['exception',['exception',['../classlxgui_1_1gui_1_1exception.html#a622fc38b68a7a7b4f24b0d345dff7f2d',1,'lxgui::gui::exception::exception(const std::string &amp;sMessage)'],['../classlxgui_1_1gui_1_1exception.html#af1d30ba51e9d59a3c308cbcc1569e87c',1,'lxgui::gui::exception::exception(const std::string &amp;sClassName, const std::string &amp;sMessage)'],['../classlxgui_1_1lua_1_1exception.html#abc35e1db543a98b00d696d2403504f90',1,'lxgui::lua::exception::exception(const std::string &amp;sMessage)'],['../classlxgui_1_1lua_1_1exception.html#a64daf2565a1fc608d55d58d9ca132143',1,'lxgui::lua::exception::exception(const std::string &amp;sClassName, const std::string &amp;sMessage)'],['../classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a',1,'lxgui::utils::exception::exception()=default'],['../classlxgui_1_1utils_1_1exception.html#a2bf238c7a2fcf0f5744fb335eaf2857b',1,'lxgui::utils::exception::exception(const exception &amp;mOther)=default'],['../classlxgui_1_1utils_1_1exception.html#a07e5b1d1af7c5502d98e9ff99cc01130',1,'lxgui::utils::exception::exception(const std::string &amp;sMessage)'],['../classlxgui_1_1utils_1_1exception.html#a306bc24e23f96f8f2ea97bb6b805f784',1,'lxgui::utils::exception::exception(const std::string &amp;sClassName, const std::string &amp;sMessage)']]],
-  ['exception',['exception',['../classlxgui_1_1lua_1_1exception.html',1,'lxgui::lua']]]
+  ['exception',['exception',['../classlxgui_1_1utils_1_1exception.html',1,'lxgui::utils']]]
 ];

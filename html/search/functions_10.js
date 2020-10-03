@@ -42,7 +42,6 @@ var searchData=
   ['renderer',['renderer',['../classlxgui_1_1gui_1_1renderer.html#a759cd3389a47493647ab5dc078613ca4',1,'lxgui::gui::renderer::renderer()'],['../classlxgui_1_1gui_1_1gl_1_1renderer.html#a687c2b5c4f7be7333eac8c0949a63e1f',1,'lxgui::gui::gl::renderer::renderer()'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html#a51b23742df1c4fc6d2a5bd06f6ea88a0',1,'lxgui::gui::sfml::renderer::renderer()']]],
   ['renderer_5fimpl',['renderer_impl',['../classlxgui_1_1gui_1_1renderer__impl.html#a13a22c03b908e052d03c7ce683cff1fb',1,'lxgui::gui::renderer_impl']]],
   ['request_5ffocus',['request_focus',['../classlxgui_1_1gui_1_1manager.html#a6fb8a942de07f4c7a6f34256d121f5fc',1,'lxgui::gui::manager']]],
-  ['reset',['reset',['../classlxgui_1_1utils_1_1optional.html#a5f3105521f2c6df1e3d72ca6fddcec9a',1,'lxgui::utils::optional']]],
   ['reset_5fstrata_5flist_5fchanged_5fflag_5f',['reset_strata_list_changed_flag_',['../classlxgui_1_1gui_1_1renderer.html#a592320e159b227a6f1787fdfe273cecb',1,'lxgui::gui::renderer']]],
   ['reset_5fwindow_5fresized',['reset_window_resized',['../classlxgui_1_1input_1_1source__impl.html#a28a7863c4cdf1d6cb06f9598aff00da9',1,'lxgui::input::source_impl']]],
   ['reverse',['reverse',['../namespacelxgui_1_1utils_1_1range.html#a9e38d6e0651c1c0ec1564ff339cc6ba9',1,'lxgui::utils::range']]],

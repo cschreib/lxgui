@@ -175,6 +175,5 @@ var searchData=
   ['step_5fvalue',['step_value',['../namespacelxgui_1_1gui.html#afb2351f51365c9fbf555f43851a3d0aa',1,'lxgui::gui']]],
   ['stop',['stop',['../classlxgui_1_1gui_1_1periodic__timer.html#a148bb4733417fe5c346df416890c0360',1,'lxgui::gui::periodic_timer']]],
   ['stop_5fmoving',['stop_moving',['../classlxgui_1_1gui_1_1frame.html#a11305acefe94e1ecf30da59217f9a4e0',1,'lxgui::gui::frame::stop_moving()'],['../classlxgui_1_1gui_1_1manager.html#a848f3c8e1401075405df77ecf92de7a9',1,'lxgui::gui::manager::stop_moving()']]],
-  ['stop_5fsizing',['stop_sizing',['../classlxgui_1_1gui_1_1frame.html#a2ce1231fdd48700c73ae57705133e99c',1,'lxgui::gui::frame::stop_sizing()'],['../classlxgui_1_1gui_1_1manager.html#abd54c6bba1f2b5821ac18fa550693472',1,'lxgui::gui::manager::stop_sizing()']]],
-  ['swap',['swap',['../classlxgui_1_1utils_1_1any.html#a26d978bdc9c8255543deef9d486b08cc',1,'lxgui::utils::any']]]
+  ['stop_5fsizing',['stop_sizing',['../classlxgui_1_1gui_1_1frame.html#a2ce1231fdd48700c73ae57705133e99c',1,'lxgui::gui::frame::stop_sizing()'],['../classlxgui_1_1gui_1_1manager.html#abd54c6bba1f2b5821ac18fa550693472',1,'lxgui::gui::manager::stop_sizing()']]]
 ];

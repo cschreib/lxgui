@@ -2,7 +2,7 @@ var searchData=
 [
   ['c_5ffunction',['c_function',['../namespacelxgui_1_1lua.html#aa2be8ed785b171b4c5b815f38abfd117',1,'lxgui::lua']]],
   ['call',['call',['../classlxgui_1_1lua_1_1Lunar.html#ab51e9697136f8301b866f3fc0b04e458',1,'lxgui::lua::Lunar']]],
-  ['call_5ffunction',['call_function',['../classlxgui_1_1lua_1_1state.html#a833e181a7be76eb18400ddd355fedf4d',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName)'],['../classlxgui_1_1lua_1_1state.html#abd77ebb8c56f96266b7aafd4bad5426d',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName, const std::vector&lt; utils::any &gt; &amp;lArgumentStack)']]],
+  ['call_5ffunction',['call_function',['../classlxgui_1_1lua_1_1state.html#a833e181a7be76eb18400ddd355fedf4d',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName)'],['../classlxgui_1_1lua_1_1state.html#abae1921c673736dc159673bc9708cd22',1,'lxgui::lua::state::call_function(const std::string &amp;sFunctionName, const std::vector&lt; utils::variant &gt; &amp;lArgumentStack)']]],
   ['can_5fhave_5fblock',['can_have_block',['../classlxgui_1_1xml_1_1block.html#ad8373cea68d375d94f81bfc02ee426af',1,'lxgui::xml::block']]],
   ['can_5fnon_5fspace_5fwrap',['can_non_space_wrap',['../classlxgui_1_1gui_1_1font__string.html#a2d953d33cb6afc308d8ee3bd4faef084',1,'lxgui::gui::font_string']]],
   ['can_5freceive_5finput',['can_receive_input',['../classlxgui_1_1input_1_1manager.html#a76e0ddd441263402af5e8d2357dbc60e',1,'lxgui::input::manager']]],

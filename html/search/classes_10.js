@@ -1,16 +1,15 @@
 var searchData=
 [
-  ['range_5fblock',['range_block',['../structlxgui_1_1xml_1_1block_1_1range__block.html',1,'lxgui::xml::block']]],
-  ['region',['region',['../classlxgui_1_1gui_1_1region.html',1,'lxgui::gui']]],
-  ['render_5ftarget',['render_target',['../classlxgui_1_1gui_1_1gl_1_1render__target.html',1,'lxgui::gui::gl']]],
-  ['render_5ftarget',['render_target',['../classlxgui_1_1gui_1_1sfml_1_1render__target.html',1,'lxgui::gui::sfml']]],
-  ['render_5ftarget',['render_target',['../classlxgui_1_1gui_1_1render__target.html',1,'lxgui::gui']]],
-  ['renderer',['renderer',['../classlxgui_1_1gui_1_1sfml_1_1renderer.html',1,'lxgui::gui::sfml']]],
-  ['renderer',['renderer',['../classlxgui_1_1gui_1_1renderer.html',1,'lxgui::gui']]],
-  ['renderer',['renderer',['../classlxgui_1_1gui_1_1gl_1_1renderer.html',1,'lxgui::gui::gl']]],
-  ['renderer_5fimpl',['renderer_impl',['../classlxgui_1_1gui_1_1renderer__impl.html',1,'lxgui::gui']]],
-  ['reverse_5fiterator_5frange',['reverse_iterator_range',['../structlxgui_1_1utils_1_1range_1_1reverse__iterator__range.html',1,'lxgui::utils::range']]],
-  ['reverse_5fkey_5frange',['reverse_key_range',['../structlxgui_1_1utils_1_1range_1_1reverse__key__range.html',1,'lxgui::utils::range']]],
-  ['reverse_5frange',['reverse_range',['../structlxgui_1_1utils_1_1range_1_1reverse__range.html',1,'lxgui::utils::range']]],
-  ['reverse_5fvalue_5frange',['reverse_value_range',['../structlxgui_1_1utils_1_1range_1_1reverse__value__range.html',1,'lxgui::utils::range']]]
+  ['script_5finfo',['script_info',['../structlxgui_1_1gui_1_1frame_1_1script__info.html',1,'lxgui::gui::frame']]],
+  ['scroll_5fframe',['scroll_frame',['../classlxgui_1_1gui_1_1scroll__frame.html',1,'lxgui::gui']]],
+  ['slider',['slider',['../classlxgui_1_1gui_1_1slider.html',1,'lxgui::gui']]],
+  ['sorted_5fvector',['sorted_vector',['../classlxgui_1_1utils_1_1sorted__vector.html',1,'lxgui::utils']]],
+  ['source',['source',['../classlxgui_1_1input_1_1glfw_1_1source.html',1,'lxgui::input::glfw']]],
+  ['source',['source',['../classlxgui_1_1input_1_1sfml_1_1source.html',1,'lxgui::input::sfml']]],
+  ['source_5fimpl',['source_impl',['../classlxgui_1_1input_1_1source__impl.html',1,'lxgui::input']]],
+  ['sprite',['sprite',['../classlxgui_1_1gui_1_1sprite.html',1,'lxgui::gui']]],
+  ['standard_5fdereferencer',['standard_dereferencer',['../structlxgui_1_1utils_1_1view_1_1standard__dereferencer.html',1,'lxgui::utils::view']]],
+  ['state',['state',['../classlxgui_1_1lua_1_1state.html',1,'lxgui::lua']]],
+  ['status_5fbar',['status_bar',['../classlxgui_1_1gui_1_1status__bar.html',1,'lxgui::gui']]],
+  ['strata',['strata',['../structlxgui_1_1gui_1_1strata.html',1,'lxgui::gui']]]
 ];

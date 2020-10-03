@@ -1,6 +1,7 @@
 var searchData=
 [
   ['edit_5fbox',['edit_box',['../classlxgui_1_1gui_1_1edit__box.html',1,'lxgui::gui']]],
+  ['empty',['empty',['../structlxgui_1_1utils_1_1empty.html',1,'lxgui::utils']]],
   ['event',['event',['../classlxgui_1_1gui_1_1event.html',1,'lxgui::gui']]],
   ['event_5fmanager',['event_manager',['../classlxgui_1_1gui_1_1event__manager.html',1,'lxgui::gui']]],
   ['event_5freceiver',['event_receiver',['../classlxgui_1_1gui_1_1event__receiver.html',1,'lxgui::gui']]],

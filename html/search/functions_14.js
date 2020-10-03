@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['value',['value',['../classlxgui_1_1utils_1_1optional.html#ab06be10612af38c6fea38170f2deb309',1,'lxgui::utils::optional::value()'],['../classlxgui_1_1utils_1_1optional.html#a1f2f7f8606803f393f2308c5561bfca1',1,'lxgui::utils::optional::value() const '],['../namespacelxgui_1_1utils_1_1range.html#aeaea8b5f6e6b015749d26dad8df6cb08',1,'lxgui::utils::range::value()']]],
+  ['value',['value',['../namespacelxgui_1_1utils_1_1range.html#aeaea8b5f6e6b015749d26dad8df6cb08',1,'lxgui::utils::range']]],
   ['value_5fiterator_5fadapter',['value_iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1value__iterator__adapter.html#a9308abf0d2eb6a0c74b1f7d61910df8c',1,'lxgui::utils::range::value_iterator_adapter']]],
   ['value_5frange',['value_range',['../structlxgui_1_1utils_1_1range_1_1value__range.html#a251e628ecb17a2d6109cb7258184821f',1,'lxgui::utils::range::value_range']]],
   ['vector2',['vector2',['../classlxgui_1_1gui_1_1vector2.html#a067b4a581887e5c583763af624536603',1,'lxgui::gui::vector2::vector2()=default'],['../classlxgui_1_1gui_1_1vector2.html#a87252d54c4efd52f57d7f00132c1eea4',1,'lxgui::gui::vector2::vector2(T mX, T mY)']]],

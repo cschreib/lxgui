@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['periodic_5ftimer',['periodic_timer',['../classlxgui_1_1gui_1_1periodic__timer.html',1,'lxgui::gui']]],
-  ['predefined_5fblock',['predefined_block',['../structlxgui_1_1xml_1_1predefined__block.html',1,'lxgui::xml']]],
-  ['ptr_5fdereferencer',['ptr_dereferencer',['../structlxgui_1_1utils_1_1view_1_1ptr__dereferencer.html',1,'lxgui::utils::view']]]
+  ['quad',['quad',['../structlxgui_1_1gui_1_1quad.html',1,'lxgui::gui']]],
+  ['quad2',['quad2',['../classlxgui_1_1gui_1_1quad2.html',1,'lxgui::gui']]],
+  ['quad2_3c_20bool_20_3e',['quad2&lt; bool &gt;',['../classlxgui_1_1gui_1_1quad2.html',1,'lxgui::gui']]],
+  ['quad2_3c_20float_20_3e',['quad2&lt; float &gt;',['../classlxgui_1_1gui_1_1quad2.html',1,'lxgui::gui']]],
+  ['quad2_3c_20int_20_3e',['quad2&lt; int &gt;',['../classlxgui_1_1gui_1_1quad2.html',1,'lxgui::gui']]]
 ];
