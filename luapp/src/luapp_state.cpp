@@ -583,7 +583,7 @@ utils::variant state::get_value(int iIndex)
         case LUA_TBOOLEAN : return get_bool(iIndex);
         case LUA_TNUMBER : return get_number(iIndex);
         case LUA_TSTRING : return get_string(iIndex);
-        default : return utils::variant();
+        default : return utils::empty{};
     }
 }
 
