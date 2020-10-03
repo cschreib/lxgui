@@ -7,7 +7,6 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_manager.hpp>
 #include <lxgui/utils_string.hpp>
-#include <lxgui/utils_wptr.hpp>
 
 #ifdef WIN32
 #define NOMINMAX
