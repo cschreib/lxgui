@@ -138,9 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8f87a747d27b9c00e34e02af5b66423"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac8f87a747d27b9c00e34e02af5b66423">get_target_height</a> () const =0</td></tr>
 <tr class="memdesc:ac8f87a747d27b9c00e34e02af5b66423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the height of this renderer's main render target (e.g., screen).  <a href="#ac8f87a747d27b9c00e34e02af5b66423">More...</a><br /></td></tr>
 <tr class="separator:ac8f87a747d27b9c00e34e02af5b66423"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8692856bdc8db2e0f9d519697a8769cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8692856bdc8db2e0f9d519697a8769cf">begin</a> (<a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pTarget=nullptr) const </td></tr>
-<tr class="memdesc:a8692856bdc8db2e0f9d519697a8769cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine to start rendering into a new target.  <a href="#a8692856bdc8db2e0f9d519697a8769cf">More...</a><br /></td></tr>
-<tr class="separator:a8692856bdc8db2e0f9d519697a8769cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21e420c253ec29368c59c2927a16cea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac21e420c253ec29368c59c2927a16cea">begin</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pTarget=nullptr) const </td></tr>
+<tr class="memdesc:ac21e420c253ec29368c59c2927a16cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine to start rendering into a new target.  <a href="#ac21e420c253ec29368c59c2927a16cea">More...</a><br /></td></tr>
+<tr class="separator:ac21e420c253ec29368c59c2927a16cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af059d60c4631c16f91696e54b6ec6b25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#af059d60c4631c16f91696e54b6ec6b25">end</a> () const </td></tr>
 <tr class="memdesc:af059d60c4631c16f91696e54b6ec6b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine we're done rendering.  <a href="#af059d60c4631c16f91696e54b6ec6b25">More...</a><br /></td></tr>
 <tr class="separator:af059d60c4631c16f91696e54b6ec6b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,30 +150,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3bacac8f04b511c33c8df3e30e2a3c2b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3bacac8f04b511c33c8df3e30e2a3c2b">render_quads</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const </td></tr>
 <tr class="memdesc:a3bacac8f04b511c33c8df3e30e2a3c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="#a3bacac8f04b511c33c8df3e30e2a3c2b">More...</a><br /></td></tr>
 <tr class="separator:a3bacac8f04b511c33c8df3e30e2a3c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a913c170b6989843139a2893300d4dc58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a913c170b6989843139a2893300d4dc58">create_sprite</a> (<a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat) const </td></tr>
-<tr class="memdesc:a913c170b6989843139a2893300d4dc58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#a913c170b6989843139a2893300d4dc58">More...</a><br /></td></tr>
-<tr class="separator:a913c170b6989843139a2893300d4dc58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8924f4f0fdd509cad51ebcd86ab8c983"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8924f4f0fdd509cad51ebcd86ab8c983">create_sprite</a> (<a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fWidth, float fHeight) const </td></tr>
-<tr class="memdesc:a8924f4f0fdd509cad51ebcd86ab8c983"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#a8924f4f0fdd509cad51ebcd86ab8c983">More...</a><br /></td></tr>
-<tr class="separator:a8924f4f0fdd509cad51ebcd86ab8c983"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7e6be9a6d03886397a52ad338492a13"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aa7e6be9a6d03886397a52ad338492a13">create_sprite</a> (<a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fU, float fV, float fWidth, float fHeight) const </td></tr>
-<tr class="memdesc:aa7e6be9a6d03886397a52ad338492a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#aa7e6be9a6d03886397a52ad338492a13">More...</a><br /></td></tr>
-<tr class="separator:aa7e6be9a6d03886397a52ad338492a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ec41161a61bdd2d4b2fbac6145c829c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4ec41161a61bdd2d4b2fbac6145c829c">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const </td></tr>
-<tr class="memdesc:a4ec41161a61bdd2d4b2fbac6145c829c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="#a4ec41161a61bdd2d4b2fbac6145c829c">More...</a><br /></td></tr>
-<tr class="separator:a4ec41161a61bdd2d4b2fbac6145c829c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d8107f496f830edffc68af7666b6459"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4d8107f496f830edffc68af7666b6459">create_material</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor) const </td></tr>
-<tr class="memdesc:a4d8107f496f830edffc68af7666b6459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a plain color.  <a href="#a4d8107f496f830edffc68af7666b6459">More...</a><br /></td></tr>
-<tr class="separator:a4d8107f496f830edffc68af7666b6459"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a085f5a58d87dfee556ed66dd75bee718"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a085f5a58d87dfee556ed66dd75bee718">create_material</a> (<a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget) const </td></tr>
-<tr class="memdesc:a085f5a58d87dfee556ed66dd75bee718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a render target.  <a href="#a085f5a58d87dfee556ed66dd75bee718">More...</a><br /></td></tr>
-<tr class="separator:a085f5a58d87dfee556ed66dd75bee718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419820bdadf47dd4f25c1e778027ce67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a419820bdadf47dd4f25c1e778027ce67">create_render_target</a> (<a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiHeight) const </td></tr>
-<tr class="memdesc:a419820bdadf47dd4f25c1e778027ce67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="#a419820bdadf47dd4f25c1e778027ce67">More...</a><br /></td></tr>
-<tr class="separator:a419820bdadf47dd4f25c1e778027ce67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34537b823ac89cf2eb4de246346a3851"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a34537b823ac89cf2eb4de246346a3851">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiSize) const </td></tr>
-<tr class="memdesc:a34537b823ac89cf2eb4de246346a3851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="#a34537b823ac89cf2eb4de246346a3851">More...</a><br /></td></tr>
-<tr class="separator:a34537b823ac89cf2eb4de246346a3851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4ddcdd76270ee0fcf14a07997f46511"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad4ddcdd76270ee0fcf14a07997f46511">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat) const </td></tr>
+<tr class="memdesc:ad4ddcdd76270ee0fcf14a07997f46511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#ad4ddcdd76270ee0fcf14a07997f46511">More...</a><br /></td></tr>
+<tr class="separator:ad4ddcdd76270ee0fcf14a07997f46511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09dd9360ac1a4275fffd16ad4eadbdd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a09dd9360ac1a4275fffd16ad4eadbdd1">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fWidth, float fHeight) const </td></tr>
+<tr class="memdesc:a09dd9360ac1a4275fffd16ad4eadbdd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#a09dd9360ac1a4275fffd16ad4eadbdd1">More...</a><br /></td></tr>
+<tr class="separator:a09dd9360ac1a4275fffd16ad4eadbdd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdda504d6429889f72bc850d8211d32f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#afdda504d6429889f72bc850d8211d32f">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fU, float fV, float fWidth, float fHeight) const </td></tr>
+<tr class="memdesc:afdda504d6429889f72bc850d8211d32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="#afdda504d6429889f72bc850d8211d32f">More...</a><br /></td></tr>
+<tr class="separator:afdda504d6429889f72bc850d8211d32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11866aaed538eafcc39f68a00de6655"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aa11866aaed538eafcc39f68a00de6655">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const </td></tr>
+<tr class="memdesc:aa11866aaed538eafcc39f68a00de6655"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="#aa11866aaed538eafcc39f68a00de6655">More...</a><br /></td></tr>
+<tr class="separator:aa11866aaed538eafcc39f68a00de6655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72828c04e99093c04b65e6953f503b7b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a72828c04e99093c04b65e6953f503b7b">create_material</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor) const </td></tr>
+<tr class="memdesc:a72828c04e99093c04b65e6953f503b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a plain color.  <a href="#a72828c04e99093c04b65e6953f503b7b">More...</a><br /></td></tr>
+<tr class="separator:a72828c04e99093c04b65e6953f503b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a287acc293a686a968a3bf4ab978e77b4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a287acc293a686a968a3bf4ab978e77b4">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget) const </td></tr>
+<tr class="memdesc:a287acc293a686a968a3bf4ab978e77b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a render target.  <a href="#a287acc293a686a968a3bf4ab978e77b4">More...</a><br /></td></tr>
+<tr class="separator:a287acc293a686a968a3bf4ab978e77b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13799a7e048c3c16c74e1f64806cb3ea"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a13799a7e048c3c16c74e1f64806cb3ea">create_render_target</a> (<a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiHeight) const </td></tr>
+<tr class="memdesc:a13799a7e048c3c16c74e1f64806cb3ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="#a13799a7e048c3c16c74e1f64806cb3ea">More...</a><br /></td></tr>
+<tr class="separator:a13799a7e048c3c16c74e1f64806cb3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4c4d908be810935ebf623fced2d5de8"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab4c4d908be810935ebf623fced2d5de8">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a> uiSize) const </td></tr>
+<tr class="memdesc:ab4c4d908be810935ebf623fced2d5de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="#ab4c4d908be810935ebf623fced2d5de8">More...</a><br /></td></tr>
+<tr class="separator:ab4c4d908be810935ebf623fced2d5de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -339,14 +339,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8692856bdc8db2e0f9d519697a8769cf"></a>
+<a class="anchor" id="ac21e420c253ec29368c59c2927a16cea"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void lxgui::gui::renderer::begin </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
           <td class="paramname"><em>pTarget</em> = <code>nullptr</code></td><td>)</td>
           <td> const</td>
         </tr>
@@ -390,12 +390,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a34537b823ac89cf2eb4de246346a3851"></a>
+<a class="anchor" id="ab4c4d908be810935ebf623fced2d5de8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt; lxgui::gui::renderer::create_font </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt; lxgui::gui::renderer::create_font </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>sFontFile</em>, </td>
@@ -428,12 +428,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4ec41161a61bdd2d4b2fbac6145c829c"></a>
+<a class="anchor" id="aa11866aaed538eafcc39f68a00de6655"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>sFileName</em>, </td>
@@ -467,12 +467,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4d8107f496f830edffc68af7666b6459"></a>
+<a class="anchor" id="a72828c04e99093c04b65e6953f503b7b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;&#160;</td>
           <td class="paramname"><em>mColor</em></td><td>)</td>
@@ -494,14 +494,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a085f5a58d87dfee556ed66dd75bee718"></a>
+<a class="anchor" id="a287acc293a686a968a3bf4ab978e77b4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
           <td class="paramname"><em>pRenderTarget</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -521,12 +521,12 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a419820bdadf47dd4f25c1e778027ce67"></a>
+<a class="anchor" id="a13799a7e048c3c16c74e1f64806cb3ea"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; lxgui::gui::renderer::create_render_target </td>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; lxgui::gui::renderer::create_render_target </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td>
           <td class="paramname"><em>uiWidth</em>, </td>
@@ -558,14 +558,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a913c170b6989843139a2893300d4dc58"></a>
+<a class="anchor" id="ad4ddcdd76270ee0fcf14a07997f46511"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
           <td class="paramname"><em>pMat</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -585,14 +585,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8924f4f0fdd509cad51ebcd86ab8c983"></a>
+<a class="anchor" id="a09dd9360ac1a4275fffd16ad4eadbdd1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
           <td class="paramname"><em>pMat</em>, </td>
         </tr>
         <tr>
@@ -632,14 +632,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="aa7e6be9a6d03886397a52ad338492a13"></a>
+<a class="anchor" id="afdda504d6429889f72bc850d8211d32f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1utils_1_1refptr.html">utils::refptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
           <td class="paramname"><em>pMat</em>, </td>
         </tr>
         <tr>
@@ -1130,7 +1130,7 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8692856bdc8db2e0f9d519697a8769cf" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#af059d60c4631c16f91696e54b6ec6b25" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac21e420c253ec29368c59c2927a16cea" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#af059d60c4631c16f91696e54b6ec6b25" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. </dd></dl>
 
 <p>Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00131">131</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
@@ -1168,7 +1168,7 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8692856bdc8db2e0f9d519697a8769cf" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#af059d60c4631c16f91696e54b6ec6b25" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac21e420c253ec29368c59c2927a16cea" title="Tells the underlying graphics engine to start rendering into a new target. ">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#af059d60c4631c16f91696e54b6ec6b25" title="Tells the underlying graphics engine we&#39;re done rendering. ">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
 
 <p>Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00136">136</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
@@ -1299,7 +1299,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 2 2020 17:57:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 3 2020 13:56:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

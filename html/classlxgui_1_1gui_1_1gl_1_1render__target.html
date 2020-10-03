@@ -142,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abdbcdcde61b22c140338cbcb8a873363"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abdbcdcde61b22c140338cbcb8a873363">get_real_height</a> () const override</td></tr>
 <tr class="memdesc:abdbcdcde61b22c140338cbcb8a873363"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's real height.  <a href="#abdbcdcde61b22c140338cbcb8a873363">More...</a><br /></td></tr>
 <tr class="separator:abdbcdcde61b22c140338cbcb8a873363"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4aafb41c9246d8a044040b6b6c8fcb94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">gl::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a4aafb41c9246d8a044040b6b6c8fcb94">get_material</a> ()</td></tr>
-<tr class="memdesc:a4aafb41c9246d8a044040b6b6c8fcb94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="#a4aafb41c9246d8a044040b6b6c8fcb94">More...</a><br /></td></tr>
-<tr class="separator:a4aafb41c9246d8a044040b6b6c8fcb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">gl::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#ac2479d0bf3e96827c558cbfa7fb5f8b0">get_material</a> ()</td></tr>
+<tr class="memdesc:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="#ac2479d0bf3e96827c558cbfa7fb5f8b0">More...</a><br /></td></tr>
+<tr class="separator:ac2479d0bf3e96827c558cbfa7fb5f8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlxgui_1_1gui_1_1render__target"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlxgui_1_1gui_1_1render__target')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlxgui_1_1gui_1_1render__target.html">lxgui::gui::render_target</a></td></tr>
 <tr class="memitem:a9c157fba4d2376633d3a018c79d70412 inherit pub_methods_classlxgui_1_1gui_1_1render__target"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#a9c157fba4d2376633d3a018c79d70412">render_target</a> ()=default</td></tr>
 <tr class="memdesc:a9c157fba4d2376633d3a018c79d70412 inherit pub_methods_classlxgui_1_1gui_1_1render__target"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a9c157fba4d2376633d3a018c79d70412">More...</a><br /></td></tr>
@@ -159,7 +159,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A place to render things (the screen, a texture, ...) </p>
 
-<p>Definition at line <a class="el" href="gui__gl__rendertarget_8hpp_source.html#l00015">15</a> of file <a class="el" href="gui__gl__rendertarget_8hpp_source.html">gui_gl_rendertarget.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__gl__rendertarget_8hpp_source.html#l00017">17</a> of file <a class="el" href="gui__gl__rendertarget_8hpp_source.html">gui_gl_rendertarget.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a971f8286bbdec7f2dea7c6ee7039b474"></a>
 <div class="memitem">
@@ -366,12 +366,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a4aafb41c9246d8a044040b6b6c8fcb94"></a>
+<a class="anchor" id="ac2479d0bf3e96827c558cbfa7fb5f8b0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt;<a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">gl::material</a>&gt; lxgui::gui::gl::render_target::get_material </td>
+          <td class="memname">std::weak_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">gl::material</a>&gt; lxgui::gui::gl::render_target::get_material </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -522,7 +522,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 2 2020 17:57:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 3 2020 13:56:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

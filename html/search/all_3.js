@@ -17,11 +17,10 @@ var searchData=
   ['dkeyrepeatspeed_5f',['dKeyRepeatSpeed_',['../classlxgui_1_1gui_1_1edit__box.html#aae8cfca589fc9d120764604ea20634c1',1,'lxgui::gui::edit_box']]],
   ['do_5ffile',['do_file',['../classlxgui_1_1lua_1_1state.html#afe7180e72afcca7f17c899c6310d627c',1,'lxgui::lua::state']]],
   ['do_5fstring',['do_string',['../classlxgui_1_1lua_1_1state.html#a029939f9bfae72a70f1fa2a45773cb15',1,'lxgui::lua::state']]],
-  ['document',['document',['../classlxgui_1_1xml_1_1document.html',1,'lxgui::xml']]],
   ['document',['document',['../classlxgui_1_1xml_1_1block.html#a7c20332b4481f29ace969e40cfce5f5f',1,'lxgui::xml::block::document()'],['../classlxgui_1_1xml_1_1document.html#af31d24cb6a62558820f1a9ca0d808185',1,'lxgui::xml::document::document(const std::string &amp;sDefFileName, std::ostream &amp;mOut=std::cout)'],['../classlxgui_1_1xml_1_1document.html#a42f4a5d4c78094eac4f28a0157823345',1,'lxgui::xml::document::document(const std::string &amp;sFileName, const std::string &amp;sDefFileName, std::ostream &amp;mOut=std::cout)'],['../classlxgui_1_1xml_1_1document.html#a0c9f8e4d0b94e2da51752ce64b284205',1,'lxgui::xml::document::document(const document &amp;)=delete'],['../classlxgui_1_1xml_1_1document.html#a018a79bcd90d81d8edb289adea75948c',1,'lxgui::xml::document::document(document &amp;&amp;)=delete']]],
+  ['document',['document',['../classlxgui_1_1xml_1_1document.html',1,'lxgui::xml']]],
   ['double',['DOUBLE',['../namespacelxgui_1_1input.html#ade8dc87d1330829b43300424689b3e89afd3e4ece78a7d422280d5ed379482229',1,'lxgui::input']]],
   ['down',['DOWN',['../classlxgui_1_1gui_1_1button.html#a42d6442bdeb36a231bad4d5fbf1669b6ac4e0e4e3118472beeb2ae75827450f1f',1,'lxgui::gui::button']]],
   ['down_5fcast',['down_cast',['../classlxgui_1_1gui_1_1uiobject.html#af274199d8663b079122e26890e13c187',1,'lxgui::gui::uiobject::down_cast() const '],['../classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5',1,'lxgui::gui::uiobject::down_cast()'],['../namespacelxgui_1_1gui.html#ae1f52b500e065c49ab56e0de2f002700',1,'lxgui::gui::down_cast()']]],
-  ['dragged',['DRAGGED',['../namespacelxgui_1_1input.html#ade8dc87d1330829b43300424689b3e89a4d02951446ff9f7473b98050ed021fd7',1,'lxgui::input']]],
-  ['dyn_5fcast',['dyn_cast',['../classlxgui_1_1utils_1_1refptr.html#ace052a072ba0d4e7bb39778dbc384637',1,'lxgui::utils::refptr::dyn_cast()'],['../classlxgui_1_1utils_1_1wptr.html#aa666e449d5d9096cb6918ad69099aec4',1,'lxgui::utils::wptr::dyn_cast()']]]
+  ['dragged',['DRAGGED',['../namespacelxgui_1_1input.html#ade8dc87d1330829b43300424689b3e89a4d02951446ff9f7473b98050ed021fd7',1,'lxgui::input']]]
 ];

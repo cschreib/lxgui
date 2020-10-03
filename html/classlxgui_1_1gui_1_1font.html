@@ -133,15 +133,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a148f23f1258a12e25e9d849bce8cf172"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#a148f23f1258a12e25e9d849bce8cf172">get_character_kerning</a> (char32_t uiChar1, char32_t uiChar2) const =0</td></tr>
 <tr class="memdesc:a148f23f1258a12e25e9d849bce8cf172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the kerning amount between two characters.  <a href="#a148f23f1258a12e25e9d849bce8cf172">More...</a><br /></td></tr>
 <tr class="separator:a148f23f1258a12e25e9d849bce8cf172"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a990b132c323cac8a60227cf29435ba58"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#a990b132c323cac8a60227cf29435ba58">get_texture</a> () const =0</td></tr>
-<tr class="memdesc:a990b132c323cac8a60227cf29435ba58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying material to use for rendering.  <a href="#a990b132c323cac8a60227cf29435ba58">More...</a><br /></td></tr>
-<tr class="separator:a990b132c323cac8a60227cf29435ba58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55cb48453897e59cfa3daa1258f33d2"><td class="memItemLeft" align="right" valign="top">virtual std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#af55cb48453897e59cfa3daa1258f33d2">get_texture</a> () const =0</td></tr>
+<tr class="memdesc:af55cb48453897e59cfa3daa1258f33d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying material to use for rendering.  <a href="#af55cb48453897e59cfa3daa1258f33d2">More...</a><br /></td></tr>
+<tr class="separator:af55cb48453897e59cfa3daa1258f33d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A texture containing characters. </p>
 <p>This class is purely virtual. It needs to be implemented and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html" title="Abstract type for implementation specific management. ">gui::renderer_impl</a>. </p>
 
-<p>Definition at line <a class="el" href="gui__font_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__font_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a84cbb12a499689e54d67cbb4b982f381"></a>
 <div class="memitem">
@@ -382,7 +382,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a990b132c323cac8a60227cf29435ba58"></a>
+<a class="anchor" id="af55cb48453897e59cfa3daa1258f33d2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -390,7 +390,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">material</a>&gt; lxgui::gui::font::get_texture </td>
+          <td class="memname">virtual std::weak_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">material</a>&gt; lxgui::gui::font::get_texture </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -406,7 +406,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the underlying material to use for rendering. </p>
 <dl class="section return"><dt>Returns</dt><dd>The underlying material to use for rendering </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a8dd5f78f3971ab7b3949ecd15e5efd40">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#afaebde7bf52c39e8720ac2f954fd360c">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#aeb0c603687c4881143e27665873515b8">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -416,7 +416,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 2 2020 17:57:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 3 2020 13:56:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

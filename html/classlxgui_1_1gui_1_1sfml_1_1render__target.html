@@ -139,9 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d18fa359eef89e11c5e3ba71b5d54cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aaa60a4efafb47fc55ffb5e7656fa48ad">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a0d18fa359eef89e11c5e3ba71b5d54cf">get_real_height</a> () const override</td></tr>
 <tr class="memdesc:a0d18fa359eef89e11c5e3ba71b5d54cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's real height.  <a href="#a0d18fa359eef89e11c5e3ba71b5d54cf">More...</a><br /></td></tr>
 <tr class="separator:a0d18fa359eef89e11c5e3ba71b5d54cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7194ad013b5ba8e73639d2472080d46e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html">sfml::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a7194ad013b5ba8e73639d2472080d46e">get_material</a> ()</td></tr>
-<tr class="memdesc:a7194ad013b5ba8e73639d2472080d46e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="#a7194ad013b5ba8e73639d2472080d46e">More...</a><br /></td></tr>
-<tr class="separator:a7194ad013b5ba8e73639d2472080d46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09b6cc79b21b703332702ed585cdde86"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html">sfml::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a09b6cc79b21b703332702ed585cdde86">get_material</a> ()</td></tr>
+<tr class="memdesc:a09b6cc79b21b703332702ed585cdde86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="#a09b6cc79b21b703332702ed585cdde86">More...</a><br /></td></tr>
+<tr class="separator:a09b6cc79b21b703332702ed585cdde86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29c19d51cfc5ce0edbc8d3d3df701b63"><td class="memItemLeft" align="right" valign="top">sf::RenderTexture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a29c19d51cfc5ce0edbc8d3d3df701b63">get_render_texture</a> ()</td></tr>
 <tr class="memdesc:a29c19d51cfc5ce0edbc8d3d3df701b63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SFML render texture object.  <a href="#a29c19d51cfc5ce0edbc8d3d3df701b63">More...</a><br /></td></tr>
 <tr class="separator:a29c19d51cfc5ce0edbc8d3d3df701b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +162,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A place to render things (the screen, a texture, ...) </p>
 
-<p>Definition at line <a class="el" href="gui__sfml__rendertarget_8hpp_source.html#l00019">19</a> of file <a class="el" href="gui__sfml__rendertarget_8hpp_source.html">gui_sfml_rendertarget.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__sfml__rendertarget_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__sfml__rendertarget_8hpp_source.html">gui_sfml_rendertarget.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a99b7743ad4bdea4e33a568dca25be062"></a>
 <div class="memitem">
@@ -342,12 +342,12 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a7194ad013b5ba8e73639d2472080d46e"></a>
+<a class="anchor" id="a09b6cc79b21b703332702ed585cdde86"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1utils_1_1wptr.html">utils::wptr</a>&lt;<a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html">sfml::material</a>&gt; lxgui::gui::sfml::render_target::get_material </td>
+          <td class="memname">std::weak_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html">sfml::material</a>&gt; lxgui::gui::sfml::render_target::get_material </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -516,7 +516,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 2 2020 17:57:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 3 2020 13:56:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
