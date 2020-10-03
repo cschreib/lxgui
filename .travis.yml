@@ -21,11 +21,19 @@ jobs:
       os: linux
       dist: bionic
       compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-9
+            - g++-9
+            - libstdc++-9-dev
       before_script:
-        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-7 libc++-8-dev libc++abi-8-dev
+        - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev clang-8
         - mkdir build
         - cd build
-        - cmake .. -DCMAKE_C_COMPILER=clang-7 -DCMAKE_CXX_COMPILER=clang++-7 -DCMAKE_CXX_FLAGS="-stdlib=libc++"
+        - cmake .. -DCMAKE_C_COMPILER=clang-7 -DCMAKE_CXX_COMPILER=clang++-7
       script: sudo make install
 
     - stage: test
