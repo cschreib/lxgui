@@ -18,6 +18,8 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
+#include <lxgui/utils_std.hpp>
+#include <lxgui/utils_range.hpp>
 
 #include <sol/state.hpp>
 

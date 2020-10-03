@@ -1,8 +1,10 @@
 #ifndef LXGUI_LUAPP_FUNCTION_HPP
 #define LXGUI_LUAPP_FUNCTION_HPP
 
-#include <lxgui/utils_any.hpp>
+#include <lxgui/utils_variant.hpp>
+
 #include <map>
+#include <memory>
 
 namespace lxgui {
 namespace lua
@@ -41,7 +43,7 @@ public :
     /// Returns this argument's value.
     /** \return This argument's value
     */
-    const utils::any& get_value() const;
+    const utils::variant& get_value() const;
 
     /// Returns this argument's Lua type.
     /** \return This argument's Lua type
@@ -50,10 +52,10 @@ public :
 
 private :
 
-    std::string sName_;
-    utils::any  mValue_;
-    type        mLuaType_ = type::NIL;
-    argument*   pParent_ = nullptr;
+    std::string    sName_;
+    utils::variant mValue_;
+    type           mLuaType_ = type::NIL;
+    argument*      pParent_ = nullptr;
 };
 
 /// argument of a Lua glue
@@ -117,7 +119,7 @@ public :
     template<class T>
     T* get() const
     {
-        return mLua_.get<T>(pData_->get_value().get<int>());
+        return mLua_.get<T>(utils::get<int>(pData_->get_value()));
     }
 
     /// Returns the value and converts it to an int.
@@ -340,7 +342,7 @@ public :
 
     /// Adds nil to the return values.
     /** \param uiNbr The number of nil to push
-    *   \note Calling push(utils::any()) does exactly the same thing. But this
+    *   \note Calling push(utils::variant()) does exactly the same thing. But this
     *         function is clearer.
     */
     void push_nil(uint uiNbr = 1);

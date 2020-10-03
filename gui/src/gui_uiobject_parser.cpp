@@ -6,6 +6,7 @@
 
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
 
 namespace lxgui {
 namespace gui

@@ -648,5 +648,16 @@ string to_string(void* p)
     sStream << p;
     return sStream.str();
 }
+
+std::string to_string(const utils::variant& mValue)
+{
+    return std::visit([&](const auto& mInnerValue) -> std::string
+    {
+        if constexpr (std::is_same_v<std::decay_t<decltype(mInnerValue)>, utils::empty>)
+            return "<none>";
+        else
+            return to_string(mInnerValue);
+    }, mValue);
+}
 }
 }

@@ -10,6 +10,7 @@
 #include <SFML/Graphics/Image.hpp>
 
 #include <vector>
+#include <memory>
 
 namespace lxgui {
 namespace gui {

@@ -1,8 +1,8 @@
 #include "lxgui/luapp_state.hpp"
 #include "lxgui/luapp_exception.hpp"
-#include <lxgui/utils_any.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
+#include <lxgui/utils_range.hpp>
 #include <iostream>
 
 namespace lxgui {
@@ -196,7 +196,7 @@ void state::call_function(const std::string& sFunctionName)
     if (!lua_isfunction(pLua_, -1))
     {
         lua::exception mExcept("state", "\""+sFunctionName+"\" is not a function ("+
-            get_type_name(get_type())+" : "+get_value().to_string()+")."
+            get_type_name(get_type())+" : "+utils::to_string(get_value())+")."
         );
         lua_settop(pLua_, uiFuncPos-1);
         throw mExcept;
@@ -243,7 +243,7 @@ void state::call_function(const std::string& sFunctionName)
     lua_remove(pLua_, uiFuncPos);
 }
 
-void state::call_function(const std::string& sFunctionName, const std::vector<utils::any>& lArgumentStack)
+void state::call_function(const std::string& sFunctionName, const std::vector<utils::variant>& lArgumentStack)
 {
     lua_pushcfunction(pLua_, pErrorFunction_);
     uint uiFuncPos = get_top();
@@ -259,7 +259,8 @@ void state::call_function(const std::string& sFunctionName, const std::vector<ut
     if (lua_isfunction(pLua_, -1))
     {
         lua_settop(pLua_, uiFuncPos-1);
-        throw lua::exception("state", "\""+sFunctionName+"\" is not a function ("+get_type_name(get_type())+" : "+get_value().to_string()+")");
+        throw lua::exception("state", "\""+sFunctionName+"\" is not a function ("+
+            get_type_name(get_type())+" : "+utils::to_string(get_value())+")");
     }
 
     for (const auto& mVar : lArgumentStack)
@@ -477,16 +478,22 @@ void state::push_nil(uint uiNumber)
         lua_pushnil(pLua_);
 }
 
-void state::push(const utils::any& vValue)
+void state::push(const utils::variant& vValue)
 {
-    const utils::any_type& mType = vValue.get_type();
-    if      (mType == utils::any::VALUE_INT)    push_number(vValue.get<int>());
-    else if (mType == utils::any::VALUE_UINT)   push_number(vValue.get<uint>());
-    else if (mType == utils::any::VALUE_FLOAT)  push_number(vValue.get<float>());
-    else if (mType == utils::any::VALUE_DOUBLE) push_number(vValue.get<double>());
-    else if (mType == utils::any::VALUE_STRING) push_string(vValue.get<std::string>());
-    else if (mType == utils::any::VALUE_BOOL)   push_bool(vValue.get<bool>());
-    else push_nil();
+    std::visit([&](const auto& mInnerValue)
+    {
+        using inner_type = std::decay_t<decltype(mInnerValue)>;
+        if constexpr (std::is_same_v<inner_type, utils::empty>)
+            push_nil();
+        else if constexpr (std::is_same_v<inner_type, bool>)
+            push_bool(mInnerValue);
+        else if constexpr (std::is_same_v<inner_type, std::string>)
+            push_string(mInnerValue);
+        else if constexpr (std::is_arithmetic_v<inner_type>)
+            push_number(mInnerValue);
+        else
+            static_assert(!std::is_same_v<inner_type, inner_type>, "unsupported type");
+    }, vValue);
 }
 
 void state::push_value(int iIndex)
@@ -568,7 +575,7 @@ std::string state::get_string(int iIndex)
     return lua_tostring(pLua_, iIndex);
 }
 
-utils::any state::get_value(int iIndex)
+utils::variant state::get_value(int iIndex)
 {
     int type = lua_type(pLua_, iIndex);
     switch (type)
@@ -576,7 +583,7 @@ utils::any state::get_value(int iIndex)
         case LUA_TBOOLEAN : return get_bool(iIndex);
         case LUA_TNUMBER : return get_number(iIndex);
         case LUA_TSTRING : return get_string(iIndex);
-        default : return utils::any();
+        default : return utils::variant();
     }
 }
 

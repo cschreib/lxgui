@@ -1,5 +1,7 @@
 #include "lxgui/utils_filesystem.hpp"
 #include "lxgui/utils_string.hpp"
+
+#include <lxgui/utils_std.hpp>
 #include <filesystem>
 
 namespace lxgui {

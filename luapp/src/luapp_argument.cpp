@@ -21,27 +21,27 @@ void argument::add(const std::string& sName, type mLuaType)
 
 float argument::get_number() const
 {
-    return float(pData_->get_value().get<double>());
+    return float(utils::get<double>(pData_->get_value()));
 }
 
 int argument::get_int() const
 {
-    return int(pData_->get_value().get<double>());
+    return int(utils::get<double>(pData_->get_value()));
 }
 
 bool argument::get_bool() const
 {
-    return pData_->get_value().get<bool>();
+    return utils::get<bool>(pData_->get_value());
 }
 
 std::string argument::get_string() const
 {
-    return pData_->get_value().get<std::string>();
+    return utils::get<std::string>(pData_->get_value());
 }
 
 int argument::get_index() const
 {
-    return pData_->get_value().get<int>();
+    return utils::get<int>(pData_->get_value());
 }
 
 type argument::get_type() const

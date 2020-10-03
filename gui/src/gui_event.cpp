@@ -18,14 +18,14 @@ void event::set_once_per_frame(bool bOncePerFrame)
     bOncePerFrame_ = bOncePerFrame;
 }
 
-void event::add(const utils::any& mValue)
+void event::add(const utils::variant& mValue)
 {
     lArgList_.push_back(mValue);
 }
 
-const utils::any* event::get(uint uiIndex) const
+const utils::variant& event::get(uint uiIndex) const
 {
-    return &lArgList_[uiIndex];
+    return lArgList_[uiIndex];
 }
 
 uint event::get_num_param() const
@@ -43,12 +43,12 @@ bool event::is_once_per_frame() const
     return bOncePerFrame_;
 }
 
-utils::any& event::operator [] (uint uiIndex)
+utils::variant& event::operator [] (uint uiIndex)
 {
     return lArgList_[uiIndex];
 }
 
-const utils::any& event::operator [] (uint uiIndex) const
+const utils::variant& event::operator [] (uint uiIndex) const
 {
     return lArgList_[uiIndex];
 }

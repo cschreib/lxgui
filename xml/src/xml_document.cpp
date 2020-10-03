@@ -4,6 +4,7 @@
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_std.hpp>
 
 #include <fstream>
 

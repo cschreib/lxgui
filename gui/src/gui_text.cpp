@@ -4,7 +4,8 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 
-typedef unsigned char uchar;
+#include <lxgui/utils.hpp>
+#include <lxgui/utils_range.hpp>
 
 namespace lxgui {
 namespace gui
@@ -424,7 +425,7 @@ void text::update_lines_()
 
     DEBUG_LOG("     Get max line nbr");
     uint uiMaxLineNbr, uiCounter = 0;
-    if (fBoxH_ != 0.0f && !math::isinf(fBoxH_))
+    if (fBoxH_ != 0.0f && !std::isinf(fBoxH_))
     {
         if (fBoxH_ < get_line_height())
         {
@@ -688,7 +689,7 @@ void text::update_cache_()
 
     if (!lLineList_.empty())
     {
-        if (fBoxW_ == 0.0f || math::isinf(fBoxW_))
+        if (fBoxW_ == 0.0f || std::isinf(fBoxW_))
         {
             fW_ = 0.0f;
             for (const auto& mLine : lLineList_)
@@ -702,7 +703,7 @@ void text::update_cache_()
         float fX  = 0.0f, fY = 0.0f;
         float fX0 = 0.0f;
 
-        if (fBoxW_ != 0.0f && !math::isinf(fBoxW_))
+        if (fBoxW_ != 0.0f && !std::isinf(fBoxW_))
         {
             switch (mAlign_)
             {
@@ -720,7 +721,7 @@ void text::update_cache_()
         else
             fX0 = 0.0f;
 
-        if (!math::isinf(fBoxH_))
+        if (!std::isinf(fBoxH_))
         {
             switch (mVertAlign_)
             {

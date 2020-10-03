@@ -3,6 +3,8 @@
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_exception.hpp>
+#include <lxgui/utils_range.hpp>
+#include <lxgui/utils_std.hpp>
 
 namespace lxgui {
 namespace xml

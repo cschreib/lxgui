@@ -7,7 +7,10 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
-#include "lxgui/input.hpp"
+
+#include <lxgui/input.hpp>
+#include <lxgui/utils_range.hpp>
+
 #include <sol/state.hpp>
 
 using namespace lxgui::input;
@@ -176,7 +179,7 @@ void edit_box::on_event(const event& mEvent)
 
     if (mEvent.get_name() == "TEXT_ENTERED" && bFocus_)
     {
-        char32_t c = mEvent.get<char32_t>(0);
+        std::uint32_t c = mEvent.get<std::uint32_t>(0);
         if (add_char_(c))
         {
             alive_checker mChecker(this);
@@ -205,7 +208,7 @@ void edit_box::on_event(const event& mEvent)
 
     if (mEvent.get_name() == "KEY_PRESSED" && bFocus_)
     {
-        key mKey = mEvent[0].get<key>();
+        key mKey = utils::get<key>(mEvent[0]);
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
             on("EnterPressed");
@@ -271,7 +274,7 @@ void edit_box::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "KEY_RELEASED")
     {
-        key mKey = mEvent[0].get<key>();
+        key mKey = utils::get<key>(mEvent[0]);
 
         if (mKey == key::K_ESCAPE)
         {
@@ -864,7 +867,7 @@ void edit_box::update_displayed_text_()
         {
             text* pTextObject = pFontString_->get_text_object();
 
-            if (!math::isinf(pTextObject->get_box_width()))
+            if (!std::isinf(pTextObject->get_box_width()))
             {
                 sDisplayedText_.erase(0, uiDisplayPos_);
 

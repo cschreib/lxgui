@@ -24,7 +24,7 @@ void font_string::render()
     {
         float fX = 0.0f, fY = 0.0f;
 
-        if (math::isinf(pText_->get_box_width()))
+        if (std::isinf(pText_->get_box_width()))
         {
             switch (mJustifyH_)
             {
@@ -36,7 +36,7 @@ void font_string::render()
         else
             fX = lBorderList_.left;
 
-        if (math::isinf(pText_->get_box_height()))
+        if (std::isinf(pText_->get_box_height()))
         {
             switch (mJustifyV_)
             {
