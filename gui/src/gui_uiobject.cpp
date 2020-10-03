@@ -696,7 +696,7 @@ const anchor* uiobject::get_point(anchor_point mPoint) const
         return nullptr;
 }
 
-const std::array<utils::optional<anchor>,9>& uiobject::get_point_list() const
+const std::array<std::optional<anchor>,9>& uiobject::get_point_list() const
 {
     return lAnchorList_;
 }
