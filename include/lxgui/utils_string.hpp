@@ -194,12 +194,6 @@ namespace utils
     bool string_to_bool(const string& s);
     bool string_to_bool(const ustring& s);
 
-    string int_to_string(const long& i);
-    string uint_to_string(const unsigned long& ui);
-
-    string float_to_string(float f);
-    string double_to_string(double d);
-
     bool is_number(const std::string& s);
     bool is_number(char s);
     bool is_boolean(const std::string& s);
