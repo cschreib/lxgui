@@ -342,8 +342,6 @@ public :
 
     /// Adds nil to the return values.
     /** \param uiNbr The number of nil to push
-    *   \note Calling push(utils::variant()) does exactly the same thing. But this
-    *         function is clearer.
     */
     void push_nil(uint uiNbr = 1);
 
