@@ -1,7 +1,7 @@
 v2.0.0:
  - general: switched to MIT license
  - general: various fixes and improvements to the build system
- - general: dropped support for C++ version less than C++17
+ - general: dropped support for C++ version earlier than C++17
  - general: fixed various warnings and minor bugs detected by clang
  - general: moved away from using reference-counted smart pointers whenever possible
  - general: moved all code into the lxgui namespace
@@ -11,7 +11,7 @@ v2.0.0:
  - general: removed foreach() macro in favor of C++11 range-based for loop
  - general: use override instead of virtual whenever applicable
  - general: made all single argument constructors explicit where appropriate
- - general: renamed lua::var into utils::any
+ - general: removed lua::var (custom std::any) and added utils::variant (using std::variant)
  - general: renamed "sensibility" to "sensitivity"
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
@@ -74,8 +74,8 @@ v1.1.4:
  - test: now also displaying the C++ created frames by default (check of the recent template stuff)
 
 v1.1.3:
- - gui::event::get() now has a template version, shortcut to the underlying utils::any
- - lua: improved performances of utils::any
+ - gui::event::get() now has a template version, shortcut to the underlying lua::var
+ - lua: improved performances of lua::var
 
 v1.1.2:
  - replaced "can't" by "cannot" in error messages
@@ -145,7 +145,7 @@ v1.0.19: (warning: API breaking update)
  - gui::edit_box: updated to use the new key localization system
  - gui::manager: fixed saved variables directory not being created
  - gui::manager: now using lower case folders by default
- - lua: improved exception message when casting a utils::any to a wrong type
+ - lua: improved exception message when casting a lua::var to a wrong type
  - utils: fixed make_directory() when some directories already extist
 
 v1.0.18:
@@ -170,7 +170,7 @@ v1.0.15:
  - gui::edit_box: added missing "positive" and "integer" parameters to the UI XML definition file
  - gui::anchor: removed useless warning when an anchor has no parent
  - lua: added lua::state::push_userdata() and lua::state::get_userdata()
- - lua: fixed const correctness of utils::any::operator!=()
+ - lua: fixed const correctness of lua::var::operator!=()
  - utils: addded utils::make_directory()
 
 v1.0.14:
