@@ -8,189 +8,308 @@ namespace utils
 {
     namespace range
     {
-        template<typename T>
-        struct reverse_range
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            using base = typename std::decay<T>::type;
-            using iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
+            template<typename T>
+            struct reverse_range
+            {
+                using base = typename std::decay<T>::type;
+                using iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
 
-            T& container;
+                T& lContainer;
 
-            explicit reverse_range(T& c) : container(c) {}
+                explicit reverse_range(T& c) : lContainer(c) {}
 
-            iterator begin() { return iterator(container.rbegin()); }
-            iterator end() { return iterator(container.rend()); }
-        };
+                iterator begin() { return iterator(lContainer.rbegin()); }
+                iterator end() { return iterator(lContainer.rend()); }
+            };
+        }
+        /** \endcond
+        */
 
-        template<typename T> reverse_range<T> reverse(T& container)
+        /// Reverse traversal
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::vector<int> v = { ... };
+        *         for (int& i : utils::range::reverse(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int& i = *iter; ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::reverse_range<T> reverse(T& lContainer)
         {
-            return reverse_range<T>(container);
+            return range_impl::reverse_range<T>(lContainer);
         }
 
-        template<typename I>
-        struct iterator_adapter
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            I iter;
-            explicit iterator_adapter(I i) : iter(i) {}
-            I operator * () { return iter; }
-            iterator_adapter& operator ++ () { ++iter; return *this; }
-            iterator_adapter operator ++ (int) { return iter++; }
-            bool operator != (const iterator_adapter& o) { return iter != o.iter; }
-        };
+            template<typename I>
+            struct iterator_adapter
+            {
+                I iter;
+                explicit iterator_adapter(I i) : iter(i) {}
+                I operator * () { return iter; }
+                iterator_adapter& operator ++ () { ++iter; return *this; }
+                iterator_adapter operator ++ (int) { return iter++; }
+                bool operator != (const iterator_adapter& o) { return iter != o.iter; }
+            };
 
-        template<typename T>
-        struct iterator_range
+            template<typename T>
+            struct iterator_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
+                using iterator = iterator_adapter<base_iterator>;
+
+                T& lContainer;
+
+                explicit iterator_range(T& c) : lContainer(c) {}
+
+                iterator begin() { return iterator(lContainer.begin()); }
+                iterator end() { return iterator(lContainer.end()); }
+            };
+        }
+        /** \endcond
+        */
+
+        /// Expose the iterator rather than the element
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::vector<int> v = { ... };
+        *         for (auto iter : utils::range::iterator(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.begin(); iter != v.end(); ++iter) { ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::iterator_range<T> iterator(T& lContainer)
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
-            using iterator = iterator_adapter<base_iterator>;
-
-            T& container;
-
-            explicit iterator_range(T& c) : container(c) {}
-
-            iterator begin() { return iterator(container.begin()); }
-            iterator end() { return iterator(container.end()); }
-        };
-
-        template<typename T> iterator_range<T> iterator(T& container)
-        {
-            return iterator_range<T>(container);
+            return range_impl::iterator_range<T>(lContainer);
         }
 
-        template<typename T>
-        struct reverse_iterator_range
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
-            using iterator = iterator_adapter<base_iterator>;
+            template<typename T>
+            struct reverse_iterator_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
+                using iterator = iterator_adapter<base_iterator>;
 
-            T& container;
+                T& lContainer;
 
-            explicit reverse_iterator_range(T& c) : container(c) {}
+                explicit reverse_iterator_range(T& c) : lContainer(c) {}
 
-            iterator begin() { return iterator(container.rbegin()); }
-            iterator end() { return iterator(container.rend()); }
-        };
+                iterator begin() { return iterator(lContainer.rbegin()); }
+                iterator end() { return iterator(lContainer.rend()); }
+            };
+        }
+        /** \endcond
+        */
 
-        template<typename T> reverse_iterator_range<T> reverse_iterator(T& container)
+        /// Expose the iterator rather than the element, with reverse traversal
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::vector<int> v = { ... };
+        *         for (auto iter : utils::range::reverse_iterator(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::reverse_iterator_range<T> reverse_iterator(T& lContainer)
         {
-            return reverse_iterator_range<T>(container);
+            return range_impl::reverse_iterator_range<T>(lContainer);
         }
 
-        template<typename I, typename V>
-        struct value_iterator_adapter
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            I iter;
-            explicit value_iterator_adapter(I i) : iter(i) {}
-            V& operator * () { return iter->second; }
-            value_iterator_adapter& operator ++ () { ++iter; return *this; }
-            value_iterator_adapter operator ++ (int) { return iter++; }
-            bool operator != (const value_iterator_adapter& o) { return iter != o.iter; }
-        };
+            template<typename I, typename V>
+            struct value_iterator_adapter
+            {
+                I iter;
+                explicit value_iterator_adapter(I i) : iter(i) {}
+                V& operator * () { return iter->second; }
+                value_iterator_adapter& operator ++ () { ++iter; return *this; }
+                value_iterator_adapter operator ++ (int) { return iter++; }
+                bool operator != (const value_iterator_adapter& o) { return iter != o.iter; }
+            };
 
-        template<typename T>
-        struct value_range
+            template<typename T>
+            struct value_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
+                using value_type = typename std::conditional<
+                    std::is_const<T>::value, const typename base::mapped_type, typename base::mapped_type>::type;
+                using iterator = value_iterator_adapter<base_iterator, value_type>;
+
+                T& lContainer;
+
+                explicit value_range(T& c) : lContainer(c) {}
+
+                iterator begin() { return iterator(lContainer.begin()); }
+                iterator end() { return iterator(lContainer.end()); }
+            };
+        }
+        /** \endcond
+        */
+
+        /// Expose the value rather than the (key,value) pair
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::map<int,std::string> v = { ... };
+        *         for (std::string& s : utils::range::value(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.begin(); iter != v.end(); ++iter) { std::string& s = iter->second; ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::value_range<T> value(T& lContainer)
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
-            using value_type = typename std::conditional<
-                std::is_const<T>::value, const typename base::mapped_type, typename base::mapped_type>::type;
-            using iterator = value_iterator_adapter<base_iterator, value_type>;
-
-            T& container;
-
-            explicit value_range(T& c) : container(c) {}
-
-            iterator begin() { return iterator(container.begin()); }
-            iterator end() { return iterator(container.end()); }
-        };
-
-        template<typename T> value_range<T> value(T& container)
-        {
-            return value_range<T>(container);
+            return range_impl::value_range<T>(lContainer);
         }
 
-        template<typename T>
-        struct reverse_value_range
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
-            using value_type = typename std::conditional<
-                std::is_const<T>::value, const typename base::mapped_type, typename base::mapped_type>::type;
-            using iterator = value_iterator_adapter<base_iterator, value_type>;
+            template<typename T>
+            struct reverse_value_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
+                using value_type = typename std::conditional<
+                    std::is_const<T>::value, const typename base::mapped_type, typename base::mapped_type>::type;
+                using iterator = value_iterator_adapter<base_iterator, value_type>;
 
-            T& container;
+                T& lContainer;
 
-            explicit reverse_value_range(T& c) : container(c) {}
+                explicit reverse_value_range(T& c) : lContainer(c) {}
 
-            iterator begin() { return iterator(container.rbegin()); }
-            iterator end() { return iterator(container.rend()); }
-        };
+                iterator begin() { return iterator(lContainer.rbegin()); }
+                iterator end() { return iterator(lContainer.rend()); }
+            };
+        }
+        /** \endcond
+        */
 
-        template<typename T> reverse_value_range<T> reverse_value(T& container)
+        /// Expose the value rather than the (key,value) pair, with reverse traversal
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::map<int,std::string> v = { ... };
+        *         for (std::string& s : utils::range::reverse_value(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { std::string& s = iter->second; ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::reverse_value_range<T> reverse_value(T& lContainer)
         {
-            return reverse_value_range<T>(container);
+            return range_impl::reverse_value_range<T>(lContainer);
         }
 
-        template<typename I, typename K>
-        struct key_iterator_adapter
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            I iter;
-            explicit key_iterator_adapter(I i) : iter(i) {}
-            const K& operator * () { return iter->first; }
-            key_iterator_adapter& operator ++ () { ++iter; return *this; }
-            key_iterator_adapter operator ++ (int) { return iter++; }
-            bool operator != (const key_iterator_adapter& o) { return iter != o.iter; }
-        };
+            template<typename I, typename K>
+            struct key_iterator_adapter
+            {
+                I iter;
+                explicit key_iterator_adapter(I i) : iter(i) {}
+                const K& operator * () { return iter->first; }
+                key_iterator_adapter& operator ++ () { ++iter; return *this; }
+                key_iterator_adapter operator ++ (int) { return iter++; }
+                bool operator != (const key_iterator_adapter& o) { return iter != o.iter; }
+            };
 
-        template<typename T>
-        struct key_range
+            template<typename T>
+            struct key_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
+                using key_type = typename base::key_type;
+                using iterator = key_iterator_adapter<base_iterator, key_type>;
+
+                T& lContainer;
+
+                explicit key_range(T& c) : lContainer(c) {}
+
+                iterator begin() { return iterator(lContainer.begin()); }
+                iterator end() { return iterator(lContainer.end()); }
+            };
+        }
+        /** \endcond
+        */
+
+        /// Expose the key rather than the (key,value) pair
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::map<int,std::string> v = { ... };
+        *         for (int k : utils::range::key(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.begin(); iter != v.end(); ++iter) { int k = iter->first; ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::key_range<T> key(T& lContainer)
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_iterator, typename base::iterator>::type;
-            using key_type = typename base::key_type;
-            using iterator = key_iterator_adapter<base_iterator, key_type>;
-
-            T& container;
-
-            explicit key_range(T& c) : container(c) {}
-
-            iterator begin() { return iterator(container.begin()); }
-            iterator end() { return iterator(container.end()); }
-        };
-
-        template<typename T> key_range<T> key(T& container)
-        {
-            return key_range<T>(container);
+            return range_impl::key_range<T>(lContainer);
         }
 
-        template<typename T>
-        struct reverse_key_range
+        /** \cond NOT_REMOVE_FROM_DOC
+        */
+        namespace range_impl
         {
-            using base = typename std::decay<T>::type;
-            using base_iterator = typename std::conditional<
-                std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
-            using key_type = typename base::key_type;
-            using iterator = key_iterator_adapter<base_iterator, key_type>;
+            template<typename T>
+            struct reverse_key_range
+            {
+                using base = typename std::decay<T>::type;
+                using base_iterator = typename std::conditional<
+                    std::is_const<T>::value, typename base::const_reverse_iterator, typename base::reverse_iterator>::type;
+                using key_type = typename base::key_type;
+                using iterator = key_iterator_adapter<base_iterator, key_type>;
 
-            T& container;
+                T& lContainer;
 
-            explicit reverse_key_range(T& c) : container(c) {}
+                explicit reverse_key_range(T& c) : lContainer(c) {}
 
-            iterator begin() { return iterator(container.rbegin()); }
-            iterator end() { return iterator(container.rend()); }
-        };
+                iterator begin() { return iterator(lContainer.rbegin()); }
+                iterator end() { return iterator(lContainer.rend()); }
+            };
+        }
+        /** \endcond
+        */
 
-        template<typename T> reverse_key_range<T> reverse_key(T& container)
+        /// Expose the key rather than the (key,value) pair, with reverse traversal
+        /** \param lContainer The container to traverse
+        *   \note Example usage:
+        *         \code{.cpp}
+        *         std::map<int,std::string> v = { ... };
+        *         for (int k : utils::range::key(v)) { ... }
+        *         // Equivalent to:
+        *         for (auto iter = v.rbegin(); iter != v.rend(); ++iter) { int k = iter->first; ... }
+        *         \endcode
+        */
+        template<typename T> range_impl::reverse_key_range<T> reverse_key(T& lContainer)
         {
-            return reverse_key_range<T>(container);
+            return range_impl::reverse_key_range<T>(lContainer);
         }
     }
 }
