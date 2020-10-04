@@ -7,7 +7,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// An helper to make gradients
+    /// Represents color gradients
     class gradient
     {
     public :

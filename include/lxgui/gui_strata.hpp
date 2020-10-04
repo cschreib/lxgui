@@ -30,14 +30,14 @@ namespace gui
 
     struct strata;
 
-    /// Contains frame
+    /// Contains gui::frame
     struct level
     {
         std::vector<frame*> lFrameList;
         strata*             pStrata = nullptr;
     };
 
-    /// Contains level
+    /// Contains gui::level
     struct strata
     {
         frame_strata                   mStrata = frame_strata::PARENT;

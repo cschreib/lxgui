@@ -165,7 +165,7 @@ namespace gui
         */
         std::string serialize(const std::string& sTab) const;
 
-        /// get_s the anchor parent from the parent string.
+        /// Update the anchor parent object from the parent string.
         void update_parent() const;
 
         /// Returns the name of an anchor point.

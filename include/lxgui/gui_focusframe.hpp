@@ -7,7 +7,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// Abstract gui widget that can receive and loose focus
+    /// Abstract GUI widget that can receive and loose focus
     /** A typical example is the edit_box widget.
     */
     class focus_frame : public frame

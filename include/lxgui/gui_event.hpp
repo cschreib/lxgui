@@ -9,7 +9,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// Contains an event informations
+    /// Represents a generic event and associated information
     class event
     {
     public :
@@ -43,17 +43,20 @@ namespace gui
         void add(const utils::variant& mValue);
 
         /// Returns a parameter of this event.
-        /** \return A parameter of this event
+        /** \param uiIndex The index of the parameter (see get_num_param())
+        *   \return A parameter of this event
         */
         const utils::variant& get(std::size_t uiIndex) const;
 
         /// Returns a parameter of this event.
-        /** \return A parameter of this event
+        /** \param uiIndex The index of the parameter (see get_num_param())
+        *   \return A parameter of this event
         */
         utils::variant& get(std::size_t uiIndex);
 
         /// Returns a parameter of this event.
-        /** \return A parameter of this event
+        /** \param uiIndex The index of the parameter (see get_num_param())
+        *   \return A parameter of this event
         */
         template<typename T>
         const T& get(std::size_t uiIndex) const
@@ -61,8 +64,8 @@ namespace gui
             return utils::get<T>(this->get(uiIndex));
         }
 
-        /// Returns the number of parameter.
-        /** \return The number of parameter
+        /// Returns the number of parameters.
+        /** \return The number of parameters
         */
         std::size_t get_num_param() const;
 

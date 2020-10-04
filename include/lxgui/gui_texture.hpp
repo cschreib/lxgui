@@ -9,7 +9,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// The base of the GUI's appearence
+    /// The GUI class to draw images and colored rectangles
     /** This object contains either a texture taken from a file,
     *   or a plain color.
     */

@@ -18,7 +18,7 @@ namespace gui
 {
     class renderer;
 
-    /// Contains layered_region
+    /// Contains gui::layered_region
     struct layer
     {
         layer();
@@ -29,7 +29,7 @@ namespace gui
         static layer_type get_layer_type(const std::string& sLayer);
     };
 
-    /// GUI container
+    /// Basic GUI container
     /** Can contain other frames, or layered_regions
     *   (text, images, ...).
     */
