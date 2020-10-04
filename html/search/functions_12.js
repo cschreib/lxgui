@@ -6,7 +6,7 @@ var searchData=
   ['to_5fhls',['to_hls',['../classlxgui_1_1gui_1_1color.html#a282daf1b346faeca502da1e4eb40c360',1,'lxgui::gui::color']]],
   ['toggle_5fcaching',['toggle_caching',['../classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4',1,'lxgui::gui::manager']]],
   ['toggle_5finput',['toggle_input',['../classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211',1,'lxgui::gui::manager']]],
-  ['toggle_5fmouse_5fgrab',['toggle_mouse_grab',['../classlxgui_1_1input_1_1glfw_1_1source.html#af930efaee5176fc4eec59dcaeede6a73',1,'lxgui::input::glfw::source::toggle_mouse_grab()'],['../classlxgui_1_1input_1_1sfml_1_1source.html#af5be3eb0862f003bc3fbcfc5348325dc',1,'lxgui::input::sfml::source::toggle_mouse_grab()'],['../classlxgui_1_1input_1_1source__impl.html#a7b2c61c6f3e5f62735b834eb7c2d0511',1,'lxgui::input::source_impl::toggle_mouse_grab()']]],
+  ['toggle_5fmouse_5fgrab',['toggle_mouse_grab',['../classlxgui_1_1input_1_1sfml_1_1source.html#af5be3eb0862f003bc3fbcfc5348325dc',1,'lxgui::input::sfml::source::toggle_mouse_grab()'],['../classlxgui_1_1input_1_1source__impl.html#a7b2c61c6f3e5f62735b834eb7c2d0511',1,'lxgui::input::source_impl::toggle_mouse_grab()']]],
   ['top_5fleft',['top_left',['../classlxgui_1_1gui_1_1quad2.html#a3e4174df293754fb9b0d0c37475bb9c2',1,'lxgui::gui::quad2']]],
   ['top_5fright',['top_right',['../classlxgui_1_1gui_1_1quad2.html#a463c8ac019498ef1a2a72337bb990b63',1,'lxgui::gui::quad2']]],
   ['transformation',['transformation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a5d1f499512b569130cb23fef383fdc05',1,'lxgui::gui::gl::matrix4']]],

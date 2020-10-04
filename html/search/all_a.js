@@ -1,7 +1,6 @@
 var searchData=
 [
   ['gl',['gl',['../namespacelxgui_1_1gui_1_1gl.html',1,'lxgui::gui']]],
-  ['glfw',['glfw',['../namespacelxgui_1_1input_1_1glfw.html',1,'lxgui::input']]],
   ['gui',['gui',['../namespacelxgui_1_1gui.html',1,'lxgui']]],
   ['input',['input',['../namespacelxgui_1_1input.html',1,'lxgui']]],
   ['l',['l',['../structlxgui_1_1gui_1_1color_1_1hls.html#a6b25e612f0c56e4781b6413a472a1501',1,'lxgui::gui::color::hls']]],
@@ -15,11 +14,11 @@ var searchData=
   ['lanchoredobjectlist_5f',['lAnchoredObjectList_',['../classlxgui_1_1gui_1_1uiobject.html#af7835bc9ee4beb05613169866086722c',1,'lxgui::gui::uiobject']]],
   ['lanchorlist_5f',['lAnchorList_',['../classlxgui_1_1gui_1_1uiobject.html#a324ba0135b4844a7ce3999f2f4f0001f',1,'lxgui::gui::uiobject']]],
   ['larg_5f',['lArg_',['../structlxgui_1_1lua_1_1argument__list.html#a9a0fcec8081a63287f2cad4f862198b2',1,'lxgui::lua::argument_list']]],
-  ['layer',['layer',['../structlxgui_1_1gui_1_1layer.html#ad9b672df43caf319ce760049de474150',1,'lxgui::gui::layer']]],
   ['layer',['layer',['../structlxgui_1_1gui_1_1layer.html',1,'lxgui::gui']]],
+  ['layer',['layer',['../structlxgui_1_1gui_1_1layer.html#ad9b672df43caf319ce760049de474150',1,'lxgui::gui::layer']]],
   ['layer_5ftype',['layer_type',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85',1,'lxgui::gui']]],
-  ['layered_5fregion',['layered_region',['../classlxgui_1_1gui_1_1layered__region.html',1,'lxgui::gui']]],
   ['layered_5fregion',['layered_region',['../classlxgui_1_1gui_1_1layered__region.html#a5f24b302933694a5c1e0b95090f5221c',1,'lxgui::gui::layered_region']]],
+  ['layered_5fregion',['layered_region',['../classlxgui_1_1gui_1_1layered__region.html',1,'lxgui::gui']]],
   ['lborderlist_5f',['lBorderList_',['../classlxgui_1_1gui_1_1uiobject.html#af3e1513775402e01269ed0f29f42f3ab',1,'lxgui::gui::uiobject']]],
   ['lbuttonstate',['lButtonState',['../structlxgui_1_1input_1_1source__impl_1_1mouse__state.html#add1d435be7cefe725e3363215b87c61d',1,'lxgui::input::source_impl::mouse_state']]],
   ['lchars_5f',['lChars_',['../classlxgui_1_1input_1_1source__impl.html#ac3a990363c631efed710581bde4f8319',1,'lxgui::input::source_impl']]],

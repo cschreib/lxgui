@@ -44,14 +44,10 @@ var searchData=
   ['request_5ffocus',['request_focus',['../classlxgui_1_1gui_1_1manager.html#a6fb8a942de07f4c7a6f34256d121f5fc',1,'lxgui::gui::manager']]],
   ['reset_5fstrata_5flist_5fchanged_5fflag_5f',['reset_strata_list_changed_flag_',['../classlxgui_1_1gui_1_1renderer.html#a592320e159b227a6f1787fdfe273cecb',1,'lxgui::gui::renderer']]],
   ['reset_5fwindow_5fresized',['reset_window_resized',['../classlxgui_1_1input_1_1source__impl.html#a28a7863c4cdf1d6cb06f9598aff00da9',1,'lxgui::input::source_impl']]],
-  ['reverse',['reverse',['../namespacelxgui_1_1utils_1_1range.html#a9e38d6e0651c1c0ec1564ff339cc6ba9',1,'lxgui::utils::range']]],
-  ['reverse_5fiterator',['reverse_iterator',['../namespacelxgui_1_1utils_1_1range.html#ada41e4b0c4fdd78c810318f3c8d9d833',1,'lxgui::utils::range']]],
-  ['reverse_5fiterator_5frange',['reverse_iterator_range',['../structlxgui_1_1utils_1_1range_1_1reverse__iterator__range.html#a79d5a56584aed29e14b3eaf52c5e6828',1,'lxgui::utils::range::reverse_iterator_range']]],
-  ['reverse_5fkey',['reverse_key',['../namespacelxgui_1_1utils_1_1range.html#ad7023347c824689bd05e8cc3b6bdb0d8',1,'lxgui::utils::range']]],
-  ['reverse_5fkey_5frange',['reverse_key_range',['../structlxgui_1_1utils_1_1range_1_1reverse__key__range.html#ad4473e8bccbaef8ee4515661b4e67e1d',1,'lxgui::utils::range::reverse_key_range']]],
-  ['reverse_5frange',['reverse_range',['../structlxgui_1_1utils_1_1range_1_1reverse__range.html#add0884c3c15f738d9a92d711445ea15e',1,'lxgui::utils::range::reverse_range']]],
-  ['reverse_5fvalue',['reverse_value',['../namespacelxgui_1_1utils_1_1range.html#a6c490e5971413049b86cee146188e9f8',1,'lxgui::utils::range']]],
-  ['reverse_5fvalue_5frange',['reverse_value_range',['../structlxgui_1_1utils_1_1range_1_1reverse__value__range.html#a4e66e1b54dcd825530d4f0f1504ad61a',1,'lxgui::utils::range::reverse_value_range']]],
+  ['reverse',['reverse',['../namespacelxgui_1_1utils_1_1range.html#a8559cd3dc50bee246a17563b5fb8cc34',1,'lxgui::utils::range']]],
+  ['reverse_5fiterator',['reverse_iterator',['../namespacelxgui_1_1utils_1_1range.html#ac72397f8eb1d6df0f66f3ae8b2ad25d6',1,'lxgui::utils::range']]],
+  ['reverse_5fkey',['reverse_key',['../namespacelxgui_1_1utils_1_1range.html#acdc618a7d230cd8f037bbca2b899f3de',1,'lxgui::utils::range']]],
+  ['reverse_5fvalue',['reverse_value',['../namespacelxgui_1_1utils_1_1range.html#ae84832219588d8471f40df8d56e060d1',1,'lxgui::utils::range']]],
   ['rotate',['rotate',['../classlxgui_1_1gui_1_1vector2.html#a59f20c186145eda27ce8b65cd4dc75ae',1,'lxgui::gui::vector2']]],
   ['rotation',['rotation',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a6fed4c279733200c3a51bb88cbc64cfe',1,'lxgui::gui::gl::matrix4']]]
 ];

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['t',['T',['../classlxgui_1_1gui_1_1gl_1_1matrix4.html#a3d21457b1ab887efdaa74c167493b07f',1,'lxgui::gui::gl::matrix4']]]
+  ['uchar',['uchar',['../namespacelxgui.html#ad8b9c3e081eb31ae66e2703874109011',1,'lxgui']]],
+  ['uint',['uint',['../namespacelxgui.html#aad60a3835af109b1519d66daff76eb44',1,'lxgui']]],
+  ['ulong',['ulong',['../namespacelxgui.html#a6f118aebf6804d5d44937e874e1ab8e5',1,'lxgui']]]
 ];

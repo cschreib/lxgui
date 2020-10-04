@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['print_5ffunction',['print_function',['../namespacelxgui_1_1lua.html#a194bf0aaeab358a5ac86ce185f8408c4',1,'lxgui::lua']]]
+  ['quad2f',['quad2f',['../namespacelxgui_1_1gui.html#ab770ca9dd8b4dbdf8b8c615804c5fb5c',1,'lxgui::gui']]],
+  ['quad2i',['quad2i',['../namespacelxgui_1_1gui.html#ab7ed9b673d62c02f454b5a9155b009eb',1,'lxgui::gui']]]
 ];

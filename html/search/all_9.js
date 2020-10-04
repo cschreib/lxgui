@@ -146,14 +146,9 @@ var searchData=
   ['k_5fy',['K_Y',['../namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada78ee983b54696a9c0ad5641fdc21e53f',1,'lxgui::input']]],
   ['k_5fyen',['K_YEN',['../namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada6b137c47cd12a7544b3ab8ebf284cd08',1,'lxgui::input']]],
   ['k_5fz',['K_Z',['../namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada6ad37f6707466db88fde2253664ae0b2',1,'lxgui::input']]],
-  ['key',['KEY',['../classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036a3b5949e0c26b87767a4752a276de9570',1,'lxgui::gui::texture::KEY()'],['../namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad',1,'lxgui::input::key()'],['../namespacelxgui_1_1utils_1_1range.html#a358e51a68ae0f7bef04b44b1134cf98d',1,'lxgui::utils::range::key()']]],
+  ['key',['KEY',['../classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036a3b5949e0c26b87767a4752a276de9570',1,'lxgui::gui::texture::KEY()'],['../namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad',1,'lxgui::input::key()'],['../namespacelxgui_1_1utils_1_1range.html#ae11da16e7464b0916bfd9f2bb6e9e307',1,'lxgui::utils::range::key()']]],
   ['key_5fis_5fdown',['key_is_down',['../classlxgui_1_1input_1_1manager.html#a9247d232f561070d1db389a5af5cb290',1,'lxgui::input::manager']]],
   ['key_5fis_5fdown_5flong',['key_is_down_long',['../classlxgui_1_1input_1_1manager.html#a3a75e956c02c9e9e20d2191ca471377c',1,'lxgui::input::manager']]],
-  ['key_5fiterator_5fadapter',['key_iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1key__iterator__adapter.html#abf2d7d6c3f65bd890d0f7be07aa4bf24',1,'lxgui::utils::range::key_iterator_adapter']]],
-  ['key_5fiterator_5fadapter',['key_iterator_adapter',['../structlxgui_1_1utils_1_1range_1_1key__iterator__adapter.html',1,'lxgui::utils::range']]],
   ['key_5fnumber',['KEY_NUMBER',['../namespacelxgui_1_1input.html#af5c08df843ba04dc04e0933a5e112798',1,'lxgui::input']]],
-  ['key_5frange',['key_range',['../structlxgui_1_1utils_1_1range_1_1key__range.html',1,'lxgui::utils::range']]],
-  ['key_5frange',['key_range',['../structlxgui_1_1utils_1_1range_1_1key__range.html#a6746731a7f9b747528cb6bd69fa14e59',1,'lxgui::utils::range::key_range']]],
-  ['key_5fstate',['key_state',['../structlxgui_1_1input_1_1source__impl_1_1key__state.html',1,'lxgui::input::source_impl']]],
-  ['key_5ftype',['key_type',['../structlxgui_1_1utils_1_1range_1_1key__range.html#a72ac116dd5b34407890a2a5971a77a95',1,'lxgui::utils::range::key_range::key_type()'],['../structlxgui_1_1utils_1_1range_1_1reverse__key__range.html#ae798cd4deaf8df3349edb6f1c4622994',1,'lxgui::utils::range::reverse_key_range::key_type()']]]
+  ['key_5fstate',['key_state',['../structlxgui_1_1input_1_1source__impl_1_1key__state.html',1,'lxgui::input::source_impl']]]
 ];

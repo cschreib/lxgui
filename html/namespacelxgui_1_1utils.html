@@ -105,6 +105,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty type, used in the implementation of <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>.  <a href="structlxgui_1_1utils_1_1empty.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1utils_1_1exception.html">exception</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class.  <a href="classlxgui_1_1utils_1_1exception.html#details">More...</a><br /></td></tr>
@@ -117,8 +118,9 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:a078f3233bf1a849602a707d85acbaa6c"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a></td></tr>
 <tr class="separator:a078f3233bf1a849602a707d85acbaa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1d3547218929b060512a936efea0070"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">variant</a> = std::variant&lt; bool, std::int8_t, std::int16_t, std::int32_t, std::int64_t, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, float, double, std::string, <a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a> &gt;</td></tr>
-<tr class="separator:af1d3547218929b060512a936efea0070"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59bc82dae7751f34aa92e649ecc3e63d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">variant</a> = std::variant&lt; <a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a>, bool, std::int8_t, std::int16_t, std::int32_t, std::int64_t, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, float, double, std::string &gt;</td></tr>
+<tr class="memdesc:a59bc82dae7751f34aa92e649ecc3e63d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type-erased value for passing arguments to events.  <a href="#a59bc82dae7751f34aa92e649ecc3e63d">More...</a><br /></td></tr>
+<tr class="separator:a59bc82dae7751f34aa92e649ecc3e63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -139,10 +141,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a86e5a9f30c68e6ff7bd20ce1c3e88cb1">find_if</a> (C &amp;v, T &amp;&amp;f)</td></tr>
 <tr class="separator:a86e5a9f30c68e6ff7bd20ce1c3e88cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aede977919f7d5d8de41e3254fa113343"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aede977919f7d5d8de41e3254fa113343"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343">get</a> (<a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">variant</a> &amp;vValue)</td></tr>
+<tr class="memitem:aede977919f7d5d8de41e3254fa113343"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343">get</a> (<a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">variant</a> &amp;vValue)</td></tr>
+<tr class="memdesc:aede977919f7d5d8de41e3254fa113343"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>.  <a href="#aede977919f7d5d8de41e3254fa113343">More...</a><br /></td></tr>
 <tr class="separator:aede977919f7d5d8de41e3254fa113343"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa76a50ac52c97ec765126f59a5f426bc"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa76a50ac52c97ec765126f59a5f426bc"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc">get</a> (const <a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">variant</a> &amp;vValue)</td></tr>
+<tr class="memitem:aa76a50ac52c97ec765126f59a5f426bc"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc">get</a> (const <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">variant</a> &amp;vValue)</td></tr>
+<tr class="memdesc:aa76a50ac52c97ec765126f59a5f426bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>.  <a href="#aa76a50ac52c97ec765126f59a5f426bc">More...</a><br /></td></tr>
 <tr class="separator:aa76a50ac52c97ec765126f59a5f426bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -160,17 +164,22 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af1d3547218929b060512a936efea0070"></a>
+<a class="anchor" id="a59bc82dae7751f34aa92e649ecc3e63d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">lxgui::utils::variant</a> = typedef std::variant&lt; bool, std::int8_t, std::int16_t, std::int32_t, std::int64_t, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, float, double, std::string, <a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a>&gt;</td>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">lxgui::utils::variant</a> = typedef std::variant&lt; <a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a>, bool, std::int8_t, std::int16_t, std::int32_t, std::int64_t, std::uint8_t, std::uint16_t, std::uint32_t, std::uint64_t, float, double, std::string&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00029">29</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p>Type-erased value for passing arguments to events. </p>
+<dl class="section note"><dt>Note</dt><dd>This contains all the basic numerical types up to 64bit precision. Any other scalar types (such as charXX_t, or strongly typed enums) can be represented as one of these. Use <a class="el" href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343" title="Retreive the value stored in an utils::variant. ">utils::get()</a> to enable automatic support for strongly typed enums. </dd>
+<dd>
+The <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant. ">utils::empty</a> type is used to indicate an un-specified value. This is also the state of a default constructed <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>. When transferred to Lua, <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant. ">utils::empty</a> is translated as nil. </dd></dl>
+
+<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00039">39</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
@@ -260,14 +269,24 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">T&amp; lxgui::utils::get </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">variant</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">variant</a> &amp;&#160;</td>
           <td class="paramname"><em>vValue</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00032">32</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p>Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vValue</td><td>The variant </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The stored value, or throws std::bad_variant_access if the type was incorrect </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This wrapper around <a class="el" href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc" title="Retreive the value stored in an utils::variant. ">std::get()</a> enables automatic support for strongly typed enums. </dd></dl>
+
+<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00047">47</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
@@ -280,14 +299,24 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">const T&amp; lxgui::utils::get </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1utils.html#af1d3547218929b060512a936efea0070">variant</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d">variant</a> &amp;&#160;</td>
           <td class="paramname"><em>vValue</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00041">41</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+<p>Retreive the value stored in an <a class="el" href="namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d" title="Type-erased value for passing arguments to events. ">utils::variant</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vValue</td><td>The variant </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The stored value, or throws std::bad_variant_access if the type was incorrect </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This wrapper around <a class="el" href="namespacelxgui_1_1utils.html#aa76a50ac52c97ec765126f59a5f426bc" title="Retreive the value stored in an utils::variant. ">std::get()</a> enables automatic support for strongly typed enums. </dd></dl>
+
+<p>Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00061">61</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
 
 </div>
 </div>
@@ -384,7 +413,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Oct 3 2020 20:17:25 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 4 2020 14:14:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
