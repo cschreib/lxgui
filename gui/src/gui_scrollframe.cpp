@@ -360,6 +360,15 @@ void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
 
     renderer::notify_rendered_frame(pFrame, bRendered);
 
+    if (!bRendered)
+    {
+        if (pFrame == pHoveredScrollChild_)
+        {
+            pHoveredScrollChild_->notify_mouse_in_frame(false, 0, 0);
+            pHoveredScrollChild_ = nullptr;
+        }
+    }
+
     bRedrawScrollRenderTarget_ = true;
 }
 
