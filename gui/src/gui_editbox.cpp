@@ -208,7 +208,7 @@ void edit_box::on_event(const event& mEvent)
 
     if (mEvent.get_name() == "KEY_PRESSED" && bFocus_)
     {
-        key mKey = utils::get<key>(mEvent[0]);
+        key mKey = utils::get<key>(mEvent.get(0));
         if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
         {
             on("EnterPressed");
@@ -274,7 +274,7 @@ void edit_box::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "KEY_RELEASED")
     {
-        key mKey = utils::get<key>(mEvent[0]);
+        key mKey = utils::get<key>(mEvent.get(0));
 
         if (mKey == key::K_ESCAPE)
         {

@@ -474,7 +474,7 @@ void manager::update(float fTempDelta)
         mCharEvent.add(std::uint32_t{});
         for (auto cChar : lChars_)
         {
-            mCharEvent[0] = cChar;
+            mCharEvent.get(0) = cChar;
             fire_event_(mCharEvent);
         }
     }

@@ -45,13 +45,18 @@ namespace gui
         /// Returns a parameter of this event.
         /** \return A parameter of this event
         */
-        const utils::variant& get(uint uiIndex) const;
+        const utils::variant& get(std::size_t uiIndex) const;
+
+        /// Returns a parameter of this event.
+        /** \return A parameter of this event
+        */
+        utils::variant& get(std::size_t uiIndex);
 
         /// Returns a parameter of this event.
         /** \return A parameter of this event
         */
         template<typename T>
-        const T& get(uint uiIndex) const
+        const T& get(std::size_t uiIndex) const
         {
             return utils::get<T>(this->get(uiIndex));
         }
@@ -59,7 +64,7 @@ namespace gui
         /// Returns the number of parameter.
         /** \return The number of parameter
         */
-        uint get_num_param() const;
+        std::size_t get_num_param() const;
 
         /// Returns the name of this event.
         /** \return The name of this event
@@ -70,10 +75,6 @@ namespace gui
         /** \return 'true' if this should only be fired once per frame
         */
         bool is_once_per_frame() const;
-
-        utils::variant& operator [] (uint uiIndex);
-
-        const utils::variant& operator [] (uint uiIndex) const;
 
     private :
 

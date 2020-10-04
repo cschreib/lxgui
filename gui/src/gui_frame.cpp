@@ -1198,8 +1198,8 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0]);
-            mKeyEvent.add(mEvent[1]);
+            mKeyEvent.add(mEvent.get(0));
+            mKeyEvent.add(mEvent.get(1));
 
             on("KeyDown", &mKeyEvent);
             if (!mChecker.is_alive())
@@ -1208,8 +1208,8 @@ void frame::on_event(const event& mEvent)
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent[0]);
-            mKeyEvent.add(mEvent[1]);
+            mKeyEvent.add(mEvent.get(0));
+            mKeyEvent.add(mEvent.get(1));
 
             on("KeyUp", &mKeyEvent);
             if (!mChecker.is_alive())
