@@ -26,16 +26,16 @@ namespace utils {
     using variant = std::variant<
         empty,
         bool,
-        std::int8_t,
-        std::int16_t,
-        std::int32_t,
         std::int64_t,
-        std::uint8_t,
-        std::uint16_t,
-        std::uint32_t,
+        std::int32_t,
+        std::int16_t,
+        std::int8_t,
         std::uint64_t,
-        float,
+        std::uint32_t,
+        std::uint16_t,
+        std::uint8_t,
         double,
+        float,
         std::string>;
 
     /// Retreive the value stored in an utils::variant
