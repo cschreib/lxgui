@@ -2,7 +2,7 @@ var searchData=
 [
   ['v',['v',['../structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617',1,'lxgui::gui::quad']]],
   ['value',['value',['../namespacelxgui_1_1utils_1_1range.html#a79f2d14a2095be192e16f4fe9e6578ee',1,'lxgui::utils::range']]],
-  ['variant',['variant',['../namespacelxgui_1_1utils.html#a59bc82dae7751f34aa92e649ecc3e63d',1,'lxgui::utils']]],
+  ['variant',['variant',['../namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09',1,'lxgui::utils']]],
   ['vector2',['vector2',['../classlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui']]],
   ['vector2',['vector2',['../classlxgui_1_1gui_1_1vector2.html#a067b4a581887e5c583763af624536603',1,'lxgui::gui::vector2::vector2()=default'],['../classlxgui_1_1gui_1_1vector2.html#a87252d54c4efd52f57d7f00132c1eea4',1,'lxgui::gui::vector2::vector2(T mX, T mY)']]],
   ['vector2_3c_20float_20_3e',['vector2&lt; float &gt;',['../classlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui']]],
