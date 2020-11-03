@@ -702,7 +702,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 
     pSol_ = std::unique_ptr<sol::state>(new sol::state());
     pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
-        sol::lib::os, sol::lib::string, sol::lib::math, sol::lib::debug);
+        sol::lib::os, sol::lib::string, sol::lib::debug);
 
     pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
     pLua_->set_print_error_function(gui_out);
