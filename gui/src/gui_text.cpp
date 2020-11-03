@@ -679,11 +679,12 @@ void text::update_lines_()
                 mLine.sCaption += U"\n";
 
             lLines.push_back(mLine);
+            uiCounter += mLine.sCaption.size();
+
             for (auto& mFormat : lTempFormatList)
                 lFormatList_.insert(std::move(mFormat));
 
             lTempFormatList.clear();
-            uiCounter += mLine.sCaption.size() - 1;
 
             // Add the maximum number of line to this text
             for (auto& sLine : lLines)
@@ -810,17 +811,16 @@ void text::update_cache_()
                 mLetter.bNoRender = (*iterChar == '\n' || *iterChar == ' ' || *iterChar == '\t');
 
                 lLetterCache_.push_back(mLetter);
+                ++uiCounter;
 
-                if (*iterChar == '\n') continue; // Don't increase the uiCounter
+                if (*iterChar == '\n') continue;
 
                 float fKerning = 0.0f;
-
                 auto iterNext = iterChar + 1;
                 if (iterNext != mLine.sCaption.end() && *iterNext != U' ' && *iterChar != U' ')
                     fKerning = get_character_kerning(*iterChar, *iterNext);
 
                 fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;
-                ++uiCounter;
             }
 
             fY += get_line_height()*fLineSpacing_;
