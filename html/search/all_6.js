@@ -83,7 +83,7 @@ var searchData=
   ['get_5ffont_5fname',['get_font_name',['../classlxgui_1_1gui_1_1font__string.html#af89f3b132ef66c42c7abc7bc888a3d83',1,'lxgui::gui::font_string::get_font_name()'],['../classlxgui_1_1gui_1_1text.html#ac1dbe113c38af22ceb42e5552b3cb481',1,'lxgui::gui::text::get_font_name()']]],
   ['get_5ffont_5fsize',['get_font_size',['../classlxgui_1_1gui_1_1text.html#a3a7d4bec84900833677696b916914764',1,'lxgui::gui::text']]],
   ['get_5ffont_5fstring',['get_font_string',['../classlxgui_1_1gui_1_1edit__box.html#aed56c14962a83a903b759478aed77aef',1,'lxgui::gui::edit_box']]],
-  ['get_5fformat',['get_format',['../namespacelxgui_1_1gui.html#af749d682026492c53f1f34559aaca8a8',1,'lxgui::gui']]],
+  ['get_5fformat',['get_format',['../namespacelxgui_1_1gui.html#a68e4297111fbbb8e7746f39415f7636d',1,'lxgui::gui']]],
   ['get_5fframe_5fstrata',['get_frame_strata',['../classlxgui_1_1gui_1_1frame.html#a580869dd2f2aae5f1f03cdb804ca88f7',1,'lxgui::gui::frame']]],
   ['get_5fframe_5ftype',['get_frame_type',['../classlxgui_1_1gui_1_1frame.html#a111d74a2ccdd4e1d9ad22cbdcd9e1666',1,'lxgui::gui::frame']]],
   ['get_5fglobal',['get_global',['../classlxgui_1_1lua_1_1state.html#a8c068963b2da1ba321f90ee01df421ca',1,'lxgui::lua::state']]],
