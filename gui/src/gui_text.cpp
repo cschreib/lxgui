@@ -386,7 +386,8 @@ void text::update()
     }
 }
 
-void get_format(utils::ustring::const_iterator& iterChar, text::format& mFormat)
+bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_iterator iterEnd,
+    text::format& mFormat)
 {
     if (*iterChar == 'r')
     {
@@ -394,27 +395,28 @@ void get_format(utils::ustring::const_iterator& iterChar, text::format& mFormat)
     }
     else if (*iterChar == 'c')
     {
-        std::string sColorPart;
-        ++iterChar;
-        sColorPart += *iterChar; ++iterChar;
-        sColorPart += *iterChar; ++iterChar;
-        float fA = utils::hex_to_uint(sColorPart)/255.0f;
-        sColorPart.clear();
-        sColorPart += *iterChar; ++iterChar;
-        sColorPart += *iterChar; ++iterChar;
-        float fR = utils::hex_to_uint(sColorPart)/255.0f;
-        sColorPart.clear();
-        sColorPart += *iterChar; ++iterChar;
-        sColorPart += *iterChar; ++iterChar;
-        float fG = utils::hex_to_uint(sColorPart)/255.0f;
-        sColorPart.clear();
-        sColorPart += *iterChar; ++iterChar;
-        sColorPart += *iterChar;
-        float fB = utils::hex_to_uint(sColorPart)/255.0f;
-
         mFormat.mColorAction = text::color_action::SET;
-        mFormat.mColor = color(fR, fG, fB, fA);
+
+        auto fuReadTwo = [&](float& fOut)
+        {
+            ++iterChar;
+            if (iterChar == iterEnd) return false;
+            std::string sColorPart('0', 2);
+            sColorPart[0] = *iterChar;
+            ++iterChar;
+            if (iterChar == iterEnd) return false;
+            sColorPart[1] = *iterChar;
+            fOut = utils::hex_to_uint(sColorPart)/255.0f;
+            return true;
+        };
+
+        if (!fuReadTwo(mFormat.mColor.a)) return false;
+        if (!fuReadTwo(mFormat.mColor.r)) return false;
+        if (!fuReadTwo(mFormat.mColor.g)) return false;
+        if (!fuReadTwo(mFormat.mColor.b)) return false;
     }
+
+    return true;
 }
 
 void text::update_lines_()
@@ -462,16 +464,18 @@ void text::update_lines_()
                 if (*iterChar1 == U'|' && bFormattingEnabled_)
                 {
                     ++iterChar1;
-                    if (iterChar1 != sManualLine.end())
+                    if (iterChar1 == sManualLine.end()) break;
+
+                    if (*iterChar1 != U'|')
                     {
-                        if (*iterChar1 != U'|')
-                        {
-                            get_format(iterChar1, lTempFormatList[uiCounter+mLine.sCaption.size()]);
-                            continue;
-                        }
+                        text::format mFormat;
+                        if (get_format(iterChar1, sManualLine.end(), mFormat))
+                            lTempFormatList[uiCounter+mLine.sCaption.size()] = mFormat;
+
+                        if (iterChar1 != sManualLine.end())
+                            ++iterChar1;
+                        if (iterChar1 == sManualLine.end()) break;
                     }
-                    else
-                        break;
                 }
 
                 DEBUG_LOG("      Get width");
@@ -612,7 +616,7 @@ void text::update_lines_()
 
                         if (iterChar1 != sManualLine.end())
                         {
-                            // Read cutted format tags
+                            // Read cut format tags
                             if (bFormattingEnabled_)
                             {
                                 while (iterTemp != iterChar1)
@@ -620,10 +624,20 @@ void text::update_lines_()
                                     if (*iterTemp == U'|')
                                     {
                                         ++iterTemp;
-                                        if (iterTemp != iterChar1 && *iterTemp != U'|')
-                                            get_format(iterTemp, lTempFormatList[uiCounter+mLine.sCaption.size()]);
+                                        if (iterTemp == iterChar1) break;
+
+                                        if (*iterTemp != U'|')
+                                        {
+                                            text::format mFormat;
+                                            if (get_format(iterTemp, iterChar1, mFormat))
+                                            {
+                                                lTempFormatList[uiCounter+mLine.sCaption.size()] = mFormat;
+                                            }
+                                        }
                                     }
-                                    ++iterTemp;
+
+                                    if (iterTemp != iterChar1)
+                                        ++iterTemp;
                                 }
                             }
 
