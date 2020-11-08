@@ -3,6 +3,7 @@ var searchData=
   ['uiabsheight_5f',['uiAbsHeight_',['../classlxgui_1_1gui_1_1uiobject.html#af4508554b4127cf3263576501e78dd67',1,'lxgui::gui::uiobject']]],
   ['uiabswidth_5f',['uiAbsWidth_',['../classlxgui_1_1gui_1_1uiobject.html#a5bdd4b4ed0e1895dc2e931e14d4d9166',1,'lxgui::gui::uiobject']]],
   ['uicodepoint',['uiCodePoint',['../structlxgui_1_1gui_1_1gl_1_1character__info.html#ac68ef4ec3ab81cdda11cb6553a0e5ad1',1,'lxgui::gui::gl::character_info']]],
+  ['uicurrenthistoryline_5f',['uiCurrentHistoryLine_',['../classlxgui_1_1gui_1_1edit__box.html#a6eca4ee45b5c1a591697c2aa86828c9e',1,'lxgui::gui::edit_box']]],
   ['uidisplaypos_5f',['uiDisplayPos_',['../classlxgui_1_1gui_1_1edit__box.html#aaabfc369df23c6846d109491ad292425',1,'lxgui::gui::edit_box']]],
   ['uiid_5f',['uiID_',['../classlxgui_1_1gui_1_1uiobject.html#a11693ef21a5095fdaeb6d51fae03d447',1,'lxgui::gui::uiobject']]],
   ['uilinenbr',['uiLineNbr',['../structlxgui_1_1gui_1_1frame_1_1script__info.html#afc7fedcf84ec8ad2425beb7240d6e96b',1,'lxgui::gui::frame::script_info']]],

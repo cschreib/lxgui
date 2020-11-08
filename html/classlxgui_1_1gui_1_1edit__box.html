@@ -221,6 +221,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aeef78eb33fe4aef720469d9ad11c0c77"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#aeef78eb33fe4aef720469d9ad11c0c77">get_history_lines</a> () const </td></tr>
 <tr class="memdesc:aeef78eb33fe4aef720469d9ad11c0c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the history line list.  <a href="#aeef78eb33fe4aef720469d9ad11c0c77">More...</a><br /></td></tr>
 <tr class="separator:aeef78eb33fe4aef720469d9ad11c0c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae659db64cecf5ae934812cf126323c0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#ae659db64cecf5ae934812cf126323c0c">clear_history</a> ()</td></tr>
+<tr class="memdesc:ae659db64cecf5ae934812cf126323c0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the history line list.  <a href="#ae659db64cecf5ae934812cf126323c0c">More...</a><br /></td></tr>
+<tr class="separator:ae659db64cecf5ae934812cf126323c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aef6910de052ff3586b7c71097bc109"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a3aef6910de052ff3586b7c71097bc109">set_arrows_ignored</a> (bool bArrowsIgnored)</td></tr>
 <tr class="memdesc:a3aef6910de052ff3586b7c71097bc109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets whether keyboard arrows move the carret or not.  <a href="#a3aef6910de052ff3586b7c71097bc109">More...</a><br /></td></tr>
 <tr class="separator:a3aef6910de052ff3586b7c71097bc109"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -986,6 +989,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:aa93d9dbb360db1fc673556d7377b4f90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a704416f12ed50a9ba31769f241187e85"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a704416f12ed50a9ba31769f241187e85">uiMaxHistoryLines_</a> = <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>(-1)</td></tr>
 <tr class="separator:a704416f12ed50a9ba31769f241187e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eca4ee45b5c1a591697c2aa86828c9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a6eca4ee45b5c1a591697c2aa86828c9e">uiCurrentHistoryLine_</a> = <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>(-1)</td></tr>
+<tr class="separator:a6eca4ee45b5c1a591697c2aa86828c9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af611da285fb78181d95797c0609496fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1font__string.html">font_string</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#af611da285fb78181d95797c0609496fa">pFontString_</a> = nullptr</td></tr>
 <tr class="separator:af611da285fb78181d95797c0609496fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cbf65100e92a1806d7d2eee6b7dd93a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#ab7ed9b673d62c02f454b5a9155b009eb">quad2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a6cbf65100e92a1806d7d2eee6b7dd93a">lTextInsets_</a> = <a class="el" href="classlxgui_1_1gui_1_1quad2.html#a89e6074ecd2c3f36959f5a8ec6cdc6b2">quad2i::ZERO</a></td></tr>
@@ -1216,7 +1221,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01027">1027</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01035">1035</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1248,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This option is only available to single line edit_boxes. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00676">676</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00677">677</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1305,7 +1310,26 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00862">862</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00870">870</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae659db64cecf5ae934812cf126323c0c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::edit_box::clear_history </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clears the history line list. </p>
+
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00697">697</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1366,7 +1390,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00830">830</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00838">838</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1391,7 +1415,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00789">789</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00797">797</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1445,7 +1469,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00799">799</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00807">807</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1568,7 +1592,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="The GUI class used to draw text on the screen. ">font_string</a> used to render the content. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="The GUI class used to draw text on the screen. ">font_string</a> used to render the content </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00762">762</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00770">770</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1589,7 +1613,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The history line list </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This list will always be empty for multi line edit_boxes. </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00689">689</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00692">692</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1625,7 +1649,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01112">1112</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01120">1120</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1645,7 +1669,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the maximum number of history lines this <a class="el" href="classlxgui_1_1gui_1_1edit__box.html" title="An editable text box. ">edit_box</a> can keep. </p>
 <dl class="section return"><dt>Returns</dt><dd>The maximum number of history lines this <a class="el" href="classlxgui_1_1gui_1_1edit__box.html" title="An editable text box. ">edit_box</a> can keep </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00671">671</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00672">672</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1725,7 +1749,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Returns the text insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>The text insets </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00724">724</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00732">732</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1836,7 +1860,7 @@ Additional Inherited Members</h2></td></tr>
 <p>Checks if this <a class="el" href="classlxgui_1_1gui_1_1edit__box.html" title="An editable text box. ">edit_box</a> can have several lines in it. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this <a class="el" href="classlxgui_1_1gui_1_1edit__box.html" title="An editable text box. ">edit_box</a> can have several lines in it </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00644">644</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00645">645</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1932,7 +1956,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01151">1151</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01159">1159</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1958,7 +1982,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01164">1164</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01172">1172</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1984,7 +2008,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01202">1202</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01210">1210</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2021,7 +2045,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1focus__frame.html#ac1dd55522c869e19e7558513b72a73ab">lxgui::gui::focus_frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00729">729</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00737">737</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2049,7 +2073,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1frame.html#ad053d918706016043fc15046c198a289">lxgui::gui::frame</a>.</p>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00756">756</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00764">764</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2248,7 +2272,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01234">1234</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01242">1242</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2301,7 +2325,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01074">1074</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01082">1082</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2327,7 +2351,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00694">694</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00702">702</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2405,7 +2429,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00767">767</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00775">775</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2484,7 +2508,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00649">649</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00650">650</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2670,7 +2694,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Positive insets will reduce the text area, while negative ones will enlarge it </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00699">699</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00707">707</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2697,7 +2721,7 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Positive insets will reduce the text area, while negative ones will enlarge it </dd></dl>
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00704">704</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00712">712</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2778,7 +2802,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00915">915</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00923">923</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2803,7 +2827,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00877">877</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00885">885</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2828,7 +2852,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00904">904</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00912">912</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -2851,7 +2875,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00382">382</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00385">385</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2873,7 +2897,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00379">379</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00382">382</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2895,7 +2919,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00381">381</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00384">384</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2917,7 +2941,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00377">377</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00380">380</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2939,7 +2963,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00380">380</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00383">383</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2961,7 +2985,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00378">378</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00381">381</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -2983,7 +3007,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00390">390</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00393">393</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3005,7 +3029,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00342">342</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00345">345</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3027,7 +3051,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00393">393</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00396">396</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3049,7 +3073,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00403">403</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00407">407</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3071,7 +3095,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00372">372</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00375">375</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3093,7 +3117,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00396">396</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00399">399</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3115,7 +3139,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00400">400</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00404">404</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3137,7 +3161,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00394">394</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00397">397</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3159,7 +3183,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00387">387</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00390">390</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3181,7 +3205,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00404">404</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00408">408</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3203,7 +3227,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00402">402</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00406">406</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3225,7 +3249,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00392">392</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00395">395</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3247,7 +3271,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00399">399</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00403">403</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3269,7 +3293,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00386">386</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00389">389</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3291,7 +3315,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00384">384</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00387">387</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3313,7 +3337,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00371">371</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00374">374</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3335,7 +3359,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00369">369</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00372">372</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3357,7 +3381,29 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00370">370</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00373">373</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6eca4ee45b5c1a591697c2aa86828c9e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::edit_box::uiCurrentHistoryLine_ = <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>(-1)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00401">401</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3379,7 +3425,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00374">374</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00377">377</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3401,7 +3447,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00397">397</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00400">400</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3423,7 +3469,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00376">376</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00379">379</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3445,7 +3491,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00375">375</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00378">378</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3467,7 +3513,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00389">389</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00392">392</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3489,7 +3535,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00388">388</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p>Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00391">391</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -3502,7 +3548,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 8 2020 12:33:06 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Nov 8 2020 13:14:49 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
