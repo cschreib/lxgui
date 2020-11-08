@@ -1260,7 +1260,8 @@ void edit_box::process_key_(key mKey)
                 return;
         }
     }
-    else if (mKey == key::K_LEFT || mKey == key::K_RIGHT || mKey == key::K_UP || mKey == key::K_DOWN)
+    else if (mKey == key::K_LEFT || mKey == key::K_RIGHT ||
+            (bMultiLine_ && (mKey == key::K_UP || mKey == key::K_DOWN)))
     {
         if (!bArrowsIgnored_)
         {
@@ -1270,10 +1271,14 @@ void edit_box::process_key_(key mKey)
                 move_carret_horizontally_(false);
             else if (mKey == key::K_RIGHT)
                 move_carret_horizontally_(true);
-            else if (mKey == key::K_UP)
-                move_carret_vertically_(false);
-            else if (mKey == key::K_DOWN)
-                move_carret_vertically_(true);
+
+            if (bMultiLine_)
+            {
+                if (mKey == key::K_UP)
+                    move_carret_vertically_(false);
+                else if (mKey == key::K_DOWN)
+                    move_carret_vertically_(true);
+            }
 
             if (pManager_->get_input_manager()->shift_is_pressed())
             {
