@@ -40,6 +40,18 @@ int lua_edit_box::_get_blink_speed(lua_State* pLua)
     return mFunc.on_return();
 }
 
+int lua_edit_box::_get_cursor_position(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("EditBox:get_cursor_position", pLua, 1);
+
+    mFunc.push(get_object()->get_cursor_position());
+
+    return mFunc.on_return();
+}
+
 int lua_edit_box::_get_history_lines(lua_State* pLua)
 {
     const auto& lHistoryLine = get_object()->get_history_lines();
@@ -201,6 +213,19 @@ int lua_edit_box::_set_blink_speed(lua_State* pLua)
     mFunc.add(0, "blink speed", lua::type::NUMBER);
     if (mFunc.check())
         get_object()->set_blink_speed(double(mFunc.get(0)->get_number()));
+
+    return mFunc.on_return();
+}
+
+int lua_edit_box::_set_cursor_position(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("EditBox:set_cursor_position", pLua);
+    mFunc.add(0, "cursor position", lua::type::NUMBER);
+    if (mFunc.check())
+        get_object()->set_cursor_position(mFunc.get(0)->get_number());
 
     return mFunc.on_return();
 }

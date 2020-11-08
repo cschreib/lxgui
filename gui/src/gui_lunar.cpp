@@ -671,6 +671,7 @@ namespace gui
         // edit_box
         method(edit_box, add_history_line),
         method(edit_box, get_blink_speed),
+        method(edit_box, get_cursor_position),
         method(edit_box, get_history_lines),
         method(edit_box, get_max_letters),
         method(edit_box, get_num_letters),
@@ -683,6 +684,7 @@ namespace gui
         method(edit_box, is_numeric),
         method(edit_box, is_password),
         method(edit_box, set_blink_speed),
+        method(edit_box, set_cursor_position),
         method(edit_box, set_max_history_lines),
         method(edit_box, set_max_letters),
         method(edit_box, set_multi_line),

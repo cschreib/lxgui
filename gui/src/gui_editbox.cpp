@@ -219,10 +219,8 @@ void edit_box::on_event(const event& mEvent)
         }
         else if (mKey == key::K_END)
         {
-            uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
-
-            iterCarretPos_ = sUnicodeText_.end();
-            update_carret_position_();
+            uint uiPreviousCarretPos = get_cursor_position();
+            set_cursor_position(get_num_letters());
 
             if (pManager_->get_input_manager()->shift_is_pressed())
             {
@@ -238,10 +236,8 @@ void edit_box::on_event(const event& mEvent)
         }
         else if (mKey == key::K_HOME)
         {
-            uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
-
-            iterCarretPos_ = sUnicodeText_.begin();
-            update_carret_position_();
+            uint uiPreviousCarretPos = get_cursor_position();
+            set_cursor_position(0u);
 
             if (pManager_->get_input_manager()->shift_is_pressed())
             {
@@ -476,13 +472,25 @@ void edit_box::insert_after_cursor(const std::string& sText)
             sUnicodeText_.insert(iterCarretPos_, sUStr.begin(), sUStr.end());
             iterCarretPos_ += sUStr.size();
             sText_ = utils::unicode_to_UTF8(sUnicodeText_);
-            uiNumLetters_ = sUnicodeText_.size();
 
             update_displayed_text_();
             update_font_string_();
             update_carret_position_();
         }
     }
+}
+
+uint edit_box::get_cursor_position() const
+{
+    return iterCarretPos_ - sUnicodeText_.begin();
+}
+
+void edit_box::set_cursor_position(uint uiPos)
+{
+    if (uiPos == get_cursor_position()) return;
+
+    iterCarretPos_ = sUnicodeText_.begin() + uiPos;
+    update_carret_position_();
 }
 
 void edit_box::set_max_letters(uint uiMaxLetters)
@@ -520,7 +528,7 @@ uint edit_box::get_max_letters() const
 
 uint edit_box::get_num_letters() const
 {
-    return uiNumLetters_;
+    return sUnicodeText_.size();
 }
 
 void edit_box::set_blink_speed(double dBlinkSpeed)
@@ -863,8 +871,6 @@ void edit_box::check_text_()
             sUnicodeText_.resize(uiMaxLetters_);
     }
 
-    uiNumLetters_ = sUnicodeText_.size();
-
     sText_ = utils::unicode_to_UTF8(sUnicodeText_);
 }
 
@@ -1023,7 +1029,7 @@ bool edit_box::add_char_(char32_t sUnicode)
     if (bSelectedText_)
         remove_char_();
 
-    if (uiNumLetters_ + 1 >= uiMaxLetters_)
+    if (get_num_letters() >= uiMaxLetters_)
         return false;
 
     if (bNumericOnly_)
@@ -1050,7 +1056,6 @@ bool edit_box::add_char_(char32_t sUnicode)
     }
 
     iterCarretPos_ = sUnicodeText_.insert(iterCarretPos_, sUnicode) + 1;
-    ++uiNumLetters_;
 
     sText_ = utils::unicode_to_UTF8(sUnicodeText_);
 
@@ -1077,7 +1082,6 @@ bool edit_box::remove_char_()
 
             sUnicodeText_.erase(uiLeft, uiRight - uiLeft);
             sText_ = utils::unicode_to_UTF8(sUnicodeText_);
-            uiNumLetters_ = sUnicodeText_.size();
 
             iterCarretPos_ = sUnicodeText_.begin() + uiLeft;
         }
@@ -1091,7 +1095,6 @@ bool edit_box::remove_char_()
 
         iterCarretPos_ = sUnicodeText_.erase(iterCarretPos_);
         sText_ = utils::unicode_to_UTF8(sUnicodeText_);
-        --uiNumLetters_;
     }
 
     update_displayed_text_();

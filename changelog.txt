@@ -24,19 +24,13 @@ v2.0.0:
  - input: removed OIS input implementation
  - input: removed GLFW input implementation
  - gui: added a pure SFML implementation for the gui::manager
- - gui: fixed rare crash in editbox
- - gui: fixed crash when calling Lua delete_frame() twice on same frame
- - gui: fixed Lua get_width()/get_height() returning incorrect values
- - gui: fixed crash when currently hovered/focussed frame is deleted
- - gui: fixed virtual gui::scroll_frame not able to be inherited from
- - gui: fixed frame OnSizeChanged not always triggered
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
+ - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
- - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a renderer
@@ -46,6 +40,15 @@ v2.0.0:
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
+ - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
+ - gui: added set_cursor_position()/get_cursor_position() to edit_box
+ - gui: fixed rare crash in editbox
+ - gui: fixed crash when calling Lua delete_frame() twice on same frame
+ - gui: fixed Lua get_width()/get_height() returning incorrect values
+ - gui: fixed crash when currently hovered/focussed frame is deleted
+ - gui: fixed virtual gui::scroll_frame not able to be inherited from
+ - gui: fixed frame OnSizeChanged not always triggered
+ - gui: fixed up/down keys for single-line edit box moving the cursor
  - xml: now parsing standard XML comments
 
 v1.2.0:

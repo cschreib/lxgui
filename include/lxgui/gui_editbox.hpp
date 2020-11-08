@@ -167,6 +167,18 @@ namespace gui
         */
         void insert_after_cursor(const std::string& sText);
 
+        /// Returns the current position of the cursor.
+        /** \return The position of the cursor (0: before first character,
+                    get_num-letters(): after last character).
+        */
+        uint get_cursor_position() const;
+
+        /// Moves the cursor to a chosen position.
+        /** \param uiPos The new cursor position (0: before first character,
+                         get_num-letters(): after last character).
+        */
+        void set_cursor_position(uint uiPos);
+
         /// Sets the maximum number of letters to allow in this edit_box.
         /** \param uiMaxLetters The max number of letters
         */
@@ -405,6 +417,7 @@ namespace gui
         // Glues
         int _add_history_line(lua_State*);
         int _get_blink_speed(lua_State*);
+        int _get_cursor_position(lua_State*);
         int _get_history_lines(lua_State*);
         int _get_max_letters(lua_State*);
         int _get_num_letters(lua_State*);
@@ -417,6 +430,7 @@ namespace gui
         int _is_numeric(lua_State*);
         int _is_password(lua_State*);
         int _set_blink_speed(lua_State*);
+        int _set_cursor_position(lua_State*);
         int _set_max_history_lines(lua_State*);
         int _set_max_letters(lua_State*);
         int _set_multi_line(lua_State*);
