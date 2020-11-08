@@ -226,6 +226,8 @@
         <n[.,1]:OnSizeChanged/>
         <n[.,1]:OnSpacePressed/>
         <n[.,1]:OnTabPressed/>
+        <n[.,1]:OnUpPressed/>
+        <n[.,1]:OnDownPressed/>
         <n[.,1]:OnTextChanged/>
         <n[.,1]:OnTextSet/>
         <n[.,1]:OnUpdate/>

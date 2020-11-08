@@ -43,6 +43,8 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnEscapePressed") ||
         (sScriptName == "OnSpacePressed") ||
         (sScriptName == "OnTabPressed") ||
+        (sScriptName == "OnUpPressed") ||
+        (sScriptName == "OnDownPressed") ||
         (sScriptName == "OnTextChanged") ||
         (sScriptName == "OnTextSet"))
         return true;
@@ -256,6 +258,18 @@ void edit_box::on_event(const event& mEvent)
         else if (mKey == key::K_TAB)
         {
             on("TabPressed");
+            if (!mChecker.is_alive())
+                return;
+        }
+        else if (mKey == key::K_UP)
+        {
+            on("UpPressed");
+            if (!mChecker.is_alive())
+                return;
+        }
+        else if (mKey == key::K_DOWN)
+        {
+            on("DownPressed");
             if (!mChecker.is_alive())
                 return;
         }
