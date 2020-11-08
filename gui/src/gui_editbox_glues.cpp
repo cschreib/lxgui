@@ -66,10 +66,10 @@ int lua_edit_box::_get_cursor_position(lua_State* pLua)
 
 int lua_edit_box::_get_history_lines(lua_State* pLua)
 {
-    const auto& lHistoryLine = get_object()->get_history_lines();
     if (!check_object_())
         return 0;
 
+    const auto& lHistoryLine = get_object()->get_history_lines();
     lua::function mFunc("EditBox:get_history_lines", pLua, lHistoryLine.size());
 
     for (const auto& sLine : lHistoryLine)
