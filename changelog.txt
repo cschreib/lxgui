@@ -50,7 +50,7 @@ v2.0.0:
  - gui: fixed virtual gui::scroll_frame not able to be inherited from
  - gui: fixed frame OnSizeChanged not always triggered
  - gui: fixed text coloring not working when applied to first character of a manual new line
- - gui: fixed up/down keys for single-line edit box moving the cursor
+ - gui: fixed up/down keys for single-line edit box just moving the cursor and not using history
  - xml: now parsing standard XML comments
 
 v1.2.0:

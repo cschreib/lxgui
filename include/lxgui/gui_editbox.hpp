@@ -398,6 +398,7 @@ namespace gui
 
         std::vector<std::string> lHistoryLineList_;
         uint                     uiMaxHistoryLines_ = uint(-1);
+        uint                     uiCurrentHistoryLine_ = uint(-1);
 
         font_string* pFontString_ = nullptr;
         quad2i       lTextInsets_ = quad2i::ZERO;

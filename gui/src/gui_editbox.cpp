@@ -1302,6 +1302,43 @@ void edit_box::process_key_(key mKey)
                 unlight_text();
         }
     }
+    else if (!bMultiLine_ && (mKey == key::K_UP || mKey == key::K_DOWN) && !lHistoryLineList_.empty())
+    {
+        if (mKey == key::K_UP)
+        {
+            if (uiCurrentHistoryLine_ != 0u)
+            {
+                if (uiCurrentHistoryLine_ == uint(-1))
+                    uiCurrentHistoryLine_ = lHistoryLineList_.size()-1;
+                else
+                    --uiCurrentHistoryLine_;
+
+                set_text(lHistoryLineList_[uiCurrentHistoryLine_]);
+                if (!mChecker.is_alive())
+                    return;
+            }
+        }
+        else
+        {
+            if (uiCurrentHistoryLine_ != uint(-1))
+            {
+                if (uiCurrentHistoryLine_ + 1 == lHistoryLineList_.size())
+                {
+                    uiCurrentHistoryLine_ = uint(-1);
+                    set_text("");
+                    if (!mChecker.is_alive())
+                        return;
+                }
+                else
+                {
+                    ++uiCurrentHistoryLine_;
+                    set_text(lHistoryLineList_[uiCurrentHistoryLine_]);
+                    if (!mChecker.is_alive())
+                        return;
+                }
+            }
+        }
+    }
 }
 
 periodic_timer::periodic_timer(double dDuration, start_type mType, bool bTickFirst) :
