@@ -285,6 +285,9 @@ namespace gui
         */
         const std::vector<std::string>& get_history_lines() const;
 
+        /// Clears the history line list.
+        void clear_history();
+
         /// Sets whether keyboard arrows move the carret or not.
         /** \param bArrowsIgnored 'true' to ignore arrow keys
         */
@@ -416,6 +419,7 @@ namespace gui
 
         // Glues
         int _add_history_line(lua_State*);
+        int _clear_history(lua_State*);
         int _get_blink_speed(lua_State*);
         int _get_cursor_position(lua_State*);
         int _get_history_lines(lua_State*);

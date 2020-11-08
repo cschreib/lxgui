@@ -670,6 +670,7 @@ namespace gui
 
         // edit_box
         method(edit_box, add_history_line),
+        method(edit_box, clear_history),
         method(edit_box, get_blink_speed),
         method(edit_box, get_cursor_position),
         method(edit_box, get_history_lines),

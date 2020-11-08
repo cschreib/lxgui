@@ -42,6 +42,7 @@ v2.0.0:
  - gui: relative sizing is now only applicable to XML <Size>
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
  - gui: added set_cursor_position()/get_cursor_position() to edit_box
+ - gui: added clear_history() to edit_box
  - gui: fixed rare crash in edit_box
  - gui: fixed crash when calling Lua delete_frame() twice on same frame
  - gui: fixed Lua get_width()/get_height() returning incorrect values

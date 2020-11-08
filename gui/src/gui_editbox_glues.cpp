@@ -28,6 +28,18 @@ int lua_edit_box::_add_history_line(lua_State* pLua)
     return mFunc.on_return();
 }
 
+int lua_edit_box::_clear_history(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("EditBox:clear_history", pLua);
+
+    get_object()->clear_history();
+
+    return mFunc.on_return();
+}
+
 int lua_edit_box::_get_blink_speed(lua_State* pLua)
 {
     if (!check_object_())

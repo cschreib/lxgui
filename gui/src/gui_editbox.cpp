@@ -638,6 +638,7 @@ void edit_box::set_multi_line(bool bMultiLine)
         iterCarretPos_ = sUnicodeText_.end();
         update_displayed_text_();
         update_carret_position_();
+        clear_history();
     }
 }
 
@@ -675,6 +676,8 @@ uint edit_box::get_max_history_lines() const
 
 void edit_box::add_history_line(const std::string& sHistoryLine)
 {
+    if (bMultiLine_) return;
+
     lHistoryLineList_.push_back(sHistoryLine);
 
     if (lHistoryLineList_.size() > uiMaxHistoryLines_)
@@ -689,6 +692,11 @@ void edit_box::add_history_line(const std::string& sHistoryLine)
 const std::vector<std::string>& edit_box::get_history_lines() const
 {
     return lHistoryLineList_;
+}
+
+void edit_box::clear_history()
+{
+    lHistoryLineList_.clear();
 }
 
 void edit_box::set_arrows_ignored(bool bArrowsIgnored)
