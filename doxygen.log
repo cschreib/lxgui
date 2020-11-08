@@ -314,26 +314,28 @@ Preprocessing /home/travis/build/c/home/travis/build/cschreib/lxgui/gui/src/gui_
 /home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:14: warning: documented symbol `lxgui::gui::lua_edit_box::lua_edit_box' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:18: warning: documented symbol `int lxgui::gui::lua_edit_box::_add_history_line' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:31: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_blink_speed' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:43: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_history_lines' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:57: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_max_letters' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:69: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_num_letters' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:81: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_number' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:93: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_text' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:105: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_text_insets' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:122: warning: documented symbol `int lxgui::gui::lua_edit_box::_highlight_text' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:146: warning: documented symbol `int lxgui::gui::lua_edit_box::_insert' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:159: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_multi_line' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:171: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_numeric' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:183: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_password' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:195: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_blink_speed' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:208: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_max_history_lines' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:221: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_max_letters' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:234: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_multi_line' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:247: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_number' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:260: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_numeric' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:273: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_password' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:286: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_text' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:299: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_text_insets' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:43: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_cursor_position' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:55: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_history_lines' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:69: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_max_letters' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:81: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_num_letters' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:93: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_number' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:105: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_text' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:117: warning: documented symbol `int lxgui::gui::lua_edit_box::_get_text_insets' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:134: warning: documented symbol `int lxgui::gui::lua_edit_box::_highlight_text' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:158: warning: documented symbol `int lxgui::gui::lua_edit_box::_insert' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:171: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_multi_line' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:183: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_numeric' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:195: warning: documented symbol `int lxgui::gui::lua_edit_box::_is_password' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:207: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_blink_speed' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:220: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_cursor_position' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:233: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_max_history_lines' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:246: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_max_letters' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:259: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_multi_line' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:272: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_number' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:285: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_numeric' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:298: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_password' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:311: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_text' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_editbox_glues.cpp:324: warning: documented symbol `int lxgui::gui::lua_edit_box::_set_text_insets' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_focusframe_glues.cpp:9: warning: documented symbol `lxgui::gui::lua_focus_frame::lua_focus_frame' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_focusframe_glues.cpp:13: warning: documented symbol `int lxgui::gui::lua_focus_frame::_clear_focus' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_focusframe_glues.cpp:25: warning: documented symbol `int lxgui::gui::lua_focus_frame::_is_auto_focus' was not declared or defined.
@@ -454,24 +456,24 @@ Preprocessing /home/travis/build/c/home/travis/build/cschreib/lxgui/gui/src/gui_
 /home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:564: warning: documented symbol `const char lxgui::gui::lua_edit_box::className' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:565: warning: documented symbol `const char * lxgui::gui::lua_edit_box::classList' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:566: warning: documented symbol `lua::lunar_binding< lua_edit_box > lxgui::gui::lua_edit_box::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:698: warning: documented symbol `const char lxgui::gui::lua_scroll_frame::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:699: warning: documented symbol `const char * lxgui::gui::lua_scroll_frame::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:700: warning: documented symbol `lua::lunar_binding< lua_scroll_frame > lxgui::gui::lua_scroll_frame::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:812: warning: documented symbol `const char lxgui::gui::lua_button::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:813: warning: documented symbol `const char * lxgui::gui::lua_button::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:814: warning: documented symbol `lua::lunar_binding< lua_button > lxgui::gui::lua_button::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:951: warning: documented symbol `const char lxgui::gui::lua_slider::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:952: warning: documented symbol `const char * lxgui::gui::lua_slider::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:953: warning: documented symbol `lua::lunar_binding< lua_slider > lxgui::gui::lua_slider::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1072: warning: documented symbol `const char lxgui::gui::lua_layered_region::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1073: warning: documented symbol `const char * lxgui::gui::lua_layered_region::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1076: warning: documented symbol `lua::lunar_binding< lua_layered_region > lxgui::gui::lua_layered_region::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1081: warning: documented symbol `const char lxgui::gui::lua_texture::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1082: warning: documented symbol `const char * lxgui::gui::lua_texture::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1083: warning: documented symbol `lua::lunar_binding< lua_texture > lxgui::gui::lua_texture::methods' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1141: warning: documented symbol `const char lxgui::gui::lua_font_string::className' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1142: warning: documented symbol `const char * lxgui::gui::lua_font_string::classList' was not declared or defined.
-/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1143: warning: documented symbol `lua::lunar_binding< lua_font_string > lxgui::gui::lua_font_string::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:700: warning: documented symbol `const char lxgui::gui::lua_scroll_frame::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:701: warning: documented symbol `const char * lxgui::gui::lua_scroll_frame::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:702: warning: documented symbol `lua::lunar_binding< lua_scroll_frame > lxgui::gui::lua_scroll_frame::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:814: warning: documented symbol `const char lxgui::gui::lua_button::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:815: warning: documented symbol `const char * lxgui::gui::lua_button::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:816: warning: documented symbol `lua::lunar_binding< lua_button > lxgui::gui::lua_button::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:953: warning: documented symbol `const char lxgui::gui::lua_slider::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:954: warning: documented symbol `const char * lxgui::gui::lua_slider::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:955: warning: documented symbol `lua::lunar_binding< lua_slider > lxgui::gui::lua_slider::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1074: warning: documented symbol `const char lxgui::gui::lua_layered_region::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1075: warning: documented symbol `const char * lxgui::gui::lua_layered_region::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1078: warning: documented symbol `lua::lunar_binding< lua_layered_region > lxgui::gui::lua_layered_region::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1083: warning: documented symbol `const char lxgui::gui::lua_texture::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1084: warning: documented symbol `const char * lxgui::gui::lua_texture::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1085: warning: documented symbol `lua::lunar_binding< lua_texture > lxgui::gui::lua_texture::methods' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1143: warning: documented symbol `const char lxgui::gui::lua_font_string::className' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1144: warning: documented symbol `const char * lxgui::gui::lua_font_string::classList' was not declared or defined.
+/home/travis/build/cschreib/lxgui/gui/src/gui_lunar.cpp:1145: warning: documented symbol `lua::lunar_binding< lua_font_string > lxgui::gui::lua_font_string::methods' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_manager_glues.cpp:59: warning: documented symbol `lxgui::gui::lua_manager::lua_manager' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_manager_glues.cpp:66: warning: documented symbol `lxgui::gui::lua_manager::~lua_manager' was not declared or defined.
 /home/travis/build/cschreib/lxgui/gui/src/gui_manager_glues.cpp:71: warning: documented symbol `void lxgui::gui::lua_manager::set_manager' was not declared or defined.
@@ -1018,5 +1020,5 @@ Generating file member index...
 Generating example index...
 finalizing index lists...
 writing tag file...
-lookup cache used 7112/65536 hits=79411 misses=7951
+lookup cache used 7117/65536 hits=79487 misses=7956
 finished...
