@@ -289,7 +289,8 @@ void edit_box::on_event(const event& mEvent)
         {
             for (char32_t cChar : pManager_->get_input_manager()->get_clipboard_content())
             {
-                add_char_(cChar);
+                if (!add_char_(cChar))
+                    break;
                 if (!mChecker.is_alive())
                     return;
             }
