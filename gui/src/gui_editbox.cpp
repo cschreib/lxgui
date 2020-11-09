@@ -1303,7 +1303,13 @@ void edit_box::process_key_(key mKey)
             if (pManager_->get_input_manager()->shift_is_pressed())
             {
                 if (bSelectedText_)
-                    highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
+                {
+                    uint uiNewEndPos = iterCarretPos_ - sUnicodeText_.begin();
+                    if (uiNewEndPos != uiSelectionStartPos_)
+                        highlight_text(uiSelectionStartPos_, uiNewEndPos);
+                    else
+                        unlight_text();
+                }
                 else
                     highlight_text(uiPreviousCarretPos, iterCarretPos_ - sUnicodeText_.begin());
             }
