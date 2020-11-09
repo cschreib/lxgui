@@ -302,7 +302,7 @@ void edit_box::on_event(const event& mEvent)
         if (!mChecker.is_alive())
             return;
     }
-    else if (mEvent.get_name() == "KEY_RELEASED")
+    else if (mEvent.get_name() == "KEY_RELEASED" && bFocus_)
     {
         key mKey = utils::get<key>(mEvent.get(0));
 
