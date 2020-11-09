@@ -29,6 +29,9 @@ namespace sfml
         void toggle_mouse_grab() override;
         std::string get_key_name(key mKey) const;
 
+        utils::ustring get_clipboard_content() override;
+        void set_clipboard_content(const utils::ustring& sContent) override;
+
         void on_sfml_event(const sf::Event& mEvent);
 
     protected :

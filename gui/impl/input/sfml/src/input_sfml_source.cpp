@@ -6,6 +6,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/Clipboard.hpp>
 
 using sf::Keyboard;
 using sf::Mouse;
@@ -34,6 +35,17 @@ void source::toggle_mouse_grab()
         fOldMouseX_ = mWindow_.getSize().x/2;
         fOldMouseY_ = mWindow_.getSize().y/2;
     }
+}
+
+utils::ustring source::get_clipboard_content()
+{
+    auto sUtfString = sf::Clipboard::getString().toUtf32();
+    return utils::ustring(sUtfString.begin(), sUtfString.end());
+}
+
+void source::set_clipboard_content(const utils::ustring& sContent)
+{
+    sf::Clipboard::setString(sf::String::fromUtf32(sContent.begin(), sContent.end()));
 }
 
 key source::from_sfml_(int uiSFKey) const

@@ -667,6 +667,16 @@ void manager::unregister_event_manager(gui::event_manager* pManager)
         lEventManagerList_.erase(iter);
 }
 
+utils::ustring manager::get_clipboard_content()
+{
+    return pSource_->get_clipboard_content();
+}
+
+void manager::set_clipboard_content(const utils::ustring& sContent)
+{
+    return pSource_->set_clipboard_content(sContent);
+}
+
 void manager::fire_event_(const gui::event& mEvent, bool bForce)
 {
     if (pFocusReceiver_ && !bForce)

@@ -2,6 +2,7 @@
 #define LXGUI_INPUT_HPP
 
 #include "lxgui/utils.hpp"
+#include "lxgui/utils_string.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -127,6 +128,16 @@ namespace input
         /** \return The double click maximum time
         */
         double get_doubleclick_time() const;
+
+        /// Retrieve a copy of the clipboard content.
+        /** \return A copy of the clipboard content (empty string is clipboard is empty).
+        */
+        virtual utils::ustring get_clipboard_content() = 0;
+
+        /// Replace the content of the clipboard.
+        /** \param sContent The new clipboard content
+        */
+        virtual void set_clipboard_content(const utils::ustring& sContent) = 0;
 
     protected:
 
@@ -405,6 +416,16 @@ namespace input
         *   \note For more details, see register_event_manager().
         */
         void unregister_event_manager(gui::event_manager* pManager);
+
+        /// Retrieve a copy of the clipboard content.
+        /** \return A copy of the clipboard content (empty string is clipboard is empty).
+        */
+        utils::ustring get_clipboard_content();
+
+        /// Replace the content of the clipboard.
+        /** \param sContent The new clipboard content
+        */
+        void set_clipboard_content(const utils::ustring& sContent);
 
         /// Returns the input source.
         /** \return The input source
