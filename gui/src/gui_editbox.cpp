@@ -275,6 +275,25 @@ void edit_box::on_event(const event& mEvent)
             if (!mChecker.is_alive())
                 return;
         }
+        else if (mKey == key::K_C && pManager_->get_input_manager()->ctrl_is_pressed())
+        {
+            if (uiSelectionEndPos_ != uiSelectionStartPos_)
+            {
+                uint uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
+                uint uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
+                utils::ustring sSelected = sUnicodeText_.substr(uiMinPos, uiMaxPos - uiMinPos);
+                pManager_->get_input_manager()->set_clipboard_content(sSelected);
+            }
+        }
+        else if (mKey == key::K_V && pManager_->get_input_manager()->ctrl_is_pressed())
+        {
+            for (char32_t cChar : pManager_->get_input_manager()->get_clipboard_content())
+            {
+                add_char_(cChar);
+                if (!mChecker.is_alive())
+                    return;
+            }
+        }
 
         mLastKeyPressed_ = mKey;
 
