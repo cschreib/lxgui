@@ -1298,17 +1298,26 @@ void edit_box::process_key_(key mKey)
         {
             uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
-            if (mKey == key::K_LEFT)
-                move_carret_horizontally_(false);
-            else if (mKey == key::K_RIGHT)
-                move_carret_horizontally_(true);
-
-            if (bMultiLine_)
+            if (mKey == key::K_LEFT || mKey == key::K_RIGHT)
             {
-                if (mKey == key::K_UP)
-                    move_carret_vertically_(false);
-                else if (mKey == key::K_DOWN)
-                    move_carret_vertically_(true);
+                if (bSelectedText_ && !pManager_->get_input_manager()->shift_is_pressed())
+                {
+                    uint uiOffset = 0;
+                    if (mKey == key::K_LEFT)
+                        uiOffset = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
+                    else
+                        uiOffset = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
+
+                    iterCarretPos_ = sUnicodeText_.begin() + uiOffset;
+                    update_carret_position_();
+                }
+                else
+                    move_carret_horizontally_(mKey == key::K_RIGHT);
+            }
+            else
+            {
+                if (bMultiLine_)
+                    move_carret_vertically_(mKey == key::K_DOWN);
             }
 
             if (pManager_->get_input_manager()->shift_is_pressed())
