@@ -93,14 +93,20 @@ namespace gui
     class renderer;
 
     /// The base of the GUI
-    /** This widget (GUI element) is a virtual base.
-    *   It doesn't display anything on its own and must
-    *   be inherited to allow new features. It provides
-    *   several virtual functions : update, render...
-    *   They should be overriden and contain all the
-    *   required logic for it to work.<br>
-    *   Look at the provided widgets (Frame, Slider, ...)
-    *   to see how it's done.
+    /** This widget (GUI element) is a virtual base. It will not display anything on its own,
+    *   and must be inherited from to implement any useful features. A few key virtual functions
+    *   (update, render...) should be overriden, and provide all the required logic for the widget
+    *   to serve its purpose. Look at the existing widgets (frame, slider, texture, ...) for
+    *   examples of how this is done.<br>
+    *   There are two main kinds of GUI elements inheriting from this base class. The first are
+    *   regions, which are simple static widgets used to display one particular type of GUI element,
+    *   such as formatted text, or a textured shape. The second are frames, which can contain other
+    *   frames and regions, while also implementing logic to react to events.<br>
+    *   The base functionalities provided by this class are: identification and naming,
+    *   parent relationship to another widget, positioning and sizing (using dimensions and
+    *   anchors), visibility (hidden/shown), transparency (alpha), and virtuality.<br>
+    *   Virtual widgets are never displayed on the screen, but serve as templates for creating new
+    *   widgets.<br>
     */
     class uiobject
     {
@@ -501,7 +507,9 @@ namespace gui
 
         /// Checks if this uiobject is virtual.
         /** \return 'true' if this uiobject is virtual
-        *   \note A virtual uiobject can be inherited.
+        *   \note A virtual uiobject will not be displayed on the screen, but can serve as a
+        *         template to create new GUI elements (it is then "inherited", although note
+        *         that this has no connection to C++ inheritance).
         */
         bool is_virtual() const;
 
@@ -566,9 +574,9 @@ namespace gui
         */
         virtual void notify_renderer_need_redraw() const;
 
-        /// Adds a Lua variable to copy when derivating.
+        /// Adds a Lua variable to copy when inheriting.
         /** \param sVariable The name of the variable
-        *   \note The variable must be an element of the widget's Lua glue.<br>
+        *   \note The variable must be an element of the widget's Lua glue.
         *         If you have a virtual widget called "Test", and in some lua code you do :<br>
         *         Test.someVariable = 2;<br>
         *         ... then you can call this function with "someVariable".
