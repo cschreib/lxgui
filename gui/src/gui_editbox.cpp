@@ -631,6 +631,8 @@ void edit_box::set_max_history_lines(uint uiMaxHistoryLines)
                 lHistoryLineList_.begin(),
                 lHistoryLineList_.begin() + (lHistoryLineList_.size() - uiMaxHistoryLines_)
             );
+
+            uiCurrentHistoryLine_ = uint(-1);
         }
     }
 }
@@ -653,6 +655,8 @@ void edit_box::add_history_line(const std::string& sHistoryLine)
             lHistoryLineList_.begin() + (lHistoryLineList_.size() - uiMaxHistoryLines_)
         );
     }
+
+    uiCurrentHistoryLine_ = uint(-1);
 }
 
 const std::vector<std::string>& edit_box::get_history_lines() const
@@ -663,6 +667,7 @@ const std::vector<std::string>& edit_box::get_history_lines() const
 void edit_box::clear_history()
 {
     lHistoryLineList_.clear();
+    uiCurrentHistoryLine_ = uint(-1);
 }
 
 void edit_box::set_arrows_ignored(bool bArrowsIgnored)
