@@ -187,7 +187,7 @@ int lua_frame::_enable_mouse(lua_State* pLua)
     mFunc.add(1, "is world input allowed", lua::type::BOOLEAN, true);
     if (mFunc.check())
     {
-        if (mFunc.is_provided(0))
+        if (mFunc.is_provided(1))
             get_object()->enable_mouse(mFunc.get(0)->get_bool(), mFunc.get(1)->get_bool());
         else
             get_object()->enable_mouse(mFunc.get(0)->get_bool());

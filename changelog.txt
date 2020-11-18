@@ -54,6 +54,7 @@ v2.0.0:
  - gui: fixed up/down keys for single-line edit_box just moving the cursor and not using history
  - gui: fixed left/right keys not moving the carret as expected when text is selected in edit_box
  - gui: fixed crash when inherited child's name is already taken
+ - gui: fixed incorrect handling of optional parameter in Frame:enable_mouse() lua function
  - xml: now parsing standard XML comments
 
 v1.2.0:
