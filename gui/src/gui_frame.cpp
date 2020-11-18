@@ -675,11 +675,7 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
     pRegion->set_name(sName);
 
     if (!pManager_->add_uiobject(pRegion.get()))
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "An object with the name " << pRegion->get_name() << " already exists." << std::endl;
         return nullptr;
-    }
 
     pRegion->create_glue();
 
@@ -717,19 +713,15 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     if (this->is_virtual())
         pNewFrame->set_virtual();
 
-    if (!pManager_->add_uiobject(pNewFrame.get()))
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "An object with the name \"" << pNewFrame->get_name() << "\" already exists." << std::endl;
-        return nullptr;
-    }
-
-    pNewFrame->create_glue();
-
     if (!pNewFrame->is_virtual())
         get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
 
     pNewFrame->set_level(get_level() + 1);
+
+    if (!pManager_->add_uiobject(pNewFrame.get()))
+        return nullptr;
+
+    pNewFrame->create_glue();
 
     for (auto* pObj : lInheritance)
     {

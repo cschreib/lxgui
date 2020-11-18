@@ -182,17 +182,13 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
     if (bVirtual)
         pNewFrame->set_virtual();
 
-    if (!add_uiobject(pNewFrame.get()))
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "An object with the name \"" << pNewFrame->get_name() << "\" already exists." << std::endl;
-        return nullptr;
-    }
-
-    pNewFrame->create_glue();
-
     if (!pNewFrame->is_virtual())
         notify_rendered_frame(pNewFrame.get(), true);
+
+    if (!add_uiobject(pNewFrame.get()))
+        return nullptr;
+
+    pNewFrame->create_glue();
 
     for (auto* pObj : lInheritance)
     {
