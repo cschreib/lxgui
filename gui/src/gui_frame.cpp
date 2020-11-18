@@ -278,6 +278,8 @@ void frame::copy_from(uiobject* pObj)
         if (pChild->is_special()) continue;
 
         frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        if (!pNewChild) continue;
+
         pNewChild->notify_loaded();
     }
 

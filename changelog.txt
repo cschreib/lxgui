@@ -53,6 +53,7 @@ v2.0.0:
  - gui: fixed text coloring not working when applied to first character of a manual new line
  - gui: fixed up/down keys for single-line edit_box just moving the cursor and not using history
  - gui: fixed left/right keys not moving the carret as expected when text is selected in edit_box
+ - gui: fixed crash when inherited child's name is already taken
  - xml: now parsing standard XML comments
 
 v1.2.0:
