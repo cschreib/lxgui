@@ -8,7 +8,7 @@ jobs:
   include:
     - stage: test
       os: linux
-      dist: bionic
+      dist: focal
       compiler: gcc
       before_script:
         - sudo apt-get -y install libz-dev libpng-dev libsfml-dev libfreetype6-dev libglew-dev liblua5.2-dev libglu1-mesa-dev g++-8
@@ -19,7 +19,7 @@ jobs:
 
     - stage: test
       os: linux
-      dist: bionic
+      dist: focal
       compiler: clang
       addons:
         apt:
