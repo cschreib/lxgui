@@ -50,7 +50,6 @@ jobs:
     - stage: test
       os: windows
       compiler: gcc
-      script:
       before_script:
         - choco install -y visualstudio2017-workload-vctools
         - cd dependencies
