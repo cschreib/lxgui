@@ -41,7 +41,7 @@ jobs:
       osx_image: xcode11.6
       compiler: clang
       before_script:
-        - brew install zlib libpng sfml freetype glew lua llvm
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install zlib libpng sfml freetype glew lua llvm
         - mkdir build
         - cd build
         - cmake .. -DCMAKE_C_COMPILER=/usr/local/opt/llvm/bin/clang -DCMAKE_CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
