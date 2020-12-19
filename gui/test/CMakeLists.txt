@@ -40,7 +40,7 @@ target_link_libraries(lxgui-test lxgui)
 target_link_libraries(lxgui-test lxgui-luapp)
 target_link_libraries(lxgui-test lxgui-xml)
 target_link_libraries(lxgui-test lxgui-utils)
-target_link_libraries(lxgui-test ${LUA_LIBRARY})
+target_link_libraries(lxgui-test ${LUA_LIBRARIES})
 
 if(WINDOWS AND MSVC)
     target_link_libraries(lxgui-test user32)

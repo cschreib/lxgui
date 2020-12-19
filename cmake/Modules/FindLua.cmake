@@ -176,7 +176,7 @@ if (LUA_LIBRARY)
         set(LUA_LIBRARIES "${LUA_LIBRARY};${LUA_MATH_LIBRARY}")
 
         # include dl library for statically-linked Lua library
-        get_filename_component(LUA_LIB_EXT ${LUA_LIBRARY} EXT)
+        get_filename_component(LUA_LIB_EXT ${LUA_LIBRARY} LAST_EXT)
         if(LUA_LIB_EXT STREQUAL CMAKE_STATIC_LIBRARY_SUFFIX)
           list(APPEND LUA_LIBRARIES ${CMAKE_DL_LIBS})
         endif()
