@@ -169,6 +169,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a98d3146588854b918742d4fb9a34b0ef"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#a98d3146588854b918742d4fb9a34b0ef">get_doubleclick_time</a> () const </td></tr>
 <tr class="memdesc:a98d3146588854b918742d4fb9a34b0ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the double click maximum time.  <a href="#a98d3146588854b918742d4fb9a34b0ef">More...</a><br /></td></tr>
 <tr class="separator:a98d3146588854b918742d4fb9a34b0ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae412448ff29f83896523678cd9e79027"><td class="memItemLeft" align="right" valign="top">virtual utils::ustring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#ae412448ff29f83896523678cd9e79027">get_clipboard_content</a> ()=0</td></tr>
+<tr class="memdesc:ae412448ff29f83896523678cd9e79027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a copy of the clipboard content.  <a href="#ae412448ff29f83896523678cd9e79027">More...</a><br /></td></tr>
+<tr class="separator:ae412448ff29f83896523678cd9e79027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c25e299c251f67429d45c497e66902c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#a6c25e299c251f67429d45c497e66902c">set_clipboard_content</a> (const utils::ustring &amp;sContent)=0</td></tr>
+<tr class="memdesc:a6c25e299c251f67429d45c497e66902c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the content of the clipboard.  <a href="#a6c25e299c251f67429d45c497e66902c">More...</a><br /></td></tr>
+<tr class="separator:a6c25e299c251f67429d45c497e66902c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -203,7 +209,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>The base class for input source implementation. </p>
 <dl class="section note"><dt>Note</dt><dd>In case you want to share the same source for multiple <a class="el" href="classlxgui_1_1input_1_1manager.html" title="Handles inputs (keyboard and mouse) ">input::manager</a>, you have to call set_manually_updated(true), and update the source yourself. Else, it will be updated by each <a class="el" href="classlxgui_1_1input_1_1manager.html" title="Handles inputs (keyboard and mouse) ">input::manager</a> (which may not be desirable). </dd></dl>
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00035">35</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00036">36</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a886b16d4066e140c5736d1133e1db7ba"></a>
 <div class="memitem">
@@ -273,6 +279,34 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The unicode characters entered with the keyboard </dd></dl>
 
 <p>Definition at line <a class="el" href="input_8cpp_source.html#l00038">38</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae412448ff29f83896523678cd9e79027"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual utils::ustring lxgui::input::source_impl::get_clipboard_content </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve a copy of the clipboard content. </p>
+<dl class="section return"><dt>Returns</dt><dd>A copy of the clipboard content (empty string is clipboard is empty). </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#ad59cf8f7b097e3fa99f47395e2b995f4">lxgui::input::sfml::source</a>.</p>
 
 </div>
 </div>
@@ -453,6 +487,40 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6c25e299c251f67429d45c497e66902c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void lxgui::input::source_impl::set_clipboard_content </td>
+          <td>(</td>
+          <td class="paramtype">const utils::ustring &amp;&#160;</td>
+          <td class="paramname"><em>sContent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replace the content of the clipboard. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sContent</td><td>The new clipboard content </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a21721b953824962f0777ea6d9ff822ab">lxgui::input::sfml::source</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ab1a1eb75c12ab4d6da022d0c29ff70d4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -599,7 +667,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00144">144</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00155">155</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -621,7 +689,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00146">146</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00157">157</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -643,7 +711,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00150">150</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00161">161</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -665,7 +733,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00139">139</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00150">150</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -687,7 +755,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00140">140</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00151">151</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -709,7 +777,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00142">142</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00153">153</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -731,7 +799,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00136">136</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00147">147</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -753,7 +821,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00137">137</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00148">148</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -775,7 +843,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00147">147</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00158">158</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -797,7 +865,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00148">148</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00159">159</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -808,7 +876,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 8 2020 13:14:49 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 19 2020 12:29:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

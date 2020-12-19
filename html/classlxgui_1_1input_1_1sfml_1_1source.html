@@ -121,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af5be3eb0862f003bc3fbcfc5348325dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac363496b6e05c0bbfcba941739076414"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#ac363496b6e05c0bbfcba941739076414">get_key_name</a> (<a class="el" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">key</a> mKey) const </td></tr>
 <tr class="separator:ac363496b6e05c0bbfcba941739076414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad59cf8f7b097e3fa99f47395e2b995f4"><td class="memItemLeft" align="right" valign="top">utils::ustring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#ad59cf8f7b097e3fa99f47395e2b995f4">get_clipboard_content</a> () override</td></tr>
+<tr class="memdesc:ad59cf8f7b097e3fa99f47395e2b995f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a copy of the clipboard content.  <a href="#ad59cf8f7b097e3fa99f47395e2b995f4">More...</a><br /></td></tr>
+<tr class="separator:ad59cf8f7b097e3fa99f47395e2b995f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21721b953824962f0777ea6d9ff822ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a21721b953824962f0777ea6d9ff822ab">set_clipboard_content</a> (const utils::ustring &amp;sContent) override</td></tr>
+<tr class="memdesc:a21721b953824962f0777ea6d9ff822ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the content of the clipboard.  <a href="#a21721b953824962f0777ea6d9ff822ab">More...</a><br /></td></tr>
+<tr class="separator:a21721b953824962f0777ea6d9ff822ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a3910b4ff821ec2f09be36b9d31320d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a2a3910b4ff821ec2f09be36b9d31320d">on_sfml_event</a> (const sf::Event &amp;mEvent)</td></tr>
 <tr class="separator:a2a3910b4ff821ec2f09be36b9d31320d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classlxgui_1_1input_1_1source__impl"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classlxgui_1_1input_1_1source__impl')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classlxgui_1_1input_1_1source__impl.html">lxgui::input::source_impl</a></td></tr>
@@ -271,6 +277,34 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad59cf8f7b097e3fa99f47395e2b995f4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">utils::ustring lxgui::input::sfml::source::get_clipboard_content </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Retrieve a copy of the clipboard content. </p>
+<dl class="section return"><dt>Returns</dt><dd>A copy of the clipboard content (empty string is clipboard is empty). </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1input_1_1source__impl.html#ae412448ff29f83896523678cd9e79027">lxgui::input::source_impl</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac363496b6e05c0bbfcba941739076414"></a>
 <div class="memitem">
 <div class="memproto">
@@ -324,6 +358,40 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a21721b953824962f0777ea6d9ff822ab"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::sfml::source::set_clipboard_content </td>
+          <td>(</td>
+          <td class="paramtype">const utils::ustring &amp;&#160;</td>
+          <td class="paramname"><em>sContent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replace the content of the clipboard. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sContent</td><td>The new clipboard content </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1input_1_1source__impl.html#a6c25e299c251f67429d45c497e66902c">lxgui::input::source_impl</a>.</p>
 
 </div>
 </div>
@@ -388,7 +456,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 8 2020 13:14:49 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 19 2020 12:29:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>

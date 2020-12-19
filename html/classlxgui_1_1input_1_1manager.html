@@ -227,6 +227,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e752d362c130afbb1c4e4cf579b7b97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a1e752d362c130afbb1c4e4cf579b7b97">unregister_event_manager</a> (<a class="el" href="classlxgui_1_1gui_1_1event__manager.html">gui::event_manager</a> *pManager)</td></tr>
 <tr class="memdesc:a1e752d362c130afbb1c4e4cf579b7b97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters an event manager.  <a href="#a1e752d362c130afbb1c4e4cf579b7b97">More...</a><br /></td></tr>
 <tr class="separator:a1e752d362c130afbb1c4e4cf579b7b97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25df55d9946d2e496b629f08919b6941"><td class="memItemLeft" align="right" valign="top">utils::ustring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a25df55d9946d2e496b629f08919b6941">get_clipboard_content</a> ()</td></tr>
+<tr class="memdesc:a25df55d9946d2e496b629f08919b6941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a copy of the clipboard content.  <a href="#a25df55d9946d2e496b629f08919b6941">More...</a><br /></td></tr>
+<tr class="separator:a25df55d9946d2e496b629f08919b6941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7efab5ed3e43a4da16771a5107d97bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a7efab5ed3e43a4da16771a5107d97bca">set_clipboard_content</a> (const utils::ustring &amp;sContent)</td></tr>
+<tr class="memdesc:a7efab5ed3e43a4da16771a5107d97bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the content of the clipboard.  <a href="#a7efab5ed3e43a4da16771a5107d97bca">More...</a><br /></td></tr>
+<tr class="separator:a7efab5ed3e43a4da16771a5107d97bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56571584b3bfcbdc42ff30986087ae06"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1input_1_1source__impl.html">source_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a56571584b3bfcbdc42ff30986087ae06">get_source</a> () const </td></tr>
 <tr class="memdesc:a56571584b3bfcbdc42ff30986087ae06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the input source.  <a href="#a56571584b3bfcbdc42ff30986087ae06">More...</a><br /></td></tr>
 <tr class="separator:a56571584b3bfcbdc42ff30986087ae06"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -237,7 +243,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles inputs (keyboard and mouse) </p>
 
-<p>Definition at line <a class="el" href="input_8hpp_source.html#l00154">154</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p>Definition at line <a class="el" href="input_8hpp_source.html#l00165">165</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9a3985cecdb94c35c175c8ebd3c08fb0"></a>
 <div class="memitem">
@@ -496,6 +502,26 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The multibyte UTF8 character just entered with the keyboard </dd></dl>
 
 <p>Definition at line <a class="el" href="input_8cpp_source.html#l00366">366</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a25df55d9946d2e496b629f08919b6941"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">utils::ustring lxgui::input::manager::get_clipboard_content </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieve a copy of the clipboard content. </p>
+<dl class="section return"><dt>Returns</dt><dd>A copy of the clipboard content (empty string is clipboard is empty). </dd></dl>
+
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00670">670</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
 
 </div>
 </div>
@@ -1212,6 +1238,32 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a7efab5ed3e43a4da16771a5107d97bca"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::manager::set_clipboard_content </td>
+          <td>(</td>
+          <td class="paramtype">const utils::ustring &amp;&#160;</td>
+          <td class="paramname"><em>sContent</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replace the content of the clipboard. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sContent</td><td>The new clipboard content </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="input_8cpp_source.html#l00675">675</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ae9f713930f71cfe363b1809e31162fb1"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1399,7 +1451,7 @@ Calling set_focus(false) doesn't immediately remove focus. You have to wait for 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 8 2020 13:14:49 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 19 2020 12:29:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
