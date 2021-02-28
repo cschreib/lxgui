@@ -5,6 +5,7 @@
 sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel
 git submodule update --init
 ```                                                                       
+
 ## install GLEW                                                                                                    
 download tar of the [![latest release](https://github.com/nigels-com/glew/releases/)](https://github.com/nigels-com/glew/releases/)                                                                                 
 ```
