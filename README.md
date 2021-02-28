@@ -1,5 +1,29 @@
 [![Build Status](https://api.travis-ci.com/cschreib/lxgui.svg?branch=master)](https://travis-ci.com/cschreib/lxgui)
 
+# Getting started 
+```
+sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel
+git submodule update --init
+```                                                                       
+## install GLEW                                                                                                    
+download tar of the [![latest release](https://github.com/nigels-com/glew/releases/)](https://github.com/nigels-com/glew/releases/)                                                                                 
+```
+sudo yum install libXmu-devel libXi-devel libGL-devel dos2unix git wget
+```
+unzip, enter the dir and 
+```
+sudo make install 
+```
+
+go back to the lxgui dir
+```
+mkdir build
+cd build 
+cmake ..
+make 
+``` 
+
+
 # What is lxgui?
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:

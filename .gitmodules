@@ -1,3 +1,3 @@
 [submodule "sol2"]
 	path = sol2
-	url = https://github.com/ThePhD/sol2.git
+	url = git@github.com:unnamed-mmo/sol2.git
