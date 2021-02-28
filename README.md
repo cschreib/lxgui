@@ -2,7 +2,9 @@
 
 # Getting started 
 ```
-sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel
+git clone https://github.com/unnamed-mmo/lxgui
+sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel lua-devel
+cd lxgui
 git submodule update --init
 ```                                                                       
 ## install GLEW                                                                                                    
