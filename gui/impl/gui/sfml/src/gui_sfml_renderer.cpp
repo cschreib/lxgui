@@ -15,7 +15,7 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow), pCurrentSFMLTarget_(nullptr)
+renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow)
 {
 }
 
@@ -135,12 +135,12 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
 
     try
     {
-        std::shared_ptr<sfml::material> pTex = std::make_shared<sfml::material>(
+        std::shared_ptr<gui::material> pTex = std::make_shared<sfml::material>(
             sFileName, material::wrap::REPEAT, mFilter
         );
 
         lTextureList_[sFileName] = pTex;
-        return std::move(pTex);
+        return pTex;
     }
     catch (const std::exception& e)
     {
@@ -151,7 +151,7 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
 
 std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
 {
-    return std::make_shared<material>(mColor);
+    return std::make_shared<sfml::material>(mColor);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -171,7 +171,7 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth,
 {
     try
     {
-        return std::make_shared<render_target>(uiWidth, uiHeight);
+        return std::make_shared<sfml::render_target>(uiWidth, uiHeight);
     }
     catch (const std::exception& e)
     {
