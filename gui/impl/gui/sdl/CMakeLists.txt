@@ -1,7 +1,7 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/sdl)
 set(SRCROOT ${TARGET_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${SDL_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIRS})
 
 add_library(lxgui-sdl STATIC
     ${SRCROOT}/gui_sdl_font.cpp
