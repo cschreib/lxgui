@@ -70,7 +70,7 @@ jobs:
         - sudo apt-get -y install doxygen
       script:
         - if [[ "$TRAVIS_BRANCH" != "master" ]]; then travis_terminate 0; fi
-        - if [[ "$TRAVIS_PULL_REQUEST" = "true" ]] ; then travis_terminate 0; fi
+        - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]] ; then travis_terminate 0; fi
         - cd $TRAVIS_BUILD_DIR
         - .ci/setup-git.sh || travis_terminate 1
         - .ci/generate-doc.sh || travis_terminate 1
