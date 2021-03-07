@@ -15,29 +15,37 @@
 
 #include <sol/state.hpp>
 
-#include <SFML/Window.hpp>
-
 //#define GL_GUI
+//#define SDL_GUI
 
-#ifdef GL_GUI
-#include <lxgui/impl/gui_gl_renderer.hpp>
-#ifdef MACOSX
-#include <OpenGL/gl.h>
+#if defined(GL_GUI)
+    // OpenGL + SFML input
+    #include <lxgui/impl/gui_gl_renderer.hpp>
+    #include <lxgui/impl/input_sfml_source.hpp>
+    #include <SFML/Window.hpp>
+    #ifdef MACOSX
+        #include <OpenGL/gl.h>
+    #else
+        #include <GL/gl.h>
+    #endif
+#elif defined(SDL_GUI)
+    // SDL
+    #include <lxgui/impl/gui_sdl.hpp>
+    #include <lxgui/impl/input_sdl_source.hpp>
 #else
-#include <GL/gl.h>
-#endif
-#else
-#include <lxgui/impl/gui_sfml.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+    // SFML
+    #include <lxgui/impl/gui_sfml.hpp>
+    #include <lxgui/impl/input_sfml_source.hpp>
+    #include <SFML/Window.hpp>
+    #include <SFML/Graphics/RenderWindow.hpp>
 #endif
 
-#include <lxgui/impl/input_sfml_source.hpp>
 
 #ifdef WIN32
-#include <windows.h>
-#ifdef MSVC
-#pragma comment(linker, "/entry:mainCRTStartup")
-#endif
+    #include <windows.h>
+    #ifdef MSVC
+        #pragma comment(linker, "/entry:mainCRTStartup")
+    #endif
 #endif
 
 #include <fstream>

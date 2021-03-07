@@ -41,12 +41,20 @@
 					"shell_cmd": "make -j12 lxgui-gl"
 				},
 				{
+					"name": "lxgui-input-sdl",
+					"shell_cmd": "make -j12 lxgui-input-sdl"
+				},
+				{
 					"name": "lxgui-input-sfml",
 					"shell_cmd": "make -j12 lxgui-input-sfml"
 				},
 				{
 					"name": "lxgui-luapp",
 					"shell_cmd": "make -j12 lxgui-luapp"
+				},
+				{
+					"name": "lxgui-sdl",
+					"shell_cmd": "make -j12 lxgui-sdl"
 				},
 				{
 					"name": "lxgui-sfml",
@@ -71,10 +79,33 @@
 	"folders":
 	[
 		{
-			"path": ".",
-			"index_exclude_patterns": ["bin/game", "build/*", ".ci/*", "gui/doc/*", "gui/test/lxgui-test*", "*.html"],
-			"folder_exclude_patterns": ["build", "gui/doc", ".git", ".ci"],
-			"file_exclude_patterns": ["*.html", "*.json", ".gitignore", ".gitmodules", ".travis.yml", "travis_key*", "lxgui-test*"]
+			"file_exclude_patterns":
+			[
+				"*.html",
+				"*.json",
+				".gitignore",
+				".gitmodules",
+				".travis.yml",
+				"travis_key*",
+				"lxgui-test*"
+			],
+			"folder_exclude_patterns":
+			[
+				"build",
+				"gui/doc",
+				".git",
+				".ci"
+			],
+			"index_exclude_patterns":
+			[
+				"bin/game",
+				"build/*",
+				".ci/*",
+				"gui/doc/*",
+				"gui/test/lxgui-test*",
+				"*.html"
+			],
+			"path": "."
 		}
 	],
 	"settings":
