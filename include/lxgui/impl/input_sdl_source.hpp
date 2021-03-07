@@ -1,18 +1,17 @@
-#ifndef LXGUI_INPUT_SFML_SOURCE_HPP
-#define LXGUI_INPUT_SFML_SOURCE_HPP
+#ifndef LXGUI_INPUT_SDL_SOURCE_HPP
+#define LXGUI_INPUT_SDL_SOURCE_HPP
 
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>
-#include <SFML/System/Clock.hpp>
 
-namespace sf {
-    class Window;
-    class Event;
-}
+#include <SDL_events.h>
+#include <chrono>
+
+struct SDL_Window;
 
 namespace lxgui {
 namespace input {
-namespace sfml
+namespace sdl
 {
     class source : public source_impl
     {
@@ -21,7 +20,7 @@ namespace sfml
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
         */
-        explicit source(const sf::Window& pWindow, bool bMouseGrab = false);
+        explicit source(SDL_Window* pWindow, bool bMouseGrab = false);
 
         source(const source&) = delete;
         source& operator = (const source&) = delete;
@@ -32,7 +31,7 @@ namespace sfml
         utils::ustring get_clipboard_content() override;
         void set_clipboard_content(const utils::ustring& sContent) override;
 
-        void on_sfml_event(const sf::Event& mEvent);
+        void on_sdl_event(const SDL_Event& mEvent);
 
     protected :
 
@@ -40,17 +39,18 @@ namespace sfml
 
     private :
 
-        input::key from_sfml_(int uiSFKey) const;
+        input::key from_sdl_(int iSDLKey) const;
 
-        const sf::Window& mWindow_;
+        SDL_Window* pWindow_ = nullptr;
 
-        bool bMouseGrab_ = false;
         bool bFirst_ = true;
+        bool bMouseGrab_ = false;
 
         float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
         float fWheelCache_ = 0.0f;
 
-        std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
+        using clock = std::chrono::high_resolution_clock;
+        std::array<clock::time_point, MOUSE_BUTTON_NUMBER> lLastClickClock_;
     };
 }
 }
