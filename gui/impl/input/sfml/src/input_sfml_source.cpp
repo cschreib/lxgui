@@ -16,7 +16,7 @@ namespace input {
 namespace sfml
 {
 source::source(const sf::Window& mWindow, bool bMouseGrab) :
-    mWindow_(mWindow), bMouseGrab_(bMouseGrab), bFirst_(true), fWheelCache_(0.0f)
+    mWindow_(mWindow), bMouseGrab_(bMouseGrab)
 {
     if (bMouseGrab_)
     {
