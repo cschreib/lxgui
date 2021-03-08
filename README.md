@@ -31,6 +31,61 @@ Here is a brief list of the available widgets:
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
+# Getting started 
+First, clone the project
+```
+git clone https://github.com/cschreib/lxgui
+``` 
+
+Ensure your c++ compiler is up to date. Lxgui requires a compiler that is c++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or VisualStudio >= 2017).
+
+Install the required dependencies for your operating system.
+
+- dnf based distros (Fedora):
+```
+sudo dnf install -y SFML-devel lua-devel
+``` 
+
+- apt based distros (Debian, Ubuntu):
+``` 
+sudo apt install libsfml-dev liblua5.2-dev
+``` 
+- OSX:
+``` 
+ brew install sfml lua
+``` 
+- Windows: 
+``` 
+ vcpkg install sfml lua
+```
+
+Finally, initialize the submodules.
+```
+cd lxgui
+git submodule update --init
+```
+
+# OpenGL setup 
+- dnf based distros (Fedora):
+```
+sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel lua-devel
+```
+
+- apt based distros (Debian, Ubuntu):
+```
+sudo apt install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
+``` 
+
+- OSX:
+```
+brew install zlib libpng freetype glew
+```
+
+- Windows: 
+```
+vcpkg install zlib libpng freetype glew
+``` 
+
 # How do I use it? A tutorial.
 
 Setting up the GUI in C++ is rather straight forward:
