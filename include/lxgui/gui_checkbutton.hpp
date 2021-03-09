@@ -7,7 +7,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// A button with two additional states : checked and unchecked
+    /// A button with two additional states: checked and unchecked
     /** This widget works exactly like a classic Button, but is has two
     *   additional special textures for the check sign.
     */
@@ -44,13 +44,13 @@ namespace gui
         void enable() override;
 
         /// Releases this CheckButton.
-        /** \note This function only has a visual impact :
+        /** \note This function only has a visual impact:
         *         the OnClick() handler is not called.
         */
         void release() override;
 
-        /// Checks if this CheckButton is checked :)
-        /** \return ... well you get my point.
+        /// Checks if this CheckButton is checked.
+        /** \return 'true' if checked, 'false' otherwise
         */
         bool is_checked();
 
