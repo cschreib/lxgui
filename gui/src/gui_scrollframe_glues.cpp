@@ -6,6 +6,28 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Frame} with scrollable content.
+*   This frame has a special child frame, the "scroll child".
+*   The scroll child is rendered on a separate render target,
+*   which is then rendered on the screen. This allows clipping
+*   the content of the scroll child and only display a portion
+*   of it (as if scrolling on a page). The displayed portion is
+*   controlled by the scroll value, which can be changed in both
+*   the vertical and horizontal directions.
+*
+*   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
+*   in addition to those from @{Frame}:
+*
+*   - `OnHorizontalScroll`: TODO.
+*   - `OnScrollRangeChanged`: TODO.
+*   - `OnVerticalScroll`: TODO.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}.
+*
+*   Child classes: none.
+*   @classmod ScrollFrame
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -18,6 +40,8 @@ lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)
 {
 }
 
+/** @function get_horizontal_scroll
+*/
 int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
 {
     if (!check_object_())
@@ -30,6 +54,8 @@ int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_horizontal_scroll_range
+*/
 int lua_scroll_frame::_get_horizontal_scroll_range(lua_State* pLua)
 {
     if (!check_object_())
@@ -42,6 +68,8 @@ int lua_scroll_frame::_get_horizontal_scroll_range(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_scroll_child
+*/
 int lua_scroll_frame::_get_scroll_child(lua_State* pLua)
 {
     if (!check_object_())
@@ -60,6 +88,8 @@ int lua_scroll_frame::_get_scroll_child(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_vertical_scroll
+*/
 int lua_scroll_frame::_get_vertical_scroll(lua_State* pLua)
 {
     if (!check_object_())
@@ -72,6 +102,8 @@ int lua_scroll_frame::_get_vertical_scroll(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_vertical_scroll_range
+*/
 int lua_scroll_frame::_get_vertical_scroll_range(lua_State* pLua)
 {
     if (!check_object_())
@@ -84,6 +116,8 @@ int lua_scroll_frame::_get_vertical_scroll_range(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_horizontal_scroll
+*/
 int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
 {
     if (!check_object_())
@@ -99,6 +133,8 @@ int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_scroll_child
+*/
 int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
 {
     if (!check_object_())
@@ -168,6 +204,8 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_vertical_scroll
+*/
 int lua_scroll_frame::_set_vertical_scroll(lua_State* pLua)
 {
     if (!check_object_())

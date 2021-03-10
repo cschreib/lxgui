@@ -3,6 +3,15 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Frame} that can receive and loose focus.
+*   A typical usage example is the @{EditBox}.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}.
+*
+*   Child classes: @{EditBox}.
+*   @classmod FocusFrame
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -10,6 +19,8 @@ lua_focus_frame::lua_focus_frame(lua_State* pLua) : lua_frame(pLua)
 {
 }
 
+/** @function clear_focus
+*/
 int lua_focus_frame::_clear_focus(lua_State* pLua)
 {
     if (!check_object_())
@@ -22,6 +33,8 @@ int lua_focus_frame::_clear_focus(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_auto_focus
+*/
 int lua_focus_frame::_is_auto_focus(lua_State* pLua)
 {
     if (!check_object_())
@@ -34,6 +47,8 @@ int lua_focus_frame::_is_auto_focus(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_auto_focus
+*/
 int lua_focus_frame::_set_auto_focus(lua_State* pLua)
 {
     if (!check_object_())
@@ -47,6 +62,8 @@ int lua_focus_frame::_set_auto_focus(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_focus
+*/
 int lua_focus_frame::_set_focus(lua_State* pLua)
 {
     if (!check_object_())

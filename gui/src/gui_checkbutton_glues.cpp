@@ -6,10 +6,14 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
-/** A Button with two additional states: checked and unchecked.
-    This widget works exactly like a classic Button, but is has two
-    additional special textures for the check sign.
-    @classmod CheckButton
+/** A @{Button} with two additional states: checked and unchecked.
+*   This widget works exactly like a classic @{Button}, but is has two
+*   additional special textures for the check sign.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}, @{Button}.
+*
+*   Child classes: none.
+*   @classmod CheckButton
 */
 
 namespace lxgui {
@@ -116,7 +120,7 @@ int lua_check_button::_set_checked(lua_State* pLua)
 }
 
 /** Sets this button's checked texture.
-*   @function void set_checked_texture
+*   @function set_checked_texture
 *   @tparam Texture tex The new texture
 */
 int lua_check_button::_set_checked_texture(lua_State* pLua)

@@ -7,6 +7,16 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** Global functions for interacting with the GUI.
+*   The functions listed on this page are registered in the
+*   Lua state as globals, and as such are accessible from
+*   anywhere automatically. They offer various functionalities
+*   for creating or destroying @{Frame}s, and accessing a few
+*   other global properties or objects.
+*
+*   @module Manager
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -91,6 +101,8 @@ lua::lunar_binding<lua_manager> lua_manager::methods[] = {
     {0,0}
 };
 
+/** @function set_key_binding
+*/
 int l_set_key_binding(lua_State* pLua)
 {
     lua::function mFunc("set_key_binding", pLua);
@@ -149,6 +161,8 @@ int l_set_key_binding(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function create_frame
+*/
 int l_create_frame(lua_State* pLua)
 {
     lua::function mFunc("create_frame", pLua, 1);
@@ -223,6 +237,8 @@ int l_create_frame(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function delete_frame
+*/
 int l_delete_frame(lua_State* pLua)
 {
     lua::function mFunc("delete_frame", pLua);
@@ -266,6 +282,8 @@ int l_delete_frame(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_locale
+*/
 int l_get_locale(lua_State* pLua)
 {
     lua::function mFunc("get_locale", pLua, 1);
@@ -280,6 +298,8 @@ int l_get_locale(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function log
+*/
 int l_log(lua_State* pLua)
 {
     lua::function mFunc("log", pLua);
