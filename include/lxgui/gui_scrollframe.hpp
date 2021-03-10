@@ -10,10 +10,14 @@ namespace gui
 {
     class texture;
 
-    /// A frame with scrollable content
-    /** This widget has a special child frame, the scroll child.
+    /// A frame with scrollable content.
+    /** This widget has a special child frame, the "scroll child".
     *   The scroll child is rendered on a render_target, which is
-    *   then rendered on the screen.
+    *   then rendered on the screen. This allows clipping
+    *   the content of the scroll child and only display a portion
+    *   of it (as if scrolling on a page). The displayed portion is
+    *   controlled by the scroll value, which can be changed in both
+    *   the vertical and horizontal directions.
     */
     class scroll_frame : public frame, public renderer
     {

@@ -11,16 +11,16 @@ namespace gui
     class font_string;
 
     /// A simple button.
-    /** This class can handle three different states :
+    /** This class can handle three different states:
     *   "normal", "pushed" and "disabled". You can provide a
     *   different texture for each of these states, and
-    *   two different fontstrings for "normal" and "disabled".<br>
+    *   two different fontstrings for "normal" and "disabled".<br><br>
     *   In addition, you can provide another texture/fontstring
     *   for the "highlight" state (when the mouse is over the
-    *   button widget).<br>
-    *   Note that there is no fontstring for the "pushed" state :
+    *   button widget).<br><br>
+    *   Note that there is no fontstring for the "pushed" state:
     *   in this case, the "normal" font is rendered with a slight
-    *   offset that you'll have to define.
+    *   offset that you are free to define.
     */
     class button : public frame
     {

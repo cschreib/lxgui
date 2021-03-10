@@ -10,13 +10,13 @@ namespace gui
 {
     class texture;
 
-    /// A variable length bar
-    /** This is a very simple widget : you give it three
-    *   values : a minimum and a maximum, and a value
-    *   between those two. It then Renders a bar that will
-    *   be full, empty, or anything in between depending on
-    *   the value.<br>
-    *   Can be used to display health or cast bars.
+    /// A variable length bar.
+    /** This frame has three main properties: a minimum value, a
+    *   maximum value, and a current value that must be contained
+    *   between the minimum and maximum values. The frame will
+    *   render a textured bar that will either be full, empty, or
+    *   anything in between depending on the current value.<br><br>
+    *   This can be used to display health bars, or progress bars.<br><br>
     */
     class status_bar : public frame
     {

@@ -29,9 +29,36 @@ namespace gui
         static layer_type get_layer_type(const std::string& sLayer);
     };
 
-    /// Basic GUI container
-    /** Can contain other frames, or layered_regions
-    *   (text, images, ...).
+    /// A widget that can contain other widget and react to events.
+    /** This widget, which is at the core of the UI design, can contain
+    *   other frames as "children", and layered_regions sorted by layers
+    *   (text, images, ...). A frame can also react to events, and register
+    *   callbacks to be executed on particular events (key presses, etc.)
+    *   or on every tick.<br><br>
+    *   Each frame has an optional "title region", which can be used to
+    *   define and draw a title bar. This title bar can then be used to
+    *   move the frame around the screen using mouse click and drag.
+    *   Furthermore, frames have optional support for resizing by click
+    *   and drag on corners or edges (opt in).<br><br>
+    *   Frames can either move freely on the screen, or be "clamped" to the
+    *   screen so they cannot be partly outside of their render area.<br><br>
+    *   <b>Rendering.</b> Frames are grouped into different "strata", which are
+    *   rendered sequentially. Frames in a high strata will always be rendered
+    *   above frames in a low strata. Then, within a strata, frames are further
+    *   sorted by "level"; within this particualr strata, a frame with a high
+    *   level will always be rendered above all frames with a lower level, but
+    *   it will still remain below other frames in a higher strata. The level
+    *   of a frame is automatically set to the maximum level inside the strata
+    *   when the frame is clicked, which effectively brings the frame to the
+    *   front.<br><br>
+    *   <b>Virtual frames.</b> Virtual frames are not displayed on the screen,
+    *   and technically are not part of the interface. They are only available
+    *   as "templates" that can be reused by other (virtual or non-virtual)
+    *   frames. This is useful for defining a few frame templates with a
+    *   particular style, and then reuse these templates across the interface
+    *   to ensure a consistent look. When inheriting from a virtual frame,
+    *   the inheriting frame will copy all the registered callbacks, all the
+    *   child frames, and all the layered regions of the virtual frame.
     */
     class frame : public event_receiver, public region
     {

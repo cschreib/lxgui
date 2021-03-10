@@ -8,9 +8,12 @@
 namespace lxgui {
 namespace gui
 {
-    /// The GUI class used to draw text on the screen
-    /** This object contains formated text, managed
-    *   by the text class.
+    /// A layered_region that can draw text on the screen.
+    /** This class holds a string and a reference to a font, which
+    *   is used to draw the string on the screen. The appearance of
+    *   the string can be changed (font, size, color, alignment, wrapping).
+    *   In addition, it is possible to change the color of a portion of
+    *   the string, for example to highlight a particular name.
     */
     class font_string : public layered_region
     {

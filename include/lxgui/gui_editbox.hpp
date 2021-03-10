@@ -88,6 +88,21 @@ namespace gui
     };
 
     /// An editable text box.
+    /** This frame lets the user input arbitrary text into a box,
+    *   which can be read and used by the rest of the interface.
+    *   The text box can be either single-line or multi-line.
+    *   Text can be selected by holding the Shift key, and natural
+    *   navigation is available with the Left, Right, Up, Down, Home,
+    *   End, Page Up, and Page Down keys. Copy and paste operations
+    *   are also supported. The edit box can also remember the history
+    *   of previously entered values or commands, which can be brought
+    *   back at will. The characters entered as handled by the
+    *   operating system, hence this class will use whatever keyboard
+    *   layout is currently in use. Finally, the edit box can be
+    *   configured to only accept numeric values (of either sign, or
+    *   positive only), and to hide the input characters to simulate a
+    *   password box (no encryption or other safety measure is used).
+    */
     class edit_box : public focus_frame
     {
     public :

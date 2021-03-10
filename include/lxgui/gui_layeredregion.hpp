@@ -7,9 +7,13 @@
 namespace lxgui {
 namespace gui
 {
-    /// Abstract GUI renderable.
-    /** \note layered regions are contained inside frames.<br>
-    *         They are sorted by layers, hence their name.
+    /// A renderable widget.
+    /** Layered regions can display content on the screen (texture,
+    *   texts, 3D models, ...) and must be contained inside a layer,
+    *   within a @{Frame} object. The frame will then render all
+    *   its layered regions, sorted by layers.
+    *   \note Layered regions cannot themselves react to events; this
+    *   must be taken care of by the parent frame.
     */
     class layered_region : public region
     {

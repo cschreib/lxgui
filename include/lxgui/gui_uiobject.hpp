@@ -92,7 +92,7 @@ namespace gui
     class frame;
     class renderer;
 
-    /// The base of the GUI
+    /// The base widget of all elements in the GUI.
     /** This widget (GUI element) is a virtual base. It will not display anything on its own,
     *   and must be inherited from to implement any useful features. A few key virtual functions
     *   (update, render...) should be overriden, and provide all the required logic for the widget
