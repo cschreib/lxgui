@@ -22,18 +22,32 @@
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
 *   in addition to those from @{Frame}:
 *
-*   - `OnChar`: TODO.
-*   - `OnCursorChanged`: TODO.
-*   - `OnEditFocusGained`: TODO.
-*   - `OnEditFocusLost`: TODO.
-*   - `OnEnterPressed`: TODO.
-*   - `OnEscapePressed`: TODO.
-*   - `OnSpacePressed`: TODO.
-*   - `OnTabPressed`: TODO.
-*   - `OnUpPressed`: TODO.
-*   - `OnDownPressed`: TODO.
-*   - `OnTextChanged`: TODO.
-*   - `OnTextSet`: TODO.
+*   - `OnChar`: Triggered whenever a new character is added to the
+*   edit box. Will always be preceeded by `OnTextChanged`.
+*   - `OnCursorChanged`: Triggered whenever the position of the edit
+*   cursor is changed (not yet implemented).
+*   - `OnEditFocusGained`: Triggered when the edit box gains focus,
+*   see @{FocusFrame:set_focus}.
+*   - `OnEditFocusLost`: Triggered when the edit box looses focus,
+*   see @{FocusFrame:set_focus}.
+*   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
+*   is pressed while the edit box is focussed. This captures both
+*   the main keyboard key and the smaller one on the numpad.
+*   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+*   while the edit box is focussed.
+*   - `OnSpacePressed`: Triggered when the `Space` key is pressed
+*   while the edit box is focussed.
+*   - `OnTabPressed`: Triggered when the `Tab` key is pressed
+*   while the edit box is focussed.
+*   - `OnUpPressed`: Triggered when the `Up` key is pressed
+*   while the edit box is focussed.
+*   - `OnDownPressed`: Triggered when the `Down` key is pressed
+*   while the edit box is focussed.
+*   - `OnTextChanged`: Triggered whenever the text contained in the
+*   edit box changes (character added or deleted, text set or pasted,
+*   etc.).
+*   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
+*   followed by `OnTextChanged`.
 *
 *   Inherits all methods from: @{UIObject}, @{Frame}, @{FocusFrame}.
 *

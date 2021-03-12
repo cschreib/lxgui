@@ -9,26 +9,28 @@
 #include <lxgui/luapp_function.hpp>
 
 /** A @{Frame} with a button that can be clicked.
-*   This class can handle three different states:
-*   "normal", "pushed" and "disabled". You can provide a
-*   different texture for each of these states, and
-*   two different fontstrings for "normal" and "disabled".
+*   This class can handle three different states: "normal", "pushed"
+*   and "disabled". You can provide a different texture for each of
+*   these states, and two different fontstrings for "normal" and
+*   "disabled". Note that a @{Button} has @{Frame:enable_mouse} set
+*   to `true` by default.
 *
-*   In addition, you can provide another texture/fontstring
-*   for the "highlight" state (when the mouse is over the
-*   button widget).
+*   In addition, you can provide another texture/fontstring for the
+*   "highlight" state (when the mouse is over the button widget).
 *
-*   Note that there is no fontstring for the "pushed" state:
-*   in this case, the "normal" font is rendered with a slight
-*   offset that you are free to define.
+*   Note that there is no fontstring for the "pushed" state: in this
+*   case, the "normal" font is rendered with a slight offset that you
+*   are free to define.
 *
-*   __Events.__ Hard-coded events available to all @{Button}s,
-*   in addition to those from @{Frame}:
+*   __Events.__ Hard-coded events available to all @{Button}s, in
+*   addition to those from @{Frame}:
 *
-*   - `OnClick`: TODO.
-*   - `OnDoubleClick`: TODO.
-*   - `OnEnable`: TODO.
-*   - `OnDisable`: TODO.
+*   - `OnClick`: Triggered when the button is clicked, either when
+*   @{Button:click} is called, or after the mouse is released after a
+*   click over the button.
+*   - `OnDoubleClick`: Triggered when the button is double-clicked.
+*   - `OnEnable`: Triggered by @{Button:enable}.
+*   - `OnDisable`: Triggered by @{Button:disable}.
 *
 *   Inherits all methods from: @{UIObject}, @{Frame}.
 *
