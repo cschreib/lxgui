@@ -48,6 +48,8 @@ lua_button::lua_button(lua_State* pLua) : lua_frame(pLua)
 {
 }
 
+/** @function click
+*/
 int lua_button::_click(lua_State* pLua)
 {
     if (!check_object_())
@@ -60,6 +62,8 @@ int lua_button::_click(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function disable
+*/
 int lua_button::_disable(lua_State* pLua)
 {
     if (!check_object_())
@@ -72,6 +76,8 @@ int lua_button::_disable(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function enable
+*/
 int lua_button::_enable(lua_State* pLua)
 {
     if (!check_object_())
@@ -84,6 +90,8 @@ int lua_button::_enable(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_button_state
+*/
 int lua_button::_get_button_state(lua_State* pLua)
 {
     if (!check_object_())
@@ -102,6 +110,8 @@ int lua_button::_get_button_state(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_disabled_font_object
+*/
 int lua_button::_get_disabled_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -121,6 +131,8 @@ int lua_button::_get_disabled_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_disabled_text_color
+*/
 int lua_button::_get_disabled_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -143,6 +155,8 @@ int lua_button::_get_disabled_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_disabled_texture
+*/
 int lua_button::_get_disabled_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -162,6 +176,8 @@ int lua_button::_get_disabled_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_highlight_font_object
+*/
 int lua_button::_get_highlight_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -181,6 +197,8 @@ int lua_button::_get_highlight_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_highlight_text_color
+*/
 int lua_button::_get_highlight_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -203,6 +221,8 @@ int lua_button::_get_highlight_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_highlight_texture
+*/
 int lua_button::_get_highlight_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -222,6 +242,8 @@ int lua_button::_get_highlight_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_normal_font_object
+*/
 int lua_button::_get_normal_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -241,6 +263,8 @@ int lua_button::_get_normal_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_normal_texture
+*/
 int lua_button::_get_normal_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -260,6 +284,8 @@ int lua_button::_get_normal_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_pushed_text_offset
+*/
 int lua_button::_get_pushed_text_offset(lua_State* pLua)
 {
     if (!check_object_())
@@ -275,6 +301,8 @@ int lua_button::_get_pushed_text_offset(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_pushed_texture
+*/
 int lua_button::_get_pushed_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -294,6 +322,8 @@ int lua_button::_get_pushed_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text
+*/
 int lua_button::_get_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -306,6 +336,8 @@ int lua_button::_get_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text_height
+*/
 int lua_button::_get_text_height(lua_State* pLua)
 {
     if (!check_object_())
@@ -322,6 +354,8 @@ int lua_button::_get_text_height(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text_width
+*/
 int lua_button::_get_text_width(lua_State* pLua)
 {
     if (!check_object_())
@@ -338,6 +372,8 @@ int lua_button::_get_text_width(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_enabled
+*/
 int lua_button::_is_enabled(lua_State* pLua)
 {
     if (!check_object_())
@@ -350,6 +386,8 @@ int lua_button::_is_enabled(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function lock_highlight
+*/
 int lua_button::_lock_highlight(lua_State* pLua)
 {
     if (!check_object_())
@@ -362,6 +400,8 @@ int lua_button::_lock_highlight(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_button_state
+*/
 int lua_button::_set_button_state(lua_State* pLua)
 {
     if (!check_object_())
@@ -394,6 +434,8 @@ int lua_button::_set_button_state(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_disabled_font_object
+*/
 int lua_button::_set_disabled_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -413,6 +455,8 @@ int lua_button::_set_disabled_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_disabled_text_color
+*/
 int lua_button::_set_disabled_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -451,6 +495,8 @@ int lua_button::_set_disabled_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_disabled_texture
+*/
 int lua_button::_set_disabled_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -470,6 +516,8 @@ int lua_button::_set_disabled_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_highlight_font_object
+*/
 int lua_button::_set_highlight_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -489,6 +537,8 @@ int lua_button::_set_highlight_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_highlight_text_color
+*/
 int lua_button::_set_highlight_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -527,6 +577,8 @@ int lua_button::_set_highlight_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_highlight_texture
+*/
 int lua_button::_set_highlight_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -547,6 +599,8 @@ int lua_button::_set_highlight_texture(lua_State* pLua)
 }
 
 
+/** @function set_normal_font_object
+*/
 int lua_button::_set_normal_font_object(lua_State* pLua)
 {
     if (!check_object_())
@@ -566,6 +620,8 @@ int lua_button::_set_normal_font_object(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_normal_text_color
+*/
 int lua_button::_set_normal_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -604,6 +660,8 @@ int lua_button::_set_normal_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_normal_texture
+*/
 int lua_button::_set_normal_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -623,6 +681,8 @@ int lua_button::_set_normal_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_pushed_text_offset
+*/
 int lua_button::_set_pushed_text_offset(lua_State* pLua)
 {
     if (!check_object_())
@@ -641,6 +701,8 @@ int lua_button::_set_pushed_text_offset(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_pushed_texture
+*/
 int lua_button::_set_pushed_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -660,6 +722,8 @@ int lua_button::_set_pushed_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_text
+*/
 int lua_button::_set_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -673,6 +737,8 @@ int lua_button::_set_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function unlock_highlight
+*/
 int lua_button::_unlock_highlight(lua_State* pLua)
 {
     if (!check_object_())
