@@ -1,0 +1,55 @@
+name: CI
+
+on: [push, pull_request]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: 
+        - { name: Ubuntu GCC,   os: ubuntu-latest,  compiler: g++,     flags: ""}
+        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, flags: ""}
+        - { name: Windows,      os: windows-latest, compiler: vs2019,  flags: "-DCMAKE_PREFIX_PATH=`pwd`"}
+        
+    name: ${{matrix.platform.name}}
+    runs-on: ${{matrix.platform.os}}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+      
+    - name: Get Linux dependencies
+      if: runner.os == 'Linux'
+      run: sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev
+      
+    - name: Setup Linux compiler
+      if: runner.os == 'Linux'
+      run: export CXX=${{matrix.platform.compiler}}
+      
+    - name: Get Windows dependencies
+      if: runner.os == 'Windows'
+      # Ideally (but too slow):
+      #run: vcpkg install sfml lua zlib libpng freetype glew
+      # Pre-compiled dependencies for VisualStudio2017 32bit:
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: unzip ${GITHUB_WORKSPACE}/dependencies/windows-dependencies-vs2017-32.zip
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake ${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=$BUILD_TYPE ${{matrix.platform.flags}}
+
+    - name: Build
+      working-directory: ${{github.workspace}}/build
+      shell: bash
+      run: cmake --build . --config ${BUILD_TYPE}
