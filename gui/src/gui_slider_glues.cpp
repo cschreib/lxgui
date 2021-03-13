@@ -13,7 +13,12 @@
 *   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
 *   in addition to those from @{Frame}:
 *
-*   - `OnValueChanged`: TODO.
+*   - `OnValueChanged`: Triggered whenever the value controlled by
+*   the slider changes. This is triggered whenever the user moves
+*   the slider thumb, and by @{Slider:set_value}. This can also be
+*   triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
+*   @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
+*   previous value would not satisfy the new constraints.
 *
 *   Inherits all methods from: @{UIObject}, @{Frame}.
 *

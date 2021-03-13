@@ -68,24 +68,95 @@
 *   a callback for `OnEvent` _and_ register the frame for each generic event
 *   you wish to listen to. This is done with @{Frame:register_event}.
 *
+*   Some events provide arguments to the registered callback function. For
+*   example, the application can fire a `"UNIT_ATTACKED"` event when a unit
+*   is under attack, and pass the ID of the attacked unit as a first argument,
+*   and the ID of the attacker as a second argument. If a callback
+*   function is registered using @{Frame:set_script}, these arguments can be
+*   handled and named like regular function parameters. In XML callback
+*   handlers, they can be accessed with the hard-coded generic names `arg1`,
+*   `arg2`, etc.
+*
 *   Hard-coded events available to all @{Frame}s:
 *
-*   - `OnDragStart`: TODO.
-*   - `OnDragStop`: TODO.
-*   - `OnEnter`: TODO.
-*   - `OnEvent`: TODO.
-*   - `OnHide`: TODO.
-*   - `OnKeyDown`: TODO.
-*   - `OnKeyUp`: TODO.
-*   - `OnLeave`: TODO.
-*   - `OnLoad`: TODO.
-*   - `OnMouseDown`: TODO.
-*   - `OnMouseUp`: TODO.
-*   - `OnMouseWheel`: TODO.
-*   - `OnReceiveDrag`: TODO.
-*   - `OnShow`: TODO.
-*   - `OnSizeChanged`: TODO.
-*   - `OnUpdate`: TODO.
+*   - `OnDragStart`: Triggered when one of the mouse button registered for
+*   dragging (see @{Frame:register_for_drag}) has been pressed inside the
+*   area of the screen occupied by the frame, and a mouse movement is first
+*   recorded.
+*   - `OnEnter`: Triggered when the mouse pointer enters into the area of
+*   the screen occupied by the frame. Note: this only takes into account the
+*   position and size of the frame, not its children or layered regions. Will
+*   not trigger if the frame is hidden.
+*   - `OnEvent`: Triggered when a registered generic event occurs. See
+*   @{Frame:register_event}. To allow distinguishing which event has just
+*   been fired, the registered callback function is always provided with a
+*   first argument (hard-coded to `event` in XML callback handlers) that is
+*   set to a string matching the event name. Further arguments can be passed
+*   to the callback and are handled as for other events.
+*   - `OnHide`: Triggered when @{UIObject:hide} is called, or when the frame
+*   is hidden indirectly (for example if its parent is itself hidden). This
+*   will only fire if the frame was previously shown.
+*   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will not
+*   trigger if the frame is hidden. This event provides two arguments to
+*   the registered callback: a number identifying the key, and the
+*   human-readable name of the key.
+*   - `OnKeyUp`: Triggered when any keyboard key is released. Will not
+*   trigger if the frame is hidden. This event provides two arguments to
+*   the registered callback: a number identifying the key, and the
+*   human-readable name of the key.
+*   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
+*   screen occupied by the frame. Note: this only takes into account the
+*   position and size of the frame, not its children or layered regions.
+*   Will not trigger if the frame is hidden, unless the frame was just
+*   hidden with the mouse previously inside the frame.
+*   - `OnLoad`: Triggered just after the frame is created. This is where
+*   you would normally register for events and specific inputs, set up
+*   initial states for extra logic, or do localization.
+*   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
+*   trigger if the frame is hidden. This event provides one argument to
+*   the registered callback: a string identifying the mouse button
+*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+*   - `OnMouseUp`: Triggered when any mouse button is released. Will not
+*   trigger if the frame is hidden. This event provides one argument to
+*   the registered callback: a string identifying the mouse button
+*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+*   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
+*   provides one argument to the registered callback: a number indicating by
+*   how many "notches" the wheel has turned in this event. A positive value
+*   means the wheel has been moved "away" from the user (this would normally
+*   scroll *up* in a document).
+*   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
+*   dragged onto the frame, and when one of the mouse button registered for
+*   dragging (see @{Frame:register_for_drag}) is released. This enables
+*   the "drop" in "drag and drop" operations.
+*   - `OnShow`: Triggered when @{UIObject:show} is called, or when the frame
+*   is shown indirectly (for example if its parent is itself shown). This
+*   will only fire if the frame was previously hidden.
+*   - `OnSizeChanged`: Triggered whenever the size of the frame changes, either
+*   directly or indirectly. Be very careful not to call any function that could
+*   change the size of the frame inside this callback, as this would generate
+*   an infinite loop.
+*   - `OnUpdate`: Triggered on every tick of the game loop. This event provides
+*   one argument to the registered callback: a floating point number indicating
+*   how much time has passed since the last call to `OnUpdate` (in seconds).
+*   For optimal performance, prefer using other events types whenever possible.
+*   `OnUpdate` callbacks will be executed over and over again, and can quickly
+*   consume a lot of resources if user unreasonably. If you have to use
+*   `OnUpdate`, you can mitigate performance problems by artificially reducing
+*   the update rate: let the callback function only accumulate the time passed,
+*   and wait until enough time has passed (say, half a second) to execute any
+*   expensive operation. Then reset the accumulated time, and wait again.
+*
+*   Generic events fired natively by lxgui:
+*
+*   - `"LUA_ERROR"`: Triggered whenever a callback function or an addon script
+*   file generates a Lua error. This event provides one argument to the
+*   registered callback: a string containing the error message.
+*   - `"ADDON_LOADED"`: Triggered when an addon is fully loaded. This event
+*   provides one argument to the registered callback: a string containing the
+*   name of the loaded addon.
+*   - `"ENTERING_WORLD"`: Triggered once at the start of the program, at the
+*   end of the first update tick.
 *
 *   __Virtual frames.__ Virtual frames are not displayed on the screen,
 *   and technically are not part of the interface. They are only available

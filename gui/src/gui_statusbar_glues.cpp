@@ -12,12 +12,15 @@
 *   render a textured bar that will either be full, empty, or
 *   anything in between depending on the current value.
 *
+*   This can be used to display health bars, or progress bars.
+*
 *   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
 *   in addition to those from @{Frame}:
 *
-*   - `OnValueChanged`: TODO.
-*
-*   This can be used to display health bars, or progress bars.
+*   - `OnValueChanged`: Triggered whenever the value represented by
+*   the status bar changes. This is triggered by @{StatusBar:set_value}.
+*   This can also be triggered by @{StatusBar:set_min_max_values} if
+*   the previous value would not satisfy the new constraints.
 *
 *   Inherits all methods from: @{UIObject}, @{Frame}.
 *
