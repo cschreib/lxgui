@@ -1,0 +1,843 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>lxgui</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/UIObject.html">UIObject</a></li>
+  <li><a href="../classes/Frame.html">Frame</a></li>
+  <li><strong>Button</strong></li>
+  <li><a href="../classes/CheckButton.html">CheckButton</a></li>
+  <li><a href="../classes/FocusFrame.html">FocusFrame</a></li>
+  <li><a href="../classes/EditBox.html">EditBox</a></li>
+  <li><a href="../classes/ScrollFrame.html">ScrollFrame</a></li>
+  <li><a href="../classes/Slider.html">Slider</a></li>
+  <li><a href="../classes/StatusBar.html">StatusBar</a></li>
+  <li><a href="../classes/LayeredRegion.html">LayeredRegion</a></li>
+  <li><a href="../classes/FontString.html">FontString</a></li>
+  <li><a href="../classes/Texture.html">Texture</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Manager.html">Manager</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Button</code></h1>
+<p>A <a href="../classes/Frame.html#">Frame</a> with a button that can be clicked.</p>
+<p>   This class can handle three different states: "normal", "pushed"
+   and "disabled". You can provide a different texture for each of
+   these states, and two different fontstrings for "normal" and
+   "disabled". Note that a <a href="../classes/Button.html#">Button</a> has <a href="../classes/Frame.html#Frame:enable_mouse">Frame:enable_mouse</a> set
+   to <code>true</code> by default.</p>
+
+<p>   In addition, you can provide another texture/fontstring for the
+   "highlight" state (when the mouse is over the button widget).</p>
+
+<p>   Note that there is no fontstring for the "pushed" state: in this
+   case, the "normal" font is rendered with a slight offset that you
+   are free to define.</p>
+
+<p>   <strong>Events.</strong> Hard-coded events available to all <a href="../classes/Button.html#">Button</a>s, in
+   addition to those from <a href="../classes/Frame.html#">Frame</a>:</p>
+
+<ul>
+    <li><code>OnClick</code>: Triggered when the button is clicked, either when
+    <a href="../classes/Button.html#Button:click">Button:click</a> is called, or after the mouse is released after a
+    click over the button.</li>
+    <li><code>OnDoubleClick</code>: Triggered when the button is double-clicked.</li>
+    <li><code>OnEnable</code>: Triggered by <a href="../classes/Button.html#Button:enable">Button:enable</a>.</li>
+    <li><code>OnDisable</code>: Triggered by <a href="../classes/Button.html#Button:disable">Button:disable</a>.</li>
+</ul>
+
+<p>   Inherits all methods from: <a href="../classes/UIObject.html#">UIObject</a>, <a href="../classes/Frame.html#">Frame</a>.</p>
+
+<p>   Child classes: <a href="../classes/CheckButton.html#">CheckButton</a>.</p>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Button:click">Button:click()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:disable">Button:disable()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:enable">Button:enable()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_button_state">Button:get_button_state()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_disabled_font_object">Button:get_disabled_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_disabled_text_color">Button:get_disabled_text_color()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_disabled_texture">Button:get_disabled_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_highlight_font_object">Button:get_highlight_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_highlight_text_color">Button:get_highlight_text_color()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_highlight_texture">Button:get_highlight_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_normal_font_object">Button:get_normal_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_normal_texture">Button:get_normal_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_pushed_text_offset">Button:get_pushed_text_offset()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_pushed_texture">Button:get_pushed_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_text">Button:get_text()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_text_height">Button:get_text_height()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:get_text_width">Button:get_text_width()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:is_enabled">Button:is_enabled()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:lock_highlight">Button:lock_highlight()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_button_state">Button:set_button_state()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_disabled_font_object">Button:set_disabled_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_disabled_text_color">Button:set_disabled_text_color()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_disabled_texture">Button:set_disabled_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_highlight_font_object">Button:set_highlight_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_highlight_text_color">Button:set_highlight_text_color()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_highlight_texture">Button:set_highlight_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_normal_font_object">Button:set_normal_font_object()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_normal_text_color">Button:set_normal_text_color()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_normal_texture">Button:set_normal_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_pushed_text_offset">Button:set_pushed_text_offset()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_pushed_texture">Button:set_pushed_texture()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:set_text">Button:set_text()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Button:unlock_highlight">Button:unlock_highlight()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Button:click"></a>
+    <strong>Button:click()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:disable"></a>
+    <strong>Button:disable()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:enable"></a>
+    <strong>Button:enable()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_button_state"></a>
+    <strong>Button:get_button_state()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_disabled_font_object"></a>
+    <strong>Button:get_disabled_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_disabled_text_color"></a>
+    <strong>Button:get_disabled_text_color()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_disabled_texture"></a>
+    <strong>Button:get_disabled_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_highlight_font_object"></a>
+    <strong>Button:get_highlight_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_highlight_text_color"></a>
+    <strong>Button:get_highlight_text_color()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_highlight_texture"></a>
+    <strong>Button:get_highlight_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_normal_font_object"></a>
+    <strong>Button:get_normal_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_normal_texture"></a>
+    <strong>Button:get_normal_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_pushed_text_offset"></a>
+    <strong>Button:get_pushed_text_offset()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_pushed_texture"></a>
+    <strong>Button:get_pushed_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_text"></a>
+    <strong>Button:get_text()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_text_height"></a>
+    <strong>Button:get_text_height()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:get_text_width"></a>
+    <strong>Button:get_text_width()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:is_enabled"></a>
+    <strong>Button:is_enabled()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:lock_highlight"></a>
+    <strong>Button:lock_highlight()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_button_state"></a>
+    <strong>Button:set_button_state()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_disabled_font_object"></a>
+    <strong>Button:set_disabled_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_disabled_text_color"></a>
+    <strong>Button:set_disabled_text_color()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_disabled_texture"></a>
+    <strong>Button:set_disabled_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_highlight_font_object"></a>
+    <strong>Button:set_highlight_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_highlight_text_color"></a>
+    <strong>Button:set_highlight_text_color()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_highlight_texture"></a>
+    <strong>Button:set_highlight_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_normal_font_object"></a>
+    <strong>Button:set_normal_font_object()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_normal_text_color"></a>
+    <strong>Button:set_normal_text_color()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_normal_texture"></a>
+    <strong>Button:set_normal_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_pushed_text_offset"></a>
+    <strong>Button:set_pushed_text_offset()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_pushed_texture"></a>
+    <strong>Button:set_pushed_texture()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:set_text"></a>
+    <strong>Button:set_text()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Button:unlock_highlight"></a>
+    <strong>Button:unlock_highlight()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-03-13 15:09:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

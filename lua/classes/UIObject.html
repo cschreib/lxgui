@@ -1,0 +1,793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>lxgui</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><strong>UIObject</strong></li>
+  <li><a href="../classes/Frame.html">Frame</a></li>
+  <li><a href="../classes/Button.html">Button</a></li>
+  <li><a href="../classes/CheckButton.html">CheckButton</a></li>
+  <li><a href="../classes/FocusFrame.html">FocusFrame</a></li>
+  <li><a href="../classes/EditBox.html">EditBox</a></li>
+  <li><a href="../classes/ScrollFrame.html">ScrollFrame</a></li>
+  <li><a href="../classes/Slider.html">Slider</a></li>
+  <li><a href="../classes/StatusBar.html">StatusBar</a></li>
+  <li><a href="../classes/LayeredRegion.html">LayeredRegion</a></li>
+  <li><a href="../classes/FontString.html">FontString</a></li>
+  <li><a href="../classes/Texture.html">Texture</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Manager.html">Manager</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>UIObject</code></h1>
+<p>The base class of all elements in the GUI.</p>
+<p>   Objects of this class offers core functionalities needed by every element
+   of the interface. They have a name, and a corresponding variable created
+   in Lua to access them. They can have a parent <a href="../classes/Frame.html#">Frame</a>. They can be placed
+   on the screen at an absolute position, or relative to other <a href="../classes/UIObject.html#">UIObject</a>s.
+   They can be shown or hidden.</p>
+
+<p>   Apart form this, a <a href="../classes/UIObject.html#">UIObject</a> does not contain anything, nor can it display
+   anything on the screen. Any functionality beyond the list above is implemented
+   in specialized subclasses (see the full list below).</p>
+
+<p>   <strong>Interaction between C++, Lua, and XML.</strong> When a <a href="../classes/UIObject.html#">UIObject</a> is created,
+   it must be given a name, for example <code>&quot;PlayerHealthBar&quot;</code>. For as long as the
+   object lives, this name will be used to refer to it. In particular, as soon
+   as the object is created, regardless of whether this was done in C++, XML, or
+   Lua, a new variable will be created in the Lua state with the exact same name,
+   <code>PlayerHealthBar</code>. This variable is a reference to the <a href="../classes/UIObject.html#">UIObject</a>, and can
+   be used to interact with it dynamically. Because of this, each object must have
+   a unique name, otherwise it could not be accessible from Lua.</p>
+
+<p>   Note: Although you can destroy this Lua variable by setting it to nil, this is
+   not recommended: the object will <em>not</em> be destroyed (nor garbage-collected)
+   because it still exists in the C++ memory space. The only way to truly destroy
+   an object is to call <a href="../modules/Manager.html#delete_frame">Manager.delete_frame</a> (for <a href="../classes/Frame.html#">Frame</a>s only). Destroying and
+   creating objects has a cost however. If the object is likely to reappear later
+   with the same content, simply hide it and show it again later on. If the
+   content may change, you can also recycle the object, i.e., keep it alive and
+   simply change its content when it later reappears.</p>
+
+<p>   <strong>Parent-child relationship.</strong> Parents of <a href="../classes/UIObject.html#">UIObject</a>s are <a href="../classes/Frame.html#">Frame</a>s. See
+   the <a href="../classes/Frame.html#">Frame</a> class documentation for more information. One important aspect
+   of the parent-child relationship is related to the object name. If a
+   <a href="../classes/UIObject.html#">UIObject</a> has a parent, it can be given a name starting with <code>&quot;$parent&quot;</code>.
+   The name of the parent will automatically replace the <code>&quot;$parent&quot;</code> string.
+   For example, if an object is named <code>&quot;$parentButton&quot;</code> and its parent is named
+   <code>&quot;ErrorMessage&quot;</code>, the final name of the object will be <code>&quot;ErrorMessageButton&quot;</code>.
+   It can be accessed from the Lua state as <code>ErrorMessageButton</code>, or as
+   <code>ErrorMessage.Button</code>. Note that this is totally dynamic: if you later change
+   the parent of this button to be another frame, for example <code>&quot;ExitDialog&quot;</code>
+   its name will naturally change to <code>&quot;ExitDialogButton&quot;</code>, and it can be accessed
+   from Lua as <code>ExitDialogButton</code>, or as <code>ExitDialog.Button</code>. This is particularly
+   powerful for writing generic code which does not rely on the full names of
+   objects, only on their child-parent relationship.</p>
+
+<p>   <strong>Positioning.</strong> <a href="../classes/UIObject.html#">UIObject</a>s have a position on the screen, but this is
+   not parametrized as a simple pair of X and Y coordinates. Instead, objects
+   are positioned based on a list of "anchors". Anchors are links between
+   objects, which force one edge or one corner of a given object to match with
+   the edge or corner of another object. For example, given two objects A and B,
+   you can create an anchor that links the top-left corner of A to the top-left
+   corner of B. The position of A will automatically be linked to the position of
+   B, hence if B moves, A will follow. To further refine this positioning, you
+   can specify anchor offsets: for example, you may want A's top-left corner to
+   be shifted from B's top-left corner by two pixels in the X direction, and
+   five in the Y direction. This offset can be defined either as an absolute
+   number of pixels, or as a relative fraction of the size of the object being
+   anchored to. For example, you can specify that A's top-left corner links to
+   B's top-left corner, with an horizontal offset equal to 30% of B's width.
+   Read the "Anchors" section below for more information.</p>
+
+<p>   An object which has no anchor will be considered "invalid" and will not be
+   displayed.</p>
+
+<p>   <strong>Sizing.</strong> There are two ways to specify the size of a <a href="../classes/UIObject.html#">UIObject</a>. The
+   first and most straightforward approach is to directly set its width and/or
+   height. This must be specified as an absolute number of pixels. The second
+   and more versatile method is to use more than one anchor for opposite sides
+   of the object, for example an anchor for the "left" and another for the
+   "right" edge. This will implicitly give a width to the object, depending on
+   the position of the other objects to which it is anchored. Anchors will always
+   override the absolute width and height of an object if they provide any
+   constraint on the extents of the object in a given dimension.</p>
+
+<p>   An object which has neither a fixed absolute size, nor has it size implicitly
+   constrained by anchors, is considered "invalid" and will not be displayed.</p>
+
+<p>   <strong>Anchors.</strong> There are nine available anchor points:</p>
+
+<ul>
+    <li><code>TOPLEFT</code>: constrains the max Y and min X.</li>
+    <li><code>TOPRIGHT</code>: constrains the max Y and max X.</li>
+    <li><code>BOTTOMLEFT</code>: constrains the min Y and min X.</li>
+    <li><code>BOTTOMRIGH</code>: constrains the min Y and max X.</li>
+    <li><code>LEFT</code>: constrains the min X and the midpoint in Y.</li>
+    <li><code>RIGHT</code>: constrains the max X and the midpoint in Y.</li>
+    <li><code>TOP</code>: constrains the max Y and the midpoint in X.</li>
+    <li><code>BOTTOM</code>: constrains the min Y and the midpoint in X.</li>
+    <li><code>CENTER</code>: constrains the midpoint in X and Y.</li>
+</ul>
+
+<p>   If you specify two constraints on the same point (for example: <code>TOPLEFT</code>
+   and <code>BOTTOMLEFT</code> both constrain the min X coordinate), the most stringent
+   constraint always wins. Constraints on the midpoints are more subtle however,
+   as they will always be discarded when both the min and max are constrained.
+   For example, consider an object <code>A</code> of fixed size 30x30 and some other object
+   <code>B</code> of fixed size 40x40. If we anchor the <code>RIGHT</code> of <code>A</code> to the <code>LEFT</code> of <code>B</code>,
+   <code>A</code>'s <em>vertical</em> center will be automatically aligned with <code>B</code>'s vertical center.
+   This is the effect of the midpoint constraint. Now, if we further anchor the
+   <code>TOP</code> of <code>A</code> to the <code>TOP</code> of <code>B</code>, we have more than one anchor constraining
+   the vertical extents of <code>A</code> (see "Sizing" above), therefore <code>A</code>'s fixed height
+   of 30 pixels will be ignored from now on. It will shrink to a height of 20
+   pixels, i.e., the distance between <code>B</code>'s top edge and its vertical center.
+   Finally, if we further anchor the <code>BOTTOM</code> of <code>A</code> to the <code>BOTTOM</code> of <code>B</code>, the
+   constraint on <code>A</code>'s midpoint will be ignored: <code>A</code> will be enlarged to a height
+   of 40 pixels, i.e., the distance between <code>B</code>'s top and bottom edges.</p>
+
+<p>   Inherits all methods from: none.</p>
+
+<p>   Child classes: <a href="../classes/Frame.html#">Frame</a>, <a href="../classes/LayeredRegion.html#">LayeredRegion</a>, <a href="../classes/FontString.html#">FontString</a>, <a href="../classes/Texture.html#">Texture</a>,
+   <a href="../classes/Button.html#">Button</a>, <a href="../classes/CheckButton.html#">CheckButton</a>, <a href="../classes/FocusFrame.html#">FocusFrame</a>, <a href="../classes/EditBox.html#">EditBox</a>, <a href="../classes/ScrollFrame.html#">ScrollFrame</a>,
+   <a href="../classes/Slider.html#">Slider</a>, <a href="../classes/StatusBar.html#">StatusBar</a>.</p>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_alpha">UIObject:get_alpha()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_name">UIObject:get_name()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_object_type">UIObject:get_object_type()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:is_object_type">UIObject:is_object_type()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_alpha">UIObject:set_alpha()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:clear_all_points">UIObject:clear_all_points()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_bottom">UIObject:get_bottom()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_center">UIObject:get_center()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_height">UIObject:get_height()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_left">UIObject:get_left()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_num_point">UIObject:get_num_point()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_parent">UIObject:get_parent()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_base">UIObject:get_base()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_point">UIObject:get_point()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_right">UIObject:get_right()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_top">UIObject:get_top()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:get_width">UIObject:get_width()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:hide">UIObject:hide()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:is_shown">UIObject:is_shown()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:is_visible">UIObject:is_visible()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_all_points">UIObject:set_all_points()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_height">UIObject:set_height()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_parent">UIObject:set_parent()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_point">UIObject:set_point()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_rel_point">UIObject:set_rel_point()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:set_width">UIObject:set_width()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UIObject:show">UIObject:show()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "UIObject:get_alpha"></a>
+    <strong>UIObject:get_alpha()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_name"></a>
+    <strong>UIObject:get_name()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_object_type"></a>
+    <strong>UIObject:get_object_type()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:is_object_type"></a>
+    <strong>UIObject:is_object_type()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_alpha"></a>
+    <strong>UIObject:set_alpha()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:clear_all_points"></a>
+    <strong>UIObject:clear_all_points()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_bottom"></a>
+    <strong>UIObject:get_bottom()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_center"></a>
+    <strong>UIObject:get_center()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_height"></a>
+    <strong>UIObject:get_height()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_left"></a>
+    <strong>UIObject:get_left()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_num_point"></a>
+    <strong>UIObject:get_num_point()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_parent"></a>
+    <strong>UIObject:get_parent()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_base"></a>
+    <strong>UIObject:get_base()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_point"></a>
+    <strong>UIObject:get_point()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_right"></a>
+    <strong>UIObject:get_right()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_top"></a>
+    <strong>UIObject:get_top()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:get_width"></a>
+    <strong>UIObject:get_width()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:hide"></a>
+    <strong>UIObject:hide()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:is_shown"></a>
+    <strong>UIObject:is_shown()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:is_visible"></a>
+    <strong>UIObject:is_visible()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_all_points"></a>
+    <strong>UIObject:set_all_points()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_height"></a>
+    <strong>UIObject:set_height()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_parent"></a>
+    <strong>UIObject:set_parent()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_point"></a>
+    <strong>UIObject:set_point()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_rel_point"></a>
+    <strong>UIObject:set_rel_point()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:set_width"></a>
+    <strong>UIObject:set_width()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UIObject:show"></a>
+    <strong>UIObject:show()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-03-13 15:09:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

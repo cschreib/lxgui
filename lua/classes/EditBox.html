@@ -1,0 +1,689 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>lxgui</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/UIObject.html">UIObject</a></li>
+  <li><a href="../classes/Frame.html">Frame</a></li>
+  <li><a href="../classes/Button.html">Button</a></li>
+  <li><a href="../classes/CheckButton.html">CheckButton</a></li>
+  <li><a href="../classes/FocusFrame.html">FocusFrame</a></li>
+  <li><strong>EditBox</strong></li>
+  <li><a href="../classes/ScrollFrame.html">ScrollFrame</a></li>
+  <li><a href="../classes/Slider.html">Slider</a></li>
+  <li><a href="../classes/StatusBar.html">StatusBar</a></li>
+  <li><a href="../classes/LayeredRegion.html">LayeredRegion</a></li>
+  <li><a href="../classes/FontString.html">FontString</a></li>
+  <li><a href="../classes/Texture.html">Texture</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Manager.html">Manager</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>EditBox</code></h1>
+<p>A <a href="../classes/Frame.html#">Frame</a> with an editable text box.</p>
+<p>   This frame lets the user input arbitrary text into a box,
+   which can be read and used by the rest of the interface.
+   The text box can be either single-line or multi-line.
+   Text can be selected by holding the Shift key, and natural
+   navigation is available with the Left, Right, Up, Down, Home,
+   End, Page Up, and Page Down keys. Copy and paste operations
+   are also supported. The edit box can also remember the history
+   of previously entered values or commands, which can be brought
+   back at will. The characters entered as handled by the
+   operating system, hence this class will use whatever keyboard
+   layout is currently in use. Finally, the edit box can be
+   configured to only accept numeric values (of either sign, or
+   positive only), and to hide the input characters to simulate a
+   password box (no encryption or other safety measure is used).</p>
+
+<p>   <strong>Events.</strong> Hard-coded events available to all <a href="../classes/EditBox.html#">EditBox</a>es,
+   in addition to those from <a href="../classes/Frame.html#">Frame</a>:</p>
+
+<ul>
+    <li><code>OnChar</code>: Triggered whenever a new character is added to the
+    edit box. Will always be preceeded by <code>OnTextChanged</code>.</li>
+    <li><code>OnCursorChanged</code>: Triggered whenever the position of the edit
+    cursor is changed (not yet implemented).</li>
+    <li><code>OnEditFocusGained</code>: Triggered when the edit box gains focus,
+    see <a href="../classes/FocusFrame.html#FocusFrame:set_focus">FocusFrame:set_focus</a>.</li>
+    <li><code>OnEditFocusLost</code>: Triggered when the edit box looses focus,
+    see <a href="../classes/FocusFrame.html#FocusFrame:set_focus">FocusFrame:set_focus</a>.</li>
+    <li><code>OnEnterPressed</code>: Triggered when the <code>Enter</code> (or <code>Return</code>) key
+    is pressed while the edit box is focussed. This captures both
+    the main keyboard key and the smaller one on the numpad.</li>
+    <li><code>OnEscapePressed</code>: Triggered when the <code>Escape</code> key is <em>released</em>
+    while the edit box is focussed.</li>
+    <li><code>OnSpacePressed</code>: Triggered when the <code>Space</code> key is pressed
+    while the edit box is focussed.</li>
+    <li><code>OnTabPressed</code>: Triggered when the <code>Tab</code> key is pressed
+    while the edit box is focussed.</li>
+    <li><code>OnUpPressed</code>: Triggered when the <code>Up</code> key is pressed
+    while the edit box is focussed.</li>
+    <li><code>OnDownPressed</code>: Triggered when the <code>Down</code> key is pressed
+    while the edit box is focussed.</li>
+    <li><code>OnTextChanged</code>: Triggered whenever the text contained in the
+    edit box changes (character added or deleted, text set or pasted,
+    etc.).</li>
+    <li><code>OnTextSet</code>: Triggered by <a href="../classes/EditBox.html#EditBox:set_text">EditBox:set_text</a>. Will always be
+    followed by <code>OnTextChanged</code>.</li>
+</ul>
+
+<p>   Inherits all methods from: <a href="../classes/UIObject.html#">UIObject</a>, <a href="../classes/Frame.html#">Frame</a>, <a href="../classes/FocusFrame.html#">FocusFrame</a>.</p>
+
+<p>   Child classes: none.</p>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:add_history_line">EditBox:add_history_line()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:clear_history">EditBox:clear_history()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_blink_speed">EditBox:get_blink_speed()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_cursor_position">EditBox:get_cursor_position()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_history_lines">EditBox:get_history_lines()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_max_letters">EditBox:get_max_letters()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_num_letters">EditBox:get_num_letters()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_number">EditBox:get_number()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_text">EditBox:get_text()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:get_text_insets">EditBox:get_text_insets()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:highlight_text">EditBox:highlight_text()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:insert">EditBox:insert()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:is_multi_line">EditBox:is_multi_line()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:is_numeric">EditBox:is_numeric()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:is_password">EditBox:is_password()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_blink_speed">EditBox:set_blink_speed()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_cursor_position">EditBox:set_cursor_position()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_max_history_lines">EditBox:set_max_history_lines()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_max_letters">EditBox:set_max_letters()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_multi_line">EditBox:set_multi_line()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_number">EditBox:set_number()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_numeric">EditBox:set_numeric()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_password">EditBox:set_password()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_text">EditBox:set_text()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#EditBox:set_text_insets">EditBox:set_text_insets()</a></td>
+	<td class="summary">
+
+</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "EditBox:add_history_line"></a>
+    <strong>EditBox:add_history_line()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:clear_history"></a>
+    <strong>EditBox:clear_history()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_blink_speed"></a>
+    <strong>EditBox:get_blink_speed()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_cursor_position"></a>
+    <strong>EditBox:get_cursor_position()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_history_lines"></a>
+    <strong>EditBox:get_history_lines()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_max_letters"></a>
+    <strong>EditBox:get_max_letters()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_num_letters"></a>
+    <strong>EditBox:get_num_letters()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_number"></a>
+    <strong>EditBox:get_number()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_text"></a>
+    <strong>EditBox:get_text()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:get_text_insets"></a>
+    <strong>EditBox:get_text_insets()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:highlight_text"></a>
+    <strong>EditBox:highlight_text()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:insert"></a>
+    <strong>EditBox:insert()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:is_multi_line"></a>
+    <strong>EditBox:is_multi_line()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:is_numeric"></a>
+    <strong>EditBox:is_numeric()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:is_password"></a>
+    <strong>EditBox:is_password()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_blink_speed"></a>
+    <strong>EditBox:set_blink_speed()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_cursor_position"></a>
+    <strong>EditBox:set_cursor_position()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_max_history_lines"></a>
+    <strong>EditBox:set_max_history_lines()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_max_letters"></a>
+    <strong>EditBox:set_max_letters()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_multi_line"></a>
+    <strong>EditBox:set_multi_line()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_number"></a>
+    <strong>EditBox:set_number()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_numeric"></a>
+    <strong>EditBox:set_numeric()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_password"></a>
+    <strong>EditBox:set_password()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_text"></a>
+    <strong>EditBox:set_text()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "EditBox:set_text_insets"></a>
+    <strong>EditBox:set_text_insets()</strong>
+    </dt>
+    <dd>
+
+
+
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-03-13 15:09:22 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
