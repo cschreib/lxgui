@@ -39,7 +39,6 @@ jobs:
 
     - name: Deploy to GitHub pages
       uses: JamesIves/github-pages-deploy-action@4.1.0
-      working-directory: ${{github.workspace}}/gui/doc
       with:
         branch: gh-pages
-        folder: deploy
+        folder: ${{github.workspace}}/gui/doc/deploy
