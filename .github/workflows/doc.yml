@@ -37,7 +37,7 @@ jobs:
       shell: bash
       run: |
         mkdir deploy
-        mv html lua deploy/
+        mv html lua index.html deploy/
 
     - name: Deploy to GitHub pages
       uses: JamesIves/github-pages-deploy-action@4.1.0
