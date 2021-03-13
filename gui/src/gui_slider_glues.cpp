@@ -10,7 +10,7 @@
 *   can be used to represent a value (for configuration menus, or
 *   scroll bars).
 *
-*   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
+*   __Events.__ Hard-coded events available to all @{Slider}s,
 *   in addition to those from @{Frame}:
 *
 *   - `OnValueChanged`: Triggered whenever the value controlled by

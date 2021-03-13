@@ -14,7 +14,7 @@
 *
 *   This can be used to display health bars, or progress bars.
 *
-*   __Events.__ Hard-coded events available to all @{ScrollFrame}s,
+*   __Events.__ Hard-coded events available to all @{StatusBar}s,
 *   in addition to those from @{Frame}:
 *
 *   - `OnValueChanged`: Triggered whenever the value represented by
