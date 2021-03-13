@@ -67,7 +67,9 @@ jobs:
       os: linux
       compiler: gcc
       before_script:
-        - sudo apt-get -y install doxygen lua5.2 lua-ldoc
+        - sudo apt-get -y install doxygen lua5.2 luarocks
+        - sudo luarocks install ldoc
+        - sudo luarocks install markdown
       script:
         - if [[ "$TRAVIS_BRANCH" != "master" ]]; then travis_terminate 0; fi
         - if [[ "$TRAVIS_PULL_REQUEST" != "false" ]] ; then travis_terminate 0; fi
