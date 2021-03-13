@@ -6,7 +6,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 * **Platform independence**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML only). Builds on Linux, MacOS, and Windows.
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
-* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html)).
+* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 * **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
@@ -31,11 +31,11 @@ Here is a brief list of the available widgets:
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
-# Getting started 
+# Getting started
 First, clone the project
 ```
 git clone https://github.com/cschreib/lxgui
-``` 
+```
 
 Ensure your c++ compiler is up to date. Lxgui requires a compiler that is c++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or VisualStudio >= 2017).
 
@@ -44,18 +44,18 @@ Install the required dependencies for your operating system.
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SFML-devel lua-devel
-``` 
+```
 
 - apt based distros (Debian, Ubuntu):
-``` 
+```
 sudo apt install libsfml-dev liblua5.2-dev
-``` 
+```
 - OSX:
-``` 
+```
  brew install sfml lua
-``` 
-- Windows: 
-``` 
+```
+- Windows:
+```
  vcpkg install sfml lua
 ```
 
@@ -65,7 +65,7 @@ cd lxgui
 git submodule update --init
 ```
 
-# OpenGL setup 
+# OpenGL setup
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel lua-devel
@@ -74,17 +74,17 @@ sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel lua-de
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
-``` 
+```
 
 - OSX:
 ```
 brew install zlib libpng freetype glew
 ```
 
-- Windows: 
+- Windows:
 ```
 vcpkg install zlib libpng freetype glew
-``` 
+```
 
 # How do I use it? A tutorial.
 
