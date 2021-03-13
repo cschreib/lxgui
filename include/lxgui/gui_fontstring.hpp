@@ -8,12 +8,27 @@
 namespace lxgui {
 namespace gui
 {
-    /// A layered_region that can draw text on the screen.
+    /// A #layered_region that can draw text on the screen.
     /** This class holds a string and a reference to a font, which
     *   is used to draw the string on the screen. The appearance of
     *   the string can be changed (font, size, color, alignment, wrapping).
     *   In addition, it is possible to change the color of a portion of
     *   the string, for example to highlight a particular name.
+    *
+    *   __Sizing.__ The #font_string class has a special property when it
+    *   comes to determining the size of its region on the screen, hence
+    *   how other object anchor to it, and how it anchors to other objects.
+    *   See the documentation for #uiobject for more information on anchors.
+    *   While other uiobjects must either have a fixed size or more than two
+    *   anchors constraining their size, the #font_string does not. If only
+    *   one anchor is specified, the width and height of the #font_string will
+    *   be determined by the area occupied by the displayed text, however long and
+    *   tall this may be. If the width is already constrained by the fixed size
+    *   or anchors, then the text will word wrap (if allowed) and the
+    *   #font_string's height will be as tall as the height of the wrapped text.
+    *   Finally, if both the width and height are constrained by fixed sizes or
+    *   anchors, the text will simply word wrap (if allowed) and be cut to fit
+    *   in the specified area.
     */
     class font_string : public layered_region
     {

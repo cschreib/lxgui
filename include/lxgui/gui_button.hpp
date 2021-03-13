@@ -10,17 +10,29 @@ namespace gui
     class texture;
     class font_string;
 
-    /// A simple button.
-    /** This class can handle three different states:
-    *   "normal", "pushed" and "disabled". You can provide a
-    *   different texture for each of these states, and
-    *   two different fontstrings for "normal" and "disabled".<br><br>
-    *   In addition, you can provide another texture/fontstring
-    *   for the "highlight" state (when the mouse is over the
-    *   button widget).<br><br>
-    *   Note that there is no fontstring for the "pushed" state:
-    *   in this case, the "normal" font is rendered with a slight
-    *   offset that you are free to define.
+    /// A #frame with a button that can be clicked.
+    /** This class can handle three different states: "normal", "pushed"
+    *   and "disabled". You can provide a different texture for each of
+    *   these states, and two different fontstrings for "normal" and
+    *   "disabled". Note that a button has frame::enable_mouse set
+    *   to `true` by default.
+    *
+    *   In addition, you can provide another texture/fontstring for the
+    *   "highlight" state (when the mouse is over the button widget).
+    *
+    *   Note that there is no fontstring for the "pushed" state: in this
+    *   case, the "normal" font is rendered with a slight offset that you
+    *   are free to define.
+    *
+    *   __Events.__ Hard-coded events available to all buttons, in
+    *   addition to those from frame:
+    *
+    *   - `OnClick`: Triggered when the button is clicked, either when
+    *   button::click is called, or after the mouse is released after a
+    *   click over the button.
+    *   - `OnDoubleClick`: Triggered when the button is double-clicked.
+    *   - `OnEnable`: Triggered by button::enable.
+    *   - `OnDisable`: Triggered by button::disable.
     */
     class button : public frame
     {

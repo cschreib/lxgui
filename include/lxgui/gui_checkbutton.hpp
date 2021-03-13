@@ -7,8 +7,8 @@
 namespace lxgui {
 namespace gui
 {
-    /// A button with two additional states: checked and unchecked.
-    /** This widget works exactly like a classic Button, but is has two
+    /// A #button with two additional states: checked and unchecked.
+    /** This widget works exactly like a classic #button, but is has two
     *   additional special textures for the check sign.
     */
     class check_button : public button

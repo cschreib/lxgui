@@ -7,12 +7,13 @@
 namespace lxgui {
 namespace gui
 {
-    /// A renderable widget.
+    /// A #uiobject that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
     *   texts, 3D models, ...) and must be contained inside a layer,
-    *   within a @{Frame} object. The frame will then render all
+    *   within a #lxgui::gui::frame object. The frame will then render all
     *   its layered regions, sorted by layers.
-    *   \note Layered regions cannot themselves react to events; this
+    *
+    *   Layered regions cannot themselves react to events; this
     *   must be taken care of by the parent frame.
     */
     class layered_region : public region

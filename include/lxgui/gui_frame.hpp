@@ -29,9 +29,9 @@ namespace gui
         static layer_type get_layer_type(const std::string& sLayer);
     };
 
-    /// A widget that can contain other widget and react to events.
-    /** This widget, which is at the core of the UI design, can contain
-    *   other frames as "children", and layered_regions sorted by layers
+    /// A #uiobject that can contain other objects and react to events.
+    /** This class, which is at the core of the UI design, can contain
+    *   other frames as "children", and layered regions sorted by layers
     *   (text, images, ...). A frame can also react to events, and register
     *   callbacks to be executed on particular events (key presses, etc.)
     *   or on every tick.

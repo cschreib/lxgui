@@ -92,21 +92,112 @@ namespace gui
     class frame;
     class renderer;
 
-    /// The base widget of all elements in the GUI.
-    /** This widget (GUI element) is a virtual base. It will not display anything on its own,
-    *   and must be inherited from to implement any useful features. A few key virtual functions
-    *   (update, render...) should be overriden, and provide all the required logic for the widget
-    *   to serve its purpose. Look at the existing widgets (frame, slider, texture, ...) for
-    *   examples of how this is done.<br>
-    *   There are two main kinds of GUI elements inheriting from this base class. The first are
-    *   regions, which are simple static widgets used to display one particular type of GUI element,
-    *   such as formatted text, or a textured shape. The second are frames, which can contain other
-    *   frames and regions, while also implementing logic to react to events.<br>
-    *   The base functionalities provided by this class are: identification and naming,
-    *   parent relationship to another widget, positioning and sizing (using dimensions and
-    *   anchors), visibility (hidden/shown), transparency (alpha), and virtuality.<br>
-    *   Virtual widgets are never displayed on the screen, but serve as templates for creating new
-    *   widgets.<br>
+    /// The base class of all elements in the GUI.
+    /** Objects of this class offers core functionalities needed by every element
+    *   of the interface. They have a name, and a corresponding variable created
+    *   in Lua to access them. They can have a parent #lxgui::gui::frame. They can be
+    *   placed on the screen at an absolute position, or relative to other uiobjects.
+    *   They can be shown or hidden.
+    *
+    *   Apart form this, a uiobject does not contain anything, nor can it display
+    *   anything on the screen. Any functionality beyond the list above is implemented
+    *   in specialized subclasses (see the full list below).
+    *
+    *   __Interaction between C++, Lua, and XML.__ When a uiobject is created,
+    *   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
+    *   object lives, this name will be used to refer to it. In particular, as soon
+    *   as the object is created, regardless of whether this was done in C++, XML, or
+    *   Lua, a new variable will be created in the Lua state with the exact same name,
+    *   `PlayerHealthBar`. This variable is a reference to the uiobject, and can
+    *   be used to interact with it dynamically. Because of this, each object must have
+    *   a unique name, otherwise it could not be accessible from Lua.
+    *
+    *   Note: Although you can destroy this Lua variable by setting it to nil, this is
+    *   not recommended: the object will _not_ be destroyed (nor garbage-collected)
+    *   because it still exists in the C++ memory space. The only way to truly destroy
+    *   an object from Lua is to call `delete_frame` (for frames only). Destroying and
+    *   creating objects has a cost however. If the object is likely to reappear later
+    *   with the same content, simply hide it and show it again later on. If the
+    *   content may change, you can also recycle the object, i.e., keep it alive and
+    *   simply change its content when it later reappears.
+    *
+    *   Deleting an object from C++ is done using uiobject::release_from_parent.
+    *   This will automatically delete all references to this object in Lua as well.
+    *
+    *   __Parent-child relationship.__ Parents of uiobjects are frames. See
+    *   the #lxgui::gui::frame class documentation for more information. One important
+    *   aspect of the parent-child relationship is related to the object name. If a
+    *   uiobject has a parent, it can be given a name starting with `"$parent"`.
+    *   The name of the parent will automatically replace the `"$parent"` string.
+    *   For example, if an object is named `"$parentButton"` and its parent is named
+    *   `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
+    *   It can be accessed from the Lua state as `ErrorMessageButton`, or as
+    *   `ErrorMessage.Button`. Note that this is totally dynamic: if you later change
+    *   the parent of this button to be another frame, for example `"ExitDialog"`
+    *   its name will naturally change to `"ExitDialogButton"`, and it can be accessed
+    *   from Lua as `ExitDialogButton`, or as `ExitDialog.Button`. This is particularly
+    *   powerful for writing generic code which does not rely on the full names of
+    *   objects, only on their child-parent relationship.
+    *
+    *   __Positioning.__ uiobjects have a position on the screen, but this is
+    *   not parametrized as a simple pair of X and Y coordinates. Instead, objects
+    *   are positioned based on a list of "anchors". Anchors are links between
+    *   objects, which force one edge or one corner of a given object to match with
+    *   the edge or corner of another object. For example, given two objects A and B,
+    *   you can create an anchor that links the top-left corner of A to the top-left
+    *   corner of B. The position of A will automatically be linked to the position of
+    *   B, hence if B moves, A will follow. To further refine this positioning, you
+    *   can specify anchor offsets: for example, you may want A's top-left corner to
+    *   be shifted from B's top-left corner by two pixels in the X direction, and
+    *   five in the Y direction. This offset can be defined either as an absolute
+    *   number of pixels, or as a relative fraction of the size of the object being
+    *   anchored to. For example, you can specify that A's top-left corner links to
+    *   B's top-left corner, with an horizontal offset equal to 30% of B's width.
+    *   Read the "Anchors" section below for more information.
+    *
+    *   An object which has no anchor will be considered "invalid" and will not be
+    *   displayed.
+    *
+    *   __Sizing.__ There are two ways to specify the size of a uiobject. The
+    *   first and most straightforward approach is to directly set its width and/or
+    *   height. This must be specified as an absolute number of pixels. The second
+    *   and more versatile method is to use more than one anchor for opposite sides
+    *   of the object, for example an anchor for the "left" and another for the
+    *   "right" edge. This will implicitly give a width to the object, depending on
+    *   the position of the other objects to which it is anchored. Anchors will always
+    *   override the absolute width and height of an object if they provide any
+    *   constraint on the extents of the object in a given dimension.
+    *
+    *   An object which has neither a fixed absolute size, nor has it size implicitly
+    *   constrained by anchors, is considered "invalid" and will not be displayed.
+    *
+    *   __Anchors.__ There are nine available anchor points:
+    *
+    *   - `TOPLEFT`: constrains the max Y and min X.
+    *   - `TOPRIGHT`: constrains the max Y and max X.
+    *   - `BOTTOMLEFT`: constrains the min Y and min X.
+    *   - `BOTTOMRIGH`: constrains the min Y and max X.
+    *   - `LEFT`: constrains the min X and the midpoint in Y.
+    *   - `RIGHT`: constrains the max X and the midpoint in Y.
+    *   - `TOP`: constrains the max Y and the midpoint in X.
+    *   - `BOTTOM`: constrains the min Y and the midpoint in X.
+    *   - `CENTER`: constrains the midpoint in X and Y.
+    *
+    *   If you specify two constraints on the same point (for example: `TOPLEFT`
+    *   and `BOTTOMLEFT` both constrain the min X coordinate), the most stringent
+    *   constraint always wins. Constraints on the midpoints are more subtle however,
+    *   as they will always be discarded when both the min and max are constrained.
+    *   For example, consider an object `A` of fixed size 30x30 and some other object
+    *   `B` of fixed size 40x40. If we anchor the `RIGHT` of `A` to the `LEFT` of `B`,
+    *   `A`'s _vertical_ center will be automatically aligned with `B`'s vertical center.
+    *   This is the effect of the midpoint constraint. Now, if we further anchor the
+    *   `TOP` of `A` to the `TOP` of `B`, we have more than one anchor constraining
+    *   the vertical extents of `A` (see "Sizing" above), therefore `A`'s fixed height
+    *   of 30 pixels will be ignored from now on. It will shrink to a height of 20
+    *   pixels, i.e., the distance between `B`'s top edge and its vertical center.
+    *   Finally, if we further anchor the `BOTTOM` of `A` to the `BOTTOM` of `B`, the
+    *   constraint on `A`'s midpoint will be ignored: `A` will be enlarged to a height
+    *   of 40 pixels, i.e., the distance between `B`'s top and bottom edges.
     */
     class uiobject
     {

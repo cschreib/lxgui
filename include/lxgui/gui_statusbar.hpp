@@ -10,13 +10,22 @@ namespace gui
 {
     class texture;
 
-    /// A variable length bar.
+    /// A #frame representing a variable-length bar.
     /** This frame has three main properties: a minimum value, a
     *   maximum value, and a current value that must be contained
     *   between the minimum and maximum values. The frame will
     *   render a textured bar that will either be full, empty, or
-    *   anything in between depending on the current value.<br><br>
-    *   This can be used to display health bars, or progress bars.<br><br>
+    *   anything in between depending on the current value.
+    *
+    *   This can be used to display health bars, or progress bars.
+    *
+    *   __Events.__ Hard-coded events available to all status bars,
+    *   in addition to those from #frame:
+    *
+    *   - `OnValueChanged`: Triggered whenever the value represented by
+    *   the status bar changes. This is triggered by status_bar::set_value.
+    *   This can also be triggered by status_bar::set_min_max_values if
+    *   the previous value would not satisfy the new constraints.
     */
     class status_bar : public frame
     {

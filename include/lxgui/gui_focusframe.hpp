@@ -7,8 +7,8 @@
 namespace lxgui {
 namespace gui
 {
-    /// A frame that can receive and loose focus
-    /** A typical usage example is the edit_box class.
+    /// A #frame that can receive and loose focus
+    /** A typical usage example is the #edit_box class.
     */
     class focus_frame : public frame
     {
