@@ -1,0 +1,45 @@
+name: Doc
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build documentation
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        sudo apt-get install doxygen luarocks lua5.2
+        sudo luarocks install ldoc
+        sudo luarocks install markdown
+
+    - name: Build C++ documentation
+      working-directory: ${{github.workspace}}/gui/doc
+      shell: bash
+      run: doxygen dox.conf
+
+    - name: Build Lua documentation
+      working-directory: ${{github.workspace}}/gui/doc
+      shell: bash
+      run: ldoc .
+
+    - name: Create deployment folder
+      working-directory: ${{github.workspace}}/gui/doc
+      shell: bash
+      run: |
+        mkdir deploy
+        mv html lua deploy/
+
+    - name: Deploy to GitHub pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      working-directory: ${{github.workspace}}/gui/doc
+      with:
+        branch: gh-pages
+        folder: deploy
