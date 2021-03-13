@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/cschreib/lxgui/actions/workflows/cmake.yml/badge.svg) [![Build Status](https://github.com/cschreib/lxgui/actions/workflows/doc.yml/badge.svg)
+![Build Status](https://github.com/cschreib/lxgui/actions/workflows/cmake.yml/badge.svg) ![Build Status](https://github.com/cschreib/lxgui/actions/workflows/doc.yml/badge.svg)
 
 # What is lxgui?
 
