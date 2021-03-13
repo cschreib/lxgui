@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 namespace lxgui {
 namespace gui
