@@ -28,7 +28,7 @@
 *   __Rendering.__ Frames are grouped into different "strata", which are
 *   rendered sequentially. Frames in a high strata will always be rendered
 *   above frames in a low strata. Then, within a strata, frames are further
-*   sorted by "level"; within this particualr strata, a frame with a high
+*   sorted by "level"; within this particular strata, a frame with a high
 *   level will always be rendered above all frames with a lower level, but
 *   it will still remain below other frames in a higher strata. The level
 *   of a frame is automatically set to the maximum level inside the strata
