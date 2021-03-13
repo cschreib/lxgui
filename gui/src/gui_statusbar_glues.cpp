@@ -5,6 +5,29 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Frame} representing a variable-length bar.
+*   This frame has three main properties: a minimum value, a
+*   maximum value, and a current value that must be contained
+*   between the minimum and maximum values. The frame will
+*   render a textured bar that will either be full, empty, or
+*   anything in between depending on the current value.
+*
+*   This can be used to display health bars, or progress bars.
+*
+*   __Events.__ Hard-coded events available to all @{StatusBar}s,
+*   in addition to those from @{Frame}:
+*
+*   - `OnValueChanged`: Triggered whenever the value represented by
+*   the status bar changes. This is triggered by @{StatusBar:set_value}.
+*   This can also be triggered by @{StatusBar:set_min_max_values} if
+*   the previous value would not satisfy the new constraints.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}.
+*
+*   Child classes: none.
+*   @classmod StatusBar
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -17,6 +40,8 @@ lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
 {
 }
 
+/** @function get_min_max_values
+*/
 int lua_status_bar::_get_min_max_values(lua_State* pLua)
 {
     if (!check_object_())
@@ -30,6 +55,8 @@ int lua_status_bar::_get_min_max_values(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_orientation
+*/
 int lua_status_bar::_get_orientation(lua_State* pLua)
 {
     if (!check_object_())
@@ -46,6 +73,8 @@ int lua_status_bar::_get_orientation(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_status_bar_color
+*/
 int lua_status_bar::_get_status_bar_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -63,6 +92,8 @@ int lua_status_bar::_get_status_bar_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_status_bar_texture
+*/
 int lua_status_bar::_get_status_bar_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -80,6 +111,8 @@ int lua_status_bar::_get_status_bar_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_value
+*/
 int lua_status_bar::_get_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -92,6 +125,8 @@ int lua_status_bar::_get_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_reversed
+*/
 int lua_status_bar::_is_reversed(lua_State* pLua)
 {
     if (!check_object_())
@@ -104,6 +139,8 @@ int lua_status_bar::_is_reversed(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_min_max_values
+*/
 int lua_status_bar::_set_min_max_values(lua_State* pLua)
 {
     if (!check_object_())
@@ -123,6 +160,8 @@ int lua_status_bar::_set_min_max_values(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_orientation
+*/
 int lua_status_bar::_set_orientation(lua_State* pLua)
 {
     if (!check_object_())
@@ -148,6 +187,8 @@ int lua_status_bar::_set_orientation(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_status_bar_color
+*/
 int lua_status_bar::_set_status_bar_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -193,6 +234,8 @@ int lua_status_bar::_set_status_bar_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_status_bar_texture
+*/
 int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -212,6 +255,8 @@ int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_value
+*/
 int lua_status_bar::_set_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -225,6 +270,8 @@ int lua_status_bar::_set_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_reversed
+*/
 int lua_status_bar::_set_reversed(lua_State* pLua)
 {
     if (!check_object_())

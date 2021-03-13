@@ -43,6 +43,7 @@ GH_REPO_ORG=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 1`
 GH_REPO_NAME=`echo $TRAVIS_REPO_SLUG | cut -d "/" -f 2`
 GH_REPO_REF="github.com/$GH_REPO_ORG/$GH_REPO_NAME.git"
 DOXYFILE=$TRAVIS_BUILD_DIR/gui/doc/dox.conf
+LDOCFILE=$TRAVIS_BUILD_DIR/gui/doc/config.ld
 
 ################################################################################
 ##### Generate the Doxygen code documentation and log the output.          #####
@@ -53,10 +54,27 @@ doxygen $(basename $DOXYFILE) 2>&1 | tee doxygen.log
 
 # Only upload if Doxygen successfully created the documentation.
 # Check this by verifying that the html directory and the file html/index.html
-# both exist. This is a good indication that Doxygen did it's work.
+# both exist. This is a good indication that Doxygen did its work.
 if [ ! -d "html" ] || [ ! -f "html/index.html" ]; then
     echo '' >&2
-    echo 'Warning: No documentation (html) files have been found!' >&2
+    echo 'Warning: No C++ documentation (html) files have been found!' >&2
+    echo 'Warning: Not going to push the documentation to GitHub!' >&2
+    exit 1
+fi
+
+################################################################################
+##### Generate the LDoc code documentation and log the output.             #####
+echo 'Generating LDoc code documentation...'
+cd $(dirname $LDOCFILE)
+# Redirect both stderr and stdout to the log file AND the console.
+ldoc . 2>&1 | tee ldoc.log
+
+# Only upload if LDoc successfully created the documentation.
+# Check this by verifying that the lua directory and the file lua/index.html
+# both exist. This is a good indication that LDoc did its work.
+if [ ! -d "lua" ] || [ ! -f "lua/index.html" ]; then
+    echo '' >&2
+    echo 'Warning: No Lua documentation (html) files have been found!' >&2
     echo 'Warning: Not going to push the documentation to GitHub!' >&2
     exit 1
 fi
@@ -69,7 +87,7 @@ git clone -b gh-pages git@github.com:$GH_REPO_ORG/$GH_REPO_NAME.git code_docs
 cd code_docs
 
 # Copy doxygen output here
-cp -rf ../html ../doxygen.log ./
+cp -rf ../html ../lua ../doxygen.log ../ldoc.log ./
 
 # Copy DoxygenLayout.xml here
 # cp $TRAVIS_BUILD_DIR/doc/DoxygenLayout.xml .

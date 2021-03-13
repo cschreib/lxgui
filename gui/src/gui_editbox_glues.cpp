@@ -3,6 +3,58 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Frame} with an editable text box.
+*   This frame lets the user input arbitrary text into a box,
+*   which can be read and used by the rest of the interface.
+*   The text box can be either single-line or multi-line.
+*   Text can be selected by holding the Shift key, and natural
+*   navigation is available with the Left, Right, Up, Down, Home,
+*   End, Page Up, and Page Down keys. Copy and paste operations
+*   are also supported. The edit box can also remember the history
+*   of previously entered values or commands, which can be brought
+*   back at will. The characters entered as handled by the
+*   operating system, hence this class will use whatever keyboard
+*   layout is currently in use. Finally, the edit box can be
+*   configured to only accept numeric values (of either sign, or
+*   positive only), and to hide the input characters to simulate a
+*   password box (no encryption or other safety measure is used).
+*
+*   __Events.__ Hard-coded events available to all @{EditBox}es,
+*   in addition to those from @{Frame}:
+*
+*   - `OnChar`: Triggered whenever a new character is added to the
+*   edit box. Will always be preceeded by `OnTextChanged`.
+*   - `OnCursorChanged`: Triggered whenever the position of the edit
+*   cursor is changed (not yet implemented).
+*   - `OnEditFocusGained`: Triggered when the edit box gains focus,
+*   see @{FocusFrame:set_focus}.
+*   - `OnEditFocusLost`: Triggered when the edit box looses focus,
+*   see @{FocusFrame:set_focus}.
+*   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
+*   is pressed while the edit box is focussed. This captures both
+*   the main keyboard key and the smaller one on the numpad.
+*   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+*   while the edit box is focussed.
+*   - `OnSpacePressed`: Triggered when the `Space` key is pressed
+*   while the edit box is focussed.
+*   - `OnTabPressed`: Triggered when the `Tab` key is pressed
+*   while the edit box is focussed.
+*   - `OnUpPressed`: Triggered when the `Up` key is pressed
+*   while the edit box is focussed.
+*   - `OnDownPressed`: Triggered when the `Down` key is pressed
+*   while the edit box is focussed.
+*   - `OnTextChanged`: Triggered whenever the text contained in the
+*   edit box changes (character added or deleted, text set or pasted,
+*   etc.).
+*   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
+*   followed by `OnTextChanged`.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}, @{FocusFrame}.
+*
+*   Child classes: none.
+*   @classmod EditBox
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -15,6 +67,8 @@ lua_edit_box::lua_edit_box(lua_State* pLua) : lua_focus_frame(pLua)
 {
 }
 
+/** @function add_history_line
+*/
 int lua_edit_box::_add_history_line(lua_State* pLua)
 {
     if (!check_object_())
@@ -28,6 +82,8 @@ int lua_edit_box::_add_history_line(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function clear_history
+*/
 int lua_edit_box::_clear_history(lua_State* pLua)
 {
     if (!check_object_())
@@ -40,6 +96,8 @@ int lua_edit_box::_clear_history(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_blink_speed
+*/
 int lua_edit_box::_get_blink_speed(lua_State* pLua)
 {
     if (!check_object_())
@@ -52,6 +110,8 @@ int lua_edit_box::_get_blink_speed(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_cursor_position
+*/
 int lua_edit_box::_get_cursor_position(lua_State* pLua)
 {
     if (!check_object_())
@@ -64,6 +124,8 @@ int lua_edit_box::_get_cursor_position(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_history_lines
+*/
 int lua_edit_box::_get_history_lines(lua_State* pLua)
 {
     if (!check_object_())
@@ -78,6 +140,8 @@ int lua_edit_box::_get_history_lines(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_max_letters
+*/
 int lua_edit_box::_get_max_letters(lua_State* pLua)
 {
     if (!check_object_())
@@ -90,6 +154,8 @@ int lua_edit_box::_get_max_letters(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_num_letters
+*/
 int lua_edit_box::_get_num_letters(lua_State* pLua)
 {
     if (!check_object_())
@@ -102,6 +168,8 @@ int lua_edit_box::_get_num_letters(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_number
+*/
 int lua_edit_box::_get_number(lua_State* pLua)
 {
     if (!check_object_())
@@ -114,6 +182,8 @@ int lua_edit_box::_get_number(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text
+*/
 int lua_edit_box::_get_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -126,6 +196,8 @@ int lua_edit_box::_get_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text_insets
+*/
 int lua_edit_box::_get_text_insets(lua_State* pLua)
 {
     if (!check_object_())
@@ -143,6 +215,8 @@ int lua_edit_box::_get_text_insets(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function highlight_text
+*/
 int lua_edit_box::_highlight_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -167,6 +241,8 @@ int lua_edit_box::_highlight_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function insert
+*/
 int lua_edit_box::_insert(lua_State* pLua)
 {
     if (!check_object_())
@@ -180,6 +256,8 @@ int lua_edit_box::_insert(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_multi_line
+*/
 int lua_edit_box::_is_multi_line(lua_State* pLua)
 {
     if (!check_object_())
@@ -192,6 +270,8 @@ int lua_edit_box::_is_multi_line(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_numeric
+*/
 int lua_edit_box::_is_numeric(lua_State* pLua)
 {
     if (!check_object_())
@@ -204,6 +284,8 @@ int lua_edit_box::_is_numeric(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_password
+*/
 int lua_edit_box::_is_password(lua_State* pLua)
 {
     if (!check_object_())
@@ -216,6 +298,8 @@ int lua_edit_box::_is_password(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_blink_speed
+*/
 int lua_edit_box::_set_blink_speed(lua_State* pLua)
 {
     if (!check_object_())
@@ -229,6 +313,8 @@ int lua_edit_box::_set_blink_speed(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_cursor_position
+*/
 int lua_edit_box::_set_cursor_position(lua_State* pLua)
 {
     if (!check_object_())
@@ -242,6 +328,8 @@ int lua_edit_box::_set_cursor_position(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_max_history_lines
+*/
 int lua_edit_box::_set_max_history_lines(lua_State* pLua)
 {
     if (!check_object_())
@@ -255,6 +343,8 @@ int lua_edit_box::_set_max_history_lines(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_max_letters
+*/
 int lua_edit_box::_set_max_letters(lua_State* pLua)
 {
     if (!check_object_())
@@ -268,6 +358,8 @@ int lua_edit_box::_set_max_letters(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_multi_line
+*/
 int lua_edit_box::_set_multi_line(lua_State* pLua)
 {
     if (!check_object_())
@@ -281,6 +373,8 @@ int lua_edit_box::_set_multi_line(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_number
+*/
 int lua_edit_box::_set_number(lua_State* pLua)
 {
     if (!check_object_())
@@ -294,6 +388,8 @@ int lua_edit_box::_set_number(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_numeric
+*/
 int lua_edit_box::_set_numeric(lua_State* pLua)
 {
     if (!check_object_())
@@ -307,6 +403,8 @@ int lua_edit_box::_set_numeric(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_password
+*/
 int lua_edit_box::_set_password(lua_State* pLua)
 {
     if (!check_object_())
@@ -320,6 +418,8 @@ int lua_edit_box::_set_password(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_text
+*/
 int lua_edit_box::_set_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -333,6 +433,8 @@ int lua_edit_box::_set_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_text_insets
+*/
 int lua_edit_box::_set_text_insets(lua_State* pLua)
 {
     if (!check_object_())

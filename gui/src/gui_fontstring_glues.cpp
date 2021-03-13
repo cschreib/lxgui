@@ -6,6 +6,34 @@
 #include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_string.hpp>
 
+/** A @{LayeredRegion} that can draw text on the screen.
+*   This class holds a string and a reference to a font, which
+*   is used to draw the string on the screen. The appearance of
+*   the string can be changed (font, size, color, alignment, wrapping).
+*   In addition, it is possible to change the color of a portion of
+*   the string, for example to highlight a particular name.
+*
+*   __Sizing.__ The @{FontString} class has a special property when it
+*   comes to determining the size of its region on the screen, hence
+*   how other object anchor to it, and how it anchors to other objects.
+*   See the documentation for @{UIObject} for more information on anchors.
+*   While other @{UIObject}s must either have a fixed size or more than two
+*   anchors constraining their size, the @{FontString} does not. If only
+*   one anchor is specified, the width and height of the @{FontString} will
+*   be determined by the area occupied by the displayed text, however long and
+*   tall this may be. If the width is already constrained by the fixed size
+*   or anchors, then the text will word wrap (if allowed) and the
+*   @{FontString}'s height will be as tall as the height of the wrapped text.
+*   Finally, if both the width and height are constrained by fixed sizes or
+*   anchors, the text will simply word wrap (if allowed) and be cut to fit
+*   in the specified area.
+*
+*   Inherits all methods from: @{UIObject}, @{LayeredRegion}.
+*
+*   Child classes: none.
+*   @classmod FontString
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -18,6 +46,8 @@ lua_font_string::lua_font_string(lua_State* pLua) : lua_layered_region(pLua)
 {
 }
 
+/** @function get_font
+*/
 int lua_font_string::_get_font(lua_State* pLua)
 {
     if (!check_object_())
@@ -30,6 +60,8 @@ int lua_font_string::_get_font(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_justify_h
+*/
 int lua_font_string::_get_justify_h(lua_State* pLua)
 {
     if (!check_object_())
@@ -52,6 +84,8 @@ int lua_font_string::_get_justify_h(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_justify_v
+*/
 int lua_font_string::_get_justify_v(lua_State* pLua)
 {
     if (!check_object_())
@@ -74,6 +108,8 @@ int lua_font_string::_get_justify_v(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_shadow_color
+*/
 int lua_font_string::_get_shadow_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -91,6 +127,8 @@ int lua_font_string::_get_shadow_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_shadow_offset
+*/
 int lua_font_string::_get_shadow_offset(lua_State* pLua)
 {
     if (!check_object_())
@@ -104,6 +142,8 @@ int lua_font_string::_get_shadow_offset(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_spacing
+*/
 int lua_font_string::_get_spacing(lua_State* pLua)
 {
     if (!check_object_())
@@ -116,6 +156,8 @@ int lua_font_string::_get_spacing(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text_color
+*/
 int lua_font_string::_get_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -133,6 +175,8 @@ int lua_font_string::_get_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_font
+*/
 int lua_font_string::_set_font(lua_State* pLua)
 {
     if (!check_object_())
@@ -166,6 +210,8 @@ int lua_font_string::_set_font(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_justify_h
+*/
 int lua_font_string::_set_justify_h(lua_State* pLua)
 {
     if (!check_object_())
@@ -193,6 +239,8 @@ int lua_font_string::_set_justify_h(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_justify_v
+*/
 int lua_font_string::_set_justify_v(lua_State* pLua)
 {
     if (!check_object_())
@@ -220,6 +268,8 @@ int lua_font_string::_set_justify_v(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_shadow_color
+*/
 int lua_font_string::_set_shadow_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -265,6 +315,8 @@ int lua_font_string::_set_shadow_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_shadow_offset
+*/
 int lua_font_string::_set_shadow_offset(lua_State* pLua)
 {
     if (!check_object_())
@@ -285,6 +337,8 @@ int lua_font_string::_set_shadow_offset(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_spacing
+*/
 int lua_font_string::_set_spacing(lua_State* pLua)
 {
     if (!check_object_())
@@ -301,6 +355,8 @@ int lua_font_string::_set_spacing(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_text_color
+*/
 int lua_font_string::_set_text_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -346,6 +402,8 @@ int lua_font_string::_set_text_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function can_non_space_wrap
+*/
 int lua_font_string::_can_non_space_wrap(lua_State* pLua)
 {
     if (!check_object_())
@@ -358,6 +416,8 @@ int lua_font_string::_can_non_space_wrap(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function can_word_wrap
+*/
 int lua_font_string::_can_word_wrap(lua_State* pLua)
 {
     if (!check_object_())
@@ -370,6 +430,8 @@ int lua_font_string::_can_word_wrap(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function enable_formatting
+*/
 int lua_font_string::_enable_formatting(lua_State* pLua)
 {
     if (!check_object_())
@@ -386,6 +448,8 @@ int lua_font_string::_enable_formatting(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_string_height
+*/
 int lua_font_string::_get_string_height(lua_State* pLua)
 {
     if (!check_object_())
@@ -398,6 +462,8 @@ int lua_font_string::_get_string_height(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_string_width
+*/
 int lua_font_string::_get_string_width(lua_State* pLua)
 {
     if (!check_object_())
@@ -410,6 +476,8 @@ int lua_font_string::_get_string_width(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_text
+*/
 int lua_font_string::_get_text(lua_State* pLua)
 {
     if (!check_object_())
@@ -422,6 +490,8 @@ int lua_font_string::_get_text(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_formatting_enabled
+*/
 int lua_font_string::_is_formatting_enabled(lua_State* pLua)
 {
     if (!check_object_())
@@ -434,6 +504,8 @@ int lua_font_string::_is_formatting_enabled(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_non_space_wrap
+*/
 int lua_font_string::_set_non_space_wrap(lua_State* pLua)
 {
     if (!check_object_())
@@ -450,6 +522,8 @@ int lua_font_string::_set_non_space_wrap(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_word_wrap
+*/
 int lua_font_string::_set_word_wrap(lua_State* pLua)
 {
     if (!check_object_())
@@ -471,6 +545,8 @@ int lua_font_string::_set_word_wrap(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_text
+*/
 int lua_font_string::_set_text(lua_State* pLua)
 {
     if (!check_object_())

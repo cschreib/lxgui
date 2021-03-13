@@ -9,6 +9,118 @@
 #include <lxgui/utils_string.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** The base class of all elements in the GUI.
+*   Objects of this class offers core functionalities needed by every element
+*   of the interface. They have a name, and a corresponding variable created
+*   in Lua to access them. They can have a parent @{Frame}. They can be placed
+*   on the screen at an absolute position, or relative to other @{UIObject}s.
+*   They can be shown or hidden.
+*
+*   Apart form this, a @{UIObject} does not contain anything, nor can it display
+*   anything on the screen. Any functionality beyond the list above is implemented
+*   in specialized subclasses (see the full list below).
+*
+*   __Interaction between C++, Lua, and XML.__ When a @{UIObject} is created,
+*   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
+*   object lives, this name will be used to refer to it. In particular, as soon
+*   as the object is created, regardless of whether this was done in C++, XML, or
+*   Lua, a new variable will be created in the Lua state with the exact same name,
+*   `PlayerHealthBar`. This variable is a reference to the @{UIObject}, and can
+*   be used to interact with it dynamically. Because of this, each object must have
+*   a unique name, otherwise it could not be accessible from Lua.
+*
+*   Note: Although you can destroy this Lua variable by setting it to nil, this is
+*   not recommended: the object will _not_ be destroyed (nor garbage-collected)
+*   because it still exists in the C++ memory space. The only way to truly destroy
+*   an object is to call @{Manager.delete_frame} (for @{Frame}s only). Destroying and
+*   creating objects has a cost however. If the object is likely to reappear later
+*   with the same content, simply hide it and show it again later on. If the
+*   content may change, you can also recycle the object, i.e., keep it alive and
+*   simply change its content when it later reappears.
+*
+*   __Parent-child relationship.__ Parents of @{UIObject}s are @{Frame}s. See
+*   the @{Frame} class documentation for more information. One important aspect
+*   of the parent-child relationship is related to the object name. If a
+*   @{UIObject} has a parent, it can be given a name starting with `"$parent"`.
+*   The name of the parent will automatically replace the `"$parent"` string.
+*   For example, if an object is named `"$parentButton"` and its parent is named
+*   `"ErrorMessage"`, the final name of the object will be `"ErrorMessageButton"`.
+*   It can be accessed from the Lua state as `ErrorMessageButton`, or as
+*   `ErrorMessage.Button`. Note that this is totally dynamic: if you later change
+*   the parent of this button to be another frame, for example `"ExitDialog"`
+*   its name will naturally change to `"ExitDialogButton"`, and it can be accessed
+*   from Lua as `ExitDialogButton`, or as `ExitDialog.Button`. This is particularly
+*   powerful for writing generic code which does not rely on the full names of
+*   objects, only on their child-parent relationship.
+*
+*   __Positioning.__ @{UIObject}s have a position on the screen, but this is
+*   not parametrized as a simple pair of X and Y coordinates. Instead, objects
+*   are positioned based on a list of "anchors". Anchors are links between
+*   objects, which force one edge or one corner of a given object to match with
+*   the edge or corner of another object. For example, given two objects A and B,
+*   you can create an anchor that links the top-left corner of A to the top-left
+*   corner of B. The position of A will automatically be linked to the position of
+*   B, hence if B moves, A will follow. To further refine this positioning, you
+*   can specify anchor offsets: for example, you may want A's top-left corner to
+*   be shifted from B's top-left corner by two pixels in the X direction, and
+*   five in the Y direction. This offset can be defined either as an absolute
+*   number of pixels, or as a relative fraction of the size of the object being
+*   anchored to. For example, you can specify that A's top-left corner links to
+*   B's top-left corner, with an horizontal offset equal to 30% of B's width.
+*   Read the "Anchors" section below for more information.
+*
+*   An object which has no anchor will be considered "invalid" and will not be
+*   displayed.
+*
+*   __Sizing.__ There are two ways to specify the size of a @{UIObject}. The
+*   first and most straightforward approach is to directly set its width and/or
+*   height. This must be specified as an absolute number of pixels. The second
+*   and more versatile method is to use more than one anchor for opposite sides
+*   of the object, for example an anchor for the "left" and another for the
+*   "right" edge. This will implicitly give a width to the object, depending on
+*   the position of the other objects to which it is anchored. Anchors will always
+*   override the absolute width and height of an object if they provide any
+*   constraint on the extents of the object in a given dimension.
+*
+*   An object which has neither a fixed absolute size, nor has it size implicitly
+*   constrained by anchors, is considered "invalid" and will not be displayed.
+*
+*   __Anchors.__ There are nine available anchor points:
+*
+*   - `TOPLEFT`: constrains the max Y and min X.
+*   - `TOPRIGHT`: constrains the max Y and max X.
+*   - `BOTTOMLEFT`: constrains the min Y and min X.
+*   - `BOTTOMRIGH`: constrains the min Y and max X.
+*   - `LEFT`: constrains the min X and the midpoint in Y.
+*   - `RIGHT`: constrains the max X and the midpoint in Y.
+*   - `TOP`: constrains the max Y and the midpoint in X.
+*   - `BOTTOM`: constrains the min Y and the midpoint in X.
+*   - `CENTER`: constrains the midpoint in X and Y.
+*
+*   If you specify two constraints on the same point (for example: `TOPLEFT`
+*   and `BOTTOMLEFT` both constrain the min X coordinate), the most stringent
+*   constraint always wins. Constraints on the midpoints are more subtle however,
+*   as they will always be discarded when both the min and max are constrained.
+*   For example, consider an object `A` of fixed size 30x30 and some other object
+*   `B` of fixed size 40x40. If we anchor the `RIGHT` of `A` to the `LEFT` of `B`,
+*   `A`'s _vertical_ center will be automatically aligned with `B`'s vertical center.
+*   This is the effect of the midpoint constraint. Now, if we further anchor the
+*   `TOP` of `A` to the `TOP` of `B`, we have more than one anchor constraining
+*   the vertical extents of `A` (see "Sizing" above), therefore `A`'s fixed height
+*   of 30 pixels will be ignored from now on. It will shrink to a height of 20
+*   pixels, i.e., the distance between `B`'s top edge and its vertical center.
+*   Finally, if we further anchor the `BOTTOM` of `A` to the `BOTTOM` of `B`, the
+*   constraint on `A`'s midpoint will be ignored: `A` will be enlarged to a height
+*   of 40 pixels, i.e., the distance between `B`'s top and bottom edges.
+*
+*   Inherits all methods from: none.
+*
+*   Child classes: @{Frame}, @{LayeredRegion}, @{FontString}, @{Texture},
+*   @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox}, @{ScrollFrame},
+*   @{Slider}, @{StatusBar}.
+*   @classmod UIObject
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -130,6 +242,8 @@ int lua_glue::get_data_table(lua_State * pLua)
     return 1;
 }
 
+/** @function get_alpha
+*/
 int lua_uiobject::_get_alpha(lua_State* pLua)
 {
     if (!check_object_())
@@ -142,6 +256,8 @@ int lua_uiobject::_get_alpha(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_name
+*/
 int lua_uiobject::_get_name(lua_State* pLua)
 {
     if (!check_object_())
@@ -154,6 +270,8 @@ int lua_uiobject::_get_name(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_object_type
+*/
 int lua_uiobject::_get_object_type(lua_State* pLua)
 {
     if (!check_object_())
@@ -166,6 +284,8 @@ int lua_uiobject::_get_object_type(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_object_type
+*/
 int lua_uiobject::_is_object_type(lua_State* pLua)
 {
     if (!check_object_())
@@ -181,6 +301,8 @@ int lua_uiobject::_is_object_type(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_alpha
+*/
 int lua_uiobject::_set_alpha(lua_State* pLua)
 {
     if (!check_object_())
@@ -196,6 +318,8 @@ int lua_uiobject::_set_alpha(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function clear_all_points
+*/
 int lua_uiobject::_clear_all_points(lua_State* pLua)
 {
     if (!check_object_())
@@ -208,6 +332,8 @@ int lua_uiobject::_clear_all_points(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_bottom
+*/
 int lua_uiobject::_get_bottom(lua_State* pLua)
 {
     if (!check_object_())
@@ -220,6 +346,8 @@ int lua_uiobject::_get_bottom(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_center
+*/
 int lua_uiobject::_get_center(lua_State* pLua)
 {
     if (!check_object_())
@@ -234,6 +362,8 @@ int lua_uiobject::_get_center(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_height
+*/
 int lua_uiobject::_get_height(lua_State* pLua)
 {
     if (!check_object_())
@@ -246,6 +376,8 @@ int lua_uiobject::_get_height(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_left
+*/
 int lua_uiobject::_get_left(lua_State* pLua)
 {
     if (!check_object_())
@@ -258,6 +390,8 @@ int lua_uiobject::_get_left(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_num_point
+*/
 int lua_uiobject::_get_num_point(lua_State* pLua)
 {
     if (!check_object_())
@@ -270,6 +404,8 @@ int lua_uiobject::_get_num_point(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_parent
+*/
 int lua_uiobject::_get_parent(lua_State* pLua)
 {
     if (!check_object_())
@@ -288,6 +424,8 @@ int lua_uiobject::_get_parent(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_base
+*/
 int lua_uiobject::_get_base(lua_State* pLua)
 {
     if (!check_object_())
@@ -306,6 +444,8 @@ int lua_uiobject::_get_base(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_point
+*/
 int lua_uiobject::_get_point(lua_State* pLua)
 {
     if (!check_object_())
@@ -340,6 +480,8 @@ int lua_uiobject::_get_point(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_right
+*/
 int lua_uiobject::_get_right(lua_State* pLua)
 {
     if (!check_object_())
@@ -352,6 +494,8 @@ int lua_uiobject::_get_right(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_top
+*/
 int lua_uiobject::_get_top(lua_State* pLua)
 {
     if (!check_object_())
@@ -364,6 +508,8 @@ int lua_uiobject::_get_top(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_width
+*/
 int lua_uiobject::_get_width(lua_State* pLua)
 {
     if (!check_object_())
@@ -376,6 +522,8 @@ int lua_uiobject::_get_width(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function hide
+*/
 int lua_uiobject::_hide(lua_State* pLua)
 {
     if (!check_object_())
@@ -388,6 +536,8 @@ int lua_uiobject::_hide(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_shown
+*/
 int lua_uiobject::_is_shown(lua_State* pLua)
 {
     if (!check_object_())
@@ -400,6 +550,8 @@ int lua_uiobject::_is_shown(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_visible
+*/
 int lua_uiobject::_is_visible(lua_State* pLua)
 {
     if (!check_object_())
@@ -412,6 +564,8 @@ int lua_uiobject::_is_visible(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_all_points
+*/
 int lua_uiobject::_set_all_points(lua_State* pLua)
 {
     if (!check_object_())
@@ -443,6 +597,8 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_height
+*/
 int lua_uiobject::_set_height(lua_State* pLua)
 {
     if (!check_object_())
@@ -456,6 +612,8 @@ int lua_uiobject::_set_height(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_parent
+*/
 int lua_uiobject::_set_parent(lua_State* pLua)
 {
     if (!check_object_())
@@ -517,6 +675,8 @@ int lua_uiobject::_set_parent(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_point
+*/
 int lua_uiobject::_set_point(lua_State* pLua)
 {
     if (!check_object_())
@@ -585,6 +745,8 @@ int lua_uiobject::_set_point(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_rel_point
+*/
 int lua_uiobject::_set_rel_point(lua_State* pLua)
 {
     if (!check_object_())
@@ -644,6 +806,8 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_width
+*/
 int lua_uiobject::_set_width(lua_State* pLua)
 {
     if (!check_object_())
@@ -657,6 +821,8 @@ int lua_uiobject::_set_width(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function show
+*/
 int lua_uiobject::_show(lua_State* pLua)
 {
     if (!check_object_())

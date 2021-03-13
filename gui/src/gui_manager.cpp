@@ -26,6 +26,14 @@
 #include <fstream>
 #include <sstream>
 
+/** \mainpage lxgui documentation
+*
+* This page allows you to browse the documentation for the C++ API of lxgui.
+*
+* For the Lua/XML API, please go to the
+* <a href="../lua/index.html">Lua documentation</a>.
+*/
+
 namespace lxgui {
 namespace gui
 {
