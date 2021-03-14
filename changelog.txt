@@ -30,6 +30,9 @@ v2.0.0:
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
+ - gui: renamed frame::on into frame::on_script
+ - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
+ - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
@@ -58,6 +61,7 @@ v2.0.0:
  - gui: fixed left/right keys not moving the carret as expected when text is selected in edit_box
  - gui: fixed crash when inherited child's name is already taken
  - gui: fixed incorrect handling of optional parameter in Frame:enable_mouse() lua function
+ - gui: fixed Frame:get_script() always returning nil
  - xml: now parsing standard XML comments
 
 v1.2.0:
