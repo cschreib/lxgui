@@ -4,6 +4,7 @@
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_std.hpp>
+#include <lxgui/utils_string.hpp>
 
 // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
 #define DEBUG_LOG(msg)
@@ -13,6 +14,7 @@ namespace gui
 {
 void event_manager::register_event(event_receiver* pReceiver, const std::string& sEventName)
 {
+    DEBUG_LOG("register "+sEventName+" to "+utils::to_string(pReceiver));
     auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj) {
         return mObj.sName == sEventName;
     });
