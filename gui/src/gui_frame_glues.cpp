@@ -886,43 +886,6 @@ int lua_frame::_is_user_placed(lua_State* pLua)
     return mFunc.on_return();
 }
 
-/** @function on
-*/
-int lua_frame::_on(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:on", pLua);
-    mFunc.add(0, "script", lua::type::STRING);
-    if (mFunc.check())
-    {
-        std::string sScript = mFunc.get(0)->get_string();
-        if (!sScript.empty())
-        {
-            if ('a' <= sScript[0] && sScript[0] <= 'z')
-            {
-                sScript[0] = toupper(sScript[0]);
-                for (std::string::iterator iter = sScript.begin(); iter != sScript.end(); ++iter)
-                {
-                    if (*iter == '_')
-                    {
-                        iter = sScript.erase(iter);
-                        if (iter == sScript.end())
-                            break;
-
-                        *iter = toupper(*iter);
-                    }
-                }
-            }
-
-            get_object()->on(sScript);
-        }
-    }
-
-    return mFunc.on_return();
-}
-
 /** @function raise
 */
 int lua_frame::_raise(lua_State* pLua)
