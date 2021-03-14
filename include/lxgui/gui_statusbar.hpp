@@ -190,7 +190,7 @@ namespace gui
         color      mBarColor_ = color::WHITE;
         layer_type mBarLayer_ = layer_type::ARTWORK;
         texture*   pBarTexture_ = nullptr;
-        std::array<float,4> lInitialTextCoords_;
+        std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

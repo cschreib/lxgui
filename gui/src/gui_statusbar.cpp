@@ -20,8 +20,6 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
 
 status_bar::status_bar(manager* pManager) : frame(pManager)
 {
-    lInitialTextCoords_[0] = lInitialTextCoords_[1] = 0.0f;
-    lInitialTextCoords_[2] = lInitialTextCoords_[3] = 1.0f;
     lType_.push_back(CLASS_NAME);
 }
 

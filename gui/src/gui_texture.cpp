@@ -15,8 +15,6 @@ namespace gui
 {
 texture::texture(manager* pManager) : layered_region(pManager)
 {
-    lTexCoord_[0] = lTexCoord_[1] = lTexCoord_[3] = lTexCoord_[6] = 0.0f;
-    lTexCoord_[2] = lTexCoord_[4] = lTexCoord_[5] = lTexCoord_[7] = 1.0f;
     lType_.push_back(CLASS_NAME);
 }
 
