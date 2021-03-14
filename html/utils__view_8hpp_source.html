@@ -166,25 +166,28 @@ $(function() {
 <div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a48d2cbad8f503e2c3375a804a4e7d915">  101</a></span>&#160;        <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a> <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a48d2cbad8f503e2c3375a804a4e7d915">begin</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="keyword">        </span>{</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;            <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a> mIter(mCollection_, mCollection_.begin());</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span> (!filter::is_included(mCollection_.begin()))</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                ++mIter;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            <span class="keywordflow">return</span> mIter;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">  109</a></span>&#160;        <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a> <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">end</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">        </span>{</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacelxgui_1_1utils_1_1range.html#ade4539ff30e8dee8582c0dc6fcef4280">iterator</a>(mCollection_, mCollection_.end());</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        }</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keyword">const</span> ContainerType&amp; mCollection_;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    };</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            <span class="keywordflow">if</span> (mCollection_.begin() != mCollection_.end() &amp;&amp;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                !filter::is_included(mCollection_.begin()))</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                ++mIter;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            }</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <span class="keywordflow">return</span> mIter;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">  112</a></span>&#160;        <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">iterator</a> <a class="code" href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">end</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">        </span>{</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="namespacelxgui_1_1utils_1_1range.html#ade4539ff30e8dee8582c0dc6fcef4280">iterator</a>(mCollection_, mCollection_.end());</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">const</span> ContainerType&amp; mCollection_;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    };</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1utils_html_aede977919f7d5d8de41e3254fa113343"><div class="ttname"><a href="namespacelxgui_1_1utils.html#aede977919f7d5d8de41e3254fa113343">lxgui::utils::get</a></div><div class="ttdeci">T &amp; get(variant &amp;vValue)</div><div class="ttdoc">Retreive the value stored in an utils::variant.</div><div class="ttdef"><b>Definition:</b> <a href="utils__variant_8hpp_source.html#l00047">utils_variant.hpp:47</a></div></div>
 <div class="ttc" id="astructlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer_html"><div class="ttname"><a href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html">lxgui::utils::view::unique_ptr_dereferencer</a></div><div class="ttdoc">Convert unique_ptr to standard pointer.</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00020">utils_view.hpp:20</a></div></div>
@@ -196,7 +199,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_html_ab0dbe0eeb57b9d975791b6393ef433a0"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor.html#ab0dbe0eeb57b9d975791b6393ef433a0">lxgui::utils::view::adaptor::operator=</a></div><div class="ttdeci">adaptor &amp; operator=(const adaptor &amp;mOther)</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00063">utils_view.hpp:63</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_html_a41611db3332270fa3e62fc71ff69fafa"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a41611db3332270fa3e62fc71ff69fafa">lxgui::utils::view::adaptor::operator=</a></div><div class="ttdeci">adaptor &amp; operator=(adaptor &amp;&amp;mOther)</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00064">utils_view.hpp:64</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_1_1iterator_html_a3b9dc33fecf8c480a6e5f568b5449bbc"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html#a3b9dc33fecf8c480a6e5f568b5449bbc">lxgui::utils::view::adaptor::iterator::operator==</a></div><div class="ttdeci">bool operator==(const iterator &amp;mOther) const</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00089">utils_view.hpp:89</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_html_a9fbacbdc2b811e551131b2e1e4286d5b"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">lxgui::utils::view::adaptor::end</a></div><div class="ttdeci">iterator end() const</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00109">utils_view.hpp:109</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_html_a9fbacbdc2b811e551131b2e1e4286d5b"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor.html#a9fbacbdc2b811e551131b2e1e4286d5b">lxgui::utils::view::adaptor::end</a></div><div class="ttdeci">iterator end() const</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00112">utils_view.hpp:112</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_html"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor.html">lxgui::utils::view::adaptor</a></div><div class="ttdoc">Allow iterating over a container without access to the container itself.</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00050">utils_view.hpp:50</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1view_1_1adaptor_1_1iterator_html"><div class="ttname"><a href="classlxgui_1_1utils_1_1view_1_1adaptor_1_1iterator.html">lxgui::utils::view::adaptor::iterator</a></div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00066">utils_view.hpp:66</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1utils_1_1range_html_ade4539ff30e8dee8582c0dc6fcef4280"><div class="ttname"><a href="namespacelxgui_1_1utils_1_1range.html#ade4539ff30e8dee8582c0dc6fcef4280">lxgui::utils::range::iterator</a></div><div class="ttdeci">range_impl::iterator_range&lt; T &gt; iterator(T &amp;lContainer)</div><div class="ttdoc">Expose the iterator rather than the element.</div><div class="ttdef"><b>Definition:</b> <a href="utils__range_8hpp_source.html#l00092">utils_range.hpp:92</a></div></div>
@@ -224,7 +227,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer_html_aa9fd797aa08a20062e24a5d735d4e2de"><div class="ttname"><a href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html#aa9fd797aa08a20062e24a5d735d4e2de">lxgui::utils::view::unique_ptr_dereferencer::dereference</a></div><div class="ttdeci">static data_type dereference(const BaseIterator &amp;mIter)</div><div class="ttdef"><b>Definition:</b> <a href="utils__view_8hpp_source.html#l00023">utils_view.hpp:23</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 14 2021 15:27:25 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 14 2021 21:52:25 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
