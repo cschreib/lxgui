@@ -24,6 +24,7 @@ v2.0.0:
  - input: removed OIS input implementation
  - input: removed GLFW input implementation
  - gui: added a pure SFML implementation for the gui::manager
+ - gui: added documentation for the Lua API
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
@@ -40,6 +41,8 @@ v2.0.0:
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
+ - gui: removed OnDragStop and fixed unimplemented OnReceiveDrag
+ - gui: implemented OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
  - gui: added set_cursor_position()/get_cursor_position() to edit_box
  - gui: added clear_history() to edit_box

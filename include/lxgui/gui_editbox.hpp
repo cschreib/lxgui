@@ -418,6 +418,7 @@ namespace gui
         utils::ustring           sUnicodeText_;
         utils::ustring           sDisplayedText_;
         utils::ustring::iterator iterCarretPos_;
+        utils::ustring::iterator iterCarretPosOld_;
 
         uint uiDisplayPos_ = 0;
         uint uiNumLetters_ = 0;

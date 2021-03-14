@@ -26,9 +26,9 @@ edit_box::edit_box(manager* pManager) : focus_frame(pManager),
     lType_.push_back(CLASS_NAME);
 
     iterCarretPos_ = sUnicodeText_.begin();
+    iterCarretPosOld_ = sUnicodeText_.begin();
 
-    std::vector<std::string> lRegs; lRegs.push_back("LeftButton");
-    register_for_drag(lRegs);
+    register_for_drag({"LeftButton"});
 }
 
 bool edit_box::can_use_script(const std::string& sScriptName) const
@@ -165,6 +165,14 @@ void edit_box::update(float fDelta)
             if (!mChecker.is_alive())
                 return;
         }
+    }
+
+    if (iterCarretPos_ != iterCarretPosOld_)
+    {
+        iterCarretPosOld_ = iterCarretPos_;
+        on("CursorChanged");
+        if (!mChecker.is_alive())
+            return;
     }
 }
 
