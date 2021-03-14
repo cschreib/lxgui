@@ -876,10 +876,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a5d1ae4db9c97f3a473e10a9a0226eb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adacaddbf6322ccf458893162f95b8f98"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1region.html">region</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#adacaddbf6322ccf458893162f95b8f98">pTitleRegion_</a> = nullptr</td></tr>
 <tr class="separator:adacaddbf6322ccf458893162f95b8f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19a8565d79a7835d611c15a8853ff728"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a19a8565d79a7835d611c15a8853ff728">lMouseButtonList_</a></td></tr>
-<tr class="separator:a19a8565d79a7835d611c15a8853ff728"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a6974710a8c9e64ddc643c3b4c40295"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a5a6974710a8c9e64ddc643c3b4c40295">bMouseDragged_</a> = false</td></tr>
-<tr class="separator:a5a6974710a8c9e64ddc643c3b4c40295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa85e17b7e39dd4193d69a72a0619413e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa85e17b7e39dd4193d69a72a0619413e">bMouseDraggedInFrame_</a> = false</td></tr>
+<tr class="separator:aa85e17b7e39dd4193d69a72a0619413e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95e9a730010e95373b68bc4f8b95a545"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a95e9a730010e95373b68bc4f8b95a545">pManager_</a> = nullptr</td></tr>
 <tr class="separator:a95e9a730010e95373b68bc4f8b95a545"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4e43169d721038cf8f257515721593"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a></td></tr>
@@ -1180,7 +1178,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00748">748</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00751">751</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1246,7 +1244,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01625">1625</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01613">1613</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1282,7 +1280,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00607">607</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00610">610</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1411,7 +1409,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Checks if this frame's position is valid. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00422">422</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00421">421</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1564,7 +1562,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 This function takes care of the basic initializing : you can directly use the created frame. However, you still need to call <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046" title="Notifies this widget that it has been fully loaded.">notify_loaded()</a> when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00702">702</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00705">705</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1739,7 +1737,7 @@ template&lt;typename T &gt; </div>
 <dd>
 This function takes care of the basic initializing : you can directly use the created region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00670">670</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00673">673</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1856,7 +1854,7 @@ This function takes care of the basic initializing : you can directly use the cr
 <p>Creates a new title region for this frame. </p>
 <dl class="section note"><dt>Note</dt><dd>You can get it by calling <a class="el" href="classlxgui_1_1gui_1_1frame.html#a743b1325b3ff7f52986cbb6785f7f868" title="Returns this frame&#39;s title region.">get_title_region()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00334">334</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00333">333</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1918,7 +1916,7 @@ This function takes care of the basic initializing : you can directly use the cr
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The last two informations are required for error messages. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01002">1002</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01005">1005</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1965,7 +1963,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01036">1036</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01039">1039</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2038,7 +2036,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00507">507</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00506">506</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2140,7 +2138,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00517">517</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00516">516</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2178,7 +2176,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a81774f19152943c2d6e86b258bbb3328">lxgui::gui::edit_box</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00527">527</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00526">526</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2225,7 +2223,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00546">546</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00545">545</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2261,7 +2259,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00570">570</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00573">573</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2291,7 +2289,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Tells this frame to rebuilt the layer list. </p>
 <dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1frame.html#a58cc214303b29cfea9b49f148a8d0aac" title="Adds a layered_region to this frame&#39;s children.">add_region()</a>, <a class="el" href="classlxgui_1_1gui_1_1frame.html#a3b4d88093d2b57bd36ed3f80098a3125" title="Removes a layered_region from this frame&#39;s children.">remove_region()</a>, and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a8cdfc0ebb64140c7239c2f85f39e5849" title="Sets this layered_region&#39;s draw layer.">layered_region::set_draw_layer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00596">596</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00599">599</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2410,7 +2408,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Returns this frame's absolute hit rect insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's absolute hit rect insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00885">885</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00888">888</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2472,7 +2470,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This frame's addon </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns "nullptr" if the frame has been created by Lua code and wasn't assigned a parent. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01822">1822</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01810">1810</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2509,7 +2507,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the snake_case name of the script </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00986">986</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00989">989</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2689,7 +2687,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Returns this frame's backdrop. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's backdrop </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00870">870</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00873">873</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2847,7 +2845,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00365">365</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00364">364</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2917,7 +2915,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the child list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The child list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00839">839</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00842">842</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2947,7 +2945,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Calculates effective alpha. </p>
 <dl class="section return"><dt>Returns</dt><dd>Effective alpha (alpha*parent-&gt;alpha) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00844">844</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00847">847</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2977,7 +2975,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Calculates effective scale. </p>
 <dl class="section return"><dt>Returns</dt><dd>Effective scale (scale*parent-&gt;scale) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00852">852</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00855">855</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3007,7 +3005,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's strata. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's strata </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00865">865</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00868">868</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3037,7 +3035,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's type. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's type (Frame, Slider, ...) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00880">880</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00883">883</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3127,7 +3125,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's level. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00860">860</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00863">863</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3299,7 +3297,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's max dimensions. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's max dimensions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00895">895</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00898">898</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3351,7 +3349,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's min dimensions. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's min dimensions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00900">900</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00903">903</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3433,7 +3431,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the number of children of this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of children of this frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00905">905</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00908">908</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3493,7 +3491,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the number of region of this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of region of this frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00910">910</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00913">913</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3769,7 +3767,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's region </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no region is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00386">386</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00385">385</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3839,7 +3837,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Returns the region list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The region list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00381">381</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00380">380</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3869,7 +3867,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Returns this frame's relative hit rect insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's relative hit rect insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00890">890</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00893">893</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3900,7 +3898,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a014d0c26ac6def83836b79c7cb235abe" title="Flags this object as rendered by another object.">set_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01690">1690</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01678">1678</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3961,7 +3959,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dl class="section return"><dt>Returns</dt><dd>This frame's scale </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you want it's true scale on the screen, use <a class="el" href="classlxgui_1_1gui_1_1frame.html#ac2479edb579f17595e2daf696397360c" title="Calculates effective scale.">get_effective_scale()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00915">915</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00918">918</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4034,7 +4032,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Returns this frame's title region. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00920">920</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00923">923</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4128,7 +4126,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8789fadb2498dd40f1d95ead6aef2505">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01695">1695</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01683">1683</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4209,7 +4207,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this script is defined </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00601">601</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00604">604</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4241,7 +4239,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a98e6af6fd9584177f5bdf8823a1432d9">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01777">1777</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01765">1765</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4271,7 +4269,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame is clamped to screen. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame is clamed to screen </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00925">925</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00928">928</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4400,7 +4398,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive keyboard input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive keyboard input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00946">946</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00949">949</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4430,7 +4428,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive mouse input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive mouse input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00951">951</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00954">954</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4460,7 +4458,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive mouse wheel input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive mouse wheel input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00961">961</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00964">964</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4490,7 +4488,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can be moved. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can be moved </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00966">966</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00969">969</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4620,7 +4618,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame can be resized. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can be resized </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00971">971</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00974">974</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4711,7 +4709,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame is at top level. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame is at top level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00976">976</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00979">979</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4741,7 +4739,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame has been moved by the user. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame has been moved by the user </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00981">981</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00984">984</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4834,7 +4832,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame allows world input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame allows world input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00956">956</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00959">959</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5037,7 +5035,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a7e1a1ba7d95426afb33fab539461bbca">lxgui::gui::edit_box</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01731">1731</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01719">1719</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5069,7 +5067,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a26baab6a36895d38a51d69e5e2eafdbd">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00583">583</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00586">586</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5157,7 +5155,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a20489d6888de8bb52ca8c879b94087d1">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01758">1758</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01746">1746</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5204,7 +5202,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01048">1048</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01051">1051</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5242,7 +5240,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01747">1747</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01735">1735</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5270,7 +5268,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01715">1715</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01703">1703</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5320,7 +5318,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#acce27b7e4e577fb55f9ffdd44512eca2">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1button.html#ab023aacdac46c76a986663da8b48295a">lxgui::gui::button</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a070fa344ec59a0b62b2e96f21e011f3f">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01250">1250</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01238">1238</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5735,7 +5733,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01664">1664</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01652">1652</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5839,7 +5837,7 @@ template&lt;typename ObjectType &gt; </div>
 <dd>
 Only works for top level frames. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01603">1603</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01591">1591</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5930,7 +5928,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Tells this frame to react to every event in the game. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01370">1370</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01358">1358</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5968,7 +5966,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">lxgui::gui::event_receiver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01376">1376</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01364">1364</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6004,7 +6002,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01382">1382</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01370">1370</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6066,7 +6064,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a395ae6dd405107c1cc31fb07a11da1de">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01572">1572</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01560">1560</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6103,7 +6101,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the child, ignore it to destroy the child. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00800">800</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00803">803</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6169,7 +6167,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the region, ignore it to destroy the region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00643">643</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00646">646</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6288,7 +6286,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a6b81bd32c4bb872b20a6d66e00f208b6">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00404">404</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00403">403</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6326,7 +6324,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae7d4bc3ace6b8060c47c38c243623a81">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00417">417</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00416">416</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6363,7 +6361,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01465">1465</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01453">1453</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6425,7 +6423,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01460">1460</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01448">1448</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6592,7 +6590,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a478b21de0b23783a8cbb12daef6b5e23">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00412">412</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00411">411</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6628,7 +6626,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01810">1810</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01798">1798</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6804,7 +6802,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01454">1454</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01442">1442</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6841,7 +6839,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If 'true', the frame can't go out of the screen. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01389">1389</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01377">1377</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6905,7 +6903,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01413">1413</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01401">1401</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6941,7 +6939,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01394">1394</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01382">1382</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7014,7 +7012,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01480">1480</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01468">1468</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7050,7 +7048,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01515">1515</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01503">1503</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7086,7 +7084,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01497">1497</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01485">1485</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7133,7 +7131,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01491">1491</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01479">1479</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7197,7 +7195,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01524">1524</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01512">1512</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7233,7 +7231,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01533">1533</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01521">1521</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7308,7 +7306,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01509">1509</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01497">1497</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7355,7 +7353,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01503">1503</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01491">1491</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7419,7 +7417,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01542">1542</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01530">1530</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7455,7 +7453,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01551">1551</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01539">1539</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7592,7 +7590,7 @@ This function is only called on objects created in Lua. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a042ef3e869652456eeafd4fda27547dd">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01556">1556</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01544">1544</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7748,7 +7746,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01475">1475</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01463">1463</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7810,7 +7808,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01470">1470</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01458">1458</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8016,7 +8014,7 @@ The renderer also takes care of providing inputs. </dd>
 <dd>
 If the renderer is set to nullptr, the frame will inherit the renderer of its parent. If the frame has no parent, this will default to the <a class="el" href="classlxgui_1_1gui_1_1manager.html" title="Manages the user interface.">gui::manager</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01676">1676</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01664">1664</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8052,7 +8050,7 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01580">1580</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01568">1568</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8088,7 +8086,7 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01585">1585</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01573">1573</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8129,7 +8127,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5bbb05d97ff563300cee35de56af7896">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01788">1788</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01776">1776</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8279,7 +8277,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01592">1592</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01580">1580</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8315,7 +8313,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01637">1637</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01625">1625</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8444,7 +8442,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c70259c29d6a03ebb9e6d">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01766">1766</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01754">1754</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8473,7 +8471,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Starts moving this frame with the mouse. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01642">1642</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01630">1630</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8509,7 +8507,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01653">1653</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01641">1641</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8538,7 +8536,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>ends moving this frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01648">1648</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01636">1636</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8567,7 +8565,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>ends resizing this frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01659">1659</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01647">1647</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8596,7 +8594,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Tells the frame not to react to all events. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01799">1799</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01787">1787</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8634,7 +8632,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">lxgui::gui::event_receiver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01805">1805</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01793">1793</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8732,7 +8730,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab24ba63af0e755870c42d42db646dde5">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01864">1864</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01852">1852</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9121,8 +9119,8 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 </div>
 </div>
-<a id="a5a6974710a8c9e64ddc643c3b4c40295"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a6974710a8c9e64ddc643c3b4c40295">&#9670;&nbsp;</a></span>bMouseDragged_</h2>
+<a id="aa85e17b7e39dd4193d69a72a0619413e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa85e17b7e39dd4193d69a72a0619413e">&#9670;&nbsp;</a></span>bMouseDraggedInFrame_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9131,7 +9129,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::frame::bMouseDragged_ = false</td>
+          <td class="memname">bool lxgui::gui::frame::bMouseDraggedInFrame_ = false</td>
         </tr>
       </table>
   </td>
@@ -9141,7 +9139,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01001">1001</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01000">1000</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9910,30 +9908,6 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00948">948</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a19a8565d79a7835d611c15a8853ff728"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19a8565d79a7835d611c15a8853ff728">&#9670;&nbsp;</a></span>lMouseButtonList_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; lxgui::gui::frame::lMouseButtonList_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01000">1000</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10714,7 +10688,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 14 2021 09:22:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 14 2021 10:13:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -141,7 +141,7 @@ Typedefs</h2></td></tr>
 <p>To use the first type of events (hard-coded events), all you have to do in general is register a callback function usingFrame:set_script}. However, some hard-coded events require explicit enabling. In particular:</p>
 <ul>
 <li>Events related to keyboard input (<code>OnKeyDown</code>, <code>OnKeyUp</code>) require Frame:enable_keyboard}.</li>
-<li>Events related to mouse input (<code>OnDragStart</code>, <code>OnDragStop</code>, <code>OnEnter</code>, <code>OnLeave</code>, <code>OnMouseUp</code>, <code>OnMouseDown</code>, <code>OnMouseWheel</code>, <code>OnReceiveDrag</code>) requireFrame:enable_mouse}.</li>
+<li>Events related to mouse input (<code>OnDragStart</code>, <code>OnEnter</code>, <code>OnLeave</code>, <code>OnMouseUp</code>, <code>OnMouseDown</code>, <code>OnMouseWheel</code>, <code>OnReceiveDrag</code>) requireFrame:enable_mouse}.</li>
 </ul>
 <p>To use the second type of events (generic events), you have to register a callback for <code>OnEvent</code> <em>and</em> register the frame for each generic event you wish to listen to. This is done withFrame:register_event}.</p>
 <p>Some events provide arguments to the registered callback function. For example, the application can fire a <code>"UNIT_ATTACKED"</code> event when a unit is under attack, and pass the ID of the attacked unit as a first argument, and the ID of the attacker as a second argument. If a callback function is registered usingFrame:set_script}, these arguments can be handled and named like regular function parameters. In XML callback handlers, they can be accessed with the hard-coded generic names <code>arg1</code>, <code>arg2</code>, etc.</p>
@@ -282,7 +282,7 @@ Typedefs</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 14 2021 09:22:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 14 2021 10:13:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

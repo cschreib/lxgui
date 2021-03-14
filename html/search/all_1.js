@@ -41,7 +41,7 @@ var searchData=
   ['blocks_71',['blocks',['../classlxgui_1_1xml_1_1block.html#a4db183f257dc308dfb48ff64c78c0b0e',1,'lxgui::xml::block']]],
   ['blue_72',['BLUE',['../classlxgui_1_1gui_1_1color.html#a757b270292a587b4ade4acc5ecb137e0',1,'lxgui::gui::color']]],
   ['bmanuallyupdated_5f_73',['bManuallyUpdated_',['../classlxgui_1_1input_1_1source__impl.html#a6b0efe213a1039dfd8414084ff17906c',1,'lxgui::input::source_impl']]],
-  ['bmousedragged_5f_74',['bMouseDragged_',['../classlxgui_1_1gui_1_1frame.html#a5a6974710a8c9e64ddc643c3b4c40295',1,'lxgui::gui::frame']]],
+  ['bmousedraggedinframe_5f_74',['bMouseDraggedInFrame_',['../classlxgui_1_1gui_1_1frame.html#aa85e17b7e39dd4193d69a72a0619413e',1,'lxgui::gui::frame']]],
   ['bmouseinframe_5f_75',['bMouseInFrame_',['../classlxgui_1_1gui_1_1frame.html#ae68ad04f5634ef88ac6bc84de3780e26',1,'lxgui::gui::frame']]],
   ['bmouseinscrolltexture_5f_76',['bMouseInScrollTexture_',['../classlxgui_1_1gui_1_1scroll__frame.html#a8f9bbad7e2eb38df373dbea66c37ea5e',1,'lxgui::gui::scroll_frame']]],
   ['bmouseinthumb_5f_77',['bMouseInThumb_',['../classlxgui_1_1gui_1_1slider.html#a2eb18b53b00fb53767d75673ee9fef47',1,'lxgui::gui::slider']]],
