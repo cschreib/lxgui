@@ -148,12 +148,12 @@ Typedefs</h2></td></tr>
 <p>Hard-coded events available to allFrame}s:</p>
 <ul>
 <li><code>OnDragStart</code>: Triggered when one of the mouse button registered for dragging (seeFrame:register_for_drag}) has been pressed inside the area of the screen occupied by the frame, and a mouse movement is first recorded.</li>
-<li><code>OnEnter</code>: Triggered when the mouse pointer enters into the area of the screen occupied by the frame. Note: this only takes into account the position and size of the frame, not its children or layered regions. Will not trigger if the frame is hidden.</li>
-<li><code>OnEvent</code>: Triggered when a registered generic event occurs. See Frame:register_event}. To allow distinguishing which event has just been fired, the registered callback function is always provided with a first argument (hard-coded to <code>event</code> in XML callback handlers) that is set to a string matching the event name. Further arguments can be passed to the callback and are handled as for other events.</li>
+<li><code>OnEnter</code>: Triggered when the mouse pointer enters into the area of the screen occupied by the frame. Note: this only takes into account the position and size of the frame and its title region, but not the space occupied by its children or layered regions. Will not trigger if the frame is hidden.</li>
+<li><code>OnEvent</code>: Triggered when a registered generic event occurs. See Frame:register_event}. To allow distinguishing which event has just been fired, the registered callback function is always provided with a first argument that is set to a string matching the event name. Further arguments can be passed to the callback and are handled as for other events.</li>
 <li><code>OnHide</code>: Triggered whenUIObject:hide} is called, or when the frame is hidden indirectly (for example if its parent is itself hidden). This will only fire if the frame was previously shown.</li>
 <li><code>OnKeyDown</code>: Triggered when any keyboard key is pressed. Will not trigger if the frame is hidden. This event provides two arguments to the registered callback: a number identifying the key, and the human-readable name of the key.</li>
 <li><code>OnKeyUp</code>: Triggered when any keyboard key is released. Will not trigger if the frame is hidden. This event provides two arguments to the registered callback: a number identifying the key, and the human-readable name of the key.</li>
-<li><code>OnLeave</code>: Triggered when the mouse pointer leaves the area of the screen occupied by the frame. Note: this only takes into account the position and size of the frame, not its children or layered regions. Will not trigger if the frame is hidden, unless the frame was just hidden with the mouse previously inside the frame.</li>
+<li><code>OnLeave</code>: Triggered when the mouse pointer leaves the area of the screen occupied by the frame. Note: this only takes into account the position and size of the frame and its title region, but not the space occupied by its children or layered regions. Will not trigger if the frame is hidden, unless the frame was just hidden with the mouse previously inside the frame.</li>
 <li><code>OnLoad</code>: Triggered just after the frame is created. This is where you would normally register for events and specific inputs, set up initial states for extra logic, or do localization.</li>
 <li><code>OnMouseDown</code>: Triggered when any mouse button is pressed. Will not trigger if the frame is hidden. This event provides one argument to the registered callback: a string identifying the mouse button (<code>"LeftButton"</code>, <code>"RightButton"</code>, or <code>"MiddleButton"</code>).</li>
 <li><code>OnMouseUp</code>: Triggered when any mouse button is released. Will not trigger if the frame is hidden. This event provides one argument to the registered callback: a string identifying the mouse button (<code>"LeftButton"</code>, <code>"RightButton"</code>, or <code>"MiddleButton"</code>).</li>
@@ -282,7 +282,7 @@ Typedefs</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 14 2021 10:49:02 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 14 2021 15:27:25 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
