@@ -16,6 +16,7 @@
 #include <lxgui/utils_range.hpp>
 
 #include <sol/state.hpp>
+#include <sol/as_args.hpp>
 
 #include <sstream>
 #include <functional>
@@ -1014,7 +1015,8 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
     std::string sStr;
-    sStr += "function " + sLuaName_ + ":" + sAdjustedName + "() " + sContent + " end";
+    sStr += "function " + sLuaName_ + ":" + sAdjustedName +
+        "(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " + sContent + " end";
 
     // Actually register the function
     try
@@ -1249,12 +1251,9 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         return;
 
     sol::state& mLua = pManager_->get_lua();
+    lua_State* pLua = mLua.lua_state();
 
-    // Reset all arg* to nil
-    for (uint i = 1; i < 9; ++i)
-    {
-        mLua["arg"+utils::to_string(i)] = sol::lua_nil;
-    }
+    std::vector<sol::object> lArgs;
 
     if (pEvent)
     {
@@ -1262,41 +1261,41 @@ void frame::on(const std::string& sScriptName, event* pEvent)
             (sScriptName == "KeyUp"))
         {
             // Set key name
-            mLua["arg1"] = static_cast<uint>(pEvent->get<input::key>(0));
-            mLua["arg2"] = pEvent->get<std::string>(1);
+            lArgs.emplace_back(pLua, sol::in_place, static_cast<uint>(pEvent->get<input::key>(0)));
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(1));
         }
         else if (sScriptName == "MouseDown")
         {
             // Set mouse button
-            mLua["arg1"] = pEvent->get<std::string>(0);
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(0));
         }
         else if (sScriptName == "MouseUp")
         {
             // Set mouse button
-            mLua["arg1"] = pEvent->get<std::string>(0);
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(0));
         }
         else if (sScriptName == "MouseWheel")
         {
-            mLua["arg1"] = pEvent->get<float>(0);
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<float>(0));
         }
         else if (sScriptName == "Update")
         {
             // Set delta time
-            mLua["arg1"] = pEvent->get<float>(0);
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<float>(0));
         }
         else if (sScriptName == "Event")
         {
             // Set event name
-            mLua["event"] = pEvent->get_name();
+            lArgs.emplace_back(pLua, sol::in_place, pEvent->get_name());
 
             // Set arguments
             for (uint i = 0; i < pEvent->get_num_param(); ++i)
             {
                 const utils::variant& mArg = pEvent->get(i);
                 if (std::holds_alternative<utils::empty>(mArg))
-                    mLua["arg"+utils::to_string(i+1)] = sol::lua_nil;
+                    lArgs.emplace_back(sol::lua_nil);
                 else
-                    mLua["arg"+utils::to_string(i+1)] = mArg;
+                    lArgs.emplace_back(pLua, sol::in_place, mArg);
             }
         }
     }
@@ -1334,7 +1333,7 @@ void frame::on(const std::string& sScriptName, event* pEvent)
         return;
     }
 
-    auto mResult = mCallback(mSelf);
+    auto mResult = mCallback(mSelf, sol::as_args(lArgs));
     // WARNING: after this point, the frame (this) may be deleted.
     // Do not use any member variable or member function directly.
 

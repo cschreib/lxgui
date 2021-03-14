@@ -90,9 +90,8 @@
 *   - `OnEvent`: Triggered when a registered generic event occurs. See
 *   @{Frame:register_event}. To allow distinguishing which event has just
 *   been fired, the registered callback function is always provided with a
-*   first argument (hard-coded to `event` in XML callback handlers) that is
-*   set to a string matching the event name. Further arguments can be passed
-*   to the callback and are handled as for other events.
+*   first argument that is set to a string matching the event name. Further
+*   arguments can be passed to the callback and are handled as for other events.
 *   - `OnHide`: Triggered when @{UIObject:hide} is called, or when the frame
 *   is hidden indirectly (for example if its parent is itself hidden). This
 *   will only fire if the frame was previously shown.
