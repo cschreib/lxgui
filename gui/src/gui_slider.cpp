@@ -152,6 +152,8 @@ void slider::on_event(const event& mEvent)
     {
         if (mEvent.get_name() == "MOUSE_PRESSED")
         {
+            update_mouse_in_frame_();
+
             if (bMouseInThumb_)
             {
                 pManager_->start_moving(

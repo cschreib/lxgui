@@ -267,6 +267,7 @@ void scroll_frame::update_scroll_child_input_()
     int iX = iMousePosX_ - lBorderList_.left;
     int iY = iMousePosY_ - lBorderList_.top;
 
+    update_mouse_in_frame_();
     if (bMouseInScrollTexture_)
     {
         frame* pHoveredFrame = find_hovered_frame_(iX, iY);

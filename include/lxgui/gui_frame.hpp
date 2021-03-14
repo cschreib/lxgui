@@ -936,6 +936,7 @@ namespace gui
         void propagate_renderer_(bool bRendered);
 
         void update_borders_() const override;
+        void update_mouse_in_frame_();
 
         struct script_info
         {

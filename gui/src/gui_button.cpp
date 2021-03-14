@@ -85,11 +85,15 @@ void button::on_event(const event& mEvent)
     if (!pManager_->is_input_enabled())
         return;
 
-    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED" && bMouseInFrame_)
+    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
     {
-        on("DoubleClicked");
-        if (!mChecker.is_alive())
-            return;
+        update_mouse_in_frame_();
+        if (bMouseInFrame_)
+        {
+            on("DoubleClicked");
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 }
 
@@ -639,6 +643,7 @@ void button::lock_highlight()
 
 void button::unlock_highlight()
 {
+    update_mouse_in_frame_();
     if (!bMouseInFrame_)
         unlight();
 

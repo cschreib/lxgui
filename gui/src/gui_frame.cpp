@@ -1090,8 +1090,10 @@ void frame::on_event(const event& mEvent)
     if (!pManager_->is_input_enabled())
         return;
 
-    if (bIsMouseEnabled_ && bIsVisible_)
+    if (bIsMouseEnabled_ && bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
     {
+        update_mouse_in_frame_();
+
         if (mEvent.get_name() == "MOUSE_DRAG_START")
         {
             if (bMouseInTitleRegion_)
@@ -1851,7 +1853,16 @@ void frame::update_borders_() const
     uiobject::update_borders_();
 
     if (bPositionUpdated)
+    {
         check_position();
+        pManager_->notify_hovered_frame_dirty();
+    }
+}
+
+void frame::update_mouse_in_frame_()
+{
+    update_borders_();
+    pManager_->get_hovered_frame();
 }
 
 void frame::update(float fDelta)

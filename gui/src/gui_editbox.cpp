@@ -204,15 +204,21 @@ void edit_box::on_event(const event& mEvent)
             if (!mChecker.is_alive())
                 return;
         }
+
         return;
     }
 
-    if (mEvent.get_name() == "MOUSE_PRESSED" && bMouseInFrame_)
+    if (mEvent.get_name() == "MOUSE_PRESSED")
     {
-        set_focus(true);
-        unlight_text();
+        update_mouse_in_frame_();
+        if (bMouseInFrame_)
+        {
+            set_focus(true);
+            unlight_text();
 
-        move_carret_at_(iMousePosX_, iMousePosY_);
+            move_carret_at_(iMousePosX_, iMousePosY_);
+        }
+
         return;
     }
 
