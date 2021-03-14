@@ -337,9 +337,10 @@ void manager::remove_frame(frame* pObj)
         lFrameList_.erase(pObj->get_id());
 
     if (pHoveredFrame_ == pObj)
-        set_hovered_frame_(nullptr);
+        clear_hovered_frame_();
+
     if (pFocusedFrame_ == pObj)
-        request_focus(nullptr);
+        clear_focussed_frame_();
 }
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
@@ -1057,23 +1058,30 @@ void manager::update(float fDelta)
     pEventManager_->frame_ended();
 }
 
+void manager::clear_hovered_frame_()
+{
+    pHoveredFrame_ = nullptr;
+    pInputManager_->allow_input("WORLD");
+}
+
 void manager::set_hovered_frame_(frame* pFrame, int iX, int iY)
 {
+    if (pFrame == pHoveredFrame_)
+        return;
+
     if (pFrame && !pFrame->is_world_input_allowed())
         pInputManager_->block_input("WORLD");
-    else
-        pInputManager_->allow_input("WORLD");
-
-    if (pFrame != pHoveredFrame_)
-    {
-        if (pHoveredFrame_)
-            pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
-
-        pHoveredFrame_ = pFrame;
-    }
 
     if (pHoveredFrame_)
+        pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
+
+    if (pFrame)
+    {
+        pHoveredFrame_ = pFrame;
         pHoveredFrame_->notify_mouse_in_frame(true, iX, iY);
+    }
+    else
+        clear_hovered_frame_();
 }
 
 void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstraint, std::function<void()> pApplyConstraintFunc)
@@ -1284,6 +1292,12 @@ const frame* manager::get_overed_frame() const
     return pHoveredFrame_;
 }
 
+void manager::clear_focussed_frame_()
+{
+    pFocusedFrame_ = nullptr;
+    pInputManager_->set_focus(false);
+}
+
 void manager::request_focus(focus_frame* pFocusFrame)
 {
     if (pFocusFrame == pFocusedFrame_)
@@ -1292,15 +1306,14 @@ void manager::request_focus(focus_frame* pFocusFrame)
     if (pFocusedFrame_)
         pFocusedFrame_->notify_focus(false);
 
-    pFocusedFrame_ = pFocusFrame;
-
-    if (pFocusedFrame_)
+    if (pFocusFrame)
     {
+        pFocusedFrame_ = pFocusFrame;
         pFocusedFrame_->notify_focus(true);
         pInputManager_->set_focus(true, pFocusedFrame_);
     }
     else
-        pInputManager_->set_focus(false);
+        clear_focussed_frame_();
 }
 
 void manager::set_key_binding(input::key mKey, const std::string& sLuaString)

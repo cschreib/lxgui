@@ -657,6 +657,8 @@ namespace gui
 
         uint get_new_object_id_() const;
 
+        void clear_focussed_frame_();
+        void clear_hovered_frame_();
         void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
 
         frame* create_root_frame_(const std::string& sClassName, const std::string& sName,
