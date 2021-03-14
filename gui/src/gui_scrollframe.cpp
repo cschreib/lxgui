@@ -38,14 +38,14 @@ bool scroll_frame::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void scroll_frame::on(const std::string& sScriptName, event* pEvent)
+void scroll_frame::on_script(const std::string& sScriptName, event* pEvent)
 {
     alive_checker mChecker(this);
-    frame::on(sScriptName, pEvent);
+    frame::on_script(sScriptName, pEvent);
     if (!mChecker.is_alive())
         return;
 
-    if (sScriptName == "SizeChanged")
+    if (sScriptName == "OnSizeChanged")
         bRebuildScrollRenderTarget_ = true;
 }
 
@@ -136,7 +136,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         if (!is_virtual())
         {
             alive_checker mChecker(this);
-            on("ScrollRangeChanged");
+            on_script("OnScrollRangeChanged");
             if (!mChecker.is_alive())
                 return;
         }
@@ -157,7 +157,7 @@ void scroll_frame::set_horizontal_scroll(int iHorizontalScroll)
     if (iHorizontalScroll_ != iHorizontalScroll)
     {
         iHorizontalScroll_ = iHorizontalScroll;
-        lQueuedEventList_.push_back("HorizontalScroll");
+        lQueuedEventList_.push_back("OnHorizontalScroll");
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
@@ -179,7 +179,7 @@ void scroll_frame::set_vertical_scroll(int iVerticalScroll)
     if (iVerticalScroll_ != iVerticalScroll)
     {
         iVerticalScroll_ = iVerticalScroll;
-        lQueuedEventList_.push_back("VerticalScroll");
+        lQueuedEventList_.push_back("OnVerticalScroll");
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-iHorizontalScroll_, -iVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
@@ -256,7 +256,7 @@ void scroll_frame::update_scroll_range_()
     if (!is_virtual())
     {
         alive_checker mChecker(this);
-        on("ScrollRangeChanged");
+        on_script("OnScrollRangeChanged");
         if (!mChecker.is_alive())
             return;
     }

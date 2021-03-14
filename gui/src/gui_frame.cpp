@@ -232,7 +232,7 @@ void frame::copy_from(uiobject* pObj)
 
         const script_info& mInfo = pFrame->lXMLScriptInfoList_[mScript.first];
         this->define_script(
-            "On"+mScript.first, mScript.second,
+            mScript.first, mScript.second,
             mInfo.sFile, mInfo.uiLineNbr
         );
     }
@@ -240,7 +240,7 @@ void frame::copy_from(uiobject* pObj)
     for (const auto& mHandler : pFrame->lDefinedHandlerList_)
     {
         if (mHandler.second)
-            this->define_script("On"+mHandler.first, mHandler.second);
+            this->define_script(mHandler.first, mHandler.second);
     }
 
     this->set_frame_strata(pFrame->get_frame_strata());
@@ -592,7 +592,7 @@ void frame::notify_loaded()
     if (!bVirtual_)
     {
         alive_checker mChecker(this);
-        on("Load");
+        on_script("OnLoad");
         if (!mChecker.is_alive())
             return;
     }
@@ -1003,10 +1003,7 @@ std::string frame::get_adjusted_script_name(const std::string& sScriptName)
 
 void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
 {
-    std::string sCutScriptName = sScriptName;
-    sCutScriptName.erase(0, 2);
-
-    std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sCutScriptName);
+    std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sScriptName);
     if (iterH != lDefinedHandlerList_.end())
         lDefinedHandlerList_.erase(iterH);
 
@@ -1020,9 +1017,9 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     try
     {
         pManager_->get_lua().script(sStr, sol::script_default_on_error);
-        lDefinedScriptList_[sCutScriptName] = sContent;
-        lXMLScriptInfoList_[sCutScriptName].sFile = sFile;
-        lXMLScriptInfoList_[sCutScriptName].uiLineNbr = uiLineNbr;
+        lDefinedScriptList_[sScriptName] = sContent;
+        lXMLScriptInfoList_[sScriptName].sFile = sFile;
+        lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
     }
     catch (const sol::error& mError)
     {
@@ -1038,21 +1035,15 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
 
 void frame::define_script(const std::string& sScriptName, handler mHandler)
 {
-    std::string sCutScriptName = sScriptName;
-    sCutScriptName.erase(0, 2);
-
-    std::map<std::string, std::string>::iterator iter = lDefinedScriptList_.find(sCutScriptName);
+    std::map<std::string, std::string>::iterator iter = lDefinedScriptList_.find(sScriptName);
     if (iter != lDefinedScriptList_.end())
         lDefinedScriptList_.erase(iter);
 
-    lDefinedHandlerList_[sCutScriptName] = mHandler;
+    lDefinedHandlerList_[sScriptName] = mHandler;
 }
 
 void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
 {
-    std::string sCutScriptName = sScriptName;
-    sCutScriptName.erase(0, 2);
-
     std::map<std::string, script_info>::iterator iter = lXMLScriptInfoList_.find(sScriptName);
     if (iter != lXMLScriptInfoList_.end())
         lXMLScriptInfoList_.erase(iter);
@@ -1063,9 +1054,9 @@ void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
         if (iter2 != lDefinedHandlerList_.end())
             lDefinedHandlerList_.erase(iter2);
 
-        lDefinedScriptList_[sCutScriptName] = "";
+        lDefinedScriptList_[sScriptName] = "";
     } else
-        lDefinedScriptList_.erase(sCutScriptName);
+        lDefinedScriptList_.erase(sScriptName);
 }
 
 void frame::on_event(const event& mEvent)
@@ -1083,7 +1074,7 @@ void frame::on_event(const event& mEvent)
         }
 
         event mTemp = mEvent;
-        on("Event", &mTemp);
+        on_script("OnEvent", &mTemp);
         if (!mChecker.is_alive())
             return;
     }
@@ -1106,7 +1097,7 @@ void frame::on_event(const event& mEvent)
                 if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
                 {
                     bMouseDraggedInFrame_ = true;
-                    on("DragStart");
+                    on_script("OnDragStart");
                     if (!mChecker.is_alive())
                         return;
                 }
@@ -1119,7 +1110,7 @@ void frame::on_event(const event& mEvent)
             if (bMouseDraggedInFrame_)
             {
                 bMouseDraggedInFrame_ = false;
-                on("DragStop");
+                on_script("OnDragStop");
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1129,7 +1120,7 @@ void frame::on_event(const event& mEvent)
                 std::string sMouseButton = mEvent.get<std::string>(3);
                 if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
                 {
-                    on("ReceiveDrag");
+                    on_script("OnReceiveDrag");
                     if (!mChecker.is_alive())
                         return;
                 }
@@ -1150,7 +1141,7 @@ void frame::on_event(const event& mEvent)
                 event mEvent2;
                 mEvent2.add(sMouseButton);
 
-                on("MouseDown", &mEvent2);
+                on_script("OnMouseDown", &mEvent2);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1164,7 +1155,7 @@ void frame::on_event(const event& mEvent)
                 event mEvent2;
                 mEvent2.add(sMouseButton);
 
-                on("MouseUp", &mEvent2);
+                on_script("OnMouseUp", &mEvent2);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1175,7 +1166,7 @@ void frame::on_event(const event& mEvent)
             {
                 event mEvent2;
                 mEvent2.add(mEvent.get(0));
-                on("MouseWheel", &mEvent2);
+                on_script("OnMouseWheel", &mEvent2);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1187,20 +1178,20 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent.get(0));
+            mKeyEvent.add((uint)mEvent.get<input::key>(0));
             mKeyEvent.add(mEvent.get(1));
 
-            on("KeyDown", &mKeyEvent);
+            on_script("OnKeyDown", &mKeyEvent);
             if (!mChecker.is_alive())
                 return;
         }
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event mKeyEvent;
-            mKeyEvent.add(mEvent.get(0));
+            mKeyEvent.add((uint)mEvent.get<input::key>(0));
             mKeyEvent.add(mEvent.get(1));
 
-            on("KeyUp", &mKeyEvent);
+            on_script("OnKeyUp", &mKeyEvent);
             if (!mChecker.is_alive())
                 return;
         }
@@ -1242,7 +1233,7 @@ int l_xml_error(lua_State* pLua)
     return 1;
 }
 
-void frame::on(const std::string& sScriptName, event* pEvent)
+void frame::on_script(const std::string& sScriptName, event* pEvent)
 {
     std::map<std::string, handler>::const_iterator iterH = lDefinedHandlerList_.find(sScriptName);
     if (iterH != lDefinedHandlerList_.end())
@@ -1262,50 +1253,24 @@ void frame::on(const std::string& sScriptName, event* pEvent)
 
     if (pEvent)
     {
-        if ((sScriptName == "KeyDown") ||
-            (sScriptName == "KeyUp"))
-        {
-            // Set key name
-            lArgs.emplace_back(pLua, sol::in_place, static_cast<uint>(pEvent->get<input::key>(0)));
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(1));
-        }
-        else if (sScriptName == "MouseDown")
-        {
-            // Set mouse button
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(0));
-        }
-        else if (sScriptName == "MouseUp")
-        {
-            // Set mouse button
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<std::string>(0));
-        }
-        else if (sScriptName == "MouseWheel")
-        {
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<float>(0));
-        }
-        else if (sScriptName == "Update")
-        {
-            // Set delta time
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get<float>(0));
-        }
-        else if (sScriptName == "Event")
+        if (sScriptName == "OnEvent")
         {
             // Set event name
             lArgs.emplace_back(pLua, sol::in_place, pEvent->get_name());
+        }
 
-            // Set arguments
-            for (uint i = 0; i < pEvent->get_num_param(); ++i)
-            {
-                const utils::variant& mArg = pEvent->get(i);
-                if (std::holds_alternative<utils::empty>(mArg))
-                    lArgs.emplace_back(sol::lua_nil);
-                else
-                    lArgs.emplace_back(pLua, sol::in_place, mArg);
-            }
+        // Set arguments
+        for (uint i = 0; i < pEvent->get_num_param(); ++i)
+        {
+            const utils::variant& mArg = pEvent->get(i);
+            if (std::holds_alternative<utils::empty>(mArg))
+                lArgs.emplace_back(sol::lua_nil);
+            else
+                lArgs.emplace_back(pLua, sol::in_place, mArg);
         }
     }
 
-    std::string sAdjustedName = get_adjusted_script_name("On"+sScriptName);
+    std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
     auto* pManager = pManager_; // make a copy in case the frame is deleted, we will need this
     auto* pOldAddOn = pManager->get_current_addon();
@@ -1716,7 +1681,7 @@ void frame::notify_visible_(bool bTriggerEvents)
 
     if (bTriggerEvents)
     {
-        lQueuedEventList_.push_back("Show");
+        lQueuedEventList_.push_back("OnShow");
         notify_renderer_need_redraw();
     }
 }
@@ -1732,7 +1697,7 @@ void frame::notify_invisible_(bool bTriggerEvents)
 
     if (bTriggerEvents)
     {
-        lQueuedEventList_.push_back("Hide");
+        lQueuedEventList_.push_back("OnHide");
         notify_renderer_need_redraw();
     }
 }
@@ -1828,7 +1793,7 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
     {
         if (!bMouseInFrame_)
         {
-            on("Enter");
+            on_script("OnEnter");
             if (!mChecker.is_alive())
                 return;
         }
@@ -1844,7 +1809,7 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
     {
         if (bMouseInFrame_)
         {
-            on("Leave");
+            on_script("OnLeave");
             if (!mChecker.is_alive())
                 return;
         }
@@ -1886,7 +1851,7 @@ void frame::update(float fDelta)
     for (const auto& sEvent : lQueuedEventList_)
     {
         DEBUG_LOG("   Event " + *iterEvent);
-        on(sEvent);
+        on_script(sEvent);
         if (!mChecker.is_alive())
             return;
     }
@@ -1921,7 +1886,7 @@ void frame::update(float fDelta)
         DEBUG_LOG("   On update");
         event mEvent;
         mEvent.add(fDelta);
-        on("Update", &mEvent);
+        on_script("OnUpdate", &mEvent);
         if (!mChecker.is_alive())
             return;
     }
@@ -1964,7 +1929,7 @@ void frame::update(float fDelta)
     if (uiOldWidth_ != uiAbsWidth_ || uiOldHeight_ != uiAbsHeight_)
     {
         DEBUG_LOG("   On size changed");
-        on("SizeChanged");
+        on_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 

@@ -103,6 +103,9 @@ namespace gui
     *   positive only), and to hide the input characters to simulate a
     *   password box (no encryption or other safety measure is used).
     *
+    *   Note that an edit_box has frame::enable_mouse set to `true`
+    *   and frame::register_for_drag set to `"LeftButton"` by default.
+    *
     *   __Events.__ Hard-coded events available to all edit_boxes,
     *   in addition to those from #frame:
     *
@@ -168,7 +171,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script

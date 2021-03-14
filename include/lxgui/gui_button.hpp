@@ -14,8 +14,7 @@ namespace gui
     /** This class can handle three different states: "normal", "pushed"
     *   and "disabled". You can provide a different texture for each of
     *   these states, and two different fontstrings for "normal" and
-    *   "disabled". Note that a button has frame::enable_mouse set
-    *   to `true` by default.
+    *   "disabled".
     *
     *   In addition, you can provide another texture/fontstring for the
     *   "highlight" state (when the mouse is over the button widget).
@@ -23,6 +22,9 @@ namespace gui
     *   Note that there is no fontstring for the "pushed" state: in this
     *   case, the "normal" font is rendered with a slight offset that you
     *   are free to define.
+    *
+    *   Note that a button has frame::enable_mouse set to `true` by
+    *   default.
     *
     *   __Events.__ Hard-coded events available to all buttons, in
     *   addition to those from frame:
@@ -70,7 +72,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured

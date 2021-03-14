@@ -708,9 +708,10 @@ int lua_frame::_get_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
+        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->has_script(sScriptName))
         {
-            lua_getglobal(pLua, (get_object()->get_name() + ":" + sScriptName).c_str());
+            lua_getglobal(pLua, (get_object()->get_name() + ":" + sAdjustedScriptName).c_str());
             mFunc.notify_pushed();
         }
     }

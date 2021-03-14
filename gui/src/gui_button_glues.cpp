@@ -12,8 +12,7 @@
 *   This class can handle three different states: "normal", "pushed"
 *   and "disabled". You can provide a different texture for each of
 *   these states, and two different fontstrings for "normal" and
-*   "disabled". Note that a @{Button} has @{Frame:enable_mouse} set
-*   to `true` by default.
+*   "disabled".
 *
 *   In addition, you can provide another texture/fontstring for the
 *   "highlight" state (when the mouse is over the button widget).
@@ -21,6 +20,9 @@
 *   Note that there is no fontstring for the "pushed" state: in this
 *   case, the "normal" font is rendered with a slight offset that you
 *   are free to define.
+*
+*   Note that a @{Button} has @{Frame:enable_mouse} set to `true` by
+*   default.
 *
 *   __Events.__ Hard-coded events available to all @{Button}s, in
 *   addition to those from @{Frame}:
@@ -59,7 +61,7 @@ int lua_button::_click(lua_State* pLua)
 
     lua::function mFunc("Button:click", pLua);
 
-    get_object()->on("Click");
+    get_object()->on_script("OnClick");
 
     return mFunc.on_return();
 }

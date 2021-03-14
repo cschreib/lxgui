@@ -19,6 +19,9 @@
 *   positive only), and to hide the input characters to simulate a
 *   password box (no encryption or other safety measure is used).
 *
+*   Note that an @{EditBox} has @{Frame:enable_mouse} set to `true`
+*   and @{Frame:register_for_drag} set to `"LeftButton"` by default.
+*
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
 *   in addition to those from @{Frame}:
 *

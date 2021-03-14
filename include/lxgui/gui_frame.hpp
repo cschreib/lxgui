@@ -616,7 +616,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        virtual void on(const std::string& sScriptName, event* pEvent = nullptr);
+        virtual void on_script(const std::string& sScriptName, event* pEvent = nullptr);
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured

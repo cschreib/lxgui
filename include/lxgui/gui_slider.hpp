@@ -50,6 +50,15 @@ namespace gui
         */
         bool can_use_script(const std::string& sScriptName) const override;
 
+        /// Calls a script.
+        /** \param sScriptName The name of the script
+        *   \param pEvent      Stores scripts arguments
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
+        */
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+
         /// Copies an uiobject's parameters into this slider (inheritance).
         /** \param pObj The uiobject to copy
         */

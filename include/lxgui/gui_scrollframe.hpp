@@ -67,7 +67,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child
