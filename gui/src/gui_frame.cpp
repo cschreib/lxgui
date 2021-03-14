@@ -1094,6 +1094,9 @@ void frame::on_event(const event& mEvent)
     {
         if (mEvent.get_name() == "MOUSE_DRAG_START")
         {
+            if (bMouseInTitleRegion_)
+                start_moving();
+
             if (bMouseInFrame_)
             {
                 std::string sMouseButton = mEvent.get<std::string>(3);
@@ -1108,6 +1111,8 @@ void frame::on_event(const event& mEvent)
         }
         else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
         {
+            stop_moving();
+
             bMouseDraggedInFrame_ = false;
 
             if (bMouseInFrame_)
@@ -1123,9 +1128,6 @@ void frame::on_event(const event& mEvent)
         }
         else if (mEvent.get_name() == "MOUSE_PRESSED")
         {
-            if (bMouseInTitleRegion_)
-                start_moving();
-
             if (bMouseInFrame_)
             {
                 if (bIsTopLevel_)
@@ -1146,9 +1148,6 @@ void frame::on_event(const event& mEvent)
         }
         else if (mEvent.get_name() == "MOUSE_RELEASED")
         {
-            if (bIsMovable_)
-                stop_moving();
-
             if (bMouseInFrame_)
             {
                 std::string sMouseButton = mEvent.get<std::string>(3);
@@ -1631,7 +1630,8 @@ void frame::start_moving()
 
 void frame::stop_moving()
 {
-    pManager_->stop_moving(this);
+    if (bIsMovable_)
+        pManager_->stop_moving(this);
 }
 
 void frame::start_sizing(const anchor_point& mPoint)
