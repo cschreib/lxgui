@@ -105,8 +105,9 @@ namespace gui
     *   recorded.
     *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
     *   the screen occupied by the frame. Note: this only takes into account the
-    *   position and size of the frame, not its children or layered regions. Will
-    *   not trigger if the frame is hidden.
+    *   position and size of the frame and its title region, but not the space
+    *   occupied by its children or layered regions. Will not trigger if the
+    *   frame is hidden.
     *   - `OnEvent`: Triggered when a registered generic event occurs. See
     *   frame::register_event. To allow distinguishing which event has just
     *   been fired, the registered callback function is always provided with a
@@ -125,9 +126,10 @@ namespace gui
     *   human-readable name of the key.
     *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
     *   screen occupied by the frame. Note: this only takes into account the
-    *   position and size of the frame, not its children or layered regions.
-    *   Will not trigger if the frame is hidden, unless the frame was just
-    *   hidden with the mouse previously inside the frame.
+    *   position and size of the frame and its title region, but not the space
+    *   occupied by its children or layered regions. Will not trigger if the
+    *   frame is hidden, unless the frame was just hidden with the mouse
+    *   previously inside the frame.
     *   - `OnLoad`: Triggered just after the frame is created. This is where
     *   you would normally register for events and specific inputs, set up
     *   initial states for extra logic, or do localization.
