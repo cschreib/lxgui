@@ -1066,19 +1066,17 @@ void manager::clear_hovered_frame_()
 
 void manager::set_hovered_frame_(frame* pFrame, int iX, int iY)
 {
-    if (pFrame == pHoveredFrame_)
-        return;
-
-    if (pFrame && !pFrame->is_world_input_allowed())
-        pInputManager_->block_input("WORLD");
-
-    if (pHoveredFrame_)
+    if (pHoveredFrame_ && pFrame != pHoveredFrame_)
         pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
 
     if (pFrame)
     {
         pHoveredFrame_ = pFrame;
         pHoveredFrame_->notify_mouse_in_frame(true, iX, iY);
+        if (pHoveredFrame_->is_world_input_allowed())
+            pInputManager_->allow_input("WORLD");
+        else
+            pInputManager_->block_input("WORLD");
     }
     else
         clear_hovered_frame_();
