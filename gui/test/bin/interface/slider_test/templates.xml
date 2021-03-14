@@ -154,9 +154,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOMRIGHT");
                     </OnDragStart>
-                    <OnDragStop>
+                    <OnReceiveDrag>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnDragStop>
+                    </OnReceiveDrag>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneBL" enableMouse="true">
@@ -177,9 +177,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOMLEFT");
                     </OnDragStart>
-                    <OnDragStop>
+                    <OnReceiveDrag>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnDragStop>
+                    </OnReceiveDrag>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneL" enableMouse="true">
@@ -197,9 +197,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("LEFT");
                     </OnDragStart>
-                    <OnDragStop>
+                    <OnReceiveDrag>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnDragStop>
+                    </OnReceiveDrag>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneR" enableMouse="true">
@@ -217,9 +217,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("RIGHT");
                     </OnDragStart>
-                    <OnDragStop>
+                    <OnReceiveDrag>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnDragStop>
+                    </OnReceiveDrag>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneB" enableMouse="true">
@@ -237,14 +237,14 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOM");
                     </OnDragStart>
-                    <OnDragStop>
+                    <OnReceiveDrag>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnDragStop>
+                    </OnReceiveDrag>
                 </Scripts>
             </Frame>
         </Frames>
     </Frame>
-    
+
     <Button name="ButtonTemplate_Button" virtual="true">
         <Size>
             <AbsDimension y="18"/>
@@ -277,7 +277,7 @@
             </OnShow>
         </Scripts>
     </Button>
-    
+
     <Frame name="FrameTemplate_ColorSlider" virtual="true">
         <Size>
             <AbsDimension y="12"/>
@@ -323,12 +323,12 @@
                     <Anchor point="LEFT">
                         <Offset>
                             <AbsDimension x="16"/>
-                        </Offset>          
+                        </Offset>
                     </Anchor>
                     <Anchor point="RIGHT" relativeTo="$parentValueString" relativePoint="LEFT">
                         <Offset>
                             <AbsDimension x="-4"/>
-                        </Offset>          
+                        </Offset>
                     </Anchor>
                 </Anchors>
                 <Backdrop edgeFile="|border_1px.png"/>

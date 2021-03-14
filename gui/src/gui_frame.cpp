@@ -197,7 +197,6 @@ std::string frame::serialize(const std::string& sTab) const
 bool frame::can_use_script(const std::string& sScriptName) const
 {
     if ((sScriptName == "OnDragStart") ||
-        (sScriptName == "OnDragStop") ||
         (sScriptName == "OnEnter") ||
         (sScriptName == "OnEvent") ||
         (sScriptName == "OnHide") ||
@@ -553,6 +552,8 @@ void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
             event_receiver::register_event("MOUSE_PRESSED");
             event_receiver::register_event("MOUSE_DOUBLE_CLICKED");
             event_receiver::register_event("MOUSE_RELEASED");
+            event_receiver::register_event("MOUSE_DRAG_START");
+            event_receiver::register_event("MOUSE_DRAG_STOP");
         }
         else if (!bIsMouseEnabled && bIsMouseEnabled_)
         {
@@ -560,6 +561,8 @@ void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
             event_receiver::unregister_event("MOUSE_PRESSED");
             event_receiver::unregister_event("MOUSE_DOUBLE_CLICKED");
             event_receiver::unregister_event("MOUSE_RELEASED");
+            event_receiver::unregister_event("MOUSE_DRAG_START");
+            event_receiver::unregister_event("MOUSE_DRAG_STOP");
         }
     }
 
@@ -1090,21 +1093,32 @@ void frame::on_event(const event& mEvent)
 
     if (bIsMouseEnabled_ && bIsVisible_)
     {
-        if (mEvent.get_name() == "MOUSE_MOVED")
+        if (mEvent.get_name() == "MOUSE_DRAG_START")
         {
-            if (!lMouseButtonList_.empty() && !bMouseDragged_)
+            if (bMouseInFrame_)
             {
-                for (const auto& sButton : lMouseButtonList_)
+                std::string sMouseButton = mEvent.get<std::string>(3);
+                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
                 {
-                    if (lRegDragList_.find(sButton) != lRegDragList_.end())
-                    {
-                        bMouseDragged_ = true;
-                        on("DragStart");
-                        if (!mChecker.is_alive())
-                            return;
+                    bMouseDraggedInFrame_ = true;
+                    on("DragStart");
+                    if (!mChecker.is_alive())
+                        return;
+                }
+            }
+        }
+        else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
+        {
+            bMouseDraggedInFrame_ = false;
 
-                        break;
-                    }
+            if (bMouseInFrame_)
+            {
+                std::string sMouseButton = mEvent.get<std::string>(3);
+                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
+                {
+                    on("ReceiveDrag");
+                    if (!mChecker.is_alive())
+                        return;
                 }
             }
         }
@@ -1122,7 +1136,6 @@ void frame::on_event(const event& mEvent)
                     pTopLevelParent_->raise();
 
                 std::string sMouseButton = mEvent.get<std::string>(3);
-                lMouseButtonList_.push_back(sMouseButton);
 
                 event mEvent2;
                 mEvent2.add(sMouseButton);
@@ -1137,10 +1150,10 @@ void frame::on_event(const event& mEvent)
             if (bIsMovable_)
                 stop_moving();
 
-            std::string sMouseButton = mEvent.get<std::string>(3);
-
             if (bMouseInFrame_)
             {
+                std::string sMouseButton = mEvent.get<std::string>(3);
+
                 event mEvent2;
                 mEvent2.add(sMouseButton);
 
@@ -1148,33 +1161,8 @@ void frame::on_event(const event& mEvent)
                 if (!mChecker.is_alive())
                     return;
             }
-
-            std::vector<std::string>::iterator iter = utils::find(lMouseButtonList_, sMouseButton);
-            if (iter != lMouseButtonList_.end())
-                lMouseButtonList_.erase(iter);
-
-            if (bMouseDragged_)
-            {
-                bool bDrag = false;
-                for (const auto& sButton : lMouseButtonList_)
-                {
-                    if (lRegDragList_.find(sButton) != lRegDragList_.end())
-                    {
-                        bDrag = true;
-                        break;
-                    }
-                }
-
-                if (!bDrag)
-                {
-                    bMouseDragged_ = false;
-                    on("DragStop");
-                    if (!mChecker.is_alive())
-                        return;
-                }
-            }
         }
-        else if (mEvent.get_name() == "MOUSE_WHEEL" || mEvent.get_name() == "MOUSE_WHEEL_SMOOTH")
+        else if (mEvent.get_name() == "MOUSE_WHEEL")
         {
             if (bMouseInFrame_)
             {

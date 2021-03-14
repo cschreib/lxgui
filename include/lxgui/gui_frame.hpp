@@ -80,7 +80,7 @@ namespace gui
     *
     *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
     *   frame::enable_keyboard.
-    *   - Events related to mouse input (`OnDragStart`, `OnDragStop`, `OnEnter`,
+    *   - Events related to mouse input (`OnDragStart`, `OnEnter`,
     *   `OnLeave`, `OnMouseUp`, `OnMouseDown`, `OnMouseWheel`, `OnReceiveDrag`)
     *   require frame::enable_mouse.
     *
@@ -997,8 +997,7 @@ namespace gui
 
         std::unique_ptr<region> pTitleRegion_ = nullptr;
 
-        std::vector<std::string> lMouseButtonList_;
-        bool                     bMouseDragged_ = false;
+        bool bMouseDraggedInFrame_ = false;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

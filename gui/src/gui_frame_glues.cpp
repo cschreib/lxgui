@@ -60,7 +60,7 @@
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
 *   @{Frame:enable_keyboard}.
-*   - Events related to mouse input (`OnDragStart`, `OnDragStop`, `OnEnter`,
+*   - Events related to mouse input (`OnDragStart`, `OnEnter`,
 *   `OnLeave`, `OnMouseUp`, `OnMouseDown`, `OnMouseWheel`, `OnReceiveDrag`)
 *   require @{Frame:enable_mouse}.
 *

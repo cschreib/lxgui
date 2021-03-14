@@ -509,12 +509,50 @@ void manager::update(float fTempDelta)
     // Send movement event
     if (fDMX_ != 0.0 || fDMY_ != 0.0)
     {
+        if (!bMouseDragged_)
+        {
+            uint iMouseButtonPressed = uint(-1);
+            for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
+            {
+                if (mMouseState.lButtonState[i])
+                {
+                    iMouseButtonPressed = i;
+                    break;
+                }
+            }
+
+            if (iMouseButtonPressed != uint(-1))
+            {
+                bMouseDragged_ = true;
+                mMouseDragButton_ = static_cast<mouse_button>(iMouseButtonPressed);
+
+                gui::event mMouseDragEvent("MOUSE_DRAG_START", true);
+                mMouseDragEvent.add(iMouseButtonPressed);
+                mMouseDragEvent.add(mMouseState.fAbsX);
+                mMouseDragEvent.add(mMouseState.fAbsY);
+                mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
+                fire_event_(mMouseDragEvent, true);
+            }
+        }
+
         gui::event mMouseMovedEvent("MOUSE_MOVED", true);
         mMouseMovedEvent.add(fDMX_);
         mMouseMovedEvent.add(fDMY_);
         mMouseMovedEvent.add(fDMX_*mMouseState.fRelX/mMouseState.fAbsX);
         mMouseMovedEvent.add(fDMY_*mMouseState.fRelY/mMouseState.fAbsY);
         fire_event_(mMouseMovedEvent, true);
+    }
+
+    if (bMouseDragged_ && !mMouseState.lButtonState[(uint)mMouseDragButton_])
+    {
+        bMouseDragged_ = false;
+
+        gui::event mMouseDragEvent("MOUSE_DRAG_STOP", true);
+        mMouseDragEvent.add((uint)mMouseDragButton_);
+        mMouseDragEvent.add(mMouseState.fAbsX);
+        mMouseDragEvent.add(mMouseState.fAbsY);
+        mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
+        fire_event_(mMouseDragEvent, true);
     }
 
     if (bWheelRolled_)

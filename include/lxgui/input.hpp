@@ -465,12 +465,14 @@ namespace input
         std::map<std::string, bool> lClickGroupList_;
         std::map<std::string, bool> lForcedClickGroupList_;
 
-        float       fMX_ = 0.0f, fMY_ = 0.0f;
-        float       fRelMX_ = 0.0f, fRelMY_ = 0.0f;
-        float       fDMX_ = 0.0f, fDMY_ = 0.0f;
-        float       fRelDMX_ = 0.0f, fRelDMY_ = 0.0f;
-        float       fMWheel_ = 0.0f;
-        bool        bWheelRolled_ = false;
+        float        fMX_ = 0.0f, fMY_ = 0.0f;
+        float        fRelMX_ = 0.0f, fRelMY_ = 0.0f;
+        float        fDMX_ = 0.0f, fDMY_ = 0.0f;
+        float        fRelDMX_ = 0.0f, fRelDMY_ = 0.0f;
+        float        fMWheel_ = 0.0f;
+        bool         bWheelRolled_ = false;
+        bool         bMouseDragged_ = false;
+        mouse_button mMouseDragButton_ = mouse_button::LEFT;
 
         double dTime_ = 0.0;
 

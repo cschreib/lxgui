@@ -109,7 +109,7 @@ void edit_box::update(float fDelta)
     if (!mChecker.is_alive())
         return;
 
-    if (bMouseDragged_)
+    if (bMouseDraggedInFrame_)
     {
         uint uiPos = get_letter_id_at_(iMousePosX_, iMousePosY_);
         if (uiPos != uiSelectionEndPos_)
