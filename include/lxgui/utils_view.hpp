@@ -101,8 +101,11 @@ namespace view
         iterator begin() const
         {
             iterator mIter(mCollection_, mCollection_.begin());
-            if (!filter::is_included(mCollection_.begin()))
+            if (mCollection_.begin() != mCollection_.end() &&
+                !filter::is_included(mCollection_.begin()))
+            {
                 ++mIter;
+            }
             return mIter;
         }
 
