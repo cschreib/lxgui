@@ -198,6 +198,7 @@ std::string frame::serialize(const std::string& sTab) const
 bool frame::can_use_script(const std::string& sScriptName) const
 {
     if ((sScriptName == "OnDragStart") ||
+        (sScriptName == "OnDragStop") ||
         (sScriptName == "OnEnter") ||
         (sScriptName == "OnEvent") ||
         (sScriptName == "OnHide") ||
@@ -1115,7 +1116,13 @@ void frame::on_event(const event& mEvent)
         {
             stop_moving();
 
-            bMouseDraggedInFrame_ = false;
+            if (bMouseDraggedInFrame_)
+            {
+                bMouseDraggedInFrame_ = false;
+                on("DragStop");
+                if (!mChecker.is_alive())
+                    return;
+            }
 
             if (bMouseInFrame_)
             {

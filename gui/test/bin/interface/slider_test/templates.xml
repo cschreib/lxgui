@@ -154,9 +154,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOMRIGHT");
                     </OnDragStart>
-                    <OnReceiveDrag>
+                    <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnReceiveDrag>
+                    </OnDragStop>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneBL" enableMouse="true">
@@ -177,9 +177,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOMLEFT");
                     </OnDragStart>
-                    <OnReceiveDrag>
+                    <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnReceiveDrag>
+                    </OnDragStop>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneL" enableMouse="true">
@@ -197,9 +197,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("LEFT");
                     </OnDragStart>
-                    <OnReceiveDrag>
+                    <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnReceiveDrag>
+                    </OnDragStop>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneR" enableMouse="true">
@@ -217,9 +217,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("RIGHT");
                     </OnDragStart>
-                    <OnReceiveDrag>
+                    <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnReceiveDrag>
+                    </OnDragStop>
                 </Scripts>
             </Frame>
             <Frame name="$parentResizeZoneB" enableMouse="true">
@@ -237,9 +237,9 @@
                     <OnDragStart>
                         self:get_parent():start_sizing("BOTTOM");
                     </OnDragStart>
-                    <OnReceiveDrag>
+                    <OnDragStop>
                         self:get_parent():stop_moving_or_sizing();
-                    </OnReceiveDrag>
+                    </OnDragStop>
                 </Scripts>
             </Frame>
         </Frames>

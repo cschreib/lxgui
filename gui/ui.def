@@ -96,6 +96,7 @@
 
     <n[.,1]:Scripts>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
@@ -135,6 +136,7 @@
         <n[.,1]:OnDoubleClick/>
         <n[.,1]:OnDisable/>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnable/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
@@ -171,6 +173,7 @@
     <n[.,1]:Scripts>
         <n[.,1]:OnColorSelect/>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
@@ -203,6 +206,7 @@
         <n[.,1]:OnChar/>
         <n[.,1]:OnCursorChanged/>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEditFocusGained/>
         <n[.,1]:OnEditFocusLost/>
         <n[.,1]:OnEnter/>
@@ -250,6 +254,7 @@
 
     <n[.,1]:Scripts>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
@@ -282,6 +287,7 @@
 
     <n[.,1]:Scripts>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
@@ -307,6 +313,7 @@
 
     <n[.,1]:Scripts>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
@@ -334,6 +341,7 @@
 
     <n[.,1]:Scripts>
         <n[.,1]:OnDragStart/>
+        <n[.,1]:OnDragStop/>
         <n[.,1]:OnEnter/>
         <n[.,1]:OnEvent/>
         <n[.,1]:OnHide/>
