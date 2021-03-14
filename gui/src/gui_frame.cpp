@@ -933,18 +933,15 @@ bool frame::is_clamped_to_screen() const
 
 bool frame::is_in_frame(int iX, int iY) const
 {
-    bool bInFrame = (
-        (lBorderList_.left  + lAbsHitRectInsetList_.left <= iX &&
-        iX <= lBorderList_.right - lAbsHitRectInsetList_.right - 1)
-        &&
-        (lBorderList_.top    + lAbsHitRectInsetList_.top <= iY &&
-        iY <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1)
-    );
-
     if (pTitleRegion_ && pTitleRegion_->is_in_region(iX, iY))
         return true;
-    else
-        return bInFrame;
+
+    bool bIsInXRange = lBorderList_.left  + lAbsHitRectInsetList_.left <= iX &&
+        iX <= lBorderList_.right - lAbsHitRectInsetList_.right - 1;
+    bool bIsInYRange = lBorderList_.top    + lAbsHitRectInsetList_.top <= iY &&
+        iY <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1;
+
+    return bIsInXRange && bIsInYRange;
 }
 
 bool frame::is_keyboard_enabled() const
