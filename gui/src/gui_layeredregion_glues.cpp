@@ -4,6 +4,21 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{UIObject} that can be rendered in a layer.
+*   LayeredRegions can display content on the screen (texture,
+*   texts, 3D models, ...) and must be contained inside a layer,
+*   within a @{Frame} object. The frame will then render all
+*   its layered regions, sorted by layers.
+*
+*   Layered regions cannot themselves react to events; this
+*   must be taken care of by the parent @{Frame}.
+*
+*   Inherits all methods from: @{UIObject}.
+*
+*   Child classes: @{FontString}, @{Texture}.
+*   @classmod LayeredRegion
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -11,6 +26,8 @@ lua_layered_region::lua_layered_region(lua_State* pLua) : lua_uiobject(pLua)
 {
 }
 
+/** @function set_draw_layer
+*/
 int lua_layered_region::_set_draw_layer(lua_State* pLua)
 {
     if (!check_object_())
@@ -24,6 +41,8 @@ int lua_layered_region::_set_draw_layer(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_draw_layer
+*/
 int lua_layered_region::_get_draw_layer(lua_State* pLua)
 {
     if (!check_object_())

@@ -6,6 +6,16 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{LayeredRegion} that can draw images and colored rectangles.
+*   This object contains either a texture taken from a file,
+*   or a plain color (possibly with a different color on each corner).
+*
+*   Inherits all methods from: @{UIObject}, @{LayeredRegion}.
+*
+*   Child classes: none.
+*   @classmod Texture
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -18,6 +28,8 @@ lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)
 {
 }
 
+/** @function get_blend_mode
+*/
 int lua_texture::_get_blend_mode(lua_State* pLua)
 {
     if (!check_object_())
@@ -42,6 +54,8 @@ int lua_texture::_get_blend_mode(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_filter_mode
+*/
 int lua_texture::_get_filter_mode(lua_State* pLua)
 {
     if (!check_object_())
@@ -63,6 +77,8 @@ int lua_texture::_get_filter_mode(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_tex_coord
+*/
 int lua_texture::_get_tex_coord(lua_State* pLua)
 {
     if (!check_object_())
@@ -78,6 +94,8 @@ int lua_texture::_get_tex_coord(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_tex_coord_modifies_rect
+*/
 int lua_texture::_get_tex_coord_modifies_rect(lua_State* pLua)
 {
     if (!check_object_())
@@ -90,6 +108,8 @@ int lua_texture::_get_tex_coord_modifies_rect(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_texture
+*/
 int lua_texture::_get_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -102,6 +122,8 @@ int lua_texture::_get_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_vertex_color
+*/
 int lua_texture::_get_vertex_color(lua_State* pLua)
 {
     if (!check_object_())
@@ -119,6 +141,8 @@ int lua_texture::_get_vertex_color(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function is_desaturated
+*/
 int lua_texture::_is_desaturated(lua_State* pLua)
 {
     if (!check_object_())
@@ -131,6 +155,8 @@ int lua_texture::_is_desaturated(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_blend_mode
+*/
 int lua_texture::_set_blend_mode(lua_State* pLua)
 {
     if (!check_object_())
@@ -165,6 +191,8 @@ int lua_texture::_set_blend_mode(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_filter_mode
+*/
 int lua_texture::_set_filter_mode(lua_State* pLua)
 {
     if (!check_object_())
@@ -193,6 +221,8 @@ int lua_texture::_set_filter_mode(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_desaturated
+*/
 int lua_texture::_set_desaturated(lua_State* pLua)
 {
     if (!check_object_())
@@ -208,6 +238,8 @@ int lua_texture::_set_desaturated(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_gradient
+*/
 int lua_texture::_set_gradient(lua_State* pLua)
 {
     if (!check_object_())
@@ -269,6 +301,8 @@ int lua_texture::_set_gradient(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_gradient_alpha
+*/
 int lua_texture::_set_gradient_alpha(lua_State* pLua)
 {
     if (!check_object_())
@@ -334,6 +368,8 @@ int lua_texture::_set_gradient_alpha(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_tex_coord
+*/
 int lua_texture::_set_tex_coord(lua_State* pLua)
 {
     if (!check_object_())
@@ -379,6 +415,8 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_tex_coord_modifies_rect
+*/
 int lua_texture::_set_tex_coord_modifies_rect(lua_State* pLua)
 {
     if (!check_object_())
@@ -392,6 +430,8 @@ int lua_texture::_set_tex_coord_modifies_rect(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_texture
+*/
 int lua_texture::_set_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -453,6 +493,8 @@ int lua_texture::_set_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_vertex_color
+*/
 int lua_texture::_set_vertex_color(lua_State* pLua)
 {
     if (!check_object_())

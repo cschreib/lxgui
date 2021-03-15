@@ -19,7 +19,7 @@ SCRIPT_ROOT_DIR=`pwd`
 
 # libpng (need to build from source)
 PNG_VERSION=1.6.37
-PNG_VERSION_SHORT=${PNG_VERSION/.//}
+PNG_VERSION_SHORT=${PNG_VERSION//./}
 PNG_WEBSITE=https://download.sourceforge.net/libpng/
 PNG_DL_FILE=lpng${PNG_VERSION_SHORT}.zip
 wget ${PNG_WEBSITE}${PNG_DL_FILE}
@@ -39,7 +39,7 @@ rm -rf ${PNG_DIR}
 
 # zlib (need to build from source)
 ZLIB_VERSION=1.2.11
-ZLIB_VERSION_SHORT=${ZLIB_VERSION/.//}
+ZLIB_VERSION_SHORT=${ZLIB_VERSION//./}
 ZLIB_WEBSITE=https://www.zlib.net/
 ZLIB_DL_FILE=zlib${ZLIB_VERSION_SHORT}.zip
 wget ${ZLIB_WEBSITE}${ZLIB_DL_FILE}
@@ -74,8 +74,8 @@ rm -rf ${SFML_DIR}
 # Freetype
 git clone https://github.com/ubawurinna/freetype-windows-binaries.git
 mv freetype-windows-binaries/include/* include/
-mv freetype-windows-binaries/win${ARCH}/*.lib lib/
-mv freetype-windows-binaries/win${ARCH}/*.dll bin/
+mv "freetype-windows-binaries/release dll/win${ARCH}"/*.lib lib/
+mv "freetype-windows-binaries/release dll/win${ARCH}"/*.dll bin/
 rm -rf freetype-windows-binaries
 
 # GLEW

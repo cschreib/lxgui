@@ -63,6 +63,7 @@
         </NormalText>
         <Scripts>
             <OnClick>
+                print(1);
                 ScrollTest:set_folder(self.id);
                 ScrollTest:develop_folder(self.id, false);
             </OnClick>
@@ -108,7 +109,7 @@
             </Button>
         </Frames>
     </Button>
-    
+
     <EditBox name="EditBoxTemplate_EditBox" virtual="true">
         <Size>
             <AbsDimension y="18"/>

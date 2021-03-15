@@ -26,6 +26,17 @@
 #include <fstream>
 #include <sstream>
 
+/** \mainpage lxgui documentation
+*
+* This page allows you to browse the documentation for the C++ API of lxgui.
+*
+* For the Lua/XML API, please go to the
+* <a href="../lua/index.html">Lua documentation</a>.
+*/
+
+// #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+#define DEBUG_LOG(msg)
+
 namespace lxgui {
 namespace gui
 {
@@ -46,6 +57,7 @@ manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::st
     event_receiver::set_event_manager(pEventManager_.get());
     pInputManager_->register_event_manager(pEventManager_.get());
     register_event("KEY_PRESSED");
+    register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
     pRendererImpl_->set_parent(this);
 }
@@ -329,9 +341,10 @@ void manager::remove_frame(frame* pObj)
         lFrameList_.erase(pObj->get_id());
 
     if (pHoveredFrame_ == pObj)
-        set_hovered_frame_(nullptr);
+        clear_hovered_frame_();
+
     if (pFocusedFrame_ == pObj)
-        request_focus(nullptr);
+        clear_focussed_frame_();
 }
 
 std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
@@ -856,88 +869,8 @@ bool manager::is_loading_ui() const
 
 void manager::update(float fDelta)
 {
-    // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
-
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
-
-    if (pMovedObject_ || pSizedObject_)
-    {
-        DEBUG_LOG(" Moved object...");
-        fMouseMovementX_ += pInputManager_->get_mouse_dx();
-        fMouseMovementY_ += pInputManager_->get_mouse_dy();
-    }
-
-    if (pMovedObject_)
-    {
-        switch (mConstraint_)
-        {
-            case constraint::NONE :
-                pMovedAnchor_->set_abs_offset(
-                    iMovementStartPositionX_ + int(fMouseMovementX_),
-                    iMovementStartPositionY_ + int(fMouseMovementY_)
-                );
-                break;
-            case constraint::X :
-                pMovedAnchor_->set_abs_offset(
-                    iMovementStartPositionX_ + int(fMouseMovementX_),
-                    iMovementStartPositionY_
-                );
-                break;
-            case constraint::Y :
-                pMovedAnchor_->set_abs_offset(
-                    iMovementStartPositionX_,
-                    iMovementStartPositionY_ + int(fMouseMovementY_)
-                );
-                break;
-            default : break;
-        }
-
-        if (pApplyConstraintFunc_)
-            pApplyConstraintFunc_();
-
-        pMovedObject_->fire_update_borders();
-    }
-    else if (pSizedObject_)
-    {
-        if (bResizeWidth_ && bResizeHeight_)
-        {
-            uint uiWidth;
-            if (bResizeFromRight_)
-                uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
-            else
-                uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
-
-            uint uiHeight;
-            if (bResizeFromBottom_)
-                uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
-            else
-                uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
-
-            pSizedObject_->set_abs_dimensions(uiWidth, uiHeight);
-        }
-        else if (bResizeWidth_)
-        {
-            uint uiWidth;
-            if (bResizeFromRight_)
-                uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
-            else
-                uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
-
-            pSizedObject_->set_abs_width(uiWidth);
-        }
-        else if (bResizeHeight_)
-        {
-            uint uiHeight;
-            if (bResizeFromBottom_)
-                uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
-            else
-                uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
-
-            pSizedObject_->set_abs_height(uiHeight);
-        }
-    }
 
     DEBUG_LOG(" Update anchors...");
     // update anchors for all widgets
@@ -1021,19 +954,11 @@ void manager::update(float fDelta)
     if (has_strata_list_changed_() || bObjectMoved_ ||
         (pInputManager_->get_mouse_dx() != 0.0f) ||
         (pInputManager_->get_mouse_dy() != 0.0f))
-        bUpdateHoveredFrame_ = true;
-
-    if (bUpdateHoveredFrame_ && bInputEnabled_)
     {
-        DEBUG_LOG(" Update hovered frame...");
-        int iX = pInputManager_->get_mouse_x();
-        int iY = pInputManager_->get_mouse_y();
-
-        frame* pHoveredFrame = find_hovered_frame_(iX, iY);
-        set_hovered_frame_(pHoveredFrame, iX, iY);
-
-        bUpdateHoveredFrame_ = false;
+        bUpdateHoveredFrame_ = true;
     }
+
+    update_hovered_frame_();
 
     bObjectMoved_ = false;
     reset_strata_list_changed_flag_();
@@ -1049,23 +974,28 @@ void manager::update(float fDelta)
     pEventManager_->frame_ended();
 }
 
+void manager::clear_hovered_frame_()
+{
+    pHoveredFrame_ = nullptr;
+    pInputManager_->allow_input("WORLD");
+}
+
 void manager::set_hovered_frame_(frame* pFrame, int iX, int iY)
 {
-    if (pFrame && !pFrame->is_world_input_allowed())
-        pInputManager_->block_input("WORLD");
-    else
-        pInputManager_->allow_input("WORLD");
+    if (pHoveredFrame_ && pFrame != pHoveredFrame_)
+        pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
 
-    if (pFrame != pHoveredFrame_)
+    if (pFrame)
     {
-        if (pHoveredFrame_)
-            pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
-
         pHoveredFrame_ = pFrame;
-    }
-
-    if (pHoveredFrame_)
         pHoveredFrame_->notify_mouse_in_frame(true, iX, iY);
+        if (pHoveredFrame_->is_world_input_allowed())
+            pInputManager_->allow_input("WORLD");
+        else
+            pInputManager_->block_input("WORLD");
+    }
+    else
+        clear_hovered_frame_();
 }
 
 void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstraint, std::function<void()> pApplyConstraintFunc)
@@ -1250,14 +1180,14 @@ void manager::toggle_input()
         bUpdateHoveredFrame_ = true;
 
         if (pFocusedFrame_)
-            pInputManager_->set_focus(true, pFocusedFrame_);
+            pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
     else
     {
         set_hovered_frame_(nullptr);
 
         if (pFocusedFrame_)
-            pInputManager_->set_focus(false);
+            pInputManager_->set_keyboard_focus(false);
     }
 }
 
@@ -1271,9 +1201,36 @@ void manager::clear_fonts_on_close(bool bClear)
     bClearFontsOnClose_ = bClear;
 }
 
-const frame* manager::get_overed_frame() const
+void manager::update_hovered_frame_()
 {
+    if (!bUpdateHoveredFrame_ || !bInputEnabled_)
+        return;
+
+    DEBUG_LOG(" Update hovered frame...");
+    int iX = pInputManager_->get_mouse_x();
+    int iY = pInputManager_->get_mouse_y();
+
+    frame* pHoveredFrame = find_hovered_frame_(iX, iY);
+    set_hovered_frame_(pHoveredFrame, iX, iY);
+
+    bUpdateHoveredFrame_ = false;
+}
+
+frame* manager::get_hovered_frame()
+{
+    update_hovered_frame_();
     return pHoveredFrame_;
+}
+
+void manager::notify_hovered_frame_dirty()
+{
+    bUpdateHoveredFrame_ = true;
+}
+
+void manager::clear_focussed_frame_()
+{
+    pFocusedFrame_ = nullptr;
+    pInputManager_->set_keyboard_focus(false);
 }
 
 void manager::request_focus(focus_frame* pFocusFrame)
@@ -1284,15 +1241,14 @@ void manager::request_focus(focus_frame* pFocusFrame)
     if (pFocusedFrame_)
         pFocusedFrame_->notify_focus(false);
 
-    pFocusedFrame_ = pFocusFrame;
-
-    if (pFocusedFrame_)
+    if (pFocusFrame)
     {
+        pFocusedFrame_ = pFocusFrame;
         pFocusedFrame_->notify_focus(true);
-        pInputManager_->set_focus(true, pFocusedFrame_);
+        pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
     else
-        pInputManager_->set_focus(false);
+        clear_focussed_frame_();
 }
 
 void manager::set_key_binding(input::key mKey, const std::string& sLuaString)
@@ -1467,6 +1423,86 @@ void manager::on_event(const event& mEvent)
         {
             if (mStrata.pRenderTarget)
                 create_strata_cache_render_target_(mStrata);
+        }
+    }
+    else if (mEvent.get_name() == "MOUSE_MOVED")
+    {
+        if (pMovedObject_ || pSizedObject_)
+        {
+            DEBUG_LOG(" Moved object...");
+            fMouseMovementX_ += mEvent.get<float>(0);
+            fMouseMovementY_ += mEvent.get<float>(1);
+        }
+
+        if (pMovedObject_)
+        {
+            switch (mConstraint_)
+            {
+                case constraint::NONE :
+                    pMovedAnchor_->set_abs_offset(
+                        iMovementStartPositionX_ + int(fMouseMovementX_),
+                        iMovementStartPositionY_ + int(fMouseMovementY_)
+                    );
+                    break;
+                case constraint::X :
+                    pMovedAnchor_->set_abs_offset(
+                        iMovementStartPositionX_ + int(fMouseMovementX_),
+                        iMovementStartPositionY_
+                    );
+                    break;
+                case constraint::Y :
+                    pMovedAnchor_->set_abs_offset(
+                        iMovementStartPositionX_,
+                        iMovementStartPositionY_ + int(fMouseMovementY_)
+                    );
+                    break;
+                default : break;
+            }
+
+            if (pApplyConstraintFunc_)
+                pApplyConstraintFunc_();
+
+            pMovedObject_->fire_update_borders();
+        }
+        else if (pSizedObject_)
+        {
+            if (bResizeWidth_ && bResizeHeight_)
+            {
+                uint uiWidth;
+                if (bResizeFromRight_)
+                    uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
+                else
+                    uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
+
+                uint uiHeight;
+                if (bResizeFromBottom_)
+                    uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
+                else
+                    uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
+
+                pSizedObject_->set_abs_dimensions(uiWidth, uiHeight);
+            }
+            else if (bResizeWidth_)
+            {
+                uint uiWidth;
+                if (bResizeFromRight_)
+                    uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
+                else
+                    uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
+
+                pSizedObject_->set_abs_width(uiWidth);
+            }
+            else if (bResizeHeight_)
+            {
+                uint uiHeight;
+                if (bResizeFromBottom_)
+                    uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
+                else
+                    uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
+
+                pSizedObject_->set_abs_height(uiHeight);
+            }
+            gui::out << "updated size" << std::endl;
         }
     }
 }

@@ -10,13 +10,22 @@ namespace gui
 {
     class texture;
 
-    /// A variable length bar
-    /** This is a very simple widget : you give it three
-    *   values : a minimum and a maximum, and a value
-    *   between those two. It then Renders a bar that will
-    *   be full, empty, or anything in between depending on
-    *   the value.<br>
-    *   Can be used to display health or cast bars.
+    /// A #frame representing a variable-length bar.
+    /** This frame has three main properties: a minimum value, a
+    *   maximum value, and a current value that must be contained
+    *   between the minimum and maximum values. The frame will
+    *   render a textured bar that will either be full, empty, or
+    *   anything in between depending on the current value.
+    *
+    *   This can be used to display health bars, or progress bars.
+    *
+    *   __Events.__ Hard-coded events available to all status bars,
+    *   in addition to those from #frame:
+    *
+    *   - `OnValueChanged`: Triggered whenever the value represented by
+    *   the status bar changes. This is triggered by status_bar::set_value.
+    *   This can also be triggered by status_bar::set_min_max_values if
+    *   the previous value would not satisfy the new constraints.
     */
     class status_bar : public frame
     {
@@ -181,7 +190,7 @@ namespace gui
         color      mBarColor_ = color::WHITE;
         layer_type mBarLayer_ = layer_type::ARTWORK;
         texture*   pBarTexture_ = nullptr;
-        std::array<float,4> lInitialTextCoords_;
+        std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

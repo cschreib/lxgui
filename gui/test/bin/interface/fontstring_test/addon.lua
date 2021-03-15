@@ -2,24 +2,24 @@ FSTest = {
     ["updateTimer"] = 1, -- Time to wait between each update of the FPS
     ["frameNbr"]    = 0, -- Frame counter
     ["FPS"]         = 0, -- The FPS as it is displayed on the screen
-    
+
     ["totalRenderTime"] = 0, -- Total render time between each update
     ["totalUpdateTime"] = 0, -- Total render time between each update
     ["renderTime"]      = 0, -- Render time displayed on screen
     ["updateTime"]      = 0, -- Render time displayed on screen
 };
 
-function FSTest.on_update()
-    FSTest.updateTimer = FSTest.updateTimer + arg1;
+function FSTest.on_update(dt)
+    FSTest.updateTimer = FSTest.updateTimer + dt;
     FSTest.frameNbr = FSTest.frameNbr + 1;
-    
+
     if (FSTest.updateTimer >= 0.5) then
         FSTest.FPS = math.floor(FSTest.frameNbr / FSTest.updateTimer);
-        
+
         FSTest.updateTimer = 0;
         FSTest.frameNbr = 0;
     end
-    
+
     FontstringTestFrameText:set_text("FPS : "..FSTest.FPS.."\n(created in XML/Lua)");
 end
 
@@ -35,7 +35,7 @@ FSTest.big_text = "Hello and welcome in the |cFF3FA7F3gui test program|r !\n\n"
     .."  - a |cFFFFC109file selector|r in the middle.\n\n"
     .."If you see all these elements, then voilà : |cFF3FA7F3you have successfully "
     .."installed the gui library !|r";
-    
+
 FSTest.controls = "|cFF3FA7F3Controls|r\n\n"
     .."Exit the test : |cFFFFC109[Escape]|r - \n"
     .."Toggle caching : |cFFFFC109[C]|r - \n"

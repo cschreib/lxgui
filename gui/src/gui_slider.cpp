@@ -30,7 +30,6 @@ void step_value(float& fValue, float fStep)
 
 slider::slider(manager* pManager) : frame(pManager)
 {
-    enable_mouse(true);
     lType_.push_back(CLASS_NAME);
 }
 
@@ -63,6 +62,17 @@ bool slider::can_use_script(const std::string& sScriptName) const
         return true;
     else
         return false;
+}
+
+void slider::on_script(const std::string& sScriptName, event* pEvent)
+{
+    if (sScriptName == "OnLoad")
+        enable_mouse(true);
+
+    alive_checker mChecker(this);
+    frame::on_script(sScriptName, pEvent);
+    if (!mChecker.is_alive())
+        return;
 }
 
 void slider::copy_from(uiobject* pObj)
@@ -152,6 +162,8 @@ void slider::on_event(const event& mEvent)
     {
         if (mEvent.get_name() == "MOUSE_PRESSED")
         {
+            update_mouse_in_frame_();
+
             if (bMouseInThumb_)
             {
                 pManager_->start_moving(
@@ -217,7 +229,7 @@ void slider::set_min_value(float fMin)
         if (fValue_ < fMinValue_)
         {
             fValue_ = fMinValue_;
-            lQueuedEventList_.push_back("ValueChanged");
+            lQueuedEventList_.push_back("OnValueChanged");
         }
 
         fire_update_thumb_texture_();
@@ -235,7 +247,7 @@ void slider::set_max_value(float fMax)
         if (fValue_ > fMaxValue_)
         {
             fValue_ = fMaxValue_;
-            lQueuedEventList_.push_back("ValueChanged");
+            lQueuedEventList_.push_back("OnValueChanged");
         }
 
         fire_update_thumb_texture_();
@@ -254,7 +266,7 @@ void slider::set_min_max_values(float fMin, float fMax)
         if (fValue_ > fMaxValue_ || fValue_ < fMinValue_)
         {
             fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-            lQueuedEventList_.push_back("ValueChanged");
+            lQueuedEventList_.push_back("OnValueChanged");
         }
 
         fire_update_thumb_texture_();
@@ -270,7 +282,7 @@ void slider::set_value(float fValue, bool bSilent)
         step_value(fValue_, fValueStep_);
 
         if (!bSilent)
-            lQueuedEventList_.push_back("ValueChanged");
+            lQueuedEventList_.push_back("OnValueChanged");
 
         fire_update_thumb_texture_();
     }
@@ -290,7 +302,7 @@ void slider::set_value_step(float fValueStep)
         fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
 
         if (fValue_ != fOldValue)
-            lQueuedEventList_.push_back("ValueChanged");
+            lQueuedEventList_.push_back("OnValueChanged");
 
         fire_update_thumb_texture_();
     }

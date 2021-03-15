@@ -3,7 +3,7 @@ set(SRCROOT ${TARGET_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${SFML_INCLUDE_DIR})
 
-add_library(lxgui-sfml STATIC
+add_library(lxgui-sfml
     ${SRCROOT}/gui_sfml_font.cpp
     ${SRCROOT}/gui_sfml_renderer.cpp
     ${SRCROOT}/gui_sfml_material.cpp

@@ -27,8 +27,8 @@
                 self:set_folder(1);
             </OnLoad>
             <OnShow>
-                self.Splitter.FolderFrame:on("size_changed");
-                self.Splitter.FileFrame:on("size_changed");
+                self.Splitter.FolderFrame:on_size_changed();
+                self.Splitter.FileFrame:on_size_changed();
             </OnShow>
         </Scripts>
         <Frames>
@@ -127,7 +127,7 @@
                         <Backdrop edgeFile="|border_1px.png"/>
                         <Scripts>
                             <OnShow>
-                                self:on("size_changed");
+                                self:on_size_changed();
                             </OnShow>
                             <OnSizeChanged>
                                 if (self.Scroll:get_height() and self:get_height()) then
@@ -194,7 +194,7 @@
                         <Backdrop edgeFile="|border_1px.png"/>
                         <Scripts>
                             <OnShow>
-                                self:on("size_changed");
+                                self:on_size_changed();
                             </OnShow>
                             <OnSizeChanged>
                                 self.Slider:set_min_max_values(0, math.max(0, self.Scroll:get_height() - self:get_height()));

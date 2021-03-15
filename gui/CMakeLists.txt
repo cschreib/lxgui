@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/sol2/include)
 include_directories(${LUA_INCLUDE_DIR})
 
-add_library(lxgui STATIC
+add_library(lxgui
     ${SRCROOT}/gui_anchor.cpp
     ${SRCROOT}/gui_alive_checker.cpp
     ${SRCROOT}/gui_backdrop.cpp

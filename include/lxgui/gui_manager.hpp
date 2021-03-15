@@ -521,7 +521,10 @@ namespace gui
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)
         */
-        const frame* get_overed_frame() const;
+        frame* get_hovered_frame();
+
+        /// Notifies this manager that it should update the hovered frame.
+        void notify_hovered_frame_dirty();
 
         /// Asks this manager for focus.
         /** \param pFocusFrame The focus_frame requesting focus
@@ -657,6 +660,9 @@ namespace gui
 
         uint get_new_object_id_() const;
 
+        void clear_focussed_frame_();
+        void clear_hovered_frame_();
+        void update_hovered_frame_();
         void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
 
         frame* create_root_frame_(const std::string& sClassName, const std::string& sName,

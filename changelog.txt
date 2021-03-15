@@ -24,11 +24,15 @@ v2.0.0:
  - input: removed OIS input implementation
  - input: removed GLFW input implementation
  - gui: added a pure SFML implementation for the gui::manager
+ - gui: added documentation for the Lua API
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
+ - gui: renamed frame::on into frame::on_script
+ - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
+ - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
@@ -40,6 +44,8 @@ v2.0.0:
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
+ - gui: removed OnDragStop and fixed unimplemented OnReceiveDrag
+ - gui: implemented OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
  - gui: added set_cursor_position()/get_cursor_position() to edit_box
  - gui: added clear_history() to edit_box
@@ -55,6 +61,8 @@ v2.0.0:
  - gui: fixed left/right keys not moving the carret as expected when text is selected in edit_box
  - gui: fixed crash when inherited child's name is already taken
  - gui: fixed incorrect handling of optional parameter in Frame:enable_mouse() lua function
+ - gui: fixed Frame:get_script() always returning nil
+ - gui: fixed edit_box stealing mouse click events from other frames
  - xml: now parsing standard XML comments
 
 v1.2.0:

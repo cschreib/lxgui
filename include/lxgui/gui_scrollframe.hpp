@@ -10,10 +10,26 @@ namespace gui
 {
     class texture;
 
-    /// A frame with scrollable content
-    /** This widget has a special child frame, the scroll child.
-    *   The scroll child is rendered on a render_target, which is
-    *   then rendered on the screen.
+    /// A #frame with scrollable content.
+    /** This frame has a special child frame, the "scroll child". The scroll
+    *   child is rendered on a separate render target, which is then rendered
+    *   on the screen. This allows clipping the content of the scroll child
+    *   and only display a portion of it (as if scrolling on a page). The
+    *   displayed portion is controlled by the scroll value, which can be
+    *   changed in both the vertical and horizontal directions.
+    *
+    *   By default, the mouse wheel movement will not trigger any scrolling;
+    *   this has to be explicitly implemented using the `OnMouseWheel` callback
+    *   and the scroll_frame::set_horizontal_scroll function.
+    *
+    *   __Events.__ Hard-coded events available to all scroll frames,
+    *   in addition to those from #frame:
+    *
+    *   - `OnHorizontalScroll`: Triggered by scroll_frame::set_horizontal_scroll.
+    *   - `OnScrollRangeChanged`: Triggered whenever the range of the scroll value
+    *   changes. This happens either when the size of the scrollable content
+    *   changes, or when the size of the scroll frame changes.
+    *   - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
     */
     class scroll_frame : public frame, public renderer
     {
@@ -51,7 +67,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child

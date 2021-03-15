@@ -92,7 +92,7 @@ bool function::check(bool bPrintError)
             std::string sError;
             for (auto& mArgList : lArgListStack_)
             {
-                std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
+                std::string sArguments = "\n  - ["+utils::to_string(uint(mArgList.lArg_.size()))+"] : ";
                 for (auto iterArg : utils::range::iterator(mArgList.lArg_))
                 {
                     if (iterArg != mArgList.lArg_.begin())
@@ -170,7 +170,7 @@ bool function::check(bool bPrintError)
                 std::string sError;
                 for (auto& mArgList : lArgListStack_)
                 {
-                    std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
+                    std::string sArguments = "\n  - ["+utils::to_string(uint(mArgList.lArg_.size()))+"] : ";
                     for (auto iterArg : utils::range::iterator(mArgList.lArg_))
                     {
                         if (iterArg != mArgList.lArg_.begin())

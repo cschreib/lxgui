@@ -87,7 +87,55 @@ namespace gui
         start_type mType_ = start_type::PAUSED;
     };
 
-    /// An editable text box.
+    /// A #frame with an editable text box.
+    /** This frame lets the user input arbitrary text into a box,
+    *   which can be read and used by the rest of the interface.
+    *   The text box can be either single-line or multi-line.
+    *   Text can be selected by holding the Shift key, and natural
+    *   navigation is available with the Left, Right, Up, Down, Home,
+    *   End, Page Up, and Page Down keys. Copy and paste operations
+    *   are also supported. The edit box can also remember the history
+    *   of previously entered values or commands, which can be brought
+    *   back at will. The characters entered as handled by the
+    *   operating system, hence this class will use whatever keyboard
+    *   layout is currently in use. Finally, the edit box can be
+    *   configured to only accept numeric values (of either sign, or
+    *   positive only), and to hide the input characters to simulate a
+    *   password box (no encryption or other safety measure is used).
+    *
+    *   Note that an edit_box has frame::enable_mouse set to `true`
+    *   and frame::register_for_drag set to `"LeftButton"` by default.
+    *
+    *   __Events.__ Hard-coded events available to all edit_boxes,
+    *   in addition to those from #frame:
+    *
+    *   - `OnChar`: Triggered whenever a new character is added to the
+    *   edit box. Will always be preceeded by `OnTextChanged`.
+    *   - `OnCursorChanged`: Triggered whenever the position of the edit
+    *   cursor is changed (not yet implemented).
+    *   - `OnEditFocusGained`: Triggered when the edit box gains focus,
+    *   see @{FocusFrame:set_focus}.
+    *   - `OnEditFocusLost`: Triggered when the edit box looses focus,
+    *   see @{FocusFrame:set_focus}.
+    *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
+    *   is pressed while the edit box is focussed. This captures both
+    *   the main keyboard key and the smaller one on the numpad.
+    *   - `OnEscapePressed`: Triggered when the `Escape` key is *released*
+    *   while the edit box is focussed.
+    *   - `OnSpacePressed`: Triggered when the `Space` key is pressed
+    *   while the edit box is focussed.
+    *   - `OnTabPressed`: Triggered when the `Tab` key is pressed
+    *   while the edit box is focussed.
+    *   - `OnUpPressed`: Triggered when the `Up` key is pressed
+    *   while the edit box is focussed.
+    *   - `OnDownPressed`: Triggered when the `Down` key is pressed
+    *   while the edit box is focussed.
+    *   - `OnTextChanged`: Triggered whenever the text contained in the
+    *   edit box changes (character added or deleted, text set or pasted,
+    *   etc.).
+    *   - `OnTextSet`: Triggered by edit_box::set_text. Will always be
+    *   followed by `OnTextChanged`.
+    */
     class edit_box : public focus_frame
     {
     public :
@@ -123,7 +171,7 @@ namespace gui
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script
@@ -373,6 +421,7 @@ namespace gui
         utils::ustring           sUnicodeText_;
         utils::ustring           sDisplayedText_;
         utils::ustring::iterator iterCarretPos_;
+        utils::ustring::iterator iterCarretPosOld_;
 
         uint uiDisplayPos_ = 0;
         uint uiNumLetters_ = 0;

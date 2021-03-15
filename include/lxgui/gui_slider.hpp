@@ -9,11 +9,21 @@ namespace gui
 {
     class texture;
 
-    /// A frame with a movable texture
-    /** This widget contains a special texture, the slider thumb.
+    /// A #frame with a movable texture.
+    /** This frame contains a special texture, the "slider thumb".
     *   It can be moved along a single axis (X or Y) and its position
     *   can be used to represent a value (for configuration menus, or
     *   scroll bars).
+    *
+    *   __Events.__ Hard-coded events available to all sliders,
+    *   in addition to those from #frame:
+    *
+    *   - `OnValueChanged`: Triggered whenever the value controlled by
+    *   the slider changes. This is triggered whenever the user moves
+    *   the slider thumb, and by slider::set_value. This can also be
+    *   triggered by slider::set_min_value, slider::set_max_value,
+    *   slider::set_min_max_values, and slider::set_value_step if the
+    *   previous value would not satisfy the new constraints.
     */
     class slider : public frame
     {
@@ -39,6 +49,15 @@ namespace gui
         *   \note This method can be overriden if needed.
         */
         bool can_use_script(const std::string& sScriptName) const override;
+
+        /// Calls a script.
+        /** \param sScriptName The name of the script
+        *   \param pEvent      Stores scripts arguments
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
+        */
+        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
 
         /// Copies an uiobject's parameters into this slider (inheritance).
         /** \param pObj The uiobject to copy

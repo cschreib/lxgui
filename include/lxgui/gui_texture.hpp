@@ -9,9 +9,9 @@
 namespace lxgui {
 namespace gui
 {
-    /// The GUI class to draw images and colored rectangles
+    /// A layered_region that can draw images and colored rectangles.
     /** This object contains either a texture taken from a file,
-    *   or a plain color.
+    *   or a plain color (possibly with a different color on each corner).
     */
     class texture : public layered_region
     {
@@ -228,7 +228,7 @@ namespace gui
         gradient         mGradient_;
         color            mColor_ = color::WHITE;
 
-        std::array<float,8> lTexCoord_;
+        std::array<float,8> lTexCoord_ = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
         bool                bTexCoordModifiesRect_ = false;
     };
 

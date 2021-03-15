@@ -6,6 +6,16 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Button} with two additional states: checked and unchecked.
+*   This widget works exactly like a classic @{Button}, but is has two
+*   additional special textures for the check sign.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}, @{Button}.
+*
+*   Child classes: none.
+*   @classmod CheckButton
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -18,6 +28,10 @@ lua_check_button::lua_check_button(lua_State* pLua) : lua_button(pLua)
 {
 }
 
+/** Checks if this CheckButton is checked.
+*   @function is_checked
+*   @treturn boolean 'true' if checked, 'false' otherwise
+*/
 int lua_check_button::_is_checked(lua_State* pLua)
 {
     if (!check_object_())
@@ -30,6 +44,10 @@ int lua_check_button::_is_checked(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** Returns this button's checked texture.
+*   @function get_checked_texture
+*   @treturn Texture This button's checked texture
+*/
 int lua_check_button::_get_checked_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -49,6 +67,10 @@ int lua_check_button::_get_checked_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** Returns this button's disabled checked texture.
+*   @function get_disabled_checked_texture
+*   @treturn Texture This button's disabled checked texture
+*/
 int lua_check_button::_get_disabled_checked_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -68,6 +90,13 @@ int lua_check_button::_get_disabled_checked_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** Check or uncheck the button.
+*   @function set_checked
+*   @tparam boolean checked Value convertible to a boolean; 'true' to check, 'false' to uncheck
+*/
+/** Checks the button.
+*   @function set_checked
+*/
 int lua_check_button::_set_checked(lua_State* pLua)
 {
     if (!check_object_())
@@ -90,6 +119,10 @@ int lua_check_button::_set_checked(lua_State* pLua)
     return 0;
 }
 
+/** Sets this button's checked texture.
+*   @function set_checked_texture
+*   @tparam Texture tex The new texture
+*/
 int lua_check_button::_set_checked_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -109,6 +142,10 @@ int lua_check_button::_set_checked_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** Sets this button's disabled checked texture.
+*   @function set_disabled_checked_texture
+*   @tparam Texture tex The new texture
+*/
 int lua_check_button::_set_disabled_checked_texture(lua_State* pLua)
 {
     if (!check_object_())

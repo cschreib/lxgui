@@ -4,6 +4,28 @@
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 
+/** A @{Frame} with a movable texture.
+*   This frame contains a special texture, the "slider thumb".
+*   It can be moved along a single axis (X or Y) and its position
+*   can be used to represent a value (for configuration menus, or
+*   scroll bars).
+*
+*   __Events.__ Hard-coded events available to all @{Slider}s,
+*   in addition to those from @{Frame}:
+*
+*   - `OnValueChanged`: Triggered whenever the value controlled by
+*   the slider changes. This is triggered whenever the user moves
+*   the slider thumb, and by @{Slider:set_value}. This can also be
+*   triggered by @{Slider:set_min_value}, @{Slider:set_max_value},
+*   @{Slider:set_min_max_values}, and @{Slider:set_value_step} if the
+*   previous value would not satisfy the new constraints.
+*
+*   Inherits all methods from: @{UIObject}, @{Frame}.
+*
+*   Child classes: none.
+*   @classmod Slider
+*/
+
 namespace lxgui {
 namespace gui
 {
@@ -16,6 +38,8 @@ lua_slider::lua_slider(lua_State* pLua) : lua_frame(pLua)
 {
 }
 
+/** @function allow_clicks_outside_thumb
+*/
 int lua_slider::_allow_clicks_outside_thumb(lua_State* pLua)
 {
     if (!check_object_())
@@ -29,6 +53,8 @@ int lua_slider::_allow_clicks_outside_thumb(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_max_value
+*/
 int lua_slider::_get_max_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -41,6 +67,8 @@ int lua_slider::_get_max_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_min_value
+*/
 int lua_slider::_get_min_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -53,6 +81,8 @@ int lua_slider::_get_min_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_min_max_values
+*/
 int lua_slider::_get_min_max_values(lua_State* pLua)
 {
     if (!check_object_())
@@ -66,6 +96,8 @@ int lua_slider::_get_min_max_values(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_orientation
+*/
 int lua_slider::_get_orientation(lua_State* pLua)
 {
     if (!check_object_())
@@ -82,6 +114,8 @@ int lua_slider::_get_orientation(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_thumb_texture
+*/
 int lua_slider::_get_thumb_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -99,6 +133,8 @@ int lua_slider::_get_thumb_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_value
+*/
 int lua_slider::_get_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -111,6 +147,8 @@ int lua_slider::_get_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_value_step
+*/
 int lua_slider::_get_value_step(lua_State* pLua)
 {
     if (!check_object_())
@@ -123,6 +161,8 @@ int lua_slider::_get_value_step(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_max_value
+*/
 int lua_slider::_set_max_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -138,6 +178,8 @@ int lua_slider::_set_max_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_min_value
+*/
 int lua_slider::_set_min_value(lua_State* pLua)
 {
     if (!check_object_())
@@ -153,6 +195,8 @@ int lua_slider::_set_min_value(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_min_max_values
+*/
 int lua_slider::_set_min_max_values(lua_State* pLua)
 {
     if (!check_object_())
@@ -172,6 +216,8 @@ int lua_slider::_set_min_max_values(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_orientation
+*/
 int lua_slider::_set_orientation(lua_State* pLua)
 {
     if (!check_object_())
@@ -187,6 +233,8 @@ int lua_slider::_set_orientation(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_thumb_texture
+*/
 int lua_slider::_set_thumb_texture(lua_State* pLua)
 {
     if (!check_object_())
@@ -206,6 +254,8 @@ int lua_slider::_set_thumb_texture(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_value_step
+*/
 int lua_slider::_set_value_step(lua_State* pLua)
 {
     if (!check_object_())
@@ -219,6 +269,8 @@ int lua_slider::_set_value_step(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function set_value
+*/
 int lua_slider::_set_value(lua_State* pLua)
 {
     if (!check_object_())
