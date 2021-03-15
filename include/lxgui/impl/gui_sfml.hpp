@@ -3,6 +3,11 @@
 
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 
+namespace sf
+{
+    class RenderWindow;
+}
+
 namespace lxgui {
 namespace gui {
 namespace sfml

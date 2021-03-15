@@ -15,15 +15,27 @@
 
 #include <sol/state.hpp>
 
-//#define GL_GUI
+//#define GLSFML_GUI
+//#define GLSDL_GUI
 //#define SDL_GUI
+//#define SFML_GUI
 
-#if defined(GL_GUI)
+#if defined(GLSFML_GUI)
     // OpenGL + SFML input
     #include <lxgui/impl/gui_gl_renderer.hpp>
     #include <lxgui/impl/input_sfml_source.hpp>
     #include <SFML/Window.hpp>
-    #ifdef MACOSX
+    #if defined(MACOSX)
+        #include <OpenGL/gl.h>
+    #else
+        #include <GL/gl.h>
+    #endif
+#elif defined(GLSDL_GUI)
+    // OpenGL + SDL input
+    #include <lxgui/impl/gui_gl_renderer.hpp>
+    #include <lxgui/impl/input_sdl_source.hpp>
+    #include <SDL.h>
+    #if defined(MACOSX)
         #include <OpenGL/gl.h>
     #else
         #include <GL/gl.h>
@@ -32,7 +44,8 @@
     // SDL
     #include <lxgui/impl/gui_sdl.hpp>
     #include <lxgui/impl/input_sdl_source.hpp>
-#else
+    #include <SDL.h>
+#elif defined(SFML_GUI)
     // SFML
     #include <lxgui/impl/gui_sfml.hpp>
     #include <lxgui/impl/input_sfml_source.hpp>
@@ -41,14 +54,17 @@
 #endif
 
 
-#ifdef WIN32
+#if defined(WIN32)
     #include <windows.h>
-    #ifdef MSVC
+    #if defined(MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
 #endif
 
 #include <fstream>
+#include <chrono>
+#include <cstdint>
+#include <thread>
 
 using namespace lxgui;
 
@@ -82,42 +98,79 @@ int main(int argc, char* argv[])
 
         // Create a window
         std::cout << "Creating window..." << std::endl;
-    #ifdef GL_GUI
+        const std::string sWindowTitle = "test";
+
+    #if defined(GLSFML_GUI)
         sf::Window mWindow;
-    #else
+    #elif defined(SDL_GUI) || defined(GLSDL_GUI)
+        std::uint32_t uiFlags = SDL_WINDOW_OPENGL;
+        if (bFullScreen) uiFlags |= SDL_WINDOW_FULLSCREEN;
+
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> pWindow(
+            SDL_CreateWindow(
+                sWindowTitle.c_str(),
+                SDL_WINDOWPOS_UNDEFINED,
+                SDL_WINDOWPOS_UNDEFINED,
+                uiWindowWidth,
+                uiWindowHeight,
+                uiFlags
+            ),
+            &SDL_DestroyWindow
+        );
+
+        std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> pRenderer(
+            SDL_CreateRenderer(pWindow.get(), -1, SDL_RENDERER_ACCELERATED), &SDL_DestroyRenderer
+        );
+    #elif defined(SFML_GUI)
         sf::RenderWindow mWindow;
     #endif
 
+    #if defined(GLSFML_GUI) || defined(SFML_GUI)
         if (bFullScreen)
-            mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test", sf::Style::Fullscreen);
+            mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), sWindowTitle, sf::Style::Fullscreen);
         else
-            mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), "test");
+            mWindow.create(sf::VideoMode(uiWindowWidth, uiWindowHeight, 32), sWindowTitle);
+    #endif
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
         std::unique_ptr<gui::manager> pManager;
 
-    #ifdef GL_GUI
+    #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         // Define the GUI renderer
         std::unique_ptr<gui::renderer_impl> pRendererImpl =
             std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
+    #endif
 
+    #if defined(GLSFML_GUI)
         // Define the input manager
         std::unique_ptr<input::source_impl> pInputSource;
-        // Use SFML (only implementation available for now)
+        // Use SFML
         pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
+    #elif defined(GLSDL_GUI)
+        // Define the input manager
+        std::unique_ptr<input::source_impl> pInputSource;
+        // Use SDL
+        pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get()));
+    #endif
 
+    #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input source
             std::move(pInputSource),
             // The locale
             sLocale,
             // Dimensions of the render window
-            mWindow.getSize().x, mWindow.getSize().y,
+            uiWindowWidth, uiWindowHeight,
             // Provide the GUI renderer implementation
             std::move(pRendererImpl)
         ));
-    #else
+    #endif
+
+    #if defined(SDL_GUI)
+        // Use full SDL implementation
+        pManager = gui::sdl::create_manager(pWindow.get(), sLocale);
+    #elif defined(SFML_GUI)
         // Use full SFML implementation
         pManager = gui::sfml::create_manager(mWindow, sLocale);
     #endif
@@ -219,10 +272,12 @@ int main(int argc, char* argv[])
         pFrame->notify_loaded();
 
         // Start the main loop
+        using clock = std::chrono::high_resolution_clock;
         bool bRunning = true;
         bool bFocus = true;
         float fDelta = 0.1f;
-        sf::Clock mClock, mPerfClock;
+        clock::time_point mPrevTime = clock::now();
+        const clock::time_point mFirstTime = mPrevTime;
         uint uiFrameCount = 0;
 
         input::manager* pInputMgr = pManager->get_input_manager();
@@ -230,6 +285,54 @@ int main(int argc, char* argv[])
         std::cout << "Entering loop..." << std::endl;
         while (bRunning)
         {
+        #if defined(SDL_GUI) || defined(GLSDL_GUI)
+            // Get events from SDL
+            SDL_Event mEvent;
+            while (SDL_PollEvent(&mEvent))
+            {
+                if (mEvent.type == SDL_WINDOWEVENT)
+                {
+                    if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                        bRunning = false;
+                    else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                        bFocus = false;
+                    else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                        bFocus = true;
+                }
+                else if (mEvent.type == SDL_KEYUP)
+                {
+                    // This uses events straight from SDL, but the GUI may want to
+                    // capture some of them (for example: the user is typing in an edit_box).
+                    // Therefore, before we can react to these events, we must check that
+                    // the input isn't being "focussed":
+                    if (!pInputMgr->is_keyboard_focused())
+                    {
+                        switch (mEvent.key.keysym.sym)
+                        {
+                            case SDLK_ESCAPE:
+                                bRunning = false;
+                                break;
+                            case SDLK_p:
+                                gui::out << pManager->print_ui() << std::endl;
+                                break;
+                            case SDLK_k:
+                                gui::out << "###" << std::endl;
+                                break;
+                            case SDLK_c:
+                                pManager->enable_caching(!pManager->is_caching_enabled());
+                                break;
+                            case SDLK_r:
+                                pManager->reload_ui();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                static_cast<input::sdl::source*>(pInputMgr->get_source())->on_sdl_event(mEvent);
+            }
+        #elif defined(SFML_GUI) || defined(GLSFML_GUI)
             // Get events from SFML
             sf::Event mEvent;
             while (mWindow.pollEvent(mEvent))
@@ -273,6 +376,7 @@ int main(int argc, char* argv[])
 
                 static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
             }
+        #endif
 
             // Check if WORLD input is allowed
             if (pInputMgr->can_receive_input("WORLD"))
@@ -282,7 +386,7 @@ int main(int argc, char* argv[])
 
             if (!bFocus)
             {
-                sf::sleep(sf::seconds(0.1f));
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 continue;
             }
 
@@ -290,10 +394,13 @@ int main(int argc, char* argv[])
             pManager->update(fDelta);
 
             // Clear the window
-        #ifdef GL_GUI
+        #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
             glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
-        #else
+        #elif defined(SDL_GUI)
+            SDL_SetRenderDrawColor(pRenderer.get(), 50, 50, 50, 255);
+            SDL_RenderClear(pRenderer.get());
+        #elif defined(SFML_GUI)
             mWindow.clear(sf::Color(51,51,51));
         #endif
 
@@ -301,14 +408,21 @@ int main(int argc, char* argv[])
             pManager->render_ui();
 
             // Display the window
+        #if defined(SDL_GUI) || defined(GLSDL_GUI)
+            SDL_RenderPresent(pRenderer.get());
+        #elif defined(SFML_GUI) || defined(GLSFML_GUI)
             mWindow.display();
+        #endif
 
-            fDelta = mClock.getElapsedTime().asSeconds();
-            mClock.restart();
+            clock::time_point mCurrentTime = clock::now();
+            fDelta = std::chrono::duration_cast<std::chrono::milliseconds>(mCurrentTime - mPrevTime).count() / 1000.0f;
+            mPrevTime = mCurrentTime;
 
             ++uiFrameCount;
         }
-        std::cout << "End of loop, mean FPS : " << uiFrameCount/mPerfClock.getElapsedTime().asSeconds() << std::endl;
+
+        float fTotalTime = std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - mFirstTime).count() / 1000.0f;
+        std::cout << "End of loop, mean FPS : " << uiFrameCount/fTotalTime << std::endl;
     }
     catch (const std::exception& e)
     {
