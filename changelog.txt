@@ -62,6 +62,7 @@ v2.0.0:
  - gui: fixed crash when inherited child's name is already taken
  - gui: fixed incorrect handling of optional parameter in Frame:enable_mouse() lua function
  - gui: fixed Frame:get_script() always returning nil
+ - gui: fixed edit_box stealing mouse click events from other frames
  - xml: now parsing standard XML comments
 
 v1.2.0:
