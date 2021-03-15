@@ -234,25 +234,32 @@ int main(int argc, char* argv[])
                     bFocus = true;
                 else if (mEvent.type == sf::Event::KeyReleased)
                 {
-                    switch (mEvent.key.code)
+                    // This uses events straight from SFML, but the GUI may want to
+                    // capture some of them (for example: the user is typing in an edit_box).
+                    // Therefore, before we can react to these events, we must check that
+                    // the input isn't being "focussed":
+                    if (!pInputMgr->is_keyboard_focused())
                     {
-                        case sf::Keyboard::Key::Escape:
-                            bRunning = false;
-                            break;
-                        case sf::Keyboard::Key::P:
-                            gui::out << pManager->print_ui() << std::endl;
-                            break;
-                        case sf::Keyboard::Key::K:
-                            gui::out << "###" << std::endl;
-                            break;
-                        case sf::Keyboard::Key::C:
-                            pManager->enable_caching(!pManager->is_caching_enabled());
-                            break;
-                        case sf::Keyboard::Key::R:
-                            pManager->reload_ui();
-                            break;
-                        default:
-                            break;
+                        switch (mEvent.key.code)
+                        {
+                            case sf::Keyboard::Key::Escape:
+                                bRunning = false;
+                                break;
+                            case sf::Keyboard::Key::P:
+                                gui::out << pManager->print_ui() << std::endl;
+                                break;
+                            case sf::Keyboard::Key::K:
+                                gui::out << "###" << std::endl;
+                                break;
+                            case sf::Keyboard::Key::C:
+                                pManager->enable_caching(!pManager->is_caching_enabled());
+                                break;
+                            case sf::Keyboard::Key::R:
+                                pManager->reload_ui();
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 }
 
