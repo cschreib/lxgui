@@ -1180,14 +1180,14 @@ void manager::toggle_input()
         bUpdateHoveredFrame_ = true;
 
         if (pFocusedFrame_)
-            pInputManager_->set_focus(true, pFocusedFrame_);
+            pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
     else
     {
         set_hovered_frame_(nullptr);
 
         if (pFocusedFrame_)
-            pInputManager_->set_focus(false);
+            pInputManager_->set_keyboard_focus(false);
     }
 }
 
@@ -1230,7 +1230,7 @@ void manager::notify_hovered_frame_dirty()
 void manager::clear_focussed_frame_()
 {
     pFocusedFrame_ = nullptr;
-    pInputManager_->set_focus(false);
+    pInputManager_->set_keyboard_focus(false);
 }
 
 void manager::request_focus(focus_frame* pFocusFrame)
@@ -1245,7 +1245,7 @@ void manager::request_focus(focus_frame* pFocusFrame)
     {
         pFocusedFrame_ = pFocusFrame;
         pFocusedFrame_->notify_focus(true);
-        pInputManager_->set_focus(true, pFocusedFrame_);
+        pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
     else
         clear_focussed_frame_();
