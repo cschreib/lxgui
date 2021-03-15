@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${SDL2_INCLUDE_DIRS})
 
-add_library(lxgui-input-sdl STATIC
+add_library(lxgui-input-sdl
     ${SRCROOT}/input_sdl_source.cpp
 )
 
