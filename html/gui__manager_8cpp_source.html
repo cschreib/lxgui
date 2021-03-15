@@ -1243,14 +1243,14 @@ $(function() {
 <div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;        bUpdateHoveredFrame_ = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160; </div>
 <div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;        <span class="keywordflow">if</span> (pFocusedFrame_)</div>
-<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;            pInputManager_-&gt;set_focus(<span class="keyword">true</span>, pFocusedFrame_);</div>
+<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;            pInputManager_-&gt;set_keyboard_focus(<span class="keyword">true</span>, pFocusedFrame_);</div>
 <div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;    }</div>
 <div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    {</div>
 <div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;        set_hovered_frame_(<span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160; </div>
 <div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;        <span class="keywordflow">if</span> (pFocusedFrame_)</div>
-<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;            pInputManager_-&gt;set_focus(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;            pInputManager_-&gt;set_keyboard_focus(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;    }</div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;}</div>
 <div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160; </div>
@@ -1293,7 +1293,7 @@ $(function() {
 <div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;<span class="keywordtype">void</span> manager::clear_focussed_frame_()</div>
 <div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;{</div>
 <div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    pFocusedFrame_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    pInputManager_-&gt;set_focus(<span class="keyword">false</span>);</div>
+<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    pInputManager_-&gt;set_keyboard_focus(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;}</div>
 <div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160; </div>
 <div class="line"><a name="l01236"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1manager.html#a6fb8a942de07f4c7a6f34256d121f5fc"> 1236</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1manager.html#a6fb8a942de07f4c7a6f34256d121f5fc">manager::request_focus</a>(<a class="code" href="classlxgui_1_1gui_1_1focus__frame.html">focus_frame</a>* pFocusFrame)</div>
@@ -1308,7 +1308,7 @@ $(function() {
 <div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    {</div>
 <div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;        pFocusedFrame_ = pFocusFrame;</div>
 <div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;        pFocusedFrame_-&gt;<a class="code" href="classlxgui_1_1gui_1_1focus__frame.html#ac1dd55522c869e19e7558513b72a73ab">notify_focus</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;        pInputManager_-&gt;set_focus(<span class="keyword">true</span>, pFocusedFrame_);</div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;        pInputManager_-&gt;set_keyboard_focus(<span class="keyword">true</span>, pFocusedFrame_);</div>
 <div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    }</div>
 <div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;        clear_focussed_frame_();</div>
@@ -1836,7 +1836,7 @@ $(function() {
 <div class="ttc" id="ainput_8hpp_html"><div class="ttname"><a href="input_8hpp.html">input.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 14 2021 21:52:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Mar 15 2021 08:34:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
