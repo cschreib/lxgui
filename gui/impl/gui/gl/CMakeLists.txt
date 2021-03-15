@@ -8,7 +8,7 @@ include_directories(${ZLIB_INCLUDE_DIR})
 include_directories(${OPENGL_INCLUDE_DIR})
 include_directories(${GLEW_INCLUDE_DIR})
 
-add_library(lxgui-gl STATIC
+add_library(lxgui-gl
     ${SRCROOT}/gui_gl_font.cpp
     ${SRCROOT}/gui_gl_renderer.cpp
     ${SRCROOT}/gui_gl_renderer_png.cpp

@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${SFML_INCLUDE_DIR})
 
-add_library(lxgui-input-sfml STATIC
+add_library(lxgui-input-sfml
     ${SRCROOT}/input_sfml_source
 )
 

@@ -11,6 +11,7 @@ endmacro()
 # set defaults
 # this has to be done before the project() instruction!
 lxgui_set_option(CMAKE_BUILD_TYPE Release STRING "Choose the type of build (Debug or Release)")
+lxgui_set_option(BUILD_SHARED_LIBS FALSE BOOL "Build lxgui as a shared library")
 lxgui_set_option(LXGUI_BUILD_GUI_GL_IMPL TRUE BOOL "Build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_GUI_SFML_IMPL TRUE BOOL "Build the SFML gui implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
