@@ -277,24 +277,27 @@ namespace input
         /** \param mID    The ID code of the mouse button you're interested in
         *   \return 'true' if the mouse button is being pressed
         */
-        bool mouse_is_down(mouse_button mID) const;
+        bool mouse_is_down(mouse_button mID, bool bForce = false) const;
 
         /// Checks if a mouse button is being pressed for a long time.
         /** \param mID    The ID code of the mouse button you're interested in
+        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the mouse button is being pressed for a long time
         */
-        bool mouse_is_down_long(mouse_button mID) const;
+        bool mouse_is_down_long(mouse_button mID, bool bForce = false) const;
 
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you're interested in
+        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return Elapsed time since the mouse button has been pressed
         */
         double get_mouse_down_duration(mouse_button mKey) const;
 
         /// Checks if the mouse wheel has been rolled.
-        /** \return 'true' if the mouse wheel has been rolled
+        /** \param bForce 'true' to bypass focus (see set_focus())
+        *   \return 'true' if the mouse wheel has been rolled
         */
-        bool wheel_is_rolled() const;
+        bool wheel_is_rolled(bool bForce = false) const;
 
         /// Returns the horizontal position of the mouse.
         /** \return The horizontal position of the mouse
@@ -380,21 +383,40 @@ namespace input
         */
         double get_long_press_delay() const;
 
-        /// Sets whether input should be stopped.
-        /** \param bFocus    'true' to stop inputs
+        /// Sets whether input should be focussed.
+        /** \param bFocus    'true' to stop general inputs and focus on one receiver
         *   \param pReceiver The event receiver that requires focus (if any)
         *   \note This function is usefull if you need to implement
-        *         an edit box : the user can type letters binded to
+        *         an edit box: the user can type letters binded to
         *         actions in the game, and you should prevent them
         *         from happening. So, you just have to call this function
         *         and use the second argument of all input functions to
         *         force focus in your edit box.
         *   \note Calling set_focus(false) doesn't immediately remove focus.
         *         You have to wait for the next update() call.
+        *   \note This function will forward all events (mouse and keyboard)
+        *         to the new receiver. See set_keyboard_focus() and
+        *         set_mouse_focus() for partial forwarding.
         */
         void set_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
 
-        /// Checks whether input is focused somewhere, to prevent multiple inputs.
+        /// Sets whether keyboard input should be focussed.
+        /** \param bFocus    'true' to stop keyboard inputs and focus on one receiver
+        *   \param pReceiver The event receiver that requires focus (if any)
+        *   \note This function will forward all keyboard events to the new receiver.
+        *         See set_focus() for more information.
+        */
+        void set_keyboard_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
+
+        /// Sets whether mouse input should be focussed.
+        /** \param bFocus    'true' to stop mouse inputs and focus on one receiver
+        *   \param pReceiver The event receiver that requires focus (if any)
+        *   \note This function will forward all mouse events to the new receiver.
+        *         See set_focus() for more information.
+        */
+        void set_mouse_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
+
+        /// Checks whether all input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
         *   \note See set_focus() for more information. If you use some other source
         *         of input than this manager, you should check the result of this
@@ -402,6 +424,24 @@ namespace input
         *         it should not provide any input).
         */
         bool is_focused() const;
+
+        /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
+        /** \return 'true' if input is focused
+        *   \note See set_keyboard_focus() for more information. If you use some other source
+        *         of input than this manager, you should check the result of this
+        *         function before actually using it (if the manager is not focussed,
+        *         it should not provide any input).
+        */
+        bool is_keyboard_focused() const;
+
+        /// Checks whether mouse input is focused somewhere, to prevent multiple inputs.
+        /** \return 'true' if input is focused
+        *   \note See set_mouse_focus() for more information. If you use some other source
+        *         of input than this manager, you should check the result of this
+        *         function before actually using it (if the manager is not focussed,
+        *         it should not provide any input).
+        */
+        bool is_mouse_focused() const;
 
         /// Registers a new event manager that will listen to input events.
         /** \param pManager The new event manager
@@ -441,9 +481,12 @@ namespace input
 
         void fire_event_(const gui::event& mEvent, bool bForce = false);
 
-        bool bRemoveFocus_ = false;
-        bool bFocus_ = false;
-        gui::event_receiver* pFocusReceiver_ = nullptr;
+        bool bRemoveKeyboardFocus_ = false;
+        bool bRemoveMouseFocus_ = false;
+        bool bKeyboardFocus_ = false;
+        bool bMouseFocus_ = false;
+        gui::event_receiver* pKeyboardFocusReceiver_ = nullptr;
+        gui::event_receiver* pMouseFocusReceiver_ = nullptr;
 
         std::vector<gui::event_manager*> lEventManagerList_;
 

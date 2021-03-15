@@ -121,7 +121,7 @@ void manager::force_input_allowed(const std::string& sGroupName, bool bForce)
 
 bool manager::get_key(bool bForce) const
 {
-    if (!bForce && bFocus_)
+    if (!bForce && bKeyboardFocus_)
         return false;
     else
         return bKey_;
@@ -344,7 +344,7 @@ std::string manager::get_key_name(key mKey, key mModifier1, key mModifier2) cons
 
 bool manager::key_is_down(key mKey, bool bForce) const
 {
-    if (!bForce && bFocus_)
+    if (!bForce && bKeyboardFocus_)
         return false;
     else
         return pSource_->get_key_state().lKeyState[(uint)mKey];
@@ -352,7 +352,7 @@ bool manager::key_is_down(key mKey, bool bForce) const
 
 bool manager::key_is_down_long(key mKey, bool bForce) const
 {
-    if (!bForce && bFocus_)
+    if (!bForce && bKeyboardFocus_)
         return false;
     else
         return lKeyLong_[(uint)mKey];
@@ -368,14 +368,20 @@ std::vector<char32_t> manager::get_chars() const
     return lChars_;
 }
 
-bool manager::mouse_is_down(mouse_button mID) const
+bool manager::mouse_is_down(mouse_button mID, bool bForce) const
 {
-    return pSource_->get_mouse_state().lButtonState[(uint)mID];
+    if (!bForce && bMouseFocus_)
+        return false;
+    else
+        return pSource_->get_mouse_state().lButtonState[(uint)mID];
 }
 
-bool manager::mouse_is_down_long(mouse_button mID) const
+bool manager::mouse_is_down_long(mouse_button mID, bool bForce) const
 {
-    return lMouseLong_[(uint)mID];
+    if (!bForce && bMouseFocus_)
+        return false;
+    else
+        return lMouseLong_[(uint)mID];
 }
 
 double manager::get_mouse_down_duration(mouse_button mID) const
@@ -383,18 +389,28 @@ double manager::get_mouse_down_duration(mouse_button mID) const
     return lMouseDelay_[(uint)mID];
 }
 
-bool manager::wheel_is_rolled() const
+bool manager::wheel_is_rolled(bool bForce) const
 {
-    return bWheelRolled_;
+    if (!bForce && bMouseFocus_)
+        return false;
+    else
+        return bWheelRolled_;
 }
 
 void manager::update(float fTempDelta)
 {
-    if (bRemoveFocus_)
+    if (bRemoveKeyboardFocus_)
     {
-        bFocus_ = false;
-        pFocusReceiver_ = nullptr;
-        bRemoveFocus_ = false;
+        bKeyboardFocus_ = false;
+        pKeyboardFocusReceiver_ = nullptr;
+        bRemoveKeyboardFocus_ = false;
+    }
+
+    if (bRemoveMouseFocus_)
+    {
+        bMouseFocus_ = false;
+        pMouseFocusReceiver_ = nullptr;
+        bRemoveMouseFocus_ = false;
     }
 
     if (!pSource_->is_manually_updated())
@@ -586,19 +602,47 @@ double manager::get_doubleclick_time() const
 
 void manager::set_focus(bool bFocus, gui::event_receiver* pReceiver)
 {
-    if (bFocus_ && !bFocus)
-        bRemoveFocus_ = true;
+    set_keyboard_focus(bFocus, pReceiver);
+    set_mouse_focus(bFocus, pReceiver);
+}
+
+void manager::set_keyboard_focus(bool bFocus, gui::event_receiver* pReceiver)
+{
+    if (bKeyboardFocus_ && !bFocus)
+        bRemoveKeyboardFocus_ = true;
     else
     {
-        bRemoveFocus_ = false;
-        bFocus_ = bFocus;
-        pFocusReceiver_ = pReceiver;
+        bRemoveKeyboardFocus_ = false;
+        bKeyboardFocus_ = bFocus;
+        pKeyboardFocusReceiver_ = pReceiver;
+    }
+}
+
+void manager::set_mouse_focus(bool bFocus, gui::event_receiver* pReceiver)
+{
+    if (bMouseFocus_ && !bFocus)
+        bRemoveMouseFocus_ = true;
+    else
+    {
+        bRemoveMouseFocus_ = false;
+        bMouseFocus_ = bFocus;
+        pMouseFocusReceiver_ = pReceiver;
     }
 }
 
 bool manager::is_focused() const
 {
-    return bFocus_;
+    return bKeyboardFocus_ && bMouseFocus_;
+}
+
+bool manager::is_keyboard_focused() const
+{
+    return bKeyboardFocus_;
+}
+
+bool manager::is_mouse_focused() const
+{
+    return bMouseFocus_;
 }
 
 bool manager::alt_is_pressed() const
@@ -717,8 +761,17 @@ void manager::set_clipboard_content(const utils::ustring& sContent)
 
 void manager::fire_event_(const gui::event& mEvent, bool bForce)
 {
-    if (pFocusReceiver_ && !bForce)
-        pFocusReceiver_->on_event(mEvent);
+    bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;
+    bool bKeyboardEvent = mEvent.get_name().find("KEY_") == 0u || mEvent.get_name() == "TEXT_ENTERED";
+
+    if (bMouseEvent && pMouseFocusReceiver_ && !bForce)
+    {
+        pMouseFocusReceiver_->on_event(mEvent);
+    }
+    else if (bKeyboardEvent && pKeyboardFocusReceiver_ && !bForce)
+    {
+        pKeyboardFocusReceiver_->on_event(mEvent);
+    }
     else
     {
         for (auto* pManager : lEventManagerList_)
