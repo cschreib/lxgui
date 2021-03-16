@@ -236,7 +236,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         }
         case SDL_MOUSEBUTTONDOWN:
         {
-            mouse_button mButton = lMouseFromSDL[mEvent.button.button];
+            mouse_button mButton = lMouseFromSDL[mEvent.button.button - 1];
             mMouse_.lButtonState[(uint)mButton] = true;
 
             gui::event mMouseEvent("MOUSE_PRESSED");
@@ -259,7 +259,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         }
         case SDL_MOUSEBUTTONUP:
         {
-            mouse_button mButton = lMouseFromSDL[mEvent.button.button];
+            mouse_button mButton = lMouseFromSDL[mEvent.button.button - 1];
             mMouse_.lButtonState[(uint)mButton] = false;
 
             gui::event mMouseEvent("MOUSE_RELEASED");
