@@ -122,48 +122,6 @@ namespace sfml
         */
         void set_filter(filter mFilter);
 
-        /// Returns the cached texture data (read only).
-        /** \return The cached texture data (read only)
-        */
-        const sf::Image& get_data() const;
-
-        /// Returns the cached texture data (read and write).
-        /** \return The cached texture data (read and write)
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        sf::Image& get_data();
-
-        /// Sets the color of one pixel.
-        /** \param x      The coordinate of the pixel in the texture
-        *   \param y      The coordinate of the pixel in the texture
-        *   \param mColor The new color of the pixel
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        void       set_pixel(uint x, uint y, const sf::Color& mColor);
-
-        /// Returns the color of one pixel (read only).
-        /** \param x      The coordinate of the pixel in the texture
-        *   \param y      The coordinate of the pixel in the texture
-        *   \return The color of the pixel
-        */
-        sf::Color  get_pixel(uint x, uint y) const;
-
-        /// Updates the texture that is in GPU memory.
-        /** \note Whenever you modify pixels of the texture,
-        *         remember to call this function when you're done,
-        *         else your changes won't be applied to the GPU.
-        */
-        void update_texture();
-
-        /// Removes the cached texture data (in CPU memory).
-        /** \note For internal use.
-        */
-        void clear_cache_data_();
-
         /// Returns the underlying SFML render texture object.
         /** return The underlying SFML render texture object
         */
@@ -189,7 +147,6 @@ namespace sfml
             bool              bRenderTarget_ = false;
             sf::RenderTexture mRenderTexture_;
             sf::Texture       mTexture_;
-            sf::Image         mData_;
         };
 
         struct color_data

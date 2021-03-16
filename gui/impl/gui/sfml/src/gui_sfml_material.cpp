@@ -49,7 +49,6 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
         }
         pTexData_->mTexture_.setSmooth(mFilter == filter::LINEAR);
         pTexData_->mTexture_.setRepeated(mWrap == wrap::REPEAT);
-        pTexData_->mData_.create(uiWidth, uiHeight);
     }
 }
 
@@ -79,11 +78,11 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter) :
     pTexData_ = std::unique_ptr<texture_data>(new texture_data());
 
     pTexData_->bRenderTarget_ = false;
-    if (!pTexData_->mData_.loadFromFile(sFileName))
+    sf::Image mData;
+    if (!mData.loadFromFile(sFileName))
         throw utils::exception("gui::sfml::material", "loading failed: '"+sFileName+"'.");
-    premultiply_alpha(pTexData_->mData_);
-    pTexData_->mTexture_.loadFromImage(pTexData_->mData_);
-    pTexData_->mData_ = sf::Image{};
+    premultiply_alpha(mData);
+    pTexData_->mTexture_.loadFromImage(mData);
     pTexData_->mTexture_.setSmooth(mFilter == filter::LINEAR);
     pTexData_->mTexture_.setRepeated(mWrap == wrap::REPEAT);
 
@@ -96,7 +95,6 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter) :
     pTexData_->uiRealWidth_ = uiWidth;
     pTexData_->uiRealHeight_ = uiHeight;
 }
-
 
 material::material(const color& mColor) : mType_(type::COLOR)
 {
@@ -138,30 +136,10 @@ void material::set_filter(filter mFilter)
         pTexData_->mTexture_.setSmooth(mFilter == filter::LINEAR);
 }
 
-const sf::Image& material::get_data() const
-{
-    return pTexData_->mData_;
-}
-
-sf::Image& material::get_data()
-{
-    return pTexData_->mData_;
-}
-
-void material::set_pixel(uint x, uint y, const sf::Color& mColor)
-{
-    pTexData_->mData_.setPixel(x, y, mColor);
-}
-
-sf::Color material::get_pixel(uint x, uint y) const
-{
-    return pTexData_->mData_.getPixel(x, y);
-}
-
 void material::premultiply_alpha(sf::Image& mData)
 {
-    uint uiWidth = mData.getSize().x;
-    uint uiHeight = mData.getSize().y;
+    const uint uiWidth = mData.getSize().x;
+    const uint uiHeight = mData.getSize().y;
     for (uint x = 0; x < uiWidth; ++x)
     for (uint y = 0; y < uiHeight; ++y)
     {
@@ -262,23 +240,6 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         pTexData_->uiHeight_ = uiHeight;
         return false;
     }
-}
-
-void material::update_texture()
-{
-    if (!pTexData_) return;
-    if (pTexData_->bRenderTarget_) return;
-
-    pTexData_->mTexture_.loadFromImage(pTexData_->mData_);
-    pTexData_->mTexture_.setSmooth(pTexData_->mFilter_ == filter::LINEAR);
-    pTexData_->mTexture_.setRepeated(pTexData_->mWrap_ == wrap::REPEAT);
-}
-
-void material::clear_cache_data_()
-{
-    if (!pTexData_) return;
-
-    pTexData_->mData_ = sf::Image{};
 }
 
 sf::RenderTexture* material::get_render_texture()
