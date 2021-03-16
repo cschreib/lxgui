@@ -56,6 +56,11 @@ namespace sfml
         */
         explicit material(const color& mColor);
 
+        material(const material& tex) = delete;
+        material(material&& tex) = delete;
+        material& operator = (const material& tex) = delete;
+        material& operator = (material&& tex) = delete;
+
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)
         */
@@ -133,9 +138,6 @@ namespace sfml
         const sf::Texture* get_texture() const;
 
     private:
-
-        material(const material& tex);
-        material& operator = (const material& tex);
 
         struct texture_data
         {

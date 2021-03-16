@@ -46,6 +46,11 @@ namespace gl
         */
         explicit material(const color& mColor);
 
+        material(const material& tex) = delete;
+        material(material&& tex) = delete;
+        material& operator = (const material& tex) = delete;
+        material& operator = (material&& tex) = delete;
+
         /// Destructor.
         ~material() override;
 
@@ -183,9 +188,6 @@ namespace gl
         static void check_availability();
 
     private:
-
-        material(const material& tex);
-        material& operator = (const material& tex);
 
         struct texture_data
         {
