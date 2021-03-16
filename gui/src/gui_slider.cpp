@@ -483,7 +483,7 @@ void slider::update(float fDelta)
                 step_value(fValue_, fValueStep_);
 
                 if (fValue_ != fOldValue)
-                    lQueuedEventList_.push_back("ValueChanged");
+                    lQueuedEventList_.push_back("OnValueChanged");
             }
 
             float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
