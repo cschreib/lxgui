@@ -80,11 +80,6 @@ namespace sfml
         */
         std::weak_ptr<sfml::material> get_material();
 
-        /// Checks if the machine is capable of using render targets.
-        /** \note If not, this function throws a gui::exception.
-        */
-        static void check_availability();
-
         /// Returns the underlying SFML render texture object.
         /** return The underlying SFML render texture object
         */
