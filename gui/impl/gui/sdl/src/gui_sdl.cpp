@@ -7,7 +7,8 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, const std::string& sLocale)
+std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer,
+    const std::string& sLocale)
 {
     int iWidth = 0, iHeight = 0;
     SDL_GetWindowSize(pWindow, &iWidth, &iHeight);
@@ -15,7 +16,7 @@ std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, const std::str
     return std::unique_ptr<gui::manager>(new gui::manager(
         std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow)),
         sLocale, iWidth, iHeight,
-        std::unique_ptr<gui::renderer_impl>(new gui::sdl::renderer(pWindow))
+        std::unique_ptr<gui::renderer_impl>(new gui::sdl::renderer(pRenderer))
     ));
 }
 }

@@ -9,7 +9,7 @@
 #include <map>
 #include <memory>
 
-struct SDL_Window;
+struct SDL_Renderer;
 
 namespace lxgui {
 namespace gui {
@@ -21,7 +21,7 @@ namespace sdl
     public :
 
         /// Constructor.
-        explicit renderer(SDL_Window* pWindow);
+        explicit renderer(SDL_Renderer* pRenderer);
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -91,12 +91,12 @@ namespace sdl
 
     private :
 
-        SDL_Window* pWindow_ = nullptr;
+        SDL_Renderer* pRenderer_ = nullptr;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        // mutable std::shared_ptr<gui::sdl::render_target> pCurrentTarget_;
+        mutable std::shared_ptr<gui::sdl::render_target> pCurrentTarget_;
     };
 }
 }

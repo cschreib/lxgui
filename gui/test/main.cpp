@@ -118,9 +118,24 @@ int main(int argc, char* argv[])
             &SDL_DestroyWindow
         );
 
+        if (!pWindow)
+        {
+            gui::exception("SDL_Window", "Could not create window.");
+        }
+
         std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> pRenderer(
-            SDL_CreateRenderer(pWindow.get(), -1, SDL_RENDERER_ACCELERATED), &SDL_DestroyRenderer
+            SDL_CreateRenderer(
+                pWindow.get(), -1,
+                SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE
+            ),
+            &SDL_DestroyRenderer
         );
+
+        if (!pRenderer)
+        {
+            gui::exception("SDL_Renderer", "Could not create renderer.");
+        }
+
     #elif defined(SFML_GUI)
         sf::RenderWindow mWindow;
     #endif
@@ -169,7 +184,7 @@ int main(int argc, char* argv[])
 
     #if defined(SDL_GUI)
         // Use full SDL implementation
-        pManager = gui::sdl::create_manager(pWindow.get(), sLocale);
+        pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get(), sLocale);
     #elif defined(SFML_GUI)
         // Use full SFML implementation
         pManager = gui::sfml::create_manager(mWindow, sLocale);
