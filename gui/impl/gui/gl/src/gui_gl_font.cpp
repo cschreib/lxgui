@@ -9,6 +9,9 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+constexpr uint uiMinChar = 32;
+constexpr uint uiMaxChar = 255;
+
 namespace lxgui {
 namespace gui {
 namespace gl
@@ -55,7 +58,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     const FT_Int32 iLoadFlags = FT_LOAD_RENDER | FT_LOAD_NO_HINTING;
 
     // Calculate maximum width, height and bearing
-    for (uint cp = 32; cp <= 255; ++cp)
+    for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
     {
         if (FT_Load_Char(mFace, cp, iLoadFlags))
             continue;
@@ -80,7 +83,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     iMaxHeight = iMaxHeight >> 6;
 
     // Calculate the size of the texture
-    size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*(255-33);
+    size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*(uiMaxChar - uiMinChar + 1);
 
     uint uiTexSide = static_cast<uint>(::sqrt((float)uiTexSize));
     uiTexSide += std::max(iMaxWidth, iMaxHeight);
@@ -107,7 +110,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
     std::fill(pTexture_->get_data().begin(), pTexture_->get_data().end(), ub32color(0, 0, 0, 0));
 
-    lCharacterList_.resize(256);
+    lCharacterList_.resize(uiMaxChar + 1);
 
     size_t x = 0, y = 0;
     character_info mCI;
@@ -116,9 +119,9 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
         bKerning_ = true;
 
     if (bKerning_)
-        mCI.lKerningInfo.resize(256);
+        mCI.lKerningInfo.resize(uiMaxChar + 1);
 
-    for (uint cp = 32; cp <= 255; ++cp)
+    for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
     {
         mCI.uiCodePoint = cp;
 
@@ -131,10 +134,19 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 
         size_t uiXBearing = std::max(0, int(mFace->glyph->metrics.horiBearingX >> 6));
 
+        FT_Int iAdvance = std::max(int(uiXBearing + mFace->glyph->bitmap.width), int(mFace->glyph->advance.x >> 6));
+
+        // If at end of row, jump to next line
+        if (x + iAdvance > uiFinalWidth - 1)
+        {
+            y += iMaxHeight + uiSpacing;
+            x = 0;
+        }
+
         ub32color::chanel* sBuffer = mFace->glyph->bitmap.buffer;
         if (sBuffer)
         {
-            int iYBearing  = iMaxBearingY - (mFace->glyph->metrics.horiBearingY >> 6);
+            int iYBearing = iMaxBearingY - (mFace->glyph->metrics.horiBearingY >> 6);
 
             for (int j = 0; j < int(mFace->glyph->bitmap.rows);  ++j)
             for (int i = 0; i < int(mFace->glyph->bitmap.width); ++i, ++sBuffer)
@@ -145,7 +157,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
         {
             FT_Vector kern;
             unsigned int prev, next;
-            for (uint cp2 = 33; cp2 <= 255; ++cp2)
+            for (uint cp2 = uiMinChar; cp2 <= uiMaxChar; ++cp2)
             {
                 prev = FT_Get_Char_Index(mFace, cp);
                 next = FT_Get_Char_Index(mFace, cp2);
@@ -153,8 +165,6 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
                     mCI.lKerningInfo[cp2] = vector2f(kern.x >> 6, kern.y >> 6);
             }
         }
-
-        FT_Int iAdvance = std::max(int(uiXBearing + mFace->glyph->bitmap.width), int(mFace->glyph->advance.x >> 6));
 
         mCI.mUVs.left   = x/float(uiFinalWidth);
         mCI.mUVs.top    = y/float(uiFinalHeight);
@@ -165,13 +175,6 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 
         // Advance a column
         x += (iAdvance + uiSpacing);
-
-        // If at end of row
-        if (x + iAdvance > uiFinalWidth - 1)
-        {
-            y += iMaxHeight + uiSpacing;
-            x = 0;
-        }
     }
 
     // Get the width of a space ' ' (32) and tab '\t' (9)
@@ -206,20 +209,21 @@ quad2f font::get_character_bounds(char32_t uiChar) const
 
 float font::get_character_width(char32_t uiChar) const
 {
-    if (uiChar < 32 || uiChar > 255) return 0.0f;
+    if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
+
     return lCharacterList_[uiChar].mUVs.width()*fTextureWidth_;
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
-    if (uiChar < 32 || uiChar > 255) return 0.0f;
+    if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
+
     return lCharacterList_[uiChar].mUVs.height()*fTextureHeight_;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 {
-    if (uiChar1 < 32 || uiChar1 > 255) return 0.0f;
-    if (uiChar2 < 32 || uiChar2 > 255) return 0.0f;
+    if (uiChar1 < uiMinChar || uiChar1 > uiMaxChar || uiChar2 < uiMinChar || uiChar2 > uiMaxChar) return 0.0f;
 
     if (bKerning_)
         return lCharacterList_[uiChar1].lKerningInfo[uiChar2].x;

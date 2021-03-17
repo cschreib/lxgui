@@ -31,7 +31,7 @@ namespace sfml
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
         *   \return The uv coordinates of this character on the texture
-        *   \note The uv coordinates are normalisez, i.e. they range from
+        *   \note The uv coordinates are normalised, i.e. they range from
         *         0 to 1. They are arranged as {u1, v1, u2, v2}.
         */
         quad2f get_character_uvs(char32_t uiChar) const override;

@@ -17,7 +17,7 @@ namespace gl
         using chanel = unsigned char;
 
         ub32color() = default;
-        ub32color(chanel tr, chanel tg, chanel tb, chanel ta);
+        ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
         chanel r, g, b, a;
     };
 

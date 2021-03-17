@@ -33,10 +33,6 @@ namespace gl
 bool material::ONLY_POWER_OF_TWO = true;
 uint material::MAXIMUM_SIZE = 128;
 
-ub32color::ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta)
-{
-}
-
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
     mType_(type::TEXTURE)
 {
