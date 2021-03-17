@@ -34,6 +34,7 @@
     // OpenGL + SDL input
     #include <lxgui/impl/gui_gl_renderer.hpp>
     #include <lxgui/impl/input_sdl_source.hpp>
+    #define SDL_MAIN_HANDLED
     #include <SDL.h>
     #if defined(MACOSX)
         #include <OpenGL/gl.h>
@@ -44,6 +45,7 @@
     // SDL
     #include <lxgui/impl/gui_sdl.hpp>
     #include <lxgui/impl/input_sdl_source.hpp>
+    #define SDL_MAIN_HANDLED
     #include <SDL.h>
 #elif defined(SFML_GUI)
     // SFML
@@ -103,6 +105,13 @@ int main(int argc, char* argv[])
     #if defined(GLSFML_GUI)
         sf::Window mWindow;
     #elif defined(SDL_GUI) || defined(GLSDL_GUI)
+        SDL_SetMainReady();
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+        {
+            throw gui::exception("SDL_Init", "Could not initialise SDL: "+
+                std::string(SDL_GetError())+".");
+        }
+
         std::uint32_t uiFlags = SDL_WINDOW_OPENGL;
         if (bFullScreen) uiFlags |= SDL_WINDOW_FULLSCREEN;
 
@@ -120,7 +129,7 @@ int main(int argc, char* argv[])
 
         if (!pWindow)
         {
-            gui::exception("SDL_Window", "Could not create window.");
+            throw gui::exception("SDL_Window", "Could not create window.");
         }
 
         std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> pRenderer(
@@ -133,7 +142,7 @@ int main(int argc, char* argv[])
 
         if (!pRenderer)
         {
-            gui::exception("SDL_Renderer", "Could not create renderer.");
+            throw gui::exception("SDL_Renderer", "Could not create renderer.");
         }
 
     #elif defined(SFML_GUI)

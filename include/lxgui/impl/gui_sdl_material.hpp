@@ -22,7 +22,7 @@ namespace sdl
         using chanel = unsigned char;
 
         ub32color() = default;
-        ub32color(chanel tr, chanel tg, chanel tb, chanel ta);
+        ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
         chanel r, g, b, a;
     };
 
@@ -42,8 +42,8 @@ namespace sdl
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE);
+        material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget = false,
+            wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
 
         /// Constructor for textures.
         /** \param pData         The surface data to use as texture
@@ -144,6 +144,11 @@ namespace sdl
         /** return The underlying SDL texture object
         */
         const SDL_Texture* get_texture() const;
+
+        /// Returns the underlying SDL texture object.
+        /** return The underlying SDL texture object
+        */
+        SDL_Texture* get_texture();
 
         /// Returns the underlying SDL texture object (for render target).
         /** return The underlying SDL texture object (for render target)

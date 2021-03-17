@@ -83,12 +83,6 @@ namespace sdl
         */
         std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
-        /// Notifies the renderer that the render window has been resized.
-        /** \param uiNewWidth  The new window width
-        *   \param uiNewHeight The new window height
-        */
-        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
-
     private :
 
         SDL_Renderer* pRenderer_ = nullptr;

@@ -61,13 +61,13 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
 
     auto& mTexData = mData_.emplace<texture_data>();
 
-    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
     }
 
     mTexData.pTexture_ = SDL_CreateTexture(pRenderer,
-        SDL_PIXELFORMAT_RGBA8888,
+        SDL_PIXELFORMAT_ABGR8888,
         bRenderTarget ? SDL_TEXTUREACCESS_TARGET : SDL_TEXTUREACCESS_STREAMING,
         uiWidth, uiHeight);
 
@@ -100,7 +100,7 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
 
     auto& mTexData = mData_.emplace<texture_data>();
 
-    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
     }
@@ -141,7 +141,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     }
 
     // Convert to RGBA 32bit
-    SDL_Surface* pConvertedSurface = SDL_ConvertSurfaceFormat(pSurface, SDL_PIXELFORMAT_RGBA8888, 0);
+    SDL_Surface* pConvertedSurface = SDL_ConvertSurfaceFormat(pSurface, SDL_PIXELFORMAT_ABGR8888, 0);
     SDL_FreeSurface(pSurface);
     if (pConvertedSurface == NULL)
     {
@@ -156,12 +156,12 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     const uint uiHeight = pSurface->h;
 
     // Create streamable texture
-    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
     }
 
-    mTexData.pTexture_ = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_RGBA8888,
+    mTexData.pTexture_ = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_ABGR8888,
         SDL_TEXTUREACCESS_STREAMING, uiWidth, uiHeight);
     if (mTexData.pTexture_ == nullptr)
     {
@@ -332,7 +332,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
             mTexData.uiRealHeight_ = uiHeight + uiHeight/2;
 
         SDL_DestroyTexture(mTexData.pTexture_);
-        mTexData.pTexture_ = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_RGBA8888,
+        mTexData.pTexture_ = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_ABGR8888,
             SDL_TEXTUREACCESS_TARGET, mTexData.uiRealWidth_, mTexData.uiRealHeight_);
 
         if (mTexData.pTexture_ == nullptr)
@@ -362,6 +362,13 @@ SDL_Texture* material::get_render_texture()
 }
 
 const SDL_Texture* material::get_texture() const
+{
+    if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
+
+    return std::get<texture_data>(mData_).pTexture_;
+}
+
+SDL_Texture* material::get_texture()
 {
     if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
 
