@@ -31,6 +31,19 @@ void material::initialise_SDL_image(bool bAlreadyInitialised)
     bSDLImageInitialised = true;
 }
 
+SDL_BlendMode get_premultiplied_alpha_blend_mode()
+{
+    static const SDL_BlendMode mBlend = SDL_ComposeCustomBlendMode(
+        SDL_BLENDFACTOR_ONE,
+        SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+        SDL_BLENDOPERATION_ADD,
+        SDL_BLENDFACTOR_ONE,
+        SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
+        SDL_BLENDOPERATION_ADD);
+
+    return mBlend;
+}
+
 material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget,
     wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
 {
@@ -48,6 +61,11 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
 
     auto& mTexData = mData_.emplace<texture_data>();
 
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set filtering hint");
+    }
+
     mTexData.pTexture_ = SDL_CreateTexture(pRenderer,
         SDL_PIXELFORMAT_RGBA8888,
         bRenderTarget ? SDL_TEXTUREACCESS_TARGET : SDL_TEXTUREACCESS_STREAMING,
@@ -58,6 +76,11 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
         throw gui::exception("gui::sdl::material", "Could not create "+
             std::string(bRenderTarget ? "render target" : "texture")+" with dimensions "+
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+    }
+
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }
 
     mTexData.uiWidth_ = uiWidth;
@@ -77,11 +100,21 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
 
     auto& mTexData = mData_.emplace<texture_data>();
 
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set filtering hint");
+    }
+
     mTexData.pTexture_ = SDL_CreateTextureFromSurface(pRenderer, pSurface);
     if (mTexData.pTexture_ == nullptr)
     {
         throw gui::exception("gui::sdl::material", "Could not create texture with dimensions "+
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+    }
+
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }
 
     mTexData.uiWidth_ = uiWidth;
@@ -123,6 +156,11 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     const uint uiHeight = pSurface->h;
 
     // Create streamable texture
+    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set filtering hint");
+    }
+
     mTexData.pTexture_ = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_RGBA8888,
         SDL_TEXTUREACCESS_STREAMING, uiWidth, uiHeight);
     if (mTexData.pTexture_ == nullptr)
@@ -148,6 +186,11 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
 
     SDL_UnlockTexture(mTexData.pTexture_);
+
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
+    }
 
     mTexData.uiWidth_ = uiWidth;
     mTexData.uiHeight_ = uiHeight;
