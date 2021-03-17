@@ -12,26 +12,33 @@ namespace gui {
 namespace sdl
 {
 
-void initialise_SDL_image()
+void material::initialise_SDL_image(bool bAlreadyInitialised)
 {
     static bool bSDLImageInitialised = false;
 
     if (bSDLImageInitialised) return;
 
-    int iImgFlags = IMG_INIT_PNG;
-    if ((IMG_Init(iImgFlags) & iImgFlags) == 0)
+    if (!bAlreadyInitialised)
     {
-        throw gui::exception("gui::sdl::material", "Could not initialise SDL_image: "+
-            std::string(IMG_GetError())+".");
+        int iImgFlags = IMG_INIT_PNG;
+        if ((IMG_Init(iImgFlags) & iImgFlags) == 0)
+        {
+            throw gui::exception("gui::sdl::material", "Could not initialise SDL_image: "+
+                std::string(IMG_GetError())+".");
+        }
     }
 
     bSDLImageInitialised = true;
 }
 
-material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, filter mFilter)
+material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget,
+    wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
 {
     SDL_RendererInfo mInfo;
-    SDL_GetRendererInfo(pRenderer, &mInfo);
+    if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not get renderer information.");
+    }
 
     if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
     {
@@ -62,7 +69,8 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
     mTexData.bRenderTarget_ = bRenderTarget;
 }
 
-material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, filter mFilter)
+material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, filter mFilter) :
+    pRenderer_(pRenderer)
 {
     const uint uiWidth  = pSurface->w;
     const uint uiHeight = pSurface->h;
@@ -85,7 +93,8 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
     mTexData.bRenderTarget_ = false;
 }
 
-material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap mWrap, filter mFilter)
+material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap mWrap,
+    filter mFilter) : pRenderer_(pRenderer)
 {
     initialise_SDL_image();
 
@@ -126,7 +135,10 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     // Copy data into the texture
     void* pPixelData = nullptr;
     int iPitch = 0;
-    SDL_LockTexture(mTexData.pTexture_, nullptr, &pPixelData, &iPitch);
+    if (SDL_LockTexture(mTexData.pTexture_, nullptr, &pPixelData, &iPitch) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
+    }
 
     const uint uiSizeInBytes = pConvertedSurface->pitch * pConvertedSurface->h;
     const std::byte* pSurfacePixelsStart =
@@ -147,7 +159,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
 }
 
 
-material::material(SDL_Renderer* /*pRenderer*/, const color& mColor)
+material::material(SDL_Renderer* pRenderer, const color& mColor) : pRenderer_(pRenderer)
 {
     auto& mColData = mData_.emplace<color_data>();
     mColData.mColor_ = mColor;
@@ -254,32 +266,37 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     auto& mTexData = std::get<texture_data>(mData_);
     if (!mTexData.bRenderTarget_) return false;
 
-    // TODO: implement this
+    SDL_RendererInfo mInfo;
+    if (SDL_GetRendererInfo(pRenderer_, &mInfo) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not get renderer information.");
+    }
 
-    // SDL_RendererInfo mInfo;
-    // SDL_GetRendererInfo(pRenderer, &mInfo);
-
-    // if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
-    // {
-    //     return false;
-    // }
+    if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+    {
+        return false;
+    }
 
     if (uiWidth > mTexData.uiRealWidth_ || uiHeight > mTexData.uiRealHeight_)
     {
-        // mTexData.uiWidth_      = uiWidth;
-        // mTexData.uiHeight_     = uiHeight;
-        // // sdl is not efficient at resizing render texture, so use an exponential growth pattern
-        // // to avoid re-allocating a new render texture on every resize operation.
-        // if (uiWidth > mTexData.uiRealWidth_)
-        //     mTexData.uiRealWidth_  = uiWidth + uiWidth/2;
-        // if (uiHeight > mTexData.uiRealHeight_)
-        //     mTexData.uiRealHeight_ = uiHeight + uiHeight/2;
+        mTexData.uiWidth_      = uiWidth;
+        mTexData.uiHeight_     = uiHeight;
+        // sdl is not efficient at resizing render texture, so use an exponential growth pattern
+        // to avoid re-allocating a new render texture on every resize operation.
+        if (uiWidth > mTexData.uiRealWidth_)
+            mTexData.uiRealWidth_  = uiWidth + uiWidth/2;
+        if (uiHeight > mTexData.uiRealHeight_)
+            mTexData.uiRealHeight_ = uiHeight + uiHeight/2;
 
-        // if (!mTexData.mRenderTexture_.create(mTexData.uiRealWidth_, mTexData.uiRealHeight_))
-        // {
-        //     throw gui::exception("gui::sdl::material", "Could not create render target with dimensions "+
-        //         utils::to_string(mTexData.uiRealWidth_)+" x "+utils::to_string(mTexData.uiRealHeight_)+".");
-        // }
+        SDL_DestroyTexture(mTexData.pTexture_);
+        mTexData.pTexture_ = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_RGBA8888,
+            SDL_TEXTUREACCESS_TARGET, mTexData.uiRealWidth_, mTexData.uiRealHeight_);
+
+        if (mTexData.pTexture_ == nullptr)
+        {
+            throw gui::exception("gui::sdl::material", "Could not create render target "
+                "with dimensions "+utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+        }
 
         return true;
     }
@@ -307,6 +324,12 @@ const SDL_Texture* material::get_texture() const
 
     return std::get<texture_data>(mData_).pTexture_;
 }
+
+SDL_Renderer* material::get_renderer()
+{
+    return pRenderer_;
+}
+
 }
 }
 }

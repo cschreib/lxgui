@@ -150,6 +150,18 @@ namespace sdl
         */
         SDL_Texture* get_render_texture();
 
+        /// Returns the SDL renderer object that this material was created on.
+        /** return The SDL renderer object that this material was created on
+        */
+        SDL_Renderer* get_renderer();
+
+        /// Initialises SDL_image library.
+        /** \param bAlreadyInitialised Set to 'true' if SDL_image was already initialised by some
+        *          other class, and doesn't need initialising again.
+        *   \note Calling this function more than once has no effect.
+        */
+        static void initialise_SDL_image(bool bAlreadyInitialised = false);
+
     private:
 
         struct texture_data
@@ -170,6 +182,7 @@ namespace sdl
 
         struct empty {};
 
+        SDL_Renderer* pRenderer_ = nullptr;
         std::variant<empty,texture_data,color_data> mData_;
     };
 }
