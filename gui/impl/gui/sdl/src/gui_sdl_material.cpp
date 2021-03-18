@@ -31,7 +31,7 @@ void material::initialise_SDL_image(bool bAlreadyInitialised)
     bSDLImageInitialised = true;
 }
 
-SDL_BlendMode get_premultiplied_alpha_blend_mode()
+int material::get_premultiplied_alpha_blend_mode()
 {
     static const SDL_BlendMode mBlend = SDL_ComposeCustomBlendMode(
         SDL_BLENDFACTOR_ONE,
@@ -41,7 +41,7 @@ SDL_BlendMode get_premultiplied_alpha_blend_mode()
         SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA,
         SDL_BLENDOPERATION_ADD);
 
-    return mBlend;
+    return (int)mBlend;
 }
 
 material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget,
@@ -78,7 +78,7 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }
@@ -112,7 +112,7 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }
@@ -187,7 +187,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
 
     SDL_UnlockTexture(mTexData.pTexture_);
 
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, get_premultiplied_alpha_blend_mode()) != 0)
+    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }

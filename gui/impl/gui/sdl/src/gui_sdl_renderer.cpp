@@ -77,7 +77,8 @@ void renderer::render_quad(const quad& mQuad) const
     {
         // Note: SDL does not support per-vertex color; just use the first vertex.
         const auto& mColor = mQuad.v[0].col * pMat->get_color();
-
+        SDL_SetRenderDrawBlendMode(pRenderer_,
+            (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
         SDL_SetRenderDrawColor(pRenderer_,
             mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255, mColor.a*255);
 

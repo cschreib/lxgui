@@ -128,6 +128,11 @@ namespace sdl
         */
         static void premultiply_alpha(SDL_Surface* pData);
 
+        /// Returns the SDL blend mode corresponding to pre-multiplied alpha.
+        /** \returns the SDL blend mode corresponding to pre-multiplied alpha
+        */
+        static int get_premultiplied_alpha_blend_mode();
+
         /// Sets the wrap mode of this texture.
         /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
         */
