@@ -9,8 +9,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-constexpr uint uiMinChar = 32;
-constexpr uint uiMaxChar = 255;
+static constexpr lxgui::uint uiMinChar = 32;
+static constexpr lxgui::uint uiMaxChar = 255;
 
 namespace lxgui {
 namespace gui {
