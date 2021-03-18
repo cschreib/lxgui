@@ -14,7 +14,7 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
+font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -22,7 +22,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) :
             std::string(TTF_GetError()));
     }
 
-    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSize);
+    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), floor(uiSize * 96.0/72.0));
     if (!pFont)
     {
         throw gui::exception("gui::sdl::font", "Could not load font file '"+
@@ -33,7 +33,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) :
     // Add some space between letters to prevent artifacts
     uint uiSpacing = 1;
 
-    int iMaxHeight = 0, iMaxWidth = 0, iMaxBearingY = 0;
+    int iMaxHeight = 0, iMaxWidth = 0;
 
     // Calculate maximum width and height
     for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
@@ -93,9 +93,12 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) :
     lCharacterList_.resize(uiMaxChar + 1);
 
     size_t x = 0, y = 0;
+    uint uiLineMaxHeight = iMaxHeight;
     character_info mCI;
 
     const SDL_Color mColor = {255, 255, 255, 255};
+
+    fYOffset_ = TTF_FontDescent(pFont);
 
     for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
     {
@@ -122,10 +125,12 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) :
         const uint uiGlyphWidth = pGlyphSurface->w;
         const uint uiGlyphHeight = pGlyphSurface->h;
 
+        uiLineMaxHeight = std::max(uiLineMaxHeight, uiGlyphHeight);
+
         // If at end of row, jump to next line
         if (x + uiGlyphWidth > uiFinalWidth - 1)
         {
-            y += iMaxHeight + uiSpacing;
+            y += uiLineMaxHeight + uiSpacing;
             x = 0;
         }
 
@@ -136,18 +141,15 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize) :
 
         SDL_FreeSurface(pGlyphSurface);
 
-        mCI.fXOffset = iMinX;
-        mCI.fYOffset = iMinY;
-
         mCI.mUVs.left   = x/float(uiFinalWidth);
         mCI.mUVs.top    = y/float(uiFinalHeight);
         mCI.mUVs.right  = (x + iAdvance)/float(uiFinalWidth);
-        mCI.mUVs.bottom = (y + iMaxHeight)/float(uiFinalHeight);
+        mCI.mUVs.bottom = (y + uiGlyphHeight)/float(uiFinalHeight);
 
         lCharacterList_[cp] = mCI;
 
         // Advance a column
-        x += (uiGlyphWidth + uiSpacing);
+        x += (std::max((uint)iAdvance, uiGlyphWidth) + uiSpacing);
     }
 
     // Get the width of a space ' ' (32) and tab '\t' (9)
@@ -190,8 +192,7 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     const float fCharWidth = mCharacterInfo.mUVs.width()*fTextureWidth_;
     const float fCharHeight = mCharacterInfo.mUVs.height()*fTextureHeight_;
 
-    return quad2f(mCharacterInfo.fXOffset, mCharacterInfo.fXOffset + fCharWidth,
-        mCharacterInfo.fYOffset, mCharacterInfo.fYOffset + fCharHeight);
+    return quad2f(0.0f, fCharWidth, fYOffset_, fYOffset_ + fCharHeight);
 }
 
 float font::get_character_width(char32_t uiChar) const

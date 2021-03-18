@@ -18,8 +18,6 @@ namespace sdl
     {
         uint   uiCodePoint;
         quad2f mUVs;
-        float fXOffset = 0.0f;
-        float fYOffset = 0.0f;
     };
 
     /// A texture containing characters
@@ -82,8 +80,8 @@ namespace sdl
 
         float fTextureWidth_ = 0.0f;
         float fTextureHeight_ = 0.0f;
+        float fYOffset_ = 0.0f;
 
-        uint                           uiSize_ = 0u;
         std::shared_ptr<sdl::material> pTexture_;
         std::vector<character_info>    lCharacterList_;
     };
