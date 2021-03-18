@@ -439,13 +439,13 @@ int main(int argc, char* argv[])
         #endif
 
             clock::time_point mCurrentTime = clock::now();
-            fDelta = std::chrono::duration_cast<std::chrono::milliseconds>(mCurrentTime - mPrevTime).count() / 1000.0f;
+            fDelta = std::chrono::duration_cast<std::chrono::microseconds>(mCurrentTime - mPrevTime).count() / 1e6;
             mPrevTime = mCurrentTime;
 
             ++uiFrameCount;
         }
 
-        float fTotalTime = std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - mFirstTime).count() / 1000.0f;
+        float fTotalTime = std::chrono::duration_cast<std::chrono::microseconds>(clock::now() - mFirstTime).count() / 1e6;
         std::cout << "End of loop, mean FPS : " << uiFrameCount/fTotalTime << std::endl;
     }
     catch (const std::exception& e)
