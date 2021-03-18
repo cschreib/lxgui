@@ -294,6 +294,7 @@ void texture::set_gradient(const gradient& mGradient)
         mSprite_.set_color(mGradient_.get_max_color(), 3);
     }
 
+    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -341,7 +342,6 @@ void texture::set_texture(const std::string& sFile)
     mGradient_ = gradient();
     mColor_ = color::EMPTY;
     sTextureFile_ = sFile;
-
     bHasSprite_ = false;
 
     if (sTextureFile_.empty())
@@ -411,8 +411,8 @@ void texture::set_color(const color& mColor)
     auto* pTopLevelRenderer = get_top_level_renderer();
     mSprite_ = pTopLevelRenderer->create_sprite(
         pTopLevelRenderer->create_material(mColor), 256, 256);
-    bHasSprite_ = true;
 
+    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
