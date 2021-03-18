@@ -227,37 +227,17 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
 bool renderer::is_gl_extension_supported(const std::string& sExtension)
 {
-    // Code taken from :
-    // http://nehe.gamedev.net/tutorial/vertex_buffer_objects/22002/
-
-    const unsigned char *pszExtensions = nullptr;
-    const unsigned char *pszStart;
-    unsigned char *pszWhere, *pszTerminator;
-
     // Extension names should not have spaces
-    pszWhere = (unsigned char*)strchr(sExtension.c_str(), ' ');
-    if (pszWhere || sExtension.empty())
+    if (sExtension.find(' ') != std::string::npos || sExtension.empty())
         return false;
 
-    // Get Extensions String
-    pszExtensions = glGetString(GL_EXTENSIONS);
+    GLint uiNumExtension = 0;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &uiNumExtension);
 
-    // Search The Extensions String For An Exact Copy
-    pszStart = pszExtensions;
-
-    for (;;)
+    for (GLuint uiIndex = 0; uiIndex < (uint)uiNumExtension; ++uiIndex)
     {
-        pszWhere = (unsigned char*)strstr((const char*)pszStart, sExtension.c_str());
-        if (!pszWhere)
-            break;
-
-        pszTerminator = pszWhere + sExtension.size();
-
-        if ((pszWhere == pszStart || *(pszWhere - 1) == ' ') &&
-            (*pszTerminator == ' ' || *pszTerminator == '\0'))
+        if (sExtension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, uiIndex)))
             return true;
-
-        pszStart = pszTerminator;
     }
 
     return false;
