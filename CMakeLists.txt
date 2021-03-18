@@ -120,6 +120,7 @@ elseif (WINDOWS)
 endif()
 
 # find libraries
+cmake_policy(SET CMP0072 "NEW")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 find_package(Lua REQUIRED)
 find_package(Freetype)
