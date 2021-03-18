@@ -31,7 +31,7 @@ jobs:
 
     - name: Get Linux dependencies
       if: runner.os == 'Linux'
-      run: sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev
+      run: sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-tff-dev libsdl2-image-dev libsdl2-dev
 
     - name: Setup Linux compiler
       if: runner.os == 'Linux'
@@ -40,7 +40,7 @@ jobs:
     - name: Get Windows dependencies
       if: runner.os == 'Windows'
       # Ideally (but too slow):
-      #run: vcpkg install sfml lua zlib libpng freetype glew
+      #run: vcpkg install sfml lua zlib libpng freetype glew sdl2 sdl2-ttf sdl2-image
       # Pre-compiled dependencies:
       shell: bash
       working-directory: ${{github.workspace}}/build
@@ -48,7 +48,7 @@ jobs:
 
     - name: Get MacOS dependencies
       if: runner.os == 'macOS'
-      run: brew install sfml lua zlib libpng freetype glew
+      run: brew install sfml lua zlib libpng freetype glew sdl2 sdl2_ttf sdl2_image
 
     - name: Configure CMake
       shell: bash
