@@ -79,15 +79,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize)
     fTextureHeight_ = static_cast<float>(uiFinalHeight);
 
     pTexture_ = std::make_shared<sdl::material>(pRenderer, uiFinalWidth, uiFinalHeight);
-
-    void* pPixelData = nullptr;
-    int iPitch = 0;
-    if (SDL_LockTexture(pTexture_->get_texture(), nullptr, &pPixelData, &iPitch) != 0)
-    {
-        throw gui::exception("gui::sdl::font", "Could not lock texture for copying pixels.");
-    }
-
-    ub32color* pTexturePixels = reinterpret_cast<ub32color*>(pPixelData);
+    ub32color* pTexturePixels = pTexture_->lock_pointer();
     std::fill(pTexturePixels, pTexturePixels + uiFinalWidth * uiFinalHeight, ub32color(0,0,0,0));
 
     lCharacterList_.resize(uiMaxChar + 1);
@@ -174,7 +166,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize)
         pTexturePixels[i].b *= a;
     }
 
-    SDL_UnlockTexture(pTexture_->get_texture());
+    pTexture_->unlock_pointer();
 }
 
 quad2f font::get_character_uvs(char32_t uiChar) const

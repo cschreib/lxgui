@@ -61,6 +61,7 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
 
     auto& mTexData = mData_.emplace<texture_data>();
 
+    // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
@@ -78,6 +79,7 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
+    // Set blend mode
     if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
@@ -100,6 +102,7 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
 
     auto& mTexData = mData_.emplace<texture_data>();
 
+    // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
@@ -112,6 +115,7 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
+    // Set blend mode
     if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
@@ -155,12 +159,13 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     const uint uiWidth  = pSurface->w;
     const uint uiHeight = pSurface->h;
 
-    // Create streamable texture
+    // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::material", "Could not set filtering hint");
     }
 
+    // Create streamable texture
     mTexData.pTexture_ = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_ABGR8888,
         SDL_TEXTUREACCESS_STREAMING, uiWidth, uiHeight);
     if (mTexData.pTexture_ == nullptr)
@@ -171,22 +176,13 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     }
 
     // Copy data into the texture
-    void* pPixelData = nullptr;
-    int iPitch = 0;
-    if (SDL_LockTexture(mTexData.pTexture_, nullptr, &pPixelData, &iPitch) != 0)
-    {
-        throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
-    }
-
-    const uint uiSizeInBytes = pConvertedSurface->pitch * pConvertedSurface->h;
-    const std::byte* pSurfacePixelsStart =
-        reinterpret_cast<const std::byte*>(pConvertedSurface->pixels);
-    const std::byte* pSurfacePixelsEnd = pSurfacePixelsStart + uiSizeInBytes;
-    std::byte* pTexturePixels = reinterpret_cast<std::byte*>(pPixelData);
+    ub32color* pTexturePixels = lock_pointer();
+    const ub32color* pSurfacePixelsStart = reinterpret_cast<const ub32color*>(pConvertedSurface->pixels);
+    const ub32color* pSurfacePixelsEnd = pSurfacePixelsStart + uiWidth * uiHeight;
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
+    unlock_pointer();
 
-    SDL_UnlockTexture(mTexData.pTexture_);
-
+    // Set blend mode
     if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
     {
         throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
@@ -349,6 +345,27 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         mTexData.uiHeight_ = uiHeight;
         return false;
     }
+}
+
+ub32color* material::lock_pointer()
+{
+    if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
+
+    void* pPixelData = nullptr;
+    int iPitch = 0;
+    if (SDL_LockTexture(std::get<texture_data>(mData_).pTexture_, nullptr, &pPixelData, &iPitch) != 0)
+    {
+        throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
+    }
+
+    return reinterpret_cast<ub32color*>(pPixelData);
+}
+
+void material::unlock_pointer()
+{
+    if (!std::holds_alternative<texture_data>(mData_)) return;
+
+    SDL_UnlockTexture(std::get<texture_data>(mData_).pTexture_);
 }
 
 SDL_Texture* material::get_render_texture()

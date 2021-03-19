@@ -165,6 +165,16 @@ namespace sdl
         */
         SDL_Renderer* get_renderer();
 
+        /// Returns a pointer to the texture data, which can be modified.
+        /** \return A pointer to the texture data, which can be modified
+        *   \note The pointer is owned by this class, you must not delete it.
+        *         Make sure you call unlock_pointer() when you are done.
+        */
+        ub32color* lock_pointer();
+
+        /// Stops modifying the texture data and update the texture in GPU memory.
+        void unlock_pointer();
+
         /// Initialises SDL_image library.
         /** \param bAlreadyInitialised Set to 'true' if SDL_image was already initialised by some
         *          other class, and doesn't need initialising again.
