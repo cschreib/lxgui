@@ -1502,7 +1502,6 @@ void manager::on_event(const event& mEvent)
 
                 pSizedObject_->set_abs_height(uiHeight);
             }
-            gui::out << "updated size" << std::endl;
         }
     }
 }
