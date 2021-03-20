@@ -240,6 +240,7 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
         const float fTexWidth = pMat->get_real_width();
         const float fTexHeight = pMat->get_real_height();
 
+        // Build the source and destination rect, figuring out rotation and flipping
         const sdl_render_data mData = make_rects(lVertexList, fTexWidth, fTexHeight);
 
         if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
