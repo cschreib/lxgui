@@ -70,7 +70,7 @@ struct sdl_render_data
     SDL_Rect mDestDisplayQuad;
     SDL_Rect mSrcQuad;
     SDL_Point mCenter;
-    double dAngle = 0.0;
+    int iAngle = 0;
     SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 };
 
@@ -148,6 +148,7 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     mData.mDestQuad.x = lVertexList[lIDs[0]].pos.x;
     mData.mDestQuad.y = lVertexList[lIDs[0]].pos.y;
 
+    bool bAxisSwapped = false;
     if (lVertexList[lIDs[0]].uvs.x < lVertexList[lIDs[1]].uvs.x)
     {
         if (lVertexList[lIDs[1]].uvs.y < lVertexList[lIDs[2]].uvs.y)
@@ -164,24 +165,24 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     }
     else if (lVertexList[lIDs[0]].uvs.y < lVertexList[lIDs[1]].uvs.y)
     {
-        std::swap(iWidth, iHeight);
+        bAxisSwapped = true;
 
         if (lVertexList[lIDs[1]].uvs.x > lVertexList[lIDs[2]].uvs.x)
         {
             // Rotated 90 degrees clockwise
-            mData.dAngle = -90.0;
+            mData.iAngle = -90;
             iUVIndex1 = 3;
             iUVIndex2 = 1;
-            mData.mDestQuad.y += iWidth;
+            mData.mDestQuad.y += iHeight;
         }
         else
         {
             // Rotated 90 degrees clockwise and flip X
             mData.mFlip = SDL_FLIP_HORIZONTAL;
-            mData.dAngle = -90.0;
+            mData.iAngle = -90;
             iUVIndex1 = 0;
             iUVIndex2 = 2;
-            mData.mDestQuad.y += iWidth;
+            mData.mDestQuad.y += iHeight;
         }
     }
     else if (lVertexList[lIDs[0]].uvs.x > lVertexList[lIDs[1]].uvs.x)
@@ -189,7 +190,7 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
         if (lVertexList[lIDs[1]].uvs.y > lVertexList[lIDs[2]].uvs.y)
         {
             // Rotated 180 degrees
-            mData.dAngle = 180.0;
+            mData.iAngle = 180;
             iUVIndex1 = 2;
             iUVIndex2 = 0;
             mData.mDestQuad.x += iWidth;
@@ -205,26 +206,29 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     }
     else if (lVertexList[lIDs[0]].uvs.y > lVertexList[lIDs[1]].uvs.y)
     {
-        std::swap(iWidth, iHeight);
+        bAxisSwapped = true;
 
         if (lVertexList[lIDs[1]].uvs.x < lVertexList[lIDs[2]].uvs.x)
         {
             // Rotated 90 degrees counter-clockwise
-            mData.dAngle = 90.0;
+            mData.iAngle = 90;
             iUVIndex1 = 1;
             iUVIndex2 = 3;
-            mData.mDestQuad.x += iHeight;
+            mData.mDestQuad.x += iWidth;
         }
         else
         {
             // Rotated 90 degrees counter-clockwise and flip X
             mData.mFlip = SDL_FLIP_HORIZONTAL;
-            mData.dAngle = 90.0;
+            mData.iAngle = 90;
             iUVIndex1 = 2;
             iUVIndex2 = 0;
-            mData.mDestQuad.x += iHeight;
+            mData.mDestQuad.x += iWidth;
         }
     }
+
+    if (bAxisSwapped)
+        std::swap(iWidth, iHeight);
 
     mData.mSrcQuad = SDL_Rect{
         static_cast<int>(lVertexList[lIDs[iUVIndex1]].uvs.x*fTexWidth),
@@ -271,13 +275,13 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
             {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(pRenderer_, pTexture, &mData.mSrcQuad, &mData.mDestQuad,
-                    mData.dAngle, &mData.mCenter, mData.mFlip);
+                    mData.iAngle, &mData.mCenter, mData.mFlip);
             }
             else
             {
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
-                const bool bAxisSwapped = std::abs(static_cast<int>(std::round(mData.dAngle))) == 90;
+                const bool bAxisSwapped = std::abs(mData.iAngle) == 90;
                 const float fXFactor = float(mData.mDestDisplayQuad.w)/float(bAxisSwapped ? mData.mSrcQuad.h : mData.mSrcQuad.w);
                 const float fYFactor = float(mData.mDestDisplayQuad.h)/float(bAxisSwapped ? mData.mSrcQuad.w : mData.mSrcQuad.h);
 
@@ -305,17 +309,24 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
                         int iTempDWidth = mData.mDestDisplayQuad.x + static_cast<int>((bAxisSwapped ? iSY2 : iSX2)*fXFactor) - iDX;
                         int iTempDHeight = mData.mDestDisplayQuad.y + static_cast<int>((bAxisSwapped ? iSX2 : iSY2)*fYFactor) - iDY;
 
-                        if (bAxisSwapped)
+                        if (mData.iAngle == 90)
+                            iDX += iTempDWidth;
+                        else if (mData.iAngle == -90)
+                            iDY += iTempDHeight;
+                        else if (mData.iAngle == 180)
                         {
-                            std::swap(iTempDWidth, iTempDHeight);
-                            iDX += iTempDHeight;
+                            iDX += iTempDWidth;
+                            iDY += iTempDHeight;
                         }
+
+                        if (bAxisSwapped)
+                            std::swap(iTempDWidth, iTempDHeight);
 
                         const SDL_Rect mSrcQuad{iSXClamped, iSYClamped, iTempSWidth, iTempSHeight};
                         const SDL_Rect mDestQuad{iDX, iDY, iTempDWidth, iTempDHeight};
 
                         SDL_RenderCopyEx(pRenderer_, pTexture, &mSrcQuad, &mDestQuad,
-                            mData.dAngle, &mData.mCenter, mData.mFlip);
+                            mData.iAngle, &mData.mCenter, mData.mFlip);
 
                         iSX += iTempSWidth;
                     }
