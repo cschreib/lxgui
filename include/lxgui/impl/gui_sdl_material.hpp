@@ -145,6 +145,11 @@ namespace sdl
         */
         void set_filter(filter mFilter);
 
+        /// Return the wrap mode of this texture.
+        /** \return The wrap mode of this texture
+        */
+        wrap get_wrap() const;
+
         /// Returns the underlying SDL texture object.
         /** return The underlying SDL texture object
         */

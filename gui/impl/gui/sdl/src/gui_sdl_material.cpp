@@ -229,6 +229,13 @@ void material::set_wrap(wrap mWrap)
     std::get<texture_data>(mData_).mWrap_ = mWrap;
 }
 
+material::wrap material::get_wrap() const
+{
+    if (!std::holds_alternative<texture_data>(mData_)) return wrap::REPEAT;
+
+    return std::get<texture_data>(mData_).mWrap_;
+}
+
 void material::set_filter(filter mFilter)
 {
     if (!std::holds_alternative<texture_data>(mData_)) return;
