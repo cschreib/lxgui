@@ -231,10 +231,10 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
         std::swap(iWidth, iHeight);
 
     mData.mSrcQuad = SDL_Rect{
-        static_cast<int>(lVertexList[lIDs[iUVIndex1]].uvs.x*fTexWidth),
-        static_cast<int>(lVertexList[lIDs[iUVIndex1]].uvs.y*fTexHeight),
-        static_cast<int>((lVertexList[lIDs[iUVIndex2]].uvs.x - lVertexList[lIDs[iUVIndex1]].uvs.x)*fTexWidth),
-        static_cast<int>((lVertexList[lIDs[iUVIndex2]].uvs.y - lVertexList[lIDs[iUVIndex1]].uvs.y)*fTexHeight)
+        (int)(lVertexList[lIDs[iUVIndex1]].uvs.x*fTexWidth),
+        (int)(lVertexList[lIDs[iUVIndex1]].uvs.y*fTexHeight),
+        (int)((lVertexList[lIDs[iUVIndex2]].uvs.x - lVertexList[lIDs[iUVIndex1]].uvs.x)*fTexWidth),
+        (int)((lVertexList[lIDs[iUVIndex2]].uvs.y - lVertexList[lIDs[iUVIndex1]].uvs.y)*fTexHeight)
     };
 
     mData.mDestQuad.w = iWidth;
@@ -288,8 +288,10 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
                 // Repeat wrap; SDL does not support this natively, so we have to
                 // do the repeating ourselves.
                 const bool bAxisSwapped = std::abs(mData.iAngle) == 90;
-                const float fXFactor = float(mData.mDestDisplayQuad.w)/float(bAxisSwapped ? mData.mSrcQuad.h : mData.mSrcQuad.w);
-                const float fYFactor = float(mData.mDestDisplayQuad.h)/float(bAxisSwapped ? mData.mSrcQuad.w : mData.mSrcQuad.h);
+                const float fXFactor = float(mData.mDestDisplayQuad.w)/
+                    float(bAxisSwapped ? mData.mSrcQuad.h : mData.mSrcQuad.w);
+                const float fYFactor = float(mData.mDestDisplayQuad.h)/
+                    float(bAxisSwapped ? mData.mSrcQuad.w : mData.mSrcQuad.h);
 
                 int iSY = mData.mSrcQuad.y;
                 while (iSY < mData.mSrcQuad.y + mData.mSrcQuad.h)
@@ -297,7 +299,8 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
                     const int iSYClamped = iSY % iTexHeight + (iSY < 0 ? iTexHeight : 0);
                     int iTempSHeight = iTexHeight - iSYClamped;
                     const int iSY1 = iSY - mData.mSrcQuad.y;
-                    if (iSY1 + iTempSHeight > mData.mSrcQuad.h) iTempSHeight = mData.mSrcQuad.h - iSY1;
+                    if (iSY1 + iTempSHeight > mData.mSrcQuad.h)
+                        iTempSHeight = mData.mSrcQuad.h - iSY1;
                     const int iSY2 = iSY1 + iTempSHeight;
 
                     int iSX = mData.mSrcQuad.x;
@@ -306,14 +309,19 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
                         const int iSXClamped = iSX % iTexWidth + (iSX < 0 ? iTexWidth : 0);
                         int iTempSWidth = iTexWidth - iSXClamped;
                         const int iSX1 = iSX - mData.mSrcQuad.x;
-                        if (iSX1 + iTempSWidth > mData.mSrcQuad.w) iTempSWidth = mData.mSrcQuad.w - iSX1;
+                        if (iSX1 + iTempSWidth > mData.mSrcQuad.w)
+                            iTempSWidth = mData.mSrcQuad.w - iSX1;
                         const int iSX2 = iSX1 + iTempSWidth;
 
-                        int iDX = mData.mDestDisplayQuad.x + static_cast<int>((bAxisSwapped ? iSY1 : iSX1)*fXFactor);
-                        int iDY = mData.mDestDisplayQuad.y + static_cast<int>((bAxisSwapped ? iSX1 : iSY1)*fYFactor);
+                        int iDX = mData.mDestDisplayQuad.x +
+                            static_cast<int>((bAxisSwapped ? iSY1 : iSX1)*fXFactor);
+                        int iDY = mData.mDestDisplayQuad.y +
+                            static_cast<int>((bAxisSwapped ? iSX1 : iSY1)*fYFactor);
 
-                        int iTempDWidth = mData.mDestDisplayQuad.x + static_cast<int>((bAxisSwapped ? iSY2 : iSX2)*fXFactor) - iDX;
-                        int iTempDHeight = mData.mDestDisplayQuad.y + static_cast<int>((bAxisSwapped ? iSX2 : iSY2)*fYFactor) - iDY;
+                        int iTempDWidth = mData.mDestDisplayQuad.x +
+                            static_cast<int>((bAxisSwapped ? iSY2 : iSX2)*fXFactor) - iDX;
+                        int iTempDHeight = mData.mDestDisplayQuad.y +
+                            static_cast<int>((bAxisSwapped ? iSX2 : iSY2)*fYFactor) - iDY;
 
                         if (mData.iAngle == 90)
                             iDX += iTempDWidth;
@@ -385,8 +393,10 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
             for (int y = 0; y < mDestQuad.h; ++y)
             for (int x = 0; x < mDestQuad.w; ++x)
             {
-                const color lColY1 = interpolate_color(lColorQuad[0], lColorQuad[3], y/float(mDestQuad.h - 1));
-                const color lColY2 = interpolate_color(lColorQuad[1], lColorQuad[2], y/float(mDestQuad.h - 1));
+                const color lColY1 = interpolate_color(
+                    lColorQuad[0], lColorQuad[3], y/float(mDestQuad.h - 1));
+                const color lColY2 = interpolate_color(
+                    lColorQuad[1], lColorQuad[2], y/float(mDestQuad.h - 1));
                 pPixelData[y * mDestQuad.w + x] = to_ub32color(
                     interpolate_color(lColY1, lColY2, x/float(mDestQuad.w - 1)));
             }
