@@ -79,12 +79,6 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
-    // Set blend mode
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
-    {
-        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
-    }
-
     mTexData.uiWidth_ = uiWidth;
     mTexData.uiHeight_ = uiHeight;
     mTexData.mWrap_ = mWrap;
@@ -113,12 +107,6 @@ material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, f
     {
         throw gui::exception("gui::sdl::material", "Could not create texture with dimensions "+
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
-    }
-
-    // Set blend mode
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
-    {
-        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
     }
 
     mTexData.uiWidth_ = uiWidth;
@@ -181,12 +169,6 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     const ub32color* pSurfacePixelsEnd = pSurfacePixelsStart + uiWidth * uiHeight;
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
     unlock_pointer();
-
-    // Set blend mode
-    if (SDL_SetTextureBlendMode(mTexData.pTexture_, (SDL_BlendMode)get_premultiplied_alpha_blend_mode()) != 0)
-    {
-        throw gui::exception("gui::sdl::material", "Could not set texture blend mode.");
-    }
 
     mTexData.uiWidth_ = uiWidth;
     mTexData.uiHeight_ = uiHeight;

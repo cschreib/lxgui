@@ -259,6 +259,12 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
         // Build the source and destination rect, figuring out rotation and flipping
         const sdl_render_data mData = make_rects(lVertexList, fTexWidth, fTexHeight);
 
+        if (SDL_SetTextureBlendMode(pTexture,
+            (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) != 0)
+        {
+            throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
+        }
+
         if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
             lVertexList[0].col == lVertexList[3].col)
         {
