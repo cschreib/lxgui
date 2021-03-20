@@ -53,10 +53,14 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
         throw gui::exception("gui::sdl::material", "Could not get renderer information.");
     }
 
-    if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+    if (mInfo.max_texture_width != 0)
     {
-        throw gui::exception("gui::sdl::material", "Texture dimensions not supported by hardware: ("+
-            utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+").");
+        if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+        {
+            throw gui::exception("gui::sdl::material",
+                "Texture dimensions not supported by hardware: ("+
+                utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+").");
+        }
     }
 
     auto& mTexData = mData_.emplace<texture_data>();
@@ -300,9 +304,12 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         throw gui::exception("gui::sdl::material", "Could not get renderer information.");
     }
 
-    if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+    if (mInfo.max_texture_width != 0)
     {
-        return false;
+        if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+        {
+            return false;
+        }
     }
 
     if (uiWidth > mTexData.uiRealWidth_ || uiHeight > mTexData.uiRealHeight_)
