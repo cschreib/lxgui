@@ -64,41 +64,195 @@ ub32color to_ub32color(const color& mColor)
     };
 }
 
-void renderer::render_quad(const quad& mQuad) const
+struct sdl_render_data
 {
-    std::shared_ptr<sdl::material> pMat = std::static_pointer_cast<sdl::material>(mQuad.mat);
+    SDL_Rect mDestQuad;
+    SDL_Rect mSrcQuad;
+    double dAngle = 0.0;
+    SDL_RendererFlip mFlip = SDL_FLIP_NONE;
+};
 
-    // Note: SDL only supports axis-aligned rects for quad shapes
-    const SDL_Rect mDestQuad = {
-        static_cast<int>(mQuad.v[0].pos.x),
-        static_cast<int>(mQuad.v[0].pos.y),
-        static_cast<int>(mQuad.v[2].pos.x - mQuad.v[0].pos.x),
-        static_cast<int>(mQuad.v[2].pos.y - mQuad.v[0].pos.y)
+sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
+    float fTexWidth, float fTexHeight)
+{
+    sdl_render_data mData;
+
+    // First, re-order vertices as top-left, top-right, bottom-right, bottom-left
+    std::array<std::size_t,4> lIds = {0u, 1u, 2u, 3u};
+    if (lVertexList[0].pos.x < lVertexList[1].pos.x)
+    {
+        if (lVertexList[1].pos.y < lVertexList[2].pos.y)
+        {
+            // No rotation and no flip
+        }
+        else
+        {
+            // No rotation and flip Y
+            lIds = {3u, 2u, 1u, 0u};
+        }
+    }
+    else if (lVertexList[0].pos.y < lVertexList[1].pos.y)
+    {
+        // std::swap(iWidth, iHeight);
+
+        if (lVertexList[1].pos.x > lVertexList[2].pos.x)
+        {
+            // Rotated 90 degrees clockwise
+            lIds = {3u, 0u, 1u, 2u};
+        }
+        else
+        {
+            // Rotated 90 degrees clockwise and flip X
+            lIds = {0u, 3u, 2u, 1u};
+        }
+    }
+    else if (lVertexList[0].pos.x > lVertexList[1].pos.x)
+    {
+        if (lVertexList[1].pos.y > lVertexList[2].pos.y)
+        {
+            // Rotated 180 degrees
+            lIds = {2u, 3u, 0u, 1u};
+        }
+        else
+        {
+            // No rotation and flip X
+            lIds = {1u, 0u, 3u, 2u};
+        }
+    }
+    else if (lVertexList[0].pos.y > lVertexList[1].pos.y)
+    {
+        // std::swap(iWidth, iHeight);
+
+        if (lVertexList[1].pos.x < lVertexList[2].pos.x)
+        {
+            // Rotated 90 degrees counter-clockwise
+            lIds = {1u, 2u, 3u, 0u};
+        }
+        else
+        {
+            // Rotated 90 degrees counter-clockwise and flip X
+            lIds = {2u, 1u, 0u, 3u};
+        }
+    }
+
+    // Now, re-order UV coordinates as top-left, top-right, bottom-right, bottom-left
+    // and figure out the required rotation and flipping to render as requested.
+    int iWidth = static_cast<int>(std::abs(lVertexList[2].pos.x - lVertexList[0].pos.x));
+    int iHeight = static_cast<int>(std::abs(lVertexList[2].pos.y - lVertexList[0].pos.y));
+    int iUVIndex1 = 0;
+    int iUVIndex2 = 2;
+
+    if (lVertexList[lIds[0]].uvs.x < lVertexList[lIds[1]].uvs.x)
+    {
+        if (lVertexList[lIds[1]].uvs.y < lVertexList[lIds[2]].uvs.y)
+        {
+            // No rotation and no flip
+        }
+        else
+        {
+            // No rotation and flip Y
+            mData.mFlip = SDL_FLIP_VERTICAL;
+            iUVIndex1 = 3;
+            iUVIndex2 = 1;
+        }
+    }
+    else if (lVertexList[lIds[0]].uvs.y < lVertexList[lIds[1]].uvs.y)
+    {
+        std::swap(iWidth, iHeight);
+
+        if (lVertexList[lIds[1]].uvs.x > lVertexList[lIds[2]].uvs.x)
+        {
+            // Rotated 90 degrees clockwise
+            mData.dAngle = -90.0;
+            iUVIndex1 = 3;
+            iUVIndex2 = 1;
+        }
+        else
+        {
+            // Rotated 90 degrees clockwise and flip X
+            mData.mFlip = SDL_FLIP_HORIZONTAL;
+            mData.dAngle = -90.0;
+            iUVIndex1 = 0;
+            iUVIndex2 = 2;
+        }
+    }
+    else if (lVertexList[lIds[0]].uvs.x > lVertexList[lIds[1]].uvs.x)
+    {
+        if (lVertexList[lIds[1]].uvs.y > lVertexList[lIds[2]].uvs.y)
+        {
+            // Rotated 180 degrees
+            mData.dAngle = 180.0;
+            iUVIndex1 = 2;
+            iUVIndex2 = 0;
+        }
+        else
+        {
+            // No rotation and flip X
+            mData.mFlip = SDL_FLIP_HORIZONTAL;
+            iUVIndex1 = 1;
+            iUVIndex2 = 3;
+        }
+    }
+    else if (lVertexList[lIds[0]].uvs.y > lVertexList[lIds[1]].uvs.y)
+    {
+        std::swap(iWidth, iHeight);
+
+        if (lVertexList[lIds[1]].uvs.x < lVertexList[lIds[2]].uvs.x)
+        {
+            // Rotated 90 degrees counter-clockwise
+            mData.dAngle = 90.0;
+            iUVIndex1 = 1;
+            iUVIndex2 = 3;
+        }
+        else
+        {
+            // Rotated 90 degrees counter-clockwise and flip X
+            mData.mFlip = SDL_FLIP_HORIZONTAL;
+            mData.dAngle = 90.0;
+            iUVIndex1 = 2;
+            iUVIndex2 = 0;
+        }
+    }
+
+    mData.mSrcQuad = SDL_Rect{
+        static_cast<int>(lVertexList[lIds[iUVIndex1]].uvs.x*fTexWidth),
+        static_cast<int>(lVertexList[lIds[iUVIndex1]].uvs.y*fTexHeight),
+        static_cast<int>((lVertexList[lIds[iUVIndex2]].uvs.x - lVertexList[lIds[iUVIndex1]].uvs.x)*fTexWidth),
+        static_cast<int>((lVertexList[lIds[iUVIndex2]].uvs.y - lVertexList[lIds[iUVIndex1]].uvs.y)*fTexHeight)
     };
 
+    const int iCenterX = static_cast<int>((lVertexList[0].pos.x + lVertexList[2].pos.x)/2.0f);
+    const int iCenterY = static_cast<int>((lVertexList[0].pos.y + lVertexList[2].pos.y)/2.0f);
+
+    mData.mDestQuad.x = iCenterX - iWidth/2;
+    mData.mDestQuad.y = iCenterY - iHeight/2;
+    mData.mDestQuad.w = iWidth;
+    mData.mDestQuad.h = iHeight;
+
+    return mData;
+}
+
+void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
+    const std::array<vertex,4>& lVertexList) const
+{
     if (pMat->get_type() == sdl::material::type::TEXTURE)
     {
         const float fTexWidth = pMat->get_real_width();
         const float fTexHeight = pMat->get_real_height();
 
-        // Note: SDL only supports axis-aligned rects for UV coordinates
-        const SDL_Rect mSrcQuad = {
-            static_cast<int>(mQuad.v[0].uvs.x*fTexWidth),
-            static_cast<int>(mQuad.v[0].uvs.y*fTexHeight),
-            static_cast<int>((mQuad.v[2].uvs.x - mQuad.v[0].uvs.x)*fTexWidth),
-            static_cast<int>((mQuad.v[2].uvs.y - mQuad.v[0].uvs.y)*fTexHeight)
-        };
+        const sdl_render_data mData = make_rects(lVertexList, fTexWidth, fTexHeight);
 
-        if (mQuad.v[0].col == mQuad.v[1].col && mQuad.v[0].col == mQuad.v[2].col &&
-            mQuad.v[0].col == mQuad.v[3].col)
+        if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
+            lVertexList[0].col == lVertexList[3].col)
         {
-            const auto mColor = mQuad.v[0].col;
+            const auto mColor = lVertexList[0].col;
 
             SDL_SetTextureColorMod(pMat->get_texture(),
                 mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255);
             SDL_SetTextureAlphaMod(pMat->get_texture(), mColor.a*255);
 
-            SDL_RenderCopy(pRenderer_, pMat->get_texture(), &mSrcQuad, &mDestQuad);
+            SDL_RenderCopyEx(pRenderer_, pMat->get_texture(), &mData.mSrcQuad, &mData.mDestQuad,
+                mData.dAngle, nullptr, mData.mFlip);
         }
         else
         {
@@ -107,11 +261,19 @@ void renderer::render_quad(const quad& mQuad) const
     }
     else
     {
-        if (mQuad.v[0].col == mQuad.v[1].col && mQuad.v[0].col == mQuad.v[2].col &&
-            mQuad.v[0].col == mQuad.v[3].col)
+        // Note: SDL only supports axis-aligned rects for quad shapes
+        const SDL_Rect mDestQuad = {
+            static_cast<int>(lVertexList[0].pos.x),
+            static_cast<int>(lVertexList[0].pos.y),
+            static_cast<int>(lVertexList[2].pos.x - lVertexList[0].pos.x),
+            static_cast<int>(lVertexList[2].pos.y - lVertexList[0].pos.y)
+        };
+
+        if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
+            lVertexList[0].col == lVertexList[3].col)
         {
             // Same color for all vertices
-            const auto& mColor = mQuad.v[0].col * pMat->get_color();
+            const auto& mColor = lVertexList[0].col * pMat->get_color();
             SDL_SetRenderDrawBlendMode(pRenderer_,
                 (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
             SDL_SetRenderDrawColor(pRenderer_,
@@ -125,10 +287,10 @@ void renderer::render_quad(const quad& mQuad) const
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
             const color lColorQuad[4] = {
-                premultiply_alpha(mQuad.v[0].col * pMat->get_color()),
-                premultiply_alpha(mQuad.v[1].col * pMat->get_color()),
-                premultiply_alpha(mQuad.v[2].col * pMat->get_color()),
-                premultiply_alpha(mQuad.v[3].col * pMat->get_color())
+                premultiply_alpha(lVertexList[0].col * pMat->get_color()),
+                premultiply_alpha(lVertexList[1].col * pMat->get_color()),
+                premultiply_alpha(lVertexList[2].col * pMat->get_color()),
+                premultiply_alpha(lVertexList[3].col * pMat->get_color())
             };
 
             sdl::material pTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);
@@ -150,54 +312,20 @@ void renderer::render_quad(const quad& mQuad) const
     }
 }
 
+void renderer::render_quad(const quad& mQuad) const
+{
+    std::shared_ptr<sdl::material> pMat = std::static_pointer_cast<sdl::material>(mQuad.mat);
+
+    render_quad(pMat, mQuad.v);
+}
+
 void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     std::shared_ptr<sdl::material> pMat = std::static_pointer_cast<sdl::material>(mQuad.mat);
 
     for (uint k = 0; k < lQuadList.size(); ++k)
     {
-        const auto& lVertexList = lQuadList[k];
-
-        // Note: SDL only supports axis-aligned rects for quad shapes
-        const SDL_Rect mDestQuad = {
-            static_cast<int>(lVertexList[0].pos.x),
-            static_cast<int>(lVertexList[0].pos.y),
-            static_cast<int>(lVertexList[2].pos.x - lVertexList[0].pos.x),
-            static_cast<int>(lVertexList[2].pos.y - lVertexList[0].pos.y)
-        };
-
-        if (pMat->get_type() == sdl::material::type::TEXTURE)
-        {
-            const float fTexWidth = pMat->get_real_width();
-            const float fTexHeight = pMat->get_real_height();
-
-            // Note: SDL only supports axis-aligned rects for UV coordinates
-            const SDL_Rect mSrcQuad = {
-                static_cast<int>(lVertexList[0].uvs.x*fTexWidth),
-                static_cast<int>(lVertexList[0].uvs.y*fTexHeight),
-                static_cast<int>((lVertexList[2].uvs.x - lVertexList[0].uvs.x)*fTexWidth),
-                static_cast<int>((lVertexList[2].uvs.y - lVertexList[0].uvs.y)*fTexHeight)
-            };
-
-            // Note: SDL does not support per-vertex color; just use the first vertex.
-            const auto& mColor = lVertexList[0].col;
-
-            SDL_SetTextureColorMod(pMat->get_texture(),
-                mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255);
-            SDL_SetTextureAlphaMod(pMat->get_texture(), mColor.a*255);
-
-            SDL_RenderCopy(pRenderer_, pMat->get_texture(), &mSrcQuad, &mDestQuad);
-        }
-        else
-        {
-            // Note: SDL does not support per-vertex color; just use the first vertex.
-            const auto mColor = lVertexList[0].col * pMat->get_color();
-
-            SDL_SetRenderDrawColor(pRenderer_,
-                mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255, mColor.a*255);
-
-            SDL_RenderFillRect(pRenderer_, &mDestQuad);
-        }
+        render_quad(pMat, lQuadList[k]);
     }
 }
 

@@ -15,6 +15,8 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
+    class material;
+
     /// SDL implementation of rendering
     class renderer : public gui::renderer_impl
     {
@@ -30,6 +32,15 @@ namespace sdl
 
         /// Ends rendering.
         void end() const override;
+
+        /// Renders a quad from a material and array of vertices.
+        /** \param pMat        The material to use to to render the quad
+        *   \param lVertexList The lsit of 4 vertices making up the quad
+        *   \note This function is meant to be called between begin() and
+        *         end() only.
+        */
+        void render_quad(std::shared_ptr<sdl::material> pMat,
+            const std::array<vertex,4>& lVertexList) const;
 
         /// Renders a quad.
         /** \param mQuad The quad to render on the current render target
