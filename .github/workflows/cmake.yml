@@ -31,7 +31,9 @@ jobs:
 
     - name: Get Linux dependencies
       if: runner.os == 'Linux'
-      run: sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
 
     - name: Setup Linux compiler
       if: runner.os == 'Linux'
