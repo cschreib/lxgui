@@ -61,6 +61,8 @@
     #if defined(MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
+#elif defined(WASM)
+    #include <emscripten.h>
 #endif
 
 #include <fstream>
@@ -69,12 +71,198 @@
 #include <thread>
 
 using namespace lxgui;
+using timing_clock = std::chrono::high_resolution_clock;
+
+struct main_loop_context
+{
+    bool bRunning = true;
+    bool bFocus = true;
+    float fDelta = 0.1f;
+    timing_clock::time_point mPrevTime;
+    timing_clock::time_point mFirstTime;
+    uint uiFrameCount = 0;
+
+    gui::manager* pManager = nullptr;
+
+#if defined(SDL_GUI)
+    SDL_Renderer* pRenderer = nullptr;
+#elif defined(SFML_GUI)
+    sf::RenderWindow* pWindow = nullptr;
+#endif
+};
+
+void main_loop(void* pTypeErasedData)
+{
+#if defined(WASM)
+    try
+    {
+#endif
+
+    main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
+
+    input::manager* pInputMgr = mContext.pManager->get_input_manager();
+
+#if defined(SDL_GUI) || defined(GLSDL_GUI)
+    // Get events from SDL
+    SDL_Event mEvent;
+    while (SDL_PollEvent(&mEvent))
+    {
+        if (mEvent.type == SDL_WINDOWEVENT)
+        {
+            if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                mContext.bRunning = false;
+            else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                mContext.bFocus = false;
+            else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                mContext.bFocus = true;
+        }
+        else if (mEvent.type == SDL_KEYUP)
+        {
+            // This uses events straight from SDL, but the GUI may want to
+            // capture some of them (for example: the user is typing in an edit_box).
+            // Therefore, before we can react to these events, we must check that
+            // the input isn't being "focussed":
+            if (!pInputMgr->is_keyboard_focused())
+            {
+                switch (mEvent.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        mContext.bRunning = false;
+                        break;
+                    case SDLK_p:
+                        gui::out << mContext.pManager->print_ui() << std::endl;
+                        break;
+                    case SDLK_k:
+                        gui::out << "###" << std::endl;
+                        break;
+                    case SDLK_c:
+                        mContext.pManager->enable_caching(!mContext.pManager->is_caching_enabled());
+                        break;
+                    case SDLK_r:
+                        mContext.pManager->reload_ui();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        static_cast<input::sdl::source*>(pInputMgr->get_source())->on_sdl_event(mEvent);
+    }
+#elif defined(SFML_GUI) || defined(GLSFML_GUI)
+    // Get events from SFML
+    sf::Event mEvent;
+    while (mContext.pWindow->pollEvent(mEvent))
+    {
+        if (mEvent.type      == sf::Event::Closed)
+            mContext.bRunning = false;
+        else if (mEvent.type == sf::Event::LostFocus)
+            mContext.bFocus = false;
+        else if (mEvent.type == sf::Event::GainedFocus)
+            mContext.bFocus = true;
+        else if (mEvent.type == sf::Event::KeyReleased)
+        {
+            // This uses events straight from SFML, but the GUI may want to
+            // capture some of them (for example: the user is typing in an edit_box).
+            // Therefore, before we can react to these events, we must check that
+            // the input isn't being "focussed":
+            if (!pInputMgr->is_keyboard_focused())
+            {
+                switch (mEvent.key.code)
+                {
+                    case sf::Keyboard::Key::Escape:
+                        mContext.bRunning = false;
+                        break;
+                    case sf::Keyboard::Key::P:
+                        gui::out << mContext.pManager->print_ui() << std::endl;
+                        break;
+                    case sf::Keyboard::Key::K:
+                        gui::out << "###" << std::endl;
+                        break;
+                    case sf::Keyboard::Key::C:
+                        mContext.pManager->enable_caching(!mContext.pManager->is_caching_enabled());
+                        break;
+                    case sf::Keyboard::Key::R:
+                        mContext.pManager->reload_ui();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
+    }
+#endif
+
+    // Check if WORLD input is allowed
+    if (pInputMgr->can_receive_input("WORLD"))
+    {
+        // Process mouse and click events in the game...
+    }
+
+    if (!mContext.bFocus)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
+    }
+
+    // Update the gui
+    mContext.pManager->update(mContext.fDelta);
+
+    // Clear the window
+#if defined(GLSFML_GUI) || defined(GLSDL_GUI)
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+#elif defined(SDL_GUI)
+    SDL_SetRenderDrawColor(mContext.pRenderer, 50, 50, 50, 255);
+    SDL_RenderClear(mContext.pRenderer);
+#elif defined(SFML_GUI)
+    mContext.pWindow->clear(sf::Color(51,51,51));
+#endif
+
+    // Render the gui
+    mContext.pManager->render_ui();
+
+    // Display the window
+#if defined(SDL_GUI) || defined(GLSDL_GUI)
+    SDL_RenderPresent(mContext.pRenderer);
+#elif defined(SFML_GUI) || defined(GLSFML_GUI)
+    mContext.pWindow->display();
+#endif
+
+    timing_clock::time_point mCurrentTime = timing_clock::now();
+    mContext.fDelta = std::chrono::duration_cast<std::chrono::microseconds>(
+        mCurrentTime - mContext.mPrevTime).count() / 1e6;
+    mContext.mPrevTime = mCurrentTime;
+
+    ++mContext.uiFrameCount;
+
+#if defined(WASM)
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+        emscripten_cancel_main_loop();
+        return;
+    }
+    catch (...)
+    {
+        std::cout << "# Error # : Unhandled exception !" << std::endl;
+        emscripten_cancel_main_loop();
+        return;
+    }
+#endif
+}
 
 int main(int argc, char* argv[])
 {
+#if !defined(WASM)
+    // Redirect output from the standard output to a file
     std::fstream mLogCout("cout.txt", std::ios::out);
     auto* pOldBuffer = std::cout.rdbuf();
     std::cout.rdbuf(mLogCout.rdbuf());
+#endif
 
     try
     {
@@ -94,9 +282,14 @@ int main(int argc, char* argv[])
             sLocale        = mLua.get_global_string("locale",     false, "enGB");
         }
 
+    #if defined(WASM)
+        // Redirect output from the gui library to the standard output
+        gui::out.rdbuf(std::cout.rdbuf());
+    #else
         // Redirect output from the gui library to a log file
         std::fstream mGUI("gui.txt", std::ios::out);
         gui::out.rdbuf(mGUI.rdbuf());
+    #endif
 
         // Create a window
         std::cout << "Creating window..." << std::endl;
@@ -296,157 +489,32 @@ int main(int argc, char* argv[])
         pFrame->notify_loaded();
 
         // Start the main loop
-        using clock = std::chrono::high_resolution_clock;
-        bool bRunning = true;
-        bool bFocus = true;
-        float fDelta = 0.1f;
-        clock::time_point mPrevTime = clock::now();
-        const clock::time_point mFirstTime = mPrevTime;
-        uint uiFrameCount = 0;
 
-        input::manager* pInputMgr = pManager->get_input_manager();
+        main_loop_context mContext;
+        mContext.mPrevTime = timing_clock::now();
+        mContext.mFirstTime = mContext.mPrevTime;
+        mContext.pManager = pManager.get();
+
+    #if defined(SDL_GUI)
+        mContext.pRenderer = pRenderer.get();
+    #elif defined(SFML_GUI)
+        mContext.pWindow = &mWindow;
+    #endif
 
         std::cout << "Entering loop..." << std::endl;
-        while (bRunning)
+
+    #if defined(WASM)
+        emscripten_set_main_loop_arg(main_loop, &mContext, -1, 1);
+    #else
+        while (mContext.bRunning)
         {
-        #if defined(SDL_GUI) || defined(GLSDL_GUI)
-            // Get events from SDL
-            SDL_Event mEvent;
-            while (SDL_PollEvent(&mEvent))
-            {
-                if (mEvent.type == SDL_WINDOWEVENT)
-                {
-                    if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
-                        bRunning = false;
-                    else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-                        bFocus = false;
-                    else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-                        bFocus = true;
-                }
-                else if (mEvent.type == SDL_KEYUP)
-                {
-                    // This uses events straight from SDL, but the GUI may want to
-                    // capture some of them (for example: the user is typing in an edit_box).
-                    // Therefore, before we can react to these events, we must check that
-                    // the input isn't being "focussed":
-                    if (!pInputMgr->is_keyboard_focused())
-                    {
-                        switch (mEvent.key.keysym.sym)
-                        {
-                            case SDLK_ESCAPE:
-                                bRunning = false;
-                                break;
-                            case SDLK_p:
-                                gui::out << pManager->print_ui() << std::endl;
-                                break;
-                            case SDLK_k:
-                                gui::out << "###" << std::endl;
-                                break;
-                            case SDLK_c:
-                                pManager->enable_caching(!pManager->is_caching_enabled());
-                                break;
-                            case SDLK_r:
-                                pManager->reload_ui();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-
-                static_cast<input::sdl::source*>(pInputMgr->get_source())->on_sdl_event(mEvent);
-            }
-        #elif defined(SFML_GUI) || defined(GLSFML_GUI)
-            // Get events from SFML
-            sf::Event mEvent;
-            while (mWindow.pollEvent(mEvent))
-            {
-                if (mEvent.type      == sf::Event::Closed)
-                    bRunning = false;
-                else if (mEvent.type == sf::Event::LostFocus)
-                    bFocus = false;
-                else if (mEvent.type == sf::Event::GainedFocus)
-                    bFocus = true;
-                else if (mEvent.type == sf::Event::KeyReleased)
-                {
-                    // This uses events straight from SFML, but the GUI may want to
-                    // capture some of them (for example: the user is typing in an edit_box).
-                    // Therefore, before we can react to these events, we must check that
-                    // the input isn't being "focussed":
-                    if (!pInputMgr->is_keyboard_focused())
-                    {
-                        switch (mEvent.key.code)
-                        {
-                            case sf::Keyboard::Key::Escape:
-                                bRunning = false;
-                                break;
-                            case sf::Keyboard::Key::P:
-                                gui::out << pManager->print_ui() << std::endl;
-                                break;
-                            case sf::Keyboard::Key::K:
-                                gui::out << "###" << std::endl;
-                                break;
-                            case sf::Keyboard::Key::C:
-                                pManager->enable_caching(!pManager->is_caching_enabled());
-                                break;
-                            case sf::Keyboard::Key::R:
-                                pManager->reload_ui();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-
-                static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
-            }
-        #endif
-
-            // Check if WORLD input is allowed
-            if (pInputMgr->can_receive_input("WORLD"))
-            {
-                // Process mouse and click events in the game...
-            }
-
-            if (!bFocus)
-            {
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                continue;
-            }
-
-            // Update the gui
-            pManager->update(fDelta);
-
-            // Clear the window
-        #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
-            glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-        #elif defined(SDL_GUI)
-            SDL_SetRenderDrawColor(pRenderer.get(), 50, 50, 50, 255);
-            SDL_RenderClear(pRenderer.get());
-        #elif defined(SFML_GUI)
-            mWindow.clear(sf::Color(51,51,51));
-        #endif
-
-            // Render the gui
-            pManager->render_ui();
-
-            // Display the window
-        #if defined(SDL_GUI) || defined(GLSDL_GUI)
-            SDL_RenderPresent(pRenderer.get());
-        #elif defined(SFML_GUI) || defined(GLSFML_GUI)
-            mWindow.display();
-        #endif
-
-            clock::time_point mCurrentTime = clock::now();
-            fDelta = std::chrono::duration_cast<std::chrono::microseconds>(mCurrentTime - mPrevTime).count() / 1e6;
-            mPrevTime = mCurrentTime;
-
-            ++uiFrameCount;
+            main_loop(&mContext);
         }
+    #endif
 
-        float fTotalTime = std::chrono::duration_cast<std::chrono::microseconds>(clock::now() - mFirstTime).count() / 1e6;
-        std::cout << "End of loop, mean FPS : " << uiFrameCount/fTotalTime << std::endl;
+        float fTotalTime = std::chrono::duration_cast<std::chrono::microseconds>(
+            timing_clock::now() - mContext.mFirstTime).count() / 1e6;
+        std::cout << "End of loop, mean FPS : " << mContext.uiFrameCount/fTotalTime << std::endl;
     }
     catch (const std::exception& e)
     {
@@ -461,7 +529,9 @@ int main(int argc, char* argv[])
 
     std::cout << "End of program." << std::endl;
 
+#if !defined(WASM)
     std::cout.rdbuf(pOldBuffer);
+#endif
 
     return 0;
 }
