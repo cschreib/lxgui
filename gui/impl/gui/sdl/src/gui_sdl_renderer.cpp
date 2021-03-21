@@ -8,15 +8,35 @@
 #include <lxgui/utils_string.hpp>
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 namespace lxgui {
 namespace gui {
 namespace sdl
 {
 
-renderer::renderer(SDL_Renderer* pRenderer) : pRenderer_(pRenderer)
+renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRenderer_(pRenderer)
 {
     render_target::check_availability(pRenderer);
+
+    if (bInitialiseSDLImage)
+    {
+        int iImgFlags = IMG_INIT_PNG;
+        if ((IMG_Init(iImgFlags) & iImgFlags) == 0)
+        {
+            throw gui::exception("gui::sdl::renderer", "Could not initialise SDL_image: "+
+                std::string(IMG_GetError())+".");
+        }
+    }
+
+    // Check if we can do pre-multiplied alpha
+    SDL_Texture* pTexture = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_ABGR8888,
+        SDL_TEXTUREACCESS_STREAMING, 4u, 4u);
+
+    bPreMultipliedAlphaSupported_ = (SDL_SetTextureBlendMode(pTexture,
+        (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) == 0);
+
+    SDL_DestroyTexture(pTexture);
 }
 
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
@@ -39,9 +59,12 @@ void renderer::end() const
     pCurrentTarget_ = nullptr;
 }
 
-color premultiply_alpha(const color& mColor)
+color premultiply_alpha(const color& mColor, bool bPreMultipliedAlphaSupported)
 {
-    return color(mColor.r*mColor.a, mColor.g*mColor.a, mColor.b*mColor.a, mColor.a);
+    if (bPreMultipliedAlphaSupported)
+        return color(mColor.r*mColor.a, mColor.g*mColor.a, mColor.b*mColor.a, mColor.a);
+    else
+        return mColor;
 }
 
 color interpolate_color(const color& mColor1, const color& mColor2, float fInterp)
@@ -259,10 +282,20 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
         // Build the source and destination rect, figuring out rotation and flipping
         const sdl_render_data mData = make_rects(lVertexList, fTexWidth, fTexHeight);
 
-        if (SDL_SetTextureBlendMode(pTexture,
-            (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) != 0)
+        if (bPreMultipliedAlphaSupported_)
         {
-            throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
+            if (SDL_SetTextureBlendMode(pTexture,
+                (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) != 0)
+            {
+                throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
+            }
+        }
+        else
+        {
+            if (SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND) != 0)
+            {
+                throw gui::exception("gui::sdl::renderer", "Could not set texture blend mode.");
+            }
         }
 
         if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
@@ -270,14 +303,24 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
         {
             const auto mColor = lVertexList[0].col;
 
-            SDL_SetTextureColorMod(pTexture,
-                mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255);
+            if (bPreMultipliedAlphaSupported_)
+            {
+                SDL_SetTextureColorMod(pTexture,
+                    mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255);
+            }
+            else
+            {
+                SDL_SetTextureColorMod(pTexture, mColor.r*255, mColor.g*255, mColor.b*255);
+            }
+
             SDL_SetTextureAlphaMod(pTexture, mColor.a*255);
 
             if (pMat->get_wrap() == material::wrap::CLAMP ||
                 (mData.mSrcQuad.x >= 0 && mData.mSrcQuad.y >= 0 &&
                 mData.mSrcQuad.x + mData.mSrcQuad.w <= iTexWidth &&
-                mData.mSrcQuad.y + mData.mSrcQuad.h <= iTexHeight))
+                mData.mSrcQuad.y + mData.mSrcQuad.h <= iTexHeight) ||
+                ((iTexHeight == 1 || mData.mDestQuad.h == 1) &&
+                (iTexWidth == 1 || mData.mDestQuad.w == 1)))
             {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(pRenderer_, pTexture, &mData.mSrcQuad, &mData.mDestQuad,
@@ -369,10 +412,20 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
         {
             // Same color for all vertices
             const auto& mColor = lVertexList[0].col * pMat->get_color();
-            SDL_SetRenderDrawBlendMode(pRenderer_,
-                (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
-            SDL_SetRenderDrawColor(pRenderer_,
-                mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255, mColor.a*255);
+            if (bPreMultipliedAlphaSupported_)
+            {
+                SDL_SetRenderDrawBlendMode(pRenderer_,
+                    (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode());
+                SDL_SetRenderDrawColor(pRenderer_,
+                    mColor.r*mColor.a*255, mColor.g*mColor.a*255, mColor.b*mColor.a*255,
+                    mColor.a*255);
+            }
+            else
+            {
+                SDL_SetRenderDrawBlendMode(pRenderer_, SDL_BLENDMODE_BLEND);
+                SDL_SetRenderDrawColor(pRenderer_,
+                    mColor.r*255, mColor.g*255, mColor.b*255, mColor.a*255);
+            }
 
             SDL_RenderFillRect(pRenderer_, &mDestQuad);
         }
@@ -382,10 +435,10 @@ void renderer::render_quad(std::shared_ptr<sdl::material> pMat,
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
             const color lColorQuad[4] = {
-                premultiply_alpha(lVertexList[0].col * pMat->get_color()),
-                premultiply_alpha(lVertexList[1].col * pMat->get_color()),
-                premultiply_alpha(lVertexList[2].col * pMat->get_color()),
-                premultiply_alpha(lVertexList[3].col * pMat->get_color())
+                premultiply_alpha(lVertexList[0].col * pMat->get_color(), bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[1].col * pMat->get_color(), bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[2].col * pMat->get_color(), bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[3].col * pMat->get_color(), bPreMultipliedAlphaSupported_)
             };
 
             sdl::material pTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);
@@ -441,7 +494,7 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
     try
     {
         std::shared_ptr<gui::material> pTex = std::make_shared<sdl::material>(
-            pRenderer_, sFileName, material::wrap::REPEAT, mFilter
+            pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
         );
 
         lTextureList_[sFileName] = pTex;
@@ -497,7 +550,8 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
             lFontList_.erase(iter);
     }
 
-    std::shared_ptr<gui::font> pFont = std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize);
+    std::shared_ptr<gui::font> pFont = std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
+        bPreMultipliedAlphaSupported_);
     lFontList_[sFontName] = pFont;
     return pFont;
 }

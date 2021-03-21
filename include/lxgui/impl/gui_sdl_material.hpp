@@ -36,7 +36,8 @@ namespace sdl
     public :
 
         /// Constructor for textures.
-        /** \param uiWidth       The requested texture width
+        /** \param pRenderer     The SDL render to create the material for
+        *   \param uiWidth       The requested texture width
         *   \param uiHeight      The requested texture height
         *   \param bRenderTarget Create the material for a render target or only for display
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
@@ -46,19 +47,14 @@ namespace sdl
             wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
 
         /// Constructor for textures.
-        /** \param pData         The surface data to use as texture
+        /** \param pRenderer     The SDL render to create the material for
+        *   \param sFileName     The file from which the texture data is loaded
+        *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE);
-
-        /// Constructor for textures.
-        /** \param sFileName     The file from which the texture data is loaded
-        *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter       Use texture filtering or not (see set_filter())
-        */
-        material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap mWrap = wrap::REPEAT,
+        material(SDL_Renderer* pRenderer, const std::string& sFileName,
+            bool bPreMultipliedAlphaSupported, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
         /// Constructor for plain colors.
@@ -179,13 +175,6 @@ namespace sdl
 
         /// Stops modifying the texture data and update the texture in GPU memory.
         void unlock_pointer();
-
-        /// Initialises SDL_image library.
-        /** \param bAlreadyInitialised Set to 'true' if SDL_image was already initialised by some
-        *          other class, and doesn't need initialising again.
-        *   \note Calling this function more than once has no effect.
-        */
-        static void initialise_SDL_image(bool bAlreadyInitialised = false);
 
     private:
 

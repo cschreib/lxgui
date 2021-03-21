@@ -14,7 +14,8 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize)
+font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
+    bool bPreMultipliedAlphaSupported)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -157,13 +158,16 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize)
     TTF_CloseFont(pFont);
 
     // Pre-multiply alpha
-    const uint uiArea = uiFinalWidth * uiFinalHeight;
-    for (uint i = 0; i < uiArea; ++i)
+    if (bPreMultipliedAlphaSupported)
     {
-        float a = pTexturePixels[i].a/255.0f;
-        pTexturePixels[i].r *= a;
-        pTexturePixels[i].g *= a;
-        pTexturePixels[i].b *= a;
+        const uint uiArea = uiFinalWidth * uiFinalHeight;
+        for (uint i = 0; i < uiArea; ++i)
+        {
+            float a = pTexturePixels[i].a/255.0f;
+            pTexturePixels[i].r *= a;
+            pTexturePixels[i].g *= a;
+            pTexturePixels[i].b *= a;
+        }
     }
 
     pTexture_->unlock_pointer();

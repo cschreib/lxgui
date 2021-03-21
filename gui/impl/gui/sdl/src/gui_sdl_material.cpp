@@ -12,25 +12,6 @@ namespace gui {
 namespace sdl
 {
 
-void material::initialise_SDL_image(bool bAlreadyInitialised)
-{
-    static bool bSDLImageInitialised = false;
-
-    if (bSDLImageInitialised) return;
-
-    if (!bAlreadyInitialised)
-    {
-        int iImgFlags = IMG_INIT_PNG;
-        if ((IMG_Init(iImgFlags) & iImgFlags) == 0)
-        {
-            throw gui::exception("gui::sdl::material", "Could not initialise SDL_image: "+
-                std::string(IMG_GetError())+".");
-        }
-    }
-
-    bSDLImageInitialised = true;
-}
-
 int material::get_premultiplied_alpha_blend_mode()
 {
     static const SDL_BlendMode mBlend = SDL_ComposeCustomBlendMode(
@@ -44,8 +25,8 @@ int material::get_premultiplied_alpha_blend_mode()
     return (int)mBlend;
 }
 
-material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget,
-    wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
+material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
+    bool bRenderTarget, wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
 {
     SDL_RendererInfo mInfo;
     if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
@@ -92,41 +73,9 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bR
     mTexData.bRenderTarget_ = bRenderTarget;
 }
 
-material::material(SDL_Renderer* pRenderer, SDL_Surface* pSurface, wrap mWrap, filter mFilter) :
-    pRenderer_(pRenderer)
+material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
+    bool bPreMultipliedAlphaSupported, wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
 {
-    const uint uiWidth  = pSurface->w;
-    const uint uiHeight = pSurface->h;
-
-    auto& mTexData = mData_.emplace<texture_data>();
-
-    // Set filtering
-    if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
-    {
-        throw gui::exception("gui::sdl::material", "Could not set filtering hint");
-    }
-
-    mTexData.pTexture_ = SDL_CreateTextureFromSurface(pRenderer, pSurface);
-    if (mTexData.pTexture_ == nullptr)
-    {
-        throw gui::exception("gui::sdl::material", "Could not create texture with dimensions "+
-            utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
-    }
-
-    mTexData.uiWidth_ = uiWidth;
-    mTexData.uiHeight_ = uiHeight;
-    mTexData.mWrap_ = mWrap;
-    mTexData.mFilter_ = mFilter;
-    mTexData.uiRealWidth_ = uiWidth;
-    mTexData.uiRealHeight_ = uiHeight;
-    mTexData.bRenderTarget_ = false;
-}
-
-material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap mWrap,
-    filter mFilter) : pRenderer_(pRenderer)
-{
-    initialise_SDL_image();
-
     auto& mTexData = mData_.emplace<texture_data>();
 
     // Load file
@@ -146,7 +95,8 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     }
 
     // Pre-multiply alpha
-    premultiply_alpha(pConvertedSurface);
+    if (bPreMultipliedAlphaSupported)
+        premultiply_alpha(pConvertedSurface);
 
     const uint uiWidth  = pSurface->w;
     const uint uiHeight = pSurface->h;
@@ -182,7 +132,6 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName, wrap m
     mTexData.uiRealHeight_ = uiHeight;
     mTexData.bRenderTarget_ = false;
 }
-
 
 material::material(SDL_Renderer* pRenderer, const color& mColor) : pRenderer_(pRenderer)
 {

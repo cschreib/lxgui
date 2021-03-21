@@ -23,7 +23,10 @@ namespace sdl
     public :
 
         /// Constructor.
-        explicit renderer(SDL_Renderer* pRenderer);
+        /** \param pRenderer A pre-initialised SDL renderer
+        *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
+        */
+        explicit renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage);
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -97,6 +100,7 @@ namespace sdl
     private :
 
         SDL_Renderer* pRenderer_ = nullptr;
+        bool bPreMultipliedAlphaSupported_ = false;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;

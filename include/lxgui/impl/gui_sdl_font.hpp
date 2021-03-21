@@ -29,10 +29,13 @@ namespace sdl
     public :
 
         /// Constructor.
-        /** \param sFontFile The name of the font file to read
+        /** \param pRenderer The SDL render to create the font for
+        *   \param sFontFile The name of the font file to read
         *   \param uiSize    The requested size in pixels of the font
+        *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         */
-        font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize);
+        font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
+            bool bPreMultipliedAlphaSupported);
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
