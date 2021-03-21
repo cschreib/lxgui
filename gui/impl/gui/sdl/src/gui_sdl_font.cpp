@@ -80,8 +80,14 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
     fTextureHeight_ = static_cast<float>(uiFinalHeight);
 
     pTexture_ = std::make_shared<sdl::material>(pRenderer, uiFinalWidth, uiFinalHeight);
-    ub32color* pTexturePixels = pTexture_->lock_pointer();
-    std::fill(pTexturePixels, pTexturePixels + uiFinalWidth * uiFinalHeight, ub32color(0,0,0,0));
+    int iTextureRealWidth = (int)pTexture_->get_real_width();
+    int iTextureRealHeight = (int)pTexture_->get_real_height();
+
+    int iPitch = 0;
+    ub32color* pTexturePixels = pTexture_->lock_pointer(&iPitch);
+    iPitch /= sizeof(ub32color);
+
+    std::fill(pTexturePixels, pTexturePixels + iPitch * iTextureRealHeight, ub32color(0,0,0,0));
 
     lCharacterList_.resize(uiMaxChar + 1);
 
@@ -115,29 +121,39 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
             continue;
         }
 
+        if (pGlyphSurface->format->format != SDL_PIXELFORMAT_ARGB8888)
+        {
+            throw gui::exception("gui::sdl::font", "SDL_ttf output format is not ARGB8888 (got "+
+                utils::to_string(pGlyphSurface->format->format)+")");
+        }
+
         const uint uiGlyphWidth = pGlyphSurface->w;
         const uint uiGlyphHeight = pGlyphSurface->h;
 
         uiLineMaxHeight = std::max(uiLineMaxHeight, uiGlyphHeight);
 
         // If at end of row, jump to next line
-        if (x + uiGlyphWidth > uiFinalWidth - 1)
+        if (x + uiGlyphWidth > (uint)iTextureRealWidth - 1)
         {
             y += uiLineMaxHeight + uiSpacing;
             x = 0;
         }
 
+        // SDL_ttf outputs glyphs in BGRA (little-endian) and we use RGBA;
+        // this is fine because we always render glyphs in white, and don't care about
+        // the color information.
         ub32color* pGlyphPixels = reinterpret_cast<ub32color*>(pGlyphSurface->pixels);
+        int iGlyphPitch = pGlyphSurface->pitch/sizeof(ub32color);
         for (uint j = 0; j < uiGlyphHeight; ++j)
-        for (uint i = 0; i < uiGlyphWidth; ++i, ++pGlyphPixels)
-            pTexturePixels[x + i + (y + j) * uiFinalWidth] = *pGlyphPixels;
+        for (uint i = 0; i < uiGlyphWidth; ++i)
+            pTexturePixels[x + i + (y + j)*iPitch] = pGlyphPixels[i + j*iGlyphPitch];
 
         SDL_FreeSurface(pGlyphSurface);
 
-        mCI.mUVs.left   = x/float(uiFinalWidth);
-        mCI.mUVs.top    = y/float(uiFinalHeight);
-        mCI.mUVs.right  = (x + iAdvance)/float(uiFinalWidth);
-        mCI.mUVs.bottom = (y + uiGlyphHeight)/float(uiFinalHeight);
+        mCI.mUVs.left   = x/float(iTextureRealWidth);
+        mCI.mUVs.top    = y/float(iTextureRealHeight);
+        mCI.mUVs.right  = (x + iAdvance)/float(iTextureRealWidth);
+        mCI.mUVs.bottom = (y + uiGlyphHeight)/float(iTextureRealHeight);
 
         lCharacterList_[cp] = mCI;
 
@@ -150,7 +166,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
     if (TTF_GlyphMetrics(pFont, 32, &iMinX, &iMaxX, &iMinY, &iMaxY, &iAdvance) == 0)
     {
         lCharacterList_[32].mUVs.left = 0.0f;
-        lCharacterList_[32].mUVs.right = iAdvance/float(uiFinalWidth);
+        lCharacterList_[32].mUVs.right = iAdvance/float(iTextureRealWidth);
         lCharacterList_[9].mUVs.left = 0.0f;
         lCharacterList_[9].mUVs.right = 4.0f*lCharacterList_[32].mUVs.right;
     }
@@ -160,7 +176,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
     // Pre-multiply alpha
     if (bPreMultipliedAlphaSupported)
     {
-        const uint uiArea = uiFinalWidth * uiFinalHeight;
+        const uint uiArea = iTextureRealWidth * iTextureRealHeight;
         for (uint i = 0; i < uiArea; ++i)
         {
             float a = pTexturePixels[i].a/255.0f;

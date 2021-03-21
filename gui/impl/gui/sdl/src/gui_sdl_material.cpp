@@ -64,12 +64,17 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
             utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
     }
 
+    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    Uint32 uiTextureFormat = 0;
+    SDL_QueryTexture(mTexData.pTexture_, &uiTextureFormat, &iAccess,
+        &iTextureRealWidth, &iTextureRealHeight);
+
     mTexData.uiWidth_ = uiWidth;
     mTexData.uiHeight_ = uiHeight;
     mTexData.mWrap_ = mWrap;
     mTexData.mFilter_ = mFilter;
-    mTexData.uiRealWidth_ = uiWidth;
-    mTexData.uiRealHeight_ = uiHeight;
+    mTexData.uiRealWidth_ = iTextureRealWidth;
+    mTexData.uiRealHeight_ = iTextureRealHeight;
     mTexData.bRenderTarget_ = bRenderTarget;
 }
 
@@ -124,12 +129,17 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
     unlock_pointer();
 
+    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    Uint32 uiTextureFormat = 0;
+    SDL_QueryTexture(mTexData.pTexture_, &uiTextureFormat, &iAccess,
+        &iTextureRealWidth, &iTextureRealHeight);
+
     mTexData.uiWidth_ = uiWidth;
     mTexData.uiHeight_ = uiHeight;
     mTexData.mWrap_ = mWrap;
     mTexData.mFilter_ = mFilter;
-    mTexData.uiRealWidth_ = uiWidth;
-    mTexData.uiRealHeight_ = uiHeight;
+    mTexData.uiRealWidth_ = iTextureRealWidth;
+    mTexData.uiRealHeight_ = iTextureRealHeight;
     mTexData.bRenderTarget_ = false;
 }
 
@@ -292,7 +302,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
 }
 
-ub32color* material::lock_pointer()
+ub32color* material::lock_pointer(int* pPitch)
 {
     if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
 
@@ -302,6 +312,8 @@ ub32color* material::lock_pointer()
     {
         throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
     }
+
+    if (pPitch) *pPitch = iPitch;
 
     return reinterpret_cast<ub32color*>(pPixelData);
 }
