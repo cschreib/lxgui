@@ -33,17 +33,17 @@ jobs:
       run: cmake -E make_directory ${{github.workspace}}/build
 
     - name: Get Linux dependencies
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
       run: |
         sudo apt-get update
         sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
 
     - name: Setup Linux compiler
-      if: runner.os == 'Linux'
+      if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
       run: export CXX=${{matrix.platform.compiler}}
 
     - name: Setup Emscripten cache
-      if: ${{matrix.platform.compiler}} == 'em++'
+      if: matrix.platform.compiler == 'em++'
       id: cache-system-libraries
       uses: actions/cache@v2
       with:
@@ -51,7 +51,7 @@ jobs:
         key: ${{env.EM_VERSION}}-${{ runner.os }}
 
     - name: Setup Emscripten
-      if: ${{matrix.platform.compiler}} == 'em++'
+      if: matrix.platform.compiler == 'em++'
       uses: mymindstorm/setup-emsdk@v7
       with:
         version: ${{env.EM_VERSION}}
