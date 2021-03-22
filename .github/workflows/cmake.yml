@@ -95,7 +95,7 @@ jobs:
          cp lxgui-test.* demo/
 
     - name: Publish
-      if: matrix.platform.compiler == 'em++' && contains(github.ref, "master")
+      if: matrix.platform.compiler == 'em++' && github.ref == 'ref/head/master'
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
