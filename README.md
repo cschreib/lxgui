@@ -11,6 +11,8 @@ There are plenty of different GUI libraries out there. They all have something t
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 * **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
 
+A WebAssembly live demo is accessible [here](https://cschreib.github.io/lxgui/demo/lxgui-test.html).
+
 ![Sample screenshot](/gui/test/expected.png)
 
 In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
