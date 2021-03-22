@@ -365,54 +365,54 @@ $(function() {
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#ad29237d5e5e75053c1c0deacc77893f7">set_color</a>(mGradient_.<a class="code" href="classlxgui_1_1gui_1_1gradient.html#a5bb4ca519a7b53f8048a73b3562333c4">get_max_color</a>(), 3);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    }</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;}</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">  300</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">texture::set_tex_coord</a>(<span class="keyword">const</span> std::array&lt;float,4&gt;&amp; lCoordinates)</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;{</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">if</span> (bHasSprite_)</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a796debb221a705a433093ddafd0287df">set_texture_rect</a>(lCoordinates, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        lTexCoord_ = mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a551538a2bbfbb40ee844d1603bfb050f">get_texture_coords</a>(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    }</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    {</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.back() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;Trying to call set_tex_coord on an uninitialized texture : &quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    }</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;}</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00315"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#a7cde13b184aed5008fdf7b0c7b005514">  315</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">texture::set_tex_coord</a>(<span class="keyword">const</span> std::array&lt;float,8&gt;&amp; lCoordinates)</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;{</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keywordflow">if</span> (bHasSprite_)</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    {</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a996b7b4f8ea254402316791e98b8ff94">set_texture_coords</a>(lCoordinates, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        lTexCoord_ = lCoordinates;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    }</div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    {</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.back() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;Trying to call set_tex_coord on an uninitialized texture : &quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;}</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">  330</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">texture::set_tex_coord_modifies_rect</a>(<span class="keywordtype">bool</span> bTexCoordModifiesRect)</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;{</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    <span class="keywordflow">if</span> (bTexCoordModifiesRect_ != bTexCoordModifiesRect)</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    {</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        bTexCoordModifiesRect_ = bTexCoordModifiesRect;</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    }</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;}</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
-<div class="line"><a name="l00339"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">  339</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">texture::set_texture</a>(<span class="keyword">const</span> std::string&amp; sFile)</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;{</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;    mGradient_ = <a class="code" href="classlxgui_1_1gui_1_1gradient.html">gradient</a>();</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    mColor_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    sTextureFile_ = sFile;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    bHasSprite_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;}</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00301"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">  301</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">texture::set_tex_coord</a>(<span class="keyword">const</span> std::array&lt;float,4&gt;&amp; lCoordinates)</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;{</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordflow">if</span> (bHasSprite_)</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    {</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a796debb221a705a433093ddafd0287df">set_texture_rect</a>(lCoordinates, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        lTexCoord_ = mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a551538a2bbfbb40ee844d1603bfb050f">get_texture_coords</a>(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    }</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    {</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.back() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;Trying to call set_tex_coord on an uninitialized texture : &quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    }</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#a7cde13b184aed5008fdf7b0c7b005514">  316</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">texture::set_tex_coord</a>(<span class="keyword">const</span> std::array&lt;float,8&gt;&amp; lCoordinates)</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;{</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordflow">if</span> (bHasSprite_)</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    {</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a996b7b4f8ea254402316791e98b8ff94">set_texture_coords</a>(lCoordinates, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        lTexCoord_ = lCoordinates;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    }</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;    {</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; <span class="stringliteral">&quot;gui::&quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5c11de52e116dee9dc1e51f2a8fa1587">lType_</a>.back() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;            &lt;&lt; <span class="stringliteral">&quot;Trying to call set_tex_coord on an uninitialized texture : &quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a> &lt;&lt; <span class="stringliteral">&quot;.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    }</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">  331</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">texture::set_tex_coord_modifies_rect</a>(<span class="keywordtype">bool</span> bTexCoordModifiesRect)</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;{</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="keywordflow">if</span> (bTexCoordModifiesRect_ != bTexCoordModifiesRect)</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    {</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        bTexCoordModifiesRect_ = bTexCoordModifiesRect;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
+<div class="line"><a name="l00340"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">  340</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">texture::set_texture</a>(<span class="keyword">const</span> std::string&amp; sFile)</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;{</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    mGradient_ = <a class="code" href="classlxgui_1_1gui_1_1gradient.html">gradient</a>();</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    mColor_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    sTextureFile_ = sFile;</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    bHasSprite_ = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
 <div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordflow">if</span> (sTextureFile_.empty())</div>
@@ -482,8 +482,8 @@ $(function() {
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    <span class="keyword">auto</span>* pTopLevelRenderer = <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a8789fadb2498dd40f1d95ead6aef2505">get_top_level_renderer</a>();</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    mSprite_ = pTopLevelRenderer-&gt;create_sprite(</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        pTopLevelRenderer-&gt;create_material(mColor), 256, 256);</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    bHasSprite_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    bHasSprite_ = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">notify_renderer_need_redraw</a>();</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;}</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
@@ -579,12 +579,12 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ac079923e86bf1256b17f12097b263332"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ac079923e86bf1256b17f12097b263332">lxgui::gui::texture::get_vertex_color</a></div><div class="ttdeci">color get_vertex_color() const</div><div class="ttdoc">Returns this textures's vertex color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00160">gui_texture.cpp:160</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html">lxgui::gui::texture</a></div><div class="ttdoc">A layered_region that can draw images and colored rectangles.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8hpp_source.html#l00016">gui_texture.hpp:16</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_aace874cf9d02ce047a933cde4296607f"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">lxgui::gui::texture::set_tex_coord</a></div><div class="ttdeci">void set_tex_coord(const std::array&lt; float, 4 &gt; &amp;lCoordinates)</div><div class="ttdoc">Sets this texture's texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00300">gui_texture.cpp:300</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_aace874cf9d02ce047a933cde4296607f"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#aace874cf9d02ce047a933cde4296607f">lxgui::gui::texture::set_tex_coord</a></div><div class="ttdeci">void set_tex_coord(const std::array&lt; float, 4 &gt; &amp;lCoordinates)</div><div class="ttdoc">Sets this texture's texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00301">gui_texture.cpp:301</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a4717ba4b7fe0d9da695349f142840e3d"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">lxgui::gui::texture::set_tex_coord_modifies_rect</a></div><div class="ttdeci">void set_tex_coord_modifies_rect(bool bTexCoordModifiesRect)</div><div class="ttdoc">Sets whether this texture's dimensions are affected by texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00330">gui_texture.cpp:330</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a4717ba4b7fe0d9da695349f142840e3d"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a4717ba4b7fe0d9da695349f142840e3d">lxgui::gui::texture::set_tex_coord_modifies_rect</a></div><div class="ttdeci">void set_tex_coord_modifies_rect(bool bTexCoordModifiesRect)</div><div class="ttdoc">Sets whether this texture's dimensions are affected by texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00331">gui_texture.cpp:331</a></div></div>
 <div class="ttc" id="agui__rendertarget_8hpp_html"><div class="ttname"><a href="gui__rendertarget_8hpp.html">gui_rendertarget.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_a61087abd47b04a2115158d51de211036"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036">lxgui::gui::texture::blend_mode</a></div><div class="ttdeci">blend_mode</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8hpp_source.html#l00020">gui_texture.hpp:20</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ae35d367ac41dde4a7561a3218b9169fc"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">lxgui::gui::texture::set_texture</a></div><div class="ttdeci">void set_texture(const std::string &amp;sFile)</div><div class="ttdoc">Sets this texture's texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00339">gui_texture.cpp:339</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1texture_html_ae35d367ac41dde4a7561a3218b9169fc"><div class="ttname"><a href="classlxgui_1_1gui_1_1texture.html#ae35d367ac41dde4a7561a3218b9169fc">lxgui::gui::texture::set_texture</a></div><div class="ttdeci">void set_texture(const std::string &amp;sFile)</div><div class="ttdoc">Sets this texture's texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__texture_8cpp_source.html#l00340">gui_texture.cpp:340</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e">lxgui::gui::gradient::orientation::HORIZONTAL</a></div><div class="ttdeci">@ HORIZONTAL</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00047">gui_manager.hpp:47</a></div></div>
@@ -606,7 +606,7 @@ $(function() {
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Mar 15 2021 17:07:40 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Mar 22 2021 08:43:50 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
