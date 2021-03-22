@@ -18,7 +18,7 @@ jobs:
         - { name: Windows 32,   os: windows-latest, compiler: vs2019,  arch: "32", cmakepp: "",        flags: "-DCMAKE_PREFIX_PATH=`pwd` -A Win32"}
         - { name: Windows 64,   os: windows-latest, compiler: vs2019,  arch: "64", cmakepp: "",        flags: "-DCMAKE_PREFIX_PATH=`pwd` -A x64"}
         - { name: MacOS,        os: macos-latest,   compiler: clang++, arch: "64", cmakepp: "",        flags: ""}
-        - { name: WebAsembly,   os: ubuntu-latest,  compiler: em++,    arch: "64", cmakepp: "emcmake", flags: ""}
+        - { name: WebAsembly,   os: ubuntu-latest,  compiler: em++,    arch: "64", cmakepp: "emcmake", flags: "-DCMAKE_PREFIX_PATH=`pwd`"}
 
     name: ${{matrix.platform.name}}
     runs-on: ${{matrix.platform.os}}
@@ -28,15 +28,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-
-    - name: Create Build Environment
-      run: cmake -E make_directory ${{github.workspace}}/build
-
-    - name: Get Linux dependencies
-      if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
-      run: |
-        sudo apt-get update
-        sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
 
     - name: Setup Linux compiler
       if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
@@ -56,6 +47,21 @@ jobs:
       with:
         version: ${{env.EM_VERSION}}
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+
+    - name: Create Build Environment
+      run: cmake -E make_directory ${{github.workspace}}/build
+
+    - name: Get Linux dependencies
+      if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
+      run: |
+        sudo apt-get update
+        sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
+
+    - name: Get Emscripten dependencies
+      if: matrix.platform.compiler != 'em++'
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: unzip ${GITHUB_WORKSPACE}/dependencies/wasm.zip
 
     - name: Get Windows dependencies
       if: runner.os == 'Windows'
