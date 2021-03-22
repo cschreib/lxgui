@@ -4,7 +4,7 @@
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
-* **Platform independence**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: either SFML, or pure OpenGL; for input: SFML only). Builds on Linux, MacOS, and Windows.
+* **Platform independence**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
@@ -15,7 +15,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
 
-The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). The second available rendering backend uses SFML2 for everything, and thus only depends on SFML. For the input back end, your only choice at the moment is to use SFML2.
+The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). The second available rendering backend uses SFML2 for everything, and thus only depends on SFML. The third rendering backend uses SDL for rendering, SDL_tff for font loading and rendering, and SDL_image for texture loading. For the input back end, backends are provided using either SFML2 or SDL.
 
 Here is a brief list of the available widgets:
 
@@ -30,6 +30,7 @@ Here is a brief list of the available widgets:
 * **status_bar**: a frame with a texture that grows depending on some value (typical use : health bars, ...).
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
+
 
 # Getting started
 First, clone the project
@@ -65,10 +66,11 @@ cd lxgui
 git submodule update --init
 ```
 
-# OpenGL setup
+
+# Full SFML setup
 - dnf based distros (Fedora):
 ```
-sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel lua-devel
+sudo dnf install -y SFML-devel
 ```
 
 - apt based distros (Debian, Ubuntu):
@@ -78,13 +80,72 @@ sudo apt install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-d
 
 - OSX:
 ```
-brew install zlib libpng freetype glew
+brew install sfml
 ```
 
 - Windows:
 ```
-vcpkg install zlib libpng freetype glew
+vcpkg install sfml
 ```
+
+
+# Full SDL setup
+- dnf based distros (Fedora):
+```
+sudo dnf install -y SDL2-devel SDL2_image-devel SDL2_ttf-devel
+```
+
+- apt based distros (Debian, Ubuntu):
+```
+sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev
+```
+
+- OSX:
+```
+brew install sdl2 sdl2_ttf sdl2_image
+```
+
+- Windows:
+```
+vcpkg install sdl2 sdl2-ttf sdl2-image
+```
+
+
+# OpenGL + SFML setup
+- dnf based distros (Fedora):
+```
+sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel
+```
+
+- apt based distros (Debian, Ubuntu):
+```
+sudo apt install libsfml-dev libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
+```
+
+- OSX:
+```
+brew install sfml zlib libpng freetype glew
+```
+
+- Windows:
+```
+vcpkg install sfml zlib libpng freetype glew
+```
+
+
+# Webassembly setup
+
+The WebAssembly build only supports the SDL backend (for rendering and input). SDL is already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
+
+With Emscripten installed and sourced in your current terminal, run
+
+```
+mkdir build
+cd build
+emcmake cmake ../
+emmake make
+```
+
 
 # How do I use it? A tutorial.
 
