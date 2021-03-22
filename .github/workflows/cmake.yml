@@ -87,7 +87,7 @@ jobs:
       run: cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package
-      if: matrix.platform.compiler == 'em++' and contains(github.ref, "master")
+      if: matrix.platform.compiler == 'em++' && contains(github.ref, "master")
       shell: bash
       working-directory: ${{github.workspace}}/gui/test/bin
       run: |
@@ -95,7 +95,7 @@ jobs:
          cp lxgui-test.* demo/
 
     - name: Publish
-      if: matrix.platform.compiler == 'em++' and contains(github.ref, "master")
+      if: matrix.platform.compiler == 'em++' && contains(github.ref, "master")
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
