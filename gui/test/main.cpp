@@ -305,7 +305,7 @@ int main(int argc, char* argv[])
                 std::string(SDL_GetError())+".");
         }
 
-        std::uint32_t uiFlags = SDL_WINDOW_OPENGL;
+        std::uint32_t uiFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
         if (bFullScreen) uiFlags |= SDL_WINDOW_FULLSCREEN;
 
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> pWindow(
