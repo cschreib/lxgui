@@ -103,8 +103,8 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     if (bPreMultipliedAlphaSupported)
         premultiply_alpha(pConvertedSurface);
 
-    const uint uiWidth  = pSurface->w;
-    const uint uiHeight = pSurface->h;
+    const uint uiWidth  = pConvertedSurface->w;
+    const uint uiHeight = pConvertedSurface->h;
 
     // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
