@@ -3,16 +3,24 @@
 
 #include <lxgui/gui_exception.hpp>
 
-#ifdef WIN32
-#define NOMINMAX
-#include <windows.h>
+#if defined(WIN32)
+    #define NOMINMAX
+    #include <windows.h>
 #endif
 
-#include <GL/glew.h>
-#ifdef MACOSX
-#include <OpenGL/gl.h>
+#if !defined(WASM)
+    #include <GL/glew.h>
+    #if defined(MACOSX)
+        #include <OpenGL/gl.h>
+    #else
+        #include <GL/gl.h>
+    #endif
 #else
-#include <GL/gl.h>
+    #if defined(MACOSX)
+        #include <OpenGLES/ES3/gl.h>
+    #else
+        #include <GLES3/gl3.h>
+    #endif
 #endif
 
 namespace lxgui {

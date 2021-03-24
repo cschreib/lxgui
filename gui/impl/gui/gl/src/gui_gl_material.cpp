@@ -10,10 +10,18 @@
 #include <windows.h>
 #endif
 
-#ifdef MACOSX
-#include <OpenGL/gl.h>
+#if !defined(WASM)
+    #if defined(MACOSX)
+        #include <OpenGL/gl.h>
+    #else
+        #include <GL/gl.h>
+    #endif
 #else
-#include <GL/gl.h>
+    #if defined(MACOSX)
+        #include <OpenGLES/ES3/gl.h>
+    #else
+        #include <GLES3/gl3.h>
+    #endif
 #endif
 
 #include <cmath>

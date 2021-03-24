@@ -20,7 +20,11 @@ namespace gl
     public :
 
         /// Constructor.
+    #if !defined(WASM)
         explicit renderer(bool bInitGLEW = true);
+    #else
+        explicit renderer();
+    #endif
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
