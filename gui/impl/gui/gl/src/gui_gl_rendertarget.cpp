@@ -150,11 +150,15 @@ std::weak_ptr<gl::material> render_target::get_material()
 
 void render_target::check_availability()
 {
+#if !defined(WASM)
     if (!renderer::is_gl_extension_supported("GL_EXT_framebuffer_object"))
     {
-        throw gui::exception("render_target", "OpenGL extension "
+        throw gui::exception("gui::gl::render_target", "OpenGL extension "
             "'GL_EXT_framebuffer_object' is not supported by your hardware.");
     }
+#else
+    // Always supported in OpenGLES3
+#endif
 }
 }
 }
