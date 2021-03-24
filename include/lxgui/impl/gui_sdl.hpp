@@ -12,7 +12,7 @@ namespace sdl
 {
 /// Create a new gui::manager using a full SDL implementation.
 /** \param pWindow The SDL render window
-*   \param pRenderr The SDL renderer
+*   \param pRenderer The SDL renderer
 *   \param sLocale The name of the game locale ("enGB", ...)
 *   \param bInitialiseSDLImage Set to 'false' if SDL Image has already been initialised elsewhere
 *   \return The new gui::manager instance
