@@ -21,7 +21,7 @@ void render_target::begin()
 {
     if (SDL_SetRenderTarget(pTexture_->get_renderer(), pTexture_->get_render_texture()) != 0)
     {
-        throw gui::exception("Could not set current render target");
+        throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
 }
 
@@ -80,7 +80,8 @@ void render_target::check_availability(SDL_Renderer* pRenderer)
 
     if ((mInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0)
     {
-        throw gui::exception("gui::sdl::material", "Render targets are not supported by hardware.");
+        throw gui::exception("gui::sdl::render_target",
+            "Render targets are not supported by hardware.");
     }
 }
 
