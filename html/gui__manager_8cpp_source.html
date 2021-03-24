@@ -344,7 +344,7 @@ $(function() {
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;        <span class="keywordflow">if</span> (!pObj-&gt;<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">is_virtual</a>())</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        {</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>* pFrame = pObj-&gt;<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#aa5847f2fa9b0534e4b5c7f0d919af3f4">down_cast</a>&lt;<a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>&gt;();</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1frame.html">frame</a>* pFrame = down_cast&lt;frame&gt;(pObj);</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;            <span class="keywordflow">if</span> (pFrame)</div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;                lFrameList_[i] = pFrame;</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;        }</div>
@@ -1764,7 +1764,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a09b67e3475da27aebead802af6e2a810"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a09b67e3475da27aebead802af6e2a810">lxgui::gui::manager::clear_fonts_on_close</a></div><div class="ttdeci">void clear_fonts_on_close(bool bClear)</div><div class="ttdoc">Sets wether the Manager should clear all fonts when closed.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l01199">gui_manager.cpp:1199</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_ac2f4ec34d84cfc5528a280a290282199"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ac2f4ec34d84cfc5528a280a290282199">lxgui::gui::l_get_locale</a></div><div class="ttdeci">int l_get_locale(lua_State *pLua)</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager__glues_8cpp_source.html#l00287">gui_manager_glues.cpp:287</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_afa68ccc9336bfb605b16c805b4b5c2bc"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#afa68ccc9336bfb605b16c805b4b5c2bc">lxgui::gui::uiobject::modify_point</a></div><div class="ttdeci">anchor * modify_point(anchor_point mPoint)</div><div class="ttdoc">Returns one of this widget's anchor to modify it.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00677">gui_uiobject.cpp:677</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_aa5847f2fa9b0534e4b5c7f0d919af3f4"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#aa5847f2fa9b0534e4b5c7f0d919af3f4">lxgui::gui::uiobject::down_cast</a></div><div class="ttdeci">const ObjectType * down_cast() const</div><div class="ttdoc">Obtain a pointer to a derived class.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00446">gui_uiobject.hpp:446</a></div></div>
 <div class="ttc" id="agui__focusframe_8hpp_html"><div class="ttname"><a href="gui__focusframe_8hpp.html">gui_focusframe.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a68847af709d8dc29cdc8079747500be1"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a68847af709d8dc29cdc8079747500be1">lxgui::gui::manager::print_ui</a></div><div class="ttdeci">std::string print_ui() const</div><div class="ttdoc">Prints debug informations in the log file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l01520">gui_manager.cpp:1520</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a1839bce5ea7026bb726dc219b4148825"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a1839bce5ea7026bb726dc219b4148825">lxgui::gui::manager::start_moving</a></div><div class="ttdeci">void start_moving(uiobject *pObj, anchor *pAnchor=nullptr, constraint mConstraint=constraint::NONE, std::function&lt; void()&gt; pApplyConstraintFunc=nullptr)</div><div class="ttdoc">Ask this manager for movement management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l01001">gui_manager.cpp:1001</a></div></div>
@@ -1835,7 +1834,7 @@ $(function() {
 <div class="ttc" id="ainput_8hpp_html"><div class="ttname"><a href="input_8hpp.html">input.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 23 2021 08:34:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 24 2021 07:35:00 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

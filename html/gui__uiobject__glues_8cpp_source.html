@@ -552,7 +552,7 @@ $(function() {
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;                    <span class="keywordflow">return</span> mFunc.on_return();</div>
 <div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;                }</div>
 <div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160; </div>
-<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;                pNewParentFrame = pNewParent-&gt;down_cast&lt;frame&gt;();</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;                pNewParentFrame = down_cast&lt;frame&gt;(pNewParent);</div>
 <div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;                <span class="keywordflow">if</span> (!pNewParentFrame)</div>
 <div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;                {</div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;                    <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : \&quot;&quot;</span>+pArg-&gt;get_string()</div>
@@ -753,10 +753,10 @@ $(function() {
 <div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
 <div class="ttc" id="agui__frame_8hpp_html"><div class="ttname"><a href="gui__frame_8hpp.html">gui_frame.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a098b8f936fecbc9ea3f70c0da1e239c4"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">lxgui::gui::anchor_point</a></div><div class="ttdeci">anchor_point</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00019">gui_anchor.hpp:19</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a11693ef21a5095fdaeb6d51fae03d447"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a11693ef21a5095fdaeb6d51fae03d447">lxgui::gui::uiobject::uiID_</a></div><div class="ttdeci">uint uiID_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00742">gui_uiobject.hpp:742</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a11693ef21a5095fdaeb6d51fae03d447"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a11693ef21a5095fdaeb6d51fae03d447">lxgui::gui::uiobject::uiID_</a></div><div class="ttdeci">uint uiID_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00714">gui_uiobject.hpp:714</a></div></div>
 <div class="ttc" id="agui__layeredregion_8hpp_html"><div class="ttname"><a href="gui__layeredregion_8hpp.html">gui_layeredregion.hpp</a></div></div>
 <div class="ttc" id="agui__anchor_8hpp_html"><div class="ttname"><a href="gui__anchor_8hpp.html">gui_anchor.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_adc4e43169d721038cf8f257515721593"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">lxgui::gui::uiobject::sName_</a></div><div class="ttdeci">std::string sName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00739">gui_uiobject.hpp:739</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_adc4e43169d721038cf8f257515721593"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">lxgui::gui::uiobject::sName_</a></div><div class="ttdeci">std::string sName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00711">gui_uiobject.hpp:711</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a5b3c78e25f2c2ff6ce1f09e705468c4c"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a5b3c78e25f2c2ff6ce1f09e705468c4c">lxgui::gui::manager::get_manager</a></div><div class="ttdeci">static manager * get_manager(lua::state &amp;mState)</div><div class="ttdoc">Returns the gui manager associated to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager__glues_8cpp_source.html#l00061">gui_manager_glues.cpp:61</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
@@ -769,7 +769,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a385b86487b594ba1bb4de5d2ad7208ce"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">lxgui::gui::anchor::get_anchor_point</a></div><div class="ttdeci">static anchor_point get_anchor_point(const std::string &amp;sPoint)</div><div class="ttdoc">Returns the anchor point from its name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00294">gui_anchor.cpp:294</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 23 2021 08:34:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 24 2021 07:35:00 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

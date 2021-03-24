@@ -326,6 +326,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aef60b1b129949e610e530a662a364990"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aef60b1b129949e610e530a662a364990"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#aef60b1b129949e610e530a662a364990">operator-</a> (const <a class="el" href="classlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt; &amp;mQuad, const <a class="el" href="classlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;mOffset)</td></tr>
 <tr class="separator:aef60b1b129949e610e530a662a364990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c223d416d9cc685e4f64d911e7b9cf2"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:a5c223d416d9cc685e4f64d911e7b9cf2"><td class="memTemplItemLeft" align="right" valign="top">const ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a5c223d416d9cc685e4f64d911e7b9cf2">down_cast</a> (const <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pSelf)</td></tr>
+<tr class="memdesc:a5c223d416d9cc685e4f64d911e7b9cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="namespacelxgui_1_1gui.html#a5c223d416d9cc685e4f64d911e7b9cf2">More...</a><br /></td></tr>
+<tr class="separator:a5c223d416d9cc685e4f64d911e7b9cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea054a653eaf362797a6aa864b718481"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
+<tr class="memitem:aea054a653eaf362797a6aa864b718481"><td class="memTemplItemLeft" align="right" valign="top">ObjectType *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#aea054a653eaf362797a6aa864b718481">down_cast</a> (<a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *pSelf)</td></tr>
+<tr class="memdesc:aea054a653eaf362797a6aa864b718481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Obtain a pointer to a derived class.  <a href="namespacelxgui_1_1gui.html#aea054a653eaf362797a6aa864b718481">More...</a><br /></td></tr>
+<tr class="separator:aea054a653eaf362797a6aa864b718481"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f52b500e065c49ab56e0de2f002700"><td class="memTemplParams" colspan="2">template&lt;typename ObjectType &gt; </td></tr>
 <tr class="memitem:ae1f52b500e065c49ab56e0de2f002700"><td class="memTemplItemLeft" align="right" valign="top">std::unique_ptr&lt; ObjectType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ae1f52b500e065c49ab56e0de2f002700">down_cast</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &gt; pObject)</td></tr>
 <tr class="memdesc:ae1f52b500e065c49ab56e0de2f002700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a down cast on an owning pointer.  <a href="namespacelxgui_1_1gui.html#ae1f52b500e065c49ab56e0de2f002700">More...</a><br /></td></tr>
@@ -641,8 +649,40 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a5c223d416d9cc685e4f64d911e7b9cf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c223d416d9cc685e4f64d911e7b9cf2">&#9670;&nbsp;</a></span>down_cast() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const ObjectType* lxgui::gui::down_cast </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *&#160;</td>
+          <td class="paramname"><em>pSelf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Obtain a pointer to a derived class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pSelf</td><td>The pointer to down cast </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00757">757</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+
+</div>
+</div>
 <a id="ae1f52b500e065c49ab56e0de2f002700"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1f52b500e065c49ab56e0de2f002700">&#9670;&nbsp;</a></span>down_cast()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1f52b500e065c49ab56e0de2f002700">&#9670;&nbsp;</a></span>down_cast() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -667,9 +707,41 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0c09d849f88675b6809662075443cca5" title="Obtain a pointer to a derived class.">uiobject::down_cast()</a> for more information. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a5c223d416d9cc685e4f64d911e7b9cf2" title="Obtain a pointer to a derived class.">down_cast(const uiobject*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00782">782</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00790">790</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aea054a653eaf362797a6aa864b718481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea054a653eaf362797a6aa864b718481">&#9670;&nbsp;</a></span>down_cast() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename ObjectType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">ObjectType* lxgui::gui::down_cast </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> *&#160;</td>
+          <td class="paramname"><em>pSelf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Obtain a pointer to a derived class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pSelf</td><td>The pointer to down cast </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00778">778</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -1430,7 +1502,7 @@ template&lt;class T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Mar 23 2021 08:34:22 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 24 2021 07:35:00 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
