@@ -1,12 +1,5 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/gl)
 set(SRCROOT ${TARGET_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${LUA_INCLUDE_DIR})
-include_directories(${FREETYPE_INCLUDE_DIRS})
-include_directories(${PNG_INCLUDE_DIR})
-include_directories(${ZLIB_INCLUDE_DIR})
-include_directories(${OPENGL_INCLUDE_DIR})
-include_directories(${GLEW_INCLUDE_DIR})
 
 add_library(lxgui-gl
     ${SRCROOT}/gui_gl_font.cpp
@@ -17,7 +10,19 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_rendertarget.cpp
 )
 
+target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
+if (NOT EMSCRIPTEN)
+    target_include_directories(lxgui-gl PUBLIC ${FREETYPE_INCLUDE_DIRS})
+    target_include_directories(lxgui-gl PUBLIC ${PNG_INCLUDE_DIR})
+    target_include_directories(lxgui-gl PUBLIC ${ZLIB_INCLUDE_DIR})
+    target_include_directories(lxgui-gl PUBLIC ${OPENGL_INCLUDE_DIR})
+    target_include_directories(lxgui-gl PUBLIC ${GLEW_INCLUDE_DIR})
+else()
+    set(GL_EMSCRIPTEN_USE_FLAGS "-s USE_LIBPNG=1 -s USE_FREETYPE=1")
+    set_target_properties(lxgui-gl PROPERTIES COMPILE_FLAGS ${GL_EMSCRIPTEN_USE_FLAGS})
+    set_target_properties(lxgui-gl PROPERTIES LINK_FLAGS ${GL_EMSCRIPTEN_USE_FLAGS})
+endif()
+
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_gl_*.hpp)
 install(FILES ${files} DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-gl ARCHIVE DESTINATION lib)
-

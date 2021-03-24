@@ -1,7 +1,5 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/sfml)
 set(SRCROOT ${TARGET_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${SFML_INCLUDE_DIR})
 
 add_library(lxgui-sfml
     ${SRCROOT}/gui_sfml_font.cpp
@@ -10,6 +8,9 @@ add_library(lxgui-sfml
     ${SRCROOT}/gui_sfml_rendertarget.cpp
     ${SRCROOT}/gui_sfml.cpp
 )
+
+target_include_directories(lxgui-sfml PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(lxgui-sfml PUBLIC ${SFML_INCLUDE_DIR})
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml*.hpp)
 install(FILES ${files} DESTINATION include/lxgui/impl)

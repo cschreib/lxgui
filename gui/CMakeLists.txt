@@ -1,8 +1,5 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui)
 set(SRCROOT ${TARGET_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/sol2/include)
-include_directories(${LUA_INCLUDE_DIR})
 
 add_library(lxgui
     ${SRCROOT}/gui_anchor.cpp
@@ -62,6 +59,10 @@ add_library(lxgui
     ${SRCROOT}/gui_uiobject_parser.cpp
     ${SRCROOT}/input.cpp
 )
+
+target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/sol2/include)
+target_include_directories(lxgui PUBLIC ${LUA_INCLUDE_DIR})
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp")

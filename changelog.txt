@@ -1,5 +1,5 @@
 v2.0.0:
- - general: added support for WebAssembly
+ - general: added support for WebAssembly (pure SDL, or SDL+OpenGL only)
  - general: switched to MIT license
  - general: various fixes and improvements to the build system
  - general: dropped support for C++ version earlier than C++17
