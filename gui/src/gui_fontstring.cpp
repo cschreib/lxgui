@@ -143,7 +143,7 @@ void font_string::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    font_string* pFontString = pObj->down_cast<font_string>();
+    font_string* pFontString = down_cast<font_string>(pObj);
     if (!pFontString)
         return;
 

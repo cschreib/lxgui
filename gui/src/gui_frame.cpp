@@ -222,7 +222,7 @@ void frame::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    frame* pFrame = pObj->down_cast<frame>();
+    frame* pFrame = down_cast<frame>(pObj);
     if (!pFrame)
         return;
 

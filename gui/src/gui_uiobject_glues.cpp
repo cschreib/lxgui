@@ -639,7 +639,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
                     return mFunc.on_return();
                 }
 
-                pNewParentFrame = pNewParent->down_cast<frame>();
+                pNewParentFrame = down_cast<frame>(pNewParent);
                 if (!pNewParentFrame)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()

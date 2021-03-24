@@ -281,7 +281,7 @@ bool manager::add_uiobject(uiobject* pObj)
 
         if (!pObj->is_virtual())
         {
-            frame* pFrame = pObj->down_cast<frame>();
+            frame* pFrame = down_cast<frame>(pObj);
             if (pFrame)
                 lFrameList_[i] = pFrame;
         }

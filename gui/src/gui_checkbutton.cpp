@@ -23,7 +23,7 @@ void check_button::copy_from(uiobject* pObj)
 {
     button::copy_from(pObj);
 
-    check_button* pButton = pObj->down_cast<check_button>();
+    check_button* pButton = down_cast<check_button>(pObj);
     if (!pButton)
         return;
 

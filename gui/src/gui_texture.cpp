@@ -100,7 +100,7 @@ void texture::copy_from(uiobject* pObj)
 {
     uiobject::copy_from(pObj);
 
-    texture* pTexture = pObj->down_cast<texture>();
+    texture* pTexture = down_cast<texture>(pObj);
     if (!pTexture)
         return;
 

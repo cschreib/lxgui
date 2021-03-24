@@ -18,7 +18,7 @@ void focus_frame::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    focus_frame* pFocusFrame = pObj->down_cast<focus_frame>();
+    focus_frame* pFocusFrame = down_cast<focus_frame>(pObj);
     if (!pFocusFrame)
         return;
 

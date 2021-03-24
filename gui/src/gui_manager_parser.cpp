@@ -40,7 +40,7 @@ manager::xml_core_attributes manager::parse_core_attributes(xml::block* pBlock, 
     {
         mAttr.bVirtual = utils::string_to_bool(pBlock->get_attribute("virtual"));
         std::string sParent = pBlock->get_attribute("parent");
-        mAttr.pParent = get_uiobject_by_name(sParent)->down_cast<frame>();
+        mAttr.pParent = down_cast<frame>(get_uiobject_by_name(sParent));
         if (!sParent.empty() && !mAttr.pParent)
         {
             gui::out << gui::warning << pBlock->get_location() << " : "

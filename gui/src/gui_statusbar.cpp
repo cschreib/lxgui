@@ -57,7 +57,7 @@ void status_bar::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    status_bar* pStatusBar = pObj->down_cast<status_bar>();
+    status_bar* pStatusBar = down_cast<status_bar>(pObj);
     if (!pStatusBar)
         return;
 

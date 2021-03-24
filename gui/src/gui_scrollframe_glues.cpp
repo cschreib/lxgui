@@ -166,7 +166,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
                     return mFunc.on_return();
                 }
 
-                pChild = pObj->down_cast<frame>();
+                pChild = down_cast<frame>(pObj);
                 if (!pChild)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : "

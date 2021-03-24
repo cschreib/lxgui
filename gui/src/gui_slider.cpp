@@ -79,7 +79,7 @@ void slider::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    slider* pSlider = pObj->down_cast<slider>();
+    slider* pSlider = down_cast<slider>(pObj);
     if (!pSlider)
         return;
 

@@ -53,7 +53,7 @@ void scroll_frame::copy_from(uiobject* pObj)
 {
     frame::copy_from(pObj);
 
-    scroll_frame* pScrollFrame = pObj->down_cast<scroll_frame>();
+    scroll_frame* pScrollFrame = down_cast<scroll_frame>(pObj);
     if (!pScrollFrame)
         return;
 

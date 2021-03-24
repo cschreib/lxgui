@@ -420,7 +420,7 @@ namespace gui
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         frame_type* get_child(const std::string& sName)
         {
-            return get_child(sName)->down_cast<frame_type>();
+            return down_cast<frame_type>(get_child(sName));
         }
 
         /// Returns the region list.
@@ -449,7 +449,7 @@ namespace gui
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
         region_type* get_region(const std::string& sName)
         {
-            return get_region(sName)->down_cast<region_type>();
+            return down_cast<region_type>(get_region(sName));
         }
 
         /// Calculates effective alpha.

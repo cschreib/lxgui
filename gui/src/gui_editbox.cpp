@@ -54,7 +54,7 @@ void edit_box::copy_from(uiobject* pObj)
 {
     focus_frame::copy_from(pObj);
 
-    edit_box* pEditBox = pObj->down_cast<edit_box>();
+    edit_box* pEditBox = down_cast<edit_box>(pObj);
     if (!pEditBox)
         return;
 
