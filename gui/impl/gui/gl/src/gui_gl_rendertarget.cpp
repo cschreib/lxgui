@@ -63,15 +63,18 @@ void render_target::begin()
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultiplied alpha
+    glDisable(GL_CULL_FACE);
+
+#if !defined(WASM)
     glDisable(GL_LIGHTING);
     glDisable(GL_ALPHA_TEST);
-    glDisable(GL_CULL_FACE);
 
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(reinterpret_cast<float*>(&mViewMatrix_));
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+#endif
 }
 
 void render_target::update_view_matrix_() const
