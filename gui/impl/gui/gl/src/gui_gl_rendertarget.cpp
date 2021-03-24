@@ -37,13 +37,13 @@ render_target::render_target(uint uiWidth, uint uiHeight)
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture_->get_handle_(), 0);
 
-    if (glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE_EXT)
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-        throw gui::exception("render_target", "Failed creating render target.");
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        throw gui::exception("gui::gl::render_target", "Failed creating render target.");
     }
 
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 render_target::~render_target()
@@ -129,13 +129,13 @@ bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
         glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture_->get_handle_(), 0);
 
-        if (glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT) != GL_FRAMEBUFFER_COMPLETE_EXT)
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         {
-            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-            throw gui::exception("render_target", "Failed resizing render target.");
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            throw gui::exception("gui::gl::render_target", "Failed resizing render target.");
         }
 
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         return true;
     }
