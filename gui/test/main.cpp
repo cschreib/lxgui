@@ -86,6 +86,8 @@ struct main_loop_context
 
 #if defined(SDL_GUI)
     SDL_Renderer* pRenderer = nullptr;
+#elif defined(GLSDL_GUI)
+    SDL_Window* pWindow = nullptr;
 #elif defined(SFML_GUI)
     sf::RenderWindow* pWindow = nullptr;
 #endif
@@ -225,10 +227,12 @@ void main_loop(void* pTypeErasedData)
     mContext.pManager->render_ui();
 
     // Display the window
-#if defined(SDL_GUI) || defined(GLSDL_GUI)
+#if defined(SDL_GUI)
     SDL_RenderPresent(mContext.pRenderer);
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     mContext.pWindow->display();
+#elif defined(GLSDL_GUI)
+    SDL_GL_SwapWindow(mContext.pWindow);
 #endif
 
     timing_clock::time_point mCurrentTime = timing_clock::now();
@@ -298,8 +302,7 @@ int main(int argc, char* argv[])
     #if defined(GLSFML_GUI)
         sf::Window mWindow;
     #elif defined(SDL_GUI) || defined(GLSDL_GUI)
-        SDL_SetMainReady();
-        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0)
+        if (SDL_Init(SDL_INIT_VIDEO) != 0)
         {
             throw gui::exception("SDL_Init", "Could not initialise SDL: "+
                 std::string(SDL_GetError())+".");
@@ -325,6 +328,7 @@ int main(int argc, char* argv[])
             throw gui::exception("SDL_Window", "Could not create window.");
         }
 
+        #if defined(SDL_GUI)
         std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> pRenderer(
             SDL_CreateRenderer(
                 pWindow.get(), -1,
@@ -337,6 +341,31 @@ int main(int argc, char* argv[])
         {
             throw gui::exception("SDL_Renderer", "Could not create renderer.");
         }
+
+        SDL_RendererInfo mRendererInfo;
+        SDL_GetRendererInfo(pRenderer.get(), &mRendererInfo);
+        gui::out << "SDL renderer: " << mRendererInfo.name << std::endl;
+        #else
+        struct GLContext
+        {
+            SDL_GLContext pContext = nullptr;
+
+            explicit GLContext(SDL_Window* pWindow) : pContext(SDL_GL_CreateContext(pWindow))
+            {
+                if (pContext == nullptr)
+                {
+                    throw gui::exception("SDL_GL_CreateContext", "Coult not create OpenGL context.");
+                }
+            }
+
+            ~GLContext()
+            {
+                SDL_GL_DeleteContext(pContext);
+            }
+        };
+
+        GLContext mGLContext(pWindow.get());
+        #endif
 
     #elif defined(SFML_GUI)
         sf::RenderWindow mWindow;
@@ -497,6 +526,8 @@ int main(int argc, char* argv[])
 
     #if defined(SDL_GUI)
         mContext.pRenderer = pRenderer.get();
+    #elif defined(GLSDL_GUI)
+        mContext.pWindow = pWindow.get();
     #elif defined(SFML_GUI)
         mContext.pWindow = &mWindow;
     #endif
