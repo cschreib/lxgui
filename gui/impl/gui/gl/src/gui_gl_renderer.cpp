@@ -66,109 +66,15 @@ renderer::renderer(bool bInitGLEW [[maybe_unused]])
 
 #if defined(LXGUI_OPENGL3)
     compile_programs_();
-
-    glGenBuffers(4, uiVertexBuffers_);
-    print_gl_errors("gen vertex buffer");
-
-    glGenVertexArrays(4, uiVertexArray_);
-    print_gl_errors("gen vertex array");
-
-    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
-
-    // Color only array & single quad
-    glBindVertexArray(uiVertexArray_[0]);
-    print_gl_errors("bind vertex array");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2]);
-    print_gl_errors("bind vertex buffer");
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(1);
-    print_gl_errors("enabling attrib array");
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
-    print_gl_errors("bind index buffer");
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("index buffer data");
-
-    // Texture array & single quad
-    glBindVertexArray(uiVertexArray_[1]);
-    print_gl_errors("bind vertex array");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[3]);
-    print_gl_errors("bind vertex buffer");
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(1);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(2);
-    print_gl_errors("enabling attrib array");
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
-    print_gl_errors("bind index buffer");
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("index buffer data");
-
-    // Color only array & multi quads
-    glBindVertexArray(uiVertexArray_[2]);
-    print_gl_errors("bind vertex array");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2]);
-    print_gl_errors("bind vertex buffer");
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(1);
-    print_gl_errors("enabling attrib array");
-
-    // Texture array & multi quads
-    glBindVertexArray(uiVertexArray_[3]);
-    print_gl_errors("bind vertex array");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[3]);
-    print_gl_errors("bind vertex buffer");
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(1);
-    print_gl_errors("enabling attrib array");
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(2);
-    print_gl_errors("enabling attrib array");
+    setup_buffers_();
 #endif
 }
 
 #if defined(LXGUI_OPENGL3)
 renderer::~renderer() noexcept
 {
-    glDeleteVertexArrays(4, uiVertexArray_);
-    print_gl_errors("delete vertex array");
-
-    glDeleteBuffers(4, uiVertexBuffers_);
-    print_gl_errors("delete vertex buffer");
+    glDeleteVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
+    glDeleteBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
 }
 #endif
 
@@ -509,6 +415,55 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
 #if defined(LXGUI_OPENGL3)
 void renderer::compile_programs_()
 {
+}
+
+void renderer::setup_buffers_()
+{
+    glGenBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
+    glGenVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
+
+    auto setup_vbo = [](uint uiID, bool bWithTexCoord)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, uiID);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+        glEnableVertexAttribArray(1);
+        if (bWithTexCoord)
+        {
+            glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
+            glEnableVertexAttribArray(2);
+        }
+    };
+
+    auto setup_ibo = [](uint uiID)
+    {
+        static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
+    };
+
+    // Color only array & single quad
+    glBindVertexArray(uiVertexArray_[0]);
+
+    setup_vbo(uiVertexBuffers_[2], false);
+    setup_ibo(uiVertexBuffers_[0]);
+
+    // Texture array & single quad
+    glBindVertexArray(uiVertexArray_[1]);
+
+    setup_vbo(uiVertexBuffers_[3], true);
+    setup_ibo(uiVertexBuffers_[0]);
+
+    // Color only array & multi quads
+    glBindVertexArray(uiVertexArray_[2]);
+
+    setup_vbo(uiVertexBuffers_[2], false);
+
+    // Texture array & multi quads
+    glBindVertexArray(uiVertexArray_[3]);
+
+    setup_vbo(uiVertexBuffers_[3], true);
 }
 #endif
 

@@ -9,6 +9,7 @@
 
 #include <map>
 #include <memory>
+#include <array>
 
 namespace lxgui {
 namespace gui {
@@ -98,6 +99,7 @@ namespace gl
         void update_view_matrix_() const;
     #if defined(LXGUI_OPENGL3)
         void compile_programs_();
+        void setup_buffers_();
     #endif
 
         std::shared_ptr<gui::material> create_material_png(const std::string& sFileName,
@@ -119,8 +121,8 @@ namespace gl
         int iTextureProjLocation_ = 0;
         int iColorProjLocation_ = 0;
         int iColorColLocation_ = 0;
-        mutable uint uiVertexArray_[4];
-        mutable uint uiVertexBuffers_[4];
+        mutable std::array<uint,4> uiVertexArray_;
+        mutable std::array<uint,4> uiVertexBuffers_;
         mutable uint uiPreviousProgram_ = (uint)-1;
         mutable std::vector<uint> lRepeatedIds_;
     #endif
