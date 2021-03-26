@@ -37,7 +37,7 @@ else()
         set(TEST_EMSCRIPTEN_USE_FLAGS "${TEST_EMSCRIPTEN_USE_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2")
     endif()
     set_target_properties(lxgui-test PROPERTIES COMPILE_FLAGS ${TEST_EMSCRIPTEN_USE_FLAGS})
-    set_target_properties(lxgui-test PROPERTIES LINK_FLAGS ${TEST_EMSCRIPTEN_USE_FLAGS})
+    set_target_properties(lxgui-test PROPERTIES LINK_FLAGS "${TEST_EMSCRIPTEN_USE_FLAGS} --shell-file ${SRCROOT}/emscripten_shell.html")
 endif()
 
 if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
