@@ -87,6 +87,12 @@ namespace gl
         */
         std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
+        /// Notifies the renderer that the render window has been resized.
+        /** \param uiNewWidth  The new window width
+        *   \param uiNewHeight The new window height
+        */
+        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
+
     #if !defined(LXGUI_OPENGL3)
         /// Checks if a given OpenGL extension is supported by the machine.
         /** \return 'true' if that is the case, 'false' else.

@@ -403,6 +403,11 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     return pFont;
 }
 
+void renderer::notify_window_resized(uint, uint)
+{
+    bUpdateViewMatrix_ = true;
+}
+
 #if !defined(LXGUI_OPENGL3)
 bool renderer::is_gl_extension_supported(const std::string& sExtension)
 {
