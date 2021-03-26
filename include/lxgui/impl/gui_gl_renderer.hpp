@@ -20,10 +20,10 @@ namespace gl
     public :
 
         /// Constructor.
-    #if !defined(WASM)
         explicit renderer(bool bInitGLEW = true);
-    #else
-        explicit renderer();
+
+    #if defined(LXGUI_OPENGL3)
+        ~renderer() noexcept override;
     #endif
 
         /// Begins rendering on a particular render target.
@@ -86,14 +86,19 @@ namespace gl
         */
         std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
+    #if !defined(LXGUI_OPENGL3)
         /// Checks if a given OpenGL extension is supported by the machine.
         /** \return 'true' if that is the case, 'false' else.
         */
         static bool is_gl_extension_supported(const std::string& sExtension);
+    #endif
 
     private :
 
         void update_view_matrix_() const;
+    #if defined(LXGUI_OPENGL3)
+        void compile_programs_();
+    #endif
 
         std::shared_ptr<gui::material> create_material_png(const std::string& sFileName,
             material::filter mFilter) const;
@@ -105,6 +110,18 @@ namespace gl
         mutable matrix4 mViewMatrix_;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
+        mutable const matrix4* pCurrentViewMatrix_ = nullptr;
+
+    #if defined(LXGUI_OPENGL3)
+        uint uiTextureProgram_ = 0;
+        uint uiColorProgram_ = 0;
+        int iTextureSamplerLocation_ = 0;
+        int iTextureProjLocation_ = 0;
+        int iColorProjLocation_ = 0;
+        int iColorColLocation_ = 0;
+        mutable uint uiVertexArray_ = 0;
+        mutable uint uiVertexBuffers_[3];
+    #endif
     };
 }
 }

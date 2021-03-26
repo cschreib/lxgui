@@ -30,15 +30,33 @@
 
 #include <cstring>
 
+const char* gl_error_to_string(GLenum mError)
+{
+    switch (mError)
+    {
+        case GL_NO_ERROR: return "no error";
+        case GL_INVALID_ENUM: return "invalid enum";
+        case GL_INVALID_VALUE: return "invalid value";
+        case GL_INVALID_OPERATION: return "invalid operation";
+        case GL_INVALID_FRAMEBUFFER_OPERATION: return "invalid framebuffer operation";
+        case GL_OUT_OF_MEMORY: return "out of memory";
+        default: return "unknown error";
+    }
+}
+
+void print_gl_errors(const char* sDoingWhat)
+{
+    while (GLenum mError = glGetError())
+    {
+        lxgui::gui::out << "error in " << sDoingWhat << ": " << gl_error_to_string(mError) << std::endl;
+    }
+}
+
 namespace lxgui {
 namespace gui {
 namespace gl
 {
-#if !defined(WASM)
-renderer::renderer(bool bInitGLEW)
-#else
-renderer::renderer()
-#endif
+renderer::renderer(bool bInitGLEW [[maybe_unused]])
 {
 #if !defined(WASM)
     if (bInitGLEW)
@@ -47,6 +65,31 @@ renderer::renderer()
 
     render_target::check_availability();
     material::check_availability();
+
+#if defined(LXGUI_OPENGL3)
+    compile_programs_();
+#endif
+}
+
+#if defined(LXGUI_OPENGL3)
+renderer::~renderer() noexcept
+{
+}
+#endif
+
+void renderer::update_view_matrix_() const
+{
+    float fWidth = pParent_->get_target_width();
+    float fHeight = pParent_->get_target_height();
+
+    mViewMatrix_ = {
+        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
+        0.0f, -2.0f/fHeight, 0.0f, 0.0f,
+        -1.0f, 1.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    bUpdateViewMatrix_ = false;
 }
 
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
@@ -55,6 +98,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     {
         pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
+        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
     }
     else
     {
@@ -62,34 +106,40 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
             update_view_matrix_();
 
         glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
-        glDisable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
-        glDisable(GL_LIGHTING);
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_CULL_FACE);
-
-        glMatrixMode(GL_PROJECTION);
-        glLoadMatrixf(reinterpret_cast<float*>(&mViewMatrix_));
-
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+        pCurrentViewMatrix_ = &mViewMatrix_;
     }
-}
 
-void renderer::update_view_matrix_() const
-{
-    float fWidth = pParent_->get_target_width();
-    float fHeight = pParent_->get_target_height();
+    print_gl_errors("setting viewport");
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
+    glDisable(GL_CULL_FACE);
+    print_gl_errors("disabling culling");
 
-    mViewMatrix_ = {
-        2.0f/fWidth, 0.0f, -1.0f, -1.0f,
-        0.0f, -2.0f/fHeight, 1.0f, 1.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
-    };
+#if !defined(LXGUI_OPENGL3)
+    glDisable(GL_LIGHTING);
+    glDisable(GL_ALPHA_TEST);
 
-    bUpdateViewMatrix_ = false;
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(pCurrentViewMatrix_->data);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+#else
+    glActiveTexture(GL_TEXTURE0);
+    print_gl_errors("setting active texture");
+#endif
+
+#if defined(LXGUI_OPENGL3)
+    glUseProgram(uiTextureProgram_);
+    print_gl_errors("use program");
+    glUniformMatrix4fv(iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    print_gl_errors("setting view matrix texture");
+    glUseProgram(uiColorProgram_);
+    print_gl_errors("use program");
+    glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    print_gl_errors("setting view matrix color");
+#endif
 }
 
 void renderer::end() const
@@ -103,8 +153,9 @@ void renderer::end() const
 
 void renderer::render_quad(const quad& mQuad) const
 {
-    static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
+#if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
     std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
@@ -138,12 +189,81 @@ void renderer::render_quad(const quad& mQuad) const
         }
         glEnd();
     }
+#else
+    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
+
+    glGenVertexArrays(1, &uiVertexArray_);
+    print_gl_errors("gen vertex array");
+    glBindVertexArray(uiVertexArray_);
+    print_gl_errors("bind vertex array");
+
+    glGenBuffers(2, uiVertexBuffers_);
+    print_gl_errors("gen vertex buffer");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    print_gl_errors("bind vertex buffer");
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mQuad.v.size(), mQuad.v.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("buffer data");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    if (pMat->get_type() == material::type::TEXTURE)
+    {
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(1);
+        print_gl_errors("enabling attrib array");
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(2);
+        print_gl_errors("enabling attrib array");
+    }
+    else
+    {
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(1);
+        print_gl_errors("enabling attrib array");
+    }
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
+    print_gl_errors("bind index buffer");
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("index buffer data");
+
+    if (pMat->get_type() == material::type::TEXTURE)
+    {
+        glUseProgram(uiTextureProgram_);
+        print_gl_errors("use program");
+        pMat->bind();
+    }
+    else
+    {
+        glUseProgram(uiColorProgram_);
+        print_gl_errors("use program");
+        glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
+        print_gl_errors("setting color color");
+    }
+
+    glDrawElements(GL_TRIANGLES, ids.size(), GL_UNSIGNED_INT, 0);
+    print_gl_errors("draw");
+
+    glDeleteBuffers(2, uiVertexBuffers_);
+    print_gl_errors("delete vertex buffer");
+    glDeleteVertexArrays(1, &uiVertexArray_);
+    print_gl_errors("delete vertex array");
+#endif
 }
 
 void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
+#if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
     std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
@@ -183,6 +303,76 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
         }
         glEnd();
     }
+#else
+    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
+
+    glGenVertexArrays(1, &uiVertexArray_);
+    print_gl_errors("gen vertex array");
+    glBindVertexArray(uiVertexArray_);
+    print_gl_errors("bind vertex array");
+
+    glGenBuffers(2, uiVertexBuffers_);
+    print_gl_errors("gen vertex buffer");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    print_gl_errors("bind vertex buffer");
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 4 * lQuadList.size(), lQuadList.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("buffer data");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    if (pMat->get_type() == material::type::TEXTURE)
+    {
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(1);
+        print_gl_errors("enabling attrib array");
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(2);
+        print_gl_errors("enabling attrib array");
+    }
+    else
+    {
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+        print_gl_errors("setting attrib pointer");
+        glEnableVertexAttribArray(1);
+        print_gl_errors("enabling attrib array");
+    }
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
+    print_gl_errors("bind index buffer");
+
+    std::vector<uint> lRepeatedIds(6*lQuadList.size());
+    for (uint i = 0; i < lRepeatedIds.size(); ++i) lRepeatedIds[i] = (i/6)*4 + ids[i%6];
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lRepeatedIds.size(), lRepeatedIds.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("index buffer data");
+
+    if (pMat->get_type() == material::type::TEXTURE)
+    {
+        glUseProgram(uiTextureProgram_);
+        print_gl_errors("use program");
+        pMat->bind();
+    }
+    else
+    {
+        glUseProgram(uiColorProgram_);
+        print_gl_errors("use program");
+        glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
+        print_gl_errors("setting color color");
+    }
+
+    glDrawElements(GL_TRIANGLES, lRepeatedIds.size(), GL_UNSIGNED_INT, 0);
+    print_gl_errors("draw");
+
+    glDeleteBuffers(2, uiVertexBuffers_);
+    print_gl_errors("delete vertex buffer");
+    glDeleteVertexArrays(1, &uiVertexArray_);
+    print_gl_errors("delete vertex array");
+#endif
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
@@ -239,6 +429,7 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     return pFont;
 }
 
+#if !defined(LXGUI_OPENGL3)
 bool renderer::is_gl_extension_supported(const std::string& sExtension)
 {
     // Extension names should not have spaces
@@ -256,6 +447,14 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
 
     return false;
 }
+#endif
+
+#if defined(LXGUI_OPENGL3)
+void renderer::compile_programs_()
+{
+}
+#endif
+
 }
 }
 }

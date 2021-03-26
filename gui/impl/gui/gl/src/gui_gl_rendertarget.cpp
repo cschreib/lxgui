@@ -60,21 +60,6 @@ void render_target::begin()
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
 
     glViewport(0.0f, 0.0f, pTexture_->get_real_width(), pTexture_->get_real_height());
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultiplied alpha
-    glDisable(GL_CULL_FACE);
-
-#if !defined(WASM)
-    glDisable(GL_LIGHTING);
-    glDisable(GL_ALPHA_TEST);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(reinterpret_cast<float*>(&mViewMatrix_));
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-#endif
 }
 
 void render_target::update_view_matrix_() const
@@ -83,10 +68,10 @@ void render_target::update_view_matrix_() const
     float fHeight = pTexture_->get_real_height();
 
     mViewMatrix_ = {
-        2.0f/fWidth, 0.0f, -1.0f, -1.0f,
-        0.0f, 2.0f/fHeight, -1.0f, -1.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f
+        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
+        0.0f, 2.0f/fHeight, 0.0f, 0.0f,
+        -1.0f, -1.0f, 1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f, 1.0f
     };
 
     bUpdateViewMatrix_ = false;
@@ -151,16 +136,21 @@ std::weak_ptr<gl::material> render_target::get_material()
     return pTexture_;
 }
 
+const matrix4& render_target::get_view_matrix() const
+{
+    return mViewMatrix_;
+}
+
 void render_target::check_availability()
 {
-#if !defined(WASM)
+#if !defined(LXGUI_OPENGL3)
     if (!renderer::is_gl_extension_supported("GL_EXT_framebuffer_object"))
     {
         throw gui::exception("gui::gl::render_target", "OpenGL extension "
             "'GL_EXT_framebuffer_object' is not supported by your hardware.");
     }
 #else
-    // Always supported in OpenGLES3
+    // Always supported in OpenGL 3 / OpenGL ES 3
 #endif
 }
 }

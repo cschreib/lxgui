@@ -78,6 +78,11 @@ namespace gl
         */
         std::weak_ptr<gl::material> get_material();
 
+        /// Returns the view matrix of this render target.
+        /** \return The view matrix of this render target
+        */
+        const matrix4& get_view_matrix() const;
+
         /// Checks if the machine is capable of using render targets.
         /** \note If not, this function throws a gui::exception.
         */

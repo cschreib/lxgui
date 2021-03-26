@@ -377,11 +377,17 @@ uint material::get_handle_()
 
 void material::check_availability()
 {
+#if !defined(LXGUI_OPENGL3)
     ONLY_POWER_OF_TWO = !renderer::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
     gui::out << "Note : non power of two textures are " << (ONLY_POWER_OF_TWO ? "not " : "") << "supported." << std::endl;
-    int max;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max);
-    MAXIMUM_SIZE = max;
+#else
+    // Non-power-of-two textures are always supported in OpenGL 3 / OpenGL ES 3
+    ONLY_POWER_OF_TWO = false;
+#endif
+
+    int iMax = 0;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &iMax);
+    MAXIMUM_SIZE = iMax;
     gui::out << "Note : maximum texture size is " << MAXIMUM_SIZE << "." << std::endl;
 }
 }
