@@ -1,5 +1,5 @@
 v2.0.0:
- - general: added support for WebAssembly (pure SDL, or SDL+OpenGL only)
+ - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3 only)
  - general: switched to MIT license
  - general: various fixes and improvements to the build system
  - general: dropped support for C++ version earlier than C++17
@@ -26,6 +26,7 @@ v2.0.0:
  - input: removed GLFW input implementation
  - gui: added a pure SFML implementation for the gui::manager
  - gui: added a pure SDL implementation for the gui::manager
+ - gui: added a "modern" OpenGL 3 implementation, alternative to fixed pipeline legacy OpenGL
  - gui: added documentation for the Lua API
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
