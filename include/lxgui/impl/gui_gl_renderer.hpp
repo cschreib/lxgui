@@ -122,6 +122,7 @@ namespace gl
         mutable uint uiVertexArray_[4];
         mutable uint uiVertexBuffers_[4];
         mutable uint uiPreviousProgram_ = (uint)-1;
+        mutable std::vector<uint> lRepeatedIds_;
     #endif
     };
 }

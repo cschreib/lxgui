@@ -390,13 +390,21 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 4 * lQuadList.size(), lQuadList.data(), GL_DYNAMIC_DRAW);
     print_gl_errors("buffer data");
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
-    print_gl_errors("bind index buffer");
+    uint uiNewSize = 6*lQuadList.size();
+    if (uiNewSize > lRepeatedIds_.size())
+    {
+        uint uiOldSize = lRepeatedIds_.size();
+        lRepeatedIds_.resize(uiNewSize);
+        for (uint i = uiOldSize; i < uiNewSize; ++i)
+        {
+            lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
+        }
 
-    std::vector<uint> lRepeatedIds(6*lQuadList.size());
-    for (uint i = 0; i < lRepeatedIds.size(); ++i) lRepeatedIds[i] = (i/6)*4 + ids[i%6];
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lRepeatedIds.size(), lRepeatedIds.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("index buffer data");
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
+        print_gl_errors("bind index buffer");
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lRepeatedIds_.size(), lRepeatedIds_.data(), GL_DYNAMIC_DRAW);
+        print_gl_errors("index buffer data");
+    }
 
     if (pMat->get_type() == material::type::TEXTURE)
     {
@@ -420,7 +428,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
         print_gl_errors("setting color color");
     }
 
-    glDrawElements(GL_TRIANGLES, lRepeatedIds.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, uiNewSize, GL_UNSIGNED_INT, 0);
     print_gl_errors("draw");
 #endif
 }
