@@ -88,8 +88,11 @@ struct main_loop_context
     SDL_Renderer* pRenderer = nullptr;
 #elif defined(GLSDL_GUI)
     SDL_Window* pWindow = nullptr;
+    SDL_GLContext pGLContext = nullptr;
 #elif defined(SFML_GUI)
     sf::RenderWindow* pWindow = nullptr;
+#elif defined(GLSFML_GUI)
+    sf::Window* pWindow = nullptr;
 #endif
 };
 
@@ -208,6 +211,10 @@ void main_loop(void* pTypeErasedData)
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         return;
     }
+
+#if defined(GLSDL_GUI)
+    SDL_GL_MakeCurrent(mContext.pWindow, mContext.pGLContext);
+#endif
 
     // Update the gui
     mContext.pManager->update(mContext.fDelta);
@@ -528,7 +535,8 @@ int main(int argc, char* argv[])
         mContext.pRenderer = pRenderer.get();
     #elif defined(GLSDL_GUI)
         mContext.pWindow = pWindow.get();
-    #elif defined(SFML_GUI)
+        mContext.pGLContext = mGLContext.pContext;
+    #elif defined(SFML_GUI) || defined(GLSFML_GUI)
         mContext.pWindow = &mWindow;
     #endif
 
