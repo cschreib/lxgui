@@ -28,8 +28,6 @@
     #endif
 #endif
 
-#include <cstring>
-
 const char* gl_error_to_string(GLenum mError)
 {
     switch (mError)
