@@ -68,77 +68,6 @@ renderer::renderer(bool bInitGLEW [[maybe_unused]])
 
 #if defined(LXGUI_OPENGL3)
     compile_programs_();
-#endif
-}
-
-#if defined(LXGUI_OPENGL3)
-renderer::~renderer() noexcept
-{
-}
-#endif
-
-void renderer::update_view_matrix_() const
-{
-    float fWidth = pParent_->get_target_width();
-    float fHeight = pParent_->get_target_height();
-
-    mViewMatrix_ = {
-        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
-        0.0f, -2.0f/fHeight, 0.0f, 0.0f,
-        -1.0f, 1.0f, 1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f
-    };
-
-    bUpdateViewMatrix_ = false;
-}
-
-void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
-{
-    if (pTarget)
-    {
-        pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
-        pCurrentTarget_->begin();
-        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
-    }
-    else
-    {
-        if (bUpdateViewMatrix_)
-            update_view_matrix_();
-
-        glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
-        pCurrentViewMatrix_ = &mViewMatrix_;
-    }
-
-    print_gl_errors("setting viewport");
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
-    glDisable(GL_CULL_FACE);
-    print_gl_errors("disabling culling");
-
-#if !defined(LXGUI_OPENGL3)
-    glDisable(GL_LIGHTING);
-    glDisable(GL_ALPHA_TEST);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(pCurrentViewMatrix_->data);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-#else
-    glActiveTexture(GL_TEXTURE0);
-    print_gl_errors("setting active texture");
-#endif
-
-#if defined(LXGUI_OPENGL3)
-    glUseProgram(uiTextureProgram_);
-    print_gl_errors("use program");
-    glUniformMatrix4fv(iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
-    print_gl_errors("setting view matrix texture");
-    glUseProgram(uiColorProgram_);
-    print_gl_errors("use program");
-    glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
-    print_gl_errors("setting view matrix color");
 
     glGenBuffers(4, uiVertexBuffers_);
     print_gl_errors("gen vertex buffer");
@@ -231,6 +160,83 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     print_gl_errors("setting attrib pointer");
     glEnableVertexAttribArray(2);
     print_gl_errors("enabling attrib array");
+#endif
+}
+
+#if defined(LXGUI_OPENGL3)
+renderer::~renderer() noexcept
+{
+    glDeleteVertexArrays(4, uiVertexArray_);
+    print_gl_errors("delete vertex array");
+
+    glDeleteBuffers(4, uiVertexBuffers_);
+    print_gl_errors("delete vertex buffer");
+}
+#endif
+
+void renderer::update_view_matrix_() const
+{
+    float fWidth = pParent_->get_target_width();
+    float fHeight = pParent_->get_target_height();
+
+    mViewMatrix_ = {
+        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
+        0.0f, -2.0f/fHeight, 0.0f, 0.0f,
+        -1.0f, 1.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f
+    };
+
+    bUpdateViewMatrix_ = false;
+}
+
+void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
+{
+    if (pTarget)
+    {
+        pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
+        pCurrentTarget_->begin();
+        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
+    }
+    else
+    {
+        if (bUpdateViewMatrix_)
+            update_view_matrix_();
+
+        glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
+        pCurrentViewMatrix_ = &mViewMatrix_;
+    }
+
+    print_gl_errors("setting viewport");
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
+    glDisable(GL_CULL_FACE);
+    print_gl_errors("disabling culling");
+
+#if !defined(LXGUI_OPENGL3)
+    glDisable(GL_LIGHTING);
+    glDisable(GL_ALPHA_TEST);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(pCurrentViewMatrix_->data);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+#else
+    glActiveTexture(GL_TEXTURE0);
+    print_gl_errors("setting active texture");
+#endif
+
+#if defined(LXGUI_OPENGL3)
+    glUseProgram(uiTextureProgram_);
+    print_gl_errors("use program");
+    glUniformMatrix4fv(iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    print_gl_errors("setting view matrix texture");
+    glUseProgram(uiColorProgram_);
+    print_gl_errors("use program");
+    glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    print_gl_errors("setting view matrix color");
+
 
     uiPreviousProgram_ = (uint)-1;
 #endif
@@ -239,11 +245,6 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 void renderer::end() const
 {
 #if defined(LXGUI_OPENGL3)
-    glDeleteVertexArrays(4, uiVertexArray_);
-    print_gl_errors("delete vertex array");
-
-    glDeleteBuffers(4, uiVertexBuffers_);
-    print_gl_errors("delete vertex buffer");
 #endif
 
     if (pCurrentTarget_)
