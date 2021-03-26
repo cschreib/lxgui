@@ -5,9 +5,9 @@
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
-#ifdef WIN32
-#define NOMINMAX
-#include <windows.h>
+#if defined(WIN32)
+    #define NOMINMAX
+    #include <windows.h>
 #endif
 
 #if !defined(WASM)
@@ -24,9 +24,13 @@
     #endif
 #endif
 
+#if !defined(GL_CLAMP_TO_EDGE)
+    #define GL_CLAMP_TO_EDGE 0x812F
+#endif
+
 #include <cmath>
 
-#ifdef MSVC
+#if defined(MSVC)
 template<typename T>
 T log2(T v)
 {
