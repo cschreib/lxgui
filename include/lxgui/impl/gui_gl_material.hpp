@@ -100,7 +100,7 @@ namespace gl
         /// Returns the plain color of this texture.
         /** \return The plain color of this texture
         */
-        color get_color() const;
+        const color& get_color() const;
 
         /// Premultiplies the texture by alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect

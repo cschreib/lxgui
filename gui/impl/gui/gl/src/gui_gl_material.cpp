@@ -132,7 +132,7 @@ material::type material::get_type() const
     return mType_;
 }
 
-color material::get_color() const
+const color& material::get_color() const
 {
     return pColData_->mColor_;
 }
