@@ -119,8 +119,9 @@ namespace gl
         int iTextureProjLocation_ = 0;
         int iColorProjLocation_ = 0;
         int iColorColLocation_ = 0;
-        mutable uint uiVertexArray_ = 0;
-        mutable uint uiVertexBuffers_[3];
+        mutable uint uiVertexArray_[4];
+        mutable uint uiVertexBuffers_[4];
+        mutable uint uiPreviousProgram_ = (uint)-1;
     #endif
     };
 }

@@ -139,11 +139,113 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     print_gl_errors("use program");
     glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
     print_gl_errors("setting view matrix color");
+
+    glGenBuffers(4, uiVertexBuffers_);
+    print_gl_errors("gen vertex buffer");
+
+    glGenVertexArrays(4, uiVertexArray_);
+    print_gl_errors("gen vertex array");
+
+    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+
+    // Color only array & single quad
+    glBindVertexArray(uiVertexArray_[0]);
+    print_gl_errors("bind vertex array");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2]);
+    print_gl_errors("bind vertex buffer");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(1);
+    print_gl_errors("enabling attrib array");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    print_gl_errors("bind index buffer");
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("index buffer data");
+
+    // Texture array & single quad
+    glBindVertexArray(uiVertexArray_[1]);
+    print_gl_errors("bind vertex array");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[3]);
+    print_gl_errors("bind vertex buffer");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(1);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(2);
+    print_gl_errors("enabling attrib array");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    print_gl_errors("bind index buffer");
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
+    print_gl_errors("index buffer data");
+
+    // Color only array & multi quads
+    glBindVertexArray(uiVertexArray_[2]);
+    print_gl_errors("bind vertex array");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2]);
+    print_gl_errors("bind vertex buffer");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(1);
+    print_gl_errors("enabling attrib array");
+
+    // Texture array & multi quads
+    glBindVertexArray(uiVertexArray_[3]);
+    print_gl_errors("bind vertex array");
+
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[3]);
+    print_gl_errors("bind vertex buffer");
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(0);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(1);
+    print_gl_errors("enabling attrib array");
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
+    print_gl_errors("setting attrib pointer");
+    glEnableVertexAttribArray(2);
+    print_gl_errors("enabling attrib array");
+
+    uiPreviousProgram_ = (uint)-1;
 #endif
 }
 
 void renderer::end() const
 {
+#if defined(LXGUI_OPENGL3)
+    glDeleteVertexArrays(4, uiVertexArray_);
+    print_gl_errors("delete vertex array");
+
+    glDeleteBuffers(4, uiVertexBuffers_);
+    print_gl_errors("delete vertex buffer");
+#endif
+
     if (pCurrentTarget_)
     {
         pCurrentTarget_->end();
@@ -192,70 +294,41 @@ void renderer::render_quad(const quad& mQuad) const
 #else
     std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
 
-    glGenVertexArrays(1, &uiVertexArray_);
-    print_gl_errors("gen vertex array");
-    glBindVertexArray(uiVertexArray_);
+    const uint uiArrayID = pMat->get_type() == material::type::TEXTURE ? 1 : 0;
+
+    glBindVertexArray(uiVertexArray_[uiArrayID]);
     print_gl_errors("bind vertex array");
 
-    glGenBuffers(2, uiVertexBuffers_);
-    print_gl_errors("gen vertex buffer");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
     print_gl_errors("bind vertex buffer");
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mQuad.v.size(), mQuad.v.data(), GL_DYNAMIC_DRAW);
     print_gl_errors("buffer data");
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
     if (pMat->get_type() == material::type::TEXTURE)
     {
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(1);
-        print_gl_errors("enabling attrib array");
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(2);
-        print_gl_errors("enabling attrib array");
-    }
-    else
-    {
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(1);
-        print_gl_errors("enabling attrib array");
-    }
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
-    print_gl_errors("bind index buffer");
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("index buffer data");
-
-    if (pMat->get_type() == material::type::TEXTURE)
-    {
-        glUseProgram(uiTextureProgram_);
-        print_gl_errors("use program");
+        if (uiPreviousProgram_ != uiTextureProgram_)
+        {
+            glUseProgram(uiTextureProgram_);
+            print_gl_errors("use program");
+            uiPreviousProgram_ = uiTextureProgram_;
+        }
         pMat->bind();
     }
     else
     {
-        glUseProgram(uiColorProgram_);
-        print_gl_errors("use program");
+        if (uiPreviousProgram_ != uiColorProgram_)
+        {
+            glUseProgram(uiColorProgram_);
+            print_gl_errors("use program");
+            uiPreviousProgram_ = uiColorProgram_;
+        }
         glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
         print_gl_errors("setting color color");
     }
 
     glDrawElements(GL_TRIANGLES, ids.size(), GL_UNSIGNED_INT, 0);
     print_gl_errors("draw");
-
-    glDeleteBuffers(2, uiVertexBuffers_);
-    print_gl_errors("delete vertex buffer");
-    glDeleteVertexArrays(1, &uiVertexArray_);
-    print_gl_errors("delete vertex array");
 #endif
 }
 
@@ -306,42 +379,16 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
 #else
     std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
 
-    glGenVertexArrays(1, &uiVertexArray_);
-    print_gl_errors("gen vertex array");
-    glBindVertexArray(uiVertexArray_);
+    const uint uiArrayID = pMat->get_type() == material::type::TEXTURE ? 1 : 0;
+
+    glBindVertexArray(uiVertexArray_[2 + uiArrayID]);
     print_gl_errors("bind vertex array");
 
-    glGenBuffers(2, uiVertexBuffers_);
-    print_gl_errors("gen vertex buffer");
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
     print_gl_errors("bind vertex buffer");
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 4 * lQuadList.size(), lQuadList.data(), GL_DYNAMIC_DRAW);
     print_gl_errors("buffer data");
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-    print_gl_errors("setting attrib pointer");
-    glEnableVertexAttribArray(0);
-    print_gl_errors("enabling attrib array");
-    if (pMat->get_type() == material::type::TEXTURE)
-    {
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(1);
-        print_gl_errors("enabling attrib array");
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(2);
-        print_gl_errors("enabling attrib array");
-    }
-    else
-    {
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-        print_gl_errors("setting attrib pointer");
-        glEnableVertexAttribArray(1);
-        print_gl_errors("enabling attrib array");
-    }
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
     print_gl_errors("bind index buffer");
@@ -353,25 +400,28 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
 
     if (pMat->get_type() == material::type::TEXTURE)
     {
-        glUseProgram(uiTextureProgram_);
-        print_gl_errors("use program");
+        if (uiPreviousProgram_ != uiTextureProgram_)
+        {
+            glUseProgram(uiTextureProgram_);
+            print_gl_errors("use program");
+            uiPreviousProgram_ = uiTextureProgram_;
+        }
         pMat->bind();
     }
     else
     {
-        glUseProgram(uiColorProgram_);
-        print_gl_errors("use program");
+        if (uiPreviousProgram_ != uiColorProgram_)
+        {
+            glUseProgram(uiColorProgram_);
+            print_gl_errors("use program");
+            uiPreviousProgram_ = uiColorProgram_;
+        }
         glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
         print_gl_errors("setting color color");
     }
 
     glDrawElements(GL_TRIANGLES, lRepeatedIds.size(), GL_UNSIGNED_INT, 0);
     print_gl_errors("draw");
-
-    glDeleteBuffers(2, uiVertexBuffers_);
-    print_gl_errors("delete vertex buffer");
-    glDeleteVertexArrays(1, &uiVertexArray_);
-    print_gl_errors("delete vertex array");
 #endif
 }
 
