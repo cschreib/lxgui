@@ -18,6 +18,7 @@ lxgui_set_option(LXGUI_BUILD_GUI_SDL_IMPL TRUE BOOL "Build the SDL gui implement
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SDL_IMPL TRUE BOOL "Build the SDL input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
+lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
@@ -32,7 +33,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     # Debugging options that can be added to EMSCRIPTEN_USE_FLAGS:
     # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
     # -g -fsanitize=address -s INITIAL_MEMORY=200MB
-    set(EMSCRIPTEN_USE_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=2")
+    set(EMSCRIPTEN_USE_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${EMSCRIPTEN_USE_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EMSCRIPTEN_USE_FLAGS}")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_USE_FLAGS}")
@@ -132,6 +133,10 @@ elseif (UNIX)
     add_definitions(-DLINUX)
 elseif (WINDOWS)
     add_definitions(-DWIN32)
+endif()
+
+if(${LXGUI_OPENGL3})
+    add_definitions(-DLXGUI_OPENGL3)
 endif()
 
 # find libraries
