@@ -21,22 +21,22 @@ namespace gl
 
         inline T& operator () (size_t i, size_t j)
         {
-            return data[j][i];
+            return data[j*4+i];
         }
 
         inline const T& operator () (size_t i, size_t j) const
         {
-            return data[j][i];
+            return data[j*4+i];
         }
 
         inline T& operator () (size_t i)
         {
-            return data[i/4][i%4];
+            return data[i];
         }
 
         inline const T& operator () (size_t i) const
         {
-            return data[i/4][i%4];
+            return data[i];
         }
 
         void make_translation(const vector2f& dx);
@@ -60,7 +60,7 @@ namespace gl
         matrix4  operator * (const matrix4& m);
         vector2f operator * (const vector2f& v);
 
-        T data[4][4];
+        T data[16];
 
         static const matrix4 IDENTITY;
     };

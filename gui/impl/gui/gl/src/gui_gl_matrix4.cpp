@@ -23,14 +23,14 @@ matrix4::matrix4(std::initializer_list<T> mList)
     for (const T* p = mList.begin(); p != mList.end() && i < 16; ++p)
     {
         i = p-mList.begin();
-        (*this)(i/4,i%4) = *p;
+        (*this)(i) = *p;
     }
 }
 
 matrix4::matrix4(T* mat)
 {
     for (int i = 0; i < 16; ++i)
-        (*this)(i/4,i%4) = mat[i];
+        (*this)(i) = mat[i];
 }
 
 void matrix4::make_translation(const vector2f& dx)
@@ -71,15 +71,12 @@ void matrix4::make_transformation(const vector2f& dx, const vector2f& scale, flo
 
 void matrix4::transpose()
 {
-    T fTemp;
     for (int i = 0; i < 4; ++i)
     for (int j = 0; j < 4; ++j)
     {
         if (i != j)
         {
-            fTemp = (*this)(i,j);
-            (*this)(i,j) = (*this)(j,i);
-            (*this)(j,i) = fTemp;
+            std::swap((*this)(i,j), (*this)(j,i));
         }
     }
 }
