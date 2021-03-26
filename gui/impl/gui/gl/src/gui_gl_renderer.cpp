@@ -141,7 +141,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
     print_gl_errors("setting view matrix color");
 
-
+    uiPreviousTexture_ = (uint)-1;
     uiPreviousProgram_ = (uint)-1;
 #endif
 }
@@ -218,7 +218,11 @@ void renderer::render_quad(const quad& mQuad) const
             print_gl_errors("use program");
             uiPreviousProgram_ = uiTextureProgram_;
         }
-        pMat->bind();
+        if (uiPreviousTexture_ != pMat->get_handle_())
+        {
+            pMat->bind();
+            uiPreviousTexture_ = pMat->get_handle_();
+        }
     }
     else
     {
@@ -319,7 +323,11 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
             print_gl_errors("use program");
             uiPreviousProgram_ = uiTextureProgram_;
         }
-        pMat->bind();
+        if (uiPreviousTexture_ != pMat->get_handle_())
+        {
+            pMat->bind();
+            uiPreviousTexture_ = pMat->get_handle_();
+        }
     }
     else
     {

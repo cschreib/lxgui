@@ -124,6 +124,7 @@ namespace gl
         mutable std::array<uint,4> uiVertexArray_;
         mutable std::array<uint,4> uiVertexBuffers_;
         mutable uint uiPreviousProgram_ = (uint)-1;
+        mutable uint uiPreviousTexture_ = (uint)-1;
         mutable std::vector<uint> lRepeatedIds_;
     #endif
     };
