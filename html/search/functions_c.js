@@ -19,5 +19,5 @@ var searchData=
   ['notify_5fscript_5fdefined_2279',['notify_script_defined',['../classlxgui_1_1gui_1_1frame.html#ac56c0b232c231aceaf87f8839fc2dd8c',1,'lxgui::gui::frame']]],
   ['notify_5ftop_5flevel_5fparent_5f_2280',['notify_top_level_parent_',['../classlxgui_1_1gui_1_1frame.html#ab13332a0bf485c32d1496362cd3702d2',1,'lxgui::gui::frame']]],
   ['notify_5fvisible_5f_2281',['notify_visible_',['../classlxgui_1_1gui_1_1frame.html#a6bf0c46f9e048f7028e44b0994a7935b',1,'lxgui::gui::frame']]],
-  ['notify_5fwindow_5fresized_2282',['notify_window_resized',['../classlxgui_1_1gui_1_1renderer__impl.html#a51c333dfacd37d9ada5c43dc28e24cad',1,'lxgui::gui::renderer_impl::notify_window_resized()'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63',1,'lxgui::gui::sfml::renderer::notify_window_resized()']]]
+  ['notify_5fwindow_5fresized_2282',['notify_window_resized',['../classlxgui_1_1gui_1_1renderer__impl.html#a51c333dfacd37d9ada5c43dc28e24cad',1,'lxgui::gui::renderer_impl::notify_window_resized()'],['../classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f',1,'lxgui::gui::gl::renderer::notify_window_resized()'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63',1,'lxgui::gui::sfml::renderer::notify_window_resized()']]]
 ];
