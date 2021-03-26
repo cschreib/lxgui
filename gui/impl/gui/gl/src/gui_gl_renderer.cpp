@@ -75,6 +75,9 @@ renderer::~renderer() noexcept
 {
     glDeleteVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
     glDeleteBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
+
+    if (uiTextureProgram_) glDeleteProgram(uiTextureProgram_);
+    if (uiColorProgram_) glDeleteProgram(uiColorProgram_);
 }
 #endif
 
@@ -421,8 +424,165 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
 #endif
 
 #if defined(LXGUI_OPENGL3)
+GLuint create_shader(GLenum mType, const char* sShaderSource)
+{
+    // Create the shader
+    GLuint uiShader = glCreateShader(mType);
+    if (uiShader == 0)
+    {
+        throw gui::exception("gl::renderer", "Could not create "+
+            std::string(mType == GL_VERTEX_SHADER ? "vertex" : "fragment")+" shader.");
+    }
+
+    glShaderSource(uiShader, 1, &sShaderSource, nullptr);
+    glCompileShader(uiShader);
+
+    // Check sucess
+    GLint iCompiled = 0;
+    glGetShaderiv(uiShader, GL_COMPILE_STATUS, &iCompiled);
+    if (iCompiled == 0)
+    {
+        GLint iInfoLength = 0;
+        glGetProgramiv(uiShader, GL_INFO_LOG_LENGTH, &iInfoLength);
+
+        std::vector<char> sErrorMessage(std::max(1, iInfoLength), '\0');
+        if (iInfoLength > 1)
+        {
+            glGetProgramInfoLog(uiShader, iInfoLength, NULL, sErrorMessage.data());
+        }
+
+        glDeleteShader(uiShader);
+        throw gui::exception("gl::renderer",
+            "Could not compile shader: "+std::string(sErrorMessage.data()));
+   }
+
+   return uiShader;
+}
+
+GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShaderSource)
+{
+    GLuint uiVertexShader = 0;
+    GLuint uiFragmentShader = 0;
+    GLuint uiProgramObject = 0;
+
+    try
+    {
+        // Create shaders
+        uiVertexShader = create_shader(GL_VERTEX_SHADER, sVertexShaderSource);
+        uiFragmentShader = create_shader(GL_FRAGMENT_SHADER, sFragmentShaderSource);
+
+        // Create program
+        uiProgramObject = glCreateProgram();
+        if (uiProgramObject == 0)
+        {
+            throw gui::exception("gl::renderer", "Could not create shader program.");
+        }
+
+        glAttachShader(uiProgramObject, uiVertexShader);
+        glAttachShader(uiProgramObject, uiFragmentShader);
+        glLinkProgram(uiProgramObject);
+
+        // Check success
+        GLint iLinked = 0;
+        glGetProgramiv(uiProgramObject, GL_LINK_STATUS, &iLinked);
+        if (iLinked == 0)
+        {
+            GLint iInfoLength = 0;
+            glGetProgramiv(uiProgramObject, GL_INFO_LOG_LENGTH, &iInfoLength);
+
+            std::vector<char> sErrorMessage(std::max(1, iInfoLength), '\0');
+            if (iInfoLength > 1)
+            {
+                glGetProgramInfoLog(uiProgramObject, iInfoLength, NULL, sErrorMessage.data());
+            }
+
+            throw gui::exception("gl::rendere",
+                "Could not link shader program: "+std::string(sErrorMessage.data()));
+        }
+    }
+    catch (...)
+    {
+        if (uiVertexShader != 0) glDeleteShader(uiVertexShader);
+        if (uiFragmentShader != 0) glDeleteShader(uiFragmentShader);
+        if (uiProgramObject != 0) glDeleteProgram(uiProgramObject);
+        throw;
+    }
+
+    glDeleteShader(uiVertexShader);
+    glDeleteShader(uiFragmentShader);
+
+    return uiProgramObject;
+}
+
 void renderer::compile_programs_()
 {
+    char sTextureVertexShader[] =
+        "#version 300 es                                         \n"
+        "layout(location = 0) in vec2 a_position;                \n"
+        "layout(location = 1) in vec4 a_color;                   \n"
+        "layout(location = 2) in vec2 a_texCoord;                \n"
+        "uniform mat4 m_proj;                                    \n"
+        "out vec4 v_color;                                       \n"
+        "out vec2 v_texCoord;                                    \n"
+        "void main()                                             \n"
+        "{                                                       \n"
+        "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
+        "    v_color = a_color;                                  \n"
+        "    v_color.rgb *= v_color.a;                           \n"
+        "    v_texCoord = a_texCoord;                            \n"
+        "}                                                       \n";
+
+    char sTextureFragmentShader[] =
+        "#version 300 es                                         \n"
+        "precision mediump float;                                \n"
+        "in vec4 v_color;                                        \n"
+        "in vec2 v_texCoord;                                     \n"
+        "layout(location = 0) out vec4 o_color;                  \n"
+        "uniform sampler2D s_texture;                            \n"
+        "void main()                                             \n"
+        "{                                                       \n"
+        "    o_color = texture(s_texture, v_texCoord)*v_color;   \n"
+        "}                                                       \n";
+
+    char sColorVertexShader[] =
+        "#version 300 es                                         \n"
+        "layout(location = 0) in vec2 a_position;                \n"
+        "layout(location = 1) in vec4 a_color;                   \n"
+        "uniform mat4 m_proj;                                    \n"
+        "uniform vec4 c_color;                                   \n"
+        "out vec4 v_color;                                       \n"
+        "void main()                                             \n"
+        "{                                                       \n"
+        "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
+        "    v_color = a_color*c_color;                          \n"
+        "    v_color.rgb *= v_color.a;                           \n"
+        "}                                                       \n";
+
+    char sColorFragmentShader[] =
+        "#version 300 es                                         \n"
+        "precision mediump float;                                \n"
+        "in vec4 v_color;                                        \n"
+        "layout(location = 0) out vec4 o_color;                  \n"
+        "void main()                                             \n"
+        "{                                                       \n"
+        "    o_color = v_color;                                  \n"
+        "}                                                       \n";
+
+    try
+    {
+        uiTextureProgram_ = create_program(sTextureVertexShader, sTextureFragmentShader);
+        uiColorProgram_ = create_program(sColorVertexShader, sColorFragmentShader);
+    }
+    catch (...)
+    {
+        if (uiTextureProgram_) glDeleteProgram(uiTextureProgram_);
+        if (uiColorProgram_) glDeleteProgram(uiColorProgram_);
+    }
+
+    iTextureSamplerLocation_ = glGetUniformLocation(uiTextureProgram_, "s_texture");
+    iTextureProjLocation_ = glGetUniformLocation(uiTextureProgram_, "m_proj");
+    iColorProjLocation_ = glGetUniformLocation(uiColorProgram_, "m_proj");
+    iColorColLocation_ = glGetUniformLocation(uiColorProgram_, "c_color");
 }
 
 void renderer::setup_buffers_()
