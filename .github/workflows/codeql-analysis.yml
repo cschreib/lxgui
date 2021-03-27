@@ -36,6 +36,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      
+    - name: Get Linux dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev libsfml-dev liblua5.2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-dev
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
