@@ -143,7 +143,7 @@ vcpkg install sfml zlib libpng freetype glew
 
 The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, libpng, and Freetype are all already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
 
-The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it will run slower. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL3, but it provides the best performance.
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it can provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: on my desktop machine, the SDL2 back-end is slower than the OpenGL back-end in Firefox, but it is faster in Chrome.
 
 With Emscripten installed and sourced in your current terminal, run
 
