@@ -3,6 +3,14 @@ cmake_minimum_required(VERSION 3.7)
 # Start new project
 project(lxgui-test-opengl-sdl CXX)
 
+if (APPLE)
+    add_definitions(-DMACOSX)
+elseif (UNIX)
+    add_definitions(-DLINUX)
+elseif (WINDOWS)
+    add_definitions(-DWIN32)
+endif()
+
 # Add the directory containing Findlxgui.cmake to the model path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../../../cmake/Modules")
 
