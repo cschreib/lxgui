@@ -234,15 +234,34 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             lEvents_.push_back(mKeyboardEvent);
             break;
         }
-        case SDL_MOUSEBUTTONDOWN:
+        case SDL_MOUSEBUTTONDOWN: [[fallthrough]];
+        case SDL_FINGERDOWN:
         {
-            mouse_button mButton = lMouseFromSDL[mEvent.button.button - 1];
+            if (mEvent.type == SDL_MOUSEBUTTONDOWN && (
+                mEvent.button.which == SDL_TOUCH_MOUSEID ||
+                mEvent.button.button == SDL_BUTTON_X1 ||
+                mEvent.button.button == SDL_BUTTON_X2))
+            {
+                // Ignore these
+                break;
+            }
+
+            mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONDOWN ?
+                lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
             mMouse_.lButtonState[(uint)mButton] = true;
 
             gui::event mMouseEvent("MOUSE_PRESSED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-            mMouseEvent.add((float)mEvent.button.x);
-            mMouseEvent.add((float)mEvent.button.y);
+            if (mEvent.type == SDL_MOUSEBUTTONDOWN)
+            {
+                mMouseEvent.add((float)mEvent.button.x);
+                mMouseEvent.add((float)mEvent.button.y);
+            }
+            else
+            {
+                mMouseEvent.add((float)mEvent.tfinger.x);
+                mMouseEvent.add((float)mEvent.tfinger.y);
+            }
             lEvents_.push_back(mMouseEvent);
 
             clock::time_point mPrev = lLastClickClock_[(uint)mButton];
@@ -257,15 +276,34 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             lLastClickClock_[(uint)mButton] = mNow;
             break;
         }
-        case SDL_MOUSEBUTTONUP:
+        case SDL_MOUSEBUTTONUP: [[fallthrough]];
+        case SDL_FINGERUP:
         {
-            mouse_button mButton = lMouseFromSDL[mEvent.button.button - 1];
+            if (mEvent.type == SDL_MOUSEBUTTONUP && (
+                mEvent.button.which == SDL_TOUCH_MOUSEID ||
+                mEvent.button.button == SDL_BUTTON_X1 ||
+                mEvent.button.button == SDL_BUTTON_X2))
+            {
+                // Ignore these
+                break;
+            }
+
+            mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONUP ?
+                lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
             mMouse_.lButtonState[(uint)mButton] = false;
 
             gui::event mMouseEvent("MOUSE_RELEASED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
-            mMouseEvent.add((float)mEvent.button.x);
-            mMouseEvent.add((float)mEvent.button.y);
+            if (mEvent.type == SDL_MOUSEBUTTONUP)
+            {
+                mMouseEvent.add((float)mEvent.button.x);
+                mMouseEvent.add((float)mEvent.button.y);
+            }
+            else
+            {
+                mMouseEvent.add((float)mEvent.tfinger.x);
+                mMouseEvent.add((float)mEvent.tfinger.y);
+            }
             lEvents_.push_back(mMouseEvent);
             break;
         }
