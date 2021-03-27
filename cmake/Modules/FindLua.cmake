@@ -124,7 +124,8 @@ if (NOT LUA_VERSION_STRING)
         unset(LUA_INCLUDE_PREFIX CACHE)
         find_path(LUA_INCLUDE_PREFIX ${subdir}/lua.h
           HINTS
-            ENV LUA_DIR
+            ${LUA_ROOT}
+            $ENV{LUA_ROOT}
           PATHS
           ~/Library/Frameworks
           /Library/Frameworks
@@ -157,7 +158,8 @@ endif ()
 find_library(LUA_LIBRARY
   NAMES ${_lua_library_names}
   HINTS
-    ENV LUA_DIR
+    ${LUA_ROOT}
+    $ENV{LUA_ROOT}
   PATH_SUFFIXES lib
   PATHS
   ~/Library/Frameworks
@@ -169,9 +171,26 @@ find_library(LUA_LIBRARY
 )
 unset(_lua_library_names)
 
+if (NOT LUA_LIBRARY)
+  find_library(LUA_LIBRARY
+    NAMES lua
+    HINTS
+      ${LUA_ROOT}
+      $ENV{LUA_ROOT}
+    PATH_SUFFIXES lib
+    PATHS
+    ~/Library/Frameworks
+    /Library/Frameworks
+    /sw
+    /opt/local
+    /opt/csw
+    /opt
+  )
+endif()
+
 if (LUA_LIBRARY)
     # include the math library for Unix
-    if (UNIX AND NOT APPLE AND NOT BEOS)
+    if (UNIX AND NOT APPLE AND NOT BEOS AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
         find_library(LUA_MATH_LIBRARY m)
         set(LUA_LIBRARIES "${LUA_LIBRARY};${LUA_MATH_LIBRARY}")
 
