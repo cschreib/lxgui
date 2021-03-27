@@ -89,7 +89,7 @@ jobs:
     - name: Prepare publish package
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
       shell: bash
-      working-directory: ${{github.workspace}}/gui/test/bin
+      working-directory: ${{github.workspace}}/gui/bin
       run: |
          mkdir demo
          cp lxgui-test.* demo/
@@ -99,5 +99,5 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
-        folder: ${{github.workspace}}/gui/test/bin/demo
+        folder: ${{github.workspace}}/gui/bin/demo
         target-folder: demo

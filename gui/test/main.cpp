@@ -115,7 +115,15 @@ void main_loop(void* pTypeErasedData)
         if (mEvent.type == SDL_WINDOWEVENT)
         {
             if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+            {
+            #if defined(WASM)
+                emscripten_cancel_main_loop();
+                return;
+            #else
                 mContext.bRunning = false;
+                return;
+            #endif
+            }
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
                 mContext.bFocus = false;
             else if (mEvent.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
@@ -132,8 +140,15 @@ void main_loop(void* pTypeErasedData)
                 switch (mEvent.key.keysym.sym)
                 {
                     case SDLK_ESCAPE:
+                    {
+                    #if defined(WASM)
+                        emscripten_cancel_main_loop();
+                        return;
+                    #else
                         mContext.bRunning = false;
-                        break;
+                        return;
+                    #endif
+                    }
                     case SDLK_p:
                         gui::out << mContext.pManager->print_ui() << std::endl;
                         break;
@@ -152,6 +167,7 @@ void main_loop(void* pTypeErasedData)
             }
         }
 
+        // Feed events to the GUI
         static_cast<input::sdl::source*>(pInputMgr->get_source())->on_sdl_event(mEvent);
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
@@ -159,8 +175,16 @@ void main_loop(void* pTypeErasedData)
     sf::Event mEvent;
     while (mContext.pWindow->pollEvent(mEvent))
     {
-        if (mEvent.type      == sf::Event::Closed)
-            mContext.bRunning = false;
+        if (mEvent.type == sf::Event::Closed)
+        {
+            #if defined(WASM)
+                emscripten_cancel_main_loop();
+                return;
+            #else
+                mContext.bRunning = false;
+                return;
+            #endif
+        }
         else if (mEvent.type == sf::Event::LostFocus)
             mContext.bFocus = false;
         else if (mEvent.type == sf::Event::GainedFocus)
@@ -176,8 +200,15 @@ void main_loop(void* pTypeErasedData)
                 switch (mEvent.key.code)
                 {
                     case sf::Keyboard::Key::Escape:
+                    {
+                    #if defined(WASM)
+                        emscripten_cancel_main_loop();
+                        return;
+                    #else
                         mContext.bRunning = false;
-                        break;
+                        return;
+                    #endif
+                    }
                     case sf::Keyboard::Key::P:
                         gui::out << mContext.pManager->print_ui() << std::endl;
                         break;
@@ -331,11 +362,9 @@ int main(int argc, char* argv[])
         );
 
         if (!pWindow)
-        {
             throw gui::exception("SDL_Window", "Could not create window.");
-        }
 
-        #if defined(SDL_GUI)
+    #if defined(SDL_GUI)
         std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> pRenderer(
             SDL_CreateRenderer(
                 pWindow.get(), -1,
@@ -345,14 +374,13 @@ int main(int argc, char* argv[])
         );
 
         if (!pRenderer)
-        {
             throw gui::exception("SDL_Renderer", "Could not create renderer.");
-        }
 
         SDL_RendererInfo mRendererInfo;
         SDL_GetRendererInfo(pRenderer.get(), &mRendererInfo);
         gui::out << "SDL renderer: " << mRendererInfo.name << std::endl;
-        #else
+    #else
+        // Helper class to manage the OpenGL context from SDL
         struct GLContext
         {
             SDL_GLContext pContext = nullptr;
@@ -372,7 +400,8 @@ int main(int argc, char* argv[])
         };
 
         GLContext mGLContext(pWindow.get());
-        #endif
+        SDL_GL_SetSwapInterval(0);
+    #endif
 
     #elif defined(SFML_GUI)
         sf::RenderWindow mWindow;
@@ -393,21 +422,18 @@ int main(int argc, char* argv[])
         // Define the GUI renderer
         std::unique_ptr<gui::renderer_impl> pRendererImpl =
             std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
-    #endif
 
-    #if defined(GLSFML_GUI)
         // Define the input manager
         std::unique_ptr<input::source_impl> pInputSource;
+
+    #if defined(GLSFML_GUI)
         // Use SFML
         pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
     #elif defined(GLSDL_GUI)
-        // Define the input manager
-        std::unique_ptr<input::source_impl> pInputSource;
         // Use SDL
         pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get()));
     #endif
 
-    #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input source
             std::move(pInputSource),
@@ -418,9 +444,7 @@ int main(int argc, char* argv[])
             // Provide the GUI renderer implementation
             std::move(pRendererImpl)
         ));
-    #endif
-
-    #if defined(SDL_GUI)
+    #elif defined(SDL_GUI)
         // Use full SDL implementation
         pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get(), sLocale);
     #elif defined(SFML_GUI)

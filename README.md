@@ -6,20 +6,24 @@ There are plenty of different GUI libraries out there. They all have something t
 
 * **Platform independence**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
-* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available online [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
+* **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **GUI data from XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything using C++ code if needed.
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 * **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
 
-A WebAssembly live demo is accessible [here](https://cschreib.github.io/lxgui/demo/lxgui-test.html).
+**For a quick demonstration and introduction.** A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL3) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL2). Bootstrap examples are available in the `gui/examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
+
+**Mandatory screenshot.** Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable Lua and XML files.
 
 ![Sample screenshot](/gui/test/expected.png)
 
-In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front end GUI library itself only depends on Lua. XML parsing is done by a custom library included in this repository.
+**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front-end GUI library itself only depends on Lua. XML parsing is done using a custom library included in this repository.
 
-The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). The second available rendering backend uses SFML2 for everything, and thus only depends on SFML. The third rendering backend uses SDL for rendering, SDL_tff for font loading and rendering, and SDL_image for texture loading. For the input back end, backends are provided using either SFML2 or SDL.
+The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort). It can be compiled either in "legacy" OpenGL (fixed pipeline) or OpenGL 3 (programmable pipeline). The second available rendering back-end uses SFML2 for everything, and thus only depends on SFML. The third rendering back-end uses SDL2 for rendering, SDL2_tff for font loading and rendering, and SDL2_image for texture loading. For the input implementation, back-ends are provided using either SFML2 or SDL2.
 
-Here is a brief list of the available widgets:
+The WebAssembly build supports all back-ends except SFML.
+
+**List of the available widgets**:
 
 * **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
 * **layered_region** (abstract): can be rendered on the screen.
@@ -137,7 +141,9 @@ vcpkg install sfml zlib libpng freetype glew
 
 # Webassembly setup
 
-The WebAssembly build only supports the SDL backend (for rendering and input). SDL is already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, libpng, and Freetype are all already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
+
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it will run slower. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL3, but it provides the best performance.
 
 With Emscripten installed and sourced in your current terminal, run
 

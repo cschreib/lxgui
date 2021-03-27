@@ -1,6 +1,6 @@
 set(SRCROOT ${PROJECT_SOURCE_DIR}/gui/test)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/gui/test/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/gui/bin)
 
 add_executable(lxgui-test
     ${SRCROOT}/main.cpp
@@ -30,7 +30,7 @@ if (NOT EMSCRIPTEN)
         target_include_directories(lxgui-test PRIVATE ${SFML_INCLUDE_DIR})
     endif()
 else()
-    set(TEST_EMSCRIPTEN_USE_FLAGS "--preload-file ${PROJECT_SOURCE_DIR}/gui/test/bin/interface@interface")
+    set(TEST_EMSCRIPTEN_USE_FLAGS "--preload-file ${PROJECT_SOURCE_DIR}/gui/bin/interface@interface")
     if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
         set(TEST_EMSCRIPTEN_USE_FLAGS "${TEST_EMSCRIPTEN_USE_FLAGS} -s USE_SDL=2 -s USE_LIBPNG=1 -s USE_FREETYPE=1 -s MIN_WEBGL_VERSION=3")
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL")

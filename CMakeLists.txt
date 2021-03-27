@@ -161,6 +161,8 @@ endif()
 if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_LESS 5.2)
     add_definitions(-DLXGUI_LUA51)
 endif()
+
+set(SOL_SAFE_NUMERICS TRUE)
 add_definitions(-DSOL_SAFE_NUMERICS=1)
 
 # add the subdirectories
