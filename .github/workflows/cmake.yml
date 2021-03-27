@@ -13,12 +13,12 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Ubuntu GCC,   os: ubuntu-latest,  compiler: g++,     arch: "64", cmakepp: "",        flags: ""}
-        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, arch: "64", cmakepp: "",        flags: ""}
-        - { name: Windows 32,   os: windows-latest, compiler: vs2019,  arch: "32", cmakepp: "",        flags: "-DCMAKE_PREFIX_PATH=`pwd` -A Win32"}
-        - { name: Windows 64,   os: windows-latest, compiler: vs2019,  arch: "64", cmakepp: "",        flags: "-DCMAKE_PREFIX_PATH=`pwd` -A x64"}
-        - { name: MacOS,        os: macos-latest,   compiler: clang++, arch: "64", cmakepp: "",        flags: ""}
-        - { name: WebAsembly,   os: ubuntu-latest,  compiler: em++,    arch: "64", cmakepp: "emcmake", flags: "-DCMAKE_BUILD_TYPE=Release -DLUA_LIBRARIES=`pwd`/lib/liblua.a -DLUA_INCLUDE_DIR=`pwd`/include -DLXGUI_TEST_IMPLEMENTATION=OPENGL_SDL"}
+        - { name: Ubuntu GCC,   os: ubuntu-latest,  compiler: g++,     arch: "64", cmakepp: "",        suffix: "",            flags: ""}
+        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: ""}
+        - { name: Windows 32,   os: windows-latest, compiler: vs2019,  arch: "32", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=${{github.workspace}}/dependencies -A Win32"}
+        - { name: Windows 64,   os: windows-latest, compiler: vs2019,  arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=${{github.workspace}}/dependencies -A x64"}
+        - { name: MacOS,        os: macos-latest,   compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: ""}
+        - { name: WebAsembly,   os: ubuntu-latest,  compiler: em++,    arch: "64", cmakepp: "emcmake", suffix: "-emscripten", flags: "-DCMAKE_PREFIX_PATH=${{github.workspace}}/dependencies -DLXGUI_TEST_IMPLEMENTATION=OPENGL_SDL"}
 
     name: ${{matrix.platform.name}}
     runs-on: ${{matrix.platform.os}}
@@ -60,8 +60,8 @@ jobs:
     - name: Get Emscripten dependencies
       if: matrix.platform.compiler == 'em++'
       shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: unzip ${GITHUB_WORKSPACE}/dependencies/wasm.zip
+      working-directory: ${{github.workspace}}/dependencies
+      run: unzip wasm.zip
 
     - name: Get Windows dependencies
       if: runner.os == 'Windows'
@@ -69,8 +69,8 @@ jobs:
       #run: vcpkg install sfml lua zlib libpng freetype glew sdl2 sdl2-ttf sdl2-image
       # Pre-compiled dependencies:
       shell: bash
-      working-directory: ${{github.workspace}}/build
-      run: unzip ${GITHUB_WORKSPACE}/dependencies/windows-dependencies-${{matrix.platform.compiler}}-${{matrix.platform.arch}}.zip
+      working-directory: ${{github.workspace}}/dependencies
+      run: unzip windows-dependencies-${{matrix.platform.compiler}}-${{matrix.platform.arch}}.zip
 
     - name: Get MacOS dependencies
       if: runner.os == 'macOS'
@@ -79,12 +79,47 @@ jobs:
     - name: Configure CMake
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=$BUILD_TYPE ${{matrix.platform.flags}}
+      run: ${{matrix.platform.cmakepp}} cmake ${{github.workspace}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/dependencies ${{matrix.platform.flags}}
 
     - name: Build
       shell: bash
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --config ${BUILD_TYPE} --parallel 2
+
+    - name: Install
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: cmake --install . --config ${BUILD_TYPE}
+
+    - name: Build example SDL
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        rm -rf *
+        ${{matrix.platform.cmakepp}} cmake ${{github.workspace}}/gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+
+    - name: Build example OpenGL-SDL
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        rm -rf *
+        ${{matrix.platform.cmakepp}} cmake ${{github.workspace}}/gui/examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+
+    - name: Build example SFML
+      if: matrix.platform.compiler != 'em++'
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        rm -rf *
+        ${{matrix.platform.cmakepp}} cmake ${{github.workspace}}/gui/examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+
+    - name: Build example OpenGL-SFML
+      if: matrix.platform.compiler != 'em++'
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        rm -rf *
+        ${{matrix.platform.cmakepp}} cmake ${{github.workspace}}/gui/examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
 
     - name: Prepare publish package
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
@@ -92,7 +127,7 @@ jobs:
       working-directory: ${{github.workspace}}/gui/bin
       run: |
          mkdir demo
-         cp lxgui-test.* demo/
+         cp lxgui-test*${{matrix.platform.suffix}}* demo/
 
     - name: Publish
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
