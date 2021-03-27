@@ -61,7 +61,7 @@ jobs:
     - name: Get Emscripten dependencies
       if: matrix.platform.compiler == 'em++'
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/dependencies
+      working-directory: ${{github.workspace}}/dependencies
       run: unzip wasm.zip
 
     - name: Get Windows dependencies
@@ -70,7 +70,7 @@ jobs:
       #run: vcpkg install sfml lua zlib libpng freetype glew sdl2 sdl2-ttf sdl2-image
       # Pre-compiled dependencies:
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/dependencies
+      working-directory: ${{github.workspace}}/dependencies
       run: unzip windows-dependencies-${{matrix.platform.compiler}}-${{matrix.platform.arch}}.zip
 
     - name: Get MacOS dependencies
@@ -79,29 +79,29 @@ jobs:
 
     - name: Configure CMake
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/dependencies ${{matrix.platform.flags}}
 
     - name: Build
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Install
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: cmake --install . --config ${BUILD_TYPE}
 
     - name: Build example SDL
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE}/gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
 
     - name: Build example OpenGL-SDL
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE}/gui/examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
@@ -109,7 +109,7 @@ jobs:
     - name: Build example SFML
       if: matrix.platform.compiler != 'em++'
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE}/gui/examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
@@ -117,7 +117,7 @@ jobs:
     - name: Build example OpenGL-SFML
       if: matrix.platform.compiler != 'em++'
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/build
+      working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ${GITHUB_WORKSPACE}/gui/examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
@@ -125,7 +125,7 @@ jobs:
     - name: Prepare publish package
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
       shell: bash
-      working-directory: ${GITHUB_WORKSPACE}/gui/bin
+      working-directory: ${{github.workspace}}/gui/bin
       run: |
          mkdir demo
          cp lxgui-test*${{matrix.platform.suffix}}* demo/
