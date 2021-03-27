@@ -6,6 +6,7 @@ env:
   BUILD_TYPE: Release
   EM_VERSION: 2.0.16
   EM_CACHE_FOLDER: 'emsdk-cache'
+  LXGUI_ROOT: ${GITHUB_WORKSPACE}/dependencies
 
 jobs:
   build:
@@ -97,6 +98,7 @@ jobs:
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+        cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SDL
       shell: bash
@@ -104,6 +106,7 @@ jobs:
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+        cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example SFML
       if: matrix.platform.compiler != 'em++'
@@ -112,6 +115,7 @@ jobs:
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+        cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SFML
       if: matrix.platform.compiler != 'em++'
@@ -120,6 +124,7 @@ jobs:
       run: |
         rm -rf *
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
+        cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package
       if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
@@ -134,5 +139,5 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
-        folder: ${GITHUB_WORKSPACE}/gui/bin/demo
+        folder: ${{github.workspace}}/gui/bin/demo
         target-folder: demo
