@@ -50,7 +50,7 @@ jobs:
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
 
     - name: Create Build Environment
-      run: cmake -E make_directory ${GITHUB_WORKSPACE}/build
+      run: cmake -E make_directory ${{github.workspace}}/build
 
     - name: Get Linux dependencies
       if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
@@ -97,6 +97,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
+        echo ${LXGUI_ROOT}
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
