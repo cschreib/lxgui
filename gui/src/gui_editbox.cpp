@@ -735,6 +735,8 @@ void edit_box::notify_focus(bool bFocus)
             if (pCarret_)
                 pCarret_->hide();
 
+            unlight_text();
+
             lQueuedEventList_.push_back("OnEditFocusLost");
         }
     }
