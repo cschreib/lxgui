@@ -374,45 +374,47 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
     uint uiLeft  = std::min(uiStart, uiEnd);
     uint uiRight = std::max(uiStart, uiEnd);
 
-    if (uiLeft == uiRight || uiRight < uiDisplayPos_ || uiLeft >= uiDisplayPos_ + sDisplayedText_.size())
-        pHighlight_->hide();
-    else
-        pHighlight_->show();
-
     if (uiSelectionStartPos_ != uiStart || uiSelectionEndPos_ != uiEnd || bForceUpdate)
     {
-        if (uiLeft != uiRight && uiRight >= uiDisplayPos_ &&
-            uiLeft < uiDisplayPos_ + sDisplayedText_.size() &&
-            pFontString_ && pFontString_->get_text_object())
+        if (uiLeft != uiRight)
         {
             bSelectedText_ = true;
 
-            int iLeftPos = 0;
-            int iRightPos = pFontString_->get_right() - pFontString_->get_left();
-
-            text* pText = pFontString_->get_text_object();
-            // if (uiLeft >= uiDisplayPos_ && uiLeft - uiDisplayPos_ < sDisplayedText_.size())
-            // {
-            //     iLeftPos = int(pText->get_letter_quad(uiLeft - uiDisplayPos_)) + lTextInsets_.left;
-            // }
-            const std::vector<text::letter>& lLetters = pText->get_letter_cache();
-
-            for (auto iter : utils::range::iterator(lLetters))
+            if (uiRight >= uiDisplayPos_ && uiLeft < uiDisplayPos_ + sDisplayedText_.size() &&
+                pFontString_ && pFontString_->get_text_object())
             {
-                uint uiPos = iter - lLetters.begin() + uiDisplayPos_;
+                text* pText = pFontString_->get_text_object();
 
-                if (uiPos == uiLeft)
-                    iLeftPos = int(iter->mQuad.left) + lTextInsets_.left;
+                if (uiLeft < uiDisplayPos_)
+                    uiLeft = 0;
+                else
+                    uiLeft = uiLeft - uiDisplayPos_;
 
-                if (uiPos == uiRight - 1)
+                int iLeftPos = int(pText->get_letter_quad(uiLeft)[0].pos.x) + lTextInsets_.left;
+
+                uiRight = uiRight - uiDisplayPos_;
+                int iRightPos;
+                if (uiRight < sDisplayedText_.size())
                 {
-                    iRightPos = int(iter->mQuad.right) + lTextInsets_.left;
-                    break;
+                    iRightPos = int(pText->get_letter_quad(uiRight)[0].pos.x) + lTextInsets_.left;
                 }
-            }
+                else
+                {
+                    uiRight = sDisplayedText_.size() - 1;
+                    iRightPos = int(pText->get_letter_quad(uiRight)[2].pos.x) + lTextInsets_.left;
+                }
 
-            pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, iLeftPos,  0);
-            pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, iRightPos, 0);
+                pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, iLeftPos,  0);
+                pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, iRightPos, 0);
+                pHighlight_->show();
+            }
+            else
+                pHighlight_->hide();
+        }
+        else
+        {
+            bSelectedText_ = false;
+            pHighlight_->hide();
         }
     }
 
@@ -885,6 +887,10 @@ void edit_box::update_displayed_text_()
                 }
             }
         }
+        else
+        {
+            // TODO: implement for multiline edit box
+        }
     }
 }
 
@@ -988,22 +994,16 @@ void edit_box::update_carret_position_()
 
         float fYOffset = (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing());
 
-        const std::vector<text::letter>& lLetters = pText->get_letter_cache();
-        auto iterLetter = lLetters.begin() + (iterDisplayCarret - sDisplayedText_.begin());
+        uint uiIndex = iterDisplayCarret - sDisplayedText_.begin();
 
-        int iXOffset = 0;
-        if (iterLetter == lLetters.begin())
-        {
-            iXOffset = int(iterLetter->mQuad.left);
-        }
+        int iXOffset = lTextInsets_.left;
+        if (uiIndex < sDisplayedText_.size())
+            iXOffset += pText->get_letter_quad(uiIndex)[0].pos.x;
         else
-        {
-            --iterLetter;
-            iXOffset = int(iterLetter->mQuad.right);
-        }
+            iXOffset += pText->get_letter_quad(sDisplayedText_.size() - 1)[2].pos.x;
 
         pCarret_->set_abs_point(
-            anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left + iXOffset, int(fYOffset)
+            anchor_point::CENTER, sName_, anchor_point::LEFT, iXOffset, int(fYOffset)
         );
 
         mCarretTimer_.zero();
@@ -1097,29 +1097,29 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
-        text* pText = pFontString_->get_text_object();
-        const std::vector<text::letter>& lLetters = pText->get_letter_cache();
-
-        if (lLetters.empty())
+        if (sDisplayedText_.empty())
             return uiDisplayPos_;
 
+        text* pText = pFontString_->get_text_object();
+
         float fX = float(iX - lBorderList_.left - lTextInsets_.left);
-        //float fY = float(iY - lBorderList_.top  - lTextInsets_.top);
+        // float fY = float(iY - lBorderList_.top  - lTextInsets_.top);
 
         if (!bMultiLine_)
         {
             if (iX < lBorderList_.left + lTextInsets_.left)
                 return uiDisplayPos_;
             else if (iX > lBorderList_.right - lTextInsets_.right)
-                return lLetters.size() + uiDisplayPos_;
+                return sDisplayedText_.size() + uiDisplayPos_;
 
-            for (auto iter : utils::range::iterator(lLetters))
+            for (uint uiIndex = 0u; uiIndex < sDisplayedText_.size(); ++uiIndex)
             {
-                if (fX < iter->mQuad.center().x)
-                    return (iter - lLetters.begin()) + uiDisplayPos_;
+                const auto& mQuad = pText->get_letter_quad(uiIndex);
+                if (fX < 0.5*(mQuad[0].pos.x + mQuad[2].pos.x))
+                    return uiIndex + uiDisplayPos_;
             }
 
-            return lLetters.size() + uiDisplayPos_;
+            return sDisplayedText_.size() + uiDisplayPos_;
         }
         else
         {
@@ -1152,6 +1152,7 @@ bool edit_box::move_carret_horizontally_(bool bForward)
         if (iterCarretPos_ != sUnicodeText_.end())
         {
             ++iterCarretPos_;
+            update_displayed_text_();
             update_carret_position_();
 
             if (pCarret_)
@@ -1169,6 +1170,7 @@ bool edit_box::move_carret_horizontally_(bool bForward)
         if (iterCarretPos_ != sUnicodeText_.begin())
         {
             --iterCarretPos_;
+            update_displayed_text_();
             update_carret_position_();
 
             if (pCarret_)
@@ -1201,6 +1203,7 @@ bool edit_box::move_carret_vertically_(bool bDown)
 
         if (iterOld != iterCarretPos_)
         {
+            update_displayed_text_();
             update_carret_position_();
 
             if (pCarret_)

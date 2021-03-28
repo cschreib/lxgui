@@ -62,15 +62,6 @@ namespace gui
             BOTTOM
         };
 
-        /// Holds the position, tex. coordinates and color of a character.
-        struct letter
-        {
-            quad2f mQuad;
-            quad2f mUVs;
-            color  mColor = color::WHITE;
-            bool   bNoRender = false;
-        };
-
         /// Constructor.
         /** \param pRenderer The renderer instance to use
         *   \param pFont The font to use for rendering
@@ -131,13 +122,13 @@ namespace gui
         /** \return The width of the rendered text
         *   \note Takes the text box into account if any.
         */
-        float get_width();
+        float get_width() const;
 
         /// Returns the height of the rendered text.
         /** \return The height of the rendered text
         *   \note Takes the text box into account if any.
         */
-        float get_height();
+        float get_height() const;
 
         /// Returns the width of the text box.
         /** \return The width of the text box
@@ -281,23 +272,21 @@ namespace gui
         /// Renders this text at the given position.
         /** \param fX The horizontal position of the top left corner
         *   \param fY The vertical position of the top left corner
-        *   \note Must be called between spriteManager::begin() and
-        *         spriteManager::end().
+        *   \note Must be called between renderer::begin() and
+        *         renderer::end().
         */
-        void render(float fX, float fY);
+        void render(float fX, float fY) const;
 
-        /// updates this text's cache.
-        /** \note Automatically done by render().<br>
-        *         Only use this method if you need it to
-        *         be Updated sooner.
+        /// Returns the quad for the letter at the provided index (position, texture coords, color).
+        /** \param uiIndex The index of the letter (0: first letter);
+        *                  must be less than get_text().size()
+        *   \return The quad of the specified letter
+        *   \note The vertex positions in the quad do not account for the rendering position
+        *         provided to render(). The first letter always has its top-left corner as
+        *         the position (0,0) (if left-aligned). This function may update the quad cache as
+        *         needed.
         */
-        void update();
-
-        /// Returns the cached letters (position, size, texture coordinates)
-        /** \return The cached letters
-        *   \note updates the letter cache if needed.
-        */
-        const std::vector<letter>& get_letter_cache();
+        const std::array<vertex,4>& get_letter_quad(uint uiIndex) const;
 
         /// Creates a sprite that contains the provided character.
         /** \param uiChar The character to draw
@@ -307,8 +296,10 @@ namespace gui
 
     private :
 
-        void update_lines_();
-        void update_cache_();
+        void update_() const;
+        void update_lines_() const;
+        void update_cache_() const;
+        void update_quads_() const;
 
         const renderer* pRenderer_ = nullptr;
 
@@ -322,28 +313,22 @@ namespace gui
         color mColor_ = color::WHITE;
         bool  bForceColor_ = false;
         bool  bFormattingEnabled_ = false;
-        float fW_ = 0.0f, fH_ = 0.0f;
-        float fX_ = std::numeric_limits<float>::infinity();
-        float fY_ = std::numeric_limits<float>::infinity();
-        float fBoxW_ = std::numeric_limits<float>::infinity();
-        float fBoxH_ = std::numeric_limits<float>::infinity();
 
-        utils::ustring     sUnicodeText_;
+        std::shared_ptr<font> pFont_;
+        utils::ustring        sUnicodeText_;
 
         alignment          mAlign_ = alignment::LEFT;
         vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
 
-        std::vector<line>      lLineList_;
-        std::map<uint, format> lFormatList_;
+        mutable bool  bUpdateCache_ = false;
+        mutable float fW_    = 0.0f, fH_ = 0.0f;
+        mutable float fBoxW_ = std::numeric_limits<float>::infinity();
+        mutable float fBoxH_ = std::numeric_limits<float>::infinity();
+        mutable std::vector<line>      lLineList_;
+        mutable std::map<uint, format> lFormatList_;
 
-        bool                bUpdateCache_ = false;
-        std::vector<letter> lLetterCache_;
-
-        bool                              bUpdateQuads_ = false;
-        std::vector<std::array<vertex,4>> lQuadList_;
-        sprite                            mSprite_;
-
-        std::shared_ptr<font> pFont_;
+        mutable bool bUpdateQuads_ = false;
+        mutable std::vector<std::array<vertex,4>> lQuadList_;
     };
 }
 }

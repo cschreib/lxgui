@@ -10,6 +10,7 @@
 namespace lxgui {
 namespace gui
 {
+
 text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
     pRenderer_(pRenderer), pFont_(std::move(pFont))
 {
@@ -17,7 +18,6 @@ text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
         return;
 
     fSpaceWidth_ = pFont_->get_character_width(32);
-    mSprite_ = pRenderer_->create_sprite(pFont_->get_texture().lock());
 
     bReady_ = true;
 }
@@ -50,7 +50,6 @@ void text::set_color(const color& mColor, bool bForceColor)
     {
         mColor_ = mColor;
         bForceColor_ = bForceColor;
-        bUpdateQuads_ = true;
     }
 }
 
@@ -86,16 +85,16 @@ void text::set_box_height(float fBoxH)
     }
 }
 
-float text::get_width()
+float text::get_width() const
 {
-    update();
+    update_();
 
     return fW_;
 }
 
-float text::get_height()
+float text::get_height() const
 {
-    update();
+    update_();
 
     return fH_;
 }
@@ -279,92 +278,54 @@ bool text::is_word_wrap_enabled() const
 
 void text::enable_formatting(bool bFormatting)
 {
-    if (bFormattingEnabled_ != bFormatting)
-    {
-        bFormattingEnabled_ = bFormatting;
-        bUpdateCache_ = true;
-    }
+    bFormattingEnabled_ = bFormatting;
 }
 
-void text::render(float fX, float fY)
+void text::render(float fX, float fY) const
 {
     if (!bReady_)
         return;
 
-    update();
+    update_();
 
-    if (fX != fX_ || fY != fY_)
-        bUpdateQuads_ = true;
-
-    if (bUpdateQuads_)
+    std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
+    for (auto& mQuad : lQuadsCopy)
     {
-        fX_ = fX;
-        fY_ = fY;
-
-        lQuadList_.clear();
-
-        std::array<vertex,4> lVertexList;
-
-        if (!bFormattingEnabled_)
+        for (uint i = 0; i < 4; ++i)
         {
-            for (uint i = 0; i < 4; ++i)
-                lVertexList[i].col = mColor_;
-        }
+            mQuad[i].pos += vector2f(fX, fY);
 
-        for (const auto& mLetter : lLetterCache_)
-        {
-            if (mLetter.bNoRender)
-                continue;
-
-            quad2f mQuad = mLetter.mQuad + vector2f(fX, fY);
-
-            lVertexList[0].pos = mQuad.top_left();
-            lVertexList[1].pos = mQuad.top_right();
-            lVertexList[2].pos = mQuad.bottom_right();
-            lVertexList[3].pos = mQuad.bottom_left();
-
-            lVertexList[0].uvs = mLetter.mUVs.top_left();
-            lVertexList[1].uvs = mLetter.mUVs.top_right();
-            lVertexList[2].uvs = mLetter.mUVs.bottom_right();
-            lVertexList[3].uvs = mLetter.mUVs.bottom_left();
-
-            if (bFormattingEnabled_)
+            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
             {
-                if (mLetter.mColor != color::EMPTY && !bForceColor_)
-                {
-                    for (uint i = 0; i < 4; ++i)
-                        lVertexList[i].col = mLetter.mColor;
-                }
-                else
-                {
-                    for (uint i = 0; i < 4; ++i)
-                        lVertexList[i].col = mColor_;
-                }
+                for (uint i = 0; i < 4; ++i)
+                    mQuad[i].col = mColor_;
             }
-
-            lQuadList_.push_back(lVertexList);
         }
-
-        bUpdateQuads_ = false;
     }
 
-    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadList_);
+    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
 }
 
-void text::update()
+void text::update_() const
 {
-    //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
+    #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+    // #define DEBUG_LOG(msg)
 
     if (bReady_ && bUpdateCache_)
     {
         DEBUG_LOG("    Update lines");
         update_lines_();
-        DEBUG_LOG("    Update cache");
-        update_cache_();
         DEBUG_LOG("    .");
         bUpdateCache_ = false;
         bUpdateQuads_ = true;
+    }
+
+    if (bUpdateQuads_)
+    {
+        DEBUG_LOG("    Update quads");
+        update_quads_();
+        DEBUG_LOG("    .");
+        bUpdateQuads_ = false;
     }
 }
 
@@ -401,7 +362,7 @@ bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_
     return true;
 }
 
-void text::update_lines_()
+void text::update_lines_() const
 {
     // Update the line list, read format tags, do word wrapping, ...
     lLineList_.clear();
@@ -670,9 +631,17 @@ void text::update_lines_()
     }
 }
 
-void text::update_cache_()
+void text::update_quads_() const
 {
-    lLetterCache_.clear();
+    lQuadList_.clear();
+
+    std::array<vertex,4> lVertexList;
+
+    if (!bFormattingEnabled_)
+    {
+        for (uint i = 0; i < 4; ++i)
+            lVertexList[i].col = mColor_;
+    }
 
     if (!lLineList_.empty())
     {
@@ -740,7 +709,6 @@ void text::update_cache_()
         }
 
         uint   uiCounter = 0;
-        letter mLetter;
         color  mColor = color::EMPTY;
 
         for (const auto& mLine : lLineList_)
@@ -777,12 +745,27 @@ void text::update_cache_()
                 }
 
                 // Add the character to the cache
-                mLetter.mQuad = pFont_->get_character_bounds(*iterChar) + vector2f(round(fX), round(fY));
-                mLetter.mUVs = pFont_->get_character_uvs(*iterChar);
-                mLetter.mColor = mColor;
-                mLetter.bNoRender = utils::is_whitespace(*iterChar);
+                if (!utils::is_whitespace(*iterChar))
+                {
+                    quad2f mQuad = pFont_->get_character_bounds(*iterChar)
+                        + vector2f(round(fX), round(fY));
+                    lVertexList[0].pos = mQuad.top_left();
+                    lVertexList[1].pos = mQuad.top_right();
+                    lVertexList[2].pos = mQuad.bottom_right();
+                    lVertexList[3].pos = mQuad.bottom_left();
 
-                lLetterCache_.push_back(mLetter);
+                    quad2f mUVs = pFont_->get_character_uvs(*iterChar);
+                    lVertexList[0].uvs = mUVs.top_left();
+                    lVertexList[1].uvs = mUVs.top_right();
+                    lVertexList[2].uvs = mUVs.bottom_right();
+                    lVertexList[3].uvs = mUVs.bottom_left();
+
+                    for (uint i = 0; i < 4; ++i)
+                        lVertexList[i].col = mColor;
+
+                    lQuadList_.push_back(lVertexList);
+                }
+
                 ++uiCounter;
 
                 if (*iterChar == U'\n') continue;
@@ -823,10 +806,15 @@ sprite text::create_sprite(char32_t uiChar) const
     return mSprite;
 }
 
-const std::vector<text::letter>& text::get_letter_cache()
+const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
 {
-    update();
-    return lLetterCache_;
+    uiIndex -= std::count_if(sUnicodeText_.begin(), sUnicodeText_.begin() + uiIndex,
+        [](char32_t c) { return utils::is_whitespace(c); });
+
+    update_();
+
+    return lQuadList_[uiIndex];
 }
+
 }
 }
