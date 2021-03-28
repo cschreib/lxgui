@@ -97,6 +97,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a147d46c192d21b92a12d45d6e6fb51c0"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0">~font</a> ()=default</td></tr>
 <tr class="memdesc:a147d46c192d21b92a12d45d6e6fb51c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0">More...</a><br /></td></tr>
 <tr class="separator:a147d46c192d21b92a12d45d6e6fb51c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe28b093b93660bbedee5bf12f9a959e"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">get_size</a> () const =0</td></tr>
+<tr class="memdesc:abe28b093b93660bbedee5bf12f9a959e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the font in pixels.  <a href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">More...</a><br /></td></tr>
+<tr class="separator:abe28b093b93660bbedee5bf12f9a959e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68609d25c7fdd9fe990a6befa6c55a2b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#ab770ca9dd8b4dbdf8b8c615804c5fb5c">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">get_character_uvs</a> (char32_t uiChar) const =0</td></tr>
 <tr class="memdesc:a68609d25c7fdd9fe990a6befa6c55a2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the uv coordinates of a character on the texture.  <a href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">More...</a><br /></td></tr>
 <tr class="separator:a68609d25c7fdd9fe990a6befa6c55a2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,6 +378,36 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="abe28b093b93660bbedee5bf12f9a959e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe28b093b93660bbedee5bf12f9a959e">&#9670;&nbsp;</a></span>get_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::font::get_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the size of the font in pixels. </p>
+<dl class="section return"><dt>Returns</dt><dd>The size of the font in pixels </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a0ef52a562702b68740092b94d7ee349a">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font</a>.</p>
+
+</div>
+</div>
 <a id="af55cb48453897e59cfa3daa1258f33d2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af55cb48453897e59cfa3daa1258f33d2">&#9670;&nbsp;</a></span>get_texture()</h2>
 
@@ -411,7 +444,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 28 2021 09:40:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 28 2021 18:24:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

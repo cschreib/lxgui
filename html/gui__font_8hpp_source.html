@@ -94,32 +94,37 @@ $(function() {
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a147d46c192d21b92a12d45d6e6fb51c0">~font</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">get_character_uvs</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a3634e02218a7ca8a548c97d61c4b0fe2">get_character_bounds</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a99455060c0d87f32471d6b9b6c1ffd16">get_character_width</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a0faf153b5b3b96821f6bf73fbed55d0b">get_character_height</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a148f23f1258a12e25e9d849bce8cf172">get_character_kerning</a>(char32_t uiChar1, char32_t uiChar2) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">virtual</span> std::weak_ptr&lt;material&gt; <a class="code" href="classlxgui_1_1gui_1_1font.html#af55cb48453897e59cfa3daa1258f33d2">get_texture</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    };</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;}</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;}</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">get_size</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">get_character_uvs</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a3634e02218a7ca8a548c97d61c4b0fe2">get_character_bounds</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a99455060c0d87f32471d6b9b6c1ffd16">get_character_width</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a0faf153b5b3b96821f6bf73fbed55d0b">get_character_height</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a148f23f1258a12e25e9d849bce8cf172">get_character_kerning</a>(char32_t uiChar1, char32_t uiChar2) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">virtual</span> std::weak_ptr&lt;material&gt; <a class="code" href="classlxgui_1_1gui_1_1font.html#af55cb48453897e59cfa3daa1258f33d2">get_texture</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    };</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a0faf153b5b3b96821f6bf73fbed55d0b"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a0faf153b5b3b96821f6bf73fbed55d0b">lxgui::gui::font::get_character_height</a></div><div class="ttdeci">virtual float get_character_height(char32_t uiChar) const =0</div><div class="ttdoc">Returns the height of a character in pixels.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a148f23f1258a12e25e9d849bce8cf172"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a148f23f1258a12e25e9d849bce8cf172">lxgui::gui::font::get_character_kerning</a></div><div class="ttdeci">virtual float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const =0</div><div class="ttdoc">Return the kerning amount between two characters.</div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html">lxgui::gui::font</a></div><div class="ttdoc">A texture containing characters.</div><div class="ttdef"><b>Definition:</b> <a href="gui__font_8hpp_source.html#l00020">gui_font.hpp:20</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_abe28b093b93660bbedee5bf12f9a959e"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">lxgui::gui::font::get_size</a></div><div class="ttdeci">virtual uint get_size() const =0</div><div class="ttdoc">Get the size of the font in pixels.</div></div>
+<div class="ttc" id="anamespacelxgui_html_aad60a3835af109b1519d66daff76eb44"><div class="ttname"><a href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">lxgui::uint</a></div><div class="ttdeci">unsigned int uint</div><div class="ttdef"><b>Definition:</b> <a href="utils_8hpp_source.html#l00007">utils.hpp:7</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_af55cb48453897e59cfa3daa1258f33d2"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#af55cb48453897e59cfa3daa1258f33d2">lxgui::gui::font::get_texture</a></div><div class="ttdeci">virtual std::weak_ptr&lt; material &gt; get_texture() const =0</div><div class="ttdoc">Returns the underlying material to use for rendering.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1quad2_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1quad2.html">lxgui::gui::quad2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a68609d25c7fdd9fe990a6befa6c55a2b"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">lxgui::gui::font::get_character_uvs</a></div><div class="ttdeci">virtual quad2f get_character_uvs(char32_t uiChar) const =0</div><div class="ttdoc">Returns the uv coordinates of a character on the texture.</div></div>
@@ -132,7 +137,7 @@ $(function() {
 <div class="ttc" id="agui__quad2_8hpp_html"><div class="ttname"><a href="gui__quad2_8hpp.html">gui_quad2.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 28 2021 09:40:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 28 2021 18:24:46 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

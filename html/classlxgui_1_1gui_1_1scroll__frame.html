@@ -690,9 +690,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a16e29961df923ce2c95abc689f6bf0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const</td></tr>
 <tr class="memdesc:a16e29961df923ce2c95abc689f6bf0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">More...</a><br /></td></tr>
 <tr class="separator:a16e29961df923ce2c95abc689f6bf0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab9eab2a07d5ba6fd4c5f15427d101846"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab9eab2a07d5ba6fd4c5f15427d101846">render_quads</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const</td></tr>
-<tr class="memdesc:ab9eab2a07d5ba6fd4c5f15427d101846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer.html#ab9eab2a07d5ba6fd4c5f15427d101846">More...</a><br /></td></tr>
-<tr class="separator:ab9eab2a07d5ba6fd4c5f15427d101846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad3d1bc8bbb3fec7398a9eee34d89fab4">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;mMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const</td></tr>
+<tr class="memdesc:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer.html#ad3d1bc8bbb3fec7398a9eee34d89fab4">More...</a><br /></td></tr>
+<tr class="separator:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade42d089d1ac874841f1b50da566468e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ade42d089d1ac874841f1b50da566468e">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat) const</td></tr>
 <tr class="memdesc:ade42d089d1ac874841f1b50da566468e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="classlxgui_1_1gui_1_1renderer.html#ade42d089d1ac874841f1b50da566468e">More...</a><br /></td></tr>
 <tr class="separator:ade42d089d1ac874841f1b50da566468e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -7111,8 +7111,8 @@ Only works for top level frames. </dd></dl>
 
 </div>
 </div>
-<a id="ab9eab2a07d5ba6fd4c5f15427d101846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab9eab2a07d5ba6fd4c5f15427d101846">&#9670;&nbsp;</a></span>render_quads()</h2>
+<a id="ad3d1bc8bbb3fec7398a9eee34d89fab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3d1bc8bbb3fec7398a9eee34d89fab4">&#9670;&nbsp;</a></span>render_quads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7123,8 +7123,8 @@ Only works for top level frames. </dd></dl>
         <tr>
           <td class="memname">void lxgui::gui::renderer::render_quads </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;&#160;</td>
-          <td class="paramname"><em>mQuad</em>, </td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;&#160;</td>
+          <td class="paramname"><em>mMaterial</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -7148,7 +7148,7 @@ Only works for top level frames. </dd></dl>
 <p>Renders a set of quads. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mQuad</td><td>The base quad to use for rendering (material, blending, ...) </td></tr>
+    <tr><td class="paramname">mMaterial</td><td>The material to use for rendering (texture, color, blending, ...) </td></tr>
     <tr><td class="paramname">lQuadList</td><td>The list of the quads you want to render </td></tr>
   </table>
   </dd>
@@ -11689,7 +11689,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 28 2021 09:40:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 28 2021 18:24:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

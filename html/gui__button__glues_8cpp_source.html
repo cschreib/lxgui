@@ -344,7 +344,7 @@ $(function() {
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;Button:get_text&quot;</span>, pLua, 1);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    mFunc.push(get_object()-&gt;get_text());</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    mFunc.push(utils::unicode_to_utf8(get_object()-&gt;get_text()));</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
 <div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;}</div>
@@ -711,7 +711,7 @@ $(function() {
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;Button:set_text&quot;</span>, pLua);</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;text&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
 <div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        get_object()-&gt;set_text(mFunc.get(0)-&gt;get_string());</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        get_object()-&gt;set_text(utils::utf8_to_unicode(mFunc.get(0)-&gt;get_string()));</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160; </div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;}</div>
@@ -754,7 +754,7 @@ $(function() {
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 28 2021 09:40:23 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 28 2021 18:24:46 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

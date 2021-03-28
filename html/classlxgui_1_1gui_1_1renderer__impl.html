@@ -110,9 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aff940234cb3c55ef45b13bb34362fa18"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#aff940234cb3c55ef45b13bb34362fa18">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const =0</td></tr>
 <tr class="memdesc:aff940234cb3c55ef45b13bb34362fa18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#aff940234cb3c55ef45b13bb34362fa18">More...</a><br /></td></tr>
 <tr class="separator:aff940234cb3c55ef45b13bb34362fa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92ac9013e6ba36bd55bf7ed027d1e0f0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a92ac9013e6ba36bd55bf7ed027d1e0f0">render_quads</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const =0</td></tr>
-<tr class="memdesc:a92ac9013e6ba36bd55bf7ed027d1e0f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#a92ac9013e6ba36bd55bf7ed027d1e0f0">More...</a><br /></td></tr>
-<tr class="separator:a92ac9013e6ba36bd55bf7ed027d1e0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc6bcdea92ff821520c909ce0bc81089"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#adc6bcdea92ff821520c909ce0bc81089">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;mMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const =0</td></tr>
+<tr class="memdesc:adc6bcdea92ff821520c909ce0bc81089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#adc6bcdea92ff821520c909ce0bc81089">More...</a><br /></td></tr>
+<tr class="separator:adc6bcdea92ff821520c909ce0bc81089"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61b72b811a5dfc5d440a5f44081f2ae2"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a61b72b811a5dfc5d440a5f44081f2ae2">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const =0</td></tr>
 <tr class="memdesc:a61b72b811a5dfc5d440a5f44081f2ae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#a61b72b811a5dfc5d440a5f44081f2ae2">More...</a><br /></td></tr>
 <tr class="separator:a61b72b811a5dfc5d440a5f44081f2ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -561,12 +561,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a6feeed4f65c674ad8b7be3bfa7deba59" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#acdc439861a02738c3fca580d1b30f036" title="Ends rendering.">end()</a> only. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a50d651097680187b916b61f4f051f761">lxgui::gui::sdl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a8e07eeb498242089227987a0e6f04e28">lxgui::gui::gl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">lxgui::gui::sfml::renderer</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a50d651097680187b916b61f4f051f761">lxgui::gui::sdl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adb94d5bdcb49d45605afa4994f880ed9">lxgui::gui::gl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">lxgui::gui::sfml::renderer</a>.</p>
 
 </div>
 </div>
-<a id="a92ac9013e6ba36bd55bf7ed027d1e0f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92ac9013e6ba36bd55bf7ed027d1e0f0">&#9670;&nbsp;</a></span>render_quads()</h2>
+<a id="adc6bcdea92ff821520c909ce0bc81089"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc6bcdea92ff821520c909ce0bc81089">&#9670;&nbsp;</a></span>render_quads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -577,8 +577,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">virtual void lxgui::gui::renderer_impl::render_quads </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;&#160;</td>
-          <td class="paramname"><em>mQuad</em>, </td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;&#160;</td>
+          <td class="paramname"><em>mMaterial</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -602,14 +602,14 @@ Protected Attributes</h2></td></tr>
 <p>Renders a set of quads. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mQuad</td><td>The base quad to use for rendering (material, blending, ...) </td></tr>
+    <tr><td class="paramname">mMaterial</td><td>The material to use for rendering (texture, color, blending, ...) </td></tr>
     <tr><td class="paramname">lQuadList</td><td>The list of the quads you want to render </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a6feeed4f65c674ad8b7be3bfa7deba59" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#acdc439861a02738c3fca580d1b30f036" title="Ends rendering.">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a55f52db8971be678f042918a26855a20">lxgui::gui::sdl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a634601797d8436aeeefdf0731166ecb1">lxgui::gui::gl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9d072cb6e9ca8b247f117b36c7a621b3">lxgui::gui::sfml::renderer</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#aa5e8e6ed9d74432944b7c102613bc5f2">lxgui::gui::sdl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a7b17fc15e3931a43818d17aa0aea069d">lxgui::gui::gl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">lxgui::gui::sfml::renderer</a>.</p>
 
 </div>
 </div>
@@ -668,7 +668,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 28 2021 09:40:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 28 2021 18:24:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
