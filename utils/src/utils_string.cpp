@@ -9,7 +9,6 @@ namespace lxgui {
 namespace utils
 {
 using string_stream = std::stringstream;
-using ustring_stream = std::basic_stringstream<char32_t>;
 
 void trim(string& s, char cPattern)
 {
@@ -258,10 +257,7 @@ bool is_number(const string& s)
 
 bool is_number(const ustring& s)
 {
-    ustring_stream mTemp(s);
-    double dValue;
-    mTemp >> dValue;
-    return !mTemp.fail();
+    return is_number(unicode_to_utf8(s));
 }
 
 bool is_number(char s)
@@ -284,7 +280,7 @@ bool string_to_bool(const string& s)
 
 bool string_to_bool(const ustring& s)
 {
-    if (s == utf8_to_unicode("true"))
+    if (s == U"true")
         return true;
     else
         return false;
