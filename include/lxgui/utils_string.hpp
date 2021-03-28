@@ -195,8 +195,10 @@ namespace utils
     bool string_to_bool(const ustring& s);
 
     bool is_number(const string& s);
+    bool is_number(const ustring& s);
     bool is_number(char s);
     bool is_boolean(const string& s);
+    bool is_boolean(const ustring& s);
 
     string to_string(int i);
     string to_string(int i, uint uiCharNbr);

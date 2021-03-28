@@ -247,9 +247,17 @@ string value_to_string(T mValue)
     return sStream.str();
 }
 
-bool is_number(const std::string& s)
+bool is_number(const string& s)
 {
     string_stream mTemp(s);
+    double dValue;
+    mTemp >> dValue;
+    return !mTemp.fail();
+}
+
+bool is_number(const ustring& s)
+{
+    ustring_stream mTemp(s);
     double dValue;
     mTemp >> dValue;
     return !mTemp.fail();
@@ -258,6 +266,11 @@ bool is_number(const std::string& s)
 bool is_number(char s)
 {
     return '0' <= s && s <= '9';
+}
+
+bool is_number(char32_t s)
+{
+    return U'0' <= s && s <= U'9';
 }
 
 bool string_to_bool(const string& s)
@@ -276,9 +289,14 @@ bool string_to_bool(const ustring& s)
         return false;
 }
 
-bool is_boolean(const std::string& s)
+bool is_boolean(const string& s)
 {
     return (s == "false") || (s == "true");
+}
+
+bool is_boolean(const ustring& s)
+{
+    return (s == U"false") || (s == U"true");
 }
 
 string to_string(int i)
