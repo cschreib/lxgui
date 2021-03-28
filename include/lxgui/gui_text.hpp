@@ -297,9 +297,6 @@ namespace gui
     private :
 
         void update_() const;
-        void update_lines_() const;
-        void update_cache_() const;
-        void update_quads_() const;
 
         const renderer* pRenderer_ = nullptr;
 
@@ -313,21 +310,18 @@ namespace gui
         color mColor_ = color::WHITE;
         bool  bForceColor_ = false;
         bool  bFormattingEnabled_ = false;
+        float fBoxW_ = std::numeric_limits<float>::infinity();
+        float fBoxH_ = std::numeric_limits<float>::infinity();
+        alignment          mAlign_ = alignment::LEFT;
+        vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
 
         std::shared_ptr<font> pFont_;
         utils::ustring        sUnicodeText_;
 
-        alignment          mAlign_ = alignment::LEFT;
-        vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
-
         mutable bool  bUpdateCache_ = false;
-        mutable float fW_    = 0.0f, fH_ = 0.0f;
-        mutable float fBoxW_ = std::numeric_limits<float>::infinity();
-        mutable float fBoxH_ = std::numeric_limits<float>::infinity();
-        mutable std::vector<line>      lLineList_;
-        mutable std::map<uint, format> lFormatList_;
-
-        mutable bool bUpdateQuads_ = false;
+        mutable float fW_ = 0.0f;
+        mutable float fH_ = 0.0f;
+        mutable uint  uiNumLines_ = 0u;
         mutable std::vector<std::array<vertex,4>> lQuadList_;
     };
 }

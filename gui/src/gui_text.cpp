@@ -127,7 +127,8 @@ float text::get_text_height() const
 
 uint text::get_num_lines() const
 {
-    return lLineList_.size();
+    update_();
+    return uiNumLines_;
 }
 
 float text::get_string_width(const std::string& sString) const
@@ -306,29 +307,6 @@ void text::render(float fX, float fY) const
     pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
 }
 
-void text::update_() const
-{
-    #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    // #define DEBUG_LOG(msg)
-
-    if (bReady_ && bUpdateCache_)
-    {
-        DEBUG_LOG("    Update lines");
-        update_lines_();
-        DEBUG_LOG("    .");
-        bUpdateCache_ = false;
-        bUpdateQuads_ = true;
-    }
-
-    if (bUpdateQuads_)
-    {
-        DEBUG_LOG("    Update quads");
-        update_quads_();
-        DEBUG_LOG("    .");
-        bUpdateQuads_ = false;
-    }
-}
-
 bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_iterator iterEnd,
     text::format& mFormat)
 {
@@ -362,11 +340,16 @@ bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_
     return true;
 }
 
-void text::update_lines_() const
+void text::update_() const
 {
+    // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+    #define DEBUG_LOG(msg)
+
+    if (!bReady_ || !bUpdateCache_) return;
+
     // Update the line list, read format tags, do word wrapping, ...
-    lLineList_.clear();
-    lFormatList_.clear();
+    std::vector<line>      lLineList;
+    std::map<uint, format> lFormatList;
 
     DEBUG_LOG("     Get max line nbr");
     uint uiMaxLineNbr, uiCounter = 0;
@@ -398,6 +381,7 @@ void text::update_lines_() const
             line mLine; mLine.fWidth = 0.0f;
             std::map<uint, format> lTempFormatList;
 
+            bool bDone = false;
             DEBUG_LOG("     Read chars");
             for (auto iterChar1 = sManualLine.begin(); iterChar1 != sManualLine.end(); ++iterChar1)
             {
@@ -484,7 +468,7 @@ void text::update_lines_() const
 
                         lLines.push_back(mLine);
                         for (auto& mFormat : lTempFormatList)
-                            lFormatList_.insert(std::move(mFormat));
+                            lFormatList.insert(std::move(mFormat));
 
                         lTempFormatList.clear();
                         uiCounter += mLine.sCaption.size();
@@ -535,11 +519,12 @@ void text::update_lines_() const
                         {
                             DEBUG_LOG("       Display single line");
                             // Word wrap is disabled, so we can only display one line anyway.
-                            lLineList_.push_back(mLine);
+                            lLineList.push_back(mLine);
                             for (const auto& mFormat : lTempFormatList)
-                                lFormatList_[mFormat.first] = mFormat.second;
+                                lFormatList[mFormat.first] = mFormat.second;
 
-                            return;
+                            bDone = true;
+                            break;
                         }
 
                         DEBUG_LOG("       Continue");
@@ -591,7 +576,7 @@ void text::update_lines_() const
                                 uiCounter += mLine.sCaption.size();
 
                                 for (auto& mFormat : lTempFormatList)
-                                    lFormatList_.insert(std::move(mFormat));
+                                    lFormatList.insert(std::move(mFormat));
 
                                 lTempFormatList.clear();
                                 mLine.fWidth = 0.0f;
@@ -606,6 +591,8 @@ void text::update_lines_() const
                 }
             }
 
+            if (bDone) break;
+
             DEBUG_LOG("     End");
 
             if (iterManual != lManualLineList.end() - 1)
@@ -615,24 +602,28 @@ void text::update_lines_() const
             uiCounter += mLine.sCaption.size();
 
             for (auto& mFormat : lTempFormatList)
-                lFormatList_.insert(std::move(mFormat));
+                lFormatList.insert(std::move(mFormat));
 
             lTempFormatList.clear();
 
             // Add the maximum number of line to this text
             for (auto& sLine : lLines)
             {
-                lLineList_.push_back(std::move(sLine));
-                if (lLineList_.size() == uiMaxLineNbr)
-                    return;
+                lLineList.push_back(std::move(sLine));
+                if (lLineList.size() == uiMaxLineNbr)
+                {
+                    bDone = true;
+                    break;
+                }
             }
+
+            if (bDone) break;
             DEBUG_LOG("     .");
         }
     }
-}
 
-void text::update_quads_() const
-{
+    uiNumLines_ = lLineList.size();
+
     lQuadList_.clear();
 
     std::array<vertex,4> lVertexList;
@@ -643,18 +634,18 @@ void text::update_quads_() const
             lVertexList[i].col = mColor_;
     }
 
-    if (!lLineList_.empty())
+    if (!lLineList.empty())
     {
         if (fBoxW_ == 0.0f || std::isinf(fBoxW_))
         {
             fW_ = 0.0f;
-            for (const auto& mLine : lLineList_)
+            for (const auto& mLine : lLineList)
                 fW_ = std::max(fW_, mLine.fWidth);
         }
         else
             fW_ = fBoxW_;
 
-        fH_ = (1.0f + (lLineList_.size() - 1)*fLineSpacing_)*get_line_height();
+        fH_ = (1.0f + (lLineList.size() - 1)*fLineSpacing_)*get_line_height();
 
         float fX  = 0.0f, fY = 0.0f;
         float fX0 = 0.0f;
@@ -711,7 +702,7 @@ void text::update_quads_() const
         uint   uiCounter = 0;
         color  mColor = color::EMPTY;
 
-        for (const auto& mLine : lLineList_)
+        for (const auto& mLine : lLineList)
         {
             switch (mAlign_)
             {
@@ -729,9 +720,9 @@ void text::update_quads_() const
             for (auto iterChar : utils::range::iterator(mLine.sCaption))
             {
                 // Format our text
-                if (bFormattingEnabled_ && lFormatList_.find(uiCounter) != lFormatList_.end())
+                if (bFormattingEnabled_ && lFormatList.find(uiCounter) != lFormatList.end())
                 {
-                    const format& mFormat = lFormatList_[uiCounter];
+                    const format& mFormat = lFormatList[uiCounter];
                     switch (mFormat.mColorAction)
                     {
                         case color_action::SET :
@@ -789,6 +780,8 @@ void text::update_quads_() const
         fW_ = 0.0f;
         fH_ = 0.0f;
     }
+
+    bUpdateCache_ = false;
 }
 
 sprite text::create_sprite(char32_t uiChar) const
