@@ -735,27 +735,23 @@ void text::update_() const
                     }
                 }
 
-                // Add the character to the cache
-                if (!utils::is_whitespace(*iterChar))
-                {
-                    quad2f mQuad = pFont_->get_character_bounds(*iterChar)
-                        + vector2f(round(fX), round(fY));
-                    lVertexList[0].pos = mQuad.top_left();
-                    lVertexList[1].pos = mQuad.top_right();
-                    lVertexList[2].pos = mQuad.bottom_right();
-                    lVertexList[3].pos = mQuad.bottom_left();
+                quad2f mQuad = pFont_->get_character_bounds(*iterChar)
+                    + vector2f(round(fX), round(fY));
+                lVertexList[0].pos = mQuad.top_left();
+                lVertexList[1].pos = mQuad.top_right();
+                lVertexList[2].pos = mQuad.bottom_right();
+                lVertexList[3].pos = mQuad.bottom_left();
 
-                    quad2f mUVs = pFont_->get_character_uvs(*iterChar);
-                    lVertexList[0].uvs = mUVs.top_left();
-                    lVertexList[1].uvs = mUVs.top_right();
-                    lVertexList[2].uvs = mUVs.bottom_right();
-                    lVertexList[3].uvs = mUVs.bottom_left();
+                quad2f mUVs = pFont_->get_character_uvs(*iterChar);
+                lVertexList[0].uvs = mUVs.top_left();
+                lVertexList[1].uvs = mUVs.top_right();
+                lVertexList[2].uvs = mUVs.bottom_right();
+                lVertexList[3].uvs = mUVs.bottom_left();
 
-                    for (uint i = 0; i < 4; ++i)
-                        lVertexList[i].col = mColor;
+                for (uint i = 0; i < 4; ++i)
+                    lVertexList[i].col = mColor;
 
-                    lQuadList_.push_back(lVertexList);
-                }
+                lQuadList_.push_back(lVertexList);
 
                 ++uiCounter;
 
@@ -801,11 +797,7 @@ sprite text::create_sprite(char32_t uiChar) const
 
 const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
 {
-    uiIndex -= std::count_if(sUnicodeText_.begin(), sUnicodeText_.begin() + uiIndex,
-        [](char32_t c) { return utils::is_whitespace(c); });
-
     update_();
-
     return lQuadList_[uiIndex];
 }
 
