@@ -8,7 +8,8 @@
 namespace lxgui {
 namespace utils
 {
-typedef std::stringstream string_stream;
+using string_stream = std::stringstream;
+using ustring_stream = std::basic_stringstream<char32_t>;
 
 void trim(string& s, char cPattern)
 {
