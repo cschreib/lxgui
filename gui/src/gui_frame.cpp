@@ -1063,7 +1063,7 @@ void frame::on_event(const event& mEvent)
 {
     alive_checker mChecker(this);
 
-    if (has_script("Event") &&
+    if (has_script("OnEvent") &&
         (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
     {
         // ADDON_LOADED should only be fired if it's this frame's addon
