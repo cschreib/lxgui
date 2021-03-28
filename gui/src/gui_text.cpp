@@ -160,7 +160,7 @@ float text::get_string_width(const utils::ustring& sString) const
             auto iterNext = iterChar + 1;
             if (iterNext != sString.end())
             {
-                if (*iterChar != U' ' && *iterNext != U' ' && *iterNext != U'\n')
+                if (!utils::is_whitespace(*iterChar) && !utils::is_whitespace(*iterNext))
                     fWidth += get_character_kerning(*iterChar, *iterNext);
             }
         }
@@ -461,19 +461,12 @@ void text::update_lines_()
                 }
 
                 DEBUG_LOG("      Get width");
-                if (*iterChar1 == U' ')
-                    mLine.fWidth += fSpaceWidth_ + fTracking_;
-                else if (*iterChar1 == U'\t')
-                    mLine.fWidth += 4*fSpaceWidth_ + fTracking_;
-                else
+                mLine.fWidth += get_character_width(*iterChar1);
+                auto iterNext = iterChar1 + 1;
+                if (!utils::is_whitespace(*iterChar1) && iterNext != sManualLine.end() &&
+                    !utils::is_whitespace(*iterNext))
                 {
-                    mLine.fWidth += get_character_width(*iterChar1) + fTracking_;
-                    auto iterNext = iterChar1 + 1;
-                    if (iterNext != sManualLine.end())
-                    {
-                        if (*iterNext != U' ')
-                            mLine.fWidth += get_character_kerning(*iterChar1, *iterNext);
-                    }
+                    mLine.fWidth += get_character_kerning(*iterChar1, *iterNext);
                 }
 
                 mLine.sCaption += *iterChar1;
@@ -482,7 +475,7 @@ void text::update_lines_()
                 {
                     DEBUG_LOG("      Box break " + utils::to_string(mLine.fWidth) + " > " + utils::to_string(fBoxW_));
                     // Whoops, the line is too long...
-                    if (mLine.sCaption.find(U" ") != mLine.sCaption.npos && bWordWrap_)
+                    if (mLine.sCaption.find_first_of(U" \t\n\r") != mLine.sCaption.npos && bWordWrap_)
                     {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
@@ -495,7 +488,7 @@ void text::update_lines_()
                         while (mLine.fWidth > fBoxW_ && iterChar2 != mLine.sCaption.begin())
                         {
                             --iterChar2;
-                            if (*iterChar2 == U' ')
+                            if (utils::is_whitespace(*iterChar2))
                             {
                                 if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fErasedWidth > fBoxW_)
                                 {
@@ -518,7 +511,7 @@ void text::update_lines_()
 
                         if (bRemoveStartingSpaces_)
                         {
-                            while (iterChar2 != mLine.sCaption.end() && *iterChar2 == U' ')
+                            while (iterChar2 != mLine.sCaption.end() && utils::is_whitespace(*iterChar2))
                             {
                                 --uiCharToErase;
                                 sErasedString.erase(0, 1);
@@ -624,12 +617,9 @@ void text::update_lines_()
                             }
 
                             // Look for the next word
-                            while (iterChar1 != sManualLine.end())
+                            while (iterChar1 != sManualLine.end() && utils::is_whitespace(*iterChar1))
                             {
-                                if ((*iterChar1) == U' ')
-                                    ++iterChar1;
-                                else
-                                    break;
+                                ++iterChar1;
                             }
 
                             // Add the line
@@ -790,7 +780,7 @@ void text::update_cache_()
                 mLetter.mQuad = pFont_->get_character_bounds(*iterChar) + vector2f(round(fX), round(fY));
                 mLetter.mUVs = pFont_->get_character_uvs(*iterChar);
                 mLetter.mColor = mColor;
-                mLetter.bNoRender = (*iterChar == U'\n' || *iterChar == U' ' || *iterChar == U'\t');
+                mLetter.bNoRender = utils::is_whitespace(*iterChar);
 
                 lLetterCache_.push_back(mLetter);
                 ++uiCounter;
@@ -799,8 +789,11 @@ void text::update_cache_()
 
                 float fKerning = 0.0f;
                 auto iterNext = iterChar + 1;
-                if (iterNext != mLine.sCaption.end() && *iterNext != U' ' && *iterChar != U' ')
+                if (iterNext != mLine.sCaption.end() &&
+                    !utils::is_whitespace(*iterNext) && !utils::is_whitespace(*iterChar))
+                {
                     fKerning = get_character_kerning(*iterChar, *iterNext);
+                }
 
                 fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;
             }

@@ -300,6 +300,16 @@ bool is_boolean(const ustring& s)
     return (s == U"false") || (s == U"true");
 }
 
+bool is_whitespace(char c)
+{
+    return c == '\n' || c == ' ' || c == '\t' || c == '\r';
+}
+
+bool is_whitespace(char32_t c)
+{
+    return c == U'\n' || c == U' ' || c == U'\t' || c == '\r';
+}
+
 string to_string(int i)
 {
     return value_to_string(i);

@@ -200,6 +200,9 @@ namespace utils
     bool is_boolean(const string& s);
     bool is_boolean(const ustring& s);
 
+    bool is_whitespace(char c);
+    bool is_whitespace(char32_t c);
+
     string to_string(int i);
     string to_string(int i, uint uiCharNbr);
 
