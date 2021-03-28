@@ -216,6 +216,8 @@ void edit_box::on_event(const event& mEvent)
 
             move_carret_at_(iMousePosX_, iMousePosY_);
         }
+        else
+            set_focus(false);
 
         return;
     }
