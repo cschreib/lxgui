@@ -903,7 +903,7 @@ void edit_box::update_carret_position_()
 {
     if (pFontString_ && pFontString_->get_text_object() && pCarret_)
     {
-        if (sDisplayedText_.empty())
+        if (sUnicodeText_.empty())
         {
             anchor_point mPoint;
             int iOffset = 0;
