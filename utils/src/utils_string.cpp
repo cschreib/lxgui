@@ -281,58 +281,6 @@ bool is_boolean(const std::string& s)
     return (s == "false") || (s == "true");
 }
 
-string to_string(const string& s, uint uiNbr)
-{
-    string sReturn;
-
-    for (uint uiCounter = 0; uiCounter < uiNbr; ++uiCounter)
-        sReturn += s;
-
-    return sReturn;
-}
-
-string to_string(const char* s)
-{
-    return s;
-}
-
-string to_string(const char* s, uint uiNbr)
-{
-    string sReturn;
-
-    for (uint uiCounter = 0; uiCounter < uiNbr; ++uiCounter)
-        sReturn += s;
-
-    return sReturn;
-}
-
-string to_string(char* s)
-{
-    return s;
-}
-
-string to_string(char* s, uint uiNbr)
-{
-    string sReturn;
-
-    for (uint uiCounter = 0; uiCounter < uiNbr; ++uiCounter)
-        sReturn += s;
-
-    return sReturn;
-}
-
-string to_string(char c)
-{
-    string s;
-    s.push_back(c);
-    return s;
-}
-
-string to_string(char c, uint uiNbr)
-{
-    return string(uiNbr, c);
-}
-
 string to_string(int i)
 {
     return value_to_string(i);

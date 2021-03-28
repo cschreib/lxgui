@@ -194,54 +194,9 @@ namespace utils
     bool string_to_bool(const string& s);
     bool string_to_bool(const ustring& s);
 
-    bool is_number(const std::string& s);
+    bool is_number(const string& s);
     bool is_number(char s);
-    bool is_boolean(const std::string& s);
-
-    string to_string(const string& s, uint uiNbr);
-
-    string to_string(const char* s);
-    string to_string(const char* s, uint uiNbr);
-
-    string to_string(char* s);
-    string to_string(char* s, uint uiNbr);
-
-    template<uint N>
-    string to_string(const char s[N])
-    {
-        return s;
-    }
-
-    template<uint N>
-    string to_string(const char s[N], uint uiNbr)
-    {
-        string sReturn;
-
-        for (uint uiCounter = 0; uiCounter < uiNbr; ++uiCounter)
-            sReturn += s;
-
-        return sReturn;
-    }
-
-    template<uint N>
-    string to_string(char s[N])
-    {
-        return s;
-    }
-
-    template<uint N>
-    string to_string(char s[N], uint uiNbr)
-    {
-        string sReturn;
-
-        for (uint uiCounter = 0; uiCounter < uiNbr; ++uiCounter)
-            sReturn += s;
-
-        return sReturn;
-    }
-
-    string to_string(char c);
-    string to_string(char c, uint uiNbr);
+    bool is_boolean(const string& s);
 
     string to_string(int i);
     string to_string(int i, uint uiCharNbr);
