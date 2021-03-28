@@ -135,9 +135,9 @@ void renderer::render_quad(const quad& mQuad) const
     pImpl_->render_quad(mQuad);
 }
 
-void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    pImpl_->render_quads(mQuad, lQuadList);
+    pImpl_->render_quads(mMaterial, lQuadList);
 }
 
 sprite renderer::create_sprite(std::shared_ptr<material> pMat) const

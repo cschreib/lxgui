@@ -335,14 +335,7 @@ SDL_Texture* material::get_render_texture()
     return mTexData.pTexture_;
 }
 
-const SDL_Texture* material::get_texture() const
-{
-    if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
-
-    return std::get<texture_data>(mData_).pTexture_;
-}
-
-SDL_Texture* material::get_texture()
+SDL_Texture* material::get_texture() const
 {
     if (!std::holds_alternative<texture_data>(mData_)) return nullptr;
 

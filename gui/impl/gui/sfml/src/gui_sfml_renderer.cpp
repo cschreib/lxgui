@@ -81,15 +81,15 @@ void renderer::render_quad(const quad& mQuad) const
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
 
-    std::shared_ptr<sfml::material> pMat = std::static_pointer_cast<sfml::material>(mQuad.mat);
+    const sfml::material& mMat = static_cast<const sfml::material&>(mMaterial);
 
-    const float fTexWidth = pMat->get_real_width();
-    const float fTexHeight = pMat->get_real_height();
+    const float fTexWidth = mMat.get_real_width();
+    const float fTexHeight = mMat.get_real_height();
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
     for (uint k = 0; k < lQuadList.size(); ++k)
@@ -100,8 +100,8 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
             const uint j = ids[i];
             sf::Vertex& mSFVertex = mArray[k*n + i];
             const vertex& mVertex = mVertices[j];
-            const color& mColor = (pMat->get_type() == sfml::material::type::TEXTURE ?
-                mVertex.col : mVertex.col*pMat->get_color());
+            const color& mColor = (mMat.get_type() == sfml::material::type::TEXTURE ?
+                mVertex.col : mVertex.col*mMat.get_color());
             const float a = mColor.a;
 
             mSFVertex.position.x  = mVertex.pos.x;
@@ -117,7 +117,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
 
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
-    mState.texture = pMat->get_texture();
+    mState.texture = mMat.get_texture();
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 

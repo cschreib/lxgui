@@ -139,15 +139,6 @@ namespace gui
         */
         void render_static() const;
 
-        /// Renders a set of quads using this sprite's material.
-        /** \param lQuadsArray The set of quads you want to render.
-        *   \note It is always much more efficient to use this method
-        *         rather than calling render_XXX() repeatedly, as it
-        *         allows for batch count reduction. The actual improvement
-        *         depends on implementation.
-        */
-        void render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const;
-
         /// Sets this sprite's internal quad.
         /** \param lVertexArray The new quad
         *   \note This quad will be overwritten by any render_XXX() call.

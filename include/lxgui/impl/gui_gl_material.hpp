@@ -178,7 +178,7 @@ namespace gl
         /// Returns the OpenGL texture handle.
         /** \note For internal use.
         */
-        uint get_handle_();
+        uint get_handle_() const;
 
         /// Checks if the machine is capable of using some features.
         /** \note The function checks for non power of two capability.

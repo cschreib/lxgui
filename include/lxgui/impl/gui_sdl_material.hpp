@@ -149,12 +149,7 @@ namespace sdl
         /// Returns the underlying SDL texture object.
         /** return The underlying SDL texture object
         */
-        const SDL_Texture* get_texture() const;
-
-        /// Returns the underlying SDL texture object.
-        /** return The underlying SDL texture object
-        */
-        SDL_Texture* get_texture();
+        SDL_Texture* get_texture() const;
 
         /// Returns the underlying SDL texture object (for render target).
         /** return The underlying SDL texture object (for render target)

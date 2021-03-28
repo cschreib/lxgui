@@ -168,10 +168,10 @@ void renderer::render_quad(const quad& mQuad) const
 #if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
-    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
-    if (pMat->get_type() == material::type::TEXTURE)
+    const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
+    if (mMat.get_type() == material::type::TEXTURE)
     {
-        pMat->bind();
+        mMat.bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -192,7 +192,7 @@ void renderer::render_quad(const quad& mQuad) const
         for (uint i = 0; i < 6; ++i)
         {
             uint j = ids[i];
-            color c = mQuad.v[j].col*pMat->get_color();
+            color c = mQuad.v[j].col*mMat.get_color();
             c.r *= c.a; c.g *= c.a; c.b *= c.a;  // Premultipled alpha
             glColor4f(c.r, c.g, c.b, c.a);
             glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
@@ -200,9 +200,9 @@ void renderer::render_quad(const quad& mQuad) const
         glEnd();
     }
 #else
-    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
+    const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
 
-    const uint uiArrayID = pMat->get_type() == material::type::TEXTURE ? 1 : 0;
+    const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
 
     glBindVertexArray(uiVertexArray_[uiArrayID]);
     print_gl_errors("bind vertex array");
@@ -213,7 +213,7 @@ void renderer::render_quad(const quad& mQuad) const
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mQuad.v.size(), mQuad.v.data(), GL_DYNAMIC_DRAW);
     print_gl_errors("buffer data");
 
-    if (pMat->get_type() == material::type::TEXTURE)
+    if (mMat.get_type() == material::type::TEXTURE)
     {
         if (uiPreviousProgram_ != uiTextureProgram_)
         {
@@ -221,10 +221,10 @@ void renderer::render_quad(const quad& mQuad) const
             print_gl_errors("use program");
             uiPreviousProgram_ = uiTextureProgram_;
         }
-        if (uiPreviousTexture_ != pMat->get_handle_())
+        if (uiPreviousTexture_ != mMat.get_handle_())
         {
-            pMat->bind();
-            uiPreviousTexture_ = pMat->get_handle_();
+            mMat.bind();
+            uiPreviousTexture_ = mMat.get_handle_();
         }
     }
     else
@@ -235,7 +235,7 @@ void renderer::render_quad(const quad& mQuad) const
             print_gl_errors("use program");
             uiPreviousProgram_ = uiColorProgram_;
         }
-        glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
+        glUniform4fv(iColorColLocation_, 1, &mMat.get_color().r);
         print_gl_errors("setting color color");
     }
 
@@ -244,17 +244,17 @@ void renderer::render_quad(const quad& mQuad) const
 #endif
 }
 
-void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
 #if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
-    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
-    if (pMat->get_type() == material::type::TEXTURE)
+    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
+    if (mMat.get_type() == material::type::TEXTURE)
     {
-        pMat->bind();
+        mMat.bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -280,7 +280,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];
-                color c = v[j].col*pMat->get_color();
+                color c = v[j].col*mMat.get_color();
                 c.r *= c.a; c.g *= c.a; c.b *= c.a; // Premultipled alpha
                 glColor4f(c.r, c.g, c.b, c.a);
                 glVertex2f(v[j].pos.x, v[j].pos.y);
@@ -289,9 +289,9 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
         glEnd();
     }
 #else
-    std::shared_ptr<gl::material> pMat = std::static_pointer_cast<gl::material>(mQuad.mat);
+    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
 
-    const uint uiArrayID = pMat->get_type() == material::type::TEXTURE ? 1 : 0;
+    const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
 
     glBindVertexArray(uiVertexArray_[2 + uiArrayID]);
     print_gl_errors("bind vertex array");
@@ -318,7 +318,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
         print_gl_errors("index buffer data");
     }
 
-    if (pMat->get_type() == material::type::TEXTURE)
+    if (mMat.get_type() == material::type::TEXTURE)
     {
         if (uiPreviousProgram_ != uiTextureProgram_)
         {
@@ -326,10 +326,10 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
             print_gl_errors("use program");
             uiPreviousProgram_ = uiTextureProgram_;
         }
-        if (uiPreviousTexture_ != pMat->get_handle_())
+        if (uiPreviousTexture_ != mMat.get_handle_())
         {
-            pMat->bind();
-            uiPreviousTexture_ = pMat->get_handle_();
+            mMat.bind();
+            uiPreviousTexture_ = mMat.get_handle_();
         }
     }
     else
@@ -340,7 +340,7 @@ void renderer::render_quads(const quad& mQuad, const std::vector<std::array<vert
             print_gl_errors("use program");
             uiPreviousProgram_ = uiColorProgram_;
         }
-        glUniform4fv(iColorColLocation_, 1, &pMat->get_color().r);
+        glUniform4fv(iColorColLocation_, 1, &mMat.get_color().r);
         print_gl_errors("setting color color");
     }
 

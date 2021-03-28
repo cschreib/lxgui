@@ -136,11 +136,6 @@ void sprite::render_4v(float fX1, float fY1,
     pRenderer_->render_quad(mQuad_);
 }
 
-void sprite::render_quads(const std::vector<std::array<vertex,4>>& lQuadsArray) const
-{
-    pRenderer_->render_quads(mQuad_, lQuadsArray);
-}
-
 void sprite::render_static() const
 {
     pRenderer_->render_quad(mQuad_);

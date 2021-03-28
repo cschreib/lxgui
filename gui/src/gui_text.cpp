@@ -348,7 +348,7 @@ void text::render(float fX, float fY)
         bUpdateQuads_ = false;
     }
 
-    mSprite_.render_quads(lQuadList_);
+    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadList_);
 }
 
 void text::update()

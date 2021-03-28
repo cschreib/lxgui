@@ -374,7 +374,7 @@ void material::clear_cache_data_()
     pTexData_->pData_.clear();
 }
 
-uint material::get_handle_()
+uint material::get_handle_() const
 {
     return pTexData_->uiTextureHandle_;
 }

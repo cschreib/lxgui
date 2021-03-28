@@ -80,14 +80,14 @@ namespace gui
         void render_quad(const quad& mQuad) const;
 
         /// Renders a set of quads.
-        /** \param mQuad     The base quad to use for rendering (material, blending, ...)
+        /** \param mMaterial The material to use for rendering (texture, color, blending, ...)
         *   \param lQuadList The list of the quads you want to render
         *   \note This function is meant to be called between begin() and
         *         end() only. It is always more efficient to call this method
         *         than calling render_quad repeatedly, as it allows to batch
         *         count reduction.
         */
-        void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const;
+        void render_quads(const material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const;
 
         /// Creates a new sprite.
         /** \param pMat The material with which to create the sprite

@@ -37,12 +37,12 @@ namespace sdl
         void end() const override;
 
         /// Renders a quad from a material and array of vertices.
-        /** \param pMat        The material to use to to render the quad
+        /** \param mMat        The material to use to to render the quad
         *   \param lVertexList The lsit of 4 vertices making up the quad
         *   \note This function is meant to be called between begin() and
         *         end() only.
         */
-        void render_quad(std::shared_ptr<sdl::material> pMat,
+        void render_quad(const sdl::material& mMat,
             const std::array<vertex,4>& lVertexList) const;
 
         /// Renders a quad.
@@ -53,14 +53,14 @@ namespace sdl
         void render_quad(const quad& mQuad) const override;
 
         /// Renders a set of quads.
-        /** \param mQuad     The base quad to use for rendering (material, blending, ...)
+        /** \param mMaterial The material to use for rendering (texture, color, blending, ...)
         *   \param lQuadList The list of the quads you want to render
         *   \note This function is meant to be called between begin() and
         *         end() only. It is always more efficient to call this method
         *         than calling render_quad repeatedly, as it allows to batch
         *         count reduction.
         */
-        void render_quads(const quad& mQuad, const std::vector<std::array<vertex,4>>& lQuadList) const override;
+        void render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const override;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
