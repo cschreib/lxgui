@@ -1009,7 +1009,8 @@ void edit_box::update_carret_position_()
         );
 
         mCarretTimer_.zero();
-        pCarret_->show();
+        if (bFocus_)
+            pCarret_->show();
     }
 }
 
