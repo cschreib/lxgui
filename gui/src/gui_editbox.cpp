@@ -866,7 +866,7 @@ void edit_box::update_displayed_text_()
     if (pFontString_ && pFontString_->get_text_object())
     {
         if (bPasswordMode_)
-            sDisplayedText_ = utils::ustring(utils::utf8_to_unicode('*'), sUnicodeText_.size());
+            sDisplayedText_ = utils::ustring(sUnicodeText_.size(), U'*');
         else
             sDisplayedText_ = sUnicodeText_;
 
