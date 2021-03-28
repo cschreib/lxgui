@@ -1,6 +1,6 @@
 v2.0.0:
- - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3 only)
  - general: switched to MIT license
+ - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3 only)
  - general: various fixes and improvements to the build system
  - general: dropped support for C++ version earlier than C++17
  - general: fixed various warnings and minor bugs detected by clang
@@ -47,12 +47,13 @@ v2.0.0:
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
- - gui: removed OnDragStop and fixed unimplemented OnReceiveDrag
- - gui: implemented OnCursorChanged for edit_box
+ - gui: added OnReceiveDrag for frame
+ - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
  - gui: added set_cursor_position()/get_cursor_position() to edit_box
  - gui: added clear_history() to edit_box
  - gui: added clipboard support to edit_box
+ - gui: added automatic un-focus of edit_box when clicking outside of the box
  - gui: fixed rare crash in edit_box
  - gui: fixed crash when calling Lua delete_frame() twice on same frame
  - gui: fixed Lua get_width()/get_height() returning incorrect values
@@ -66,6 +67,7 @@ v2.0.0:
  - gui: fixed incorrect handling of optional parameter in Frame:enable_mouse() lua function
  - gui: fixed Frame:get_script() always returning nil
  - gui: fixed edit_box stealing mouse click events from other frames
+ - gui: fixed edit_box carret appearing after set_text() even if the box is not focussed
  - xml: now parsing standard XML comments
 
 v1.2.0:
