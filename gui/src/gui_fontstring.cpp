@@ -76,22 +76,6 @@ void font_string::render()
     }
 }
 
-void font_string::update(float fDelta)
-{
-    //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
-
-    DEBUG_LOG("  ~");
-    if (pText_)
-    {
-        DEBUG_LOG("   Update text");
-        pText_->update();
-    }
-
-    uiobject::update(fDelta);
-    DEBUG_LOG("   .");
-}
-
 std::string font_string::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
