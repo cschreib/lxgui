@@ -30,6 +30,11 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), uiSizeS
     pTexture_ = std::make_shared<sfml::material>(mData);
 }
 
+uint font::get_size() const
+{
+    return uiSize_;
+}
+
 quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};

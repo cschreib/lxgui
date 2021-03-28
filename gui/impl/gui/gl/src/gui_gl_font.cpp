@@ -193,6 +193,11 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     pTexture_->clear_cache_data_();
 }
 
+uint font::get_size() const
+{
+    return uiSize_;
+}
+
 quad2f font::get_character_uvs(char32_t uiChar) const
 {
     return lCharacterList_[uiChar].mUVs;

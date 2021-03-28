@@ -15,7 +15,7 @@ namespace gui {
 namespace sdl
 {
 font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
-    bool bPreMultipliedAlphaSupported)
+    bool bPreMultipliedAlphaSupported) : uiSize_(floor(uiSize * 96.0/72.0))
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -23,7 +23,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
             std::string(TTF_GetError()));
     }
 
-    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), floor(uiSize * 96.0/72.0));
+    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSize_);
     if (!pFont)
     {
         throw gui::exception("gui::sdl::font", "Could not load font file '"+
@@ -187,6 +187,11 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
     }
 
     pTexture_->unlock_pointer();
+}
+
+uint font::get_size() const
+{
+    return uiSize_;
 }
 
 quad2f font::get_character_uvs(char32_t uiChar) const

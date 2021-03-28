@@ -28,6 +28,11 @@ namespace sfml
         */
         font(const std::string& sFontFile, uint uiSize);
 
+        /// Get the size of the font in pixels.
+        /** \return The size of the font in pixels
+        */
+        uint get_size() const override;
+
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
         *   \return The uv coordinates of this character on the texture

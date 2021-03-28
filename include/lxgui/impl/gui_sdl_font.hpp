@@ -37,6 +37,11 @@ namespace sdl
         font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
             bool bPreMultipliedAlphaSupported);
 
+        /// Get the size of the font in pixels.
+        /** \return The size of the font in pixels
+        */
+        uint get_size() const override;
+
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
         *   \return The uv coordinates of this character on the texture
@@ -84,6 +89,7 @@ namespace sdl
         float fTextureWidth_ = 0.0f;
         float fTextureHeight_ = 0.0f;
         float fYOffset_ = 0.0f;
+        uint uiSize_ = 0u;
 
         std::shared_ptr<sdl::material> pTexture_;
         std::vector<character_info>    lCharacterList_;
