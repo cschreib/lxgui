@@ -16,7 +16,7 @@ namespace lxgui {
 namespace utils
 {
     using string = std::string;
-    using ustring = std::basic_string<char32_t>;
+    using ustring = std::u32string;
 
     void trim(string& s, char cPattern);
     void trim(string& s, const string& sPatterns);
@@ -24,7 +24,7 @@ namespace utils
 
     uint count_occurrences(const string& s, const string& sPattern);
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
     {
         std::vector<std::basic_string<T>> lPieces;
@@ -46,13 +46,13 @@ namespace utils
         return lPieces;
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim)
     {
         return cut(s, std::basic_string<T>(sDelim));
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
     {
         std::vector<std::basic_string<T>> lPieces;
@@ -79,13 +79,13 @@ namespace utils
         return lPieces;
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
     {
         return cut(s, std::basic_string<T>(sDelim), uiMaxCut);
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
     {
         std::vector<std::basic_string<T>> lPieces;
@@ -106,13 +106,13 @@ namespace utils
         return lPieces;
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim)
     {
         return cut_each(s, std::basic_string<T>(sDelim));
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
     {
         std::vector<std::basic_string<T>> lPieces;
@@ -137,13 +137,13 @@ namespace utils
         return lPieces;
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
     {
         return cut_each(s, std::basic_string<T>(sDelim), uiMaxCut);
     }
 
-    template<class T>
+    template<typename T>
     std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::vector<T>& lDelims)
     {
         std::vector<std::basic_string<T>> lPieces;
@@ -221,7 +221,7 @@ namespace utils
     string to_string(bool b);
     string to_string(void* p);
 
-    template<class T>
+    template<typename T>
     string to_string(T* p)
     {
         if (p != nullptr)
@@ -230,7 +230,13 @@ namespace utils
             return "NULL";
     }
 
-    std::string to_string(const utils::variant& mValue);
+    string to_string(const utils::variant& mValue);
+
+    template<typename ... Args>
+    ustring to_ustring(Args&& ... args)
+    {
+        return utils::UTF8_to_unicode(to_string(std::forward<Args>(args)...));
+    }
 }
 }
 
