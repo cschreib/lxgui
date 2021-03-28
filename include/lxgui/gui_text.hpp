@@ -2,14 +2,12 @@
 #define LXGUI_GUI_TEXT_HPP
 
 #include "lxgui/gui_color.hpp"
-#include "lxgui/gui_quad2.hpp"
 #include "lxgui/gui_font.hpp"
-#include "lxgui/gui_sprite.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
 
-#include <map>
+#include <vector>
 #include <array>
 #include <memory>
 

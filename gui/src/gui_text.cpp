@@ -7,6 +7,8 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_range.hpp>
 
+#include <map>
+
 namespace lxgui {
 namespace gui
 {
