@@ -485,7 +485,7 @@ int lua_font_string::_get_text(lua_State* pLua)
 
     lua::function mFunc("FontString:get_text", pLua, 1);
 
-    mFunc.push(get_object()->get_text());
+    mFunc.push(utils::unicode_to_utf8(get_object()->get_text()));
 
     return mFunc.on_return();
 }
@@ -567,7 +567,7 @@ int lua_font_string::_set_text(lua_State* pLua)
         else if (mFunc.get(0)->get_type() == lua::type::BOOLEAN)
             sText = utils::to_string(mFunc.get(0)->get_bool());
 
-        get_object()->set_text(sText);
+        get_object()->set_text(utils::utf8_to_unicode(sText));
     }
 
     return mFunc.on_return();

@@ -335,7 +335,7 @@ int lua_button::_get_text(lua_State* pLua)
 
     lua::function mFunc("Button:get_text", pLua, 1);
 
-    mFunc.push(get_object()->get_text());
+    mFunc.push(utils::unicode_to_utf8(get_object()->get_text()));
 
     return mFunc.on_return();
 }
@@ -736,7 +736,7 @@ int lua_button::_set_text(lua_State* pLua)
     lua::function mFunc("Button:set_text", pLua);
     mFunc.add(0, "text", lua::type::STRING);
     if (mFunc.check())
-        get_object()->set_text(mFunc.get(0)->get_string());
+        get_object()->set_text(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
 
     return mFunc.on_return();
 }

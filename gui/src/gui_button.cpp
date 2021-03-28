@@ -285,7 +285,7 @@ void button::copy_from(uiobject* pObj)
         this->disable();
 }
 
-void button::set_text(const std::string& sText)
+void button::set_text(const utils::ustring& sText)
 {
     sText_ = sText;
 
@@ -299,7 +299,7 @@ void button::set_text(const std::string& sText)
         pDisabledText_->set_text(sText);
 }
 
-const std::string& button::get_text() const
+const utils::ustring& button::get_text() const
 {
     return sText_;
 }

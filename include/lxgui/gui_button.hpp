@@ -2,6 +2,7 @@
 #define LXGUI_GUI_BUTTON_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_string.hpp>
 #include "lxgui/gui_frame.hpp"
 
 namespace lxgui {
@@ -90,12 +91,12 @@ namespace gui
         /// Sets this button's text.
         /** \param sText The new text
         */
-        virtual void set_text(const std::string& sText);
+        virtual void set_text(const utils::ustring& sText);
 
         /// Returns this button's text.
         /** \return This button's text
         */
-        const std::string& get_text() const;
+        const utils::ustring& get_text() const;
 
         /// Returns this button's normal texture.
         /** \return This button's normal texture
@@ -259,7 +260,7 @@ namespace gui
         bool      bHighlighted_ = false;
         bool      bLockHighlight_ = false;
 
-        std::string sText_;
+        utils::ustring sText_;
 
         texture* pNormalTexture_ = nullptr;
         texture* pPushedTexture_ = nullptr;

@@ -10,16 +10,11 @@
 namespace lxgui {
 namespace gui
 {
-text::text(const renderer* pRenderer, const std::string& sFileName, float fSize) :
-    pRenderer_(pRenderer), sFileName_(sFileName), fSize_(fSize)
+text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
+    pRenderer_(pRenderer), pFont_(std::move(pFont))
 {
-    pFont_ = pRenderer_->create_font(sFileName_, fSize_);
     if (!pFont_)
-    {
-        gui::out << gui::error << "gui::text : "
-            "Error initializing \"" << sFileName << "\" (size : " << fSize << ")." << std::endl;
         return;
-    }
 
     fSpaceWidth_ = pFont_->get_character_width(32);
     mSprite_ = pRenderer_->create_sprite(pFont_->get_texture().lock());
@@ -27,37 +22,24 @@ text::text(const renderer* pRenderer, const std::string& sFileName, float fSize)
     bReady_ = true;
 }
 
-const std::string& text::get_font_name() const
-{
-    return sFileName_;
-}
-
-float text::get_font_size() const
-{
-    return fSize_;
-}
-
 float text::get_line_height() const
 {
-    return fSize_;
+    if (pFont_)
+        return pFont_->get_size();
+    else
+        return 0.0;
 }
 
-void text::set_text(const std::string& sText)
+void text::set_text(const utils::ustring& sText)
 {
-    if (sText_ != sText)
+    if (sUnicodeText_ != sText)
     {
-        sText_ = sText;
-        sUnicodeText_ = utils::UTF8_to_unicode(sText_);
+        sUnicodeText_ = sText;
         bUpdateCache_ = true;
     }
 }
 
-const std::string& text::get_text() const
-{
-    return sText_;
-}
-
-const utils::ustring& text::get_unicode_text() const
+const utils::ustring& text::get_text() const
 {
     return sUnicodeText_;
 }
@@ -138,7 +120,7 @@ float text::get_text_height() const
     if (!bReady_)
         return 0.0f;
 
-    uint count = std::count(sText_.begin(), sText_.end(), '\n');
+    uint count = std::count(sUnicodeText_.begin(), sUnicodeText_.end(), U'\n');
     float fHeight = (1.0f + count*fLineSpacing_)*get_line_height();
 
     return fHeight;
@@ -151,7 +133,7 @@ uint text::get_num_lines() const
 
 float text::get_string_width(const std::string& sString) const
 {
-    return get_string_width(utils::UTF8_to_unicode(sString));
+    return get_string_width(utils::utf8_to_unicode(sString));
 }
 
 float text::get_string_width(const utils::ustring& sString) const
@@ -164,7 +146,7 @@ float text::get_string_width(const utils::ustring& sString) const
 
     for (auto iterChar : utils::range::iterator(sString))
     {
-        if (*iterChar == '\n')
+        if (*iterChar == U'\n')
         {
             if (fWidth > fMaxWidth)
                 fMaxWidth = fWidth;
@@ -449,7 +431,7 @@ void text::update_lines_()
         {
             const utils::ustring& sManualLine = *iterManual;
 
-            DEBUG_LOG("     Line : '" + utils::unicode_to_UTF8(sManualLine) + "'");
+            DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(sManualLine) + "'");
             // Make a temporary line array
             std::vector<line> lLines;
             line mLine; mLine.fWidth = 0.0f;
@@ -808,12 +790,12 @@ void text::update_cache_()
                 mLetter.mQuad = pFont_->get_character_bounds(*iterChar) + vector2f(round(fX), round(fY));
                 mLetter.mUVs = pFont_->get_character_uvs(*iterChar);
                 mLetter.mColor = mColor;
-                mLetter.bNoRender = (*iterChar == '\n' || *iterChar == ' ' || *iterChar == '\t');
+                mLetter.bNoRender = (*iterChar == U'\n' || *iterChar == U' ' || *iterChar == U'\t');
 
                 lLetterCache_.push_back(mLetter);
                 ++uiCounter;
 
-                if (*iterChar == '\n') continue;
+                if (*iterChar == U'\n') continue;
 
                 float fKerning = 0.0f;
                 auto iterNext = iterChar + 1;

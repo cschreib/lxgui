@@ -118,7 +118,7 @@ void button::parse_block(xml::block* pBlock)
     }
 
     if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
-        set_text(pBlock->get_attribute("text"));
+        set_text(utils::utf8_to_unicode(pBlock->get_attribute("text")));
 }
 }
 }

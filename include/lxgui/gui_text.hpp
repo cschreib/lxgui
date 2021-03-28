@@ -73,46 +73,29 @@ namespace gui
 
         /// Constructor.
         /** \param pRenderer The renderer instance to use
-        *   \param sFileName The path to the .ttf file to use
-        *   \param fSize     The size of the font (in point)
+        *   \param pFont The font to use for rendering
         */
-        explicit text(const renderer* pRenderer, const std::string& sFileName, float fSize);
-
-        /// Returns the path to the .ttf file.
-        /** \return The path to the .ttf file
-        */
-        const std::string& get_font_name() const;
-
-        /// Returns the size of the font.
-        /** \return The size of the font
-        */
-        float get_font_size() const;
+        explicit text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont);
 
         /// Returns the height of one line (constant).
         /** \return The height of one line (constant)
         */
         float get_line_height() const;
 
-        /// Sets the text to render.
+        /// Sets the text to render (unicode character set).
         /** \param sText The text to render
         *   \note This text can be formated :<br>
         *         - "|cAARRGGBB" : sets text color (hexadecimal).<br>
         *         - "|r" : sets text color to default.<br>
         *         - "||" : writes "|".
         */
-        void set_text(const std::string& sText);
-
-        /// Returns the text that will be rendered.
-        /** \return The text that will be rendered
-        *   \note This string contains format tags.
-        */
-        const std::string& get_text() const;
+        void set_text(const utils::ustring& sText);
 
         /// Returns the text that will be rendered (unicode character set).
         /** \return The text that will be rendered (unicode character set)
         *   \note This string contains format tags.
         */
-        const utils::ustring& get_unicode_text() const;
+        const utils::ustring& get_text() const;
 
         /// Sets this text's default color.
         /** \param mColor      The default color
@@ -329,10 +312,7 @@ namespace gui
 
         const renderer* pRenderer_ = nullptr;
 
-        std::string sFileName_;
-
         bool  bReady_ = false;
-        float fSize_ = 0.0f;
         float fTracking_ = 0.0f;
         float fLineSpacing_ = 1.5f;
         float fSpaceWidth_ = 0.0f;
@@ -348,7 +328,6 @@ namespace gui
         float fBoxW_ = std::numeric_limits<float>::infinity();
         float fBoxH_ = std::numeric_limits<float>::infinity();
 
-        std::string        sText_;
         utils::ustring     sUnicodeText_;
 
         alignment          mAlign_ = alignment::LEFT;

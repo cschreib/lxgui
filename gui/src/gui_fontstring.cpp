@@ -101,7 +101,7 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # Font name   : " << sFontName_ << "\n";
     sStr << sTab << "  # Font height : " << uiHeight_ << "\n";
     sStr << sTab << "  # Text ready  : " << (pText_ != nullptr) << "\n";
-    sStr << sTab << "  # Text        : \"" << sText_ << "\"\n";
+    sStr << sTab << "  # Text        : \"" << utils::unicode_to_utf8(sText_) << "\"\n";
     sStr << sTab << "  # Outlined    : " << bIsOutlined_ << "\n";
     sStr << sTab << "  # Text color  : " << mTextColor_ << "\n";
     sStr << sTab << "  # Spacing     : " << fSpacing_ << "\n";
@@ -241,7 +241,8 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
     sFontName_ = sFontName;
     uiHeight_ = uiHeight;
 
-    pText_ = std::unique_ptr<text>(new text(get_top_level_renderer(), sFontName, uiHeight));
+    renderer* pRenderer = get_top_level_renderer();
+    pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiHeight)));
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);
@@ -375,18 +376,9 @@ float font_string::get_string_width() const
         return 0.0f;
 }
 
-const std::string& font_string::get_text() const
+const utils::ustring& font_string::get_text() const
 {
     return sText_;
-}
-
-const utils::ustring& font_string::get_unicode_text() const
-{
-    static const utils::ustring empty;
-    if (pText_)
-        return pText_->get_unicode_text();
-    else
-        return empty;
 }
 
 void font_string::set_non_space_wrap(bool bCanNonSpaceWrap)
@@ -437,7 +429,7 @@ bool font_string::is_formatting_enabled() const
     return bFormattingEnabled_;
 }
 
-void font_string::set_text(const std::string& sText)
+void font_string::set_text(const utils::ustring& sText)
 {
     if (sText_ != sText)
     {

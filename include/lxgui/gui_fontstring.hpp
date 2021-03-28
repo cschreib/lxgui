@@ -199,12 +199,7 @@ namespace gui
         /// Returns the rendered text (with format tags).
         /** \return The rendered text (with format tags)
         */
-        const std::string& get_text() const;
-
-        /// Returns the rendered text (with format tags, unicode character set).
-        /** \return The rendered text (with format tags, unicode character set)
-        */
-        const utils::ustring& get_unicode_text() const;
+        const utils::ustring& get_text() const;
 
         /// Sets whether large text is truncated or wrapped.
         /** \param bCanNonSpaceWrap 'true' to truncate the text
@@ -252,7 +247,7 @@ namespace gui
         /** \param sText The rendered text
         *   \note See text::set_text for more infos about formatting.
         */
-        void set_text(const std::string& sText);
+        void set_text(const utils::ustring& sText);
 
         /// Creates the associated Lua glue.
         void create_glue() override;
@@ -286,9 +281,9 @@ namespace gui
 
         mutable std::unique_ptr<text> pText_;
 
-        std::string sText_;
-        std::string sFontName_;
-        uint        uiHeight_ = 0;
+        utils::ustring sText_;
+        std::string    sFontName_;
+        uint           uiHeight_ = 0;
 
         float                    fSpacing_ = 0.0f;
         text::alignment          mJustifyH_ = text::alignment::CENTER;

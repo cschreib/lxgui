@@ -174,11 +174,11 @@ namespace utils
 
     bool has_no_content(const std::string& s);
 
-    ustring  UTF8_to_unicode(const string& s);
-    char32_t UTF8_to_unicode(char c);
+    ustring  utf8_to_unicode(const string& s);
+    char32_t utf8_to_unicode(char c);
 
-    string  unicode_to_UTF8(const ustring& s);
-    char    unicode_to_UTF8(char32_t c);
+    string  unicode_to_utf8(const ustring& s);
+    char    unicode_to_utf8(char32_t c);
 
     uint    hex_to_uint(const string& s);
 
@@ -237,7 +237,7 @@ namespace utils
     template<typename ... Args>
     ustring to_ustring(Args&& ... args)
     {
-        return utils::UTF8_to_unicode(to_string(std::forward<Args>(args)...));
+        return utils::utf8_to_unicode(to_string(std::forward<Args>(args)...));
     }
 }
 }

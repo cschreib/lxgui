@@ -94,7 +94,7 @@ bool ends_with(const string& s, const string& sPattern)
     return true;
 }
 
-ustring UTF8_to_unicode(const string& s)
+ustring utf8_to_unicode(const string& s)
 {
     static unsigned char MAX_ANSI = 127;
     static unsigned char ESC_C2   = 194;
@@ -139,7 +139,7 @@ ustring UTF8_to_unicode(const string& s)
     return sResult;
 }
 
-char32_t UTF8_to_unicode(char c)
+char32_t utf8_to_unicode(char c)
 {
     static unsigned char MAX_ANSI = 127;
 
@@ -151,7 +151,7 @@ char32_t UTF8_to_unicode(char c)
         return 0u;
 }
 
-string unicode_to_UTF8(const ustring& s)
+string unicode_to_utf8(const ustring& s)
 {
     static uint MAX_ANSI = 127;
     static uint ESC_C2   = 194;
@@ -183,7 +183,7 @@ string unicode_to_UTF8(const ustring& s)
     return sResult;
 }
 
-char unicode_to_UTF8(char32_t c)
+char unicode_to_utf8(char32_t c)
 {
     static uint MAX_ANSI = 127;
     if (c <= MAX_ANSI)
@@ -211,7 +211,7 @@ long string_to_int(const string& s)
 
 long string_to_int(const ustring& s)
 {
-    return string_to_int(unicode_to_UTF8(s));
+    return string_to_int(unicode_to_utf8(s));
 }
 
 unsigned long string_to_uint(const string& s)
@@ -224,7 +224,7 @@ unsigned long string_to_uint(const string& s)
 
 unsigned long string_to_uint(const ustring& s)
 {
-    return string_to_uint(unicode_to_UTF8(s));
+    return string_to_uint(unicode_to_utf8(s));
 }
 
 double string_to_float(const string& s)
@@ -237,7 +237,7 @@ double string_to_float(const string& s)
 
 double string_to_float(const ustring& s)
 {
-    return string_to_float(unicode_to_UTF8(s));
+    return string_to_float(unicode_to_utf8(s));
 }
 
 template<typename T>
@@ -284,7 +284,7 @@ bool string_to_bool(const string& s)
 
 bool string_to_bool(const ustring& s)
 {
-    if (s == UTF8_to_unicode("true"))
+    if (s == utf8_to_unicode("true"))
         return true;
     else
         return false;

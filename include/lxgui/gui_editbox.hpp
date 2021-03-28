@@ -187,12 +187,12 @@ namespace gui
         /// Sets the content of this edit_box.
         /** \param sText The content of this edit_box
         */
-        void set_text(const std::string& sText);
+        void set_text(const utils::ustring& sText);
 
         /// Returns the content of this edit_box.
         /** \return The content of this edit_box
         */
-        const std::string& get_text() const;
+        const utils::ustring& get_text() const;
 
         /// Selects a portion of the content.
         /** \param uiStart      The first character to select
@@ -213,7 +213,7 @@ namespace gui
         /// Inserts some text after the cursor.
         /** \param sText The text to insert
         */
-        void insert_after_cursor(const std::string& sText);
+        void insert_after_cursor(const utils::ustring& sText);
 
         /// Returns the current position of the cursor.
         /** \return The position of the cursor (0: before first character,
@@ -325,13 +325,13 @@ namespace gui
         /** \param sHistoryLine The content of this history line
         *   \note This option is only available to single line edit_boxes.
         */
-        void add_history_line(const std::string& sHistoryLine);
+        void add_history_line(const utils::ustring& sHistoryLine);
 
         /// Returns the history line list.
         /** \return The history line list
         *   \note This list will always be empty for multi line edit_boxes.
         */
-        const std::vector<std::string>& get_history_lines() const;
+        const std::vector<utils::ustring>& get_history_lines() const;
 
         /// Clears the history line list.
         void clear_history();
@@ -417,7 +417,6 @@ namespace gui
 
         void process_key_(input::key uiKey);
 
-        std::string              sText_;
         utils::ustring           sUnicodeText_;
         utils::ustring           sDisplayedText_;
         utils::ustring::iterator iterCarretPos_;
@@ -445,9 +444,9 @@ namespace gui
         double         dBlinkSpeed_ = 0.5;
         periodic_timer mCarretTimer_;
 
-        std::vector<std::string> lHistoryLineList_;
-        uint                     uiMaxHistoryLines_ = uint(-1);
-        uint                     uiCurrentHistoryLine_ = uint(-1);
+        std::vector<utils::ustring> lHistoryLineList_;
+        uint                        uiMaxHistoryLines_ = uint(-1);
+        uint                        uiCurrentHistoryLine_ = uint(-1);
 
         font_string* pFontString_ = nullptr;
         quad2i       lTextInsets_ = quad2i::ZERO;

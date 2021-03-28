@@ -80,7 +80,7 @@ int lua_edit_box::_add_history_line(lua_State* pLua)
     lua::function mFunc("EditBox:add_history_line", pLua);
     mFunc.add(0, "line", lua::type::STRING);
     if (mFunc.check())
-        get_object()->add_history_line(mFunc.get(0)->get_string());
+        get_object()->add_history_line(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
 
     return mFunc.on_return();
 }
@@ -138,7 +138,7 @@ int lua_edit_box::_get_history_lines(lua_State* pLua)
     lua::function mFunc("EditBox:get_history_lines", pLua, lHistoryLine.size());
 
     for (const auto& sLine : lHistoryLine)
-        mFunc.push(sLine);
+        mFunc.push(utils::unicode_to_utf8(sLine));
 
     return mFunc.on_return();
 }
@@ -194,7 +194,7 @@ int lua_edit_box::_get_text(lua_State* pLua)
 
     lua::function mFunc("EditBox:get_text", pLua, 1);
 
-    mFunc.push(get_object()->get_text());
+    mFunc.push(utils::unicode_to_utf8(get_object()->get_text()));
 
     return mFunc.on_return();
 }
@@ -254,7 +254,7 @@ int lua_edit_box::_insert(lua_State* pLua)
     lua::function mFunc("EditBox:insert", pLua);
     mFunc.add(0, "text", lua::type::STRING);
     if (mFunc.check())
-        get_object()->insert_after_cursor(mFunc.get(0)->get_string());
+        get_object()->insert_after_cursor(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
 
     return mFunc.on_return();
 }
@@ -386,7 +386,7 @@ int lua_edit_box::_set_number(lua_State* pLua)
     lua::function mFunc("EditBox:set_number", pLua);
     mFunc.add(0, "number", lua::type::NUMBER);
     if (mFunc.check())
-        get_object()->set_text(utils::to_string(mFunc.get(0)->get_number()));
+        get_object()->set_text(utils::to_ustring(mFunc.get(0)->get_number()));
 
     return mFunc.on_return();
 }
@@ -431,7 +431,7 @@ int lua_edit_box::_set_text(lua_State* pLua)
     lua::function mFunc("EditBox:set_text", pLua);
     mFunc.add(0, "text", lua::type::STRING);
     if (mFunc.check())
-        get_object()->set_text(mFunc.get(0)->get_string());
+        get_object()->set_text(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
 
     return mFunc.on_return();
 }

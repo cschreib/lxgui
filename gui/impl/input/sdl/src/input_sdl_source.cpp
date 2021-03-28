@@ -35,7 +35,7 @@ utils::ustring source::get_clipboard_content()
     if (SDL_HasClipboardText())
     {
         char* sText = SDL_GetClipboardText();
-        utils::ustring sUnicodeText = utils::UTF8_to_unicode(sText);
+        utils::ustring sUnicodeText = utils::utf8_to_unicode(sText);
         SDL_free(sText);
         return sUnicodeText;
     }
@@ -47,7 +47,7 @@ utils::ustring source::get_clipboard_content()
 
 void source::set_clipboard_content(const utils::ustring& sContent)
 {
-    SDL_SetClipboardText(utils::unicode_to_UTF8(sContent).c_str());
+    SDL_SetClipboardText(utils::unicode_to_utf8(sContent).c_str());
 }
 
 key source::from_sdl_(int iSDLKey) const
@@ -315,7 +315,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         }
         case SDL_TEXTINPUT:
         {
-            for (auto c : utils::UTF8_to_unicode(mEvent.text.text))
+            for (auto c : utils::utf8_to_unicode(mEvent.text.text))
             {
                 // Remove non printable characters (< 32) and Del. (127)
                 if (c >= 32 && c != 127)

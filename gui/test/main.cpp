@@ -537,7 +537,7 @@ int main(int argc, char* argv[])
 
                 if (timer > update_time) {
                     gui::font_string* text = self->get_region<gui::font_string>("Text");
-                    text->set_text("(created in C++)\nFPS : "+utils::to_string(floor(frames/timer)));
+                    text->set_text(U"(created in C++)\nFPS : "+utils::to_ustring(floor(frames/timer)));
 
                     timer = 0.0f;
                     frames = 0;
