@@ -75,7 +75,10 @@ renderer::~renderer() noexcept
 {
     glDeleteVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
     glDeleteBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
+}
 
+renderer::shader_cache::~shader_cache()
+{
     if (uiTextureProgram_) glDeleteProgram(uiTextureProgram_);
     if (uiColorProgram_) glDeleteProgram(uiColorProgram_);
 }
@@ -135,13 +138,13 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 #endif
 
 #if defined(LXGUI_OPENGL3)
-    glUseProgram(uiTextureProgram_);
+    glUseProgram(pShaderCache_->uiTextureProgram_);
     print_gl_errors("use program");
-    glUniformMatrix4fv(iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    glUniformMatrix4fv(pShaderCache_->iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
     print_gl_errors("setting view matrix texture");
-    glUseProgram(uiColorProgram_);
+    glUseProgram(pShaderCache_->uiColorProgram_);
     print_gl_errors("use program");
-    glUniformMatrix4fv(iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
+    glUniformMatrix4fv(pShaderCache_->iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
     print_gl_errors("setting view matrix color");
 
     uiPreviousTexture_ = (uint)-1;
@@ -215,11 +218,11 @@ void renderer::render_quad(const quad& mQuad) const
 
     if (mMat.get_type() == material::type::TEXTURE)
     {
-        if (uiPreviousProgram_ != uiTextureProgram_)
+        if (uiPreviousProgram_ != pShaderCache_->uiTextureProgram_)
         {
-            glUseProgram(uiTextureProgram_);
+            glUseProgram(pShaderCache_->uiTextureProgram_);
             print_gl_errors("use program");
-            uiPreviousProgram_ = uiTextureProgram_;
+            uiPreviousProgram_ = pShaderCache_->uiTextureProgram_;
         }
         if (uiPreviousTexture_ != mMat.get_handle_())
         {
@@ -229,13 +232,13 @@ void renderer::render_quad(const quad& mQuad) const
     }
     else
     {
-        if (uiPreviousProgram_ != uiColorProgram_)
+        if (uiPreviousProgram_ != pShaderCache_->uiColorProgram_)
         {
-            glUseProgram(uiColorProgram_);
+            glUseProgram(pShaderCache_->uiColorProgram_);
             print_gl_errors("use program");
-            uiPreviousProgram_ = uiColorProgram_;
+            uiPreviousProgram_ = pShaderCache_->uiColorProgram_;
         }
-        glUniform4fv(iColorColLocation_, 1, &mMat.get_color().r);
+        glUniform4fv(pShaderCache_->iColorColLocation_, 1, &mMat.get_color().r);
         print_gl_errors("setting color color");
     }
 
@@ -320,11 +323,11 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
 
     if (mMat.get_type() == material::type::TEXTURE)
     {
-        if (uiPreviousProgram_ != uiTextureProgram_)
+        if (uiPreviousProgram_ != pShaderCache_->uiTextureProgram_)
         {
-            glUseProgram(uiTextureProgram_);
+            glUseProgram(pShaderCache_->uiTextureProgram_);
             print_gl_errors("use program");
-            uiPreviousProgram_ = uiTextureProgram_;
+            uiPreviousProgram_ = pShaderCache_->uiTextureProgram_;
         }
         if (uiPreviousTexture_ != mMat.get_handle_())
         {
@@ -334,13 +337,13 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     }
     else
     {
-        if (uiPreviousProgram_ != uiColorProgram_)
+        if (uiPreviousProgram_ != pShaderCache_->uiColorProgram_)
         {
-            glUseProgram(uiColorProgram_);
+            glUseProgram(pShaderCache_->uiColorProgram_);
             print_gl_errors("use program");
-            uiPreviousProgram_ = uiColorProgram_;
+            uiPreviousProgram_ = pShaderCache_->uiColorProgram_;
         }
-        glUniform4fv(iColorColLocation_, 1, &mMat.get_color().r);
+        glUniform4fv(pShaderCache_->iColorColLocation_, 1, &mMat.get_color().r);
         print_gl_errors("setting color color");
     }
 
@@ -521,73 +524,90 @@ GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShad
 
 void renderer::compile_programs_()
 {
-    char sTextureVertexShader[] =
-        "#version 300 es                                         \n"
-        "layout(location = 0) in vec2 a_position;                \n"
-        "layout(location = 1) in vec4 a_color;                   \n"
-        "layout(location = 2) in vec2 a_texCoord;                \n"
-        "uniform mat4 m_proj;                                    \n"
-        "out vec4 v_color;                                       \n"
-        "out vec2 v_texCoord;                                    \n"
-        "void main()                                             \n"
-        "{                                                       \n"
-        "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
-        "    v_color = a_color;                                  \n"
-        "    v_color.rgb *= v_color.a;                           \n"
-        "    v_texCoord = a_texCoord;                            \n"
-        "}                                                       \n";
+    // Shaders are compiled once, and reused by other renderers
+    thread_local bool bShaderCached = false;
 
-    char sTextureFragmentShader[] =
-        "#version 300 es                                         \n"
-        "precision mediump float;                                \n"
-        "in vec4 v_color;                                        \n"
-        "in vec2 v_texCoord;                                     \n"
-        "layout(location = 0) out vec4 o_color;                  \n"
-        "uniform sampler2D s_texture;                            \n"
-        "void main()                                             \n"
-        "{                                                       \n"
-        "    o_color = texture(s_texture, v_texCoord)*v_color;   \n"
-        "}                                                       \n";
-
-    char sColorVertexShader[] =
-        "#version 300 es                                         \n"
-        "layout(location = 0) in vec2 a_position;                \n"
-        "layout(location = 1) in vec4 a_color;                   \n"
-        "uniform mat4 m_proj;                                    \n"
-        "uniform vec4 c_color;                                   \n"
-        "out vec4 v_color;                                       \n"
-        "void main()                                             \n"
-        "{                                                       \n"
-        "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
-        "    v_color = a_color*c_color;                          \n"
-        "    v_color.rgb *= v_color.a;                           \n"
-        "}                                                       \n";
-
-    char sColorFragmentShader[] =
-        "#version 300 es                                         \n"
-        "precision mediump float;                                \n"
-        "in vec4 v_color;                                        \n"
-        "layout(location = 0) out vec4 o_color;                  \n"
-        "void main()                                             \n"
-        "{                                                       \n"
-        "    o_color = v_color;                                  \n"
-        "}                                                       \n";
-
-    try
+    if (!bShaderCached)
     {
-        uiTextureProgram_ = create_program(sTextureVertexShader, sTextureFragmentShader);
-        uiColorProgram_ = create_program(sColorVertexShader, sColorFragmentShader);
-    }
-    catch (...)
-    {
-        if (uiTextureProgram_) glDeleteProgram(uiTextureProgram_);
-        if (uiColorProgram_) glDeleteProgram(uiColorProgram_);
-    }
+        char sTextureVertexShader[] =
+            "#version 300 es                                         \n"
+            "layout(location = 0) in vec2 a_position;                \n"
+            "layout(location = 1) in vec4 a_color;                   \n"
+            "layout(location = 2) in vec2 a_texCoord;                \n"
+            "uniform mat4 m_proj;                                    \n"
+            "out vec4 v_color;                                       \n"
+            "out vec2 v_texCoord;                                    \n"
+            "void main()                                             \n"
+            "{                                                       \n"
+            "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
+            "    v_color = a_color;                                  \n"
+            "    v_color.rgb *= v_color.a;                           \n"
+            "    v_texCoord = a_texCoord;                            \n"
+            "}                                                       \n";
 
-    iTextureSamplerLocation_ = glGetUniformLocation(uiTextureProgram_, "s_texture");
-    iTextureProjLocation_ = glGetUniformLocation(uiTextureProgram_, "m_proj");
-    iColorProjLocation_ = glGetUniformLocation(uiColorProgram_, "m_proj");
-    iColorColLocation_ = glGetUniformLocation(uiColorProgram_, "c_color");
+        char sTextureFragmentShader[] =
+            "#version 300 es                                         \n"
+            "precision mediump float;                                \n"
+            "in vec4 v_color;                                        \n"
+            "in vec2 v_texCoord;                                     \n"
+            "layout(location = 0) out vec4 o_color;                  \n"
+            "uniform sampler2D s_texture;                            \n"
+            "void main()                                             \n"
+            "{                                                       \n"
+            "    o_color = texture(s_texture, v_texCoord)*v_color;   \n"
+            "}                                                       \n";
+
+        char sColorVertexShader[] =
+            "#version 300 es                                         \n"
+            "layout(location = 0) in vec2 a_position;                \n"
+            "layout(location = 1) in vec4 a_color;                   \n"
+            "uniform mat4 m_proj;                                    \n"
+            "uniform vec4 c_color;                                   \n"
+            "out vec4 v_color;                                       \n"
+            "void main()                                             \n"
+            "{                                                       \n"
+            "    gl_Position = m_proj*vec4(a_position.xy,0,1);       \n"
+            "    v_color = a_color*c_color;                          \n"
+            "    v_color.rgb *= v_color.a;                           \n"
+            "}                                                       \n";
+
+        char sColorFragmentShader[] =
+            "#version 300 es                                         \n"
+            "precision mediump float;                                \n"
+            "in vec4 v_color;                                        \n"
+            "layout(location = 0) out vec4 o_color;                  \n"
+            "void main()                                             \n"
+            "{                                                       \n"
+            "    o_color = v_color;                                  \n"
+            "}                                                       \n";
+
+        pShaderCache_ = std::make_shared<shader_cache>();
+
+        try
+        {
+            pShaderCache_->uiTextureProgram_ = create_program(sTextureVertexShader, sTextureFragmentShader);
+            pShaderCache_->uiColorProgram_ = create_program(sColorVertexShader, sColorFragmentShader);
+        }
+        catch (...)
+        {
+            if (pShaderCache_->uiTextureProgram_) glDeleteProgram(pShaderCache_->uiTextureProgram_);
+            if (pShaderCache_->uiColorProgram_) glDeleteProgram(pShaderCache_->uiColorProgram_);
+            pShaderCache_ = nullptr;
+            throw;
+        }
+
+        pShaderCache_->iTextureSamplerLocation_ = glGetUniformLocation(pShaderCache_->uiTextureProgram_, "s_texture");
+        pShaderCache_->iTextureProjLocation_ = glGetUniformLocation(pShaderCache_->uiTextureProgram_, "m_proj");
+        pShaderCache_->iColorProjLocation_ = glGetUniformLocation(pShaderCache_->uiColorProgram_, "m_proj");
+        pShaderCache_->iColorColLocation_ = glGetUniformLocation(pShaderCache_->uiColorProgram_, "c_color");
+
+        pStaticShaderCache_ = pShaderCache_;
+        bShaderCached = true;
+    }
+    else
+    {
+        pShaderCache_ = pStaticShaderCache_.lock();
+    }
 }
 
 void renderer::setup_buffers_()

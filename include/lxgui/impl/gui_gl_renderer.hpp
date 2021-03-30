@@ -121,12 +121,24 @@ namespace gl
         mutable const matrix4* pCurrentViewMatrix_ = nullptr;
 
     #if defined(LXGUI_OPENGL3)
-        uint uiTextureProgram_ = 0;
-        uint uiColorProgram_ = 0;
-        int iTextureSamplerLocation_ = 0;
-        int iTextureProjLocation_ = 0;
-        int iColorProjLocation_ = 0;
-        int iColorColLocation_ = 0;
+        struct shader_cache
+        {
+            shader_cache() = default;
+            shader_cache(const shader_cache&) = delete;
+            shader_cache(shader_cache&&) = delete;
+            ~shader_cache();
+
+            uint uiTextureProgram_ = 0;
+            uint uiColorProgram_ = 0;
+            int iTextureSamplerLocation_ = 0;
+            int iTextureProjLocation_ = 0;
+            int iColorProjLocation_ = 0;
+            int iColorColLocation_ = 0;
+        };
+
+        static thread_local std::weak_ptr<shader_cache> pStaticShaderCache_;
+        std::shared_ptr<shader_cache> pShaderCache_;
+
         mutable std::array<uint,4> uiVertexArray_;
         mutable std::array<uint,4> uiVertexBuffers_;
         mutable uint uiPreviousProgram_ = (uint)-1;
