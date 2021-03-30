@@ -54,6 +54,11 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
+
+#if defined(LXGUI_OPENGL3)
+thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_;
+#endif
+
 renderer::renderer(bool bInitGLEW [[maybe_unused]])
 {
 #if !defined(WASM)
