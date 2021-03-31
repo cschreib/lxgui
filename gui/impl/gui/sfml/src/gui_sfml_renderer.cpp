@@ -15,7 +15,8 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow)
+renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow),
+    uiWindowWidth_(mWindow.getSize().x), uiWindowHeight_(mWindow.getSize().y)
 {
 }
 
@@ -32,6 +33,8 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     }
     else
     {
+        sf::FloatRect mVisibleArea(0, 0, uiWindowWidth_, uiWindowHeight_);
+        mWindow_.setView(sf::View(mVisibleArea));
         pCurrentSFMLTarget_ = &mWindow_;
     }
 }
@@ -199,8 +202,8 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
 void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
 {
-    sf::FloatRect mVisibleArea(0, 0, uiNewWidth, uiNewHeight);
-    mWindow_.setView(sf::View(mVisibleArea));
+    uiWindowWidth_=  uiNewWidth;
+    uiWindowHeight_=  uiNewHeight;
 }
 
 }

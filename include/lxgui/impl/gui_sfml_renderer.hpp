@@ -96,6 +96,8 @@ namespace sfml
     private :
 
         sf::RenderWindow& mWindow_;
+        uint uiWindowWidth_ = 0u;
+        uint uiWindowHeight_ = 0u;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
