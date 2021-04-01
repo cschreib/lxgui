@@ -293,15 +293,58 @@ void text::render(float fX, float fY) const
 
     std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
     for (auto& mQuad : lQuadsCopy)
+    for (uint i = 0; i < 4; ++i)
     {
+        mQuad[i].pos += vector2f(fX, fY);
+
+        if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+        {
+            mQuad[i].col = mColor_;
+        }
+    }
+
+    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
+}
+
+void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScale) const
+{
+    if (!bReady_)
+        return;
+
+    update_();
+
+    std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
+
+    if (fRot != 0.0f)
+    {
+        float cost = cos(fRot);
+        float sint = sin(fRot);
+
+        for (auto& mQuad : lQuadsCopy)
         for (uint i = 0; i < 4; ++i)
         {
-            mQuad[i].pos += vector2f(fX, fY);
+            float fX0 = mQuad[i].pos.x*fHScale;
+            float fY0 = mQuad[i].pos.y*fVScale;
+            mQuad[i].pos = vector2f(fX + fX0*cost - fY0*sint, fY + fX0*sint + fY0*cost);
 
             if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
             {
-                for (uint i = 0; i < 4; ++i)
-                    mQuad[i].col = mColor_;
+                mQuad[i].col = mColor_;
+            }
+        }
+    }
+    else
+    {
+        for (auto& mQuad : lQuadsCopy)
+        for (uint i = 0; i < 4; ++i)
+        {
+            float fX0 = mQuad[i].pos.x*fHScale;
+            float fY0 = mQuad[i].pos.y*fVScale;
+            mQuad[i].pos = vector2f(fX + fX0, fY + fY0);
+
+            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+            {
+                mQuad[i].col = mColor_;
             }
         }
     }

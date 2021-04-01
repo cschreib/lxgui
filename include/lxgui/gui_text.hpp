@@ -278,6 +278,21 @@ namespace gui
         */
         void render(float fX, float fY) const;
 
+        /// Deforms this text and render it on the current render target.
+        /** \param fX      The horizontal position
+        *   \param fY      The vertical position
+        *   \param fRot    The rotation to apply (angle in radian)
+        *   \param fHScale The horizontal scale to apply
+        *   \param fVScale The vertical scale to apply
+        *   \note Must be called between begin() and end(). The parameters fX and fY refer to the position
+        *         of the top-left corner of the text (if alignment is LEFT),
+        *         the center-top of the text (if alignment is CENTER), or the
+        *         the top-right corner of the text (if alignment is RIGHT).
+        */
+        void render_ex(float fX, float fY,
+                      float fRot,
+                      float fHScale = 1.0f, float fVScale = 1.0f) const;
+
         /// Returns the quad for the letter at the provided index (position, texture coords, color).
         /** \param uiIndex The index of the letter (0: first letter);
         *                  must be less than get_text().size()
