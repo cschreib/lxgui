@@ -268,10 +268,13 @@ namespace gui
         void enable_formatting(bool bFormatting);
 
         /// Renders this text at the given position.
-        /** \param fX The horizontal position of the top left corner
-        *   \param fY The vertical position of the top left corner
+        /** \param fX The horizontal position
+        *   \param fY The vertical position
         *   \note Must be called between renderer::begin() and
-        *         renderer::end().
+        *         renderer::end(). The parameters fX and fY refer to the position
+        *         of the top-left corner of the text (if alignment is LEFT),
+        *         the center-top of the text (if alignment is CENTER), or the
+        *         the top-right corner of the text (if alignment is RIGHT).
         */
         void render(float fX, float fY) const;
 

@@ -98,8 +98,7 @@ namespace gui
         *   \param fRot    The rotation to apply (angle in radian)
         *   \param fHScale The horizontal scale to apply
         *   \param fVScale The vertical scale to apply
-        *   \note This function doesn't store the deformation.<br>
-        *         Must be called between begin() and end().
+        *   \note Must be called between begin() and end().
         */
         void render_ex(float fX, float fY,
                       float fRot,
@@ -110,8 +109,7 @@ namespace gui
         *   \param fY1 The top-left corner vertical position
         *   \param fX3 The bottom-right corner horizontal position
         *   \param fY3 The bottom-right corner vertical position
-        *   \note This function doesn't store the deformation.<br>
-        *         Must be called between begin() and end().
+        *   \note Must be called between begin() and end().
         */
         void render_2v(float fX1, float fY1,
                       float fX3, float fY3);
@@ -125,8 +123,7 @@ namespace gui
         *   \param fY3 The bottom-right corner vertical position
         *   \param fX4 The bottom-left corner horizontal position
         *   \param fY4 The bottom-left corner vertical position
-        *   \note This function doesn't store the deformation.<br>
-        *         Must be called between begin() and end().
+        *   \note Must be called between begin() and end().
         */
         void render_4v(float fX1, float fY1,
                       float fX2, float fY2,
