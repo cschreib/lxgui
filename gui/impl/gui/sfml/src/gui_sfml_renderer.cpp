@@ -3,6 +3,7 @@
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include <lxgui/gui_sprite.hpp>
+#include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
@@ -46,6 +47,19 @@ void renderer::end() const
 
     pCurrentTarget_ = nullptr;
     pCurrentSFMLTarget_ = nullptr;
+}
+
+void renderer::set_view(const matrix4f& mViewMatrix) const
+{
+    float fScaleX = std::sqrt(mViewMatrix(0,0)*mViewMatrix(0,0) + mViewMatrix(1,0)*mViewMatrix(1,0));
+    float fScaleY = std::sqrt(mViewMatrix(0,1)*mViewMatrix(0,1) + mViewMatrix(1,1)*mViewMatrix(1,1));
+    float fAngle = std::atan2(mViewMatrix(0,1)/fScaleY, mViewMatrix(0,0)/fScaleX)*(180.0/M_PI);
+
+    sf::View mView;
+    mView.setCenter(sf::Vector2f(-mViewMatrix(3,0)/fScaleX, -mViewMatrix(3,1)/fScaleY));
+    mView.rotate(fAngle);
+    mView.setSize(sf::Vector2f(2.0f/fScaleX, 2.0/fScaleY));
+    mWindow_.setView(mView);
 }
 
 void renderer::render_quad(const quad& mQuad) const

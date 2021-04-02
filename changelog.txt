@@ -31,8 +31,10 @@ v2.0.0:
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
+ - gui: added renderer::set_view() to allow arbitrary view transforms
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
+ - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
  - gui: renamed frame::on into frame::on_script
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")

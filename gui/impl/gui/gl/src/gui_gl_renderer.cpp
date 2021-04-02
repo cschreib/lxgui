@@ -94,12 +94,7 @@ void renderer::update_view_matrix_() const
     float fWidth = pParent_->get_target_width();
     float fHeight = pParent_->get_target_height();
 
-    mViewMatrix_ = {
-        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
-        0.0f, -2.0f/fHeight, 0.0f, 0.0f,
-        -1.0f, 1.0f, 1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f
-    };
+    mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
 
     bUpdateViewMatrix_ = false;
 }
@@ -131,30 +126,15 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 #if !defined(LXGUI_OPENGL3)
     glDisable(GL_LIGHTING);
     glDisable(GL_ALPHA_TEST);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(pCurrentViewMatrix_->data);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 #else
     glActiveTexture(GL_TEXTURE0);
-    print_gl_errors("setting active texture");
 #endif
 
 #if defined(LXGUI_OPENGL3)
-    glUseProgram(pShaderCache_->uiTextureProgram_);
-    print_gl_errors("use program");
-    glUniformMatrix4fv(pShaderCache_->iTextureProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
-    print_gl_errors("setting view matrix texture");
-    glUseProgram(pShaderCache_->uiColorProgram_);
-    print_gl_errors("use program");
-    glUniformMatrix4fv(pShaderCache_->iColorProjLocation_, 1, GL_FALSE, pCurrentViewMatrix_->data);
-    print_gl_errors("setting view matrix color");
-
     uiPreviousTexture_ = (uint)-1;
-    uiPreviousProgram_ = (uint)-1;
 #endif
+
+    set_view(*pCurrentViewMatrix);
 }
 
 void renderer::end() const
@@ -167,6 +147,31 @@ void renderer::end() const
         pCurrentTarget_->end();
         pCurrentTarget_ = nullptr;
     }
+}
+
+void renderer::set_view(const matrix4f& mViewMatrix) const
+{
+    matrix4f mCorrectedView = mViewMatrix;
+    if (!pCurrentTarget_)
+    {
+        // Rendering to main screen, flip Y
+        for (uint i = 0; i < 4; ++i)
+            mCorrectedView(i,1) *= -1.0f;
+    }
+
+#if !defined(LXGUI_OPENGL3)
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(mCorrectedView.data);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+#else
+    glUseProgram(pShaderCache_->uiTextureProgram_);
+    glUniformMatrix4fv(pShaderCache_->iTextureProjLocation_, 1, GL_FALSE, mCorrectedView.data);
+    glUseProgram(pShaderCache_->uiColorProgram_);
+    glUniformMatrix4fv(pShaderCache_->iColorProjLocation_, 1, GL_FALSE, mCorrectedView.data);
+
+    uiPreviousProgram_ = (uint)-1;
+#endif
 }
 
 void renderer::render_quad(const quad& mQuad) const

@@ -3,6 +3,7 @@
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 #include "lxgui/impl/gui_sdl_font.hpp"
 #include <lxgui/gui_sprite.hpp>
+#include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
@@ -57,6 +58,26 @@ void renderer::end() const
         pCurrentTarget_->end();
 
     pCurrentTarget_ = nullptr;
+}
+
+void renderer::set_view(const matrix4f& mViewMatrix) const
+{
+    float fScaleX = std::sqrt(mViewMatrix(0,0)*mViewMatrix(0,0) + mViewMatrix(1,0)*mViewMatrix(1,0));
+    float fScaleY = std::sqrt(mViewMatrix(0,1)*mViewMatrix(0,1) + mViewMatrix(1,1)*mViewMatrix(1,1));
+    float fAngle = std::atan2(mViewMatrix(0,1)/fScaleY, mViewMatrix(0,0)/fScaleX);
+
+    if (std::abs(fAngle) > 1e-3)
+    {
+        throw gui::exception("sdl::renderer",
+            "Rotated views are not supported with the SDL renderer.");
+    }
+
+    SDL_Rect mViewport;
+    mViewport.w = 2.0f/fScaleX;
+    mViewport.h = 2.0f/fScaleY;
+    mViewport.x = mViewport.w/2.0f + mViewMatrix(3,0)/fScaleX;
+    mViewport.y = mViewport.h/2.0f + mViewMatrix(3,1)/fScaleY;
+    SDL_RenderSetViewport(pRenderer_, &mViewport);
 }
 
 color premultiply_alpha(const color& mColor, bool bPreMultipliedAlphaSupported)

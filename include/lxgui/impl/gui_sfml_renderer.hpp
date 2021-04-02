@@ -35,6 +35,23 @@ namespace sfml
         /// Ends rendering.
         void end() const override;
 
+        /// Sets the view matrix to use when rendering (viewport).
+        /** \param mViewMatrix The view matrix
+        *   \note This function is called by default in begin(), which resets the
+        *         view to span the entire render target (or the entire screen). Therefore
+        *         it is only necessary to use this function when a custom view is required.
+        *         The view matrix converts custom "world" coordinates into screen-space
+        *         coordinates, where the X and Y coordinates represent the horizontal and
+        *         vertical dimensions on the screen, respectively, and range from -1 to +1.
+        *         In screen-space coordinates, the top-left corner of the screen has
+        *         coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1).
+        *   \warning Although the view is specified here as a matrix for maximum flexibility,
+        *            some backends do not actually support arbitrary view matrices. For such
+        *            backends, the view matrix will be simplified to a simpler 2D translate +
+        *            rotate + scale transform, or even just translate + scale.
+        */
+        void set_view(const matrix4f& mViewMatrix) const override;
+
         /// Renders a quad.
         /** \param mQuad The quad to render on the current render target
         *   \note This function is meant to be called between begin() and

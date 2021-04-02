@@ -130,6 +130,11 @@ void renderer::end() const
     pImpl_->end();
 }
 
+void renderer::set_view(const matrix4f& mViewMatrix) const
+{
+    pImpl_->set_view(mViewMatrix);
+}
+
 void renderer::render_quad(const quad& mQuad) const
 {
     pImpl_->render_quad(mQuad);
