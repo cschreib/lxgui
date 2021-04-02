@@ -48,6 +48,12 @@ namespace gui
         static const color GREEN;
         static const color BLUE;
         static const color GREY;
+
+        static constexpr color from_bytes(
+            std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a = 255u) noexcept
+        {
+            return color(r/255.0f, g/255.0f, b/255.0f, a/255.0f);
+        }
     };
 
     color operator + (const color& c1, const color& c2) noexcept;
