@@ -882,21 +882,21 @@ $(function() {
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
 <div class="line"><a name="l00820"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1manager.html#a41a09995c43d10d065e0b6c38e8da389">  820</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1manager.html#a41a09995c43d10d065e0b6c38e8da389">manager::render_ui</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    <span class="keywordflow">if</span> (bEnableCaching_)</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    {</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad">begin</a>();</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a0d540ae0624e904545ee16b7fccc052b">render</a>(0, 0);</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">end</a>();</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad">begin</a>();</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="keywordflow">if</span> (bEnableCaching_)</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    {</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;        mSprite_.<a class="code" href="classlxgui_1_1gui_1_1sprite.html#a0d540ae0624e904545ee16b7fccc052b">render</a>(0, 0);</div>
 <div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    }</div>
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    {</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad">begin</a>();</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mStrata : <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a704f875b2ca7cae3b83286c1eb9f9859">lStrataList_</a>)</div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;        {</div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1renderer.html#aa0f6932e489d5f0bc050dd0414a265b0">render_strata_</a>(mStrata);</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;        }</div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">end</a>();</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    }</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mStrata : <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a704f875b2ca7cae3b83286c1eb9f9859">lStrataList_</a>)</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;        {</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1renderer.html#aa0f6932e489d5f0bc050dd0414a265b0">render_strata_</a>(mStrata);</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;        }</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    }</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">end</a>();</div>
 <div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;}</div>
 <div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
 <div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="keywordtype">void</span> manager::create_caching_render_target_()</div>
@@ -1834,7 +1834,7 @@ $(function() {
 <div class="ttc" id="ainput_8hpp_html"><div class="ttname"><a href="input_8hpp.html">input.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 08:45:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 09:31:52 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
