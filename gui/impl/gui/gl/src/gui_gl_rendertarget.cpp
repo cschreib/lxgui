@@ -136,7 +136,7 @@ std::weak_ptr<gl::material> render_target::get_material()
     return pTexture_;
 }
 
-const matrix4& render_target::get_view_matrix() const
+const matrix4f& render_target::get_view_matrix() const
 {
     return mViewMatrix_;
 }

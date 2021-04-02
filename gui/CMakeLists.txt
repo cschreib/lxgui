@@ -35,6 +35,7 @@ add_library(lxgui
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
     ${SRCROOT}/gui_manager_parser.cpp
+    ${SRCROOT}/gui_matrix4.cpp
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp
     ${SRCROOT}/gui_region_parser.cpp

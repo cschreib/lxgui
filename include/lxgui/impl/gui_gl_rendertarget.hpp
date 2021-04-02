@@ -2,9 +2,9 @@
 #define LXGUI_GUI_GL_RENDERTARGET_HPP
 
 #include "lxgui/impl/gui_gl_material.hpp"
-#include "lxgui/impl/gui_gl_matrix4.hpp"
 
 #include <lxgui/gui_rendertarget.hpp>
+#include <lxgui/gui_matrix4.hpp>
 #include <lxgui/utils.hpp>
 
 #include <memory>
@@ -81,7 +81,7 @@ namespace gl
         /// Returns the view matrix of this render target.
         /** \return The view matrix of this render target
         */
-        const matrix4& get_view_matrix() const;
+        const matrix4f& get_view_matrix() const;
 
         /// Checks if the machine is capable of using render targets.
         /** \note If not, this function throws a gui::exception.
@@ -95,8 +95,8 @@ namespace gl
         uint                          uiFBOHandle_ = 0;
         std::shared_ptr<gl::material> pTexture_;
 
-        mutable bool    bUpdateViewMatrix_ = true;
-        mutable matrix4 mViewMatrix_;
+        mutable bool     bUpdateViewMatrix_ = true;
+        mutable matrix4f mViewMatrix_;
     };
 }
 }

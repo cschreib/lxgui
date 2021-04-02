@@ -1,10 +1,10 @@
 #ifndef LXGUI_GUI_GL_RENDERER_HPP
 #define LXGUI_GUI_GL_RENDERER_HPP
 
-#include "lxgui/impl/gui_gl_matrix4.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 
 #include <lxgui/gui_renderer_impl.hpp>
+#include <lxgui/gui_matrix4.hpp>
 #include <lxgui/utils.hpp>
 
 #include <map>
@@ -114,11 +114,10 @@ namespace gl
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        mutable bool    bUpdateViewMatrix_ = true;
-        mutable matrix4 mViewMatrix_;
+        mutable bool     bUpdateViewMatrix_ = true;
+        mutable matrix4f mViewMatrix_;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
-        mutable const matrix4* pCurrentViewMatrix_ = nullptr;
 
     #if defined(LXGUI_OPENGL3)
         struct shader_cache

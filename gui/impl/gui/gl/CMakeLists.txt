@@ -6,7 +6,6 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_renderer.cpp
     ${SRCROOT}/gui_gl_renderer_png.cpp
     ${SRCROOT}/gui_gl_material.cpp
-    ${SRCROOT}/gui_gl_matrix4.cpp
     ${SRCROOT}/gui_gl_rendertarget.cpp
 )
 

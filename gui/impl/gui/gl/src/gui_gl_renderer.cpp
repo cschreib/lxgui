@@ -106,11 +106,13 @@ void renderer::update_view_matrix_() const
 
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
+    const matrix4f* pCurrentViewMatrix = nullptr;
+
     if (pTarget)
     {
         pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
-        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
+        pCurrentViewMatrix = &pCurrentTarget_->get_view_matrix();
     }
     else
     {
@@ -118,15 +120,13 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
             update_view_matrix_();
 
         glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
-        pCurrentViewMatrix_ = &mViewMatrix_;
+        pCurrentViewMatrix = &mViewMatrix_;
     }
 
-    print_gl_errors("setting viewport");
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
     glDisable(GL_CULL_FACE);
-    print_gl_errors("disabling culling");
 
 #if !defined(LXGUI_OPENGL3)
     glDisable(GL_LIGHTING);
