@@ -230,6 +230,18 @@ vector2f operator * (const matrix4f& m, const vector2f& v)
     return r;
 }
 
+vector2f operator * (const vector2f& v, const matrix4f& m)
+{
+    vector2f r;
+
+    const float fInvW = 1.0f/(m(0,3)*v.x + m(1,3)*v.y + m(3,3));
+
+    r.x = (m(0,0)*v.x + m(1,0)*v.y + m(3,0))*fInvW;
+    r.y = (m(0,1)*v.x + m(1,1)*v.y + m(3,1))*fInvW;
+
+    return r;
+}
+
 std::ostream& operator << (std::ostream& o, const matrix4f& m)
 {
     return o << "(" << m(0,0) << ", " << m(0,1) << ", " << m(0,2) << ", " << m(0,3) << ")\n"

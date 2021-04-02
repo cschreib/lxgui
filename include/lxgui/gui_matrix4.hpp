@@ -58,6 +58,7 @@ namespace gui
     matrix4f operator - (const matrix4f& m1, const matrix4f& m2);
     matrix4f operator * (const matrix4f& m1, const matrix4f& m2);
     vector2f operator * (const matrix4f& m,  const vector2f& v);
+    vector2f operator * (const vector2f& v,  const matrix4f& m);
 
     std::ostream& operator << (std::ostream& o, const matrix4f& m);
 }
