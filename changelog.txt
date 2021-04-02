@@ -32,10 +32,12 @@ v2.0.0:
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: added renderer::set_view() to allow arbitrary view transforms
+ - gui: added color::from_hsv and color::to_hsv
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
  - gui: renamed frame::on into frame::on_script
+ - gui: renamed color::chanel to color::channel
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: sprite is now a value type
