@@ -12,6 +12,8 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
+#include <cmath>
+
 namespace lxgui {
 namespace gui {
 namespace sfml
