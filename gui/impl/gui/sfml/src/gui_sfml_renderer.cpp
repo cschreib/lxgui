@@ -12,8 +12,6 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 
-#include <cmath>
-
 namespace lxgui {
 namespace gui {
 namespace sfml
@@ -53,9 +51,11 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
+    static const float RAD_TO_DEG = 180.0/std::acos(-1.0f);
+
     float fScaleX = std::sqrt(mViewMatrix(0,0)*mViewMatrix(0,0) + mViewMatrix(1,0)*mViewMatrix(1,0));
     float fScaleY = std::sqrt(mViewMatrix(0,1)*mViewMatrix(0,1) + mViewMatrix(1,1)*mViewMatrix(1,1));
-    float fAngle = std::atan2(mViewMatrix(0,1)/fScaleY, mViewMatrix(0,0)/fScaleX)*(180.0/M_PI);
+    float fAngle = std::atan2(mViewMatrix(0,1)/fScaleY, mViewMatrix(0,0)/fScaleX)*RAD_TO_DEG;
 
     sf::View mView;
     mView.setCenter(sf::Vector2f(-mViewMatrix(3,0)/fScaleX, -mViewMatrix(3,1)/fScaleY));
