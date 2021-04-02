@@ -28,28 +28,6 @@
     #endif
 #endif
 
-const char* gl_error_to_string(GLenum mError)
-{
-    switch (mError)
-    {
-        case GL_NO_ERROR: return "no error";
-        case GL_INVALID_ENUM: return "invalid enum";
-        case GL_INVALID_VALUE: return "invalid value";
-        case GL_INVALID_OPERATION: return "invalid operation";
-        case GL_INVALID_FRAMEBUFFER_OPERATION: return "invalid framebuffer operation";
-        case GL_OUT_OF_MEMORY: return "out of memory";
-        default: return "unknown error";
-    }
-}
-
-void print_gl_errors(const char* sDoingWhat)
-{
-    while (GLenum mError = glGetError())
-    {
-        lxgui::gui::out << "error in " << sDoingWhat << ": " << gl_error_to_string(mError) << std::endl;
-    }
-}
-
 namespace lxgui {
 namespace gui {
 namespace gl
@@ -218,20 +196,17 @@ void renderer::render_quad(const quad& mQuad) const
     const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
 
     glBindVertexArray(uiVertexArray_[uiArrayID]);
-    print_gl_errors("bind vertex array");
 
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
-    print_gl_errors("bind vertex buffer");
-
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mQuad.v.size(), mQuad.v.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("buffer data");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
 
     if (mMat.get_type() == material::type::TEXTURE)
     {
         if (uiPreviousProgram_ != pShaderCache_->uiTextureProgram_)
         {
             glUseProgram(pShaderCache_->uiTextureProgram_);
-            print_gl_errors("use program");
             uiPreviousProgram_ = pShaderCache_->uiTextureProgram_;
         }
         if (uiPreviousTexture_ != mMat.get_handle_())
@@ -245,15 +220,13 @@ void renderer::render_quad(const quad& mQuad) const
         if (uiPreviousProgram_ != pShaderCache_->uiColorProgram_)
         {
             glUseProgram(pShaderCache_->uiColorProgram_);
-            print_gl_errors("use program");
             uiPreviousProgram_ = pShaderCache_->uiColorProgram_;
         }
+
         glUniform4fv(pShaderCache_->iColorColLocation_, 1, &mMat.get_color().r);
-        print_gl_errors("setting color color");
     }
 
     glDrawElements(GL_TRIANGLES, ids.size(), GL_UNSIGNED_INT, 0);
-    print_gl_errors("draw");
 #endif
 }
 
@@ -307,13 +280,11 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
 
     glBindVertexArray(uiVertexArray_[2 + uiArrayID]);
-    print_gl_errors("bind vertex array");
 
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
-    print_gl_errors("bind vertex buffer");
-
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 4 * lQuadList.size(), lQuadList.data(), GL_DYNAMIC_DRAW);
-    print_gl_errors("buffer data");
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
 
     uint uiNewSize = 6*lQuadList.size();
     if (uiNewSize > lRepeatedIds_.size())
@@ -325,10 +296,7 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
             lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
         }
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
-        print_gl_errors("bind index buffer");
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lRepeatedIds_.size(), lRepeatedIds_.data(), GL_DYNAMIC_DRAW);
-        print_gl_errors("index buffer data");
     }
 
     if (mMat.get_type() == material::type::TEXTURE)
@@ -336,7 +304,6 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
         if (uiPreviousProgram_ != pShaderCache_->uiTextureProgram_)
         {
             glUseProgram(pShaderCache_->uiTextureProgram_);
-            print_gl_errors("use program");
             uiPreviousProgram_ = pShaderCache_->uiTextureProgram_;
         }
         if (uiPreviousTexture_ != mMat.get_handle_())
@@ -350,15 +317,13 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
         if (uiPreviousProgram_ != pShaderCache_->uiColorProgram_)
         {
             glUseProgram(pShaderCache_->uiColorProgram_);
-            print_gl_errors("use program");
             uiPreviousProgram_ = pShaderCache_->uiColorProgram_;
         }
+
         glUniform4fv(pShaderCache_->iColorColLocation_, 1, &mMat.get_color().r);
-        print_gl_errors("setting color color");
     }
 
     glDrawElements(GL_TRIANGLES, uiNewSize, GL_UNSIGNED_INT, 0);
-    print_gl_errors("draw");
 #endif
 }
 
