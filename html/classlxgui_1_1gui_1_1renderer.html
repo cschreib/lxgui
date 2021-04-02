@@ -111,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa146b6ec3f25a0e2b28ea2e6c3db5ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed level.  <a href="classlxgui_1_1gui_1_1renderer.html#aa146b6ec3f25a0e2b28ea2e6c3db5ac8">More...</a><br /></td></tr>
 <tr class="separator:aa146b6ec3f25a0e2b28ea2e6c3db5ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6381197a122a69c42ec1ee299789584c"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6381197a122a69c42ec1ee299789584c">get_target_width</a> () const =0</td></tr>
-<tr class="memdesc:a6381197a122a69c42ec1ee299789584c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width of of this renderer's main render target (e.g., screen).  <a href="classlxgui_1_1gui_1_1renderer.html#a6381197a122a69c42ec1ee299789584c">More...</a><br /></td></tr>
+<tr class="memdesc:a6381197a122a69c42ec1ee299789584c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width of this renderer's main render target (e.g., screen).  <a href="classlxgui_1_1gui_1_1renderer.html#a6381197a122a69c42ec1ee299789584c">More...</a><br /></td></tr>
 <tr class="separator:a6381197a122a69c42ec1ee299789584c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f87a747d27b9c00e34e02af5b66423"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac8f87a747d27b9c00e34e02af5b66423">get_target_height</a> () const =0</td></tr>
 <tr class="memdesc:ac8f87a747d27b9c00e34e02af5b66423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the height of this renderer's main render target (e.g., screen).  <a href="classlxgui_1_1gui_1_1renderer.html#ac8f87a747d27b9c00e34e02af5b66423">More...</a><br /></td></tr>
@@ -122,6 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a00fba47b9588660555824a5a47e28a79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">end</a> () const</td></tr>
 <tr class="memdesc:a00fba47b9588660555824a5a47e28a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine we're done rendering.  <a href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">More...</a><br /></td></tr>
 <tr class="separator:a00fba47b9588660555824a5a47e28a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1acb165e6428191d3a4c84a5affd184"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac1acb165e6428191d3a4c84a5affd184">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const</td></tr>
+<tr class="memdesc:ac1acb165e6428191d3a4c84a5affd184"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1renderer.html#ac1acb165e6428191d3a4c84a5affd184">More...</a><br /></td></tr>
+<tr class="separator:ac1acb165e6428191d3a4c84a5affd184"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16e29961df923ce2c95abc689f6bf0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const</td></tr>
 <tr class="memdesc:a16e29961df923ce2c95abc689f6bf0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">More...</a><br /></td></tr>
 <tr class="separator:a16e29961df923ce2c95abc689f6bf0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -189,7 +192,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>GUI renderer. </p>
 <p>Abstract interface for object that can render frames. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a759cd3389a47493647ab5dc078613ca4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a759cd3389a47493647ab5dc078613ca4">&#9670;&nbsp;</a></span>renderer()</h2>
@@ -283,7 +286,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00211">211</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00216">216</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -321,7 +324,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00184">184</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00189">189</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -376,7 +379,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00259">259</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00264">264</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -416,7 +419,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Even though the gui has been designed to use vector fonts files (such as .ttf or .otf font formats), nothing prevents the implementation from using any other font type, including bitmap fonts. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00179">179</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00184">184</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -445,7 +448,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00164">164</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00169">169</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -486,7 +489,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00159">159</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00164">164</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -515,7 +518,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00169">169</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00174">174</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -554,7 +557,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00174">174</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00179">179</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -583,7 +586,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00148">148</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -646,7 +649,7 @@ Protected Attributes</h2></td></tr>
  However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00158">158</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -695,7 +698,7 @@ Protected Attributes</h2></td></tr>
  However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00148">148</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -723,7 +726,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00245">245</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00250">250</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -783,7 +786,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00282">282</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00287">287</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -872,7 +875,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the width of of this renderer's main render target (e.g., screen). </p>
+<p>Returns the width of this renderer's main render target (e.g., screen). </p>
 <dl class="section return"><dt>Returns</dt><dd>The render target width </dd></dl>
 
 <p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a3d528a89e3684c2fb0197d8b16d589f5">lxgui::gui::scroll_frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1manager.html#a83dff1555acf6b763027b8ad0402a648">lxgui::gui::manager</a>.</p>
@@ -902,7 +905,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00272">272</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00277">277</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1100,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00218">218</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00223">223</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1135,7 +1138,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00197">197</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00202">202</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1167,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Tells the underlying graphics engine we&#39;re done rendering.">end()</a> only. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00138">138</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1204,7 +1207,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Tells the underlying graphics engine we&#39;re done rendering.">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00138">138</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1232,7 +1235,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00231">231</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00236">236</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1259,7 +1262,37 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00277">277</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00282">282</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac1acb165e6428191d3a4c84a5affd184"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1acb165e6428191d3a4c84a5affd184">&#9670;&nbsp;</a></span>set_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::set_view </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mViewMatrix</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the view matrix to use when rendering (viewport). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mViewMatrix</td><td>The view matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1284,7 +1317,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00181">181</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00199">199</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -1308,7 +1341,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00180">180</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00198">198</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1365,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00179">179</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00197">197</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -1343,7 +1376,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 1 2021 07:23:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 08:45:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

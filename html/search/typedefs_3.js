@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filter_2893',['filter',['../classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893',1,'lxgui::utils::view::adaptor']]]
+  ['element_5ftype_2893',['element_type',['../structlxgui_1_1gui_1_1matrix4f.html#af2d4717d6a521c2306da9414d19d1bbe',1,'lxgui::gui::matrix4f']]]
 ];

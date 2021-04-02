@@ -99,6 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac9eeb1eba5a1a4b8651d6e0f5fbaebf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#ac9eeb1eba5a1a4b8651d6e0f5fbaebf5">end</a> () const override</td></tr>
 <tr class="memdesc:ac9eeb1eba5a1a4b8651d6e0f5fbaebf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ends rendering.  <a href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#ac9eeb1eba5a1a4b8651d6e0f5fbaebf5">More...</a><br /></td></tr>
 <tr class="separator:ac9eeb1eba5a1a4b8651d6e0f5fbaebf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4143ad878fa28a4f854216254b432e0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a4143ad878fa28a4f854216254b432e0a">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const override</td></tr>
+<tr class="memdesc:a4143ad878fa28a4f854216254b432e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a4143ad878fa28a4f854216254b432e0a">More...</a><br /></td></tr>
+<tr class="separator:a4143ad878fa28a4f854216254b432e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1887a53c71761023b9f081d2f1789c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#ac1887a53c71761023b9f081d2f1789c6">render_quad</a> (const <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html">sdl::material</a> &amp;mMat, const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt; &amp;lVertexList) const</td></tr>
 <tr class="memdesc:ac1887a53c71761023b9f081d2f1789c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad from a material and array of vertices.  <a href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#ac1887a53c71761023b9f081d2f1789c6">More...</a><br /></td></tr>
 <tr class="separator:ac1887a53c71761023b9f081d2f1789c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -672,6 +675,44 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a4143ad878fa28a4f854216254b432e0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4143ad878fa28a4f854216254b432e0a">&#9670;&nbsp;</a></span>set_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::sdl::renderer::set_view </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mViewMatrix</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the view matrix to use when rendering (viewport). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mViewMatrix</td><td>The view matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#adb20f30eb4a8b3e54c766db962da4ed7" title="Begins rendering on a particular render target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a16f2d2a5b892f4f3a2a4a3e5bc95379a">lxgui::gui::renderer_impl</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a0c018fd4208b36fd75573948043f4b48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c018fd4208b36fd75573948043f4b48">&#9670;&nbsp;</a></span>pParent_</h2>
@@ -693,7 +734,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00107">107</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00125">125</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -703,7 +744,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 1 2021 07:23:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 08:45:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

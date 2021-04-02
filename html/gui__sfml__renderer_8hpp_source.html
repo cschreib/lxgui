@@ -102,54 +102,58 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745">end</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">render_quad</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a>&amp; mQuad) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">render_quads</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&amp; mMaterial, <span class="keyword">const</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt;&amp; lQuadList) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#acf75ffa49373582738368a76cf153fff">set_view</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; mViewMatrix) <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(<span class="keyword">const</span> std::string&amp; sFileName,</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">render_quad</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a>&amp; mQuad) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mColor) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">render_quads</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&amp; mMaterial, <span class="keyword">const</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt;&amp; lQuadList) <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(std::shared_ptr&lt;gui::render_target&gt; pRenderTarget) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        std::shared_ptr&lt;gui::render_target&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a327102b44aa81a4f2031385667cf868b">create_render_target</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::shared_ptr&lt;gui::font&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9ec819968b8723d3e8f67f6ca22ef2a5">create_font</a>(<span class="keyword">const</span> std::string&amp; sFontFile, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63">notify_window_resized</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewWidth, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewHeight) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    private :</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        sf::RenderWindow&amp; mWindow_;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowWidth_ = 0u;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowHeight_ = 0u;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keyword">mutable</span> std::map&lt;std::string, std::weak_ptr&lt;gui::material&gt;&gt; lTextureList_;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keyword">mutable</span> std::map&lt;std::string, std::weak_ptr&lt;gui::font&gt;&gt;     lFontList_;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;gui::sfml::render_target&gt; pCurrentTarget_;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        <span class="keyword">mutable</span> sf::RenderTarget*                         pCurrentSFMLTarget_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    };</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(<span class="keyword">const</span> std::string&amp; sFileName,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter = <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mColor) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a>(std::shared_ptr&lt;gui::render_target&gt; pRenderTarget) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::shared_ptr&lt;gui::render_target&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a327102b44aa81a4f2031385667cf868b">create_render_target</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        std::shared_ptr&lt;gui::font&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9ec819968b8723d3e8f67f6ca22ef2a5">create_font</a>(<span class="keyword">const</span> std::string&amp; sFontFile, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63">notify_window_resized</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewWidth, <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewHeight) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    private :</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        sf::RenderWindow&amp; mWindow_;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowWidth_ = 0u;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowHeight_ = 0u;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keyword">mutable</span> std::map&lt;std::string, std::weak_ptr&lt;gui::material&gt;&gt; lTextureList_;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keyword">mutable</span> std::map&lt;std::string, std::weak_ptr&lt;gui::font&gt;&gt;     lFontList_;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;gui::sfml::render_target&gt; pCurrentTarget_;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        <span class="keyword">mutable</span> sf::RenderTarget*                         pCurrentSFMLTarget_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    };</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00023">gui_material.hpp:23</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00011">gui_color.hpp:11</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer__impl_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer__impl.html">lxgui::gui::renderer_impl</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer__impl_8hpp_source.html#l00022">gui_renderer_impl.hpp:22</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer__impl_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer__impl.html">lxgui::gui::renderer_impl</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer__impl_8hpp_source.html#l00023">gui_renderer_impl.hpp:23</a></div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
 <div class="ttc" id="agui__sfml__rendertarget_8hpp_html"><div class="ttname"><a href="gui__sfml__rendertarget_8hpp.html">gui_sfml_rendertarget.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00013">gui_material.hpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1renderer_html_acf75ffa49373582738368a76cf153fff"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#acf75ffa49373582738368a76cf153fff">lxgui::gui::sfml::renderer::set_view</a></div><div class="ttdeci">void set_view(const matrix4f &amp;mViewMatrix) const override</div><div class="ttdoc">Sets the view matrix to use when rendering (viewport).</div></div>
 <div class="ttc" id="agui__renderer__impl_8hpp_html"><div class="ttname"><a href="gui__renderer__impl_8hpp.html">gui_renderer_impl.hpp</a></div></div>
 <div class="ttc" id="anamespacesf_html"><div class="ttname"><a href="namespacesf.html">sf</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__sfml_8hpp_source.html#l00006">gui_sfml.hpp:6</a></div></div>
 <div class="ttc" id="anamespacelxgui_html_aad60a3835af109b1519d66daff76eb44"><div class="ttname"><a href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">lxgui::uint</a></div><div class="ttdeci">unsigned int uint</div><div class="ttdef"><b>Definition:</b> <a href="utils_8hpp_source.html#l00007">utils.hpp:7</a></div></div>
@@ -157,6 +161,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1renderer_html_a327102b44aa81a4f2031385667cf868b"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a327102b44aa81a4f2031385667cf868b">lxgui::gui::sfml::renderer::create_render_target</a></div><div class="ttdeci">std::shared_ptr&lt; gui::render_target &gt; create_render_target(uint uiWidth, uint uiHeight) const override</div><div class="ttdoc">Creates a new render target.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">lxgui::gui::material::filter::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1matrix4f_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1matrix4f.html">lxgui::gui::matrix4f</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__matrix4_8hpp_source.html#l00011">gui_matrix4.hpp:11</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1renderer_html_ab186dd51df0d224a854da231e76df745"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745">lxgui::gui::sfml::renderer::end</a></div><div class="ttdeci">void end() const override</div><div class="ttdoc">Ends rendering.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1renderer_html_ac2d66e6c21028089fd5f6c31982d72be"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">lxgui::gui::sfml::renderer::render_quads</a></div><div class="ttdeci">void render_quads(const gui::material &amp;mMaterial, const std::vector&lt; std::array&lt; vertex, 4 &gt;&gt; &amp;lQuadList) const override</div><div class="ttdoc">Renders a set of quads.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1renderer_html_a8a7d8ddb63663853ade84658a27632e9"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9">lxgui::gui::sfml::renderer::begin</a></div><div class="ttdeci">void begin(std::shared_ptr&lt; gui::render_target &gt; pTarget=nullptr) const override</div><div class="ttdoc">Begins rendering on a particular render target.</div></div>
@@ -168,7 +173,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1quad_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad.html">lxgui::gui::quad</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8hpp_source.html#l00054">gui_sprite.hpp:54</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 1 2021 07:23:12 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 08:45:47 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['handler_2894',['handler',['../classlxgui_1_1gui_1_1frame.html#a26480ea9a512453abfeab4f7d8d56395',1,'lxgui::gui::frame']]]
+  ['filter_2894',['filter',['../classlxgui_1_1utils_1_1view_1_1adaptor.html#aeff0640f5db7978e093168d244917893',1,'lxgui::utils::view::adaptor']]]
 ];

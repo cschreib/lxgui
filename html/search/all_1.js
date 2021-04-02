@@ -68,13 +68,14 @@ var searchData=
   ['bspecial_5f_98',['bSpecial_',['../classlxgui_1_1gui_1_1uiobject.html#aafc5ddaec258c84253290b261aa123ce',1,'lxgui::gui::uiobject']]],
   ['bstratalistupdated_5f_99',['bStrataListUpdated_',['../classlxgui_1_1gui_1_1renderer.html#a6ece840aa94c826bfd2720553771d0e3',1,'lxgui::gui::renderer']]],
   ['bthumbmoved_5f_100',['bThumbMoved_',['../classlxgui_1_1gui_1_1slider.html#a4b8e4aae10283628de15720a275dc98c',1,'lxgui::gui::slider']]],
-  ['bupdateanchors_5f_101',['bUpdateAnchors_',['../classlxgui_1_1gui_1_1uiobject.html#a6cdac72a8d94986741133c76862a0e8b',1,'lxgui::gui::uiobject']]],
-  ['bupdatebartexture_5f_102',['bUpdateBarTexture_',['../classlxgui_1_1gui_1_1status__bar.html#a1832f8a5e54d073aad8bceeb457b152e',1,'lxgui::gui::status_bar']]],
-  ['bupdateborders_5f_103',['bUpdateBorders_',['../classlxgui_1_1gui_1_1uiobject.html#a61efb7db2fa48e8dbbf43eb8d375e1bb',1,'lxgui::gui::uiobject']]],
-  ['bupdatescrollrange_5f_104',['bUpdateScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60',1,'lxgui::gui::scroll_frame']]],
-  ['bupdatethumbtexture_5f_105',['bUpdateThumbTexture_',['../classlxgui_1_1gui_1_1slider.html#a485a2c6dd2c9fb909e2ac25966e5f2a2',1,'lxgui::gui::slider']]],
-  ['button_106',['button',['../classlxgui_1_1gui_1_1button.html',1,'lxgui::gui::button'],['../classlxgui_1_1gui_1_1button.html#ae73ba0744d4baedca389df65ba08be45',1,'lxgui::gui::button::button()']]],
-  ['bvirtual_107',['bVirtual',['../structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#af40cc7197e1472321774cd09032b00f3',1,'lxgui::gui::manager::xml_core_attributes']]],
-  ['bvirtual_5f_108',['bVirtual_',['../classlxgui_1_1gui_1_1uiobject.html#ad0779b64cd085c299e478dfaf6212f11',1,'lxgui::gui::uiobject']]],
-  ['bwindowresized_5f_109',['bWindowResized_',['../classlxgui_1_1input_1_1source__impl.html#ac3da9670bf82b319381fc27d16c0fb5e',1,'lxgui::input::source_impl']]]
+  ['build_5fidentity_101',['build_identity',['../namespacelxgui_1_1gui.html#a43b0bef484deb0a69264fb56c7c1a42a',1,'lxgui::gui']]],
+  ['bupdateanchors_5f_102',['bUpdateAnchors_',['../classlxgui_1_1gui_1_1uiobject.html#a6cdac72a8d94986741133c76862a0e8b',1,'lxgui::gui::uiobject']]],
+  ['bupdatebartexture_5f_103',['bUpdateBarTexture_',['../classlxgui_1_1gui_1_1status__bar.html#a1832f8a5e54d073aad8bceeb457b152e',1,'lxgui::gui::status_bar']]],
+  ['bupdateborders_5f_104',['bUpdateBorders_',['../classlxgui_1_1gui_1_1uiobject.html#a61efb7db2fa48e8dbbf43eb8d375e1bb',1,'lxgui::gui::uiobject']]],
+  ['bupdatescrollrange_5f_105',['bUpdateScrollRange_',['../classlxgui_1_1gui_1_1scroll__frame.html#af7c730d3c0cb2479a5acd160af617a60',1,'lxgui::gui::scroll_frame']]],
+  ['bupdatethumbtexture_5f_106',['bUpdateThumbTexture_',['../classlxgui_1_1gui_1_1slider.html#a485a2c6dd2c9fb909e2ac25966e5f2a2',1,'lxgui::gui::slider']]],
+  ['button_107',['button',['../classlxgui_1_1gui_1_1button.html',1,'lxgui::gui::button'],['../classlxgui_1_1gui_1_1button.html#ae73ba0744d4baedca389df65ba08be45',1,'lxgui::gui::button::button()']]],
+  ['bvirtual_108',['bVirtual',['../structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#af40cc7197e1472321774cd09032b00f3',1,'lxgui::gui::manager::xml_core_attributes']]],
+  ['bvirtual_5f_109',['bVirtual_',['../classlxgui_1_1gui_1_1uiobject.html#ad0779b64cd085c299e478dfaf6212f11',1,'lxgui::gui::uiobject']]],
+  ['bwindowresized_5f_110',['bWindowResized_',['../classlxgui_1_1input_1_1source__impl.html#ac3da9670bf82b319381fc27d16c0fb5e',1,'lxgui::input::source_impl']]]
 ];

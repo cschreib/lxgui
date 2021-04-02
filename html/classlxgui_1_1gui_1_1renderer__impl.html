@@ -107,6 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acdc439861a02738c3fca580d1b30f036"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#acdc439861a02738c3fca580d1b30f036">end</a> () const =0</td></tr>
 <tr class="memdesc:acdc439861a02738c3fca580d1b30f036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ends rendering.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#acdc439861a02738c3fca580d1b30f036">More...</a><br /></td></tr>
 <tr class="separator:acdc439861a02738c3fca580d1b30f036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16f2d2a5b892f4f3a2a4a3e5bc95379a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a16f2d2a5b892f4f3a2a4a3e5bc95379a">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const =0</td></tr>
+<tr class="memdesc:a16f2d2a5b892f4f3a2a4a3e5bc95379a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1renderer__impl.html#a16f2d2a5b892f4f3a2a4a3e5bc95379a">More...</a><br /></td></tr>
+<tr class="separator:a16f2d2a5b892f4f3a2a4a3e5bc95379a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff940234cb3c55ef45b13bb34362fa18"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#aff940234cb3c55ef45b13bb34362fa18">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const =0</td></tr>
 <tr class="memdesc:aff940234cb3c55ef45b13bb34362fa18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#aff940234cb3c55ef45b13bb34362fa18">More...</a><br /></td></tr>
 <tr class="separator:aff940234cb3c55ef45b13bb34362fa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,7 +143,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract type for implementation specific management. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a13a22c03b908e052d03c7ce683cff1fb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13a22c03b908e052d03c7ce683cff1fb">&#9670;&nbsp;</a></span>renderer_impl()</h2>
@@ -636,6 +639,44 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a16f2d2a5b892f4f3a2a4a3e5bc95379a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16f2d2a5b892f4f3a2a4a3e5bc95379a">&#9670;&nbsp;</a></span>set_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void lxgui::gui::renderer_impl::set_view </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mViewMatrix</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the view matrix to use when rendering (viewport). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mViewMatrix</td><td>The view matrix </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a6feeed4f65c674ad8b7be3bfa7deba59" title="Begins rendering on a particular render target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a4143ad878fa28a4f854216254b432e0a">lxgui::gui::sdl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a69f7ef9315904fb01f01196671cc621e">lxgui::gui::gl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#acf75ffa49373582738368a76cf153fff">lxgui::gui::sfml::renderer</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a0c018fd4208b36fd75573948043f4b48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0c018fd4208b36fd75573948043f4b48">&#9670;&nbsp;</a></span>pParent_</h2>
@@ -657,7 +698,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00107">107</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00125">125</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
 
 </div>
 </div>
@@ -668,7 +709,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 1 2021 07:23:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 08:45:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
