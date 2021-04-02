@@ -24,6 +24,7 @@ v2.0.0:
  - input: get_key_name() is now platform-independent, and only returns English
  - input: removed OIS input implementation
  - input: removed GLFW input implementation
+ - input: added set_mouse_cursor() and reset_mouse_cursor()
  - gui: added a pure SFML implementation for the gui::manager
  - gui: added a pure SDL implementation for the gui::manager
  - gui: added a "modern" OpenGL 3 implementation, alternative to fixed pipeline legacy OpenGL
