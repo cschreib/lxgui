@@ -431,7 +431,9 @@ int main(int argc, char* argv[])
         pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
     #elif defined(GLSDL_GUI)
         // Use SDL
-        pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get()));
+        bool bInitializeSDLImage = true;
+        pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get(),
+            bInitializeSDLImage));
     #endif
 
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
