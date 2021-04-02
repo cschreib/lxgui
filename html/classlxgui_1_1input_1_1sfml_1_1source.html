@@ -88,9 +88,9 @@ Inheritance diagram for lxgui::input::sfml::source:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abd6bb78e547cb0ba1f871a5d2bddc0ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#abd6bb78e547cb0ba1f871a5d2bddc0ab">source</a> (const sf::Window &amp;pWindow, bool bMouseGrab=false)</td></tr>
-<tr class="memdesc:abd6bb78e547cb0ba1f871a5d2bddc0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this input source.  <a href="classlxgui_1_1input_1_1sfml_1_1source.html#abd6bb78e547cb0ba1f871a5d2bddc0ab">More...</a><br /></td></tr>
-<tr class="separator:abd6bb78e547cb0ba1f871a5d2bddc0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bdb937dcae02cfd517ead01f6185418"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a1bdb937dcae02cfd517ead01f6185418">source</a> (sf::Window &amp;pWindow, bool bMouseGrab=false)</td></tr>
+<tr class="memdesc:a1bdb937dcae02cfd517ead01f6185418"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this input source.  <a href="classlxgui_1_1input_1_1sfml_1_1source.html#a1bdb937dcae02cfd517ead01f6185418">More...</a><br /></td></tr>
+<tr class="separator:a1bdb937dcae02cfd517ead01f6185418"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeefb0e77e22eff84310d0435566e9e1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#aeefb0e77e22eff84310d0435566e9e1c">source</a> (const <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html">source</a> &amp;)=delete</td></tr>
 <tr class="separator:aeefb0e77e22eff84310d0435566e9e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52c8763d648a4622df408100b1def751"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html">source</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a52c8763d648a4622df408100b1def751">operator=</a> (const <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html">source</a> &amp;)=delete</td></tr>
@@ -108,6 +108,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a21721b953824962f0777ea6d9ff822ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a3910b4ff821ec2f09be36b9d31320d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a2a3910b4ff821ec2f09be36b9d31320d">on_sfml_event</a> (const sf::Event &amp;mEvent)</td></tr>
 <tr class="separator:a2a3910b4ff821ec2f09be36b9d31320d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eb883b4a801e6c9fabc5d496118085a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a3eb883b4a801e6c9fabc5d496118085a">set_mouse_cursor</a> (const std::string &amp;sFileName, const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;mHotSpot) override</td></tr>
+<tr class="memdesc:a3eb883b4a801e6c9fabc5d496118085a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor to a given image on disk.  <a href="classlxgui_1_1input_1_1sfml_1_1source.html#a3eb883b4a801e6c9fabc5d496118085a">More...</a><br /></td></tr>
+<tr class="separator:a3eb883b4a801e6c9fabc5d496118085a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae0a5eee4c6234a971e0b59c3caaf1c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#aae0a5eee4c6234a971e0b59c3caaf1c7">reset_mouse_cursor</a> () override</td></tr>
+<tr class="memdesc:aae0a5eee4c6234a971e0b59c3caaf1c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor back to the default (arrow).  <a href="classlxgui_1_1input_1_1sfml_1_1source.html#aae0a5eee4c6234a971e0b59c3caaf1c7">More...</a><br /></td></tr>
+<tr class="separator:aae0a5eee4c6234a971e0b59c3caaf1c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0ec72a3b125610fe4bd4c55418f1ce8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#aa0ec72a3b125610fe4bd4c55418f1ce8">update</a> ()</td></tr>
 <tr class="memdesc:aa0ec72a3b125610fe4bd4c55418f1ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates this input source.  <a href="classlxgui_1_1input_1_1source__impl.html#aa0ec72a3b125610fe4bd4c55418f1ce8">More...</a><br /></td></tr>
 <tr class="separator:aa0ec72a3b125610fe4bd4c55418f1ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,10 +185,10 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="input__sfml__source_8hpp_source.html#l00017">17</a> of file <a class="el" href="input__sfml__source_8hpp_source.html">input_sfml_source.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input__sfml__source_8hpp_source.html#l00020">20</a> of file <a class="el" href="input__sfml__source_8hpp_source.html">input_sfml_source.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="abd6bb78e547cb0ba1f871a5d2bddc0ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd6bb78e547cb0ba1f871a5d2bddc0ab">&#9670;&nbsp;</a></span>source() <span class="overload">[1/2]</span></h2>
+<a id="a1bdb937dcae02cfd517ead01f6185418"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bdb937dcae02cfd517ead01f6185418">&#9670;&nbsp;</a></span>source() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -193,7 +199,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">lxgui::input::sfml::source::source </td>
           <td>(</td>
-          <td class="paramtype">const sf::Window &amp;&#160;</td>
+          <td class="paramtype">sf::Window &amp;&#160;</td>
           <td class="paramname"><em>pWindow</em>, </td>
         </tr>
         <tr>
@@ -612,6 +618,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="aae0a5eee4c6234a971e0b59c3caaf1c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0a5eee4c6234a971e0b59c3caaf1c7">&#9670;&nbsp;</a></span>reset_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::sfml::source::reset_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor back to the default (arrow). </p>
+
+<p>Implements <a class="el" href="classlxgui_1_1input_1_1source__impl.html#abe51f41bda45c121430916f3fec76fd1">lxgui::input::source_impl</a>.</p>
+
+</div>
+</div>
 <a id="a28a7863c4cdf1d6cb06f9598aff00da9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28a7863c4cdf1d6cb06f9598aff00da9">&#9670;&nbsp;</a></span>reset_window_resized()</h2>
 
@@ -750,6 +785,54 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a3eb883b4a801e6c9fabc5d496118085a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eb883b4a801e6c9fabc5d496118085a">&#9670;&nbsp;</a></span>set_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::sfml::source::set_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;&#160;</td>
+          <td class="paramname"><em>mHotSpot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor to a given image on disk. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFileName</td><td>The cursor image </td></tr>
+    <tr><td class="paramname">mHotSpot</td><td>The pixel position of the tip of the pointer in the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#aae0a5eee4c6234a971e0b59c3caaf1c7" title="Sets the mouse cursor back to the default (arrow).">reset_mouse_cursor()</a> to set the cursor back to the default. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1input_1_1source__impl.html#a06abe49757c628a02d12eb4f84cbd354">lxgui::input::source_impl</a>.</p>
+
+</div>
+</div>
 <a id="af5be3eb0862f003bc3fbcfc5348325dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5be3eb0862f003bc3fbcfc5348325dc">&#9670;&nbsp;</a></span>toggle_mouse_grab()</h2>
 
@@ -859,7 +942,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00155">155</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00166">166</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -883,7 +966,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00157">157</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00168">168</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -907,7 +990,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00161">161</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00172">172</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -931,7 +1014,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00150">150</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00161">161</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -955,7 +1038,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00151">151</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00162">162</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -979,7 +1062,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00153">153</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00164">164</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -1003,7 +1086,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00147">147</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00158">158</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1110,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00148">148</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00159">159</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +1134,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00158">158</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00169">169</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -1075,7 +1158,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00159">159</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00170">170</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -1085,7 +1168,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 10:54:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 16:53:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

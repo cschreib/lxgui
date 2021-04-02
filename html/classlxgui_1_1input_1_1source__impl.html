@@ -154,6 +154,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c25e299c251f67429d45c497e66902c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#a6c25e299c251f67429d45c497e66902c">set_clipboard_content</a> (const utils::ustring &amp;sContent)=0</td></tr>
 <tr class="memdesc:a6c25e299c251f67429d45c497e66902c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the content of the clipboard.  <a href="classlxgui_1_1input_1_1source__impl.html#a6c25e299c251f67429d45c497e66902c">More...</a><br /></td></tr>
 <tr class="separator:a6c25e299c251f67429d45c497e66902c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06abe49757c628a02d12eb4f84cbd354"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#a06abe49757c628a02d12eb4f84cbd354">set_mouse_cursor</a> (const std::string &amp;sFileName, const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;mHotSpot)=0</td></tr>
+<tr class="memdesc:a06abe49757c628a02d12eb4f84cbd354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor to a given image on disk.  <a href="classlxgui_1_1input_1_1source__impl.html#a06abe49757c628a02d12eb4f84cbd354">More...</a><br /></td></tr>
+<tr class="separator:a06abe49757c628a02d12eb4f84cbd354"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe51f41bda45c121430916f3fec76fd1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1source__impl.html#abe51f41bda45c121430916f3fec76fd1">reset_mouse_cursor</a> ()=0</td></tr>
+<tr class="memdesc:abe51f41bda45c121430916f3fec76fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor back to the default (arrow).  <a href="classlxgui_1_1input_1_1source__impl.html#abe51f41bda45c121430916f3fec76fd1">More...</a><br /></td></tr>
+<tr class="separator:abe51f41bda45c121430916f3fec76fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -188,7 +194,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>The base class for input source implementation. </p>
 <dl class="section note"><dt>Note</dt><dd>In case you want to share the same source for multiple <a class="el" href="classlxgui_1_1input_1_1manager.html" title="Handles inputs (keyboard and mouse)">input::manager</a>, you have to call set_manually_updated(true), and update the source yourself. Else, it will be updated by each <a class="el" href="classlxgui_1_1input_1_1manager.html" title="Handles inputs (keyboard and mouse)">input::manager</a> (which may not be desirable). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00036">36</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00037">37</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a886b16d4066e140c5736d1133e1db7ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a886b16d4066e140c5736d1133e1db7ba">&#9670;&nbsp;</a></span>source_impl()</h2>
@@ -471,6 +477,35 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="abe51f41bda45c121430916f3fec76fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe51f41bda45c121430916f3fec76fd1">&#9670;&nbsp;</a></span>reset_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void lxgui::input::source_impl::reset_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor back to the default (arrow). </p>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#aae0a5eee4c6234a971e0b59c3caaf1c7">lxgui::input::sfml::source</a>, and <a class="el" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">lxgui::input::sdl::source</a>.</p>
+
+</div>
+</div>
 <a id="a28a7863c4cdf1d6cb06f9598aff00da9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28a7863c4cdf1d6cb06f9598aff00da9">&#9670;&nbsp;</a></span>reset_window_resized()</h2>
 
@@ -585,6 +620,54 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a06abe49757c628a02d12eb4f84cbd354"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06abe49757c628a02d12eb4f84cbd354">&#9670;&nbsp;</a></span>set_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void lxgui::input::source_impl::set_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;&#160;</td>
+          <td class="paramname"><em>mHotSpot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor to a given image on disk. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFileName</td><td>The cursor image </td></tr>
+    <tr><td class="paramname">mHotSpot</td><td>The pixel position of the tip of the pointer in the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classlxgui_1_1input_1_1source__impl.html#abe51f41bda45c121430916f3fec76fd1" title="Sets the mouse cursor back to the default (arrow).">reset_mouse_cursor()</a> to set the cursor back to the default. </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1input_1_1sfml_1_1source.html#a3eb883b4a801e6c9fabc5d496118085a">lxgui::input::sfml::source</a>, and <a class="el" href="classlxgui_1_1input_1_1sdl_1_1source.html#a03747162ee42b017d1b7ba151178f0a4">lxgui::input::sdl::source</a>.</p>
+
+</div>
+</div>
 <a id="a7b2c61c6f3e5f62735b834eb7c2d0511"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b2c61c6f3e5f62735b834eb7c2d0511">&#9670;&nbsp;</a></span>toggle_mouse_grab()</h2>
 
@@ -686,7 +769,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00155">155</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00166">166</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -710,7 +793,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00157">157</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00168">168</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -734,7 +817,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00161">161</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00172">172</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -758,7 +841,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00150">150</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00161">161</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -782,7 +865,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00151">151</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00162">162</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -806,7 +889,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00153">153</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00164">164</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -830,7 +913,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00147">147</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00158">158</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -854,7 +937,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00148">148</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00159">159</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -878,7 +961,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00158">158</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00169">169</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -902,7 +985,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00159">159</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00170">170</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 
 </div>
 </div>
@@ -913,7 +996,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 10:54:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 16:53:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

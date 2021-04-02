@@ -223,6 +223,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7efab5ed3e43a4da16771a5107d97bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a7efab5ed3e43a4da16771a5107d97bca">set_clipboard_content</a> (const utils::ustring &amp;sContent)</td></tr>
 <tr class="memdesc:a7efab5ed3e43a4da16771a5107d97bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the content of the clipboard.  <a href="classlxgui_1_1input_1_1manager.html#a7efab5ed3e43a4da16771a5107d97bca">More...</a><br /></td></tr>
 <tr class="separator:a7efab5ed3e43a4da16771a5107d97bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5ba256a5482c6dff5b8a5ca619a7827"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#ab5ba256a5482c6dff5b8a5ca619a7827">set_mouse_cursor</a> (const std::string &amp;sFileName, const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;mHotSpot)</td></tr>
+<tr class="memdesc:ab5ba256a5482c6dff5b8a5ca619a7827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor to a given image on disk.  <a href="classlxgui_1_1input_1_1manager.html#ab5ba256a5482c6dff5b8a5ca619a7827">More...</a><br /></td></tr>
+<tr class="separator:ab5ba256a5482c6dff5b8a5ca619a7827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42be517797dd44b7ffb83ba498c51676"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a42be517797dd44b7ffb83ba498c51676">reset_mouse_cursor</a> ()</td></tr>
+<tr class="memdesc:a42be517797dd44b7ffb83ba498c51676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the mouse cursor back to the default (arrow).  <a href="classlxgui_1_1input_1_1manager.html#a42be517797dd44b7ffb83ba498c51676">More...</a><br /></td></tr>
+<tr class="separator:a42be517797dd44b7ffb83ba498c51676"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84a342eb192dee94b974ee92b6462c9f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1input_1_1source__impl.html">source_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1input_1_1manager.html#a84a342eb192dee94b974ee92b6462c9f">get_source</a> () const</td></tr>
 <tr class="memdesc:a84a342eb192dee94b974ee92b6462c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the input source.  <a href="classlxgui_1_1input_1_1manager.html#a84a342eb192dee94b974ee92b6462c9f">More...</a><br /></td></tr>
 <tr class="separator:a84a342eb192dee94b974ee92b6462c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,7 +239,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Handles inputs (keyboard and mouse) </p>
 
-<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00165">165</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="input_8hpp_source.html#l00176">176</a> of file <a class="el" href="input_8hpp_source.html">input.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9a3985cecdb94c35c175c8ebd3c08fb0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a3985cecdb94c35c175c8ebd3c08fb0">&#9670;&nbsp;</a></span>manager() <span class="overload">[1/3]</span></h2>
@@ -1372,6 +1378,27 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a42be517797dd44b7ffb83ba498c51676"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42be517797dd44b7ffb83ba498c51676">&#9670;&nbsp;</a></span>reset_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::manager::reset_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor back to the default (arrow). </p>
+
+<p class="definition">Definition at line <a class="el" href="input_8cpp_source.html#l00767">767</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a7efab5ed3e43a4da16771a5107d97bca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7efab5ed3e43a4da16771a5107d97bca">&#9670;&nbsp;</a></span>set_clipboard_content()</h2>
 
@@ -1541,6 +1568,46 @@ This function will forward all events (mouse and keyboard) to the new receiver. 
 
 </div>
 </div>
+<a id="ab5ba256a5482c6dff5b8a5ca619a7827"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5ba256a5482c6dff5b8a5ca619a7827">&#9670;&nbsp;</a></span>set_mouse_cursor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::input::manager::set_mouse_cursor </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">gui::vector2i</a> &amp;&#160;</td>
+          <td class="paramname"><em>mHotSpot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the mouse cursor to a given image on disk. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFileName</td><td>The cursor image </td></tr>
+    <tr><td class="paramname">mHotSpot</td><td>The pixel position of the tip of the pointer in the image </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classlxgui_1_1input_1_1manager.html#a42be517797dd44b7ffb83ba498c51676" title="Sets the mouse cursor back to the default (arrow).">reset_mouse_cursor()</a> to set the cursor back to the default. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="input_8cpp_source.html#l00762">762</a> of file <a class="el" href="input_8cpp_source.html">input.cpp</a>.</p>
+
+</div>
+</div>
 <a id="ade05e0c9c3e98e5d39dc40127a71297c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ade05e0c9c3e98e5d39dc40127a71297c">&#9670;&nbsp;</a></span>set_mouse_focus()</h2>
 
@@ -1690,7 +1757,7 @@ This function will forward all events (mouse and keyboard) to the new receiver. 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 10:54:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 16:53:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
