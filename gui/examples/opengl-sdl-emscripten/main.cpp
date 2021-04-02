@@ -186,8 +186,10 @@ int main(int argc, char* argv[])
             std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
 
         // Define the input manager
+        bool bInitialiseSDLImage = true;
         std::unique_ptr<input::source_impl> pInputSource =
-            std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get()));
+            std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get(),
+                bInitialiseSDLImage));
 
         // Create the GUI manager
         std::unique_ptr<gui::manager> pManager = std::unique_ptr<gui::manager>(new gui::manager(
