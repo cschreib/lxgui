@@ -5,10 +5,6 @@
 namespace lxgui {
 namespace gui
 {
-vertex::vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol) :
-    pos(mPos), uvs(mUV), col(mCol)
-{
-}
 
 sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
@@ -326,5 +322,6 @@ std::array<float,8> sprite::get_texture_coords(bool bNormalized) const
 
     return mCoords;
 }
+
 }
 }

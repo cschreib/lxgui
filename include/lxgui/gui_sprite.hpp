@@ -29,19 +29,9 @@ namespace gui
 
     struct vertex
     {
-        vertex() = default;
-
-        vertex(const vertex&) = default;
-        vertex(vertex&&) = default;
-
-        vertex(const vector2f& mPos, const vector2f& mUV, const color& mCol);
-
-        vertex& operator=(const vertex&) = default;
-        vertex& operator=(vertex&&) = default;
-
         vector2f pos;
         vector2f uvs;
-        color    col = color::WHITE;
+        color    col;
     };
 
     enum class blend_mode
