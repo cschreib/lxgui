@@ -83,7 +83,7 @@ matrix4f matrix4f::view(const vector2f& window)
 
 matrix4f matrix4f::view(const vector2f& window, const vector2f& center)
 {
-    return translation(-center)*view(window);
+    return translation(vector2f(window.x/2, window.y/2) - center)*view(window);
 }
 
 void matrix4f::transpose()
