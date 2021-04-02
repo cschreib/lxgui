@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['quad2f_2900',['quad2f',['../namespacelxgui_1_1gui.html#ab770ca9dd8b4dbdf8b8c615804c5fb5c',1,'lxgui::gui']]],
-  ['quad2i_2901',['quad2i',['../namespacelxgui_1_1gui.html#ab7ed9b673d62c02f454b5a9155b009eb',1,'lxgui::gui']]]
+  ['quad2f_2903',['quad2f',['../namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9',1,'lxgui::gui']]],
+  ['quad2i_2904',['quad2i',['../namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd',1,'lxgui::gui']]]
 ];

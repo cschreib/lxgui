@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['b_33',['b',['../classlxgui_1_1gui_1_1color.html#a96aafe9c774170df8f8694e38cbf73b5',1,'lxgui::gui::color::b()'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a06d0e31b0f9438f58b041b961b302f15',1,'lxgui::gui::gl::ub32color::b()'],['../structlxgui_1_1gui_1_1sdl_1_1ub32color.html#aca112af19988537edd26042480d22fb5',1,'lxgui::gui::sdl::ub32color::b()']]],
+  ['b_33',['b',['../classlxgui_1_1gui_1_1color.html#a8346db2fda5f218a3aac2616d532699c',1,'lxgui::gui::color::b()'],['../structlxgui_1_1gui_1_1gl_1_1ub32color.html#a06d0e31b0f9438f58b041b961b302f15',1,'lxgui::gui::gl::ub32color::b()'],['../structlxgui_1_1gui_1_1sdl_1_1ub32color.html#aca112af19988537edd26042480d22fb5',1,'lxgui::gui::sdl::ub32color::b()']]],
   ['backdrop_34',['backdrop',['../classlxgui_1_1gui_1_1backdrop.html',1,'lxgui::gui::backdrop'],['../classlxgui_1_1gui_1_1backdrop.html#a09156aa311f3c0204607bdbbff1e9867',1,'lxgui::gui::backdrop::backdrop()']]],
   ['background_35',['BACKGROUND',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6a87ed58ce5596142e11cb65deb049bb4b',1,'lxgui::gui::BACKGROUND()'],['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a87ed58ce5596142e11cb65deb049bb4b',1,'lxgui::gui::BACKGROUND()']]],
   ['ballowclicksoutsidethumb_5f_36',['bAllowClicksOutsideThumb_',['../classlxgui_1_1gui_1_1slider.html#a99af4ef0d74d2686e5e7c39a59e2dee1',1,'lxgui::gui::slider']]],
@@ -52,9 +52,9 @@ var searchData=
   ['boolean_82',['BOOLEAN',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1bac48d5da12d702e73d6966069f2687376',1,'lxgui::lua::BOOLEAN()'],['../namespacelxgui_1_1xml.html#a1bcf42a37d7676a4751e73aee325716bac48d5da12d702e73d6966069f2687376',1,'lxgui::xml::BOOLEAN()']]],
   ['boptional_83',['bOptional',['../structlxgui_1_1xml_1_1attribute.html#a0103eb791490257b306860a082c8371e',1,'lxgui::xml::attribute']]],
   ['border_84',['BORDER',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85aab279ad24b23820ab47758389353c178',1,'lxgui::gui']]],
-  ['bottom_85',['bottom',['../classlxgui_1_1gui_1_1quad2.html#a544528bb6db00f3cec8d37378d6b2897',1,'lxgui::gui::quad2::bottom()'],['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa1fabf63de5c96c78e2a40805bcdeb73b',1,'lxgui::gui::text::BOTTOM()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a1fabf63de5c96c78e2a40805bcdeb73b',1,'lxgui::gui::BOTTOM()']]],
-  ['bottom_5fleft_86',['bottom_left',['../classlxgui_1_1gui_1_1quad2.html#a8a0dac0a57b21e4ea4cf84ab5e0acacd',1,'lxgui::gui::quad2']]],
-  ['bottom_5fright_87',['bottom_right',['../classlxgui_1_1gui_1_1quad2.html#a996bba363e88f5cf871ddaf117cd4833',1,'lxgui::gui::quad2']]],
+  ['bottom_85',['bottom',['../structlxgui_1_1gui_1_1quad2.html#a544528bb6db00f3cec8d37378d6b2897',1,'lxgui::gui::quad2::bottom()'],['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa1fabf63de5c96c78e2a40805bcdeb73b',1,'lxgui::gui::text::BOTTOM()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a1fabf63de5c96c78e2a40805bcdeb73b',1,'lxgui::gui::BOTTOM()']]],
+  ['bottom_5fleft_86',['bottom_left',['../structlxgui_1_1gui_1_1quad2.html#ab69cbdb71159718fde16d69a25120788',1,'lxgui::gui::quad2']]],
+  ['bottom_5fright_87',['bottom_right',['../structlxgui_1_1gui_1_1quad2.html#a544268b69909acd4845a8d805b6a3b8c',1,'lxgui::gui::quad2']]],
   ['bottomleft_88',['BOTTOMLEFT',['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a58357ae4912d9521749cbf762e8fb1cf',1,'lxgui::gui']]],
   ['bottomright_89',['BOTTOMRIGHT',['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a584cd46a84f23e701ff4179887bc18a4',1,'lxgui::gui']]],
   ['bpasswordmode_5f_90',['bPasswordMode_',['../classlxgui_1_1gui_1_1edit__box.html#a38808704ea41f99fff57b4f75d25ddd7',1,'lxgui::gui::edit_box']]],

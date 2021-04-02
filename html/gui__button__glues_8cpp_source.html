@@ -310,7 +310,7 @@ $(function() {
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;Button:get_pushed_text_offset&quot;</span>, pLua, 2);</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#acc188f9007f92826adba35f20ba0ac5c">vector2i</a> lOffset = get_object()-&gt;get_pushed_text_offset();</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">vector2i</a> lOffset = get_object()-&gt;get_pushed_text_offset();</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    mFunc.push(lOffset.x);</div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    mFunc.push(lOffset.y);</div>
@@ -676,7 +676,7 @@ $(function() {
 <div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;y offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
 <div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
 <div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;    {</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        get_object()-&gt;set_pushed_text_offset(<a class="code" href="namespacelxgui_1_1gui.html#acc188f9007f92826adba35f20ba0ac5c">vector2i</a>(</div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        get_object()-&gt;set_pushed_text_offset(<a class="code" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">vector2i</a>(</div>
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;            (<span class="keywordtype">int</span>)mFunc.get(0)-&gt;get_number(), (<span class="keywordtype">int</span>)mFunc.get(1)-&gt;get_number()</div>
 <div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        ));</div>
 <div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;    }</div>
@@ -738,8 +738,8 @@ $(function() {
 <div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a42d6442bdeb36a231bad4d5fbf1669b6ac4e0e4e3118472beeb2ae75827450f1f"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a42d6442bdeb36a231bad4d5fbf1669b6ac4e0e4e3118472beeb2ae75827450f1f">lxgui::gui::button::state::DOWN</a></div><div class="ttdeci">@ DOWN</div></div>
 <div class="ttc" id="agui__frame_8hpp_html"><div class="ttname"><a href="gui__frame_8hpp.html">gui_frame.hpp</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a161ead5fdbb92ad27ab24a76083e262d"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">lxgui::gui::vector2i</a></div><div class="ttdeci">vector2&lt; int &gt; vector2i</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00154">gui_vector2.hpp:154</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1function_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1function.html">lxgui::lua::function</a></div><div class="ttdoc">A helper to write Lua glues.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__function_8hpp_source.html#l00186">luapp_function.hpp:186</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_acc188f9007f92826adba35f20ba0ac5c"><div class="ttname"><a href="namespacelxgui_1_1gui.html#acc188f9007f92826adba35f20ba0ac5c">lxgui::gui::vector2i</a></div><div class="ttdeci">vector2&lt; int &gt; vector2i</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00158">gui_vector2.hpp:158</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1state_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html">lxgui::lua::state</a></div><div class="ttdoc">Lua wrapper.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__state_8hpp_source.html#l00040">luapp_state.hpp:40</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a42d6442bdeb36a231bad4d5fbf1669b6a055c1a591abb0e8cd86dc969727bcc0b"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a42d6442bdeb36a231bad4d5fbf1669b6a055c1a591abb0e8cd86dc969727bcc0b">lxgui::gui::button::state::DISABLED</a></div><div class="ttdeci">@ DISABLED</div></div>
@@ -754,7 +754,7 @@ $(function() {
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 09:31:52 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 10:54:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

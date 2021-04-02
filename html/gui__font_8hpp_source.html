@@ -97,10 +97,10 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">get_size</a>() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">get_character_uvs</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="structlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">get_character_uvs</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a3634e02218a7ca8a548c97d61c4b0fe2">get_character_bounds</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="structlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1font.html#a3634e02218a7ca8a548c97d61c4b0fe2">get_character_bounds</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1font.html#a99455060c0d87f32471d6b9b6c1ffd16">get_character_width</a>(char32_t uiChar) <span class="keyword">const</span> = 0;</div>
@@ -126,8 +126,8 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_abe28b093b93660bbedee5bf12f9a959e"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#abe28b093b93660bbedee5bf12f9a959e">lxgui::gui::font::get_size</a></div><div class="ttdeci">virtual uint get_size() const =0</div><div class="ttdoc">Get the size of the font in pixels.</div></div>
 <div class="ttc" id="anamespacelxgui_html_aad60a3835af109b1519d66daff76eb44"><div class="ttname"><a href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">lxgui::uint</a></div><div class="ttdeci">unsigned int uint</div><div class="ttdef"><b>Definition:</b> <a href="utils_8hpp_source.html#l00007">utils.hpp:7</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_af55cb48453897e59cfa3daa1258f33d2"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#af55cb48453897e59cfa3daa1258f33d2">lxgui::gui::font::get_texture</a></div><div class="ttdeci">virtual std::weak_ptr&lt; material &gt; get_texture() const =0</div><div class="ttdoc">Returns the underlying material to use for rendering.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1quad2_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1quad2.html">lxgui::gui::quad2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a68609d25c7fdd9fe990a6befa6c55a2b"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a68609d25c7fdd9fe990a6befa6c55a2b">lxgui::gui::font::get_character_uvs</a></div><div class="ttdeci">virtual quad2f get_character_uvs(char32_t uiChar) const =0</div><div class="ttdoc">Returns the uv coordinates of a character on the texture.</div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1quad2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad2.html">lxgui::gui::quad2&lt; float &gt;</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a99455060c0d87f32471d6b9b6c1ffd16"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a99455060c0d87f32471d6b9b6c1ffd16">lxgui::gui::font::get_character_width</a></div><div class="ttdeci">virtual float get_character_width(char32_t uiChar) const =0</div><div class="ttdoc">Returns the width of a character in pixels.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a84cbb12a499689e54d67cbb4b982f381"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a84cbb12a499689e54d67cbb4b982f381">lxgui::gui::font::font</a></div><div class="ttdeci">font()=default</div><div class="ttdoc">Constructor.</div></div>
@@ -137,7 +137,7 @@ $(function() {
 <div class="ttc" id="agui__quad2_8hpp_html"><div class="ttname"><a href="gui__quad2_8hpp.html">gui_quad2.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 2 2021 09:31:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 2 2021 10:54:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
