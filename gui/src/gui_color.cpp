@@ -1,6 +1,8 @@
 #include "lxgui/gui_color.hpp"
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
+#include <cmath>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -55,6 +57,41 @@ color::hls color::to_hls() const noexcept
     return hls;
 }
 
+color::hsv color::to_hsv() const noexcept
+{
+    color::hsv hsv;
+
+    float cmax;
+    float cmin;
+    if (r > g && r > b)
+    {
+        cmax = r;
+        cmin = g > b ? g : b;
+        hsv.h = 60.0f*std::fmod((g - b)/(cmax - cmin), 6.0f);
+    } else if (g > r && g > b)
+    {
+        cmax = g;
+        cmin = r > b ? r : b;
+        hsv.h = 60.0f*((b - r)/(cmax - cmin) + 2.0f);
+    } else if (b > r && b > g)
+    {
+        cmax = b;
+        cmin = r > g ? r : g;
+        hsv.h = 60.0f*((r - g)/(cmax - cmin) + 4.0f);
+    } else
+    {
+        hsv.h = 0.0f;
+        hsv.s = 0.0f;
+        hsv.v = r;
+        return hsv;
+    }
+
+    hsv.s = (cmax - cmin)/cmax;
+    hsv.v = cmax;
+
+    return hsv;
+}
+
 float h2_to_rgb(float v1, float v2, float h) noexcept
 {
     if      (h < 0.0f)   h = h + 360.0f;
@@ -66,13 +103,14 @@ float h2_to_rgb(float v1, float v2, float h) noexcept
     else                 return v1;
 }
 
-void color::from_hls(const hls& hls) noexcept
+color color::from_hls(const hls& hls) noexcept
 {
-    a = hls.a;
+    color c;
+    c.a = hls.a;
 
     if (hls.s == 0.0f)
     {
-        r = hls.l; g = hls.l; b = hls.l;
+        c.r = hls.l; c.g = hls.l; c.b = hls.l;
     }
     else
     {
@@ -84,34 +122,36 @@ void color::from_hls(const hls& hls) noexcept
 
         float v1 = 2.0f*hls.l - v2;
 
-        r = h2_to_rgb(v1, v2, hls.h + 120.0f);
-        g = h2_to_rgb(v1, v2, hls.h);
-        b = h2_to_rgb(v1, v2, hls.h - 120.0f);
+        c.r = h2_to_rgb(v1, v2, hls.h + 120.0f);
+        c.g = h2_to_rgb(v1, v2, hls.h);
+        c.b = h2_to_rgb(v1, v2, hls.h - 120.0f);
     }
-}
 
-color color::luminosity(float f) const noexcept
-{
-    hls hls = to_hls();
-    hls.l = f;
-    color c; c.from_hls(hls);
     return c;
 }
 
-color color::saturation(float f) const noexcept
+color color::from_hsv(const hsv& hsv) noexcept
 {
-    hls hls = to_hls();
-    hls.s = f;
-    color c; c.from_hls(hls);
-    return c;
-}
+    const channel t = hsv.s*hsv.v;
+    const channel x = t*(1.0f - std::abs(std::fmod(hsv.h/60.0f, 2.0f) - 1.0f));
+    const channel m = hsv.v - t;
 
-color color::hue(float f) const noexcept
-{
-    hls hls = to_hls();
-    hls.h = f;
-    color c; c.from_hls(hls);
-    return c;
+    const channel low = std::clamp(m, 0.0f, 1.0f);
+    const channel mid = std::clamp(x + m, 0.0f, 1.0f);
+    const channel hig = std::clamp(t + m, 0.0f, 1.0f);
+
+    if (hsv.h < 60.0f)
+        return color(hig, mid, low, hsv.a);
+    else if (hsv.h < 120.0f)
+        return color(mid, hig, low, hsv.a);
+    else if (hsv.h < 180.0f)
+        return color(low, hig, mid, hsv.a);
+    else if (hsv.h < 240.0f)
+        return color(low, mid, hig, hsv.a);
+    else if (hsv.h < 300.0f)
+        return color(mid, low, hig, hsv.a);
+    else
+        return color(hig, low, mid, hsv.a);
 }
 
 bool color::operator == (const color& c) const noexcept

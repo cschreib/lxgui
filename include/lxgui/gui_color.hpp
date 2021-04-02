@@ -19,17 +19,18 @@ namespace gui
             channel h, l, s, a;
         };
 
+        struct hsv
+        {
+            channel h, s, v, a;
+        };
+
         constexpr color() = default;
         constexpr color(channel nr, channel ng, channel nb, channel na = 1.0f) noexcept :
             r(nr), g(ng), b(nb), a(na) {}
         explicit color(const std::string& s);
 
         hls  to_hls() const noexcept;
-        void from_hls(const hls& hls) noexcept;
-
-        color luminosity(float f) const noexcept;
-        color saturation(float f) const noexcept;
-        color hue(float f) const noexcept;
+        hsv  to_hsv() const noexcept;
 
         bool operator == (const color& c) const noexcept;
         bool operator != (const color& c) const noexcept;
@@ -54,6 +55,9 @@ namespace gui
         {
             return color(r/255.0f, g/255.0f, b/255.0f, a/255.0f);
         }
+
+        static color from_hls(const hls& hls) noexcept;
+        static color from_hsv(const hsv& hsv) noexcept;
     };
 
     color operator + (const color& c1, const color& c2) noexcept;
