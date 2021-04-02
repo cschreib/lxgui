@@ -8,46 +8,42 @@
 namespace lxgui {
 namespace gui
 {
-    template<class T>
-    class vector2
+    template<typename T>
+    struct vector2
     {
-    public :
+        constexpr vector2() = default;
 
-        vector2() = default;
+        constexpr vector2(T mX, T mY) noexcept : x(mX), y(mY) {}
 
-        vector2(T mX, T mY) : x(mX), y(mY)
-        {
-        }
-
-        void set(T mX, T mY)
+        void set(T mX, T mY) noexcept
         {
             x = mX; y = mY;
         }
 
-        T get_norm() const
+        T get_norm() const noexcept
         {
             return T(sqrt(x*x + y*y));
         }
 
-        T get_norm_squared() const
+        T get_norm_squared() const noexcept
         {
             return x*x + y*y;
         }
 
-        void normalize()
+        void normalize() noexcept
         {
             T mNorm = T(sqrt(x*x + y*y));
             x = x/mNorm;
             y = y/mNorm;
         }
 
-        vector2 get_unit() const
+        vector2 get_unit() const noexcept
         {
             T mNorm = T(sqrt(x*x + y*y));
             return vector2(x/mNorm, y/mNorm);
         }
 
-        void rotate(const float& fAngle)
+        void rotate(const float& fAngle) noexcept
         {
             vector2 p;
 
@@ -60,76 +56,76 @@ namespace gui
             y = p.y;
         }
 
-        vector2 get_rotated(const float& fAngle) const
+        vector2 get_rotated(const float& fAngle) const noexcept
         {
             double ca = cos(fAngle), sa = sin(fAngle);
             return vector2(x*ca - y*sa, x*sa + y*ca);
         }
 
-        void scale(const vector2& v)
+        void scale(const vector2& v) noexcept
         {
             x *= v.x;
             y *= v.y;
         }
 
-        vector2 get_scale(const vector2& v) const
+        vector2 get_scale(const vector2& v) const noexcept
         {
             return vector2(x*v.x, y*v.y);
         }
 
-        vector2 operator + (const vector2& v)  const
+        vector2 operator + (const vector2& v)  const noexcept
         {
             return vector2(x + v.x, y + v.y);
         }
-        void operator += (const vector2& v)
+        void operator += (const vector2& v) noexcept
         {
             x += v.x; y += v.y;
         }
 
-        vector2 operator - () const
+        vector2 operator - () const noexcept
         {
             return vector2(-x, -y);
         }
 
-        vector2 operator - (const vector2& v) const
+        vector2 operator - (const vector2& v) const noexcept
         {
             return vector2(x - v.x, y - v.y);
         }
-        void operator -= (const vector2& v)
+        void operator -= (const vector2& v) noexcept
         {
             x -= v.x; y -= v.y;
         }
 
-        bool operator == (const vector2& v) const
+        bool operator == (const vector2& v) const noexcept
         {
             return (x == v.x) && (y == v.y);
         }
-        bool operator != (const vector2& v) const
+        bool operator != (const vector2& v) const noexcept
         {
             return (x != v.x) || (y != v.y);
         }
 
-        vector2 operator * (T mValue) const
+        vector2 operator * (T mValue) const noexcept
         {
             return vector2(x*mValue, y*mValue);
         }
 
-        void operator *= (T mValue)
+        void operator *= (T mValue) noexcept
         {
             x *= mValue;  y *= mValue;
         }
 
-        vector2 operator / (T mValue) const
+        vector2 operator / (T mValue) const noexcept
         {
             return vector2(x/mValue, y/mValue);
         }
 
-        void operator /= (T mValue)
+        void operator /= (T mValue) noexcept
         {
             x /= mValue;  y /= mValue;
         }
 
-        T operator * (const vector2& v) const
+        T operator * (const vector2& v) const noexcept
         {
             return x*v.x + y*v.y;
         }
@@ -142,29 +138,29 @@ namespace gui
         T x = 0, y = 0;
     };
 
-    template<class T>
-    const vector2<T> vector2<T>::ZERO(0, 0);
+    template<typename T>
+    constexpr vector2<T> vector2<T>::ZERO(0, 0);
 
-    template<class T>
-    const vector2<T> vector2<T>::UNIT(1, 1);
+    template<typename T>
+    constexpr vector2<T> vector2<T>::UNIT(1, 1);
 
-    template<class T>
-    const vector2<T> vector2<T>::X(1, 0);
+    template<typename T>
+    constexpr vector2<T> vector2<T>::X(1, 0);
 
-    template<class T>
-    const vector2<T> vector2<T>::Y(0, 1);
+    template<typename T>
+    constexpr vector2<T> vector2<T>::Y(0, 1);
 
-    typedef vector2<float> vector2f;
-    typedef vector2<int>   vector2i;
-    typedef vector2<uint>  vector2ui;
+    using vector2f = vector2<float>;
+    using vector2i  = vector2<int>;
+    using vector2ui = vector2<uint>;
 
-    template<class T>
-    vector2<T> operator * (T mValue, const vector2<T>& mV)
+    template<typename T>
+    vector2<T> operator * (T mValue, const vector2<T>& mV) noexcept
     {
         return vector2<T>(mV.x*mValue, mV.y*mValue);
     }
 
-    template<class T>
+    template<typename T>
     std::ostream& operator << (std::ostream& mStream, const vector2<T>& mV)
     {
         return mStream << mV.x << ", " << mV.y;

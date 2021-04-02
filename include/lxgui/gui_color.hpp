@@ -12,33 +12,34 @@ namespace gui
     {
     public :
 
-        typedef float chanel;
+        using channel = float;
 
         struct hls
         {
-            chanel h, l, s, a;
+            channel h, l, s, a;
         };
 
-        color() = default;
-        color(chanel nr, chanel ng, chanel nb, chanel na = 1.0f);
+        constexpr color() = default;
+        constexpr color(channel nr, channel ng, channel nb, channel na = 1.0f) noexcept :
+            r(nr), g(ng), b(nb), a(na) {}
         explicit color(const std::string& s);
 
-        hls  to_hls() const;
-        void from_hls(const hls& hls);
+        hls  to_hls() const noexcept;
+        void from_hls(const hls& hls) noexcept;
 
-        color luminosity(float f) const;
-        color saturation(float f) const;
-        color hue(float f) const;
+        color luminosity(float f) const noexcept;
+        color saturation(float f) const noexcept;
+        color hue(float f) const noexcept;
 
-        bool operator == (const color& c) const;
-        bool operator != (const color& c) const;
+        bool operator == (const color& c) const noexcept;
+        bool operator != (const color& c) const noexcept;
 
-        void operator += (const color& c);
-        void operator -= (const color& c);
-        void operator *= (const color& c);
-        void operator *= (float f);
+        void operator += (const color& c) noexcept;
+        void operator -= (const color& c) noexcept;
+        void operator *= (const color& c) noexcept;
+        void operator *= (float f) noexcept;
 
-        chanel r, g, b, a;
+        channel r = 1.0f, g = 1.0f, b = 1.0f, a = 1.0f;
 
         static const color EMPTY;
         static const color WHITE;
@@ -49,11 +50,11 @@ namespace gui
         static const color GREY;
     };
 
-    color operator + (const color& c1, const color& c2);
-    color operator - (const color& c1, const color& c2);
-    color operator * (const color& c1, const color& c2);
-    color operator * (const color& c1, float f);
-    color operator * (float f, const color& c2);
+    color operator + (const color& c1, const color& c2) noexcept;
+    color operator - (const color& c1, const color& c2) noexcept;
+    color operator * (const color& c1, const color& c2) noexcept;
+    color operator * (const color& c1, float f) noexcept;
+    color operator * (float f, const color& c2) noexcept;
 
     std::ostream& operator << (std::ostream& mStream, const color& mColor);
     std::istream& operator >> (std::istream& mStream, color& mColor);

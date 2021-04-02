@@ -15,17 +15,12 @@ const color color::GREEN(0.0f, 1.0f, 0.0f);
 const color color::BLUE (0.0f, 0.0f, 1.0f);
 const color color::GREY (0.5f, 0.5f, 0.5f);
 
-color::color(chanel nr, chanel ng, chanel nb, chanel na) :
-    r(nr), g(ng), b(nb), a(na)
-{
-}
-
 color::color(const std::string& s)
 {
     std::istringstream ss(s); ss >> *this;
 }
 
-color::hls color::to_hls() const
+color::hls color::to_hls() const noexcept
 {
     float ma = std::max(std::max(r, g), b);
     float mi = std::min(std::min(r, g), b);
@@ -60,7 +55,7 @@ color::hls color::to_hls() const
     return hls;
 }
 
-float h2_to_rgb(float v1, float v2, float h)
+float h2_to_rgb(float v1, float v2, float h) noexcept
 {
     if      (h < 0.0f)   h = h + 360.0f;
     else if (h > 360.0f) h = h - 360.0f;
@@ -71,7 +66,7 @@ float h2_to_rgb(float v1, float v2, float h)
     else                 return v1;
 }
 
-void color::from_hls(const hls& hls)
+void color::from_hls(const hls& hls) noexcept
 {
     a = hls.a;
 
@@ -95,7 +90,7 @@ void color::from_hls(const hls& hls)
     }
 }
 
-color color::luminosity(float f) const
+color color::luminosity(float f) const noexcept
 {
     hls hls = to_hls();
     hls.l = f;
@@ -103,7 +98,7 @@ color color::luminosity(float f) const
     return c;
 }
 
-color color::saturation(float f) const
+color color::saturation(float f) const noexcept
 {
     hls hls = to_hls();
     hls.s = f;
@@ -111,7 +106,7 @@ color color::saturation(float f) const
     return c;
 }
 
-color color::hue(float f) const
+color color::hue(float f) const noexcept
 {
     hls hls = to_hls();
     hls.h = f;
@@ -119,57 +114,57 @@ color color::hue(float f) const
     return c;
 }
 
-bool color::operator == (const color& c) const
+bool color::operator == (const color& c) const noexcept
 {
     return (r == c.r && g == c.g && b == c.b && a == c.a);
 }
 
-bool color::operator != (const color& c) const
+bool color::operator != (const color& c) const noexcept
 {
     return (r != c.r || g != c.g || b != c.b || a != c.a);
 }
 
-void color::operator += (const color& c)
+void color::operator += (const color& c) noexcept
 {
     r += c.r; g += c.g; b += c.b; a += c.a;
 }
 
-void color::operator -= (const color& c)
+void color::operator -= (const color& c) noexcept
 {
     r -= c.r; g -= c.g; b -= c.b; a -= c.a;
 }
 
-void color::operator *= (const color& c)
+void color::operator *= (const color& c) noexcept
 {
     r *= c.r; g *= c.g; b *= c.b; a *= c.a;
 }
 
-void color::operator *= (float f)
+void color::operator *= (float f) noexcept
 {
     r *= f; g *= f; b *= f; a *= f;
 }
 
-color operator + (const color& c1, const color& c2)
+color operator + (const color& c1, const color& c2) noexcept
 {
     return color(c1.r+c2.r, c1.g+c2.g, c1.b+c2.b, c1.a+c2.a);
 }
 
-color operator - (const color& c1, const color& c2)
+color operator - (const color& c1, const color& c2) noexcept
 {
     return color(c1.r-c2.r, c1.g-c2.g, c1.b-c2.b, c1.a-c2.a);
 }
 
-color operator * (const color& c1, const color& c2)
+color operator * (const color& c1, const color& c2) noexcept
 {
     return color(c1.r*c2.r, c1.g*c2.g, c1.b*c2.b, c1.a*c2.a);
 }
 
-color operator * (const color& c1, float f)
+color operator * (const color& c1, float f) noexcept
 {
     return color(c1.r*f, c1.g*f, c1.b*f, c1.a);
 }
 
-color operator * (float f, const color& c2)
+color operator * (float f, const color& c2) noexcept
 {
     return color(f*c2.r, f*c2.g, f*c2.b, c2.a);
 }
