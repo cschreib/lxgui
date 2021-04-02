@@ -1,12 +1,14 @@
 #include "lxgui/impl/input_sfml_source.hpp"
 #include <lxgui/gui_event.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/gui_exception.hpp>
 
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Window/Clipboard.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 using sf::Keyboard;
 using sf::Mouse;
@@ -15,7 +17,7 @@ namespace lxgui {
 namespace input {
 namespace sfml
 {
-source::source(const sf::Window& mWindow, bool bMouseGrab) :
+source::source(sf::Window& mWindow, bool bMouseGrab) :
     mWindow_(mWindow), bMouseGrab_(bMouseGrab)
 {
     if (bMouseGrab_)
@@ -46,6 +48,41 @@ utils::ustring source::get_clipboard_content()
 void source::set_clipboard_content(const utils::ustring& sContent)
 {
     sf::Clipboard::setString(sf::String::fromUtf32(sContent.begin(), sContent.end()));
+}
+
+void source::set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot)
+{
+    auto mIter = lCursorMap_.find(sFileName);
+    if (mIter == lCursorMap_.end())
+    {
+        sf::Image mImage;
+        if (!mImage.loadFromFile(sFileName))
+        {
+            throw gui::exception("input::sfml::source",
+                "Could not load cursor file '" + sFileName + "'.");
+        }
+
+        auto pCursor = std::make_unique<sf::Cursor>();
+        pCursor->loadFromPixels(mImage.getPixelsPtr(), mImage.getSize(),
+            sf::Vector2u(mHotSpot.x, mHotSpot.y));
+        mIter = lCursorMap_.insert(std::make_pair(sFileName, std::move(pCursor))).first;
+    }
+
+    mWindow_.setMouseCursor(*mIter->second);
+}
+
+void source::reset_mouse_cursor()
+{
+    const std::string sName = "system_arrow";
+    auto mIter = lCursorMap_.find(sName);
+    if (mIter == lCursorMap_.end())
+    {
+        auto pCursor = std::make_unique<sf::Cursor>();
+        pCursor->loadFromSystem(sf::Cursor::Arrow);
+        mIter = lCursorMap_.insert(std::make_pair(sName, std::move(pCursor))).first;
+    }
+
+    mWindow_.setMouseCursor(*mIter->second);
 }
 
 key source::from_sfml_(int uiSFKey) const

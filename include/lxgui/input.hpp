@@ -3,6 +3,7 @@
 
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_string.hpp"
+#include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -138,6 +139,16 @@ namespace input
         /** \param sContent The new clipboard content
         */
         virtual void set_clipboard_content(const utils::ustring& sContent) = 0;
+
+        /// Sets the mouse cursor to a given image on disk.
+        /** \param sFileName The cursor image
+        *   \param mHotSpot The pixel position of the tip of the pointer in the image
+        *   \note Use reset_mouse_cursor() to set the cursor back to the default.
+        */
+        virtual void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) = 0;
+
+        /// Sets the mouse cursor back to the default (arrow).
+        virtual void reset_mouse_cursor() = 0;
 
     protected:
 
@@ -466,6 +477,16 @@ namespace input
         /** \param sContent The new clipboard content
         */
         void set_clipboard_content(const utils::ustring& sContent);
+
+        /// Sets the mouse cursor to a given image on disk.
+        /** \param sFileName The cursor image
+        *   \param mHotSpot The pixel position of the tip of the pointer in the image
+        *   \note Use reset_mouse_cursor() to set the cursor back to the default.
+        */
+        void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot);
+
+        /// Sets the mouse cursor back to the default (arrow).
+        void reset_mouse_cursor();
 
         /// Returns the input source.
         /** \return The input source

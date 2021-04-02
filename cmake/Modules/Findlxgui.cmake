@@ -224,11 +224,7 @@ if(LXGUI_FOUND)
     endif()
 
     if(NOT LXGUI_EMSCRIPTEN)
-        if(LXGUI_GUI_SFML_LIBRARY)
-            find_package(SFML 2 COMPONENTS graphics system window)
-        elseif(LXGUI_INPUT_SFML_LIBRARY)
-            find_package(SFML 2 COMPONENTS system window)
-        endif()
+        find_package(SFML 2 COMPONENTS graphics system window)
     endif()
 
     if(LXGUI_GUI_SFML_LIBRARY)
@@ -266,6 +262,7 @@ if(LXGUI_FOUND)
                     ${SFML_INCLUDE_DIR})
                 set(LXGUI_INPUT_SFML_LIBRARIES
                     ${LXGUI_INPUT_SFML_LIBRARY}
+                    ${SFML_GRAPHICS_LIBRARY}
                     ${SFML_WINDOW_LIBRARY}
                     ${SFML_SYSTEM_LIBRARY})
 
@@ -329,7 +326,8 @@ if(LXGUI_FOUND)
                     ${SDL2_INCLUDE_DIRS})
                 set(LXGUI_INPUT_SDL_LIBRARIES
                     ${LXGUI_INPUT_SDL_LIBRARY}
-                    ${SDL2_LIBRARIES})
+                    ${SDL2_LIBRARIES}
+                    ${SDL2_IMAGE_LIBRARIES})
 
                 mark_as_advanced(LXGUI_INPUT_SDL_INCLUDE_DIRS LXGUI_INPUT_SDL_LIBRARIES)
             else()
@@ -341,7 +339,7 @@ if(LXGUI_FOUND)
 
             set(LXGUI_INPUT_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
             set(LXGUI_INPUT_SDL_LIBRARIES ${LXGUI_INPUT_SDL_LIBRARY})
-            set(LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2")
+            set(LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
         endif()
     endif()
 endif()

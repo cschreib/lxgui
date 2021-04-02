@@ -6,8 +6,10 @@
 
 #include <SDL_events.h>
 #include <chrono>
+#include <unordered_map>
 
 struct SDL_Window;
+struct SDL_Cursor;
 
 namespace lxgui {
 namespace input {
@@ -19,8 +21,9 @@ namespace sdl
 
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
+        *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
         */
-        explicit source(SDL_Window* pWindow, bool bMouseGrab = false);
+        explicit source(SDL_Window* pWindow, bool bInitialiseSDLImage, bool bMouseGrab = false);
 
         source(const source&) = delete;
         source& operator = (const source&) = delete;
@@ -32,6 +35,9 @@ namespace sdl
         void set_clipboard_content(const utils::ustring& sContent) override;
 
         void on_sdl_event(const SDL_Event& mEvent);
+
+        void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
+        void reset_mouse_cursor() override;
 
     protected :
 
@@ -51,6 +57,9 @@ namespace sdl
 
         using clock = std::chrono::high_resolution_clock;
         std::array<clock::time_point, MOUSE_BUTTON_NUMBER> lLastClickClock_;
+
+        using wrapped_cursor = std::unique_ptr<SDL_Cursor, void(*)(SDL_Cursor*)>;
+        std::unordered_map<std::string,wrapped_cursor> lCursorMap_;
     };
 }
 }

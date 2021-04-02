@@ -759,6 +759,16 @@ void manager::set_clipboard_content(const utils::ustring& sContent)
     return pSource_->set_clipboard_content(sContent);
 }
 
+void manager::set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot)
+{
+    return pSource_->set_mouse_cursor(sFileName, mHotSpot);
+}
+
+void manager::reset_mouse_cursor()
+{
+    return pSource_->reset_mouse_cursor();
+}
+
 void manager::fire_event_(const gui::event& mEvent, bool bForce)
 {
     bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;

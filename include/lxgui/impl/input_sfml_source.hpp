@@ -4,6 +4,9 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/input.hpp>
 #include <SFML/System/Clock.hpp>
+#include <SFML/Window/Cursor.hpp>
+
+#include <unordered_map>
 
 namespace sf {
     class Window;
@@ -21,7 +24,7 @@ namespace sfml
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
         */
-        explicit source(const sf::Window& pWindow, bool bMouseGrab = false);
+        explicit source(sf::Window& pWindow, bool bMouseGrab = false);
 
         source(const source&) = delete;
         source& operator = (const source&) = delete;
@@ -34,6 +37,9 @@ namespace sfml
 
         void on_sfml_event(const sf::Event& mEvent);
 
+        void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
+        void reset_mouse_cursor() override;
+
     protected :
 
         void update_() override;
@@ -42,7 +48,7 @@ namespace sfml
 
         input::key from_sfml_(int uiSFKey) const;
 
-        const sf::Window& mWindow_;
+        sf::Window& mWindow_;
 
         bool bMouseGrab_ = false;
         bool bFirst_ = true;
@@ -51,6 +57,8 @@ namespace sfml
         float fWheelCache_ = 0.0f;
 
         std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
+
+        std::unordered_map<std::string,std::unique_ptr<sf::Cursor>> lCursorMap_;
     };
 }
 }

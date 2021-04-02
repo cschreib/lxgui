@@ -1,20 +1,32 @@
 #include "lxgui/impl/input_sdl_source.hpp"
 #include <lxgui/gui_event.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/gui_exception.hpp>
 
 #include <SDL_keycode.h>
 #include <SDL_mouse.h>
 #include <SDL_video.h>
 #include <SDL_clipboard.h>
+#include <SDL_image.h>
 
 namespace lxgui {
 namespace input {
 namespace sdl
 {
-source::source(SDL_Window* pWindow, bool bMouseGrab) :
+source::source(SDL_Window* pWindow, bool bInitialiseSDLImage, bool bMouseGrab) :
     pWindow_(pWindow), bMouseGrab_(bMouseGrab)
 {
     mMouse_.bHasDelta = true;
+
+    if (bInitialiseSDLImage)
+    {
+        int iImgFlags = IMG_INIT_PNG;
+        if ((IMG_Init(iImgFlags) & iImgFlags) == 0)
+        {
+            throw gui::exception("input::sdl::source", "Could not initialise SDL_image: "+
+                std::string(IMG_GetError())+".");
+        }
+    }
 }
 
 void source::toggle_mouse_grab()
@@ -48,6 +60,39 @@ utils::ustring source::get_clipboard_content()
 void source::set_clipboard_content(const utils::ustring& sContent)
 {
     SDL_SetClipboardText(utils::unicode_to_utf8(sContent).c_str());
+}
+
+void source::set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot)
+{
+    auto mIter = lCursorMap_.find(sFileName);
+    if (mIter == lCursorMap_.end())
+    {
+        // Load file
+        SDL_Surface* pSurface = IMG_Load(sFileName.c_str());
+        if (pSurface == nullptr)
+        {
+            throw gui::exception("input::sdl::source", "Could not load image file "+sFileName+".");
+        }
+
+        auto pCursor = wrapped_cursor(SDL_CreateColorCursor(pSurface, mHotSpot.x, mHotSpot.y), &SDL_FreeCursor);
+        mIter = lCursorMap_.insert(std::make_pair(sFileName, std::move(pCursor))).first;
+        SDL_FreeSurface(pSurface);
+    }
+
+    SDL_SetCursor(mIter->second.get());
+}
+
+void source::reset_mouse_cursor()
+{
+    const std::string sName = "system_arrow";
+    auto mIter = lCursorMap_.find(sName);
+    if (mIter == lCursorMap_.end())
+    {
+        auto pCursor = wrapped_cursor(SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW), &SDL_FreeCursor);
+        mIter = lCursorMap_.insert(std::make_pair(sName, std::move(pCursor))).first;
+    }
+
+    SDL_SetCursor(mIter->second.get());
 }
 
 key source::from_sdl_(int iSDLKey) const

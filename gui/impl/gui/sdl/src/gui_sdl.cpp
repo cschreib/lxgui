@@ -14,9 +14,9 @@ std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, SDL_Renderer* 
     SDL_GetWindowSize(pWindow, &iWidth, &iHeight);
 
     return std::unique_ptr<gui::manager>(new gui::manager(
-        std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow)),
+        std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow, bInitialiseSDLImage)),
         sLocale, iWidth, iHeight,
-        std::unique_ptr<gui::renderer_impl>(new gui::sdl::renderer(pRenderer, bInitialiseSDLImage))
+        std::unique_ptr<gui::renderer_impl>(new gui::sdl::renderer(pRenderer, false))
     ));
 }
 }
