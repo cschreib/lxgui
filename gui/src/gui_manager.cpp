@@ -819,21 +819,21 @@ void manager::reload_ui()
 
 void manager::render_ui() const
 {
+    begin();
+
     if (bEnableCaching_)
     {
-        begin();
         mSprite_.render(0, 0);
-        end();
     }
     else
     {
-        begin();
         for (const auto& mStrata : lStrataList_)
         {
             render_strata_(mStrata);
         }
-        end();
     }
+
+    end();
 }
 
 void manager::create_caching_render_target_()
