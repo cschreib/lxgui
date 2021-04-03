@@ -1,6 +1,7 @@
 #ifndef LXGUI_LUAPP_EXCEPTION_HPP
 #define LXGUI_LUAPP_EXCEPTION_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils_exception.hpp>
 
 namespace lxgui {

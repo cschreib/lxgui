@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_STATUSBAR_HPP
 #define LXGUI_GUI_STATUSBAR_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_color.hpp"

@@ -1,5 +1,6 @@
 #ifndef LXGUI_GUI_UIOBJECT_TPL_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/luapp_state.hpp>
 
 namespace lxgui {

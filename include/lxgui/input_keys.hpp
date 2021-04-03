@@ -1,6 +1,8 @@
 #ifndef LXGUI_KEYS_HPP
 #define LXGUI_KEYS_HPP
 
+#include <lxgui/lxgui.hpp>
+
 namespace lxgui {
 namespace input
 {

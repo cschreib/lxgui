@@ -10,6 +10,7 @@
 #ifndef LXGUI_GUI_SPRITE_HPP
 #define LXGUI_GUI_SPRITE_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 
 #include "lxgui/gui_vector2.hpp"

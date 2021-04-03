@@ -1,6 +1,8 @@
 #ifndef LXGUI_lunar_h
 #define LXGUI_lunar_h
 
+#include <lxgui/lxgui.hpp>
+
 extern "C" {
 #include <lua.h>
 #include <lauxlib.h>

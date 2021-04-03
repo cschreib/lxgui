@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_EDITBOX_HPP
 #define LXGUI_GUI_EDITBOX_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
 #include "lxgui/input_keys.hpp"

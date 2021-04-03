@@ -1,6 +1,8 @@
 #ifndef LXGUI_SORTED_VECTOR_HPP
 #define LXGUI_SORTED_VECTOR_HPP
 
+#include <lxgui/lxgui.hpp>
+
 #include <vector>
 #include <algorithm>
 #include <functional>

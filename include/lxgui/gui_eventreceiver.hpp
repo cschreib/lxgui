@@ -1,7 +1,9 @@
 #ifndef LXGUI_GUI_EVENTRECEIVER_HPP
 #define LXGUI_GUI_EVENTRECEIVER_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+
 #include <string>
 
 namespace lxgui {

@@ -1,6 +1,7 @@
 #ifndef LXGUI_LUAPP_STATE_HPP
 #define LXGUI_LUAPP_STATE_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/lunar.hpp"
 
 #include <lxgui/utils.hpp>

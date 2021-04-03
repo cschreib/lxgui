@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_TEXTURE_HPP
 #define LXGUI_GUI_TEXTURE_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_gradient.hpp"

@@ -1,9 +1,11 @@
 #ifndef LXGUI_GUI_VECTOR2_HPP
 #define LXGUI_GUI_VECTOR2_HPP
 
+#include <lxgui/lxgui.hpp>
+#include <lxgui/utils.hpp>
+
 #include <cmath>
 #include <iosfwd>
-#include <lxgui/utils.hpp>
 
 namespace lxgui {
 namespace gui

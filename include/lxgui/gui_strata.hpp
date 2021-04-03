@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_STRATA_HPP
 #define LXGUI_GUI_STRATA_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_sprite.hpp"
 

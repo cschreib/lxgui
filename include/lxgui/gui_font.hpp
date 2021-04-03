@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_FONT_HPP
 #define LXGUI_GUI_FONT_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_quad2.hpp"

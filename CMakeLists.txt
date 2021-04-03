@@ -140,10 +140,6 @@ elseif (WINDOWS)
     add_definitions(-DWIN32)
 endif()
 
-if(${LXGUI_OPENGL3})
-    add_definitions(-DLXGUI_OPENGL3)
-endif()
-
 # find libraries
 cmake_policy(SET CMP0072 "NEW")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -160,11 +156,10 @@ find_package(SDL2_image)
 find_package(SDL2_ttf)
 endif()
 if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_LESS 5.2)
-    add_definitions(-DLXGUI_LUA51)
+    set(LXGUI_LUA51 TRUE)
 endif()
 
 set(SOL_SAFE_NUMERICS TRUE)
-add_definitions(-DSOL_SAFE_NUMERICS=1)
 
 # add the subdirectories
 add_subdirectory(utils)

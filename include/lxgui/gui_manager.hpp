@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_MANAGER_HPP
 #define LXGUI_GUI_MANAGER_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"

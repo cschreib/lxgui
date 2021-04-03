@@ -1,7 +1,9 @@
 #ifndef LXGUI_GUI_EVENTMANAGER_HPP
 #define LXGUI_GUI_EVENTMANAGER_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+
 #include <string>
 #include <vector>
 #include <list>

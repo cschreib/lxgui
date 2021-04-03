@@ -1,6 +1,7 @@
 #ifndef LXGUI_UTILS_STRING_HPP
 #define LXGUI_UTILS_STRING_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_variant.hpp"
 

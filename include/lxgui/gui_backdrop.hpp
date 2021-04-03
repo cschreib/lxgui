@@ -1,9 +1,12 @@
 #ifndef LXGUI_GUI_BACKDROP_HPP
 #define LXGUI_GUI_BACKDROP_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_quad2.hpp"
+
+#include <string>
 
 namespace lxgui {
 namespace gui

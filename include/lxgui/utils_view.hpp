@@ -1,6 +1,8 @@
 #ifndef LXGUI_UTILS_VIEW_HPP
 #define LXGUI_UTILS_VIEW_HPP
 
+#include <lxgui/lxgui.hpp>
+
 #include <utility>
 
 namespace lxgui {

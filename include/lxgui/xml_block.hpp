@@ -1,10 +1,12 @@
 #ifndef LXGUI_XML_BLOCK_HPP
 #define LXGUI_XML_BLOCK_HPP
 
+#include <lxgui/lxgui.hpp>
+#include <lxgui/utils.hpp>
+
 #include <string>
 #include <vector>
 #include <map>
-#include <lxgui/utils.hpp>
 
 namespace lxgui {
 namespace xml

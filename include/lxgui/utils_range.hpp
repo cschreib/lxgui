@@ -1,6 +1,8 @@
 #ifndef LXGUI_UTILS_RANGE_HPP
 #define LXGUI_UTILS_RANGE_HPP
 
+#include <lxgui/lxgui.hpp>
+
 #include <type_traits>
 
 namespace lxgui {

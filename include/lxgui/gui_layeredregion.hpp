@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_LAYEREDREGION_HPP
 #define LXGUI_GUI_LAYEREDREGION_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_region.hpp"
 

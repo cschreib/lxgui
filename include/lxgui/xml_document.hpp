@@ -1,7 +1,9 @@
 #ifndef LXGUI_XML_DOCUMENT_HPP
 #define LXGUI_XML_DOCUMENT_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/xml_block.hpp"
+
 #include <iostream>
 
 namespace lxgui {

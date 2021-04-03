@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_EVENT_HPP
 #define LXGUI_GUI_EVENT_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils_variant.hpp>
 
 #include <string>

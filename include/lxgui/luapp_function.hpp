@@ -1,6 +1,7 @@
 #ifndef LXGUI_LUAPP_FUNCTION_HPP
 #define LXGUI_LUAPP_FUNCTION_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils_variant.hpp>
 
 #include <map>

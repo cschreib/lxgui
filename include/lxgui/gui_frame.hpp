@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_FRAME_HPP
 #define LXGUI_GUI_FRAME_HPP
 
+#include <lxgui/lxgui.hpp>
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"

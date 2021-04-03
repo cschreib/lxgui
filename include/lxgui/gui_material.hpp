@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_MATERIAL_HPP
 #define LXGUI_GUI_MATERIAL_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 
 namespace lxgui {
