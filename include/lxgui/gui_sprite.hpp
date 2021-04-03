@@ -13,8 +13,10 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 
+#include "lxgui/gui_vertex.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_color.hpp"
+#include "lxgui/gui_material.hpp"
 #include "lxgui/gui_material.hpp"
 
 #include <array>
@@ -27,13 +29,6 @@ namespace gui
     class renderer;
     class render_target;
     class material;
-
-    struct vertex
-    {
-        vector2f pos;
-        vector2f uvs;
-        color    col;
-    };
 
     enum class blend_mode
     {
