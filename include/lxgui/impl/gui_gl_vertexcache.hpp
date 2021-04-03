@@ -18,10 +18,13 @@ namespace gl
     public :
 
         /// Constructor.
-        /** \param uiWidth  The width of the vertex_cache
-        *   \param uiHeight The height of the vertex_cache
+        /** \param pMaterial  The material to use to render the vertices
+        *   \param uiSizeHint An estimate of how much data will be stored in this cache
+        *   \details A default constructed vertex cache holds no data. Use update()
+        *            to store vertices to be rendered. The size hint can enable the cache to be
+        *            pre-allocated, which will avoid a reallocation when update() is called.
         */
-        vertex_cache(std::shared_ptr<gui::material> pMaterial);
+        explicit vertex_cache(std::shared_ptr<gui::material> pMaterial, uint uiSizeHint);
 
         /// Destructor.
         ~vertex_cache() override;
@@ -44,8 +47,16 @@ namespace gl
         */
         void update_indices(const std::vector<uint>& lVertexIndices) override;
 
+        /// Renders the cache.
+        /** \note This does not bind the material, just binds the cache and renders it
+        *         with whatever shader / texture is currently bound.
+        */
+        void render();
+
     private :
 
+        uint uiCurrentSizeVertex_ = 0u;
+        uint uiCurrentSizeIndex_ = 0u;
         uint uiVertexArray_ = (uint)-1;
         uint uiVertexBuffer_ = (uint)-1;
         uint uiIndexBuffer_ = (uint)-1;

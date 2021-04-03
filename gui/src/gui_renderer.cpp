@@ -191,9 +191,9 @@ bool renderer::has_vertex_cache() const
     return pImpl_->has_vertex_cache();
 }
 
-std::shared_ptr<vertex_cache> renderer::create_vertex_cache(std::shared_ptr<material> pMaterial) const
+std::shared_ptr<vertex_cache> renderer::create_vertex_cache(std::shared_ptr<material> pMaterial, uint uiSizeHint) const
 {
-    return pImpl_->create_vertex_cache(std::move(pMaterial));
+    return pImpl_->create_vertex_cache(std::move(pMaterial), uiSizeHint);
 }
 
 void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)

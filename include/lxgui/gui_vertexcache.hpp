@@ -38,9 +38,9 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param pMaterial The material to use to render the vertices.
-            \details A default constructed vertex cache holds no data. Use update()
-            to store vertices to be rendered.
+        /** \param pMaterial  The material to use to render the vertices
+        *   \details A default constructed vertex cache holds no data. Use update()
+        *            to store vertices to be rendered.
         */
         explicit vertex_cache(std::shared_ptr<material> pMaterial);
 
