@@ -72,60 +72,63 @@ $(function() {
 <a href="gui__eventreceiver_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_GUI_EVENTRECEIVER_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_EVENTRECEIVER_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">class </span>event;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">class </span>event_manager;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">class </span>event;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">class </span>event_manager;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__receiver.html">   19</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1event__receiver.html">event_receiver</a></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    public :</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a6f4bf54e29735c9c04277bff27264415">event_receiver</a>(<a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pManager = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a1b18b71a7d96719923b647396e3679f6">~event_receiver</a>();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__receiver.html">   21</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1event__receiver.html">event_receiver</a></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    public :</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a6f4bf54e29735c9c04277bff27264415">event_receiver</a>(<a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pManager = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a1b18b71a7d96719923b647396e3679f6">~event_receiver</a>();</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a62700a1784f8bb5b09f01b10e0fb92d3">on_event</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1event.html">event</a>&amp; mEvent) = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a62700a1784f8bb5b09f01b10e0fb92d3">on_event</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1event.html">event</a>&amp; mEvent) = 0;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">register_event</a>(<span class="keyword">const</span> std::string&amp; sEventName);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">register_event</a>(<span class="keyword">const</span> std::string&amp; sEventName);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">unregister_event</a>(<span class="keyword">const</span> std::string&amp; sEventName);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    protected :</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">unregister_event</a>(<span class="keyword">const</span> std::string&amp; sEventName);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a9f2b80df38bb508370684591a440d539">set_event_manager</a>(<a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pManager);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    protected :</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    private :</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a9f2b80df38bb508370684591a440d539">set_event_manager</a>(<a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pManager);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pEventManager_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    };</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;}</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    private :</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>* pEventManager_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    };</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;}</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a62700a1784f8bb5b09f01b10e0fb92d3"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a62700a1784f8bb5b09f01b10e0fb92d3">lxgui::gui::event_receiver::on_event</a></div><div class="ttdeci">virtual void on_event(const event &amp;mEvent)=0</div><div class="ttdoc">Called whenever an Event occurs.</div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html">lxgui::gui::event_receiver</a></div><div class="ttdoc">Abstract interface for event handling.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8hpp_source.html#l00019">gui_eventreceiver.hpp:19</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html">lxgui::gui::event</a></div><div class="ttdoc">Represents a generic event and associated information.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8hpp_source.html#l00013">gui_event.hpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html">lxgui::gui::event_receiver</a></div><div class="ttdoc">Abstract interface for event handling.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8hpp_source.html#l00021">gui_eventreceiver.hpp:21</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html">lxgui::gui::event</a></div><div class="ttdoc">Represents a generic event and associated information.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8hpp_source.html#l00014">gui_event.hpp:14</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a34f7791f5875f6f86428782ea1719b1b"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">lxgui::gui::event_receiver::register_event</a></div><div class="ttdeci">virtual void register_event(const std::string &amp;sEventName)</div><div class="ttdoc">Enables reaction to an Event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00018">gui_eventreceiver.cpp:18</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a6f4bf54e29735c9c04277bff27264415"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a6f4bf54e29735c9c04277bff27264415">lxgui::gui::event_receiver::event_receiver</a></div><div class="ttdeci">event_receiver(event_manager *pManager=nullptr)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00007">gui_eventreceiver.cpp:7</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a1b18b71a7d96719923b647396e3679f6"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a1b18b71a7d96719923b647396e3679f6">lxgui::gui::event_receiver::~event_receiver</a></div><div class="ttdeci">virtual ~event_receiver()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00012">gui_eventreceiver.cpp:12</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html">lxgui::gui::event_manager</a></div><div class="ttdoc">Manages events and their responses.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8hpp_source.html#l00016">gui_eventmanager.hpp:16</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html">lxgui::gui::event_manager</a></div><div class="ttdoc">Manages events and their responses.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8hpp_source.html#l00018">gui_eventmanager.hpp:18</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a0ae0c8fa099950863dbe6f2ba214ba07"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">lxgui::gui::event_receiver::unregister_event</a></div><div class="ttdeci">virtual void unregister_event(const std::string &amp;sEventName)</div><div class="ttdoc">Disables reaction to an Event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00024">gui_eventreceiver.cpp:24</a></div></div>
+<div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a9f2b80df38bb508370684591a440d539"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a9f2b80df38bb508370684591a440d539">lxgui::gui::event_receiver::set_event_manager</a></div><div class="ttdeci">void set_event_manager(event_manager *pManager)</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00030">gui_eventreceiver.cpp:30</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 08:17:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 3 2021 13:19:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

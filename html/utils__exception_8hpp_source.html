@@ -72,52 +72,55 @@ $(function() {
 <a href="utils__exception_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_UTILS_EXCEPTION_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_UTILS_EXCEPTION_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>utils</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html">   11</a></span>&#160;<span class="keyword">class </span><a class="code" href="classlxgui_1_1utils_1_1exception.html">exception</a> : <span class="keyword">public</span> std::exception</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;public :</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>utils</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="classlxgui_1_1utils_1_1exception.html">exception</a> : <span class="keyword">public</span> std::exception</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;public :</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html">exception</a>&amp; mOther) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html">exception</a>&amp; mOther) = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> std::string&amp; sMessage);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> std::string&amp; sMessage);</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> std::string&amp; sClassName, <span class="keyword">const</span> std::string&amp; sMessage);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">exception</a>(<span class="keyword">const</span> std::string&amp; sClassName, <span class="keyword">const</span> std::string&amp; sMessage);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="classlxgui_1_1utils_1_1exception.html#a872af70bf9eed2161455cffe35e99e4b">get_description</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> std::string&amp; <a class="code" href="classlxgui_1_1utils_1_1exception.html#a872af70bf9eed2161455cffe35e99e4b">get_description</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classlxgui_1_1utils_1_1exception.html#a1061905e447a47cb03c492acee5163dc">what</a>() <span class="keyword">const</span> noexcept <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;protected :</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code" href="classlxgui_1_1utils_1_1exception.html#a1061905e447a47cb03c492acee5163dc">what</a>() <span class="keyword">const</span> noexcept <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">   48</a></span>&#160;    std::string <a class="code" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">sMessage_</a> = <span class="stringliteral">&quot;Undefined exception.&quot;</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;protected :</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">   50</a></span>&#160;    std::string <a class="code" href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">sMessage_</a> = <span class="stringliteral">&quot;Undefined exception.&quot;</span>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;};</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a872af70bf9eed2161455cffe35e99e4b"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a872af70bf9eed2161455cffe35e99e4b">lxgui::utils::exception::get_description</a></div><div class="ttdeci">const std::string &amp; get_description() const</div><div class="ttdoc">Returns the message of the exception.</div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html">lxgui::utils::exception</a></div><div class="ttdoc">Exception class.</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8hpp_source.html#l00011">utils_exception.hpp:11</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html">lxgui::utils::exception</a></div><div class="ttdoc">Exception class.</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8hpp_source.html#l00013">utils_exception.hpp:13</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a1061905e447a47cb03c492acee5163dc"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a1061905e447a47cb03c492acee5163dc">lxgui::utils::exception::what</a></div><div class="ttdeci">const char * what() const noexcept override</div><div class="ttdoc">Override std::exception::what()</div></div>
-<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a81da9cf74e44e0ca656eec3ba46a72b7"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">lxgui::utils::exception::sMessage_</a></div><div class="ttdeci">std::string sMessage_</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8hpp_source.html#l00048">utils_exception.hpp:48</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a81da9cf74e44e0ca656eec3ba46a72b7"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a81da9cf74e44e0ca656eec3ba46a72b7">lxgui::utils::exception::sMessage_</a></div><div class="ttdeci">std::string sMessage_</div><div class="ttdef"><b>Definition:</b> <a href="utils__exception_8hpp_source.html#l00050">utils_exception.hpp:50</a></div></div>
+<div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1utils_1_1exception_html_a7f943854fa5d934d0308744a0ab9f69a"><div class="ttname"><a href="classlxgui_1_1utils_1_1exception.html#a7f943854fa5d934d0308744a0ab9f69a">lxgui::utils::exception::exception</a></div><div class="ttdeci">exception()=default</div><div class="ttdoc">Default exception.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 08:17:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 3 2021 13:19:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
