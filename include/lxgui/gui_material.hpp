@@ -39,6 +39,11 @@ namespace gui
         /// Destructor.
         virtual ~material() = default;
 
+        /// Returns the type of this material (texture or color).
+        /** \return The type of this material (texture or color)
+        */
+        virtual type get_type() const = 0;
+
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)
         */

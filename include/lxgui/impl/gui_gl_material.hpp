@@ -57,7 +57,7 @@ namespace gl
         /// Returns the type of this texture (texture or color).
         /** \return The type of this texture (texture or color)
         */
-        type get_type() const;
+        type get_type() const override;
 
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)
