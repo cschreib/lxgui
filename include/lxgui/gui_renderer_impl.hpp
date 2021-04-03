@@ -13,6 +13,7 @@ namespace gui
 {
     class manager;
     class material;
+    class vertex_cache;
     class font;
     class render_target;
     class color;
@@ -114,6 +115,17 @@ namespace gui
         *         from using any other font type, including bitmap fonts.
         */
         virtual std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
+
+        /// Checks if the renderer supports vertex caches.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        virtual bool has_vertex_cache() const = 0;
+
+        /// Creates a new empty vertex cache.
+        /** \param pMaterial The material to use to render the vertices
+        *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        */
+        virtual std::shared_ptr<vertex_cache> create_vertex_cache(std::shared_ptr<material> pMaterial) const = 0;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width

@@ -114,6 +114,17 @@ namespace sdl
         */
         std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
+        /// Checks if the renderer supports vertex caches.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        bool has_vertex_cache() const override;
+
+        /// Creates a new empty vertex cache.
+        /** \param pMaterial The material to use to render the vertices
+        *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        */
+        std::shared_ptr<gui::vertex_cache> create_vertex_cache(std::shared_ptr<gui::material> pMaterial) const override;
+
     private :
 
         SDL_Renderer* pRenderer_ = nullptr;

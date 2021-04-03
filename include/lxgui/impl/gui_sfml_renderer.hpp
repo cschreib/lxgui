@@ -104,6 +104,17 @@ namespace sfml
         */
         std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
 
+        /// Checks if the renderer supports vertex caches.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        bool has_vertex_cache() const override;
+
+        /// Creates a new empty vertex cache.
+        /** \param pMaterial The material to use to render the vertices
+        *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        */
+        std::shared_ptr<gui::vertex_cache> create_vertex_cache(std::shared_ptr<gui::material> pMaterial) const override;
+
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width
         *   \param uiNewHeight The new window height

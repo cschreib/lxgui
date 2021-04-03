@@ -186,6 +186,16 @@ std::shared_ptr<font> renderer::create_font(const std::string& sFontFile, uint u
     return pImpl_->create_font(sFontFile, uiSize);
 }
 
+bool renderer::has_vertex_cache() const
+{
+    return pImpl_->has_vertex_cache();
+}
+
+std::shared_ptr<vertex_cache> renderer::create_vertex_cache(std::shared_ptr<material> pMaterial) const
+{
+    return pImpl_->create_vertex_cache(std::move(pMaterial));
+}
+
 void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
 {
     int iNewLevel = pFrame->get_level();

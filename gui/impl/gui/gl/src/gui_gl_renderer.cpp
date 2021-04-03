@@ -2,6 +2,7 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
+#include "lxgui/impl/gui_gl_vertexcache.hpp"
 
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_out.hpp>
@@ -379,6 +380,16 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     std::shared_ptr<gui::font> pFont = std::make_shared<gl::font>(sFontFile, uiSize);
     lFontList_[sFontName] = pFont;
     return pFont;
+}
+
+bool renderer::has_vertex_cache() const
+{
+    return true;
+}
+
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(std::shared_ptr<gui::material> pMaterial) const
+{
+    return std::make_shared<gl::vertex_cache>(std::move(pMaterial));
 }
 
 void renderer::notify_window_resized(uint, uint)

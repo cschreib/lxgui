@@ -7,6 +7,7 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_renderer_png.cpp
     ${SRCROOT}/gui_gl_material.cpp
     ${SRCROOT}/gui_gl_rendertarget.cpp
+    ${SRCROOT}/gui_gl_vertexcache.cpp
 )
 
 target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)

@@ -577,6 +577,16 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     return pFont;
 }
 
+bool renderer::has_vertex_cache() const
+{
+    return false;
+}
+
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(std::shared_ptr<gui::material>) const
+{
+    throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
+}
+
 }
 }
 }

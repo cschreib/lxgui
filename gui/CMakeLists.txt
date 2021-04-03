@@ -58,6 +58,7 @@ add_library(lxgui
     ${SRCROOT}/gui_uiobject.cpp
     ${SRCROOT}/gui_uiobject_glues.cpp
     ${SRCROOT}/gui_uiobject_parser.cpp
+    ${SRCROOT}/gui_vertexcache.cpp
     ${SRCROOT}/input.cpp
 )
 
