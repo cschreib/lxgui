@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_vertexcache.hpp"
 
 #include <vector>
 #include <memory>
@@ -12,8 +13,6 @@ namespace lxgui {
 namespace gui
 {
     class manager;
-    class material;
-    class vertex_cache;
     class font;
     class render_target;
     class color;
@@ -137,12 +136,12 @@ namespace gui
         virtual bool has_vertex_cache() const = 0;
 
         /// Creates a new empty vertex cache.
-        /** \param uiSizeHint An estimate of how much data will be stored in this cache
+        /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
         *         The size hint can enable the cache to be pre-allocated, which will avoid a
         *         reallocation when data is pushed to the cache.
         */
-        virtual std::shared_ptr<vertex_cache> create_vertex_cache(uint uiSizeHint) const = 0;
+        virtual std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const = 0;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width

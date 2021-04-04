@@ -35,45 +35,34 @@ namespace gui
     {
     public :
 
+        /// The type of vertex data contained in a vertex_cache.
+        enum class type
+        {
+            TRIANGLES, /// 3 vertices per element
+            QUADS      /// 4 vertices per element
+        };
+
         /// Constructor.
-        /** \details A default constructed vertex cache holds no data. Use update()
+        /** \param mType The type of data this cache will hold
+        *   \details A default constructed vertex cache holds no data. Use update()
         *            to store vertices to be rendered.
         */
-        vertex_cache() = default;
+        explicit vertex_cache(type mType);
 
         /// Destructor.
         virtual ~vertex_cache() = default;
 
-        /// Update the data stored in the cache, reusing existing indices.
+        /// Update the data stored in the cache to form new triangles.
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache
+        *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
+        *         If the type if QUADS, uiNumVertex must be a multiple of 4.
         */
-        virtual void update_data(const vertex* lVertexData, uint uiNumVertex) = 0;
+        virtual void update(const vertex* lVertexData, uint uiNumVertex) = 0;
 
-        /// Update the indices stored in the cache, reusing existing data.
-        /** \param lVertexIndices The indices to use for drawing triangles
-        *   \param uiNumIndices The number of indices to cache
-        */
-        virtual void update_indices(const uint* lVertexIndices, uint uiNumIndices) = 0;
+    protected:
 
-        /// Update the indices stored in the cache, but only if the current index cache is smaller.
-        /** \param lVertexIndices The indices to use for drawing triangles
-        *   \param uiNumIndices The number of indices to cache
-        *   \note This function assumes that the index buffer is always initialised with
-        *         valid indices, and that only the *number* of indices changes. Indices that
-        *         were set in previous calls of update_indices() are assumed to not change
-        *         value.
-        */
-        virtual void update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices) = 0;
-
-        /// Update the data and indices stored in the cache to form new quads.
-        /** \param lVertexData The vertices to cache
-        *   \param uiNumVertex The number of vertices to cache (must be a nultiple of 4)
-        *   \note This function assumes that vertices are stored as quads, i.e.,
-        *         top-left, top-right, bottom-right, bottom-left. The function will
-        *         automatically take care of setting the indices for this format.
-        */
-        void update_quads(const vertex* lVertexData, uint uiNumVertex);
+        type mType_ = type::TRIANGLES;
     };
 }
 }

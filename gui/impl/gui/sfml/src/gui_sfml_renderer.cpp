@@ -226,7 +226,7 @@ bool renderer::has_vertex_cache() const
     return false;
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(uint) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 }

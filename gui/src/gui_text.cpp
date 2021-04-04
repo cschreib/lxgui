@@ -839,7 +839,7 @@ void text::update_() const
     if (pRenderer_->has_vertex_cache())
     {
         if (!pVertexCache_)
-            pVertexCache_ = pRenderer_->create_vertex_cache(lQuadList_.size()*4);
+            pVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
 
         std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
         for (auto& mQuad : lQuadsCopy)
@@ -851,7 +851,7 @@ void text::update_() const
             }
         }
 
-        pVertexCache_->update_quads(lQuadsCopy[0].data(), lQuadsCopy.size()*4);
+        pVertexCache_->update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);
     }
 
     bUpdateCache_ = false;

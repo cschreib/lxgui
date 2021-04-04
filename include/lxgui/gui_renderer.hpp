@@ -5,6 +5,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_matrix4.hpp"
 
@@ -13,7 +14,6 @@ namespace gui
 {
     class frame;
     class font;
-    class vertex_cache;
     class color;
     class renderer_impl;
 
@@ -202,12 +202,12 @@ namespace gui
         bool has_vertex_cache() const;
 
         /// Creates a new empty vertex cache.
-        /** \param uiSizeHint An estimate of how much data will be stored in this cache
+        /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
         *         The size hint can enable the cache to be pre-allocated, which will avoid a
         *         reallocation when data is pushed to the cache.
         */
-        std::shared_ptr<vertex_cache> create_vertex_cache(uint uiSizeHint = 0u) const;
+        std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const;
 
     protected :
 

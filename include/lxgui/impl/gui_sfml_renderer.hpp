@@ -125,12 +125,12 @@ namespace sfml
         bool has_vertex_cache() const override;
 
         /// Creates a new empty vertex cache.
-        /** \param uiSizeHint An estimate of how much data will be stored in this cache
+        /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
         *         The size hint can enable the cache to be pre-allocated, which will avoid a
         *         reallocation when data is pushed to the cache.
         */
-        std::shared_ptr<gui::vertex_cache> create_vertex_cache(uint uiSizeHint) const override;
+        std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const override;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width

@@ -253,7 +253,7 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
     // Update vertex data
-    pCache->update_quads(lQuadList[0].data(), lQuadList.size()*4);
+    pCache->update(lQuadList[0].data(), lQuadList.size()*4);
 
     // Render
     render_cache(mMaterial, *pCache, matrix4f::IDENTITY);
@@ -357,12 +357,12 @@ bool renderer::has_vertex_cache() const
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(uint uiSizeHint) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
 {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    return std::make_shared<gl::vertex_cache>(uiSizeHint);
+    return std::make_shared<gl::vertex_cache>(mType);
 #endif
 }
 
@@ -567,10 +567,12 @@ void renderer::setup_buffers_()
 
     for (uint i = 0; i < CACHE_CYCLE_SIZE; ++i)
     {
-        pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(4u));
+        pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(
+            vertex_cache::type::QUADS));
         pQuadCache_[i]->update_indices(lQuadIDs.data(), lQuadIDs.size());
 
-        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(uiNumArrayIndices));
+        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(
+            vertex_cache::type::QUADS));
         pArrayCache_[i]->update_indices(lRepeatedIds.data(), lRepeatedIds.size());
     }
 }

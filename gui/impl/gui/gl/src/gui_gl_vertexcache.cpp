@@ -1,6 +1,7 @@
 #include "lxgui/impl/gui_gl_vertexcache.hpp"
 
 #include <lxgui/gui_exception.hpp>
+#include <lxgui/utils_string.hpp>
 
 #if defined(WIN32)
     #define NOMINMAX
@@ -29,8 +30,7 @@ namespace gui {
 namespace gl
 {
 
-vertex_cache::vertex_cache(uint uiSizeHint) :
-    uiCurrentCapacityVertex_(uiSizeHint), uiCurrentCapacityIndex_(uiSizeHint)
+vertex_cache::vertex_cache(type mType) : gui::vertex_cache(mType)
 {
     glGenVertexArrays(1, &uiVertexArray_);
 
@@ -49,17 +49,7 @@ vertex_cache::vertex_cache(uint uiSizeHint) :
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
 
-    if (uiSizeHint != 0u)
-    {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * uiSizeHint, nullptr, GL_DYNAMIC_DRAW);
-    }
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
-
-    if (uiSizeHint != 0u)
-    {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * uiSizeHint, nullptr, GL_DYNAMIC_DRAW);
-    }
 
     glBindVertexArray(0);
 }
@@ -116,6 +106,69 @@ void vertex_cache::update_indices_if_grow(const uint* lVertexIndices, uint uiNum
     {
         // Cheap resize, do not update indices
         uiCurrentSizeIndex_ = uiNumIndices;
+    }
+}
+
+void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
+{
+    if (mType_ == type::QUADS)
+    {
+        static constexpr std::array<uint, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
+        static thread_local std::vector<uint> lRepeatedIds;
+
+        if (uiNumVertex % 4 != 0)
+        {
+            throw gui::exception("gui::gl::vertex_cache",
+                "Number of vertices in quad array must be a multiple of 4 "
+                "(got "+utils::to_string(uiNumVertex)+").");
+        }
+
+        // Update the vertex data
+        update_data(lVertexData, uiNumVertex);
+
+        // Update the repeated quads IDs array if it needs to grow
+        uint uiNumIndices = (uiNumVertex/4u)*6u;
+        if (uiNumIndices > lRepeatedIds.size())
+        {
+            uint uiOldSize = lRepeatedIds.size();
+            lRepeatedIds.resize(uiNumIndices);
+            for (uint i = uiOldSize; i < uiNumIndices; ++i)
+            {
+                lRepeatedIds[i] = (i/6)*4 + lQuadIDs[i%6];
+            }
+        }
+
+        // Update the index cache
+        update_indices_if_grow(lRepeatedIds.data(), uiNumIndices);
+    }
+    else
+    {
+        static thread_local std::vector<uint> lRepeatedIds;
+
+        if (uiNumVertex % 3 != 0)
+        {
+            throw gui::exception("gui::gl::vertex_cache",
+                "Number of vertices in triangle array must be a multiple of 3 "
+                "(got "+utils::to_string(uiNumVertex)+").");
+        }
+
+        // Update the vertex data
+        update_data(lVertexData, uiNumVertex);
+
+        // Update the repeated quads IDs array if it needs to grow
+        uint uiNumIndices = uiNumVertex;
+        if (uiNumIndices > lRepeatedIds.size())
+        {
+            uint uiOldSize = lRepeatedIds.size();
+            lRepeatedIds.resize(uiNumIndices);
+            for (uint i = uiOldSize; i < uiNumIndices; ++i)
+            {
+                lRepeatedIds[i] = i;
+            }
+        }
+
+        // Update the index cache
+        update_indices_if_grow(lRepeatedIds.data(), uiNumIndices);
     }
 }
 

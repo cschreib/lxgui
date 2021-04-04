@@ -200,9 +200,9 @@ bool renderer::has_vertex_cache() const
     return pImpl_->has_vertex_cache();
 }
 
-std::shared_ptr<vertex_cache> renderer::create_vertex_cache(uint uiSizeHint) const
+std::shared_ptr<vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
 {
-    return pImpl_->create_vertex_cache(uiSizeHint);
+    return pImpl_->create_vertex_cache(mType);
 }
 
 void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
