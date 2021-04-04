@@ -183,11 +183,19 @@ void renderer::render_quad(const quad& mQuad) const
 #else
     const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
 
+    // Note: we rotate through a fairly large number of vertex caches
+    // rather than constantly reusing the same cache. This is because
+    // update_data() calls glBufferSubData(), which will wait for the
+    // previous draw call using this cache to finish before updating.
+    // If we rotate, it is more likely that the draw call is done, and
+    // that we don't have to wait.
     const auto& pCache = pQuadCache_[uiQuadCycleCache_];
     uiQuadCycleCache_ = (uiQuadCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
+    // Update vertex data
     pCache->update_data(mQuad.v.data(), mQuad.v.size());
 
+    // Setup uniforms
     int iType = 0;
     if (mMat.get_type() == material::type::TEXTURE)
     {
@@ -257,11 +265,19 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
 #else
     const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
 
+    // Note: we rotate through a fairly large number of vertex caches
+    // rather than constantly reusing the same cache. This is because
+    // update_data() calls glBufferSubData(), which will wait for the
+    // previous draw call using this cache to finish before updating.
+    // If we rotate, it is more likely that the draw call is done, and
+    // that we don't have to wait.
     const auto& pCache = pArrayCache_[uiArrayCycleCache_];
     uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
+    // Update vertex data
     pCache->update_data(lQuadList[0].data(), lQuadList.size()*4);
 
+    // Update the repeated quads IDs array if it needs to grow
     uint uiNewSize = 6*lQuadList.size();
     if (uiNewSize > lRepeatedIds_.size())
     {
@@ -273,11 +289,13 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
         }
     }
 
+    // Update the index cache of that vertex cache if it needs to grow
     if (uiNewSize > pCache->get_num_indices())
     {
         pCache->update_indices(lRepeatedIds_.data(), uiNewSize);
     }
 
+    // Setup uniforms
     int iType = 0;
     if (mMat.get_type() == material::type::TEXTURE)
     {
