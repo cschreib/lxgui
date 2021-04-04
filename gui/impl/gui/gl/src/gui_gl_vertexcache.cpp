@@ -22,6 +22,8 @@
     #endif
 #endif
 
+#include <array>
+
 namespace lxgui {
 namespace gui {
 namespace gl
