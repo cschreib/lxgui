@@ -278,7 +278,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         case SDL_KEYUP:
         {
             key mKey = from_sdl_(mEvent.key.keysym.sym);
-            mKeyboard_.lKeyState[(uint)mKey] = true;
+            mKeyboard_.lKeyState[(uint)mKey] = false;
 
             gui::event mKeyboardEvent("KEY_RELEASED");
             mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
