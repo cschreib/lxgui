@@ -9,6 +9,9 @@ namespace gui
 sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
+    if (!pMat)
+        throw gui::exception("gui::sprite", "Cannot construct a sprite from just a null material.");
+
     mQuad_.mat = pMat;
     fWidth_  = pMat->get_width();
     fHeight_ = pMat->get_height();
@@ -39,8 +42,8 @@ sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float 
     mQuad_.v[2].pos = vector2f(0+fWidth_, 0+fHeight_);
     mQuad_.v[3].pos = vector2f(0,         0+fHeight_);
 
-    float u = fWidth_/pMat->get_real_width();
-    float v = fHeight_/pMat->get_real_height();
+    float u = (pMat ? fWidth_/pMat->get_real_width() : 1.0f);
+    float v = (pMat ? fHeight_/pMat->get_real_height() : 1.0f);
 
     mQuad_.v[0].uvs = vector2f(0, 0);
     mQuad_.v[1].uvs = vector2f(u, 0);
@@ -60,10 +63,10 @@ sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float 
     mQuad_.v[2].pos = vector2f(0+fWidth_, 0+fHeight_);
     mQuad_.v[3].pos = vector2f(0,         0+fHeight_);
 
-    float u1 = fU/pMat->get_real_width();
-    float v1 = fV/pMat->get_real_height();
-    float u2 = (fU + fWidth_)/pMat->get_real_width();
-    float v2 = (fV + fHeight_)/pMat->get_real_height();
+    float u1 = (pMat ? fU/pMat->get_real_width() : 0.0f);
+    float v1 = (pMat ? fV/pMat->get_real_height() : 0.0f);
+    float u2 = (pMat ? (fU + fWidth_)/pMat->get_real_width() : 1.0f);
+    float v2 = (pMat ? (fV + fHeight_)/pMat->get_real_height() : 1.0f);
 
     mQuad_.v[0].uvs = vector2f(u1, v1);
     mQuad_.v[1].uvs = vector2f(u2, v1);
@@ -187,6 +190,12 @@ void sprite::set_texture_rect(const std::array<float,4>& lTextureRect, bool bNor
     }
     else
     {
+        if (!mQuad_.mat)
+        {
+            throw gui::exception("gui::sprite",
+                "Cannot use non-normalised coordinates with null material");
+        }
+
         float fWidth = mQuad_.mat->get_width();
         float fHeight = mQuad_.mat->get_height();
 
@@ -208,6 +217,12 @@ void sprite::set_texture_rect(float fX1, float fY1, float fX3, float fY3, bool b
     }
     else
     {
+        if (!mQuad_.mat)
+        {
+            throw gui::exception("gui::sprite",
+                "Cannot use non-normalised coordinates with null material");
+        }
+
         float fWidth = mQuad_.mat->get_width();
         float fHeight = mQuad_.mat->get_height();
 
@@ -229,6 +244,12 @@ void sprite::set_texture_coords(const std::array<float,8>& lTextureCoords, bool 
     }
     else
     {
+        if (!mQuad_.mat)
+        {
+            throw gui::exception("gui::sprite",
+                "Cannot use non-normalised coordinates with null material");
+        }
+
         float fWidth = mQuad_.mat->get_width();
         float fHeight = mQuad_.mat->get_height();
 
@@ -251,6 +272,12 @@ void sprite::set_texture_coords(float fX1, float fY1, float fX2, float fY2, floa
     }
     else
     {
+        if (!mQuad_.mat)
+        {
+            throw gui::exception("gui::sprite",
+                "Cannot use non-normalised coordinates with null material");
+        }
+
         float fWidth = mQuad_.mat->get_width();
         float fHeight = mQuad_.mat->get_height();
 
@@ -310,6 +337,12 @@ std::array<float,8> sprite::get_texture_coords(bool bNormalized) const
     }
     else
     {
+        if (!mQuad_.mat)
+        {
+            throw gui::exception("gui::sprite",
+                "Cannot request non-normalised coordinates with null material");
+        }
+
         float fWidth = mQuad_.mat->get_width();
         float fHeight = mQuad_.mat->get_height();
 

@@ -57,11 +57,6 @@ namespace sdl
             bool bPreMultipliedAlphaSupported, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
-        /// Constructor for plain colors.
-        /** \param mColor The plain color to use
-        */
-        material(SDL_Renderer* pRenderer, const color& mColor);
-
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
@@ -69,11 +64,6 @@ namespace sdl
 
         /// Destructor.
         ~material() noexcept override;
-
-        /// Returns the type of this texture (texture or color).
-        /** \return The type of this texture (texture or color)
-        */
-        type get_type() const override;
 
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)
@@ -112,11 +102,6 @@ namespace sdl
         *   \note All the previous data that was stored in this texture will be lost.
         */
         bool set_dimensions(uint uiWidth, uint uiHeight);
-
-        /// Returns the plain color of this texture.
-        /** \return The plain color of this texture
-        */
-        color get_color() const;
 
         /// Premultiplies an image by its alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect
@@ -174,26 +159,15 @@ namespace sdl
 
     private:
 
-        struct texture_data
-        {
-            uint   uiWidth_ = 0u, uiHeight_ = 0u;
-            uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-            wrap   mWrap_ = wrap::REPEAT;
-            filter mFilter_ = filter::NONE;
-            bool   bRenderTarget_ = false;
-
-            SDL_Texture* pTexture_ = nullptr;
-        };
-
-        struct color_data
-        {
-            color mColor_;
-        };
-
-        struct empty {};
-
         SDL_Renderer* pRenderer_ = nullptr;
-        std::variant<empty,texture_data,color_data> mData_;
+
+        uint   uiWidth_ = 0u, uiHeight_ = 0u;
+        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        wrap   mWrap_ = wrap::REPEAT;
+        filter mFilter_ = filter::NONE;
+        bool   bRenderTarget_ = false;
+
+        SDL_Texture* pTexture_ = nullptr;
     };
 }
 }

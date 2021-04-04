@@ -289,14 +289,14 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     return mData;
 }
 
-void renderer::render_quad(const sdl::material& mMat,
+void renderer::render_quad(const sdl::material* pMat,
     const std::array<vertex,4>& lVertexList) const
 {
-    if (mMat.get_type() == sdl::material::type::TEXTURE)
+    if (pMat)
     {
-        SDL_Texture* pTexture = mMat.get_texture();
-        const float fTexWidth = mMat.get_real_width();
-        const float fTexHeight = mMat.get_real_height();
+        SDL_Texture* pTexture = pMat->get_texture();
+        const float fTexWidth = pMat->get_real_width();
+        const float fTexHeight = pMat->get_real_height();
         const int iTexWidth = static_cast<int>(fTexWidth);
         const int iTexHeight = static_cast<int>(fTexHeight);
 
@@ -336,7 +336,7 @@ void renderer::render_quad(const sdl::material& mMat,
 
             SDL_SetTextureAlphaMod(pTexture, mColor.a*255);
 
-            if (mMat.get_wrap() == material::wrap::CLAMP ||
+            if (pMat->get_wrap() == material::wrap::CLAMP ||
                 (mData.mSrcQuad.x >= 0 && mData.mSrcQuad.y >= 0 &&
                 mData.mSrcQuad.x + mData.mSrcQuad.w <= iTexWidth &&
                 mData.mSrcQuad.y + mData.mSrcQuad.h <= iTexHeight) ||
@@ -432,7 +432,7 @@ void renderer::render_quad(const sdl::material& mMat,
             lVertexList[0].col == lVertexList[3].col)
         {
             // Same color for all vertices
-            const auto& mColor = lVertexList[0].col * mMat.get_color();
+            const auto& mColor = lVertexList[0].col;
             if (bPreMultipliedAlphaSupported_)
             {
                 SDL_SetRenderDrawBlendMode(pRenderer_,
@@ -456,14 +456,14 @@ void renderer::render_quad(const sdl::material& mMat,
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
             const color lColorQuad[4] = {
-                premultiply_alpha(lVertexList[0].col * mMat.get_color(), bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[1].col * mMat.get_color(), bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[2].col * mMat.get_color(), bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[3].col * mMat.get_color(), bPreMultipliedAlphaSupported_)
+                premultiply_alpha(lVertexList[0].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[1].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[2].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lVertexList[3].col, bPreMultipliedAlphaSupported_)
             };
 
-            sdl::material pTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);
-            ub32color* pPixelData = pTempMat.lock_pointer();
+            sdl::material mTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);
+            ub32color* pPixelData = mTempMat.lock_pointer();
             for (int y = 0; y < mDestQuad.h; ++y)
             for (int x = 0; x < mDestQuad.w; ++x)
             {
@@ -474,33 +474,33 @@ void renderer::render_quad(const sdl::material& mMat,
                 pPixelData[y * mDestQuad.w + x] = to_ub32color(
                     interpolate_color(lColY1, lColY2, x/float(mDestQuad.w - 1)));
             }
-            pTempMat.unlock_pointer();
+            mTempMat.unlock_pointer();
 
             const SDL_Rect mSrcQuad = { 0, 0, mDestQuad.w, mDestQuad.h };
 
-            SDL_RenderCopy(pRenderer_, pTempMat.get_texture(), &mSrcQuad, &mDestQuad);
+            SDL_RenderCopy(pRenderer_, mTempMat.get_texture(), &mSrcQuad, &mDestQuad);
         }
     }
 }
 
 void renderer::render_quad(const quad& mQuad) const
 {
-    const sdl::material& mMat = static_cast<const sdl::material&>(*mQuad.mat);
+    const sdl::material* pMat = static_cast<const sdl::material*>(mQuad.mat.get());
 
-    render_quad(mMat, mQuad.v);
+    render_quad(pMat, mQuad.v);
 }
 
-void renderer::render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    const sdl::material& mMat = static_cast<const sdl::material&>(mMaterial);
+    const sdl::material* pMat = static_cast<const sdl::material*>(pMaterial);
 
     for (uint k = 0; k < lQuadList.size(); ++k)
     {
-        render_quad(mMat, lQuadList[k]);
+        render_quad(pMat, lQuadList[k]);
     }
 }
 
-void renderer::render_cache(const gui::material&, const gui::vertex_cache&, const matrix4f&) const
+void renderer::render_cache(const gui::material*, const gui::vertex_cache&, const matrix4f&) const
 {
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }
@@ -531,11 +531,6 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
     }
-}
-
-std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
-{
-    return std::make_shared<sdl::material>(pRenderer_, mColor);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const

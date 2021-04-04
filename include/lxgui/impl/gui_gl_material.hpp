@@ -41,11 +41,6 @@ namespace gl
         material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE, bool bGPUOnly = false);
 
-        /// Constructor for plain colors.
-        /** \param mColor The plain color to use
-        */
-        explicit material(const color& mColor);
-
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
@@ -53,11 +48,6 @@ namespace gl
 
         /// Destructor.
         ~material() override;
-
-        /// Returns the type of this texture (texture or color).
-        /** \return The type of this texture (texture or color)
-        */
-        type get_type() const override;
 
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)
@@ -96,11 +86,6 @@ namespace gl
         *   \note All the previous data that was stored in this texture will be lost.
         */
         bool set_dimensions(uint uiWidth, uint uiHeight);
-
-        /// Returns the plain color of this texture.
-        /** \return The plain color of this texture
-        */
-        const color& get_color() const;
 
         /// Premultiplies the texture by alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect
@@ -189,26 +174,13 @@ namespace gl
 
     private:
 
-        struct texture_data
-        {
-            uint   uiWidth_ = 0u, uiHeight_ = 0u;
-            uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-            wrap   mWrap_ = wrap::REPEAT;
-            filter mFilter_ = filter::NONE;
-            uint   uiTextureHandle_ = 0u;
+        uint   uiWidth_ = 0u, uiHeight_ = 0u;
+        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        wrap   mWrap_ = wrap::REPEAT;
+        filter mFilter_ = filter::NONE;
+        uint   uiTextureHandle_ = 0u;
 
-            std::vector<ub32color> pData_;
-        };
-
-        struct color_data
-        {
-            color mColor_;
-        };
-
-        type mType_;
-
-        std::unique_ptr<texture_data> pTexData_;
-        std::unique_ptr<color_data>   pColData_;
+        std::vector<ub32color> pData_;
 
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;

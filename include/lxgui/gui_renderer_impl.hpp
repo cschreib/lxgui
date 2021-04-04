@@ -70,17 +70,17 @@ namespace gui
         virtual void render_quad(const quad& mQuad) const = 0;
 
         /// Renders a set of quads.
-        /** \param mMaterial The material to use for rendering (texture, color, blending, ...)
+        /** \param pMaterial The material to use for rendering, or null if none
         *   \param lQuadList The list of the quads you want to render
         *   \note This function is meant to be called between begin() and
         *         end() only. When multiple quads share the same material, it is
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        virtual void render_quads(const material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
+        virtual void render_quads(const material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
 
         /// Renders a vertex cache.
-        /** \param mMaterial       The material to use for rendering (texture, color, blending, ...)
+        /** \param pMaterial       The material to use for rendering, or null if none
         *   \param mCache          The vertex cache
         *   \param mModelTransform The transformation matrix to apply to vertices
         *   \note This function is meant to be called between begin() and
@@ -91,7 +91,7 @@ namespace gui
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See has_vertex_cache().
         */
-        virtual void render_cache(const material& mMaterial, const vertex_cache& mCache,
+        virtual void render_cache(const material* pMaterial, const vertex_cache& mCache,
             const matrix4f& mModelTransform) const = 0;
 
         /// Creates a new material from a texture file.
@@ -102,12 +102,6 @@ namespace gui
         */
         virtual std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const = 0;
-
-        /// Creates a new material from a plain color.
-        /** \param mColor The color to use
-        *   \return The new material
-        */
-        virtual std::shared_ptr<material> create_material(const color& mColor) const = 0;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels

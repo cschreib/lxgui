@@ -71,10 +71,10 @@ void renderer::render_quad(const quad& mQuad) const
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
 
-    std::shared_ptr<sfml::material> pMat = std::static_pointer_cast<sfml::material>(mQuad.mat);
+    const sfml::material* pMat = static_cast<const sfml::material*>(mQuad.mat.get());
 
-    const float fTexWidth = pMat->get_real_width();
-    const float fTexHeight = pMat->get_real_height();
+    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
+    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size());
     for (uint i = 0; i < n; ++i)
@@ -82,35 +82,34 @@ void renderer::render_quad(const quad& mQuad) const
         const uint j = ids[i];
         sf::Vertex& mSFVertex = mArray[i];
         const vertex& mVertex = mQuad.v[j];
-        const color& mColor = (pMat->get_type() == sfml::material::type::TEXTURE ?
-            mVertex.col : mVertex.col*pMat->get_color());
-        const float a = mColor.a;
+        const float a = mVertex.col.a;
 
         mSFVertex.position.x  = mVertex.pos.x;
         mSFVertex.position.y  = mVertex.pos.y;
         mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
         mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
-        mSFVertex.color.r     = mColor.r*a*255; // Premultipled alpha
-        mSFVertex.color.g     = mColor.g*a*255; // Premultipled alpha
-        mSFVertex.color.b     = mColor.b*a*255; // Premultipled alpha
+        mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
+        mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
+        mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
         mSFVertex.color.a     = a*255;
     }
 
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
-    mState.texture = pMat->get_texture();
+    if (pMat)
+        mState.texture = pMat->get_texture();
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-void renderer::render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();
 
-    const sfml::material& mMat = static_cast<const sfml::material&>(mMaterial);
+    const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
 
-    const float fTexWidth = mMat.get_real_width();
-    const float fTexHeight = mMat.get_real_height();
+    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
+    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
     for (uint k = 0; k < lQuadList.size(); ++k)
@@ -121,24 +120,23 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
             const uint j = ids[i];
             sf::Vertex& mSFVertex = mArray[k*n + i];
             const vertex& mVertex = mVertices[j];
-            const color& mColor = (mMat.get_type() == sfml::material::type::TEXTURE ?
-                mVertex.col : mVertex.col*mMat.get_color());
-            const float a = mColor.a;
+            const float a = mVertex.col.a;
 
             mSFVertex.position.x  = mVertex.pos.x;
             mSFVertex.position.y  = mVertex.pos.y;
             mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
             mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
-            mSFVertex.color.r     = mColor.r*a*255; // Premultipled alpha
-            mSFVertex.color.g     = mColor.g*a*255; // Premultipled alpha
-            mSFVertex.color.b     = mColor.b*a*255; // Premultipled alpha
+            mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
+            mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
+            mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
             mSFVertex.color.a     = a*255;
         }
     }
 
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
-    mState.texture = mMat.get_texture();
+    if (pMat)
+        mState.texture = pMat->get_texture();
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
@@ -151,23 +149,22 @@ sf::Transform to_sfml(const matrix4f& mMatrix)
     );
 }
 
-void renderer::render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 
 #if 0
-    const sfml::material& mMat = static_cast<const sfml::material&>(mMaterial);
+    const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
     const sfml::vertex_cache& mSFCache = static_cast<const sfml::vertex_cache&>(mCache);
-
-    sf::Texture::bind(mMat.get_texture());
 
     // Note: the following will not work correctly, as vertex_cache has texture coordinates
     // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
     // https://github.com/SFML/SFML/issues/1773
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
-    mState.texture = mMat.get_texture();
+    if (pMat)
+        mState.texture = pMat->get_texture();
     mState.transform = to_sfml(mModelTransform);
     pCurrentSFMLTarget_->draw(mSFCache.get_impl(), 0, mSFCache.get_num_vertex(), mState);
 #endif
@@ -199,11 +196,6 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
     }
-}
-
-std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
-{
-    return std::make_shared<sfml::material>(mColor);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const

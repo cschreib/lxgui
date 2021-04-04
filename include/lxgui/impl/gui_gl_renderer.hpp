@@ -59,17 +59,17 @@ namespace gl
         void render_quad(const quad& mQuad) const override;
 
         /// Renders a set of quads.
-        /** \param mMaterial The material to use for rendering (texture, color, blending, ...)
+        /** \param pMaterial The material to use for rendering, or null if none
         *   \param lQuadList The list of the quads you want to render
         *   \note This function is meant to be called between begin() and
         *         end() only. When multiple quads share the same material, it is
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        void render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const override;
+        void render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const override;
 
         /// Renders a vertex cache.
-        /** \param mMaterial       The material to use for rendering (texture, color, blending, ...)
+        /** \param pMaterial       The material to use for rendering, or null if none
         *   \param mCache          The vertex cache
         *   \param mModelTransform The transformation matrix to apply to vertices
         *   \note This function is meant to be called between begin() and
@@ -80,7 +80,7 @@ namespace gl
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See has_vertex_cache().
         */
-        void render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+        void render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
             const matrix4f& mModelTransform) const override;
 
         /// Creates a new material from a texture file.
@@ -91,12 +91,6 @@ namespace gl
         */
         std::shared_ptr<gui::material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const override;
-
-        /// Creates a new material from a plain color.
-        /** \param mColor The color to use
-        *   \return The new material
-        */
-        std::shared_ptr<gui::material> create_material(const color& mColor) const override;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
@@ -175,7 +169,6 @@ namespace gl
             int iSamplerLocation_ = 0;
             int iProjLocation_ = 0;
             int iModelLocation_ = 0;
-            int iColLocation_ = 0;
             int iTypeLocation_ = 0;
         };
 

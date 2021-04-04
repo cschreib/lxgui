@@ -51,20 +51,10 @@ namespace sfml
         explicit material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
-        /// Constructor for plain colors.
-        /** \param mColor The plain color to use
-        */
-        explicit material(const color& mColor);
-
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
         material& operator = (material&& tex) = delete;
-
-        /// Returns the type of this texture (texture or color).
-        /** \return The type of this texture (texture or color)
-        */
-        type get_type() const override;
 
         /// Returns the width of the underlying texture (if any).
         /** \return The width of the underlying texture (if any)
@@ -104,11 +94,6 @@ namespace sfml
         */
         bool set_dimensions(uint uiWidth, uint uiHeight);
 
-        /// Returns the plain color of this texture.
-        /** \return The plain color of this texture
-        */
-        color get_color() const;
-
         /// Premultiplies an image by its alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect
         *         alpha blending when using render targets.
@@ -139,27 +124,14 @@ namespace sfml
 
     private:
 
-        struct texture_data
-        {
-            uint   uiWidth_ = 0u, uiHeight_ = 0u;
-            uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-            wrap   mWrap_ = wrap::REPEAT;
-            filter mFilter_ = filter::NONE;
+        uint   uiWidth_ = 0u, uiHeight_ = 0u;
+        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        wrap   mWrap_ = wrap::REPEAT;
+        filter mFilter_ = filter::NONE;
 
-            bool              bRenderTarget_ = false;
-            sf::RenderTexture mRenderTexture_;
-            sf::Texture       mTexture_;
-        };
-
-        struct color_data
-        {
-            color mColor_;
-        };
-
-        type mType_;
-
-        std::unique_ptr<texture_data> pTexData_;
-        std::unique_ptr<color_data>   pColData_;
+        bool              bRenderTarget_ = false;
+        sf::RenderTexture mRenderTexture_;
+        sf::Texture       mTexture_;
 
         static const uint MAXIMUM_SIZE;
     };

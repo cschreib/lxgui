@@ -149,10 +149,10 @@ void renderer::render_quad(const quad& mQuad) const
 #if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
-    if (mMat.get_type() == material::type::TEXTURE)
+    const gl::material* pMat = static_cast<const gl::material*>(mQuad.mat.get());
+    if (mMat)
     {
-        mMat.bind();
+        mMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -173,9 +173,7 @@ void renderer::render_quad(const quad& mQuad) const
         for (uint i = 0; i < 6; ++i)
         {
             uint j = ids[i];
-            color c = mQuad.v[j].col*mMat.get_color();
-            c.r *= c.a; c.g *= c.a; c.b *= c.a;  // Premultipled alpha
-            glColor4f(c.r, c.g, c.b, c.a);
+            glColor4f(mQuad.v[j].col.r*a, mQuad.v[j].col.g*a, mQuad.v[j].col.b*a, a); // Premultipled alpha
             glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
         }
         glEnd();
@@ -194,21 +192,21 @@ void renderer::render_quad(const quad& mQuad) const
     pCache->update_data(mQuad.v.data(), mQuad.v.size());
 
     // Render
-    render_cache(*mQuad.mat, *pCache, matrix4f::IDENTITY);
+    render_cache(mQuad.mat.get(), *pCache, matrix4f::IDENTITY);
 #endif
 }
 
-void renderer::render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
 #if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
-    if (mMat.get_type() == material::type::TEXTURE)
+    const gl::material* pMat = static_cast<const gl::material*>(mMaterial);
+    if (mMat)
     {
-        mMat.bind();
+        mMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -234,9 +232,7 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];
-                color c = v[j].col*mMat.get_color();
-                c.r *= c.a; c.g *= c.a; c.b *= c.a; // Premultipled alpha
-                glColor4f(c.r, c.g, c.b, c.a);
+                glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);
             }
         }
@@ -256,34 +252,33 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     pCache->update(lQuadList[0].data(), lQuadList.size()*4);
 
     // Render
-    render_cache(mMaterial, *pCache, matrix4f::IDENTITY);
+    render_cache(pMaterial, *pCache, matrix4f::IDENTITY);
 #endif
 }
 
-void renderer::render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
 #else
-    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
+    const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
     const gl::vertex_cache& mGLCache = static_cast<const gl::vertex_cache&>(mCache);
 
     // Setup uniforms
     int iType = 0;
-    if (mMat.get_type() == material::type::TEXTURE)
+    if (pMat)
     {
         iType = 0;
-        if (uiPreviousTexture_ != mMat.get_handle_())
+        if (uiPreviousTexture_ != pMat->get_handle_())
         {
-            mMat.bind();
-            uiPreviousTexture_ = mMat.get_handle_();
+            pMat->bind();
+            uiPreviousTexture_ = pMat->get_handle_();
         }
     }
     else
     {
         iType = 1;
-        glUniform4fv(pShaderCache_->iColLocation_, 1, &mMat.get_color().r);
     }
 
     glUniform1i(pShaderCache_->iTypeLocation_, iType);
@@ -314,11 +309,6 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
             << sFileName << "'." << std::endl;
         return nullptr;
     }
-}
-
-std::shared_ptr<gui::material> renderer::create_material(const color& mColor) const
-{
-    return std::make_shared<material>(mColor);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -494,19 +484,14 @@ void renderer::compile_programs_()
             "layout(location = 0) in vec2 a_position;                  \n"
             "layout(location = 1) in vec4 a_color;                     \n"
             "layout(location = 2) in vec2 a_texCoord;                  \n"
-            "uniform mediump int i_type;                               \n"
             "uniform mat4 m_proj;                                      \n"
             "uniform mat4 m_model;                                     \n"
-            "uniform vec4 c_color;                                     \n"
             "out vec4 v_color;                                         \n"
             "out vec2 v_texCoord;                                      \n"
             "void main()                                               \n"
             "{                                                         \n"
             "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
-            "    if (i_type == 0)                                      \n"
-            "        v_color = a_color;                                \n"
-            "    else                                                  \n"
-            "        v_color = a_color*c_color;                        \n"
+            "    v_color = a_color;                                    \n"
             "    v_color.rgb *= v_color.a;                             \n"
             "    v_texCoord = a_texCoord;                              \n"
             "}                                                         \n";
@@ -542,7 +527,6 @@ void renderer::compile_programs_()
         pShaderCache_->iSamplerLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "s_texture");
         pShaderCache_->iProjLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_proj");
         pShaderCache_->iModelLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_model");
-        pShaderCache_->iColLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "c_color");
         pShaderCache_->iTypeLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "i_type");
 
         pStaticShaderCache_ = pShaderCache_;

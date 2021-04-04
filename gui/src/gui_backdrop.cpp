@@ -78,9 +78,8 @@ void backdrop::set_background_color(const color& mColor)
 
     uiTileSize_ = uiOriginalTileSize_ = 256;
     auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
-    mBackground_ = pTopLevelRenderer->create_sprite(
-        pTopLevelRenderer->create_material(mColor), 256, 256
-    );
+    mBackground_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+    mBackground_.set_color(mColor);
 
     bHasBackground_ = true;
 }
@@ -226,9 +225,8 @@ void backdrop::set_edge_color(const color& mColor)
     for (auto& mEdge : lEdgeList_)
     {
         auto* pTopLevelRenderer = pParent_->get_top_level_renderer();
-        mEdge = pTopLevelRenderer->create_sprite(
-            pTopLevelRenderer->create_material(mColor), 1, 1
-        );
+        mEdge = pTopLevelRenderer->create_sprite(nullptr, 1, 1);
+        mEdge.set_color(mColor);
     }
 
     get_edge(edge_type::TOPLEFT).set_hot_spot(0.0f, 0.0f);

@@ -297,9 +297,10 @@ void text::render(float fX, float fY) const
 
     update_();
 
+    const material* pMat = pFont_->get_texture().lock().get();
     if (pRenderer_->has_vertex_cache())
     {
-        pRenderer_->render_cache(*pFont_->get_texture().lock(), *pVertexCache_,
+        pRenderer_->render_cache(pMat, *pVertexCache_,
             matrix4f::translation(vector2f(fX, fY)));
     }
     else
@@ -316,7 +317,7 @@ void text::render(float fX, float fY) const
             }
         }
 
-        pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
+        pRenderer_->render_quads(pMat, lQuadsCopy);
     }
 }
 
@@ -363,7 +364,8 @@ void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScal
         }
     }
 
-    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
+    const material* pMat = pFont_->get_texture().lock().get();
+    pRenderer_->render_quads(pMat, lQuadsCopy);
 }
 
 bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_iterator iterEnd,

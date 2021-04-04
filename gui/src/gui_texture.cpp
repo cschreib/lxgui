@@ -276,8 +276,7 @@ void texture::set_gradient(const gradient& mGradient)
     sTextureFile_ = "";
     mGradient_ = mGradient;
     auto* pTopLevelRenderer = get_top_level_renderer();
-    mSprite_ = pTopLevelRenderer->create_sprite(
-        pTopLevelRenderer->create_material(color::WHITE), 256, 256);
+    mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
@@ -364,8 +363,7 @@ void texture::set_texture(const std::string& sFile)
             << "Cannot load file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
 
-        mSprite_ = pTopLevelRenderer->create_sprite(
-            pTopLevelRenderer->create_material(color::WHITE), 256, 256);
+        mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
     }
 
     bHasSprite_ = true;
@@ -394,8 +392,7 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
             << "Cannot create a texture from render target.\n"
             "Using white texture instead." << std::endl;
 
-        mSprite_ = pTopLevelRenderer->create_sprite(
-            pTopLevelRenderer->create_material(color::WHITE), 256, 256);
+        mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
     }
 
     bHasSprite_ = true;
@@ -409,8 +406,8 @@ void texture::set_color(const color& mColor)
 
     mColor_ = mColor;
     auto* pTopLevelRenderer = get_top_level_renderer();
-    mSprite_ = pTopLevelRenderer->create_sprite(
-        pTopLevelRenderer->create_material(mColor), 256, 256);
+    mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+    mSprite_.set_color(mColor);
 
     bHasSprite_ = true;
     notify_renderer_need_redraw();
