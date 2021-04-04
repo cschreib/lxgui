@@ -438,6 +438,7 @@ int uiobject::get_bottom() const
 
 const quad2i& uiobject::get_borders() const
 {
+    update_borders_();
     return lBorderList_;
 }
 
