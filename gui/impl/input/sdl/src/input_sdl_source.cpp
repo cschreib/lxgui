@@ -261,6 +261,12 @@ void source::on_sdl_event(const SDL_Event& mEvent)
     {
         case SDL_KEYDOWN:
         {
+            if (mEvent.key.repeat != 0)
+            {
+                // Ignore these, we handle key repeat ourselves
+                break;
+            }
+
             key mKey = from_sdl_(mEvent.key.keysym.sym);
             mKeyboard_.lKeyState[(uint)mKey] = true;
 
