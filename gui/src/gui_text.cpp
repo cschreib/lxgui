@@ -2,6 +2,7 @@
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils.hpp>
@@ -52,6 +53,7 @@ void text::set_color(const color& mColor, bool bForceColor)
     {
         mColor_ = mColor;
         bForceColor_ = bForceColor;
+        bUpdateCache_ = pRenderer_->has_vertex_cache();
     }
 }
 
@@ -281,7 +283,11 @@ bool text::is_word_wrap_enabled() const
 
 void text::enable_formatting(bool bFormatting)
 {
-    bFormattingEnabled_ = bFormatting;
+    if (bFormatting != bFormattingEnabled_)
+    {
+        bFormattingEnabled_ = bFormatting;
+        bUpdateCache_ = pRenderer_->has_vertex_cache();
+    }
 }
 
 void text::render(float fX, float fY) const
@@ -291,19 +297,27 @@ void text::render(float fX, float fY) const
 
     update_();
 
-    std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
-    for (auto& mQuad : lQuadsCopy)
-    for (uint i = 0; i < 4; ++i)
+    if (pRenderer_->has_vertex_cache())
     {
-        mQuad[i].pos += vector2f(fX, fY);
-
-        if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
-        {
-            mQuad[i].col = mColor_;
-        }
+        pRenderer_->render_cache(*pFont_->get_texture().lock(), *pVertexCache_,
+            matrix4f::translation(vector2f(fX, fY)));
     }
+    else
+    {
+        std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
+        for (auto& mQuad : lQuadsCopy)
+        for (uint i = 0; i < 4; ++i)
+        {
+            mQuad[i].pos += vector2f(fX, fY);
 
-    pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
+            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+            {
+                mQuad[i].col = mColor_;
+            }
+        }
+
+        pRenderer_->render_quads(*pFont_->get_texture().lock(), lQuadsCopy);
+    }
 }
 
 void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScale) const
@@ -820,6 +834,24 @@ void text::update_() const
     {
         fW_ = 0.0f;
         fH_ = 0.0f;
+    }
+
+    if (pRenderer_->has_vertex_cache())
+    {
+        if (!pVertexCache_)
+            pVertexCache_ = pRenderer_->create_vertex_cache(lQuadList_.size()*4);
+
+        std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
+        for (auto& mQuad : lQuadsCopy)
+        for (uint i = 0; i < 4; ++i)
+        {
+            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+            {
+                mQuad[i].col = mColor_;
+            }
+        }
+
+        pVertexCache_->update_quads(lQuadsCopy[0].data(), lQuadsCopy.size()*4);
     }
 
     bUpdateCache_ = false;

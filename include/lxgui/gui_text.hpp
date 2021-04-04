@@ -16,6 +16,7 @@ namespace lxgui {
 namespace gui
 {
     class  renderer;
+    class  vertex_cache;
     class  sprite;
     struct vertex;
 
@@ -340,6 +341,7 @@ namespace gui
         mutable float fH_ = 0.0f;
         mutable uint  uiNumLines_ = 0u;
         mutable std::vector<std::array<vertex,4>> lQuadList_;
+        mutable std::shared_ptr<vertex_cache> pVertexCache_;
     };
 }
 }
