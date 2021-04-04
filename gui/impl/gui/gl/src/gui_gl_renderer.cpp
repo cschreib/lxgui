@@ -374,12 +374,20 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
 bool renderer::has_vertex_cache() const
 {
+#if !defined(LXGUI_OPENGL3)
+    return false;
+#else
     return true;
+#endif
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(uint uiSizeHint) const
 {
+#if !defined(LXGUI_OPENGL3)
+    throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
+#else
     return std::make_shared<gl::vertex_cache>(uiSizeHint);
+#endif
 }
 
 void renderer::notify_window_resized(uint, uint)
