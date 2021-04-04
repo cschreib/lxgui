@@ -370,9 +370,10 @@ bool renderer::has_vertex_cache() const
     return true;
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(std::shared_ptr<gui::material> pMaterial) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(
+    std::shared_ptr<gui::material> pMaterial, uint uiSizeHint) const
 {
-    return std::make_shared<gl::vertex_cache>(std::move(pMaterial));
+    return std::make_shared<gl::vertex_cache>(std::move(pMaterial), uiSizeHint);
 }
 
 void renderer::notify_window_resized(uint, uint)

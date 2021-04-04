@@ -188,9 +188,13 @@ namespace gui
 
         /// Creates a new empty vertex cache.
         /** \param pMaterial The material to use to render the vertices
+        *   \param uiSizeHint An estimate of how much data will be stored in this cache
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        *         The size hint can enable the cache to be pre-allocated, which will avoid a
+        *         reallocation when data is pushed to the cache.
         */
-        std::shared_ptr<vertex_cache> create_vertex_cache(std::shared_ptr<material> pMaterial) const;
+        std::shared_ptr<vertex_cache> create_vertex_cache(std::shared_ptr<material> pMaterial,
+            uint uiSizeHint = 0u) const;
 
     protected :
 

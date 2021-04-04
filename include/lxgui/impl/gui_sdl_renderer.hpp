@@ -121,9 +121,13 @@ namespace sdl
 
         /// Creates a new empty vertex cache.
         /** \param pMaterial The material to use to render the vertices
+        *   \param uiSizeHint An estimate of how much data will be stored in this cache
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        *         The size hint can enable the cache to be pre-allocated, which will avoid a
+        *         reallocation when data is pushed to the cache.
         */
-        std::shared_ptr<gui::vertex_cache> create_vertex_cache(std::shared_ptr<gui::material> pMaterial) const override;
+        std::shared_ptr<gui::vertex_cache> create_vertex_cache(std::shared_ptr<gui::material> pMaterial,
+            uint uiSizeHint) const override;
 
     private :
 
