@@ -2,6 +2,7 @@
 #define LXGUI_GUI_GL_RENDERER_HPP
 
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
+#include "lxgui/impl/gui_gl_vertexcache.hpp"
 
 #include <lxgui/gui_renderer_impl.hpp>
 #include <lxgui/gui_matrix4.hpp>
@@ -22,10 +23,6 @@ namespace gl
 
         /// Constructor.
         explicit renderer(bool bInitGLEW = true);
-
-    #if defined(LXGUI_OPENGL3)
-        ~renderer() noexcept override;
-    #endif
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -167,8 +164,11 @@ namespace gl
         static thread_local std::weak_ptr<shader_cache> pStaticShaderCache_;
         std::shared_ptr<shader_cache> pShaderCache_;
 
-        mutable std::array<uint,4> uiVertexArray_;
-        mutable std::array<uint,4> uiVertexBuffers_;
+        static constexpr uint CACHE_CYCLE_SIZE = 1024u;
+        mutable std::array<std::shared_ptr<gl::vertex_cache>,CACHE_CYCLE_SIZE> pQuadCache_;
+        mutable std::array<std::shared_ptr<gl::vertex_cache>,CACHE_CYCLE_SIZE> pArrayCache_;
+        mutable uint uiQuadCycleCache_ = 0u;
+        mutable uint uiArrayCycleCache_ = 0u;
         mutable uint uiPreviousTexture_ = (uint)-1;
         mutable std::vector<uint> lRepeatedIds_;
     #endif

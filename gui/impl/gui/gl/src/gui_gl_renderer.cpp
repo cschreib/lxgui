@@ -55,12 +55,6 @@ renderer::renderer(bool bInitGLEW [[maybe_unused]])
 }
 
 #if defined(LXGUI_OPENGL3)
-renderer::~renderer() noexcept
-{
-    glDeleteVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
-    glDeleteBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
-}
-
 renderer::shader_cache::~shader_cache()
 {
     if (uiProgram_ != 0) glDeleteProgram(uiProgram_);
@@ -189,14 +183,10 @@ void renderer::render_quad(const quad& mQuad) const
 #else
     const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
 
-    const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
+    const auto& pCache = pQuadCache_[uiQuadCycleCache_];
+    uiQuadCycleCache_ = (uiQuadCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
-    glBindVertexArray(uiVertexArray_[uiArrayID]);
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mQuad.v.size(), mQuad.v.data(), GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[0]);
+    pCache->update_data(mQuad.v.data(), mQuad.v.size());
 
     int iType = 0;
     if (mMat.get_type() == material::type::TEXTURE)
@@ -216,7 +206,7 @@ void renderer::render_quad(const quad& mQuad) const
 
     glUniform1i(pShaderCache_->iTypeLocation_, iType);
 
-    glDrawElements(GL_TRIANGLES, ids.size(), GL_UNSIGNED_INT, 0);
+    pCache->render();
 #endif
 }
 
@@ -267,14 +257,10 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
 #else
     const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
 
-    const uint uiArrayID = mMat.get_type() == material::type::TEXTURE ? 1 : 0;
+    const auto& pCache = pArrayCache_[uiArrayCycleCache_];
+    uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
-    glBindVertexArray(uiVertexArray_[2 + uiArrayID]);
-
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffers_[2 + uiArrayID]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * 4 * lQuadList.size(), lQuadList.data(), GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiVertexBuffers_[1]);
+    pCache->update_data(lQuadList[0].data(), lQuadList.size()*4);
 
     uint uiNewSize = 6*lQuadList.size();
     if (uiNewSize > lRepeatedIds_.size())
@@ -285,8 +271,11 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
         {
             lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
         }
+    }
 
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lRepeatedIds_.size(), lRepeatedIds_.data(), GL_DYNAMIC_DRAW);
+    if (uiNewSize > pCache->get_num_indices())
+    {
+        pCache->update_indices(lRepeatedIds_.data(), uiNewSize);
     }
 
     int iType = 0;
@@ -307,7 +296,7 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
 
     glUniform1i(pShaderCache_->iTypeLocation_, iType);
 
-    glDrawElements(GL_TRIANGLES, uiNewSize, GL_UNSIGNED_INT, 0);
+    pCache->render(uiNewSize);
 #endif
 }
 
@@ -370,10 +359,9 @@ bool renderer::has_vertex_cache() const
     return true;
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(
-    std::shared_ptr<gui::material> pMaterial, uint uiSizeHint) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(uint uiSizeHint) const
 {
-    return std::make_shared<gl::vertex_cache>(std::move(pMaterial), uiSizeHint);
+    return std::make_shared<gl::vertex_cache>(uiSizeHint);
 }
 
 void renderer::notify_window_resized(uint, uint)
@@ -564,48 +552,23 @@ void renderer::compile_programs_()
 
 void renderer::setup_buffers_()
 {
-    glGenBuffers(uiVertexBuffers_.size(), uiVertexBuffers_.data());
-    glGenVertexArrays(uiVertexArray_.size(), uiVertexArray_.data());
+    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
-    auto setup_vbo = [](uint uiID)
+    const uint uiInitArraySize = 768u;
+    lRepeatedIds_.resize(uiInitArraySize);
+    for (uint i = 0; i < uiInitArraySize; ++i)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, uiID);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-        glEnableVertexAttribArray(2);
-    };
+        lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
+    }
 
-    auto setup_ibo = [](uint uiID)
+    for (uint i = 0; i < CACHE_CYCLE_SIZE; ++i)
     {
-        static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * ids.size(), ids.data(), GL_DYNAMIC_DRAW);
-    };
+        pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(4u));
+        pQuadCache_[i]->update_indices(ids.data(), ids.size());
 
-    // Color only array & single quad
-    glBindVertexArray(uiVertexArray_[0]);
-
-    setup_vbo(uiVertexBuffers_[2]);
-    setup_ibo(uiVertexBuffers_[0]);
-
-    // Texture array & single quad
-    glBindVertexArray(uiVertexArray_[1]);
-
-    setup_vbo(uiVertexBuffers_[3]);
-    setup_ibo(uiVertexBuffers_[0]);
-
-    // Color only array & multi quads
-    glBindVertexArray(uiVertexArray_[2]);
-
-    setup_vbo(uiVertexBuffers_[2]);
-
-    // Texture array & multi quads
-    glBindVertexArray(uiVertexArray_[3]);
-
-    setup_vbo(uiVertexBuffers_[3]);
+        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(uiInitArraySize));
+        pArrayCache_[i]->update_indices(lRepeatedIds_.data(), lRepeatedIds_.size());
+    }
 }
 #endif
 
