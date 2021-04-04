@@ -1,8 +1,6 @@
 #ifndef LXGUI_GUI_GL_VERTEXCACHE_HPP
 #define LXGUI_GUI_GL_VERTEXCACHE_HPP
 
-#include "lxgui/impl/gui_gl_material.hpp"
-
 #include <lxgui/gui_vertexcache.hpp>
 #include <lxgui/utils.hpp>
 
