@@ -155,12 +155,11 @@ namespace gl
             shader_cache(shader_cache&&) = delete;
             ~shader_cache();
 
-            uint uiTextureProgram_ = 0;
-            uint uiColorProgram_ = 0;
-            int iTextureSamplerLocation_ = 0;
-            int iTextureProjLocation_ = 0;
-            int iColorProjLocation_ = 0;
-            int iColorColLocation_ = 0;
+            uint uiProgram_ = 0;
+            int iSamplerLocation_ = 0;
+            int iProjLocation_ = 0;
+            int iColLocation_ = 0;
+            int iTypeLocation_ = 0;
         };
 
         static thread_local std::weak_ptr<shader_cache> pStaticShaderCache_;
@@ -168,7 +167,6 @@ namespace gl
 
         mutable std::array<uint,4> uiVertexArray_;
         mutable std::array<uint,4> uiVertexBuffers_;
-        mutable uint uiPreviousProgram_ = (uint)-1;
         mutable uint uiPreviousTexture_ = (uint)-1;
         mutable std::vector<uint> lRepeatedIds_;
     #endif
