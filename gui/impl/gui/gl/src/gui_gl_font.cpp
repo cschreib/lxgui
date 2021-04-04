@@ -9,6 +9,10 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
+// Convert fixed point to float point (from SDL_ttf)
+#define FT_FLOOR(X) (((X) & -64) / 64)
+#define FT_CEIL(X)  FT_FLOOR((X) + 63)
+
 static constexpr lxgui::uint uiMinChar = 32;
 static constexpr lxgui::uint uiMaxChar = 255;
 
@@ -118,6 +122,16 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     if (FT_HAS_KERNING(mFace))
         bKerning_ = true;
 
+    if (FT_IS_SCALABLE(mFace))
+    {
+        FT_Fixed mScale = mFace->size->metrics.y_scale;
+        fYOffset_ = FT_CEIL(FT_MulFix(mFace->descender, mScale));
+    }
+    else
+    {
+        fYOffset_ = FT_CEIL(mFace->size->metrics.descender);
+    }
+
     if (bKerning_)
         mCI.lKerningInfo.resize(uiMaxChar + 1);
 
@@ -207,9 +221,8 @@ quad2f font::get_character_bounds(char32_t uiChar) const
 {
     const float fCharWidth = get_character_width(uiChar);
     const float fCharHeight = get_character_height(uiChar);
-    const float fYOffset = floor(uiSize_/2.0f + uiSize_/8.0f - fCharHeight/2.0f);
 
-    return quad2f(0.0f, fCharWidth, fYOffset, fYOffset+fCharHeight);
+    return quad2f(0.0f, fCharWidth, fYOffset_, fYOffset_ + fCharHeight);
 }
 
 float font::get_character_width(char32_t uiChar) const

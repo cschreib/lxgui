@@ -89,6 +89,7 @@ namespace gl
         std::vector<character_info> lCharacterList_;
 
         uint uiSize_ = 0u;
+        float fYOffset_ = 0.0f;
         bool bKerning_ = false;
     };
 }
