@@ -181,8 +181,6 @@ void renderer::render_quad(const quad& mQuad) const
         glEnd();
     }
 #else
-    const gl::material& mMat = static_cast<const gl::material&>(*mQuad.mat);
-
     // Note: we rotate through a fairly large number of vertex caches
     // rather than constantly reusing the same cache. This is because
     // update_data() calls glBufferSubData(), which will wait for the
@@ -195,26 +193,8 @@ void renderer::render_quad(const quad& mQuad) const
     // Update vertex data
     pCache->update_data(mQuad.v.data(), mQuad.v.size());
 
-    // Setup uniforms
-    int iType = 0;
-    if (mMat.get_type() == material::type::TEXTURE)
-    {
-        iType = 0;
-        if (uiPreviousTexture_ != mMat.get_handle_())
-        {
-            mMat.bind();
-            uiPreviousTexture_ = mMat.get_handle_();
-        }
-    }
-    else
-    {
-        iType = 1;
-        glUniform4fv(pShaderCache_->iColLocation_, 1, &mMat.get_color().r);
-    }
-
-    glUniform1i(pShaderCache_->iTypeLocation_, iType);
-
-    pCache->render();
+    // Render
+    render_cache(*mQuad.mat, *pCache, matrix4f::IDENTITY);
 #endif
 }
 
@@ -263,8 +243,6 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
         glEnd();
     }
 #else
-    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
-
     // Note: we rotate through a fairly large number of vertex caches
     // rather than constantly reusing the same cache. This is because
     // update_data() calls glBufferSubData(), which will wait for the
@@ -275,25 +253,21 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
     // Update vertex data
-    pCache->update_data(lQuadList[0].data(), lQuadList.size()*4);
+    pCache->update_quads(lQuadList[0].data(), lQuadList.size()*4);
 
-    // Update the repeated quads IDs array if it needs to grow
-    uint uiNewSize = 6*lQuadList.size();
-    if (uiNewSize > lRepeatedIds_.size())
-    {
-        uint uiOldSize = lRepeatedIds_.size();
-        lRepeatedIds_.resize(uiNewSize);
-        for (uint i = uiOldSize; i < uiNewSize; ++i)
-        {
-            lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
-        }
-    }
+    // Render
+    render_cache(mMaterial, *pCache, matrix4f::IDENTITY);
+#endif
+}
 
-    // Update the index cache of that vertex cache if it needs to grow
-    if (uiNewSize > pCache->get_num_indices())
-    {
-        pCache->update_indices(lRepeatedIds_.data(), uiNewSize);
-    }
+void renderer::render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+    const matrix4f& mModelTransform) const
+{
+#if !defined(LXGUI_OPENGL3)
+    throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
+#else
+    const gl::material& mMat = static_cast<const gl::material&>(mMaterial);
+    const gl::vertex_cache& mGLCache = static_cast<const gl::vertex_cache&>(mCache);
 
     // Setup uniforms
     int iType = 0;
@@ -313,8 +287,10 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     }
 
     glUniform1i(pShaderCache_->iTypeLocation_, iType);
+    glUniformMatrix4fv(pShaderCache_->iModelLocation_, 1, GL_FALSE, mModelTransform.data);
 
-    pCache->render(uiNewSize);
+    // Render
+    mGLCache.render();
 #endif
 }
 
@@ -488,7 +464,7 @@ GLuint create_program(const char* sVertexShaderSource, const char* sFragmentShad
                 glGetProgramInfoLog(uiProgramObject, iInfoLength, NULL, sErrorMessage.data());
             }
 
-            throw gui::exception("gl::rendere",
+            throw gui::exception("gl::renderer",
                 "Could not link shader program: "+std::string(sErrorMessage.data()));
         }
     }
@@ -520,12 +496,13 @@ void renderer::compile_programs_()
             "layout(location = 2) in vec2 a_texCoord;                  \n"
             "uniform int i_type;                                       \n"
             "uniform mat4 m_proj;                                      \n"
+            "uniform mat4 m_model;                                     \n"
             "uniform vec4 c_color;                                     \n"
             "out vec4 v_color;                                         \n"
             "out vec2 v_texCoord;                                      \n"
             "void main()                                               \n"
             "{                                                         \n"
-            "    gl_Position = m_proj*vec4(a_position.xy,0,1);         \n"
+            "    gl_Position = m_proj*m_model*vec4(a_position.xy,0,1); \n"
             "    if (i_type == 0)                                      \n"
             "        v_color = a_color;                                \n"
             "    else                                                  \n"
@@ -564,6 +541,7 @@ void renderer::compile_programs_()
 
         pShaderCache_->iSamplerLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "s_texture");
         pShaderCache_->iProjLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_proj");
+        pShaderCache_->iModelLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "m_model");
         pShaderCache_->iColLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "c_color");
         pShaderCache_->iTypeLocation_ = glGetUniformLocation(pShaderCache_->uiProgram_, "i_type");
 
@@ -578,22 +556,22 @@ void renderer::compile_programs_()
 
 void renderer::setup_buffers_()
 {
-    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<uint, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
 
-    const uint uiInitArraySize = 768u;
-    lRepeatedIds_.resize(uiInitArraySize);
-    for (uint i = 0; i < uiInitArraySize; ++i)
+    constexpr uint uiNumArrayIndices = 768u;
+    std::vector<uint> lRepeatedIds(uiNumArrayIndices);
+    for (uint i = 0; i < uiNumArrayIndices; ++i)
     {
-        lRepeatedIds_[i] = (i/6)*4 + ids[i%6];
+        lRepeatedIds[i] = (i/6)*4 + lQuadIDs[i%6];
     }
 
     for (uint i = 0; i < CACHE_CYCLE_SIZE; ++i)
     {
         pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(4u));
-        pQuadCache_[i]->update_indices(ids.data(), ids.size());
+        pQuadCache_[i]->update_indices(lQuadIDs.data(), lQuadIDs.size());
 
-        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(uiInitArraySize));
-        pArrayCache_[i]->update_indices(lRepeatedIds_.data(), lRepeatedIds_.size());
+        pArrayCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(uiNumArrayIndices));
+        pArrayCache_[i]->update_indices(lRepeatedIds.data(), lRepeatedIds.size());
     }
 }
 #endif

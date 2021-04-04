@@ -104,21 +104,23 @@ void vertex_cache::update_indices(const uint* lVertexIndices, uint uiNumIndices)
     uiCurrentSizeIndex_ = uiNumIndices;
 }
 
-uint vertex_cache::get_num_indices() const
+void vertex_cache::update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices)
 {
-    return uiCurrentSizeIndex_;
+    if (uiNumIndices > uiCurrentCapacityIndex_)
+    {
+        update_indices(lVertexIndices, uiNumIndices);
+    }
+    else
+    {
+        // Cheap resize, do not update indices
+        uiCurrentSizeIndex_ = uiNumIndices;
+    }
 }
 
-void vertex_cache::render(uint uiNumIndices)
+void vertex_cache::render() const
 {
-    if (uiNumIndices == (uint)-1)
-        uiNumIndices = uiCurrentSizeIndex_;
-
-    if (uiNumIndices > uiCurrentSizeIndex_)
-        throw gui::exception("gl::vertex_cache", "Too many indices requested in render().");
-
     glBindVertexArray(uiVertexArray_);
-    glDrawElements(GL_TRIANGLES, uiNumIndices, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, uiCurrentSizeIndex_, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 

@@ -63,11 +63,26 @@ namespace sfml
         /** \param mMaterial The material to use for rendering (texture, color, blending, ...)
         *   \param lQuadList The list of the quads you want to render
         *   \note This function is meant to be called between begin() and
-        *         end() only. It is always more efficient to call this method
-        *         than calling render_quad repeatedly, as it allows to batch
-        *         count reduction.
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls.
         */
         void render_quads(const gui::material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const override;
+
+        /// Renders a vertex cache.
+        /** \param mMaterial       The material to use for rendering (texture, color, blending, ...)
+        *   \param mCache          The vertex cache
+        *   \param mModelTransform The transformation matrix to apply to vertices
+        *   \note This function is meant to be called between begin() and
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls. This method
+        *         is also more efficient than render_quads(), as the vertex data is
+        *         already cached to the GPU and does not need sending again. However,
+        *         not all implementations support vertex caches. See has_vertex_cache().
+        */
+        void render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+            const matrix4f& mModelTransform) const override;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file

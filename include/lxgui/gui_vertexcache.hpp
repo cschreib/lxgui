@@ -55,6 +55,25 @@ namespace gui
         *   \param uiNumIndices The number of indices to cache
         */
         virtual void update_indices(const uint* lVertexIndices, uint uiNumIndices) = 0;
+
+        /// Update the indices stored in the cache, but only if the current index cache is smaller.
+        /** \param lVertexIndices The indices to use for drawing triangles
+        *   \param uiNumIndices The number of indices to cache
+        *   \note This function assumes that the index buffer is always initialised with
+        *         valid indices, and that only the *number* of indices changes. Indices that
+        *         were set in previous calls of update_indices() are assumed to not change
+        *         value.
+        */
+        virtual void update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices) = 0;
+
+        /// Update the data and indices stored in the cache to form new quads.
+        /** \param lVertexData The vertices to cache
+        *   \param uiNumVertex The number of vertices to cache (must be a nultiple of 4)
+        *   \note This function assumes that vertices are stored as quads, i.e.,
+        *         top-left, top-right, bottom-right, bottom-left. The function will
+        *         automatically take care of setting the indices for this format.
+        */
+        void update_quads(const vertex* lVertexData, uint uiNumVertex);
     };
 }
 }

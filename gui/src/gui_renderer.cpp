@@ -140,9 +140,16 @@ void renderer::render_quad(const quad& mQuad) const
     pImpl_->render_quad(mQuad);
 }
 
-void renderer::render_quads(const material& mMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads(const material& mMaterial,
+    const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     pImpl_->render_quads(mMaterial, lQuadList);
+}
+
+void renderer::render_cache(const material& mMaterial, const vertex_cache& mCache,
+    const matrix4f& mModelTransform) const
+{
+    pImpl_->render_cache(mMaterial, mCache, mModelTransform);
 }
 
 sprite renderer::create_sprite(std::shared_ptr<material> pMat) const
@@ -161,7 +168,8 @@ sprite renderer::create_sprite(std::shared_ptr<material> pMat,
     return sprite(this, pMat, fU, fV, fWidth, fHeight);
 }
 
-std::shared_ptr<material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<material> renderer::create_material(const std::string& sFileName,
+    material::filter mFilter) const
 {
     return pImpl_->create_material(sFileName, mFilter);
 }
@@ -171,7 +179,8 @@ std::shared_ptr<material> renderer::create_material(const color& mColor) const
     return pImpl_->create_material(mColor);
 }
 
-std::shared_ptr<material> renderer::create_material(std::shared_ptr<render_target> pRenderTarget) const
+std::shared_ptr<material> renderer::create_material(
+    std::shared_ptr<render_target> pRenderTarget) const
 {
     return pImpl_->create_material(pRenderTarget);
 }

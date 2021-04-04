@@ -500,6 +500,11 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     }
 }
 
+void renderer::render_cache(const gui::material&, const gui::vertex_cache&, const matrix4f&) const
+{
+    throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
+}
+
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;

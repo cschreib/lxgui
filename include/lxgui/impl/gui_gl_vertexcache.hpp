@@ -40,17 +40,21 @@ namespace gl
         */
         void update_indices(const uint* lVertexIndices, uint uiNumIndices) override;
 
-        /// Returns the current number of indices in the cache.
-        /** \return The current number of indices in the cache
+        /// Update the indices stored in the cache, but only if the current index cache is smaller.
+        /** \param lVertexIndices The indices to use for drawing triangles
+        *   \param uiNumIndices The number of indices to cache
+        *   \note This function assumes that the index buffer is always initialised with
+        *         valid indices, and that only the *number* of indices changes. Indices that
+        *         were set in previous calls of update_indices() are assumed to not change
+        *         value.
         */
-        uint get_num_indices() const;
+        void update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices) override;
 
         /// Renders the cache.
-        /** \param uiNumIndices The number of indices to draw (-1 for all)
-        *   \note This does not bind the material, just binds the cache and renders it
+        /** \note This does not bind the material, just binds the cache and renders it
         *         with whatever shader / texture is currently bound.
         */
-        void render(uint uiNumIndices = (uint)-1);
+        void render() const;
 
     private :
 

@@ -140,6 +140,11 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
+void renderer::render_cache(const gui::material&, const gui::vertex_cache&, const matrix4f&) const
+{
+    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
+}
+
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
@@ -223,7 +228,7 @@ bool renderer::has_vertex_cache() const
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(uint) const
 {
-    throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
+    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 }
 
 void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
