@@ -59,6 +59,7 @@ v2.0.0:
  - gui: added clear_history() to edit_box
  - gui: added clipboard support to edit_box
  - gui: added automatic un-focus of edit_box when clicking outside of the box
+ - gui: added vertex_cache to speed up text rendering (only available with OpenGL renderer)
  - gui: fixed rare crash in edit_box
  - gui: fixed crash when calling Lua delete_frame() twice on same frame
  - gui: fixed Lua get_width()/get_height() returning incorrect values
