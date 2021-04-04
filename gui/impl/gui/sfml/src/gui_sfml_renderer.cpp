@@ -2,6 +2,7 @@
 #include "lxgui/impl/gui_sfml_material.hpp"
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
+#include "lxgui/impl/gui_sfml_vertexcache.hpp"
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
@@ -11,6 +12,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/Graphics/VertexBuffer.hpp>
 
 namespace lxgui {
 namespace gui {
@@ -140,9 +142,35 @@ void renderer::render_quads(const gui::material& mMaterial, const std::vector<st
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
-void renderer::render_cache(const gui::material&, const gui::vertex_cache&, const matrix4f&) const
+sf::Transform to_sfml(const matrix4f& mMatrix)
+{
+    return sf::Transform(
+        mMatrix(0,0), mMatrix(1,0), mMatrix(3,0),
+        mMatrix(0,1), mMatrix(1,1), mMatrix(3,1),
+        0.0, 0.0, 1.0
+    );
+}
+
+void renderer::render_cache(const gui::material& mMaterial, const gui::vertex_cache& mCache,
+    const matrix4f& mModelTransform) const
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
+
+#if 0
+    const sfml::material& mMat = static_cast<const sfml::material&>(mMaterial);
+    const sfml::vertex_cache& mSFCache = static_cast<const sfml::vertex_cache&>(mCache);
+
+    sf::Texture::bind(mMat.get_texture());
+
+    // Note: the following will not work correctly, as vertex_cache has texture coordinates
+    // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
+    // https://github.com/SFML/SFML/issues/1773
+    sf::RenderStates mState;
+    mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
+    mState.texture = mMat.get_texture();
+    mState.transform = to_sfml(mModelTransform);
+    pCurrentSFMLTarget_->draw(mSFCache.get_impl(), 0, mSFCache.get_num_vertex(), mState);
+#endif
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
@@ -224,11 +252,19 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 bool renderer::has_vertex_cache() const
 {
     return false;
+
+#if 0
+    return sf::VertexBuffer::isAvailable();
+#endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
+
+#if 0
+    return std::make_shared<sfml::vertex_cache>(mType);
+#endif
 }
 
 void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
