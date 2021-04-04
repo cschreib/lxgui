@@ -11,8 +11,6 @@
 namespace lxgui {
 namespace gui
 {
-    class material;
-
     /// An object representing cached vertex data on the GPU
     /** A vertex cache stores vertices and indices that can be used to draw
     *   any shape on the screen. Each group of 3 vertices forms a triangle.
@@ -38,41 +36,25 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param pMaterial  The material to use to render the vertices
-        *   \details A default constructed vertex cache holds no data. Use update()
+        /** \details A default constructed vertex cache holds no data. Use update()
         *            to store vertices to be rendered.
         */
-        explicit vertex_cache(std::shared_ptr<material> pMaterial);
+        vertex_cache() = default;
 
         /// Destructor.
         virtual ~vertex_cache() = default;
 
-        /// Update the data and indices stored in the cache.
-        /** \param lVertexData    The vertices to cache
-        *   \param lVertexIndices The indices to use for drawing triangles
-        *   \note This is equivalent to (but more efficient than) calling
-        *         update_data() followed by updated_indices().
-        */
-        virtual void update(const std::vector<vertex>& lVertexData, const std::vector<uint>& lVertexIndices) = 0;
-
         /// Update the data stored in the cache, reusing existing indices.
         /** \param lVertexData The vertices to cache
+        *   \param uiNumVertex The number of vertices to cache
         */
-        virtual void update_data(const std::vector<vertex>& lVertexData) = 0;
+        virtual void update_data(const vertex* lVertexData, uint uiNumVertex) = 0;
 
         /// Update the indices stored in the cache, reusing existing data.
         /** \param lVertexIndices The indices to use for drawing triangles
+        *   \param uiNumIndices The number of indices to cache
         */
-        virtual void update_indices(const std::vector<uint>& lVertexIndices) = 0;
-
-        /// Returns the material used by this vertex cache.
-        /** \return The material used by this vertex cache
-        */
-        std::shared_ptr<material> get_material() const;
-
-    protected :
-
-        std::shared_ptr<material> pMaterial_;
+        virtual void update_indices(const uint* lVertexIndices, uint uiNumIndices) = 0;
     };
 }
 }

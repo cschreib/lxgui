@@ -27,9 +27,8 @@ namespace gui {
 namespace gl
 {
 
-vertex_cache::vertex_cache(std::shared_ptr<gui::material> pMaterial, uint uiSizeHint) :
-    gui::vertex_cache(std::move(pMaterial)), uiCurrentSizeVertex_(uiSizeHint),
-    uiCurrentSizeIndex_(uiSizeHint)
+vertex_cache::vertex_cache(uint uiSizeHint) :
+    uiCurrentCapacityVertex_(uiSizeHint), uiCurrentCapacityIndex_(uiSizeHint)
 {
     glGenVertexArrays(1, &uiVertexArray_);
 
@@ -41,23 +40,26 @@ vertex_cache::vertex_cache(std::shared_ptr<gui::material> pMaterial, uint uiSize
     glBindVertexArray(uiVertexArray_);
 
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), 0);
     glEnableVertexAttribArray(1);
-    if (pMaterial_->get_type() == material::type::TEXTURE)
-    {
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
-        glEnableVertexAttribArray(2);
-    }
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)*2));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(vertex), reinterpret_cast<const void*>(sizeof(vector2f)));
 
     if (uiSizeHint != 0u)
     {
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * uiSizeHint, nullptr, GL_DYNAMIC_DRAW);
+    }
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
+
+    if (uiSizeHint != 0u)
+    {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * uiSizeHint, nullptr, GL_DYNAMIC_DRAW);
     }
+
+    glBindVertexArray(0);
 }
 
 vertex_cache::~vertex_cache()
@@ -68,48 +70,56 @@ vertex_cache::~vertex_cache()
     glDeleteBuffers(lBuffers.size(), lBuffers.data());
 }
 
-void vertex_cache::update(const std::vector<vertex>& lVertexData, const std::vector<uint>& lVertexIndices)
-{
-    update_data(lVertexData);
-    update_indices(lVertexIndices);
-}
-
-void vertex_cache::update_data(const std::vector<vertex>& lVertexData)
+void vertex_cache::update_data(const vertex* lVertexData, uint uiNumVertex)
 {
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
 
-    if (lVertexData.size() > uiCurrentSizeVertex_)
+    if (uiNumVertex > uiCurrentCapacityVertex_)
     {
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * lVertexData.size(), lVertexData.data(), GL_DYNAMIC_DRAW);
-        uiCurrentSizeVertex_ = lVertexData.size();
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * uiNumVertex, lVertexData, GL_DYNAMIC_DRAW);
+        uiCurrentCapacityVertex_ = uiNumVertex;
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * lVertexData.size(), lVertexData.data());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * uiNumVertex, lVertexData);
     }
+
+    uiCurrentSizeVertex_ = uiNumVertex;
 }
 
-void vertex_cache::update_indices(const std::vector<uint>& lVertexIndices)
+void vertex_cache::update_indices(const uint* lVertexIndices, uint uiNumIndices)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
 
-    if (lVertexIndices.size() > uiCurrentSizeIndex_)
+    if (uiNumIndices > uiCurrentCapacityIndex_)
     {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * lVertexIndices.size(), lVertexIndices.data(), GL_DYNAMIC_DRAW);
-        uiCurrentSizeIndex_ = lVertexIndices.size();
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * uiNumIndices, lVertexIndices, GL_DYNAMIC_DRAW);
+        uiCurrentCapacityIndex_ = uiNumIndices;
     }
     else
     {
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0,sizeof(uint) * lVertexIndices.size(), lVertexIndices.data());
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint) * uiNumIndices, lVertexIndices);
     }
+
+    uiCurrentSizeIndex_ = uiNumIndices;
 }
 
-void vertex_cache::render()
+uint vertex_cache::get_num_indices() const
 {
+    return uiCurrentSizeIndex_;
+}
+
+void vertex_cache::render(uint uiNumIndices)
+{
+    if (uiNumIndices == (uint)-1)
+        uiNumIndices = uiCurrentSizeIndex_;
+
+    if (uiNumIndices > uiCurrentSizeIndex_)
+        throw gui::exception("gl::vertex_cache", "Too many indices requested in render().");
+
     glBindVertexArray(uiVertexArray_);
-    glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
-    glDrawElements(GL_TRIANGLES, uiCurrentSizeIndex_, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, uiNumIndices, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
 }

@@ -18,45 +18,46 @@ namespace gl
     public :
 
         /// Constructor.
-        /** \param pMaterial  The material to use to render the vertices
-        *   \param uiSizeHint An estimate of how much data will be stored in this cache
+        /** \param uiSizeHint An estimate of how much data will be stored in this cache
         *   \details A default constructed vertex cache holds no data. Use update()
         *            to store vertices to be rendered. The size hint can enable the cache to be
         *            pre-allocated, which will avoid a reallocation when update() is called.
         */
-        explicit vertex_cache(std::shared_ptr<gui::material> pMaterial, uint uiSizeHint);
+        explicit vertex_cache(uint uiSizeHint);
 
         /// Destructor.
         ~vertex_cache() override;
 
-        /// Update the data and indices stored in the cache.
-        /** \param lVertexData    The vertices to cache
-        *   \param lVertexIndices The indices to use for drawing triangles
-        *   \note This is equivalent to (but more efficient than) calling
-        *         update_data() followed by updated_indices().
-        */
-        void update(const std::vector<vertex>& lVertexData, const std::vector<uint>& lVertexIndices) override;
-
         /// Update the data stored in the cache, reusing existing indices.
         /** \param lVertexData The vertices to cache
+        *   \param uiNumVertex The number of vertices to cache
         */
-        void update_data(const std::vector<vertex>& lVertexData) override;
+        void update_data(const vertex* lVertexData, uint uiNumVertex) override;
 
         /// Update the indices stored in the cache, reusing existing data.
         /** \param lVertexIndices The indices to use for drawing triangles
+        *   \param uiNumIndices The number of indices to cache
         */
-        void update_indices(const std::vector<uint>& lVertexIndices) override;
+        void update_indices(const uint* lVertexIndices, uint uiNumIndices) override;
+
+        /// Returns the current number of indices in the cache.
+        /** \return The current number of indices in the cache
+        */
+        uint get_num_indices() const;
 
         /// Renders the cache.
-        /** \note This does not bind the material, just binds the cache and renders it
+        /** \param uiNumIndices The number of indices to draw (-1 for all)
+        *   \note This does not bind the material, just binds the cache and renders it
         *         with whatever shader / texture is currently bound.
         */
-        void render();
+        void render(uint uiNumIndices = (uint)-1);
 
     private :
 
         uint uiCurrentSizeVertex_ = 0u;
         uint uiCurrentSizeIndex_ = 0u;
+        uint uiCurrentCapacityVertex_ = 0u;
+        uint uiCurrentCapacityIndex_ = 0u;
         uint uiVertexArray_ = (uint)-1;
         uint uiVertexBuffer_ = (uint)-1;
         uint uiIndexBuffer_ = (uint)-1;
