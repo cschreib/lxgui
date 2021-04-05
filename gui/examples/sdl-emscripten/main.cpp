@@ -140,7 +140,9 @@ int main(int argc, char* argv[])
                 std::string(SDL_GetError())+".");
         }
 
-        const std::uint32_t uiFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+        const std::uint32_t uiFlags =
+            SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> pWindow(
             SDL_CreateWindow(
                 sWindowTitle.c_str(),

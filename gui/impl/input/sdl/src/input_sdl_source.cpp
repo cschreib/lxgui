@@ -13,10 +13,12 @@ namespace lxgui {
 namespace input {
 namespace sdl
 {
-source::source(SDL_Window* pWindow, bool bInitialiseSDLImage, bool bMouseGrab) :
-    pWindow_(pWindow), bMouseGrab_(bMouseGrab)
+source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage,
+    bool bMouseGrab) : pWindow_(pWindow), pRenderer_(pRenderer), bMouseGrab_(bMouseGrab)
 {
     mMouse_.bHasDelta = true;
+
+    update_pixel_ratio_();
 
     if (bInitialiseSDLImage)
     {
@@ -34,11 +36,10 @@ void source::toggle_mouse_grab()
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
     {
-        int iWidth = 0, iHeight = 0;
-        SDL_GetWindowSize(pWindow_, &iWidth, &iHeight);
+        gui::vector2ui mWindowSize = get_window_pixel_size_();
 
-        fOldMouseX_ = iWidth/2;
-        fOldMouseY_ = iHeight/2;
+        fOldMouseX_ = mWindowSize.x/2;
+        fOldMouseY_ = mWindowSize.y/2;
     }
 }
 
@@ -202,20 +203,43 @@ key source::from_sdl_(int iSDLKey) const
     }
 }
 
+gui::vector2ui source::get_window_pixel_size_() const
+{
+    int iPixelWidth, iPixelHeight;
+    if (pRenderer_)
+        SDL_GetRendererOutputSize(pRenderer_, &iPixelWidth, &iPixelHeight);
+    else
+        SDL_GL_GetDrawableSize(pWindow_, &iPixelWidth, &iPixelHeight);
+
+    return gui::vector2ui(iPixelWidth, iPixelHeight);
+}
+
+void source::update_pixel_ratio_()
+{
+    gui::vector2ui mPixelSize = get_window_pixel_size_();
+
+    int iUnitWidth, iUnitHeight;
+    SDL_GetWindowSize(pWindow_, &iUnitWidth, &iUnitHeight);
+
+    fPixelsPerUnit_ = std::min(mPixelSize.x/float(iUnitWidth), mPixelSize.y/float(iUnitHeight));
+}
+
 void source::update_()
 {
     int iMouseX, iMouseY;
     SDL_GetMouseState(&iMouseX, &iMouseY);
 
-    int iWidth = 0, iHeight = 0;
-    SDL_GetWindowSize(pWindow_, &iWidth, &iHeight);
+    float fMouseX = iMouseX*fPixelsPerUnit_;
+    float fMouseY = iMouseY*fPixelsPerUnit_;
+
+    gui::vector2ui mWindowSize = get_window_pixel_size_();
 
     if (bFirst_)
     {
-        mMouse_.fAbsX = iMouseX;
-        mMouse_.fAbsY = iMouseY;
-        mMouse_.fRelX = mMouse_.fAbsX/iWidth;
-        mMouse_.fRelY = mMouse_.fAbsY/iHeight;
+        mMouse_.fAbsX = fMouseX;
+        mMouse_.fAbsY = fMouseY;
+        mMouse_.fRelX = mMouse_.fAbsX/mWindowSize.x;
+        mMouse_.fRelY = mMouse_.fAbsY/mWindowSize.y;
 
         mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
         bFirst_ = false;
@@ -228,15 +252,15 @@ void source::update_()
     }
     else
     {
-        mMouse_.fDX = iMouseX - fOldMouseX_;
-        mMouse_.fDY = iMouseY - fOldMouseY_;
-        mMouse_.fRelDX = mMouse_.fDX/iWidth;
-        mMouse_.fRelDY = mMouse_.fDY/iHeight;
+        mMouse_.fDX = fMouseX - fOldMouseX_;
+        mMouse_.fDY = fMouseY - fOldMouseY_;
+        mMouse_.fRelDX = mMouse_.fDX/mWindowSize.x;
+        mMouse_.fRelDY = mMouse_.fDY/mWindowSize.y;
 
         mMouse_.fAbsX += mMouse_.fDX;
         mMouse_.fAbsY += mMouse_.fDY;
-        mMouse_.fRelX = mMouse_.fAbsX/iWidth;
-        mMouse_.fRelY = mMouse_.fAbsY/iHeight;
+        mMouse_.fRelX = mMouse_.fAbsX/mWindowSize.x;
+        mMouse_.fRelY = mMouse_.fAbsY/mWindowSize.y;
 
         if (bMouseGrab_)
         {
@@ -305,13 +329,13 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
             if (mEvent.type == SDL_MOUSEBUTTONDOWN)
             {
-                mMouseEvent.add((float)mEvent.button.x);
-                mMouseEvent.add((float)mEvent.button.y);
+                mMouseEvent.add(mEvent.button.x*fPixelsPerUnit_);
+                mMouseEvent.add(mEvent.button.y*fPixelsPerUnit_);
             }
             else
             {
-                mMouseEvent.add((float)mEvent.tfinger.x);
-                mMouseEvent.add((float)mEvent.tfinger.y);
+                mMouseEvent.add(mEvent.tfinger.x*fPixelsPerUnit_);
+                mMouseEvent.add(mEvent.tfinger.y*fPixelsPerUnit_);
             }
             lEvents_.push_back(mMouseEvent);
 
@@ -347,13 +371,13 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
             if (mEvent.type == SDL_MOUSEBUTTONUP)
             {
-                mMouseEvent.add((float)mEvent.button.x);
-                mMouseEvent.add((float)mEvent.button.y);
+                mMouseEvent.add(mEvent.button.x*fPixelsPerUnit_);
+                mMouseEvent.add(mEvent.button.y*fPixelsPerUnit_);
             }
             else
             {
-                mMouseEvent.add((float)mEvent.tfinger.x);
-                mMouseEvent.add((float)mEvent.tfinger.y);
+                mMouseEvent.add(mEvent.tfinger.x*fPixelsPerUnit_);
+                mMouseEvent.add(mEvent.tfinger.y*fPixelsPerUnit_);
             }
             lEvents_.push_back(mMouseEvent);
             break;
@@ -380,10 +404,13 @@ void source::on_sdl_event(const SDL_Event& mEvent)
                 mEvent.window.windowID == SDL_GetWindowID(pWindow_))
             {
                 bWindowResized_ = true;
-                int iWidth = 0, iHeight = 0;
-                SDL_GetWindowSize(pWindow_, &iWidth, &iHeight);
-                uiNewWindowWidth_ = iWidth;
-                uiNewWindowHeight_ = iHeight;
+
+                gui::vector2ui mPixelSize = get_window_pixel_size_();
+
+                uiNewWindowWidth_ = mPixelSize.x;
+                uiNewWindowHeight_ = mPixelSize.y;
+
+                update_pixel_ratio_();
             }
             break;
         }

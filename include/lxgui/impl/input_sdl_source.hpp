@@ -2,13 +2,16 @@
 #define LXGUI_INPUT_SDL_SOURCE_HPP
 
 #include <lxgui/utils.hpp>
+#include <lxgui/gui_vector2.hpp>
 #include <lxgui/input.hpp>
 
 #include <SDL_events.h>
+
 #include <chrono>
 #include <unordered_map>
 
 struct SDL_Window;
+struct SDL_Renderer;
 struct SDL_Cursor;
 
 namespace lxgui {
@@ -21,9 +24,11 @@ namespace sdl
 
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
+        *   \param pRenderer The SDL renderer, or null if using raw OpenGL
         *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
         */
-        explicit source(SDL_Window* pWindow, bool bInitialiseSDLImage, bool bMouseGrab = false);
+        explicit source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage,
+            bool bMouseGrab = false);
 
         source(const source&) = delete;
         source& operator = (const source&) = delete;
@@ -45,12 +50,16 @@ namespace sdl
 
     private :
 
+        gui::vector2ui get_window_pixel_size_() const;
+        void update_pixel_ratio_();
         input::key from_sdl_(int iSDLKey) const;
 
         SDL_Window* pWindow_ = nullptr;
+        SDL_Renderer* pRenderer_ = nullptr;
 
         bool bFirst_ = true;
         bool bMouseGrab_ = false;
+        float fPixelsPerUnit_ = 1.0f;
 
         float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
         float fWheelCache_ = 0.0f;

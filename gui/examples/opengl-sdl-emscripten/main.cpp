@@ -157,7 +157,9 @@ int main(int argc, char* argv[])
                 std::string(SDL_GetError())+".");
         }
 
-        const std::uint32_t uiFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+        const std::uint32_t uiFlags =
+            SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> pWindow(
             SDL_CreateWindow(
                 sWindowTitle.c_str(),
@@ -186,10 +188,13 @@ int main(int argc, char* argv[])
             std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
 
         // Define the input manager
-        bool bInitialiseSDLImage = true;
-        std::unique_ptr<input::source_impl> pInputSource =
-            std::unique_ptr<input::source_impl>(new input::sdl::source(pWindow.get(),
-                bInitialiseSDLImage));
+        std::unique_ptr<input::source_impl> pInputSource;
+        {
+            bool bInitialiseSDLImage = true;
+            SDL_Renderer* pRenderer = nullptr;
+            pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(
+                pWindow.get(), pRenderer, bInitialiseSDLImage));
+        }
 
         // Create the GUI manager
         std::unique_ptr<gui::manager> pManager = std::unique_ptr<gui::manager>(new gui::manager(
