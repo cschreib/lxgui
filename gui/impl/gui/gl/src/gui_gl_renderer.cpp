@@ -144,9 +144,9 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
 
 void renderer::render_quad(const quad& mQuad) const
 {
+#if !defined(LXGUI_OPENGL3)
     static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
-#if !defined(LXGUI_OPENGL3)
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(mQuad.mat.get());
@@ -198,9 +198,9 @@ void renderer::render_quad(const quad& mQuad) const
 
 void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
 
 #if !defined(LXGUI_OPENGL3)
+    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(mMaterial);
