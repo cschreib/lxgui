@@ -44,6 +44,8 @@ namespace sdl
         void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
         void reset_mouse_cursor() override;
 
+        float get_pixels_per_unit();
+
     protected :
 
         void update_() override;
@@ -51,7 +53,7 @@ namespace sdl
     private :
 
         gui::vector2ui get_window_pixel_size_() const;
-        void update_pixel_ratio_();
+        void update_pixel_per_unit_();
         input::key from_sdl_(int iSDLKey) const;
 
         SDL_Window* pWindow_ = nullptr;

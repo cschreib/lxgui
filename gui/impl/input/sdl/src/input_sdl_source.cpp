@@ -18,7 +18,7 @@ source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDL
 {
     mMouse_.bHasDelta = true;
 
-    update_pixel_ratio_();
+    update_pixel_per_unit_();
 
     if (bInitialiseSDLImage)
     {
@@ -94,6 +94,11 @@ void source::reset_mouse_cursor()
     }
 
     SDL_SetCursor(mIter->second.get());
+}
+
+float source::get_pixels_per_unit()
+{
+    return fPixelsPerUnit_;
 }
 
 key source::from_sdl_(int iSDLKey) const
@@ -214,7 +219,7 @@ gui::vector2ui source::get_window_pixel_size_() const
     return gui::vector2ui(iPixelWidth, iPixelHeight);
 }
 
-void source::update_pixel_ratio_()
+void source::update_pixel_per_unit_()
 {
     gui::vector2ui mPixelSize = get_window_pixel_size_();
 
@@ -410,7 +415,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
                 uiNewWindowWidth_ = mPixelSize.x;
                 uiNewWindowHeight_ = mPixelSize.y;
 
-                update_pixel_ratio_();
+                update_pixel_per_unit_();
             }
             break;
         }
