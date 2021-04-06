@@ -235,7 +235,7 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
     pText_->enable_word_wrap(bCanWordWrap_, bAddEllipsis_);
     pText_->enable_formatting(bFormattingEnabled_);
 
-    fire_update_borders();
+    notify_borders_need_update();
     notify_renderer_need_redraw();
 }
 
@@ -421,7 +421,7 @@ void font_string::set_text(const utils::ustring& sText)
         if (pText_)
         {
             pText_->set_text(sText_);
-            fire_update_borders();
+            notify_borders_need_update();
         }
     }
 }

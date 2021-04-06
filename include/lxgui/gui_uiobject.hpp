@@ -253,8 +253,8 @@ namespace gui
         */
         virtual void copy_from(uiobject* pObj);
 
-        /// Tells this widget to update its borders.
-        virtual void fire_update_borders() const;
+        /// Tells this widget that its borders need updating.
+        virtual void notify_borders_need_update() const;
 
         /// Returns this widget's name.
         /** \return This widget's name

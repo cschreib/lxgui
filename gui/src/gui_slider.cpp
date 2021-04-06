@@ -494,7 +494,7 @@ void slider::update(float fDelta)
             else
                 pAnchor->set_abs_offset(0, uiAbsHeight_*fCoef);
 
-            pThumbTexture_->fire_update_borders();
+            pThumbTexture_->notify_borders_need_update();
             pThumbTexture_->update(fDelta);
 
             bUpdateThumbTexture_ = false;
@@ -502,9 +502,9 @@ void slider::update(float fDelta)
     }
 }
 
-void slider::fire_update_borders() const
+void slider::notify_borders_need_update() const
 {
-    frame::fire_update_borders();
+    frame::notify_borders_need_update();
     fire_update_thumb_texture_();
 }
 

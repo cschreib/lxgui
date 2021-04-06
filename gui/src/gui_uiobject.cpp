@@ -300,7 +300,7 @@ void uiobject::set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight)
         pManager_->notify_object_moved();
         uiAbsWidth_ = uiAbsWidth;
         uiAbsHeight_ = uiAbsHeight;
-        fire_update_borders();
+        notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
@@ -311,7 +311,7 @@ void uiobject::set_abs_width(uint uiAbsWidth)
     {
         pManager_->notify_object_moved();
         uiAbsWidth_ = uiAbsWidth;
-        fire_update_borders();
+        notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
@@ -322,7 +322,7 @@ void uiobject::set_abs_height(uint uiAbsHeight)
     {
         pManager_->notify_object_moved();
         uiAbsHeight_ = uiAbsHeight;
-        fire_update_borders();
+        notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
@@ -382,7 +382,7 @@ void uiobject::set_parent(frame* pParent)
     if (pParent_ != pParent)
     {
         pParent_ = pParent;
-        fire_update_borders();
+        notify_borders_need_update();
     }
 }
 
@@ -459,7 +459,7 @@ void uiobject::clear_all_points()
         lDefinedBorderList_ = quad2<bool>(false, false, false, false);
 
         bUpdateAnchors_ = true;
-        fire_update_borders();
+        notify_borders_need_update();
         notify_renderer_need_redraw();
         pManager_->notify_object_moved();
     }
@@ -479,7 +479,7 @@ void uiobject::set_all_points(const std::string& sObjName)
         lDefinedBorderList_ = quad2<bool>(true, true, true, true);
 
         bUpdateAnchors_ = true;
-        fire_update_borders();
+        notify_borders_need_update();
         notify_renderer_need_redraw();
         pManager_->notify_object_moved();
     }
@@ -543,7 +543,7 @@ void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName
     }
 
     bUpdateAnchors_ = true;
-    fire_update_borders();
+    notify_borders_need_update();
     notify_renderer_need_redraw();
     pManager_->notify_object_moved();
 }
@@ -594,7 +594,7 @@ void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName
     }
 
     bUpdateAnchors_ = true;
-    fire_update_borders();
+    notify_borders_need_update();
     notify_renderer_need_redraw();
     pManager_->notify_object_moved();
 }
@@ -637,7 +637,7 @@ void uiobject::set_point(const anchor& mAnchor)
     }
 
     bUpdateAnchors_ = true;
-    fire_update_borders();
+    notify_borders_need_update();
     notify_renderer_need_redraw();
     pManager_->notify_object_moved();
 }
@@ -679,7 +679,7 @@ anchor* uiobject::modify_point(anchor_point mPoint)
 {
     pManager_->notify_object_moved();
 
-    fire_update_borders();
+    notify_borders_need_update();
 
     auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
     if (mAnchor)
@@ -936,12 +936,12 @@ void uiobject::update_anchors()
     bUpdateAnchors_ = false;
 }
 
-void uiobject::fire_update_borders() const
+void uiobject::notify_borders_need_update() const
 {
     bUpdateBorders_ = true;
 
     for (auto* pObject : lAnchoredObjectList_)
-        pObject->fire_update_borders();
+        pObject->notify_borders_need_update();
 }
 
 void uiobject::update(float fDelta)

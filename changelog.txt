@@ -38,6 +38,7 @@ v2.0.0:
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
  - gui: renamed frame::on into frame::on_script
+ - gui: renamed uiobject::fire_udpate_borders to uiobject::notify_borders_need_update
  - gui: renamed color::chanel to color::channel
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")

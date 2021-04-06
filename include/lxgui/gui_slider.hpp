@@ -190,8 +190,8 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
-        /// Tells this widget to update its borders.
-        void fire_update_borders() const override;
+        /// Tells this widget that its borders need updating.
+        void notify_borders_need_update() const override;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
