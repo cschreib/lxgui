@@ -61,7 +61,7 @@ namespace gui
     };
 
     template<typename T>
-    quad2<T> operator + (const vector2<T>& mOffset, const quad2<T>& mQuad)
+    quad2<T> operator + (const vector2<T>& mOffset, const quad2<T>& mQuad) noexcept
     {
         quad2<T> mTmp = mQuad;
         mTmp.left += mOffset.x;
@@ -72,7 +72,7 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator + (const quad2<T>& mQuad, const vector2<T>& mOffset)
+    quad2<T> operator + (const quad2<T>& mQuad, const vector2<T>& mOffset) noexcept
     {
         quad2<T> mTmp = mQuad;
         mTmp.left += mOffset.x;
@@ -83,13 +83,46 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator - (const quad2<T>& mQuad, const vector2<T>& mOffset)
+    quad2<T> operator - (const quad2<T>& mQuad, const vector2<T>& mOffset) noexcept
     {
         quad2<T> mTmp = mQuad;
         mTmp.left -= mOffset.x;
         mTmp.right -= mOffset.x;
         mTmp.top -= mOffset.y;
         mTmp.bottom -= mOffset.y;
+        return mTmp;
+    }
+
+    template<typename T>
+    quad2<T> operator * (const quad2<T>& mQuad, T fScale) noexcept
+    {
+        quad2<T> mTmp = mQuad;
+        mTmp.left *= fScale;
+        mTmp.right *= fScale;
+        mTmp.top *= fScale;
+        mTmp.bottom *= fScale;
+        return mTmp;
+    }
+
+    template<typename T>
+    quad2<T> operator * (T fScale, const quad2<T>& mQuad) noexcept
+    {
+        quad2<T> mTmp = mQuad;
+        mTmp.left *= fScale;
+        mTmp.right *= fScale;
+        mTmp.top *= fScale;
+        mTmp.bottom *= fScale;
+        return mTmp;
+    }
+
+    template<typename T>
+    quad2<T> operator / (const quad2<T>& mQuad, T fScale) noexcept
+    {
+        quad2<T> mTmp = mQuad;
+        mTmp.left /= fScale;
+        mTmp.right /= fScale;
+        mTmp.top /= fScale;
+        mTmp.bottom /= fScale;
         return mTmp;
     }
 
