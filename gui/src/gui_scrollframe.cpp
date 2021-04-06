@@ -295,19 +295,22 @@ void scroll_frame::rebuild_scroll_render_target_()
     if (uiAbsWidth_ == 0 || uiAbsHeight_ == 0)
         return;
 
+    float fFactor = get_interface_scaling_factor();
+
     if (pScrollRenderTarget_)
     {
-        pScrollRenderTarget_->set_dimensions(uiAbsWidth_, uiAbsHeight_);
+        pScrollRenderTarget_->set_dimensions(uiAbsWidth_*fFactor, uiAbsHeight_*fFactor);
+
         std::array<float,4> lTexCoords;
         lTexCoords[0] = 0.0f; lTexCoords[1] = 0.0f;
-        lTexCoords[2] = float(uiAbsWidth_)/pScrollRenderTarget_->get_real_width();
-        lTexCoords[3] = float(uiAbsHeight_)/pScrollRenderTarget_->get_real_height();
+        lTexCoords[2] = uiAbsWidth_*fFactor/pScrollRenderTarget_->get_real_width();
+        lTexCoords[3] = uiAbsHeight_*fFactor/pScrollRenderTarget_->get_real_height();
         pScrollTexture_->set_tex_coord(lTexCoords);
         bUpdateScrollRange_ = true;
     }
     else
     {
-        pScrollRenderTarget_ = create_render_target(uiAbsWidth_, uiAbsHeight_);
+        pScrollRenderTarget_ = create_render_target(uiAbsWidth_*fFactor, uiAbsHeight_*fFactor);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -382,5 +385,18 @@ uint scroll_frame::get_target_height() const
 {
     return get_apparent_height();
 }
+
+uint scroll_frame::get_target_physical_pixel_width() const
+{
+    if (!pScrollRenderTarget_) return 0u;
+    return pScrollRenderTarget_->get_real_width();
+}
+
+uint scroll_frame::get_target_physical_pixel_height() const
+{
+    if (!pScrollRenderTarget_) return 0u;
+    return pScrollRenderTarget_->get_real_height();
+}
+
 }
 }

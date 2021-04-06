@@ -82,10 +82,20 @@ const renderer_impl* manager::get_renderer() const
 
 uint manager::get_target_width() const
 {
-    return uiScreenWidth_;
+    return uiScreenWidth_/get_interface_scaling_factor();
 }
 
 uint manager::get_target_height() const
+{
+    return uiScreenHeight_/get_interface_scaling_factor();
+}
+
+uint manager::get_target_physical_pixel_width() const
+{
+    return uiScreenWidth_;
+}
+
+uint manager::get_target_physical_pixel_height() const
 {
     return uiScreenHeight_;
 }

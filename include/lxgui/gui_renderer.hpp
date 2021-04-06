@@ -54,15 +54,25 @@ namespace gui
         */
         virtual void notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel);
 
-        /// Returns the width of this renderer's main render target (e.g., screen).
+        /// Returns the display width of this renderer's main render target (e.g., screen).
         /** \return The render target width
         */
         virtual uint get_target_width() const = 0;
 
-        /// Returns the height of this renderer's main render target (e.g., screen).
+        /// Returns the display height of this renderer's main render target (e.g., screen).
         /** \return The render target height
         */
         virtual uint get_target_height() const = 0;
+
+        /// Returns the physical width of this renderer's main render target (e.g., screen), in pixels.
+        /** \return The render target width
+        */
+        virtual uint get_target_physical_pixel_width() const = 0;
+
+        /// Returns the physical height of this renderer's main render target (e.g., screen), in pixels.
+        /** \return The render target height
+        */
+        virtual uint get_target_physical_pixel_height() const = 0;
 
         /// Tells the underlying graphics engine to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)
@@ -74,6 +84,28 @@ namespace gui
         *         done, so don't forget to call it !
         */
         void end() const;
+
+        /// Sets the global UI scaling factor.
+        /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
+        *   \note This value determines how to convert sizing units or position coordinates
+        *         into actual number of pixels. By default, units specified for sizes and
+        *         positions are 1:1 mapping with pixels on the screen. If designing the UI
+        *         on a "traditional" display (say, 1080p resolution monitor), the UI will not
+        *         scale correctly when running on high-DPI displays unless the scaling factor is
+        *         adjusted accordingly. The value of the scaling factor should be the ratio
+        *         DPI_target/DPI_dev, where DPI_dev is the DPI of the display used for
+        *         development, and DPI_target is the DPI of the display used to run the program.
+        *         In addition, the scaling factor can also be used to improve accessibility of
+        *         the interface to users with poorer eye sight, which would benefit from larger
+        *         font sizes and larger icons.
+        */
+        void set_interface_scaling_factor(float fScalingFactor);
+
+        /// Returns the current UI scaling factor.
+        /** \return The current UI scaling factor
+        *   \see set_interface_scaling_factor()
+        */
+        float get_interface_scaling_factor() const;
 
         /// Sets the view matrix to use when rendering (viewport).
         /** \param mViewMatrix The view matrix
@@ -221,6 +253,8 @@ namespace gui
         renderer_impl*       pImpl_ = nullptr;
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;
+
+        float fScalingFactor_ = 1.0f;
     };
 }
 }

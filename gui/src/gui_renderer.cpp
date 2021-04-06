@@ -2,6 +2,7 @@
 #include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_out.hpp"
 
@@ -48,6 +49,8 @@ renderer::renderer(renderer_impl* pImpl) : pImpl_(pImpl)
     {
         lStrataList_[uiStrata].mStrata = (frame_strata)uiStrata;
     }
+
+    fScalingFactor_ = 2.0f;
 }
 
 void renderer::fire_redraw(frame_strata mStrata) const
@@ -123,11 +126,33 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
 void renderer::begin(std::shared_ptr<render_target> pTarget) const
 {
     pImpl_->begin(pTarget);
+    pImpl_->set_view(matrix4f::view(vector2f(
+        get_target_physical_pixel_width()/fScalingFactor_,
+        get_target_physical_pixel_height()/fScalingFactor_)));
 }
 
 void renderer::end() const
 {
     pImpl_->end();
+}
+
+void renderer::set_interface_scaling_factor(float fScalingFactor)
+{
+    if (fScalingFactor == fScalingFactor_) return;
+
+    fScalingFactor_ = fScalingFactor;
+
+    for (auto& mStrata : lStrataList_)
+    for (auto& mLevel : mStrata.lLevelList)
+    for (auto& pFrame : mLevel.second.lFrameList)
+    {
+        pFrame->notify_borders_need_update();
+    }
+}
+
+float renderer::get_interface_scaling_factor() const
+{
+    return fScalingFactor_;
 }
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
