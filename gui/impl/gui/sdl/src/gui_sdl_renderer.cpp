@@ -5,7 +5,6 @@
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/gui_manager.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
@@ -19,6 +18,11 @@ namespace sdl
 
 renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRenderer_(pRenderer)
 {
+    int iWindowWidth, iWindowHeight;
+    SDL_GetRendererOutputSize(pRenderer_, &iWindowWidth, &iWindowHeight);
+    uiWindowWidth_ = iWindowWidth;
+    uiWindowHeight_ = iWindowHeight;
+
     render_target::check_availability(pRenderer);
 
     if (bInitialiseSDLImage)
@@ -51,16 +55,14 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
         pCurrentTarget_ = std::static_pointer_cast<sdl::render_target>(pTarget);
         pCurrentTarget_->begin();
 
-        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
+        mTargetViewMatrix_ = pCurrentTarget_->get_view_matrix();
     }
     else
     {
-        float fWidth = pParent_->get_target_physical_pixel_width();
-        float fHeight = pParent_->get_target_physical_pixel_height();
-
-        mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
-        pCurrentViewMatrix_ = &mViewMatrix_;
+        mTargetViewMatrix_ = matrix4f::view(vector2f(uiWindowWidth_, uiWindowHeight_));
     }
+
+    mViewMatrix_ = mTargetViewMatrix_;
 }
 
 void renderer::end() const
@@ -73,8 +75,7 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
-    mViewMatrix_ = mViewMatrix;
-    pCurrentViewMatrix_ = &mViewMatrix_;
+    mViewMatrix_ = mViewMatrix*matrix4f::invert(mTargetViewMatrix_);
 }
 
 color premultiply_alpha(const color& mColor, bool bPreMultipliedAlphaSupported)
@@ -292,7 +293,7 @@ void renderer::render_quad(const sdl::material* pMat,
     auto lViewList = lVertexList;
     for (auto& v : lViewList)
     {
-        v.pos = (*pCurrentViewMatrix_) * v.pos;
+        v.pos = v.pos*mViewMatrix_;
     }
 
     if (pMat)
@@ -305,6 +306,8 @@ void renderer::render_quad(const sdl::material* pMat,
 
         // Build the source and destination rect, figuring out rotation and flipping
         const sdl_render_data mData = make_rects(lViewList, fTexWidth, fTexHeight);
+
+        if (mData.mDestQuad.w == 0 || mData.mDestQuad.h == 0) return;
 
         if (bPreMultipliedAlphaSupported_)
         {
@@ -339,12 +342,14 @@ void renderer::render_quad(const sdl::material* pMat,
 
             SDL_SetTextureAlphaMod(pTexture, mColor.a*255);
 
-            if (pMat->get_wrap() == material::wrap::CLAMP ||
-                (mData.mSrcQuad.x >= 0 && mData.mSrcQuad.y >= 0 &&
+            bool bCoordsAllInTexture = mData.mSrcQuad.x >= 0 && mData.mSrcQuad.y >= 0 &&
                 mData.mSrcQuad.x + mData.mSrcQuad.w <= iTexWidth &&
-                mData.mSrcQuad.y + mData.mSrcQuad.h <= iTexHeight) ||
-                ((iTexHeight == 1 || mData.mDestQuad.h == 1) &&
-                (iTexWidth == 1 || mData.mDestQuad.w == 1)))
+                mData.mSrcQuad.y + mData.mSrcQuad.h <= iTexHeight;
+
+            bool bOnePixel = (iTexHeight == 1 || mData.mDestQuad.h == 1) &&
+                             (iTexWidth == 1 || mData.mDestQuad.w == 1);
+
+            if (pMat->get_wrap() == material::wrap::CLAMP || bCoordsAllInTexture || bOnePixel)
             {
                 // Single texture copy, or clamped wrap
                 SDL_RenderCopyEx(pRenderer_, pTexture, &mData.mSrcQuad, &mData.mDestQuad,
@@ -430,6 +435,8 @@ void renderer::render_quad(const sdl::material* pMat,
             static_cast<int>(lViewList[2].pos.x - lViewList[0].pos.x),
             static_cast<int>(lViewList[2].pos.y - lViewList[0].pos.y)
         };
+
+        if (mDestQuad.w == 0 || mDestQuad.h == 0) return;
 
         if (lViewList[0].col == lViewList[1].col && lViewList[0].col == lViewList[2].col &&
             lViewList[0].col == lViewList[3].col)
@@ -588,6 +595,12 @@ bool renderer::has_vertex_cache() const
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const
 {
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
+}
+
+void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+{
+    uiWindowWidth_ = uiNewWidth;
+    uiWindowHeight_ = uiNewHeight;
 }
 
 }

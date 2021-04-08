@@ -149,16 +149,6 @@ namespace gui
         */
         uint get_target_height() const override;
 
-        /// Returns the physical width of this renderer's main render target (e.g., screen), in pixels.
-        /** \return The render target width
-        */
-        uint get_target_physical_pixel_width() const override;
-
-        /// Returns the physical height of this renderer's main render target (e.g., screen), in pixels.
-        /** \return The render target height
-        */
-        uint get_target_physical_pixel_height() const override;
-
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 

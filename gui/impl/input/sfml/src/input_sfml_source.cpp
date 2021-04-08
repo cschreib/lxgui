@@ -20,10 +20,13 @@ namespace sfml
 source::source(sf::Window& mWindow, bool bMouseGrab) :
     mWindow_(mWindow), bMouseGrab_(bMouseGrab)
 {
+    uiWindowWidth_ = mWindow_.getSize().x;
+    uiWindowHeight_ = mWindow_.getSize().y;
+
     if (bMouseGrab_)
     {
-        fOldMouseX_ = mWindow_.getSize().x/2;
-        fOldMouseY_ = mWindow_.getSize().y/2;
+        fOldMouseX_ = uiWindowWidth_/2;
+        fOldMouseY_ = uiWindowHeight_/2;
     }
 
     mMouse_.bHasDelta = true;
@@ -34,8 +37,8 @@ void source::toggle_mouse_grab()
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
     {
-        fOldMouseX_ = mWindow_.getSize().x/2;
-        fOldMouseY_ = mWindow_.getSize().y/2;
+        fOldMouseX_ = uiWindowWidth_/2;
+        fOldMouseY_ = uiWindowHeight_/2;
     }
 }
 
@@ -195,17 +198,14 @@ key source::from_sfml_(int uiSFKey) const
 
 void source::update_()
 {
-    const float width  = mWindow_.getSize().x;
-    const float height = mWindow_.getSize().y;
-
     const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
 
     if (bFirst_)
     {
         mMouse_.fAbsX = mMousePos.x;
         mMouse_.fAbsY = mMousePos.y;
-        mMouse_.fRelX = mMouse_.fAbsX/width;
-        mMouse_.fRelY = mMouse_.fAbsY/height;
+        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
+        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
 
         mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
         bFirst_ = false;
@@ -220,13 +220,13 @@ void source::update_()
     {
         mMouse_.fDX = mMousePos.x - fOldMouseX_;
         mMouse_.fDY = mMousePos.y - fOldMouseY_;
-        mMouse_.fRelDX = mMouse_.fDX/width;
-        mMouse_.fRelDY = mMouse_.fDY/height;
+        mMouse_.fRelDX = mMouse_.fDX/uiWindowWidth_;
+        mMouse_.fRelDY = mMouse_.fDY/uiWindowHeight_;
 
         mMouse_.fAbsX += mMouse_.fDX;
         mMouse_.fAbsY += mMouse_.fDY;
-        mMouse_.fRelX = mMouse_.fAbsX/width;
-        mMouse_.fRelY = mMouse_.fAbsY/height;
+        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
+        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
 
         if (bMouseGrab_)
         {
@@ -261,8 +261,8 @@ void source::on_sfml_event(const sf::Event& mEvent)
     else if (mEvent.type == sf::Event::Resized)
     {
         bWindowResized_ = true;
-        uiNewWindowWidth_ = mEvent.size.width;
-        uiNewWindowHeight_ = mEvent.size.height;
+        uiWindowWidth_ = mEvent.size.width;
+        uiWindowHeight_ = mEvent.size.height;
     }
     else if (mEvent.type == sf::Event::KeyPressed)
     {

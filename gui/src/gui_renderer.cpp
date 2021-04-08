@@ -44,7 +44,7 @@ void print_frames(const std::array<strata,8>& lStrataList)
     }
 }
 
-renderer::renderer(manager* pManager, renderer_impl* pImpl) : pParentManager_(pManager), pImpl_(pImpl)
+renderer::renderer()
 {
     for (uint uiStrata = 0; uiStrata < lStrataList_.size(); ++uiStrata)
     {
@@ -122,85 +122,6 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
     fire_redraw(mStrata.mStrata);
 }
 
-void renderer::begin(std::shared_ptr<render_target> pTarget) const
-{
-    pImpl_->begin(pTarget);
-
-    float fScalingFactor = pParentManager_->get_interface_scaling_factor();
-    float fWidth, fHeight;
-    if (pTarget)
-    {
-        fWidth = pTarget->get_real_width()/fScalingFactor;
-        fHeight = pTarget->get_real_height()/fScalingFactor;
-    }
-    else
-    {
-        fWidth = get_target_physical_pixel_width()/fScalingFactor;
-        fHeight = get_target_physical_pixel_height()/fScalingFactor;
-    }
-
-    pImpl_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
-}
-
-void renderer::end() const
-{
-    pImpl_->end();
-}
-
-void renderer::set_view(const matrix4f& mViewMatrix) const
-{
-    pImpl_->set_view(mViewMatrix);
-}
-
-void renderer::render_quad(const quad& mQuad) const
-{
-    pImpl_->render_quad(mQuad);
-}
-
-void renderer::render_quads(const material* pMaterial,
-    const std::vector<std::array<vertex,4>>& lQuadList) const
-{
-    pImpl_->render_quads(pMaterial, lQuadList);
-}
-
-void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,
-    const matrix4f& mModelTransform) const
-{
-    pImpl_->render_cache(pMaterial, mCache, mModelTransform);
-}
-
-std::shared_ptr<material> renderer::create_material(const std::string& sFileName,
-    material::filter mFilter) const
-{
-    return pImpl_->create_material(sFileName, mFilter);
-}
-
-std::shared_ptr<material> renderer::create_material(
-    std::shared_ptr<render_target> pRenderTarget) const
-{
-    return pImpl_->create_material(pRenderTarget);
-}
-
-std::shared_ptr<render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
-{
-    return pImpl_->create_render_target(uiWidth, uiHeight);
-}
-
-std::shared_ptr<font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
-{
-    return pImpl_->create_font(sFontFile, uiSize);
-}
-
-bool renderer::has_vertex_cache() const
-{
-    return pImpl_->has_vertex_cache();
-}
-
-std::shared_ptr<vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
-{
-    return pImpl_->create_vertex_cache(mType);
-}
-
 void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
 {
     int iNewLevel = pFrame->get_level();
@@ -260,22 +181,6 @@ void renderer::render_strata_(const strata& mStrata) const
     }
 
     ++mStrata.uiRedrawCount;
-}
-
-void renderer::create_strata_cache_render_target_(strata& mStrata)
-{
-    uint uiWidth = get_target_physical_pixel_width();
-    uint uiHeight = get_target_physical_pixel_height();
-
-    if (mStrata.pRenderTarget)
-        mStrata.pRenderTarget->set_dimensions(uiWidth, uiHeight);
-    else
-        mStrata.pRenderTarget = create_render_target(uiWidth, uiHeight);
-
-    mStrata.mSprite = sprite(pImpl_, create_material(mStrata.pRenderTarget));
-
-    float fScale = 1.0/pParentManager_->get_interface_scaling_factor();
-    mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
 }
 
 void renderer::clear_strata_list_()

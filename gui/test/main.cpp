@@ -421,10 +421,6 @@ int main(int argc, char* argv[])
         std::unique_ptr<gui::manager> pManager;
 
     #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
-        // Define the GUI renderer
-        std::unique_ptr<gui::renderer_impl> pRendererImpl =
-            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
-
         // Define the input manager
         std::unique_ptr<input::source_impl> pInputSource;
 
@@ -441,15 +437,19 @@ int main(int argc, char* argv[])
         }
     #endif
 
+        // Define the GUI renderer
+        std::unique_ptr<gui::renderer_impl> pRendererImpl =
+            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer(
+                pInputSource->get_window_width(),
+                pInputSource->get_window_height()));
+
         pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input source
             std::move(pInputSource),
-            // The locale
-            sLocale,
-            // Dimensions of the render window
-            uiWindowWidth, uiWindowHeight,
             // Provide the GUI renderer implementation
-            std::move(pRendererImpl)
+            std::move(pRendererImpl),
+            // The locale
+            sLocale
         ));
     #elif defined(SDL_GUI)
         // Use full SDL implementation

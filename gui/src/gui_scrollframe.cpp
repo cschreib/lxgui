@@ -2,6 +2,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
@@ -10,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager* pManager) : frame(pManager), renderer(pManager, pManager->get_renderer())
+scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -319,7 +320,8 @@ void scroll_frame::rebuild_scroll_render_target_()
     }
     else
     {
-        pScrollRenderTarget_ = create_render_target(uiScaledWidth, uiScaledHeight);
+        auto* pRenderer = pManager_->get_renderer();
+        pScrollRenderTarget_ = pRenderer->create_render_target(uiScaledWidth, uiScaledHeight);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -328,7 +330,7 @@ void scroll_frame::rebuild_scroll_render_target_()
 
 void scroll_frame::render_scroll_strata_list_()
 {
-    begin(pScrollRenderTarget_);
+    pManager_->begin(pScrollRenderTarget_);
     pScrollRenderTarget_->clear(color::EMPTY);
 
     for (const auto& mStrata : lStrataList_)
@@ -336,7 +338,7 @@ void scroll_frame::render_scroll_strata_list_()
         render_strata_(mStrata);
     }
 
-    end();
+    pManager_->end();
 }
 
 bool scroll_frame::is_in_frame(int iX, int iY) const
@@ -393,18 +395,6 @@ uint scroll_frame::get_target_width() const
 uint scroll_frame::get_target_height() const
 {
     return get_apparent_height();
-}
-
-uint scroll_frame::get_target_physical_pixel_width() const
-{
-    if (!pScrollRenderTarget_) return 0u;
-    return pScrollRenderTarget_->get_real_width();
-}
-
-uint scroll_frame::get_target_physical_pixel_height() const
-{
-    if (!pScrollRenderTarget_) return 0u;
-    return pScrollRenderTarget_->get_real_height();
 }
 
 }

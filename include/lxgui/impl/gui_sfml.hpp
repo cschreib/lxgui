@@ -2,6 +2,7 @@
 #define LXGUI_GUI_SFML_HPP
 
 #include "lxgui/impl/gui_sfml_renderer.hpp"
+#include "lxgui/gui_manager.hpp"
 
 namespace sf
 {

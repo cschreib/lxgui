@@ -183,10 +183,6 @@ int main(int argc, char* argv[])
         std::cout << "Creating gui manager..." << std::endl;
         const std::string sLocale = "enGB";
 
-        // Define the GUI renderer
-        std::unique_ptr<gui::renderer_impl> pRendererImpl =
-            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer());
-
         // Define the input manager
         std::unique_ptr<input::source_impl> pInputSource;
         {
@@ -196,16 +192,20 @@ int main(int argc, char* argv[])
                 pWindow.get(), pRenderer, bInitialiseSDLImage));
         }
 
+        // Define the GUI renderer
+        std::unique_ptr<gui::renderer_impl> pRendererImpl =
+            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer(
+                pInputSource->get_window_width(),
+                pInputSource->get_window_height()));
+
         // Create the GUI manager
         std::unique_ptr<gui::manager> pManager = std::unique_ptr<gui::manager>(new gui::manager(
             // Provide the input source
             std::move(pInputSource),
-            // The locale
-            sLocale,
-            // Dimensions of the render window
-            uiWindowWidth, uiWindowHeight,
             // Provide the GUI renderer implementation
             std::move(pRendererImpl)
+            // The locale
+            sLocale,
         ));
 
         pManager->enable_caching(false);

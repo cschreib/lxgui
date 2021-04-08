@@ -6,7 +6,7 @@
 
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/gui_manager.hpp>
+#include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
 #ifdef WIN32
@@ -38,7 +38,8 @@ namespace gl
 thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_;
 #endif
 
-renderer::renderer(bool bInitGLEW [[maybe_unused]])
+renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[maybe_unused]]) :
+    uiWindowWidth_(uiWindowWidth), uiWindowHeight_(uiWindowHeight)
 {
 #if !defined(WASM)
     if (bInitGLEW)
@@ -63,25 +64,20 @@ renderer::shader_cache::~shader_cache()
 
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
-    const matrix4f* pCurrentViewMatrix = nullptr;
+    matrix4f mCurrentViewMatrix;
 
     if (pTarget)
     {
         pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
 
-        pCurrentViewMatrix = &pCurrentTarget_->get_view_matrix();
+        mCurrentViewMatrix = pCurrentTarget_->get_view_matrix();
     }
     else
     {
-        float fWidth = pParent_->get_target_physical_pixel_width();
-        float fHeight = pParent_->get_target_physical_pixel_height();
+        glViewport(0.0f, 0.0f, uiWindowWidth_, uiWindowHeight_);
 
-        mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
-
-        glViewport(0.0f, 0.0f, fWidth, fHeight);
-
-        pCurrentViewMatrix = &mViewMatrix_;
+        mCurrentViewMatrix = matrix4f::view(vector2f(uiWindowWidth_, uiWindowHeight_));
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -101,7 +97,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     uiPreviousTexture_ = (uint)-1;
 #endif
 
-    set_view(*pCurrentViewMatrix);
+    set_view(mCurrentViewMatrix);
 }
 
 void renderer::end() const
@@ -350,8 +346,10 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
 #endif
 }
 
-void renderer::notify_window_resized(uint, uint)
+void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
 {
+    uiWindowWidth_ = uiNewWidth;
+    uiWindowHeight_ = uiNewHeight;
 }
 
 #if !defined(LXGUI_OPENGL3)

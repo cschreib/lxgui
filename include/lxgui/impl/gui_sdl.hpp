@@ -2,6 +2,7 @@
 #define LXGUI_GUI_SDL_HPP
 
 #include "lxgui/impl/gui_sdl_renderer.hpp"
+#include "lxgui/gui_manager.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;

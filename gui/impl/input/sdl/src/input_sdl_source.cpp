@@ -16,6 +16,10 @@ namespace sdl
 source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage,
     bool bMouseGrab) : pWindow_(pWindow), pRenderer_(pRenderer), bMouseGrab_(bMouseGrab)
 {
+    gui::vector2ui mWindowSize = get_window_pixel_size_();
+    uiWindowWidth_ = mWindowSize.x;
+    uiWindowHeight_ = mWindowSize.y;
+
     mMouse_.bHasDelta = true;
 
     update_pixel_per_unit_();
@@ -36,10 +40,8 @@ void source::toggle_mouse_grab()
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
     {
-        gui::vector2ui mWindowSize = get_window_pixel_size_();
-
-        fOldMouseX_ = mWindowSize.x/2;
-        fOldMouseY_ = mWindowSize.y/2;
+        fOldMouseX_ = uiWindowWidth_/2;
+        fOldMouseY_ = uiWindowHeight_/2;
     }
 }
 
@@ -237,14 +239,12 @@ void source::update_()
     float fMouseX = iMouseX*fPixelsPerUnit_;
     float fMouseY = iMouseY*fPixelsPerUnit_;
 
-    gui::vector2ui mWindowSize = get_window_pixel_size_();
-
     if (bFirst_)
     {
         mMouse_.fAbsX = fMouseX;
         mMouse_.fAbsY = fMouseY;
-        mMouse_.fRelX = mMouse_.fAbsX/mWindowSize.x;
-        mMouse_.fRelY = mMouse_.fAbsY/mWindowSize.y;
+        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
+        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
 
         mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
         bFirst_ = false;
@@ -259,13 +259,13 @@ void source::update_()
     {
         mMouse_.fDX = fMouseX - fOldMouseX_;
         mMouse_.fDY = fMouseY - fOldMouseY_;
-        mMouse_.fRelDX = mMouse_.fDX/mWindowSize.x;
-        mMouse_.fRelDY = mMouse_.fDY/mWindowSize.y;
+        mMouse_.fRelDX = mMouse_.fDX/uiWindowWidth_;
+        mMouse_.fRelDY = mMouse_.fDY/uiWindowHeight_;
 
         mMouse_.fAbsX += mMouse_.fDX;
         mMouse_.fAbsY += mMouse_.fDY;
-        mMouse_.fRelX = mMouse_.fAbsX/mWindowSize.x;
-        mMouse_.fRelY = mMouse_.fAbsY/mWindowSize.y;
+        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
+        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
 
         if (bMouseGrab_)
         {
@@ -412,8 +412,8 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
                 gui::vector2ui mPixelSize = get_window_pixel_size_();
 
-                uiNewWindowWidth_ = mPixelSize.x;
-                uiNewWindowHeight_ = mPixelSize.y;
+                uiWindowWidth_ = mPixelSize.x;
+                uiWindowHeight_ = mPixelSize.y;
 
                 update_pixel_per_unit_();
             }

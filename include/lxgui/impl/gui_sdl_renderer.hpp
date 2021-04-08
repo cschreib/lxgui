@@ -137,13 +137,21 @@ namespace sdl
         */
         std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const override;
 
+        /// Notifies the renderer that the render window has been resized.
+        /** \param uiNewWidth  The new window width
+        *   \param uiNewHeight The new window height
+        */
+        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
+
     private :
 
         SDL_Renderer* pRenderer_ = nullptr;
         bool bPreMultipliedAlphaSupported_ = false;
 
-        mutable const matrix4f* pCurrentViewMatrix_ = nullptr;
+        uint uiWindowWidth_ = 0u;
+        uint uiWindowHeight_ = 0u;
         mutable matrix4f mViewMatrix_;
+        mutable matrix4f mTargetViewMatrix_;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;

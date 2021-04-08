@@ -78,13 +78,11 @@ namespace gui
 
         /// Constructor.
         /** \param pInputSource   The input source to use
-        *   \param sLocale        The name of the game locale ("enGB", ...)
-        *   \param uiScreenWidth  The width of the screen
-        *   \param uiScreenHeight The height of the screen
         *   \param pRendererImpl  The renderer implementation
+        *   \param sLocale        The name of the game locale ("enGB", ...)
         */
-        manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
-                uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pRendererImpl);
+        manager(std::unique_ptr<input::source_impl> pInputSource,
+                std::unique_ptr<renderer_impl> pRendererImpl, const std::string& sLocale);
 
         /// Destructor.
         ~manager() override;
@@ -103,16 +101,6 @@ namespace gui
         /** \return The render target height
         */
         uint get_target_height() const override;
-
-        /// Returns the physical width of this renderer's main render target (e.g., screen), in pixels.
-        /** \return The render target width
-        */
-        uint get_target_physical_pixel_width() const override;
-
-        /// Returns the physical height of this renderer's main render target (e.g., screen), in pixels.
-        /** \return The render target height
-        */
-        uint get_target_physical_pixel_height() const override;
 
         /// Sets the global UI scaling factor.
         /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
@@ -439,6 +427,17 @@ namespace gui
         */
         void reload_ui();
 
+        /// Tells the rendering back-end to start rendering into a new target.
+        /** \param pTarget The target to render to (nullptr to render to the screen)
+        */
+        void begin(std::shared_ptr<render_target> pTarget = nullptr) const;
+
+        /// Tells the rendering back-end we are done rendering on the current target.
+        /** \note For most back-ends, this is when the rendering is actually
+        *         done, so do not forget to call it even if it appears to do nothing.
+        */
+        void end() const;
+
         /// Renders the UI into the current render target.
         void render_ui() const;
 
@@ -702,6 +701,7 @@ namespace gui
             bool bVirtual, const std::vector<uiobject*>& lInheritance);
 
         void create_caching_render_target_();
+        void create_strata_cache_render_target_(strata& mStrata);
 
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 

@@ -24,7 +24,12 @@ namespace gl
     public :
 
         /// Constructor.
-        explicit renderer(bool bInitGLEW = true);
+        /** \param uiWindowWidth  The initial width of the window (in pixels)
+        *   \param uiWindowHeight The initial height of the window (in pixels)
+        *   \param bInitGLEW      Set to 'true' to initialise GLEW
+        *   \note Use notify_window_resized() if the size of the window changes later.
+        */
+        explicit renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW = true);
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -152,7 +157,8 @@ namespace gl
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        mutable matrix4f mViewMatrix_;
+        uint uiWindowWidth_ = 0u;
+        uint uiWindowHeight_ = 0u;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
 

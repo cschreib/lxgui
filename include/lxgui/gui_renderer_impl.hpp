@@ -12,7 +12,6 @@
 namespace lxgui {
 namespace gui
 {
-    class manager;
     class font;
     class render_target;
     class color;
@@ -30,12 +29,6 @@ namespace gui
 
         /// Destructor.
         virtual ~renderer_impl() = default;
-
-        /// Gives a pointer to the base class.
-        /** \note This function is automatically called by gui::manager
-        *         on creation.
-        */
-        void set_parent(manager* pParent);
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -142,10 +135,6 @@ namespace gui
         *   \param uiNewHeight The new window height
         */
         virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
-
-    protected :
-
-        manager* pParent_ = nullptr;
     };
 }
 }

@@ -13,8 +13,8 @@ std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow, const st
 {
     return std::unique_ptr<gui::manager>(new gui::manager(
         std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow)),
-        sLocale, mWindow.getSize().x, mWindow.getSize().y,
-        std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow))
+        std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow)),
+        sLocale
     ));
 }
 }

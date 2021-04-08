@@ -111,15 +111,15 @@ namespace input
         /// Resets the "window resized" flag.
         void reset_window_resized();
 
-        /// Get the new window width
-        /** \return The new window width
+        /// Get the window width (in pixels)
+        /** \return The window width
         */
-        uint get_window_new_width() const;
+        uint get_window_width() const;
 
-        /// Get the new window height
-        /** \return The new window height
+        /// Get the window height (in pixels)
+        /** \return The window height
         */
-        uint get_window_new_height() const;
+        uint get_window_height() const;
 
         /// Sets the double click maximum time.
         /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
@@ -176,8 +176,8 @@ namespace input
         bool bManuallyUpdated_ = false;
 
         bool bWindowResized_ = false;
-        uint uiNewWindowHeight_ = 0u;
-        uint uiNewWindowWidth_ = 0u;
+        uint uiWindowHeight_ = 0u;
+        uint uiWindowWidth_ = 0u;
 
         double dDoubleClickTime_ = 0.25;
     };
@@ -497,6 +497,16 @@ namespace input
 
         /// Sets the mouse cursor back to the default (arrow).
         void reset_mouse_cursor();
+
+        /// Get the window width (in pixels)
+        /** \return The window width
+        */
+        uint get_window_width() const;
+
+        /// Get the window height (in pixels)
+        /** \return The window height
+        */
+        uint get_window_height() const;
 
         /// Sets the scaling factor applied to the interface.
         /** \param fScalingFactor The new scaling factor (default: 1)

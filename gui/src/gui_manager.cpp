@@ -47,10 +47,9 @@ int l_get_locale(lua_State* pLua);
 int l_set_interface_scaling_factor(lua_State* pLua);
 int l_log(lua_State* pLua);
 
-manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
-    uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pRendererImpl) :
-    event_receiver(nullptr), renderer(this, pRendererImpl.get()),
-    uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
+manager::manager(std::unique_ptr<input::source_impl> pInputSource,
+    std::unique_ptr<renderer_impl> pRendererImpl, const std::string& sLocale) :
+    event_receiver(nullptr),
     pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
     pRendererImpl_(std::move(pRendererImpl))
 {
@@ -60,7 +59,11 @@ manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::st
     register_event("KEY_PRESSED");
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
-    pRendererImpl_->set_parent(this);
+
+    uiScreenWidth_ = pInputManager_->get_window_width();
+    uiScreenHeight_ = pInputManager_->get_window_height();
+
+    set_interface_scaling_factor(1.0f);
 }
 
 manager::~manager()
@@ -91,16 +94,6 @@ uint manager::get_target_height() const
     return uiScreenHeight_/get_interface_scaling_factor();
 }
 
-uint manager::get_target_physical_pixel_width() const
-{
-    return uiScreenWidth_;
-}
-
-uint manager::get_target_physical_pixel_height() const
-{
-    return uiScreenHeight_;
-}
-
 void manager::set_interface_scaling_factor(float fScalingFactor)
 {
     fScalingFactor *= pInputManager_->get_interface_scaling_factor_hint();
@@ -123,6 +116,8 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
         if (mStrata.pRenderTarget)
             create_strata_cache_render_target_(mStrata);
     }
+
+    notify_object_moved();
 }
 
 float manager::get_interface_scaling_factor() const
@@ -858,6 +853,30 @@ void manager::reload_ui()
     gui::out << "Done." << std::endl;
 }
 
+void manager::begin(std::shared_ptr<render_target> pTarget) const
+{
+    pRendererImpl_->begin(pTarget);
+
+    float fWidth, fHeight;
+    if (pTarget)
+    {
+        fWidth = pTarget->get_real_width()/fScalingFactor_;
+        fHeight = pTarget->get_real_height()/fScalingFactor_;
+    }
+    else
+    {
+        fWidth = uiScreenWidth_/fScalingFactor_;
+        fHeight = uiScreenHeight_/fScalingFactor_;
+    }
+
+    pRendererImpl_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
+}
+
+void manager::end() const
+{
+    pRendererImpl_->end();
+}
+
 void manager::render_ui() const
 {
     begin();
@@ -884,7 +903,7 @@ void manager::create_caching_render_target_()
         if (pRenderTarget_)
             pRenderTarget_->set_dimensions(uiScreenWidth_, uiScreenHeight_);
         else
-            pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
+            pRenderTarget_ = pRendererImpl_->create_render_target(uiScreenWidth_, uiScreenHeight_);
     }
     catch (const utils::exception& e)
     {
@@ -899,6 +918,19 @@ void manager::create_caching_render_target_()
 
     float fScale = 1.0/get_interface_scaling_factor();
     mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
+}
+
+void manager::create_strata_cache_render_target_(strata& mStrata)
+{
+    if (mStrata.pRenderTarget)
+        mStrata.pRenderTarget->set_dimensions(uiScreenWidth_, uiScreenHeight_);
+    else
+        mStrata.pRenderTarget = pRendererImpl_->create_render_target(uiScreenWidth_, uiScreenHeight_);
+
+    mStrata.mSprite = sprite(pRendererImpl_.get(), pRendererImpl_->create_material(mStrata.pRenderTarget));
+
+    float fScale = 1.0/fScalingFactor_;
+    mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
 }
 
 bool manager::is_loading_ui() const

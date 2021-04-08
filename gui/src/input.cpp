@@ -62,14 +62,14 @@ void source_impl::reset_window_resized()
     bWindowResized_ = false;
 }
 
-uint source_impl::get_window_new_width() const
+uint source_impl::get_window_width() const
 {
-    return uiNewWindowWidth_;
+    return uiWindowWidth_;
 }
 
-uint source_impl::get_window_new_height() const
+uint source_impl::get_window_height() const
 {
-    return uiNewWindowHeight_;
+    return uiWindowHeight_;
 }
 
 void source_impl::set_doubleclick_time(double dDoubleClickTime)
@@ -586,8 +586,8 @@ void manager::update(float fTempDelta)
     if (pSource_->has_window_resized())
     {
         gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
-        mWindowResizedEvent.add(pSource_->get_window_new_width());
-        mWindowResizedEvent.add(pSource_->get_window_new_height());
+        mWindowResizedEvent.add(pSource_->get_window_width());
+        mWindowResizedEvent.add(pSource_->get_window_height());
         fire_event_(mWindowResizedEvent, true);
         pSource_->reset_window_resized();
     }
@@ -772,6 +772,16 @@ void manager::set_mouse_cursor(const std::string& sFileName, const gui::vector2i
 void manager::reset_mouse_cursor()
 {
     return pSource_->reset_mouse_cursor();
+}
+
+uint manager::get_window_width() const
+{
+    return pSource_->get_window_width();
+}
+
+uint manager::get_window_height() const
+{
+    return pSource_->get_window_height();
 }
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
