@@ -44,6 +44,7 @@ int l_set_key_binding(lua_State* pLua);
 int l_create_frame(lua_State* pLua);
 int l_delete_frame(lua_State* pLua);
 int l_get_locale(lua_State* pLua);
+int l_set_interface_scaling_factor(lua_State* pLua);
 int l_log(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
@@ -762,11 +763,12 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLua_->reg<lua_focus_frame>();
     pLua_->reg<lua_layered_region>();
 
-    pLua_->reg("set_key_binding", l_set_key_binding);
-    pLua_->reg("create_frame",    l_create_frame);
-    pLua_->reg("delete_frame",    l_delete_frame);
-    pLua_->reg("get_locale",      l_get_locale);
-    pLua_->reg("log",             l_log);
+    pLua_->reg("set_key_binding",              l_set_key_binding);
+    pLua_->reg("create_frame",                 l_create_frame);
+    pLua_->reg("delete_frame",                 l_delete_frame);
+    pLua_->reg("get_locale",                   l_get_locale);
+    pLua_->reg("set_interface_scaling_factor", l_set_interface_scaling_factor);
+    pLua_->reg("log",                          l_log);
 
     pLuaRegs_ = pLuaRegs;
     if (pLuaRegs_)

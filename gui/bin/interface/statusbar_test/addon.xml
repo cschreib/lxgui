@@ -20,6 +20,8 @@
                 end
                 self:set_value(self.value);
                 self.value = self:get_value();
+
+                set_interface_scaling_factor(1.0 + self.value/10.0)
             </OnMouseDown>
         </Scripts>
         <Layers>
@@ -28,7 +30,7 @@
             </Layer>
         </Layers>
     </StatusBar>
-    
+
     <StatusBar name="StatusBarTest2" defaultValue="0" reversed="true">
         <Size>
             <AbsDimension x="100" y="16"/>
@@ -53,17 +55,17 @@
                 self.timer = self.timer + arg1;
                 self.total_fps = self.total_fps + 1.0/arg1;
                 self.frames = self.frames + 1;
-                
+
                 if (self.timer > self.update_time) then
                     local fps = self.total_fps/self.frames;
-                    
+
                     if (fps > self.max_fps) then
                         self.max_fps = fps;
                         self:set_min_max_values(0, self.max_fps);
                     end
-                    
+
                     self:set_value(fps);
-                
+
                     self.timer = 0;
                     self.total_fps = 0;
                     self.frames = 0;

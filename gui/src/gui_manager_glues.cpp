@@ -287,13 +287,34 @@ int l_delete_frame(lua_State* pLua)
 int l_get_locale(lua_State* pLua)
 {
     lua::function mFunc("get_locale", pLua, 1);
-
     lua::state& mState = mFunc.get_state();
     mState.get_global("_MGR");
     manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
     mState.pop();
 
     mFunc.push(pGUIMgr->get_locale());
+
+    return mFunc.on_return();
+}
+
+/** Sets the global interface scaling factor.
+*   @function set_interface_scaling_factor
+*   @tparam number The scaling factor (1: no scaling, 2: twice larger fonts and textures)
+*/
+int l_set_interface_scaling_factor(lua_State* pLua)
+{
+    lua::function mFunc("set_interface_scaling_factor", pLua);
+    mFunc.add(0, "scale factor", lua::type::NUMBER);
+
+    if (mFunc.check())
+    {
+        lua::state& mState = mFunc.get_state();
+        mState.get_global("_MGR");
+        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+        mState.pop();
+
+        pGUIMgr->set_interface_scaling_factor(mFunc.get(0)->get_number());
+    }
 
     return mFunc.on_return();
 }
