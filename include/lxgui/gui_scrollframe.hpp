@@ -4,7 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 
 namespace lxgui {
 namespace gui

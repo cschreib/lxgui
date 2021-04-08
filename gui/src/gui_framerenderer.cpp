@@ -1,4 +1,4 @@
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 

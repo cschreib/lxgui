@@ -6,7 +6,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 

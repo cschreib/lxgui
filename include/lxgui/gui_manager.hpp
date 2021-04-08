@@ -6,7 +6,7 @@
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_exception.hpp>
