@@ -54,27 +54,14 @@ render_target::~render_target()
 
 void render_target::begin()
 {
-    if (bUpdateViewMatrix_)
-        update_view_matrix_();
-
-    glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
-
-    glViewport(0.0f, 0.0f, pTexture_->get_real_width(), pTexture_->get_real_height());
-}
-
-void render_target::update_view_matrix_() const
-{
     float fWidth = pTexture_->get_real_width();
     float fHeight = pTexture_->get_real_height();
 
-    mViewMatrix_ = {
-        2.0f/fWidth, 0.0f, 0.0f, 0.0f,
-        0.0f, 2.0f/fHeight, 0.0f, 0.0f,
-        -1.0f, -1.0f, 1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f, 1.0f
-    };
+    mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
 
-    bUpdateViewMatrix_ = false;
+    glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
+
+    glViewport(0.0f, 0.0f, fWidth, fHeight);
 }
 
 void render_target::end()
@@ -110,8 +97,6 @@ uint render_target::get_real_height() const
 
 bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
 {
-    bUpdateViewMatrix_ = true;
-
     if (pTexture_->set_dimensions(uiWidth, uiHeight))
     {
         glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);

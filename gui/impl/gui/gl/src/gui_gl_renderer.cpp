@@ -61,16 +61,6 @@ renderer::shader_cache::~shader_cache()
 }
 #endif
 
-void renderer::update_view_matrix_() const
-{
-    float fWidth = pParent_->get_target_width();
-    float fHeight = pParent_->get_target_height();
-
-    mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
-
-    bUpdateViewMatrix_ = false;
-}
-
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
     const matrix4f* pCurrentViewMatrix = nullptr;
@@ -79,14 +69,18 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     {
         pCurrentTarget_ = std::static_pointer_cast<gl::render_target>(pTarget);
         pCurrentTarget_->begin();
+
         pCurrentViewMatrix = &pCurrentTarget_->get_view_matrix();
     }
     else
     {
-        if (bUpdateViewMatrix_)
-            update_view_matrix_();
+        float fWidth = pParent_->get_target_physical_pixel_width();
+        float fHeight = pParent_->get_target_physical_pixel_height();
 
-        glViewport(0.0f, 0.0f, pParent_->get_target_width(), pParent_->get_target_height());
+        mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
+
+        glViewport(0.0f, 0.0f, fWidth, fHeight);
+
         pCurrentViewMatrix = &mViewMatrix_;
     }
 
@@ -358,7 +352,6 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
 
 void renderer::notify_window_resized(uint, uint)
 {
-    bUpdateViewMatrix_ = true;
 }
 
 #if !defined(LXGUI_OPENGL3)
