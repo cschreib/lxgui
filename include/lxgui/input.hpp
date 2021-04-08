@@ -148,6 +148,15 @@ namespace input
         */
         virtual void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) = 0;
 
+        /// Return the interface scaling factor suggested by the operating system.
+        /** \return The interface scaling factor suggested by the operating system
+        *   \note This is implementation-dependent; not all input implementations are able
+        *         to produce this hint, in which case the function always returns 1.
+        *         Consequently, it is recommended to not rely blindly on this hint, and
+        *         to offer a way for the user to change the scaling factor.
+        */
+        virtual float get_interface_scaling_factor_hint() const;
+
         /// Sets the mouse cursor back to the default (arrow).
         virtual void reset_mouse_cursor() = 0;
 
@@ -488,6 +497,15 @@ namespace input
 
         /// Sets the mouse cursor back to the default (arrow).
         void reset_mouse_cursor();
+
+        /// Return the interface scaling factor suggested by the operating system.
+        /** \return The interface scaling factor suggested by the operating system
+        *   \note This is implementation-dependent; not all input implementations are able
+        *         to produce this hint, in which case the function always returns 1.
+        *         Consequently, it is recommended to not rely blindly on this hint, and
+        *         to offer a way for the user to change the scaling factor.
+        */
+        float get_interface_scaling_factor_hint() const;
 
         /// Returns the input source.
         /** \return The input source

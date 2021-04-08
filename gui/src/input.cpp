@@ -82,6 +82,11 @@ double source_impl::get_doubleclick_time() const
     return dDoubleClickTime_;
 }
 
+float source_impl::get_interface_scaling_factor_hint() const
+{
+    return 1.0f;
+}
+
 manager::manager(std::unique_ptr<source_impl> pSource) : pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(false);
@@ -767,6 +772,11 @@ void manager::set_mouse_cursor(const std::string& sFileName, const gui::vector2i
 void manager::reset_mouse_cursor()
 {
     return pSource_->reset_mouse_cursor();
+}
+
+float manager::get_interface_scaling_factor_hint() const
+{
+    return pSource_->get_interface_scaling_factor_hint();
 }
 
 void manager::fire_event_(const gui::event& mEvent, bool bForce)

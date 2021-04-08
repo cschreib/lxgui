@@ -96,7 +96,7 @@ void source::reset_mouse_cursor()
     SDL_SetCursor(mIter->second.get());
 }
 
-float source::get_pixels_per_unit()
+float source::get_interface_scaling_factor_hint() const
 {
     return fPixelsPerUnit_;
 }
