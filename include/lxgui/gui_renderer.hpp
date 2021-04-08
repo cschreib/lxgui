@@ -20,15 +20,15 @@ namespace gui
     struct matrix4f;
 
     /// Abstract type for implementation specific management
-    class renderer_impl
+    class renderer
     {
     public :
 
         /// Constructor.
-        renderer_impl() = default;
+        renderer() = default;
 
         /// Destructor.
-        virtual ~renderer_impl() = default;
+        virtual ~renderer() = default;
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)

@@ -30,7 +30,7 @@ namespace lua {
 }
 
 namespace input {
-    class source_impl;
+    class source;
     class manager;
 }
 
@@ -40,7 +40,7 @@ namespace gui
     class layered_region;
     class frame;
     class focus_frame;
-    class renderer_impl;
+    class renderer;
     struct quad;
     struct vertex;
 
@@ -77,12 +77,12 @@ namespace gui
             utils::view::non_null_filter>;
 
         /// Constructor.
-        /** \param pInputSource   The input source to use
-        *   \param pRendererImpl  The renderer implementation
-        *   \param sLocale        The name of the game locale ("enGB", ...)
+        /** \param pInputSource The input source to use
+        *   \param pRenderer    The renderer implementation
+        *   \param sLocale      The name of the game locale ("enGB", ...)
         */
-        manager(std::unique_ptr<input::source_impl> pInputSource,
-                std::unique_ptr<renderer_impl> pRendererImpl, const std::string& sLocale);
+        manager(std::unique_ptr<input::source> pInputSource,
+                std::unique_ptr<renderer> pRenderer, const std::string& sLocale);
 
         /// Destructor.
         ~manager() override;
@@ -626,12 +626,12 @@ namespace gui
         /// Returns the renderer implementation.
         /** \return The renderer implementation
         */
-        const renderer_impl* get_renderer() const;
+        const renderer* get_renderer() const;
 
         /// Returns the renderer implementation.
         /** \return The renderer implementation
         */
-        renderer_impl* get_renderer();
+        renderer* get_renderer();
 
         /// Returns the gui event manager.
         /** \return The gui event manager
@@ -771,7 +771,7 @@ namespace gui
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;
-        std::unique_ptr<renderer_impl> pRendererImpl_;
+        std::unique_ptr<renderer>      pRenderer_;
     };
 }
 }

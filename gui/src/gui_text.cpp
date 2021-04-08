@@ -3,7 +3,7 @@
 #include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_out.hpp"
 
@@ -16,7 +16,7 @@ namespace lxgui {
 namespace gui
 {
 
-text::text(const renderer_impl* pRenderer, std::shared_ptr<gui::font> pFont) :
+text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
     pRenderer_(pRenderer), pFont_(std::move(pFont))
 {
     if (!pFont_)

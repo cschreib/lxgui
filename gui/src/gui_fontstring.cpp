@@ -2,7 +2,7 @@
 
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
@@ -236,7 +236,7 @@ void font_string::set_font(const std::string& sFontName, uint uiHeight)
 
     uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*uiHeight);
 
-    renderer_impl* pRenderer = pManager_->get_renderer();
+    renderer* pRenderer = pManager_->get_renderer();
     pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiPixelHeight)));
     pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);

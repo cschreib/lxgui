@@ -3,7 +3,7 @@
 
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 
-#include <lxgui/gui_renderer_impl.hpp>
+#include <lxgui/gui_renderer.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/utils.hpp>
 
@@ -19,7 +19,7 @@ namespace sdl
     class material;
 
     /// SDL implementation of rendering
-    class renderer : public gui::renderer_impl
+    class renderer : public gui::renderer
     {
     public :
 

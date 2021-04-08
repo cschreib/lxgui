@@ -15,7 +15,7 @@
 namespace lxgui {
 namespace gui
 {
-    class  renderer_impl;
+    class  renderer;
     class  vertex_cache;
     class  sprite;
     struct vertex;
@@ -66,7 +66,7 @@ namespace gui
         /** \param pRenderer The renderer instance to use
         *   \param pFont The font to use for rendering
         */
-        explicit text(const renderer_impl* pRenderer, std::shared_ptr<gui::font> pFont);
+        explicit text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont);
 
         /// Returns the height of one line (constant).
         /** \return The height of one line (constant)
@@ -329,7 +329,7 @@ namespace gui
 
         void update_() const;
 
-        const renderer_impl* pRenderer_ = nullptr;
+        const renderer* pRenderer_ = nullptr;
 
         bool  bReady_ = false;
         float fScalingFactor_ = 1.0f;

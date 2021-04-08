@@ -18,7 +18,7 @@ namespace lxgui {
 namespace input {
 namespace sdl
 {
-    class source : public source_impl
+    class source : public input::source
     {
     public :
 

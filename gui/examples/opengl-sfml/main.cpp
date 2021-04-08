@@ -46,12 +46,12 @@ int main(int argc, char* argv[])
         const std::string sLocale = "enGB";
 
         // Define the input manager
-        std::unique_ptr<input::source_impl> pInputSource =
-            std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
+        std::unique_ptr<input::source> pInputSource =
+            std::unique_ptr<input::source>(new input::sfml::source(mWindow));
 
         // Define the GUI renderer
-        std::unique_ptr<gui::renderer_impl> pRendererImpl =
-            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer(
+        std::unique_ptr<gui::renderer> pRenderer =
+            std::unique_ptr<gui::renderer>(new gui::gl::renderer(
                 pInputSource->get_window_width(),
                 pInputSource->get_window_height()));
 
@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRendererImpl),
+            std::move(pRenderer),
             // The locale
             sLocale
         ));

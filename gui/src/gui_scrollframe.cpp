@@ -2,7 +2,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"

@@ -13,81 +13,81 @@
 namespace lxgui {
 namespace input
 {
-void source_impl::update()
+void source::update()
 {
     update_();
     lChars_.clear();
     std::swap(lChars_, lCharsCache_);
 }
 
-bool source_impl::is_manually_updated() const
+bool source::is_manually_updated() const
 {
     return bManuallyUpdated_;
 }
 
-void source_impl::set_manually_updated(bool bManuallyUpdated)
+void source::set_manually_updated(bool bManuallyUpdated)
 {
     bManuallyUpdated_ = bManuallyUpdated;
 }
 
-const source_impl::key_state& source_impl::get_key_state() const
+const source::key_state& source::get_key_state() const
 {
     return mKeyboard_;
 }
 
-const std::vector<char32_t>& source_impl::get_chars() const
+const std::vector<char32_t>& source::get_chars() const
 {
     return lChars_;
 }
 
-std::vector<gui::event> source_impl::poll_events()
+std::vector<gui::event> source::poll_events()
 {
     std::vector<gui::event> lTemp;
     std::swap(lTemp, lEvents_);
     return lTemp;
 }
 
-const source_impl::mouse_state& source_impl::get_mouse_state() const
+const source::mouse_state& source::get_mouse_state() const
 {
     return mMouse_;
 }
 
-bool source_impl::has_window_resized() const
+bool source::has_window_resized() const
 {
     return bWindowResized_;
 }
 
-void source_impl::reset_window_resized()
+void source::reset_window_resized()
 {
     bWindowResized_ = false;
 }
 
-uint source_impl::get_window_width() const
+uint source::get_window_width() const
 {
     return uiWindowWidth_;
 }
 
-uint source_impl::get_window_height() const
+uint source::get_window_height() const
 {
     return uiWindowHeight_;
 }
 
-void source_impl::set_doubleclick_time(double dDoubleClickTime)
+void source::set_doubleclick_time(double dDoubleClickTime)
 {
     dDoubleClickTime_ = dDoubleClickTime;
 }
 
-double source_impl::get_doubleclick_time() const
+double source::get_doubleclick_time() const
 {
     return dDoubleClickTime_;
 }
 
-float source_impl::get_interface_scaling_factor_hint() const
+float source::get_interface_scaling_factor_hint() const
 {
     return 1.0f;
 }
 
-manager::manager(std::unique_ptr<source_impl> pSource) : pSource_(std::move(pSource))
+manager::manager(std::unique_ptr<source> pSource) : pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(false);
     lKeyLong_.fill(false);
@@ -427,7 +427,7 @@ void manager::update(float fTempDelta)
         dDelta = 0.05;
 
     // Update keys
-    const source_impl::key_state& mKeyState = pSource_->get_key_state();
+    const source::key_state& mKeyState = pSource_->get_key_state();
     bKey_ = false;
     for (uint i = 0; i < KEY_NUMBER; ++i)
     {
@@ -452,7 +452,7 @@ void manager::update(float fTempDelta)
     bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
 
     // Update mouse state
-    const source_impl::mouse_state& mMouseState = pSource_->get_mouse_state();
+    const source::mouse_state& mMouseState = pSource_->get_mouse_state();
     for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
     {
         // Update delays
@@ -731,12 +731,12 @@ std::string manager::get_mouse_button_string(mouse_button mID) const
     }
 }
 
-const source_impl* manager::get_source() const
+const source* manager::get_source() const
 {
     return pSource_.get();
 }
 
-source_impl* manager::get_source()
+source* manager::get_source()
 {
     return pSource_.get();
 }

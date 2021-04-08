@@ -17,7 +17,7 @@ namespace lxgui {
 namespace input {
 namespace sfml
 {
-    class source : public source_impl
+    class source : public input::source
     {
     public :
 

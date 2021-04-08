@@ -35,7 +35,7 @@ namespace input
     *         by each input::manager (which may not be
     *         desirable).
     */
-    class source_impl
+    class source
     {
     public :
 
@@ -54,10 +54,10 @@ namespace input
         };
 
         /// Constructor.
-        source_impl() = default;
+        source() = default;
 
         /// Destructor.
-        virtual ~source_impl() = default;
+        virtual ~source() = default;
 
         /// Updates this input source.
         void update();
@@ -190,7 +190,7 @@ namespace input
         /// Initializes this manager with a chosen input source.
         /** \param pSource The input source
         */
-        explicit manager(std::unique_ptr<source_impl> pSource);
+        explicit manager(std::unique_ptr<source> pSource);
 
         manager(const manager& mMgr) = delete;
         manager(manager&& mMgr) = delete;
@@ -532,12 +532,12 @@ namespace input
         /// Returns the input source.
         /** \return The input source
         */
-        const source_impl* get_source() const;
+        const source* get_source() const;
 
         /// Returns the input source.
         /** \return The input source
         */
-        source_impl* get_source();
+        source* get_source();
 
     private :
 
@@ -582,7 +582,7 @@ namespace input
 
         double dTime_ = 0.0;
 
-        std::unique_ptr<source_impl> pSource_;
+        std::unique_ptr<source> pSource_;
     };
 }
 }

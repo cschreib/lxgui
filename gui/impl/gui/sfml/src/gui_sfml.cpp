@@ -12,8 +12,8 @@ namespace sfml
 std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow, const std::string& sLocale)
 {
     return std::unique_ptr<gui::manager>(new gui::manager(
-        std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow)),
-        std::unique_ptr<gui::renderer_impl>(new gui::sfml::renderer(mWindow)),
+        std::unique_ptr<input::source>(new input::sfml::source(mWindow)),
+        std::unique_ptr<gui::renderer>(new gui::sfml::renderer(mWindow)),
         sLocale
     ));
 }

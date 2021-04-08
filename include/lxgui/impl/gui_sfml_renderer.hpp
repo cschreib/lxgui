@@ -3,7 +3,7 @@
 
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 
-#include <lxgui/gui_renderer_impl.hpp>
+#include <lxgui/gui_renderer.hpp>
 #include <lxgui/utils.hpp>
 
 #include <map>
@@ -20,7 +20,7 @@ namespace gui {
 namespace sfml
 {
     /// SFML implementation of rendering
-    class renderer : public gui::renderer_impl
+    class renderer : public gui::renderer
     {
     public :
 

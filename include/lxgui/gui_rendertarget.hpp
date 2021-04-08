@@ -10,7 +10,7 @@ namespace gui
 {
     /// A place to render things (the screen, a texture, ...)
     /** \note This is an abstract class that must be inherited
-    *         from and created by the corresponding gui::renderer_impl.
+    *         from and created by the corresponding gui::renderer.
     */
     class render_target
     {

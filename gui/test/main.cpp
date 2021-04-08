@@ -422,24 +422,24 @@ int main(int argc, char* argv[])
 
     #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         // Define the input manager
-        std::unique_ptr<input::source_impl> pInputSource;
+        std::unique_ptr<input::source> pInputSource;
 
     #if defined(GLSFML_GUI)
         // Use SFML
-        pInputSource = std::unique_ptr<input::source_impl>(new input::sfml::source(mWindow));
+        pInputSource = std::unique_ptr<input::source>(new input::sfml::source(mWindow));
     #elif defined(GLSDL_GUI)
         // Use SDL
         {
             bool bInitializeSDLImage = true;
             SDL_Renderer* pRenderer = nullptr; // set to nullptr when not using an SDL_Renderer
-            pInputSource = std::unique_ptr<input::source_impl>(new input::sdl::source(
+            pInputSource = std::unique_ptr<input::source>(new input::sdl::source(
                 pWindow.get(), pRenderer, bInitializeSDLImage));
         }
     #endif
 
         // Define the GUI renderer
-        std::unique_ptr<gui::renderer_impl> pRendererImpl =
-            std::unique_ptr<gui::renderer_impl>(new gui::gl::renderer(
+        std::unique_ptr<gui::renderer> pRenderer =
+            std::unique_ptr<gui::renderer>(new gui::gl::renderer(
                 pInputSource->get_window_width(),
                 pInputSource->get_window_height()));
 
@@ -447,7 +447,7 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRendererImpl),
+            std::move(pRenderer),
             // The locale
             sLocale
         ));

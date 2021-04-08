@@ -1,7 +1,7 @@
 #include "lxgui/gui_texture.hpp"
 
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"

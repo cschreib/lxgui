@@ -27,6 +27,7 @@ add_library(lxgui
     ${SRCROOT}/gui_frame.cpp
     ${SRCROOT}/gui_frame_glues.cpp
     ${SRCROOT}/gui_frame_parser.cpp
+    ${SRCROOT}/gui_framerenderer.cpp
     ${SRCROOT}/gui_gradient.cpp
     ${SRCROOT}/gui_layeredregion.cpp
     ${SRCROOT}/gui_layeredregion_glues.cpp
@@ -39,8 +40,7 @@ add_library(lxgui
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp
     ${SRCROOT}/gui_region_parser.cpp
-    ${SRCROOT}/gui_framerenderer.cpp
-    ${SRCROOT}/gui_renderer_impl.cpp
+    ${SRCROOT}/gui_renderer.cpp
     ${SRCROOT}/gui_scrollframe.cpp
     ${SRCROOT}/gui_scrollframe_glues.cpp
     ${SRCROOT}/gui_scrollframe_parser.cpp

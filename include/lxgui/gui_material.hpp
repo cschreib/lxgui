@@ -9,7 +9,7 @@ namespace gui
 {
     /// A class that holds rendering data
     /** This is an abstract class that must be implemented
-    *   and created by the corresponding gui::renderer_impl.
+    *   and created by the corresponding gui::renderer.
     */
     class material
     {
@@ -47,7 +47,7 @@ namespace gui
         /** \return The physical width of the underlying texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material,
-        *         the gui::renderer_impl should create a bigger texture that has
+        *         the gui::renderer should create a bigger texture that has
         *         power of two dimensions (the "physical" dimensions).
         */
         virtual float get_real_width() const = 0;
@@ -56,7 +56,7 @@ namespace gui
         /** \return The physical height of the underlying texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material,
-        *         the gui::renderer_impl should create a bigger texture that has
+        *         the gui::renderer should create a bigger texture that has
         *         power of two dimensions (the "physical" dimensions).
         */
         virtual float get_real_height() const = 0;

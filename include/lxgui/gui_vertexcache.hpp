@@ -26,10 +26,10 @@ namespace gui
     *   of sprites or quads that share the same material (texture). This
     *   is especially true if the data to render does not change often.
     *
-    *   A vertex cache can be rendered with gui::renderer_impl::render_vertex_cache().
+    *   A vertex cache can be rendered with gui::renderer::render_vertex_cache().
     *  .
     *   \note This is an abstract class that must be inherited
-    *         from and created by the corresponding gui::renderer_impl.
+    *         from and created by the corresponding gui::renderer.
     */
     class vertex_cache
     {

@@ -12,7 +12,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/luapp_exception.hpp>
@@ -48,11 +48,11 @@ int l_get_locale(lua_State* pLua);
 int l_set_interface_scaling_factor(lua_State* pLua);
 int l_log(lua_State* pLua);
 
-manager::manager(std::unique_ptr<input::source_impl> pInputSource,
-    std::unique_ptr<renderer_impl> pRendererImpl, const std::string& sLocale) :
+manager::manager(std::unique_ptr<input::source> pInputSource,
+    std::unique_ptr<renderer> pRenderer, const std::string& sLocale) :
     event_receiver(nullptr),
     pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
-    pRendererImpl_(std::move(pRendererImpl))
+    pRenderer_(std::move(pRenderer))
 {
     pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
     event_receiver::set_event_manager(pEventManager_.get());
@@ -75,14 +75,14 @@ manager::~manager()
     event_receiver::set_event_manager(nullptr);
 }
 
-renderer_impl* manager::get_renderer()
+renderer* manager::get_renderer()
 {
-    return pRendererImpl_.get();
+    return pRenderer_.get();
 }
 
-const renderer_impl* manager::get_renderer() const
+const renderer* manager::get_renderer() const
 {
-    return pRendererImpl_.get();
+    return pRenderer_.get();
 }
 
 uint manager::get_target_width() const
@@ -856,7 +856,7 @@ void manager::reload_ui()
 
 void manager::begin(std::shared_ptr<render_target> pTarget) const
 {
-    pRendererImpl_->begin(pTarget);
+    pRenderer_->begin(pTarget);
 
     float fWidth, fHeight;
     if (pTarget)
@@ -870,12 +870,12 @@ void manager::begin(std::shared_ptr<render_target> pTarget) const
         fHeight = uiScreenHeight_/fScalingFactor_;
     }
 
-    pRendererImpl_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
+    pRenderer_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
 }
 
 void manager::end() const
 {
-    pRendererImpl_->end();
+    pRenderer_->end();
 }
 
 void manager::render_ui() const
@@ -904,7 +904,7 @@ void manager::create_caching_render_target_()
         if (pRenderTarget_)
             pRenderTarget_->set_dimensions(uiScreenWidth_, uiScreenHeight_);
         else
-            pRenderTarget_ = pRendererImpl_->create_render_target(uiScreenWidth_, uiScreenHeight_);
+            pRenderTarget_ = pRenderer_->create_render_target(uiScreenWidth_, uiScreenHeight_);
     }
     catch (const utils::exception& e)
     {
@@ -915,7 +915,7 @@ void manager::create_caching_render_target_()
         return;
     }
 
-    mSprite_ = sprite(pRendererImpl_.get(), pRendererImpl_->create_material(pRenderTarget_));
+    mSprite_ = sprite(pRenderer_.get(), pRenderer_->create_material(pRenderTarget_));
 
     float fScale = 1.0/get_interface_scaling_factor();
     mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
@@ -926,9 +926,9 @@ void manager::create_strata_cache_render_target_(strata& mStrata)
     if (mStrata.pRenderTarget)
         mStrata.pRenderTarget->set_dimensions(uiScreenWidth_, uiScreenHeight_);
     else
-        mStrata.pRenderTarget = pRendererImpl_->create_render_target(uiScreenWidth_, uiScreenHeight_);
+        mStrata.pRenderTarget = pRenderer_->create_render_target(uiScreenWidth_, uiScreenHeight_);
 
-    mStrata.mSprite = sprite(pRendererImpl_.get(), pRendererImpl_->create_material(mStrata.pRenderTarget));
+    mStrata.mSprite = sprite(pRenderer_.get(), pRenderer_->create_material(mStrata.pRenderTarget));
 
     float fScale = 1.0/fScalingFactor_;
     mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
@@ -1488,7 +1488,7 @@ void manager::on_event(const event& mEvent)
 
         notify_object_moved();
 
-        pRendererImpl_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
+        pRenderer_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
 
         // Resize caching render targets
         if (pRenderTarget_)

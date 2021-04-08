@@ -31,7 +31,7 @@ Other changes:
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
  - lua: starting switching to sol2 to manage the Lua state
- - input: simplified class hierarchy by merging handler+handler_impl into manager_impl
+ - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
  - input: get_key_name() is now platform-independent, and only returns English
  - input: added set_mouse_cursor() and reset_mouse_cursor()
@@ -40,9 +40,9 @@ Other changes:
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
- - gui: added renderer_impl::set_view() to allow arbitrary view transforms
+ - gui: added renderer::set_view() to allow arbitrary view transforms
  - gui: added color::from_hsv and color::to_hsv
- - gui: renamed gui::manager_impl into gui::renderer_impl
+ - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
  - gui: renamed frame::on into frame::on_script
