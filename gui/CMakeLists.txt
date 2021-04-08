@@ -60,6 +60,7 @@ add_library(lxgui
     ${SRCROOT}/gui_uiobject_parser.cpp
     ${SRCROOT}/gui_vertexcache.cpp
     ${SRCROOT}/input.cpp
+    ${SRCROOT}/input_source.cpp
 )
 
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)

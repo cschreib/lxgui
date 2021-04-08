@@ -2,11 +2,13 @@
 #define LXGUI_INPUT_SFML_SOURCE_HPP
 
 #include <lxgui/utils.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/input_source.hpp>
+#include <lxgui/gui_vector2.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Cursor.hpp>
 
 #include <unordered_map>
+#include <memory>
 
 namespace sf {
     class Window;

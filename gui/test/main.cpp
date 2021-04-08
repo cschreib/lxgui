@@ -8,6 +8,7 @@
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/input.hpp>
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_filesystem.hpp>

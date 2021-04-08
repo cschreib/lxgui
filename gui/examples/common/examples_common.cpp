@@ -9,6 +9,7 @@
 #include <lxgui/gui_scrollframe.hpp>
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
+#include <lxgui/input.hpp>
 #include <lxgui/utils_filesystem.hpp>
 
 #include <sol/state.hpp>

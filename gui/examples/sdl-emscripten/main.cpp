@@ -1,6 +1,7 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/input.hpp>
 
 #include <emscripten.h>
 
