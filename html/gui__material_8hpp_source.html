@@ -95,32 +95,26 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046">LINEAR</a></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        };</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2">   30</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2">type</a></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2a3f92f542bd9ec48f912b9350e22736ac">TEXTURE</a>,</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2a04bd834032febb3fda8c6936ee140949">COLOR</a></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        };</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">material</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">~material</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">material</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">~material</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a789677d5f629ceebc30764a4490e2b7e">get_width</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aafbf763b149c70789bb70fb08722dbfe">get_height</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#afa8b3dde1c4c0ebac611f9fb91291e9a">get_real_width</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#ac89d6d59259a4a98035670b729e57fb9">get_real_height</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    };</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a789677d5f629ceebc30764a4490e2b7e">get_width</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aafbf763b149c70789bb70fb08722dbfe">get_height</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#afa8b3dde1c4c0ebac611f9fb91291e9a">get_real_width</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#ac89d6d59259a4a98035670b729e57fb9">get_real_height</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00024">gui_material.hpp:24</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">lxgui::gui::material::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00018">gui_material.hpp:18</a></div></div>
@@ -134,16 +128,13 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a2484e2c1ad0d1497f20d77b78aee1524"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">lxgui::gui::material::material</a></div><div class="ttdeci">material()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345">lxgui::gui::material::wrap::CLAMP</a></div><div class="ttdeci">@ CLAMP</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_aa7356cdaf760898e56e339bfaa2df7c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">lxgui::gui::material::~material</a></div><div class="ttdeci">virtual ~material()=default</div><div class="ttdoc">Destructor.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a2ba24743a100fc5f0a786627802118a2a3f92f542bd9ec48f912b9350e22736ac"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2a3f92f542bd9ec48f912b9350e22736ac">lxgui::gui::material::type::TEXTURE</a></div><div class="ttdeci">@ TEXTURE</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a2ba24743a100fc5f0a786627802118a2"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2">lxgui::gui::material::type</a></div><div class="ttdeci">type</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00030">gui_material.hpp:30</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_aafbf763b149c70789bb70fb08722dbfe"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#aafbf763b149c70789bb70fb08722dbfe">lxgui::gui::material::get_height</a></div><div class="ttdeci">virtual float get_height() const =0</div><div class="ttdoc">Returns the height of the underlying texture (if any).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a2ba24743a100fc5f0a786627802118a2a04bd834032febb3fda8c6936ee140949"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a2ba24743a100fc5f0a786627802118a2a04bd834032febb3fda8c6936ee140949">lxgui::gui::material::type::COLOR</a></div><div class="ttdeci">@ COLOR</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046">lxgui::gui::material::filter::LINEAR</a></div><div class="ttdeci">@ LINEAR</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555">lxgui::gui::material::wrap::REPEAT</a></div><div class="ttdeci">@ REPEAT</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:50 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

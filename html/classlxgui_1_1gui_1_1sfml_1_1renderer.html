@@ -67,7 +67,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classlxgui_1_1gui_1_1sfml_1_1renderer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::gui::sfml::renderer Class Reference</div>  </div>
@@ -84,7 +83,7 @@ Inheritance diagram for lxgui::gui::sfml::renderer:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1sfml_1_1renderer.png" usemap="#lxgui::gui::sfml::renderer_map" alt=""/>
   <map id="lxgui::gui::sfml::renderer_map" name="lxgui::gui::sfml::renderer_map">
-<area href="classlxgui_1_1gui_1_1renderer__impl.html" title="Abstract type for implementation specific management." alt="lxgui::gui::renderer_impl" shape="rect" coords="0,0,146,24"/>
+<area href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management." alt="lxgui::gui::renderer" shape="rect" coords="0,0,145,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -105,15 +104,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa350350f05d8afdf663a350160b4ef88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const override</td></tr>
 <tr class="memdesc:aa350350f05d8afdf663a350160b4ef88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#aa350350f05d8afdf663a350160b4ef88">More...</a><br /></td></tr>
 <tr class="separator:aa350350f05d8afdf663a350160b4ef88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2d66e6c21028089fd5f6c31982d72be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &amp;mMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const override</td></tr>
-<tr class="memdesc:ac2d66e6c21028089fd5f6c31982d72be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac2d66e6c21028089fd5f6c31982d72be">More...</a><br /></td></tr>
-<tr class="separator:ac2d66e6c21028089fd5f6c31982d72be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc3e299076b1544abf0ab5ee3da5720"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#afcc3e299076b1544abf0ab5ee3da5720">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> *pMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const override</td></tr>
+<tr class="memdesc:afcc3e299076b1544abf0ab5ee3da5720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#afcc3e299076b1544abf0ab5ee3da5720">More...</a><br /></td></tr>
+<tr class="separator:afcc3e299076b1544abf0ab5ee3da5720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0b9a3327476ec9fbc82984399e2409c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac0b9a3327476ec9fbc82984399e2409c">render_cache</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> *pMaterial, const <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &amp;mCache, const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mModelTransform) const override</td></tr>
+<tr class="memdesc:ac0b9a3327476ec9fbc82984399e2409c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a vertex cache.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ac0b9a3327476ec9fbc82984399e2409c">More...</a><br /></td></tr>
+<tr class="separator:ac0b9a3327476ec9fbc82984399e2409c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8534c0b81194b61df8cc09c409f4cff4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
 <tr class="memdesc:a8534c0b81194b61df8cc09c409f4cff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8534c0b81194b61df8cc09c409f4cff4">More...</a><br /></td></tr>
 <tr class="separator:a8534c0b81194b61df8cc09c409f4cff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a256347e32d43cd0c88d2ae49db3c2830"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a256347e32d43cd0c88d2ae49db3c2830">create_material</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor) const override</td></tr>
-<tr class="memdesc:a256347e32d43cd0c88d2ae49db3c2830"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a plain color.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a256347e32d43cd0c88d2ae49db3c2830">More...</a><br /></td></tr>
-<tr class="separator:a256347e32d43cd0c88d2ae49db3c2830"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6499c083a03ae4a7cac4d0f9478713ab"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a6499c083a03ae4a7cac4d0f9478713ab">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt; pRenderTarget) const override</td></tr>
 <tr class="memdesc:a6499c083a03ae4a7cac4d0f9478713ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a render target.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a6499c083a03ae4a7cac4d0f9478713ab">More...</a><br /></td></tr>
 <tr class="separator:a6499c083a03ae4a7cac4d0f9478713ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,17 +122,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ec819968b8723d3e8f67f6ca22ef2a5"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9ec819968b8723d3e8f67f6ca22ef2a5">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) const override</td></tr>
 <tr class="memdesc:a9ec819968b8723d3e8f67f6ca22ef2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9ec819968b8723d3e8f67f6ca22ef2a5">More...</a><br /></td></tr>
 <tr class="separator:a9ec819968b8723d3e8f67f6ca22ef2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad609eb9a8fec0a4aa060b8d07156c699"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ad609eb9a8fec0a4aa060b8d07156c699">has_vertex_cache</a> () const override</td></tr>
+<tr class="memdesc:ad609eb9a8fec0a4aa060b8d07156c699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ad609eb9a8fec0a4aa060b8d07156c699">More...</a><br /></td></tr>
+<tr class="separator:ad609eb9a8fec0a4aa060b8d07156c699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93db252c6b6ed31352b70f7bf8ffb69c"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a93db252c6b6ed31352b70f7bf8ffb69c">create_vertex_cache</a> (<a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">gui::vertex_cache::type</a> mType) const override</td></tr>
+<tr class="memdesc:a93db252c6b6ed31352b70f7bf8ffb69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new empty vertex cache.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a93db252c6b6ed31352b70f7bf8ffb69c">More...</a><br /></td></tr>
+<tr class="separator:a93db252c6b6ed31352b70f7bf8ffb69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fc1849b69749002b91c160d9a5e7d63"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63">notify_window_resized</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewHeight) override</td></tr>
 <tr class="memdesc:a9fc1849b69749002b91c160d9a5e7d63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer that the render window has been resized.  <a href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a9fc1849b69749002b91c160d9a5e7d63">More...</a><br /></td></tr>
 <tr class="separator:a9fc1849b69749002b91c160d9a5e7d63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fb4208985509dcc9a86d5c6204d671d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a3fb4208985509dcc9a86d5c6204d671d">set_parent</a> (<a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *pParent)</td></tr>
-<tr class="memdesc:a3fb4208985509dcc9a86d5c6204d671d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives a pointer to the base class.  <a href="classlxgui_1_1gui_1_1renderer__impl.html#a3fb4208985509dcc9a86d5c6204d671d">More...</a><br /></td></tr>
-<tr class="separator:a3fb4208985509dcc9a86d5c6204d671d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a0c018fd4208b36fd75573948043f4b48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a0c018fd4208b36fd75573948043f4b48">pParent_</a> = nullptr</td></tr>
-<tr class="separator:a0c018fd4208b36fd75573948043f4b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SFML implementation of rendering. </p>
@@ -201,7 +198,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a6feeed4f65c674ad8b7be3bfa7deba59">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a68d8d705793e6c518e0a9b7482cf5188">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -249,49 +246,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This implementation uses FreeType to load vector fonts and rasterize them. Bitmap fonts are not yet supported. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a7dcebfd5454b6a48a2688ce459850098">lxgui::gui::renderer_impl</a>.</p>
-
-</div>
-</div>
-<a id="a256347e32d43cd0c88d2ae49db3c2830"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a256347e32d43cd0c88d2ae49db3c2830">&#9670;&nbsp;</a></span>create_material() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::sfml::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;&#160;</td>
-          <td class="paramname"><em>mColor</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from a plain color. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mColor</td><td>The color to use </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a0d58156137dd50f95b5689c7e6d5e725">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a019dc9217411bc3d81f585353905c36d">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
 <a id="a8534c0b81194b61df8cc09c409f4cff4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8534c0b81194b61df8cc09c409f4cff4">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8534c0b81194b61df8cc09c409f4cff4">&#9670;&nbsp;</a></span>create_material() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -335,12 +295,12 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Only PNG textures are supported by this implementation (parsed by libpng). </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a61b72b811a5dfc5d440a5f44081f2ae2">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ae259495c173f20c63ad41adbed98b645">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
 <a id="a6499c083a03ae4a7cac4d0f9478713ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6499c083a03ae4a7cac4d0f9478713ab">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6499c083a03ae4a7cac4d0f9478713ab">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,7 +332,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#afe488a7a7217802337d52298349111aa">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a289d5f563d65bc112bda89f484ef86b4">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -419,7 +379,44 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a5c7f471a4bd1140eef2c6c0e9c94625d">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3aa62f256de9c17d14612b6570824029">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="a93db252c6b6ed31352b70f7bf8ffb69c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93db252c6b6ed31352b70f7bf8ffb69c">&#9670;&nbsp;</a></span>create_vertex_cache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a>&gt; lxgui::gui::sfml::renderer::create_vertex_cache </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">gui::vertex_cache::type</a>&#160;</td>
+          <td class="paramname"><em>mType</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new empty vertex cache. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mType</td><td>The type of data this cache will hold </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ad609eb9a8fec0a4aa060b8d07156c699" title="Checks if the renderer supports vertex caches.">has_vertex_cache()</a>. The size hint can enable the cache to be pre-allocated, which will avoid a reallocation when data is pushed to the cache. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -448,7 +445,37 @@ Protected Attributes</h2></td></tr>
 
 <p>Ends rendering. </p>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#acdc439861a02738c3fca580d1b30f036">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8e43d36493b3f54a5c526615a9d20547">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="ad609eb9a8fec0a4aa060b8d07156c699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad609eb9a8fec0a4aa060b8d07156c699">&#9670;&nbsp;</a></span>has_vertex_cache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::sfml::renderer::has_vertex_cache </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the renderer supports vertex caches. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if supported, 'false' otherwise </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a97313a95b93417db0871f4ad941677ce">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -495,7 +522,62 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a51c333dfacd37d9ada5c43dc28e24cad">lxgui::gui::renderer_impl</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a10bcbcc8774d676727f903cb917ba702">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="ac0b9a3327476ec9fbc82984399e2409c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0b9a3327476ec9fbc82984399e2409c">&#9670;&nbsp;</a></span>render_cache()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::sfml::renderer::render_cache </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> *&#160;</td>
+          <td class="paramname"><em>pMaterial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &amp;&#160;</td>
+          <td class="paramname"><em>mCache</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mModelTransform</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Renders a vertex cache. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pMaterial</td><td>The material to use for rendering, or null if none </td></tr>
+    <tr><td class="paramname">mCache</td><td>The vertex cache </td></tr>
+    <tr><td class="paramname">mModelTransform</td><td>The transformation matrix to apply to vertices </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. This method is also more efficient than <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#afcc3e299076b1544abf0ab5ee3da5720" title="Renders a set of quads.">render_quads()</a>, as the vertex data is already cached to the GPU and does not need sending again. However, not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ad609eb9a8fec0a4aa060b8d07156c699" title="Checks if the renderer supports vertex caches.">has_vertex_cache()</a>. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a2832bef0aafa727578ee8bf87d7a939d">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -532,12 +614,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745" title="Ends rendering.">end()</a> only. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#aff940234cb3c55ef45b13bb34362fa18">lxgui::gui::renderer_impl</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad9a1658fe62c2f7fe7028951e13f61be">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
-<a id="ac2d66e6c21028089fd5f6c31982d72be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2d66e6c21028089fd5f6c31982d72be">&#9670;&nbsp;</a></span>render_quads()</h2>
+<a id="afcc3e299076b1544abf0ab5ee3da5720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcc3e299076b1544abf0ab5ee3da5720">&#9670;&nbsp;</a></span>render_quads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -548,8 +630,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void lxgui::gui::sfml::renderer::render_quads </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &amp;&#160;</td>
-          <td class="paramname"><em>mMaterial</em>, </td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> *&#160;</td>
+          <td class="paramname"><em>pMaterial</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -573,45 +655,14 @@ Protected Attributes</h2></td></tr>
 <p>Renders a set of quads. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mMaterial</td><td>The material to use for rendering (texture, color, blending, ...) </td></tr>
+    <tr><td class="paramname">pMaterial</td><td>The material to use for rendering, or null if none </td></tr>
     <tr><td class="paramname">lQuadList</td><td>The list of the quads you want to render </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745" title="Ends rendering.">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#ab186dd51df0d224a854da231e76df745" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#adc6bcdea92ff821520c909ce0bc81089">lxgui::gui::renderer_impl</a>.</p>
-
-</div>
-</div>
-<a id="a3fb4208985509dcc9a86d5c6204d671d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fb4208985509dcc9a86d5c6204d671d">&#9670;&nbsp;</a></span>set_parent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::renderer_impl::set_parent </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td>
-          <td class="paramname"><em>pParent</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gives a pointer to the base class. </p>
-<dl class="section note"><dt>Note</dt><dd>This function is automatically called by <a class="el" href="classlxgui_1_1gui_1_1manager.html" title="Manages the user interface.">gui::manager</a> on creation. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8cpp_source.html#l00006">6</a> of file <a class="el" href="gui__renderer__impl_8cpp_source.html">gui_renderer_impl.cpp</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -649,32 +700,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8a7d8ddb63663853ade84658a27632e9" title="Begins rendering on a particular render target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html#a16f2d2a5b892f4f3a2a4a3e5bc95379a">lxgui::gui::renderer_impl</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0c018fd4208b36fd75573948043f4b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c018fd4208b36fd75573948043f4b48">&#9670;&nbsp;</a></span>pParent_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a>* lxgui::gui::renderer_impl::pParent_ = nullptr</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer__impl_8hpp_source.html#l00126">126</a> of file <a class="el" href="gui__renderer__impl_8hpp_source.html">gui_renderer_impl.hpp</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a82a403c3f2a4fad4a7913560d70f5a42">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -684,7 +710,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:51 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

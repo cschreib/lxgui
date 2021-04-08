@@ -120,6 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a28ac483054fe010a22c4dfab3ec847f9"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html">sdl::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">get_material</a> ()</td></tr>
 <tr class="memdesc:a28ac483054fe010a22c4dfab3ec847f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">More...</a><br /></td></tr>
 <tr class="separator:a28ac483054fe010a22c4dfab3ec847f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecebda11c417a14518d19c8e05a76d96"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aecebda11c417a14518d19c8e05a76d96">get_view_matrix</a> () const</td></tr>
+<tr class="memdesc:aecebda11c417a14518d19c8e05a76d96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the view matrix of this render target.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aecebda11c417a14518d19c8e05a76d96">More...</a><br /></td></tr>
+<tr class="separator:aecebda11c417a14518d19c8e05a76d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a612237f6ad7a6b9f83d6b5b19805db0a"><td class="memItemLeft" align="right" valign="top">SDL_Texture *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a612237f6ad7a6b9f83d6b5b19805db0a">get_render_texture</a> ()</td></tr>
 <tr class="memdesc:a612237f6ad7a6b9f83d6b5b19805db0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying SDL render texture object.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a612237f6ad7a6b9f83d6b5b19805db0a">More...</a><br /></td></tr>
 <tr class="separator:a612237f6ad7a6b9f83d6b5b19805db0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +136,7 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A place to render things (the screen, a texture, ...) </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__rendertarget_8hpp_source.html#l00019">19</a> of file <a class="el" href="gui__sdl__rendertarget_8hpp_source.html">gui_sdl_rendertarget.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sdl__rendertarget_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__sdl__rendertarget_8hpp_source.html">gui_sdl_rendertarget.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a89b1c3d731db1c58ae57f4efcc6a8403"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89b1c3d731db1c58ae57f4efcc6a8403">&#9670;&nbsp;</a></span>render_target()</h2>
@@ -440,6 +443,26 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aecebda11c417a14518d19c8e05a76d96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecebda11c417a14518d19c8e05a76d96">&#9670;&nbsp;</a></span>get_view_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; lxgui::gui::sdl::render_target::get_view_matrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the view matrix of this render target. </p>
+<dl class="section return"><dt>Returns</dt><dd>The view matrix of this render target </dd></dl>
+
+</div>
+</div>
 <a id="ad268f7f2ab6a7e857028ff85eba021b1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad268f7f2ab6a7e857028ff85eba021b1">&#9670;&nbsp;</a></span>get_width()</h2>
 
@@ -524,7 +547,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:51 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

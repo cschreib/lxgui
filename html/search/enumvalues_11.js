@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_3149',['X',['../namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3ba02129bb861061d1a052c592e2dc6b383',1,'lxgui::gui']]]
+  ['vertical_3194',['VERTICAL',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a3e1b74251c07310c5f1b968145bf00dc',1,'lxgui::gui::gradient::VERTICAL()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1a3e1b74251c07310c5f1b968145bf00dc',1,'lxgui::gui::slider::VERTICAL()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc',1,'lxgui::gui::status_bar::VERTICAL()']]]
 ];

@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A place to render things (the screen, a texture, ...) </p>
-<dl class="section note"><dt>Note</dt><dd>This is an abstract class that must be inherited from and created by manager_impl. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is an abstract class that must be inherited from and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__rendertarget_8hpp_source.html#l00015">15</a> of file <a class="el" href="gui__rendertarget_8hpp_source.html">gui_rendertarget.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -336,7 +336,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>This render target's real height </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a0d18fa359eef89e11c5e3ba71b5d54cf">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abdbcdcde61b22c140338cbcb8a873363">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa1f5a1ea0b0c3c0683873e76a03f4bde">lxgui::gui::sdl::render_target</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a0d18fa359eef89e11c5e3ba71b5d54cf">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa1f5a1ea0b0c3c0683873e76a03f4bde">lxgui::gui::sdl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#abdbcdcde61b22c140338cbcb8a873363">lxgui::gui::gl::render_target</a>.</p>
 
 </div>
 </div>
@@ -367,7 +367,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>This render target's real width </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a183498d88759ec501667b28688ab7bfb">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a065e7a1d714a6adc26130c9d8d8f52c8">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a30791419fe2b4709e0bebbaffebb2936">lxgui::gui::sdl::render_target</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a183498d88759ec501667b28688ab7bfb">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a30791419fe2b4709e0bebbaffebb2936">lxgui::gui::sdl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a065e7a1d714a6adc26130c9d8d8f52c8">lxgui::gui::gl::render_target</a>.</p>
 
 </div>
 </div>
@@ -445,7 +445,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the function had to re-create a new render target </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#ada6550fb9a3b8a575387196a959fa8fe">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#af6969634255fb26de9fb30460f4be1f4">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a76b94a5409a2b7a99cb1483cb69d7e5a">lxgui::gui::sdl::render_target</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#ada6550fb9a3b8a575387196a959fa8fe">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a76b94a5409a2b7a99cb1483cb69d7e5a">lxgui::gui::sdl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#af6969634255fb26de9fb30460f4be1f4">lxgui::gui::gl::render_target</a>.</p>
 
 </div>
 </div>
@@ -455,7 +455,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:51 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

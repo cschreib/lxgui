@@ -88,8 +88,8 @@ Inheritance diagram for lxgui::gui::manager:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1manager.png" usemap="#lxgui::gui::manager_map" alt=""/>
   <map id="lxgui::gui::manager_map" name="lxgui::gui::manager_map">
-<area href="classlxgui_1_1gui_1_1event__receiver.html" title="Abstract interface for event handling." alt="lxgui::gui::event_receiver" shape="rect" coords="0,0,153,24"/>
-<area href="classlxgui_1_1gui_1_1renderer.html" title="GUI renderer." alt="lxgui::gui::renderer" shape="rect" coords="163,0,316,24"/>
+<area href="classlxgui_1_1gui_1_1event__receiver.html" title="Abstract interface for event handling." alt="lxgui::gui::event_receiver" shape="rect" coords="0,0,156,24"/>
+<area href="classlxgui_1_1gui_1_1frame__renderer.html" title="Abstract class for layering and rendering frames." alt="lxgui::gui::frame_renderer" shape="rect" coords="166,0,322,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -109,9 +109,9 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa69ddc2d56b1c76901893f0a7e03214d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#aa69ddc2d56b1c76901893f0a7e03214d">manager</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1input_1_1source__impl.html">input::source_impl</a> &gt; pInputSource, const std::string &amp;sLocale, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiScreenWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiScreenHeight, std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> &gt; pRendererImpl)</td></tr>
-<tr class="memdesc:aa69ddc2d56b1c76901893f0a7e03214d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1manager.html#aa69ddc2d56b1c76901893f0a7e03214d">More...</a><br /></td></tr>
-<tr class="separator:aa69ddc2d56b1c76901893f0a7e03214d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9bf0d53c079a94c75764a2226808512"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#af9bf0d53c079a94c75764a2226808512">manager</a> (std::unique_ptr&lt; <a class="el" href="classlxgui_1_1input_1_1source.html">input::source</a> &gt; pInputSource, std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> &gt; pRenderer, const std::string &amp;sLocale)</td></tr>
+<tr class="memdesc:af9bf0d53c079a94c75764a2226808512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1manager.html#af9bf0d53c079a94c75764a2226808512">More...</a><br /></td></tr>
+<tr class="separator:af9bf0d53c079a94c75764a2226808512"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d73bfae7f1364771fc9822573591d3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ac8d73bfae7f1364771fc9822573591d3">~manager</a> () override</td></tr>
 <tr class="memdesc:ac8d73bfae7f1364771fc9822573591d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classlxgui_1_1gui_1_1manager.html#ac8d73bfae7f1364771fc9822573591d3">More...</a><br /></td></tr>
 <tr class="separator:ac8d73bfae7f1364771fc9822573591d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,6 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab1e8e147487b924c27c8f5e995e9589b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ab1e8e147487b924c27c8f5e995e9589b">get_target_height</a> () const override</td></tr>
 <tr class="memdesc:ab1e8e147487b924c27c8f5e995e9589b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the height of this renderer's main render target (e.g., screen).  <a href="classlxgui_1_1gui_1_1manager.html#ab1e8e147487b924c27c8f5e995e9589b">More...</a><br /></td></tr>
 <tr class="separator:ab1e8e147487b924c27c8f5e995e9589b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3573a8e007742b52c234c4f5ba7f1a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4">set_interface_scaling_factor</a> (float fScalingFactor)</td></tr>
+<tr class="memdesc:ad3573a8e007742b52c234c4f5ba7f1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the global UI scaling factor.  <a href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4">More...</a><br /></td></tr>
+<tr class="separator:ad3573a8e007742b52c234c4f5ba7f1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c85265c0b14c9bfecbcdcc28730ff82"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">get_interface_scaling_factor</a> () const</td></tr>
+<tr class="memdesc:a3c85265c0b14c9bfecbcdcc28730ff82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current UI scaling factor.  <a href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">More...</a><br /></td></tr>
+<tr class="separator:a3c85265c0b14c9bfecbcdcc28730ff82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95358d809a8e3a30527c6755c9049924"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a95358d809a8e3a30527c6755c9049924">add_addon_directory</a> (const std::string &amp;sDirectory)</td></tr>
 <tr class="memdesc:a95358d809a8e3a30527c6755c9049924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a new directory to be parsed for UI addons.  <a href="classlxgui_1_1gui_1_1manager.html#a95358d809a8e3a30527c6755c9049924">More...</a><br /></td></tr>
 <tr class="separator:a95358d809a8e3a30527c6755c9049924"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,6 +257,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac127aaccb23425d206053dbb491a7fb2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2">reload_ui</a> ()</td></tr>
 <tr class="memdesc:ac127aaccb23425d206053dbb491a7fb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the current UI and load it again.  <a href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2">More...</a><br /></td></tr>
 <tr class="separator:ac127aaccb23425d206053dbb491a7fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a470238d941ed70a5addc791bc3d69801"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a470238d941ed70a5addc791bc3d69801">begin</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pTarget=nullptr) const</td></tr>
+<tr class="memdesc:a470238d941ed70a5addc791bc3d69801"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the rendering back-end to start rendering into a new target.  <a href="classlxgui_1_1gui_1_1manager.html#a470238d941ed70a5addc791bc3d69801">More...</a><br /></td></tr>
+<tr class="separator:a470238d941ed70a5addc791bc3d69801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91b22dd8acfef8732db5fe77933ee366"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a91b22dd8acfef8732db5fe77933ee366">end</a> () const</td></tr>
+<tr class="memdesc:a91b22dd8acfef8732db5fe77933ee366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the rendering back-end we are done rendering on the current target.  <a href="classlxgui_1_1gui_1_1manager.html#a91b22dd8acfef8732db5fe77933ee366">More...</a><br /></td></tr>
+<tr class="separator:a91b22dd8acfef8732db5fe77933ee366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41a09995c43d10d065e0b6c38e8da389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a41a09995c43d10d065e0b6c38e8da389">render_ui</a> () const</td></tr>
 <tr class="memdesc:a41a09995c43d10d065e0b6c38e8da389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the UI into the current render target.  <a href="classlxgui_1_1gui_1_1manager.html#a41a09995c43d10d065e0b6c38e8da389">More...</a><br /></td></tr>
 <tr class="separator:a41a09995c43d10d065e0b6c38e8da389"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -339,12 +351,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6323c1eacc417141a36bed3f7892899"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ac6323c1eacc417141a36bed3f7892899">register_region_type</a> ()</td></tr>
 <tr class="memdesc:ac6323c1eacc417141a36bed3f7892899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type.  <a href="classlxgui_1_1gui_1_1manager.html#ac6323c1eacc417141a36bed3f7892899">More...</a><br /></td></tr>
 <tr class="separator:ac6323c1eacc417141a36bed3f7892899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25477585807d068178ba669fc09a2349"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a25477585807d068178ba669fc09a2349">get_renderer</a> () const</td></tr>
-<tr class="memdesc:a25477585807d068178ba669fc09a2349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer implementation.  <a href="classlxgui_1_1gui_1_1manager.html#a25477585807d068178ba669fc09a2349">More...</a><br /></td></tr>
-<tr class="separator:a25477585807d068178ba669fc09a2349"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5a1f85286d6f279aa73a9b8ea7c2637"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ae5a1f85286d6f279aa73a9b8ea7c2637">get_renderer</a> ()</td></tr>
-<tr class="memdesc:ae5a1f85286d6f279aa73a9b8ea7c2637"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer implementation.  <a href="classlxgui_1_1gui_1_1manager.html#ae5a1f85286d6f279aa73a9b8ea7c2637">More...</a><br /></td></tr>
-<tr class="separator:ae5a1f85286d6f279aa73a9b8ea7c2637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a9b25bb17fd2d7644f09760bc6618a7fe">get_renderer</a> () const</td></tr>
+<tr class="memdesc:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer implementation.  <a href="classlxgui_1_1gui_1_1manager.html#a9b25bb17fd2d7644f09760bc6618a7fe">More...</a><br /></td></tr>
+<tr class="separator:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a480a784e2d4f10bcfa64bc280aa460"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a8a480a784e2d4f10bcfa64bc280aa460">get_renderer</a> ()</td></tr>
+<tr class="memdesc:a8a480a784e2d4f10bcfa64bc280aa460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer implementation.  <a href="classlxgui_1_1gui_1_1manager.html#a8a480a784e2d4f10bcfa64bc280aa460">More...</a><br /></td></tr>
+<tr class="separator:a8a480a784e2d4f10bcfa64bc280aa460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafe12a421a461fb1f2a0c968291f0258"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#aafe12a421a461fb1f2a0c968291f0258">get_event_manager</a> () const</td></tr>
 <tr class="memdesc:aafe12a421a461fb1f2a0c968291f0258"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the gui event manager.  <a href="classlxgui_1_1gui_1_1manager.html#aafe12a421a461fb1f2a0c968291f0258">More...</a><br /></td></tr>
 <tr class="separator:aafe12a421a461fb1f2a0c968291f0258"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -369,57 +381,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ae0c8fa099950863dbe6f2ba214ba07"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">unregister_event</a> (const std::string &amp;sEventName)</td></tr>
 <tr class="memdesc:a0ae0c8fa099950863dbe6f2ba214ba07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables reaction to an Event.  <a href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">More...</a><br /></td></tr>
 <tr class="separator:a0ae0c8fa099950863dbe6f2ba214ba07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9da4fa0d1b859c14d2d25627bbaf56a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9da4fa0d1b859c14d2d25627bbaf56a5">fire_redraw</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mStrata) const</td></tr>
-<tr class="memdesc:a9da4fa0d1b859c14d2d25627bbaf56a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that one of its widget requires redraw.  <a href="classlxgui_1_1gui_1_1renderer.html#a9da4fa0d1b859c14d2d25627bbaf56a5">More...</a><br /></td></tr>
-<tr class="separator:a9da4fa0d1b859c14d2d25627bbaf56a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea2cd934f64d3af91add3832cdfc2a6b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aea2cd934f64d3af91add3832cdfc2a6b">notify_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bManuallyRendered)</td></tr>
-<tr class="memdesc:aea2cd934f64d3af91add3832cdfc2a6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="classlxgui_1_1gui_1_1renderer.html#aea2cd934f64d3af91add3832cdfc2a6b">More...</a><br /></td></tr>
-<tr class="separator:aea2cd934f64d3af91add3832cdfc2a6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a441cefab467d5f38ecb1ff465cc18fb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a441cefab467d5f38ecb1ff465cc18fb0">notify_frame_strata_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mOldStrata, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mNewStrata)</td></tr>
-<tr class="memdesc:a441cefab467d5f38ecb1ff465cc18fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed strata.  <a href="classlxgui_1_1gui_1_1renderer.html#a441cefab467d5f38ecb1ff465cc18fb0">More...</a><br /></td></tr>
-<tr class="separator:a441cefab467d5f38ecb1ff465cc18fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa146b6ec3f25a0e2b28ea2e6c3db5ac8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aa146b6ec3f25a0e2b28ea2e6c3db5ac8">notify_frame_level_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, int iOldLevel, int iNewLevel)</td></tr>
-<tr class="memdesc:aa146b6ec3f25a0e2b28ea2e6c3db5ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed level.  <a href="classlxgui_1_1gui_1_1renderer.html#aa146b6ec3f25a0e2b28ea2e6c3db5ac8">More...</a><br /></td></tr>
-<tr class="separator:aa146b6ec3f25a0e2b28ea2e6c3db5ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cb7c1c3bcf0e415f3d76e8f73755aad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad">begin</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pTarget=nullptr) const</td></tr>
-<tr class="memdesc:a3cb7c1c3bcf0e415f3d76e8f73755aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine to start rendering into a new target.  <a href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad">More...</a><br /></td></tr>
-<tr class="separator:a3cb7c1c3bcf0e415f3d76e8f73755aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00fba47b9588660555824a5a47e28a79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">end</a> () const</td></tr>
-<tr class="memdesc:a00fba47b9588660555824a5a47e28a79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells the underlying graphics engine we're done rendering.  <a href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79">More...</a><br /></td></tr>
-<tr class="separator:a00fba47b9588660555824a5a47e28a79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1acb165e6428191d3a4c84a5affd184"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac1acb165e6428191d3a4c84a5affd184">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const</td></tr>
-<tr class="memdesc:ac1acb165e6428191d3a4c84a5affd184"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1renderer.html#ac1acb165e6428191d3a4c84a5affd184">More...</a><br /></td></tr>
-<tr class="separator:ac1acb165e6428191d3a4c84a5affd184"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16e29961df923ce2c95abc689f6bf0da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const</td></tr>
-<tr class="memdesc:a16e29961df923ce2c95abc689f6bf0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer.html#a16e29961df923ce2c95abc689f6bf0da">More...</a><br /></td></tr>
-<tr class="separator:a16e29961df923ce2c95abc689f6bf0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad3d1bc8bbb3fec7398a9eee34d89fab4">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;mMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const</td></tr>
-<tr class="memdesc:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer.html#ad3d1bc8bbb3fec7398a9eee34d89fab4">More...</a><br /></td></tr>
-<tr class="separator:ad3d1bc8bbb3fec7398a9eee34d89fab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade42d089d1ac874841f1b50da566468e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ade42d089d1ac874841f1b50da566468e">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat) const</td></tr>
-<tr class="memdesc:ade42d089d1ac874841f1b50da566468e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="classlxgui_1_1gui_1_1renderer.html#ade42d089d1ac874841f1b50da566468e">More...</a><br /></td></tr>
-<tr class="separator:ade42d089d1ac874841f1b50da566468e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a3549835ae8196de54eb28e1abdeb32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9a3549835ae8196de54eb28e1abdeb32">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fWidth, float fHeight) const</td></tr>
-<tr class="memdesc:a9a3549835ae8196de54eb28e1abdeb32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="classlxgui_1_1gui_1_1renderer.html#a9a3549835ae8196de54eb28e1abdeb32">More...</a><br /></td></tr>
-<tr class="separator:a9a3549835ae8196de54eb28e1abdeb32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86772cb005275a0836cc3de2eea322e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a86772cb005275a0836cc3de2eea322e7">create_sprite</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; pMat, float fU, float fV, float fWidth, float fHeight) const</td></tr>
-<tr class="memdesc:a86772cb005275a0836cc3de2eea322e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new sprite.  <a href="classlxgui_1_1gui_1_1renderer.html#a86772cb005275a0836cc3de2eea322e7">More...</a><br /></td></tr>
-<tr class="separator:a86772cb005275a0836cc3de2eea322e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a6eb528e4c315a0a0cce1cc3c5fae85"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a2a6eb528e4c315a0a0cce1cc3c5fae85">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const</td></tr>
-<tr class="memdesc:a2a6eb528e4c315a0a0cce1cc3c5fae85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer.html#a2a6eb528e4c315a0a0cce1cc3c5fae85">More...</a><br /></td></tr>
-<tr class="separator:a2a6eb528e4c315a0a0cce1cc3c5fae85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da7a42ae3a14d38b896bb48f88354d2"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5da7a42ae3a14d38b896bb48f88354d2">create_material</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor) const</td></tr>
-<tr class="memdesc:a5da7a42ae3a14d38b896bb48f88354d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a plain color.  <a href="classlxgui_1_1gui_1_1renderer.html#a5da7a42ae3a14d38b896bb48f88354d2">More...</a><br /></td></tr>
-<tr class="separator:a5da7a42ae3a14d38b896bb48f88354d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget) const</td></tr>
-<tr class="memdesc:adb352d74d13a5bcfc4c6b505dda5843a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a render target.  <a href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">More...</a><br /></td></tr>
-<tr class="separator:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee43ae20f5b120b2eef54cb2a0881b86"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aee43ae20f5b120b2eef54cb2a0881b86">create_render_target</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight) const</td></tr>
-<tr class="memdesc:aee43ae20f5b120b2eef54cb2a0881b86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1renderer.html#aee43ae20f5b120b2eef54cb2a0881b86">More...</a><br /></td></tr>
-<tr class="separator:aee43ae20f5b120b2eef54cb2a0881b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a631d286abb9548d59bcb588c2c72bfaf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a631d286abb9548d59bcb588c2c72bfaf">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) const</td></tr>
-<tr class="memdesc:a631d286abb9548d59bcb588c2c72bfaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="classlxgui_1_1gui_1_1renderer.html#a631d286abb9548d59bcb588c2c72bfaf">More...</a><br /></td></tr>
-<tr class="separator:a631d286abb9548d59bcb588c2c72bfaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a5d75e0e9074d9f510a41aafa429249"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a4a5d75e0e9074d9f510a41aafa429249">fire_redraw</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mStrata) const</td></tr>
+<tr class="memdesc:a4a5d75e0e9074d9f510a41aafa429249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that one of its widget requires redraw.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a4a5d75e0e9074d9f510a41aafa429249">More...</a><br /></td></tr>
+<tr class="separator:a4a5d75e0e9074d9f510a41aafa429249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a1c5e77502bb33bf750ec52c6ce3acf94">notify_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bManuallyRendered)</td></tr>
+<tr class="memdesc:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a1c5e77502bb33bf750ec52c6ce3acf94">More...</a><br /></td></tr>
+<tr class="separator:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85fc50efee56835be9a8d9057aa8fe1b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a85fc50efee56835be9a8d9057aa8fe1b">notify_frame_strata_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mOldStrata, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mNewStrata)</td></tr>
+<tr class="memdesc:a85fc50efee56835be9a8d9057aa8fe1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed strata.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a85fc50efee56835be9a8d9057aa8fe1b">More...</a><br /></td></tr>
+<tr class="separator:a85fc50efee56835be9a8d9057aa8fe1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67883572445a4ccb68082ed57eebc6d4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a67883572445a4ccb68082ed57eebc6d4">notify_frame_level_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, int iOldLevel, int iNewLevel)</td></tr>
+<tr class="memdesc:a67883572445a4ccb68082ed57eebc6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed level.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a67883572445a4ccb68082ed57eebc6d4">More...</a><br /></td></tr>
+<tr class="separator:a67883572445a4ccb68082ed57eebc6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -431,35 +404,31 @@ Static Public Member Functions</h2></td></tr>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a9f2b80df38bb508370684591a440d539"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a9f2b80df38bb508370684591a440d539">set_event_manager</a> (<a class="el" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a> *pManager)</td></tr>
 <tr class="separator:a9f2b80df38bb508370684591a440d539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d738ef79698f63dc964433c833b91a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5d738ef79698f63dc964433c833b91a9">add_to_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
-<tr class="separator:a5d738ef79698f63dc964433c833b91a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d695fc8932fa7d630ce22d8a46fa597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8d695fc8932fa7d630ce22d8a46fa597">remove_from_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
-<tr class="separator:a8d695fc8932fa7d630ce22d8a46fa597"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7dfd59a94163aa3510fecb1605583b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#af7dfd59a94163aa3510fecb1605583b5">add_to_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;mLevel, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
-<tr class="separator:af7dfd59a94163aa3510fecb1605583b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada1e71ae41cbaa49979d674d0d65d5d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ada1e71ae41cbaa49979d674d0d65d5d8">remove_from_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;mLevel, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
-<tr class="separator:ada1e71ae41cbaa49979d674d0d65d5d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae71d81d599ad5673006d1cf81f64e44b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ae71d81d599ad5673006d1cf81f64e44b">clear_strata_list_</a> ()</td></tr>
-<tr class="separator:ae71d81d599ad5673006d1cf81f64e44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8527bcef8c082fb82b5105153b79a98c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8527bcef8c082fb82b5105153b79a98c">has_strata_list_changed_</a> () const</td></tr>
-<tr class="separator:a8527bcef8c082fb82b5105153b79a98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a592320e159b227a6f1787fdfe273cecb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a592320e159b227a6f1787fdfe273cecb">reset_strata_list_changed_flag_</a> ()</td></tr>
-<tr class="separator:a592320e159b227a6f1787fdfe273cecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0f6932e489d5f0bc050dd0414a265b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aa0f6932e489d5f0bc050dd0414a265b0">render_strata_</a> (const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata) const</td></tr>
-<tr class="separator:aa0f6932e489d5f0bc050dd0414a265b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeea4ceb577fd478bc0197f1a43ea1db4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aeea4ceb577fd478bc0197f1a43ea1db4">create_strata_cache_render_target_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata)</td></tr>
-<tr class="separator:aeea4ceb577fd478bc0197f1a43ea1db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5221093cbcd3b30d2662e8aa445c2027"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5221093cbcd3b30d2662e8aa445c2027">find_hovered_frame_</a> (int iX, int iY)</td></tr>
-<tr class="separator:a5221093cbcd3b30d2662e8aa445c2027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b14c92a9c68ca4bbc7eec0dc9f33bdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a5b14c92a9c68ca4bbc7eec0dc9f33bdd">add_to_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
+<tr class="separator:a5b14c92a9c68ca4bbc7eec0dc9f33bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff3b6fb3d18a2f70e3b0d3682c744ea9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aff3b6fb3d18a2f70e3b0d3682c744ea9">remove_from_strata_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
+<tr class="separator:aff3b6fb3d18a2f70e3b0d3682c744ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0ccea33b82704e6e5586a7cd39fcebe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ae0ccea33b82704e6e5586a7cd39fcebe">add_to_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;mLevel, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
+<tr class="separator:ae0ccea33b82704e6e5586a7cd39fcebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fd5ba531c235a144431ad8dfe0919c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a3fd5ba531c235a144431ad8dfe0919c7">remove_from_level_list_</a> (<a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;mLevel, <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame)</td></tr>
+<tr class="separator:a3fd5ba531c235a144431ad8dfe0919c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac71ba9991745f6d4112f64c353829bfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#ac71ba9991745f6d4112f64c353829bfa">clear_strata_list_</a> ()</td></tr>
+<tr class="separator:ac71ba9991745f6d4112f64c353829bfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a071267901b73cb56ccad565aaf5b51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a7a071267901b73cb56ccad565aaf5b51">has_strata_list_changed_</a> () const</td></tr>
+<tr class="separator:a7a071267901b73cb56ccad565aaf5b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e222f71beed87cea80f8fd182d65dc2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a3e222f71beed87cea80f8fd182d65dc2">reset_strata_list_changed_flag_</a> ()</td></tr>
+<tr class="separator:a3e222f71beed87cea80f8fd182d65dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88b958d9551170672a28ea6fab080cfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a88b958d9551170672a28ea6fab080cfc">render_strata_</a> (const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;mStrata) const</td></tr>
+<tr class="separator:a88b958d9551170672a28ea6fab080cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a584b349bc03b17acd86cda4cdeb97fc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a584b349bc03b17acd86cda4cdeb97fc7">find_hovered_frame_</a> (int iX, int iY)</td></tr>
+<tr class="separator:a584b349bc03b17acd86cda4cdeb97fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a3e6da83107a081068d7e4332520f1d78"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3e6da83107a081068d7e4332520f1d78">pImpl_</a> = nullptr</td></tr>
-<tr class="separator:a3e6da83107a081068d7e4332520f1d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a704f875b2ca7cae3b83286c1eb9f9859"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a704f875b2ca7cae3b83286c1eb9f9859">lStrataList_</a></td></tr>
-<tr class="separator:a704f875b2ca7cae3b83286c1eb9f9859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ece840aa94c826bfd2720553771d0e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6ece840aa94c826bfd2720553771d0e3">bStrataListUpdated_</a> = false</td></tr>
-<tr class="separator:a6ece840aa94c826bfd2720553771d0e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bc2ee39137e0f09091dc01b4443eb94"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a8bc2ee39137e0f09091dc01b4443eb94">lStrataList_</a></td></tr>
+<tr class="separator:a8bc2ee39137e0f09091dc01b4443eb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7400cdad20324f1b198f37e1bf18876a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a7400cdad20324f1b198f37e1bf18876a">bStrataListUpdated_</a> = false</td></tr>
+<tr class="separator:a7400cdad20324f1b198f37e1bf18876a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Manages the user interface. </p>
@@ -509,8 +478,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa69ddc2d56b1c76901893f0a7e03214d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa69ddc2d56b1c76901893f0a7e03214d">&#9670;&nbsp;</a></span>manager() <span class="overload">[1/3]</span></h2>
+<a id="af9bf0d53c079a94c75764a2226808512"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9bf0d53c079a94c75764a2226808512">&#9670;&nbsp;</a></span>manager() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -518,32 +487,20 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">lxgui::gui::manager::manager </td>
           <td>(</td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1input_1_1source__impl.html">input::source_impl</a> &gt;&#160;</td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1input_1_1source.html">input::source</a> &gt;&#160;</td>
           <td class="paramname"><em>pInputSource</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> &gt;&#160;</td>
+          <td class="paramname"><em>pRenderer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sLocale</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiScreenWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiScreenHeight</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::unique_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> &gt;&#160;</td>
-          <td class="paramname"><em>pRendererImpl</em>&#160;</td>
+          <td class="paramname"><em>sLocale</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -557,15 +514,13 @@ Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pInputSource</td><td>The input source to use </td></tr>
+    <tr><td class="paramname">pRenderer</td><td>The renderer implementation </td></tr>
     <tr><td class="paramname">sLocale</td><td>The name of the game locale ("enGB", ...) </td></tr>
-    <tr><td class="paramname">uiScreenWidth</td><td>The width of the screen </td></tr>
-    <tr><td class="paramname">uiScreenHeight</td><td>The height of the screen </td></tr>
-    <tr><td class="paramname">pRendererImpl</td><td>The renderer implementation </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00049">49</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00051">51</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -594,7 +549,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00065">65</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00070">70</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -675,7 +630,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00093">93</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00129">129</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -704,12 +659,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Raw pointer to the frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00300">300</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00336">336</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="af7dfd59a94163aa3510fecb1605583b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7dfd59a94163aa3510fecb1605583b5">&#9670;&nbsp;</a></span>add_to_level_list_()</h2>
+<a id="ae0ccea33b82704e6e5586a7cd39fcebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0ccea33b82704e6e5586a7cd39fcebe">&#9670;&nbsp;</a></span>add_to_level_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -718,7 +673,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::add_to_level_list_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::add_to_level_list_ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;&#160;</td>
           <td class="paramname"><em>mLevel</em>, </td>
@@ -742,12 +697,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00216">216</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00147">147</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a5d738ef79698f63dc964433c833b91a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d738ef79698f63dc964433c833b91a9">&#9670;&nbsp;</a></span>add_to_strata_list_()</h2>
+<a id="a5b14c92a9c68ca4bbc7eec0dc9f33bdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b14c92a9c68ca4bbc7eec0dc9f33bdd">&#9670;&nbsp;</a></span>add_to_strata_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -756,7 +711,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::add_to_strata_list_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::add_to_strata_list_ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
           <td class="paramname"><em>mStrata</em>, </td>
@@ -780,7 +735,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00189">189</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00120">120</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -809,35 +764,27 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'false' if the name of the widget was already taken </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00248">248</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00284">284</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a3cb7c1c3bcf0e415f3d76e8f73755aad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cb7c1c3bcf0e415f3d76e8f73755aad">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a470238d941ed70a5addc791bc3d69801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a470238d941ed70a5addc791bc3d69801">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::begin </td>
+          <td class="memname">void lxgui::gui::manager::begin </td>
           <td>(</td>
           <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
           <td class="paramname"><em>pTarget</em> = <code>nullptr</code></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Tells the underlying graphics engine to start rendering into a new target. </p>
+<p>Tells the rendering back-end to start rendering into a new target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pTarget</td><td>The target to render to (nullptr to render to the screen) </td></tr>
@@ -845,7 +792,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00123">123</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00857">857</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -874,7 +821,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the provided string can be the name of a widget </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00104">104</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00140">140</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -896,7 +843,7 @@ Protected Attributes</h2></td></tr>
 <p>Clears the addon directory list. </p>
 <dl class="section note"><dt>Note</dt><dd>This is usefull whenever you need to reload a completely different UI (for example, when switching from your game's main menu to the real game). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00099">99</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00135">135</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -925,12 +872,12 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Enabled by default. Note that when enabled, it will also clear fonts when the UI is reloaded, and load them once again. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01199">1199</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01271">1271</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ae71d81d599ad5673006d1cf81f64e44b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae71d81d599ad5673006d1cf81f64e44b">&#9670;&nbsp;</a></span>clear_strata_list_()</h2>
+<a id="ac71ba9991745f6d4112f64c353829bfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac71ba9991745f6d4112f64c353829bfa">&#9670;&nbsp;</a></span>clear_strata_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -939,7 +886,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::clear_strata_list_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::clear_strata_list_ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -952,7 +899,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00264">264</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00181">181</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -973,55 +920,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Closes the UI, deletes widgets. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00757">757</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a631d286abb9548d59bcb588c2c72bfaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a631d286abb9548d59bcb588c2c72bfaf">&#9670;&nbsp;</a></span>create_font()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt; lxgui::gui::renderer::create_font </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sFontFile</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiSize</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new font. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sFontFile</td><td>The file from which to read the font </td></tr>
-    <tr><td class="paramname">uiSize</td><td>The requested size of the characters (in points) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Even though the gui has been designed to use vector fonts files (such as .ttf or .otf font formats), nothing prevents the implementation from using any other font type, including bitmap fonts. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00184">184</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00794">794</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1051,7 +950,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned frame only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab6d465f763870c80758bb6e975dc7621" title="Creates a new frame, ready for use, and owned by this manager.">create_root_frame()</a> or <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6d098a4b38122f1e4e33d20b90a2e25d" title="Creates a new frame as child of this frame.">frame::create_child()</a> to get a fully-functional frame object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00165">165</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00201">201</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +980,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned region only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1frame.html#a5ed5cb86aed64ea8e6247190dbb950df" title="Creates a new region as child of this frame.">frame::create_region()</a> to get a fully-functional region object. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00225">225</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00261">261</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1110,177 +1009,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is usefull if you need to create additionnal resources on the Lua state before the GUI files are loaded. You need to do this inside the provided argument function, because this code will need to be called again in case the GUI is reloaded (see <a class="el" href="classlxgui_1_1gui_1_1manager.html#ac127aaccb23425d206053dbb491a7fb2" title="Closes the current UI and load it again.">reload_ui()</a>). Else, you can simply use <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI.">load_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00708">708</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a5da7a42ae3a14d38b896bb48f88354d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da7a42ae3a14d38b896bb48f88354d2">&#9670;&nbsp;</a></span>create_material() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;&#160;</td>
-          <td class="paramname"><em>mColor</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from a plain color. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mColor</td><td>The color to use </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00169">169</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a2a6eb528e4c315a0a0cce1cc3c5fae85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a6eb528e4c315a0a0cce1cc3c5fae85">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sFileName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
-          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from a texture file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
-    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00164">164</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="adb352d74d13a5bcfc4c6b505dda5843a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb352d74d13a5bcfc4c6b505dda5843a">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
-          <td class="paramname"><em>pRenderTarget</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from a render target. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pRenderTarget</td><td>The render target from which to read the pixels </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00174">174</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aee43ae20f5b120b2eef54cb2a0881b86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee43ae20f5b120b2eef54cb2a0881b86">&#9670;&nbsp;</a></span>create_render_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; lxgui::gui::renderer::create_render_target </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new render target. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">uiWidth</td><td>The width of the render target </td></tr>
-    <tr><td class="paramname">uiHeight</td><td>The height of the render target </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00179">179</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00744">744</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1336,7 +1065,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function takes care of the basic initializing: the frame is directly usable. However, you still need to call notify_loaded() when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00155">155</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00175">175</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1387,200 +1116,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The new frame </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function takes care of the basic initializing: the frame is directly usable. However, you still need to call notify_loaded() when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00188">188</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ade42d089d1ac874841f1b50da566468e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade42d089d1ac874841f1b50da566468e">&#9670;&nbsp;</a></span>create_sprite() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00148">148</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a86772cb005275a0836cc3de2eea322e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86772cb005275a0836cc3de2eea322e7">&#9670;&nbsp;</a></span>create_sprite() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fU</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fV</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-    <tr><td class="paramname">fU</td><td>The top left corner of the sprite in the material </td></tr>
-    <tr><td class="paramname">fV</td><td>The top left corner of the sprite in the material </td></tr>
-    <tr><td class="paramname">fWidth</td><td>The width of the sprite </td></tr>
-    <tr><td class="paramname">fHeight</td><td>The height of the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>If the width and height you provide are smaller than the texture's ones, the texture will be cut on the right and bottom edges.<br  />
- However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00158">158</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a9a3549835ae8196de54eb28e1abdeb32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a3549835ae8196de54eb28e1abdeb32">&#9670;&nbsp;</a></span>create_sprite() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::renderer::create_sprite </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td>
-          <td class="paramname"><em>pMat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new sprite. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pMat</td><td>The material with which to create the sprite </td></tr>
-    <tr><td class="paramname">fWidth</td><td>The width of the sprite </td></tr>
-    <tr><td class="paramname">fHeight</td><td>The height of the sprite </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>If the width and height you provide are smaller than the texture's ones, the texture will be cut on the right and bottom edges.<br  />
- However, if they are larger than the texture's one, the texture will be tiled. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The new sprite </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aeea4ceb577fd478bc0197f1a43ea1db4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeea4ceb577fd478bc0197f1a43ea1db4">&#9670;&nbsp;</a></span>create_strata_cache_render_target_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::renderer::create_strata_cache_render_target_ </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
-          <td class="paramname"><em>mStrata</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00250">250</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00208">208</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1610,7 +1146,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>The new uiobject </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This is a low level function; the returned object only has the bare minimum initialization. Use <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab6d465f763870c80758bb6e975dc7621" title="Creates a new frame, ready for use, and owned by this manager.">create_root_frame()</a> or <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6d098a4b38122f1e4e33d20b90a2e25d" title="Creates a new frame as child of this frame.">frame::create_child()</a> to get a fully-functional frame object, or <a class="el" href="classlxgui_1_1gui_1_1frame.html#a5ed5cb86aed64ea8e6247190dbb950df" title="Creates a new region as child of this frame.">frame::create_region()</a> for region objects. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00180">180</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1204,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 Virtual frames are not displayed, but they can be used as templates to create other frames through inheritance. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00171">171</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00191">191</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1721,7 +1257,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 Virtual frames are not displayed, but they can be used as templates to create other frames through inheritance. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00204">204</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00224">224</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -1750,7 +1286,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a27ca24c690a26c6c5240f102d45ae8f4" title="Toggles render caching.">toggle_caching()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01157">1157</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01229">1229</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1773,42 +1309,34 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Enables/disables input response for all widgets. </p>
 <p>\parem bEnable 'true' to enable input </p><dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211" title="Toggles input response for all widgets.">toggle_input()</a> and <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f4bbbb6c55f6" title="Checks if input response is enabled for all widgets.">is_input_enabled()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01168">1168</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01240">1240</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a00fba47b9588660555824a5a47e28a79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a00fba47b9588660555824a5a47e28a79">&#9670;&nbsp;</a></span>end()</h2>
+<a id="a91b22dd8acfef8732db5fe77933ee366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91b22dd8acfef8732db5fe77933ee366">&#9670;&nbsp;</a></span>end()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::end </td>
+          <td class="memname">void lxgui::gui::manager::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Tells the underlying graphics engine we're done rendering. </p>
-<dl class="section note"><dt>Note</dt><dd>For most engines, this is when the rendering is actually done, so don't forget to call it ! </dd></dl>
+<p>Tells the rendering back-end we are done rendering on the current target. </p>
+<dl class="section note"><dt>Note</dt><dd>For most back-ends, this is when the rendering is actually done, so do not forget to call it even if it appears to do nothing. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00128">128</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00876">876</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a5221093cbcd3b30d2662e8aa445c2027"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5221093cbcd3b30d2662e8aa445c2027">&#9670;&nbsp;</a></span>find_hovered_frame_()</h2>
+<a id="a584b349bc03b17acd86cda4cdeb97fc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a584b349bc03b17acd86cda4cdeb97fc7">&#9670;&nbsp;</a></span>find_hovered_frame_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1817,7 +1345,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> * lxgui::gui::renderer::find_hovered_frame_ </td>
+          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> * lxgui::gui::frame_renderer::find_hovered_frame_ </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>iX</em>, </td>
@@ -1841,7 +1369,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00287">287</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00204">204</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1864,8 +1392,8 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 
 </div>
 </div>
-<a id="a9da4fa0d1b859c14d2d25627bbaf56a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9da4fa0d1b859c14d2d25627bbaf56a5">&#9670;&nbsp;</a></span>fire_redraw()</h2>
+<a id="a4a5d75e0e9074d9f510a41aafa429249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a5d75e0e9074d9f510a41aafa429249">&#9670;&nbsp;</a></span>fire_redraw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1874,7 +1402,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::fire_redraw </td>
+          <td class="memname">void lxgui::gui::frame_renderer::fire_redraw </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a>&#160;</td>
           <td class="paramname"><em>mStrata</em></td><td>)</td>
@@ -1892,7 +1420,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a07b24c168c08625ebf4c5cff29a8a10f">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00053">53</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00050">50</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +1442,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the addon that is being parsed. </p>
 <dl class="section return"><dt>Returns</dt><dd>The addon that is being parsed </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01301">1301</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01373">1373</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1956,7 +1484,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the gui event manager. </p>
 <dl class="section return"><dt>Returns</dt><dd>The gui event manager </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01558">1558</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01633">1633</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1985,7 +1513,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The highest level on the provided strata </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01292">1292</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01364">1364</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2007,7 +1535,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the frame under the mouse. </p>
 <dl class="section return"><dt>Returns</dt><dd>The frame under the mouse (nullptr if none) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01219">1219</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01291">1291</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2049,7 +1577,30 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the input manager associated to this gui. </p>
 <dl class="section return"><dt>Returns</dt><dd>The input manager associated to this gui </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01568">1568</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01643">1643</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a3c85265c0b14c9bfecbcdcc28730ff82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c85265c0b14c9bfecbcdcc28730ff82">&#9670;&nbsp;</a></span>get_interface_scaling_factor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lxgui::gui::manager::get_interface_scaling_factor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the current UI scaling factor. </p>
+<dl class="section return"><dt>Returns</dt><dd>The current UI scaling factor </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4" title="Sets the global UI scaling factor.">set_interface_scaling_factor()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2071,7 +1622,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the current game locale ("enGB", ...). </p>
 <dl class="section return"><dt>Returns</dt><dd>The current game locale </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01578">1578</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01653">1653</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2093,7 +1644,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the GUI Lua state (sol wrapper). </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00456">456</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00492">492</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2135,7 +1686,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the GUI Lua state (luapp wrapper). </p>
 <dl class="section return"><dt>Returns</dt><dd>The GUI Lua state </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00466">466</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00502">502</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2214,7 +1765,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <dl class="section return"><dt>Returns</dt><dd>The cumuled horizontal mouse movement </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This value is reset to zero whenever <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1839bce5ea7026bb726dc219b4148825" title="Ask this manager for movement management.">start_moving()</a> or <a class="el" href="classlxgui_1_1gui_1_1manager.html#a683835e09588fd6e5c0cda567354a065" title="Starts resizing a widget.">start_sizing()</a> is called. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01131">1131</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01203">1203</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2237,18 +1788,18 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <dl class="section return"><dt>Returns</dt><dd>The cumuled vertical mouse movement </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This value is reset to zero whenever <a class="el" href="classlxgui_1_1gui_1_1manager.html#a1839bce5ea7026bb726dc219b4148825" title="Ask this manager for movement management.">start_moving()</a> or <a class="el" href="classlxgui_1_1gui_1_1manager.html#a683835e09588fd6e5c0cda567354a065" title="Starts resizing a widget.">start_sizing()</a> is called. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01136">1136</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01208">1208</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ae5a1f85286d6f279aa73a9b8ea7c2637"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5a1f85286d6f279aa73a9b8ea7c2637">&#9670;&nbsp;</a></span>get_renderer() <span class="overload">[1/2]</span></h2>
+<a id="a8a480a784e2d4f10bcfa64bc280aa460"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a480a784e2d4f10bcfa64bc280aa460">&#9670;&nbsp;</a></span>get_renderer() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a>* lxgui::gui::manager::get_renderer </td>
+          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>* lxgui::gui::manager::get_renderer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -2261,14 +1812,14 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 
 </div>
 </div>
-<a id="a25477585807d068178ba669fc09a2349"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25477585807d068178ba669fc09a2349">&#9670;&nbsp;</a></span>get_renderer() <span class="overload">[2/2]</span></h2>
+<a id="a9b25bb17fd2d7644f09760bc6618a7fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b25bb17fd2d7644f09760bc6618a7fe">&#9670;&nbsp;</a></span>get_renderer() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a> * lxgui::gui::manager::get_renderer </td>
+          <td class="memname">const <a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> * lxgui::gui::manager::get_renderer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -2279,7 +1830,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the renderer implementation. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer implementation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00073">73</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2301,7 +1852,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the root frame list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The root frame list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00363">363</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00399">399</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2331,9 +1882,9 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the height of this renderer's main render target (e.g., screen). </p>
 <dl class="section return"><dt>Returns</dt><dd>The render target height </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac8f87a747d27b9c00e34e02af5b66423">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a9445394eaaec50891e95538b251227f0">lxgui::gui::frame_renderer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00088">88</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00093">93</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2363,9 +1914,9 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Returns the width of of this renderer's main render target (e.g., screen). </p>
 <dl class="section return"><dt>Returns</dt><dd>The render target width </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6381197a122a69c42ec1ee299789584c">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aa797937d2ff79fa33b0d104b6bf3ef6b">lxgui::gui::frame_renderer</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00083">83</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00088">88</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2394,7 +1945,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given ID, or nullptr if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00377">377</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00413">413</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2423,7 +1974,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given ID, or nullptr if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00368">368</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00404">404</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2463,7 +2014,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given name, or nullptr if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00436">436</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00472">472</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2503,7 +2054,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The uiobject associated with the given name, or nullptr if not found </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00416">416</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00452">452</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2532,12 +2083,12 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A vector of objects matching the list. Objects not found will be excluded. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00386">386</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00422">422</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8527bcef8c082fb82b5105153b79a98c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8527bcef8c082fb82b5105153b79a98c">&#9670;&nbsp;</a></span>has_strata_list_changed_()</h2>
+<a id="a7a071267901b73cb56ccad565aaf5b51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a071267901b73cb56ccad565aaf5b51">&#9670;&nbsp;</a></span>has_strata_list_changed_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2546,7 +2097,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::renderer::has_strata_list_changed_ </td>
+          <td class="memname">bool lxgui::gui::frame_renderer::has_strata_list_changed_ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -2559,7 +2110,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00277">277</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00194">194</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -2581,7 +2132,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <p>Checks if GUI caching is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if GUI caching is enabled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01163">1163</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01235">1235</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2606,7 +2157,7 @@ Virtual frames are not displayed, but they can be used as templates to create ot
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211" title="Toggles input response for all widgets.">toggle_input()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01194">1194</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01266">1266</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2628,7 +2179,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Checks if the UI is currently being loaded. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the UI is currently being loaded </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00865">865</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00937">937</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2657,7 +2208,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to move </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01040">1040</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01112">1112</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2686,7 +2237,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the given object is allowed to be resized </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01126">1126</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01198">1198</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2708,12 +2259,12 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Loads the UI. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3512ff3df718de4349b521f8b59827e0" title="Creates the lua::state that will be used to communicate with the GUI.">create_lua()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#aadf3a3ba84f97b89ac7f4001e26294f3" title="Reads GUI files in the directory list.">read_files()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00751">751</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00788">788</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa146b6ec3f25a0e2b28ea2e6c3db5ac8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa146b6ec3f25a0e2b28ea2e6c3db5ac8">&#9670;&nbsp;</a></span>notify_frame_level_changed()</h2>
+<a id="a67883572445a4ccb68082ed57eebc6d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67883572445a4ccb68082ed57eebc6d4">&#9670;&nbsp;</a></span>notify_frame_level_changed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2722,7 +2273,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::notify_frame_level_changed </td>
+          <td class="memname">void lxgui::gui::frame_renderer::notify_frame_level_changed </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
           <td class="paramname"><em>pFrame</em>, </td>
@@ -2762,12 +2313,12 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00093">93</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00090">90</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a441cefab467d5f38ecb1ff465cc18fb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a441cefab467d5f38ecb1ff465cc18fb0">&#9670;&nbsp;</a></span>notify_frame_strata_changed()</h2>
+<a id="a85fc50efee56835be9a8d9057aa8fe1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85fc50efee56835be9a8d9057aa8fe1b">&#9670;&nbsp;</a></span>notify_frame_strata_changed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2776,7 +2327,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::notify_frame_strata_changed </td>
+          <td class="memname">void lxgui::gui::frame_renderer::notify_frame_strata_changed </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
           <td class="paramname"><em>pFrame</em>, </td>
@@ -2816,7 +2367,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00075">75</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -2837,7 +2388,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Notifies this manager that it should update the hovered frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01225">1225</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01297">1297</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -2858,12 +2409,12 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Tells this manager an object has moved. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01141">1141</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01213">1213</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aea2cd934f64d3af91add3832cdfc2a6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea2cd934f64d3af91add3832cdfc2a6b">&#9670;&nbsp;</a></span>notify_rendered_frame()</h2>
+<a id="a1c5e77502bb33bf750ec52c6ce3acf94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c5e77502bb33bf750ec52c6ce3acf94">&#9670;&nbsp;</a></span>notify_rendered_frame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2872,7 +2423,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::notify_rendered_frame </td>
+          <td class="memname">void lxgui::gui::frame_renderer::notify_rendered_frame </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
           <td class="paramname"><em>pFrame</em>, </td>
@@ -2907,7 +2458,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a1204a5bafe152d2ecbc721f80426b4d4">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00058">58</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00055">55</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -2945,7 +2496,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a62700a1784f8bb5b09f01b10e0fb92d3">lxgui::gui::event_receiver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01327">1327</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01399">1399</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3067,7 +2618,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <dl class="section return"><dt>Returns</dt><dd>The modified file name </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>All file names are relative to the Engine's executable path, but sometimes you'd like to use a path that is relative to your addon directory for example. To do so, you need to append "|" in front of your file name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01311">1311</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01383">1383</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3088,7 +2639,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 
 <p>Prints in the log several performance statistics. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01509">1509</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01584">1584</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3110,7 +2661,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b8
 <p>Prints debug informations in the log file. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aaef412e12cd0af0e855e79ab5bebd701" title="Prints all relevant information about this widget in a string.">uiobject::serialize()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01520">1520</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01595">1595</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3136,7 +2687,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3512ff3df718de4349b521f8b59827e0" title="Creates the lua::state that will be used to communicate with the GUI.">create_lua()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00737">737</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00774">774</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3206,7 +2757,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Registers a new frame type. </p>
 <dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00567">567</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00598">598</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -3241,7 +2792,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00557">557</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00588">588</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -3273,7 +2824,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type. </p>
 <dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00589">589</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00620">620</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -3308,7 +2859,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00579">579</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00610">610</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -3330,7 +2881,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 <p>Closes the current UI and load it again. </p>
 <dl class="section note"><dt>Note</dt><dd>Calls <a class="el" href="classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d" title="Closes the UI, deletes widgets.">close_ui()</a> then <a class="el" href="classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478" title="Loads the UI.">load_ui()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00811">811</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00848">848</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3359,12 +2910,12 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Called automatically by frame destructor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00336">336</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00372">372</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ada1e71ae41cbaa49979d674d0d65d5d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada1e71ae41cbaa49979d674d0d65d5d8">&#9670;&nbsp;</a></span>remove_from_level_list_()</h2>
+<a id="a3fd5ba531c235a144431ad8dfe0919c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd5ba531c235a144431ad8dfe0919c7">&#9670;&nbsp;</a></span>remove_from_level_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3373,7 +2924,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::remove_from_level_list_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::remove_from_level_list_ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1level.html">level</a> &amp;&#160;</td>
           <td class="paramname"><em>mLevel</em>, </td>
@@ -3397,12 +2948,12 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00223">223</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00154">154</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8d695fc8932fa7d630ce22d8a46fa597"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d695fc8932fa7d630ce22d8a46fa597">&#9670;&nbsp;</a></span>remove_from_strata_list_()</h2>
+<a id="aff3b6fb3d18a2f70e3b0d3682c744ea9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff3b6fb3d18a2f70e3b0d3682c744ea9">&#9670;&nbsp;</a></span>remove_from_strata_list_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3411,7 +2962,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::remove_from_strata_list_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::remove_from_strata_list_ </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
           <td class="paramname"><em>mStrata</em>, </td>
@@ -3435,7 +2986,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00202">202</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -3481,7 +3032,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01269">1269</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01341">1341</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3510,7 +3061,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the previously owned frame, ignore it to destroy it. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00350">350</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00386">386</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3539,12 +3090,12 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Called automatically by uiobject destructor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00318">318</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00354">354</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a16e29961df923ce2c95abc689f6bf0da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16e29961df923ce2c95abc689f6bf0da">&#9670;&nbsp;</a></span>render_quad()</h2>
+<a id="a88b958d9551170672a28ea6fab080cfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88b958d9551170672a28ea6fab080cfc">&#9670;&nbsp;</a></span>render_strata_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3553,92 +3104,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::render_quad </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;&#160;</td>
-          <td class="paramname"><em>mQuad</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Renders a quad. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mQuad</td><td>The quad to render on the current render target </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Tells the underlying graphics engine we&#39;re done rendering.">end()</a> only. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00138">138</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ad3d1bc8bbb3fec7398a9eee34d89fab4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3d1bc8bbb3fec7398a9eee34d89fab4">&#9670;&nbsp;</a></span>render_quads()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::renderer::render_quads </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;&#160;</td>
-          <td class="paramname"><em>mMaterial</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;&#160;</td>
-          <td class="paramname"><em>lQuadList</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Renders a set of quads. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mMaterial</td><td>The material to use for rendering (texture, color, blending, ...) </td></tr>
-    <tr><td class="paramname">lQuadList</td><td>The list of the quads you want to render </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Tells the underlying graphics engine we&#39;re done rendering.">end()</a> only. It is always more efficient to call this method than calling render_quad repeatedly, as it allows to batch count reduction. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00143">143</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aa0f6932e489d5f0bc050dd0414a265b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0f6932e489d5f0bc050dd0414a265b0">&#9670;&nbsp;</a></span>render_strata_()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::renderer::render_strata_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::render_strata_ </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a> &amp;&#160;</td>
           <td class="paramname"><em>mStrata</em></td><td>)</td>
@@ -3652,7 +3118,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00236">236</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00167">167</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -3673,7 +3139,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 
 <p>Renders the UI into the current render target. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00820">820</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00881">881</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3701,12 +3167,12 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01236">1236</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01308">1308</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a592320e159b227a6f1787fdfe273cecb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a592320e159b227a6f1787fdfe273cecb">&#9670;&nbsp;</a></span>reset_strata_list_changed_flag_()</h2>
+<a id="a3e222f71beed87cea80f8fd182d65dc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e222f71beed87cea80f8fd182d65dc2">&#9670;&nbsp;</a></span>reset_strata_list_changed_flag_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3715,7 +3181,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::renderer::reset_strata_list_changed_flag_ </td>
+          <td class="memname">void lxgui::gui::frame_renderer::reset_strata_list_changed_flag_ </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -3728,7 +3194,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00282">282</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8cpp_source.html#l00199">199</a> of file <a class="el" href="gui__framerenderer_8cpp_source.html">gui_framerenderer.cpp</a>.</p>
 
 </div>
 </div>
@@ -3757,7 +3223,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The current addon is used when parsing file names. See <a class="el" href="classlxgui_1_1gui_1_1manager.html#a753013f976456bf5986966693396faf8" title="Reads a file address and completes it to make a working address.">parse_file_name()</a> for more information. For uiobjects that are created manually after the loading stage, one needs to specify the addon that is actually creating the widget, and that is the purpose of this method. It is called by frame automatically, before each call to handler functions. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01306">1306</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01378">1378</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3786,6 +3252,35 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__eventreceiver_8cpp_source.html#l00030">30</a> of file <a class="el" href="gui__eventreceiver_8cpp_source.html">gui_eventreceiver.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad3573a8e007742b52c234c4f5ba7f1a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3573a8e007742b52c234c4f5ba7f1a4">&#9670;&nbsp;</a></span>set_interface_scaling_factor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::manager::set_interface_scaling_factor </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fScalingFactor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the global UI scaling factor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fScalingFactor</td><td>The factor to use for rescaling (1: no rescaling, default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This value determines how to convert sizing units or position coordinates into actual number of pixels. By default, units specified for sizes and positions are 1:1 mapping with pixels on the screen. If designing the UI on a "traditional" display (say, 1080p resolution monitor), the UI will not scale correctly when running on high-DPI displays unless the scaling factor is adjusted accordingly. The value of the scaling factor should be the ratio DPI_target/DPI_dev, where DPI_dev is the DPI of the display used for development, and DPI_target is the DPI of the display used to run the program. In addition, the scaling factor can also be used to improve accessibility of the interface to users with poorer eye sight, which would benefit from larger font sizes and larger icons. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00098">98</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3824,7 +3319,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01254">1254</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01326">1326</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3870,7 +3365,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01259">1259</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01331">1331</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -3923,45 +3418,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01264">1264</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ac1acb165e6428191d3a4c84a5affd184"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1acb165e6428191d3a4c84a5affd184">&#9670;&nbsp;</a></span>set_view()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::renderer::set_view </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
-          <td class="paramname"><em>mViewMatrix</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the view matrix to use when rendering (viewport). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mViewMatrix</td><td>The view matrix </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>This function is called by default in <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Tells the underlying graphics engine to start rendering into a new target.">begin()</a>, which resets the view to span the entire render target (or the entire screen). Therefore it is only necessary to use this function when a custom view is required. The view matrix converts custom "world" coordinates into screen-space coordinates, where the X and Y coordinates represent the horizontal and vertical dimensions on the screen, respectively, and range from -1 to +1. In screen-space coordinates, the top-left corner of the screen has coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1). </dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Although the view is specified here as a matrix for maximum flexibility, some backends do not actually support arbitrary view matrices. For such backends, the view matrix will be simplified to a simpler 2D translate + rotate + scale transform, or even just translate + scale. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01336">1336</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4014,7 +3471,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Movement is handled by the manager itself, you don't need to do anything. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01001">1001</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01073">1073</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4054,7 +3511,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Resizing is handled by the manager itself, you don't need to do anything. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01045">1045</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01117">1117</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4082,7 +3539,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01031">1031</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01103">1103</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4110,7 +3567,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01120">1120</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01192">1192</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4134,7 +3591,7 @@ The string parameter is not used anymore (still here for compatibility reasons, 
 <dd>
 Enabling this will most likely improve performances. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01146">1146</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01218">1218</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4158,7 +3615,7 @@ Enabling this will most likely improve performances. </dd></dl>
 <dd>
 See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f4bbbb6c55f6" title="Checks if input response is enabled for all widgets.">is_input_enabled()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01174">1174</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l01246">1246</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -4224,13 +3681,13 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00870">870</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00942">942</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a6ece840aa94c826bfd2720553771d0e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ece840aa94c826bfd2720553771d0e3">&#9670;&nbsp;</a></span>bStrataListUpdated_</h2>
+<a id="a7400cdad20324f1b198f37e1bf18876a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7400cdad20324f1b198f37e1bf18876a">&#9670;&nbsp;</a></span>bStrataListUpdated_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4239,7 +3696,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool lxgui::gui::renderer::bStrataListUpdated_ = false</td>
+          <td class="memname">bool lxgui::gui::frame_renderer::bStrataListUpdated_ = false</td>
         </tr>
       </table>
   </td>
@@ -4249,12 +3706,12 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00200">200</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8hpp_source.html#l00077">77</a> of file <a class="el" href="gui__framerenderer_8hpp_source.html">gui_framerenderer.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a704f875b2ca7cae3b83286c1eb9f9859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a704f875b2ca7cae3b83286c1eb9f9859">&#9670;&nbsp;</a></span>lStrataList_</h2>
+<a id="a8bc2ee39137e0f09091dc01b4443eb94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bc2ee39137e0f09091dc01b4443eb94">&#9670;&nbsp;</a></span>lStrataList_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4263,7 +3720,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>,8&gt; lxgui::gui::renderer::lStrataList_</td>
+          <td class="memname">std::array&lt;<a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>,8&gt; lxgui::gui::frame_renderer::lStrataList_</td>
         </tr>
       </table>
   </td>
@@ -4273,31 +3730,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00199">199</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a3e6da83107a081068d7e4332520f1d78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e6da83107a081068d7e4332520f1d78">&#9670;&nbsp;</a></span>pImpl_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1renderer__impl.html">renderer_impl</a>* lxgui::gui::renderer::pImpl_ = nullptr</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00198">198</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__framerenderer_8hpp_source.html#l00076">76</a> of file <a class="el" href="gui__framerenderer_8hpp_source.html">gui_framerenderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -4310,7 +3743,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:51 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

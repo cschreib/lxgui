@@ -73,29 +73,31 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_SDL_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__sdl__renderer_8hpp.html">lxgui/impl/gui_sdl_renderer.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">struct </span>SDL_Window;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">struct </span>SDL_Renderer;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gui {</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui_1_1sdl.html">   11</a></span>&#160;<span class="keyword">namespace </span>sdl</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;std::unique_ptr&lt;gui::manager&gt; <a class="code" href="namespacelxgui_1_1gui_1_1sdl.html#ac629136bdb95b439908c4c99a0cefa7a">create_manager</a>(SDL_Window* pWindow, SDL_Renderer* pRenderer,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">const</span> std::string&amp; sLocale, <span class="keywordtype">bool</span> bInitialiseSDLImage = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__manager_8hpp.html">lxgui/gui_manager.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">struct </span>SDL_Window;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">struct </span>SDL_Renderer;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>gui {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui_1_1sdl.html">   12</a></span>&#160;<span class="keyword">namespace </span>sdl</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;std::unique_ptr&lt;gui::manager&gt; <a class="code" href="namespacelxgui_1_1gui_1_1sdl.html#ac629136bdb95b439908c4c99a0cefa7a">create_manager</a>(SDL_Window* pWindow, SDL_Renderer* pRenderer,</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">const</span> std::string&amp; sLocale, <span class="keywordtype">bool</span> bInitialiseSDLImage = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="agui__sdl__renderer_8hpp_html"><div class="ttname"><a href="gui__sdl__renderer_8hpp.html">gui_sdl_renderer.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_1_1sdl_html_ac629136bdb95b439908c4c99a0cefa7a"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1sdl.html#ac629136bdb95b439908c4c99a0cefa7a">lxgui::gui::sdl::create_manager</a></div><div class="ttdeci">std::unique_ptr&lt; gui::manager &gt; create_manager(SDL_Window *pWindow, SDL_Renderer *pRenderer, const std::string &amp;sLocale, bool bInitialiseSDLImage=true)</div><div class="ttdoc">Create a new gui::manager using a full SDL implementation.</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
+<div class="ttc" id="agui__manager_8hpp_html"><div class="ttname"><a href="gui__manager_8hpp.html">gui_manager.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 3 2021 13:19:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 8 2021 20:56:50 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
