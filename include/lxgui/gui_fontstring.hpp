@@ -245,6 +245,9 @@ namespace gui
         */
         void set_text(const utils::ustring& sText);
 
+        /// Tells this widget that the global interface scaling factor has changed.
+        void notify_scaling_factor_updated() override;
+
         /// Creates the associated Lua glue.
         void create_glue() override;
 

@@ -114,6 +114,28 @@ namespace gui
         */
         uint get_target_physical_pixel_height() const override;
 
+        /// Sets the global UI scaling factor.
+        /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
+        *   \note This value determines how to convert sizing units or position coordinates
+        *         into actual number of pixels. By default, units specified for sizes and
+        *         positions are 1:1 mapping with pixels on the screen. If designing the UI
+        *         on a "traditional" display (say, 1080p resolution monitor), the UI will not
+        *         scale correctly when running on high-DPI displays unless the scaling factor is
+        *         adjusted accordingly. The value of the scaling factor should be the ratio
+        *         DPI_target/DPI_dev, where DPI_dev is the DPI of the display used for
+        *         development, and DPI_target is the DPI of the display used to run the program.
+        *         In addition, the scaling factor can also be used to improve accessibility of
+        *         the interface to users with poorer eye sight, which would benefit from larger
+        *         font sizes and larger icons.
+        */
+        void set_interface_scaling_factor(float fScalingFactor);
+
+        /// Returns the current UI scaling factor.
+        /** \return The current UI scaling factor
+        *   \see set_interface_scaling_factor()
+        */
+        float get_interface_scaling_factor() const;
+
         /// Adds a new directory to be parsed for UI addons.
         /** \param sDirectory The new directory
         */
@@ -686,6 +708,8 @@ namespace gui
         std::string sUIVersion_ = "0001";
         uint        uiScreenWidth_ = 0u;
         uint        uiScreenHeight_=  0u;
+        float       fScalingFactor_ = 1.0f;
+        float       fBaseScalingFactor_ = 1.0f;
 
         bool bClearFontsOnClose_ = true;
 

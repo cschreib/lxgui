@@ -4,6 +4,7 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_font.hpp"
+#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_range.hpp>
@@ -43,14 +44,12 @@ void print_frames(const std::array<strata,8>& lStrataList)
     }
 }
 
-renderer::renderer(renderer_impl* pImpl) : pImpl_(pImpl)
+renderer::renderer(manager* pManager, renderer_impl* pImpl) : pParentManager_(pManager), pImpl_(pImpl)
 {
     for (uint uiStrata = 0; uiStrata < lStrataList_.size(); ++uiStrata)
     {
         lStrataList_[uiStrata].mStrata = (frame_strata)uiStrata;
     }
-
-    fScalingFactor_ = 2.0f;
 }
 
 void renderer::fire_redraw(frame_strata mStrata) const
@@ -126,33 +125,26 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
 void renderer::begin(std::shared_ptr<render_target> pTarget) const
 {
     pImpl_->begin(pTarget);
-    pImpl_->set_view(matrix4f::view(vector2f(
-        get_target_physical_pixel_width()/fScalingFactor_,
-        get_target_physical_pixel_height()/fScalingFactor_)));
+
+    float fScalingFactor = pParentManager_->get_interface_scaling_factor();
+    float fWidth, fHeight;
+    if (pTarget)
+    {
+        fWidth = pTarget->get_real_width()/fScalingFactor;
+        fHeight = pTarget->get_real_height()/fScalingFactor;
+    }
+    else
+    {
+        fWidth = get_target_physical_pixel_width()/fScalingFactor;
+        fHeight = get_target_physical_pixel_height()/fScalingFactor;
+    }
+
+    pImpl_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
 }
 
 void renderer::end() const
 {
     pImpl_->end();
-}
-
-void renderer::set_interface_scaling_factor(float fScalingFactor)
-{
-    if (fScalingFactor == fScalingFactor_) return;
-
-    fScalingFactor_ = fScalingFactor;
-
-    for (auto& mStrata : lStrataList_)
-    for (auto& mLevel : mStrata.lLevelList)
-    for (auto& pFrame : mLevel.second.lFrameList)
-    {
-        pFrame->notify_borders_need_update();
-    }
-}
-
-float renderer::get_interface_scaling_factor() const
-{
-    return fScalingFactor_;
 }
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
@@ -288,16 +280,18 @@ void renderer::render_strata_(const strata& mStrata) const
 
 void renderer::create_strata_cache_render_target_(strata& mStrata)
 {
+    uint uiWidth = get_target_physical_pixel_width();
+    uint uiHeight = get_target_physical_pixel_height();
+
     if (mStrata.pRenderTarget)
-    {
-        mStrata.pRenderTarget->set_dimensions(get_target_width(), get_target_height());
-    }
+        mStrata.pRenderTarget->set_dimensions(uiWidth, uiHeight);
     else
-    {
-        mStrata.pRenderTarget = create_render_target(get_target_width(), get_target_height());
-    }
+        mStrata.pRenderTarget = create_render_target(uiWidth, uiHeight);
 
     mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
+
+    float fScale = 1.0/pParentManager_->get_interface_scaling_factor();
+    mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
 }
 
 void renderer::clear_strata_list_()

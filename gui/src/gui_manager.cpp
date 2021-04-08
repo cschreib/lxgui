@@ -48,7 +48,7 @@ int l_log(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source_impl> pInputSource, const std::string& sLocale,
     uint uiScreenWidth, uint uiScreenHeight, std::unique_ptr<renderer_impl> pRendererImpl) :
-    event_receiver(nullptr), renderer(pRendererImpl.get()),
+    event_receiver(nullptr), renderer(this, pRendererImpl.get()),
     uiScreenWidth_(uiScreenWidth), uiScreenHeight_(uiScreenHeight),
     pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
     pRendererImpl_(std::move(pRendererImpl))
@@ -98,6 +98,35 @@ uint manager::get_target_physical_pixel_width() const
 uint manager::get_target_physical_pixel_height() const
 {
     return uiScreenHeight_;
+}
+
+void manager::set_interface_scaling_factor(float fScalingFactor)
+{
+    fScalingFactor *= pInputManager_->get_interface_scaling_factor_hint();
+
+    if (fScalingFactor == fScalingFactor_) return;
+
+    fBaseScalingFactor_ = fScalingFactor;
+    fScalingFactor_ = fScalingFactor;
+
+    pInputManager_->set_interface_scaling_factor(fScalingFactor_);
+
+    for (auto* pObject : utils::range::value(lObjectList_))
+        pObject->notify_scaling_factor_updated();
+
+    if (pRenderTarget_)
+        create_caching_render_target_();
+
+    for (auto& mStrata : lStrataList_)
+    {
+        if (mStrata.pRenderTarget)
+            create_strata_cache_render_target_(mStrata);
+    }
+}
+
+float manager::get_interface_scaling_factor() const
+{
+    return fBaseScalingFactor_;
 }
 
 void manager::add_addon_directory(const std::string& sDirectory)
@@ -851,13 +880,9 @@ void manager::create_caching_render_target_()
     try
     {
         if (pRenderTarget_)
-        {
             pRenderTarget_->set_dimensions(uiScreenWidth_, uiScreenHeight_);
-        }
         else
-        {
             pRenderTarget_ = create_render_target(uiScreenWidth_, uiScreenHeight_);
-        }
     }
     catch (const utils::exception& e)
     {
@@ -869,8 +894,10 @@ void manager::create_caching_render_target_()
     }
 
     mSprite_ = create_sprite(create_material(pRenderTarget_));
-}
 
+    float fScale = 1.0/get_interface_scaling_factor();
+    mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
+}
 
 bool manager::is_loading_ui() const
 {
@@ -1410,6 +1437,9 @@ void manager::on_event(const event& mEvent)
         // Update internal window size
         uiScreenWidth_ = mEvent.get<uint>(0);
         uiScreenHeight_ = mEvent.get<uint>(1);
+
+        // Update the scaling factor
+        set_interface_scaling_factor(fBaseScalingFactor_);
 
         // Notify all frames anchored to the window edges
         for (auto* pObject : get_root_frames())

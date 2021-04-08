@@ -944,6 +944,11 @@ void uiobject::notify_borders_need_update() const
         pObject->notify_borders_need_update();
 }
 
+void uiobject::notify_scaling_factor_updated()
+{
+    notify_borders_need_update();
+}
+
 void uiobject::update(float fDelta)
 {
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl

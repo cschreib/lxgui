@@ -220,13 +220,24 @@ const color& font_string::get_text_color() const
     return mTextColor_;
 }
 
+void font_string::notify_scaling_factor_updated()
+{
+    uiobject::notify_scaling_factor_updated();
+
+    if (pText_)
+        set_font(sFontName_, uiHeight_);
+}
+
 void font_string::set_font(const std::string& sFontName, uint uiHeight)
 {
     sFontName_ = sFontName;
     uiHeight_ = uiHeight;
 
+    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*uiHeight);
+
     renderer* pRenderer = get_top_level_renderer();
-    pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiHeight)));
+    pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiPixelHeight)));
+    pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);

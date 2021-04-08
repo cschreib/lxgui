@@ -159,6 +159,9 @@ namespace gui
         */
         uint get_target_physical_pixel_height() const override;
 
+        /// Tells this widget that the global interface scaling factor has changed.
+        void notify_scaling_factor_updated() override;
+
         /// Returns this widget's Lua glue.
         void create_glue() override;
 

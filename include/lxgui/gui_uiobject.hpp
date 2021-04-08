@@ -256,6 +256,9 @@ namespace gui
         /// Tells this widget that its borders need updating.
         virtual void notify_borders_need_update() const;
 
+        /// Tells this widget that the global interface scaling factor has changed.
+        virtual void notify_scaling_factor_updated();
+
         /// Returns this widget's name.
         /** \return This widget's name
         */

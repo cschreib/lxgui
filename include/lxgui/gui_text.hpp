@@ -73,6 +73,19 @@ namespace gui
         */
         float get_line_height() const;
 
+        /// Set the scaling factor to use when rendering glyphs.
+        /** \param fScalingFactor The scaling factor
+        *   \note This defines the conversion factor between pixels (from the texture of the
+        *         font object) and interface units. By default this is set to 1, but needs to
+        *         be changed on high DPI systems.
+        */
+        void set_scaling_factor(float fScalingFactor);
+
+        /// Returns the scaling factor used when rendering glyphs.
+        /** \return The scaling factor used when rendering glyphs
+        */
+        float get_scaling_factor() const;
+
         /// Sets the text to render (unicode character set).
         /** \param sText The text to render
         *   \note This text can be formated :<br>
@@ -319,6 +332,7 @@ namespace gui
         const renderer* pRenderer_ = nullptr;
 
         bool  bReady_ = false;
+        float fScalingFactor_ = 1.0f;
         float fTracking_ = 0.0f;
         float fLineSpacing_ = 1.5f;
         float fSpaceWidth_ = 0.0f;

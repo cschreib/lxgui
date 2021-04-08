@@ -20,17 +20,28 @@ text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
     if (!pFont_)
         return;
 
-    fSpaceWidth_ = pFont_->get_character_width(32);
-
     bReady_ = true;
 }
 
 float text::get_line_height() const
 {
     if (pFont_)
-        return pFont_->get_size();
+        return pFont_->get_size()*fScalingFactor_;
     else
         return 0.0;
+}
+
+void text::set_scaling_factor(float fScalingFactor)
+{
+    if (fScalingFactor_ == fScalingFactor) return;
+
+    fScalingFactor_ = fScalingFactor;
+    bUpdateCache_ = true;
+}
+
+float text::get_scaling_factor() const
+{
+    return fScalingFactor_;
 }
 
 void text::set_text(const utils::ustring& sText)
@@ -181,11 +192,11 @@ float text::get_character_width(char32_t uiChar) const
     if (bReady_)
     {
         if (uiChar == U' ')
-            return fSpaceWidth_;
+            return pFont_->get_character_width(32)*fScalingFactor_;
         else if (uiChar == U'\t')
-            return 4.0f*fSpaceWidth_;
+            return 4.0f*pFont_->get_character_width(32)*fScalingFactor_;
         else
-            return pFont_->get_character_width(uiChar);
+            return pFont_->get_character_width(uiChar)*fScalingFactor_;
     }
     else
         return 0.0f;
@@ -193,7 +204,7 @@ float text::get_character_width(char32_t uiChar) const
 
 float text::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 {
-    return pFont_->get_character_kerning(uiChar1, uiChar2);
+    return pFont_->get_character_kerning(uiChar1, uiChar2)*fScalingFactor_;
 }
 
 void text::set_alignment(const text::alignment& mAlign)
@@ -498,7 +509,7 @@ void text::update_() const
                             {
                                 if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fErasedWidth > fBoxW_)
                                 {
-                                    mLine.fWidth -= fErasedWidth + fSpaceWidth_ + fTracking_;
+                                    mLine.fWidth -= fErasedWidth + get_character_width(U' ') + fTracking_;
                                     sErasedString.insert(sErasedString.begin(), *iterChar2);
                                     fErasedWidth = 0.0f;
                                     ++uiCharToErase;
@@ -695,6 +706,11 @@ void text::update_() const
             lVertexList[i].col = mColor_;
     }
 
+    auto round_to_pixel = [&](float fValue)
+    {
+        return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
+    };
+
     if (!lLineList.empty())
     {
         if (fBoxW_ == 0.0f || std::isinf(fBoxW_))
@@ -719,7 +735,7 @@ void text::update_() const
                     fX0 = 0.0f;
                     break;
                 case alignment::CENTER :
-                    fX0 = floor(fBoxW_*0.5f);
+                    fX0 = round_to_pixel(fBoxW_*0.5f);
                     break;
                 case alignment::RIGHT :
                     fX0 = fBoxW_;
@@ -737,7 +753,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = floor((fBoxH_ - fH_)*0.5f);
+                    fY = round_to_pixel((fBoxH_ - fH_)*0.5f);
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = (fBoxH_ - fH_);
@@ -752,7 +768,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = -floor(fH_*0.5f);
+                    fY = -round_to_pixel(fH_*0.5f);
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = -fH_;
@@ -771,7 +787,7 @@ void text::update_() const
                     fX = fX0;
                     break;
                 case alignment::CENTER :
-                    fX = fX0 - floor(mLine.fWidth*0.5f);
+                    fX = fX0 - round_to_pixel(mLine.fWidth*0.5f);
                     break;
                 case alignment::RIGHT :
                     fX = fX0 - mLine.fWidth;
@@ -796,8 +812,8 @@ void text::update_() const
                     }
                 }
 
-                quad2f mQuad = pFont_->get_character_bounds(*iterChar)
-                    + vector2f(round(fX), round(fY));
+                quad2f mQuad = pFont_->get_character_bounds(*iterChar)*fScalingFactor_
+                    + vector2f(round_to_pixel(fX), round_to_pixel(fY));
                 lVertexList[0].pos = mQuad.top_left();
                 lVertexList[1].pos = mQuad.top_right();
                 lVertexList[2].pos = mQuad.bottom_right();
@@ -826,7 +842,7 @@ void text::update_() const
                     fKerning = get_character_kerning(*iterChar, *iterNext);
                 }
 
-                fX += pFont_->get_character_width(*iterChar) + fKerning + fTracking_;
+                fX += get_character_width(*iterChar) + fKerning + fTracking_;
             }
 
             fY += get_line_height()*fLineSpacing_;

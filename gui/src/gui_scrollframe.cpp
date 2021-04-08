@@ -10,7 +10,7 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager* pManager) : frame(pManager), renderer(pManager->get_renderer())
+scroll_frame::scroll_frame(manager* pManager) : frame(pManager), renderer(pManager, pManager->get_renderer())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -290,27 +290,36 @@ void scroll_frame::update_scroll_child_input_()
     }
 }
 
+void scroll_frame::notify_scaling_factor_updated()
+{
+    uiobject::notify_scaling_factor_updated();
+
+    rebuild_scroll_render_target_();
+}
+
 void scroll_frame::rebuild_scroll_render_target_()
 {
     if (uiAbsWidth_ == 0 || uiAbsHeight_ == 0)
         return;
 
-    float fFactor = get_interface_scaling_factor();
+    float fFactor = pManager_->get_interface_scaling_factor();
+    uint uiScaledWidth = uiAbsWidth_*fFactor;
+    uint uiScaledHeight = uiAbsHeight_*fFactor;
 
     if (pScrollRenderTarget_)
     {
-        pScrollRenderTarget_->set_dimensions(uiAbsWidth_*fFactor, uiAbsHeight_*fFactor);
+        pScrollRenderTarget_->set_dimensions(uiScaledWidth, uiScaledHeight);
 
         std::array<float,4> lTexCoords;
         lTexCoords[0] = 0.0f; lTexCoords[1] = 0.0f;
-        lTexCoords[2] = uiAbsWidth_*fFactor/pScrollRenderTarget_->get_real_width();
-        lTexCoords[3] = uiAbsHeight_*fFactor/pScrollRenderTarget_->get_real_height();
+        lTexCoords[2] = uiScaledWidth/float(pScrollRenderTarget_->get_real_width());
+        lTexCoords[3] = uiScaledHeight/float(pScrollRenderTarget_->get_real_height());
         pScrollTexture_->set_tex_coord(lTexCoords);
         bUpdateScrollRange_ = true;
     }
     else
     {
-        pScrollRenderTarget_ = create_render_target(uiAbsWidth_*fFactor, uiAbsHeight_*fFactor);
+        pScrollRenderTarget_ = create_render_target(uiScaledWidth, uiScaledHeight);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);

@@ -312,16 +312,18 @@ int main(int argc, char* argv[])
         uint uiWindowHeight = 600;
         bool bFullScreen    = false;
         std::string sLocale = "enGB";
+        float fScaleFactor  = 1.0f;
 
         // Read some configuration data
         if (utils::file_exists("config.lua"))
         {
             lua::state mLua;
             mLua.do_file("config.lua");
-            uiWindowWidth  = mLua.get_global_int("window_width",  false, 800);
-            uiWindowHeight = mLua.get_global_int("window_height", false, 600);
-            bFullScreen    = mLua.get_global_bool("fullscreen",   false, false);
-            sLocale        = mLua.get_global_string("locale",     false, "enGB");
+            uiWindowWidth  = mLua.get_global_int("window_width",    false, 800);
+            uiWindowHeight = mLua.get_global_int("window_height",   false, 600);
+            bFullScreen    = mLua.get_global_bool("fullscreen",     false, false);
+            sLocale        = mLua.get_global_string("locale",       false, "enGB");
+            fScaleFactor   = mLua.get_global_double("scale_factor", false, 1.0);
         }
 
     #if defined(WASM)
@@ -458,6 +460,8 @@ int main(int argc, char* argv[])
     #endif
 
         pManager->enable_caching(false);
+
+        pManager->set_interface_scaling_factor(fScaleFactor);
 
         // Load files :
         //  - first set the directory in which the interface is located
