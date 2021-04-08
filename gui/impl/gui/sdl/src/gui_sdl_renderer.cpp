@@ -5,6 +5,7 @@
 #include <lxgui/gui_sprite.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_manager.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
@@ -49,6 +50,16 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     {
         pCurrentTarget_ = std::static_pointer_cast<sdl::render_target>(pTarget);
         pCurrentTarget_->begin();
+
+        pCurrentViewMatrix_ = &pCurrentTarget_->get_view_matrix();
+    }
+    else
+    {
+        float fWidth = pParent_->get_target_physical_pixel_width();
+        float fHeight = pParent_->get_target_physical_pixel_height();
+
+        mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
+        pCurrentViewMatrix_ = &mViewMatrix_;
     }
 }
 
@@ -62,22 +73,8 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
-    float fScaleX = std::sqrt(mViewMatrix(0,0)*mViewMatrix(0,0) + mViewMatrix(1,0)*mViewMatrix(1,0));
-    float fScaleY = std::sqrt(mViewMatrix(0,1)*mViewMatrix(0,1) + mViewMatrix(1,1)*mViewMatrix(1,1));
-    float fAngle = std::atan2(mViewMatrix(0,1)/fScaleY, mViewMatrix(0,0)/fScaleX);
-
-    if (std::abs(fAngle) > 1e-3)
-    {
-        throw gui::exception("sdl::renderer",
-            "Rotated views are not supported with the SDL renderer.");
-    }
-
-    SDL_Rect mViewport;
-    mViewport.w = 2.0f/fScaleX;
-    mViewport.h = 2.0f/fScaleY;
-    mViewport.x = mViewport.w/2.0f + mViewMatrix(3,0)/fScaleX;
-    mViewport.y = mViewport.h/2.0f + mViewMatrix(3,1)/fScaleY;
-    SDL_RenderSetViewport(pRenderer_, &mViewport);
+    mViewMatrix_ = mViewMatrix;
+    pCurrentViewMatrix_ = &mViewMatrix_;
 }
 
 color premultiply_alpha(const color& mColor, bool bPreMultipliedAlphaSupported)
@@ -292,6 +289,12 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
 void renderer::render_quad(const sdl::material* pMat,
     const std::array<vertex,4>& lVertexList) const
 {
+    auto lViewList = lVertexList;
+    for (auto& v : lViewList)
+    {
+        v.pos = (*pCurrentViewMatrix_) * v.pos;
+    }
+
     if (pMat)
     {
         SDL_Texture* pTexture = pMat->get_texture();
@@ -301,7 +304,7 @@ void renderer::render_quad(const sdl::material* pMat,
         const int iTexHeight = static_cast<int>(fTexHeight);
 
         // Build the source and destination rect, figuring out rotation and flipping
-        const sdl_render_data mData = make_rects(lVertexList, fTexWidth, fTexHeight);
+        const sdl_render_data mData = make_rects(lViewList, fTexWidth, fTexHeight);
 
         if (bPreMultipliedAlphaSupported_)
         {
@@ -319,10 +322,10 @@ void renderer::render_quad(const sdl::material* pMat,
             }
         }
 
-        if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
-            lVertexList[0].col == lVertexList[3].col)
+        if (lViewList[0].col == lViewList[1].col && lViewList[0].col == lViewList[2].col &&
+            lViewList[0].col == lViewList[3].col)
         {
-            const auto mColor = lVertexList[0].col;
+            const auto mColor = lViewList[0].col;
 
             if (bPreMultipliedAlphaSupported_)
             {
@@ -422,17 +425,17 @@ void renderer::render_quad(const sdl::material* pMat,
     {
         // Note: SDL only supports axis-aligned rects for quad shapes
         const SDL_Rect mDestQuad = {
-            static_cast<int>(lVertexList[0].pos.x),
-            static_cast<int>(lVertexList[0].pos.y),
-            static_cast<int>(lVertexList[2].pos.x - lVertexList[0].pos.x),
-            static_cast<int>(lVertexList[2].pos.y - lVertexList[0].pos.y)
+            static_cast<int>(lViewList[0].pos.x),
+            static_cast<int>(lViewList[0].pos.y),
+            static_cast<int>(lViewList[2].pos.x - lViewList[0].pos.x),
+            static_cast<int>(lViewList[2].pos.y - lViewList[0].pos.y)
         };
 
-        if (lVertexList[0].col == lVertexList[1].col && lVertexList[0].col == lVertexList[2].col &&
-            lVertexList[0].col == lVertexList[3].col)
+        if (lViewList[0].col == lViewList[1].col && lViewList[0].col == lViewList[2].col &&
+            lViewList[0].col == lViewList[3].col)
         {
             // Same color for all vertices
-            const auto& mColor = lVertexList[0].col;
+            const auto& mColor = lViewList[0].col;
             if (bPreMultipliedAlphaSupported_)
             {
                 SDL_SetRenderDrawBlendMode(pRenderer_,
@@ -456,10 +459,10 @@ void renderer::render_quad(const sdl::material* pMat,
             // We have to create a temporary texture, do the bilinear interpolation ourselves,
             // and draw that.
             const color lColorQuad[4] = {
-                premultiply_alpha(lVertexList[0].col, bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[1].col, bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[2].col, bPreMultipliedAlphaSupported_),
-                premultiply_alpha(lVertexList[3].col, bPreMultipliedAlphaSupported_)
+                premultiply_alpha(lViewList[0].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lViewList[1].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lViewList[2].col, bPreMultipliedAlphaSupported_),
+                premultiply_alpha(lViewList[3].col, bPreMultipliedAlphaSupported_)
             };
 
             sdl::material mTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);

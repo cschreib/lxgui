@@ -23,6 +23,8 @@ void render_target::begin()
     {
         throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
+
+    mViewMatrix_ = matrix4f::view(vector2f(get_real_width(), get_real_height()));
 }
 
 void render_target::end()
@@ -71,6 +73,11 @@ std::weak_ptr<sdl::material> render_target::get_material()
 SDL_Texture* render_target::get_render_texture()
 {
     return pTexture_->get_render_texture();
+}
+
+const matrix4f& render_target::get_view_matrix() const
+{
+    return mViewMatrix_;
 }
 
 void render_target::check_availability(SDL_Renderer* pRenderer)
