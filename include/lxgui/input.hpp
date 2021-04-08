@@ -498,6 +498,18 @@ namespace input
         /// Sets the mouse cursor back to the default (arrow).
         void reset_mouse_cursor();
 
+        /// Sets the scaling factor applied to the interface.
+        /** \param fScalingFactor The new scaling factor (default: 1)
+        *   \note This is the conversion factor between UI units and pixels in the display.
+        *         This factor should match gui::renderer::get_interface_scaling_factor().
+        */
+        void set_interface_scaling_factor(float fScalingFactor);
+
+        /// Return the current interface scaling factor.
+        /** \return The current interface scaling factor
+        */
+        float get_interface_scaling_factor() const;
+
         /// Return the interface scaling factor suggested by the operating system.
         /** \return The interface scaling factor suggested by the operating system
         *   \note This is implementation-dependent; not all input implementations are able
@@ -548,6 +560,7 @@ namespace input
         std::map<std::string, bool> lClickGroupList_;
         std::map<std::string, bool> lForcedClickGroupList_;
 
+        float        fScalingFactor_ = 1.0f;
         float        fMX_ = 0.0f, fMY_ = 0.0f;
         float        fRelMX_ = 0.0f, fRelMY_ = 0.0f;
         float        fDMX_ = 0.0f, fDMY_ = 0.0f;

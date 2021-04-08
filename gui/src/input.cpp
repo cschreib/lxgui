@@ -503,23 +503,23 @@ void manager::update(float fTempDelta)
     // Update mouse position
     if (mMouseState.bHasDelta)
     {
-        fDMX_    = mMouseState.fDX;
-        fDMY_    = mMouseState.fDY;
-        fRelDMX_ = mMouseState.fRelDX;
-        fRelDMY_ = mMouseState.fRelDY;
+        fDMX_    = mMouseState.fDX/fScalingFactor_;
+        fDMY_    = mMouseState.fDY/fScalingFactor_;
+        fRelDMX_ = mMouseState.fRelDX/fScalingFactor_;
+        fRelDMY_ = mMouseState.fRelDY/fScalingFactor_;
     }
     else
     {
-        fDMX_    = mMouseState.fAbsX - fMX_;
-        fDMY_    = mMouseState.fAbsY - fMY_;
-        fRelDMX_ = mMouseState.fRelX - fRelMX_;
-        fRelDMY_ = mMouseState.fRelY - fRelMY_;
+        fDMX_    = (mMouseState.fAbsX - fMX_)/fScalingFactor_;
+        fDMY_    = (mMouseState.fAbsY - fMY_)/fScalingFactor_;
+        fRelDMX_ = (mMouseState.fRelX - fRelMX_)/fScalingFactor_;
+        fRelDMY_ = (mMouseState.fRelY - fRelMY_)/fScalingFactor_;
     }
 
-    fMX_    = mMouseState.fAbsX;
-    fMY_    = mMouseState.fAbsY;
-    fRelMX_ = mMouseState.fRelX;
-    fRelMY_ = mMouseState.fRelY;
+    fMX_    = mMouseState.fAbsX/fScalingFactor_;
+    fMY_    = mMouseState.fAbsY/fScalingFactor_;
+    fRelMX_ = mMouseState.fRelX/fScalingFactor_;
+    fRelMY_ = mMouseState.fRelY/fScalingFactor_;
 
     fMWheel_ = mMouseState.fRelWheel;
     if (fMWheel_ == 0.0f)
@@ -772,6 +772,16 @@ void manager::set_mouse_cursor(const std::string& sFileName, const gui::vector2i
 void manager::reset_mouse_cursor()
 {
     return pSource_->reset_mouse_cursor();
+}
+
+void manager::set_interface_scaling_factor(float fScalingFactor)
+{
+    fScalingFactor_ = fScalingFactor;
+}
+
+float manager::get_interface_scaling_factor() const
+{
+    return fScalingFactor_;
 }
 
 float manager::get_interface_scaling_factor_hint() const
