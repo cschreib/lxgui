@@ -63,7 +63,7 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
     mView.setCenter(sf::Vector2f(-mViewMatrix(3,0)/fScaleX, -mViewMatrix(3,1)/fScaleY));
     mView.rotate(fAngle);
     mView.setSize(sf::Vector2f(2.0f/fScaleX, 2.0/fScaleY));
-    mWindow_.setView(mView);
+    pCurrentSFMLTarget_->setView(mView);
 }
 
 void renderer::render_quad(const quad& mQuad) const
