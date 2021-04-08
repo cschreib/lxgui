@@ -17,7 +17,6 @@
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_material.hpp"
 
 #include <array>
 #include <vector>
@@ -26,7 +25,7 @@
 namespace lxgui {
 namespace gui
 {
-    class renderer;
+    class renderer_impl;
     class render_target;
     class material;
 
@@ -63,13 +62,13 @@ namespace gui
         sprite() = default;
 
         /// Constructor.
-        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat);
+        sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat);
 
         /// Constructor.
-        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight);
+        sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight);
 
         /// Constructor.
-        sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
+        sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
 
         /// Renders this sprite on the current render target.
         /** \param fX The horizontal position
@@ -259,7 +258,7 @@ namespace gui
 
     private :
 
-        const renderer* pRenderer_ = nullptr;
+        const renderer_impl* pRenderer_ = nullptr;
 
         mutable quad mQuad_;
         vector2f     mHotSpot_;

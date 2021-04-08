@@ -1,12 +1,13 @@
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_renderer_impl.hpp"
 
 namespace lxgui {
 namespace gui
 {
 
-sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat) :
+sprite::sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     if (!pMat)
@@ -30,7 +31,7 @@ sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat) :
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight) :
+sprite::sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat, float fWidth, float fHeight) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;
@@ -51,7 +52,7 @@ sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float 
     mQuad_.v[3].uvs = vector2f(0, v);
 }
 
-sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
+sprite::sprite(const renderer_impl* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight) :
     pRenderer_(pRenderer), mHotSpot_(vector2f::ZERO)
 {
     mQuad_.mat = pMat;

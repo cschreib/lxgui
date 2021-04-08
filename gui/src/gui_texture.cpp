@@ -1,9 +1,10 @@
 #include "lxgui/gui_texture.hpp"
 
 #include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
@@ -221,9 +222,8 @@ void texture::set_filter_mode(material::filter mFilter)
 
         if (!sTextureFile_.empty() && bHasSprite_)
         {
-            auto* pTopLevelRenderer = get_top_level_renderer();
-            mSprite_ = pTopLevelRenderer->create_sprite(
-                pTopLevelRenderer->create_material(sTextureFile_, mFilter_));
+            auto* pRenderer = pManager_->get_renderer();
+            mSprite_ = sprite(pRenderer, pRenderer->create_material(sTextureFile_, mFilter_));
             mSprite_.set_texture_coords(lTexCoord_, true);
         }
 
@@ -275,8 +275,8 @@ void texture::set_gradient(const gradient& mGradient)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
     mGradient_ = mGradient;
-    auto* pTopLevelRenderer = get_top_level_renderer();
-    mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+    auto* pRenderer = pManager_->get_renderer();
+    mSprite_ = sprite(pRenderer, nullptr, 256, 256);
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
@@ -346,15 +346,15 @@ void texture::set_texture(const std::string& sFile)
     if (sTextureFile_.empty())
         return;
 
-    auto* pTopLevelRenderer = get_top_level_renderer();
+    auto* pRenderer = pManager_->get_renderer();
 
     std::shared_ptr<gui::material> pMat;
     if (utils::file_exists(sTextureFile_))
-        pMat = pTopLevelRenderer->create_material(sTextureFile_, mFilter_);
+        pMat = pRenderer->create_material(sTextureFile_, mFilter_);
 
     if (pMat)
     {
-        mSprite_ = pTopLevelRenderer->create_sprite(pMat);
+        mSprite_ = sprite(pRenderer, pMat);
         mSprite_.set_texture_coords(lTexCoord_, true);
     }
     else
@@ -363,7 +363,7 @@ void texture::set_texture(const std::string& sFile)
             << "Cannot load file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
 
-        mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+        mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     }
 
     bHasSprite_ = true;
@@ -376,15 +376,15 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
 
-    auto* pTopLevelRenderer = get_top_level_renderer();
+    auto* pRenderer = pManager_->get_renderer();
 
     std::shared_ptr<gui::material> pMat;
     if (pRenderTarget)
-        pMat = pTopLevelRenderer->create_material(pRenderTarget);
+        pMat = pRenderer->create_material(pRenderTarget);
 
     if (pMat)
     {
-        mSprite_ = pTopLevelRenderer->create_sprite(pMat);
+        mSprite_ = sprite(pRenderer, pMat);
     }
     else
     {
@@ -392,7 +392,7 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
             << "Cannot create a texture from render target.\n"
             "Using white texture instead." << std::endl;
 
-        mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+        mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     }
 
     bHasSprite_ = true;
@@ -405,8 +405,8 @@ void texture::set_color(const color& mColor)
     sTextureFile_ = "";
 
     mColor_ = mColor;
-    auto* pTopLevelRenderer = get_top_level_renderer();
-    mSprite_ = pTopLevelRenderer->create_sprite(nullptr, 256, 256);
+    auto* pRenderer = pManager_->get_renderer();
+    mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     mSprite_.set_color(mColor);
 
     bHasSprite_ = true;

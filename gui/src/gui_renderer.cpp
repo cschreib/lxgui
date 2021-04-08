@@ -169,22 +169,6 @@ void renderer::render_cache(const material* pMaterial, const vertex_cache& mCach
     pImpl_->render_cache(pMaterial, mCache, mModelTransform);
 }
 
-sprite renderer::create_sprite(std::shared_ptr<material> pMat) const
-{
-    return sprite(this, pMat);
-}
-
-sprite renderer::create_sprite(std::shared_ptr<material> pMat, float fWidth, float fHeight) const
-{
-    return sprite(this, pMat, fWidth, fHeight);
-}
-
-sprite renderer::create_sprite(std::shared_ptr<material> pMat,
-    float fU, float fV, float fWidth, float fHeight) const
-{
-    return sprite(this, pMat, fU, fV, fWidth, fHeight);
-}
-
 std::shared_ptr<material> renderer::create_material(const std::string& sFileName,
     material::filter mFilter) const
 {
@@ -288,7 +272,7 @@ void renderer::create_strata_cache_render_target_(strata& mStrata)
     else
         mStrata.pRenderTarget = create_render_target(uiWidth, uiHeight);
 
-    mStrata.mSprite = create_sprite(create_material(mStrata.pRenderTarget));
+    mStrata.mSprite = sprite(pImpl_, create_material(mStrata.pRenderTarget));
 
     float fScale = 1.0/pParentManager_->get_interface_scaling_factor();
     mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);

@@ -1,7 +1,9 @@
 #include "lxgui/gui_text.hpp"
 #include "lxgui/gui_font.hpp"
+#include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_out.hpp"
 
@@ -14,7 +16,7 @@ namespace lxgui {
 namespace gui
 {
 
-text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
+text::text(const renderer_impl* pRenderer, std::shared_ptr<gui::font> pFont) :
     pRenderer_(pRenderer), pFont_(std::move(pFont))
 {
     if (!pFont_)
@@ -883,7 +885,7 @@ sprite text::create_sprite(char32_t uiChar) const
     const float fWidth = mBounds.right - mBounds.left;
     const float fHeight = mBounds.bottom - mBounds.top;
 
-    sprite mSprite = pRenderer_->create_sprite(pFont_->get_texture().lock(), fWidth, fHeight);
+    sprite mSprite(pRenderer_, pFont_->get_texture().lock(), fWidth, fHeight);
     mSprite.set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
     mSprite.set_color(mColor_);
 

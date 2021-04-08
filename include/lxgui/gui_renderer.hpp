@@ -135,41 +135,6 @@ namespace gui
         void render_cache(const material* pMaterial, const vertex_cache& mCache,
             const matrix4f& mModelTransform = matrix4f::IDENTITY) const;
 
-        /// Creates a new sprite.
-        /** \param pMat The material with which to create the sprite
-        *   \return The new sprite
-        */
-        sprite create_sprite(std::shared_ptr<material> pMat) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \return The new sprite
-        */
-        sprite create_sprite(std::shared_ptr<material> pMat, float fWidth, float fHeight) const;
-
-        /// Creates a new sprite.
-        /** \param pMat    The material with which to create the sprite
-        *   \param fU      The top left corner of the sprite in the material
-        *   \param fV      The top left corner of the sprite in the material
-        *   \param fWidth  The width of the sprite
-        *   \param fHeight The height of the sprite
-        *   \note If the width and height you provide are smaller than
-        *         the texture's ones, the texture will be cut on the right
-        *         and bottom edges.<br>
-        *         However, if they are larger than the texture's one, the
-        *         texture will be tiled.
-        *   \return The new sprite
-        */
-        sprite create_sprite(std::shared_ptr<material> pMat,
-            float fU, float fV, float fWidth, float fHeight) const;
-
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
         *   \param mFilter   The filtering to apply to the texture

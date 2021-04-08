@@ -895,7 +895,7 @@ void manager::create_caching_render_target_()
         return;
     }
 
-    mSprite_ = create_sprite(create_material(pRenderTarget_));
+    mSprite_ = sprite(pRendererImpl_.get(), pRendererImpl_->create_material(pRenderTarget_));
 
     float fScale = 1.0/get_interface_scaling_factor();
     mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
