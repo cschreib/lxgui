@@ -45,7 +45,7 @@ namespace gui
     struct vertex;
 
     /// Manages the user interface
-    class manager : public event_receiver, public renderer
+    class manager : public event_receiver, public frame_renderer
     {
     private :
 

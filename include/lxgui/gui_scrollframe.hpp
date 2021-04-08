@@ -32,7 +32,7 @@ namespace gui
     *   changes, or when the size of the scroll frame changes.
     *   - `OnVerticalScroll`: Triggered by scroll_frame::set_vertical_scroll.
     */
-    class scroll_frame : public frame, public renderer
+    class scroll_frame : public frame, public frame_renderer
     {
     public :
 

@@ -7,6 +7,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
@@ -339,7 +340,7 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 
     if (!pAddedFrame->is_virtual())
     {
-        renderer* pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
+        frame_renderer* pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
         if (pOldTopLevelRenderer != this)
         {
             pOldTopLevelRenderer->notify_rendered_frame(pAddedFrame, false);

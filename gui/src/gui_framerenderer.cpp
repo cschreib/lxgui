@@ -1,10 +1,5 @@
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_renderer_impl.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_matrix4.hpp"
-#include "lxgui/gui_font.hpp"
-#include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_range.hpp>
@@ -44,7 +39,7 @@ void print_frames(const std::array<strata,8>& lStrataList)
     }
 }
 
-renderer::renderer()
+frame_renderer::frame_renderer()
 {
     for (uint uiStrata = 0; uiStrata < lStrataList_.size(); ++uiStrata)
     {
@@ -52,19 +47,19 @@ renderer::renderer()
     }
 }
 
-void renderer::fire_redraw(frame_strata mStrata) const
+void frame_renderer::fire_redraw(frame_strata mStrata) const
 {
     lStrataList_[(uint)mStrata].bRedraw = true;
 }
 
-void renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
+void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
 {
     if (!pFrame)
         return;
 
     if (pFrame->get_frame_strata() == frame_strata::PARENT)
     {
-        throw gui::exception("gui::renderer", "cannot use PARENT strata for renderer");
+        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
     auto& mStrata = lStrataList_[(uint)pFrame->get_frame_strata()];
@@ -77,12 +72,12 @@ void renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
     fire_redraw(mStrata.mStrata);
 }
 
-void renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
+void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
                                            frame_strata mNewStrata)
 {
     if (mOldStrata == frame_strata::PARENT || mNewStrata == frame_strata::PARENT)
     {
-        throw gui::exception("gui::renderer", "cannot use PARENT strata for renderer");
+        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
     remove_from_strata_list_(lStrataList_[(uint)mOldStrata], pFrame);
@@ -92,11 +87,11 @@ void renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrat
     fire_redraw(mNewStrata);
 }
 
-void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
+void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
 {
     if (pFrame->get_frame_strata() == frame_strata::PARENT)
     {
-        throw gui::exception("gui::renderer", "cannot use PARENT strata for renderer");
+        throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
     auto& mStrata = lStrataList_[(uint)pFrame->get_frame_strata()];
@@ -122,7 +117,7 @@ void renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNew
     fire_redraw(mStrata.mStrata);
 }
 
-void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
+void frame_renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
 {
     int iNewLevel = pFrame->get_level();
     auto mIterNew = mStrata.lLevelList.find(iNewLevel);
@@ -135,12 +130,12 @@ void renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
     add_to_level_list_(mIterNew->second, pFrame);
 }
 
-void renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
+void frame_renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
 {
     auto mIter = mStrata.lLevelList.find(pFrame->get_level());
     if (mIter == mStrata.lLevelList.end())
     {
-        throw gui::exception("gui::renderer", "frame not found in this strata and level");
+        throw gui::exception("gui::frame_renderer", "frame not found in this strata and level");
     }
 
     remove_from_level_list_(mIter->second, pFrame);
@@ -149,19 +144,19 @@ void renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
         mStrata.lLevelList.erase(mIter);
 }
 
-void renderer::add_to_level_list_(level& mLevel, frame* pFrame)
+void frame_renderer::add_to_level_list_(level& mLevel, frame* pFrame)
 {
     mLevel.lFrameList.push_back(pFrame);
     fire_redraw(mLevel.pStrata->mStrata);
     bStrataListUpdated_ = true;
 }
 
-void renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
+void frame_renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
 {
     auto mIter = std::find(mLevel.lFrameList.begin(), mLevel.lFrameList.end(), pFrame);
     if (mIter == mLevel.lFrameList.end())
     {
-        throw gui::exception("gui::renderer", "frame not found in this strata and level");
+        throw gui::exception("gui::frame_renderer", "frame not found in this strata and level");
     }
 
     mLevel.lFrameList.erase(mIter);
@@ -169,7 +164,7 @@ void renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
     bStrataListUpdated_ = true;
 }
 
-void renderer::render_strata_(const strata& mStrata) const
+void frame_renderer::render_strata_(const strata& mStrata) const
 {
     for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
     {
@@ -183,7 +178,7 @@ void renderer::render_strata_(const strata& mStrata) const
     ++mStrata.uiRedrawCount;
 }
 
-void renderer::clear_strata_list_()
+void frame_renderer::clear_strata_list_()
 {
     for (auto& mStrata : lStrataList_)
     {
@@ -196,17 +191,17 @@ void renderer::clear_strata_list_()
     bStrataListUpdated_ = true;
 }
 
-bool renderer::has_strata_list_changed_() const
+bool frame_renderer::has_strata_list_changed_() const
 {
     return bStrataListUpdated_;
 }
 
-void renderer::reset_strata_list_changed_flag_()
+void frame_renderer::reset_strata_list_changed_flag_()
 {
     bStrataListUpdated_ = false;
 }
 
-frame* renderer::find_hovered_frame_(int iX, int iY)
+frame* frame_renderer::find_hovered_frame_(int iX, int iY)
 {
     frame* pHoveredFrame = nullptr;
 

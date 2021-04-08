@@ -91,7 +91,7 @@ namespace gui
     };
 
     class frame;
-    class renderer;
+    class frame_renderer;
 
     /// The base class of all elements in the GUI.
     /** Objects of this class offers core functionalities needed by every element
@@ -622,13 +622,13 @@ namespace gui
         /** \return The renderer of this object or its parents
         *   \note For more informations, see frame::set_renderer().
         */
-        virtual renderer* get_top_level_renderer();
+        virtual frame_renderer* get_top_level_renderer();
 
         /// Returns the renderer of this object or its parents.
         /** \return The renderer of this object or its parents
         *   \note For more informations, see frame::set_renderer().
         */
-        virtual const renderer* get_top_level_renderer() const;
+        virtual const frame_renderer* get_top_level_renderer() const;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape-changing function.

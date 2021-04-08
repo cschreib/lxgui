@@ -1036,13 +1036,13 @@ void uiobject::notify_loaded()
     bLoaded_ = true;
 }
 
-renderer* uiobject::get_top_level_renderer()
+frame_renderer* uiobject::get_top_level_renderer()
 {
     if (!pParent_) return pManager_;
     return pParent_->get_top_level_renderer();
 }
 
-const renderer* uiobject::get_top_level_renderer() const
+const frame_renderer* uiobject::get_top_level_renderer() const
 {
     if (!pParent_) return pManager_;
     return pParent_->get_top_level_renderer();

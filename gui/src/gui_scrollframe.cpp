@@ -357,7 +357,7 @@ void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY)
 
 void scroll_frame::fire_redraw(frame_strata mStrata) const
 {
-    renderer::fire_redraw(mStrata);
+    frame_renderer::fire_redraw(mStrata);
 
     bRedrawScrollRenderTarget_ = true;
     notify_renderer_need_redraw();
@@ -373,7 +373,7 @@ void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
     if (!pFrame)
         return;
 
-    renderer::notify_rendered_frame(pFrame, bRendered);
+    frame_renderer::notify_rendered_frame(pFrame, bRendered);
 
     if (!bRendered)
     {

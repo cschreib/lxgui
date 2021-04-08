@@ -17,7 +17,7 @@
 namespace lxgui {
 namespace gui
 {
-    class renderer;
+    class frame_renderer;
 
     /// Contains gui::layered_region
     struct layer
@@ -823,25 +823,25 @@ namespace gui
         *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
         *         parent. If the frame has no parent, this will default to the gui::manager.
         */
-        void set_renderer(renderer* pRenderer);
+        void set_renderer(frame_renderer* pRenderer);
 
         /// Returns the renderer of this object, nullptr if none.
         /** \return The renderer of this object, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const renderer* get_renderer() const;
+        const frame_renderer* get_renderer() const;
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        renderer* get_top_level_renderer() override;
+        frame_renderer* get_top_level_renderer() override;
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const renderer* get_top_level_renderer() const override;
+        const frame_renderer* get_top_level_renderer() const override;
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
@@ -961,10 +961,10 @@ namespace gui
 
         int iLevel_ = 0;
 
-        frame_strata mStrata_ = frame_strata::MEDIUM;
-        bool         bIsTopLevel_ = false;
-        frame*       pTopLevelParent_ = nullptr;
-        renderer*    pRenderer_ = nullptr;
+        frame_strata    mStrata_ = frame_strata::MEDIUM;
+        bool            bIsTopLevel_ = false;
+        frame*          pTopLevelParent_ = nullptr;
+        frame_renderer* pRenderer_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 

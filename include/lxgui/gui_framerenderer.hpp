@@ -4,10 +4,6 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_strata.hpp"
-#include "lxgui/gui_material.hpp"
-#include "lxgui/gui_vertexcache.hpp"
-#include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_matrix4.hpp"
 
 namespace lxgui {
 namespace gui
@@ -15,23 +11,19 @@ namespace gui
     class frame;
     class font;
     class color;
-    class manager;
-    class renderer_impl;
 
-    /// GUI renderer
-    /** Abstract interface for object that can render frames.
-    */
-    class renderer
+    /// Abstract class for layering and rendering frames.
+    class frame_renderer
     {
     public :
 
         /// Constructor.
         /** \param pManager The GUI manager this renderer belongs to
         */
-        renderer();
+        frame_renderer();
 
         /// Destructor
-        virtual ~renderer() = default;
+        virtual ~frame_renderer() = default;
 
         /// Tells this renderer that one of its widget requires redraw.
         virtual void fire_redraw(frame_strata mStrata) const;
@@ -81,7 +73,6 @@ namespace gui
 
         frame* find_hovered_frame_(int iX, int iY);
 
-        manager*             pParentManager_ = nullptr;
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;
     };

@@ -40,7 +40,7 @@ Other changes:
  - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
- - gui: added renderer::set_view() to allow arbitrary view transforms
+ - gui: added renderer_impl::set_view() to allow arbitrary view transforms
  - gui: added color::from_hsv and color::to_hsv
  - gui: renamed gui::manager_impl into gui::renderer_impl
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -53,8 +53,8 @@ Other changes:
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
- - gui: added renderer class interface to clarify the frame class
- - gui: only frames can now be flagged as having a renderer
+ - gui: added frame_renderer class interface to clarify the frame class
+ - gui: only frames can now be flagged as having a frame_renderer
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting

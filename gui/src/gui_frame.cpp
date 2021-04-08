@@ -783,8 +783,8 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
 
     if (!bVirtual_)
     {
-        renderer* pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
-        renderer* pNewTopLevelRenderer = get_top_level_renderer();
+        frame_renderer* pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
+        frame_renderer* pNewTopLevelRenderer = get_top_level_renderer();
         if (pOldTopLevelRenderer != pNewTopLevelRenderer)
         {
             pOldTopLevelRenderer->notify_rendered_frame(pAddedChild, false);
@@ -822,7 +822,7 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     // NB: the iterator is not removed yet; it will be removed later in update().
     std::unique_ptr<frame> pRemovedChild = std::move(*mIter);
 
-    renderer* pTopLevelRenderer = get_top_level_renderer();
+    frame_renderer* pTopLevelRenderer = get_top_level_renderer();
     bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
     if (bNotifyRenderer)
     {
@@ -1631,7 +1631,7 @@ void frame::propagate_renderer_(bool bRendered)
     }
 }
 
-void frame::set_renderer(renderer* pRenderer)
+void frame::set_renderer(frame_renderer* pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
@@ -1645,12 +1645,12 @@ void frame::set_renderer(renderer* pRenderer)
     propagate_renderer_(true);
 }
 
-const renderer* frame::get_renderer() const
+const frame_renderer* frame::get_renderer() const
 {
     return pRenderer_;
 }
 
-renderer* frame::get_top_level_renderer()
+frame_renderer* frame::get_top_level_renderer()
 {
     if (pRenderer_)
         return pRenderer_;
@@ -1660,7 +1660,7 @@ renderer* frame::get_top_level_renderer()
         return pManager_;
 }
 
-const renderer* frame::get_top_level_renderer() const
+const frame_renderer* frame::get_top_level_renderer() const
 {
     if (pRenderer_)
         return pRenderer_;
