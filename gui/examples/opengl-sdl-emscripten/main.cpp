@@ -204,9 +204,9 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRenderer)
+            std::move(pRenderer),
             // The locale
-            sLocale,
+            sLocale
         ));
 
         pManager->enable_caching(false);
