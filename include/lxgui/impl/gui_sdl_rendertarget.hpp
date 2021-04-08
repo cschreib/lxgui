@@ -5,6 +5,7 @@
 #include "lxgui/impl/gui_sdl_material.hpp"
 
 #include <lxgui/utils.hpp>
+#include <lxgui/gui_matrix4.hpp>
 
 #include <memory>
 
@@ -78,6 +79,11 @@ namespace sdl
         */
         std::weak_ptr<sdl::material> get_material();
 
+        /// Returns the view matrix of this render target.
+        /** \return The view matrix of this render target
+        */
+        const matrix4f& get_view_matrix() const;
+
         /// Checks if the machine is capable of using render targets.
         /** \param pRenderer The renderer to check for availability
         *   \note If not, this function throws a gui::exception.
@@ -91,9 +97,8 @@ namespace sdl
 
     private :
 
-        void update_view_matrix_() const;
-
         std::shared_ptr<sdl::material> pTexture_;
+        mutable matrix4f mViewMatrix_;
     };
 }
 }

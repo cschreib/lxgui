@@ -4,6 +4,7 @@
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 
 #include <lxgui/gui_renderer_impl.hpp>
+#include <lxgui/gui_matrix4.hpp>
 #include <lxgui/utils.hpp>
 
 #include <map>
@@ -140,6 +141,9 @@ namespace sdl
 
         SDL_Renderer* pRenderer_ = nullptr;
         bool bPreMultipliedAlphaSupported_ = false;
+
+        mutable const matrix4f* pCurrentViewMatrix_ = nullptr;
+        mutable matrix4f mViewMatrix_;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;

@@ -152,7 +152,6 @@ namespace gl
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        mutable bool     bUpdateViewMatrix_ = true;
         mutable matrix4f mViewMatrix_;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;

@@ -90,12 +90,9 @@ namespace gl
 
     private :
 
-        void update_view_matrix_() const;
-
         uint                          uiFBOHandle_ = 0;
         std::shared_ptr<gl::material> pTexture_;
 
-        mutable bool     bUpdateViewMatrix_ = true;
         mutable matrix4f mViewMatrix_;
     };
 }

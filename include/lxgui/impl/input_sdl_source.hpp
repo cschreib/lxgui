@@ -44,7 +44,7 @@ namespace sdl
         void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
         void reset_mouse_cursor() override;
 
-        float get_pixels_per_unit();
+        float get_interface_scaling_factor_hint() const;
 
     protected :
 
