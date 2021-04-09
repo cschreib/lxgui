@@ -112,7 +112,7 @@ $(function() {
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a03747162ee42b017d1b7ba151178f0a4">set_mouse_cursor</a>(<span class="keyword">const</span> std::string&amp; sFileName, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2i</a>&amp; mHotSpot) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">reset_mouse_cursor</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a175840f395b2d3244ffa701470b2fd91">get_interface_scaling_factor_hint</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#af062d50118690ebfaad7ee792d325281">get_interface_scaling_factor_hint</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    protected :</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
@@ -146,7 +146,6 @@ $(function() {
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a175840f395b2d3244ffa701470b2fd91"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a175840f395b2d3244ffa701470b2fd91">lxgui::input::sdl::source::get_interface_scaling_factor_hint</a></div><div class="ttdeci">float get_interface_scaling_factor_hint() const</div><div class="ttdoc">Return the interface scaling factor suggested by the operating system.</div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a96b8efaead1af58200d6c5244d1725de"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">lxgui::input::source::source</a></div><div class="ttdeci">source()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a6beea23fd9faf1749950b1528f6b3485"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a6beea23fd9faf1749950b1528f6b3485">lxgui::input::sdl::source::set_clipboard_content</a></div><div class="ttdeci">void set_clipboard_content(const utils::ustring &amp;sContent) override</div><div class="ttdoc">Replace the content of the clipboard.</div></div>
@@ -159,6 +158,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_ab5a53e6ce6bd7b2b587c37524728a305"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#ab5a53e6ce6bd7b2b587c37524728a305">lxgui::input::sdl::source::get_key_name</a></div><div class="ttdeci">std::string get_key_name(key mKey) const</div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a03747162ee42b017d1b7ba151178f0a4"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a03747162ee42b017d1b7ba151178f0a4">lxgui::input::sdl::source::set_mouse_cursor</a></div><div class="ttdeci">void set_mouse_cursor(const std::string &amp;sFileName, const gui::vector2i &amp;mHotSpot) override</div><div class="ttdoc">Sets the mouse cursor to a given image on disk.</div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a06821d37e8557e577de4cb61f8b065c2"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a06821d37e8557e577de4cb61f8b065c2">lxgui::input::sdl::source::operator=</a></div><div class="ttdeci">source &amp; operator=(const source &amp;)=delete</div></div>
+<div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_af062d50118690ebfaad7ee792d325281"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#af062d50118690ebfaad7ee792d325281">lxgui::input::sdl::source::get_interface_scaling_factor_hint</a></div><div class="ttdeci">float get_interface_scaling_factor_hint() const override</div><div class="ttdoc">Return the interface scaling factor suggested by the operating system.</div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1source_html"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html">lxgui::input::source</a></div><div class="ttdoc">The base class for input source implementation.</div><div class="ttdef"><b>Definition:</b> <a href="input__source_8hpp_source.html#l00029">input_source.hpp:29</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html">lxgui::input::sdl::source</a></div><div class="ttdef"><b>Definition:</b> <a href="input__sdl__source_8hpp_source.html#l00022">input_sdl_source.hpp:22</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
@@ -167,7 +167,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a6925618ca525141a2099410535a79ce7"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">lxgui::input::sdl::source::reset_mouse_cursor</a></div><div class="ttdeci">void reset_mouse_cursor() override</div><div class="ttdoc">Sets the mouse cursor back to the default (arrow).</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 8 2021 21:51:03 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 9 2021 06:42:58 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
