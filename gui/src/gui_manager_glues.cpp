@@ -299,7 +299,7 @@ int l_get_locale(lua_State* pLua)
 
 /** Sets the global interface scaling factor.
 *   @function set_interface_scaling_factor
-*   @tparam number The scaling factor (1: no scaling, 2: twice larger fonts and textures)
+*   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and textures, etc.)
 */
 int l_set_interface_scaling_factor(lua_State* pLua)
 {
