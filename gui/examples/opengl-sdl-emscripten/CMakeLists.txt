@@ -35,7 +35,7 @@ target_link_libraries(lxgui-test-opengl-sdl-emscripten
 
 # Setup Emscripten-specific stuff
 # Setup compilation options
-set(EMSCRIPTEN_USE_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s TOTAL_MEMORY=512MB")
+set(EMSCRIPTEN_USE_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s ALLOW_MEMORY_GROWTH=1")
 # Setup dependencies
 set(EMSCRIPTEN_USE_FLAGS "${EMSCRIPTEN_USE_FLAGS} ${LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN} ${LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN}")
 # Add "interface" folder to the preload-file list
