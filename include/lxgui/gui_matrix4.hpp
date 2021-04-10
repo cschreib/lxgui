@@ -15,7 +15,7 @@ namespace gui
 
         matrix4f() = default;
         matrix4f(std::initializer_list<element_type> mList);
-        explicit matrix4f(element_type* mat);
+        explicit matrix4f(const element_type* mat);
 
         element_type& operator () (uint row, uint col)
         {

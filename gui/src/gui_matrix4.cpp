@@ -22,7 +22,7 @@ matrix4f::matrix4f(std::initializer_list<element_type> mList)
     std::copy(mList.begin(), mList.begin() + length, data);
 }
 
-matrix4f::matrix4f(element_type* mat)
+matrix4f::matrix4f(const element_type* mat)
 {
     std::copy(mat, mat + 16u, data);
 }
