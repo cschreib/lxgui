@@ -97,12 +97,12 @@ uint manager::get_target_height() const
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
 {
-    fScalingFactor *= pInputManager_->get_interface_scaling_factor_hint();
+    float fFullScalingFactor = fScalingFactor*pInputManager_->get_interface_scaling_factor_hint();
 
-    if (fScalingFactor == fScalingFactor_) return;
+    if (fFullScalingFactor == fScalingFactor_) return;
 
     fBaseScalingFactor_ = fScalingFactor;
-    fScalingFactor_ = fScalingFactor;
+    fScalingFactor_ = fFullScalingFactor;
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
 
@@ -123,7 +123,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 
 float manager::get_interface_scaling_factor() const
 {
-    return fBaseScalingFactor_;
+    return fScalingFactor_;
 }
 
 void manager::add_addon_directory(const std::string& sDirectory)
