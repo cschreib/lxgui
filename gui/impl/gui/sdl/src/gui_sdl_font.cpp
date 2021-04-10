@@ -15,7 +15,7 @@ namespace gui {
 namespace sdl
 {
 font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
-    bool bPreMultipliedAlphaSupported) : uiSize_(floor(uiSize * 96.0/72.0))
+    bool bPreMultipliedAlphaSupported) : uiSize_(uiSize)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -23,7 +23,8 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
             std::string(TTF_GetError()));
     }
 
-    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSize_);
+    uint uiSDLSize = floor(uiSize_ * 96.0/72.0);
+    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSDLSize);
     if (!pFont)
     {
         throw gui::exception("gui::sdl::font", "Could not load font file '"+
