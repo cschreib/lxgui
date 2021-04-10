@@ -21,7 +21,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 **Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front-end GUI library itself only depends on Lua. XML parsing is done using a custom library included in this repository.
 
-The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as GLEW for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) or OpenGL 3 (programmable pipeline). The second available rendering back-end uses SFML2 for everything, and thus only depends on SFML. The third rendering back-end uses SDL2 for rendering, SDL2_tff for font loading and rendering, and SDL2_image for texture loading. For the input implementation, back-ends are provided using either SFML2 or SDL2.
+The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as GLEW for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) or OpenGL 3 (programmable pipeline). The second available rendering back-end uses SFML2 for everything, and thus only depends on SFML. The third rendering back-end uses SDL2 for rendering, SDL2_tff for font loading and rendering, and SDL2_image for texture loading. For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input backend also depends on SDL2_image (for loading cursor files).
 
 The WebAssembly build supports all back-ends except SFML.
 
@@ -52,20 +52,20 @@ Install the required dependencies for your operating system.
 
 - dnf based distros (Fedora):
 ```
-sudo dnf install -y SFML-devel lua-devel
+sudo dnf install -y lua-devel
 ```
 
 - apt based distros (Debian, Ubuntu):
 ```
-sudo apt install libsfml-dev liblua5.2-dev
+sudo apt install liblua5.2-dev
 ```
 - OSX:
 ```
- brew install sfml lua
+ brew install lua
 ```
 - Windows:
 ```
- vcpkg install sfml lua
+ vcpkg install lua
 ```
 
 Finally, initialize the submodules.
@@ -83,7 +83,7 @@ sudo dnf install -y SFML-devel
 
 - apt based distros (Debian, Ubuntu):
 ```
-sudo apt install libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
+sudo apt install libsfml-dev
 ```
 
 - OSX:
@@ -122,7 +122,7 @@ vcpkg install sdl2 sdl2-ttf sdl2-image
 # OpenGL + SFML setup
 - dnf based distros (Fedora):
 ```
-sudo dnf install -y freetype-devel SFML-devel lua-bit32 mesa-libGLU-devel
+sudo dnf install -y freetype-devel SFML-devel mesa-libGLU-devel
 ```
 
 - apt based distros (Debian, Ubuntu):
@@ -137,7 +137,27 @@ brew install sfml zlib libpng freetype glew
 
 - Windows:
 ```
-vcpkg install sfml zlib libpng freetype glew
+
+
+# OpenGL + SDL setup
+- dnf based distros (Fedora):
+```
+sudo dnf install -y SDL2-devel SDL2_image-devel freetype-devel mesa-libGLU-devel
+```
+
+- apt based distros (Debian, Ubuntu):
+```
+sudo apt install libsdl2-dev libsdl2-image-dev libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
+```
+
+- OSX:
+```
+brew install sdl2 sdl2-image zlib libpng freetype glew
+```
+
+- Windows:
+```
+vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 ```
 
 
@@ -145,7 +165,7 @@ vcpkg install sfml zlib libpng freetype glew
 
 The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, libpng, and Freetype are all already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
 
-The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it can provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: on my desktop machine, the SDL2 back-end is slower than the OpenGL back-end in Firefox, but it is faster in Chrome.
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it can provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: at the time of writing this, and on my desktop machine, the SDL2 back-end is slower than the OpenGL back-end in Firefox, but it is faster in Chrome. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
 
 With Emscripten installed and sourced in your current terminal, run
 
