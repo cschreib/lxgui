@@ -108,10 +108,11 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 
     uiFinalWidth = uiTexSide;
 
-    fTextureWidth_ = static_cast<float>(uiFinalWidth);
-    fTextureHeight_ = static_cast<float>(uiFinalHeight);
-
     pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
+
+    fTextureWidth_ = static_cast<float>(pTexture_->get_real_width());
+    fTextureHeight_ = static_cast<float>(pTexture_->get_real_height());
+
     std::fill(pTexture_->get_data().begin(), pTexture_->get_data().end(), ub32color(0, 0, 0, 0));
 
     lCharacterList_.resize(uiMaxChar + 1);

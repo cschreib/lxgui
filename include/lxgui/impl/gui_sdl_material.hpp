@@ -152,7 +152,7 @@ namespace sdl
         *   \note The pointer is owned by this class, you must not delete it.
         *         Make sure you call unlock_pointer() when you are done.
         */
-        ub32color* lock_pointer(int* pPitch = nullptr);
+        ub32color* lock_pointer(uint* pPitch = nullptr);
 
         /// Stops modifying the texture data and update the texture in GPU memory.
         void unlock_pointer();

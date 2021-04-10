@@ -119,9 +119,10 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     }
 
     // Copy data into the texture
-    ub32color* pTexturePixels = lock_pointer();
+    uint uiPitch = 0;
+    ub32color* pTexturePixels = lock_pointer(&uiPitch);
     const ub32color* pSurfacePixelsStart = reinterpret_cast<const ub32color*>(pConvertedSurface->pixels);
-    const ub32color* pSurfacePixelsEnd = pSurfacePixelsStart + uiWidth * uiHeight;
+    const ub32color* pSurfacePixelsEnd = pSurfacePixelsStart + uiPitch * uiHeight;
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
     unlock_pointer();
 
@@ -242,7 +243,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
 }
 
-ub32color* material::lock_pointer(int* pPitch)
+ub32color* material::lock_pointer(uint* pPitch)
 {
     void* pPixelData = nullptr;
     int iPitch = 0;
@@ -251,7 +252,8 @@ ub32color* material::lock_pointer(int* pPitch)
         throw gui::exception("gui::sdl::material", "Could not lock texture for copying pixels.");
     }
 
-    if (pPitch) *pPitch = iPitch;
+    if (pPitch)
+        *pPitch = static_cast<uint>(iPitch) / sizeof(ub32color);
 
     return reinterpret_cast<ub32color*>(pPixelData);
 }
