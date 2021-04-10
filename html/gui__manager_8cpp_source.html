@@ -160,12 +160,12 @@ $(function() {
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4">   98</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1manager.html#ad3573a8e007742b52c234c4f5ba7f1a4">manager::set_interface_scaling_factor</a>(<span class="keywordtype">float</span> fScalingFactor)</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    fScalingFactor *= pInputManager_-&gt;get_interface_scaling_factor_hint();</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordtype">float</span> fFullScalingFactor = fScalingFactor*pInputManager_-&gt;get_interface_scaling_factor_hint();</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (fScalingFactor == fScalingFactor_) <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (fFullScalingFactor == fScalingFactor_) <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    fBaseScalingFactor_ = fScalingFactor;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    fScalingFactor_ = fScalingFactor;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    fScalingFactor_ = fFullScalingFactor;</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    pInputManager_-&gt;set_interface_scaling_factor(fScalingFactor_);</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
@@ -186,7 +186,7 @@ $(function() {
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
 <div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">  124</a></span>&#160;<span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1manager.html#a3c85265c0b14c9bfecbcdcc28730ff82">manager::get_interface_scaling_factor</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">return</span> fBaseScalingFactor_;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordflow">return</span> fScalingFactor_;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
 <div class="line"><a name="l00129"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1manager.html#a95358d809a8e3a30527c6755c9049924">  129</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1manager.html#a95358d809a8e3a30527c6755c9049924">manager::add_addon_directory</a>(<span class="keyword">const</span> std::string&amp; sDirectory)</div>
@@ -1913,7 +1913,7 @@ $(function() {
 <div class="ttc" id="ainput_8hpp_html"><div class="ttname"><a href="input_8hpp.html">input.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Apr 9 2021 07:57:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 10 2021 08:44:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

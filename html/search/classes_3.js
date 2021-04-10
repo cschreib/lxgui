@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['data_1578',['data',['../classlxgui_1_1lua_1_1data.html',1,'lxgui::lua']]],
-  ['document_1579',['document',['../classlxgui_1_1xml_1_1document.html',1,'lxgui::xml']]]
+  ['data_1575',['data',['../classlxgui_1_1lua_1_1data.html',1,'lxgui::lua']]],
+  ['document_1576',['document',['../classlxgui_1_1xml_1_1document.html',1,'lxgui::xml']]]
 ];
