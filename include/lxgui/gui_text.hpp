@@ -321,6 +321,7 @@ namespace gui
     private :
 
         void update_() const;
+        void notify_cache_dirty_() const;
 
         const renderer* pRenderer_ = nullptr;
 

@@ -38,7 +38,7 @@ void text::set_scaling_factor(float fScalingFactor)
     if (fScalingFactor_ == fScalingFactor) return;
 
     fScalingFactor_ = fScalingFactor;
-    bUpdateCache_ = true;
+    notify_cache_dirty_();
 }
 
 float text::get_scaling_factor() const
@@ -51,7 +51,7 @@ void text::set_text(const utils::ustring& sText)
     if (sUnicodeText_ != sText)
     {
         sUnicodeText_ = sText;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -66,7 +66,8 @@ void text::set_color(const color& mColor, bool bForceColor)
     {
         mColor_ = mColor;
         bForceColor_ = bForceColor;
-        bUpdateCache_ = pRenderer_->has_vertex_cache();
+        if (pRenderer_->has_vertex_cache())
+            notify_cache_dirty_();
     }
 }
 
@@ -80,7 +81,7 @@ void text::set_dimensions(float fW, float fH)
     if (fBoxW_ != fW && fBoxH_ != fH)
     {
         fBoxW_ = fW; fBoxH_ = fH;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -89,7 +90,7 @@ void text::set_box_width(float fBoxW)
     if (fBoxW_ != fBoxW)
     {
         fBoxW_ = fBoxW;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -98,7 +99,7 @@ void text::set_box_height(float fBoxH)
     if (fBoxH_ != fBoxH)
     {
         fBoxH_ = fBoxH;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -214,7 +215,7 @@ void text::set_alignment(const text::alignment& mAlign)
     if (mAlign_ != mAlign)
     {
         mAlign_ = mAlign;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -223,7 +224,7 @@ void text::set_vertical_alignment(const text::vertical_alignment& mVertAlign)
     if (mVertAlign_ != mVertAlign)
     {
         mVertAlign_ = mVertAlign;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -242,7 +243,7 @@ void text::set_tracking(float fTracking)
     if (fTracking_ != fTracking)
     {
         fTracking_ = fTracking;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -256,7 +257,7 @@ void text::set_line_spacing(float fLineSpacing)
     if (fLineSpacing_ != fLineSpacing)
     {
         fLineSpacing_ = fLineSpacing;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -270,7 +271,7 @@ void text::set_remove_starting_spaces(bool bRemoveStartingSpaces)
     if (bRemoveStartingSpaces_ != bRemoveStartingSpaces)
     {
         bRemoveStartingSpaces_ = bRemoveStartingSpaces;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -285,7 +286,7 @@ void text::enable_word_wrap(bool bWrap, bool bAddEllipsis)
     {
         bWordWrap_ = bWrap;
         bAddEllipsis_ = bAddEllipsis;
-        bUpdateCache_ = true;
+        notify_cache_dirty_();
     }
 }
 
@@ -299,7 +300,8 @@ void text::enable_formatting(bool bFormatting)
     if (bFormatting != bFormattingEnabled_)
     {
         bFormattingEnabled_ = bFormatting;
-        bUpdateCache_ = pRenderer_->has_vertex_cache();
+        if (pRenderer_->has_vertex_cache())
+            notify_cache_dirty_();
     }
 }
 
@@ -419,6 +421,11 @@ struct line
     utils::ustring sCaption;
     float          fWidth = 0.0f;
 };
+
+void text::notify_cache_dirty_() const
+{
+    bUpdateCache_ = true;
+}
 
 void text::update_() const
 {
