@@ -177,18 +177,18 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
 
     // Now, re-order UV coordinates as top-left, top-right, bottom-right, bottom-left
     // and figure out the required rotation and flipping to render as requested.
-    int iWidth = static_cast<int>(lVertexList[lIDs[2]].pos.x - lVertexList[lIDs[0]].pos.x);
-    int iHeight = static_cast<int>(lVertexList[lIDs[2]].pos.y - lVertexList[lIDs[0]].pos.y);
+    int iWidth = static_cast<int>(std::round(lVertexList[lIDs[2]].pos.x - lVertexList[lIDs[0]].pos.x));
+    int iHeight = static_cast<int>(std::round(lVertexList[lIDs[2]].pos.y - lVertexList[lIDs[0]].pos.y));
     int iUVIndex1 = 0;
     int iUVIndex2 = 2;
 
-    mData.mDestDisplayQuad.x = lVertexList[lIDs[0]].pos.x;
-    mData.mDestDisplayQuad.y = lVertexList[lIDs[0]].pos.y;
+    mData.mDestDisplayQuad.x = static_cast<int>(std::round(lVertexList[lIDs[0]].pos.x));
+    mData.mDestDisplayQuad.y = static_cast<int>(std::round(lVertexList[lIDs[0]].pos.y));
     mData.mDestDisplayQuad.w = iWidth;
     mData.mDestDisplayQuad.h = iHeight;
 
-    mData.mDestQuad.x = lVertexList[lIDs[0]].pos.x;
-    mData.mDestQuad.y = lVertexList[lIDs[0]].pos.y;
+    mData.mDestQuad.x = static_cast<int>(std::round(lVertexList[lIDs[0]].pos.x));
+    mData.mDestQuad.y = static_cast<int>(std::round(lVertexList[lIDs[0]].pos.y));
 
     bool bAxisSwapped = false;
     if (lVertexList[lIDs[0]].uvs.x < lVertexList[lIDs[1]].uvs.x)
@@ -273,10 +273,10 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
         std::swap(iWidth, iHeight);
 
     mData.mSrcQuad = SDL_Rect{
-        (int)(lVertexList[lIDs[iUVIndex1]].uvs.x*fTexWidth),
-        (int)(lVertexList[lIDs[iUVIndex1]].uvs.y*fTexHeight),
-        (int)((lVertexList[lIDs[iUVIndex2]].uvs.x - lVertexList[lIDs[iUVIndex1]].uvs.x)*fTexWidth),
-        (int)((lVertexList[lIDs[iUVIndex2]].uvs.y - lVertexList[lIDs[iUVIndex1]].uvs.y)*fTexHeight)
+        (int)std::round(lVertexList[lIDs[iUVIndex1]].uvs.x*fTexWidth),
+        (int)std::round(lVertexList[lIDs[iUVIndex1]].uvs.y*fTexHeight),
+        (int)std::round((lVertexList[lIDs[iUVIndex2]].uvs.x - lVertexList[lIDs[iUVIndex1]].uvs.x)*fTexWidth),
+        (int)std::round((lVertexList[lIDs[iUVIndex2]].uvs.y - lVertexList[lIDs[iUVIndex1]].uvs.y)*fTexHeight)
     };
 
     mData.mDestQuad.w = iWidth;
