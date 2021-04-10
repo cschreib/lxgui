@@ -220,9 +220,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ab59dc9d28b6abf80b70f3de3dbc45c"><td class="memItemLeft" align="right" valign="top">const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">get_letter_quad</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex) const</td></tr>
 <tr class="memdesc:a0ab59dc9d28b6abf80b70f3de3dbc45c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quad for the letter at the provided index (position, texture coords, color).  <a href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">More...</a><br /></td></tr>
 <tr class="separator:a0ab59dc9d28b6abf80b70f3de3dbc45c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e9451e1af4a2281f7433b10c0fb3908"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a2e9451e1af4a2281f7433b10c0fb3908">create_sprite</a> (char32_t uiChar) const</td></tr>
-<tr class="memdesc:a2e9451e1af4a2281f7433b10c0fb3908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a sprite that contains the provided character.  <a href="classlxgui_1_1gui_1_1text.html#a2e9451e1af4a2281f7433b10c0fb3908">More...</a><br /></td></tr>
-<tr class="separator:a2e9451e1af4a2281f7433b10c0fb3908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d77a8951b29d49f6660b20c8c18b63f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">create_letter_quad</a> (char32_t uiChar) const</td></tr>
+<tr class="memdesc:a9d77a8951b29d49f6660b20c8c18b63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a quad that contains the provided character.  <a href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">More...</a><br /></td></tr>
+<tr class="separator:a9d77a8951b29d49f6660b20c8c18b63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Used to draw some text on the screen. </p>
@@ -365,14 +365,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e9451e1af4a2281f7433b10c0fb3908"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e9451e1af4a2281f7433b10c0fb3908">&#9670;&nbsp;</a></span>create_sprite()</h2>
+<a id="a9d77a8951b29d49f6660b20c8c18b63f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d77a8951b29d49f6660b20c8c18b63f">&#9670;&nbsp;</a></span>create_letter_quad()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1sprite.html">sprite</a> lxgui::gui::text::create_sprite </td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> lxgui::gui::text::create_letter_quad </td>
           <td>(</td>
           <td class="paramtype">char32_t&#160;</td>
           <td class="paramname"><em>uiChar</em></td><td>)</td>
@@ -381,7 +381,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Creates a sprite that contains the provided character. </p>
+<p>Creates a quad that contains the provided character. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">uiChar</td><td>The character to draw </td></tr>
@@ -390,7 +390,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses this text's font texture. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00890">890</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00905">905</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -678,7 +678,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The quad of the specified letter </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The vertex positions in the quad do not account for the rendering position provided to <a class="el" href="classlxgui_1_1gui_1_1text.html#ad6486377673575ae3d4e7f9823831537" title="Renders this text at the given position.">render()</a>. The first letter always has its top-left corner as the position (0,0) (if left-aligned). This function may update the quad cache as needed. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00905">905</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00914">914</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -1105,7 +1105,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Must be called between begin() and end(). The parameters fX and fY refer to the position of the top-left corner of the text (if alignment is LEFT), the center-top of the text (if alignment is CENTER), or the the top-right corner of the text (if alignment is RIGHT). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00339">339</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00340">340</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -1462,7 +1462,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 10 2021 08:44:33 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Apr 10 2021 09:45:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
