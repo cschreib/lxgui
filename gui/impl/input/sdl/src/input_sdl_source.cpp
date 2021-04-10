@@ -332,16 +332,25 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
             gui::event mMouseEvent("MOUSE_PRESSED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
+
+            float fMouseX, fMouseY;
             if (mEvent.type == SDL_MOUSEBUTTONDOWN)
             {
-                mMouseEvent.add(mEvent.button.x*fPixelsPerUnit_);
-                mMouseEvent.add(mEvent.button.y*fPixelsPerUnit_);
+                fMouseX = mEvent.button.x*fPixelsPerUnit_;
+                fMouseX = mEvent.button.y*fPixelsPerUnit_;
             }
             else
             {
-                mMouseEvent.add(mEvent.tfinger.x*fPixelsPerUnit_);
-                mMouseEvent.add(mEvent.tfinger.y*fPixelsPerUnit_);
+                // Reset "previous" mouse position to avoid triggering incorrect
+                // drag events. With touch devices, the mouse position does not change
+                // until the finger is down on the screen.
+                fMouseX = fOldMouseX_ = mEvent.tfinger.x*uiWindowWidth_;
+                fMouseY = fOldMouseY_ = mEvent.tfinger.y*uiWindowHeight_;
             }
+
+            mMouseEvent.add(fMouseX);
+            mMouseEvent.add(fMouseY);
+
             lEvents_.push_back(mMouseEvent);
 
             clock::time_point mPrev = lLastClickClock_[(uint)mButton];
@@ -374,16 +383,22 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
             gui::event mMouseEvent("MOUSE_RELEASED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
+
+            float fMouseX, fMouseY;
             if (mEvent.type == SDL_MOUSEBUTTONUP)
             {
-                mMouseEvent.add(mEvent.button.x*fPixelsPerUnit_);
-                mMouseEvent.add(mEvent.button.y*fPixelsPerUnit_);
+                fMouseX = mEvent.button.x*fPixelsPerUnit_;
+                fMouseX = mEvent.button.y*fPixelsPerUnit_;
             }
             else
             {
-                mMouseEvent.add(mEvent.tfinger.x*fPixelsPerUnit_);
-                mMouseEvent.add(mEvent.tfinger.y*fPixelsPerUnit_);
+                fMouseX = mEvent.tfinger.x*fPixelsPerUnit_;
+                fMouseY = mEvent.tfinger.y*fPixelsPerUnit_;
             }
+
+            mMouseEvent.add(fMouseX);
+            mMouseEvent.add(fMouseY);
+
             lEvents_.push_back(mMouseEvent);
             break;
         }
