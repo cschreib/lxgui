@@ -414,6 +414,12 @@ bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_
     return true;
 }
 
+struct line
+{
+    utils::ustring sCaption;
+    float          fWidth = 0.0f;
+};
+
 void text::update_() const
 {
     // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
@@ -450,9 +456,13 @@ void text::update_() const
             const utils::ustring& sManualLine = *iterManual;
 
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(sManualLine) + "'");
+
             // Make a temporary line array
             std::vector<line> lLines;
-            line mLine; mLine.fWidth = 0.0f;
+
+            line mLine;
+            mLine.fWidth = 0.0f;
+
             std::map<uint, format> lTempFormatList;
 
             bool bDone = false;
@@ -700,19 +710,6 @@ void text::update_() const
 
     lQuadList_.clear();
 
-    std::array<vertex,4> lVertexList;
-
-    if (!bFormattingEnabled_)
-    {
-        for (uint i = 0; i < 4; ++i)
-            lVertexList[i].col = mColor_;
-    }
-
-    auto round_to_pixel = [&](float fValue)
-    {
-        return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
-    };
-
     if (!lLineList.empty())
     {
         if (fBoxW_ == 0.0f || std::isinf(fBoxW_))
@@ -728,6 +725,11 @@ void text::update_() const
 
         float fX  = 0.0f, fY = 0.0f;
         float fX0 = 0.0f;
+
+        auto round_to_pixel = [&](float fValue)
+        {
+            return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
+        };
 
         if (fBoxW_ != 0.0f && !std::isinf(fBoxW_))
         {
@@ -780,6 +782,7 @@ void text::update_() const
 
         uint   uiCounter = 0;
         color  mColor = color::EMPTY;
+        std::array<vertex,4> lVertexList;
 
         for (const auto& mLine : lLineList)
         {

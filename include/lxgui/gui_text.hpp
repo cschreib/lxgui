@@ -27,13 +27,6 @@ namespace gui
     {
     public :
 
-        /// Contains a string that will be drawn on a line
-        struct line
-        {
-            utils::ustring sCaption;
-            float          fWidth = 0.0f;
-        };
-
         enum class color_action
         {
             NONE,
