@@ -54,6 +54,14 @@ namespace sdl
         */
         void set_view(const matrix4f& mViewMatrix) const override;
 
+        /// Returns the current view matrix to use when rendering (viewport).
+        /** \return The current view matrix to use when rendering
+        *   \note See set_view() for more information. The returned matrix may be different
+        *         from the matrix given to set_view(), if the rendering backend does not
+        *         support certain transformations.
+        */
+        matrix4f get_view() const override;
+
         /// Renders a quad from a material and array of vertices.
         /** \param pMat        The material to use to to render the quad, or null if none
         *   \param lVertexList The lsit of 4 vertices making up the quad
@@ -151,6 +159,7 @@ namespace sdl
         uint uiWindowWidth_ = 0u;
         uint uiWindowHeight_ = 0u;
         mutable matrix4f mViewMatrix_;
+        mutable matrix4f mRawViewMatrix_;
         mutable matrix4f mTargetViewMatrix_;
 
         mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;

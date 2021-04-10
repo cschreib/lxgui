@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 
 #include <vector>
@@ -17,7 +18,6 @@ namespace gui
     class color;
     struct quad;
     struct vertex;
-    struct matrix4f;
 
     /// Abstract type for implementation specific management
     class renderer
@@ -55,6 +55,14 @@ namespace gui
         */
         virtual void set_view(const matrix4f& mViewMatrix) const = 0;
 
+        /// Returns the current view matrix to use when rendering (viewport).
+        /** \return The current view matrix to use when rendering
+        *   \note See set_view() for more information. The returned matrix may be different
+        *         from the matrix given to set_view(), if the rendering backend does not
+        *         support certain transformations.
+        */
+        virtual matrix4f get_view() const = 0;
+
         /// Renders a quad.
         /** \param mQuad The quad to render on the current render target
         *   \note This function is meant to be called between begin() and
@@ -85,7 +93,7 @@ namespace gui
         *         not all implementations support vertex caches. See has_vertex_cache().
         */
         virtual void render_cache(const material* pMaterial, const vertex_cache& mCache,
-            const matrix4f& mModelTransform) const = 0;
+            const matrix4f& mModelTransform = matrix4f::IDENTITY) const = 0;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file

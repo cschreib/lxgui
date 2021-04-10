@@ -75,7 +75,13 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
+    mRawViewMatrix_ = mViewMatrix;
     mViewMatrix_ = mViewMatrix*matrix4f::invert(mTargetViewMatrix_);
+}
+
+matrix4f renderer::get_view() const
+{
+    return mRawViewMatrix_;
 }
 
 color premultiply_alpha(const color& mColor, bool bPreMultipliedAlphaSupported)

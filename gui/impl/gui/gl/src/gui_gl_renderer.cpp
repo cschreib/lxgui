@@ -114,6 +114,8 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
+    mCurrentViewMatrix_ = mViewMatrix;
+
     matrix4f mCorrectedView = mViewMatrix;
     if (!pCurrentTarget_)
     {
@@ -130,6 +132,11 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
 #else
     glUniformMatrix4fv(pShaderCache_->iProjLocation_, 1, GL_FALSE, mCorrectedView.data);
 #endif
+}
+
+matrix4f renderer::get_view() const
+{
+    return mCurrentViewMatrix_;
 }
 
 void renderer::render_quad(const quad& mQuad) const

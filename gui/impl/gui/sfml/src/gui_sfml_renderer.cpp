@@ -66,6 +66,11 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
     pCurrentSFMLTarget_->setView(mView);
 }
 
+matrix4f renderer::get_view() const
+{
+    return matrix4f(pCurrentSFMLTarget_->getView().getTransform().getMatrix());
+}
+
 void renderer::render_quad(const quad& mQuad) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};

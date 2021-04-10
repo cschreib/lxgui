@@ -56,6 +56,14 @@ namespace gl
         */
         void set_view(const matrix4f& mViewMatrix) const override;
 
+        /// Returns the current view matrix to use when rendering (viewport).
+        /** \return The current view matrix to use when rendering
+        *   \note See set_view() for more information. The returned matrix may be different
+        *         from the matrix given to set_view(), if the rendering backend does not
+        *         support certain transformations.
+        */
+        matrix4f get_view() const override;
+
         /// Renders a quad.
         /** \param mQuad The quad to render on the current render target
         *   \note This function is meant to be called between begin() and
@@ -161,6 +169,7 @@ namespace gl
         uint uiWindowHeight_ = 0u;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
+        mutable matrix4f mCurrentViewMatrix_ = matrix4f::IDENTITY;
 
     #if defined(LXGUI_OPENGL3)
         struct shader_cache
