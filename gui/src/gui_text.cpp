@@ -312,11 +312,12 @@ void text::render(float fX, float fY) const
 
     update_();
 
+    vector2f mOffset(round_to_pixel_(fX), round_to_pixel_(fY));
+
     const material* pMat = pFont_->get_texture().lock().get();
     if (pRenderer_->has_vertex_cache())
     {
-        pRenderer_->render_cache(pMat, *pVertexCache_,
-            matrix4f::translation(vector2f(fX, fY)));
+        pRenderer_->render_cache(pMat, *pVertexCache_, matrix4f::translation(mOffset));
     }
     else
     {
@@ -324,7 +325,7 @@ void text::render(float fX, float fY) const
         for (auto& mQuad : lQuadsCopy)
         for (uint i = 0; i < 4; ++i)
         {
-            mQuad[i].pos += vector2f(fX, fY);
+            mQuad[i].pos += mOffset;
 
             if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
             {
@@ -425,6 +426,11 @@ struct line
 void text::notify_cache_dirty_() const
 {
     bUpdateCache_ = true;
+}
+
+float text::round_to_pixel_(float fValue) const
+{
+    return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
 }
 
 void text::update_() const
@@ -733,11 +739,6 @@ void text::update_() const
         float fX  = 0.0f, fY = 0.0f;
         float fX0 = 0.0f;
 
-        auto round_to_pixel = [&](float fValue)
-        {
-            return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
-        };
-
         if (fBoxW_ != 0.0f && !std::isinf(fBoxW_))
         {
             switch (mAlign_)
@@ -746,7 +747,7 @@ void text::update_() const
                     fX0 = 0.0f;
                     break;
                 case alignment::CENTER :
-                    fX0 = round_to_pixel(fBoxW_*0.5f);
+                    fX0 = round_to_pixel_(fBoxW_*0.5f);
                     break;
                 case alignment::RIGHT :
                     fX0 = fBoxW_;
@@ -764,7 +765,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = round_to_pixel((fBoxH_ - fH_)*0.5f);
+                    fY = round_to_pixel_((fBoxH_ - fH_)*0.5f);
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = (fBoxH_ - fH_);
@@ -779,7 +780,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = -round_to_pixel(fH_*0.5f);
+                    fY = -round_to_pixel_(fH_*0.5f);
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = -fH_;
@@ -799,7 +800,7 @@ void text::update_() const
                     fX = fX0;
                     break;
                 case alignment::CENTER :
-                    fX = fX0 - round_to_pixel(mLine.fWidth*0.5f);
+                    fX = fX0 - round_to_pixel_(mLine.fWidth*0.5f);
                     break;
                 case alignment::RIGHT :
                     fX = fX0 - mLine.fWidth;
@@ -824,21 +825,12 @@ void text::update_() const
                     }
                 }
 
-                quad2f mQuad = pFont_->get_character_bounds(*iterChar)*fScalingFactor_
-                    + vector2f(round_to_pixel(fX), round_to_pixel(fY));
-                lVertexList[0].pos = mQuad.top_left();
-                lVertexList[1].pos = mQuad.top_right();
-                lVertexList[2].pos = mQuad.bottom_right();
-                lVertexList[3].pos = mQuad.bottom_left();
-
-                quad2f mUVs = pFont_->get_character_uvs(*iterChar);
-                lVertexList[0].uvs = mUVs.top_left();
-                lVertexList[1].uvs = mUVs.top_right();
-                lVertexList[2].uvs = mUVs.bottom_right();
-                lVertexList[3].uvs = mUVs.bottom_left();
-
+                std::array<vertex,4> lVertexList = create_letter_quad_(*iterChar);
                 for (uint i = 0; i < 4; ++i)
+                {
+                    lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                     lVertexList[i].col = mColor;
+                }
 
                 lQuadList_.push_back(lVertexList);
 
@@ -887,19 +879,36 @@ void text::update_() const
     bUpdateCache_ = false;
 }
 
-sprite text::create_sprite(char32_t uiChar) const
+std::array<vertex,4> text::create_letter_quad_(char32_t uiChar) const
 {
-    const quad2f lUVs = pFont_->get_character_uvs(uiChar);
+    quad2f mQuad = pFont_->get_character_bounds(uiChar)*fScalingFactor_;
+    mQuad.left = round_to_pixel_(mQuad.left);
+    mQuad.top = round_to_pixel_(mQuad.top);
+    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);
+    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);
 
-    const quad2f mBounds = pFont_->get_character_bounds(uiChar);
-    const float fWidth = mBounds.right - mBounds.left;
-    const float fHeight = mBounds.bottom - mBounds.top;
+    std::array<vertex,4> lVertexList;
+    lVertexList[0].pos = mQuad.top_left();
+    lVertexList[1].pos = mQuad.top_right();
+    lVertexList[2].pos = mQuad.bottom_right();
+    lVertexList[3].pos = mQuad.bottom_left();
 
-    sprite mSprite(pRenderer_, pFont_->get_texture().lock(), fWidth, fHeight);
-    mSprite.set_texture_rect(lUVs.left, lUVs.top, lUVs.right, lUVs.bottom, true);
-    mSprite.set_color(mColor_);
+    quad2f mUVs = pFont_->get_character_uvs(uiChar);
+    lVertexList[0].uvs = mUVs.top_left();
+    lVertexList[1].uvs = mUVs.top_right();
+    lVertexList[2].uvs = mUVs.bottom_right();
+    lVertexList[3].uvs = mUVs.bottom_left();
 
-    return mSprite;
+    return lVertexList;
+}
+
+quad text::create_letter_quad(char32_t uiChar) const
+{
+    quad mOutput;
+    mOutput.mat = pFont_->get_texture().lock();
+    mOutput.v = create_letter_quad_(uiChar);
+
+    return mOutput;
 }
 
 const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const

@@ -841,7 +841,7 @@ void edit_box::create_carret_()
 
     pCarret->create_glue();
 
-    sprite mSprite = pFontString_->get_text_object()->create_sprite(U'|');
+    sprite mSprite(pManager_->get_renderer(), pFontString_->get_text_object()->create_letter_quad(U'|'));
     mSprite.set_color(pFontString_->get_text_color());
 
     pCarret->set_sprite(std::move(mSprite));

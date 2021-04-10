@@ -70,6 +70,9 @@ namespace gui
         /// Constructor.
         sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float fU, float fV, float fWidth, float fHeight);
 
+        /// Constructor.
+        sprite(const renderer* pRenderer, const quad& mQuad);
+
         /// Renders this sprite on the current render target.
         /** \param fX The horizontal position
         *   \param fY The vertical position

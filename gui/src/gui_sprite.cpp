@@ -75,6 +75,13 @@ sprite::sprite(const renderer* pRenderer, std::shared_ptr<material> pMat, float 
     mQuad_.v[3].uvs = vector2f(u1, v2);
 }
 
+sprite::sprite(const renderer* pRenderer, const quad& mQuad) : pRenderer_(pRenderer), mQuad_(mQuad),
+    mHotSpot_(vector2f::ZERO)
+{
+    fWidth_ = std::abs((mQuad_.v[2].pos - mQuad_.v[0].pos).x);
+    fHeight_ = std::abs((mQuad_.v[2].pos - mQuad_.v[0].pos).y);
+}
+
 void sprite::render(float fX, float fY) const
 {
     mQuad_.v[0].pos = vector2f(fX,         fY) - mHotSpot_;

@@ -4,6 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_font.hpp"
+#include "lxgui/gui_sprite.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
@@ -17,7 +18,6 @@ namespace gui
 {
     class  renderer;
     class  vertex_cache;
-    class  sprite;
     struct vertex;
 
     /// Used to draw some text on the screen
@@ -312,16 +312,18 @@ namespace gui
         */
         const std::array<vertex,4>& get_letter_quad(uint uiIndex) const;
 
-        /// Creates a sprite that contains the provided character.
+        /// Creates a quad that contains the provided character.
         /** \param uiChar The character to draw
         *   \note Uses this text's font texture.
         */
-        sprite create_sprite(char32_t uiChar) const;
+        quad create_letter_quad(char32_t uiChar) const;
 
     private :
 
         void update_() const;
         void notify_cache_dirty_() const;
+        float round_to_pixel_(float fValue) const;
+        std::array<vertex,4> create_letter_quad_(char32_t uiChar) const;
 
         const renderer* pRenderer_ = nullptr;
 
