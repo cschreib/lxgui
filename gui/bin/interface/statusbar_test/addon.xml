@@ -10,23 +10,34 @@
         <Backdrop edgeFile="|border_1px.png"/>
         <Scripts>
             <OnLoad>
-                self.value = 0;
+                local min_value, max_value = self:get_min_max_values();
+                self:set_value(0.5*(min_value + max_value));
             </OnLoad>
             <OnMouseDown>
+                local value = self:get_value();
                 if (arg1 == "LeftButton") then
-                    self.value = self.value + 1;
+                    value = value + 1;
                 elseif (arg1 == "RightButton") then
-                    self.value = self.value - 1;
+                    value = value - 1;
                 end
-                self:set_value(self.value);
-                self.value = self:get_value();
 
-                set_interface_scaling_factor(1.0 + self.value/10.0)
+                self:set_value(value);
+                value = self:get_value();
+
+                local min_value, max_value = self:get_min_max_values();
+                local mid_value = 0.5*(min_value + max_value);
+                local range = mid_value - min_value;
+                local zoom = 2.0^((value - mid_value)/range);
+
+                set_interface_scaling_factor(zoom);
+
+                zoom = math.floor(zoom*100 + 0.5)/100;
+                self.Text:set_text("Zoom x"..zoom)
             </OnMouseDown>
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="9" outline="NORMAL" text="Click me !" setAllPoints="true"/>
+                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="9" outline="NORMAL" text="Zoom x1.0" setAllPoints="true"/>
             </Layer>
         </Layers>
     </StatusBar>
