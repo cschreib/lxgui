@@ -8,9 +8,9 @@ function ColorSelector:update_RGB_sliders()
     self.SliderG.Slider:set_value(self.currentColor.g*255.0, true);
     self.SliderB.Slider:set_value(self.currentColor.b*255.0, true);
 
-    self.SliderR.ValueString:set_text(math.floor(self.currentColor.r*255.0));
-    self.SliderG.ValueString:set_text(math.floor(self.currentColor.g*255.0));
-    self.SliderB.ValueString:set_text(math.floor(self.currentColor.b*255.0));
+    self.SliderR.ValueString:set_text(math.floor(self.currentColor.r*255.0 + 0.5));
+    self.SliderG.ValueString:set_text(math.floor(self.currentColor.g*255.0 + 0.5));
+    self.SliderB.ValueString:set_text(math.floor(self.currentColor.b*255.0 + 0.5));
 end
 
 function ColorSelector:update_HSL_sliders()
@@ -18,9 +18,9 @@ function ColorSelector:update_HSL_sliders()
     self.SliderS.Slider:set_value(self.currentColor.s*100.0, true);
     self.SliderL.Slider:set_value(self.currentColor.l*100.0, true);
 
-    self.SliderH.ValueString:set_text(math.floor(self.currentColor.h));
-    self.SliderS.ValueString:set_text(math.floor(self.currentColor.s*100.0));
-    self.SliderL.ValueString:set_text(math.floor(self.currentColor.l*100.0));
+    self.SliderH.ValueString:set_text(math.floor(self.currentColor.h + 0.5));
+    self.SliderS.ValueString:set_text(math.floor(self.currentColor.s*100.0 + 0.5));
+    self.SliderL.ValueString:set_text(math.floor(self.currentColor.l*100.0 + 0.5));
 end
 
 function ColorSelector:set_color(color)
