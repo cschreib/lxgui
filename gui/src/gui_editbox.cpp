@@ -109,7 +109,7 @@ void edit_box::update(float fDelta)
 
     if (bMouseDraggedInFrame_)
     {
-        uint uiPos = get_letter_id_at_(iMousePosX_, iMousePosY_);
+        uint uiPos = get_letter_id_at_(fMousePosX_, fMousePosY_);
         if (uiPos != uiSelectionEndPos_)
         {
             if (uiPos != uint(-1))
@@ -214,7 +214,7 @@ void edit_box::on_event(const event& mEvent)
             set_focus(true);
             unlight_text();
 
-            move_carret_at_(iMousePosX_, iMousePosY_);
+            move_carret_at_(fMousePosX_, fMousePosY_);
         }
         else
             set_focus(false);
@@ -317,7 +317,7 @@ void edit_box::on_script(const std::string& sScriptName, event* pEvent)
     }
 
     if (sScriptName == "OnDragStart")
-        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(iMousePosX_, iMousePosY_);
+        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(fMousePosX_, fMousePosY_);
 }
 
 void edit_box::create_glue()
@@ -390,22 +390,22 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
                 else
                     uiLeft = uiLeft - uiDisplayPos_;
 
-                int iLeftPos = int(pText->get_letter_quad(uiLeft)[0].pos.x) + lTextInsets_.left;
+                float fLeftPos = pText->get_letter_quad(uiLeft)[0].pos.x + lTextInsets_.left;
 
                 uiRight = uiRight - uiDisplayPos_;
-                int iRightPos;
+                float fRightPos;
                 if (uiRight < sDisplayedText_.size())
                 {
-                    iRightPos = int(pText->get_letter_quad(uiRight)[0].pos.x) + lTextInsets_.left;
+                    fRightPos = pText->get_letter_quad(uiRight)[0].pos.x + lTextInsets_.left;
                 }
                 else
                 {
                     uiRight = sDisplayedText_.size() - 1;
-                    iRightPos = int(pText->get_letter_quad(uiRight)[2].pos.x) + lTextInsets_.left;
+                    fRightPos = pText->get_letter_quad(uiRight)[2].pos.x + lTextInsets_.left;
                 }
 
-                pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, iLeftPos,  0);
-                pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, iRightPos, 0);
+                pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, fLeftPos,  0);
+                pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, fRightPos, 0);
                 pHighlight_->show();
             }
             else
@@ -687,12 +687,12 @@ void edit_box::set_arrows_ignored(bool bArrowsIgnored)
     bArrowsIgnored_ = bArrowsIgnored;
 }
 
-void edit_box::set_text_insets(int iLeft, int iRight, int iTop, int iBottom)
+void edit_box::set_text_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    set_text_insets(quad2i(iLeft, iRight, iTop, iBottom));
+    set_text_insets(quad2f(fLeft, fRight, fTop, fBottom));
 }
 
-void edit_box::set_text_insets(const quad2i& lInsets)
+void edit_box::set_text_insets(const quad2f& lInsets)
 {
     lTextInsets_ = lInsets;
 
@@ -712,7 +712,7 @@ void edit_box::set_text_insets(const quad2i& lInsets)
     }
 }
 
-const quad2i& edit_box::get_text_insets() const
+const quad2f& edit_box::get_text_insets() const
 {
     return lTextInsets_;
 }
@@ -767,7 +767,7 @@ void edit_box::set_font_string(font_string* pFont)
     pFontString_->set_parent(this);
     pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
 
-    pFontString_->set_abs_dimensions(0u, 0u);
+    pFontString_->set_abs_dimensions(0, 0);
     pFontString_->clear_all_points();
     pFontString_->set_abs_point(
         anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
@@ -912,24 +912,24 @@ void edit_box::update_carret_position_()
         if (sUnicodeText_.empty())
         {
             anchor_point mPoint;
-            int iOffset = 0;
+            float fOffset = 0.0f;
             switch (pFontString_->get_justify_h())
             {
                 case text::alignment::LEFT :
                     mPoint = anchor_point::LEFT;
-                    iOffset = lTextInsets_.left - 1;
+                    fOffset = lTextInsets_.left - 1;
                     break;
                 case text::alignment::CENTER :
                     mPoint = anchor_point::CENTER;
                     break;
                 case text::alignment::RIGHT :
                     mPoint = anchor_point::RIGHT;
-                    iOffset = -lTextInsets_.right - 1;
+                    fOffset = -lTextInsets_.right - 1;
                     break;
                 default : mPoint = anchor_point::LEFT; break;
             }
             pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, mPoint, iOffset, 0
+                anchor_point::CENTER, sName_, mPoint, fOffset, 0
             );
             return;
         }
@@ -996,14 +996,14 @@ void edit_box::update_carret_position_()
 
         uint uiIndex = iterDisplayCarret - sDisplayedText_.begin();
 
-        int iXOffset = lTextInsets_.left;
+        float fXOffset = lTextInsets_.left;
         if (uiIndex < sDisplayedText_.size())
-            iXOffset += pText->get_letter_quad(uiIndex)[0].pos.x;
+            fXOffset += pText->get_letter_quad(uiIndex)[0].pos.x;
         else
-            iXOffset += pText->get_letter_quad(sDisplayedText_.size() - 1)[2].pos.x;
+            fXOffset += pText->get_letter_quad(sDisplayedText_.size() - 1)[2].pos.x;
 
         pCarret_->set_abs_point(
-            anchor_point::CENTER, sName_, anchor_point::LEFT, iXOffset, int(fYOffset)
+            anchor_point::CENTER, sName_, anchor_point::LEFT, fXOffset, fYOffset
         );
 
         mCarretTimer_.zero();
@@ -1093,7 +1093,7 @@ bool edit_box::remove_char_()
     return true;
 }
 
-uint edit_box::get_letter_id_at_(int iX, int iY)
+uint edit_box::get_letter_id_at_(float fX, float fY)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
@@ -1102,20 +1102,20 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
 
         text* pText = pFontString_->get_text_object();
 
-        float fX = float(iX - lBorderList_.left - lTextInsets_.left);
-        // float fY = float(iY - lBorderList_.top  - lTextInsets_.top);
+        float fLocalX = fX - lBorderList_.left - lTextInsets_.left;
+        // float fLocalY = fY - lBorderList_.top  - lTextInsets_.top;
 
         if (!bMultiLine_)
         {
-            if (iX < lBorderList_.left + lTextInsets_.left)
+            if (fX < lBorderList_.left + lTextInsets_.left)
                 return uiDisplayPos_;
-            else if (iX > lBorderList_.right - lTextInsets_.right)
+            else if (fX > lBorderList_.right - lTextInsets_.right)
                 return sDisplayedText_.size() + uiDisplayPos_;
 
             for (uint uiIndex = 0u; uiIndex < sDisplayedText_.size(); ++uiIndex)
             {
                 const auto& mQuad = pText->get_letter_quad(uiIndex);
-                if (fX < 0.5*(mQuad[0].pos.x + mQuad[2].pos.x))
+                if (fLocalX < 0.5*(mQuad[0].pos.x + mQuad[2].pos.x))
                     return uiIndex + uiDisplayPos_;
             }
 
@@ -1132,9 +1132,9 @@ uint edit_box::get_letter_id_at_(int iX, int iY)
     return uint(-1);
 }
 
-bool edit_box::move_carret_at_(int iX, int iY)
+bool edit_box::move_carret_at_(float fX, float fY)
 {
-    uint uiPos = get_letter_id_at_(iX, iY);
+    uint uiPos = get_letter_id_at_(fX, fY);
     if (uiPos != uint(-1))
     {
         iterCarretPos_ = sUnicodeText_.begin() + uiPos;

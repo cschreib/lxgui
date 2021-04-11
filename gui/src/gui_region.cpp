@@ -18,10 +18,10 @@ void region::create_glue()
     create_glue_<lua_uiobject>();
 }
 
-bool region::is_in_region(int iX, int iY) const
+bool region::is_in_region(float fX, float fY) const
 {
-    return ((lBorderList_.left <= iX && iX <= lBorderList_.right  - 1) &&
-            (lBorderList_.top  <= iY && iY <= lBorderList_.bottom - 1));
+    return ((lBorderList_.left <= fX && fX <= lBorderList_.right  - 1) &&
+            (lBorderList_.top  <= fY && fY <= lBorderList_.bottom - 1));
 }
 }
 }

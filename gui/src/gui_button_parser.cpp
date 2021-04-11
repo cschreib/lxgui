@@ -105,9 +105,9 @@ void button::parse_block(xml::block* pBlock)
         xml::block* pDimBlock = pOffsetBlock->get_radio_block();
         if (pDimBlock->get_name() == "AbsDimension")
         {
-            set_pushed_text_offset(vector2i(
-                (int)utils::string_to_int(pDimBlock->get_attribute("x")),
-                (int)utils::string_to_int(pDimBlock->get_attribute("y"))
+            set_pushed_text_offset(vector2f(
+                utils::string_to_float(pDimBlock->get_attribute("x")),
+                utils::string_to_float(pDimBlock->get_attribute("y"))
             ));
         }
         else if (pDimBlock->get_name() == "RelDimension")

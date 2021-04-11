@@ -132,7 +132,7 @@ int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
     mFunc.add(0, "horizontal scroll", lua::type::NUMBER);
     if (mFunc.check())
     {
-        get_object()->set_horizontal_scroll(int(mFunc.get(0)->get_number()));
+        get_object()->set_horizontal_scroll(mFunc.get(0)->get_number());
     }
 
     return mFunc.on_return();
@@ -220,7 +220,7 @@ int lua_scroll_frame::_set_vertical_scroll(lua_State* pLua)
     mFunc.add(0, "vertical scroll", lua::type::NUMBER);
     if (mFunc.check())
     {
-        get_object()->set_vertical_scroll(int(mFunc.get(0)->get_number()));
+        get_object()->set_vertical_scroll(mFunc.get(0)->get_number());
     }
 
     return mFunc.on_return();

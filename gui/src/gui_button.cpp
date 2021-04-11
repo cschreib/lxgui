@@ -652,13 +652,13 @@ void button::unlock_highlight()
     bLockHighlight_ = false;
 }
 
-void button::set_pushed_text_offset(const vector2i& mOffset)
+void button::set_pushed_text_offset(const vector2f& mOffset)
 {
     mPushedTextOffset_ = mOffset;
     notify_renderer_need_redraw();
 }
 
-const vector2i& button::get_pushed_text_offset() const
+const vector2f& button::get_pushed_text_offset() const
 {
     return mPushedTextOffset_;
 }

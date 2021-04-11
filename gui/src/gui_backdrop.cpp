@@ -111,32 +111,32 @@ uint backdrop::get_tile_size() const
     return uiTileSize_;
 }
 
-void backdrop::set_background_insets(const quad2i& lInsets)
+void backdrop::set_background_insets(const quad2f& lInsets)
 {
     lBackgroundInsets_ = lInsets;
 }
 
-void backdrop::set_background_insets(int iLeft, int iRight, int iTop, int iBottom)
+void backdrop::set_background_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lBackgroundInsets_ = quad2i(iLeft, iRight, iTop, iBottom);
+    lBackgroundInsets_ = quad2f(fLeft, fRight, fTop, fBottom);
 }
 
-const quad2i& backdrop::get_background_insets() const
+const quad2f& backdrop::get_background_insets() const
 {
     return lBackgroundInsets_;
 }
 
-void backdrop::set_edge_insets(const quad2i& lInsets)
+void backdrop::set_edge_insets(const quad2f& lInsets)
 {
     lEdgeInsets_ = lInsets;
 }
 
-void backdrop::set_edge_insets(int iLeft, int iRight, int iTop, int iBottom)
+void backdrop::set_edge_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lEdgeInsets_ = quad2i(iLeft, iRight, iTop, iBottom);
+    lEdgeInsets_ = quad2f(fLeft, fRight, fTop, fBottom);
 }
 
-const quad2i& backdrop::get_edge_insets() const
+const quad2f& backdrop::get_edge_insets() const
 {
     return lEdgeInsets_;
 }
@@ -264,7 +264,7 @@ void backdrop::render() const
 {
     if (pParent_)
     {
-        const quad2i& lParentBorders = pParent_->get_borders();
+        const quad2f& lParentBorders = pParent_->get_borders();
 
         if (bHasBackground_)
         {

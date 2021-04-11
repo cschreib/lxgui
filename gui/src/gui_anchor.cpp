@@ -58,79 +58,79 @@ void anchor::update_parent() const
     pParent_ = pNewParent;
 }
 
-int anchor::get_abs_x() const
+float anchor::get_abs_x() const
 {
     if (pObj_)
     {
         update_parent();
 
-        int iParentX;
+        float fParentX;
         if (pParent_)
         {
-            iParentX = pParent_->get_left();
-            iParentWidth_ = pParent_->get_apparent_width();
+            fParentX = pParent_->get_left();
+            fParentWidth_ = pParent_->get_apparent_width();
         }
         else
         {
-            iParentX = 0;
-            iParentWidth_ = pObj_->get_top_level_renderer()->get_target_width();
+            fParentX = 0;
+            fParentWidth_ = pObj_->get_top_level_renderer()->get_target_width();
         }
 
-        int iOffset;
+        float fOffset;
         if (mType_ == anchor_type::ABS)
-            iOffset = iAbsOffX_;
+            fOffset = fAbsOffX_;
         else
-            iOffset = fRelOffX_*iParentWidth_;
+            fOffset = fRelOffX_*fParentWidth_;
 
-        int iParentOffset;
+        float fParentOffset;
         if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::BOTTOMLEFT))
-            iParentOffset = 0;
+            fParentOffset = 0;
         else if ((mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::BOTTOM))
-            iParentOffset = iParentWidth_/2;
+            fParentOffset = fParentWidth_/2;
         else if ((mParentPoint_ == anchor_point::TOPRIGHT) || (mParentPoint_ == anchor_point::RIGHT) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
-            iParentOffset = iParentWidth_;
-        else iParentOffset = 0;
+            fParentOffset = fParentWidth_;
+        else fParentOffset = 0;
 
-        return iOffset + iParentOffset + iParentX;
+        return fOffset + fParentOffset + fParentX;
     }
 
     return 0;
 }
 
-int anchor::get_abs_y() const
+float anchor::get_abs_y() const
 {
     if (pObj_)
     {
         update_parent();
 
-        int iParentY;
+        float fParentY;
         if (pParent_)
         {
-            iParentY = pParent_->get_top();
-            iParentHeight_ = pParent_->get_apparent_height();
+            fParentY = pParent_->get_top();
+            fParentHeight_ = pParent_->get_apparent_height();
         }
         else
         {
-            iParentY = 0;
-            iParentHeight_ = pObj_->get_top_level_renderer()->get_target_height();
+            fParentY = 0;
+            fParentHeight_ = pObj_->get_top_level_renderer()->get_target_height();
         }
 
-        int iOffset;
+        float fOffset;
         if (mType_ == anchor_type::ABS)
-            iOffset = iAbsOffY_;
+            fOffset = fAbsOffY_;
         else
-            iOffset = fRelOffY_*iParentHeight_;
+            fOffset = fRelOffY_*fParentHeight_;
 
-        int iParentOffset;
+        float fParentOffset;
         if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::TOPRIGHT))
-            iParentOffset = 0;
+            fParentOffset = 0;
         else if ((mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::RIGHT))
-            iParentOffset = iParentHeight_/2;
+            fParentOffset = fParentHeight_/2;
         else if ((mParentPoint_ == anchor_point::BOTTOMLEFT) || (mParentPoint_ == anchor_point::BOTTOM) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
-            iParentOffset = iParentHeight_;
-        else iParentOffset = 0;
+            fParentOffset = fParentHeight_;
+        else fParentOffset = 0;
 
-        return iOffset + iParentOffset + iParentY;
+        return fOffset + fParentOffset + fParentY;
     }
 
     return 0;
@@ -167,19 +167,19 @@ anchor_type anchor::get_type() const
     return mType_;
 }
 
-int anchor::get_abs_offset_x() const
+float anchor::get_abs_offset_x() const
 {
-    return iAbsOffX_;
+    return fAbsOffX_;
 }
 
-int anchor::get_abs_offset_y() const
+float anchor::get_abs_offset_y() const
 {
-    return iAbsOffY_;
+    return fAbsOffY_;
 }
 
-vector2i anchor::get_abs_offset() const
+vector2f anchor::get_abs_offset() const
 {
-    return vector2i(iAbsOffX_, iAbsOffY_);
+    return vector2f(fAbsOffX_, fAbsOffY_);
 }
 
 float anchor::get_rel_offset_x() const
@@ -218,17 +218,17 @@ void anchor::set_parent_point(anchor_point mParentPoint)
     mParentPoint_ = mParentPoint;
 }
 
-void anchor::set_abs_offset(int iX, int iY)
+void anchor::set_abs_offset(float fX, float fY)
 {
-    iAbsOffX_ = iX;
-    iAbsOffY_ = iY;
+    fAbsOffX_ = fX;
+    fAbsOffY_ = fY;
     mType_ = anchor_type::ABS;
 }
 
-void anchor::set_abs_offset(const vector2i& mOffset)
+void anchor::set_abs_offset(const vector2f& mOffset)
 {
-    iAbsOffX_ = mOffset.x;
-    iAbsOffY_ = mOffset.y;
+    fAbsOffX_ = mOffset.x;
+    fAbsOffY_ = mOffset.y;
     mType_ = anchor_type::ABS;
 }
 
@@ -262,13 +262,13 @@ std::string anchor::serialize(const std::string& sTab) const
     sStr << sTab << "  |   # Rel. point : " << get_string_point(mParentPoint_) << "\n";
     if (mType_ == anchor_type::ABS)
     {
-    sStr << sTab << "  |   # Offset X   : " << iAbsOffX_ << "\n";
-    sStr << sTab << "  |   # Offset Y   : " << iAbsOffY_ << "\n";
+    sStr << sTab << "  |   # Offset X   : " << fAbsOffX_ << "\n";
+    sStr << sTab << "  |   # Offset Y   : " << fAbsOffY_ << "\n";
     }
     else
     {
-    sStr << sTab << "  |   # Offset X   : " << fRelOffX_ << " (" << fRelOffX_*iParentWidth_ << ")\n";
-    sStr << sTab << "  |   # Offset Y   : " << fRelOffY_ << " (" << fRelOffY_*iParentHeight_ << ")\n";
+    sStr << sTab << "  |   # Offset X   : " << fRelOffX_ << " (" << fRelOffX_*fParentWidth_ << ")\n";
+    sStr << sTab << "  |   # Offset Y   : " << fRelOffY_ << " (" << fRelOffY_*fParentHeight_ << ")\n";
     }
 
     return sStr.str();

@@ -95,12 +95,12 @@ namespace gui
         /// Returns the width of of this renderer's main render target (e.g., screen).
         /** \return The render target width
         */
-        uint get_target_width() const override;
+        float get_target_width() const override;
 
         /// Returns the height of this renderer's main render target (e.g., screen).
         /** \return The render target height
         */
-        uint get_target_height() const override;
+        float get_target_height() const override;
 
         /// Sets the global UI scaling factor.
         /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
@@ -493,14 +493,14 @@ namespace gui
         *   \note This value is reset to zero whenever start_moving() or
         *         start_sizing() is called.
         */
-        int get_movement_x() const;
+        float get_movement_x() const;
 
         /// Returns the cumuled vertical mouse movement.
         /** \return The cumuled vertical mouse movement
         *   \note This value is reset to zero whenever start_moving() or
         *         start_sizing() is called.
         */
-        int get_movement_y() const;
+        float get_movement_y() const;
 
         /// Tells this manager an object has moved.
         void notify_object_moved();
@@ -695,7 +695,7 @@ namespace gui
         void clear_focussed_frame_();
         void clear_hovered_frame_();
         void update_hovered_frame_();
-        void set_hovered_frame_(frame* pFrame, int iX = 0, int iY = 0);
+        void set_hovered_frame_(frame* pFrame, float fX = 0, float fY = 0);
 
         frame* create_root_frame_(const std::string& sClassName, const std::string& sName,
             bool bVirtual, const std::vector<uiobject*>& lInheritance);
@@ -747,13 +747,13 @@ namespace gui
         float     fMouseMovementY_ = 0.0f;
 
         anchor*    pMovedAnchor_ = nullptr;
-        int        iMovementStartPositionX_ = 0;
-        int        iMovementStartPositionY_ = 0;
+        float      fMovementStartPositionX_ = 0.0f;
+        float      fMovementStartPositionY_ = 0.0f;
         constraint mConstraint_ = constraint::NONE;
         std::function<void()> pApplyConstraintFunc_;
 
-        uint uiResizeStartW_ = 0u;
-        uint uiResizeStartH_ = 0u;
+        float fResizeStartW_ = 0.0f;
+        float fResizeStartH_ = 0.0f;
         bool bResizeWidth_ = false;
         bool bResizeHeight_ = false;
         bool bResizeFromRight_ = false;

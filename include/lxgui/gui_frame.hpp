@@ -491,7 +491,7 @@ namespace gui
         /// Returns this frame's absolute hit rect insets.
         /** \return This frame's absolute hit rect insets
         */
-        const quad2i& get_abs_hit_rect_insets() const;
+        const quad2f& get_abs_hit_rect_insets() const;
 
         /// Returns this frame's relative hit rect insets.
         /** \return This frame's relative hit rect insets
@@ -501,12 +501,12 @@ namespace gui
         /// Returns this frame's max dimensions.
         /** \return This frame's max dimensions
         */
-        vector2ui get_max_resize() const;
+        vector2f get_max_resize() const;
 
         /// Returns this frame's min dimensions.
         /** \return This frame's min dimensions
         */
-        vector2ui get_min_resize() const;
+        vector2f get_min_resize() const;
 
         /// Returns the number of children of this frame.
         /** \return The number of children of this frame
@@ -534,11 +534,11 @@ namespace gui
         bool is_clamped_to_screen() const;
 
         /// Checks if the provided coordinates are in the frame.
-        /** \param iX The horizontal coordinate
-        *   \param iY The vertical coordinate
+        /** \param fX The horizontal coordinate
+        *   \param fY The vertical coordinate
         *   \return 'true' if the provided coordinates are in the frame
         */
-        virtual bool is_in_frame(int iX, int iY) const;
+        virtual bool is_in_frame(float fX, float fY) const;
 
         /// Checks if this frame can receive keyboard input.
         /** \return 'true' if this frame can receive keyboard input
@@ -662,19 +662,19 @@ namespace gui
         void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
 
         /// Sets this frame's absolute hit rect insets.
-        /** \param iLeft   Offset from the left border
-        *   \param iRight  Offset from the right border
-        *   \param iTop    Offset from the top border
-        *   \param iBottom Offset from the bottom border
+        /** \param fLeft   Offset from the left border
+        *   \param fRight  Offset from the right border
+        *   \param fTop    Offset from the top border
+        *   \param fBottom Offset from the bottom border
         *   \note This is the zone on which you can click.
         */
-        void set_abs_hit_rect_insets(int iLeft, int iRight, int iTop, int iBottom);
+        void set_abs_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Sets this frame's absolute hit rect insets.
         /** \param lInsets Offsets
         *   \note This is the zone on which you can click.
         */
-        void set_abs_hit_rect_insets(const quad2i& lInsets);
+        void set_abs_hit_rect_insets(const quad2f& lInsets);
 
         /// Sets this frame's relative hit rect insets.
         /** \param fLeft   Offset from the left border
@@ -697,46 +697,46 @@ namespace gui
         void set_level(int iLevel);
 
         /// Sets this frame's maximum size.
-        /** \param uiMaxWidth  The maximum width this frame can have
-        *   \param uiMaxHeight The maximum height this frame can have
+        /** \param fMaxWidth  The maximum width this frame can have
+        *   \param fMaxHeight The maximum height this frame can have
         */
-        void set_max_resize(uint uiMaxWidth, uint uiMaxHeight);
+        void set_max_resize(float fMaxWidth, float fMaxHeight);
 
         /// Sets this frame's maximum size.
         /** \param mMax The maximum dimensions of this frame
         */
-        void set_max_resize(const vector2ui& mMax);
+        void set_max_resize(const vector2f& mMax);
 
         /// Sets this frame's minimum size.
-        /** \param uiMinWidth  The minimum width this frame can have
-        *   \param uiMinHeight The minimum height this frame can have
+        /** \param fMinWidth  The minimum width this frame can have
+        *   \param fMinHeight The minimum height this frame can have
         */
-        void set_min_resize(uint uiMinWidth, uint uiMinHeight);
+        void set_min_resize(float fMinWidth, float fMinHeight);
 
         /// Sets this frame's minimum size.
         /** \param mMin Minimum dimensions of this frame
         */
-        void set_min_resize(const vector2ui& mMin);
+        void set_min_resize(const vector2f& mMin);
 
         /// Sets this frame's maximum height.
-        /** \param uiMaxHeight The maximum height this frame can have
+        /** \param fMaxHeight The maximum height this frame can have
         */
-        void set_max_height(uint uiMaxHeight);
+        void set_max_height(float fMaxHeight);
 
         /// Sets this frame's maximum width.
-        /** \param uiMaxWidth  The maximum width this frame can have
+        /** \param fMaxWidth  The maximum width this frame can have
         */
-        void set_max_width(uint uiMaxWidth);
+        void set_max_width(float fMaxWidth);
 
         /// Sets this frame's minimum height.
-        /** \param uiMinHeight The minimum height this frame can have
+        /** \param fMinHeight The minimum height this frame can have
         */
-        void set_min_height(uint uiMinHeight);
+        void set_min_height(float fMinHeight);
 
         /// Sets this frame's minimum width.
-        /** \param uiMinWidth  The minimum width this frame can have
+        /** \param fMinWidth  The minimum width this frame can have
         */
-        void set_min_width(uint uiMinWidth);
+        void set_min_width(float fMinWidth);
 
         /// Sets if this frame can be moved by the user.
         /** \param bIsMovable 'true' to allow the user to move this frame
@@ -849,30 +849,30 @@ namespace gui
         void notify_renderer_need_redraw() const override;
 
         /// Changes this widget's absolute dimensions (in pixels).
-        /** \param uiAbsWidth  The new width
-        *   \param uiAbsHeight The new height
+        /** \param fAbsWidth  The new width
+        *   \param fAbsHeight The new height
         */
-        void set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight) override;
+        void set_abs_dimensions(float fAbsWidth, float fAbsHeight) override;
 
         /// Changes this widget's absolute width (in pixels).
-        /** \param uiAbsWidth The new width
+        /** \param fAbsWidth The new width
         */
-        void set_abs_width(uint uiAbsWidth) override;
+        void set_abs_width(float fAbsWidth) override;
 
         /// Changes this widget's absolute height (in pixels).
-        /** \param uiAbsHeight The new height
+        /** \param fAbsHeight The new height
         */
-        void set_abs_height(uint uiAbsHeight) override;
+        void set_abs_height(float fAbsHeight) override;
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param iX            The horizontal mouse coordinate
-        *   \param iY            The vertical mouse coordinate
+        *   \param fX            The horizontal mouse coordinate
+        *   \param fY            The vertical mouse coordinate
         *   \note Always use the mouse position set by this function and
         *         not the one returned by the InputManager, because there
         *         can be an offset to apply (for example with ScrollFrame).
         */
-        virtual void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY);
+        virtual void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY);
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
@@ -981,22 +981,22 @@ namespace gui
 
         bool bBuildLayerList_ = false;
 
-        quad2i lAbsHitRectInsetList_ = quad2i::ZERO;
+        quad2f lAbsHitRectInsetList_ = quad2f::ZERO;
         quad2f lRelHitRectInsetList_ = quad2f::ZERO;
 
-        uint uiMinWidth_ = 0u;
-        uint uiMaxWidth_ = uint(-1);
-        uint uiMinHeight_ = 0u;
-        uint uiMaxHeight_ = uint(-1);
+        float fMinWidth_ = 0.0f;
+        float fMaxWidth_ = std::numeric_limits<float>::infinity();
+        float fMinHeight_ = 0.0f;
+        float fMaxHeight_ = std::numeric_limits<float>::infinity();
 
-        uint uiOldWidth_ = 0u;
-        uint uiOldHeight_ = 0u;
+        float uiOldWidth_ = 0.0f;
+        float uiOldHeight_ = 0.0f;
 
         float fScale_ = 1.0f;
 
         bool bMouseInFrame_ = false;
         bool bMouseInTitleRegion_ = false;
-        int  iMousePosX_ = 0, iMousePosY_ = 0;
+        float fMousePosX_ = 0.0f, fMousePosY_ = 0.0f;
 
         std::unique_ptr<region> pTitleRegion_ = nullptr;
 

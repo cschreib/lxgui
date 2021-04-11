@@ -85,12 +85,12 @@ const renderer* manager::get_renderer() const
     return pRenderer_.get();
 }
 
-uint manager::get_target_width() const
+float manager::get_target_width() const
 {
     return uiScreenWidth_/get_interface_scaling_factor();
 }
 
-uint manager::get_target_height() const
+float manager::get_target_height() const
 {
     return uiScreenHeight_/get_interface_scaling_factor();
 }
@@ -825,11 +825,11 @@ void manager::close_ui()
         bObjectMoved_ = false;
         fMouseMovementX_ = 0.0f;
         fMouseMovementY_ = 0.0f;
-        iMovementStartPositionX_ = 0;
-        iMovementStartPositionY_ = 0;
+        fMovementStartPositionX_ = 0;
+        fMovementStartPositionY_ = 0;
         mConstraint_ = constraint::NONE;
-        uiResizeStartW_ = 0;
-        uiResizeStartH_ = 0;
+        fResizeStartW_ = 0;
+        fResizeStartH_ = 0;
         bResizeWidth_ = false;
         bResizeHeight_ = false;
         bResizeFromRight_ = false;
@@ -1052,15 +1052,15 @@ void manager::clear_hovered_frame_()
     pInputManager_->allow_input("WORLD");
 }
 
-void manager::set_hovered_frame_(frame* pFrame, int iX, int iY)
+void manager::set_hovered_frame_(frame* pFrame, float fX, float fY)
 {
     if (pHoveredFrame_ && pFrame != pHoveredFrame_)
-        pHoveredFrame_->notify_mouse_in_frame(false, iX, iY);
+        pHoveredFrame_->notify_mouse_in_frame(false, fX, fY);
 
     if (pFrame)
     {
         pHoveredFrame_ = pFrame;
-        pHoveredFrame_->notify_mouse_in_frame(true, iX, iY);
+        pHoveredFrame_->notify_mouse_in_frame(true, fX, fY);
         if (pHoveredFrame_->is_world_input_allowed())
             pInputManager_->allow_input("WORLD");
         else
@@ -1084,18 +1084,18 @@ void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstrai
         if (pAnchor)
         {
             pMovedAnchor_ = pAnchor;
-            iMovementStartPositionX_ = pMovedAnchor_->get_abs_offset_x();
-            iMovementStartPositionY_ = pMovedAnchor_->get_abs_offset_y();
+            fMovementStartPositionX_ = pMovedAnchor_->get_abs_offset_x();
+            fMovementStartPositionY_ = pMovedAnchor_->get_abs_offset_y();
         }
         else
         {
             pMovedObject_->clear_all_points();
-            const quad2i& lBorders = pMovedObject_->get_borders();
+            const quad2f& lBorders = pMovedObject_->get_borders();
             pMovedObject_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, lBorders.top_left());
             pMovedAnchor_ = pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
-            iMovementStartPositionX_ = lBorders.left;
-            iMovementStartPositionY_ = lBorders.top;
+            fMovementStartPositionX_ = lBorders.left;
+            fMovementStartPositionY_ = lBorders.top;
         }
     }
 }
@@ -1123,10 +1123,10 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
 
     if (pSizedObject_)
     {
-        const quad2i& lBorders = pSizedObject_->get_borders();
+        const quad2f& lBorders = pSizedObject_->get_borders();
 
         anchor_point mOppositePoint = anchor_point::CENTER;
-        vector2i mOffset;
+        vector2f mOffset;
 
         switch (mPoint)
         {
@@ -1168,8 +1168,8 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
         pSizedObject_->clear_all_points();
         pSizedObject_->set_abs_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
 
-        uiResizeStartW_ = pSizedObject_->get_abs_width();
-        uiResizeStartH_ = pSizedObject_->get_abs_height();
+        fResizeStartW_ = pSizedObject_->get_abs_width();
+        fResizeStartH_ = pSizedObject_->get_abs_height();
 
         if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT)
         {
@@ -1200,12 +1200,12 @@ bool manager::is_sizing(uiobject* pObj) const
     return (pSizedObject_ == pObj);
 }
 
-int manager::get_movement_x() const
+float manager::get_movement_x() const
 {
     return fMouseMovementX_;
 }
 
-int manager::get_movement_y() const
+float manager::get_movement_y() const
 {
     return fMouseMovementY_;
 }
@@ -1279,11 +1279,11 @@ void manager::update_hovered_frame_()
         return;
 
     DEBUG_LOG(" Update hovered frame...");
-    int iX = pInputManager_->get_mouse_x();
-    int iY = pInputManager_->get_mouse_y();
+    float fX = pInputManager_->get_mouse_x();
+    float fY = pInputManager_->get_mouse_y();
 
-    frame* pHoveredFrame = find_hovered_frame_(iX, iY);
-    set_hovered_frame_(pHoveredFrame, iX, iY);
+    frame* pHoveredFrame = find_hovered_frame_(fX, fY);
+    set_hovered_frame_(pHoveredFrame, fX, fY);
 
     bUpdateHoveredFrame_ = false;
 }
@@ -1515,20 +1515,20 @@ void manager::on_event(const event& mEvent)
             {
                 case constraint::NONE :
                     pMovedAnchor_->set_abs_offset(
-                        iMovementStartPositionX_ + int(fMouseMovementX_),
-                        iMovementStartPositionY_ + int(fMouseMovementY_)
+                        fMovementStartPositionX_ + fMouseMovementX_,
+                        fMovementStartPositionY_ + fMouseMovementY_
                     );
                     break;
                 case constraint::X :
                     pMovedAnchor_->set_abs_offset(
-                        iMovementStartPositionX_ + int(fMouseMovementX_),
-                        iMovementStartPositionY_
+                        fMovementStartPositionX_ + fMouseMovementX_,
+                        fMovementStartPositionY_
                     );
                     break;
                 case constraint::Y :
                     pMovedAnchor_->set_abs_offset(
-                        iMovementStartPositionX_,
-                        iMovementStartPositionY_ + int(fMouseMovementY_)
+                        fMovementStartPositionX_,
+                        fMovementStartPositionY_ + fMouseMovementY_
                     );
                     break;
                 default : break;
@@ -1543,39 +1543,39 @@ void manager::on_event(const event& mEvent)
         {
             if (bResizeWidth_ && bResizeHeight_)
             {
-                uint uiWidth;
+                float fWidth;
                 if (bResizeFromRight_)
-                    uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
+                    fWidth = std::max(0.0f, fResizeStartW_ + fMouseMovementX_);
                 else
-                    uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
+                    fWidth = std::max(0.0f, fResizeStartW_ - fMouseMovementX_);
 
-                uint uiHeight;
+                float fHeight;
                 if (bResizeFromBottom_)
-                    uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
+                    fHeight = std::max(0.0f, fResizeStartH_ + fMouseMovementY_);
                 else
-                    uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
+                    fHeight = std::max(0.0f, fResizeStartH_ - fMouseMovementY_);
 
-                pSizedObject_->set_abs_dimensions(uiWidth, uiHeight);
+                pSizedObject_->set_abs_dimensions(fWidth, fHeight);
             }
             else if (bResizeWidth_)
             {
-                uint uiWidth;
+                float fWidth;
                 if (bResizeFromRight_)
-                    uiWidth = std::max(0, int(uiResizeStartW_) + int(fMouseMovementX_));
+                    fWidth = std::max(0.0f, fResizeStartW_ + fMouseMovementX_);
                 else
-                    uiWidth = std::max(0, int(uiResizeStartW_) - int(fMouseMovementX_));
+                    fWidth = std::max(0.0f, fResizeStartW_ - fMouseMovementX_);
 
-                pSizedObject_->set_abs_width(uiWidth);
+                pSizedObject_->set_abs_width(fWidth);
             }
             else if (bResizeHeight_)
             {
-                uint uiHeight;
+                float fHeight;
                 if (bResizeFromBottom_)
-                    uiHeight = std::max(0, int(uiResizeStartH_) + int(fMouseMovementY_));
+                    fHeight = std::max(0.0f, fResizeStartH_ + fMouseMovementY_);
                 else
-                    uiHeight = std::max(0, int(uiResizeStartH_) - int(fMouseMovementY_));
+                    fHeight = std::max(0.0f, fResizeStartH_ - fMouseMovementY_);
 
-                pSizedObject_->set_abs_height(uiHeight);
+                pSizedObject_->set_abs_height(fHeight);
             }
         }
     }

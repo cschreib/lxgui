@@ -51,7 +51,7 @@ uiobject::~uiobject()
             {
                 const anchor* pAnchor = pObj->get_point(mPoint);
                 anchor mNewAnchor = anchor(pObj, mPoint, "", anchor_point::TOPLEFT);
-                vector2i mOffset = pAnchor->get_abs_offset();
+                vector2f mOffset = pAnchor->get_abs_offset();
 
                 switch (pAnchor->get_parent_point())
                 {
@@ -129,8 +129,8 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  |-###\n";
     sStr << sTab << "  # Alpha       : " << fAlpha_ << "\n";
     sStr << sTab << "  # Shown       : " << bIsShown_ << "\n";
-    sStr << sTab << "  # Abs width   : " << uiAbsWidth_ << "\n";
-    sStr << sTab << "  # Abs height  : " << uiAbsHeight_ << "\n";
+    sStr << sTab << "  # Abs width   : " << fAbsWidth_ << "\n";
+    sStr << sTab << "  # Abs height  : " << fAbsHeight_ << "\n";
 
     return sStr.str();
 }
@@ -293,35 +293,35 @@ bool uiobject::is_visible() const
     return bIsVisible_;
 }
 
-void uiobject::set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight)
+void uiobject::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
 {
-    if (uiAbsWidth_  != uiAbsWidth || uiAbsHeight_ != uiAbsHeight)
+    if (fAbsWidth_  != fAbsWidth || fAbsHeight_ != fAbsHeight)
     {
         pManager_->notify_object_moved();
-        uiAbsWidth_ = uiAbsWidth;
-        uiAbsHeight_ = uiAbsHeight;
+        fAbsWidth_ = fAbsWidth;
+        fAbsHeight_ = fAbsHeight;
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
 
-void uiobject::set_abs_width(uint uiAbsWidth)
+void uiobject::set_abs_width(float fAbsWidth)
 {
-    if (uiAbsWidth_ != uiAbsWidth)
+    if (fAbsWidth_ != fAbsWidth)
     {
         pManager_->notify_object_moved();
-        uiAbsWidth_ = uiAbsWidth;
+        fAbsWidth_ = fAbsWidth;
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
 }
 
-void uiobject::set_abs_height(uint uiAbsHeight)
+void uiobject::set_abs_height(float fAbsHeight)
 {
-    if (uiAbsHeight_ != uiAbsHeight)
+    if (fAbsHeight_ != fAbsHeight)
     {
         pManager_->notify_object_moved();
-        uiAbsHeight_ = uiAbsHeight;
+        fAbsHeight_ = fAbsHeight;
         notify_borders_need_update();
         notify_renderer_need_redraw();
     }
@@ -349,23 +349,23 @@ void uiobject::set_rel_height(float fRelHeight)
         set_abs_height(fRelHeight*get_top_level_renderer()->get_target_height());
 }
 
-uint uiobject::get_abs_width() const
+float uiobject::get_abs_width() const
 {
-    return uiAbsWidth_;
+    return fAbsWidth_;
 }
 
-uint uiobject::get_apparent_width() const
+float uiobject::get_apparent_width() const
 {
     update_borders_();
     return lBorderList_.width();
 }
 
-uint uiobject::get_abs_height() const
+float uiobject::get_abs_height() const
 {
-    return uiAbsHeight_;
+    return fAbsHeight_;
 }
 
-uint uiobject::get_apparent_height() const
+float uiobject::get_apparent_height() const
 {
     update_borders_();
     return lBorderList_.height();
@@ -406,37 +406,37 @@ uiobject* uiobject::get_base()
     return pInheritance_;
 }
 
-vector2<int> uiobject::get_center() const
+vector2f uiobject::get_center() const
 {
     update_borders_();
     return lBorderList_.center();
 }
 
-int uiobject::get_left() const
+float uiobject::get_left() const
 {
     update_borders_();
     return lBorderList_.left;
 }
 
-int uiobject::get_right() const
+float uiobject::get_right() const
 {
     update_borders_();
     return lBorderList_.right;
 }
 
-int uiobject::get_top() const
+float uiobject::get_top() const
 {
     update_borders_();
     return lBorderList_.top;
 }
 
-int uiobject::get_bottom() const
+float uiobject::get_bottom() const
 {
     update_borders_();
     return lBorderList_.bottom;
 }
 
-const quad2i& uiobject::get_borders() const
+const quad2f& uiobject::get_borders() const
 {
     update_borders_();
     return lBorderList_;
@@ -497,12 +497,12 @@ void uiobject::set_all_points(uiobject* pObj)
         gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_all_points(this)." << std::endl;
 }
 
-void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, int iX, int iY)
+void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, float fX, float fY)
 {
-    set_abs_point(mPoint, sParentName, mRelativePoint, vector2i(iX, iY));
+    set_abs_point(mPoint, sParentName, mRelativePoint, vector2f(fX, fY));
 }
 
-void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, const vector2i& mOffset)
+void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, const vector2f& mOffset)
 {
     auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)].emplace(
         this, mPoint, sParentName, mRelativePoint);
@@ -775,13 +775,13 @@ void uiobject::make_borders_(float& iMin, float& iMax, float iCenter, float iSiz
     }
 }
 
-void uiobject::read_anchors_(float& iLeft, float& iRight, float& iTop,
-    float& iBottom, float& iXCenter, float& iYCenter) const
+void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
+    float& fBottom, float& fXCenter, float& fYCenter) const
 {
-    iLeft   = +std::numeric_limits<float>::infinity();
-    iRight  = -std::numeric_limits<float>::infinity();
-    iTop    = +std::numeric_limits<float>::infinity();
-    iBottom = -std::numeric_limits<float>::infinity();
+    fLeft   = +std::numeric_limits<float>::infinity();
+    fRight  = -std::numeric_limits<float>::infinity();
+    fTop    = +std::numeric_limits<float>::infinity();
+    fBottom = -std::numeric_limits<float>::infinity();
 
     for (const auto& mOptAnchor : lAnchorList_)
     {
@@ -798,40 +798,40 @@ void uiobject::read_anchors_(float& iLeft, float& iRight, float& iTop,
         switch (mAnchor.get_point())
         {
             case anchor_point::TOPLEFT :
-                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
-                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
+                fTop = std::min<float>(fTop, mAnchor.get_abs_y());
+                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x());
                 break;
             case anchor_point::TOP :
-                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
-                iXCenter = mAnchor.get_abs_x();
+                fTop = std::min<float>(fTop, mAnchor.get_abs_y());
+                fXCenter = mAnchor.get_abs_x();
                 break;
             case anchor_point::TOPRIGHT :
-                iTop = std::min<float>(iTop, mAnchor.get_abs_y());
-                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
+                fTop = std::min<float>(fTop, mAnchor.get_abs_y());
+                fRight = std::max<float>(fRight, mAnchor.get_abs_x());
                 break;
             case anchor_point::RIGHT :
-                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
-                iYCenter = mAnchor.get_abs_y();
+                fRight = std::max<float>(fRight, mAnchor.get_abs_x());
+                fYCenter = mAnchor.get_abs_y();
                 break;
             case anchor_point::BOTTOMRIGHT :
-                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
-                iRight = std::max<float>(iRight, mAnchor.get_abs_x());
+                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y());
+                fRight = std::max<float>(fRight, mAnchor.get_abs_x());
                 break;
             case anchor_point::BOTTOM :
-                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
-                iXCenter = mAnchor.get_abs_x();
+                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y());
+                fXCenter = mAnchor.get_abs_x();
                 break;
             case anchor_point::BOTTOMLEFT :
-                iBottom = std::max<float>(iBottom, mAnchor.get_abs_y());
-                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
+                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y());
+                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x());
                 break;
             case anchor_point::LEFT :
-                iLeft = std::min<float>(iLeft, mAnchor.get_abs_x());
-                iYCenter = mAnchor.get_abs_y();
+                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x());
+                fYCenter = mAnchor.get_abs_y();
                 break;
             case anchor_point::CENTER :
-                iXCenter = mAnchor.get_abs_x();
-                iYCenter = mAnchor.get_abs_y();
+                fXCenter = mAnchor.get_abs_x();
+                fYCenter = mAnchor.get_abs_y();
                 break;
         }
     }
@@ -857,25 +857,23 @@ void uiobject::update_borders_() const
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
 
         DEBUG_LOG("  Make borders");
-        make_borders_(fTop,  fBottom, fYCenter, uiAbsHeight_);
-        make_borders_(fLeft, fRight,  fXCenter, uiAbsWidth_);
+        make_borders_(fTop,  fBottom, fYCenter, fAbsHeight_);
+        make_borders_(fLeft, fRight,  fXCenter, fAbsWidth_);
 
         if (bReady_)
         {
-            int iLeft = fLeft, iRight = fRight, iTop = fTop, iBottom = fBottom;
+            if (fRight < fLeft)
+                fRight = fLeft+1;
+            if (fBottom < fTop)
+                fBottom = fTop+1;
 
-            if (iRight < iLeft)
-                iRight = iLeft+1;
-            if (iBottom < iTop)
-                iBottom = iTop+1;
+            lBorderList_ = quad2f(fLeft, fRight, fTop, fBottom);
 
-            lBorderList_ = quad2i(iLeft, iRight, iTop, iBottom);
-
-            uiAbsWidth_  = iRight - iLeft;
-            uiAbsHeight_  = iBottom - iTop;
+            fAbsWidth_  = fRight - fLeft;
+            fAbsHeight_  = fBottom - fTop;
         }
         else
-            lBorderList_ = quad2i::ZERO;
+            lBorderList_ = quad2f::ZERO;
 
         bUpdateBorders_ = false;
     }

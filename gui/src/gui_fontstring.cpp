@@ -49,13 +49,13 @@ void font_string::render()
         else
             fY = lBorderList_.top;
 
-        fX += iXOffset_;
-        fY += iYOffset_;
+        fX += fXOffset_;
+        fY += fYOffset_;
 
         if (bHasShadow_)
         {
             pText_->set_color(mShadowColor_, true);
-            pText_->render(fX + iShadowXOffset_, fY + iShadowYOffset_);
+            pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
         }
 
         if (bIsOutlined_)
@@ -84,7 +84,7 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << layered_region::serialize(sTab);
 
     sStr << sTab << "  # Font name   : " << sFontName_ << "\n";
-    sStr << sTab << "  # Font height : " << uiHeight_ << "\n";
+    sStr << sTab << "  # Font height : " << fHeight_ << "\n";
     sStr << sTab << "  # Text ready  : " << (pText_ != nullptr) << "\n";
     sStr << sTab << "  # Text        : \"" << utils::unicode_to_utf8(sText_) << "\"\n";
     sStr << sTab << "  # Outlined    : " << bIsOutlined_ << "\n";
@@ -112,7 +112,7 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # NonSpaceW.  : " << bCanNonSpaceWrap_ << "\n";
     if (bHasShadow_)
     {
-    sStr << sTab << "  # Shadow off. : (" << iShadowXOffset_ << ", " << iShadowYOffset_ << ")\n";
+    sStr << sTab << "  # Shadow off. : (" << fShadowXOffset_ << ", " << fShadowYOffset_ << ")\n";
     sStr << sTab << "  # Shadow col. : " <<  mShadowColor_ << "\n";
     }
 
@@ -133,9 +133,9 @@ void font_string::copy_from(uiobject* pObj)
         return;
 
     std::string sFontName = pFontString->get_font_name();
-    uint uiHeight = pFontString->get_font_height();
-    if (!sFontName.empty() && uiHeight != 0)
-        this->set_font(sFontName, uiHeight);
+    float fHeight = pFontString->get_font_height();
+    if (!sFontName.empty() && fHeight != 0)
+        this->set_font(sFontName, fHeight);
 
     this->set_justify_h(pFontString->get_justify_h());
     this->set_justify_v(pFontString->get_justify_v());
@@ -157,9 +157,9 @@ const std::string& font_string::get_font_name() const
     return sFontName_;
 }
 
-uint font_string::get_font_height() const
+float font_string::get_font_height() const
 {
-    return uiHeight_;
+    return fHeight_;
 }
 
 void font_string::set_outlined(bool bIsOutlined)
@@ -191,24 +191,24 @@ const color& font_string::get_shadow_color() const
     return mShadowColor_;
 }
 
-vector2i font_string::get_shadow_offsets() const
+vector2f font_string::get_shadow_offsets() const
 {
-    return vector2i(iShadowXOffset_, iShadowYOffset_);
+    return vector2f(fShadowXOffset_, fShadowYOffset_);
 }
 
-vector2i font_string::get_offsets() const
+vector2f font_string::get_offsets() const
 {
-    return vector2i(iXOffset_, iYOffset_);
+    return vector2f(fXOffset_, fYOffset_);
 }
 
-int font_string::get_shadow_x_offset() const
+float font_string::get_shadow_x_offset() const
 {
-    return iShadowXOffset_;
+    return fShadowXOffset_;
 }
 
-int font_string::get_shadow_y_offset() const
+float font_string::get_shadow_y_offset() const
 {
-    return iShadowYOffset_;
+    return fShadowYOffset_;
 }
 
 float font_string::get_spacing() const
@@ -226,15 +226,15 @@ void font_string::notify_scaling_factor_updated()
     uiobject::notify_scaling_factor_updated();
 
     if (pText_)
-        set_font(sFontName_, uiHeight_);
+        set_font(sFontName_, fHeight_);
 }
 
-void font_string::set_font(const std::string& sFontName, uint uiHeight)
+void font_string::set_font(const std::string& sFontName, float fHeight)
 {
     sFontName_ = sFontName;
-    uiHeight_ = uiHeight;
+    fHeight_ = fHeight;
 
-    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*uiHeight);
+    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight);
 
     renderer* pRenderer = pManager_->get_renderer();
     pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiPixelHeight)));
@@ -287,44 +287,44 @@ void font_string::set_shadow_color(const color& mShadowColor)
     }
 }
 
-void font_string::set_shadow_offsets(int iShadowXOffset, int iShadowYOffset)
+void font_string::set_shadow_offsets(float fShadowXOffset, float fShadowYOffset)
 {
-    if (iShadowXOffset_ != iShadowXOffset || iShadowYOffset_ != iShadowYOffset)
+    if (fShadowXOffset_ != fShadowXOffset || fShadowYOffset_ != fShadowYOffset)
     {
-        iShadowXOffset_ = iShadowXOffset;
-        iShadowYOffset_ = iShadowYOffset;
+        fShadowXOffset_ = fShadowXOffset;
+        fShadowYOffset_ = fShadowYOffset;
         if (bHasShadow_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_shadow_offsets(const vector2i& mShadowOffsets)
+void font_string::set_shadow_offsets(const vector2f& mShadowOffsets)
 {
-    if (iShadowXOffset_ != mShadowOffsets.x || iShadowYOffset_ != mShadowOffsets.y)
+    if (fShadowXOffset_ != mShadowOffsets.x || fShadowYOffset_ != mShadowOffsets.y)
     {
-        iShadowXOffset_ = mShadowOffsets.x;
-        iShadowYOffset_ = mShadowOffsets.y;
+        fShadowXOffset_ = mShadowOffsets.x;
+        fShadowYOffset_ = mShadowOffsets.y;
         if (bHasShadow_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_offsets(int iXOffset, int iYOffset)
+void font_string::set_offsets(float fXOffset, float fYOffset)
 {
-    if (iXOffset_ != iXOffset || iYOffset_ != iYOffset)
+    if (fXOffset_ != fXOffset || fYOffset_ != fYOffset)
     {
-        iXOffset_ = iXOffset;
-        iYOffset_ = iYOffset;
+        fXOffset_ = fXOffset;
+        fYOffset_ = fYOffset;
         notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_offsets(const vector2i& mOffsets)
+void font_string::set_offsets(const vector2f& mOffsets)
 {
-    if (iXOffset_ != mOffsets.x || iYOffset_ != mOffsets.y)
+    if (fXOffset_ != mOffsets.x || fYOffset_ != mOffsets.y)
     {
-        iXOffset_ = mOffsets.x;
-        iYOffset_ = mOffsets.y;
+        fXOffset_ = mOffsets.x;
+        fYOffset_ = mOffsets.y;
         notify_renderer_need_redraw();
     }
 }
@@ -470,7 +470,7 @@ void font_string::update_borders_() const
         DEBUG_LOG("  Read anchors");
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
 
-        if (uiAbsWidth_ == 0u)
+        if (fAbsWidth_ == 0.0f)
         {
             if (lDefinedBorderList_.left && lDefinedBorderList_.right)
                 pText_->set_box_width(fRight - fLeft);
@@ -478,9 +478,9 @@ void font_string::update_borders_() const
                 pText_->set_box_width(std::numeric_limits<float>::infinity());
         }
         else
-            pText_->set_box_width(uiAbsWidth_);
+            pText_->set_box_width(fAbsWidth_);
 
-        if (uiAbsHeight_ == 0u)
+        if (fAbsHeight_ == 0.0f)
         {
             if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
                 pText_->set_box_height(fBottom - fTop);
@@ -488,35 +488,33 @@ void font_string::update_borders_() const
                 pText_->set_box_height(std::numeric_limits<float>::infinity());
         }
         else
-            pText_->set_box_height(uiAbsHeight_);
+            pText_->set_box_height(fAbsHeight_);
 
         DEBUG_LOG("  Make borders");
-        if (uiAbsHeight_ != 0u)
-            make_borders_(fTop, fBottom, fYCenter, uiAbsHeight_);
+        if (fAbsHeight_ != 0.0f)
+            make_borders_(fTop, fBottom, fYCenter, fAbsHeight_);
         else
             make_borders_(fTop, fBottom, fYCenter, pText_->get_height());
 
-        if (uiAbsWidth_ != 0u)
-            make_borders_(fLeft, fRight, fXCenter, uiAbsWidth_);
+        if (fAbsWidth_ != 0.0f)
+            make_borders_(fLeft, fRight, fXCenter, fAbsWidth_);
         else
             make_borders_(fLeft, fRight, fXCenter, pText_->get_width());
 
         if (bReady_)
         {
-            int iLeft = fLeft, iRight = fRight, iTop = fTop, iBottom = fBottom;
+            if (fRight < fLeft)
+                fRight = fLeft + 1.0f;
+            if (fBottom < fTop)
+                fBottom = fTop + 1.0f;
 
-            if (iRight < iLeft)
-                iRight = iLeft+1;
-            if (iBottom < iTop)
-                iBottom = iTop+1;
-
-            lBorderList_.left   = iLeft;
-            lBorderList_.right  = iRight;
-            lBorderList_.top    = iTop;
-            lBorderList_.bottom = iBottom;
+            lBorderList_.left   = fLeft;
+            lBorderList_.right  = fRight;
+            lBorderList_.top    = fTop;
+            lBorderList_.bottom = fBottom;
         }
         else
-            lBorderList_ = quad2i::ZERO;
+            lBorderList_ = quad2f::ZERO;
 
         bUpdateBorders_ = false;
     }

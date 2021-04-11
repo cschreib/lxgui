@@ -81,8 +81,8 @@ void frame::parse_resize_bounds_block_(xml::block* pBlock)
             if (pDimBlock->get_name() == "AbsDimension")
             {
                 set_min_resize(
-                    utils::string_to_int(pDimBlock->get_attribute("x")),
-                    utils::string_to_int(pDimBlock->get_attribute("y"))
+                    utils::string_to_float(pDimBlock->get_attribute("x")),
+                    utils::string_to_float(pDimBlock->get_attribute("y"))
                 );
             }
             else if (pDimBlock->get_name() == "RelDimension")
@@ -99,8 +99,8 @@ void frame::parse_resize_bounds_block_(xml::block* pBlock)
             if (pDimBlock->get_name() == "AbsDimension")
             {
                 set_max_resize(
-                    utils::string_to_int(pDimBlock->get_attribute("x")),
-                    utils::string_to_int(pDimBlock->get_attribute("y"))
+                    utils::string_to_float(pDimBlock->get_attribute("x")),
+                    utils::string_to_float(pDimBlock->get_attribute("y"))
                 );
             }
             else if (pDimBlock->get_name() == "RelDimension")
@@ -147,10 +147,10 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             if (pInsetBlock->get_name() == "AbsInset")
             {
                 pBackdrop->set_background_insets(
-                    utils::string_to_int(pInsetBlock->get_attribute("left")),
-                    utils::string_to_int(pInsetBlock->get_attribute("right")),
-                    utils::string_to_int(pInsetBlock->get_attribute("top")),
-                    utils::string_to_int(pInsetBlock->get_attribute("bottom"))
+                    utils::string_to_float(pInsetBlock->get_attribute("left")),
+                    utils::string_to_float(pInsetBlock->get_attribute("right")),
+                    utils::string_to_float(pInsetBlock->get_attribute("top")),
+                    utils::string_to_float(pInsetBlock->get_attribute("bottom"))
                 );
             }
             else
@@ -167,10 +167,10 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             if (pInsetBlock->get_name() == "AbsInset")
             {
                 pBackdrop->set_edge_insets(
-                    utils::string_to_int(pInsetBlock->get_attribute("left")),
-                    utils::string_to_int(pInsetBlock->get_attribute("right")),
-                    utils::string_to_int(pInsetBlock->get_attribute("top")),
-                    utils::string_to_int(pInsetBlock->get_attribute("bottom"))
+                    utils::string_to_float(pInsetBlock->get_attribute("left")),
+                    utils::string_to_float(pInsetBlock->get_attribute("right")),
+                    utils::string_to_float(pInsetBlock->get_attribute("top")),
+                    utils::string_to_float(pInsetBlock->get_attribute("bottom"))
                 );
             }
             else
@@ -229,10 +229,10 @@ void frame::parse_hit_rect_insets_block_(xml::block* pBlock)
         if (pInsetBlock->get_name() == "AbsInset")
         {
             set_abs_hit_rect_insets(
-                utils::string_to_int(pInsetBlock->get_attribute("left")),
-                utils::string_to_int(pInsetBlock->get_attribute("right")),
-                utils::string_to_int(pInsetBlock->get_attribute("top")),
-                utils::string_to_int(pInsetBlock->get_attribute("bottom"))
+                utils::string_to_float(pInsetBlock->get_attribute("left")),
+                utils::string_to_float(pInsetBlock->get_attribute("right")),
+                utils::string_to_float(pInsetBlock->get_attribute("top")),
+                utils::string_to_float(pInsetBlock->get_attribute("bottom"))
             );
         }
         else if (pInsetBlock->get_name() == "RelInset")

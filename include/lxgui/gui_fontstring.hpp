@@ -60,7 +60,7 @@ namespace gui
         /// Returns the heigh of the font.
         /** \return The heigh of the font
         */
-        uint get_font_height() const;
+        float get_font_height() const;
 
         /// Adds or remove the outline around the text.
         /** \param bIsOutlined 'true' to enable the outline
@@ -93,23 +93,23 @@ namespace gui
         /** \return This font_string's shadow offsets
         *   \note Contains (X, Y) offsets.
         */
-        vector2i get_shadow_offsets() const;
+        vector2f get_shadow_offsets() const;
 
         /// Returns this font_string's shadow X offset.
         /** \return This font_string's shadow X offset
         */
-        int get_shadow_x_offset() const;
+        float get_shadow_x_offset() const;
 
         /// Returns this font_string's shadow Y offset.
         /** \return This font_string's shadow Y offset
         */
-        int get_shadow_y_offset() const;
+        float get_shadow_y_offset() const;
 
         /// Returns this font_string's offsets.
         /** \return This font_string's offsets
         *   \note Contains (X, Y) offsets.
         */
-        vector2i get_offsets() const;
+        vector2f get_offsets() const;
 
         /// Returns the space between each letter.
         /** \return The space between each letter
@@ -123,9 +123,9 @@ namespace gui
 
         /// Sets this font_string's font (file and size).
         /** \param sFontName   The file path to the .ttf file
-        *   \param uiHeight    The font height
+        *   \param fHeight     The font height
         */
-        void set_font(const std::string& sFontName, uint uiHeight);
+        void set_font(const std::string& sFontName, float fHeight);
 
         /// Sets this font_string's horizontal aligment behavior.
         /** \param mJustifyH The horizontal alignment behavior
@@ -143,28 +143,28 @@ namespace gui
         void set_shadow_color(const color& mShadowColor);
 
         /// Sets this font_string's shadow offsets.
-        /** \param iShadowXOffset The horizontal offset
-        *   \param iShadowYOffset The vertical offset
+        /** \param fShadowXOffset The horizontal offset
+        *   \param fShadowYOffset The vertical offset
         */
-        void set_shadow_offsets(int iShadowXOffset, int iShadowYOffset);
+        void set_shadow_offsets(float fShadowXOffset, float fShadowYOffset);
 
         /// Sets this font_string's shadow offsets.
         /** \param mShadowOffsets Offsets
         *   \note Contains (X, Y) offsets.
         */
-        void set_shadow_offsets(const vector2i& mShadowOffsets);
+        void set_shadow_offsets(const vector2f& mShadowOffsets);
 
         /// Sets this font_string's offsets.
-        /** \param iXOffset The horizontal offset
-        *   \param iYOffset The vertical offset
+        /** \param fXOffset The horizontal offset
+        *   \param fYOffset The vertical offset
         */
-        void set_offsets(int iXOffset, int iYOffset);
+        void set_offsets(float fXOffset, float fYOffset);
 
         /// Sets this font_string's offsets.
         /** \param mOffsets Offsets
         *   \note Contains (X, Y) offsets.
         */
-        void set_offsets(const vector2i& mOffsets);
+        void set_offsets(const vector2f& mOffsets);
 
         /// Sets the space between each letter.
         /** \param fSpacing The space between each letter
@@ -282,13 +282,13 @@ namespace gui
 
         utils::ustring sText_;
         std::string    sFontName_;
-        uint           uiHeight_ = 0;
+        float          fHeight_ = 0.0f;
 
         float                    fSpacing_ = 0.0f;
         text::alignment          mJustifyH_ = text::alignment::CENTER;
         text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
-        int                      iXOffset_ = 0;
-        int                      iYOffset_ = 0;
+        float                    fXOffset_ = 0.0f;
+        float                    fYOffset_ = 0.0f;
 
         bool  bIsOutlined_ = false;
         bool  bCanNonSpaceWrap_ = false;
@@ -299,8 +299,8 @@ namespace gui
 
         bool  bHasShadow_ = false;
         color mShadowColor_ = color::BLACK;
-        int   iShadowXOffset_ = 0;
-        int   iShadowYOffset_ = 0;
+        float fShadowXOffset_ = 0.0f;
+        float fShadowYOffset_ = 0.0f;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

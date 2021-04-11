@@ -187,6 +187,8 @@ float text::get_string_width(const utils::ustring& sString) const
     if (fWidth > fMaxWidth)
         fMaxWidth = fWidth;
 
+    gui::out << "string width: " << utils::unicode_to_utf8(sString) << ": " << fMaxWidth << std::endl;
+
     return fMaxWidth;
 }
 
@@ -503,7 +505,7 @@ void text::update_() const
                 }
 
                 DEBUG_LOG("      Get width");
-                mLine.fWidth += get_character_width(*iterChar1);
+                mLine.fWidth += get_character_width(*iterChar1) + fTracking_;
                 auto iterNext = iterChar1 + 1;
                 if (!utils::is_whitespace(*iterChar1) && iterNext != sManualLine.end() &&
                     !utils::is_whitespace(*iterNext))
@@ -513,8 +515,9 @@ void text::update_() const
 
                 mLine.sCaption += *iterChar1;
 
-                if (mLine.fWidth > fBoxW_)
+                if (round_to_pixel_(mLine.fWidth - fBoxW_) > 0)
                 {
+                    gui::out << "string width: " << utils::unicode_to_utf8(mLine.sCaption) << ": " << mLine.fWidth << " vs box " << fBoxW_  << " (diff: " << mLine.fWidth - fBoxW_ << ")" << std::endl;
                     DEBUG_LOG("      Box break " + utils::to_string(mLine.fWidth) + " > " + utils::to_string(fBoxW_));
                     // Whoops, the line is too long...
                     if (mLine.sCaption.find_first_of(U" \t\n\r") != mLine.sCaption.npos && bWordWrap_)

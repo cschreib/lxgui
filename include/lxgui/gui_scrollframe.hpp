@@ -82,38 +82,38 @@ namespace gui
         frame* get_scroll_child();
 
         /// Sets the horizontal offset of the scroll child.
-        /** \param iHorizontalScroll The horizontal offset
+        /** \param fHorizontalScroll The horizontal offset
         */
-        void set_horizontal_scroll(int iHorizontalScroll);
+        void set_horizontal_scroll(float fHorizontalScroll);
 
         /// Returns the horizontal offset of the scroll child.
         /** \return The horizontal offset of the scroll child
         */
-        int get_horizontal_scroll() const;
+        float get_horizontal_scroll() const;
 
         /// Returns the maximum horizontal offset of the scroll child.
         /** \return The maximum horizontal offset of the scroll child
         */
-        int get_horizontal_scroll_range() const;
+        float get_horizontal_scroll_range() const;
 
         /// Sets the vertical offset of the scroll child.
-        /** \param iVerticalScroll The vertical offset
+        /** \param fVerticalScroll The vertical offset
         */
-        void set_vertical_scroll(int iVerticalScroll);
+        void set_vertical_scroll(float fVerticalScroll);
 
         /// Returns the vertical offset of the scroll child.
         /** \return The vertical offset of the scroll child
         */
-        int get_vertical_scroll() const;
+        float get_vertical_scroll() const;
 
         /// Returns the maximum vertical offset of the scroll child.
         /** \return The maximum vertical offset of the scroll child
         */
-        int get_vertical_scroll_range() const;
+        float get_vertical_scroll_range() const;
 
         /// Checks if the provided coordinates are in the scroll_frame.
-        /** \param iX           The horizontal coordinate
-        *   \param iY           The vertical coordinate
+        /** \param fX The horizontal coordinate
+        *   \param fY The vertical coordinate
         *   \return 'true' if the provided coordinates are in the scroll_frame
         *   \note The scroll_frame version of this function also checks if the
         *         mouse is over the scroll texture (which means this function
@@ -121,14 +121,14 @@ namespace gui
         *   \note For scroll children to receive input, the scroll_frame must be
         *         keyboard/mouse/wheel enabled.
         */
-        bool is_in_frame(int iX, int iY) const override;
+        bool is_in_frame(float fX, float fY) const override;
 
         /// Tells this scroll_frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this scroll_frame
-        *   \param iX            The horizontal mouse coordinate
-        *   \param iY            The vertical mouse coordinate
+        *   \param fX            The horizontal mouse coordinate
+        *   \param fY            The vertical mouse coordinate
         */
-        void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY) override;
+        void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY) override;
 
         /// Tells this renderer that one of its widget requires redraw.
         void fire_redraw(frame_strata mStrata) const override;
@@ -142,12 +142,12 @@ namespace gui
         /// Returns the width of of this renderer's main render target (e.g., screen).
         /** \return The render target width
         */
-        uint get_target_width() const override;
+        float get_target_width() const override;
 
         /// Returns the height of this renderer's main render target (e.g., screen).
         /** \return The render target height
         */
-        uint get_target_height() const override;
+        float get_target_height() const override;
 
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
@@ -174,10 +174,10 @@ namespace gui
         void rebuild_scroll_render_target_();
         void render_scroll_strata_list_();
 
-        int iHorizontalScroll_ = 0;
-        int iHorizontalScrollRange_ = 0;
-        int iVerticalScroll_ = 0;
-        int iVerticalScrollRange_ = 0;
+        float fHorizontalScroll_ = 0;
+        float fHorizontalScrollRange_ = 0;
+        float fVerticalScroll_ = 0;
+        float fVerticalScrollRange_ = 0;
 
         frame* pScrollChild_ = nullptr;
 

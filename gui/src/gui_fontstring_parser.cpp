@@ -24,7 +24,7 @@ void font_string::parse_attributes_(xml::block* pBlock)
 
     set_font(
         pManager_->parse_file_name(pBlock->get_attribute("font")),
-        utils::string_to_uint(pBlock->get_attribute("fontHeight"))
+        utils::string_to_float(pBlock->get_attribute("fontHeight"))
     );
 
     if (pBlock->is_provided("text") || !bInherits_)

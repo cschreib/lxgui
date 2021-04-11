@@ -208,7 +208,7 @@ int lua_edit_box::_get_text_insets(lua_State* pLua)
 
     lua::function mFunc("EditBox:get_text_insets", pLua, 4);
 
-    const quad2i& lInsets = get_object()->get_text_insets();
+    const quad2f& lInsets = get_object()->get_text_insets();
 
     mFunc.push(lInsets.left);
     mFunc.push(lInsets.right);
@@ -451,10 +451,10 @@ int lua_edit_box::_set_text_insets(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_text_insets(
-            int(mFunc.get(0)->get_number()),
-            int(mFunc.get(1)->get_number()),
-            int(mFunc.get(2)->get_number()),
-            int(mFunc.get(3)->get_number())
+            mFunc.get(0)->get_number(),
+            mFunc.get(1)->get_number(),
+            mFunc.get(2)->get_number(),
+            mFunc.get(3)->get_number()
         );
     }
 

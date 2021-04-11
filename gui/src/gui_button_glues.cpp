@@ -297,7 +297,7 @@ int lua_button::_get_pushed_text_offset(lua_State* pLua)
 
     lua::function mFunc("Button:get_pushed_text_offset", pLua, 2);
 
-    vector2i lOffset = get_object()->get_pushed_text_offset();
+    vector2f lOffset = get_object()->get_pushed_text_offset();
 
     mFunc.push(lOffset.x);
     mFunc.push(lOffset.y);
@@ -697,8 +697,8 @@ int lua_button::_set_pushed_text_offset(lua_State* pLua)
     mFunc.add(1, "y offset", lua::type::NUMBER);
     if (mFunc.check())
     {
-        get_object()->set_pushed_text_offset(vector2i(
-            (int)mFunc.get(0)->get_number(), (int)mFunc.get(1)->get_number()
+        get_object()->set_pushed_text_offset(vector2f(
+            mFunc.get(0)->get_number(), mFunc.get(1)->get_number()
         ));
     }
 

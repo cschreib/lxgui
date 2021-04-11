@@ -232,12 +232,12 @@ namespace gui
         /// Sets this button's pushed text offset.
         /** \param lOffset The pushed text offset
         */
-        virtual void set_pushed_text_offset(const vector2i& lOffset);
+        void set_pushed_text_offset(const vector2f& lOffset);
 
         /// Returns this button's pushed text offset.
         /** \return This button's pushed text offset
         */
-        const vector2i& get_pushed_text_offset() const;
+        const vector2f& get_pushed_text_offset() const;
 
         /// Parses data from an xml::block.
         /** \param pBlock The button's xml::block
@@ -275,7 +275,7 @@ namespace gui
         font_string* pDisabledText_ = nullptr;
         font_string* pCurrentFontString_ = nullptr;
 
-        vector2i mPushedTextOffset_ = vector2i::ZERO;
+        vector2f mPushedTextOffset_ = vector2f::ZERO;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

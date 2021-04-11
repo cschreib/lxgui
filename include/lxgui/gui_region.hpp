@@ -31,7 +31,7 @@ namespace gui
         *   \param iY The vertical coordinate
         *   \return 'true' if the provided coordinates are inside this region
         */
-        virtual bool is_in_region(int iX, int iY) const;
+        virtual bool is_in_region(float fX, float fY) const;
 
         /// Creates the associated Lua glue.
         void create_glue() override;

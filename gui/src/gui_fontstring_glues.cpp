@@ -329,8 +329,8 @@ int lua_font_string::_set_shadow_offset(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_shadow_offsets(
-            int(mFunc.get(0)->get_number()),
-            int(mFunc.get(1)->get_number())
+            mFunc.get(0)->get_number(),
+            mFunc.get(1)->get_number()
         );
     }
 

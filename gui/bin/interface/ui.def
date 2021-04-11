@@ -5,14 +5,14 @@
 <d:Region name inherits="" b:virtual="false" b:setAllPoints="false" b:hidden="false">
 
     <n[.,1]:Size>
-        <n[*]:AbsDimension n:x="0"   n:y="0"/>
+        <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
         <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
     </Size>
 
     <n[.,1]:Anchors>
         <Anchor point="TOPLEFT" relativeTo="" relativePoint="">
             <n[.,1]:Offset>
-                <n[*]:AbsDimension n:x="0"   n:y="0"/>
+                <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
                 <n[*]:RelDimension n:x="0.0" n:y="0.0"/>
             </Offset>
         </Anchor>
@@ -48,12 +48,12 @@
 
     <n[.,1]:ResizeBounds>
         <n[.,1]:Min>
-            <n[*]:AbsDimension n:x="0"   n:y="0"/>
+            <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
             <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
         </Min>
         <n[.,1]:Max>
-            <n[*]:AbsDimension n:x="-1"   n:y="-1"/>
-            <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
+            <n[*]:AbsDimension n:x="-1.0" n:y="-1.0"/>
+            <n[*]:RelDimension n:x="1.0"  n:y="1.0"/>
         </Max>
     </ResizeBounds>
 
@@ -61,7 +61,7 @@
 
     <n[.,1]:Backdrop bgFile="" edgeFile="" b:tile="false">
         <n[.,1]:BackgroundInsets>
-            <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
+            <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
             <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         </BackgroundInsets>
 
@@ -79,7 +79,7 @@
     </Backdrop>
 
     <n[.,1]:HitRectInsets>
-        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
+        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </HitRectInsets>
 
@@ -127,7 +127,7 @@
     <n[.,1]:c[FontString]:DisabledText  name="$parentDisabledText"  b:setAllPoints="true" hidden="true" layer="BORDER"/>
 
     <n[.,1]:PushedTextOffset>
-        <n[*]:AbsDimension n:x="0" n:y="0"/>
+        <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
         <n[*]:RelDimension n:x="0.0" n:y="0.0"/>
     </PushedTextOffset>
 
@@ -240,7 +240,7 @@
     <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
 
     <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
+        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </TextInsets>
 
@@ -281,7 +281,7 @@
     <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
 
     <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
+        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </TextInsets>
 

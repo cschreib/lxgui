@@ -417,7 +417,7 @@ int lua_frame::_get_backdrop(lua_State* pLua)
         mState.set_field("insets");
         mState.get_field("insets");
 
-        const quad2i& lInsets = pBackdrop->get_background_insets();
+        const quad2f& lInsets = pBackdrop->get_background_insets();
         mState.set_field_int("left",   lInsets.left);
         mState.set_field_int("right",  lInsets.right);
         mState.set_field_int("top",    lInsets.top);
@@ -596,7 +596,7 @@ int lua_frame::_get_hit_rect_insets(lua_State* pLua)
 
     lua::function mFunc("Frame:get_hit_rect_inset", pLua, 4);
 
-    const quad2i& lInsets = get_object()->get_abs_hit_rect_insets();
+    const quad2f& lInsets = get_object()->get_abs_hit_rect_insets();
 
     mFunc.push(lInsets.left);
     mFunc.push(lInsets.right);
@@ -629,7 +629,7 @@ int lua_frame::_get_max_resize(lua_State* pLua)
 
     lua::function mFunc("Frame:get_max_resize", pLua, 2);
 
-    vector2ui lMax = get_object()->get_max_resize();
+    vector2f lMax = get_object()->get_max_resize();
 
     mFunc.push(lMax.x);
     mFunc.push(lMax.y);
@@ -646,7 +646,7 @@ int lua_frame::_get_min_resize(lua_State* pLua)
 
     lua::function mFunc("Frame:get_min_resize", pLua, 2);
 
-    vector2ui lMin = get_object()->get_min_resize();
+    vector2f lMin = get_object()->get_min_resize();
 
     mFunc.push(lMin.x);
     mFunc.push(lMin.y);
@@ -995,11 +995,11 @@ int lua_frame::_set_backdrop(lua_State* pLua)
 
             if (mState.get_type() == lua::type::TABLE)
             {
-                pBackdrop->set_background_insets(quad2i(
-                    mState.get_field_int("left",   false, 0),
-                    mState.get_field_int("right",  false, 0),
-                    mState.get_field_int("top",    false, 0),
-                    mState.get_field_int("bottom", false, 0)
+                pBackdrop->set_background_insets(quad2f(
+                    mState.get_field_double("left",   false, 0),
+                    mState.get_field_double("right",  false, 0),
+                    mState.get_field_double("top",    false, 0),
+                    mState.get_field_double("bottom", false, 0)
                 ));
             }
 
@@ -1179,10 +1179,10 @@ int lua_frame::_set_hit_rect_insets(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_abs_hit_rect_insets(
-            int(mFunc.get(0)->get_number()),
-            int(mFunc.get(1)->get_number()),
-            int(mFunc.get(2)->get_number()),
-            int(mFunc.get(3)->get_number())
+            mFunc.get(0)->get_number(),
+            mFunc.get(1)->get_number(),
+            mFunc.get(2)->get_number(),
+            mFunc.get(3)->get_number()
         );
     }
 
@@ -1202,8 +1202,8 @@ int lua_frame::_set_max_resize(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_max_resize(
-            uint(mFunc.get(0)->get_number()),
-            uint(mFunc.get(1)->get_number())
+            mFunc.get(0)->get_number(),
+            mFunc.get(1)->get_number()
         );
     }
 
@@ -1223,8 +1223,8 @@ int lua_frame::_set_min_resize(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_min_resize(
-            uint(mFunc.get(0)->get_number()),
-            uint(mFunc.get(1)->get_number())
+            mFunc.get(0)->get_number(),
+            mFunc.get(1)->get_number()
         );
     }
 
@@ -1243,7 +1243,7 @@ int lua_frame::_set_max_width(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_max_width(
-            uint(mFunc.get(0)->get_number())
+            mFunc.get(0)->get_number()
         );
     }
 
@@ -1262,7 +1262,7 @@ int lua_frame::_set_max_height(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_max_height(
-            uint(mFunc.get(0)->get_number())
+            mFunc.get(0)->get_number()
         );
     }
 
@@ -1281,7 +1281,7 @@ int lua_frame::_set_min_width(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_min_width(
-            uint(mFunc.get(0)->get_number())
+            mFunc.get(0)->get_number()
         );
     }
 
@@ -1300,7 +1300,7 @@ int lua_frame::_set_min_height(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_min_height(
-            uint(mFunc.get(0)->get_number())
+            mFunc.get(0)->get_number()
         );
     }
 

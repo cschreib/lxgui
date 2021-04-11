@@ -41,14 +41,14 @@ void uiobject::parse_size_block_(xml::block* pBlock)
             if (bHasX && bHasY)
             {
                 set_abs_dimensions(
-                    utils::string_to_uint(pDimBlock->get_attribute("x")),
-                    utils::string_to_uint(pDimBlock->get_attribute("y"))
+                    utils::string_to_float(pDimBlock->get_attribute("x")),
+                    utils::string_to_float(pDimBlock->get_attribute("y"))
                 );
             }
             else if (bHasX)
-                set_abs_width(utils::string_to_uint(pDimBlock->get_attribute("x")));
+                set_abs_width(utils::string_to_float(pDimBlock->get_attribute("x")));
             else if (bHasY)
-                set_abs_height(utils::string_to_uint(pDimBlock->get_attribute("y")));
+                set_abs_height(utils::string_to_float(pDimBlock->get_attribute("y")));
         }
         else if (pDimBlock->get_name() == "RelDimension")
         {
@@ -113,8 +113,8 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
                     if (pDimBlock->get_name() == "AbsDimension")
                     {
                         mAnchor.set_abs_offset(
-                            utils::string_to_int(pDimBlock->get_attribute("x")),
-                            utils::string_to_int(pDimBlock->get_attribute("y"))
+                            utils::string_to_float(pDimBlock->get_attribute("x")),
+                            utils::string_to_float(pDimBlock->get_attribute("y"))
                         );
                     }
                     else if (pDimBlock->get_name() == "RelDimension")

@@ -52,12 +52,12 @@ namespace gui
         /// Returns the display width of this renderer's main render target (e.g., screen).
         /** \return The render target width
         */
-        virtual uint get_target_width() const = 0;
+        virtual float get_target_width() const = 0;
 
         /// Returns the display height of this renderer's main render target (e.g., screen).
         /** \return The render target height
         */
-        virtual uint get_target_height() const = 0;
+        virtual float get_target_height() const = 0;
 
     protected :
 
@@ -71,7 +71,7 @@ namespace gui
 
         void render_strata_(const strata& mStrata) const;
 
-        frame* find_hovered_frame_(int iX, int iY);
+        frame* find_hovered_frame_(float fX, float fY);
 
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;

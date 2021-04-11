@@ -343,26 +343,26 @@ namespace gui
         void set_arrows_ignored(bool bArrowsIgnored);
 
         /// Sets the insets used to render the content text.
-        /** \param iLeft   The left inset
-        *   \param iRight  The right inset
-        *   \param iTop    The top inset
-        *   \param iBottom The bottom inset
+        /** \param fLeft   The left inset
+        *   \param fRight  The right inset
+        *   \param fTop    The top inset
+        *   \param fBottom The bottom inset
         *   \note Positive insets will reduce the text area, while
         *         negative ones will enlarge it
         */
-        void set_text_insets(int iLeft, int iRight, int iTop, int iBottom);
+        void set_text_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Sets the insets used to render the content text.
         /** \param lInsets (left, right, top, bottom)
         *   \note Positive insets will reduce the text area, while
         *         negative ones will enlarge it
         */
-        void set_text_insets(const quad2i& lInsets);
+        void set_text_insets(const quad2f& lInsets);
 
         /// Returns the text insets.
         /** \return The text insets
         */
-        const quad2i& get_text_insets() const;
+        const quad2f& get_text_insets() const;
 
         /// Returns the font_string used to render the content.
         /** \return The font_string used to render the content
@@ -411,8 +411,8 @@ namespace gui
 
         bool add_char_(char32_t sChar);
         bool remove_char_();
-        uint get_letter_id_at_(int iX, int iY);
-        bool move_carret_at_(int iX, int iY);
+        uint get_letter_id_at_(float fX, float fY);
+        bool move_carret_at_(float fX, float fY);
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
 
@@ -450,7 +450,7 @@ namespace gui
         uint                        uiCurrentHistoryLine_ = uint(-1);
 
         font_string* pFontString_ = nullptr;
-        quad2i       lTextInsets_ = quad2i::ZERO;
+        quad2f       lTextInsets_ = quad2f::ZERO;
 
         input::key     mLastKeyPressed_;
         double         dKeyRepeatSpeed_ = 0.03;

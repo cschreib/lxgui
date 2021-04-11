@@ -159,20 +159,20 @@ namespace gui
         bool  are_clicks_outside_thumb_allowed();
 
         /// Checks if the provided coordinates are in the frame.
-        /** \param iX           The horizontal coordinate
-        *   \param iY           The vertical coordinate
+        /** \param fX The horizontal coordinate
+        *   \param fY The vertical coordinate
         *   \return 'true' if the provided coordinates are in the frame
         *   \note The slider version of this function also checks if the
         *         mouse is over the thumb texture.
         */
-        bool is_in_frame(int iX, int iY) const override;
+        bool is_in_frame(float fX, float fY) const override;
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param iX            The horizontal mouse coordinate
-        *   \param iY            The vertical mouse coordinate
+        *   \param fX            The horizontal mouse coordinate
+        *   \param fY            The vertical mouse coordinate
         */
-        void notify_mouse_in_frame(bool bMouseInFrame, int iX, int iY) override;
+        void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured

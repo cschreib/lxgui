@@ -355,7 +355,7 @@ int lua_uiobject::_get_center(lua_State* pLua)
 
     lua::function mFunc("UIObject:get_center", pLua, 2);
 
-    vector2<int> mP = pObject_->get_center();
+    vector2f mP = pObject_->get_center();
     mFunc.push(mP.x);
     mFunc.push(mP.y);
 
@@ -607,7 +607,7 @@ int lua_uiobject::_set_height(lua_State* pLua)
     lua::function mFunc("UIObject:set_height", pLua);
     mFunc.add(0, "height", lua::type::NUMBER);
     if (mFunc.check())
-        pObject_->set_abs_height(uint(mFunc.get(0)->get_number()));
+        pObject_->set_abs_height(mFunc.get(0)->get_number());
 
     return mFunc.on_return();
 }
@@ -730,16 +730,16 @@ int lua_uiobject::_set_point(lua_State* pLua)
             mParentPoint = anchor::get_anchor_point(mFunc.get(2)->get_string());
 
         // x
-        int iAbsX = 0;
+        float fAbsX = 0;
         if (mFunc.is_provided(3))
-            iAbsX = int(mFunc.get(3)->get_number());
+            fAbsX = mFunc.get(3)->get_number();
 
         // y
-        int iAbsY = 0;
+        float fAbsY = 0;
         if (mFunc.is_provided(4))
-            iAbsY = int(mFunc.get(4)->get_number());
+            fAbsY = mFunc.get(4)->get_number();
 
-        pObject_->set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, iAbsX, iAbsY);
+        pObject_->set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
     }
 
     return mFunc.on_return();

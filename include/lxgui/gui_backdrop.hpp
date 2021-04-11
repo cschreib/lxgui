@@ -74,38 +74,38 @@ namespace gui
         /// Sets insets for the background texture.
         /** \param lInsets The insets array
         */
-        void set_background_insets(const quad2i& lInsets);
+        void set_background_insets(const quad2f& lInsets);
 
         /// Sets insets for the background texture.
-        /** \param iLeft   The left inset
-        *   \param iRight  The right inset
-        *   \param iTop    The top inset
-        *   \param iBottom The bottom inset
+        /** \param fLeft   The left inset
+        *   \param fRight  The right inset
+        *   \param fTop    The top inset
+        *   \param fBottom The bottom inset
         */
-        void set_background_insets(int iLeft, int iRight, int iTop, int iBottom);
+        void set_background_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Returns this backdrop's background insets.
         /** \return This backdrop's background insets
         */
-        const quad2i& get_background_insets() const;
+        const quad2f& get_background_insets() const;
 
         /// Sets insets for the edge texture.
         /** \param lInsets The insets array
         */
-        void set_edge_insets(const quad2i& lInsets);
+        void set_edge_insets(const quad2f& lInsets);
 
         /// Sets insets for the edge texture.
-        /** \param iLeft   The left inset
-        *   \param iRight  The right inset
-        *   \param iTop    The top inset
-        *   \param iBottom The bottom inset
+        /** \param fLeft   The left inset
+        *   \param fRight  The right inset
+        *   \param fTop    The top inset
+        *   \param fBottom The bottom inset
         */
-        void set_edge_insets(int iLeft, int iRight, int iTop, int iBottom);
+        void set_edge_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Returns this backdrop's edge insets.
         /** \return This backdrop's edge insets
         */
-        const quad2i& get_edge_insets() const;
+        const quad2f& get_edge_insets() const;
 
         /// Sets the edge/corner texture.
         /** \param sEdgeFile The edge/corner texture
@@ -193,8 +193,8 @@ namespace gui
         bool   bBackgroundTilling_ = false;
         uint   uiTileSize_ = 0u;
         uint   uiOriginalTileSize_ = 0u;
-        quad2i lBackgroundInsets_;
-        quad2i lEdgeInsets_;
+        quad2f lBackgroundInsets_;
+        quad2f lEdgeInsets_;
         uint   uiEdgeSize_ = 0u;
         uint   uiOriginalEdgeSize_ = 0u;
     };

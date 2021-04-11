@@ -128,10 +128,10 @@ std::string frame::serialize(const std::string& sTab) const
     sStr << sTab << "  |   # top    : " << lAbsHitRectInsetList_.top << "\n";
     sStr << sTab << "  |   # bottom : " << lAbsHitRectInsetList_.bottom << "\n";
     sStr << sTab << "  |-###\n";
-    sStr << sTab << "  # Min width   : " << uiMinWidth_ << "\n";
-    sStr << sTab << "  # Max width   : " << uiMaxWidth_ << "\n";
-    sStr << sTab << "  # Min height  : " << uiMinHeight_ << "\n";
-    sStr << sTab << "  # Max height  : " << uiMaxHeight_ << "\n";
+    sStr << sTab << "  # Min width   : " << fMinWidth_ << "\n";
+    sStr << sTab << "  # Max width   : " << fMaxWidth_ << "\n";
+    sStr << sTab << "  # Min height  : " << fMinHeight_ << "\n";
+    sStr << sTab << "  # Max height  : " << fMaxHeight_ << "\n";
     sStr << sTab << "  # Scale       : " << fScale_ << "\n";
     if (pTitleRegion_)
     {
@@ -142,7 +142,7 @@ std::string frame::serialize(const std::string& sTab) const
     }
     if (pBackdrop_)
     {
-        const quad2i& lInsets = pBackdrop_->get_background_insets();
+        const quad2f& lInsets = pBackdrop_->get_background_insets();
 
         sStr << sTab << "  # Backdrop    :\n";
         sStr << sTab << "  |-###\n";
@@ -402,104 +402,104 @@ layered_region* frame::get_region(const std::string& sName)
     return nullptr;
 }
 
-void frame::set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight)
+void frame::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
 {
     uiobject::set_abs_dimensions(
-        std::min(std::max(uiAbsWidth,  uiMinWidth_),  uiMaxWidth_),
-        std::min(std::max(uiAbsHeight, uiMinHeight_), uiMaxHeight_)
+        std::min(std::max(fAbsWidth,  fMinWidth_),  fMaxWidth_),
+        std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_)
     );
 }
 
-void frame::set_abs_width(uint uiAbsWidth)
+void frame::set_abs_width(float fAbsWidth)
 {
-    uiobject::set_abs_width(std::min(std::max(uiAbsWidth, uiMinWidth_), uiMaxWidth_));
+    uiobject::set_abs_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
 }
 
-void frame::set_abs_height(uint uiAbsHeight)
+void frame::set_abs_height(float fAbsHeight)
 {
-    uiobject::set_abs_height(std::min(std::max(uiAbsHeight, uiMinHeight_), uiMaxHeight_));
+    uiobject::set_abs_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
 }
 
 void frame::check_position() const
 {
-    if (lBorderList_.right - lBorderList_.left < int(uiMinWidth_))
+    if (lBorderList_.right - lBorderList_.left < fMinWidth_)
     {
-        lBorderList_.right = lBorderList_.left + uiMinWidth_;
-        uiAbsWidth_ = uiMinWidth_;
+        lBorderList_.right = lBorderList_.left + fMinWidth_;
+        fAbsWidth_ = fMinWidth_;
     }
-    else if (uint(lBorderList_.right - lBorderList_.left) > uiMaxWidth_)
+    else if (lBorderList_.right - lBorderList_.left > fMaxWidth_)
     {
-        lBorderList_.right = lBorderList_.left + uiMaxWidth_;
-        uiAbsWidth_ = uiMaxWidth_;
+        lBorderList_.right = lBorderList_.left + fMaxWidth_;
+        fAbsWidth_ = fMaxWidth_;
     }
 
-    if (lBorderList_.bottom - lBorderList_.top < int(uiMinHeight_))
+    if (lBorderList_.bottom - lBorderList_.top < fMinHeight_)
     {
-        lBorderList_.bottom = lBorderList_.top + uiMinHeight_;
-        uiAbsHeight_ = uiMinHeight_;
+        lBorderList_.bottom = lBorderList_.top + fMinHeight_;
+        fAbsHeight_ = fMinHeight_;
     }
-    else if (uint(lBorderList_.bottom - lBorderList_.top) > uiMaxHeight_)
+    else if (lBorderList_.bottom - lBorderList_.top > fMaxHeight_)
     {
-        lBorderList_.bottom = lBorderList_.top + uiMaxHeight_;
-        uiAbsHeight_ = uiMaxHeight_;
+        lBorderList_.bottom = lBorderList_.top + fMaxHeight_;
+        fAbsHeight_ = fMaxHeight_;
     }
 
     if (bIsClampedToScreen_)
     {
-        uint uiScreenW = get_top_level_renderer()->get_target_width();
-        uint uiScreenH = get_top_level_renderer()->get_target_height();
+        float fScreenW = get_top_level_renderer()->get_target_width();
+        float fScreenH = get_top_level_renderer()->get_target_height();
 
-        if (lBorderList_.right > int(uiScreenW))
+        if (lBorderList_.right > fScreenW)
         {
-            if (uint(lBorderList_.right - lBorderList_.left) > uiScreenW)
+            if (lBorderList_.right - lBorderList_.left > fScreenW)
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = uiScreenW;
+                lBorderList_.right = fScreenW;
             }
             else
             {
-                lBorderList_.right = uiScreenW;
-                lBorderList_.left = uiScreenW - uiAbsWidth_;
+                lBorderList_.right = fScreenW;
+                lBorderList_.left = fScreenW - fAbsWidth_;
             }
         }
         if (lBorderList_.left < 0)
         {
-            if (uint(lBorderList_.right - lBorderList_.left) > uiScreenW)
+            if (lBorderList_.right - lBorderList_.left > fScreenW)
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = uiScreenW;
+                lBorderList_.right = fScreenW;
             }
             else
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = uiAbsWidth_;
+                lBorderList_.right = fAbsWidth_;
             }
         }
 
-        if (lBorderList_.bottom > int(uiScreenH))
+        if (lBorderList_.bottom > fScreenH)
         {
-            if (uint(lBorderList_.bottom - lBorderList_.top) > uiScreenH)
+            if (lBorderList_.bottom - lBorderList_.top > fScreenH)
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = uiScreenH;
+                lBorderList_.bottom = fScreenH;
             }
             else
             {
-                lBorderList_.bottom = uiScreenH;
-                lBorderList_.top = uiScreenH - uiAbsHeight_;
+                lBorderList_.bottom = fScreenH;
+                lBorderList_.top = fScreenH - fAbsHeight_;
             }
         }
         if (lBorderList_.top < 0)
         {
-            if (uint(lBorderList_.bottom - lBorderList_.top) > uiScreenH)
+            if (lBorderList_.bottom - lBorderList_.top > fScreenH)
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = uiScreenH;
+                lBorderList_.bottom = fScreenH;
             }
             else
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = uiAbsHeight_;
+                lBorderList_.bottom = fAbsHeight_;
             }
         }
     }
@@ -887,7 +887,7 @@ const std::string& frame::get_frame_type() const
     return lType_.back();
 }
 
-const quad2i& frame::get_abs_hit_rect_insets() const
+const quad2f& frame::get_abs_hit_rect_insets() const
 {
     return lAbsHitRectInsetList_;
 }
@@ -897,14 +897,14 @@ const quad2f& frame::get_rel_hit_rect_insets() const
     return lRelHitRectInsetList_;
 }
 
-vector2ui frame::get_max_resize() const
+vector2f frame::get_max_resize() const
 {
-    return vector2ui(uiMaxWidth_, uiMaxHeight_);
+    return vector2f(fMaxWidth_, fMaxHeight_);
 }
 
-vector2ui frame::get_min_resize() const
+vector2f frame::get_min_resize() const
 {
-    return vector2ui(uiMinWidth_, uiMinHeight_);
+    return vector2f(fMinWidth_, fMinHeight_);
 }
 
 uint frame::get_num_children() const
@@ -932,15 +932,15 @@ bool frame::is_clamped_to_screen() const
     return bIsClampedToScreen_;
 }
 
-bool frame::is_in_frame(int iX, int iY) const
+bool frame::is_in_frame(float fX, float fY) const
 {
-    if (pTitleRegion_ && pTitleRegion_->is_in_region(iX, iY))
+    if (pTitleRegion_ && pTitleRegion_->is_in_region(fX, fY))
         return true;
 
-    bool bIsInXRange = lBorderList_.left  + lAbsHitRectInsetList_.left <= iX &&
-        iX <= lBorderList_.right - lAbsHitRectInsetList_.right - 1;
-    bool bIsInYRange = lBorderList_.top    + lAbsHitRectInsetList_.top <= iY &&
-        iY <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1;
+    bool bIsInXRange = lBorderList_.left  + lAbsHitRectInsetList_.left <= fX &&
+        fX <= lBorderList_.right - lAbsHitRectInsetList_.right - 1.0f;
+    bool bIsInYRange = lBorderList_.top   + lAbsHitRectInsetList_.top <= fY &&
+        fY <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1.0f;
 
     return bIsInXRange && bIsInYRange;
 }
@@ -1414,12 +1414,12 @@ void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop)
     notify_renderer_need_redraw();
 }
 
-void frame::set_abs_hit_rect_insets(int iLeft, int iRight, int iTop, int iBottom)
+void frame::set_abs_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lAbsHitRectInsetList_ = quad2i(iLeft, iRight, iTop, iBottom);
+    lAbsHitRectInsetList_ = quad2f(fLeft, fRight, fTop, fBottom);
 }
 
-void frame::set_abs_hit_rect_insets(const quad2i& lInsets)
+void frame::set_abs_hit_rect_insets(const quad2f& lInsets)
 {
     lAbsHitRectInsetList_ = lInsets;
 }
@@ -1445,63 +1445,67 @@ void frame::set_level(int iLevel)
     }
 }
 
-void frame::set_max_resize(uint uiMaxWidth, uint uiMaxHeight)
+void frame::set_max_resize(float fMaxWidth, float fMaxHeight)
 {
-    set_max_height(uiMaxHeight);
-    set_max_width(uiMaxWidth);
+    set_max_width(fMaxWidth);
+    set_max_height(fMaxHeight);
 }
 
-void frame::set_max_resize(const vector2ui& mMax)
+void frame::set_max_resize(const vector2f& mMax)
 {
-    set_max_height(mMax.x);
-    set_max_width(mMax.y);
+    set_max_width(mMax.x);
+    set_max_height(mMax.y);
 }
 
-void frame::set_min_resize(uint uiMinWidth, uint uiMinHeight)
+void frame::set_min_resize(float fMinWidth, float fMinHeight)
 {
-    set_min_height(uiMinHeight);
-    set_min_width(uiMinWidth);
+    set_min_width(fMinWidth);
+    set_min_height(fMinHeight);
 }
 
-void frame::set_min_resize(const vector2ui& mMin)
+void frame::set_min_resize(const vector2f& mMin)
 {
-    set_min_height(mMin.x);
-    set_min_width(mMin.y);
+    set_min_width(mMin.x);
+    set_min_height(mMin.y);
 }
 
-void frame::set_max_height(uint uiMaxHeight)
+void frame::set_max_height(float fMaxHeight)
 {
-    if (uiMaxHeight >= uiMinHeight_)
-        uiMaxHeight_ = uiMaxHeight;
+    if (fMaxHeight < 0.0f) fMaxHeight = std::numeric_limits<float>::infinity();
 
-    if (uiMaxHeight_ != uiMaxHeight)
+    if (fMaxHeight >= fMinHeight_)
+        fMaxHeight_ = fMaxHeight;
+
+    if (fMaxHeight_ != fMaxHeight)
         notify_borders_need_update();
 }
 
-void frame::set_max_width(uint uiMaxWidth)
+void frame::set_max_width(float fMaxWidth)
 {
-    if (uiMaxWidth >= uiMinWidth_)
-        uiMaxWidth_ = uiMaxWidth;
+    if (fMaxWidth < 0.0f) fMaxWidth = std::numeric_limits<float>::infinity();
 
-    if (uiMaxWidth_ != uiMaxWidth)
+    if (fMaxWidth >= fMinWidth_)
+        fMaxWidth_ = fMaxWidth;
+
+    if (fMaxWidth_ != fMaxWidth)
         notify_borders_need_update();
 }
 
-void frame::set_min_height(uint uiMinHeight)
+void frame::set_min_height(float fMinHeight)
 {
-    if (uiMinHeight <= uiMaxHeight_)
-        uiMinHeight_ = uiMinHeight;
+    if (fMinHeight <= fMaxHeight_)
+        fMinHeight_ = fMinHeight;
 
-    if (uiMinHeight_ != uiMinHeight)
+    if (fMinHeight_ != fMinHeight)
         notify_borders_need_update();
 }
 
-void frame::set_min_width(uint uiMinWidth)
+void frame::set_min_width(float fMinWidth)
 {
-    if (uiMinWidth <= uiMaxWidth_)
-        uiMinWidth_ = uiMinWidth;
+    if (fMinWidth <= fMaxWidth_)
+        fMinWidth_ = fMinWidth;
 
-    if (uiMinWidth_ != uiMinWidth)
+    if (fMinWidth_ != fMinWidth)
         notify_borders_need_update();
 }
 
@@ -1785,7 +1789,7 @@ addon* frame::get_addon() const
         return pAddOn_;
 }
 
-void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
+void frame::notify_mouse_in_frame(bool bMouseInframe, float fX, float fY)
 {
     alive_checker mChecker(this);
 
@@ -1800,10 +1804,10 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, int iX, int iY)
 
         bMouseInFrame_ = true;
 
-        iMousePosX_ = iX;
-        iMousePosY_ = iY;
+        fMousePosX_ = fX;
+        fMousePosY_ = fY;
 
-        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(iX, iY));
+        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(fX, fY));
     }
     else
     {
@@ -1926,15 +1930,15 @@ void frame::update(float fDelta)
         lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
-    if (uiOldWidth_ != uiAbsWidth_ || uiOldHeight_ != uiAbsHeight_)
+    if (uiOldWidth_ != fAbsWidth_ || uiOldHeight_ != fAbsHeight_)
     {
         DEBUG_LOG("   On size changed");
         on_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 
-        uiOldWidth_  = uiAbsWidth_;
-        uiOldHeight_ = uiAbsHeight_;
+        uiOldWidth_  = fAbsWidth_;
+        uiOldHeight_ = fAbsHeight_;
     }
 
     DEBUG_LOG("   .");

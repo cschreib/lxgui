@@ -351,20 +351,20 @@ namespace gui
         virtual bool is_visible() const;
 
         /// Changes this widget's absolute dimensions (in pixels).
-        /** \param uiAbsWidth  The new width
-        *   \param uiAbsHeight The new height
+        /** \param fAbsWidth  The new width
+        *   \param fAbsHeight The new height
         */
-        virtual void set_abs_dimensions(uint uiAbsWidth, uint uiAbsHeight);
+        virtual void set_abs_dimensions(float fAbsWidth, float fAbsHeight);
 
         /// Changes this widget's absolute width (in pixels).
-        /** \param uiAbsWidth The new width
+        /** \param fAbsWidth The new width
         */
-        virtual void set_abs_width(uint uiAbsWidth);
+        virtual void set_abs_width(float fAbsWidth);
 
         /// Changes this widget's absolute height (in pixels).
-        /** \param uiAbsHeight The new height
+        /** \param fAbsHeight The new height
         */
-        virtual void set_abs_height(uint uiAbsHeight);
+        virtual void set_abs_height(float fAbsHeight);
 
         /// Changes this widget's dimensions (relative to its parent).
         /** \param fRelWidth  The new width
@@ -388,7 +388,7 @@ namespace gui
         *         use get_apparent_width() instead, because some
         *         widgets can have an infinite or undefined width.
         */
-        uint get_abs_width() const;
+        float get_abs_width() const;
 
         /// Returns this widget's appearend width (in pixels).
         /** \return This widget's appearend width (in pixels)
@@ -396,7 +396,7 @@ namespace gui
         *         use this function instead of get_abs_width(), because
         *         some widgets can have an infinite or undefined width.
         */
-        uint get_apparent_width() const;
+        float get_apparent_width() const;
 
         /// Returns this widget's absolute height (in pixels).
         /** \return This widget's absolute height (in pixels)
@@ -404,7 +404,7 @@ namespace gui
         *         use get_apparent_height() instead, because some
         *         widgets can have an infinite or undefined height.
         */
-        uint get_abs_height() const;
+        float get_abs_height() const;
 
         /// Returns this widget's appearend height (in pixels).
         /** \return This widget's appearend height (in pixels)
@@ -412,7 +412,7 @@ namespace gui
         *         use this function instead of get_abs_height(), because
         *         some widgets can have an infinite or undefined height.
         */
-        uint get_apparent_height() const;
+        float get_apparent_height() const;
 
         /// Returns the type of this widget.
         /** \return The type of this widget
@@ -442,32 +442,32 @@ namespace gui
         /// Returns the vertical position of this widget's bottom border.
         /** \return The vertical position of this widget's bottom border
         */
-        int get_bottom() const;
+        float get_bottom() const;
 
         /// Returns the position of this widget's center.
         /** \return The position of this widget's center
         */
-        vector2<int> get_center() const;
+        vector2f get_center() const;
 
         /// Returns the horizontal position of this widget's left border.
         /** \return The horizontal position of this widget's left border
         */
-        int get_left() const;
+        float get_left() const;
 
         /// Returns the horizontal position of this widget's right border.
         /** \return The horizontal position of this widget's right border
         */
-        int get_right() const;
+        float get_right() const;
 
         /// Returns the vertical position of this widget's top border.
         /** \return The vertical position of this widget's top border
         */
-        int get_top() const;
+        float get_top() const;
 
         /// Returns this widget's borders.
         /** \return This widget's borders
         */
-        const quad2i& get_borders() const;
+        const quad2f& get_borders() const;
 
         /// Removes all anchors.
         /** \note This widget and its children won't be visible until you
@@ -493,11 +493,11 @@ namespace gui
         /** \param mPoint         The anchor point for this object
         *   \param sParentName    The anchor's parent
         *   \param mRelativePoint The anchor point for the parent
-        *   \param iX             The horizontal offset
-        *   \param iY             The vertical offset
+        *   \param fX             The horizontal offset
+        *   \param fY             The vertical offset
         */
         void set_abs_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, int iX = 0, int iY = 0);
+            anchor_point mRelativePoint, float fX = 0, float fY = 0);
 
         /// create_s/modifies an anchor.
         /** \param mPoint         The anchor point for this object
@@ -506,7 +506,7 @@ namespace gui
         *   \param mOffset        The offset
         */
         void set_abs_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, const vector2i& mOffset);
+            anchor_point mRelativePoint, const vector2f& mOffset);
 
         /// create_s/modifies an anchor.
         /** \param mPoint         The anchor point for this object
@@ -734,14 +734,14 @@ namespace gui
         std::array<std::optional<anchor>,9> lAnchorList_;
         std::vector<const uiobject*>        lPreviousAnchorParentList_;
         quad2<bool>                         lDefinedBorderList_;
-        mutable quad2i                      lBorderList_;
+        mutable quad2f                      lBorderList_;
 
         float fAlpha_ = 1.0f;
         bool  bIsShown_ = true;
         bool  bIsVisible_ = true;
 
-        mutable uint uiAbsWidth_ = 0u;
-        mutable uint uiAbsHeight_ = 0u;
+        mutable float fAbsWidth_ = 0.0f;
+        mutable float fAbsHeight_ = 0.0f;
 
         mutable bool bUpdateAnchors_ = false;
         mutable bool bUpdateBorders_ = true;

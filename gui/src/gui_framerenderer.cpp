@@ -201,10 +201,8 @@ void frame_renderer::reset_strata_list_changed_flag_()
     bStrataListUpdated_ = false;
 }
 
-frame* frame_renderer::find_hovered_frame_(int iX, int iY)
+frame* frame_renderer::find_hovered_frame_(float fX, float fY)
 {
-    frame* pHoveredFrame = nullptr;
-
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
     for (const auto& mStrata : utils::range::reverse(lStrataList_))
     {
@@ -212,20 +210,13 @@ frame* frame_renderer::find_hovered_frame_(int iX, int iY)
         {
             for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
             {
-                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(iX, iY))
-                {
-                    pHoveredFrame = pFrame;
-                    break;
-                }
+                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(fX, fY))
+                    return pFrame;
             }
-
-            if (pHoveredFrame) break;
         }
-
-        if (pHoveredFrame) break;
     }
 
-    return pHoveredFrame;
+    return nullptr;
 }
 }
 }

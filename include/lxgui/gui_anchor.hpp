@@ -52,12 +52,12 @@ namespace gui
         /// Returns this anchor absolute X (in pixel).
         /** \return This anchor absolute X.
         */
-        int get_abs_x() const;
+        float get_abs_x() const;
 
         /// Returns this anchor absolute Y (in pixel).
         /** \return This anchor absolute Y.
         */
-        int get_abs_y() const;
+        float get_abs_y() const;
 
         /// Returns this anchor's base widget.
         /** \return This anchor's base widget
@@ -92,17 +92,17 @@ namespace gui
         /// Returns this anchor's absolute horizontal offset.
         /** \return This anchor's absolute horizontal offset
         */
-        int get_abs_offset_x() const;
+        float get_abs_offset_x() const;
 
         /// Returns this anchor's absolute vertical offset.
         /** \return This anchor's absolute vertical offset
         */
-        int get_abs_offset_y() const;
+        float get_abs_offset_y() const;
 
         /// Returns this anchor's absolute offset.
         /** \return This anchor's absolute offset
         */
-        vector2i get_abs_offset() const;
+        vector2f get_abs_offset() const;
 
         /// Returns this anchor's relative horizontal offset.
         /** \return This anchor's relative horizontal offset
@@ -143,12 +143,12 @@ namespace gui
         /** \param iX The new horizontal offset
         *   \param iY The new vertical offset
         */
-        void set_abs_offset(int iX, int iY);
+        void set_abs_offset(float fX, float fY);
 
         /// Sets this anchor's absolute offset.
         /** \param mOffset The new offset
         */
-        void set_abs_offset(const vector2i& mOffset);
+        void set_abs_offset(const vector2f& mOffset);
 
         /// Sets this anchor's relative offset.
         /** \param fX The new horizontal offset
@@ -188,10 +188,10 @@ namespace gui
         anchor_point    mPoint_       = anchor_point::TOPLEFT;
         anchor_type     mType_        = anchor_type::ABS;
 
-        int   iAbsOffX_ = 0,    iAbsOffY_ = 0;
+        float fAbsOffX_ = 0.0f, fAbsOffY_ = 0.0f;
         float fRelOffX_ = 0.0f, fRelOffY_ = 0.0f;
 
-        mutable int iParentWidth_ = 0u, iParentHeight_ = 0u;
+        mutable float fParentWidth_ = 0.0f, fParentHeight_ = 0.0f;
 
         mutable const uiobject* pParent_ = nullptr;
         mutable std::string     sParent_;
