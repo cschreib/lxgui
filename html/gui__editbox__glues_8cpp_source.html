@@ -204,7 +204,7 @@ $(function() {
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;EditBox:get_text_insets&quot;</span>, pLua, 4);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">quad2i</a>&amp; lInsets = get_object()-&gt;get_text_insets();</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&amp; lInsets = get_object()-&gt;get_text_insets();</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    mFunc.push(lInsets.left);</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    mFunc.push(lInsets.right);</div>
@@ -417,10 +417,10 @@ $(function() {
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    {</div>
 <div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;        get_object()-&gt;set_text_insets(</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            <span class="keywordtype">int</span>(mFunc.get(0)-&gt;get_number()),</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            <span class="keywordtype">int</span>(mFunc.get(1)-&gt;get_number()),</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            <span class="keywordtype">int</span>(mFunc.get(2)-&gt;get_number()),</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            <span class="keywordtype">int</span>(mFunc.get(3)-&gt;get_number())</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;            mFunc.get(0)-&gt;get_number(),</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            mFunc.get(1)-&gt;get_number(),</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            mFunc.get(2)-&gt;get_number(),</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            mFunc.get(3)-&gt;get_number()</div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;        );</div>
 <div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;    }</div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
@@ -429,11 +429,11 @@ $(function() {
 <div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;}</div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a015791420a86dd9f8bdcaf76466c93b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">lxgui::gui::quad2f</a></div><div class="ttdeci">quad2&lt; float &gt; quad2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__quad2_8hpp_source.html#l00132">gui_quad2.hpp:132</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1state_html_ac137db19980f4ad1f15ecf64062646f5"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">lxgui::lua::state::reg</a></div><div class="ttdeci">void reg(const std::string &amp;sFunctionName, c_function mFunction)</div><div class="ttdoc">Binds a C++ function to a Lua function.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1edit__box_html_a8488ecd18f87e36497a96a6c23dc012a"><div class="ttname"><a href="classlxgui_1_1gui_1_1edit__box.html#a8488ecd18f87e36497a96a6c23dc012a">lxgui::gui::edit_box::register_glue</a></div><div class="ttdeci">static void register_glue(lua::state &amp;mLua)</div><div class="ttdoc">Registers this widget to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__editbox__glues_8cpp_source.html#l00064">gui_editbox_glues.cpp:64</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lxgui::lua::type::STRING</a></div><div class="ttdeci">@ STRING</div></div>
 <div class="ttc" id="agui__editbox_8hpp_html"><div class="ttname"><a href="gui__editbox_8hpp.html">gui_editbox.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a0ae177a8b36933469d90a6bdb19d18fd"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">lxgui::gui::quad2i</a></div><div class="ttdeci">quad2&lt; int &gt; quad2i</div><div class="ttdef"><b>Definition:</b> <a href="gui__quad2_8hpp_source.html#l00133">gui_quad2.hpp:133</a></div></div>
 <div class="ttc" id="anamespacelxgui_html_aad60a3835af109b1519d66daff76eb44"><div class="ttname"><a href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">lxgui::uint</a></div><div class="ttdeci">unsigned int uint</div><div class="ttdef"><b>Definition:</b> <a href="utils_8hpp_source.html#l00009">utils.hpp:9</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lxgui::lua::type::NUMBER</a></div><div class="ttdeci">@ NUMBER</div></div>
 <div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
@@ -445,7 +445,7 @@ $(function() {
 <div class="ttc" id="aluapp__function_8hpp_html"><div class="ttname"><a href="luapp__function_8hpp.html">luapp_function.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 11 2021 17:43:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 11 2021 17:43:33 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

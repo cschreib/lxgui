@@ -109,9 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a018e40e851662359950cca96a02aa093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a018e40e851662359950cca96a02aa093">render</a> () override</td></tr>
 <tr class="memdesc:a018e40e851662359950cca96a02aa093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1region.html#a018e40e851662359950cca96a02aa093">More...</a><br /></td></tr>
 <tr class="separator:a018e40e851662359950cca96a02aa093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c027544ecc4f13b45cc2b6a27d3f353"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a0c027544ecc4f13b45cc2b6a27d3f353">is_in_region</a> (int iX, int iY) const</td></tr>
-<tr class="memdesc:a0c027544ecc4f13b45cc2b6a27d3f353"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided coordinates are inside this region.  <a href="classlxgui_1_1gui_1_1region.html#a0c027544ecc4f13b45cc2b6a27d3f353">More...</a><br /></td></tr>
-<tr class="separator:a0c027544ecc4f13b45cc2b6a27d3f353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1ddbbcf70d36c5019cc0c837ffbbb99"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#ab1ddbbcf70d36c5019cc0c837ffbbb99">is_in_region</a> (float fX, float fY) const</td></tr>
+<tr class="memdesc:ab1ddbbcf70d36c5019cc0c837ffbbb99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided coordinates are inside this region.  <a href="classlxgui_1_1gui_1_1region.html#ab1ddbbcf70d36c5019cc0c837ffbbb99">More...</a><br /></td></tr>
+<tr class="separator:ab1ddbbcf70d36c5019cc0c837ffbbb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a591a0074efc3de7c27e8365bd1077cd9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a591a0074efc3de7c27e8365bd1077cd9">create_glue</a> () override</td></tr>
 <tr class="memdesc:a591a0074efc3de7c27e8365bd1077cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the associated Lua glue.  <a href="classlxgui_1_1gui_1_1region.html#a591a0074efc3de7c27e8365bd1077cd9">More...</a><br /></td></tr>
 <tr class="separator:a591a0074efc3de7c27e8365bd1077cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,15 +184,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acf781503737274463891a202b5eda7b0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#acf781503737274463891a202b5eda7b0">is_visible</a> () const</td></tr>
 <tr class="memdesc:acf781503737274463891a202b5eda7b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this widget can be seen on the screen.  <a href="classlxgui_1_1gui_1_1uiobject.html#acf781503737274463891a202b5eda7b0">More...</a><br /></td></tr>
 <tr class="separator:acf781503737274463891a202b5eda7b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b81bd32c4bb872b20a6d66e00f208b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a6b81bd32c4bb872b20a6d66e00f208b6">set_abs_dimensions</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiAbsWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiAbsHeight)</td></tr>
-<tr class="memdesc:a6b81bd32c4bb872b20a6d66e00f208b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute dimensions (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a6b81bd32c4bb872b20a6d66e00f208b6">More...</a><br /></td></tr>
-<tr class="separator:a6b81bd32c4bb872b20a6d66e00f208b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a478b21de0b23783a8cbb12daef6b5e23"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a478b21de0b23783a8cbb12daef6b5e23">set_abs_width</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiAbsWidth)</td></tr>
-<tr class="memdesc:a478b21de0b23783a8cbb12daef6b5e23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a478b21de0b23783a8cbb12daef6b5e23">More...</a><br /></td></tr>
-<tr class="separator:a478b21de0b23783a8cbb12daef6b5e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7d4bc3ace6b8060c47c38c243623a81"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae7d4bc3ace6b8060c47c38c243623a81">set_abs_height</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiAbsHeight)</td></tr>
-<tr class="memdesc:ae7d4bc3ace6b8060c47c38c243623a81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#ae7d4bc3ace6b8060c47c38c243623a81">More...</a><br /></td></tr>
-<tr class="separator:ae7d4bc3ace6b8060c47c38c243623a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64facd950e17e8a833215d1a2d4c5c7d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a64facd950e17e8a833215d1a2d4c5c7d">set_abs_dimensions</a> (float fAbsWidth, float fAbsHeight)</td></tr>
+<tr class="memdesc:a64facd950e17e8a833215d1a2d4c5c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute dimensions (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a64facd950e17e8a833215d1a2d4c5c7d">More...</a><br /></td></tr>
+<tr class="separator:a64facd950e17e8a833215d1a2d4c5c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded61ed4549c6e5fc447517f5fd5b5fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aded61ed4549c6e5fc447517f5fd5b5fc">set_abs_width</a> (float fAbsWidth)</td></tr>
+<tr class="memdesc:aded61ed4549c6e5fc447517f5fd5b5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#aded61ed4549c6e5fc447517f5fd5b5fc">More...</a><br /></td></tr>
+<tr class="separator:aded61ed4549c6e5fc447517f5fd5b5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54e579037d3048f0d1d0609f77bb25d4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a54e579037d3048f0d1d0609f77bb25d4">set_abs_height</a> (float fAbsHeight)</td></tr>
+<tr class="memdesc:a54e579037d3048f0d1d0609f77bb25d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's absolute height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a54e579037d3048f0d1d0609f77bb25d4">More...</a><br /></td></tr>
+<tr class="separator:a54e579037d3048f0d1d0609f77bb25d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92c039d2a3b357a32d531876945c1cdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a92c039d2a3b357a32d531876945c1cdd">set_rel_dimensions</a> (float fRelWidth, float fRelHeight)</td></tr>
 <tr class="memdesc:a92c039d2a3b357a32d531876945c1cdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's dimensions (relative to its parent).  <a href="classlxgui_1_1gui_1_1uiobject.html#a92c039d2a3b357a32d531876945c1cdd">More...</a><br /></td></tr>
 <tr class="separator:a92c039d2a3b357a32d531876945c1cdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,18 +202,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab6c19c07df3d142f487bb06dede6ab8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab6c19c07df3d142f487bb06dede6ab8e">set_rel_height</a> (float fRelHeight)</td></tr>
 <tr class="memdesc:ab6c19c07df3d142f487bb06dede6ab8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes this widget's height (relative to its parent).  <a href="classlxgui_1_1gui_1_1uiobject.html#ab6c19c07df3d142f487bb06dede6ab8e">More...</a><br /></td></tr>
 <tr class="separator:ab6c19c07df3d142f487bb06dede6ab8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84dd17bd505bcf99a58ce7a701ca1310"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a84dd17bd505bcf99a58ce7a701ca1310">get_abs_width</a> () const</td></tr>
-<tr class="memdesc:a84dd17bd505bcf99a58ce7a701ca1310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's absolute width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a84dd17bd505bcf99a58ce7a701ca1310">More...</a><br /></td></tr>
-<tr class="separator:a84dd17bd505bcf99a58ce7a701ca1310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9126efc28e816504a203a4d0b09a9a2f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a9126efc28e816504a203a4d0b09a9a2f">get_apparent_width</a> () const</td></tr>
-<tr class="memdesc:a9126efc28e816504a203a4d0b09a9a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's appearend width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a9126efc28e816504a203a4d0b09a9a2f">More...</a><br /></td></tr>
-<tr class="separator:a9126efc28e816504a203a4d0b09a9a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb41495509ef2c5deef89ee35e57b987"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#adb41495509ef2c5deef89ee35e57b987">get_abs_height</a> () const</td></tr>
-<tr class="memdesc:adb41495509ef2c5deef89ee35e57b987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's absolute height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#adb41495509ef2c5deef89ee35e57b987">More...</a><br /></td></tr>
-<tr class="separator:adb41495509ef2c5deef89ee35e57b987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14b8ff8215b11d90731ca212db8dd192"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a14b8ff8215b11d90731ca212db8dd192">get_apparent_height</a> () const</td></tr>
-<tr class="memdesc:a14b8ff8215b11d90731ca212db8dd192"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's appearend height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a14b8ff8215b11d90731ca212db8dd192">More...</a><br /></td></tr>
-<tr class="separator:a14b8ff8215b11d90731ca212db8dd192"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75dbb2d27038d88bf0f0a233a71b80b0"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a75dbb2d27038d88bf0f0a233a71b80b0">get_abs_width</a> () const</td></tr>
+<tr class="memdesc:a75dbb2d27038d88bf0f0a233a71b80b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's absolute width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a75dbb2d27038d88bf0f0a233a71b80b0">More...</a><br /></td></tr>
+<tr class="separator:a75dbb2d27038d88bf0f0a233a71b80b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56a07f35311654d50ca10d8d13258b6e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a56a07f35311654d50ca10d8d13258b6e">get_apparent_width</a> () const</td></tr>
+<tr class="memdesc:a56a07f35311654d50ca10d8d13258b6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's appearend width (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a56a07f35311654d50ca10d8d13258b6e">More...</a><br /></td></tr>
+<tr class="separator:a56a07f35311654d50ca10d8d13258b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5216789eba7ae6c4e7167f9c564b1a26"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5216789eba7ae6c4e7167f9c564b1a26">get_abs_height</a> () const</td></tr>
+<tr class="memdesc:a5216789eba7ae6c4e7167f9c564b1a26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's absolute height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#a5216789eba7ae6c4e7167f9c564b1a26">More...</a><br /></td></tr>
+<tr class="separator:a5216789eba7ae6c4e7167f9c564b1a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa68ef9258844811816a8e167f80ede4d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa68ef9258844811816a8e167f80ede4d">get_apparent_height</a> () const</td></tr>
+<tr class="memdesc:aa68ef9258844811816a8e167f80ede4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's appearend height (in pixels).  <a href="classlxgui_1_1gui_1_1uiobject.html#aa68ef9258844811816a8e167f80ede4d">More...</a><br /></td></tr>
+<tr class="separator:aa68ef9258844811816a8e167f80ede4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5957b8f1f41c93c124c5a6c377a3393"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae5957b8f1f41c93c124c5a6c377a3393">get_object_type</a> () const</td></tr>
 <tr class="memdesc:ae5957b8f1f41c93c124c5a6c377a3393"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the type of this widget.  <a href="classlxgui_1_1gui_1_1uiobject.html#ae5957b8f1f41c93c124c5a6c377a3393">More...</a><br /></td></tr>
 <tr class="separator:ae5957b8f1f41c93c124c5a6c377a3393"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,24 +227,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a58a24f88f1fafc8ea4255d0ed1f98b69"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a58a24f88f1fafc8ea4255d0ed1f98b69">get_object_type_list</a> () const</td></tr>
 <tr class="memdesc:a58a24f88f1fafc8ea4255d0ed1f98b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an array containing all the types of this widget.  <a href="classlxgui_1_1gui_1_1uiobject.html#a58a24f88f1fafc8ea4255d0ed1f98b69">More...</a><br /></td></tr>
 <tr class="separator:a58a24f88f1fafc8ea4255d0ed1f98b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a635bc892ce7c33373772c74330fc2c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5a635bc892ce7c33373772c74330fc2c">get_bottom</a> () const</td></tr>
-<tr class="memdesc:a5a635bc892ce7c33373772c74330fc2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's bottom border.  <a href="classlxgui_1_1gui_1_1uiobject.html#a5a635bc892ce7c33373772c74330fc2c">More...</a><br /></td></tr>
-<tr class="separator:a5a635bc892ce7c33373772c74330fc2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27c0a9dc4d4cbdbc8f52616b5a9f2442"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a27c0a9dc4d4cbdbc8f52616b5a9f2442">get_center</a> () const</td></tr>
-<tr class="memdesc:a27c0a9dc4d4cbdbc8f52616b5a9f2442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of this widget's center.  <a href="classlxgui_1_1gui_1_1uiobject.html#a27c0a9dc4d4cbdbc8f52616b5a9f2442">More...</a><br /></td></tr>
-<tr class="separator:a27c0a9dc4d4cbdbc8f52616b5a9f2442"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab92da0bd3463ad9cf2003696fb40dc50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab92da0bd3463ad9cf2003696fb40dc50">get_left</a> () const</td></tr>
-<tr class="memdesc:ab92da0bd3463ad9cf2003696fb40dc50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the horizontal position of this widget's left border.  <a href="classlxgui_1_1gui_1_1uiobject.html#ab92da0bd3463ad9cf2003696fb40dc50">More...</a><br /></td></tr>
-<tr class="separator:ab92da0bd3463ad9cf2003696fb40dc50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8eb1849914e82ae45353d7bf0affff5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af8eb1849914e82ae45353d7bf0affff5">get_right</a> () const</td></tr>
-<tr class="memdesc:af8eb1849914e82ae45353d7bf0affff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the horizontal position of this widget's right border.  <a href="classlxgui_1_1gui_1_1uiobject.html#af8eb1849914e82ae45353d7bf0affff5">More...</a><br /></td></tr>
-<tr class="separator:af8eb1849914e82ae45353d7bf0affff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a571bf8d3d6915b6594e8b97343b35c86"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a571bf8d3d6915b6594e8b97343b35c86">get_top</a> () const</td></tr>
-<tr class="memdesc:a571bf8d3d6915b6594e8b97343b35c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's top border.  <a href="classlxgui_1_1gui_1_1uiobject.html#a571bf8d3d6915b6594e8b97343b35c86">More...</a><br /></td></tr>
-<tr class="separator:a571bf8d3d6915b6594e8b97343b35c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7f4c3288ae127d3364a25c7307e0f8a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">quad2i</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab7f4c3288ae127d3364a25c7307e0f8a">get_borders</a> () const</td></tr>
-<tr class="memdesc:ab7f4c3288ae127d3364a25c7307e0f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's borders.  <a href="classlxgui_1_1gui_1_1uiobject.html#ab7f4c3288ae127d3364a25c7307e0f8a">More...</a><br /></td></tr>
-<tr class="separator:ab7f4c3288ae127d3364a25c7307e0f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48b49ffa6810835079cd5b4f79c84060"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a48b49ffa6810835079cd5b4f79c84060">get_bottom</a> () const</td></tr>
+<tr class="memdesc:a48b49ffa6810835079cd5b4f79c84060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's bottom border.  <a href="classlxgui_1_1gui_1_1uiobject.html#a48b49ffa6810835079cd5b4f79c84060">More...</a><br /></td></tr>
+<tr class="separator:a48b49ffa6810835079cd5b4f79c84060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d58775766cd241612047b99bbfa1f8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a89d58775766cd241612047b99bbfa1f8">get_center</a> () const</td></tr>
+<tr class="memdesc:a89d58775766cd241612047b99bbfa1f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the position of this widget's center.  <a href="classlxgui_1_1gui_1_1uiobject.html#a89d58775766cd241612047b99bbfa1f8">More...</a><br /></td></tr>
+<tr class="separator:a89d58775766cd241612047b99bbfa1f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae41bc815c0b31bea613f5af839b43212"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae41bc815c0b31bea613f5af839b43212">get_left</a> () const</td></tr>
+<tr class="memdesc:ae41bc815c0b31bea613f5af839b43212"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the horizontal position of this widget's left border.  <a href="classlxgui_1_1gui_1_1uiobject.html#ae41bc815c0b31bea613f5af839b43212">More...</a><br /></td></tr>
+<tr class="separator:ae41bc815c0b31bea613f5af839b43212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada2404bdc3b3bf858be45429a9f4c315"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ada2404bdc3b3bf858be45429a9f4c315">get_right</a> () const</td></tr>
+<tr class="memdesc:ada2404bdc3b3bf858be45429a9f4c315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the horizontal position of this widget's right border.  <a href="classlxgui_1_1gui_1_1uiobject.html#ada2404bdc3b3bf858be45429a9f4c315">More...</a><br /></td></tr>
+<tr class="separator:ada2404bdc3b3bf858be45429a9f4c315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2459d2972ca2d3e153b9fdfffca6c62b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a2459d2972ca2d3e153b9fdfffca6c62b">get_top</a> () const</td></tr>
+<tr class="memdesc:a2459d2972ca2d3e153b9fdfffca6c62b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vertical position of this widget's top border.  <a href="classlxgui_1_1gui_1_1uiobject.html#a2459d2972ca2d3e153b9fdfffca6c62b">More...</a><br /></td></tr>
+<tr class="separator:a2459d2972ca2d3e153b9fdfffca6c62b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08efcae21421a973006746057d612c44"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a08efcae21421a973006746057d612c44">get_borders</a> () const</td></tr>
+<tr class="memdesc:a08efcae21421a973006746057d612c44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's borders.  <a href="classlxgui_1_1gui_1_1uiobject.html#a08efcae21421a973006746057d612c44">More...</a><br /></td></tr>
+<tr class="separator:a08efcae21421a973006746057d612c44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4037dd67e0e143de109626dfa9e30a62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a4037dd67e0e143de109626dfa9e30a62">clear_all_points</a> ()</td></tr>
 <tr class="memdesc:a4037dd67e0e143de109626dfa9e30a62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all anchors.  <a href="classlxgui_1_1gui_1_1uiobject.html#a4037dd67e0e143de109626dfa9e30a62">More...</a><br /></td></tr>
 <tr class="separator:a4037dd67e0e143de109626dfa9e30a62"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,12 +254,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab7d24ee54837e517227896286e5db35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aab7d24ee54837e517227896286e5db35">set_all_points</a> (const std::string &amp;sObjName)</td></tr>
 <tr class="memdesc:aab7d24ee54837e517227896286e5db35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjusts this widgets anchors to fit the provided widget.  <a href="classlxgui_1_1gui_1_1uiobject.html#aab7d24ee54837e517227896286e5db35">More...</a><br /></td></tr>
 <tr class="separator:aab7d24ee54837e517227896286e5db35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80ad7508ec73fa141d094c7155c666d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a80ad7508ec73fa141d094c7155c666d5">set_abs_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint, const std::string &amp;sParentName, <a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mRelativePoint, int iX=0, int iY=0)</td></tr>
-<tr class="memdesc:a80ad7508ec73fa141d094c7155c666d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">create_s/modifies an anchor.  <a href="classlxgui_1_1gui_1_1uiobject.html#a80ad7508ec73fa141d094c7155c666d5">More...</a><br /></td></tr>
-<tr class="separator:a80ad7508ec73fa141d094c7155c666d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb59c313f066c0c40d0f0e2706d7fb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aefb59c313f066c0c40d0f0e2706d7fb0">set_abs_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint, const std::string &amp;sParentName, <a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mRelativePoint, const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">vector2i</a> &amp;mOffset)</td></tr>
-<tr class="memdesc:aefb59c313f066c0c40d0f0e2706d7fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">create_s/modifies an anchor.  <a href="classlxgui_1_1gui_1_1uiobject.html#aefb59c313f066c0c40d0f0e2706d7fb0">More...</a><br /></td></tr>
-<tr class="separator:aefb59c313f066c0c40d0f0e2706d7fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a69e01691cd490ffac274fa3f5aa7a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5a69e01691cd490ffac274fa3f5aa7a4">set_abs_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint, const std::string &amp;sParentName, <a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mRelativePoint, float fX=0, float fY=0)</td></tr>
+<tr class="memdesc:a5a69e01691cd490ffac274fa3f5aa7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">create_s/modifies an anchor.  <a href="classlxgui_1_1gui_1_1uiobject.html#a5a69e01691cd490ffac274fa3f5aa7a4">More...</a><br /></td></tr>
+<tr class="separator:a5a69e01691cd490ffac274fa3f5aa7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b9451d6f705d6a7d7e1dfdaa157123c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a3b9451d6f705d6a7d7e1dfdaa157123c">set_abs_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint, const std::string &amp;sParentName, <a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mRelativePoint, const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;mOffset)</td></tr>
+<tr class="memdesc:a3b9451d6f705d6a7d7e1dfdaa157123c"><td class="mdescLeft">&#160;</td><td class="mdescRight">create_s/modifies an anchor.  <a href="classlxgui_1_1gui_1_1uiobject.html#a3b9451d6f705d6a7d7e1dfdaa157123c">More...</a><br /></td></tr>
+<tr class="separator:a3b9451d6f705d6a7d7e1dfdaa157123c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5488b20220c823a6407c4eb8812903b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5488b20220c823a6407c4eb8812903b5">set_rel_point</a> (<a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint, const std::string &amp;sParentName, <a class="el" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mRelativePoint, float fX=0, float fY=0)</td></tr>
 <tr class="memdesc:a5488b20220c823a6407c4eb8812903b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">create_s/modifies an anchor.  <a href="classlxgui_1_1gui_1_1uiobject.html#a5488b20220c823a6407c4eb8812903b5">More...</a><br /></td></tr>
 <tr class="separator:a5488b20220c823a6407c4eb8812903b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -414,18 +414,18 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a0046ae735c042ec81af41524b1bd9f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6439cf07e63de8fa5fb8ed8fddd3f35e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a6439cf07e63de8fa5fb8ed8fddd3f35e">lDefinedBorderList_</a></td></tr>
 <tr class="separator:a6439cf07e63de8fa5fb8ed8fddd3f35e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3e1513775402e01269ed0f29f42f3ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">quad2i</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af3e1513775402e01269ed0f29f42f3ab">lBorderList_</a></td></tr>
-<tr class="separator:af3e1513775402e01269ed0f29f42f3ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a999d6ac681f6e32d570ca4109e444255"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a999d6ac681f6e32d570ca4109e444255">lBorderList_</a></td></tr>
+<tr class="separator:a999d6ac681f6e32d570ca4109e444255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acee5ca91a79bb688f493d2295263acd8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#acee5ca91a79bb688f493d2295263acd8">fAlpha_</a> = 1.0f</td></tr>
 <tr class="separator:acee5ca91a79bb688f493d2295263acd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84b643c00de49f910fda2cd3c8eba7a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a84b643c00de49f910fda2cd3c8eba7a1">bIsShown_</a> = true</td></tr>
 <tr class="separator:a84b643c00de49f910fda2cd3c8eba7a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4b725fa6d174af53f04fdb32ba33dc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa4b725fa6d174af53f04fdb32ba33dc5">bIsVisible_</a> = true</td></tr>
 <tr class="separator:aa4b725fa6d174af53f04fdb32ba33dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bdd4b4ed0e1895dc2e931e14d4d9166"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5bdd4b4ed0e1895dc2e931e14d4d9166">uiAbsWidth_</a> = 0u</td></tr>
-<tr class="separator:a5bdd4b4ed0e1895dc2e931e14d4d9166"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4508554b4127cf3263576501e78dd67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af4508554b4127cf3263576501e78dd67">uiAbsHeight_</a> = 0u</td></tr>
-<tr class="separator:af4508554b4127cf3263576501e78dd67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c42a16ea432cdf80155c06759379b28"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a6c42a16ea432cdf80155c06759379b28">fAbsWidth_</a> = 0.0f</td></tr>
+<tr class="separator:a6c42a16ea432cdf80155c06759379b28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4714486d206444de43b985be9d72f7b4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a4714486d206444de43b985be9d72f7b4">fAbsHeight_</a> = 0.0f</td></tr>
+<tr class="separator:a4714486d206444de43b985be9d72f7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cdac72a8d94986741133c76862a0e8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a6cdac72a8d94986741133c76862a0e8b">bUpdateAnchors_</a> = false</td></tr>
 <tr class="separator:a6cdac72a8d94986741133c76862a0e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61efb7db2fa48e8dbbf43eb8d375e1bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a61efb7db2fa48e8dbbf43eb8d375e1bb">bUpdateBorders_</a> = true</td></tr>
@@ -634,8 +634,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="adb41495509ef2c5deef89ee35e57b987"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb41495509ef2c5deef89ee35e57b987">&#9670;&nbsp;</a></span>get_abs_height()</h2>
+<a id="a5216789eba7ae6c4e7167f9c564b1a26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5216789eba7ae6c4e7167f9c564b1a26">&#9670;&nbsp;</a></span>get_abs_height()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,7 +644,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::get_abs_height </td>
+          <td class="memname">float lxgui::gui::uiobject::get_abs_height </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -659,14 +659,14 @@ template&lt;typename T &gt; </div>
 
 <p>Returns this widget's absolute height (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's absolute height (in pixels) </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a14b8ff8215b11d90731ca212db8dd192" title="Returns this widget&#39;s appearend height (in pixels).">get_apparent_height()</a> instead, because some widgets can have an infinite or undefined height. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa68ef9258844811816a8e167f80ede4d" title="Returns this widget&#39;s appearend height (in pixels).">get_apparent_height()</a> instead, because some widgets can have an infinite or undefined height. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00363">363</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a84dd17bd505bcf99a58ce7a701ca1310"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84dd17bd505bcf99a58ce7a701ca1310">&#9670;&nbsp;</a></span>get_abs_width()</h2>
+<a id="a75dbb2d27038d88bf0f0a233a71b80b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75dbb2d27038d88bf0f0a233a71b80b0">&#9670;&nbsp;</a></span>get_abs_width()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -675,7 +675,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::get_abs_width </td>
+          <td class="memname">float lxgui::gui::uiobject::get_abs_width </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -690,7 +690,7 @@ template&lt;typename T &gt; </div>
 
 <p>Returns this widget's absolute width (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's absolute width (in pixels) </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a9126efc28e816504a203a4d0b09a9a2f" title="Returns this widget&#39;s appearend width (in pixels).">get_apparent_width()</a> instead, because some widgets can have an infinite or undefined width. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a56a07f35311654d50ca10d8d13258b6e" title="Returns this widget&#39;s appearend width (in pixels).">get_apparent_width()</a> instead, because some widgets can have an infinite or undefined width. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00352">352</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
@@ -752,12 +752,12 @@ template&lt;typename T &gt; </div>
 <p>Returns the list of all objects that are anchored to this one. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of all objects that are anchored to this one </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01029">1029</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01027">1027</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a14b8ff8215b11d90731ca212db8dd192"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14b8ff8215b11d90731ca212db8dd192">&#9670;&nbsp;</a></span>get_apparent_height()</h2>
+<a id="aa68ef9258844811816a8e167f80ede4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa68ef9258844811816a8e167f80ede4d">&#9670;&nbsp;</a></span>get_apparent_height()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -766,7 +766,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::get_apparent_height </td>
+          <td class="memname">float lxgui::gui::uiobject::get_apparent_height </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -781,14 +781,14 @@ template&lt;typename T &gt; </div>
 
 <p>Returns this widget's appearend height (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's appearend height (in pixels) </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#adb41495509ef2c5deef89ee35e57b987" title="Returns this widget&#39;s absolute height (in pixels).">get_abs_height()</a>, because some widgets can have an infinite or undefined height. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5216789eba7ae6c4e7167f9c564b1a26" title="Returns this widget&#39;s absolute height (in pixels).">get_abs_height()</a>, because some widgets can have an infinite or undefined height. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00368">368</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a9126efc28e816504a203a4d0b09a9a2f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9126efc28e816504a203a4d0b09a9a2f">&#9670;&nbsp;</a></span>get_apparent_width()</h2>
+<a id="a56a07f35311654d50ca10d8d13258b6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56a07f35311654d50ca10d8d13258b6e">&#9670;&nbsp;</a></span>get_apparent_width()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -797,7 +797,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::get_apparent_width </td>
+          <td class="memname">float lxgui::gui::uiobject::get_apparent_width </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -812,7 +812,7 @@ template&lt;typename T &gt; </div>
 
 <p>Returns this widget's appearend width (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's appearend width (in pixels) </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a84dd17bd505bcf99a58ce7a701ca1310" title="Returns this widget&#39;s absolute width (in pixels).">get_abs_width()</a>, because some widgets can have an infinite or undefined width. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a75dbb2d27038d88bf0f0a233a71b80b0" title="Returns this widget&#39;s absolute width (in pixels).">get_abs_width()</a>, because some widgets can have an infinite or undefined width. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00357">357</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
@@ -848,8 +848,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab7f4c3288ae127d3364a25c7307e0f8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7f4c3288ae127d3364a25c7307e0f8a">&#9670;&nbsp;</a></span>get_borders()</h2>
+<a id="a08efcae21421a973006746057d612c44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08efcae21421a973006746057d612c44">&#9670;&nbsp;</a></span>get_borders()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -858,7 +858,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">quad2i</a> &amp; lxgui::gui::uiobject::get_borders </td>
+          <td class="memname">const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp; lxgui::gui::uiobject::get_borders </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -878,8 +878,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a5a635bc892ce7c33373772c74330fc2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a635bc892ce7c33373772c74330fc2c">&#9670;&nbsp;</a></span>get_bottom()</h2>
+<a id="a48b49ffa6810835079cd5b4f79c84060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48b49ffa6810835079cd5b4f79c84060">&#9670;&nbsp;</a></span>get_bottom()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -888,7 +888,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int lxgui::gui::uiobject::get_bottom </td>
+          <td class="memname">float lxgui::gui::uiobject::get_bottom </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -908,8 +908,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a27c0a9dc4d4cbdbc8f52616b5a9f2442"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27c0a9dc4d4cbdbc8f52616b5a9f2442">&#9670;&nbsp;</a></span>get_center()</h2>
+<a id="a89d58775766cd241612047b99bbfa1f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89d58775766cd241612047b99bbfa1f8">&#9670;&nbsp;</a></span>get_center()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -918,7 +918,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; int &gt; lxgui::gui::uiobject::get_center </td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> lxgui::gui::uiobject::get_center </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -968,8 +968,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab92da0bd3463ad9cf2003696fb40dc50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab92da0bd3463ad9cf2003696fb40dc50">&#9670;&nbsp;</a></span>get_left()</h2>
+<a id="ae41bc815c0b31bea613f5af839b43212"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae41bc815c0b31bea613f5af839b43212">&#9670;&nbsp;</a></span>get_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -978,7 +978,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int lxgui::gui::uiobject::get_left </td>
+          <td class="memname">float lxgui::gui::uiobject::get_left </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1021,7 +1021,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00968">968</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00966">966</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1078,7 +1078,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00973">973</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00971">971</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1416,8 +1416,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="af8eb1849914e82ae45353d7bf0affff5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8eb1849914e82ae45353d7bf0affff5">&#9670;&nbsp;</a></span>get_right()</h2>
+<a id="ada2404bdc3b3bf858be45429a9f4c315"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada2404bdc3b3bf858be45429a9f4c315">&#9670;&nbsp;</a></span>get_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1426,7 +1426,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int lxgui::gui::uiobject::get_right </td>
+          <td class="memname">float lxgui::gui::uiobject::get_right </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1446,8 +1446,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a571bf8d3d6915b6594e8b97343b35c86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a571bf8d3d6915b6594e8b97343b35c86">&#9670;&nbsp;</a></span>get_top()</h2>
+<a id="a2459d2972ca2d3e153b9fdfffca6c62b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2459d2972ca2d3e153b9fdfffca6c62b">&#9670;&nbsp;</a></span>get_top()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1456,7 +1456,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int lxgui::gui::uiobject::get_top </td>
+          <td class="memname">float lxgui::gui::uiobject::get_top </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1505,7 +1505,7 @@ template&lt;typename T &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ab1e440077c4471e9e26b9a232835e39a">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01039">1039</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01037">1037</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1572,8 +1572,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a0c027544ecc4f13b45cc2b6a27d3f353"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c027544ecc4f13b45cc2b6a27d3f353">&#9670;&nbsp;</a></span>is_in_region()</h2>
+<a id="ab1ddbbcf70d36c5019cc0c837ffbbb99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1ddbbcf70d36c5019cc0c837ffbbb99">&#9670;&nbsp;</a></span>is_in_region()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1584,14 +1584,14 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname">bool lxgui::gui::region::is_in_region </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>iX</em>, </td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fX</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>iY</em>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fY</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1647,7 +1647,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this object has been newly created </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae130e3bf75a41ff0893bd2ecec33cdc9" title="Flags this object as newly created.">set_newly_created()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01013">1013</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01011">1011</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1777,7 +1777,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this objet is special </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8aa127a900947dc13543d87dfbd79985" title="Flags this object as &quot;special&quot;.">set_special()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00999">999</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00997">997</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1929,7 +1929,7 @@ template&lt;typename ObjectType &gt; </div>
  Test.someVariable = 2;<br  />
  ... then you can call this function with "someVariable". </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01018">1018</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01016">1016</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2044,7 +2044,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a8891fe2cbe9b16419ee728c197a5e62d">lxgui::gui::slider</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00939">939</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00937">937</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2075,7 +2075,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01034">1034</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01032">1032</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2107,7 +2107,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a0431d207f6880e4f74c23c890dff895d">lxgui::gui::frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ada8ba3e10a000c3985433b0aa033a5ef">lxgui::gui::layered_region</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01004">1004</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01002">1002</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2138,7 +2138,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00947">947</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00945">945</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2328,7 +2328,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00983">983</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00981">981</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2364,7 +2364,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00978">978</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00976">976</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2487,7 +2487,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Removes the Lua glue. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00988">988</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00986">986</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2564,8 +2564,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a6b81bd32c4bb872b20a6d66e00f208b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b81bd32c4bb872b20a6d66e00f208b6">&#9670;&nbsp;</a></span>set_abs_dimensions()</h2>
+<a id="a64facd950e17e8a833215d1a2d4c5c7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64facd950e17e8a833215d1a2d4c5c7d">&#9670;&nbsp;</a></span>set_abs_dimensions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2576,14 +2576,14 @@ template&lt;typename ObjectType &gt; </div>
         <tr>
           <td class="memname">void lxgui::gui::uiobject::set_abs_dimensions </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiAbsWidth</em>, </td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fAbsWidth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiAbsHeight</em>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fAbsHeight</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2601,20 +2601,20 @@ template&lt;typename ObjectType &gt; </div>
 <p>Changes this widget's absolute dimensions (in pixels). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiAbsWidth</td><td>The new width </td></tr>
-    <tr><td class="paramname">uiAbsHeight</td><td>The new height </td></tr>
+    <tr><td class="paramname">fAbsWidth</td><td>The new width </td></tr>
+    <tr><td class="paramname">fAbsHeight</td><td>The new height </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6c662ecb2c46f5614c827d90b2aaaef4">lxgui::gui::frame</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a26ec6c1a747f29af5cec046f1788c2fd">lxgui::gui::frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00296">296</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ae7d4bc3ace6b8060c47c38c243623a81"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7d4bc3ace6b8060c47c38c243623a81">&#9670;&nbsp;</a></span>set_abs_height()</h2>
+<a id="a54e579037d3048f0d1d0609f77bb25d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54e579037d3048f0d1d0609f77bb25d4">&#9670;&nbsp;</a></span>set_abs_height()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2625,8 +2625,8 @@ template&lt;typename ObjectType &gt; </div>
         <tr>
           <td class="memname">void lxgui::gui::uiobject::set_abs_height </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiAbsHeight</em></td><td>)</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fAbsHeight</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2640,19 +2640,19 @@ template&lt;typename ObjectType &gt; </div>
 <p>Changes this widget's absolute height (in pixels). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiAbsHeight</td><td>The new height </td></tr>
+    <tr><td class="paramname">fAbsHeight</td><td>The new height </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a27f9e194af3168d4b9b2ce7201d68398">lxgui::gui::frame</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ac35ac40c41b131771e5f44f79ea01ca6">lxgui::gui::frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00319">319</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aefb59c313f066c0c40d0f0e2706d7fb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefb59c313f066c0c40d0f0e2706d7fb0">&#9670;&nbsp;</a></span>set_abs_point() <span class="overload">[1/2]</span></h2>
+<a id="a3b9451d6f705d6a7d7e1dfdaa157123c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b9451d6f705d6a7d7e1dfdaa157123c">&#9670;&nbsp;</a></span>set_abs_point() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2681,7 +2681,7 @@ template&lt;typename ObjectType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d">vector2i</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;&#160;</td>
           <td class="paramname"><em>mOffset</em>&#160;</td>
         </tr>
         <tr>
@@ -2712,8 +2712,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a80ad7508ec73fa141d094c7155c666d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80ad7508ec73fa141d094c7155c666d5">&#9670;&nbsp;</a></span>set_abs_point() <span class="overload">[2/2]</span></h2>
+<a id="a5a69e01691cd490ffac274fa3f5aa7a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a69e01691cd490ffac274fa3f5aa7a4">&#9670;&nbsp;</a></span>set_abs_point() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2742,14 +2742,14 @@ template&lt;typename ObjectType &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>iX</em> = <code>0</code>, </td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fX</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>iY</em> = <code>0</code>&#160;</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fY</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2770,8 +2770,8 @@ template&lt;typename ObjectType &gt; </div>
     <tr><td class="paramname">mPoint</td><td>The anchor point for this object </td></tr>
     <tr><td class="paramname">sParentName</td><td>The anchor's parent </td></tr>
     <tr><td class="paramname">mRelativePoint</td><td>The anchor point for the parent </td></tr>
-    <tr><td class="paramname">iX</td><td>The horizontal offset </td></tr>
-    <tr><td class="paramname">iY</td><td>The vertical offset </td></tr>
+    <tr><td class="paramname">fX</td><td>The horizontal offset </td></tr>
+    <tr><td class="paramname">fY</td><td>The vertical offset </td></tr>
   </table>
   </dd>
 </dl>
@@ -2780,8 +2780,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a478b21de0b23783a8cbb12daef6b5e23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a478b21de0b23783a8cbb12daef6b5e23">&#9670;&nbsp;</a></span>set_abs_width()</h2>
+<a id="aded61ed4549c6e5fc447517f5fd5b5fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aded61ed4549c6e5fc447517f5fd5b5fc">&#9670;&nbsp;</a></span>set_abs_width()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2792,8 +2792,8 @@ template&lt;typename ObjectType &gt; </div>
         <tr>
           <td class="memname">void lxgui::gui::uiobject::set_abs_width </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiAbsWidth</em></td><td>)</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fAbsWidth</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2807,12 +2807,12 @@ template&lt;typename ObjectType &gt; </div>
 <p>Changes this widget's absolute width (in pixels). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiAbsWidth</td><td>The new width </td></tr>
+    <tr><td class="paramname">fAbsWidth</td><td>The new width </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a923abeeaf02154c5af7d15ece7cc2311">lxgui::gui::frame</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a97d0627616787c7d619af08dc4930e97">lxgui::gui::frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00308">308</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
@@ -3032,7 +3032,7 @@ template&lt;typename ObjectType &gt; </div>
 <dd>
 This function is only called on objects created in Lua. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01008">1008</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01006">1006</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3426,7 +3426,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 <p>Flags this object as "special". </p>
 <dl class="section note"><dt>Note</dt><dd>Special objects are not automatically copied in the frame inheritance process. They must be explicitely copied by the derived class (example : Button will have to copy its button textures itself). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00994">994</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00992">992</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3526,7 +3526,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a8b2266d230a6e194a57f87169eee5e2e">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#a89c7bf5a6baea2b293ef0416e87fdb19">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ae6643cd4c97b14fca653c3c41d954a87">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#aefa11461cc5f4ee33a0cb55a53ef4095">lxgui::gui::edit_box</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00952">952</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00950">950</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3556,7 +3556,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 <p>updates this widget's anchors. </p>
 <dl class="section note"><dt>Note</dt><dd>Must be called on <em>all</em> widgets before <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a4d627b329537e63aefe792a46225cc7e" title="Updates this widget&#39;s logic.">update()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00893">893</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00891">891</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3854,6 +3854,54 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 
 </div>
 </div>
+<a id="a4714486d206444de43b985be9d72f7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4714486d206444de43b985be9d72f7b4">&#9670;&nbsp;</a></span>fAbsHeight_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lxgui::gui::uiobject::fAbsHeight_ = 0.0f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a6c42a16ea432cdf80155c06759379b28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c42a16ea432cdf80155c06759379b28">&#9670;&nbsp;</a></span>fAbsWidth_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lxgui::gui::uiobject::fAbsWidth_ = 0.0f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00743">743</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+
+</div>
+</div>
 <a id="acee5ca91a79bb688f493d2295263acd8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acee5ca91a79bb688f493d2295263acd8">&#9670;&nbsp;</a></span>fAlpha_</h2>
 
@@ -3926,8 +3974,8 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 
 </div>
 </div>
-<a id="af3e1513775402e01269ed0f29f42f3ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3e1513775402e01269ed0f29f42f3ab">&#9670;&nbsp;</a></span>lBorderList_</h2>
+<a id="a999d6ac681f6e32d570ca4109e444255"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a999d6ac681f6e32d570ca4109e444255">&#9670;&nbsp;</a></span>lBorderList_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3936,7 +3984,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a0ae177a8b36933469d90a6bdb19d18fd">quad2i</a> lxgui::gui::uiobject::lBorderList_</td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> lxgui::gui::uiobject::lBorderList_</td>
         </tr>
       </table>
   </td>
@@ -4214,54 +4262,6 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 
 </div>
 </div>
-<a id="af4508554b4127cf3263576501e78dd67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4508554b4127cf3263576501e78dd67">&#9670;&nbsp;</a></span>uiAbsHeight_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::uiAbsHeight_ = 0u</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a5bdd4b4ed0e1895dc2e931e14d4d9166"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bdd4b4ed0e1895dc2e931e14d4d9166">&#9670;&nbsp;</a></span>uiAbsWidth_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::uiobject::uiAbsWidth_ = 0u</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00743">743</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
 <a id="a11693ef21a5095fdaeb6d51fae03d447"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11693ef21a5095fdaeb6d51fae03d447">&#9670;&nbsp;</a></span>uiID_</h2>
 
@@ -4294,7 +4294,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 11 2021 17:43:05 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 11 2021 17:43:34 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
