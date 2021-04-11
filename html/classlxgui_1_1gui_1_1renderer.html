@@ -106,15 +106,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a82a403c3f2a4fad4a7913560d70f5a42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a82a403c3f2a4fad4a7913560d70f5a42">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const =0</td></tr>
 <tr class="memdesc:a82a403c3f2a4fad4a7913560d70f5a42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1renderer.html#a82a403c3f2a4fad4a7913560d70f5a42">More...</a><br /></td></tr>
 <tr class="separator:a82a403c3f2a4fad4a7913560d70f5a42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afab27f6ab691cc16d0499a3b2204cd4f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#afab27f6ab691cc16d0499a3b2204cd4f">get_view</a> () const =0</td></tr>
+<tr class="memdesc:afab27f6ab691cc16d0499a3b2204cd4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1renderer.html#afab27f6ab691cc16d0499a3b2204cd4f">More...</a><br /></td></tr>
+<tr class="separator:afab27f6ab691cc16d0499a3b2204cd4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9a1658fe62c2f7fe7028951e13f61be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ad9a1658fe62c2f7fe7028951e13f61be">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const =0</td></tr>
 <tr class="memdesc:ad9a1658fe62c2f7fe7028951e13f61be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1renderer.html#ad9a1658fe62c2f7fe7028951e13f61be">More...</a><br /></td></tr>
 <tr class="separator:ad9a1658fe62c2f7fe7028951e13f61be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55796f8ca2e6fda95e0058c17c05af42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">render_quads</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> *pMaterial, const std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lQuadList) const =0</td></tr>
 <tr class="memdesc:a55796f8ca2e6fda95e0058c17c05af42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a set of quads.  <a href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">More...</a><br /></td></tr>
 <tr class="separator:a55796f8ca2e6fda95e0058c17c05af42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2832bef0aafa727578ee8bf87d7a939d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a2832bef0aafa727578ee8bf87d7a939d">render_cache</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> *pMaterial, const <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">vertex_cache</a> &amp;mCache, const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mModelTransform) const =0</td></tr>
-<tr class="memdesc:a2832bef0aafa727578ee8bf87d7a939d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a vertex cache.  <a href="classlxgui_1_1gui_1_1renderer.html#a2832bef0aafa727578ee8bf87d7a939d">More...</a><br /></td></tr>
-<tr class="separator:a2832bef0aafa727578ee8bf87d7a939d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab869ebda568d50c8ccc9cc69188f35c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">render_cache</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> *pMaterial, const <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">vertex_cache</a> &amp;mCache, const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mModelTransform=<a class="el" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a>) const =0</td></tr>
+<tr class="memdesc:ab869ebda568d50c8ccc9cc69188f35c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a vertex cache.  <a href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">More...</a><br /></td></tr>
+<tr class="separator:ab869ebda568d50c8ccc9cc69188f35c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae259495c173f20c63ad41adbed98b645"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ae259495c173f20c63ad41adbed98b645">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const =0</td></tr>
 <tr class="memdesc:ae259495c173f20c63ad41adbed98b645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer.html#ae259495c173f20c63ad41adbed98b645">More...</a><br /></td></tr>
 <tr class="separator:ae259495c173f20c63ad41adbed98b645"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -479,6 +482,37 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="afab27f6ab691cc16d0499a3b2204cd4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afab27f6ab691cc16d0499a3b2204cd4f">&#9670;&nbsp;</a></span>get_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> lxgui::gui::renderer::get_view </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the current view matrix to use when rendering (viewport). </p>
+<dl class="section return"><dt>Returns</dt><dd>The current view matrix to use when rendering </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a82a403c3f2a4fad4a7913560d70f5a42" title="Sets the view matrix to use when rendering (viewport).">set_view()</a> for more information. The returned matrix may be different from the matrix given to <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a82a403c3f2a4fad4a7913560d70f5a42" title="Sets the view matrix to use when rendering (viewport).">set_view()</a>, if the rendering backend does not support certain transformations. </dd></dl>
+
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a67cb05518380d308f5093bea79d60b7f">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a8a7beb767ff56e000504c7d206ef408b">lxgui::gui::sdl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a10b5245d98270ce99b694e984ab2eeed">lxgui::gui::sfml::renderer</a>.</p>
+
+</div>
+</div>
 <a id="a97313a95b93417db0871f4ad941677ce"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a97313a95b93417db0871f4ad941677ce">&#9670;&nbsp;</a></span>has_vertex_cache()</h2>
 
@@ -558,8 +592,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a2832bef0aafa727578ee8bf87d7a939d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2832bef0aafa727578ee8bf87d7a939d">&#9670;&nbsp;</a></span>render_cache()</h2>
+<a id="ab869ebda568d50c8ccc9cc69188f35c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab869ebda568d50c8ccc9cc69188f35c8">&#9670;&nbsp;</a></span>render_cache()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -583,7 +617,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
-          <td class="paramname"><em>mModelTransform</em>&#160;</td>
+          <td class="paramname"><em>mModelTransform</em> = <code><a class="el" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -743,7 +777,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 10 2021 09:45:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 11 2021 13:29:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

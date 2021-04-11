@@ -102,6 +102,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69f7ef9315904fb01f01196671cc621e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a69f7ef9315904fb01f01196671cc621e">set_view</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mViewMatrix) const override</td></tr>
 <tr class="memdesc:a69f7ef9315904fb01f01196671cc621e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a69f7ef9315904fb01f01196671cc621e">More...</a><br /></td></tr>
 <tr class="separator:a69f7ef9315904fb01f01196671cc621e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67cb05518380d308f5093bea79d60b7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a67cb05518380d308f5093bea79d60b7f">get_view</a> () const override</td></tr>
+<tr class="memdesc:a67cb05518380d308f5093bea79d60b7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current view matrix to use when rendering (viewport).  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a67cb05518380d308f5093bea79d60b7f">More...</a><br /></td></tr>
+<tr class="separator:a67cb05518380d308f5093bea79d60b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb94d5bdcb49d45605afa4994f880ed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adb94d5bdcb49d45605afa4994f880ed9">render_quad</a> (const <a class="el" href="structlxgui_1_1gui_1_1quad.html">quad</a> &amp;mQuad) const override</td></tr>
 <tr class="memdesc:adb94d5bdcb49d45605afa4994f880ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a quad.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adb94d5bdcb49d45605afa4994f880ed9">More...</a><br /></td></tr>
 <tr class="separator:adb94d5bdcb49d45605afa4994f880ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,6 +484,37 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a67cb05518380d308f5093bea79d60b7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67cb05518380d308f5093bea79d60b7f">&#9670;&nbsp;</a></span>get_view()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> lxgui::gui::gl::renderer::get_view </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the current view matrix to use when rendering (viewport). </p>
+<dl class="section return"><dt>Returns</dt><dd>The current view matrix to use when rendering </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a69f7ef9315904fb01f01196671cc621e" title="Sets the view matrix to use when rendering (viewport).">set_view()</a> for more information. The returned matrix may be different from the matrix given to <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a69f7ef9315904fb01f01196671cc621e" title="Sets the view matrix to use when rendering (viewport).">set_view()</a>, if the rendering backend does not support certain transformations. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#afab27f6ab691cc16d0499a3b2204cd4f">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
 <a id="a6562c70a8ac3287bbbfa4fc7459808e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6562c70a8ac3287bbbfa4fc7459808e9">&#9670;&nbsp;</a></span>has_vertex_cache()</h2>
 
@@ -638,7 +672,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4589f2da4b04a93796e55ca6daf4c21e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1a75c41efa3f8eb9b6bdc5e5210b910e" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. This method is also more efficient than <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#af0ecdcaf3437b950a7330d135971bc61" title="Renders a set of quads.">render_quads()</a>, as the vertex data is already cached to the GPU and does not need sending again. However, not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6562c70a8ac3287bbbfa4fc7459808e9" title="Checks if the renderer supports vertex caches.">has_vertex_cache()</a>. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a2832bef0aafa727578ee8bf87d7a939d">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -771,7 +805,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Apr 10 2021 09:45:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 11 2021 13:29:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
