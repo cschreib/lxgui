@@ -5,14 +5,14 @@
 <d:Region name inherits="" b:virtual="false" b:setAllPoints="false" b:hidden="false">
 
     <n[.,1]:Size>
-        <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
+        <n[*]:AbsDimension n:x="0"   n:y="0"/>
         <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
     </Size>
 
     <n[.,1]:Anchors>
         <Anchor point="TOPLEFT" relativeTo="" relativePoint="">
             <n[.,1]:Offset>
-                <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
+                <n[*]:AbsDimension n:x="0"   n:y="0"/>
                 <n[*]:RelDimension n:x="0.0" n:y="0.0"/>
             </Offset>
         </Anchor>
@@ -48,12 +48,12 @@
 
     <n[.,1]:ResizeBounds>
         <n[.,1]:Min>
-            <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
+            <n[*]:AbsDimension n:x="0"   n:y="0"/>
             <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
         </Min>
         <n[.,1]:Max>
-            <n[*]:AbsDimension n:x="-1.0" n:y="-1.0"/>
-            <n[*]:RelDimension n:x="1.0"  n:y="1.0"/>
+            <n[*]:AbsDimension n:x="-1"   n:y="-1"/>
+            <n[*]:RelDimension n:x="1.0" n:y="1.0"/>
         </Max>
     </ResizeBounds>
 
@@ -61,7 +61,7 @@
 
     <n[.,1]:Backdrop bgFile="" edgeFile="" b:tile="false">
         <n[.,1]:BackgroundInsets>
-            <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
+            <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
             <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         </BackgroundInsets>
 
@@ -79,7 +79,7 @@
     </Backdrop>
 
     <n[.,1]:HitRectInsets>
-        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
+        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </HitRectInsets>
 
@@ -127,7 +127,7 @@
     <n[.,1]:c[FontString]:DisabledText  name="$parentDisabledText"  b:setAllPoints="true" hidden="true" layer="BORDER"/>
 
     <n[.,1]:PushedTextOffset>
-        <n[*]:AbsDimension n:x="0.0" n:y="0.0"/>
+        <n[*]:AbsDimension n:x="0" n:y="0"/>
         <n[*]:RelDimension n:x="0.0" n:y="0.0"/>
     </PushedTextOffset>
 
@@ -240,7 +240,7 @@
     <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
 
     <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
+        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </TextInsets>
 
@@ -281,7 +281,7 @@
     <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
 
     <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
+        <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
         <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
     </TextInsets>
 
@@ -409,9 +409,9 @@ function ColorSelector:update_RGB_sliders()
     self.SliderG.Slider:set_value(self.currentColor.g*255.0, true);
     self.SliderB.Slider:set_value(self.currentColor.b*255.0, true);
 
-    self.SliderR.ValueString:set_text(math.floor(self.currentColor.r*255.0 + 0.5));
-    self.SliderG.ValueString:set_text(math.floor(self.currentColor.g*255.0 + 0.5));
-    self.SliderB.ValueString:set_text(math.floor(self.currentColor.b*255.0 + 0.5));
+    self.SliderR.ValueString:set_text(math.floor(self.currentColor.r*255.0));
+    self.SliderG.ValueString:set_text(math.floor(self.currentColor.g*255.0));
+    self.SliderB.ValueString:set_text(math.floor(self.currentColor.b*255.0));
 end
 
 function ColorSelector:update_HSL_sliders()
@@ -419,9 +419,9 @@ function ColorSelector:update_HSL_sliders()
     self.SliderS.Slider:set_value(self.currentColor.s*100.0, true);
     self.SliderL.Slider:set_value(self.currentColor.l*100.0, true);
 
-    self.SliderH.ValueString:set_text(math.floor(self.currentColor.h + 0.5));
-    self.SliderS.ValueString:set_text(math.floor(self.currentColor.s*100.0 + 0.5));
-    self.SliderL.ValueString:set_text(math.floor(self.currentColor.l*100.0 + 0.5));
+    self.SliderH.ValueString:set_text(math.floor(self.currentColor.h));
+    self.SliderS.ValueString:set_text(math.floor(self.currentColor.s*100.0));
+    self.SliderL.ValueString:set_text(math.floor(self.currentColor.l*100.0));
 end
 
 function ColorSelector:set_color(color)
