@@ -137,7 +137,8 @@ brew install sfml zlib libpng freetype glew
 
 - Windows:
 ```
-
+vcpkg install sfml zlib libpng freetype glew
+```
 
 # OpenGL + SDL setup
 - dnf based distros (Fedora):
