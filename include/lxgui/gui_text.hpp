@@ -331,7 +331,6 @@ namespace gui
         float fScalingFactor_ = 1.0f;
         float fTracking_ = 0.0f;
         float fLineSpacing_ = 1.5f;
-        float fSpaceWidth_ = 0.0f;
         bool  bRemoveStartingSpaces_ = false;
         bool  bWordWrap_ = true;
         bool  bAddEllipsis_ = false;
