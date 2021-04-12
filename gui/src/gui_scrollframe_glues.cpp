@@ -161,7 +161,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
                 if (!pObj)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : "
-                        "\""+pObj->get_name()+"\" does not exist." << std::endl;
+                        "\""+pArg->get_string()+"\" does not exist." << std::endl;
 
                     return mFunc.on_return();
                 }
@@ -201,8 +201,12 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
             }
         }
 
-        std::unique_ptr<frame> pScrollChild = down_cast<frame>(pChild->release_from_parent());
-        pScrollChild->set_parent(get_object());
+        std::unique_ptr<frame> pScrollChild;
+        if (pChild)
+        {
+            pScrollChild = down_cast<frame>(pChild->release_from_parent());
+            pScrollChild->set_parent(get_object());
+        }
         get_object()->set_scroll_child(std::move(pScrollChild));
     }
 

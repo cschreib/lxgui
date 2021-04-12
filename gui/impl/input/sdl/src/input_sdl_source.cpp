@@ -337,7 +337,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             if (mEvent.type == SDL_MOUSEBUTTONDOWN)
             {
                 fMouseX = mEvent.button.x*fPixelsPerUnit_;
-                fMouseX = mEvent.button.y*fPixelsPerUnit_;
+                fMouseY = mEvent.button.y*fPixelsPerUnit_;
             }
             else
             {
@@ -388,7 +388,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             if (mEvent.type == SDL_MOUSEBUTTONUP)
             {
                 fMouseX = mEvent.button.x*fPixelsPerUnit_;
-                fMouseX = mEvent.button.y*fPixelsPerUnit_;
+                fMouseY = mEvent.button.y*fPixelsPerUnit_;
             }
             else
             {

@@ -662,13 +662,16 @@ int lua_uiobject::_set_parent(lua_State* pLua)
 
         pObject_->set_parent(pNewParentFrame);
 
-        if (pObject_->is_object_type<frame>())
+        if (pNewParentFrame)
         {
-            pNewParentFrame->add_child(down_cast<frame>(pObject_->release_from_parent()));
-        }
-        else
-        {
-            pNewParentFrame->add_region(down_cast<layered_region>(pObject_->release_from_parent()));
+            if (pObject_->is_object_type<frame>())
+            {
+                pNewParentFrame->add_child(down_cast<frame>(pObject_->release_from_parent()));
+            }
+            else
+            {
+                pNewParentFrame->add_region(down_cast<layered_region>(pObject_->release_from_parent()));
+            }
         }
     }
 
