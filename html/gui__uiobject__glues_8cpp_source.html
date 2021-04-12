@@ -575,172 +575,175 @@ $(function() {
 <div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160; </div>
 <div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;        pObject_-&gt;set_parent(pNewParentFrame);</div>
 <div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160; </div>
-<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">if</span> (pObject_-&gt;is_object_type&lt;frame&gt;())</div>
+<div class="line"><a name="l00665"></a><span class="lineno">  665</span>&#160;        <span class="keywordflow">if</span> (pNewParentFrame)</div>
 <div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;        {</div>
-<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;            pNewParentFrame-&gt;add_child(down_cast&lt;frame&gt;(pObject_-&gt;release_from_parent()));</div>
-<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;        }</div>
-<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;        {</div>
-<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;            pNewParentFrame-&gt;add_region(down_cast&lt;layered_region&gt;(pObject_-&gt;release_from_parent()));</div>
-<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;        }</div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;    }</div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160; </div>
-<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;}</div>
+<div class="line"><a name="l00667"></a><span class="lineno">  667</span>&#160;            <span class="keywordflow">if</span> (pObject_-&gt;is_object_type&lt;frame&gt;())</div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;            {</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;                pNewParentFrame-&gt;add_child(down_cast&lt;frame&gt;(pObject_-&gt;release_from_parent()));</div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160;            }</div>
+<div class="line"><a name="l00671"></a><span class="lineno">  671</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00672"></a><span class="lineno">  672</span>&#160;            {</div>
+<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;                pNewParentFrame-&gt;add_region(down_cast&lt;layered_region&gt;(pObject_-&gt;release_from_parent()));</div>
+<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160;            }</div>
+<div class="line"><a name="l00675"></a><span class="lineno">  675</span>&#160;        }</div>
+<div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160;    }</div>
 <div class="line"><a name="l00677"></a><span class="lineno">  677</span>&#160; </div>
-<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_point(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;{</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160; </div>
-<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_point&quot;</span>, pLua);</div>
-<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
-<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent name&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;    mFunc.add(2, <span class="stringliteral">&quot;relative point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;    mFunc.add(3, <span class="stringliteral">&quot;x offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    mFunc.add(4, <span class="stringliteral">&quot;y offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    {</div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;        <span class="comment">// point</span></div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(0)-&gt;get_string());</div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160; </div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        <span class="comment">// parent</span></div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        lua::argument* pArg = mFunc.get(1);</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;        uiobject* pParent = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        <span class="keywordflow">if</span> (pArg-&gt;is_provided())</div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        {</div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;            <span class="keywordflow">if</span> (pArg-&gt;get_type() == <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>)</div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;            {</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;                std::string sParent = pArg-&gt;get_string();</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;                <span class="keywordflow">if</span> (!utils::has_no_content(sParent))</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;                    pParent = pObject_-&gt;get_manager()-&gt;get_uiobject_by_name(sParent);</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;            }</div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;            {</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;                lua_uiobject* pLuaObj = pArg-&gt;get&lt;lua_uiobject&gt;();</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;                <span class="keywordflow">if</span> (pLuaObj)</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;                    pParent = pLuaObj-&gt;get_object();</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;            }</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;        }</div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;            pParent = pObject_-&gt;get_parent();</div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160; </div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keywordflow">if</span> (pParent &amp;&amp; pParent-&gt;depends_on(pObject_))</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;        {</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : Cyclic anchor dependency ! &quot;</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; pObject_-&gt;get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; and \&quot;&quot;</span> &lt;&lt; pParent-&gt;get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; depend on &quot;</span></div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;                <span class="stringliteral">&quot;eachothers (directly or indirectly).\n\&quot;&quot;</span></div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;                &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a0d95658fce5cf25a5142c5516920035c">anchor::get_string_point</a>(mPoint) &lt;&lt; <span class="stringliteral">&quot;\&quot; anchor not added.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;            <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;        }</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160; </div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;        <span class="comment">// relativePoint</span></div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mParentPoint = mPoint;</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(2))</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;            mParentPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(2)-&gt;get_string());</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160; </div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <span class="comment">// x</span></div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;        <span class="keywordtype">float</span> fAbsX = 0;</div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(3))</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;            fAbsX = mFunc.get(3)-&gt;get_number();</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        <span class="comment">// y</span></div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;        <span class="keywordtype">float</span> fAbsY = 0;</div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(4))</div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;            fAbsY = mFunc.get(4)-&gt;get_number();</div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160; </div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        pObject_-&gt;set_abs_point(mPoint, pParent ? pParent-&gt;get_name() : <span class="stringliteral">&quot;&quot;</span>, mParentPoint, fAbsX, fAbsY);</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    }</div>
+<div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;}</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160; </div>
+<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_point(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
+<div class="line"><a name="l00684"></a><span class="lineno">  684</span>&#160;{</div>
+<div class="line"><a name="l00685"></a><span class="lineno">  685</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
+<div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160; </div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_point&quot;</span>, pLua);</div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
+<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent name&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    mFunc.add(2, <span class="stringliteral">&quot;relative point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160;    mFunc.add(3, <span class="stringliteral">&quot;x offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    mFunc.add(4, <span class="stringliteral">&quot;y offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    {</div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;        <span class="comment">// point</span></div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(0)-&gt;get_string());</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160; </div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;        <span class="comment">// parent</span></div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;        lua::argument* pArg = mFunc.get(1);</div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;        uiobject* pParent = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;        <span class="keywordflow">if</span> (pArg-&gt;is_provided())</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;        {</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;            <span class="keywordflow">if</span> (pArg-&gt;get_type() == <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>)</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;            {</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;                std::string sParent = pArg-&gt;get_string();</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;                <span class="keywordflow">if</span> (!utils::has_no_content(sParent))</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;                    pParent = pObject_-&gt;get_manager()-&gt;get_uiobject_by_name(sParent);</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;            }</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;            {</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;                lua_uiobject* pLuaObj = pArg-&gt;get&lt;lua_uiobject&gt;();</div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;                <span class="keywordflow">if</span> (pLuaObj)</div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;                    pParent = pLuaObj-&gt;get_object();</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;            }</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;        }</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            pParent = pObject_-&gt;get_parent();</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160; </div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;        <span class="keywordflow">if</span> (pParent &amp;&amp; pParent-&gt;depends_on(pObject_))</div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;        {</div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : Cyclic anchor dependency ! &quot;</span></div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> &lt;&lt; pObject_-&gt;get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; and \&quot;&quot;</span> &lt;&lt; pParent-&gt;get_name() &lt;&lt; <span class="stringliteral">&quot;\&quot; depend on &quot;</span></div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;                <span class="stringliteral">&quot;eachothers (directly or indirectly).\n\&quot;&quot;</span></div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;                &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a0d95658fce5cf25a5142c5516920035c">anchor::get_string_point</a>(mPoint) &lt;&lt; <span class="stringliteral">&quot;\&quot; anchor not added.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;            <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;        }</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160; </div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;        <span class="comment">// relativePoint</span></div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mParentPoint = mPoint;</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(2))</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;            mParentPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(2)-&gt;get_string());</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160; </div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        <span class="comment">// x</span></div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        <span class="keywordtype">float</span> fAbsX = 0;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(3))</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;            fAbsX = mFunc.get(3)-&gt;get_number();</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160; </div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        <span class="comment">// y</span></div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;        <span class="keywordtype">float</span> fAbsY = 0;</div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(4))</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;            fAbsY = mFunc.get(4)-&gt;get_number();</div>
 <div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160; </div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;}</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;        pObject_-&gt;set_abs_point(mPoint, pParent ? pParent-&gt;get_name() : <span class="stringliteral">&quot;&quot;</span>, mParentPoint, fAbsX, fAbsY);</div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;    }</div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160; </div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_rel_point(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;{</div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160; </div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_rel_point&quot;</span>, pLua);</div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent name&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    mFunc.add(2, <span class="stringliteral">&quot;relative point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    mFunc.add(3, <span class="stringliteral">&quot;x offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    mFunc.add(4, <span class="stringliteral">&quot;y offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    {</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;        <span class="comment">// point</span></div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(0)-&gt;get_string());</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160; </div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        <span class="comment">// parent</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        lua::argument* pArg = mFunc.get(1);</div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;        uiobject* pParent = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        <span class="keywordflow">if</span> (pArg-&gt;is_provided())</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        {</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;            <span class="keywordflow">if</span> (pArg-&gt;get_type() == <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>)</div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;            {</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;                std::string sParent = pArg-&gt;get_string();</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;                <span class="keywordflow">if</span> (!utils::has_no_content(sParent))</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;                    pParent = pObject_-&gt;get_manager()-&gt;get_uiobject_by_name(sParent);</div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;            }</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;            {</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;                lua_uiobject* pLuaObj = pArg-&gt;get&lt;lua_uiobject&gt;();</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;                <span class="keywordflow">if</span> (pLuaObj)</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;                    pParent = pLuaObj-&gt;get_object();</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;            }</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        }</div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;            pParent = pObject_-&gt;get_parent();</div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160; </div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        <span class="comment">// relativePoint</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mParentPoint = mPoint;</div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(2))</div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;            mParentPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(2)-&gt;get_string());</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160; </div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;        <span class="comment">// x</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;        <span class="keywordtype">float</span> fRelX = 0.0f;</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(3))</div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;            fRelX = mFunc.get(3)-&gt;get_number();</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        <span class="comment">// y</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;        <span class="keywordtype">float</span> fRelY = 0.0f;</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(4))</div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;            fRelY = mFunc.get(4)-&gt;get_number();</div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        pObject_-&gt;set_rel_point(mPoint, pParent ? pParent-&gt;get_name() : <span class="stringliteral">&quot;&quot;</span>, mParentPoint, fRelX, fRelY);</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    }</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;}</div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160; </div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_rel_point(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;{</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160; </div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_rel_point&quot;</span>, pLua);</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent name&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;parent&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    mFunc.add(2, <span class="stringliteral">&quot;relative point&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    mFunc.add(3, <span class="stringliteral">&quot;x offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    mFunc.add(4, <span class="stringliteral">&quot;y offset&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    {</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;        <span class="comment">// point</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(0)-&gt;get_string());</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; </div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;        <span class="comment">// parent</span></div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;        lua::argument* pArg = mFunc.get(1);</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;        uiobject* pParent = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;        <span class="keywordflow">if</span> (pArg-&gt;is_provided())</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;        {</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;            <span class="keywordflow">if</span> (pArg-&gt;get_type() == <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>)</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;            {</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;                std::string sParent = pArg-&gt;get_string();</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;                <span class="keywordflow">if</span> (!utils::has_no_content(sParent))</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;                    pParent = pObject_-&gt;get_manager()-&gt;get_uiobject_by_name(sParent);</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;            }</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;            <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;            {</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;                lua_uiobject* pLuaObj = pArg-&gt;get&lt;lua_uiobject&gt;();</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;                <span class="keywordflow">if</span> (pLuaObj)</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;                    pParent = pLuaObj-&gt;get_object();</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;            }</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;        }</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;            pParent = pObject_-&gt;get_parent();</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;        <span class="comment">// relativePoint</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4">anchor_point</a> mParentPoint = mPoint;</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(2))</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;            mParentPoint = <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(mFunc.get(2)-&gt;get_string());</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160; </div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;        <span class="comment">// x</span></div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;        <span class="keywordtype">float</span> fRelX = 0.0f;</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(3))</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;            fRelX = mFunc.get(3)-&gt;get_number();</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160; </div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;        <span class="comment">// y</span></div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        <span class="keywordtype">float</span> fRelY = 0.0f;</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        <span class="keywordflow">if</span> (mFunc.is_provided(4))</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;            fRelY = mFunc.get(4)-&gt;get_number();</div>
 <div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160; </div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;}</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;        pObject_-&gt;set_rel_point(mPoint, pParent ? pParent-&gt;get_name() : <span class="stringliteral">&quot;&quot;</span>, mParentPoint, fRelX, fRelY);</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    }</div>
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160; </div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_width(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;{</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_width&quot;</span>, pLua);</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;width&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;        pObject_-&gt;set_abs_width(mFunc.get(0)-&gt;get_number());</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;}</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;}</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160; </div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_set_width(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;{</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160; </div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:set_width&quot;</span>, pLua);</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;width&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        pObject_-&gt;set_abs_width(mFunc.get(0)-&gt;get_number());</div>
 <div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_show(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;{</div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160; </div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:show&quot;</span>, pLua);</div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    pObject_-&gt;show();</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;}</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;}</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;}</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;}</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="keywordtype">int</span> lua_uiobject::_show(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;{</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160; </div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;UIObject:show&quot;</span>, pLua);</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    pObject_-&gt;show();</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160; </div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;}</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;}</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_html_abf2ac19edd1a7ce40ebf7a29b96ecf48"><div class="ttname"><a href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">lxgui::gui::error</a></div><div class="ttdeci">const std::string error</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00008">gui_out.cpp:8</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a0d95658fce5cf25a5142c5516920035c"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a0d95658fce5cf25a5142c5516920035c">lxgui::gui::anchor::get_string_point</a></div><div class="ttdeci">static std::string get_string_point(anchor_point mPoint)</div><div class="ttdoc">Returns the name of an anchor point.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00277">gui_anchor.cpp:277</a></div></div>
@@ -769,7 +772,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a385b86487b594ba1bb4de5d2ad7208ce"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">lxgui::gui::anchor::get_anchor_point</a></div><div class="ttdeci">static anchor_point get_anchor_point(const std::string &amp;sPoint)</div><div class="ttdoc">Returns the anchor point from its name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00294">gui_anchor.cpp:294</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Apr 11 2021 17:43:33 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 12 2021 17:39:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
