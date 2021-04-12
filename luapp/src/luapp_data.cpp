@@ -17,11 +17,9 @@ void data::set(state& mLua, int iIndex)
         mValue_ = mLua.get_number(iIndex);
     else if (mLuaType_ == type::STRING)
         mValue_ = mLua.get_string(iIndex);
-    else if (mLuaType_ == type::TABLE)
-        mValue_ = iIndex;
-    else if (mLuaType_ == type::FUNCTION)
-        mValue_ = iIndex;
-    else if (mLuaType_ == type::USERDATA)
+    else if (mLuaType_ == type::TABLE ||
+             mLuaType_ == type::FUNCTION ||
+             mLuaType_ == type::USERDATA)
         mValue_ = iIndex;
     else if (mLuaType_ == type::NIL)
         mValue_ = utils::empty{};
