@@ -1,5 +1,7 @@
 #include "lxgui/gui_matrix4.hpp"
+
 #include <iostream>
+#include <cmath>
 
 namespace lxgui {
 namespace gui
@@ -49,7 +51,7 @@ matrix4f matrix4f::scaling(const vector2f& scale)
 
 matrix4f matrix4f::rotation(float rot)
 {
-    float co = cos(rot), si = sin(rot);
+    float co = std::cos(rot), si = std::sin(rot);
 
     return {
         co,   si,   0.0f, 0.0f,
@@ -61,7 +63,7 @@ matrix4f matrix4f::rotation(float rot)
 
 matrix4f matrix4f::transformation(const vector2f& dx, const vector2f& scale, float rot)
 {
-    float co = cos(rot), si = sin(rot);
+    float co = std::cos(rot), si = std::sin(rot);
 
     return {
         scale.x*co,   scale.y*si,   0.0f, 0.0f,
