@@ -30,14 +30,6 @@
 
 #include <cmath>
 
-#if defined(MSVC)
-template<typename T>
-T log2(T v)
-{
-    return log(v)/log(2.0);
-}
-#endif
-
 namespace lxgui {
 namespace gui {
 namespace gl
@@ -45,13 +37,18 @@ namespace gl
 bool material::ONLY_POWER_OF_TWO = true;
 uint material::MAXIMUM_SIZE = 128;
 
+uint next_pot(uint uiSize)
+{
+    return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(uiSize))));
+}
+
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
     uiWidth_(uiWidth), uiHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter)
 {
     if (ONLY_POWER_OF_TWO)
     {
-        uiRealWidth_ = pow(2.0f, ceil(log2((float)uiWidth)));
-        uiRealHeight_ = pow(2.0f, ceil(log2((float)uiHeight)));
+        uiRealWidth_ = next_pot(uiWidth);
+        uiRealHeight_ = next_pot(uiHeight);
     }
     else
     {
@@ -226,8 +223,8 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     uint uiRealHeight = uiHeight;
     if (ONLY_POWER_OF_TWO)
     {
-        uiRealWidth  = pow(2.0f, ceil(log2((float)uiWidth)));
-        uiRealHeight = pow(2.0f, ceil(log2((float)uiHeight)));
+        uiRealWidth  = next_pot(uiWidth);
+        uiRealHeight = next_pot(uiHeight);
     }
 
     if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)

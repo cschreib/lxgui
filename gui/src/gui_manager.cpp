@@ -584,7 +584,7 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
 
             mFile.close();
 
-            if (mAddOn.sName == "")
+            if (mAddOn.sName.empty())
                 gui::out << gui::error << "gui::manager : Missing addon name in " << sTOCFile << "." << std::endl;
             else
                 lAddOns[sAddOnName] = mAddOn;
@@ -668,10 +668,7 @@ void manager::load_addon_directory_(const std::string& sDirectory)
             {
                 sLine.erase(0, 1);
                 utils::trim(sLine, ' ');
-                if (sLine == "Core")
-                    bCore = true;
-                else
-                    bCore = false;
+                bCore = sLine == "Core";
             }
             else
             {
@@ -917,7 +914,7 @@ void manager::create_caching_render_target_()
 
     mSprite_ = sprite(pRenderer_.get(), pRenderer_->create_material(pRenderTarget_));
 
-    float fScale = 1.0/get_interface_scaling_factor();
+    float fScale = 1.0f/get_interface_scaling_factor();
     mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
 }
 
@@ -930,7 +927,7 @@ void manager::create_strata_cache_render_target_(strata& mStrata)
 
     mStrata.mSprite = sprite(pRenderer_.get(), pRenderer_->create_material(mStrata.pRenderTarget));
 
-    float fScale = 1.0/fScalingFactor_;
+    float fScale = 1.0f/fScalingFactor_;
     mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
 }
 
@@ -1351,10 +1348,10 @@ void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::
             {
                 iter2->second.erase(iter3);
 
-                if (iter2->second.size() == 0)
+                if (iter2->second.empty())
                     iter1->second.erase(iter2);
 
-                if (iter1->second.size() == 0)
+                if (iter1->second.empty())
                     lKeyBindingList_.erase(iter1);
             }
         }

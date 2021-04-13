@@ -53,7 +53,7 @@ void renderer::end() const
 
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
-    static const float RAD_TO_DEG = 180.0/std::acos(-1.0f);
+    static const float RAD_TO_DEG = 180.0f/std::acos(-1.0f);
 
     float fScaleX = std::sqrt(mViewMatrix(0,0)*mViewMatrix(0,0) + mViewMatrix(1,0)*mViewMatrix(1,0));
     float fScaleY = std::sqrt(mViewMatrix(0,1)*mViewMatrix(0,1) + mViewMatrix(1,1)*mViewMatrix(1,1));
@@ -177,8 +177,8 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
+    std::string sBakedName = utils::to_string((int)mFilter) + '|' + sFileName;
+    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBakedName);
     if (iter != lTextureList_.end())
     {
         if (std::shared_ptr<gui::material> pLock = iter->second.lock())

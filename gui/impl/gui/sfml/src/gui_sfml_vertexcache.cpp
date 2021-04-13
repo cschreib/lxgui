@@ -44,7 +44,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
         for (uint i = 0; i < uiNumVertexExpanded; ++i)
         {
             auto& sv = lVertices[i];
-            auto& v = lVertexData[(i/6u)*4u + lQuadIDs[i%6u]];
+            const auto& v = lVertexData[(i/6u)*4u + lQuadIDs[i%6u]];
             to_sfml(v, sv);
         }
 
@@ -60,7 +60,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
         for (uint i = 0; i < uiNumVertex; ++i)
         {
             auto& sv = lVertices[i];
-            auto& v = lVertexData[i];
+            const auto& v = lVertexData[i];
             to_sfml(v, sv);
         }
 

@@ -17,7 +17,7 @@ namespace input
 
 manager::manager(std::unique_ptr<source> pSource) : pSource_(std::move(pSource))
 {
-    lKeyDelay_.fill(false);
+    lKeyDelay_.fill(0.0);
     lKeyLong_.fill(false);
 
     lMouseDelay_.fill(0.0);
@@ -450,10 +450,7 @@ void manager::update(float fTempDelta)
     fRelMY_ = mMouseState.fRelY/fScalingFactor_;
 
     fMWheel_ = mMouseState.fRelWheel;
-    if (fMWheel_ == 0.0f)
-        bWheelRolled_ = false;
-    else
-        bWheelRolled_ = true;
+    bWheelRolled_ = fMWheel_ != 0.0f;
 
     // Send movement event
     if (fDMX_ != 0.0 || fDMY_ != 0.0)

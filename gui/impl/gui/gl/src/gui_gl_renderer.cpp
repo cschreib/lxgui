@@ -94,7 +94,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 
 #if defined(LXGUI_OPENGL3)
     glUseProgram(pShaderCache_->uiProgram_);
-    uiPreviousTexture_ = (uint)-1;
+    uiPreviousTexture_ = static_cast<uint>(-1);
 #endif
 
     set_view(mCurrentViewMatrix);
@@ -288,8 +288,8 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
+    std::string sBakedName = utils::to_string((int)mFilter) + '|' + sFileName;
+    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBakedName);
     if (iter != lTextureList_.end())
     {
         if (std::shared_ptr<gui::material> pLock = iter->second.lock())
