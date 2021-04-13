@@ -82,14 +82,25 @@ float anchor::get_abs_x() const
         else
             fOffset = fRelOffX_*fParentWidth_;
 
-        float fParentOffset;
-        if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::BOTTOMLEFT))
-            fParentOffset = 0;
-        else if ((mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::BOTTOM))
-            fParentOffset = fParentWidth_/2;
-        else if ((mParentPoint_ == anchor_point::TOPRIGHT) || (mParentPoint_ == anchor_point::RIGHT) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
-            fParentOffset = fParentWidth_;
-        else fParentOffset = 0;
+        float fParentOffset = 0.0f;
+        switch (mParentPoint_)
+        {
+            case anchor_point::TOPLEFT: [[fallthrough]];
+            case anchor_point::LEFT: [[fallthrough]];
+            case anchor_point::BOTTOMLEFT:
+                fParentOffset = 0.0f;
+                break;
+            case anchor_point::TOP: [[fallthrough]];
+            case anchor_point::CENTER: [[fallthrough]];
+            case anchor_point::BOTTOM:
+                fParentOffset = fParentWidth_/2.0f;
+                break;
+            case anchor_point::TOPRIGHT: [[fallthrough]];
+            case anchor_point::RIGHT: [[fallthrough]];
+            case anchor_point::BOTTOMRIGHT:
+                fParentOffset = fParentWidth_;
+                break;
+        }
 
         return fOffset + fParentOffset + fParentX;
     }
@@ -121,14 +132,25 @@ float anchor::get_abs_y() const
         else
             fOffset = fRelOffY_*fParentHeight_;
 
-        float fParentOffset;
-        if ((mParentPoint_ == anchor_point::TOPLEFT) || (mParentPoint_ == anchor_point::TOP) || (mParentPoint_ == anchor_point::TOPRIGHT))
-            fParentOffset = 0;
-        else if ((mParentPoint_ == anchor_point::LEFT) || (mParentPoint_ == anchor_point::CENTER) || (mParentPoint_ == anchor_point::RIGHT))
-            fParentOffset = fParentHeight_/2;
-        else if ((mParentPoint_ == anchor_point::BOTTOMLEFT) || (mParentPoint_ == anchor_point::BOTTOM) || (mParentPoint_ == anchor_point::BOTTOMRIGHT))
-            fParentOffset = fParentHeight_;
-        else fParentOffset = 0;
+        float fParentOffset = 0.0f;
+        switch (mParentPoint_)
+        {
+            case anchor_point::TOPLEFT: [[fallthrough]];
+            case anchor_point::TOP: [[fallthrough]];
+            case anchor_point::TOPRIGHT:
+                fParentOffset = 0.0f;
+                break;
+            case anchor_point::LEFT: [[fallthrough]];
+            case anchor_point::CENTER: [[fallthrough]];
+            case anchor_point::RIGHT:
+                fParentOffset = fParentHeight_/2.0f;
+                break;
+            case anchor_point::BOTTOMLEFT: [[fallthrough]];
+            case anchor_point::BOTTOM: [[fallthrough]];
+            case anchor_point::BOTTOMRIGHT:
+                fParentOffset = fParentHeight_;
+                break;
+        }
 
         return fOffset + fParentOffset + fParentY;
     }
