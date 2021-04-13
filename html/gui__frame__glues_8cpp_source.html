@@ -297,18 +297,18 @@ $(function() {
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        mState.set_field_string(<span class="stringliteral">&quot;edgeFile&quot;</span>, pBackdrop-&gt;get_edge_file());</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        mState.set_field_bool(<span class="stringliteral">&quot;tile&quot;</span>, pBackdrop-&gt;is_background_tilling());</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;tileSize&quot;</span>, pBackdrop-&gt;get_tile_size());</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;edgeSize&quot;</span>, pBackdrop-&gt;get_edge_size());</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;tileSize&quot;</span>, pBackdrop-&gt;get_tile_size());</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;edgeSize&quot;</span>, pBackdrop-&gt;get_edge_size());</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        mState.new_table();</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        mState.set_field(<span class="stringliteral">&quot;insets&quot;</span>);</div>
 <div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;        mState.get_field(<span class="stringliteral">&quot;insets&quot;</span>);</div>
 <div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
 <div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&amp; lInsets = pBackdrop-&gt;get_background_insets();</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;left&quot;</span>,   lInsets.left);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;right&quot;</span>,  lInsets.right);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;top&quot;</span>,    lInsets.top);</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        mState.set_field_int(<span class="stringliteral">&quot;bottom&quot;</span>, lInsets.bottom);</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;left&quot;</span>,   lInsets.left);</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;right&quot;</span>,  lInsets.right);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;top&quot;</span>,    lInsets.top);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;        mState.set_field_double(<span class="stringliteral">&quot;bottom&quot;</span>, lInsets.bottom);</div>
 <div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; </div>
 <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        mState.pop();</div>
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160; </div>
@@ -806,13 +806,13 @@ $(function() {
 <div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;            pBackdrop-&gt;set_edge(pManager-&gt;parse_file_name(mState.get_field_string(<span class="stringliteral">&quot;edgeFile&quot;</span>, <span class="keyword">false</span>, <span class="stringliteral">&quot;&quot;</span>)));</div>
 <div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;            pBackdrop-&gt;set_backgrond_tilling(mState.get_field_bool(<span class="stringliteral">&quot;tile&quot;</span>, <span class="keyword">false</span>, <span class="keyword">false</span>));</div>
 <div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160; </div>
-<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;            <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiTileSize = <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>(mState.get_field_int(<span class="stringliteral">&quot;tileSize&quot;</span>, <span class="keyword">false</span>, 0));</div>
-<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;            <span class="keywordflow">if</span> (uiTileSize != 0)</div>
-<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;                pBackdrop-&gt;set_tile_size(uiTileSize);</div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;            <span class="keywordtype">float</span> fTileSize = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(mState.get_field_double(<span class="stringliteral">&quot;tileSize&quot;</span>, <span class="keyword">false</span>, 0.0));</div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;            <span class="keywordflow">if</span> (fTileSize != 0)</div>
+<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;                pBackdrop-&gt;set_tile_size(fTileSize);</div>
 <div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160; </div>
-<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;            <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiEdgeSize = <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>(mState.get_field_int(<span class="stringliteral">&quot;edgeSize&quot;</span>, <span class="keyword">false</span>, 0));</div>
-<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;            <span class="keywordflow">if</span> (uiEdgeSize != 0)</div>
-<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;                pBackdrop-&gt;set_edge_size(uiEdgeSize);</div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;            <span class="keywordtype">float</span> fEdgeSize = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(mState.get_field_double(<span class="stringliteral">&quot;edgeSize&quot;</span>, <span class="keyword">false</span>, 0.0));</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;            <span class="keywordflow">if</span> (fEdgeSize != 0)</div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;                pBackdrop-&gt;set_edge_size(fEdgeSize);</div>
 <div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160; </div>
 <div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;            mState.get_field(<span class="stringliteral">&quot;insets&quot;</span>);</div>
 <div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160; </div>
@@ -959,7 +959,7 @@ $(function() {
 <div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;Frame:set_frame_level&quot;</span>, pLua);</div>
 <div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;level&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
 <div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;        get_object()-&gt;set_level(mFunc.get(0)-&gt;get_number());</div>
+<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;        get_object()-&gt;set_level(mFunc.get(0)-&gt;get_int());</div>
 <div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160; </div>
 <div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
 <div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;}</div>
@@ -1314,13 +1314,13 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a6f62faad68736da3e6df7e8d92c293a6ab89de3b4b81c4facfac906edf29aec8c"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ab89de3b4b81c4facfac906edf29aec8c">lxgui::gui::frame_strata::HIGH</a></div><div class="ttdeci">@ HIGH</div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a0c2cba6197570349be19187871420c85a9b2e9d96ab6088c37a04a8f5a9a0ea80"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a9b2e9d96ab6088c37a04a8f5a9a0ea80">lxgui::gui::layer_type::ARTWORK</a></div><div class="ttdeci">@ ARTWORK</div></div>
 <div class="ttc" id="agui__manager_8hpp_html"><div class="ttname"><a href="gui__manager_8hpp.html">gui_manager.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a385b86487b594ba1bb4de5d2ad7208ce"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">lxgui::gui::anchor::get_anchor_point</a></div><div class="ttdeci">static anchor_point get_anchor_point(const std::string &amp;sPoint)</div><div class="ttdoc">Returns the anchor point from its name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00294">gui_anchor.cpp:294</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a385b86487b594ba1bb4de5d2ad7208ce"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">lxgui::gui::anchor::get_anchor_point</a></div><div class="ttdeci">static anchor_point get_anchor_point(const std::string &amp;sPoint)</div><div class="ttdoc">Returns the anchor point from its name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00316">gui_anchor.cpp:316</a></div></div>
 <div class="ttc" id="agui__fontstring_8hpp_html"><div class="ttname"><a href="gui__fontstring_8hpp.html">gui_fontstring.hpp</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1layer_html_a6781b088d608dbaac7720472357d3dc3"><div class="ttname"><a href="structlxgui_1_1gui_1_1layer.html#a6781b088d608dbaac7720472357d3dc3">lxgui::gui::layer::get_layer_type</a></div><div class="ttdeci">static layer_type get_layer_type(const std::string &amp;sLayer)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01947">gui_frame.cpp:1947</a></div></div>
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Apr 12 2021 17:39:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Apr 13 2021 20:17:44 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
