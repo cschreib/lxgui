@@ -121,28 +121,28 @@ uint hex_to_uint(const string& s)
     return i;
 }
 
-long string_to_int(const string& s)
+int string_to_int(const string& s)
 {
-    long i = 0;
+    int i = 0;
     string_stream ss(s);
     ss >> i;
     return i;
 }
 
-long string_to_int(const ustring& s)
+int string_to_int(const ustring& s)
 {
     return string_to_int(unicode_to_utf8(s));
 }
 
-unsigned long string_to_uint(const string& s)
+uint string_to_uint(const string& s)
 {
-    unsigned long ui = 0;
+    uint ui = 0;
     string_stream ss(s);
     ss >> ui;
     return ui;
 }
 
-unsigned long string_to_uint(const ustring& s)
+uint string_to_uint(const ustring& s)
 {
     return string_to_uint(unicode_to_utf8(s));
 }

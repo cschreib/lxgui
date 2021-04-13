@@ -180,11 +180,11 @@ namespace utils
 
     uint    hex_to_uint(const string& s);
 
-    long string_to_int(const string& s);
-    long string_to_int(const ustring& s);
+    int string_to_int(const string& s);
+    int string_to_int(const ustring& s);
 
-    unsigned long string_to_uint(const string& s);
-    unsigned long string_to_uint(const ustring& s);
+    uint string_to_uint(const string& s);
+    uint string_to_uint(const ustring& s);
 
     float string_to_float(const string& s);
     float string_to_float(const ustring& s);
