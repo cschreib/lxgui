@@ -15,7 +15,7 @@ bool file_exists(const std::string& sFile)
 string_vector get_directory_list(const std::string& sRelPath)
 {
     string_vector lDirList;
-    for (auto& mEntry : std::filesystem::directory_iterator(sRelPath))
+    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
     {
         if (mEntry.is_directory())
             lDirList.push_back(mEntry.path().filename().u8string());
@@ -27,7 +27,7 @@ string_vector get_directory_list(const std::string& sRelPath)
 string_vector get_file_list(const std::string& sRelPath, bool bWithPath)
 {
     string_vector lFileList;
-    for (auto& mEntry : std::filesystem::directory_iterator(sRelPath))
+    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
     {
         if (mEntry.is_regular_file())
         {
@@ -48,7 +48,7 @@ string_vector get_file_list(const std::string& sRelPath, bool bWithPath, const s
         utils::trim(sExtension, ' ');
 
     string_vector lFileList;
-    for (auto& mEntry : std::filesystem::directory_iterator(sRelPath))
+    for (const auto& mEntry : std::filesystem::directory_iterator(sRelPath))
     {
         if (mEntry.is_regular_file())
         {
