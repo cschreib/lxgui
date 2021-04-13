@@ -442,7 +442,7 @@ std::string state::serialize(const std::string& sTab, int iIndex)
             pop();
 
             if (sContent != "\n")
-                sResult + sContent + sTab;
+                sResult += sContent + sTab;
 
             sResult += "}";
             break;
