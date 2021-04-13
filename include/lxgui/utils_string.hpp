@@ -173,13 +173,10 @@ namespace utils
     bool starts_with(const string& s, const string& sPattern);
     bool ends_with(const string& s, const string& sPattern);
 
-    bool has_no_content(const std::string& s);
+    bool has_no_content(const string& s);
 
-    ustring  utf8_to_unicode(const string& s);
-    char32_t utf8_to_unicode(char c);
-
+    ustring utf8_to_unicode(const string& s);
     string  unicode_to_utf8(const ustring& s);
-    char    unicode_to_utf8(char32_t c);
 
     uint    hex_to_uint(const string& s);
 

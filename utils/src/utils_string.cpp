@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <cmath>
+#include <locale>
+#include <codecvt>
 
 /** \cond NOT_REMOVE_FROM_DOC
 */
@@ -59,14 +61,14 @@ uint count_occurrences(const string& s, const string& sPattern)
     return uiCount;
 }
 
-bool has_no_content(const std::string& s)
+bool has_no_content(const string& s)
 {
     if (s.empty())
         return true;
 
     for (size_t i = 0; i < s.length(); ++i)
     {
-        if (s[i] != ' ' && s[i] != '	')
+        if (s[i] != ' ' && s[i] != '\t')
             return false;
     }
 
@@ -77,7 +79,10 @@ bool starts_with(const string& s, const string& sPattern)
 {
     size_t n = std::min(s.size(), sPattern.size());
     for (size_t i = 0; i < n; ++i)
-        if (s[i] != sPattern[i]) return false;
+    {
+        if (s[i] != sPattern[i])
+            return false;
+    }
 
     return true;
 }
@@ -88,107 +93,24 @@ bool ends_with(const string& s, const string& sPattern)
     size_t ps = sPattern.size();
     size_t n = std::min(ss, ps);
     for (size_t i = 1; i <= n; ++i)
-        if (s[ss-i] != sPattern[ps-i]) return false;
+    {
+        if (s[ss-i] != sPattern[ps-i])
+            return false;
+    }
 
     return true;
 }
 
 ustring utf8_to_unicode(const string& s)
 {
-    static unsigned char MAX_ANSI = 127;
-    static unsigned char ESC_C2   = 194;
-    static unsigned char ESC_C3   = 195;
-
-    ustring sResult;
-
-    unsigned char cEscape = 0;
-
-    for (unsigned char c : s)
-    {
-        if (c <= MAX_ANSI)
-        {
-            sResult.push_back(c);
-        }
-        else
-        {
-            if (c == ESC_C2 || c == ESC_C3)
-            {
-                cEscape = c;
-                continue;
-            }
-
-            if (cEscape != 0)
-            {
-                if (cEscape == ESC_C3)
-                {
-                    // 192 : offset of for "c3" (195) escaped characters (accentuated)
-                    // 128 : start offset for these characters (the first one is "c3 80")
-                    sResult.push_back(192 + c - 128);
-                }
-                else if (cEscape == ESC_C2)
-                {
-                    // 192 : offset of for "c2" (194) escaped characters (misc)
-                    // 128 : start offset for these characters (the first one is "c2 80")
-                    sResult.push_back(128 + c - 128);
-                }
-            }
-        }
-    }
-
-    return sResult;
-}
-
-char32_t utf8_to_unicode(char c)
-{
-    static unsigned char MAX_ANSI = 127;
-
-    unsigned char uc = (unsigned char)c;
-
-    if (uc <= MAX_ANSI)
-        return uc;
-    else
-        return 0u;
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+    return cvt.from_bytes(s);
 }
 
 string unicode_to_utf8(const ustring& s)
 {
-    static uint MAX_ANSI = 127;
-    static uint ESC_C2   = 194;
-    static uint ESC_C3   = 195;
-
-    string sResult;
-
-    for (auto c : s)
-    {
-        if (c <= MAX_ANSI)
-        {
-            sResult.push_back(c);
-        }
-        else
-        {
-            if (c < 192)
-            {
-                sResult.push_back((unsigned char)ESC_C2);
-                sResult.push_back((unsigned char)(128 + c - 128));
-            }
-            else
-            {
-                sResult.push_back((unsigned char)ESC_C3);
-                sResult.push_back((unsigned char)(128 + c - 192));
-            }
-        }
-    }
-
-    return sResult;
-}
-
-char unicode_to_utf8(char32_t c)
-{
-    static uint MAX_ANSI = 127;
-    if (c <= MAX_ANSI)
-        return (unsigned char)c;
-    else
-        return '\0';
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
+    return cvt.to_bytes(s);
 }
 
 uint hex_to_uint(const string& s)
