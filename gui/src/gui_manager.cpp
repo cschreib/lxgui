@@ -1588,7 +1588,7 @@ void manager::print_statistics()
     for (const auto& mStrata : lStrataList_)
     {
         gui::out << "     - [" << static_cast<uint>(mStrata.mStrata) << "] : "
-            << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_), 2, 1) << "%" << std::endl;
+            << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_)) << "%" << std::endl;
     }
 }
 
