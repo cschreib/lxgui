@@ -44,7 +44,7 @@ namespace gui
         /// Returns the time elapsed since the last tick.
         /** \return The time elapsed since last tick
         */
-        double get_elapsed();
+        double get_elapsed() const;
 
         /// Returns the period of the periodic_timer.
         /** \return The period of the periodic_timer

@@ -1397,7 +1397,7 @@ periodic_timer::periodic_timer(double dDuration, start_type mType, bool bTickFir
         start();
 }
 
-double periodic_timer::get_elapsed()
+double periodic_timer::get_elapsed() const
 {
     return dElapsed_;
 }
