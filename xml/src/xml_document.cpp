@@ -891,7 +891,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
         sName, sParent, uiMin, uiMax, bCopy, bPreDefining, bLoad, uiRadioGroup, false
     );
 
-    if (uiRadioGroup != (uint)(-1) && sName == ".")
+    if (uiRadioGroup != static_cast<uint>(-1) && sName == ".")
     {
         pCurrentParentBlock_->set_radio_group_optional(uiRadioGroup);
         return;
@@ -939,7 +939,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
         {
             if (pDoc_->get_predefined_block(sName))
             {
-                if (uiRadioGroup != (uint)(-1))
+                if (uiRadioGroup != static_cast<uint>(-1))
                     pCurrentParentBlock_->add_predefined_radio_block(pDoc_->get_predefined_block(sName), uiRadioGroup);
                 else
                     pCurrentParentBlock_->add_predefined_block(pDoc_->get_predefined_block(sName), uiMin, uiMax);
@@ -959,7 +959,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
         }
         else if (bCopy)
         {
-            if (uiRadioGroup != (uint)(-1))
+            if (uiRadioGroup != static_cast<uint>(-1))
                 pCurrentBlock_ = pCurrentParentBlock_->create_radio_def_block(sName, uiRadioGroup);
             else
                 pCurrentBlock_ = pCurrentParentBlock_->create_def_block(sName, uiMin, uiMax);
@@ -985,7 +985,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
         {
             if (!pDoc_->get_predefined_block(sName))
             {
-                if (uiRadioGroup != (uint)(-1))
+                if (uiRadioGroup != static_cast<uint>(-1))
                     pCurrentBlock_ = pCurrentParentBlock_->create_radio_def_block(sName, uiRadioGroup);
                 else
                     pCurrentBlock_ = pCurrentParentBlock_->create_def_block(sName, uiMin, uiMax);
@@ -1111,7 +1111,7 @@ void document::def_state::read_opening_tag(const std::string& sTagContent)
         sName, sParent, uiMin, uiMax, bCopy, bPreDefining, bLoad, uiRadioGroup, true
     );
 
-    if (uiRadioGroup != (uint)(-1) && sName == ".")
+    if (uiRadioGroup != static_cast<uint>(-1) && sName == ".")
     {
         pCurrentParentBlock_->set_radio_group_optional(uiRadioGroup);
         return;
@@ -1130,7 +1130,7 @@ void document::def_state::read_opening_tag(const std::string& sTagContent)
     {
         if (bCopy)
         {
-            if (uiRadioGroup != (uint)(-1))
+            if (uiRadioGroup != static_cast<uint>(-1))
                 pCurrentBlock_ = pCurrentParentBlock_->create_radio_def_block(sName, uiRadioGroup);
             else
                 pCurrentBlock_ = pCurrentParentBlock_->create_def_block(sName, uiMin, uiMax);
@@ -1154,7 +1154,7 @@ void document::def_state::read_opening_tag(const std::string& sTagContent)
         }
         else if (!pDoc_->get_predefined_block(sName))
         {
-            if (uiRadioGroup != (uint)(-1))
+            if (uiRadioGroup != static_cast<uint>(-1))
                 pCurrentBlock_ = pCurrentParentBlock_->create_radio_def_block(sName, uiRadioGroup);
             else
                 pCurrentBlock_ = pCurrentParentBlock_->create_def_block(sName, uiMin, uiMax);
