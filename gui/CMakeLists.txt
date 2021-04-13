@@ -63,6 +63,9 @@ add_library(lxgui
     ${SRCROOT}/input_source.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui PRIVATE cxx_std_17)
+
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/sol2/include)
 target_include_directories(lxgui PUBLIC ${LUA_INCLUDE_DIR})

@@ -9,6 +9,9 @@ add_library(lxgui-sdl
     ${SRCROOT}/gui_sdl.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui-sdl PRIVATE cxx_std_17)
+
 target_include_directories(lxgui-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 if (NOT EMSCRIPTEN)
     target_include_directories(lxgui-sdl PUBLIC ${SDL2_INCLUDE_DIRS})

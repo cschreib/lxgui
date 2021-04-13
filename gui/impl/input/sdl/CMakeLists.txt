@@ -5,6 +5,9 @@ add_library(lxgui-input-sdl
     ${SRCROOT}/input_sdl_source.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui-input-sdl PRIVATE cxx_std_17)
+
 target_include_directories(lxgui-input-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(lxgui-input-sdl PUBLIC ${LUA_INCLUDE_DIR})
 if (NOT EMSCRIPTEN)

@@ -40,8 +40,6 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${EMSCRIPTEN_USE_FLAGS}")
     set(CMAKE_EXECUTABLE_SUFFIX .html)
 
-    add_definitions(-std=c++17)
-
     set(EMSCRIPTEN 1)
 elseif(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wall)
@@ -54,8 +52,6 @@ elseif(CMAKE_COMPILER_IS_GNUCXX)
     list(GET GCC_VERSION_COMPONENTS 1 GCC_MINOR)
     set(GCC_VERSION ${GCC_MAJOR}.${GCC_MINOR})
 
-    add_definitions(-std=c++17)
-
     if(GCC_VERSION VERSION_LESS 8.0)
         message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with gcc 8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
     endif()
@@ -64,7 +60,6 @@ elseif(MSVC)
     add_definitions(/W4)
     add_definitions(/GR)
     add_definitions(/EHs)
-    add_definitions(/std:c++17)
     add_definitions(/D_CRT_SECURE_NO_DEPRECATE)
 
     if(MSVC_VERSION VERSION_LESS 1910)
@@ -120,7 +115,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}
     add_definitions(-Wno-shadow-uncaptured-local)
     add_definitions(-Wno-shadow)
     add_definitions(-Wno-undefined-reinterpret-cast)
-    add_definitions(-std=c++17)
 else()
     message(WARNING "Warning: your compiler has not been setup by the CMake script, do not expect it to work")
 endif()

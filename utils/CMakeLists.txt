@@ -8,6 +8,9 @@ add_library(lxgui-utils STATIC
     ${SRCROOT}/utils_string.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui-utils PRIVATE cxx_std_17)
+
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
 install(TARGETS lxgui-utils ARCHIVE DESTINATION lib)

@@ -10,6 +10,9 @@ add_library(lxgui-luapp STATIC
     ${SRCROOT}/luapp_state.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui-luapp PRIVATE cxx_std_17)
+
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/lu*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
 install(TARGETS lxgui-luapp ARCHIVE DESTINATION lib)

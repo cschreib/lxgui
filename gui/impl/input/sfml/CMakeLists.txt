@@ -8,6 +8,9 @@ add_library(lxgui-input-sfml
     ${SRCROOT}/input_sfml_source
 )
 
+# Need C++17
+target_compile_features(lxgui-input-sfml PRIVATE cxx_std_17)
+
 install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/input_sfml_source.hpp DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-input-sfml ARCHIVE DESTINATION lib)
 

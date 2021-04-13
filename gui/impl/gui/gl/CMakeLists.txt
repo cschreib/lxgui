@@ -10,6 +10,9 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_vertexcache.cpp
 )
 
+# Need C++17
+target_compile_features(lxgui-gl PRIVATE cxx_std_17)
+
 target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 if (NOT EMSCRIPTEN)
     target_include_directories(lxgui-gl PUBLIC ${FREETYPE_INCLUDE_DIRS})
