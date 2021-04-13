@@ -27,7 +27,7 @@ color::hls color::to_hls() const noexcept
     float ma = std::max(std::max(r, g), b);
     float mi = std::min(std::min(r, g), b);
 
-    hls hls;
+    color::hls hls;
     hls.a = a;
 
     if (ma == mi)
@@ -211,8 +211,10 @@ color operator * (float f, const color& c2) noexcept
 
 std::ostream& operator << (std::ostream& mStream, const color& mColor)
 {
-    return mStream << (uint)255*mColor.r << ", " << (uint)255*mColor.g << ", "
-                   << (uint)255*mColor.b << ", " << (uint)255*mColor.a;
+    return mStream << static_cast<uint>(std::round(255.0f*mColor.r)) << ", "
+                   << static_cast<uint>(std::round(255.0f*mColor.g)) << ", "
+                   << static_cast<uint>(std::round(255.0f*mColor.b)) << ", "
+                   << static_cast<uint>(std::round(255.0f*mColor.a));
 }
 
 std::istream& operator >> (std::istream& mStream, color& mColor)
