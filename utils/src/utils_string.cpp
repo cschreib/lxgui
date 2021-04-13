@@ -1,7 +1,6 @@
 #include "lxgui/utils_string.hpp"
 
 #include <sstream>
-#include <cmath>
 #include <locale>
 #include <codecvt>
 
@@ -115,7 +114,7 @@ string unicode_to_utf8(const ustring& s)
 
 uint hex_to_uint(const string& s)
 {
-    uint i;
+    uint i = 0;
     string_stream ss;
     ss << s;
     ss >> std::hex >> i;
@@ -124,7 +123,7 @@ uint hex_to_uint(const string& s)
 
 long string_to_int(const string& s)
 {
-    long i;
+    long i = 0;
     string_stream ss(s);
     ss >> i;
     return i;
@@ -137,7 +136,7 @@ long string_to_int(const ustring& s)
 
 unsigned long string_to_uint(const string& s)
 {
-    unsigned long ui;
+    unsigned long ui = 0;
     string_stream ss(s);
     ss >> ui;
     return ui;
@@ -150,7 +149,7 @@ unsigned long string_to_uint(const ustring& s)
 
 double string_to_float(const string& s)
 {
-    double d;
+    double d = 0;
     string_stream ss(s);
     ss >> d;
     return d;
@@ -161,18 +160,10 @@ double string_to_float(const ustring& s)
     return string_to_float(unicode_to_utf8(s));
 }
 
-template<typename T>
-string value_to_string(T mValue)
-{
-    string_stream sStream;
-    sStream << mValue;
-    return sStream.str();
-}
-
 bool is_number(const string& s)
 {
     string_stream mTemp(s);
-    double dValue;
+    double dValue = 0;
     mTemp >> dValue;
     return !mTemp.fail();
 }
@@ -194,18 +185,12 @@ bool is_number(char32_t s)
 
 bool string_to_bool(const string& s)
 {
-    if (s == "true")
-        return true;
-    else
-        return false;
+    return s == "true";
 }
 
 bool string_to_bool(const ustring& s)
 {
-    if (s == U"true")
-        return true;
-    else
-        return false;
+    return s == U"true";
 }
 
 bool is_boolean(const string& s)
@@ -228,48 +213,22 @@ bool is_whitespace(char32_t c)
     return c == U'\n' || c == U' ' || c == U'\t' || c == '\r';
 }
 
+template<typename T>
+string value_to_string(T mValue)
+{
+    string_stream sStream;
+    sStream << mValue;
+    return sStream.str();
+}
+
 string to_string(int i)
 {
     return value_to_string(i);
 }
 
-string to_string(int i, uint uiCharNbr)
+string to_string(uint i)
 {
-    string sReturn;
-
-    if (i >= 0)
-    {
-        sReturn = to_string(i);
-
-        while (sReturn.length() < uiCharNbr)
-            sReturn = '0' + sReturn;
-    }
-    else
-    {
-        sReturn = to_string(-i);
-
-        while (sReturn.length() < uiCharNbr)
-            sReturn = '0' + sReturn;
-
-        sReturn = '-' + sReturn;
-    }
-
-    return sReturn;
-}
-
-string to_string(uint ui)
-{
-    return value_to_string(ui);
-}
-
-string to_string(uint ui, uint uiCharNbr)
-{
-    string sReturn = to_string(ui);
-
-    while (sReturn.length() < uiCharNbr)
-        sReturn = '0' + sReturn;
-
-    return sReturn;
+    return value_to_string(i);
 }
 
 string to_string(long i)
@@ -277,43 +236,9 @@ string to_string(long i)
     return value_to_string(i);
 }
 
-string to_string(long i, uint uiCharNbr)
-{
-    string sReturn;
-
-    if (i >= 0)
-    {
-        sReturn = to_string(i);
-
-        while (sReturn.length() < uiCharNbr)
-            sReturn = '0' + sReturn;
-    }
-    else
-    {
-        sReturn = to_string(-i);
-
-        while (sReturn.length() < uiCharNbr)
-            sReturn = '0' + sReturn;
-
-        sReturn = '-' + sReturn;
-    }
-
-    return sReturn;
-}
-
 string to_string(ulong ui)
 {
     return value_to_string(ui);
-}
-
-string to_string(ulong ui, uint uiCharNbr)
-{
-    string sReturn = to_string(ui);
-
-    while (sReturn.length() < uiCharNbr)
-        sReturn = '0' + sReturn;
-
-    return sReturn;
 }
 
 string to_string(float f)
@@ -321,193 +246,9 @@ string to_string(float f)
     return value_to_string(f);
 }
 
-string to_string(float f, uint uiDigitNbr)
-{
-    string sReturn;
-
-    float fTemp = f;
-    if (fTemp < 0.0f)
-    {
-        sReturn.push_back('-');
-        fTemp *= -1.0f;
-    }
-
-    if (fTemp < 1.0f)
-    {
-        sReturn += "0.";
-
-        uint uiZeroes = 0;
-
-        do
-        {
-            fTemp *= 10.0f;
-            ++uiZeroes;
-        }
-        while (fTemp < 1.0f);
-
-        sReturn.append(uiZeroes, '0');
-
-        for (uint i = 0; i < uiDigitNbr; ++i)
-            fTemp *= 10.0f;
-
-        sReturn += to_string((uint)fTemp);
-    }
-    else
-    {
-        float fTemp2 = floor(fTemp);
-        uint uiInt = (uint)fTemp2;
-        sReturn += to_string(uiInt);
-
-        uint uiSize = sReturn.size();
-        if (sReturn[0] == '-')
-            --uiSize;
-
-        if (uiSize > uiDigitNbr)
-        {
-            uint uiExcess = uiSize - uiDigitNbr;
-
-            sReturn.erase(sReturn.length() - uiExcess, uiExcess);
-            sReturn.append(uiExcess, '0');
-            return sReturn;
-        }
-
-        sReturn.push_back('.');
-
-        uint uiRemaining = uiDigitNbr - uiSize;
-
-        fTemp2 = fTemp - fTemp2;
-        for (uint i = 0; i < uiRemaining; ++i)
-            fTemp2 *= 10.0f;
-
-        sReturn += to_string((uint)fTemp2, uiRemaining);
-    }
-
-    return sReturn;
-}
-
-string to_string(float f, uint uiIntCharNbr, uint uiFracCharNbr)
-{
-    string sReturn;
-
-    float fTemp = f;
-    if (fTemp < 0.0f)
-    {
-        sReturn.push_back('-');
-        fTemp *= -1.0f;
-    }
-
-    float fTemp2 = floor(fTemp);
-
-    sReturn = to_string((uint)fTemp2, uiIntCharNbr);
-
-    if (uiFracCharNbr > 0)
-    {
-        fTemp2 = fTemp - fTemp2;
-        for (uint i = 0; i < uiFracCharNbr; ++i)
-            fTemp2 *= 10.0f;
-
-        sReturn.push_back('.');
-        sReturn += to_string((uint)fTemp2, uiFracCharNbr);
-    }
-
-    return sReturn;
-}
-
 string to_string(double f)
 {
     return value_to_string(f);
-}
-
-string to_string(double f, uint uiDigitNbr)
-{
-    string sReturn;
-
-    double fTemp = f;
-    if (fTemp < 0.0)
-    {
-        sReturn.push_back('-');
-        fTemp *= -1.0;
-    }
-
-    if (fTemp < 1.0)
-    {
-        sReturn += "0.";
-
-        uint uiZeroes = 0;
-
-        do
-        {
-            fTemp *= 10.0;
-            ++uiZeroes;
-        }
-        while (fTemp < 1.0);
-
-        sReturn.append(uiZeroes, '0');
-
-        for (uint i = 0; i < uiDigitNbr; ++i)
-            fTemp *= 10.0;
-
-        sReturn += to_string((uint)fTemp);
-    }
-    else
-    {
-        double fTemp2 = floor(fTemp);
-        uint uiInt = (uint)fTemp2;
-        sReturn += to_string(uiInt);
-
-        uint uiSize = sReturn.size();
-        if (sReturn[0] == '-')
-            --uiSize;
-
-        if (uiSize > uiDigitNbr)
-        {
-            uint uiExcess = uiSize - uiDigitNbr;
-
-            sReturn.erase(sReturn.length() - uiExcess, uiExcess);
-            sReturn.append(uiExcess, '0');
-            return sReturn;
-        }
-
-        sReturn.push_back('.');
-
-        uint uiRemaining = uiDigitNbr - uiSize;
-
-        fTemp2 = fTemp - fTemp2;
-        for (uint i = 0; i < uiRemaining; ++i)
-            fTemp2 *= 10.0;
-
-        sReturn += to_string((uint)fTemp2, uiRemaining);
-    }
-
-    return sReturn;
-}
-
-string to_string(double f, uint uiIntCharNbr, uint uiFracCharNbr)
-{
-    string sReturn;
-
-    double fTemp = f;
-    if (fTemp < 0.0)
-    {
-        sReturn.push_back('-');
-        fTemp *= -1.0;
-    }
-
-    double fTemp2 = floor(fTemp);
-
-    sReturn = to_string((uint)fTemp2, uiIntCharNbr);
-
-    if (uiFracCharNbr > 0)
-    {
-        fTemp2 = fTemp - fTemp2;
-        for (uint i = 0; i < uiFracCharNbr; ++i)
-            fTemp2 *= 10.0;
-
-        sReturn.push_back('.');
-        sReturn += to_string((uint)fTemp2, uiFracCharNbr);
-    }
-
-    return sReturn;
 }
 
 string to_string(bool b)

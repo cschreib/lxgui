@@ -202,25 +202,11 @@ namespace utils
     bool is_whitespace(char32_t c);
 
     string to_string(int i);
-    string to_string(int i, uint uiCharNbr);
-
     string to_string(uint ui);
-    string to_string(uint ui, uint uiCharNbr);
-
     string to_string(long i);
-    string to_string(long i, uint uiCharNbr);
-
     string to_string(ulong ui);
-    string to_string(ulong ui, uint uiCharNbr);
-
     string to_string(float f);
-    string to_string(float f, uint uiDigitNbr);
-    string to_string(float f, uint uiIntCharNbr, uint uiFraCharNbr);
-
     string to_string(double f);
-    string to_string(double f, uint uiDigitNbr);
-    string to_string(double f, uint uiIntCharNbr, uint uiFraCharNbr);
-
     string to_string(bool b);
     string to_string(void* p);
 
