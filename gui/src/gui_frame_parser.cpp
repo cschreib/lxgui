@@ -194,7 +194,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             xml::block* pSizeBlock = pEdgeSizeBlock->get_radio_block();
             if (pSizeBlock->get_name() == "AbsValue")
             {
-                pBackdrop->set_edge_size(utils::string_to_uint(pSizeBlock->get_attribute("x")));
+                pBackdrop->set_edge_size(utils::string_to_float(pSizeBlock->get_attribute("x")));
             }
             else
             {
@@ -208,7 +208,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
         {
             xml::block* pTileBlock = pTileSizeBlock->get_radio_block();
             if (pTileBlock->get_name() == "AbsValue")
-                pBackdrop->set_tile_size(utils::string_to_uint(pTileBlock->get_attribute("x")));
+                pBackdrop->set_tile_size(utils::string_to_float(pTileBlock->get_attribute("x")));
             else
             {
                 gui::out << gui::warning << pTileBlock->get_location() << " : "

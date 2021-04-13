@@ -410,18 +410,18 @@ int lua_frame::_get_backdrop(lua_State* pLua)
         mState.set_field_string("edgeFile", pBackdrop->get_edge_file());
         mState.set_field_bool("tile", pBackdrop->is_background_tilling());
 
-        mState.set_field_int("tileSize", pBackdrop->get_tile_size());
-        mState.set_field_int("edgeSize", pBackdrop->get_edge_size());
+        mState.set_field_double("tileSize", pBackdrop->get_tile_size());
+        mState.set_field_double("edgeSize", pBackdrop->get_edge_size());
 
         mState.new_table();
         mState.set_field("insets");
         mState.get_field("insets");
 
         const quad2f& lInsets = pBackdrop->get_background_insets();
-        mState.set_field_int("left",   lInsets.left);
-        mState.set_field_int("right",  lInsets.right);
-        mState.set_field_int("top",    lInsets.top);
-        mState.set_field_int("bottom", lInsets.bottom);
+        mState.set_field_double("left",   lInsets.left);
+        mState.set_field_double("right",  lInsets.right);
+        mState.set_field_double("top",    lInsets.top);
+        mState.set_field_double("bottom", lInsets.bottom);
 
         mState.pop();
 
@@ -983,13 +983,13 @@ int lua_frame::_set_backdrop(lua_State* pLua)
             pBackdrop->set_edge(pManager->parse_file_name(mState.get_field_string("edgeFile", false, "")));
             pBackdrop->set_backgrond_tilling(mState.get_field_bool("tile", false, false));
 
-            uint uiTileSize = uint(mState.get_field_int("tileSize", false, 0));
-            if (uiTileSize != 0)
-                pBackdrop->set_tile_size(uiTileSize);
+            float fTileSize = static_cast<float>(mState.get_field_double("tileSize", false, 0.0));
+            if (fTileSize != 0)
+                pBackdrop->set_tile_size(fTileSize);
 
-            uint uiEdgeSize = uint(mState.get_field_int("edgeSize", false, 0));
-            if (uiEdgeSize != 0)
-                pBackdrop->set_edge_size(uiEdgeSize);
+            float fEdgeSize = static_cast<float>(mState.get_field_double("edgeSize", false, 0.0));
+            if (fEdgeSize != 0)
+                pBackdrop->set_edge_size(fEdgeSize);
 
             mState.get_field("insets");
 

@@ -61,15 +61,15 @@ namespace gui
         bool is_background_tilling() const;
 
         /// Sets the appearent tile size.
-        /** \param uiTileSize The new edget size
-        *   \note Tile will be scaled by uiTileSize/backgroundTextureSize.
+        /** \param fTileSize The new tile size
+        *   \note Tile will be scaled by fTileSize/backgroundTextureSize.
         */
-        void set_tile_size(uint uiTileSize);
+        void set_tile_size(float fTileSize);
 
         /// Returns this backdrop's tile size.
         /** \return This backdrop's tile size
         */
-        uint get_tile_size() const;
+        float get_tile_size() const;
 
         /// Sets insets for the background texture.
         /** \param lInsets The insets array
@@ -141,15 +141,15 @@ namespace gui
         color get_edge_color() const;
 
         /// Sets the appearent edge size.
-        /** \param uiEdgeSize The new edget size
-        *   \note Edges will be scaled by uiEdgeSize/edgeTextureHeight.
+        /** \param fEdgeSize The new edge size
+        *   \note Edges will be scaled by fEdgeSize/edgeTextureHeight.
         */
-        void set_edge_size(uint uiEdgeSize);
+        void set_edge_size(float fEdgeSize);
 
         /// Returns this backdrop's edge size.
         /** \return This backdrop's edge size
         */
-        uint get_edge_size() const;
+        float get_edge_size() const;
 
         /// Sets the color to be multiplied to all drawn vertices.
         /** \param mColor The new vertex color
@@ -191,12 +191,12 @@ namespace gui
         mutable std::array<sprite,8> lEdgeList_;
 
         bool   bBackgroundTilling_ = false;
-        uint   uiTileSize_ = 0u;
-        uint   uiOriginalTileSize_ = 0u;
+        float  fTileSize_ = 0.0f;
+        float  fOriginalTileSize_ = 0.0f;
         quad2f lBackgroundInsets_;
         quad2f lEdgeInsets_;
-        uint   uiEdgeSize_ = 0u;
-        uint   uiOriginalEdgeSize_ = 0u;
+        float  fEdgeSize_ = 0.0f;
+        float  fOriginalEdgeSize_ = 0.0f;
     };
 }
 }
