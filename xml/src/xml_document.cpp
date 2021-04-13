@@ -566,14 +566,6 @@ void document::set_invalid()
     bValid_ = false;
 }
 
-document::state::state() : pDoc_(nullptr), pCurrentBlock_(nullptr), pCurrentParentBlock_(nullptr)
-{
-}
-
-document::state::~state()
-{
-}
-
 void document::state::set_document(document* pDoc)
 {
     pDoc_ = pDoc;
@@ -944,7 +936,7 @@ void document::def_state::read_single_tag(const std::string& sTagContent)
                 else
                     pCurrentParentBlock_->add_predefined_block(pDoc_->get_predefined_block(sName), uiMin, uiMax);
 
-                if (lAttributes.size() != 0)
+                if (!lAttributes.empty())
                 {
                     pDoc_->out << "# Warning # : " << pDoc_->get_current_location()
                         << " : Can't add attributes to a loaded pre-defined block." << std::endl;

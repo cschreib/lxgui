@@ -126,9 +126,8 @@ namespace xml
                 XML
             };
 
-            state();
-
-            virtual ~state();
+            state() = default;
+            virtual ~state() = default;
 
             virtual std::string read_tag_name(const std::string& sTagContent) const = 0;
             virtual void  read_opening_tag(const std::string& sTagContent) = 0;
@@ -143,11 +142,11 @@ namespace xml
 
         protected :
 
-            document* pDoc_;
-            id        mID_;
+            document* pDoc_ = nullptr;
+            id        mID_ = id::XML;
 
-            block*      pCurrentBlock_;
-            block*      pCurrentParentBlock_;
+            block*      pCurrentBlock_ = nullptr;
+            block*      pCurrentParentBlock_ = nullptr;
         };
         friend class state;
 
