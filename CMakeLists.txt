@@ -60,6 +60,8 @@ elseif(MSVC)
     add_definitions(/W4)
     add_definitions(/GR)
     add_definitions(/EHs)
+    add_definitions(/wd4267)
+    add_definitions(/wd4245)
     add_definitions(/D_CRT_SECURE_NO_DEPRECATE)
 
     if(MSVC_VERSION VERSION_LESS 1910)
