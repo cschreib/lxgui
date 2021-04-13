@@ -63,11 +63,12 @@ void font_string::render()
             pText_->set_color(color(0, 0, 0, mTextColor_.a), true);
             for (uint i = 0; i < OUTLINE_QUALITY; ++i)
             {
-                static const float PI2 = 2.0f*acos(-1.0f);
+                static const float PI2 = 2.0f*std::acos(-1.0f);
+                const float fAngle = PI2*static_cast<float>(i)/static_cast<float>(OUTLINE_QUALITY);
 
                 pText_->render(
-                    fX + OUTLINE_THICKNESS*cos(PI2*float(i)/OUTLINE_QUALITY),
-                    fY + OUTLINE_THICKNESS*sin(PI2*float(i)/OUTLINE_QUALITY)
+                    fX + OUTLINE_THICKNESS*std::cos(fAngle),
+                    fY + OUTLINE_THICKNESS*std::sin(fAngle)
                 );
             }
         }
