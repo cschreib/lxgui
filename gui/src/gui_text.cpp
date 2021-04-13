@@ -401,7 +401,7 @@ bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_
         {
             ++iterChar;
             if (iterChar == iterEnd) return false;
-            std::string sColorPart('0', 2);
+            std::string sColorPart(2, '0');
             sColorPart[0] = *iterChar;
             ++iterChar;
             if (iterChar == iterEnd) return false;
@@ -457,7 +457,7 @@ void text::update_() const
         else
         {
             float fRemaining = fBoxH_ - get_line_height();
-            uiMaxLineNbr = 1 + floor(fRemaining/(get_line_height()*fLineSpacing_));
+            uiMaxLineNbr = 1 + static_cast<uint>(std::floor(fRemaining/(get_line_height()*fLineSpacing_)));
         }
     }
     else
@@ -568,7 +568,7 @@ void text::update_() const
 
                         lLines.push_back(mLine);
                         for (auto& mFormat : lTempFormatList)
-                            lFormatList.insert(std::move(mFormat));
+                            lFormatList.insert(mFormat);
 
                         lTempFormatList.clear();
                         uiCounter += mLine.sCaption.size();
@@ -702,7 +702,7 @@ void text::update_() const
             uiCounter += mLine.sCaption.size();
 
             for (auto& mFormat : lTempFormatList)
-                lFormatList.insert(std::move(mFormat));
+                lFormatList.insert(mFormat);
 
             lTempFormatList.clear();
 
