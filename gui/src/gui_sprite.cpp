@@ -3,6 +3,8 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_renderer.hpp"
 
+#include <cmath>
+
 namespace lxgui {
 namespace gui
 {
@@ -101,8 +103,8 @@ void sprite::render_ex(float fX, float fY, float fRot, float fHScale, float fVSc
 
     if (fRot != 0.0f)
     {
-        float cost = cos(fRot);
-        float sint = sin(fRot);
+        float cost = std::cos(fRot);
+        float sint = std::sin(fRot);
 
         mQuad_.v[0].pos = vector2f(x1*cost - y1*sint + fX, x1*sint + y1*cost + fY);
         mQuad_.v[1].pos = vector2f(x2*cost - y1*sint + fX, x2*sint + y1*cost + fY);
