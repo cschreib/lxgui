@@ -1027,7 +1027,7 @@ bool edit_box::add_char_(char32_t sUnicode)
             if (bIntegerOnly_)
                 return false;
 
-            if (sUnicodeText_.find(U'.'))
+            if (sUnicodeText_.find(U'.') != utils::ustring::npos)
                 return false;
         }
         else if (sUnicode == U'+' || sUnicode == U'-')
@@ -1036,7 +1036,8 @@ bool edit_box::add_char_(char32_t sUnicode)
                 return false;
 
             if (iterCarretPos_ != sUnicodeText_.begin() ||
-                sUnicodeText_.find(U'+') || sUnicodeText_.find(U'-'))
+                sUnicodeText_.find(U'+') != utils::ustring::npos ||
+                sUnicodeText_.find(U'-') != utils::ustring::npos)
                 return false;
         }
         else if (sUnicode < U'0' || sUnicode > U'9')

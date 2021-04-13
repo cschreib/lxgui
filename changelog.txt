@@ -85,6 +85,7 @@ Other changes:
  - gui: fixed edit_box carret appearing after set_text() even if the box is not focussed
  - gui: fixed edit_box getting stuck when pressing Backspace to delete all partially-displayed text
  - gui: fixed FontString:set_font() outline flags not handled correctly
+ - gui: fixed edit_box numeric only mode not accepting input correctly
  - xml: now parsing standard XML comments
 
 v1.2.0:

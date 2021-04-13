@@ -193,7 +193,8 @@ int lua_font_string::_set_font(lua_State* pLua)
         if (mFunc.is_provided(2))
         {
             std::string sFlags = mFunc.get(2)->get_string();
-            if (sFlags.find("OUTLINE") != 0 || sFlags.find("THICKOUTLINE") != 0)
+            if (sFlags.find("OUTLINE") != std::string::npos ||
+                sFlags.find("THICKOUTLINE") != std::string::npos)
                 get_object()->set_outlined(true);
             else if (sFlags.empty())
                 get_object()->set_outlined(false);
