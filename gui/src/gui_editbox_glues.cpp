@@ -180,7 +180,7 @@ int lua_edit_box::_get_number(lua_State* pLua)
 
     lua::function mFunc("EditBox:get_number", pLua, 1);
 
-    mFunc.push(utils::string_to_float(get_object()->get_text()));
+    mFunc.push(utils::string_to_double(get_object()->get_text()));
 
     return mFunc.on_return();
 }

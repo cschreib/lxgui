@@ -147,7 +147,20 @@ unsigned long string_to_uint(const ustring& s)
     return string_to_uint(unicode_to_utf8(s));
 }
 
-double string_to_float(const string& s)
+float string_to_float(const string& s)
+{
+    float d = 0;
+    string_stream ss(s);
+    ss >> d;
+    return d;
+}
+
+float string_to_float(const ustring& s)
+{
+    return string_to_float(unicode_to_utf8(s));
+}
+
+double string_to_double(const string& s)
 {
     double d = 0;
     string_stream ss(s);
@@ -155,9 +168,9 @@ double string_to_float(const string& s)
     return d;
 }
 
-double string_to_float(const ustring& s)
+double string_to_double(const ustring& s)
 {
-    return string_to_float(unicode_to_utf8(s));
+    return string_to_double(unicode_to_utf8(s));
 }
 
 bool is_number(const string& s)
