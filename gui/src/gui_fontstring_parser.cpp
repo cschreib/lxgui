@@ -98,8 +98,8 @@ void font_string::parse_shadow_block_(xml::block* pBlock)
         if (pOffsetBlock)
         {
             set_shadow_offsets(
-                utils::string_to_int(pOffsetBlock->get_attribute("x")),
-                utils::string_to_int(pOffsetBlock->get_attribute("y"))
+                utils::string_to_float(pOffsetBlock->get_attribute("x")),
+                utils::string_to_float(pOffsetBlock->get_attribute("y"))
             );
         }
     }
