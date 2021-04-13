@@ -241,7 +241,7 @@ bool block::check_blocks()
         {
             uint uiCount = lFoundBlockList_.count(mBlock.get_name());
             uint uiGroup = mBlock.get_radio_group();
-            if (uiGroup != (uint)(-1))
+            if (uiGroup != static_cast<uint>(-1))
             {
                 if (uiCount == 1)
                 {
@@ -274,7 +274,7 @@ bool block::check_blocks()
         {
             uint uiCount = lFoundBlockList_.count(mPreDefBlock.pBlock->get_name());
             uint uiGroup = mPreDefBlock.uiRadioGroup;
-            if (uiGroup != (uint)(-1))
+            if (uiGroup != static_cast<uint>(-1))
             {
                 if (uiCount == 1)
                 {
@@ -427,7 +427,7 @@ uint block::get_max_count() const
 
 bool block::is_radio() const
 {
-    return uiRadioGroup_ != (uint)(-1);
+    return uiRadioGroup_ != static_cast<uint>(-1);
 }
 
 uint block::get_radio_group() const
