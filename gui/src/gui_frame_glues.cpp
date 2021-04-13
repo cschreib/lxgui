@@ -1144,7 +1144,7 @@ int lua_frame::_set_frame_level(lua_State* pLua)
     lua::function mFunc("Frame:set_frame_level", pLua);
     mFunc.add(0, "level", lua::type::NUMBER);
     if (mFunc.check())
-        get_object()->set_level(mFunc.get(0)->get_number());
+        get_object()->set_level(mFunc.get(0)->get_int());
 
     return mFunc.on_return();
 }
