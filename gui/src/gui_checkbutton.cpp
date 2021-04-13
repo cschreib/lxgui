@@ -148,7 +148,7 @@ void check_button::release()
         check();
 }
 
-bool check_button::is_checked()
+bool check_button::is_checked() const
 {
     return bChecked_;
 }

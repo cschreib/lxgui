@@ -53,7 +53,7 @@ namespace gui
         /// Checks if this CheckButton is checked.
         /** \return 'true' if checked, 'false' otherwise
         */
-        bool is_checked();
+        bool is_checked() const;
 
         /// Returns this button's checked texture.
         /** \return This button's checked texture
