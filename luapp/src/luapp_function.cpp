@@ -101,9 +101,9 @@ bool function::check(bool bPrintError)
                     sArguments += iterArg->second->get_data()->get_name();
                 }
 
-                if (mArgList.lOptional_.size() > 0)
+                if (!mArgList.lOptional_.empty())
                 {
-                    if (sArguments != "")
+                    if (!sArguments.empty())
                         sArguments += ", ";
 
                     sArguments += "(+";
@@ -121,18 +121,11 @@ bool function::check(bool bPrintError)
             }
 
             if (lArgListStack_.size() == 1)
-            {
-                mLua_.print_error(
-                    "Too few arguments in \""+sName_+"\". Expected :"+sError
-                );
-            }
+                mLua_.print_error("Too few arguments in \""+sName_+"\". Expected :"+sError);
             else
-            {
-                mLua_.print_error(
-                    "Too few arguments in \""+sName_+"\". Expected either :"+sError
-                );
-            }
+                mLua_.print_error("Too few arguments in \""+sName_+"\". Expected either :"+sError);
         }
+
         // So if there isn't enough, just return false
         return false;
     }
@@ -170,7 +163,7 @@ bool function::check(bool bPrintError)
                 std::string sError;
                 for (auto& mArgList : lArgListStack_)
                 {
-                    std::string sArguments = "\n  - ["+utils::to_string(uint(mArgList.lArg_.size()))+"] : ";
+                    std::string sArguments = "\n  - ["+utils::to_string(mArgList.lArg_.size())+"] : ";
                     for (auto iterArg : utils::range::iterator(mArgList.lArg_))
                     {
                         if (iterArg != mArgList.lArg_.begin())
@@ -178,9 +171,9 @@ bool function::check(bool bPrintError)
                         sArguments += iterArg->second->get_data()->get_name();
                     }
 
-                    if (mArgList.lOptional_.size() > 0)
+                    if (!mArgList.lOptional_.empty())
                     {
-                        if (sArguments != "")
+                        if (!sArguments.empty())
                             sArguments += ", ";
 
                         sArguments += "(+";
