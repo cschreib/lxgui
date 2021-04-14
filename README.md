@@ -19,9 +19,15 @@ There are plenty of different GUI libraries out there. They all have something t
 
 ![Sample screenshot](/gui/test/expected.png)
 
-**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE (Code::Blocks, Visual Studio, ...). The front-end GUI library itself only depends on Lua. XML parsing is done using a custom library included in this repository.
+**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
 
-The first available rendering back end uses OpenGL. It depends on Freetype for font loading and rendering, and libpng for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as GLEW for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) or OpenGL 3 (programmable pipeline). The second available rendering back-end uses SFML2 for everything, and thus only depends on SFML. The third rendering back-end uses SDL2 for rendering, SDL2_tff for font loading and rendering, and SDL2_image for texture loading. For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input backend also depends on SDL2_image (for loading cursor files).
+The first available rendering back-end uses raw OpenGL. It depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance.
+
+The second available rendering back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML.
+
+The third rendering back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading.
+
+For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input backend also depends on SDL2_image (for loading cursor files).
 
 The WebAssembly build supports all back-ends except SFML.
 
@@ -35,7 +41,7 @@ The WebAssembly build supports all back-ends except SFML.
 * **button**: a click-able frame with several states: normal, pushed, highlight.
 * **check_button**: a button with a check box.
 * **slider**: a frame with a texture that can be dragged vertically or horizontally.
-* **status_bar**: a frame with a texture that grows depending on some value (typical use : health bars, ...).
+* **status_bar**: a frame with a texture that grows depending on some value (typical use: health bars, ...).
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 

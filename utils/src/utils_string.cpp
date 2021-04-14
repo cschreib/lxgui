@@ -1,8 +1,7 @@
 #include "lxgui/utils_string.hpp"
+#include "utf8.h"
 
 #include <sstream>
-#include <locale>
-#include <codecvt>
 
 /** \cond NOT_REMOVE_FROM_DOC
 */
@@ -102,14 +101,12 @@ bool ends_with(const string& s, const string& sPattern)
 
 ustring utf8_to_unicode(const string& s)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
-    return cvt.from_bytes(s);
+    return utf8::utf8to32(s);
 }
 
 string unicode_to_utf8(const ustring& s)
 {
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> cvt;
-    return cvt.to_bytes(s);
+    return utf8::utf32to8(s);
 }
 
 uint hex_to_uint(const string& s)

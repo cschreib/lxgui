@@ -1,6 +1,7 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/utils)
 set(SRCROOT ${TARGET_DIR}/src)
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/utfcpp/source)
 
 add_library(lxgui-utils STATIC
     ${SRCROOT}/utils_exception.cpp

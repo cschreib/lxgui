@@ -28,6 +28,7 @@ Other changes:
  - general: renamed "sensibility" to "sensitivity"
  - general: renamed "overed" to "hovered"
  - general: now using non-static data member initialisers whenever possible
+ - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
  - lua: starting switching to sol2 to manage the Lua state
@@ -85,7 +86,7 @@ Other changes:
  - gui: fixed edit_box carret appearing after set_text() even if the box is not focussed
  - gui: fixed edit_box getting stuck when pressing Backspace to delete all partially-displayed text
  - gui: fixed FontString:set_font() outline flags not handled correctly
- - gui: fixed edit_box numeric only mode not accepting input correctly
+ - gui: fixed edit_box numeric-only mode not accepting input correctly
  - xml: now parsing standard XML comments
 
 v1.2.0:
