@@ -158,7 +158,6 @@ void edit_box::update(float fDelta)
 
         if (mKeyRepeatTimer_.ticks())
         {
-            alive_checker mChecker(this);
             process_key_(mLastKeyPressed_);
             if (!mChecker.is_alive())
                 return;
@@ -190,8 +189,6 @@ void edit_box::on_event(const event& mEvent)
         std::uint32_t c = mEvent.get<std::uint32_t>(0);
         if (add_char_(c))
         {
-            alive_checker mChecker(this);
-
             on_script("OnTextChanged");
             if (!mChecker.is_alive())
                 return;

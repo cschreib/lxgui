@@ -788,9 +788,8 @@ void text::update_() const
             }
         }
 
-        uint   uiCounter = 0;
-        color  mColor = color::EMPTY;
-        std::array<vertex,4> lVertexList;
+        uiCounter = 0;
+        color mColor = color::EMPTY;
 
         for (const auto& mLine : lLineList)
         {
