@@ -11,6 +11,7 @@ add_library(lxgui-utils STATIC
 
 # Need C++17
 target_compile_features(lxgui-utils PRIVATE cxx_std_17)
+target_compile_definitions(lxgui-utils PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
