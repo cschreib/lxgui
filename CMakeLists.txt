@@ -60,9 +60,10 @@ elseif(MSVC)
     add_definitions(/W4)
     add_definitions(/GR)
     add_definitions(/EHs)
-    add_definitions(/wd4267)
-    add_definitions(/wd4245)
-    add_definitions(/wd4244)
+    add_definitions(/wd4267) # narrowing implicit conversion from size_t
+    add_definitions(/wd4245) # signed/unsigned mismatch
+    add_definitions(/wd4244) # narrowing implicit conversion
+    add_definitions(/wd4100) # unused parameter
     add_definitions(/D_CRT_SECURE_NO_DEPRECATE)
 
     if(MSVC_VERSION VERSION_LESS 1910)
