@@ -187,8 +187,6 @@ float text::get_string_width(const utils::ustring& sString) const
     if (fWidth > fMaxWidth)
         fMaxWidth = fWidth;
 
-    gui::out << "string width: " << utils::unicode_to_utf8(sString) << ": " << fMaxWidth << std::endl;
-
     return fMaxWidth;
 }
 
