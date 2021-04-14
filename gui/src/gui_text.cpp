@@ -517,7 +517,6 @@ void text::update_() const
 
                 if (round_to_pixel_(mLine.fWidth - fBoxW_) > 0)
                 {
-                    gui::out << "string width: " << utils::unicode_to_utf8(mLine.sCaption) << ": " << mLine.fWidth << " vs box " << fBoxW_  << " (diff: " << mLine.fWidth - fBoxW_ << ")" << std::endl;
                     DEBUG_LOG("      Box break " + utils::to_string(mLine.fWidth) + " > " + utils::to_string(fBoxW_));
                     // Whoops, the line is too long...
                     if (mLine.sCaption.find_first_of(U" \t\n\r") != mLine.sCaption.npos && bWordWrap_)
