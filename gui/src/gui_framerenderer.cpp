@@ -47,7 +47,7 @@ frame_renderer::frame_renderer()
     }
 }
 
-void frame_renderer::fire_redraw(frame_strata mStrata) const
+void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata) const
 {
     lStrataList_[(uint)mStrata].bRedraw = true;
 }
@@ -69,7 +69,7 @@ void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
     else
         remove_from_strata_list_(mStrata, pFrame);
 
-    fire_redraw(mStrata.mStrata);
+    notify_strata_needs_redraw(mStrata.mStrata);
 }
 
 void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
@@ -83,8 +83,8 @@ void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOl
     remove_from_strata_list_(lStrataList_[(uint)mOldStrata], pFrame);
     add_to_strata_list_(lStrataList_[(uint)mNewStrata], pFrame);
 
-    fire_redraw(mOldStrata);
-    fire_redraw(mNewStrata);
+    notify_strata_needs_redraw(mOldStrata);
+    notify_strata_needs_redraw(mNewStrata);
 }
 
 void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
@@ -114,7 +114,7 @@ void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, in
 
     add_to_level_list_(mIterNew->second, pFrame);
 
-    fire_redraw(mStrata.mStrata);
+    notify_strata_needs_redraw(mStrata.mStrata);
 }
 
 void frame_renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
@@ -147,7 +147,7 @@ void frame_renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
 void frame_renderer::add_to_level_list_(level& mLevel, frame* pFrame)
 {
     mLevel.lFrameList.push_back(pFrame);
-    fire_redraw(mLevel.pStrata->mStrata);
+    notify_strata_needs_redraw(mLevel.pStrata->mStrata);
     bStrataListUpdated_ = true;
 }
 
@@ -160,7 +160,7 @@ void frame_renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
     }
 
     mLevel.lFrameList.erase(mIter);
-    fire_redraw(mLevel.pStrata->mStrata);
+    notify_strata_needs_redraw(mLevel.pStrata->mStrata);
     bStrataListUpdated_ = true;
 }
 

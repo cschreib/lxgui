@@ -26,7 +26,7 @@ namespace gui
         virtual ~frame_renderer() = default;
 
         /// Tells this renderer that one of its widget requires redraw.
-        virtual void fire_redraw(frame_strata mStrata) const;
+        virtual void notify_strata_needs_redraw(frame_strata mStrata) const;
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render

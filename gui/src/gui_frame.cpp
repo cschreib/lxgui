@@ -1721,7 +1721,7 @@ void frame::notify_renderer_need_redraw() const
     if (bVirtual_)
         return;
 
-    get_top_level_renderer()->fire_redraw(mStrata_);
+    get_top_level_renderer()->notify_strata_needs_redraw(mStrata_);
 }
 
 void frame::show()

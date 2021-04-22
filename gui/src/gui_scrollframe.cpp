@@ -355,9 +355,9 @@ void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY)
     bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(fX, fY));
 }
 
-void scroll_frame::fire_redraw(frame_strata mStrata) const
+void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata) const
 {
-    frame_renderer::fire_redraw(mStrata);
+    frame_renderer::notify_strata_needs_redraw(mStrata);
 
     bRedrawScrollRenderTarget_ = true;
     notify_renderer_need_redraw();

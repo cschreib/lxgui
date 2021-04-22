@@ -131,7 +131,7 @@ namespace gui
         void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY) override;
 
         /// Tells this renderer that one of its widget requires redraw.
-        void fire_redraw(frame_strata mStrata) const override;
+        void notify_strata_needs_redraw(frame_strata mStrata) const override;
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render
