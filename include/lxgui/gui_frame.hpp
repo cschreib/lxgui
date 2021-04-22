@@ -879,11 +879,11 @@ namespace gui
         */
         void notify_loaded() override;
 
-        /// Tells this frame to rebuilt the layer list.
+        /// Tells this frame to rebuild its layer list.
         /** \note Automatically called by add_region(), remove_region(), and
         *         layered_region::set_draw_layer().
         */
-        void fire_build_layer_list();
+        void notify_layers_need_update();
 
         /// Tells the frame not to react to all events.
         void unregister_all_events();

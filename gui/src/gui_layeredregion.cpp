@@ -83,7 +83,7 @@ void layered_region::set_draw_layer(layer_type mLayer)
     {
         mLayer_ = mLayer;
         notify_renderer_need_redraw();
-        pParent_->fire_build_layer_list();
+        pParent_->notify_layers_need_update();
     }
 }
 
@@ -112,7 +112,7 @@ void layered_region::set_draw_layer(const std::string& sLayer)
     {
         mLayer_ = mLayer;
         notify_renderer_need_redraw();
-        pParent_->fire_build_layer_list();
+        pParent_->notify_layers_need_update();
     }
 }
 

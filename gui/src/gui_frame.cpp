@@ -378,7 +378,6 @@ frame* frame::get_child(const std::string& sName)
     return nullptr;
 }
 
-
 frame::region_list_view frame::get_regions() const
 {
     return region_list_view(lRegionList_);
@@ -598,7 +597,7 @@ void frame::notify_loaded()
     }
 }
 
-void frame::fire_build_layer_list()
+void frame::notify_layers_need_update()
 {
     bBuildLayerList_ = true;
 }
@@ -629,7 +628,7 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     layered_region* pAddedRegion = pRegion.get();
     lRegionList_.push_back(std::move(pRegion));
 
-    fire_build_layer_list();
+    notify_layers_need_update();
     notify_renderer_need_redraw();
 
     if (!bVirtual_)
@@ -665,7 +664,7 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     // NB: the iterator is not removed yet; it will be removed later in update().
     std::unique_ptr<layered_region> pRemovedRegion = std::move(*mIter);
 
-    fire_build_layer_list();
+    notify_layers_need_update();
     notify_renderer_need_redraw();
     pRemovedRegion->set_parent(nullptr);
 
