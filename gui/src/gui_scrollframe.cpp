@@ -397,5 +397,13 @@ float scroll_frame::get_target_height() const
     return get_apparent_height();
 }
 
+void scroll_frame::update_borders_() const
+{
+    frame::update_borders_();
+
+    if (pScrollChild_)
+        pScrollChild_->notify_borders_need_update();
+}
+
 }
 }
