@@ -78,7 +78,7 @@ const color& text::get_color() const
 
 void text::set_dimensions(float fW, float fH)
 {
-    if (fBoxW_ != fW && fBoxH_ != fH)
+    if (fBoxW_ != fW || fBoxH_ != fH)
     {
         fBoxW_ = fW; fBoxH_ = fH;
         notify_cache_dirty_();
