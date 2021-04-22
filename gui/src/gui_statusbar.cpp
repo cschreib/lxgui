@@ -103,7 +103,7 @@ void status_bar::set_min_value(float fMin)
         fMinValue_ = fMin;
         if (fMinValue_ > fMaxValue_) fMinValue_ = fMaxValue_;
         fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-        fire_update_bar_texture_();
+        notify_bar_texture_needs_update_();
     }
 }
 
@@ -114,7 +114,7 @@ void status_bar::set_max_value(float fMax)
         fMaxValue_ = fMax;
         if (fMaxValue_ < fMinValue_) fMaxValue_ = fMinValue_;
         fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-        fire_update_bar_texture_();
+        notify_bar_texture_needs_update_();
     }
 }
 
@@ -125,7 +125,7 @@ void status_bar::set_min_max_values(float fMin, float fMax)
         fMinValue_ = std::min(fMin, fMax);
         fMaxValue_ = std::max(fMin, fMax);
         fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-        fire_update_bar_texture_();
+        notify_bar_texture_needs_update_();
     }
 }
 
@@ -135,7 +135,7 @@ void status_bar::set_value(float fValue)
     if (fValue != fValue_)
     {
         fValue_ = fValue;
-        fire_update_bar_texture_();
+        notify_bar_texture_needs_update_();
     }
 }
 
@@ -184,7 +184,7 @@ void status_bar::set_bar_texture(texture* pBarTexture)
         pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
     lInitialTextCoords_ = select_uvs(pBarTexture_->get_tex_coord());
-    fire_update_bar_texture_();
+    notify_bar_texture_needs_update_();
 }
 
 void status_bar::set_bar_color(const color& mBarColor)
@@ -218,7 +218,7 @@ void status_bar::set_orientation(orientation mOrient)
     if (mOrient != mOrientation_)
     {
         mOrientation_ = mOrient;
-        fire_update_bar_texture_();
+        notify_bar_texture_needs_update_();
     }
 }
 
@@ -343,7 +343,7 @@ void status_bar::update(float fDelta)
         return;
 }
 
-void status_bar::fire_update_bar_texture_()
+void status_bar::notify_bar_texture_needs_update_()
 {
     bUpdateBarTexture_ = true;
 }

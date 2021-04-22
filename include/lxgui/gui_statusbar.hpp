@@ -177,7 +177,7 @@ namespace gui
     protected :
 
         std::unique_ptr<texture> create_bar_texture_();
-        void                     fire_update_bar_texture_();
+        void                     notify_bar_texture_needs_update_();
 
         bool bUpdateBarTexture_ = false;
 
