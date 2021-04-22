@@ -479,36 +479,28 @@ void font_string::update_borders_() const
         DEBUG_LOG("  Read anchors");
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
 
-        if (fAbsWidth_ == 0.0f)
-        {
-            if (lDefinedBorderList_.left && lDefinedBorderList_.right)
-                pText_->set_box_width(fRight - fLeft);
-            else
-                pText_->set_box_width(std::numeric_limits<float>::infinity());
-        }
-        else
-            pText_->set_box_width(fAbsWidth_);
+        float fBoxWidth = std::numeric_limits<float>::infinity();
+        if (fAbsWidth_ != 0.0f)
+            fBoxWidth = fAbsWidth_;
+        else if (lDefinedBorderList_.left && lDefinedBorderList_.right)
+            fBoxWidth = fRight - fLeft;
 
-        if (fAbsHeight_ == 0.0f)
-        {
-            if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
-                pText_->set_box_height(fBottom - fTop);
-            else
-                pText_->set_box_height(std::numeric_limits<float>::infinity());
-        }
-        else
-            pText_->set_box_height(fAbsHeight_);
+        float fBoxHeight = std::numeric_limits<float>::infinity();
+        if (fAbsHeight_ != 0.0f)
+            fBoxHeight = fAbsHeight_;
+        else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
+            fBoxHeight = fBottom - fTop;
+
+        pText_->set_dimensions(fBoxWidth, fBoxHeight);
 
         DEBUG_LOG("  Make borders");
-        if (fAbsHeight_ != 0.0f)
-            make_borders_(fTop, fBottom, fYCenter, fAbsHeight_);
-        else
-            make_borders_(fTop, fBottom, fYCenter, pText_->get_height());
+        if (std::isinf(fBoxHeight))
+            fBoxHeight = pText_->get_height();
+        if (std::isinf(fBoxWidth))
+            fBoxWidth = pText_->get_width();
 
-        if (fAbsWidth_ != 0.0f)
-            make_borders_(fLeft, fRight, fXCenter, fAbsWidth_);
-        else
-            make_borders_(fLeft, fRight, fXCenter, pText_->get_width());
+        make_borders_(fTop, fBottom, fYCenter, fBoxHeight);
+        make_borders_(fLeft, fRight, fXCenter, fBoxWidth);
 
         if (bReady_)
         {
