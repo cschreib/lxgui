@@ -149,7 +149,7 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a672377ce56e148c4441b58eb32958032">   79</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#a672377ce56e148c4441b58eb32958032">text::set_dimensions</a>(<span class="keywordtype">float</span> fW, <span class="keywordtype">float</span> fH)</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> (fBoxW_ != fW &amp;&amp; fBoxH_ != fH)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> (fBoxW_ != fW || fBoxH_ != fH)</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        fBoxW_ = fW; fBoxH_ = fH;</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        notify_cache_dirty_();</div>
@@ -1078,7 +1078,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a42015b3194ce8492336f4adce570d73b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a42015b3194ce8492336f4adce570d73b">lxgui::gui::text::get_width</a></div><div class="ttdeci">float get_width() const</div><div class="ttdoc">Returns the width of the rendered text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00106">gui_text.cpp:106</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 22 2021 07:41:07 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 22 2021 18:12:05 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
