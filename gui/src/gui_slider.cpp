@@ -232,7 +232,7 @@ void slider::set_min_value(float fMin)
             lQueuedEventList_.push_back("OnValueChanged");
         }
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -250,7 +250,7 @@ void slider::set_max_value(float fMax)
             lQueuedEventList_.push_back("OnValueChanged");
         }
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -269,7 +269,7 @@ void slider::set_min_max_values(float fMin, float fMax)
             lQueuedEventList_.push_back("OnValueChanged");
         }
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -284,7 +284,7 @@ void slider::set_value(float fValue, bool bSilent)
         if (!bSilent)
             lQueuedEventList_.push_back("OnValueChanged");
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -304,7 +304,7 @@ void slider::set_value_step(float fValueStep)
         if (fValue_ != fOldValue)
             lQueuedEventList_.push_back("OnValueChanged");
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -317,7 +317,7 @@ void slider::set_thumb_texture(texture* pTexture)
         mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
     ));
 
-    fire_update_thumb_texture_();
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::set_orientation(orientation mOrientation)
@@ -333,7 +333,7 @@ void slider::set_orientation(orientation mOrientation)
             ));
         }
 
-        fire_update_thumb_texture_();
+        notify_thumb_texture_needs_update_();
     }
 }
 
@@ -505,7 +505,7 @@ void slider::update(float fDelta)
 void slider::notify_borders_need_update() const
 {
     frame::notify_borders_need_update();
-    fire_update_thumb_texture_();
+    notify_thumb_texture_needs_update_();
 }
 
 void slider::create_glue()
@@ -513,7 +513,7 @@ void slider::create_glue()
     create_glue_<lua_slider>();
 }
 
-void slider::fire_update_thumb_texture_() const
+void slider::notify_thumb_texture_needs_update_() const
 {
     bUpdateThumbTexture_ = true;
 }
