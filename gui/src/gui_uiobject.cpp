@@ -848,7 +848,7 @@ void uiobject::update_borders_() const
     bool bOldReady = bReady_;
     bReady_ = true;
 
-    if (get_num_point() > 0u)
+    if (!lAnchorList_.empty())
     {
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
         float fXCenter = 0.0f, fYCenter = 0.0f;
@@ -878,7 +878,10 @@ void uiobject::update_borders_() const
         bUpdateBorders_ = false;
     }
     else
+    {
+        lBorderList_ = quad2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
         bReady_ = false;
+    }
 
     if (bReady_ || (!bReady_ && bOldReady))
     {

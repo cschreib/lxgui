@@ -520,7 +520,18 @@ void font_string::update_borders_() const
         bUpdateBorders_ = false;
     }
     else
+    {
+        float fBoxWidth = fAbsWidth_;
+        if (fBoxWidth == 0.0)
+            fBoxWidth = pText_->get_width();
+
+        float fBoxHeight = fAbsHeight_;
+        if (fBoxHeight == 0.0)
+            fBoxHeight = pText_->get_height();
+
+        lBorderList_ = quad2f(0.0, 0.0, fBoxWidth, fBoxHeight);
         bReady_ = false;
+    }
 
     if (bReady_ || (!bReady_ && bOldReady))
     {
