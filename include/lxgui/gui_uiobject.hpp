@@ -700,8 +700,11 @@ namespace gui
         virtual void parse_anchor_block_(xml::block* pBlock);
         color        parse_color_block_(xml::block* pBlock);
 
-        void         read_anchors_(float& iLeft, float& iRight, float& iTop, float& iBottom, float& iXCenter, float& iYCenter) const;
-        void         make_borders_(float& iMin, float& iMax, float iCenter, float iSize) const;
+        void read_anchors_(float& fLeft, float& fRight, float& fTop,
+                           float& fBottom, float& fXCenter, float& fYCenter) const;
+
+        void make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
+
         virtual void update_borders_() const;
 
         sol::state&  get_lua_();

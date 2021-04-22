@@ -743,33 +743,33 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     }
 }
 
-void uiobject::make_borders_(float& iMin, float& iMax, float iCenter, float iSize) const
+void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
 {
-    if (std::isinf(iMin) && std::isinf(iMax))
+    if (std::isinf(fMin) && std::isinf(fMax))
     {
-        if (!std::isinf(iSize) && iSize != 0 && !std::isinf(iCenter))
+        if (!std::isinf(fSize) && fSize > 0.0f && !std::isinf(fCenter))
         {
-            iMin = iCenter - iSize/2.0f;
-            iMax = iCenter + iSize/2.0f;
+            fMin = fCenter - fSize/2.0f;
+            fMax = fCenter + fSize/2.0f;
         }
         else
             bReady_ = false;
     }
-    else if (std::isinf(iMax))
+    else if (std::isinf(fMax))
     {
-        if (!std::isinf(iSize) && iSize != 0)
-            iMax = iMin + iSize;
-        else if (!std::isinf(iCenter))
-            iMax = iMin + 2.0f*(iCenter - iMin);
+        if (!std::isinf(fSize) && fSize > 0.0f)
+            fMax = fMin + fSize;
+        else if (!std::isinf(fCenter))
+            fMax = fMin + 2.0f*(fCenter - fMin);
         else
             bReady_ = false;
     }
-    else if (std::isinf(iMin))
+    else if (std::isinf(fMin))
     {
-        if (!std::isinf(iSize) && iSize != 0)
-            iMin = iMax - iSize;
-        else if (!std::isinf(iCenter))
-            iMin = iMax - 2.0f*(iMax - iCenter);
+        if (!std::isinf(fSize) && fSize > 0.0f)
+            fMin = fMax - fSize;
+        else if (!std::isinf(fCenter))
+            fMin = fMax - 2.0f*(fMax - fCenter);
         else
             bReady_ = false;
     }
