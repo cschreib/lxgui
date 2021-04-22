@@ -21,61 +21,63 @@ font_string::font_string(manager* pManager) : layered_region(pManager)
 
 void font_string::render()
 {
-    if (pText_ && is_visible())
+    update_borders_();
+
+    if (!pText_ || !bReady_ || !is_visible())
+        return;
+
+    float fX = 0.0f, fY = 0.0f;
+
+    if (std::isinf(pText_->get_box_width()))
     {
-        float fX = 0.0f, fY = 0.0f;
-
-        if (std::isinf(pText_->get_box_width()))
+        switch (mJustifyH_)
         {
-            switch (mJustifyH_)
-            {
-                case text::alignment::LEFT   : fX = lBorderList_.left; break;
-                case text::alignment::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
-                case text::alignment::RIGHT  : fX = lBorderList_.right; break;
-            }
+            case text::alignment::LEFT   : fX = lBorderList_.left; break;
+            case text::alignment::CENTER : fX = (lBorderList_.left + lBorderList_.right)/2; break;
+            case text::alignment::RIGHT  : fX = lBorderList_.right; break;
         }
-        else
-            fX = lBorderList_.left;
-
-        if (std::isinf(pText_->get_box_height()))
-        {
-            switch (mJustifyV_)
-            {
-                case text::vertical_alignment::TOP    : fY = lBorderList_.top; break;
-                case text::vertical_alignment::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
-                case text::vertical_alignment::BOTTOM : fY = lBorderList_.bottom; break;
-            }
-        }
-        else
-            fY = lBorderList_.top;
-
-        fX += fXOffset_;
-        fY += fYOffset_;
-
-        if (bHasShadow_)
-        {
-            pText_->set_color(mShadowColor_, true);
-            pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
-        }
-
-        if (bIsOutlined_)
-        {
-            pText_->set_color(color(0, 0, 0, mTextColor_.a), true);
-            for (uint i = 0; i < OUTLINE_QUALITY; ++i)
-            {
-                static const float PI2 = 2.0f*std::acos(-1.0f);
-                const float fAngle = PI2*static_cast<float>(i)/static_cast<float>(OUTLINE_QUALITY);
-
-                pText_->render(
-                    fX + OUTLINE_THICKNESS*std::cos(fAngle),
-                    fY + OUTLINE_THICKNESS*std::sin(fAngle)
-                );
-            }
-        }
-
-        pText_->set_color(mTextColor_);
-        pText_->render(fX, fY);
     }
+    else
+        fX = lBorderList_.left;
+
+    if (std::isinf(pText_->get_box_height()))
+    {
+        switch (mJustifyV_)
+        {
+            case text::vertical_alignment::TOP    : fY = lBorderList_.top; break;
+            case text::vertical_alignment::MIDDLE : fY = (lBorderList_.top + lBorderList_.bottom)/2; break;
+            case text::vertical_alignment::BOTTOM : fY = lBorderList_.bottom; break;
+        }
+    }
+    else
+        fY = lBorderList_.top;
+
+    fX += fXOffset_;
+    fY += fYOffset_;
+
+    if (bHasShadow_)
+    {
+        pText_->set_color(mShadowColor_, true);
+        pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
+    }
+
+    if (bIsOutlined_)
+    {
+        pText_->set_color(color(0, 0, 0, mTextColor_.a), true);
+        for (uint i = 0; i < OUTLINE_QUALITY; ++i)
+        {
+            static const float PI2 = 2.0f*std::acos(-1.0f);
+            const float fAngle = PI2*static_cast<float>(i)/static_cast<float>(OUTLINE_QUALITY);
+
+            pText_->render(
+                fX + OUTLINE_THICKNESS*std::cos(fAngle),
+                fY + OUTLINE_THICKNESS*std::sin(fAngle)
+            );
+        }
+    }
+
+    pText_->set_color(mTextColor_);
+    pText_->render(fX, fY);
 }
 
 std::string font_string::serialize(const std::string& sTab) const
