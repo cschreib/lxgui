@@ -471,8 +471,18 @@ int lua_font_string::_get_string_width(lua_State* pLua)
         return 0;
 
     lua::function mFunc("FontString:get_string_width", pLua, 1);
+    mFunc.add(0, "string", lua::type::STRING, true);
 
-    mFunc.push(get_object()->get_string_width());
+    if (mFunc.check())
+    {
+        if (mFunc.is_provided(0))
+        {
+            mFunc.push(get_object()->get_string_width(
+                utils::utf8_to_unicode(mFunc.get(0)->get_string())));
+        }
+        else
+            mFunc.push(get_object()->get_string_width());
+    }
 
     return mFunc.on_return();
 }

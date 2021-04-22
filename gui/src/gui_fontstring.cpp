@@ -373,6 +373,14 @@ float font_string::get_string_width() const
         return 0.0f;
 }
 
+float font_string::get_string_width(const utils::ustring& sString) const
+{
+    if (pText_)
+        return pText_->get_string_width(sString);
+    else
+        return 0.0f;
+}
+
 const utils::ustring& font_string::get_text() const
 {
     return sText_;

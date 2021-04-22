@@ -182,15 +182,21 @@ namespace gui
         */
         bool can_non_space_wrap() const;
 
-        /// Returns the height of the string if not format is applied.
-        /** \return The height of the string if not format is applied
+        /// Returns the height of the string if no format or wrapping is applied.
+        /** \return The height of the string if no format or wrapping is applied
         */
         float get_string_height() const;
 
-        /// Returns the width of the string if not format is applied.
-        /** \return The width of the string if not format is applied
+        /// Returns the width of the string if no format or wrapping is applied.
+        /** \return The width of the string if no format or wrapping is applied
         */
         float get_string_width() const;
+
+        /// Returns the width of a string if no format or wrapping is applied.
+        /** \param sString The string for which to calculate the width
+        *   \return The width of a string if no format or wrapping is applied
+        */
+        float get_string_width(const utils::ustring& sString) const;
 
         /// Returns the rendered text (with format tags).
         /** \return The rendered text (with format tags)
