@@ -1582,10 +1582,11 @@ void manager::print_statistics()
 {
     gui::out << "GUI Statistics :" << std::endl;
     gui::out << "    strata redraw percent :" << std::endl;
-    for (const auto& mStrata : lStrataList_)
+    for (uint uiStrata = 0u; uiStrata < lStrataList_.size(); ++uiStrata)
     {
-        gui::out << "     - [" << static_cast<uint>(mStrata.mStrata) << "] : "
-            << utils::to_string(100.0f*float(mStrata.uiRedrawCount)/float(uiFrameNumber_)) << "%" << std::endl;
+        const float fRedrawFraction = float(lStrataList_[uiStrata].uiRedrawCount)/float(uiFrameNumber_);
+        gui::out << "     - [" << uiStrata << "] : "
+            << utils::to_string(100.0f*fRedrawFraction) << "%" << std::endl;
     }
 }
 

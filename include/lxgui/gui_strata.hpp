@@ -41,7 +41,6 @@ namespace gui
     /// Contains gui::level
     struct strata
     {
-        frame_strata                   mStrata = frame_strata::PARENT;
         std::map<int, level>           lLevelList;
         mutable bool                   bRedraw = true;
         std::shared_ptr<render_target> pRenderTarget;

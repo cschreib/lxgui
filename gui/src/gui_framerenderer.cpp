@@ -39,17 +39,14 @@ void print_frames(const std::array<strata,8>& lStrataList)
     }
 }
 
-frame_renderer::frame_renderer()
+void frame_renderer::notify_strata_needs_redraw_(const strata& mStrata) const
 {
-    for (uint uiStrata = 0; uiStrata < lStrataList_.size(); ++uiStrata)
-    {
-        lStrataList_[uiStrata].mStrata = (frame_strata)uiStrata;
-    }
+    mStrata.bRedraw = true;
 }
 
 void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata) const
 {
-    lStrataList_[(uint)mStrata].bRedraw = true;
+    notify_strata_needs_redraw_(lStrataList_[(uint)mStrata]);
 }
 
 void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
@@ -62,14 +59,15 @@ void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
-    auto& mStrata = lStrataList_[(uint)pFrame->get_frame_strata()];
+    const auto mFrameStrata = pFrame->get_frame_strata();
+    auto& mStrata = lStrataList_[(uint)mFrameStrata];
 
     if (bRendered)
         add_to_strata_list_(mStrata, pFrame);
     else
         remove_from_strata_list_(mStrata, pFrame);
 
-    notify_strata_needs_redraw(mStrata.mStrata);
+    notify_strata_needs_redraw_(mStrata);
 }
 
 void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
@@ -80,11 +78,13 @@ void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOl
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
-    remove_from_strata_list_(lStrataList_[(uint)mOldStrata], pFrame);
-    add_to_strata_list_(lStrataList_[(uint)mNewStrata], pFrame);
+    auto& mOld = lStrataList_[(uint)mOldStrata];
+    auto& mNew = lStrataList_[(uint)mNewStrata];
+    remove_from_strata_list_(mOld, pFrame);
+    add_to_strata_list_(mNew, pFrame);
 
-    notify_strata_needs_redraw(mOldStrata);
-    notify_strata_needs_redraw(mNewStrata);
+    notify_strata_needs_redraw_(mOld);
+    notify_strata_needs_redraw_(mNew);
 }
 
 void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
@@ -94,7 +94,8 @@ void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, in
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
-    auto& mStrata = lStrataList_[(uint)pFrame->get_frame_strata()];
+    const auto mFrameStrata = pFrame->get_frame_strata();
+    auto& mStrata = lStrataList_[(uint)mFrameStrata];
     auto& lLevelList = mStrata.lLevelList;
 
     auto mIterOld = lLevelList.find(iOldLevel);
@@ -114,7 +115,7 @@ void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, in
 
     add_to_level_list_(mIterNew->second, pFrame);
 
-    notify_strata_needs_redraw(mStrata.mStrata);
+    notify_strata_needs_redraw_(mStrata);
 }
 
 void frame_renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
@@ -147,7 +148,7 @@ void frame_renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
 void frame_renderer::add_to_level_list_(level& mLevel, frame* pFrame)
 {
     mLevel.lFrameList.push_back(pFrame);
-    notify_strata_needs_redraw(mLevel.pStrata->mStrata);
+    notify_strata_needs_redraw_(*mLevel.pStrata);
     bStrataListUpdated_ = true;
 }
 
@@ -160,7 +161,7 @@ void frame_renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
     }
 
     mLevel.lFrameList.erase(mIter);
-    notify_strata_needs_redraw(mLevel.pStrata->mStrata);
+    notify_strata_needs_redraw_(*mLevel.pStrata);
     bStrataListUpdated_ = true;
 }
 

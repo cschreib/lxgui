@@ -17,11 +17,6 @@ namespace gui
     {
     public :
 
-        /// Constructor.
-        /** \param pManager The GUI manager this renderer belongs to
-        */
-        frame_renderer();
-
         /// Destructor
         virtual ~frame_renderer() = default;
 
@@ -68,6 +63,7 @@ namespace gui
         void clear_strata_list_();
         bool has_strata_list_changed_() const;
         void reset_strata_list_changed_flag_();
+        void notify_strata_needs_redraw_(const strata& mStrata) const;
 
         void render_strata_(const strata& mStrata) const;
 

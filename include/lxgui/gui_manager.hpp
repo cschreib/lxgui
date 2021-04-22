@@ -303,9 +303,6 @@ namespace gui
         */
         uiobject* get_uiobject_by_name(const std::string& sName, bool bVirtual = false);
 
-        /// Tells this manager it must rebuild its strata list.
-        void fire_build_strata_list();
-
         /// Prints in the log several performance statistics.
         void print_statistics();
 
