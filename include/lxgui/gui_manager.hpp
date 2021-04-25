@@ -577,22 +577,52 @@ namespace gui
         void on_event(const event& mEvent) override;
 
         /// Registers a new frame type.
-        /** \note Use as template argument the C++ type of this frame.
+        /** \note Set the first template argument as the C++ type of this frame.
         */
-        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        template<typename frame_type,
+            typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
             frame_type::register_glue(*pLua_);
         }
 
-        /// Registers a new layered_region type.
-        /** \note Use as template argument the C++ type of this layered_region.
+        /// Registers a new frame type.
+        /** \param mFactoryFunction A function that creates new frames of this type. Must take a
+        *                           lxgui::gui::manager* as first and only argument, and return
+        *                           a std::unique_ptr<frame>.
+        *   \note Set the first template argument as the C++ type of this frame.
         */
-        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        template<typename frame_type, typename function_type,
+            typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        void register_frame_type(function_type&& mFactoryFunction)
+        {
+            lCustomFrameList_[frame_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
+            frame_type::register_glue(*pLua_);
+        }
+
+        /// Registers a new layered_region type.
+        /** \note Set the first template argument as the C++ type of this layered_region.
+        */
+        template<typename region_type,
+            typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
+            region_type::register_glue(*pLua_);
+        }
+
+        /// Registers a new layered_region type.
+        /** \param mFactoryFunction A function that creates new layered regions of this type. Must
+        *                           take a lxgui::gui::manager* as first and only argument, and
+        *                           return a std::unique_ptr<layered_region>.
+        *   \note Set the first template argument as the C++ type of this layered_region.
+        */
+        template<typename region_type, typename function_type,
+            typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        void register_region_type(function_type&& mFactoryFunction)
+        {
+            lCustomRegionList_[region_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
             region_type::register_glue(*pLua_);
         }
 
