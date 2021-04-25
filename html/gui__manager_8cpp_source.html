@@ -250,11 +250,11 @@ $(function() {
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    {</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keyword">auto</span> iterFrame = lCustomFrameList_.find(sClassName);</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keywordflow">if</span> (iterFrame != lCustomFrameList_.end())</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">return</span> std::unique_ptr&lt;uiobject&gt;((*iterFrame-&gt;second)(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            <span class="keywordflow">return</span> iterFrame-&gt;second(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keyword">auto</span> iterRegion = lCustomRegionList_.find(sClassName);</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">if</span> (iterRegion != lCustomRegionList_.end())</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> std::unique_ptr&lt;uiobject&gt;((*iterRegion-&gt;second)(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            <span class="keywordflow">return</span> iterRegion-&gt;second(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;gui::manager : Unknown uiobject class : \&quot;&quot;</span> &lt;&lt; sClassName &lt;&lt; <span class="stringliteral">&quot;\&quot;.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
@@ -271,7 +271,7 @@ $(function() {
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">auto</span> iterFrame = lCustomFrameList_.find(sClassName);</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        <span class="keywordflow">if</span> (iterFrame != lCustomFrameList_.end())</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">return</span> std::unique_ptr&lt;frame&gt;((*iterFrame-&gt;second)(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            <span class="keywordflow">return</span> std::unique_ptr&lt;frame&gt;(iterFrame-&gt;second(<span class="keyword">this</span>));</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;gui::manager : Unknown Frame class : \&quot;&quot;</span> &lt;&lt; sClassName &lt;&lt; <span class="stringliteral">&quot;\&quot;.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
@@ -325,7 +325,7 @@ $(function() {
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;{</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">auto</span> iterRegion = lCustomRegionList_.find(sClassName);</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordflow">if</span> (iterRegion != lCustomRegionList_.end())</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">return</span> std::unique_ptr&lt;layered_region&gt;((*iterRegion-&gt;second)(<span class="keyword">this</span>));</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keywordflow">return</span> iterRegion-&gt;second(<span class="keyword">this</span>);</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
 <div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;gui::manager : Unknown layered_region class : \&quot;&quot;</span> &lt;&lt; sClassName &lt;&lt; <span class="stringliteral">&quot;\&quot;.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
@@ -1911,7 +1911,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a8a6d2eb49fe5e154747acfa3efb125b7"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a8a6d2eb49fe5e154747acfa3efb125b7">lxgui::gui::manager::get_movement_x</a></div><div class="ttdeci">float get_movement_x() const</div><div class="ttdoc">Returns the cumuled horizontal mouse movement.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l01200">gui_manager.cpp:1200</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 22 2021 18:12:05 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 25 2021 08:48:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

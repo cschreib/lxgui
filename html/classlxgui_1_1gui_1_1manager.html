@@ -332,22 +332,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e93259c4071039e6972c238b0e0d70f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a3e93259c4071039e6972c238b0e0d70f">on_event</a> (const <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a> &amp;mEvent) override</td></tr>
 <tr class="memdesc:a3e93259c4071039e6972c238b0e0d70f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever an Event occurs.  <a href="classlxgui_1_1gui_1_1manager.html#a3e93259c4071039e6972c238b0e0d70f">More...</a><br /></td></tr>
 <tr class="separator:a3e93259c4071039e6972c238b0e0d70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a930243aebe879e7f8fdae27ad229cc9a"><td class="memTemplParams" colspan="2">template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:a930243aebe879e7f8fdae27ad229cc9a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a930243aebe879e7f8fdae27ad229cc9a">register_frame_type</a> (const std::string &amp;)</td></tr>
-<tr class="memdesc:a930243aebe879e7f8fdae27ad229cc9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new frame type.  <a href="classlxgui_1_1gui_1_1manager.html#a930243aebe879e7f8fdae27ad229cc9a">More...</a><br /></td></tr>
-<tr class="separator:a930243aebe879e7f8fdae27ad229cc9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a159950242599fe6f0fe68f4653d375cc"><td class="memTemplParams" colspan="2">template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:a159950242599fe6f0fe68f4653d375cc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a159950242599fe6f0fe68f4653d375cc">register_frame_type</a> ()</td></tr>
 <tr class="memdesc:a159950242599fe6f0fe68f4653d375cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new frame type.  <a href="classlxgui_1_1gui_1_1manager.html#a159950242599fe6f0fe68f4653d375cc">More...</a><br /></td></tr>
 <tr class="separator:a159950242599fe6f0fe68f4653d375cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a018b5ad0aacc50721b8ddeebde1be46d"><td class="memTemplParams" colspan="2">template&lt;typename region_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </td></tr>
-<tr class="memitem:a018b5ad0aacc50721b8ddeebde1be46d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a018b5ad0aacc50721b8ddeebde1be46d">register_region_type</a> (const std::string &amp;)</td></tr>
-<tr class="memdesc:a018b5ad0aacc50721b8ddeebde1be46d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type.  <a href="classlxgui_1_1gui_1_1manager.html#a018b5ad0aacc50721b8ddeebde1be46d">More...</a><br /></td></tr>
-<tr class="separator:a018b5ad0aacc50721b8ddeebde1be46d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20007e795d14739912bf15b886c534f3"><td class="memTemplParams" colspan="2">template&lt;typename frame_type , typename function_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a20007e795d14739912bf15b886c534f3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a20007e795d14739912bf15b886c534f3">register_frame_type</a> (function_type &amp;&amp;mFactoryFunction)</td></tr>
+<tr class="memdesc:a20007e795d14739912bf15b886c534f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new frame type.  <a href="classlxgui_1_1gui_1_1manager.html#a20007e795d14739912bf15b886c534f3">More...</a><br /></td></tr>
+<tr class="separator:a20007e795d14739912bf15b886c534f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6323c1eacc417141a36bed3f7892899"><td class="memTemplParams" colspan="2">template&lt;typename region_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:ac6323c1eacc417141a36bed3f7892899"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#ac6323c1eacc417141a36bed3f7892899">register_region_type</a> ()</td></tr>
 <tr class="memdesc:ac6323c1eacc417141a36bed3f7892899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type.  <a href="classlxgui_1_1gui_1_1manager.html#ac6323c1eacc417141a36bed3f7892899">More...</a><br /></td></tr>
 <tr class="separator:ac6323c1eacc417141a36bed3f7892899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8ff22e295d877c3fac8f271ddf9db2"><td class="memTemplParams" colspan="2">template&lt;typename region_type , typename function_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a6a8ff22e295d877c3fac8f271ddf9db2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a6a8ff22e295d877c3fac8f271ddf9db2">register_region_type</a> (function_type &amp;&amp;mFactoryFunction)</td></tr>
+<tr class="memdesc:a6a8ff22e295d877c3fac8f271ddf9db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type.  <a href="classlxgui_1_1gui_1_1manager.html#a6a8ff22e295d877c3fac8f271ddf9db2">More...</a><br /></td></tr>
+<tr class="separator:a6a8ff22e295d877c3fac8f271ddf9db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html#a9b25bb17fd2d7644f09760bc6618a7fe">get_renderer</a> () const</td></tr>
 <tr class="memdesc:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the renderer implementation.  <a href="classlxgui_1_1gui_1_1manager.html#a9b25bb17fd2d7644f09760bc6618a7fe">More...</a><br /></td></tr>
 <tr class="separator:a9b25bb17fd2d7644f09760bc6618a7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2763,19 +2763,19 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </div><div class="memdoc">
 
 <p>Registers a new frame type. </p>
-<dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this frame. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Set the first template argument as the C++ type of this frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00595">595</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00584">584</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a930243aebe879e7f8fdae27ad229cc9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a930243aebe879e7f8fdae27ad229cc9a">&#9670;&nbsp;</a></span>register_frame_type() <span class="overload">[2/2]</span></h2>
+<a id="a20007e795d14739912bf15b886c534f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20007e795d14739912bf15b886c534f3">&#9670;&nbsp;</a></span>register_frame_type() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </div>
+template&lt;typename frame_type , typename function_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::frame, frame_type&gt;::value&gt;::type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2783,8 +2783,8 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
         <tr>
           <td class="memname">void lxgui::gui::manager::register_frame_type </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">function_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>mFactoryFunction</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2796,11 +2796,15 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </div><div class="memdoc">
 
 <p>Registers a new frame type. </p>
-<dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this frame. </dd>
-<dd>
-The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mFactoryFunction</td><td>A function that creates new frames of this type. Must take a <a class="el" href="classlxgui_1_1gui_1_1manager.html" title="Manages the user interface.">lxgui::gui::manager</a>* as first and only argument, and return a std::unique_ptr&lt;frame&gt;. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Set the first template argument as the C++ type of this frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00585">585</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00598">598</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -2830,19 +2834,19 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </div><div class="memdoc">
 
 <p>Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type. </p>
-<dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Set the first template argument as the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00617">617</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00609">609</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
-<a id="a018b5ad0aacc50721b8ddeebde1be46d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a018b5ad0aacc50721b8ddeebde1be46d">&#9670;&nbsp;</a></span>register_region_type() <span class="overload">[2/2]</span></h2>
+<a id="a6a8ff22e295d877c3fac8f271ddf9db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8ff22e295d877c3fac8f271ddf9db2">&#9670;&nbsp;</a></span>register_region_type() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename region_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </div>
+template&lt;typename region_type , typename function_type , typename enable  = typename std::enable_if&lt;std::is_base_of&lt;gui::layered_region, region_type&gt;::value&gt;::type&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2850,8 +2854,8 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
         <tr>
           <td class="memname">void lxgui::gui::manager::register_region_type </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">function_type &amp;&amp;&#160;</td>
+          <td class="paramname"><em>mFactoryFunction</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2863,11 +2867,15 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </div><div class="memdoc">
 
 <p>Registers a new <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a> type. </p>
-<dl class="section note"><dt>Note</dt><dd>Use as template argument the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a>. </dd>
-<dd>
-The string parameter is not used anymore (still here for compatibility reasons, will disappear in a future release). </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mFactoryFunction</td><td>A function that creates new layered regions of this type. Must take a <a class="el" href="classlxgui_1_1gui_1_1manager.html" title="Manages the user interface.">lxgui::gui::manager</a>* as first and only argument, and return a std::unique_ptr&lt;layered_region&gt;. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Set the first template argument as the C++ type of this <a class="el" href="classlxgui_1_1gui_1_1layered__region.html" title="A uiobject that can be rendered in a layer.">layered_region</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00607">607</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8hpp_source.html#l00623">623</a> of file <a class="el" href="gui__manager_8hpp_source.html">gui_manager.hpp</a>.</p>
 
 </div>
 </div>
@@ -3751,7 +3759,7 @@ See <a class="el" href="classlxgui_1_1gui_1_1manager.html#ab668a5d95d76afb1f8d4f
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 22 2021 18:12:05 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Apr 25 2021 08:48:48 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
