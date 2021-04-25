@@ -50,15 +50,15 @@ namespace gui
     private :
 
         template <class T>
-        static frame* create_new_frame(manager* pMgr)
+        static std::unique_ptr<frame> create_new_frame(manager* pMgr)
         {
-            return new T(pMgr);
+            return std::make_unique<T>(pMgr);
         }
 
         template <class T>
-        static layered_region* create_new_layered_region(manager* pMgr)
+        static std::unique_ptr<layered_region> create_new_layered_region(manager* pMgr)
         {
-            return new T(pMgr);
+            return std::make_unique<T>(pMgr);
         }
 
     public :
@@ -739,8 +739,8 @@ namespace gui
         std::shared_ptr<render_target> pRenderTarget_;
         sprite                         mSprite_;
 
-        std::map<std::string, std::function<frame*(manager*)>>          lCustomFrameList_;
-        std::map<std::string, std::function<layered_region*(manager*)>> lCustomRegionList_;
+        std::map<std::string, std::function<std::unique_ptr<frame>(manager*)>>          lCustomFrameList_;
+        std::map<std::string, std::function<std::unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;

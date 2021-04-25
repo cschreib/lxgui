@@ -187,11 +187,11 @@ std::unique_ptr<uiobject> manager::create_uiobject(const std::string& sClassName
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
         if (iterFrame != lCustomFrameList_.end())
-            return std::unique_ptr<uiobject>(iterFrame->second(this));
+            return iterFrame->second(this);
 
         auto iterRegion = lCustomRegionList_.find(sClassName);
         if (iterRegion != lCustomRegionList_.end())
-            return std::unique_ptr<uiobject>(iterRegion->second(this));
+            return iterRegion->second(this);
 
         gui::out << gui::warning << "gui::manager : Unknown uiobject class : \"" << sClassName << "\"." << std::endl;
         return nullptr;
@@ -262,7 +262,7 @@ std::unique_ptr<layered_region> manager::create_layered_region(const std::string
 {
     auto iterRegion = lCustomRegionList_.find(sClassName);
     if (iterRegion != lCustomRegionList_.end())
-        return std::unique_ptr<layered_region>(iterRegion->second(this));
+        return iterRegion->second(this);
 
     gui::out << gui::warning << "gui::manager : Unknown layered_region class : \"" << sClassName << "\"." << std::endl;
     return nullptr;
