@@ -578,36 +578,12 @@ namespace gui
 
         /// Registers a new frame type.
         /** \note Use as template argument the C++ type of this frame.
-        *   \note The string parameter is not used anymore (still here for
-        *         compatibility reasons, will disappear in a future release).
-        */
-        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        void register_frame_type(const std::string&)
-        {
-            lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(*pLua_);
-        }
-
-        /// Registers a new frame type.
-        /** \note Use as template argument the C++ type of this frame.
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
             frame_type::register_glue(*pLua_);
-        }
-
-        /// Registers a new layered_region type.
-        /** \note Use as template argument the C++ type of this layered_region.
-        *   \note The string parameter is not used anymore (still here for
-        *         compatibility reasons, will disappear in a future release).
-        */
-        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        void register_region_type(const std::string&)
-        {
-            lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(*pLua_);
         }
 
         /// Registers a new layered_region type.
@@ -763,8 +739,8 @@ namespace gui
         std::shared_ptr<render_target> pRenderTarget_;
         sprite                         mSprite_;
 
-        std::map<std::string, frame*(*)(manager*)>          lCustomFrameList_;
-        std::map<std::string, layered_region*(*)(manager*)> lCustomRegionList_;
+        std::map<std::string, std::function<frame*(manager*)>>          lCustomFrameList_;
+        std::map<std::string, std::function<layered_region*(manager*)>> lCustomRegionList_;
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;
