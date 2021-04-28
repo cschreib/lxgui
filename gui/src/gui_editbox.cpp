@@ -282,9 +282,9 @@ void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
     if (!bVirtual_)
     {
         if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
-            event_receiver::register_event("TEXT_ENTERED");
+            register_event("TEXT_ENTERED");
         else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
-            event_receiver::unregister_event("TEXT_ENTERED");
+            unregister_event("TEXT_ENTERED");
     }
 
     frame::enable_keyboard(bIsKeyboardEnabled);

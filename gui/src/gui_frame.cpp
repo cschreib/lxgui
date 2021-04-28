@@ -530,13 +530,13 @@ void frame::enable_keyboard(bool bIsKeyboardEnabled)
     {
         if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
         {
-            event_receiver::register_event("KEY_PRESSED");
-            event_receiver::register_event("KEY_RELEASED");
+            register_event("KEY_PRESSED");
+            register_event("KEY_RELEASED");
         }
         else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
         {
-            event_receiver::unregister_event("KEY_PRESSED");
-            event_receiver::unregister_event("KEY_RELEASED");
+            unregister_event("KEY_PRESSED");
+            unregister_event("KEY_RELEASED");
         }
     }
 
@@ -549,21 +549,21 @@ void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
     {
         if (bIsMouseEnabled && !bIsMouseEnabled_)
         {
-            event_receiver::register_event("MOUSE_MOVED");
-            event_receiver::register_event("MOUSE_PRESSED");
-            event_receiver::register_event("MOUSE_DOUBLE_CLICKED");
-            event_receiver::register_event("MOUSE_RELEASED");
-            event_receiver::register_event("MOUSE_DRAG_START");
-            event_receiver::register_event("MOUSE_DRAG_STOP");
+            register_event("MOUSE_MOVED");
+            register_event("MOUSE_PRESSED");
+            register_event("MOUSE_DOUBLE_CLICKED");
+            register_event("MOUSE_RELEASED");
+            register_event("MOUSE_DRAG_START");
+            register_event("MOUSE_DRAG_STOP");
         }
         else if (!bIsMouseEnabled && bIsMouseEnabled_)
         {
-            event_receiver::unregister_event("MOUSE_MOVED");
-            event_receiver::unregister_event("MOUSE_PRESSED");
-            event_receiver::unregister_event("MOUSE_DOUBLE_CLICKED");
-            event_receiver::unregister_event("MOUSE_RELEASED");
-            event_receiver::unregister_event("MOUSE_DRAG_START");
-            event_receiver::unregister_event("MOUSE_DRAG_STOP");
+            unregister_event("MOUSE_MOVED");
+            unregister_event("MOUSE_PRESSED");
+            unregister_event("MOUSE_DOUBLE_CLICKED");
+            unregister_event("MOUSE_RELEASED");
+            unregister_event("MOUSE_DRAG_START");
+            unregister_event("MOUSE_DRAG_STOP");
         }
     }
 
@@ -576,9 +576,9 @@ void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
     if (!bVirtual_)
     {
         if (bIsMouseWheelEnabled && !bIsMouseWheelEnabled_)
-            event_receiver::register_event("MOUSE_WHEEL");
+            register_event("MOUSE_WHEEL");
         else if (!bIsMouseWheelEnabled && bIsMouseWheelEnabled_)
-            event_receiver::unregister_event("MOUSE_WHEEL");
+            unregister_event("MOUSE_WHEEL");
     }
 
     bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
@@ -1331,8 +1331,13 @@ void frame::register_all_events()
 
 void frame::register_event(const std::string& sEvent)
 {
-    lRegEventList_.insert(sEvent);
-    event_receiver::register_event(sEvent);
+    if (bHasAllEventsRegistred_)
+        return;
+
+    auto mInserted = lRegEventList_.insert(sEvent);
+
+    if (!bVirtual_ && mInserted.second)
+        event_receiver::register_event(sEvent);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)
@@ -1765,7 +1770,17 @@ void frame::unregister_all_events()
 
 void frame::unregister_event(const std::string& sEvent)
 {
+    if (bHasAllEventsRegistred_)
+        return;
+
+    auto mIter = lRegEventList_.find(sEvent);
+    if (mIter == lRegEventList_.end())
+        return;
+
     lRegEventList_.erase(sEvent);
+
+    if (!bVirtual_)
+        event_receiver::unregister_event(sEvent);
 }
 
 void frame::set_addon(addon* pAddOn)
