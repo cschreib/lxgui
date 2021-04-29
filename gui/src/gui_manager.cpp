@@ -1086,8 +1086,9 @@ void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstrai
         }
         else
         {
+            const quad2f lBorders = pMovedObject_->get_borders();
+
             pMovedObject_->clear_all_points();
-            const quad2f& lBorders = pMovedObject_->get_borders();
             pMovedObject_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, lBorders.top_left());
             pMovedAnchor_ = pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
@@ -1120,7 +1121,7 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
 
     if (pSizedObject_)
     {
-        const quad2f& lBorders = pSizedObject_->get_borders();
+        const quad2f lBorders = pSizedObject_->get_borders();
 
         anchor_point mOppositePoint = anchor_point::CENTER;
         vector2f mOffset;
