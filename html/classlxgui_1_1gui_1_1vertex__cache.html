@@ -85,8 +85,8 @@ Inheritance diagram for lxgui::gui::vertex_cache:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1vertex__cache.png" usemap="#lxgui::gui::vertex_5Fcache_map" alt=""/>
   <map id="lxgui::gui::vertex_5Fcache_map" name="lxgui::gui::vertex_5Fcache_map">
-<area href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html" title="A place to render things (the screen, a texture, ...)" alt="lxgui::gui::gl::vertex_cache" shape="rect" coords="0,56,172,80"/>
-<area href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html" title="A place to render things (the screen, a texture, ...)" alt="lxgui::gui::sfml::vertex_cache" shape="rect" coords="182,56,354,80"/>
+<area href="classlxgui_1_1gui_1_1gl_1_1vertex__cache.html" alt="lxgui::gui::gl::vertex_cache" shape="rect" coords="0,56,172,80"/>
+<area href="classlxgui_1_1gui_1_1sfml_1_1vertex__cache.html" alt="lxgui::gui::sfml::vertex_cache" shape="rect" coords="182,56,354,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -117,11 +117,12 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An object representing cached vertex data on the GPU. </p>
-<p>A vertex cache stores vertices and indices that can be used to draw any shape on the screen. Each group of 3 vertices forms a triangle. Vertices in the cache can be combined in any order (including by reusing the same vertex twice) using an index array. For example, with an index array <code>ids</code> and a vertex array <code>v</code>, the first triangle will be drawn using <code>v[ids[0]]</code>, <code>v[ids[1]]</code>, and <code>v[ids[2]]</code>. Hence, a quad is most efficiently drawn by a <code>v</code> array of length 4, containing the vertex at each corner, and an <code>ids</code> array of length 6 containing the indices <code>[0,1,2,2,3,0]</code>.</p>
+<p>A vertex cache stores vertices and indices that can be used to draw any shape on the screen. If the type is TRIANGLES, each group of 3 vertices forms a triangle, while if the type is QUADS, each group of 4 vertices forms a quad.</p>
 <p>Using this class enables more efficient rendering of large groups of sprites or quads that share the same material (texture). This is especially true if the data to render does not change often.</p>
-<p>A vertex cache can be rendered with gui::renderer::render_vertex_cache(). </p><dl class="section note"><dt>Note</dt><dd>This is an abstract class that must be inherited from and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </dd></dl>
+<p>A vertex cache can be rendered with gui::renderer::render_vertex_cache().</p>
+<dl class="section note"><dt>Note</dt><dd>This is an abstract class that must be inherited from and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00034">34</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00029">29</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a0354490e97b4d68ec0c2e1d5f5b3f6de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0354490e97b4d68ec0c2e1d5f5b3f6de">&#9670;&nbsp;</a></span>type</h2>
@@ -151,7 +152,7 @@ Protected Attributes</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00039">39</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00034">34</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
 
 </div>
 </div>
@@ -292,7 +293,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00065">65</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vertexcache_8hpp_source.html#l00060">60</a> of file <a class="el" href="gui__vertexcache_8hpp_source.html">gui_vertexcache.hpp</a>.</p>
 
 </div>
 </div>
@@ -303,7 +304,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 29 2021 06:56:41 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 30 2021 07:37:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
