@@ -12,7 +12,20 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-    /// A place to render things (the screen, a texture, ...)
+    /** A vertex cache stores vertices and indices that can be used to draw
+    *   any shape on the screen. If the type is TRIANGLES, each group of 3
+    *   vertices forms a triangle, while if the type is QUADS, each group of 4
+    *   vertices forms a quad.
+    *
+    *   Using this class enables more efficient rendering of large groups
+    *   of sprites or quads that share the same material (texture). This
+    *   is especially true if the data to render does not change often.
+    *
+    *   A vertex cache can be rendered with gui::renderer::render_vertex_cache().
+    *
+    *   \note This is an abstract class that must be inherited
+    *         from and created by the corresponding gui::renderer.
+    */
     class vertex_cache : public gui::vertex_cache
     {
     public :

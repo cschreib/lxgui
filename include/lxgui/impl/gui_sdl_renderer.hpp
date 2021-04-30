@@ -86,7 +86,8 @@ namespace sdl
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        void render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const override;
+        void render_quads(const gui::material* pMaterial,
+            const std::vector<std::array<vertex,4>>& lQuadList) const override;
 
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
@@ -116,13 +117,15 @@ namespace sdl
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
-        std::shared_ptr<gui::material> create_material(std::shared_ptr<gui::render_target> pRenderTarget) const override;
+        std::shared_ptr<gui::material> create_material(
+            std::shared_ptr<gui::render_target> pRenderTarget) const override;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
         */
-        std::shared_ptr<gui::render_target> create_render_target(uint uiWidth, uint uiHeight) const override;
+        std::shared_ptr<gui::render_target> create_render_target(
+            uint uiWidth, uint uiHeight) const override;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -130,7 +133,8 @@ namespace sdl
         *   \note This implementation uses FreeType to load vector fonts and rasterize them.
         *         Bitmap fonts are not yet supported.
         */
-        std::shared_ptr<gui::font> create_font(const std::string& sFontFile, uint uiSize) const override;
+        std::shared_ptr<gui::font> create_font(const std::string& sFontFile,
+            uint uiSize) const override;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
@@ -140,10 +144,9 @@ namespace sdl
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
-        *         The size hint can enable the cache to be pre-allocated, which will avoid a
-        *         reallocation when data is pushed to the cache.
         */
-        std::shared_ptr<gui::vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const override;
+        std::shared_ptr<gui::vertex_cache> create_vertex_cache(
+            gui::vertex_cache::type mType) const override;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width

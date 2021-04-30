@@ -78,7 +78,8 @@ namespace gui
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        virtual void render_quads(const material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
+        virtual void render_quads(const material* pMaterial,
+            const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
 
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
@@ -108,13 +109,15 @@ namespace gui
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material
         */
-        virtual std::shared_ptr<material> create_material(std::shared_ptr<render_target> pRenderTarget) const = 0;
+        virtual std::shared_ptr<material> create_material(
+            std::shared_ptr<render_target> pRenderTarget) const = 0;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
         */
-        virtual std::shared_ptr<render_target> create_render_target(uint uiWidth, uint uiHeight) const = 0;
+        virtual std::shared_ptr<render_target> create_render_target(
+            uint uiWidth, uint uiHeight) const = 0;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -123,7 +126,8 @@ namespace gui
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
-        virtual std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const = 0;
+        virtual std::shared_ptr<font> create_font(const std::string& sFontFile,
+            uint uiSize) const = 0;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
@@ -133,10 +137,9 @@ namespace gui
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
         *   \note Not all implementations support vertex caches. See has_vertex_cache().
-        *         The size hint can enable the cache to be pre-allocated, which will avoid a
-        *         reallocation when data is pushed to the cache.
         */
-        virtual std::shared_ptr<vertex_cache> create_vertex_cache(gui::vertex_cache::type mType) const = 0;
+        virtual std::shared_ptr<vertex_cache> create_vertex_cache(
+            gui::vertex_cache::type mType) const = 0;
 
         /// Notifies the renderer that the render window has been resized.
         /** \param uiNewWidth  The new window width
