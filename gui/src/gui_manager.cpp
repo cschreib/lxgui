@@ -844,6 +844,14 @@ void manager::close_ui()
 
 void manager::reload_ui()
 {
+    if (bUpdating_)
+        bReloadUI_ = true;
+    else
+        reload_ui_();
+}
+
+void manager::reload_ui_()
+{
     gui::out << "Closing UI..." << std::endl;
     close_ui();
     gui::out << "Done. Loading UI..." << std::endl;
@@ -938,6 +946,8 @@ bool manager::is_loading_ui() const
 
 void manager::update(float fDelta)
 {
+    bUpdating_ = true;
+
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
 
@@ -1041,6 +1051,13 @@ void manager::update(float fDelta)
 
     ++uiFrameNumber_;
     pEventManager_->frame_ended();
+    bUpdating_ = false;
+
+    if (bReloadUI_)
+    {
+        bReloadUI_ = false;
+        reload_ui_();
+    }
 }
 
 void manager::clear_hovered_frame_()

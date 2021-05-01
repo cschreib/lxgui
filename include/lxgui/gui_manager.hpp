@@ -401,6 +401,8 @@ namespace gui
         *         because this code will need to be called again in case the GUI
         *         is reloaded (see reload_ui()).
         *         Else, you can simply use load_ui().
+        *   \warning Do not call this function while the manager is running update()
+        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void create_lua(std::function<void(gui::manager&)> pLuaRegs = nullptr);
 
@@ -408,19 +410,29 @@ namespace gui
         /** \note See add_addon_directory().
         *   \note See load_ui().
         *   \note See create_lua().
+        *   \warning Do not call this function while the manager is running update()
+        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void read_files();
 
         /// Loads the UI.
         /** \note Calls create_lua() then read_files().
+        *   \warning Do not call this function while the manager is running update()
+        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void load_ui();
 
         /// Closes the UI, deletes widgets.
+        /** \warning Do not call this function while the manager is running update()
+        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        */
         void close_ui();
 
         /// Closes the current UI and load it again.
-        /** \note Calls close_ui() then load_ui().
+        /** \note Calls close_ui() then load_ui(). If called from within a frame's callback,
+        *         the UI will be reloaded at the end of the current update() call. Is is
+        *         therefore safe. If called from any other location, the UI will be reloaded
+        *         immediately.
         */
         void reload_ui();
 
@@ -686,6 +698,7 @@ namespace gui
     private :
 
         void register_lua_manager_();
+        void reload_ui_();
 
         void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
         void load_addon_files_(addon* pAddOn);
@@ -722,7 +735,9 @@ namespace gui
 
         bool bClosed_ = true;
         bool bLoadingUI_ = false;
+        bool bReloadUI_ = false;
         bool bFirstIteration_ = true;
+        bool bUpdating_ = false;
 
         bool                            bInputEnabled_ = true;
         std::unique_ptr<input::manager> pInputManager_;
