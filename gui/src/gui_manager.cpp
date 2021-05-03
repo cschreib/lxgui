@@ -944,6 +944,11 @@ bool manager::is_loading_ui() const
     return bLoadingUI_;
 }
 
+bool manager::is_loaded() const
+{
+    return !bClosed_;
+}
+
 void manager::update(float fDelta)
 {
     bUpdating_ = true;

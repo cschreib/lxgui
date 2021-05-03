@@ -455,6 +455,11 @@ namespace gui
         */
         bool is_loading_ui() const;
 
+        /// Checks if the UI has been loaded.
+        /** \return 'true' if the UI has being loaded
+        */
+        bool is_loaded() const;
+
         /// Ask this manager for movement management.
         /** \param pObj        The object to move
         *   \param pAnchor     The reference anchor
