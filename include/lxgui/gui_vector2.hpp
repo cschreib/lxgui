@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <iosfwd>
+#include <type_traits>
 
 namespace lxgui {
 namespace gui
@@ -13,6 +14,8 @@ namespace gui
     template<typename T>
     struct vector2
     {
+        using float_type = std::conditional_t<std::is_floating_point_v<T>, T, double>;
+
         constexpr vector2() = default;
 
         constexpr vector2(T mX, T mY) noexcept : x(mX), y(mY) {}
@@ -22,63 +25,51 @@ namespace gui
             x = mX; y = mY;
         }
 
-        T get_norm() const noexcept
-        {
-            return T(sqrt(x*x + y*y));
-        }
-
         T get_norm_squared() const noexcept
         {
             return x*x + y*y;
         }
 
-        void normalize() noexcept
+        float_type get_norm() const noexcept
         {
-            T mNorm = T(sqrt(x*x + y*y));
-            x = x/mNorm;
-            y = y/mNorm;
+            return std::sqrt(static_cast<float_type>(get_norm_squared()));
         }
 
-        vector2 get_unit() const noexcept
+        vector2<float_type> get_unit() const noexcept
         {
-            T mNorm = T(sqrt(x*x + y*y));
-            return vector2(x/mNorm, y/mNorm);
+            vector2<float_type> mVec(static_cast<float_type>(x), static_cast<float_type>(y));
+            const typename vector2<float_type>::float_type mNorm = get_norm();
+            mVec.x /= mNorm;
+            mVec.y /= mNorm;
+            return mVec;
         }
 
-        void rotate(const float& fAngle) noexcept
+        vector2 get_rotated(float_type mAngle) const noexcept
         {
-            vector2 p;
+            vector2<float_type> mVec(static_cast<float_type>(x), static_cast<float_type>(y));
+            vector2<float_type> mOrig = mVec;
 
-            double ca = cos(fAngle), sa = sin(fAngle);
+            const float_type ca = std::cos(mAngle);
+            const float_type sa = std::sin(mAngle);
 
-            p.x = x*ca - y*sa;
-            p.y = x*sa + y*ca;
+            mVec.x = static_cast<T>(mOrig.x*ca - mOrig.y*sa);
+            mVec.y = static_cast<T>(mOrig.x*sa + mOrig.y*ca);
 
-            x = p.x;
-            y = p.y;
+            return mVec;
         }
 
-        vector2 get_rotated(const float& fAngle) const noexcept
+        vector2 get_scaled(const vector2& v) const noexcept
         {
-            double ca = cos(fAngle), sa = sin(fAngle);
-            return vector2(x*ca - y*sa, x*sa + y*ca);
-        }
-
-        void scale(const vector2& v) noexcept
-        {
-            x *= v.x;
-            y *= v.y;
-        }
-
-        vector2 get_scale(const vector2& v) const noexcept
-        {
-            return vector2(x*v.x, y*v.y);
+            vector2 mVec = *this;
+            mVec.scale(v);
+            return mVec;
         }
 
         vector2 operator + (const vector2& v)  const noexcept
         {
             return vector2(x + v.x, y + v.y);
         }
+
         void operator += (const vector2& v) noexcept
         {
             x += v.x; y += v.y;
@@ -93,6 +84,7 @@ namespace gui
         {
             return vector2(x - v.x, y - v.y);
         }
+
         void operator -= (const vector2& v) noexcept
         {
             x -= v.x; y -= v.y;
@@ -102,6 +94,7 @@ namespace gui
         {
             return (x == v.x) && (y == v.y);
         }
+
         bool operator != (const vector2& v) const noexcept
         {
             return (x != v.x) || (y != v.y);
@@ -152,7 +145,8 @@ namespace gui
     template<typename T>
     constexpr vector2<T> vector2<T>::Y(0, 1);
 
-    using vector2f = vector2<float>;
+    using vector2f  = vector2<float>;
+    using vector2d  = vector2<double>;
     using vector2i  = vector2<int>;
     using vector2ui = vector2<uint>;
 
