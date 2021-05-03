@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['v_1519',['v',['../structlxgui_1_1gui_1_1color_1_1hsv.html#a5fae0f4ad17ba583a615cb69bd2b9404',1,'lxgui::gui::color::hsv::v()'],['../structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617',1,'lxgui::gui::quad::v()']]],
-  ['value_1520',['value',['../namespacelxgui_1_1utils_1_1range.html#a79f2d14a2095be192e16f4fe9e6578ee',1,'lxgui::utils::range']]],
-  ['variant_1521',['variant',['../namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09',1,'lxgui::utils']]],
-  ['vector2_1522',['vector2',['../structlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui::vector2&lt; T &gt;'],['../structlxgui_1_1gui_1_1vector2.html#a9f7457e0b57777eb1ff02452953c8fc6',1,'lxgui::gui::vector2::vector2()=default'],['../structlxgui_1_1gui_1_1vector2.html#a827be20b8cf70defa17c22e2298643c5',1,'lxgui::gui::vector2::vector2(T mX, T mY) noexcept']]],
-  ['vector2_3c_20float_20_3e_1523',['vector2&lt; float &gt;',['../structlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui']]],
+  ['v_1518',['v',['../structlxgui_1_1gui_1_1color_1_1hsv.html#a5fae0f4ad17ba583a615cb69bd2b9404',1,'lxgui::gui::color::hsv::v()'],['../structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617',1,'lxgui::gui::quad::v()']]],
+  ['value_1519',['value',['../namespacelxgui_1_1utils_1_1range.html#a79f2d14a2095be192e16f4fe9e6578ee',1,'lxgui::utils::range']]],
+  ['variant_1520',['variant',['../namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09',1,'lxgui::utils']]],
+  ['vector2_1521',['vector2',['../structlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui::vector2&lt; T &gt;'],['../structlxgui_1_1gui_1_1vector2.html#a9f7457e0b57777eb1ff02452953c8fc6',1,'lxgui::gui::vector2::vector2()=default'],['../structlxgui_1_1gui_1_1vector2.html#a827be20b8cf70defa17c22e2298643c5',1,'lxgui::gui::vector2::vector2(T mX, T mY) noexcept']]],
+  ['vector2_3c_20float_20_3e_1522',['vector2&lt; float &gt;',['../structlxgui_1_1gui_1_1vector2.html',1,'lxgui::gui']]],
+  ['vector2d_1523',['vector2d',['../namespacelxgui_1_1gui.html#a90245e4e80271e14930d27810218ba74',1,'lxgui::gui']]],
   ['vector2f_1524',['vector2f',['../namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b',1,'lxgui::gui']]],
   ['vector2i_1525',['vector2i',['../namespacelxgui_1_1gui.html#a161ead5fdbb92ad27ab24a76083e262d',1,'lxgui::gui']]],
   ['vector2ui_1526',['vector2ui',['../namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434',1,'lxgui::gui']]],

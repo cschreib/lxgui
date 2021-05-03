@@ -49,6 +49,5 @@ var searchData=
   ['reverse_5fiterator_2421',['reverse_iterator',['../namespacelxgui_1_1utils_1_1range.html#ac72397f8eb1d6df0f66f3ae8b2ad25d6',1,'lxgui::utils::range']]],
   ['reverse_5fkey_2422',['reverse_key',['../namespacelxgui_1_1utils_1_1range.html#acdc618a7d230cd8f037bbca2b899f3de',1,'lxgui::utils::range']]],
   ['reverse_5fvalue_2423',['reverse_value',['../namespacelxgui_1_1utils_1_1range.html#ae84832219588d8471f40df8d56e060d1',1,'lxgui::utils::range']]],
-  ['rotate_2424',['rotate',['../structlxgui_1_1gui_1_1vector2.html#a41ee5ac33764c788acf1684c529ceec0',1,'lxgui::gui::vector2']]],
-  ['rotation_2425',['rotation',['../structlxgui_1_1gui_1_1matrix4f.html#a9dd7d6ae17ef78337c59aa91b8b3b165',1,'lxgui::gui::matrix4f']]]
+  ['rotation_2424',['rotation',['../structlxgui_1_1gui_1_1matrix4f.html#a9dd7d6ae17ef78337c59aa91b8b3b165',1,'lxgui::gui::matrix4f']]]
 ];

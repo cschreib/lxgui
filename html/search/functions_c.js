@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['new_5fparam_5fset_2286',['new_param_set',['../classlxgui_1_1lua_1_1function.html#a97ca75bd23ae70ca068b03434bc31fbb',1,'lxgui::lua::function']]],
-  ['new_5ftable_2287',['new_table',['../classlxgui_1_1lua_1_1state.html#a16397ad13b7cd95fd315c063a8e762f6',1,'lxgui::lua::state']]],
-  ['next_2288',['next',['../classlxgui_1_1lua_1_1state.html#a52e31b637e18b2e73c14c69e1b8274a1',1,'lxgui::lua::state::next()'],['../classlxgui_1_1xml_1_1block.html#a985df3092f96fc36ad3110c28851c5fd',1,'lxgui::xml::block::next()']]],
-  ['normalize_2289',['normalize',['../structlxgui_1_1gui_1_1vector2.html#aec16a7b39a3dedb517c64117efae7dfd',1,'lxgui::gui::vector2']]],
+  ['new_5fparam_5fset_2287',['new_param_set',['../classlxgui_1_1lua_1_1function.html#a97ca75bd23ae70ca068b03434bc31fbb',1,'lxgui::lua::function']]],
+  ['new_5ftable_2288',['new_table',['../classlxgui_1_1lua_1_1state.html#a16397ad13b7cd95fd315c063a8e762f6',1,'lxgui::lua::state']]],
+  ['next_2289',['next',['../classlxgui_1_1lua_1_1state.html#a52e31b637e18b2e73c14c69e1b8274a1',1,'lxgui::lua::state::next()'],['../classlxgui_1_1xml_1_1block.html#a985df3092f96fc36ad3110c28851c5fd',1,'lxgui::xml::block::next()']]],
   ['notify_5fanchored_5fobject_2290',['notify_anchored_object',['../classlxgui_1_1gui_1_1uiobject.html#a834ca8380fc7ac024cbd00fa9cd83525',1,'lxgui::gui::uiobject']]],
   ['notify_5fbar_5ftexture_5fneeds_5fupdate_5f_2291',['notify_bar_texture_needs_update_',['../classlxgui_1_1gui_1_1status__bar.html#aad04c65e99d177313dd0a45e9c473084',1,'lxgui::gui::status_bar']]],
   ['notify_5fborders_5fneed_5fupdate_2292',['notify_borders_need_update',['../classlxgui_1_1gui_1_1slider.html#a8891fe2cbe9b16419ee728c197a5e62d',1,'lxgui::gui::slider::notify_borders_need_update()'],['../classlxgui_1_1gui_1_1uiobject.html#af0311d934dd0ec8ccc24b0683c5bdb80',1,'lxgui::gui::uiobject::notify_borders_need_update()']]],

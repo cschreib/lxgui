@@ -66,6 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
@@ -77,6 +78,11 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ac45940a10c3c0e034b70d6a5b60f9de6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a> = std::conditional_t&lt; std::is_floating_point_v&lt; T &gt;, T, double &gt;</td></tr>
+<tr class="separator:ac45940a10c3c0e034b70d6a5b60f9de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f7457e0b57777eb1ff02452953c8fc6"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a9f7457e0b57777eb1ff02452953c8fc6">vector2</a> ()=default</td></tr>
@@ -85,22 +91,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a827be20b8cf70defa17c22e2298643c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29aaf5c5e6fc7ef711d240c7787d565d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a29aaf5c5e6fc7ef711d240c7787d565d">set</a> (T mX, T mY) noexcept</td></tr>
 <tr class="separator:a29aaf5c5e6fc7ef711d240c7787d565d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1db36d369e1362af27ee42ab91b62492"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a1db36d369e1362af27ee42ab91b62492">get_norm</a> () const noexcept</td></tr>
-<tr class="separator:a1db36d369e1362af27ee42ab91b62492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0396f64bc3b628031faaa3f14dcde731"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a0396f64bc3b628031faaa3f14dcde731">get_norm_squared</a> () const noexcept</td></tr>
 <tr class="separator:a0396f64bc3b628031faaa3f14dcde731"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec16a7b39a3dedb517c64117efae7dfd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#aec16a7b39a3dedb517c64117efae7dfd">normalize</a> () noexcept</td></tr>
-<tr class="separator:aec16a7b39a3dedb517c64117efae7dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ebb7180137b86ecefded49d2696e185"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a8ebb7180137b86ecefded49d2696e185">get_unit</a> () const noexcept</td></tr>
-<tr class="separator:a8ebb7180137b86ecefded49d2696e185"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41ee5ac33764c788acf1684c529ceec0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a41ee5ac33764c788acf1684c529ceec0">rotate</a> (const float &amp;fAngle) noexcept</td></tr>
-<tr class="separator:a41ee5ac33764c788acf1684c529ceec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad016a49d239c6f1a612ecd36da966f31"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#ad016a49d239c6f1a612ecd36da966f31">get_rotated</a> (const float &amp;fAngle) const noexcept</td></tr>
-<tr class="separator:ad016a49d239c6f1a612ecd36da966f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef9f7082738a11b462141f8b15a63f4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#aef9f7082738a11b462141f8b15a63f4f">scale</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> &amp;v) noexcept</td></tr>
-<tr class="separator:aef9f7082738a11b462141f8b15a63f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f416788d75c309e0b526d2517f52e29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a1f416788d75c309e0b526d2517f52e29">get_scale</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> &amp;v) const noexcept</td></tr>
-<tr class="separator:a1f416788d75c309e0b526d2517f52e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261953097303763e6319f64f231f7256"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a261953097303763e6319f64f231f7256">get_norm</a> () const noexcept</td></tr>
+<tr class="separator:a261953097303763e6319f64f231f7256"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5898e8b4edb8aba2fcb5a6bba7c2d493"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; <a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a5898e8b4edb8aba2fcb5a6bba7c2d493">get_unit</a> () const noexcept</td></tr>
+<tr class="separator:a5898e8b4edb8aba2fcb5a6bba7c2d493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a325d5a697471e804052f91bbaaa05107"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a325d5a697471e804052f91bbaaa05107">get_rotated</a> (<a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a> mAngle) const noexcept</td></tr>
+<tr class="separator:a325d5a697471e804052f91bbaaa05107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda70d68663303d5f2822d8998841b59"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#adda70d68663303d5f2822d8998841b59">get_scaled</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> &amp;v) const noexcept</td></tr>
+<tr class="separator:adda70d68663303d5f2822d8998841b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6fd56a7fcd08c4eb50373ba0ac053e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#aca6fd56a7fcd08c4eb50373ba0ac053e">operator+</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> &amp;v) const noexcept</td></tr>
 <tr class="separator:aca6fd56a7fcd08c4eb50373ba0ac053e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cdc0e8e0f5a56ee0465e397142706bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#a2cdc0e8e0f5a56ee0465e397142706bd">operator+=</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> &amp;v) noexcept</td></tr>
@@ -149,8 +149,27 @@ Static Public Attributes</h2></td></tr>
 struct lxgui::gui::vector2&lt; T &gt;</h3>
 
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00014">14</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00015">15</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ac45940a10c3c0e034b70d6a5b60f9de6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45940a10c3c0e034b70d6a5b60f9de6">&#9670;&nbsp;</a></span>float_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::<a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a> =  std::conditional_t&lt;std::is_floating_point_v&lt;T&gt;, T, double&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00017">17</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9f7457e0b57777eb1ff02452953c8fc6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9f7457e0b57777eb1ff02452953c8fc6">&#9670;&nbsp;</a></span>vector2() <span class="overload">[1/2]</span></h2>
 
@@ -214,13 +233,13 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00018">18</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1db36d369e1362af27ee42ab91b62492"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1db36d369e1362af27ee42ab91b62492">&#9670;&nbsp;</a></span>get_norm()</h2>
+<a id="a261953097303763e6319f64f231f7256"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a261953097303763e6319f64f231f7256">&#9670;&nbsp;</a></span>get_norm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +250,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_norm </td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a> <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_norm </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -244,7 +263,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00033">33</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -273,12 +292,12 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00030">30</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00028">28</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
-<a id="ad016a49d239c6f1a612ecd36da966f31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad016a49d239c6f1a612ecd36da966f31">&#9670;&nbsp;</a></span>get_rotated()</h2>
+<a id="a325d5a697471e804052f91bbaaa05107"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a325d5a697471e804052f91bbaaa05107">&#9670;&nbsp;</a></span>get_rotated()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,8 +310,38 @@ template&lt;typename T &gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_rotated </td>
           <td>(</td>
-          <td class="paramtype">const float &amp;&#160;</td>
-          <td class="paramname"><em>fAngle</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a>&#160;</td>
+          <td class="paramname"><em>mAngle</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00047">47</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+
+</div>
+</div>
+<a id="adda70d68663303d5f2822d8998841b59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adda70d68663303d5f2822d8998841b59">&#9670;&nbsp;</a></span>get_scaled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_scaled </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -307,8 +356,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a1f416788d75c309e0b526d2517f52e29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f416788d75c309e0b526d2517f52e29">&#9670;&nbsp;</a></span>get_scale()</h2>
+<a id="a5898e8b4edb8aba2fcb5a6bba7c2d493"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5898e8b4edb8aba2fcb5a6bba7c2d493">&#9670;&nbsp;</a></span>get_unit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,37 +368,7 @@ template&lt;typename T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_scale </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00073">73</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a8ebb7180137b86ecefded49d2696e185"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ebb7180137b86ecefded49d2696e185">&#9670;&nbsp;</a></span>get_unit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a> <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_unit </td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt;<a class="el" href="structlxgui_1_1gui_1_1vector2.html#ac45940a10c3c0e034b70d6a5b60f9de6">float_type</a>&gt; <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::get_unit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -362,36 +381,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00042">42</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
-
-</div>
-</div>
-<a id="aec16a7b39a3dedb517c64117efae7dfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec16a7b39a3dedb517c64117efae7dfd">&#9670;&nbsp;</a></span>normalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::normalize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00035">35</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00038">38</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -421,7 +411,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00105">105</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00098">98</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -451,7 +441,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00130">130</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00123">123</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -481,7 +471,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00110">110</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00103">103</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -511,7 +501,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00115">115</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00108">108</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -541,7 +531,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00078">78</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00068">68</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -571,7 +561,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00082">82</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00073">73</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -600,7 +590,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00087">87</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00078">78</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -630,7 +620,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00092">92</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00083">83</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -660,7 +650,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00096">96</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00088">88</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -690,7 +680,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00120">120</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00113">113</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -720,7 +710,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00125">125</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00118">118</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -750,67 +740,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00101">101</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a41ee5ac33764c788acf1684c529ceec0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41ee5ac33764c788acf1684c529ceec0">&#9670;&nbsp;</a></span>rotate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::rotate </td>
-          <td>(</td>
-          <td class="paramtype">const float &amp;&#160;</td>
-          <td class="paramname"><em>fAngle</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00048">48</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
-
-</div>
-</div>
-<a id="aef9f7082738a11b462141f8b15a63f4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef9f7082738a11b462141f8b15a63f4f">&#9670;&nbsp;</a></span>scale()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2</a>&lt; T &gt;::scale </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00067">67</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00093">93</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -850,7 +780,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00023">23</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -877,7 +807,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00136">136</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00129">129</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -903,7 +833,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00137">137</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00130">130</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -921,7 +851,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00140">140</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00133">133</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -947,7 +877,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00138">138</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00131">131</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -965,7 +895,7 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00140">140</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00133">133</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -991,7 +921,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00135">135</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__vector2_8hpp_source.html#l00128">128</a> of file <a class="el" href="gui__vector2_8hpp_source.html">gui_vector2.hpp</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +931,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat May 1 2021 16:47:07 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 3 2021 09:57:35 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
