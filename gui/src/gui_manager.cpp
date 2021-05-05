@@ -805,6 +805,8 @@ void manager::close_ui()
 
         lRootFrameList_.clear();
 
+        uiNextObjectID_ = 0u;
+        lFreeObjectIDs_.clear();
         lObjectList_.clear();
         lNamedObjectList_.clear();
         lNamedVirtualObjectList_.clear();
