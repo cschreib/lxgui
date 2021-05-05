@@ -939,6 +939,8 @@ void uiobject::update_anchors()
 
 void uiobject::notify_borders_need_update() const
 {
+    if (bUpdateBorders_) return;
+
     bUpdateBorders_ = true;
 
     for (auto* pObject : lAnchoredObjectList_)

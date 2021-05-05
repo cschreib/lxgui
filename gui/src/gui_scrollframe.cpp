@@ -399,9 +399,10 @@ float scroll_frame::get_target_height() const
 
 void scroll_frame::update_borders_() const
 {
+    bool bPositionUpdated = bUpdateBorders_;
     frame::update_borders_();
 
-    if (pScrollChild_)
+    if (bPositionUpdated && pScrollChild_)
         pScrollChild_->notify_borders_need_update();
 }
 
