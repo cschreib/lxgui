@@ -330,6 +330,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a26baab6a36895d38a51d69e5e2eafdbd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a26baab6a36895d38a51d69e5e2eafdbd">notify_loaded</a> ()</td></tr>
 <tr class="memdesc:a26baab6a36895d38a51d69e5e2eafdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies this widget that it has been fully loaded.  <a href="classlxgui_1_1gui_1_1uiobject.html#a26baab6a36895d38a51d69e5e2eafdbd">More...</a><br /></td></tr>
 <tr class="separator:a26baab6a36895d38a51d69e5e2eafdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abee3acb291cb5c470a28f06501e71b02"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#abee3acb291cb5c470a28f06501e71b02">notify_visible</a> (bool bTriggerEvents=true)</td></tr>
+<tr class="memdesc:abee3acb291cb5c470a28f06501e71b02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies this widget that it is now visible on screen.  <a href="classlxgui_1_1gui_1_1uiobject.html#abee3acb291cb5c470a28f06501e71b02">More...</a><br /></td></tr>
+<tr class="separator:abee3acb291cb5c470a28f06501e71b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1890da040ad7ed3769d896314a057836"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a1890da040ad7ed3769d896314a057836">notify_invisible</a> (bool bTriggerEvents=true)</td></tr>
+<tr class="memdesc:a1890da040ad7ed3769d896314a057836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies this widget that it is no longer visible on screen.  <a href="classlxgui_1_1gui_1_1uiobject.html#a1890da040ad7ed3769d896314a057836">More...</a><br /></td></tr>
+<tr class="separator:a1890da040ad7ed3769d896314a057836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae85d704996e86a6c87054a75eef0e7c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae85d704996e86a6c87054a75eef0e7c4">get_manager</a> ()</td></tr>
 <tr class="memdesc:ae85d704996e86a6c87054a75eef0e7c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's manager.  <a href="classlxgui_1_1gui_1_1uiobject.html#ae85d704996e86a6c87054a75eef0e7c4">More...</a><br /></td></tr>
 <tr class="separator:ae85d704996e86a6c87054a75eef0e7c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -500,7 +506,7 @@ Protected Attributes</h2></td></tr>
 <p>Removes all anchors. </p>
 <dl class="section note"><dt>Note</dt><dd>This widget and its children won't be visible until you define at least one anchor. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00445">445</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00468">468</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -634,7 +640,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Usefull to detect circular refences. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00645">645</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00668">668</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -665,7 +671,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This widget's absolute height (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aa68ef9258844811816a8e167f80ede4d" title="Returns this widget&#39;s appearend height (in pixels).">get_apparent_height()</a> instead, because some widgets can have an infinite or undefined height. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00363">363</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00386">386</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -696,7 +702,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This widget's absolute width (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a56a07f35311654d50ca10d8d13258b6e" title="Returns this widget&#39;s appearend width (in pixels).">get_apparent_width()</a> instead, because some widgets can have an infinite or undefined width. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00352">352</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00375">375</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -756,7 +762,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the list of all objects that are anchored to this one. </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of all objects that are anchored to this one </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01030">1030</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01055">1055</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -787,7 +793,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This widget's appearend height (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5216789eba7ae6c4e7167f9c564b1a26" title="Returns this widget&#39;s absolute height (in pixels).">get_abs_height()</a>, because some widgets can have an infinite or undefined height. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00368">368</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00391">391</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -818,7 +824,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This widget's appearend width (in pixels) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you need to get the size of a widget on the screen, use this function instead of <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a75dbb2d27038d88bf0f0a233a71b80b0" title="Returns this widget&#39;s absolute width (in pixels).">get_abs_width()</a>, because some widgets can have an infinite or undefined width. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00357">357</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00380">380</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -848,7 +854,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the widget this one inherits from. </p>
 <dl class="section return"><dt>Returns</dt><dd>The widget this one inherits from </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00404">404</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00427">427</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -878,7 +884,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this widget's borders. </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's borders </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00439">439</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00462">462</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -908,7 +914,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this widget's bottom border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this widget's bottom border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00433">433</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00456">456</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -938,7 +944,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the position of this widget's center. </p>
 <dl class="section return"><dt>Returns</dt><dd>The position of this widget's center </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00409">409</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00432">432</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -990,7 +996,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this widget's unique ID. </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's unique ID </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00715">715</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00738">738</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1020,7 +1026,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this widget's left border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this widget's left border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00415">415</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00438">438</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1047,7 +1053,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00969">969</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00994">994</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1104,7 +1110,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00974">974</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00999">999</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1222,7 +1228,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the number of defined anchors. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of defined anchors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00666">666</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00689">689</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1346,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this widget's parent. </p>
 <dl class="section return"><dt>Returns</dt><dd>This widget's parent </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00389">389</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00412">412</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1377,7 +1383,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the anchor, nullptr if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00691">691</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00714">714</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1413,7 @@ template&lt;typename T &gt; </div>
 <p>Returns all of this widgets's anchors. </p>
 <dl class="section return"><dt>Returns</dt><dd>All of this widgets's anchors </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00700">700</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00723">723</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1468,7 +1474,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal position of this widget's right border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this widget's right border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00421">421</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00444">444</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1498,7 +1504,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical position of this widget's top border. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical position of this widget's top border </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00427">427</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00450">450</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1531,7 +1537,7 @@ template&lt;typename T &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#abfee109c37481f422d6cf519ce801f7e">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01040">1040</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01065">1065</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1673,7 +1679,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this object has been newly created </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ae130e3bf75a41ff0893bd2ecec33cdc9" title="Flags this object as newly created.">set_newly_created()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01014">1014</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01039">1039</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1772,7 +1778,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this widget is shown. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this widget is shown </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00286">286</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00309">309</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1803,7 +1809,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this objet is special </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8aa127a900947dc13543d87dfbd79985" title="Flags this object as &quot;special&quot;.">set_special()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01000">1000</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01025">1025</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1834,7 +1840,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this uiobject is virtual </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>A virtual uiobject will not be displayed on the screen, but can serve as a template to create new GUI elements (it is then "inherited", although note that this has no connection to C++ inheritance). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00705">705</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1916,7 +1922,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00746">746</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00769">769</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1955,7 +1961,7 @@ template&lt;typename ObjectType &gt; </div>
  Test.someVariable = 2;<br  />
  ... then you can call this function with "someVariable". </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01019">1019</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01044">1044</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -1992,7 +1998,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to the anchor, nullptr if none </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00678">678</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00701">701</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2039,7 +2045,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00751">751</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2070,7 +2076,46 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a8891fe2cbe9b16419ee728c197a5e62d">lxgui::gui::slider</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00940">940</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00963">963</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a1890da040ad7ed3769d896314a057836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1890da040ad7ed3769d896314a057836">&#9670;&nbsp;</a></span>notify_invisible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::uiobject::notify_invisible </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bTriggerEvents</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Notifies this widget that it is no longer visible on screen. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bTriggerEvents</td><td>Set to false to disable OnShow/OnHide events </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3" title="shows this widget.">show()</a>/hide(). </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#aa987387f42e8ace0b5e69fcc8b43d067">lxgui::gui::frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#ac8350bd703dca5940ba294aae155e9fa">lxgui::gui::edit_box</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01082">1082</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2101,7 +2146,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01035">1035</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01060">1060</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2164,7 +2209,46 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00948">948</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00973">973</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abee3acb291cb5c470a28f06501e71b02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abee3acb291cb5c470a28f06501e71b02">&#9670;&nbsp;</a></span>notify_visible()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::uiobject::notify_visible </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bTriggerEvents</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Notifies this widget that it is now visible on screen. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bTriggerEvents</td><td>Set to false to disable OnShow/OnHide events </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1eea006ce0c1649790e603e49ae3" title="shows this widget.">show()</a>/hide(). </dd></dl>
+
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a504df304153299b63a5fd845e9fa6c6b">lxgui::gui::frame</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01077">1077</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2354,7 +2438,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00984">984</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01009">1009</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2390,7 +2474,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00979">979</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01004">1004</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2452,7 +2536,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00778">778</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00801">801</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2513,7 +2597,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Removes the Lua glue. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00989">989</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01014">1014</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2637,7 +2721,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a26ec6c1a747f29af5cec046f1788c2fd">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00296">296</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00319">319</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2675,7 +2759,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ac35ac40c41b131771e5f44f79ea01ca6">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00319">319</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00342">342</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2736,7 +2820,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00505">505</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00528">528</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2804,7 +2888,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00500">500</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00523">523</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2842,7 +2926,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a97d0627616787c7d619af08dc4930e97">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00308">308</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00331">331</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2880,7 +2964,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones.<br  />
  This version is to be used by virtual widgets to preserve the anchor hierarchy. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00468">468</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00491">491</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -2917,7 +3001,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Removes all anchors and defines two new ones. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00490">490</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00513">513</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3063,7 +3147,7 @@ template&lt;typename ObjectType &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Can only be called once. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00720">720</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00743">743</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3132,7 +3216,7 @@ template&lt;typename ObjectType &gt; </div>
 <dd>
 This function is only called on objects created in Lua. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01009">1009</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01034">1034</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3171,7 +3255,7 @@ This function is only called on objects created in Lua. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae62f40624b2c17666d83467000c798b5">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00374">374</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00397">397</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3207,7 +3291,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00602">602</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00625">625</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3254,7 +3338,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00330">330</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00353">353</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3290,7 +3374,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00344">344</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00367">367</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3351,7 +3435,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00556">556</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00579">579</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3419,7 +3503,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00551">551</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00574">574</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3455,7 +3539,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00336">336</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00359">359</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3496,7 +3580,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a763deea9d70159df2d843816b86c5708">lxgui::gui::frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00281">281</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00293">293</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3526,7 +3610,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 <p>Flags this object as "special". </p>
 <dl class="section note"><dt>Note</dt><dd>Special objects are not automatically copied in the frame inheritance process. They must be explicitely copied by the derived class (example : Button will have to copy its button textures itself). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00995">995</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01020">1020</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3556,7 +3640,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 <p>Makes this uiobject virtual. </p>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e" title="Checks if this uiobject is virtual.">is_virtual()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00710">710</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00733">733</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3626,7 +3710,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a8b2266d230a6e194a57f87169eee5e2e">lxgui::gui::frame</a>, <a class="el" href="classlxgui_1_1gui_1_1slider.html#a89c7bf5a6baea2b293ef0416e87fdb19">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ae6643cd4c97b14fca653c3c41d954a87">lxgui::gui::status_bar</a>, <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#aefa11461cc5f4ee33a0cb55a53ef4095">lxgui::gui::edit_box</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00953">953</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00978">978</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3656,7 +3740,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 <p>updates this widget's anchors. </p>
 <dl class="section note"><dt>Note</dt><dd>Must be called on <em>all</em> widgets before <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a4d627b329537e63aefe792a46225cc7e" title="Updates this widget&#39;s logic.">update()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00894">894</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00917">917</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3685,7 +3769,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6f63e66f4df6972e1a9667d135661630">lxgui::gui::frame</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a6bf572d1af1cf1ad9446f94ae46c8d2e">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00840">840</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00863">863</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
 
 </div>
 </div>
@@ -3710,7 +3794,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00726">726</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00738">738</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3734,7 +3818,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00743">743</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00755">755</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3758,7 +3842,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00756">756</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3782,7 +3866,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00729">729</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00741">741</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3806,7 +3890,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00725">725</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00737">737</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3830,7 +3914,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00730">730</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00742">742</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3854,7 +3938,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00724">724</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00736">736</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3878,7 +3962,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00749">749</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00761">761</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3902,7 +3986,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00750">750</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00762">762</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3926,7 +4010,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00740">740</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3974,7 +4058,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00747">747</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00759">759</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3998,7 +4082,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00746">746</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00758">758</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4022,7 +4106,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00742">742</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00754">754</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4046,7 +4130,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00752">752</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00764">764</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4070,7 +4154,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00737">737</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00749">749</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4094,7 +4178,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00740">740</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00752">752</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4118,7 +4202,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00733">733</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00745">745</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4142,7 +4226,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00739">739</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00751">751</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4166,7 +4250,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00732">732</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4190,7 +4274,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00738">738</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00750">750</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4214,7 +4298,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00735">735</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00747">747</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4262,7 +4346,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00723">723</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00735">735</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4286,7 +4370,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00716">716</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4310,7 +4394,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00722">722</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00734">734</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4334,7 +4418,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00720">720</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00732">732</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4358,7 +4442,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00718">718</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00730">730</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4382,7 +4466,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00719">719</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00731">731</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4406,7 +4490,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00721">721</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00733">733</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4418,7 +4502,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 3 2021 10:43:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 5 2021 07:45:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
