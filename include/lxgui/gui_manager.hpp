@@ -711,7 +711,7 @@ namespace gui
 
         void save_variables_(const addon* pAddOn);
 
-        uint get_new_object_id_() const;
+        uint get_new_object_id_();
 
         void clear_focussed_frame_();
         void clear_hovered_frame_();
@@ -783,6 +783,8 @@ namespace gui
         bool bResizeFromBottom_ = false;
 
         uint uiFrameNumber_ = 0u;
+        uint uiNextObjectID_ = 0u;
+        std::vector<uint> lFreeObjectIDs_;
 
         bool bEnableCaching_= true;
 

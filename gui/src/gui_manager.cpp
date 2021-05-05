@@ -268,17 +268,20 @@ std::unique_ptr<layered_region> manager::create_layered_region(const std::string
     return nullptr;
 }
 
-uint manager::get_new_object_id_() const
+uint manager::get_new_object_id_()
 {
-    uint i = 0;
-    auto iterObj = lObjectList_.find(i);
-    while (iterObj != lObjectList_.end())
+    if (lFreeObjectIDs_.empty())
     {
-        ++i;
-        iterObj = lObjectList_.find(i);
+        uint uiID = uiNextObjectID_;
+        ++uiNextObjectID_;
+        return uiID;
     }
-
-    return i;
+    else
+    {
+        uint uiID = lFreeObjectIDs_.back();
+        lFreeObjectIDs_.pop_back();
+        return uiID;
+    }
 }
 
 bool manager::add_uiobject(uiobject* pObj)
@@ -354,6 +357,8 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
 void manager::remove_uiobject(uiobject* pObj)
 {
     if (!pObj) return;
+
+    lFreeObjectIDs_.push_back(pObj->get_id());
 
     lObjectList_.erase(pObj->get_id());
 
