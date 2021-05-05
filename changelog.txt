@@ -92,6 +92,8 @@ Other changes:
  - gui: fixed FontString:set_font() outline flags not handled correctly
  - gui: fixed edit_box numeric-only mode not accepting input correctly
  - gui: fixed scroll_frame not propagating all size updates to its scroll child
+ - gui: fixed is_visible() for layered_regions always returning false
+ - gui: fixed hovered frame not updated when hide/show is called
  - xml: now parsing standard XML comments
 
 v1.2.0:

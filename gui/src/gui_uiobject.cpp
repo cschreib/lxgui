@@ -270,17 +270,40 @@ void uiobject::set_alpha(float fAlpha)
 
 void uiobject::show()
 {
+    if (bIsShown_)
+        return;
+
     bIsShown_ = true;
+
+    if (!bIsVisible_ && (!pParent_ || pParent_->is_visible()))
+        notify_visible();
 }
 
 void uiobject::hide()
 {
+    if (!bIsShown_)
+        return;
+
     bIsShown_ = false;
+
+    if (bIsVisible_)
+        notify_invisible();
 }
 
 void uiobject::set_shown(bool bIsShown)
 {
+    if (bIsShown == bIsShown_) return;
+
     bIsShown_ = bIsShown;
+
+    bool bNewVisible = bIsShown_ && (!pParent_ || pParent_->is_visible());
+    if (bNewVisible != bIsVisible_)
+    {
+        if (bNewVisible)
+            notify_visible(false);
+        else
+            notify_invisible(false);
+    }
 }
 
 bool uiobject::is_shown() const
@@ -1050,5 +1073,16 @@ const frame_renderer* uiobject::get_top_level_renderer() const
     if (!pParent_) return pManager_;
     return pParent_->get_top_level_renderer();
 }
+
+void uiobject::notify_visible(bool)
+{
+    bIsVisible_ = true;
+}
+
+void uiobject::notify_invisible(bool)
+{
+    bIsVisible_ = false;
+}
+
 }
 }

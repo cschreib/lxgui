@@ -652,6 +652,18 @@ namespace gui
         /// Notifies this widget that it has been fully loaded.
         virtual void notify_loaded();
 
+        /// Notifies this widget that it is now visible on screen.
+        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
+        *   \note Automatically called by show()/hide().
+        */
+        virtual void notify_visible(bool bTriggerEvents = true);
+
+        /// Notifies this widget that it is no longer visible on screen.
+        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
+        *   \note Automatically called by show()/hide().
+        */
+        virtual void notify_invisible(bool bTriggerEvents = true);
+
         /// Returns this widget's manager.
         /** \return This widget's manager
         */

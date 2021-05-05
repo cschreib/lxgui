@@ -380,6 +380,12 @@ namespace gui
         */
         void notify_focus(bool bFocus) override;
 
+        /// Notifies this widget that it is no longer visible on screen.
+        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
+        *   \note Automatically called by show()/hide().
+        */
+        void notify_invisible(bool bTriggerEvents = true) override;
+
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
@@ -394,8 +400,6 @@ namespace gui
         static constexpr const char* CLASS_NAME = "EditBox";
 
     protected :
-
-        void notify_invisible_(bool bTriggerEvents = true) override;
 
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);

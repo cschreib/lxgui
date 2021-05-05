@@ -743,10 +743,10 @@ void edit_box::notify_focus(bool bFocus)
     }
 }
 
-void edit_box::notify_invisible_(bool bTriggerEvents)
+void edit_box::notify_invisible(bool bTriggerEvents)
 {
     set_focus(false);
-    frame::notify_invisible_(bTriggerEvents);
+    frame::notify_invisible(bTriggerEvents);
 }
 
 font_string* edit_box::get_font_string()

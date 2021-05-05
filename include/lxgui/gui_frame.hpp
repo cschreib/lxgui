@@ -874,6 +874,18 @@ namespace gui
         */
         virtual void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY);
 
+        /// Notifies this widget that it is now visible on screen.
+        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
+        *   \note Automatically called by show()/hide().
+        */
+        void notify_visible(bool bTriggerEvents = true) override;
+
+        /// Notifies this widget that it is no longer visible on screen.
+        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
+        *   \note Automatically called by show()/hide().
+        */
+        void notify_invisible(bool bTriggerEvents = true) override;
+
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
         */
@@ -926,9 +938,6 @@ namespace gui
         virtual void parse_layers_block_(xml::block* pBlock);
         virtual void parse_frames_block_(xml::block* pBlock);
         virtual void parse_scripts_block_(xml::block* pBlock);
-
-        virtual void notify_visible_(bool bTriggerEvents = true);
-        virtual void notify_invisible_(bool bTriggerEvents = true);
 
         virtual void notify_top_level_parent_(bool bTopLevel, frame* pParent);
 

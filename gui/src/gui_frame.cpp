@@ -773,9 +773,9 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
         pChild->notify_top_level_parent_(true, pTopLevelParent_);
 
     if (is_visible() && pChild->is_shown())
-        pChild->notify_visible_(!pManager_->is_loading_ui());
+        pChild->notify_visible(!pManager_->is_loading_ui());
     else
-        pChild->notify_invisible_(!pManager_->is_loading_ui());
+        pChild->notify_invisible(!pManager_->is_loading_ui());
 
     frame* pAddedChild = pChild.get();
     lChildList_.push_back(std::move(pChild));
@@ -1678,13 +1678,20 @@ const frame_renderer* frame::get_top_level_renderer() const
         return pManager_;
 }
 
-void frame::notify_visible_(bool bTriggerEvents)
+void frame::notify_visible(bool bTriggerEvents)
 {
-    bIsVisible_ = true;
+    uiobject::notify_visible(bTriggerEvents);
+
+    for (auto* pRegion : get_regions())
+    {
+        if (pRegion->is_shown())
+            pRegion->notify_visible(bTriggerEvents);
+    }
+
     for (auto* pChild : get_children())
     {
         if (pChild->is_shown())
-            pChild->notify_visible_(bTriggerEvents);
+            pChild->notify_visible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1694,13 +1701,14 @@ void frame::notify_visible_(bool bTriggerEvents)
     }
 }
 
-void frame::notify_invisible_(bool bTriggerEvents)
+void frame::notify_invisible(bool bTriggerEvents)
 {
-    bIsVisible_ = false;
+    uiobject::notify_invisible(bTriggerEvents);
+
     for (auto* pChild : get_children())
     {
         if (pChild->is_shown())
-            pChild->notify_invisible_(bTriggerEvents);
+            pChild->notify_invisible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1734,10 +1742,11 @@ void frame::show()
     if (bIsShown_)
         return;
 
+    bool bWasVisible_ = bIsVisible_;
     uiobject::show();
 
-    if (!pParent_ || pParent_->is_visible())
-        notify_visible_();
+    if (!bWasVisible_)
+        pManager_->notify_hovered_frame_dirty();
 }
 
 void frame::hide()
@@ -1745,10 +1754,11 @@ void frame::hide()
     if (!bIsShown_)
         return;
 
+    bool bWasVisible_ = bIsVisible_;
     uiobject::hide();
 
-    if (bIsVisible_)
-        notify_invisible_();
+    if (bWasVisible_)
+        pManager_->notify_hovered_frame_dirty();
 }
 
 void frame::set_shown(bool bIsShown)
@@ -1759,7 +1769,7 @@ void frame::set_shown(bool bIsShown)
     bIsShown_ = bIsShown;
 
     if (!bIsShown_)
-        notify_invisible_(false);
+        notify_invisible(false);
 }
 
 void frame::unregister_all_events()
