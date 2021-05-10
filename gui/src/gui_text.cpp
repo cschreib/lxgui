@@ -496,8 +496,7 @@ void text::update_() const
                         if (get_format(iterChar1, sManualLine.end(), mFormat))
                             lTempFormatList[uiCounter+mLine.sCaption.size()] = mFormat;
 
-                        if (iterChar1 != sManualLine.end())
-                            ++iterChar1;
+                        if (iterChar1 != sManualLine.end()) continue;
                         if (iterChar1 == sManualLine.end()) break;
                     }
                 }
