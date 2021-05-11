@@ -998,8 +998,8 @@ namespace gui
         float fMinHeight_ = 0.0f;
         float fMaxHeight_ = std::numeric_limits<float>::infinity();
 
-        float uiOldWidth_ = 0.0f;
-        float uiOldHeight_ = 0.0f;
+        float fOldWidth_ = 0.0f;
+        float fOldHeight_ = 0.0f;
 
         float fScale_ = 1.0f;
 

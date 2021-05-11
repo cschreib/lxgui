@@ -1954,15 +1954,15 @@ void frame::update(float fDelta)
         lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
-    if (uiOldWidth_ != fAbsWidth_ || uiOldHeight_ != fAbsHeight_)
+    if (fOldWidth_ != fAbsWidth_ || fOldHeight_ != fAbsHeight_)
     {
         DEBUG_LOG("   On size changed");
         on_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 
-        uiOldWidth_  = fAbsWidth_;
-        uiOldHeight_ = fAbsHeight_;
+        fOldWidth_  = fAbsWidth_;
+        fOldHeight_ = fAbsHeight_;
     }
 
     DEBUG_LOG("   .");
