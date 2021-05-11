@@ -1893,7 +1893,7 @@ void frame::update(float fDelta)
         for (auto& mLayer : utils::range::value(lLayerList_))
             mLayer.lRegionList.clear();
 
-        // Fill layers with regions (with font_string rendered last withing the same layer)
+        // Fill layers with regions (with font_string rendered last within the same layer)
         for (auto* pRegion : get_regions())
         {
             if (pRegion->get_object_type() != "font_string")
