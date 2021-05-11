@@ -112,7 +112,10 @@
 *   previously inside the frame.
 *   - `OnLoad`: Triggered just after the frame is created. This is where
 *   you would normally register for events and specific inputs, set up
-*   initial states for extra logic, or do localization.
+*   initial states for extra logic, or do localization. When this event is
+*   triggered, you can assume that all the frame's regions and children
+*   have already been loaded. Other frames and other regions may not, however,
+*   hence they must not be refered to (directly or indirectly).
 *   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
 *   trigger if the frame is hidden. This event provides one argument to
 *   the registered callback: a string identifying the mouse button
