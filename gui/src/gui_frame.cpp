@@ -274,29 +274,6 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_scale(pFrame->get_scale());
 
-    for (auto* pChild : pFrame->get_children())
-    {
-        if (pChild->is_special()) continue;
-
-        frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
-        if (!pNewChild) continue;
-
-        pNewChild->notify_loaded();
-    }
-
-    if (pFrame->pBackdrop_)
-    {
-        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
-        pBackdrop_->copy_from(*pFrame->pBackdrop_);
-    }
-
-    if (pFrame->pTitleRegion_)
-    {
-        this->create_title_region();
-        if (pTitleRegion_)
-            pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
-    }
-
     for (auto* pArt : pFrame->get_regions())
     {
         if (pArt->is_special()) continue;
@@ -330,6 +307,29 @@ void frame::copy_from(uiobject* pObj)
     }
 
     bBuildLayerList_ = true;
+
+    if (pFrame->pBackdrop_)
+    {
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
+        pBackdrop_->copy_from(*pFrame->pBackdrop_);
+    }
+
+    if (pFrame->pTitleRegion_)
+    {
+        this->create_title_region();
+        if (pTitleRegion_)
+            pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
+    }
+
+    for (auto* pChild : pFrame->get_children())
+    {
+        if (pChild->is_special()) continue;
+
+        frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        if (!pNewChild) continue;
+
+        pNewChild->notify_loaded();
+    }
 }
 
 void frame::create_title_region()
