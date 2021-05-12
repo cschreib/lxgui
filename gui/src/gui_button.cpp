@@ -435,16 +435,25 @@ void button::set_normal_text(font_string* pFont)
         pCurrentFontString_ = pFont;
 
     pNormalText_ = pFont;
+    pNormalText_->set_text(sText_);
 }
 
 void button::set_highlight_text(font_string* pFont)
 {
+    if (pHighlightText_ == pCurrentFontString_)
+        pCurrentFontString_ = pFont;
+
     pHighlightText_ = pFont;
+    pNormalText_->set_text(sText_);
 }
 
 void button::set_disabled_text(font_string* pFont)
 {
+    if (pDisabledText_ == pCurrentFontString_)
+        pCurrentFontString_ = pFont;
+
     pDisabledText_ = pFont;
+    pNormalText_->set_text(sText_);
 }
 
 font_string* button::get_current_font_string()
