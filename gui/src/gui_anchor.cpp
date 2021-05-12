@@ -43,7 +43,7 @@ void anchor::update_parent() const
     {
         gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
             << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
-            << sParent_ << "\" but this widget does not exist." << std::endl;
+            << sParent_ << "\" but this widget does not (yet?) exist." << std::endl;
         return;
     }
 
