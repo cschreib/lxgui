@@ -963,14 +963,6 @@ void manager::update(float fDelta)
     DEBUG_LOG(" Input...");
     pInputManager_->update(fDelta);
 
-    DEBUG_LOG(" Update anchors...");
-    // update anchors for all widgets
-    for (auto* pObject : utils::range::value(lObjectList_))
-    {
-        if (!pObject->is_virtual())
-            pObject->update_anchors();
-    }
-
     DEBUG_LOG(" Update widgets...");
     // ... then update logics on main widgets from parent to children.
     for (auto* pObject : get_root_frames())

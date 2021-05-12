@@ -32,20 +32,6 @@
             </OnShow>
         </Scripts>
         <Frames>
-            <EditBox name="$parentFile" inherits="EditBoxTemplate_EditBox">
-                <Anchors>
-                    <Anchor point="BOTTOMLEFT">
-                        <Offset>
-                            <AbsDimension x="12" y="-12"/>
-                        </Offset>
-                    </Anchor>
-                    <Anchor point="TOPRIGHT" relativeTo="$parentOkButton" relativePoint="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="-5"/>
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-            </EditBox>
             <Button name="$parentCancelButton" inherits="ButtonTemplate_Button">
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT">
@@ -78,6 +64,20 @@
                     </OnClick>
                 </Scripts>
             </Button>
+            <EditBox name="$parentFile" inherits="EditBoxTemplate_EditBox">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="12" y="-12"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentOkButton" relativePoint="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="-5"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </EditBox>
             <Slider name="$parentSplitter" maxValue="376" defaultValue="100" valueStep="1" orientation="HORIZONTAL">
                 <ThumbTexture>
                     <Size>

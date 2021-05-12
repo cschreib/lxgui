@@ -232,11 +232,6 @@ namespace gui
         /// Renders this widget on the current render target.
         virtual void render() = 0;
 
-        /// updates this widget's anchors.
-        /** \note Must be called on *all* widgets before update().
-        */
-        virtual void update_anchors();
-
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
         */
@@ -545,7 +540,7 @@ namespace gui
         /** \param pObj The widget to test
         *   \note Usefull to detect circular refences.
         */
-        bool depends_on(uiobject* pObj) const;
+        bool depends_on(const uiobject* pObj) const;
 
         /// Returns the number of defined anchors.
         /** \return The number of defined anchors
@@ -727,6 +722,7 @@ namespace gui
         void make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
 
         virtual void update_borders_() const;
+        virtual void update_anchors_();
 
         sol::state&  get_lua_();
         lua::state&  get_luapp_();
@@ -767,7 +763,6 @@ namespace gui
         mutable float fAbsWidth_ = 0.0f;
         mutable float fAbsHeight_ = 0.0f;
 
-        mutable bool bUpdateAnchors_ = false;
         mutable bool bUpdateBorders_ = true;
 
         mutable std::vector<uiobject*> lAnchoredObjectList_;

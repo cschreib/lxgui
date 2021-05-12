@@ -70,7 +70,7 @@ uiobject::~uiobject()
                 pObj->set_point(mNewAnchor);
             }
 
-            pObj->update_anchors();
+            pObj->update_anchors_();
         }
     }
 
@@ -968,11 +968,8 @@ void uiobject::update_borders_() const
     DEBUG_LOG("  @");
 }
 
-void uiobject::update_anchors()
+void uiobject::update_anchors_()
 {
-    if (!bUpdateAnchors_)
-        return;
-
     std::vector<const uiobject*> lAnchorParentList;
     for (auto& mAnchor : lAnchorList_)
     {
@@ -1011,7 +1008,6 @@ void uiobject::update_anchors()
     }
 
     lPreviousAnchorParentList_ = std::move(lAnchorParentList);
-    bUpdateAnchors_ = false;
 }
 
 void uiobject::notify_borders_need_update() const

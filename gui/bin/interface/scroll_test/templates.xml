@@ -68,21 +68,6 @@
             </OnClick>
         </Scripts>
         <Frames>
-            <Frame name="$parentIconFrame">
-                <Size>
-                    <AbsDimension x="16" y="16"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentDevelop" relativePoint="RIGHT"/>
-                </Anchors>
-                <Layers>
-                    <Layer>
-                        <Texture name="$parentFolder" file="|icons.png" setAllPoints="true">
-                            <TexCoords left="0.25" right="0.375" top="0.0" bottom="1.0"/>
-                        </Texture>
-                    </Layer>
-                </Layers>
-            </Frame>
             <Button name="$parentDevelop">
                 <Size>
                     <AbsDimension x="16" y="16"/>
@@ -106,6 +91,21 @@
                     </OnClick>
                 </Scripts>
             </Button>
+            <Frame name="$parentIconFrame">
+                <Size>
+                    <AbsDimension x="16" y="16"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentDevelop" relativePoint="RIGHT"/>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <Texture name="$parentFolder" file="|icons.png" setAllPoints="true">
+                            <TexCoords left="0.25" right="0.375" top="0.0" bottom="1.0"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Frame>
         </Frames>
     </Button>
 
