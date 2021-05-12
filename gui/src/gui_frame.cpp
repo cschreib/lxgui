@@ -1518,22 +1518,6 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-void frame::set_parent(frame* pParent)
-{
-    if (pParent == this)
-    {
-        gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_parent(this)." << std::endl;
-        return;
-    }
-
-    if (pParent == pParent_)
-        return;
-
-    pParent_ = pParent;
-
-    notify_borders_need_update();
-}
-
 std::unique_ptr<uiobject> frame::release_from_parent()
 {
     if (pParent_)

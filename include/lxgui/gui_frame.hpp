@@ -743,13 +743,6 @@ namespace gui
         */
         void set_movable(bool bIsMovable);
 
-        /// Changes this widget's parent.
-        /** \param pParent The new parent
-        *   \note Default is nullptr.<br>
-        *         Overrides uiobject's implementation.
-        */
-        void set_parent(frame* pParent) override;
-
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */

@@ -286,7 +286,7 @@ namespace gui
         /** \param pParent The new parent
         *   \note Default is nullptr.
         */
-        virtual void set_parent(frame* pParent);
+        void set_parent(frame* pParent);
 
         /// Returns this widget's parent.
         /** \return This widget's parent
