@@ -429,6 +429,24 @@ void uiobject::set_parent(frame* pParent)
     }
 }
 
+void uiobject::set_name_and_parent(const std::string& sName, frame* pParent)
+{
+    if (pParent == this)
+    {
+        gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_parent(this)." << std::endl;
+        return;
+    }
+
+    if (pParent_ == pParent && sName == sName_)
+        return;
+
+    pParent_ = pParent;
+    set_name(sName);
+
+    if (!bVirtual_)
+        notify_borders_need_update();
+}
+
 const frame* uiobject::get_parent() const
 {
     return pParent_;

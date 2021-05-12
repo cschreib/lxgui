@@ -278,7 +278,8 @@ namespace gui
 
         /// Sets this widget's name.
         /** \param sName This widget's name
-        *   \note Can only be called once.
+        *   \note Can only be called once. If you need to set both the name and the parent
+        *         at the same time (typically, at creation), use set_name_and_parent().
         */
         void set_name(const std::string& sName);
 
@@ -297,6 +298,14 @@ namespace gui
         /** \return This widget's parent
         */
         frame* get_parent();
+
+        /// Sets this widget's name and parent at once.
+        /** \param sName This widget's name
+        *   \param pParent The new parent
+        *   \note The name can only be set once. If you need to just change the
+        *         parent, call set_parent().
+        */
+        void set_name_and_parent(const std::string& sName, frame* pParent);
 
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget

@@ -281,11 +281,10 @@ void frame::copy_from(uiobject* pObj)
         std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
         if (!pNewArt) continue;
 
-        pNewArt->set_parent(this);
         if (this->is_virtual())
             pNewArt->set_virtual();
 
-        pNewArt->set_name(pArt->get_raw_name());
+        pNewArt->set_name_and_parent(pArt->get_raw_name(), this);
         if (!pManager_->add_uiobject(pNewArt.get()))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
@@ -344,8 +343,7 @@ void frame::create_title_region()
     if (this->is_virtual())
         pTitleRegion_->set_virtual();
     pTitleRegion_->set_special();
-    pTitleRegion_->set_parent(this);
-    pTitleRegion_->set_name(sName_+"TitleRegion");
+    pTitleRegion_->set_name_and_parent(sName_+"TitleRegion", this);
 
     if (!pManager_->add_uiobject(pTitleRegion_.get()))
     {
@@ -675,10 +673,11 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
     const std::string& sName, const std::vector<uiobject*>& lInheritance)
 {
     std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(sClassName);
-    pRegion->set_parent(this);
+    if (!pRegion)
+        return nullptr;
 
     pRegion->set_draw_layer(mLayer);
-    pRegion->set_name(sName);
+    pRegion->set_name_and_parent(sName, this);
 
     if (!pManager_->add_uiobject(pRegion.get()))
         return nullptr;
@@ -713,8 +712,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_parent(this);
-    pNewFrame->set_name(sName);
+    pNewFrame->set_name_and_parent(sName, this);
 
     if (this->is_virtual())
         pNewFrame->set_virtual();

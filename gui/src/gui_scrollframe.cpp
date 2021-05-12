@@ -89,9 +89,8 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         // Create the scroll texture
         std::unique_ptr<texture> pScrollTexture(new texture(pManager_));
         pScrollTexture->set_special();
-        pScrollTexture->set_parent(this);
         pScrollTexture->set_draw_layer("ARTWORK");
-        pScrollTexture->set_name("$parentScrollTexture");
+        pScrollTexture->set_name_and_parent("$parentScrollTexture", this);
 
         if (!pManager_->add_uiobject(pScrollTexture.get()))
         {
