@@ -236,7 +236,8 @@ void status_bar::set_reversed(bool bReversed)
         else
             pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
-        pBarTexture_->notify_borders_need_update();
+        if (!bVirtual_)
+            pBarTexture_->notify_borders_need_update();
     }
 }
 

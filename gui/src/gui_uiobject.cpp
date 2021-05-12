@@ -320,11 +320,17 @@ void uiobject::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
 {
     if (fAbsWidth_  != fAbsWidth || fAbsHeight_ != fAbsHeight)
     {
-        pManager_->notify_object_moved();
+        if (!bVirtual_)
+            pManager_->notify_object_moved();
+
         fAbsWidth_ = fAbsWidth;
         fAbsHeight_ = fAbsHeight;
-        notify_borders_need_update();
-        notify_renderer_need_redraw();
+
+        if (!bVirtual_)
+        {
+            notify_borders_need_update();
+            notify_renderer_need_redraw();
+        }
     }
 }
 
@@ -332,10 +338,16 @@ void uiobject::set_abs_width(float fAbsWidth)
 {
     if (fAbsWidth_ != fAbsWidth)
     {
-        pManager_->notify_object_moved();
+        if (!bVirtual_)
+            pManager_->notify_object_moved();
+
         fAbsWidth_ = fAbsWidth;
-        notify_borders_need_update();
-        notify_renderer_need_redraw();
+
+        if (!bVirtual_)
+        {
+            notify_borders_need_update();
+            notify_renderer_need_redraw();
+        }
     }
 }
 
@@ -343,10 +355,16 @@ void uiobject::set_abs_height(float fAbsHeight)
 {
     if (fAbsHeight_ != fAbsHeight)
     {
-        pManager_->notify_object_moved();
+        if (!bVirtual_)
+            pManager_->notify_object_moved();
+
         fAbsHeight_ = fAbsHeight;
-        notify_borders_need_update();
-        notify_renderer_need_redraw();
+
+        if (!bVirtual_)
+        {
+            notify_borders_need_update();
+            notify_renderer_need_redraw();
+        }
     }
 }
 
@@ -405,7 +423,9 @@ void uiobject::set_parent(frame* pParent)
     if (pParent_ != pParent)
     {
         pParent_ = pParent;
-        notify_borders_need_update();
+
+        if (!bVirtual_)
+            notify_borders_need_update();
     }
 }
 
@@ -481,10 +501,13 @@ void uiobject::clear_all_points()
     {
         lDefinedBorderList_ = quad2<bool>(false, false, false, false);
 
-        bUpdateAnchors_ = true;
-        notify_borders_need_update();
-        notify_renderer_need_redraw();
-        pManager_->notify_object_moved();
+        if (!bVirtual_)
+        {
+            update_anchors_();
+            notify_borders_need_update();
+            notify_renderer_need_redraw();
+            pManager_->notify_object_moved();
+        }
     }
 }
 
@@ -501,10 +524,13 @@ void uiobject::set_all_points(const std::string& sObjName)
 
         lDefinedBorderList_ = quad2<bool>(true, true, true, true);
 
-        bUpdateAnchors_ = true;
-        notify_borders_need_update();
-        notify_renderer_need_redraw();
-        pManager_->notify_object_moved();
+        if (!bVirtual_)
+        {
+            update_anchors_();
+            notify_borders_need_update();
+            notify_renderer_need_redraw();
+            pManager_->notify_object_moved();
+        }
     }
     else
         gui::out << gui::error << "gui::" << lType_.back() << " : Cannot call set_all_points(this)." << std::endl;
@@ -565,10 +591,13 @@ void uiobject::set_abs_point(anchor_point mPoint, const std::string& sParentName
         default : break;
     }
 
-    bUpdateAnchors_ = true;
-    notify_borders_need_update();
-    notify_renderer_need_redraw();
-    pManager_->notify_object_moved();
+    if (!bVirtual_)
+    {
+        update_anchors_();
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+        pManager_->notify_object_moved();
+    }
 }
 
 void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName, anchor_point mRelativePoint, float fX, float fY)
@@ -616,10 +645,13 @@ void uiobject::set_rel_point(anchor_point mPoint, const std::string& sParentName
         default : break;
     }
 
-    bUpdateAnchors_ = true;
-    notify_borders_need_update();
-    notify_renderer_need_redraw();
-    pManager_->notify_object_moved();
+    if (!bVirtual_)
+    {
+        update_anchors_();
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+        pManager_->notify_object_moved();
+    }
 }
 
 void uiobject::set_point(const anchor& mAnchor)
@@ -659,13 +691,16 @@ void uiobject::set_point(const anchor& mAnchor)
         default : break;
     }
 
-    bUpdateAnchors_ = true;
-    notify_borders_need_update();
-    notify_renderer_need_redraw();
-    pManager_->notify_object_moved();
+    if (!bVirtual_)
+    {
+        update_anchors_();
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+        pManager_->notify_object_moved();
+    }
 }
 
-bool uiobject::depends_on(uiobject* pObj) const
+bool uiobject::depends_on(const uiobject* pObj) const
 {
     if (pObj)
     {
@@ -702,7 +737,8 @@ anchor* uiobject::modify_point(anchor_point mPoint)
 {
     pManager_->notify_object_moved();
 
-    notify_borders_need_update();
+    if (!bVirtual_)
+        notify_borders_need_update();
 
     auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
     if (mAnchor)
@@ -972,7 +1008,8 @@ void uiobject::notify_borders_need_update() const
 
 void uiobject::notify_scaling_factor_updated()
 {
-    notify_borders_need_update();
+    if (!bVirtual_)
+        notify_borders_need_update();
 }
 
 void uiobject::update(float fDelta)

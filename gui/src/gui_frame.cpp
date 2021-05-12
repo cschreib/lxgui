@@ -1480,7 +1480,7 @@ void frame::set_max_height(float fMaxHeight)
     if (fMaxHeight >= fMinHeight_)
         fMaxHeight_ = fMaxHeight;
 
-    if (fMaxHeight_ != fMaxHeight)
+    if (fMaxHeight_ != fMaxHeight && !bVirtual_)
         notify_borders_need_update();
 }
 
@@ -1491,7 +1491,7 @@ void frame::set_max_width(float fMaxWidth)
     if (fMaxWidth >= fMinWidth_)
         fMaxWidth_ = fMaxWidth;
 
-    if (fMaxWidth_ != fMaxWidth)
+    if (fMaxWidth_ != fMaxWidth && !bVirtual_)
         notify_borders_need_update();
 }
 
@@ -1500,7 +1500,7 @@ void frame::set_min_height(float fMinHeight)
     if (fMinHeight <= fMaxHeight_)
         fMinHeight_ = fMinHeight;
 
-    if (fMinHeight_ != fMinHeight)
+    if (fMinHeight_ != fMinHeight && !bVirtual_)
         notify_borders_need_update();
 }
 
@@ -1509,7 +1509,7 @@ void frame::set_min_width(float fMinWidth)
     if (fMinWidth <= fMaxWidth_)
         fMinWidth_ = fMinWidth;
 
-    if (fMinWidth_ != fMinWidth)
+    if (fMinWidth_ != fMinWidth && !bVirtual_)
         notify_borders_need_update();
 }
 

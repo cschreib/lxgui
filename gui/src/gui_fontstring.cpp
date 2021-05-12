@@ -250,8 +250,11 @@ void font_string::set_font(const std::string& sFontName, float fHeight)
     pText_->enable_word_wrap(bCanWordWrap_, bAddEllipsis_);
     pText_->enable_formatting(bFormattingEnabled_);
 
-    notify_borders_need_update();
-    notify_renderer_need_redraw();
+    if (!bVirtual_)
+    {
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
+    }
 }
 
 void font_string::set_justify_h(text::alignment mJustifyH)
@@ -262,7 +265,9 @@ void font_string::set_justify_h(text::alignment mJustifyH)
         if (pText_)
         {
             pText_->set_alignment(mJustifyH_);
-            notify_renderer_need_redraw();
+
+            if (!bVirtual_)
+                notify_renderer_need_redraw();
         }
     }
 }
@@ -275,7 +280,9 @@ void font_string::set_justify_v(text::vertical_alignment mJustifyV)
         if (pText_)
         {
             pText_->set_vertical_alignment(mJustifyV_);
-            notify_renderer_need_redraw();
+
+            if (!bVirtual_)
+                notify_renderer_need_redraw();
         }
     }
 }
@@ -285,7 +292,7 @@ void font_string::set_shadow_color(const color& mShadowColor)
     if (mShadowColor_ != mShadowColor)
     {
         mShadowColor_ = mShadowColor;
-        if (bHasShadow_)
+        if (bHasShadow_ && !bVirtual_)
             notify_renderer_need_redraw();
     }
 }
@@ -296,7 +303,7 @@ void font_string::set_shadow_offsets(float fShadowXOffset, float fShadowYOffset)
     {
         fShadowXOffset_ = fShadowXOffset;
         fShadowYOffset_ = fShadowYOffset;
-        if (bHasShadow_)
+        if (bHasShadow_ && !bVirtual_)
             notify_renderer_need_redraw();
     }
 }
@@ -307,7 +314,7 @@ void font_string::set_shadow_offsets(const vector2f& mShadowOffsets)
     {
         fShadowXOffset_ = mShadowOffsets.x;
         fShadowYOffset_ = mShadowOffsets.y;
-        if (bHasShadow_)
+        if (bHasShadow_ && !bVirtual_)
             notify_renderer_need_redraw();
     }
 }
@@ -318,7 +325,8 @@ void font_string::set_offsets(float fXOffset, float fYOffset)
     {
         fXOffset_ = fXOffset;
         fYOffset_ = fYOffset;
-        notify_renderer_need_redraw();
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
@@ -328,7 +336,8 @@ void font_string::set_offsets(const vector2f& mOffsets)
     {
         fXOffset_ = mOffsets.x;
         fYOffset_ = mOffsets.y;
-        notify_renderer_need_redraw();
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
@@ -340,7 +349,8 @@ void font_string::set_spacing(float fSpacing)
         if (pText_)
         {
             pText_->set_tracking(fSpacing_);
-            notify_renderer_need_redraw();
+            if (!bVirtual_)
+                notify_renderer_need_redraw();
         }
     }
 }
@@ -350,7 +360,8 @@ void font_string::set_text_color(const color& mTextColor)
     if (mTextColor_ != mTextColor)
     {
         mTextColor_ = mTextColor;
-        notify_renderer_need_redraw();
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
@@ -393,7 +404,8 @@ void font_string::set_non_space_wrap(bool bCanNonSpaceWrap)
     if (bCanNonSpaceWrap_ != bCanNonSpaceWrap)
     {
         bCanNonSpaceWrap_ = bCanNonSpaceWrap;
-        notify_renderer_need_redraw();
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
@@ -407,7 +419,8 @@ void font_string::set_shadow(bool bHasShadow)
     if (bHasShadow_ != bHasShadow)
     {
         bHasShadow_ = bHasShadow;
-        notify_renderer_need_redraw();
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 
@@ -444,7 +457,8 @@ void font_string::set_text(const utils::ustring& sText)
         if (pText_)
         {
             pText_->set_text(sText_);
-            notify_borders_need_update();
+            if (!bVirtual_)
+                notify_borders_need_update();
         }
     }
 }
