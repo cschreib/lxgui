@@ -52,14 +52,11 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The edit_box's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         static constexpr const char* CLASS_NAME = "FocusFrame";
 
     protected :
+
+        void parse_attributes_(xml::block* pBlock) override;
 
         bool bFocus_ = false;
         bool bAutoFocus_ = false;

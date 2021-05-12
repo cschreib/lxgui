@@ -6,9 +6,9 @@
 namespace lxgui {
 namespace gui
 {
-void check_button::parse_block(xml::block* pBlock)
+void check_button::parse_all_blocks_before_children_(xml::block* pBlock)
 {
-    button::parse_block(pBlock);
+    button::parse_all_blocks_before_children_(pBlock);
 
     xml::block* pSpecialBlock;
     pSpecialBlock = pBlock->get_block("CheckedTexture");

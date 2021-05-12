@@ -10,7 +10,7 @@
 namespace lxgui {
 namespace gui
 {
-void frame::parse_block(xml::block* pBlock)
+void frame::parse_all_blocks_before_children_(xml::block* pBlock)
 {
     parse_attributes_(pBlock);
 
@@ -22,6 +22,11 @@ void frame::parse_block(xml::block* pBlock)
     parse_hit_rect_insets_block_(pBlock);
 
     parse_layers_block_(pBlock);
+}
+
+void frame::parse_block(xml::block* pBlock)
+{
+    parse_all_blocks_before_children_(pBlock);
     parse_frames_block_(pBlock);
     parse_scripts_block_(pBlock);
 }

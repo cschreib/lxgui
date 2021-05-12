@@ -8,9 +8,9 @@
 namespace lxgui {
 namespace gui
 {
-void status_bar::parse_block(xml::block* pBlock)
+void status_bar::parse_attributes_(xml::block* pBlock)
 {
-    frame::parse_block(pBlock);
+    frame::parse_attributes_(pBlock);
 
     if (pBlock->is_provided("minValue") || !bInherits_)
         set_min_value(utils::string_to_float(pBlock->get_attribute("minValue")));
@@ -38,6 +38,11 @@ void status_bar::parse_block(xml::block* pBlock)
 
     if (pBlock->is_provided("reversed") || !bInherits_)
         set_reversed(utils::string_to_bool(pBlock->get_attribute("reversed")));
+}
+
+void status_bar::parse_all_blocks_before_children_(xml::block* pBlock)
+{
+    frame::parse_all_blocks_before_children_(pBlock);
 
     xml::block* pBarBlock = pBlock->get_radio_block();
     if (pBarBlock)

@@ -156,11 +156,6 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The status_bar's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
         *   \note Triggered callbacks could destroy the frame. If you need
@@ -178,6 +173,9 @@ namespace gui
 
         std::unique_ptr<texture> create_bar_texture_();
         void                     notify_bar_texture_needs_update_();
+
+        void parse_attributes_(xml::block* pBlock) override;
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
         bool bUpdateBarTexture_ = false;
 

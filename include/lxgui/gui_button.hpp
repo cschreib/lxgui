@@ -239,17 +239,15 @@ namespace gui
         */
         const vector2f& get_pushed_text_offset() const;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The button's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Button";
 
     protected :
+
+        void parse_attributes_(xml::block* pBlock) override;
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
         std::unique_ptr<texture>     create_normal_texture_();
         std::unique_ptr<texture>     create_pushed_texture_();

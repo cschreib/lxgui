@@ -7,9 +7,9 @@
 namespace lxgui {
 namespace gui
 {
-void scroll_frame::parse_block(xml::block* pBlock)
+void scroll_frame::parse_all_blocks_before_children_(xml::block* pBlock)
 {
-    frame::parse_block(pBlock);
+    frame::parse_all_blocks_before_children_(pBlock);
 
     parse_scroll_child_block_(pBlock);
 }

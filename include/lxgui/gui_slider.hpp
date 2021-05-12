@@ -185,11 +185,6 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The slider's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Tells this widget that its borders need updating.
         void notify_borders_need_update() const override;
 
@@ -212,6 +207,9 @@ namespace gui
 
         std::unique_ptr<texture> create_thumb_texture_();
         void                     notify_thumb_texture_needs_update_() const;
+
+        void parse_attributes_(xml::block* pBlock) override;
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
         mutable bool bUpdateThumbTexture_ = false;
 

@@ -78,17 +78,14 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The Checkbutton's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state& mLua);
 
         static constexpr const char* CLASS_NAME = "CheckButton";
 
     protected :
+
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
         std::unique_ptr<texture> create_checked_texture_();
         std::unique_ptr<texture> create_disabled_checked_texture_();

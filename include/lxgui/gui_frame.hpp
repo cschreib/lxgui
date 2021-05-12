@@ -915,8 +915,11 @@ namespace gui
 
         /// Parses data from an xml::block.
         /** \param pBlock The frame's xml::block
+        *   \note Derived classes must override parse_all_blocks_before_children_() if
+        *         they need to parse additional blocks, and parse_attributes_() if they
+        *         need to parse additional attributes.
         */
-        void parse_block(xml::block* pBlock) override;
+        void parse_block(xml::block* pBlock) final;
 
         static constexpr const char* CLASS_NAME = "Frame";
 
@@ -924,6 +927,7 @@ namespace gui
 
         // XML parsing
         void parse_attributes_(xml::block* pBlock) override;
+        virtual void parse_all_blocks_before_children_(xml::block* pBlock);
         virtual void parse_resize_bounds_block_(xml::block* pBlock);
         virtual void parse_title_region_block_(xml::block* pBlock);
         virtual void parse_backdrop_block_(xml::block* pBlock);

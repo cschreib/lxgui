@@ -155,11 +155,6 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The scroll_frame's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state& mLua);
 
@@ -167,6 +162,7 @@ namespace gui
 
     protected :
 
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
         virtual void parse_scroll_child_block_(xml::block* pBlock);
 
         void update_scroll_range_();

@@ -6,9 +6,9 @@
 namespace lxgui {
 namespace gui
 {
-void focus_frame::parse_block(xml::block* pBlock)
+void focus_frame::parse_attributes_(xml::block* pBlock)
 {
-    frame::parse_block(pBlock);
+    frame::parse_attributes_(pBlock);
 
     if ((pBlock->is_provided("autoFocus") || !pBlock->is_provided("inherits")))
         enable_auto_focus(utils::string_to_bool(pBlock->get_attribute("autoFocus")));

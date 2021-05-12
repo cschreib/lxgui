@@ -9,9 +9,17 @@
 namespace lxgui {
 namespace gui
 {
-void button::parse_block(xml::block* pBlock)
+void button::parse_attributes_(xml::block* pBlock)
 {
-    frame::parse_block(pBlock);
+    frame::parse_attributes_(pBlock);
+
+    if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
+        set_text(utils::utf8_to_unicode(pBlock->get_attribute("text")));
+}
+
+void button::parse_all_blocks_before_children_(xml::block* pBlock)
+{
+    frame::parse_all_blocks_before_children_(pBlock);
 
     xml::block* pSpecialBlock;
     pSpecialBlock = pBlock->get_block("NormalTexture");
@@ -116,9 +124,6 @@ void button::parse_block(xml::block* pBlock)
                 << "RelDimension for button:PushedTextOffset is not yet supported ("+sName_+")." << std::endl;
         }
     }
-
-    if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
-        set_text(utils::utf8_to_unicode(pBlock->get_attribute("text")));
 }
 }
 }

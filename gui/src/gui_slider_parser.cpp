@@ -8,9 +8,9 @@
 namespace lxgui {
 namespace gui
 {
-void slider::parse_block(xml::block* pBlock)
+void slider::parse_attributes_(xml::block* pBlock)
 {
-    frame::parse_block(pBlock);
+    frame::parse_attributes_(pBlock);
 
     if (pBlock->is_provided("valueStep") || !bInherits_)
         set_value_step(utils::string_to_float(pBlock->get_attribute("valueStep")));
@@ -37,6 +37,11 @@ void slider::parse_block(xml::block* pBlock)
                 "\"HORIZONTAL\" or \"VERTICAL\". Attribute ignored." << std::endl;
         }
     }
+}
+
+void slider::parse_all_blocks_before_children_(xml::block* pBlock)
+{
+    frame::parse_all_blocks_before_children_(pBlock);
 
     xml::block* pThumbBlock = pBlock->get_block("ThumbTexture");
     if (pThumbBlock)

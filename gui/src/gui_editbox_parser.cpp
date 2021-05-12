@@ -8,16 +8,9 @@
 namespace lxgui {
 namespace gui
 {
-void edit_box::parse_block(xml::block* pBlock)
+void edit_box::parse_attributes_(xml::block* pBlock)
 {
-    focus_frame::parse_block(pBlock);
-
-    parse_text_insets_block_(pBlock);
-    parse_font_string_block_(pBlock);
-
-    xml::block* pHighlightBlock = pBlock->get_block("HighlightColor");
-    if (pHighlightBlock)
-        set_highlight_color(parse_color_block_(pHighlightBlock));
+    focus_frame::parse_attributes_(pBlock);
 
     if ((pBlock->is_provided("letters") || !pBlock->is_provided("inherits")))
         set_max_letters(utils::string_to_uint(pBlock->get_attribute("letters")));
@@ -45,6 +38,18 @@ void edit_box::parse_block(xml::block* pBlock)
 
     if ((pBlock->is_provided("ignoreArrows") || !pBlock->is_provided("inherits")))
         set_arrows_ignored(utils::string_to_bool(pBlock->get_attribute("ignoreArrows")));
+}
+
+void edit_box::parse_all_blocks_before_children_(xml::block* pBlock)
+{
+    focus_frame::parse_all_blocks_before_children_(pBlock);
+
+    parse_text_insets_block_(pBlock);
+    parse_font_string_block_(pBlock);
+
+    xml::block* pHighlightBlock = pBlock->get_block("HighlightColor");
+    if (pHighlightBlock)
+        set_highlight_color(parse_color_block_(pHighlightBlock));
 }
 
 void edit_box::parse_font_string_block_(xml::block* pBlock)

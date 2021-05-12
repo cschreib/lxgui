@@ -389,11 +389,6 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The edit_box's xml::block
-        */
-        void parse_block(xml::block* pBlock) override;
-
         /// Registers this widget to the provided lua::state
         static void register_glue(lua::state& mLua);
 
@@ -401,6 +396,8 @@ namespace gui
 
     protected :
 
+        void parse_attributes_(xml::block* pBlock) override;
+        void parse_all_blocks_before_children_(xml::block* pBlock) override;
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
 
