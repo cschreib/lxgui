@@ -181,7 +181,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             else
             {
                 gui::out << gui::warning << pInsetBlock->get_location() << " : "
-                    << "RelInset for Backdrop:BackgroundInsets is not yet supported (" << sName_ << ")." << std::endl;
+                    << "RelInset for Backdrop:EdgeInsets is not yet supported (" << sName_ << ")." << std::endl;
             }
         }
 

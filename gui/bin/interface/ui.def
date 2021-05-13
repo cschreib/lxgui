@@ -65,6 +65,11 @@
             <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
         </BackgroundInsets>
 
+        <n[.,1]:EdgeInsets>
+            <n[*]:AbsInset n:left="0"   n:right="0"   n:top="0"   n:bottom="0"/>
+            <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
+        </EdgeInsets>
+
         <n[.,1]:BackgroundColor n:a="1.0" n:r="0.0" n:g="0.0" n:b="0.0" c=""/>
 
         <n[.,1]:TileSize>
