@@ -549,6 +549,11 @@ void font_string::update_borders_() const
         bReady_ = false;
     }
 
+    lBorderList_.left = round_to_pixel_(lBorderList_.left);
+    lBorderList_.right = round_to_pixel_(lBorderList_.right);
+    lBorderList_.top = round_to_pixel_(lBorderList_.top);
+    lBorderList_.bottom = round_to_pixel_(lBorderList_.bottom);
+
     if (bReady_ || (!bReady_ && bOldReady))
     {
         DEBUG_LOG("  Fire redraw");
