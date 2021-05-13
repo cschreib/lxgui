@@ -32,7 +32,7 @@ void anchor::update_parent() const
     }
     else if (sParent_.find("$parent") != sParent_.npos)
     {
-        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+        gui::out << gui::error << "gui::" << pObj_->get_object_type() << " : "
             << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
             << sParent_ << "\", but '$parent' does not exist." << std::endl;
         return;
@@ -41,7 +41,7 @@ void anchor::update_parent() const
     const uiobject* pNewParent = pObj_->get_manager()->get_uiobject_by_name(sParent_);
     if (!pNewParent)
     {
-        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+        gui::out << gui::error << "gui::" << pObj_->get_object_type() << " : "
             << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
             << sParent_ << "\" but this widget does not (yet?) exist." << std::endl;
         return;
@@ -49,7 +49,7 @@ void anchor::update_parent() const
 
     if (pObj_->get_top_level_renderer() != pNewParent->get_top_level_renderer())
     {
-        gui::out << gui::warning << "gui::" << pObj_->get_object_type() << " : "
+        gui::out << gui::error << "gui::" << pObj_->get_object_type() << " : "
             << "uiobject \"" << pObj_->get_name() << "\" tries to anchor to \""
             << sParent_ << "\" which is in another renderer." << std::endl;
         return;
