@@ -706,7 +706,17 @@ int lua_uiobject::_set_point(lua_State* pLua)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
+                {
                     pParent = pObject_->get_manager()->get_uiobject_by_name(sParent);
+                    if (!pParent)
+                    {
+                        gui::out << gui::error << mFunc.get_name() << "("
+                            << anchor::get_string_point(mPoint) << ") : "
+                            << "uiobject \"" << pObject_->get_name() << "\" tries to anchor to \""
+                            << sParent << "\" but this widget does not (yet?) exist." << std::endl;
+                        return mFunc.on_return();
+                    }
+                }
             }
             else
             {
