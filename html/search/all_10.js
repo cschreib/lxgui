@@ -60,5 +60,6 @@ var searchData=
   ['right_1224',['right',['../structlxgui_1_1gui_1_1quad2.html#af5b3d3f9fb5a874cef1550ec84142396',1,'lxgui::gui::quad2::right()'],['../classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5a21507b40c80068eda19865706fdc2403',1,'lxgui::gui::text::RIGHT()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a21507b40c80068eda19865706fdc2403',1,'lxgui::gui::RIGHT()'],['../namespacelxgui_1_1input.html#a73db087bbe736e8e1604fa9b6adb7b43a21507b40c80068eda19865706fdc2403',1,'lxgui::input::RIGHT()']]],
   ['root_5fframe_5flist_1225',['root_frame_list',['../classlxgui_1_1gui_1_1manager.html#a353b7992b1f070a05b45e8034c908219',1,'lxgui::gui::manager']]],
   ['root_5fframe_5flist_5fview_1226',['root_frame_list_view',['../classlxgui_1_1gui_1_1manager.html#a96ba024db64d25f88e518a81ddbfae79',1,'lxgui::gui::manager']]],
-  ['rotation_1227',['rotation',['../structlxgui_1_1gui_1_1matrix4f.html#a9dd7d6ae17ef78337c59aa91b8b3b165',1,'lxgui::gui::matrix4f']]]
+  ['rotation_1227',['rotation',['../structlxgui_1_1gui_1_1matrix4f.html#a9dd7d6ae17ef78337c59aa91b8b3b165',1,'lxgui::gui::matrix4f']]],
+  ['round_5fto_5fpixel_5f_1228',['round_to_pixel_',['../classlxgui_1_1gui_1_1uiobject.html#a0c4d17b949bf987d3feb5c07e77a7b59',1,'lxgui::gui::uiobject']]]
 ];
