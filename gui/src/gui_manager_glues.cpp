@@ -276,7 +276,7 @@ int l_delete_frame(lua_State* pLua)
             return mFunc.on_return();
         }
 
-        pFrame->release_from_parent();
+        pFrame->destroy();
     }
 
     return mFunc.on_return();

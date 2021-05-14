@@ -122,8 +122,12 @@ namespace gui
     *   content may change, you can also recycle the object, i.e., keep it alive and
     *   simply change its content when it later reappears.
     *
-    *   Deleting an object from C++ is done using uiobject::release_from_parent.
+    *   Deleting an object from C++ is done using uiobject::destroy.
     *   This will automatically delete all references to this object in Lua as well.
+    *
+    *   Finally, note that objects do not need to be explicitly destroyed: they will
+    *   automatically be destroyed when their parent is itself destroyed (see below).
+    *   Only use explicit destruction when absolutely necessary.
     *
     *   __Parent-child relationship.__ Parents of uiobjects are frames. See
     *   the #lxgui::gui::frame class documentation for more information. One important
@@ -306,6 +310,13 @@ namespace gui
         /** \return An owning pointer to this widget
         */
         virtual std::unique_ptr<uiobject> release_from_parent();
+
+        /// Forcefully removes this widget from the GUI.
+        /** \warning After calling this function, any pointer to the object is invalidated!
+        *            Only call this function if you need the object to be destroyed early,
+        *            before its parent (if any) would itself be destroyed.
+        */
+        void destroy();
 
         /// Returns the widget this one inherits from.
         /** \return The widget this one inherits from

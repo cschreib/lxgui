@@ -102,6 +102,7 @@ Other changes:
  - gui: fixed scroll_frame not propagating all size updates to its scroll child
  - gui: fixed is_visible() for layered_regions always returning false
  - gui: fixed hovered frame not updated when hide/show is called
+ - gui: fixed OnEnter/OnLeave not always triggered hide/show is called
  - xml: now parsing standard XML comments
 
 v1.2.0:

@@ -462,6 +462,15 @@ std::unique_ptr<uiobject> uiobject::release_from_parent()
     return nullptr;
 }
 
+void uiobject::destroy()
+{
+    // Gracefully disappear (trigger events, etc).
+    hide();
+
+    // Ignoring the return value destroys the object.
+    release_from_parent();
+}
+
 uiobject* uiobject::get_base()
 {
     return pInheritance_;

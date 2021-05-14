@@ -1728,7 +1728,10 @@ void frame::show()
     uiobject::show();
 
     if (!bWasVisible_)
+    {
         pManager_->notify_hovered_frame_dirty();
+        update_mouse_in_frame_();
+    }
 }
 
 void frame::hide()
@@ -1740,7 +1743,10 @@ void frame::hide()
     uiobject::hide();
 
     if (bWasVisible_)
+    {
         pManager_->notify_hovered_frame_dirty();
+        update_mouse_in_frame_();
+    }
 }
 
 void frame::set_shown(bool bIsShown)
