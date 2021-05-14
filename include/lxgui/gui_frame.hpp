@@ -13,6 +13,7 @@
 #include <set>
 #include <list>
 #include <functional>
+#include <limits>
 
 namespace lxgui {
 namespace gui

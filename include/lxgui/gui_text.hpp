@@ -12,6 +12,7 @@
 #include <vector>
 #include <array>
 #include <memory>
+#include <limits>
 
 namespace lxgui {
 namespace gui
