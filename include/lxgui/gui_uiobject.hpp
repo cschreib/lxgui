@@ -721,6 +721,8 @@ namespace gui
 
         void make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
 
+        float round_to_pixel_(float fValue) const;
+
         virtual void update_borders_() const;
         virtual void update_anchors_();
 

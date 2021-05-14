@@ -820,6 +820,12 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     }
 }
 
+float uiobject::round_to_pixel_(float fValue) const
+{
+    float fScalingFactor = pManager_->get_interface_scaling_factor();
+    return std::floor(fValue*fScalingFactor)/fScalingFactor;
+}
+
 void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
 {
     if (std::isinf(fMin) && std::isinf(fMax))
@@ -959,6 +965,11 @@ void uiobject::update_borders_() const
         lBorderList_ = quad2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
         bReady_ = false;
     }
+
+    lBorderList_.left = round_to_pixel_(lBorderList_.left);
+    lBorderList_.right = round_to_pixel_(lBorderList_.right);
+    lBorderList_.top = round_to_pixel_(lBorderList_.top);
+    lBorderList_.bottom = round_to_pixel_(lBorderList_.bottom);
 
     if (bReady_ || (!bReady_ && bOldReady))
     {
