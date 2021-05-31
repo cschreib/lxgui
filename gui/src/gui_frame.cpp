@@ -1023,7 +1023,7 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
 
     uint uiOffset = utils::string_to_uint(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1));
     sOriginalMessage.erase(uiPos3 + 1, uiPos4 - uiPos3 - 1);
-    sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset));
+    sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset - 1));
 
     return sOriginalMessage;
 }
