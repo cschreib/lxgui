@@ -53,30 +53,6 @@ namespace gui
         int        iRef_;
     };
 
-    // Virtual widget Lua glue
-    class lua_virtual_glue : public lua_glue
-    {
-    public :
-
-        explicit lua_virtual_glue(lua_State* luaVM);
-        virtual ~lua_virtual_glue();
-
-        virtual void notify_deleted();
-
-        int _mark_for_copy(lua_State*);
-        int _get_base(lua_State*);
-        int _get_name(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_virtual_glue> methods[];
-
-    protected :
-
-        uint      uiID_ = 0u;
-        uiobject* pObject_ = nullptr;
-    };
-
     /** \endcond
     */
 
@@ -650,15 +626,6 @@ namespace gui
         */
         virtual void notify_renderer_need_redraw() const;
 
-        /// Adds a Lua variable to copy when inheriting.
-        /** \param sVariable The name of the variable
-        *   \note The variable must be an element of the widget's Lua glue.
-        *         If you have a virtual widget called "Test", and in some lua code you do :<br>
-        *         Test.someVariable = 2;<br>
-        *         ... then you can call this function with "someVariable".
-        */
-        void mark_for_copy(const std::string& sVariable);
-
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one
         */
@@ -759,8 +726,7 @@ namespace gui
         bool         bLoaded_ = false;
         mutable bool bReady_ = true;
 
-        lua_glue*                lGlue_ = nullptr;
-        std::vector<std::string> lCopyList_;
+        lua_glue* lGlue_ = nullptr;
 
         std::vector<std::string> lType_;
 

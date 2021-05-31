@@ -756,7 +756,6 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLua_->set_print_error_function(gui_out);
 
     register_lua_manager_();
-    pLua_->reg<lua_virtual_glue>();
     pLua_->reg<lua_uiobject>();
     pLua_->reg<lua_frame>();
     pLua_->reg<lua_focus_frame>();

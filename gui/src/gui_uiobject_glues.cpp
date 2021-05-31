@@ -136,60 +136,6 @@ lua_glue::~lua_glue()
     luaL_unref(pLua_, LUA_REGISTRYINDEX, iRef_);
 }
 
-lua_virtual_glue::lua_virtual_glue(lua_State* pLua) : lua_glue(pLua)
-{
-    uiID_ = lua_tonumber(pLua, -1);
-    lua::state mState(pLua);
-    manager* pGUIMgr = manager::get_manager(mState);
-    pObject_ = pGUIMgr->get_uiobject(uiID_);
-
-    if (!pObject_)
-        throw exception("lua_virtual_glue", "Glue missing its parent (\""+utils::to_string(uiID_)+"\") !");
-}
-
-lua_virtual_glue::~lua_virtual_glue()
-{
-}
-
-void lua_virtual_glue::notify_deleted()
-{
-    pObject_ = nullptr;
-}
-
-int lua_virtual_glue::_mark_for_copy(lua_State* pLua)
-{
-    lua::function mFunc("VirtualGlue:mark_for_copy", pLua, 1);
-    mFunc.add(0, "variable", lua::type::STRING);
-    if (mFunc.check())
-        pObject_->mark_for_copy(mFunc.get(0)->get_string());
-
-    return mFunc.on_return();
-}
-
-int lua_virtual_glue::_get_name(lua_State* pLua)
-{
-    lua::function mFunc("VirtualGlue:get_name", pLua, 1);
-
-    mFunc.push(pObject_->get_lua_name());
-
-    return mFunc.on_return();
-}
-
-int lua_virtual_glue::_get_base(lua_State* pLua)
-{
-    lua::function mFunc("VirtualGlue:get_base", pLua, 1);
-
-    if (pObject_->get_base())
-    {
-        pObject_->get_base()->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-    else
-        mFunc.push_nil();
-
-    return mFunc.on_return();
-}
-
 lua_uiobject::lua_uiobject(lua_State* pLua) : lua_glue(pLua)
 {
     sName_ = lua_tostring(pLua, -1);

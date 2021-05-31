@@ -139,27 +139,6 @@ void uiobject::copy_from(uiobject* pObj)
 {
     if (pObj)
     {
-        // Copy marked Lua member variables
-        if (!pObj->lCopyList_.empty())
-        {
-            if (is_virtual())
-            {
-                // The current object is virtual too,
-                // add the Lua member variables to its copy list.
-                for (const auto& mMember : pObj->lCopyList_)
-                    lCopyList_.push_back(mMember);
-            }
-
-            sol::state& mLua = pManager_->get_lua();
-            auto mOrig = mLua[pObj->get_lua_name()];
-            auto mNew = mLua[this->get_lua_name()];
-            if (mOrig.valid() && mNew.valid()) {
-                for (const auto& mMember : pObj->lCopyList_) {
-                    mNew[mMember] = mOrig[mMember];
-                }
-            }
-        }
-
         bInherits_ = true;
         pInheritance_ = pObj;
 
@@ -1110,17 +1089,6 @@ void uiobject::set_newly_created()
 bool uiobject::is_newly_created() const
 {
     return bNewlyCreated_;
-}
-
-void uiobject::mark_for_copy(const std::string& sVariable)
-{
-    if (utils::find(lCopyList_, sVariable) == lCopyList_.end())
-        lCopyList_.push_back(sVariable);
-    else
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "\"" << sName_ << "." << sVariable << "\" has already been marked for copy. Ignoring." << std::endl;
-    }
 }
 
 const std::vector<uiobject*>& uiobject::get_anchored_objects() const

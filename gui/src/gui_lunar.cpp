@@ -26,19 +26,6 @@
 namespace lxgui {
 namespace gui
 {
-    const char lua_virtual_glue::className[] = "VirtualGlue";
-    const char* lua_virtual_glue::classList[] = {"VirtualGlue", 0};
-    lua::lunar_binding<lua_virtual_glue> lua_virtual_glue::methods[] = {
-        {"dt", &lua_virtual_glue::get_data_table},
-
-        // VirtualGlue
-        method(virtual_glue, mark_for_copy),
-        method(virtual_glue, get_base),
-        method(virtual_glue, get_name),
-
-        {0,0}
-    };
-
     const char lua_uiobject::className[] = "UIObject";
     const char* lua_uiobject::classList[] = {"UIObject",
         "Frame", "FocusFrame", "Button", "CheckButton", "EditBox", "ScrollFrame",

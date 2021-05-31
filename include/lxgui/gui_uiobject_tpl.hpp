@@ -12,17 +12,8 @@ namespace gui
         if (lGlue_) return;
 
         lua::state& mLua = get_luapp_();
-
-        if (bVirtual_)
-        {
-            mLua.push_number(uiID_);
-            lGlue_ = mLua.push_new<lua_virtual_glue>();
-        }
-        else
-        {
-            mLua.push_string(sLuaName_);
-            lGlue_ = mLua.push_new<T>();
-        }
+        mLua.push_string(sLuaName_);
+        lGlue_ = mLua.push_new<T>();
 
         mLua.set_global(sLuaName_);
         mLua.pop();
