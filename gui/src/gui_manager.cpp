@@ -236,7 +236,8 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
     if (!add_uiobject(pNewFrame.get()))
         return nullptr;
 
-    pNewFrame->create_glue();
+    if (!pNewFrame->is_virtual())
+        pNewFrame->create_glue();
 
     for (auto* pObj : lInheritance)
     {

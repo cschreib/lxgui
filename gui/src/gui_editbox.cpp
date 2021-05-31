@@ -788,6 +788,9 @@ std::unique_ptr<font_string> edit_box::create_font_string_()
 
 void edit_box::create_highlight_()
 {
+    if (is_virtual())
+        return;
+
     std::unique_ptr<texture> pHighlight(new texture(pManager_));
     pHighlight->set_special();
     pHighlight->set_parent(this);
@@ -819,7 +822,7 @@ void edit_box::create_highlight_()
 
 void edit_box::create_carret_()
 {
-    if (!pFontString_ || !pFontString_->get_text_object())
+    if (!pFontString_ || !pFontString_->get_text_object() || is_virtual())
         return;
 
     std::unique_ptr<texture> pCarret(new texture(pManager_));

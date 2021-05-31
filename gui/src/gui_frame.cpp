@@ -682,7 +682,8 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
     if (!pManager_->add_uiobject(pRegion.get()))
         return nullptr;
 
-    pRegion->create_glue();
+    if (!pRegion->is_virtual())
+        pRegion->create_glue();
 
     for (auto* pObj : lInheritance)
     {
@@ -725,7 +726,8 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     if (!pManager_->add_uiobject(pNewFrame.get()))
         return nullptr;
 
-    pNewFrame->create_glue();
+    if (!pNewFrame->is_virtual())
+        pNewFrame->create_glue();
 
     for (auto* pObj : lInheritance)
     {
