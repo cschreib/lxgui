@@ -19,7 +19,7 @@ namespace sdl
     class material;
 
     /// SDL implementation of rendering
-    class renderer : public gui::renderer
+    class renderer final : public gui::renderer
     {
     public :
 

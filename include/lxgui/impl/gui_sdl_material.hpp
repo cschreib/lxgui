@@ -31,7 +31,7 @@ namespace sdl
     *   or a real SDL_Texture. It is also used by the
     *   gui::sdl::render_target class to store the output data.
     */
-    class material : public gui::material
+    class material final : public gui::material
     {
     public :
 

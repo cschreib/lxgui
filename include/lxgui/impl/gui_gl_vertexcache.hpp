@@ -24,7 +24,7 @@ namespace gl
     *   \note This is an abstract class that must be inherited
     *         from and created by the corresponding gui::renderer.
     */
-    class vertex_cache : public gui::vertex_cache
+    class vertex_cache final : public gui::vertex_cache
     {
     public :
 

@@ -17,7 +17,7 @@ namespace gui {
 namespace sdl
 {
     /// A place to render things (the screen, a texture, ...)
-    class render_target : public gui::render_target
+    class render_target final : public gui::render_target
     {
     public :
 

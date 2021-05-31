@@ -23,7 +23,7 @@ namespace gl
     *   It uses the freetype library to read data from .ttf and
     *   .otf files and to render the characters on the font texture.
     */
-    class font : public gui::font
+    class font final : public gui::font
     {
     public :
 

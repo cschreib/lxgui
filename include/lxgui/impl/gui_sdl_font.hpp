@@ -24,7 +24,7 @@ namespace sdl
     /** This is the SDL implementation of the gui::font.
         It uses SDL_ttf to render glyphs and get character data.
     */
-    class font : public gui::font
+    class font final : public gui::font
     {
     public :
 

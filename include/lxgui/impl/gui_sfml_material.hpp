@@ -21,7 +21,7 @@ namespace sfml
     *   or a real sf::Texture. It is also used by the
     *   gui::sfml::render_target class to store the output data.
     */
-    class material : public gui::material
+    class material final : public gui::material
     {
     public :
 

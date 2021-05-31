@@ -18,7 +18,7 @@ namespace sfml
     /** This is the SFML implementation of the gui::font.
         It uses sf::Font to render glyphs and get character data.
     */
-    class font : public gui::font
+    class font final : public gui::font
     {
     public :
 

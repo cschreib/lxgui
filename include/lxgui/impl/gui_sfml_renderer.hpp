@@ -20,7 +20,7 @@ namespace gui {
 namespace sfml
 {
     /// SFML implementation of rendering
-    class renderer : public gui::renderer
+    class renderer final : public gui::renderer
     {
     public :
 
