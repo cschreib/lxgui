@@ -1000,6 +1000,49 @@ std::string frame::get_adjusted_script_name(const std::string& sScriptName)
     return sAdjustedName;
 }
 
+std::string hijack_sol_error_line(std::string sOriginalMessage, const std::string& sFile, uint uiLineNbr)
+{
+    auto uiPos1 = sOriginalMessage.find("[string \"" + sFile);
+    if (uiPos1 == std::string::npos)
+        return sOriginalMessage;
+
+    auto uiPos2 = sOriginalMessage.find_first_of('"', uiPos1 + 9);
+    if (uiPos2 == std::string::npos)
+        return sOriginalMessage;
+
+    sOriginalMessage.erase(uiPos1, uiPos2 - uiPos1 + 2);
+    sOriginalMessage.insert(uiPos1, sFile);
+
+    auto uiPos3 = sOriginalMessage.find_first_of(':', uiPos1 + sFile.size());
+    if (uiPos3 == std::string::npos)
+        return sOriginalMessage;
+
+    auto uiPos4 = sOriginalMessage.find_first_of(':', uiPos3 + 1);
+    if (uiPos4 == std::string::npos)
+        return sOriginalMessage;
+
+    uint uiOffset = utils::string_to_uint(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1));
+    sOriginalMessage.erase(uiPos3 + 1, uiPos4 - uiPos3 - 1);
+    sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset));
+
+    return sOriginalMessage;
+}
+
+std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, uint uiLineNbr)
+{
+    std::string sNewError;
+    std::string sLine;
+    for (auto sLine : utils::cut(sOriginalMessage, "\n"))
+    {
+        if (!sNewError.empty())
+            sNewError += '\n';
+
+        sNewError += hijack_sol_error_line(sLine, sFile, uiLineNbr);
+    }
+
+    return sNewError;
+}
+
 void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
 {
     std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sScriptName);
@@ -1015,15 +1058,14 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     // Actually register the function
     try
     {
-        pManager_->get_lua().script(sStr, sol::script_default_on_error);
+        pManager_->get_lua().script(sStr, sol::script_default_on_error, sFile);
         lDefinedScriptList_[sScriptName] = sContent;
         lXMLScriptInfoList_[sScriptName].sFile = sFile;
         lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
     }
     catch (const sol::error& mError)
     {
-        // TODO: show file/line number from lXMLScriptInfoList_
-        std::string sError = mError.what();
+        std::string sError = hijack_sol_error_message(mError.what(), sFile, uiLineNbr);
         gui::out << gui::error << sError << std::endl;
 
         event mEvent("LUA_ERROR");
@@ -1302,6 +1344,12 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
         return;
     }
 
+    // Copy info, in case frame is deleted
+    script_info mScriptInfo;
+    std::map<std::string, script_info>::iterator iterInfo = lXMLScriptInfoList_.find(sScriptName);
+    if (iterInfo != lXMLScriptInfoList_.end())
+        mScriptInfo = iterInfo->second;
+
     auto mResult = mCallback(mSelf, sol::as_args(lArgs));
     // WARNING: after this point, the frame (this) may be deleted.
     // Do not use any member variable or member function directly.
@@ -1310,8 +1358,7 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
     {
         sol::error mError = mResult;
 
-        // TODO: show file/line number from lXMLScriptInfoList_
-        std::string sError = mError.what();
+        std::string sError = hijack_sol_error_message(mError.what(), mScriptInfo.sFile, mScriptInfo.uiLineNbr);
 
         gui::out << gui::error << sError << std::endl;
 
