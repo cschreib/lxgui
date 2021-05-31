@@ -163,6 +163,7 @@ if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_
 endif()
 
 set(SOL_SAFE_NUMERICS TRUE)
+set(SOL_PRINT_ERRORS FALSE)
 
 # add the subdirectories
 add_subdirectory(utils)

@@ -10,5 +10,6 @@
 // Configure lua verion
 /* #undef LXGUI_LUA51 */
 #define SOL_SAFE_NUMERICS 1
+#define SOL_PRINT_ERRORS 0
 // Configure OpenGL version
 #define LXGUI_OPENGL3
