@@ -16,7 +16,9 @@ var searchData=
   ['high_677',['HIGH',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ab89de3b4b81c4facfac906edf29aec8c',1,'lxgui::gui']]],
   ['highlight_678',['highlight',['../classlxgui_1_1gui_1_1button.html#a8d16306d9176c5c7c7838f1390004ca1',1,'lxgui::gui::button::highlight()'],['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a57830ad692fb15d7a396d61f7bd9ccc7',1,'lxgui::gui::HIGHLIGHT()']]],
   ['highlight_5ftext_679',['highlight_text',['../classlxgui_1_1gui_1_1edit__box.html#ada97df13a9111ded563852b1f93cf35a',1,'lxgui::gui::edit_box']]],
-  ['hls_680',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]],
-  ['horizontal_681',['HORIZONTAL',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::gradient::HORIZONTAL()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::slider::HORIZONTAL()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::status_bar::HORIZONTAL()']]],
-  ['hsv_682',['hsv',['../structlxgui_1_1gui_1_1color_1_1hsv.html',1,'lxgui::gui::color']]]
+  ['hijack_5fsol_5ferror_5fline_680',['hijack_sol_error_line',['../namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048',1,'lxgui::gui']]],
+  ['hijack_5fsol_5ferror_5fmessage_681',['hijack_sol_error_message',['../namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128',1,'lxgui::gui']]],
+  ['hls_682',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]],
+  ['horizontal_683',['HORIZONTAL',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::gradient::HORIZONTAL()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::slider::HORIZONTAL()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e',1,'lxgui::gui::status_bar::HORIZONTAL()']]],
+  ['hsv_684',['hsv',['../structlxgui_1_1gui_1_1color_1_1hsv.html',1,'lxgui::gui::color']]]
 ];

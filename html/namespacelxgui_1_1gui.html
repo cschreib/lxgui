@@ -300,6 +300,10 @@ Functions</h2></td></tr>
 <tr class="separator:ac3eb0797f9a6420072ce91cb11948d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad57f0ca9397db0fadf600a138b82d1ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad57f0ca9397db0fadf600a138b82d1ab">l_xml_error</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *)</td></tr>
 <tr class="separator:ad57f0ca9397db0fadf600a138b82d1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54d23357c5e1da31598468a72388e048"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">hijack_sol_error_line</a> (std::string sOriginalMessage, const std::string &amp;sFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiLineNbr)</td></tr>
+<tr class="separator:a54d23357c5e1da31598468a72388e048"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6852e747fabf40d48ce04b0bd9f47128"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">hijack_sol_error_message</a> (std::string sOriginalMessage, const std::string &amp;sFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiLineNbr)</td></tr>
+<tr class="separator:a6852e747fabf40d48ce04b0bd9f47128"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7883b791709545509a95db5de251f57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#af7883b791709545509a95db5de251f57">count_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
 <tr class="separator:af7883b791709545509a95db5de251f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1417131ce04efe31b8e95d581499167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">print_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
@@ -864,7 +868,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00741">741</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00742">742</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -909,6 +913,78 @@ template&lt;typename ObjectType &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__color_8cpp_source.html#l00095">95</a> of file <a class="el" href="gui__color_8cpp_source.html">gui_color.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a54d23357c5e1da31598468a72388e048"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54d23357c5e1da31598468a72388e048">&#9670;&nbsp;</a></span>hijack_sol_error_line()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::hijack_sol_error_line </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sOriginalMessage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiLineNbr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01003">1003</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6852e747fabf40d48ce04b0bd9f47128"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6852e747fabf40d48ce04b0bd9f47128">&#9670;&nbsp;</a></span>hijack_sol_error_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::hijack_sol_error_message </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sOriginalMessage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiLineNbr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01031">1031</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1135,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01198">1198</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01242">1242</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1975,7 +2051,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri May 14 2021 07:37:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 31 2021 09:37:24 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
