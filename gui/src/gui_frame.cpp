@@ -1049,29 +1049,34 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     if (iterH != lDefinedHandlerList_.end())
         lDefinedHandlerList_.erase(iterH);
 
-    std::string sAdjustedName = get_adjusted_script_name(sScriptName);
-
-    std::string sStr;
-    sStr += "function " + sLuaName_ + ":" + sAdjustedName +
-        "(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " + sContent + " end";
-
-    // Actually register the function
-    try
+    if (!is_virtual())
     {
-        pManager_->get_lua().script(sStr, sol::script_default_on_error, sFile);
-        lDefinedScriptList_[sScriptName] = sContent;
-        lXMLScriptInfoList_[sScriptName].sFile = sFile;
-        lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
-    }
-    catch (const sol::error& mError)
-    {
-        std::string sError = hijack_sol_error_message(mError.what(), sFile, uiLineNbr);
-        gui::out << gui::error << sError << std::endl;
+        // Actually register the function
+        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        pManager_->get_event_manager()->fire_event(mEvent);
+        std::string sStr;
+        sStr += "function " + sLuaName_ + ":" + sAdjustedName +
+            "(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " + sContent + " end";
+
+        try
+        {
+            pManager_->get_lua().script(sStr, sol::script_default_on_error, sFile);
+        }
+        catch (const sol::error& mError)
+        {
+            std::string sError = hijack_sol_error_message(mError.what(), sFile, uiLineNbr);
+            gui::out << gui::error << sError << std::endl;
+
+            event mEvent("LUA_ERROR");
+            mEvent.add(sError);
+            pManager_->get_event_manager()->fire_event(mEvent);
+            return;
+        }
     }
+
+    lDefinedScriptList_[sScriptName] = sContent;
+    lXMLScriptInfoList_[sScriptName].sFile = sFile;
+    lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
 }
 
 void frame::define_script(const std::string& sScriptName, handler mHandler)
