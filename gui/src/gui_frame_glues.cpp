@@ -114,7 +114,10 @@
 *   you would normally register for events and specific inputs, set up
 *   initial states for extra logic, or do localization. When this event is
 *   triggered, you can assume that all the frame's regions and children
-*   have already been loaded. Other frames and other regions may not, however,
+*   have already been loaded. Other frames and other regions can be assumed
+*   to have already been loaded *only* if they are either defined earlier in
+*   the same XML file, or if they are defined in an addon listed earlier than
+*   the current addon in the 'addons.txt' file.
 *   hence they must not be refered to (directly or indirectly).
 *   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
 *   trigger if the frame is hidden. This event provides one argument to
