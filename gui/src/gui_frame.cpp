@@ -1017,13 +1017,22 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     if (uiPos3 == std::string::npos)
         return sOriginalMessage;
 
-    auto uiPos4 = sOriginalMessage.find_first_of(':', uiPos3 + 1);
+    auto uiPos4 = sOriginalMessage.find_first_of(":>", uiPos3 + 1);
     if (uiPos4 == std::string::npos)
         return sOriginalMessage;
 
     uint uiOffset = utils::string_to_uint(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1));
     sOriginalMessage.erase(uiPos3 + 1, uiPos4 - uiPos3 - 1);
     sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset - 1));
+    uiPos4 = sOriginalMessage.find_first_of(':', uiPos3 + 1);
+
+    auto uiPos5 = sOriginalMessage.find("[string \"" + sFile, uiPos4);
+    if (uiPos5 == std::string::npos)
+        return sOriginalMessage;
+
+    std::string sMessage = sOriginalMessage.substr(uiPos4 + 1);
+    sOriginalMessage.erase(uiPos4 + 1);
+    sOriginalMessage += hijack_sol_error_line(sMessage, sFile, uiLineNbr);
 
     return sOriginalMessage;
 }
@@ -1065,6 +1074,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         catch (const sol::error& mError)
         {
             std::string sError = hijack_sol_error_message(mError.what(), sFile, uiLineNbr);
+
             gui::out << gui::error << sError << std::endl;
 
             event mEvent("LUA_ERROR");
