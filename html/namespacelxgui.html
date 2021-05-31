@@ -156,7 +156,7 @@ Typedefs</h2></td></tr>
 <li><code>OnKeyDown</code>: Triggered when any keyboard key is pressed. Will not trigger if the frame is hidden. This event provides two arguments to the registered callback: a number identifying the key, and the human-readable name of the key.</li>
 <li><code>OnKeyUp</code>: Triggered when any keyboard key is released. Will not trigger if the frame is hidden. This event provides two arguments to the registered callback: a number identifying the key, and the human-readable name of the key.</li>
 <li><code>OnLeave</code>: Triggered when the mouse pointer leaves the area of the screen occupied by the frame. Note: this only takes into account the position and size of the frame and its title region, but not the space occupied by its children or layered regions. Will not trigger if the frame is hidden, unless the frame was just hidden with the mouse previously inside the frame.</li>
-<li><code>OnLoad</code>: Triggered just after the frame is created. This is where you would normally register for events and specific inputs, set up initial states for extra logic, or do localization. When this event is triggered, you can assume that all the frame's regions and children have already been loaded. Other frames and other regions may not, however, hence they must not be refered to (directly or indirectly).</li>
+<li><code>OnLoad</code>: Triggered just after the frame is created. This is where you would normally register for events and specific inputs, set up initial states for extra logic, or do localization. When this event is triggered, you can assume that all the frame's regions and children have already been loaded. Other frames and other regions can be assumed to have already been loaded <em>only</em> if they are either defined earlier in the same XML file, or if they are defined in an addon listed earlier than the current addon in the 'addons.txt' file. hence they must not be refered to (directly or indirectly).</li>
 <li><code>OnMouseDown</code>: Triggered when any mouse button is pressed. Will not trigger if the frame is hidden. This event provides one argument to the registered callback: a string identifying the mouse button (<code>"LeftButton"</code>, <code>"RightButton"</code>, or <code>"MiddleButton"</code>).</li>
 <li><code>OnMouseUp</code>: Triggered when any mouse button is released. Will not trigger if the frame is hidden. This event provides one argument to the registered callback: a string identifying the mouse button (<code>"LeftButton"</code>, <code>"RightButton"</code>, or <code>"MiddleButton"</code>).</li>
 <li><code>OnMouseWheel</code>: Triggered when the mouse wheel is moved. This event provides one argument to the registered callback: a number indicating by how many "notches" the wheel has turned in this event. A positive value means the wheel has been moved "away" from the user (this would normally scroll <em>up</em> in a document).</li>
@@ -284,7 +284,7 @@ Typedefs</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 31 2021 09:57:26 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon May 31 2021 10:23:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
