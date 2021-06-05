@@ -156,7 +156,7 @@ namespace gui
         /** \return 'true' if it is the case
         *   \note See set_allow_clicks_outside_thumb().
         */
-        bool  are_clicks_outside_thumb_allowed();
+        bool are_clicks_outside_thumb_allowed();
 
         /// Checks if the provided coordinates are in the frame.
         /** \param fX The horizontal coordinate

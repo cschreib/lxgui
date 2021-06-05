@@ -134,9 +134,8 @@ void slider::constrain_thumb_()
             else
                 fValue = pThumbTexture_->get_point(anchor_point::CENTER)->get_abs_offset_y()/fAbsHeight_;
 
-            fValue *= (fMaxValue_ - fMinValue_);
-            fValue += fMinValue_;
-            fValue = fValue > fMaxValue_ ? fMaxValue_ : (fValue < fMinValue_ ? fMinValue_ : fValue);
+            fValue = fValue * (fMaxValue_ - fMinValue_) + fMinValue_;
+            fValue = std::clamp(fValue, fMinValue_, fMaxValue_);
             step_value(fValue, fValueStep_);
         }
 
@@ -229,7 +228,7 @@ void slider::set_min_value(float fMin)
         if (fValue_ < fMinValue_)
         {
             fValue_ = fMinValue_;
-            lQueuedEventList_.push_back("OnValueChanged");
+            on_script("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -247,7 +246,7 @@ void slider::set_max_value(float fMax)
         if (fValue_ > fMaxValue_)
         {
             fValue_ = fMaxValue_;
-            lQueuedEventList_.push_back("OnValueChanged");
+            on_script("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -265,8 +264,8 @@ void slider::set_min_max_values(float fMin, float fMax)
 
         if (fValue_ > fMaxValue_ || fValue_ < fMinValue_)
         {
-            fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-            lQueuedEventList_.push_back("OnValueChanged");
+            fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
+            on_script("OnValueChanged");
         }
 
         notify_thumb_texture_needs_update_();
@@ -275,14 +274,15 @@ void slider::set_min_max_values(float fMin, float fMax)
 
 void slider::set_value(float fValue, bool bSilent)
 {
+    fValue = std::clamp(fValue, fMinValue_, fMaxValue_);
+    step_value(fValue, fValueStep_);
+
     if (fValue != fValue_)
     {
         fValue_ = fValue;
-        fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
-        step_value(fValue_, fValueStep_);
 
         if (!bSilent)
-            lQueuedEventList_.push_back("OnValueChanged");
+            on_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }
@@ -298,11 +298,11 @@ void slider::set_value_step(float fValueStep)
         step_value(fMaxValue_, fValueStep_);
 
         float fOldValue = fValue_;
+        fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
         step_value(fValue_, fValueStep_);
-        fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
 
         if (fValue_ != fOldValue)
-            lQueuedEventList_.push_back("OnValueChanged");
+            on_script("OnValueChanged");
 
         notify_thumb_texture_needs_update_();
     }
@@ -479,7 +479,7 @@ void slider::update(float fDelta)
 
                 fValue_ *= (fMaxValue_ - fMinValue_);
                 fValue_ += fMinValue_;
-                fValue_ = fValue_ > fMaxValue_ ? fMaxValue_ : (fValue_ < fMinValue_ ? fMinValue_ : fValue_);
+                fValue_ = std::clamp(fValue_, fMinValue_, fMaxValue_);
                 step_value(fValue_, fValueStep_);
 
                 if (fValue_ != fOldValue)
