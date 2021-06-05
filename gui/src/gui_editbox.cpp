@@ -558,7 +558,7 @@ void edit_box::set_integer_only(bool bIntegerOnly)
     {
         bIntegerOnly_ = bIntegerOnly;
 
-        if (bIntegerOnly_ && bPositiveOnly_)
+        if (bNumericOnly_ && bIntegerOnly_)
         {
             check_text_();
             iterCarretPos_ = sUnicodeText_.end();
@@ -883,12 +883,25 @@ void edit_box::create_carret_()
 
 void edit_box::check_text_()
 {
-    if (!utils::is_number(sUnicodeText_) && bNumericOnly_)
-        sUnicodeText_.clear();
-    else
+    if (sUnicodeText_.size() > uiMaxLetters_)
+        sUnicodeText_.resize(uiMaxLetters_);
+
+    if (bNumericOnly_ && !utils::is_number(sUnicodeText_))
     {
-        if (sUnicodeText_.size() > uiMaxLetters_)
-            sUnicodeText_.resize(uiMaxLetters_);
+        sUnicodeText_.clear();
+        return;
+    }
+
+    if (bIntegerOnly_ && !utils::is_integer(sUnicodeText_))
+    {
+        sUnicodeText_.clear();
+        return;
+    }
+
+    if (bPositiveOnly_ && utils::string_to_double(sUnicodeText_) < 0)
+    {
+        sUnicodeText_.clear();
+        return;
     }
 }
 
