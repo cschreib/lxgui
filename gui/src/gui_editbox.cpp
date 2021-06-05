@@ -1069,7 +1069,7 @@ bool edit_box::add_char_(char32_t sUnicode)
                 sUnicodeText_.find(U'-') != utils::ustring::npos)
                 return false;
         }
-        else if (sUnicode < U'0' || sUnicode > U'9')
+        else if (!utils::is_number(sUnicode))
             return false;
     }
 
