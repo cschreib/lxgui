@@ -668,6 +668,7 @@ namespace gui
         method(edit_box, is_password),
         method(edit_box, set_blink_speed),
         method(edit_box, set_cursor_position),
+        method(edit_box, set_font),
         method(edit_box, set_max_history_lines),
         method(edit_box, set_max_letters),
         method(edit_box, set_multi_line),

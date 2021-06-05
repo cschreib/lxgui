@@ -1,4 +1,6 @@
 #include "lxgui/gui_editbox.hpp"
+#include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_out.hpp"
 
 #include <lxgui/luapp_state.hpp>
 #include <lxgui/luapp_function.hpp>
@@ -327,6 +329,42 @@ int lua_edit_box::_set_cursor_position(lua_State* pLua)
     mFunc.add(0, "cursor position", lua::type::NUMBER);
     if (mFunc.check())
         get_object()->set_cursor_position(mFunc.get(0)->get_number());
+
+    return mFunc.on_return();
+}
+
+/** @function set_font
+*/
+int lua_edit_box::_set_font(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("EditBox:set_font", pLua);
+    mFunc.add(0, "file", lua::type::STRING);
+    mFunc.add(1, "height", lua::type::NUMBER);
+    mFunc.add(3, "flags", lua::type::STRING, true);
+
+    if (mFunc.check())
+    {
+        get_object()->set_font(mFunc.get(0)->get_string(), mFunc.get(1)->get_number());
+        if (mFunc.is_provided(2))
+        {
+            std::string sFlags = mFunc.get(2)->get_string();
+            if (sFlags.find("OUTLINE") != std::string::npos ||
+                sFlags.find("THICKOUTLINE") != std::string::npos)
+                get_object()->get_font_string()->set_outlined(true);
+            else if (sFlags.empty())
+                get_object()->get_font_string()->set_outlined(false);
+            else
+            {
+                gui::out << gui::warning << mFunc.get_name() << " : "
+                    << "Unknown flag list : \"" << sFlags <<"\"." << std::endl;
+            }
+        }
+        else
+            get_object()->get_font_string()->set_outlined(false);
+    }
 
     return mFunc.on_return();
 }

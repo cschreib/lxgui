@@ -374,6 +374,12 @@ namespace gui
         */
         void set_font_string(font_string* pFont);
 
+        /// Sets the font (file and size) to render the content.
+        /** \param sFontName The file path to the .ttf file
+        *   \param fHeight   The font height
+        */
+        void set_font(const std::string& sFontName, float fHeight);
+
         /// Notifies this edit_box it has gained/lost focus.
         /** \param bFocus 'true' if the edit_box has gained focus
         *   \note This function is called by manager.
@@ -486,6 +492,7 @@ namespace gui
         int _is_password(lua_State*);
         int _set_blink_speed(lua_State*);
         int _set_cursor_position(lua_State*);
+        int _set_font(lua_State*);
         int _set_max_history_lines(lua_State*);
         int _set_max_letters(lua_State*);
         int _set_multi_line(lua_State*);

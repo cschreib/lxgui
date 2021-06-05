@@ -122,8 +122,8 @@ namespace gui
         const color& get_text_color() const;
 
         /// Sets this font_string's font (file and size).
-        /** \param sFontName   The file path to the .ttf file
-        *   \param fHeight     The font height
+        /** \param sFontName The file path to the .ttf file
+        *   \param fHeight   The font height
         */
         void set_font(const std::string& sFontName, float fHeight);
 

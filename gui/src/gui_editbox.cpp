@@ -776,6 +776,35 @@ void edit_box::set_font_string(font_string* pFont)
     pFontString_->enable_formatting(false);
 }
 
+void edit_box::set_font(const std::string& sFontName, float fHeight)
+{
+    if (!pFontString_)
+    {
+        std::unique_ptr<font_string> pText = create_font_string_();
+
+        pText->set_name("$parentFontString");
+        if (!pManager_->add_uiobject(pText.get()))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to add \"$parentFontString\" to \""+sName_+"\", "
+                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
+            return;
+        }
+
+        if (!is_virtual())
+        {
+            pText->create_glue();
+            pText->enable_formatting(false);
+        }
+
+        pText->notify_loaded();
+        set_font_string(pText.get());
+        add_region(std::move(pText));
+    }
+
+    pFontString_->set_font(sFontName, fHeight);
+}
+
 std::unique_ptr<font_string> edit_box::create_font_string_()
 {
     std::unique_ptr<font_string> pFont(new font_string(pManager_));
