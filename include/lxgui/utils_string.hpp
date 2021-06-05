@@ -198,6 +198,9 @@ namespace utils
     bool is_number(const string& s);
     bool is_number(const ustring& s);
     bool is_number(char s);
+    bool is_integer(const string& s);
+    bool is_integer(const ustring& s);
+    bool is_integer(char s);
     bool is_boolean(const string& s);
     bool is_boolean(const ustring& s);
 

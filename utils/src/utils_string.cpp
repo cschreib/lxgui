@@ -193,6 +193,29 @@ bool is_number(char32_t s)
     return U'0' <= s && s <= U'9';
 }
 
+bool is_integer(const string& s)
+{
+    string_stream mTemp(s);
+    std::int64_t iValue = 0;
+    mTemp >> iValue;
+    return !mTemp.fail();
+}
+
+bool is_integer(const ustring& s)
+{
+    return is_integer(unicode_to_utf8(s));
+}
+
+bool is_integer(char s)
+{
+    return is_number(s);
+}
+
+bool is_integer(char32_t s)
+{
+    return is_number(s);
+}
+
 bool string_to_bool(const string& s)
 {
     return s == "true";
