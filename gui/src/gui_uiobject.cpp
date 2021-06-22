@@ -238,6 +238,18 @@ float uiobject::get_alpha() const
     return fAlpha_;
 }
 
+float uiobject::get_effective_alpha() const
+{
+    if (pParent_)
+    {
+        return pParent_->get_effective_alpha()*get_alpha();
+    }
+    else
+    {
+        return get_alpha();
+    }
+}
+
 void uiobject::set_alpha(float fAlpha)
 {
     if (fAlpha_ != fAlpha)

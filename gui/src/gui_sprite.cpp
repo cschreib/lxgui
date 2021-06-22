@@ -314,9 +314,9 @@ float sprite::get_height() const
     return fHeight_;
 }
 
-color sprite::get_color() const
+color sprite::get_color(uint uiIndex) const
 {
-    return mQuad_.v[0].col;
+    return mQuad_.v[uiIndex].col;
 }
 
 blend_mode sprite::get_blend_mode() const

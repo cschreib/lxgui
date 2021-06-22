@@ -264,6 +264,27 @@ void backdrop::render() const
 {
     if (pParent_)
     {
+        float fAlpha = pParent_->get_effective_alpha();
+
+        sprite mTempSprite;
+        auto mGetSprite = [&](sprite& mSprite) -> sprite&
+        {
+            if (fAlpha != 1.0)
+            {
+                mTempSprite = mSprite;
+                color mColor(1.0, 1.0, 1.0, fAlpha);
+
+                for (uint uiIndex = 0; uiIndex < 4; ++uiIndex)
+                    mTempSprite.set_color(mSprite.get_color(uiIndex)*mColor, uiIndex);
+
+                return mTempSprite;
+            }
+            else
+            {
+                return mSprite;
+            }
+        };
+
         const quad2f& lParentBorders = pParent_->get_borders();
 
         if (bHasBackground_)
@@ -283,7 +304,7 @@ void backdrop::render() const
                 );
             }
 
-            mBackground_.render_2v(
+            mGetSprite(mBackground_).render_2v(
                 lParentBorders.left   + lBackgroundInsets_.left,
                 lParentBorders.top    + lBackgroundInsets_.top,
                 lParentBorders.right  - lBackgroundInsets_.right,
@@ -296,25 +317,25 @@ void backdrop::render() const
             float fEdgeScale = fEdgeSize_/fOriginalEdgeSize_;
 
             // render corners
-            get_edge(edge_type::TOPLEFT).render_ex(
+            mGetSprite(get_edge(edge_type::TOPLEFT)).render_ex(
                 lParentBorders.left + lEdgeInsets_.left,
                 lParentBorders.top  + lEdgeInsets_.top,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::TOPRIGHT).render_ex(
+            mGetSprite(get_edge(edge_type::TOPRIGHT)).render_ex(
                 lParentBorders.right - lEdgeInsets_.right,
                 lParentBorders.top   + lEdgeInsets_.top,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::BOTTOMLEFT).render_ex(
+            mGetSprite(get_edge(edge_type::BOTTOMLEFT)).render_ex(
                 lParentBorders.left   + lEdgeInsets_.left,
                 lParentBorders.bottom - lEdgeInsets_.bottom,
                 0.0f, fEdgeScale, fEdgeScale
             );
 
-            get_edge(edge_type::BOTTOMRIGHT).render_ex(
+            mGetSprite(get_edge(edge_type::BOTTOMRIGHT)).render_ex(
                 lParentBorders.right  - lEdgeInsets_.right,
                 lParentBorders.bottom - lEdgeInsets_.bottom,
                 0.0f, fEdgeScale, fEdgeScale
@@ -326,15 +347,15 @@ void backdrop::render() const
 
             if (fEdgeHeight > 0.0f)
             {
-                get_edge(edge_type::LEFT).set_texture_rect(
+                mGetSprite(get_edge(edge_type::LEFT)).set_texture_rect(
                     0.0f, 0.0f, fOriginalEdgeSize_, fEdgeHeight
                 );
 
-                get_edge(edge_type::RIGHT).set_texture_rect(
+                mGetSprite(get_edge(edge_type::RIGHT)).set_texture_rect(
                     fOriginalEdgeSize_, 0.0f, 2.0f*fOriginalEdgeSize_, fEdgeHeight
                 );
 
-                get_edge(edge_type::LEFT).render_2v(
+                mGetSprite(get_edge(edge_type::LEFT)).render_2v(
                     lParentBorders.left   + lEdgeInsets_.left,
                     lParentBorders.top    + lEdgeInsets_.top    + fEdgeSize_,
 
@@ -342,7 +363,7 @@ void backdrop::render() const
                     lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_
                 );
 
-                get_edge(edge_type::RIGHT).render_2v(
+                mGetSprite(get_edge(edge_type::RIGHT)).render_2v(
                     lParentBorders.right  - lEdgeInsets_.right  - fEdgeSize_,
                     lParentBorders.top    + lEdgeInsets_.top    + fEdgeSize_,
 
@@ -356,15 +377,15 @@ void backdrop::render() const
 
             if (fEdgeWidth > 0.0f)
             {
-                get_edge(edge_type::TOP).set_texture_rect(
+                mGetSprite(get_edge(edge_type::TOP)).set_texture_rect(
                     2.0f*fOriginalEdgeSize_, 0.0f, 3.0f*fOriginalEdgeSize_, fEdgeWidth
                 );
 
-                get_edge(edge_type::BOTTOM).set_texture_rect(
+                mGetSprite(get_edge(edge_type::BOTTOM)).set_texture_rect(
                     3.0f*fOriginalEdgeSize_, 0.0f, 4.0f*fOriginalEdgeSize_, fEdgeWidth
                 );
 
-                get_edge(edge_type::TOP).render_4v(
+                mGetSprite(get_edge(edge_type::TOP)).render_4v(
                     lParentBorders.right - lEdgeInsets_.right - fEdgeSize_,
                     lParentBorders.top   + lEdgeInsets_.top,
 
@@ -378,7 +399,7 @@ void backdrop::render() const
                     lParentBorders.top   + lEdgeInsets_.top
                 );
 
-                get_edge(edge_type::BOTTOM).render_4v(
+                mGetSprite(get_edge(edge_type::BOTTOM)).render_4v(
                     lParentBorders.right  - lEdgeInsets_.right  - fEdgeSize_,
                     lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_,
 

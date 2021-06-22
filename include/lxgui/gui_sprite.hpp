@@ -238,10 +238,11 @@ namespace gui
         */
         float get_height() const;
 
-        /// Returns this sprite's color.
-        /** \return This sprite's color
+        /// Returns the color of a vertex.
+        /** \param uiIndex The vertex index
+        *   \return The vertex color
         */
-        color get_color() const;
+        color get_color(uint uiIndex) const;
 
         /// Returns this sprite's blend mode.
         /** \return This sprite's blend mode

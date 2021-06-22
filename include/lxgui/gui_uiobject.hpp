@@ -310,6 +310,12 @@ namespace gui
         */
         float get_alpha() const;
 
+        /// Returns this widget's effective alpha (opacity).
+        /** \return This widget's effective alpha (opacity).
+        *   \note This includes the widget's parent alpha.
+        */
+        float get_effective_alpha() const;
+
         /// shows this widget.
         /** \note Its parent must be shown for it to appear on
         *         the screen.

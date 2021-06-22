@@ -55,15 +55,20 @@ void font_string::render()
     fX += fXOffset_;
     fY += fYOffset_;
 
+    color mColor(1.0, 1.0, 1.0, get_effective_alpha());
+
     if (bHasShadow_)
     {
-        pText_->set_color(mShadowColor_, true);
+        pText_->set_color(mShadowColor_*mColor, true);
         pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
     }
 
     if (bIsOutlined_)
     {
-        pText_->set_color(color(0, 0, 0, mTextColor_.a), true);
+        float fOutlineAlpha = std::pow(mTextColor_.a*mColor.a,
+            1.0/static_cast<float>(OUTLINE_QUALITY));
+
+        pText_->set_color(color(0, 0, 0, fOutlineAlpha), true);
         for (uint i = 0; i < OUTLINE_QUALITY; ++i)
         {
             static const float PI2 = 2.0f*std::acos(-1.0f);
@@ -76,7 +81,7 @@ void font_string::render()
         }
     }
 
-    pText_->set_color(mTextColor_);
+    pText_->set_color(mTextColor_*mColor);
     pText_->render(fX, fY);
 }
 

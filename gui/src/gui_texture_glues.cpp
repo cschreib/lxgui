@@ -130,13 +130,17 @@ int lua_texture::_get_vertex_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:get_vertex_color", pLua, 4);
+    mFunc.add(0, "index", lua::type::NUMBER);
 
-    color mColor = get_object()->get_vertex_color();
+    if (mFunc.check())
+    {
+        color mColor = get_object()->get_vertex_color(mFunc.get(0)->get_number());
 
-    mFunc.push(mColor.r);
-    mFunc.push(mColor.g);
-    mFunc.push(mColor.b);
-    mFunc.push(mColor.a);
+        mFunc.push(mColor.r);
+        mFunc.push(mColor.g);
+        mFunc.push(mColor.b);
+        mFunc.push(mColor.a);
+    }
 
     return mFunc.on_return();
 }
@@ -501,40 +505,46 @@ int lua_texture::_set_vertex_color(lua_State* pLua)
         return 0;
 
     lua::function mFunc("Texture:set_vertex_color", pLua);
+    mFunc.add(0, "index", lua::type::NUMBER);
+    mFunc.add(1, "red", lua::type::NUMBER);
+    mFunc.add(2, "green", lua::type::NUMBER);
+    mFunc.add(3, "blue", lua::type::NUMBER);
+    mFunc.add(4, "alpha", lua::type::NUMBER);
+    mFunc.new_param_set();
+    mFunc.add(0, "index", lua::type::NUMBER);
+    mFunc.add(1, "color", lua::type::STRING);
+    mFunc.new_param_set();
     mFunc.add(0, "red", lua::type::NUMBER);
     mFunc.add(1, "green", lua::type::NUMBER);
     mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
+    mFunc.add(3, "alpha", lua::type::NUMBER);
     mFunc.new_param_set();
     mFunc.add(0, "color", lua::type::STRING);
 
     if (mFunc.check())
     {
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
+        uint uiIndex = (uint)-1;
+        uint uiOffset = 0;
+        if (mFunc.get_param_set_rank() <= 1)
         {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
+            uiIndex = static_cast<uint>(mFunc.get(0)->get_number());
+            uiOffset = 1;
+        }
+
+        color mColor;
+        if (mFunc.get_param_set_rank() % 2 == 0)
+        {
+            mColor = color(
+                mFunc.get(uiOffset+0)->get_number(),
+                mFunc.get(uiOffset+1)->get_number(),
+                mFunc.get(uiOffset+2)->get_number(),
+                mFunc.get(uiOffset+3)->get_number()
+            );
         }
         else
-            mColor = color(mFunc.get(0)->get_string());
+            mColor = color(mFunc.get(uiOffset+0)->get_string());
 
-        get_object()->set_vertex_color(mColor);
+        get_object()->set_vertex_color(mColor, uiIndex);
     }
 
     return mFunc.on_return();

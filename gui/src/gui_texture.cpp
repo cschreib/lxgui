@@ -85,10 +85,27 @@ void texture::render()
 {
     if (bHasSprite_ && is_visible())
     {
-        mSprite_.render_2v(
-            lBorderList_.left,  lBorderList_.top,
-            lBorderList_.right, lBorderList_.bottom
-        );
+        float fAlpha = get_effective_alpha();
+        if (fAlpha != 1.0f)
+        {
+            sprite mTempSprite = mSprite_;
+            color mColor(1.0, 1.0, 1.0, fAlpha);
+
+            for (uint uiIndex = 0; uiIndex < 4; ++uiIndex)
+                mTempSprite.set_color(mSprite_.get_color(uiIndex)*mColor, uiIndex);
+
+            mTempSprite.render_2v(
+                lBorderList_.left,  lBorderList_.top,
+                lBorderList_.right, lBorderList_.bottom
+            );
+        }
+        else
+        {
+            mSprite_.render_2v(
+                lBorderList_.left,  lBorderList_.top,
+                lBorderList_.right, lBorderList_.bottom
+            );
+        }
     }
 }
 
@@ -158,10 +175,10 @@ const std::string& texture::get_texture() const
     return sTextureFile_;
 }
 
-color texture::get_vertex_color() const
+color texture::get_vertex_color(uint uiIndex) const
 {
     if (bHasSprite_)
-        return mSprite_.get_color();
+        return mSprite_.get_color(uiIndex);
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
@@ -428,11 +445,11 @@ void texture::set_sprite(sprite mSprite)
     notify_renderer_need_redraw();
 }
 
-void texture::set_vertex_color(const color& mColor)
+void texture::set_vertex_color(const color& mColor, uint uiIndex)
 {
     if (bHasSprite_)
     {
-        mSprite_.set_color(mColor);
+        mSprite_.set_color(mColor, uiIndex);
         notify_renderer_need_redraw();
     }
     else
