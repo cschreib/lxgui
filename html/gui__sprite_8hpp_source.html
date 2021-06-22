@@ -194,29 +194,29 @@ $(function() {
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a6eff75ac71a51dc549186bbe0525481a">get_height</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160; </div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a7e633ff7108fb2998e5242eb94c412d3">get_color</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f">blend_mode</a> <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">get_blend_mode</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        std::array&lt;float,4&gt; <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a42397d4041c530db2c96c3539539ff68">get_texture_rect</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160; </div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;        std::array&lt;float,8&gt; <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a551538a2bbfbb40ee844d1603bfb050f">get_texture_coords</a>(<span class="keywordtype">bool</span> bNormalized = <span class="keyword">false</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    private :</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>* pRenderer_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160; </div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keyword">mutable</span> <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mQuad_;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>     mHotSpot_;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <span class="keywordtype">float</span>        fWidth_ = 0.0f, fHeight_ = 0.0f;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    };</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;}</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a90a7b8789a03346cd668b8c74338472c">get_color</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f">blend_mode</a> <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">get_blend_mode</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;        std::array&lt;float,4&gt; <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a42397d4041c530db2c96c3539539ff68">get_texture_rect</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        std::array&lt;float,8&gt; <a class="code" href="classlxgui_1_1gui_1_1sprite.html#a551538a2bbfbb40ee844d1603bfb050f">get_texture_coords</a>(<span class="keywordtype">bool</span> bNormalized = <span class="keyword">false</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    private :</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>* pRenderer_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keyword">mutable</span> <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mQuad_;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>     mHotSpot_;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordtype">float</span>        fWidth_ = 0.0f, fHeight_ = 0.0f;</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    };</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;}</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="astructlxgui_1_1gui_1_1quad_html_a07f0afcc50b7bea0172c44a7464c2d26"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad.html#a07f0afcc50b7bea0172c44a7464c2d26">lxgui::gui::quad::blend</a></div><div class="ttdeci">blend_mode blend</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8hpp_source.html#l00043">gui_sprite.hpp:43</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
@@ -240,7 +240,6 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1quad_html_aaee863ba3c49ce1af0fc3db69c786617"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617">lxgui::gui::quad::v</a></div><div class="ttdeci">std::array&lt; vertex, 4 &gt; v</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8hpp_source.html#l00041">gui_sprite.hpp:41</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a9b1b5abef50ef0fa9de5784166d5f183"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a9b1b5abef50ef0fa9de5784166d5f183">lxgui::gui::sprite::render_2v</a></div><div class="ttdeci">void render_2v(float fX1, float fY1, float fX3, float fY3)</div><div class="ttdoc">Stretches this this sprite and render it on the current render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00125">gui_sprite.cpp:125</a></div></div>
 <div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a7e633ff7108fb2998e5242eb94c412d3"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a7e633ff7108fb2998e5242eb94c412d3">lxgui::gui::sprite::get_color</a></div><div class="ttdeci">color get_color() const</div><div class="ttdoc">Returns this sprite's color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00317">gui_sprite.cpp:317</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a81856a5689dd5848dad0dd8d7e00c728"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">lxgui::gui::sprite::get_blend_mode</a></div><div class="ttdeci">blend_mode get_blend_mode() const</div><div class="ttdoc">Returns this sprite's blend mode.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00322">gui_sprite.cpp:322</a></div></div>
 <div class="ttc" id="agui__color_8hpp_html"><div class="ttname"><a href="gui__color_8hpp.html">gui_color.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a551538a2bbfbb40ee844d1603bfb050f"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a551538a2bbfbb40ee844d1603bfb050f">lxgui::gui::sprite::get_texture_coords</a></div><div class="ttdeci">std::array&lt; float, 8 &gt; get_texture_coords(bool bNormalized=false) const</div><div class="ttdoc">Returns this sprite's texture coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00337">gui_sprite.cpp:337</a></div></div>
@@ -251,6 +250,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html">lxgui::gui::renderer</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8hpp_source.html#l00023">gui_renderer.hpp:23</a></div></div>
 <div class="ttc" id="agui__vector2_8hpp_html"><div class="ttname"><a href="gui__vector2_8hpp.html">gui_vector2.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a0d540ae0624e904545ee16b7fccc052b"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a0d540ae0624e904545ee16b7fccc052b">lxgui::gui::sprite::render</a></div><div class="ttdeci">void render(float fX, float fY) const</div><div class="ttdoc">Renders this sprite on the current render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00087">gui_sprite.cpp:87</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a90a7b8789a03346cd668b8c74338472c"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a90a7b8789a03346cd668b8c74338472c">lxgui::gui::sprite::get_color</a></div><div class="ttdeci">color get_color(uint uiIndex) const</div><div class="ttdoc">Returns the color of a vertex.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00317">gui_sprite.cpp:317</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_ad29237d5e5e75053c1c0deacc77893f7"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#ad29237d5e5e75053c1c0deacc77893f7">lxgui::gui::sprite::set_color</a></div><div class="ttdeci">void set_color(const color &amp;mColor, uint uiIndex=(uint)(-1))</div><div class="ttdoc">Changes the color of this sprite.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00158">gui_sprite.cpp:158</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sprite_html_a4863be1fbb73592402801f9baa038568"><div class="ttname"><a href="classlxgui_1_1gui_1_1sprite.html#a4863be1fbb73592402801f9baa038568">lxgui::gui::sprite::set_dimensions</a></div><div class="ttdeci">void set_dimensions(float fWidth, float fHeight)</div><div class="ttdoc">Changes this sprite's dimensions.</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8cpp_source.html#l00301">gui_sprite.cpp:301</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a246cb1ee567c201f149a8765e79c0b8f"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f">lxgui::gui::blend_mode</a></div><div class="ttdeci">blend_mode</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8hpp_source.html#l00032">gui_sprite.hpp:32</a></div></div>
@@ -260,7 +260,7 @@ $(function() {
 <div class="ttc" id="agui__vertex_8hpp_html"><div class="ttname"><a href="gui__vertex_8hpp.html">gui_vertex.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 31 2021 15:39:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jun 22 2021 07:53:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

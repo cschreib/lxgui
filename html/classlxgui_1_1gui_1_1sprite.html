@@ -149,9 +149,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6eff75ac71a51dc549186bbe0525481a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a6eff75ac71a51dc549186bbe0525481a">get_height</a> () const</td></tr>
 <tr class="memdesc:a6eff75ac71a51dc549186bbe0525481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this sprite's height.  <a href="classlxgui_1_1gui_1_1sprite.html#a6eff75ac71a51dc549186bbe0525481a">More...</a><br /></td></tr>
 <tr class="separator:a6eff75ac71a51dc549186bbe0525481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e633ff7108fb2998e5242eb94c412d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a7e633ff7108fb2998e5242eb94c412d3">get_color</a> () const</td></tr>
-<tr class="memdesc:a7e633ff7108fb2998e5242eb94c412d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this sprite's color.  <a href="classlxgui_1_1gui_1_1sprite.html#a7e633ff7108fb2998e5242eb94c412d3">More...</a><br /></td></tr>
-<tr class="separator:a7e633ff7108fb2998e5242eb94c412d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90a7b8789a03346cd668b8c74338472c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a90a7b8789a03346cd668b8c74338472c">get_color</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex) const</td></tr>
+<tr class="memdesc:a90a7b8789a03346cd668b8c74338472c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the color of a vertex.  <a href="classlxgui_1_1gui_1_1sprite.html#a90a7b8789a03346cd668b8c74338472c">More...</a><br /></td></tr>
+<tr class="separator:a90a7b8789a03346cd668b8c74338472c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81856a5689dd5848dad0dd8d7e00c728"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8f">blend_mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">get_blend_mode</a> () const</td></tr>
 <tr class="memdesc:a81856a5689dd5848dad0dd8d7e00c728"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this sprite's blend mode.  <a href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">More...</a><br /></td></tr>
 <tr class="separator:a81856a5689dd5848dad0dd8d7e00c728"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -383,8 +383,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7e633ff7108fb2998e5242eb94c412d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e633ff7108fb2998e5242eb94c412d3">&#9670;&nbsp;</a></span>get_color()</h2>
+<a id="a90a7b8789a03346cd668b8c74338472c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90a7b8789a03346cd668b8c74338472c">&#9670;&nbsp;</a></span>get_color()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -392,14 +392,21 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> lxgui::gui::sprite::get_color </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiIndex</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns this sprite's color. </p>
-<dl class="section return"><dt>Returns</dt><dd>This sprite's color </dd></dl>
+<p>Returns the color of a vertex. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uiIndex</td><td>The vertex index </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The vertex color </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__sprite_8cpp_source.html#l00317">317</a> of file <a class="el" href="gui__sprite_8cpp_source.html">gui_sprite.cpp</a>.</p>
 
@@ -1239,7 +1246,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon May 31 2021 15:39:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Tue Jun 22 2021 07:53:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
