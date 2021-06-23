@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-[[noreturn]] void raise_error(png_struct* png, char const* message)
+[[noreturn]] void raise_error(png_struct* /*png*/, char const* message)
 {
     throw gui::exception("gui::gl::manager", message);
 }
@@ -21,7 +21,7 @@ namespace gl
 void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
 {
     png_voidp p = png_get_io_ptr(pReadStruct);
-    ((std::ifstream*)p)->read((char*)pData, uiLength);
+    static_cast<std::ifstream*>(p)->read(reinterpret_cast<char*>(pData), uiLength);
 }
 
 std::shared_ptr<gui::material> renderer::create_material_png(const std::string& sFileName, material::filter mFilter) const
@@ -35,7 +35,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
 
     const uint PNGSIGSIZE = 8;
     png_byte lSignature[PNGSIGSIZE];
-    mFile.read((char*)lSignature, PNGSIGSIZE);
+    mFile.read(reinterpret_cast<char*>(lSignature), PNGSIGSIZE);
     if (!mFile.good() || png_sig_cmp(lSignature, 0, PNGSIGSIZE) != 0)
     {
         gui::out << gui::warning << "gui::gl::manager : '" << sFileName <<
@@ -59,7 +59,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
         if (!pInfoStruct)
             throw gui::exception("gui::gl::manager", "'png_create_info_struct' failed.");
 
-        png_set_read_fn(pReadStruct, (png_voidp)(&mFile), read_data);
+        png_set_read_fn(pReadStruct, static_cast<png_voidp>(&mFile), read_data);
 
         png_set_sig_bytes(pReadStruct, PNGSIGSIZE);
         png_read_info(pReadStruct, pInfoStruct);
@@ -94,7 +94,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
         png_bytep* pTempRows = pRows.get();
         ub32color* pTempData = pTex->get_data().data();
         for (uint i = 0; i < uiHeight; ++i)
-            pTempRows[i] = (png_bytep)(pTempData + i*uiWidth);
+            pTempRows[i] = reinterpret_cast<png_bytep>(pTempData + i*uiWidth);
 
         png_read_image(pReadStruct, pTempRows);
 
