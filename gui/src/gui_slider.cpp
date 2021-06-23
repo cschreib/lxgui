@@ -8,24 +8,17 @@
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sstream>
+#include <algorithm>
 
 namespace lxgui {
 namespace gui
 {
-#ifdef MSVC
-template<typename T>
-T round(T value)
-{
-    return (long)(value + 0.5);
-}
-#endif
-
 void step_value(float& fValue, float fStep)
 {
     // Makes the value a multiple of the step :
     // fValue = N*fStep, where N is an integer.
     if (fStep != 0.0f)
-        fValue = round(fValue/fStep)*fStep;
+        fValue = std::round(fValue/fStep)*fStep;
 }
 
 slider::slider(manager* pManager) : frame(pManager)
