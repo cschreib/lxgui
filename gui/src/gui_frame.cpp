@@ -1040,7 +1040,6 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
 std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, uint uiLineNbr)
 {
     std::string sNewError;
-    std::string sLine;
     for (auto sLine : utils::cut(sOriginalMessage, "\n"))
     {
         if (!sNewError.empty())
