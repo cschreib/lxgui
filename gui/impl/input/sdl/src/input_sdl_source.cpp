@@ -135,6 +135,7 @@ key source::from_sdl_(int iSDLKey) const
     case SDLK_LEFTBRACKET:  return key::K_LBRACKET;
     case SDLK_RIGHTBRACKET: return key::K_RBRACKET;
     case SDLK_RETURN:       return key::K_RETURN;
+    case SDLK_KP_ENTER:     return key::K_NUMPADENTER;
     case SDLK_LCTRL:        return key::K_LCONTROL;
     case SDLK_a:            return key::K_A;
     case SDLK_s:            return key::K_S;
