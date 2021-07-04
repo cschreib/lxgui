@@ -6,6 +6,6 @@
 
 class_helper.lua
 color.lua
+addon.lua
 templates.xml
 addon.xml
-addon.lua

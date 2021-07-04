@@ -18,11 +18,10 @@
             <OnLoad>
                 self.Title.TitleString:set_text("Color picker");
                 self:register_event("ADDON_LOADED");
-                self.currentColor = Color(1,1,1,1);
             </OnLoad>
             <OnEvent>
                 if (arg1 == "ADDON_LOADED") then
-                    self:set_color(Color(1,1,1,1));
+                    ColorSelectorAddon:set_color(Color(1,1,1,1));
                 end
             </OnEvent>
         </Scripts>
@@ -73,7 +72,7 @@
                         self:set_text("Copy");
                     </OnLoad>
                     <OnClick>
-                        ColorSelector.savedColor = Color(ColorSelector.currentColor);
+                        ColorSelectorAddon.savedColor = Color(ColorSelectorAddon.currentColor);
                     </OnClick>
                 </Scripts>
             </Button>
@@ -95,9 +94,9 @@
                         self:set_text("Paste");
                     </OnLoad>
                     <OnClick>
-                        if (ColorSelector.savedColor) then
-                            ColorSelector:set_color(ColorSelector.savedColor);
-                            ColorSelector:on_color_update();
+                        if (ColorSelectorAddon.savedColor) then
+                            ColorSelectorAddon:set_color(ColorSelectorAddon.savedColor);
+                            ColorSelectorAddon:on_color_update();
                         end
                     </OnClick>
                 </Scripts>

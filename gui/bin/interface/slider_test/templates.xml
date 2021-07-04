@@ -341,7 +341,7 @@
                     <OnValueChanged>
                         local v = self:get_value();
                         self:get_parent().ValueString:set_text(v);
-                        ColorSelector:on_color_update(self:get_parent().chanel, v);
+                        ColorSelectorAddon:on_color_update(self:get_parent().chanel, v);
                     </OnValueChanged>
                 </Scripts>
             </Slider>
