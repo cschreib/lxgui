@@ -21,10 +21,10 @@ void to_sfml(const vertex& v, sf::Vertex& sv)
 {
     sv.position.x = v.pos.x;
     sv.position.y = v.pos.y;
-    sv.color.r = static_cast<sf::Uint8>(v.col.a*v.col.r*255.0);
-    sv.color.g = static_cast<sf::Uint8>(v.col.a*v.col.g*255.0);
-    sv.color.b = static_cast<sf::Uint8>(v.col.a*v.col.b*255.0);
-    sv.color.a = static_cast<sf::Uint8>(v.col.a*v.col.a*255.0);
+    sv.color.r = static_cast<sf::Uint8>(v.col.a*v.col.r*255.0); // Premultipled alpha
+    sv.color.g = static_cast<sf::Uint8>(v.col.a*v.col.g*255.0); // Premultipled alpha
+    sv.color.b = static_cast<sf::Uint8>(v.col.a*v.col.b*255.0); // Premultipled alpha
+    sv.color.a = static_cast<sf::Uint8>(v.col.a*255.0);
     sv.texCoords.x = v.uvs.x;
     sv.texCoords.y = v.uvs.y;
 }
@@ -48,7 +48,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
             to_sfml(v, sv);
         }
 
-        mBuffer_.update(lVertices.data(), 0, uiNumVertexExpanded);
+        mBuffer_.update(lVertices.data(), uiNumVertexExpanded, 0);
         uiNumVertex_ = uiNumVertexExpanded;
     }
     else
@@ -64,7 +64,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
             to_sfml(v, sv);
         }
 
-        mBuffer_.update(lVertices.data(), 0, uiNumVertex);
+        mBuffer_.update(lVertices.data(), uiNumVertex, 0);
         uiNumVertex_ = uiNumVertex;
     }
 }
