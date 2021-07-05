@@ -49,35 +49,30 @@ namespace gl
         /// Destructor.
         ~material() override;
 
-        /// Returns the width of the underlying texture (if any).
-        /** \return The width of the underlying texture (if any)
+        /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
+        /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        float get_width() const override;
+        quad2f get_rect() const override;
 
-        /// Returns the height of the underlying texture (if any).
-        /** \return The height of the underlying texture (if any)
-        */
-        float get_height() const override;
-
-        /// Returns the physical width of the underlying texture (if any).
-        /** \return The physical width of the underlying texture (if any)
+        /// Returns the physical width in pixels of the canvas containing this texture (if any).
+        /** \return The physical width in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_width() const override;
+        float get_canvas_width() const override;
 
-        /// Returns the physical height of the underlying texture (if any).
-        /** \return The physical height of the underlying texture (if any)
+        /// Returns the physical height in pixels of the canvas containing this texture (if any).
+        /** \return The physical height in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_height() const override;
+        float get_canvas_height() const override;
 
         /// Resizes this texture.
         /** \param uiWidth  The new texture width

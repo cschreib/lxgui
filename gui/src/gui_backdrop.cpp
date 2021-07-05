@@ -93,7 +93,7 @@ void backdrop::set_backgrond_tilling(bool bBackgroundTilling)
     bBackgroundTilling_ = bBackgroundTilling;
 
     if (!bBackgroundTilling_ && bHasBackground_)
-        mBackground_.set_texture_rect(0.0f, 0.0f, 1.0f, 1.0f, true);
+        mBackground_.set_texture_rect({0.0f, 0.0f, 1.0f, 1.0f}, true);
 }
 
 bool backdrop::is_background_tilling() const
@@ -150,14 +150,14 @@ void backdrop::set_edge(const std::string& sEdgeFile)
             auto* pRenderer = pParent_->get_manager()->get_renderer();
             std::shared_ptr<material> pMat = pRenderer->create_material(sEdgeFile);
 
-            if (pMat->get_width()/pMat->get_height() == 8.0f)
+            if (pMat->get_rect().width()/pMat->get_rect().height() == 8.0f)
             {
-                fEdgeSize_ = fOriginalEdgeSize_ = pMat->get_height();
+                fEdgeSize_ = fOriginalEdgeSize_ = pMat->get_rect().height();
 
                 for (uint i = 0; i < 8; ++i)
                 {
                     lEdgeList_[i] = sprite(pRenderer,
-                        pMat, static_cast<float>(pMat->get_height()*i), 0.0f, fEdgeSize_, fEdgeSize_
+                        pMat, static_cast<float>(pMat->get_rect().height()*i), 0.0f, fEdgeSize_, fEdgeSize_
                     );
                 }
 
@@ -291,7 +291,7 @@ void backdrop::render() const
         {
             if (bBackgroundTilling_)
             {
-                mBackground_.set_texture_rect(
+                mBackground_.set_texture_rect({
                     0.0f, 0.0f,
                     (
                         lParentBorders.right + lBackgroundInsets_.right -
@@ -301,7 +301,7 @@ void backdrop::render() const
                         lParentBorders.bottom - lBackgroundInsets_.bottom -
                         (lParentBorders.top   - lBackgroundInsets_.top)
                     )*fOriginalTileSize_/fTileSize_
-                );
+                });
             }
 
             mGetSprite(mBackground_).render_2v(
@@ -347,13 +347,13 @@ void backdrop::render() const
 
             if (fEdgeHeight > 0.0f)
             {
-                mGetSprite(get_edge(edge_type::LEFT)).set_texture_rect(
+                mGetSprite(get_edge(edge_type::LEFT)).set_texture_rect({
                     0.0f, 0.0f, fOriginalEdgeSize_, fEdgeHeight
-                );
+                });
 
-                mGetSprite(get_edge(edge_type::RIGHT)).set_texture_rect(
+                mGetSprite(get_edge(edge_type::RIGHT)).set_texture_rect({
                     fOriginalEdgeSize_, 0.0f, 2.0f*fOriginalEdgeSize_, fEdgeHeight
-                );
+                });
 
                 mGetSprite(get_edge(edge_type::LEFT)).render_2v(
                     lParentBorders.left   + lEdgeInsets_.left,
@@ -377,13 +377,13 @@ void backdrop::render() const
 
             if (fEdgeWidth > 0.0f)
             {
-                mGetSprite(get_edge(edge_type::TOP)).set_texture_rect(
+                mGetSprite(get_edge(edge_type::TOP)).set_texture_rect({
                     2.0f*fOriginalEdgeSize_, 0.0f, 3.0f*fOriginalEdgeSize_, fEdgeWidth
-                );
+                });
 
-                mGetSprite(get_edge(edge_type::BOTTOM)).set_texture_rect(
+                mGetSprite(get_edge(edge_type::BOTTOM)).set_texture_rect({
                     3.0f*fOriginalEdgeSize_, 0.0f, 4.0f*fOriginalEdgeSize_, fEdgeWidth
-                );
+                });
 
                 mGetSprite(get_edge(edge_type::TOP)).render_4v(
                     lParentBorders.right - lEdgeInsets_.right - fEdgeSize_,

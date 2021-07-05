@@ -119,22 +119,17 @@ void material::premultiply_alpha(sf::Image& mData)
     }
 }
 
-float material::get_width() const
+quad2f material::get_rect() const
 {
-    return uiWidth_;
+    return quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
-float material::get_height() const
-{
-    return uiHeight_;
-}
-
-float material::get_real_width() const
+float material::get_canvas_width() const
 {
     return uiRealWidth_;
 }
 
-float material::get_real_height() const
+float material::get_canvas_height() const
 {
     return uiRealHeight_;
 }

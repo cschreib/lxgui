@@ -24,7 +24,7 @@ void render_target::begin()
         throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
 
-    mViewMatrix_ = matrix4f::view(vector2f(get_real_width(), get_real_height()));
+    mViewMatrix_ = matrix4f::view(vector2f(get_canvas_width(), get_canvas_height()));
 }
 
 void render_target::end()
@@ -40,24 +40,19 @@ void render_target::clear(const color& mColor)
     SDL_RenderClear(pTexture_->get_renderer());
 }
 
-uint render_target::get_width() const
+quad2f render_target::get_rect() const
 {
-    return pTexture_->get_width();
+    return pTexture_->get_rect();
 }
 
-uint render_target::get_height() const
+uint render_target::get_canvas_width() const
 {
-    return pTexture_->get_height();
+    return pTexture_->get_canvas_width();
 }
 
-uint render_target::get_real_width() const
+uint render_target::get_canvas_height() const
 {
-    return pTexture_->get_real_width();
-}
-
-uint render_target::get_real_height() const
-{
-    return pTexture_->get_real_height();
+    return pTexture_->get_canvas_height();
 }
 
 bool render_target::set_dimensions(uint uiWidth, uint uiHeight)

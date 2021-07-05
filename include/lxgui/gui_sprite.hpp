@@ -171,54 +171,24 @@ namespace gui
         void set_hot_spot(float fX, float fY);
 
         /// Changes this sprite's texture rectangle.
-        /** \param lTextureRect The new texture rect
+        /** \param lTextureRect The new texture rect (left, top, right, bottom)
         *   \param bNormalized  'true' if the coords are already clamped to [0, 1]
-        *   \note Texture rectangle is the zone of the texture you want to display.<br>
+        *   \note The texture rectangle defines the zone of the texture you want to display.
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
         void set_texture_rect(const std::array<float,4>& lTextureRect, bool bNormalized = false);
 
-        /// Changes this sprite's texture rectangle.
-        /** \param fX1 The rect's top left horizontal position
-        *   \param fY1 The rect's top left vertical position
-        *   \param fX3 The rect's bottom right horizontal position
-        *   \param fY3 The rect's bottom right vertical position
-        *   \param bNormalized  'true' if the coords are already clamped to [0, 1]
-        *   \note Texture rectangle is the zone of the texture you want to display.<br>
-        *         Note that it doesn't need to be adjusted to this sprite's dimensions.
-        *         The texture will then be stretched to fit the sprite's dimensions.
-        */
-        void set_texture_rect(float fX1, float fY1, float fX3, float fY3, bool bNormalized = false);
-
         /// Changes this sprite's texture coordinates.
-        /** \param lTextureCoords The new texture coordinates
+        /** \param lTextureCoords The new texture coordinates (top-left X, top-left Y, top-right X,
+        *                         top-right Y, bottom-right X, bottom-right Y, bottom-left X,
+        *                         bottom-left Y)
         *   \param bNormalized  'true' if the coords are already converted to texture space
-        *   \note Texture rectangle is the zone of the texture you want to display.<br>
+        *   \note The texture coordinates define the zone of the texture you want to display.
         *         Note that it doesn't need to be adjusted to this sprite's dimensions.
         *         The texture will then be stretched to fit the sprite's dimensions.
         */
         void set_texture_coords(const std::array<float,8>& lTextureCoords, bool bNormalized = false);
-
-        /// Changes this sprite's texture coordinates.
-        /** \param fX1 The sprites's top left horizontal position
-        *   \param fY1 The sprites's top left vertical position
-        *   \param fX2 The sprites's top right horizontal position
-        *   \param fY2 The sprites's top right vertical position
-        *   \param fX3 The sprites's bottom right horizontal position
-        *   \param fY3 The sprites's bottom right vertical position
-        *   \param fX4 The sprites's bottom left horizontal position
-        *   \param fY4 The sprites's bottom left vertical position
-        *   \param bNormalized  'true' if the coords are already converted to texture space
-        *   \note Texture rectangle is the zone of the texture you want to display.<br>
-        *         Note that it doesn't need to be adjusted to this sprite's dimensions.
-        *         The texture will then be stretched to fit the sprite's dimensions.
-        */
-        void set_texture_coords(float fX1, float fY1,
-                              float fX2, float fY2,
-                              float fX3, float fY3,
-                              float fX4, float fY4,
-                              bool bNormalized = false);
 
         /// Changes this sprite's dimensions.
         /** \param fWidth      The new width

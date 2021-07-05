@@ -305,8 +305,8 @@ void renderer::render_quad(const sdl::material* pMat,
     if (pMat)
     {
         SDL_Texture* pTexture = pMat->get_texture();
-        const float fTexWidth = pMat->get_real_width();
-        const float fTexHeight = pMat->get_real_height();
+        const float fTexWidth = pMat->get_canvas_width();
+        const float fTexHeight = pMat->get_canvas_height();
         const int iTexWidth = static_cast<int>(fTexWidth);
         const int iTexHeight = static_cast<int>(fTexHeight);
 
