@@ -113,6 +113,26 @@ namespace sdl
         std::shared_ptr<gui::material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const override;
 
+        /// Creates a new material from a texture file.
+        /** \param sAtlasCategory The category of atlas in which to create the texture
+        *   \param sFileName      The name of the file
+        *   \param mFilter        The filtering to apply to the texture
+        *   \return The new material
+        *   \note Supported texture formats are defined by implementation.
+        *         The gui library is completely unaware of this.
+        *   \note The atlas category is a hint that the implementation can use to select
+        *         the texture atlas in which to place this new texture. If a group of
+        *         textures is known to be used to render objects that are often rendered
+        *         consecutively (for example, various tiles of a background), they should
+        *         be placed in the same category to maximize the chance of draw call batching.
+        *         Conversely, if two texture are known to rarely be used in the same context
+        *         (for example, a special effect particle texture and a UI button texture),
+        *         they should not be placed in the same category, as this could otherwise
+        *         fill up the atlas quickly, and reduce batching opportunities.
+        */
+        std::shared_ptr<gui::material> create_atlas_material(const std::string& sAtlasCategory,
+            const std::string& sFileName, material::filter mFilter = material::filter::NONE) const override;
+
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \return The new material

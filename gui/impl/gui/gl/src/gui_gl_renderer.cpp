@@ -308,6 +308,12 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
     }
 }
 
+std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
+    const std::string& sFileName, material::filter mFilter) const
+{
+    throw gui::exception("gui::gl::renderer", "Atlas material not yet supported.");
+}
+
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
 {
     return std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
