@@ -63,12 +63,21 @@ void renderer::set_view(const matrix4f& mViewMatrix) const
     mView.setCenter(sf::Vector2f(-mViewMatrix(3,0)/fScaleX, -mViewMatrix(3,1)/fScaleY));
     mView.rotate(fAngle);
     mView.setSize(sf::Vector2f(2.0f/fScaleX, 2.0/fScaleY));
+
     pCurrentSFMLTarget_->setView(mView);
 }
 
 matrix4f renderer::get_view() const
 {
-    return matrix4f(pCurrentSFMLTarget_->getView().getTransform().getMatrix());
+    matrix4f mCurrentViewMatrix = matrix4f(pCurrentSFMLTarget_->getView().getTransform().getMatrix());
+    if (!pCurrentTarget_)
+    {
+        // Rendering to main screen, flip Y
+        for (uint i = 0; i < 4; ++i)
+            mCurrentViewMatrix(i,1) *= -1.0f;
+    }
+
+    return mCurrentViewMatrix;
 }
 
 void renderer::render_quad(const quad& mQuad) const
