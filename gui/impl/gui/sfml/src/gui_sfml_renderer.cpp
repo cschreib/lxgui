@@ -87,8 +87,8 @@ void renderer::render_quad(const quad& mQuad) const
 
     const sfml::material* pMat = static_cast<const sfml::material*>(mQuad.mat.get());
 
-    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
+    const float fTexWidth = pMat ? pMat->get_canvas_width() : 1.0f;
+    const float fTexHeight = pMat ? pMat->get_canvas_height() : 1.0f;
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size());
     for (uint i = 0; i < n; ++i)
@@ -122,8 +122,8 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
 
     const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
 
-    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
+    const float fTexWidth = pMat ? pMat->get_canvas_width() : 1.0f;
+    const float fTexHeight = pMat ? pMat->get_canvas_height() : 1.0f;
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
     for (uint k = 0; k < lQuadList.size(); ++k)
