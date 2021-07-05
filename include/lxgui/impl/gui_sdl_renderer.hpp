@@ -7,7 +7,6 @@
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/utils.hpp>
 
-#include <map>
 #include <memory>
 
 struct SDL_Renderer;
@@ -105,15 +104,6 @@ namespace sdl
             const matrix4f& mModelTransform) const override;
 
         /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file
-        *   \param mFilter   The filtering to apply to the texture
-        *   \return The new material
-        *   \note Only PNG textures are supported by this implementation (parsed by libpng).
-        */
-        std::shared_ptr<gui::material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const override;
-
-        /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
         *   \param sFileName      The name of the file
         *   \param mFilter        The filtering to apply to the texture
@@ -147,15 +137,6 @@ namespace sdl
         std::shared_ptr<gui::render_target> create_render_target(
             uint uiWidth, uint uiHeight) const override;
 
-        /// Creates a new font.
-        /** \param sFontFile The file from which to read the font
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \note This implementation uses FreeType to load vector fonts and rasterize them.
-        *         Bitmap fonts are not yet supported.
-        */
-        std::shared_ptr<gui::font> create_font(const std::string& sFontFile,
-            uint uiSize) const override;
-
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
         */
@@ -174,6 +155,26 @@ namespace sdl
         */
         void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
 
+    protected :
+
+        /// Creates a new material from a texture file.
+        /** \param sFileName The name of the file
+        *   \param mFilter   The filtering to apply to the texture
+        *   \return The new material
+        *   \note Only PNG textures are supported by this implementation (parsed by libpng).
+        */
+        std::shared_ptr<gui::material> create_material_(const std::string& sFileName,
+            material::filter mFilter) const override;
+
+        /// Creates a new font.
+        /** \param sFontFile The file from which to read the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \note This implementation uses FreeType to load vector fonts and rasterize them.
+        *         Bitmap fonts are not yet supported.
+        */
+        std::shared_ptr<gui::font> create_font_(const std::string& sFontFile,
+            uint uiSize) const override;
+
     private :
 
         SDL_Renderer* pRenderer_ = nullptr;
@@ -184,9 +185,6 @@ namespace sdl
         mutable matrix4f mViewMatrix_;
         mutable matrix4f mRawViewMatrix_;
         mutable matrix4f mTargetViewMatrix_;
-
-        mutable std::map<std::string, std::weak_ptr<gui::material>> lTextureList_;
-        mutable std::map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
         mutable std::shared_ptr<gui::sdl::render_target> pCurrentTarget_;
     };

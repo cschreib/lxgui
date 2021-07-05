@@ -240,7 +240,7 @@ void texture::set_filter_mode(material::filter mFilter)
         if (!sTextureFile_.empty() && bHasSprite_)
         {
             auto* pRenderer = pManager_->get_renderer();
-            mSprite_ = sprite(pRenderer, pRenderer->create_material(sTextureFile_, mFilter_));
+            mSprite_ = sprite(pRenderer, pRenderer->create_atlas_material("GUI", sTextureFile_, mFilter_));
             mSprite_.set_texture_coords(lTexCoord_, true);
         }
 
@@ -367,7 +367,7 @@ void texture::set_texture(const std::string& sFile)
 
     std::shared_ptr<gui::material> pMat;
     if (utils::file_exists(sTextureFile_))
-        pMat = pRenderer->create_material(sTextureFile_, mFilter_);
+        pMat = pRenderer->create_atlas_material("GUI", sTextureFile_, mFilter_);
 
     if (pMat)
     {

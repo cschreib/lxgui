@@ -521,38 +521,18 @@ void renderer::render_cache(const gui::material*, const gui::vertex_cache&, cons
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
-    if (iter != lTextureList_.end())
-    {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
-            return pLock;
-        else
-            lTextureList_.erase(iter);
-    }
-
-    try
-    {
-        std::shared_ptr<gui::material> pTex = std::make_shared<sdl::material>(
-            pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
-        );
-
-        lTextureList_[sFileName] = pTex;
-        return pTex;
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
+    return std::make_shared<sdl::material>(
+        pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
+    );
 }
 
 std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
     const std::string& sFileName, material::filter mFilter) const
 {
-    throw gui::exception("gui::gl::renderer", "Atlas material not yet supported.");
+    // Atlas material not yet supported, fallback to normal material
+    return gui::renderer::create_material(sFileName, mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -581,22 +561,10 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth,
     }
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
 {
-    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
-    {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
-            return pLock;
-        else
-            lFontList_.erase(iter);
-    }
-
-    std::shared_ptr<gui::font> pFont = std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
+    return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
         bPreMultipliedAlphaSupported_);
-    lFontList_[sFontName] = pFont;
-    return pFont;
 }
 
 bool renderer::has_vertex_cache() const

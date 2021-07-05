@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace lxgui {
 namespace gui
@@ -103,8 +104,8 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        virtual std::shared_ptr<material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const = 0;
+        std::shared_ptr<material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const;
 
         /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
@@ -147,8 +148,7 @@ namespace gui
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
-        virtual std::shared_ptr<font> create_font(const std::string& sFontFile,
-            uint uiSize) const = 0;
+        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
@@ -167,6 +167,31 @@ namespace gui
         *   \param uiNewHeight The new window height
         */
         virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
+
+    protected:
+
+        /// Creates a new material from a texture file.
+        /** \param sFileName The name of the file
+        *   \param mFilter   The filtering to apply to the texture
+        *   \return The new material
+        *   \note Supported texture formats are defined by implementation.
+        *         The gui library is completely unaware of this.
+        */
+        virtual std::shared_ptr<material> create_material_(const std::string& sFileName,
+            material::filter mFilter) const = 0;
+
+        /// Creates a new font.
+        /** \param sFontFile The file from which to read the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \note Even though the gui has been designed to use vector fonts files
+        *         (such as .ttf or .otf font formats), nothing prevents the implementation
+        *         from using any other font type, including bitmap fonts.
+        */
+        virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
+            uint uiSize) const = 0;
+
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
     };
 }
 }

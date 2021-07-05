@@ -42,7 +42,7 @@ void backdrop::set_background(const std::string& sBackgroundFile)
         if (utils::file_exists(sBackgroundFile))
         {
             auto* pRenderer = pParent_->get_manager()->get_renderer();
-            mBackground_ = sprite(pRenderer, pRenderer->create_material(sBackgroundFile));
+            mBackground_ = sprite(pRenderer, pRenderer->create_atlas_material("GUI", sBackgroundFile));
             fTileSize_ = fOriginalTileSize_ = static_cast<float>(mBackground_.get_width());
             mBackgroundColor_ = color::EMPTY;
             bHasBackground_ = true;
@@ -148,7 +148,7 @@ void backdrop::set_edge(const std::string& sEdgeFile)
         if (utils::file_exists(sEdgeFile))
         {
             auto* pRenderer = pParent_->get_manager()->get_renderer();
-            std::shared_ptr<material> pMat = pRenderer->create_material(sEdgeFile);
+            std::shared_ptr<material> pMat = pRenderer->create_atlas_material("GUI", sEdgeFile);
 
             if (pMat->get_rect().width()/pMat->get_rect().height() == 8.0f)
             {

@@ -29,8 +29,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
     std::ifstream mFile(sFileName, std::ios::binary);
     if (!mFile.is_open())
     {
-        gui::out << gui::warning << "gui::gl::manager : Cannot find file '" << sFileName << "'." << std::endl;
-        return nullptr;
+        throw gui::exception("gui::gl::manager", "Cannot find file '" + sFileName + "'.");
     }
 
     const uint PNGSIGSIZE = 8;
@@ -38,9 +37,8 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
     mFile.read(reinterpret_cast<char*>(lSignature), PNGSIGSIZE);
     if (!mFile.good() || png_sig_cmp(lSignature, 0, PNGSIGSIZE) != 0)
     {
-        gui::out << gui::warning << "gui::gl::manager : '" << sFileName <<
-            "' is not a valid PNG image : '" << lSignature << "'." << std::endl;
-        return nullptr;
+        throw gui::exception("gui::gl::manager", sFileName + "' is not a valid PNG image : '"
+            + std::string(lSignature, lSignature + PNGSIGSIZE) + "'.");
     }
 
     png_structp pReadStruct = nullptr;
@@ -50,10 +48,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
     {
         pReadStruct = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, raise_error, nullptr);
         if (!pReadStruct)
-        {
-            gui::out << gui::error << "gui::gl::manager : 'png_create_read_struct' failed." << std::endl;
-            return nullptr;
-        }
+            throw gui::exception("gui::gl::manager", "'png_create_read_struct' failed.");
 
         pInfoStruct = png_create_info_struct(pReadStruct);
         if (!pInfoStruct)
@@ -109,15 +104,14 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
     }
     catch (const gui::exception& e)
     {
-        gui::out << gui::error << "gui::gl::manager : Parsing " << sFileName << " :\n"
-            << e.get_description() << std::endl;
+        gui::out << gui::error << "gui::gl::manager : Error parsing " << sFileName << "." << std::endl;
 
         if (pReadStruct && pInfoStruct)
             png_destroy_read_struct(&pReadStruct, &pInfoStruct, nullptr);
         else if (pReadStruct)
             png_destroy_read_struct(&pReadStruct, nullptr, nullptr);
 
-        return nullptr;
+        throw;
     }
 }
 }

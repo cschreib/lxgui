@@ -184,32 +184,20 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBakedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBakedName);
-    if (iter != lTextureList_.end())
-    {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
-            return pLock;
-        else
-            lTextureList_.erase(iter);
-    }
+    return std::make_shared<sfml::material>(
+        sFileName, material::wrap::REPEAT, mFilter
+    );
+}
 
-    try
-    {
-        std::shared_ptr<gui::material> pTex = std::make_shared<sfml::material>(
-            sFileName, material::wrap::REPEAT, mFilter
-        );
+std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
+    const std::string& sFileName, material::filter mFilter) const
+{
+    std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
 
-        lTextureList_[sFileName] = pTex;
-        return pTex;
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
+    // Atlas material not yet supported, fallback to normal material
+    return gui::renderer::create_material(sFileName, mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -225,12 +213,6 @@ std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::re
     }
 }
 
-std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
-{
-    throw gui::exception("gui::gl::renderer", "Atlas material not yet supported.");
-}
-
 std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
     try
@@ -244,21 +226,9 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth,
     }
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
 {
-    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
-    {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
-            return pLock;
-        else
-            lFontList_.erase(iter);
-    }
-
-    std::shared_ptr<gui::font> pFont = std::make_shared<sfml::font>(sFontFile, uiSize);
-    lFontList_[sFontName] = pFont;
-    return pFont;
+    return std::make_shared<sfml::font>(sFontFile, uiSize);
 }
 
 bool renderer::has_vertex_cache() const

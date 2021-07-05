@@ -286,32 +286,19 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBakedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBakedName);
-    if (iter != lTextureList_.end())
-    {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
-            return pLock;
-        else
-            lTextureList_.erase(iter);
-    }
+    if (!utils::ends_with(sFileName, ".png"))
+        throw gui::exception("gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
 
-    if (utils::ends_with(sFileName, ".png"))
-        return create_material_png(sFileName, mFilter);
-    else
-    {
-        gui::out << gui::warning << "gui::gl::renderer : Unsupported texture format '"
-            << sFileName << "'." << std::endl;
-        return nullptr;
-    }
+    return create_material_png(sFileName, mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
     const std::string& sFileName, material::filter mFilter) const
 {
-    throw gui::exception("gui::gl::renderer", "Atlas material not yet supported.");
+    // Atlas material not yet supported, fallback to normal material
+    return gui::renderer::create_material(sFileName, mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -324,21 +311,9 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth,
     return std::make_shared<render_target>(uiWidth, uiHeight);
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
 {
-    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
-    {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
-            return pLock;
-        else
-            lFontList_.erase(iter);
-    }
-
-    std::shared_ptr<gui::font> pFont = std::make_shared<gl::font>(sFontFile, uiSize);
-    lFontList_[sFontName] = pFont;
-    return pFont;
+    return std::make_shared<gl::font>(sFontFile, uiSize);
 }
 
 bool renderer::has_vertex_cache() const
