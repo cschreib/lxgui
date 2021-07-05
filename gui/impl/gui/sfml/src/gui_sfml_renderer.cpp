@@ -87,9 +87,6 @@ void renderer::render_quad(const quad& mQuad) const
 
     const sfml::material* pMat = static_cast<const sfml::material*>(mQuad.mat.get());
 
-    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
-
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size());
     for (uint i = 0; i < n; ++i)
     {
@@ -100,8 +97,8 @@ void renderer::render_quad(const quad& mQuad) const
 
         mSFVertex.position.x  = mVertex.pos.x;
         mSFVertex.position.y  = mVertex.pos.y;
-        mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
-        mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
+        mSFVertex.texCoords.x = mVertex.uvs.x;
+        mSFVertex.texCoords.y = mVertex.uvs.y;
         mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
         mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
         mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
@@ -110,8 +107,10 @@ void renderer::render_quad(const quad& mQuad) const
 
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
+    mState.coordinateType = sf::Normalized;
     if (pMat)
         mState.texture = pMat->get_texture();
+
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
@@ -121,9 +120,6 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
     static const uint n = ids.size();
 
     const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
-
-    const float fTexWidth = pMat ? pMat->get_real_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_real_height() : 1.0f;
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
     for (uint k = 0; k < lQuadList.size(); ++k)
@@ -138,8 +134,8 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
 
             mSFVertex.position.x  = mVertex.pos.x;
             mSFVertex.position.y  = mVertex.pos.y;
-            mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
-            mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
+            mSFVertex.texCoords.x = mVertex.uvs.x;
+            mSFVertex.texCoords.y = mVertex.uvs.y;
             mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
             mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
             mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
@@ -149,8 +145,10 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
 
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
+    mState.coordinateType = sf::Normalized;
     if (pMat)
         mState.texture = pMat->get_texture();
+
     pCurrentSFMLTarget_->draw(mArray, mState);
 }
 
@@ -166,22 +164,17 @@ sf::Transform to_sfml(const matrix4f& mMatrix)
 void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
-    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
-
-#if 0
     const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
     const sfml::vertex_cache& mSFCache = static_cast<const sfml::vertex_cache&>(mCache);
 
-    // Note: the following will not work correctly, as vertex_cache has texture coordinates
-    // normalised, but sf::RenderTarget::draw assumes coordinates in pixels.
-    // https://github.com/SFML/SFML/issues/1773
     sf::RenderStates mState;
     mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
+    mState.transform = to_sfml(mModelTransform);
+    mState.coordinateType = sf::Normalized;
     if (pMat)
         mState.texture = pMat->get_texture();
-    mState.transform = to_sfml(mModelTransform);
+
     pCurrentSFMLTarget_->draw(mSFCache.get_impl(), 0, mSFCache.get_num_vertex(), mState);
-#endif
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
@@ -257,20 +250,12 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
 bool renderer::has_vertex_cache() const
 {
-    return false;
-
-#if 0
     return sf::VertexBuffer::isAvailable();
-#endif
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
 {
-    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
-
-#if 0
     return std::make_shared<sfml::vertex_cache>(mType);
-#endif
 }
 
 void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
