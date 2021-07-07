@@ -1,0 +1,80 @@
+#ifndef LXGUI_GUI_SDL_ATLAS_HPP
+#define LXGUI_GUI_SDL_ATLAS_HPP
+
+#include <lxgui/utils.hpp>
+#include <lxgui/gui_material.hpp>
+#include <lxgui/gui_atlas.hpp>
+
+#include <vector>
+#include <memory>
+#include <variant>
+
+struct SDL_Renderer;
+struct SDL_Surface;
+struct SDL_Texture;
+
+namespace lxgui {
+namespace gui {
+namespace sdl
+{
+    /// A single texture holding multiple materials for efficient rendering
+    /** This is an abstract class that must be implemented
+    *   and created by the corresponding gui::renderer.
+    */
+    class atlas_page : public gui::atlas_page
+    {
+    public :
+
+        /// Constructor.
+        explicit atlas_page(SDL_Renderer* pRenderer, material::filter mFilter);
+
+    protected :
+
+        /// Adds a new material to this page, at the provided location
+        /** \param mMat      The material to add
+        *   \param mLocation The position at which to insert this material
+        *   \return A new material pointing to inside this page
+        */
+        std::shared_ptr<gui::material> add_material_(const gui::material& mMat,
+            const quad2f& mLocation) const override;
+    };
+
+    /// A class that holds rendering data
+    /** This implementation can contain either a plain color
+    *   or a real SDL_Texture. It is also used by the
+    *   gui::sdl::render_target class to store the output data.
+    */
+    class atlas final : public gui::atlas
+    {
+    public :
+
+        /// Constructor for textures.
+        /** \param pRenderer The SDL render to create the atlas for
+        *   \param mFilter   Use texture filtering or not (see set_filter())
+        */
+        explicit atlas(SDL_Renderer* pRenderer, material::filter mFilter);
+
+        atlas(const atlas& tex) = delete;
+        atlas(atlas&& tex) = delete;
+        atlas& operator = (const atlas& tex) = delete;
+        atlas& operator = (atlas&& tex) = delete;
+
+        /// Destructor.
+        ~atlas() noexcept override;
+
+    protected :
+
+        /// Create a new page in this atlas.
+        /** \return The new page, added at the back of the page list
+        */
+        std::unique_ptr<gui::atlas_page> create_page_() const override;
+
+    private :
+
+        SDL_Renderer* pRenderer_ = nullptr;
+    };
+}
+}
+}
+
+#endif

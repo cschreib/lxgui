@@ -15,6 +15,7 @@ namespace lxgui {
 namespace gui
 {
     class font;
+    class atlas;
     class render_target;
     class color;
     struct quad;
@@ -124,8 +125,8 @@ namespace gui
         *         they should not be placed in the same category, as this could otherwise
         *         fill up the atlas quickly, and reduce batching opportunities.
         */
-        virtual std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
-            const std::string& sFileName, material::filter mFilter = material::filter::NONE) const = 0;
+        std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
+            const std::string& sFileName, material::filter mFilter = material::filter::NONE) const;
 
         /// Creates a new material from a render target.
         /** \param pRenderTarget The render target from which to read the pixels
@@ -180,6 +181,12 @@ namespace gui
         virtual std::shared_ptr<material> create_material_(const std::string& sFileName,
             material::filter mFilter) const = 0;
 
+        /// Creates a new atlas with a given texture filter mode.
+        /** \param mFilter The filtering to apply to the texture
+        *   \return The new atlas
+        */
+        virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
+
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
         *   \param uiSize    The requested size of the characters (in points)
@@ -191,6 +198,7 @@ namespace gui
             uint uiSize) const = 0;
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::atlas>>    lAtlasList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
     };
 }

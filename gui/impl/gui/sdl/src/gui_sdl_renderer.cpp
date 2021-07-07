@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_sdl_renderer.hpp"
+#include "lxgui/impl/gui_sdl_atlas.hpp"
 #include "lxgui/impl/gui_sdl_material.hpp"
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 #include "lxgui/impl/gui_sdl_font.hpp"
@@ -528,11 +529,9 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
     );
 }
 
-std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-    // Atlas material not yet supported, fallback to normal material
-    return gui::renderer::create_material(sFileName, mFilter);
+    return std::make_shared<sdl::atlas>(pRenderer_, mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const

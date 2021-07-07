@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_sfml_renderer.hpp"
+#include "lxgui/impl/gui_sfml_atlas.hpp"
 #include "lxgui/impl/gui_sfml_material.hpp"
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
@@ -186,18 +187,12 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 
 std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
 {
-    return std::make_shared<sfml::material>(
-        sFileName, material::wrap::REPEAT, mFilter
-    );
+    return std::make_shared<sfml::material>(sFileName, material::wrap::REPEAT, mFilter);
 }
 
-std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-    std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
-
-    // Atlas material not yet supported, fallback to normal material
-    return gui::renderer::create_material(sFileName, mFilter);
+    return std::make_shared<sfml::atlas>(mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const

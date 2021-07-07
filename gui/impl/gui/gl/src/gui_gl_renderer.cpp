@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_gl_renderer.hpp"
+#include "lxgui/impl/gui_gl_atlas.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
@@ -294,11 +295,9 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
     return create_material_png(sFileName, mFilter);
 }
 
-std::shared_ptr<gui::material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-    // Atlas material not yet supported, fallback to normal material
-    return gui::renderer::create_material(sFileName, mFilter);
+    return std::make_shared<gl::atlas>(mFilter);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
@@ -308,7 +307,7 @@ std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::re
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
 {
-    return std::make_shared<render_target>(uiWidth, uiHeight);
+    return std::make_shared<gl::render_target>(uiWidth, uiHeight);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const

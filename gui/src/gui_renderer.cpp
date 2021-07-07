@@ -1,4 +1,5 @@
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_string.hpp"
 
@@ -50,6 +51,42 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     std::shared_ptr<gui::font> pFont = create_font_(sFontFile, uiSize);
     lFontList_[sFontName] = pFont;
     return pFont;
+}
+
+std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
+    const std::string& sFileName, material::filter mFilter) const
+{
+    std::shared_ptr<gui::atlas> pAtlas;
+
+    std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
+    auto iter = lAtlasList_.find(sBakedAtlasName);
+    if (iter != lAtlasList_.end())
+    {
+        if (std::shared_ptr<gui::atlas> pLock = iter->second.lock())
+            pAtlas = pLock;
+        else
+            lAtlasList_.erase(iter);
+    }
+
+    if (!pAtlas)
+    {
+        pAtlas = create_atlas_(mFilter);
+        lAtlasList_[sBakedAtlasName] = pAtlas;
+    }
+
+    auto pTex = pAtlas->fetch_material(sFileName);
+    if (pTex)
+        return pTex;
+
+    pTex = create_material(sFileName, mFilter);
+    if (!pTex)
+        return nullptr;
+
+    auto pAddedTex = pAtlas->add_material(sFileName, *pTex);
+    if (pAddedTex)
+        return pAddedTex;
+    else
+        return pTex;
 }
 
 

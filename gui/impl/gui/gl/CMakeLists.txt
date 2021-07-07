@@ -2,6 +2,7 @@ set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/gl)
 set(SRCROOT ${TARGET_DIR}/src)
 
 add_library(lxgui-gl
+    ${SRCROOT}/gui_gl_atlas.cpp
     ${SRCROOT}/gui_gl_font.cpp
     ${SRCROOT}/gui_gl_renderer.cpp
     ${SRCROOT}/gui_gl_renderer_png.cpp
