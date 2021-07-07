@@ -23,7 +23,7 @@ namespace gui
     public :
 
         /// Constructor.
-        atlas_page() = default;
+        explicit atlas_page(material::filter mFilter);
 
         /// Destructor.
         virtual ~atlas_page() = default;
@@ -40,7 +40,7 @@ namespace gui
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat) const;
+        std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat);
 
         /// Checks if this page is empty (contains no materials).
         /** \return 'true' if the page is empty, 'false' otherwise
@@ -55,7 +55,19 @@ namespace gui
         *   \return A new material pointing to inside this page
         */
         virtual std::shared_ptr<material> add_material_(const material& mMat,
-            const quad2f& mLocation) const = 0;
+            const quad2f& mLocation) = 0;
+
+        /// Return the width of this page (in pixels).
+        /** \return The width of this page (in pixels)
+        */
+        virtual float get_width() const = 0;
+
+        /// Return the height of this page (in pixels).
+        /** \return The height of this page (in pixels)
+        */
+        virtual float get_height() const = 0;
+
+        material::filter mFilter_ = material::filter::NONE;
 
     private :
 

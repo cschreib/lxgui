@@ -5,6 +5,8 @@
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_atlas.hpp>
 
+#include <SFML/Graphics/Texture.hpp>
+
 namespace lxgui {
 namespace gui {
 namespace sfml
@@ -13,7 +15,7 @@ namespace sfml
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::renderer.
     */
-    class atlas_page : public gui::atlas_page
+    class atlas_page final : public gui::atlas_page
     {
     public :
 
@@ -28,7 +30,21 @@ namespace sfml
         *   \return A new material pointing to inside this page
         */
         std::shared_ptr<gui::material> add_material_(const gui::material& mMat,
-            const quad2f& mLocation) const override;
+            const quad2f& mLocation) override;
+
+        /// Return the width of this page (in pixels).
+        /** \return The width of this page (in pixels)
+        */
+        float get_width() const override;
+
+        /// Return the height of this page (in pixels).
+        /** \return The height of this page (in pixels)
+        */
+        float get_height() const override;
+
+    private :
+
+        sf::Texture mTexture_;
     };
 
     /// A class that holds rendering data

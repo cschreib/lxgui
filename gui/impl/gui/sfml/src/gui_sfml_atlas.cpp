@@ -9,13 +9,38 @@ namespace gui {
 namespace sfml
 {
 
-atlas_page::atlas_page(material::filter mFilter) {}
+atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter)
+{
+    const uint uiSize = sf::Texture::getMaximumSize();
+
+    if (!mTexture_.create(uiSize, uiSize))
+    {
+        throw gui::exception("gui::sfml::atlas_page", "Could not create texture with dimensions "+
+            utils::to_string(uiSize)+" x "+utils::to_string(uiSize)+".");
+    }
+
+    mTexture_.setSmooth(mFilter == material::filter::LINEAR);
+}
 
 std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const quad2f& mLocation) const
+    const quad2f& mLocation)
 {
-    // TODO
-    return nullptr;
+    const sfml::material& mSFMat = static_cast<const sfml::material&>(mMat);
+
+    const sf::Image mImage = mSFMat.get_texture()->copyToImage();
+    mTexture_.update(mImage, mLocation.left, mLocation.top);
+
+    return std::make_shared<sfml::material>(mTexture_, mLocation, mFilter_);
+}
+
+float atlas_page::get_width() const
+{
+    return mTexture_.getSize().x;
+}
+
+float atlas_page::get_height() const
+{
+    return mTexture_.getSize().y;
 }
 
 atlas::atlas(material::filter mFilter) : gui::atlas(mFilter) {}

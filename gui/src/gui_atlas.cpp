@@ -6,6 +6,8 @@ namespace lxgui {
 namespace gui
 {
 
+atlas_page::atlas_page(material::filter mFilter) : mFilter_(mFilter) {}
+
 std::shared_ptr<material> atlas_page::fetch_material(const std::string& sFileName) const
 {
     auto mIter = lTextureList_.find(sFileName);
@@ -20,7 +22,8 @@ std::shared_ptr<material> atlas_page::fetch_material(const std::string& sFileNam
     return nullptr;
 }
 
-std::shared_ptr<gui::material> atlas_page::add_material(const std::string& sFileName, const material& mMat) const
+std::shared_ptr<gui::material> atlas_page::add_material(const std::string& sFileName,
+    const material& mMat)
 {
     try
     {

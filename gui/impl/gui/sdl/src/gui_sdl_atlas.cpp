@@ -12,13 +12,25 @@ namespace gui {
 namespace sdl
 {
 
-atlas_page::atlas_page(SDL_Renderer* pRenderer, material::filter mFilter) {}
+atlas_page::atlas_page(SDL_Renderer* pRenderer, material::filter mFilter) : gui::atlas_page(mFilter) {}
 
 std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const quad2f& mLocation) const
+    const quad2f& mLocation)
 {
     // TODO
     return nullptr;
+}
+
+float atlas_page::get_width() const
+{
+    // TODO
+    return 0.0f;
+}
+
+float atlas_page::get_height() const
+{
+    // TODO
+    return 0.0;
 }
 
 atlas::atlas(SDL_Renderer* pRenderer, material::filter mFilter) :
