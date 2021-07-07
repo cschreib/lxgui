@@ -69,9 +69,6 @@ namespace sdl
         atlas& operator = (const atlas& tex) = delete;
         atlas& operator = (atlas&& tex) = delete;
 
-        /// Destructor.
-        ~atlas() noexcept override;
-
     protected :
 
         /// Create a new page in this atlas.

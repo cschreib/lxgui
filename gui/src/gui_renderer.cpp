@@ -14,13 +14,13 @@ void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
     std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    auto iter = lTextureList_.find(sBackedName);
-    if (iter != lTextureList_.end())
+    auto mIter = lTextureList_.find(sBackedName);
+    if (mIter != lTextureList_.end())
     {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::material> pLock = mIter->second.lock())
             return pLock;
         else
-            lTextureList_.erase(iter);
+            lTextureList_.erase(mIter);
     }
 
     try
@@ -39,13 +39,13 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
 std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    auto iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
+    auto mIter = lFontList_.find(sFontName);
+    if (mIter != lFontList_.end())
     {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
+        if (std::shared_ptr<gui::font> pLock = mIter->second.lock())
             return pLock;
         else
-            lFontList_.erase(iter);
+            lFontList_.erase(mIter);
     }
 
     std::shared_ptr<gui::font> pFont = create_font_(sFontFile, uiSize);
@@ -59,13 +59,10 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
     std::shared_ptr<gui::atlas> pAtlas;
 
     std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
-    auto iter = lAtlasList_.find(sBakedAtlasName);
-    if (iter != lAtlasList_.end())
+    auto mIter = lAtlasList_.find(sBakedAtlasName);
+    if (mIter != lAtlasList_.end())
     {
-        if (std::shared_ptr<gui::atlas> pLock = iter->second.lock())
-            pAtlas = pLock;
-        else
-            lAtlasList_.erase(iter);
+        pAtlas = mIter->second;
     }
 
     if (!pAtlas)

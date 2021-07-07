@@ -48,16 +48,73 @@ bool atlas_page::empty() const
     for (const auto& pMat : lTextureList_)
     {
         if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
-            return true;
+            return false;
     }
 
-    return false;
+    return true;
 }
 
 std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) const
 {
-    // TODO
-    return std::nullopt;
+    quad2f mStartQuad(0, fWidth, 0, fHeight);
+    if (empty())
+        return mStartQuad;
+
+    const float fAtlasWidth = get_width();
+    const float fAtlasHeight = get_height();
+
+    std::vector<quad2f> lOccupiedSpace;
+    lOccupiedSpace.reserve(lTextureList_.size());
+
+    float fMaxWidth = 0.0f;
+    float fMaxHeight = 0.0f;
+
+    for (const auto& pMat : lTextureList_)
+    {
+        if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
+        {
+            lOccupiedSpace.push_back(pLock->get_rect());
+            fMaxWidth = std::max(fMaxWidth, lOccupiedSpace.back().right);
+            fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
+        }
+    }
+
+    float fBestArea = std::numeric_limits<float>::infinity();
+    quad2f mBestQuad;
+
+    for (const auto& mRectSource : lOccupiedSpace)
+    {
+        auto mTestPosition = [&](const vector2f& mPos)
+        {
+            const quad2f mTestQuad = mStartQuad + mPos;
+            if (mTestQuad.right > fAtlasWidth || mTestQuad.bottom > fAtlasHeight)
+                return;
+
+            const float fNewMaxWidth = std::max(fMaxWidth, mTestQuad.right);
+            const float fNewMaxHeight = std::max(fMaxHeight, mTestQuad.bottom);
+            const float fNewArea = fNewMaxWidth*fNewMaxHeight;
+
+            if (fNewArea >= fBestArea)
+                return;
+
+            for (const auto& mRectOther : lOccupiedSpace)
+            {
+                if (mTestQuad.overlaps(mRectOther))
+                    return;
+            }
+
+            fBestArea = fNewArea;
+            mBestQuad = mTestQuad;
+        };
+
+        mTestPosition(mRectSource.top_right());
+        mTestPosition(mRectSource.bottom_left());
+    }
+
+    if (std::isfinite(fBestArea))
+        return mBestQuad;
+    else
+        return std::nullopt;
 }
 
 atlas::atlas(material::filter mFilter) : mFilter_(mFilter) {}

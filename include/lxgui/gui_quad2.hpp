@@ -55,6 +55,22 @@ namespace gui
             return bottom - top;
         }
 
+        bool contains(const vector2<T>& mPoint) const
+        {
+            return mPoint.x >= left && mPoint.x < right && mPoint.y >= top && mPoint.y < bottom;
+        }
+
+        bool overlaps(const quad2<T>& mQuad) const
+        {
+            auto range_overlaps = [](T mMin1, T mMax1, T mMin2, T mMax2)
+            {
+                return (mMin1 >= mMin2 && mMin1 < mMax2) || (mMin2 >= mMin1 && mMin2 < mMax1);
+            };
+
+            return range_overlaps(left, right, mQuad.left, mQuad.right) &&
+                   range_overlaps(top, bottom, mQuad.top, mQuad.bottom);
+        }
+
         static const quad2 ZERO;
 
         T left = 0, right = 0, top = 0, bottom = 0;
@@ -131,6 +147,12 @@ namespace gui
 
     using quad2f = quad2<float>;
     using quad2i = quad2<int>;
+
+    template<typename O, typename T>
+    O& operator << (O& mStream, const quad2<T>& mQuad)
+    {
+        return mStream << "(" << mQuad.top_left() << "), (" << mQuad.bottom_right() << ")";
+    }
 }
 }
 

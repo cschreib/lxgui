@@ -23,6 +23,9 @@ namespace gl
         /// Constructor.
         explicit atlas_page(material::filter mFilter);
 
+        /// Destructor.
+        ~atlas_page() override;
+
     protected :
 
         /// Adds a new material to this page, at the provided location
@@ -42,6 +45,10 @@ namespace gl
         /** \return The height of this page (in pixels)
         */
         float get_height() const override;
+
+    private :
+
+        uint uiTextureHandle_ = 0u;
     };
 
     /// A class that holds rendering data
@@ -62,9 +69,6 @@ namespace gl
         atlas(atlas&& tex) = delete;
         atlas& operator = (const atlas& tex) = delete;
         atlas& operator = (atlas&& tex) = delete;
-
-        /// Destructor.
-        ~atlas() override;
 
     protected :
 

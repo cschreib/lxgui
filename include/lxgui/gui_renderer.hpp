@@ -198,7 +198,7 @@ namespace gui
             uint uiSize) const = 0;
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
-        mutable std::unordered_map<std::string, std::weak_ptr<gui::atlas>>    lAtlasList_;
+        mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
     };
 }

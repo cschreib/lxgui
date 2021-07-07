@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_gl_atlas.hpp"
+#include "lxgui/impl/gui_gl_material.hpp"
 
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
@@ -34,25 +35,73 @@ namespace gui {
 namespace gl
 {
 
-atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter) {}
+atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter)
+{
+    GLint iPreviousID;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
+
+    glGenTextures(1, &uiTextureHandle_);
+
+    glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+        gl::material::maximum_size(), gl::material::maximum_size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+    );
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    switch (mFilter)
+    {
+    case material::filter::LINEAR :
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        break;
+    case material::filter::NONE :
+    default :
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        break;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, iPreviousID);
+}
+
+atlas_page::~atlas_page()
+{
+    glDeleteTextures(1, &uiTextureHandle_);
+}
 
 std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
     const quad2f& mLocation)
 {
-    // TODO
-    return nullptr;
+    const gl::material& mGLMat = static_cast<const gl::material&>(mMat);
+
+    GLint iPreviousID;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
+
+    std::vector<ub32color> lData(mLocation.width()*mLocation.height());
+    glBindTexture(GL_TEXTURE_2D, mGLMat.get_handle_());
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
+
+    glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+        mLocation.left, mLocation.top, mLocation.width(), mLocation.height(),
+        GL_RGBA, GL_UNSIGNED_BYTE, lData.data()
+    );
+
+    glBindTexture(GL_TEXTURE_2D, iPreviousID);
+
+    return std::make_shared<gl::material>(uiTextureHandle_, mLocation, mFilter_);
 }
 
 float atlas_page::get_width() const
 {
-    // TODO
-    return 0.0f;
+    return gl::material::maximum_size();
 }
 
 float atlas_page::get_height() const
 {
-    // TODO
-    return 0.0;
+    return gl::material::maximum_size();
 }
 
 atlas::atlas(material::filter mFilter) : gui::atlas(mFilter) {}

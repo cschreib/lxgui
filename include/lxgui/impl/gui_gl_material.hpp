@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_color.hpp>
+#include <lxgui/gui_quad2.hpp>
 
 #include <vector>
 #include <memory>
@@ -40,6 +41,13 @@ namespace gl
         */
         material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE, bool bGPUOnly = false);
+
+        /// Constructor for atlas textures.
+        /** \param uiTextureHandle The handle to the texture object of the atlas
+        *   \param mRect           The position of this texture inside the atlas
+        *   \param mFilter         Use texture filtering or not (see set_filter())
+        */
+        material(uint uiTextureHandle, const quad2f mRect, filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
         material(material&& tex) = delete;
@@ -167,6 +175,11 @@ namespace gl
         */
         static void check_availability();
 
+        /// Returns the maximum size available for a texture, in pixels.
+        /** \return The maximum size available for a texture, in pixels
+        */
+        static uint maximum_size();
+
     private:
 
         uint   uiWidth_ = 0u, uiHeight_ = 0u;
@@ -174,6 +187,8 @@ namespace gl
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
         uint   uiTextureHandle_ = 0u;
+        quad2f mRect_;
+        bool   bIsOwner_ = false;
 
         std::vector<ub32color> pData_;
 
