@@ -262,6 +262,8 @@ void backdrop::set_vertex_color(const color& mColor)
 
 void backdrop::render() const
 {
+    // TODO: adjust for if using atlas or not
+
     if (pParent_)
     {
         float fAlpha = pParent_->get_effective_alpha();

@@ -108,6 +108,18 @@ namespace gui
         std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const;
 
+        /// Checks if the renderer has texture atlases enabled.
+        /** \return 'true' if enabled, 'false' otherwise
+        */
+        bool has_texture_atlas() const;
+
+        /// Enables/disables texture atlases.
+        /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
+        *   \note Texture atlases are enabled by default. Changing this flag will only
+        *         impact newly created materials. Existing materials will not be affected.
+        */
+        void set_texture_atlas_enabled(bool bEnabled);
+
         /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
         *   \param sFileName      The name of the file
@@ -124,6 +136,10 @@ namespace gui
         *         (for example, a special effect particle texture and a UI button texture),
         *         they should not be placed in the same category, as this could otherwise
         *         fill up the atlas quickly, and reduce batching opportunities.
+        *   \note Because of how texture atlases work, it is not possible to use texture
+        *         coordinate wrapping for materials from an atlas. Trying to use coordinates
+        *         outside the [0,1] range will start reading texture data from another
+        *         material.
         */
         std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
             const std::string& sFileName, material::filter mFilter = material::filter::NONE) const;
@@ -200,6 +216,8 @@ namespace gui
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
+
+        bool bTextureAtlasEnabled_ = true;
     };
 }
 }

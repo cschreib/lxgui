@@ -110,6 +110,10 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
 material::material(uint uiTextureHandle, const quad2f mRect, filter mFilter) : mFilter_(mFilter),
     uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
 {
+    uiWidth_ = mRect_.width();
+    uiHeight_ = mRect_.height();
+    uiRealWidth_ = MAXIMUM_SIZE;
+    uiRealHeight_ = MAXIMUM_SIZE;
 }
 
 material::~material()
@@ -123,7 +127,7 @@ void material::set_wrap(wrap mWrap)
     if (!bIsOwner_)
     {
         throw gui::exception("gui::gl::material",
-            "An material in an atlas cannot change its wrapping mode.");
+            "A material in an atlas cannot change its wrapping mode.");
     }
 
     GLint iPreviousID;
@@ -151,7 +155,7 @@ void material::set_filter(filter mFilter)
     if (!bIsOwner_)
     {
         throw gui::exception("gui::gl::material",
-            "An material in an atlas cannot change its filtering.");
+            "A material in an atlas cannot change its filtering.");
     }
 
     GLint iPreviousID;
@@ -224,25 +228,19 @@ quad2f material::get_rect() const
 
 float material::get_canvas_width() const
 {
-    if (!bIsOwner_)
-        return MAXIMUM_SIZE;
-    else
-        return uiRealWidth_;
+    return uiRealWidth_;
 }
 
 float material::get_canvas_height() const
 {
-    if (!bIsOwner_)
-        return MAXIMUM_SIZE;
-    else
-        return uiRealHeight_;
+    return uiRealHeight_;
 }
 
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
     if (!bIsOwner_)
     {
-        throw gui::exception("gui::gl::material", "An material in an atlas cannot be resized.");
+        throw gui::exception("gui::gl::material", "A material in an atlas cannot be resized.");
     }
 
     uint uiRealWidth = uiWidth;
@@ -311,7 +309,7 @@ void material::update_texture()
 {
     if (!bIsOwner_)
     {
-        throw gui::exception("gui::gl::material", "An material in an atlas cannot update its data.");
+        throw gui::exception("gui::gl::material", "A material in an atlas cannot update its data.");
     }
 
     GLint iPreviousID;

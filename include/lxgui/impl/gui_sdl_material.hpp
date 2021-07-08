@@ -57,6 +57,15 @@ namespace sdl
             bool bPreMultipliedAlphaSupported, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
+        /// Constructor for atlas textures.
+        /** \param pRenderer The SDL render to create the material for
+        *   \param pTexture  The texture object of the atlas
+        *   \param mRect     The position of this texture inside the atlas
+        *   \param mFilter   Use texture filtering or not (see set_filter())
+        */
+        material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
+            filter mFilter = filter::NONE);
+
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
@@ -149,8 +158,11 @@ namespace sdl
         */
         ub32color* lock_pointer(uint* pPitch = nullptr);
 
+        /// \copydoc lock_pointer
+        const ub32color* lock_pointer(uint* pPitch = nullptr) const;
+
         /// Stops modifying the texture data and update the texture in GPU memory.
-        void unlock_pointer();
+        void unlock_pointer() const;
 
     private:
 
@@ -158,11 +170,13 @@ namespace sdl
 
         uint   uiWidth_ = 0u, uiHeight_ = 0u;
         uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        quad2f mRect_;
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
         bool   bRenderTarget_ = false;
 
         SDL_Texture* pTexture_ = nullptr;
+        bool         bIsOwner_ = false;
     };
 }
 }

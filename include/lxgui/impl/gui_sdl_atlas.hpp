@@ -5,6 +5,8 @@
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_atlas.hpp>
 
+#include "lxgui/impl/gui_sdl_material.hpp"
+
 #include <vector>
 #include <memory>
 #include <variant>
@@ -28,6 +30,9 @@ namespace sdl
         /// Constructor.
         explicit atlas_page(SDL_Renderer* pRenderer, material::filter mFilter);
 
+        /// Destructor.
+        ~atlas_page() override;
+
     protected :
 
         /// Adds a new material to this page, at the provided location
@@ -47,6 +52,12 @@ namespace sdl
         /** \return The height of this page (in pixels)
         */
         float get_height() const override;
+
+    private :
+
+        SDL_Renderer* pRenderer_ = nullptr;
+        SDL_Texture*  pTexture_ = nullptr;
+        uint          uiSize_ = 0u;
     };
 
     /// A class that holds rendering data

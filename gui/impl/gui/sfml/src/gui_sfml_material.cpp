@@ -99,7 +99,7 @@ void material::set_wrap(wrap mWrap)
     if (pAtlasTexture_)
     {
         throw gui::exception("gui::sfml::material",
-            "An material in an atlas cannot change its wrapping mode.");
+            "A material in an atlas cannot change its wrapping mode.");
     }
 
     mWrap_ = mWrap;
@@ -115,7 +115,7 @@ void material::set_filter(filter mFilter)
     if (pAtlasTexture_)
     {
         throw gui::exception("gui::sfml::material",
-            "An material in an atlas cannot change its filtering.");
+            "A material in an atlas cannot change its filtering.");
     }
 
     mFilter_ = mFilter;
@@ -167,7 +167,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
     if (pAtlasTexture_)
     {
-        throw gui::exception("gui::sfml::material", "An material in an atlas cannot be resized.");
+        throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
     }
 
     if (!bRenderTarget_) return false;

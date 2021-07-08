@@ -1,5 +1,6 @@
 #include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
 #include "lxgui/utils_string.hpp"
 
 namespace lxgui {

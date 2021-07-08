@@ -53,9 +53,22 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     return pFont;
 }
 
+bool renderer::has_texture_atlas() const
+{
+    return bTextureAtlasEnabled_;
+}
+
+void renderer::set_texture_atlas_enabled(bool bEnabled)
+{
+    bTextureAtlasEnabled_ = bEnabled;
+}
+
 std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
     const std::string& sFileName, material::filter mFilter) const
 {
+    if (!has_texture_atlas())
+        return create_material(sFileName, mFilter);
+
     std::shared_ptr<gui::atlas> pAtlas;
 
     std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
