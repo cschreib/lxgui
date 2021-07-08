@@ -20,7 +20,7 @@ void backdrop::copy_from(const backdrop& mBackdrop)
     this->set_background(mBackdrop.get_background_file());
     this->set_edge(mBackdrop.get_edge_file());
 
-    this->set_backgrond_tilling(mBackdrop.is_background_tilling());
+    this->set_background_tilling(mBackdrop.is_background_tilling());
     this->set_tile_size(mBackdrop.get_tile_size());
 
     if (mBackdrop.sBackgroundFile_.empty())
@@ -88,7 +88,7 @@ color backdrop::get_background_color() const
     return mBackgroundColor_;
 }
 
-void backdrop::set_backgrond_tilling(bool bBackgroundTilling)
+void backdrop::set_background_tilling(bool bBackgroundTilling)
 {
     bBackgroundTilling_ = bBackgroundTilling;
 

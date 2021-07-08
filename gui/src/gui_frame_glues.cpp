@@ -988,7 +988,7 @@ int lua_frame::_set_backdrop(lua_State* pLua)
 
             pBackdrop->set_background(pManager->parse_file_name(mState.get_field_string("bgFile", false, "")));
             pBackdrop->set_edge(pManager->parse_file_name(mState.get_field_string("edgeFile", false, "")));
-            pBackdrop->set_backgrond_tilling(mState.get_field_bool("tile", false, false));
+            pBackdrop->set_background_tilling(mState.get_field_bool("tile", false, false));
 
             float fTileSize = static_cast<float>(mState.get_field_double("tileSize", false, 0.0));
             if (fTileSize != 0)

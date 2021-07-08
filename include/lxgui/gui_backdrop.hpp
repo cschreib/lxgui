@@ -53,7 +53,7 @@ namespace gui
         /// Enables tilling for the background texture.
         /** \param bBackgroundTilling 'true' to enable tilling
         */
-        void set_backgrond_tilling(bool bBackgroundTilling);
+        void set_background_tilling(bool bBackgroundTilling);
 
         /// Checks if tilling is enabled for the background texture.
         /** \return 'true' if tilling is enabled for the background texture
