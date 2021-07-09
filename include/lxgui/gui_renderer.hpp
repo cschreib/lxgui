@@ -117,6 +117,11 @@ namespace gui
         /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
         *   \note Texture atlases are enabled by default. Changing this flag will only
         *         impact newly created materials. Existing materials will not be affected.
+        *   \note In general, texture atlases only increase performance when vertex caches
+        *         are supported and used (see has_vertex_cache()). The can actually decrease
+        *         performance when vertex caches are not supported, if texture tiling is
+        *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
+        *         disable texture atlases if vertex caches are not supported.
         */
         void set_texture_atlas_enabled(bool bEnabled);
 

@@ -1,118 +1,119 @@
 {
-    "build_systems":
-    [
-        {
-            "file_regex": "(.+[^:]):(\\d+):(\\d+): (?:fatal )?((?:error|warning): .+)$",
-            "name": "lxgui (Linux)",
-            "shell_cmd": "make -j12",
-            "syntax": "Packages/CMakeBuilder/Syntax/Make.sublime-syntax",
-            "variants":
-            [
-                {
-                    "name": "clean",
-                    "shell_cmd": "make -j12 clean"
-                },
-                {
-                    "name": "install",
-                    "shell_cmd": "make -j12 install"
-                },
-                {
-                    "name": "install/local",
-                    "shell_cmd": "make -j12 install/local"
-                },
-                {
-                    "name": "install/strip",
-                    "shell_cmd": "make -j12 install/strip"
-                },
-                {
-                    "name": "list_install_components",
-                    "shell_cmd": "make -j12 list_install_components"
-                },
-                {
-                    "name": "rebuild_cache",
-                    "shell_cmd": "make -j12 rebuild_cache"
-                },
-                {
-                    "name": "lxgui",
-                    "shell_cmd": "make -j12 lxgui"
-                },
-                {
-                    "name": "lxgui-gl",
-                    "shell_cmd": "make -j12 lxgui-gl"
-                },
-                {
-                    "name": "lxgui-input-sdl",
-                    "shell_cmd": "make -j12 lxgui-input-sdl"
-                },
-                {
-                    "name": "lxgui-input-sfml",
-                    "shell_cmd": "make -j12 lxgui-input-sfml"
-                },
-                {
-                    "name": "lxgui-luapp",
-                    "shell_cmd": "make -j12 lxgui-luapp"
-                },
-                {
-                    "name": "lxgui-sdl",
-                    "shell_cmd": "make -j12 lxgui-sdl"
-                },
-                {
-                    "name": "lxgui-sfml",
-                    "shell_cmd": "make -j12 lxgui-sfml"
-                },
-                {
-                    "name": "lxgui-test",
-                    "shell_cmd": "make -j12 lxgui-test"
-                },
-                {
-                    "name": "lxgui-utils",
-                    "shell_cmd": "make -j12 lxgui-utils"
-                },
-                {
-                    "name": "lxgui-xml",
-                    "shell_cmd": "make -j12 lxgui-xml"
-                }
-            ],
-            "working_dir": "$folder/build"
-        }
-    ],
-    "folders":
-    [
-        {
-            "file_exclude_patterns":
-            [
-                "*.html",
-                "*.json",
-                ".gitignore",
-                ".gitmodules",
-                ".travis.yml",
-                "travis_key*",
-                "lxgui-test*"
-            ],
-            "folder_exclude_patterns":
-            [
-                "build",
-                "gui/doc",
-                ".git",
-                ".ci"
-            ],
-            "index_exclude_patterns":
-            [
-                "bin/game",
-                "build/*",
-                ".ci/*",
-                "gui/doc/*",
-                "gui/test/lxgui-test*",
-                "*.html"
-            ],
-            "path": "."
-        }
-    ],
-    "settings":
-    {
-        "cmake":
-        {
-            "build_folder": "$folder/build"
-        }
-    }
+	"build_systems":
+	[
+		{
+			"file_regex": "(.+[^:]):(\\d+):(\\d+): (?:fatal )?((?:error|warning): .+)$",
+			"name": "lxgui (Linux)",
+			"shell_cmd": "make -j12",
+			"syntax": "Packages/CMakeBuilder/Syntax/Make.sublime-syntax",
+			"variants":
+			[
+				{
+					"name": "clean",
+					"shell_cmd": "make -j12 clean"
+				},
+				{
+					"name": "install",
+					"shell_cmd": "make -j12 install"
+				},
+				{
+					"name": "install/local",
+					"shell_cmd": "make -j12 install/local"
+				},
+				{
+					"name": "install/strip",
+					"shell_cmd": "make -j12 install/strip"
+				},
+				{
+					"name": "list_install_components",
+					"shell_cmd": "make -j12 list_install_components"
+				},
+				{
+					"name": "rebuild_cache",
+					"shell_cmd": "make -j12 rebuild_cache"
+				},
+				{
+					"name": "lxgui",
+					"shell_cmd": "make -j12 lxgui"
+				},
+				{
+					"name": "lxgui-gl",
+					"shell_cmd": "make -j12 lxgui-gl"
+				},
+				{
+					"name": "lxgui-input-sdl",
+					"shell_cmd": "make -j12 lxgui-input-sdl"
+				},
+				{
+					"name": "lxgui-input-sfml",
+					"shell_cmd": "make -j12 lxgui-input-sfml"
+				},
+				{
+					"name": "lxgui-luapp",
+					"shell_cmd": "make -j12 lxgui-luapp"
+				},
+				{
+					"name": "lxgui-sdl",
+					"shell_cmd": "make -j12 lxgui-sdl"
+				},
+				{
+					"name": "lxgui-sfml",
+					"shell_cmd": "make -j12 lxgui-sfml"
+				},
+				{
+					"name": "lxgui-test",
+					"shell_cmd": "make -j12 lxgui-test"
+				},
+				{
+					"name": "lxgui-utils",
+					"shell_cmd": "make -j12 lxgui-utils"
+				},
+				{
+					"name": "lxgui-xml",
+					"shell_cmd": "make -j12 lxgui-xml"
+				}
+			],
+			"working_dir": "$folder/build"
+		}
+	],
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.html",
+				"*.json",
+				".gitignore",
+				".gitmodules",
+				".travis.yml",
+				"travis_key*",
+				"lxgui-test*"
+			],
+			"folder_exclude_patterns":
+			[
+				"build",
+				"gui/doc",
+				".git",
+				".ci"
+			],
+			"index_exclude_patterns":
+			[
+				"bin/game",
+				"build/*",
+				"dependencies/*",
+				".ci/*",
+				"gui/doc/*",
+				"gui/test/lxgui-test*",
+				"*.html"
+			],
+			"path": "."
+		}
+	],
+	"settings":
+	{
+		"cmake":
+		{
+			"build_folder": "$folder/build"
+		}
+	}
 }
