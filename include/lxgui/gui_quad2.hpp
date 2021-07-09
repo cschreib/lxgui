@@ -71,6 +71,18 @@ namespace gui
                    range_overlaps(top, bottom, mQuad.top, mQuad.bottom);
         }
 
+        bool operator == (const quad2<T>& mQuad) const
+        {
+            return left == mQuad.left && right == mQuad.right &&
+                   top == mQuad.top && bottom == mQuad.bottom;
+        }
+
+        bool operator != (const quad2<T>& mQuad) const
+        {
+            return left != mQuad.left || right != mQuad.right ||
+                   top != mQuad.top || bottom != mQuad.bottom;
+        }
+
         static const quad2 ZERO;
 
         T left = 0, right = 0, top = 0, bottom = 0;
