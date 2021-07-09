@@ -272,7 +272,7 @@ void backdrop::render() const
         if (pRenderer->has_vertex_cache())
             pRenderer->render_cache(pEdgeTexture_.get(), *pEdgeCache_);
         else
-            pRenderer->render_quads(pEdgeTexture_.get(), lBackgroundQuads_);
+            pRenderer->render_quads(pEdgeTexture_.get(), lEdgeQuads_);
     }
 }
 
@@ -374,13 +374,33 @@ void backdrop::update_background_(color mColor) const
     mBorders.top += lBackgroundInsets_.top;
     mBorders.bottom -= lBackgroundInsets_.bottom;
 
-    if (bBackgroundTilling_ && pBackgroundTexture_)
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+
+    if (pBackgroundTexture_)
     {
         const vector2f mCanvasTL = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
         const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
-        repeat_wrap(lBackgroundQuads_,
-            quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y),
-            fTileSize_, false, mColor, mBorders);
+        const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+
+        if (pRenderer->has_texture_atlas() && bBackgroundTilling_)
+        {
+            repeat_wrap(lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
+        }
+        else
+        {
+            lBackgroundQuads_.emplace_back();
+            auto& mQuad = lBackgroundQuads_.back();
+
+            mQuad[0].pos = mBorders.top_left();
+            mQuad[1].pos = mBorders.top_right();
+            mQuad[2].pos = mBorders.bottom_right();
+            mQuad[3].pos = mBorders.bottom_left();
+            mQuad[0].uvs = mCanvasUVs.top_left();
+            mQuad[1].uvs = mCanvasUVs.top_right();
+            mQuad[2].uvs = mCanvasUVs.bottom_right();
+            mQuad[3].uvs = mCanvasUVs.bottom_left();
+            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+        }
     }
     else
     {
@@ -391,26 +411,14 @@ void backdrop::update_background_(color mColor) const
         mQuad[1].pos = mBorders.top_right();
         mQuad[2].pos = mBorders.bottom_right();
         mQuad[3].pos = mBorders.bottom_left();
-
-        if (pBackgroundTexture_)
-        {
-            mQuad[0].uvs = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f,0.0f), true);
-            mQuad[1].uvs = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f,0.0f), true);
-            mQuad[2].uvs = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f,1.0f), true);
-            mQuad[3].uvs = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f,1.0f), true);
-        }
-        else
-        {
-            mQuad[0].uvs = vector2f(0.0f,0.0f);
-            mQuad[1].uvs = vector2f(1.0f,0.0f);
-            mQuad[2].uvs = vector2f(1.0f,1.0f);
-            mQuad[3].uvs = vector2f(0.0f,1.0f);
-        }
+        mQuad[0].uvs = vector2f(0.0f,0.0f);
+        mQuad[1].uvs = vector2f(1.0f,0.0f);
+        mQuad[2].uvs = vector2f(1.0f,1.0f);
+        mQuad[3].uvs = vector2f(0.0f,1.0f);
 
         mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
     }
 
-    auto* pRenderer = pParent_->get_manager()->get_renderer();
     if (pRenderer->has_vertex_cache())
     {
         if (!pBackgroundCache_)
@@ -435,20 +443,53 @@ void backdrop::update_edge_(color mColor) const
     mBorders.top += lEdgeInsets_.top;
     mBorders.bottom -= lEdgeInsets_.bottom;
 
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+
     auto repeat_wrap_edge = [&](const quad2f& mSourceUVs, bool bRotated, const quad2f& mDestination)
     {
         if (pEdgeTexture_)
         {
             const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
             const vector2f mCanvasBR = pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
-            repeat_wrap(lEdgeQuads_,
-                quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y),
-                fEdgeSize_, bRotated, mColor, mDestination);
+            const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+            if (pRenderer->has_texture_atlas())
+            {
+                repeat_wrap(lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
+            }
+            else
+            {
+                lEdgeQuads_.emplace_back();
+                auto& mQuad = lEdgeQuads_.back();
+
+                mQuad[0].pos = mDestination.top_left();
+                mQuad[1].pos = mDestination.top_right();
+                mQuad[2].pos = mDestination.bottom_right();
+                mQuad[3].pos = mDestination.bottom_left();
+
+                if (bRotated)
+                {
+                    float fFactor = mDestination.width() / fEdgeSize_;
+                    mQuad[0].uvs = mCanvasUVs.top_left() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                    mQuad[1].uvs = mCanvasUVs.top_left();
+                    mQuad[2].uvs = mCanvasUVs.top_right();
+                    mQuad[3].uvs = mCanvasUVs.top_right() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                }
+                else
+                {
+                    float fFactor = mDestination.height() / fEdgeSize_;
+                    mQuad[0].uvs = mCanvasUVs.top_left();
+                    mQuad[1].uvs = mCanvasUVs.top_right();
+                    mQuad[2].uvs = mCanvasUVs.top_right() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                    mQuad[3].uvs = mCanvasUVs.top_left() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                }
+
+                mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+            }
         }
         else
         {
-            lBackgroundQuads_.emplace_back();
-            auto& mQuad = lBackgroundQuads_.back();
+            lEdgeQuads_.emplace_back();
+            auto& mQuad = lEdgeQuads_.back();
 
             mQuad[0].pos = mDestination.top_left();
             mQuad[1].pos = mDestination.top_right();
@@ -510,7 +551,6 @@ void backdrop::update_edge_(color mColor) const
         mBorders.bottom - fEdgeSize_, mBorders.bottom
     ));
 
-    auto* pRenderer = pParent_->get_manager()->get_renderer();
     if (pRenderer->has_vertex_cache())
     {
         if (!pEdgeCache_)
