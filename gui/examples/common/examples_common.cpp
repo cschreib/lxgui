@@ -25,6 +25,18 @@ double get_time_delta(const timing_clock::time_point& mT1, const timing_clock::t
 
 void examples_setup_gui(gui::manager& mManager)
 {
+    // Automatically select best settings
+    gui::renderer* pGUIRenderer = pManager->get_renderer();
+    pGUIRenderer->auto_detect_settings();
+
+    std::cout << " Renderer settings:" << std::endl;
+    std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
+    std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
+    std::cout << "  Vertex cache supported: " << pGUIRenderer->is_vertex_cache_supported() << std::endl;
+    std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
+    std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
+    std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
+
     // The first thing to do is create the lua::state, and register any glue function
     // into the Lua state to call into your C++ application.
     std::cout << " Creating lua..." << std::endl;
