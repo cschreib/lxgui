@@ -1,6 +1,7 @@
 #include "examples_common.hpp"
 
 #include <lxgui/lxgui.hpp>
+#include <lxgui/gui_renderer.hpp>
 #include <lxgui/gui_texture.hpp>
 #include <lxgui/gui_fontstring.hpp>
 #include <lxgui/gui_button.hpp>
