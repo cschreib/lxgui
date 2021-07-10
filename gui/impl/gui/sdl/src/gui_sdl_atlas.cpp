@@ -7,59 +7,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-struct SDL_SW_YUVTexture
-{
-    Uint32 format;
-    Uint32 target_format;
-    int w, h;
-    Uint8 *pixels;
-
-    /* These are just so we don't have to allocate them separately */
-    Uint16 pitches[3];
-    Uint8 *planes[3];
-
-    /* This is a temporary surface in case we have to stretch copy */
-    SDL_Surface *stretch;
-    SDL_Surface *display;
-};
-
-typedef enum
-{
-    SDL_ScaleModeNearest, /**< nearest pixel sampling */
-    SDL_ScaleModeLinear,  /**< linear filtering */
-    SDL_ScaleModeBest     /**< anisotropic filtering */
-} SDL_ScaleMode;
-
-struct SDL_Texture
-{
-    const void *magic;
-    Uint32 format;              /**< The pixel format of the texture */
-    int access;                 /**< SDL_TextureAccess */
-    int w;                      /**< The width of the texture */
-    int h;                      /**< The height of the texture */
-    int modMode;                /**< The texture modulation mode */
-    SDL_BlendMode blendMode;    /**< The texture blend mode */
-    SDL_ScaleMode scaleMode;    /**< The texture scale mode */
-    Uint8 r, g, b, a;           /**< Texture modulation values */
-
-    SDL_Renderer *renderer;
-
-    /* Support for formats not supported directly by the renderer */
-    SDL_Texture *native;
-    SDL_SW_YUVTexture *yuv;
-    void *pixels;
-    int pitch;
-    SDL_Rect locked_rect;
-    SDL_Surface *locked_surface;  /**< Locked region exposed as a SDL surface */
-
-    Uint32 last_command_generation; /* last command queue generation this texture was in. */
-
-    void *driverdata;           /**< Driver specific texture representation */
-
-    SDL_Texture *prev;
-    SDL_Texture *next;
-};
-
 namespace lxgui {
 namespace gui {
 namespace sdl
