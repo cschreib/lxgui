@@ -120,9 +120,11 @@ namespace gl
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
+        *   \param mFilter  The filtering to apply to the target texture when displayed
         */
         std::shared_ptr<gui::render_target> create_render_target(
-            uint uiWidth, uint uiHeight) const override;
+            uint uiWidth, uint uiHeight,
+            material::filter mFilter = material::filter::NONE) const override;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise

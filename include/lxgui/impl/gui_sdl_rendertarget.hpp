@@ -24,8 +24,10 @@ namespace sdl
         /// Constructor.
         /** \param uiWidth  The width of the render_target
         *   \param uiHeight The height of the render_target
+        *   \param mFilter  The filtering to apply to the target texture when displayed
         */
-        render_target(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight);
+        render_target(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
+            material::filter mFilter = material::filter::NONE);
 
         /// Begins rendering on this target.
         void begin() override;

@@ -27,10 +27,10 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-render_target::render_target(uint uiWidth, uint uiHeight)
+render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
 {
     pTexture_ = std::make_shared<gl::material>(
-        uiWidth, uiHeight, material::wrap::REPEAT, material::filter::NONE, true
+        uiWidth, uiHeight, material::wrap::REPEAT, mFilter, true
     );
 
     glGenFramebuffers(1, &uiFBOHandle_);

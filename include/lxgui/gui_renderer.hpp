@@ -180,9 +180,11 @@ namespace gui
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
+        *   \param mFilter  The filtering to apply to the target texture when displayed
         */
         virtual std::shared_ptr<render_target> create_render_target(
-            uint uiWidth, uint uiHeight) const = 0;
+            uint uiWidth, uint uiHeight,
+            material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font

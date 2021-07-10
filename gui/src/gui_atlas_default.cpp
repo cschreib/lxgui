@@ -10,7 +10,7 @@ atlas_page_default::atlas_page_default(const renderer& mRenderer, material::filt
     atlas_page(mFilter), mRenderer_(mRenderer)
 {
     uint uiMaxSize = mRenderer_.get_texture_max_size();
-    pTarget_ = mRenderer_.create_render_target(uiMaxSize, uiMaxSize);
+    pTarget_ = mRenderer_.create_render_target(uiMaxSize, uiMaxSize, mFilter);
 }
 
 std::shared_ptr<gui::material> atlas_page_default::add_material_(const gui::material& mMat,

@@ -21,8 +21,10 @@ namespace gl
         /// Constructor.
         /** \param uiWidth  The width of the render_target
         *   \param uiHeight The height of the render_target
+        *   \param mFilter  The filtering to apply to the target texture when displayed
         */
-        render_target(uint uiWidth, uint uiHeight);
+        render_target(uint uiWidth, uint uiHeight,
+            material::filter mFilter = material::filter::NONE);
 
         /// Destructor.
         ~render_target() override;

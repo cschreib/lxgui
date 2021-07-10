@@ -575,17 +575,10 @@ std::shared_ptr<gui::material> renderer::create_material(
     }
 }
 
-std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<gui::render_target> renderer::create_render_target(
+    uint uiWidth, uint uiHeight, material::filter mFilter) const
 {
-    try
-    {
-        return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight);
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
+    return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const

@@ -86,6 +86,7 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         break;
     }
+
     switch (mFilter)
     {
     case filter::LINEAR :

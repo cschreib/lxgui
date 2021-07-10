@@ -10,10 +10,11 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-render_target::render_target(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight)
+render_target::render_target(SDL_Renderer* pRenderer,
+    uint uiWidth, uint uiHeight, material::filter mFilter)
 {
     pTexture_ = std::make_shared<sdl::material>(
-        pRenderer, uiWidth, uiHeight, true, material::wrap::REPEAT, material::filter::NONE
+        pRenderer, uiWidth, uiHeight, true, material::wrap::REPEAT, mFilter
     );
 }
 

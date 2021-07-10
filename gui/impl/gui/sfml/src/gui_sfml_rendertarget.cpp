@@ -7,10 +7,10 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-render_target::render_target(uint uiWidth, uint uiHeight)
+render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
 {
     pTexture_ = std::make_shared<sfml::material>(
-        uiWidth, uiHeight, true, material::wrap::REPEAT, material::filter::NONE
+        uiWidth, uiHeight, true, material::wrap::REPEAT, mFilter
     );
 
     pRenderTexture_ = pTexture_->get_render_texture();
