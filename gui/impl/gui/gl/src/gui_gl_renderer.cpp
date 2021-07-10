@@ -148,9 +148,9 @@ void renderer::render_quad(const quad& mQuad) const
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(mQuad.mat.get());
-    if (mMat)
+    if (pMat)
     {
-        mMat->bind();
+        pMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -171,6 +171,7 @@ void renderer::render_quad(const quad& mQuad) const
         for (uint i = 0; i < 6; ++i)
         {
             uint j = ids[i];
+            float a = mQuad.v[j].col.a;
             glColor4f(mQuad.v[j].col.r*a, mQuad.v[j].col.g*a, mQuad.v[j].col.b*a, a); // Premultipled alpha
             glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
         }
@@ -201,10 +202,10 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
     static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material* pMat = static_cast<const gl::material*>(mMaterial);
-    if (mMat)
+    const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
+    if (pMat)
     {
-        mMat->bind();
+        pMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -230,6 +231,7 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];
+                float a = v[j].col.a;
                 glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);
             }
