@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_sdl_renderer.hpp"
+#include "lxgui/impl/gui_sdl_atlas.hpp"
 #include "lxgui/impl/gui_sdl_material.hpp"
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 #include "lxgui/impl/gui_sdl_font.hpp"
@@ -35,6 +36,17 @@ renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRendere
         }
     }
 
+    // Get maximum texture size
+    SDL_RendererInfo mInfo;
+    if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
+    {
+        throw gui::exception("gui::sdl::renderer", "Could not get renderer information.");
+    }
+
+    uiTextureMaxSize_ = std::min(mInfo.max_texture_width, mInfo.max_texture_height);
+    if (uiTextureMaxSize_ == 0)
+        uiTextureMaxSize_ = 1024u;
+
     // Check if we can do pre-multiplied alpha
     SDL_Texture* pTexture = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_ABGR8888,
         SDL_TEXTUREACCESS_STREAMING, 4u, 4u);
@@ -43,6 +55,13 @@ renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRendere
         (SDL_BlendMode)material::get_premultiplied_alpha_blend_mode()) == 0);
 
     SDL_DestroyTexture(pTexture);
+}
+
+std::string renderer::get_name() const
+{
+    SDL_RendererInfo mRendererInfo;
+    SDL_GetRendererInfo(pRenderer_, &mRendererInfo);
+    return std::string("SDL (") + mRendererInfo.name + ")";
 }
 
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
@@ -305,8 +324,8 @@ void renderer::render_quad(const sdl::material* pMat,
     if (pMat)
     {
         SDL_Texture* pTexture = pMat->get_texture();
-        const float fTexWidth = pMat->get_real_width();
-        const float fTexHeight = pMat->get_real_height();
+        const float fTexWidth = pMat->get_canvas_width();
+        const float fTexHeight = pMat->get_canvas_height();
         const int iTexWidth = static_cast<int>(fTexWidth);
         const int iTexHeight = static_cast<int>(fTexHeight);
 
@@ -521,79 +540,61 @@ void renderer::render_cache(const gui::material*, const gui::vertex_cache&, cons
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+SDL_Renderer* renderer::get_sdl_renderer() const
 {
-    std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBackedName);
-    if (iter != lTextureList_.end())
-    {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
-            return pLock;
-        else
-            lTextureList_.erase(iter);
-    }
+    return pRenderer_;
+}
 
-    try
-    {
-        std::shared_ptr<gui::material> pTex = std::make_shared<sdl::material>(
-            pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
-        );
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
+{
+    return std::make_shared<sdl::material>(
+        pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
+    );
+}
 
-        lTextureList_[sFileName] = pTex;
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
+{
+    return std::make_shared<sdl::atlas>(*this, mFilter);
+}
+
+uint renderer::get_texture_max_size() const
+{
+    return uiTextureMaxSize_;
+}
+
+bool renderer::is_texture_atlas_natively_supported() const
+{
+    return true;
+}
+
+std::shared_ptr<gui::material> renderer::create_material(
+    std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
+{
+    auto pTex = std::static_pointer_cast<sdl::render_target>(pRenderTarget)->get_material().lock();
+    if (mLocation == pRenderTarget->get_rect())
+    {
         return pTex;
     }
-    catch (const std::exception& e)
+    else
     {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
+        return std::make_shared<sdl::material>(pRenderer_,
+            pTex->get_render_texture(), mLocation, pTex->get_filter());
     }
 }
 
-std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
+std::shared_ptr<gui::render_target> renderer::create_render_target(
+    uint uiWidth, uint uiHeight, material::filter mFilter) const
 {
-    try
-    {
-        return std::static_pointer_cast<sdl::render_target>(pRenderTarget)->get_material().lock();
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
+    return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight, mFilter);
 }
 
-std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
 {
-    try
-    {
-        return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight);
-    }
-    catch (const std::exception& e)
-    {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
-    }
-}
-
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
-{
-    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
-    {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
-            return pLock;
-        else
-            lFontList_.erase(iter);
-    }
-
-    std::shared_ptr<gui::font> pFont = std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
+    return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
         bPreMultipliedAlphaSupported_);
-    lFontList_[sFontName] = pFont;
-    return pFont;
 }
 
-bool renderer::has_vertex_cache() const
+bool renderer::is_vertex_cache_supported() const
 {
     return false;
 }

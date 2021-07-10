@@ -378,10 +378,6 @@ int main(int argc, char* argv[])
 
         if (!pRenderer)
             throw gui::exception("SDL_Renderer", "Could not create renderer.");
-
-        SDL_RendererInfo mRendererInfo;
-        SDL_GetRendererInfo(pRenderer.get(), &mRendererInfo);
-        gui::out << "SDL renderer: " << mRendererInfo.name << std::endl;
     #else
         // Helper class to manage the OpenGL context from SDL
         struct GLContext
@@ -459,6 +455,19 @@ int main(int argc, char* argv[])
         // Use full SFML implementation
         pManager = gui::sfml::create_manager(mWindow, sLocale);
     #endif
+
+        // Automatically select best settings
+        gui::renderer* pGUIRenderer = pManager->get_renderer();
+        pGUIRenderer->auto_detect_settings();
+
+        std::cout << " Renderer settings:" << std::endl;
+        std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
+        std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
+        std::cout << "  Vertex cache supported: " << pGUIRenderer->is_vertex_cache_supported() << std::endl;
+        std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
+        std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
+        std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
+        std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
 
         pManager->enable_caching(false);
 

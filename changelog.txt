@@ -2,7 +2,7 @@ v2.0.0:
 
 Major changes:
  - general: switched to MIT license
- - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3 only)
+ - general: added support for WebAssembly (pure SDL, or SDL + OpenGL ES3)
  - general: dropped support for C++ version earlier than C++17
  - input: added SDL input implementation
  - input: removed OIS input implementation
@@ -12,6 +12,8 @@ Major changes:
  - gui: added a faster OpenGL 3 implementation, alternative to fixed pipeline legacy OpenGL
  - gui: added documentation for the Lua API
  - gui: added support for high-DPI systems using a global scaling factor (with hints from OS)
+ - gui: added vertex_cache to speed up rendering (only available with OpenGL renderer)
+ - gui: added texture atlases to speed up rendering (best enabled only if vertex cache is supported)
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:
     - the frame itself is created (without any of its regions or children)
     - the special regions are parsed (e.g., slider thumb texture, button texture, etc.)
@@ -79,7 +81,7 @@ Other changes:
  - gui: added clear_history() to edit_box
  - gui: added clipboard support to edit_box
  - gui: added automatic un-focus of edit_box when clicking outside of the box
- - gui: added vertex_cache to speed up text rendering (only available with OpenGL renderer)
+ - gui: render targets can now have texture filtering other than nearest
  - gui: improved peformance of "update borders" notifications
  - gui: improved peformance of generating new object IDs
  - gui: fixed rare crash in edit_box

@@ -7,13 +7,16 @@
 #include "lxgui/gui_vertexcache.hpp"
 
 #include <vector>
+#include <array>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 namespace lxgui {
 namespace gui
 {
     class font;
+    class atlas;
     class render_target;
     class color;
     struct quad;
@@ -29,6 +32,11 @@ namespace gui
 
         /// Destructor.
         virtual ~renderer() = default;
+
+        /// Returns a human-readable name for this renderer.
+        /** \return A human-readable name for this renderer
+        */
+        virtual std::string get_name() const = 0;
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -91,33 +99,118 @@ namespace gui
         *         repeatedly, as it allows to reduce the number of draw calls. This method
         *         is also more efficient than render_quads(), as the vertex data is
         *         already cached to the GPU and does not need sending again. However,
-        *         not all implementations support vertex caches. See has_vertex_cache().
+        *         not all implementations support vertex caches. See is_vertex_cache_supported().
         */
         virtual void render_cache(const material* pMaterial, const vertex_cache& mCache,
             const matrix4f& mModelTransform = matrix4f::IDENTITY) const = 0;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
+        *   \param mFilter   The filtering to apply to the texture
         *   \return The new material
         *   \note Supported texture formats are defined by implementation.
         *         The gui library is completely unaware of this.
         */
-        virtual std::shared_ptr<material> create_material(const std::string& sFileName,
-            material::filter mFilter = material::filter::NONE) const = 0;
+        std::shared_ptr<material> create_material(const std::string& sFileName,
+            material::filter mFilter = material::filter::NONE) const;
 
-        /// Creates a new material from a render target.
+        /// Returns the maximum texture width/height (in pixels).
+        /** \return The maximum texture width/height (in pixels)
+        */
+        virtual uint get_texture_max_size() const = 0;
+
+        /// Checks if the renderer supports texture atlases natively.
+        /** \return 'true' if enabled, 'false' otherwise
+        *   \note If 'false', texture atlases will be implemented using a generic
+        *         solution with render targets.
+        */
+        virtual bool is_texture_atlas_natively_supported() const = 0;
+
+        /// Checks if the renderer has texture atlases enabled.
+        /** \return 'true' if enabled, 'false' otherwise
+        */
+        bool is_texture_atlas_enabled() const;
+
+        /// Enables/disables texture atlases.
+        /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
+        *   \note Texture atlases are enabled by default. Changing this flag will only
+        *         impact newly created materials. Existing materials will not be affected.
+        *   \note In general, texture atlases only increase performance when vertex caches
+        *         are supported and used (see is_vertex_cache_supported()). The can actually decrease
+        *         performance when vertex caches are not supported, if texture tiling is
+        *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
+        *         disable texture atlases if vertex caches are not supported.
+        */
+        void set_texture_atlas_enabled(bool bEnabled);
+
+        /// Returns the width/height of a texture atlas page (in pixels).
+        /** \return The width/height of a texture atlas page (in pixels)
+        */
+        uint get_texture_atlas_page_size() const;
+
+        /// Set the width/height of a texture atlas page (in pixels).
+        /** \param uiPageSize The texture width/height in pixels
+        *   \note Changing this value will only impact newly created atlas pages.
+        *         Existing pages will not be affected.
+        *   \note Increase this value to allow more materials to fit on a single atlas
+        *         page, therefore improving performance. Decrease tihs value if the
+        *         memory usage from atlas textures is too large. Set it to zero
+        *         to fall back to the implementation-defined default value.
+        */
+        void set_texture_atlas_page_size(uint uiPageSize);
+
+        /// Count the total number of texture atlas pages curently in use.
+        /** \return The total number of texture atlas pages curently in use
+        */
+        uint get_num_texture_atlas_pages() const;
+
+        /// Creates a new material from a texture file.
+        /** \param sAtlasCategory The category of atlas in which to create the texture
+        *   \param sFileName      The name of the file
+        *   \param mFilter        The filtering to apply to the texture
+        *   \return The new material
+        *   \note Supported texture formats are defined by implementation.
+        *         The gui library is completely unaware of this.
+        *   \note The atlas category is a hint that the implementation can use to select
+        *         the texture atlas in which to place this new texture. If a group of
+        *         textures is known to be used to render objects that are often rendered
+        *         consecutively (for example, various tiles of a background), they should
+        *         be placed in the same category to maximize the chance of draw call batching.
+        *         Conversely, if two texture are known to rarely be used in the same context
+        *         (for example, a special effect particle texture and a UI button texture),
+        *         they should not be placed in the same category, as this could otherwise
+        *         fill up the atlas quickly, and reduce batching opportunities.
+        *   \note Because of how texture atlases work, it is not possible to use texture
+        *         coordinate wrapping for materials from an atlas. Trying to use coordinates
+        *         outside the [0,1] range will start reading texture data from another
+        *         material.
+        */
+        std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
+            const std::string& sFileName, material::filter mFilter = material::filter::NONE) const;
+
+        /// Creates a new material from a portion of a render target.
         /** \param pRenderTarget The render target from which to read the pixels
+        *   \param mLocation     The portion of the render target to use as material
         *   \return The new material
         */
         virtual std::shared_ptr<material> create_material(
-            std::shared_ptr<render_target> pRenderTarget) const = 0;
+            std::shared_ptr<render_target> pRenderTarget, const quad2f& mLocation) const = 0;
+
+        /// Creates a new material from an entire render target.
+        /** \param pRenderTarget The render target from which to read the pixels
+        *   \return The new material
+        */
+        std::shared_ptr<material> create_material(
+            std::shared_ptr<render_target> pRenderTarget) const;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target
+        *   \param mFilter  The filtering to apply to the target texture when displayed
         */
         virtual std::shared_ptr<render_target> create_render_target(
-            uint uiWidth, uint uiHeight) const = 0;
+            uint uiWidth, uint uiHeight,
+            material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
@@ -126,17 +219,28 @@ namespace gui
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
-        virtual std::shared_ptr<font> create_font(const std::string& sFontFile,
-            uint uiSize) const = 0;
+        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
         */
-        virtual bool has_vertex_cache() const = 0;
+        virtual bool is_vertex_cache_supported() const = 0;
+
+        /// Checks if the renderer has enabled support for vertex caches.
+        /** \return 'true' if vertex caches are supported and enabled, 'false' otherwise
+        */
+        bool is_vertex_cache_enabled() const;
+
+        /// Enables/disables vertex caches.
+        /** \param bEnabled 'true' to enable vertex caches, 'false' to disable them
+        *   \note Even if enabled with this function, vertex caches may not be supported
+        *         by the renderer, see is_vertex_cache_supported().
+        */
+        void set_vertex_cache_enabled(bool bEnabled);
 
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
-        *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
         */
         virtual std::shared_ptr<vertex_cache> create_vertex_cache(
             gui::vertex_cache::type mType) const = 0;
@@ -146,6 +250,51 @@ namespace gui
         *   \param uiNewHeight The new window height
         */
         virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
+
+        /// Automatically determines the best rendering settings for the current platform.
+        void auto_detect_settings();
+
+    protected:
+
+        /// Creates a new material from a texture file.
+        /** \param sFileName The name of the file
+        *   \param mFilter   The filtering to apply to the texture
+        *   \return The new material
+        *   \note Supported texture formats are defined by implementation.
+        *         The gui library is completely unaware of this.
+        */
+        virtual std::shared_ptr<material> create_material_(const std::string& sFileName,
+            material::filter mFilter) const = 0;
+
+        /// Creates a new atlas with a given texture filter mode.
+        /** \param mFilter The filtering to apply to the texture
+        *   \return The new atlas
+        */
+        virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
+
+        /// Creates a new atlas with a given texture filter mode (using default implementation).
+        /** \param mFilter The filtering to apply to the texture
+        *   \return The new atlas
+        */
+        std::shared_ptr<atlas> create_atlas_default_(material::filter mFilter) const;
+
+        /// Creates a new font.
+        /** \param sFontFile The file from which to read the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \note Even though the gui has been designed to use vector fonts files
+        *         (such as .ttf or .otf font formats), nothing prevents the implementation
+        *         from using any other font type, including bitmap fonts.
+        */
+        virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
+            uint uiSize) const = 0;
+
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
+
+        bool bTextureAtlasEnabled_ = true;
+        bool bVertexCacheEnabled_ = true;
+        uint uiTextureAtlasPageSize_ = 0u;
     };
 }
 }

@@ -309,12 +309,7 @@ void scroll_frame::rebuild_scroll_render_target_()
     if (pScrollRenderTarget_)
     {
         pScrollRenderTarget_->set_dimensions(fScaledWidth, fScaledHeight);
-
-        std::array<float,4> lTexCoords;
-        lTexCoords[0] = 0.0f; lTexCoords[1] = 0.0f;
-        lTexCoords[2] = fScaledWidth/pScrollRenderTarget_->get_real_width();
-        lTexCoords[3] = fScaledHeight/pScrollRenderTarget_->get_real_height();
-        pScrollTexture_->set_tex_coord(lTexCoords);
+        pScrollTexture_->set_tex_coord(std::array<float,4>{0.0f, 0.0f, 1.0f, 1.0f});
         bUpdateScrollRange_ = true;
     }
     else

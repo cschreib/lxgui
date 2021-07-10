@@ -143,7 +143,7 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             pBackdropBlock->get_attribute("edgeFile")
         ));
 
-        pBackdrop->set_backgrond_tilling(utils::string_to_bool(pBackdropBlock->get_attribute("tile")));
+        pBackdrop->set_background_tilling(utils::string_to_bool(pBackdropBlock->get_attribute("tile")));
 
         xml::block* pBGInsetsBlock = pBackdropBlock->get_block("BackgroundInsets");
         if (pBGInsetsBlock)

@@ -43,6 +43,8 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
         mTexture_.setSmooth(mFilter == filter::LINEAR);
         mTexture_.setRepeated(mWrap == wrap::REPEAT);
     }
+
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(const sf::Image& mData, wrap mWrap, filter mFilter)
@@ -60,6 +62,7 @@ material::material(const sf::Image& mData, wrap mWrap, filter mFilter)
     mFilter_ = mFilter;
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(const std::string& sFileName, wrap mWrap, filter mFilter)
@@ -81,10 +84,24 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter)
     mFilter_ = mFilter;
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+}
+
+material::material(const sf::Texture& mTexture, const quad2f& mLocation, filter mFilter)
+{
+    mRect_ = mLocation;
+    mFilter_ = mFilter;
+    pAtlasTexture_ = &mTexture;
 }
 
 void material::set_wrap(wrap mWrap)
 {
+    if (pAtlasTexture_)
+    {
+        throw gui::exception("gui::sfml::material",
+            "A material in an atlas cannot change its wrapping mode.");
+    }
+
     mWrap_ = mWrap;
 
     if (bRenderTarget_)
@@ -95,12 +112,23 @@ void material::set_wrap(wrap mWrap)
 
 void material::set_filter(filter mFilter)
 {
+    if (pAtlasTexture_)
+    {
+        throw gui::exception("gui::sfml::material",
+            "A material in an atlas cannot change its filtering.");
+    }
+
     mFilter_ = mFilter;
 
     if (bRenderTarget_)
         mRenderTexture_.setSmooth(mFilter == filter::LINEAR);
     else
         mTexture_.setSmooth(mFilter == filter::LINEAR);
+}
+
+material::filter material::get_filter() const
+{
+    return mFilter_;
 }
 
 void material::premultiply_alpha(sf::Image& mData)
@@ -119,37 +147,45 @@ void material::premultiply_alpha(sf::Image& mData)
     }
 }
 
-float material::get_width() const
+quad2f material::get_rect() const
 {
-    return uiWidth_;
+    return mRect_;
 }
 
-float material::get_height() const
+float material::get_canvas_width() const
 {
-    return uiHeight_;
+    if (pAtlasTexture_)
+        return pAtlasTexture_->getSize().x;
+    else
+        return uiRealWidth_;
 }
 
-float material::get_real_width() const
+float material::get_canvas_height() const
 {
-    return uiRealWidth_;
-}
-
-float material::get_real_height() const
-{
-    return uiRealHeight_;
+    if (pAtlasTexture_)
+        return pAtlasTexture_->getSize().y;
+    else
+        return uiRealHeight_;
 }
 
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
+    if (pAtlasTexture_)
+    {
+        throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
+    }
+
     if (!bRenderTarget_) return false;
 
     if (uiWidth > sf::Texture::getMaximumSize() || uiHeight > sf::Texture::getMaximumSize())
         return false;
 
+    uiWidth_  = uiWidth;
+    uiHeight_ = uiHeight;
+    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {
-        uiWidth_      = uiWidth;
-        uiHeight_     = uiHeight;
         // SFML is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
         if (uiWidth > uiRealWidth_)
@@ -170,8 +206,6 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
     else
     {
-        uiWidth_  = uiWidth;
-        uiHeight_ = uiHeight;
         return false;
     }
 }
@@ -187,6 +221,8 @@ const sf::Texture* material::get_texture() const
 {
     if (bRenderTarget_)
         return &mRenderTexture_.getTexture();
+    else if (pAtlasTexture_)
+        return pAtlasTexture_;
     else
         return &mTexture_;
 }

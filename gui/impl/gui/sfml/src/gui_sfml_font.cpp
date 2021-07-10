@@ -39,16 +39,15 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
 
-    const float fTexWidth = pTexture_->get_width();
-    const float fTexHeight = pTexture_->get_height();
+    const quad2f mTexRect = pTexture_->get_rect();
 
     const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false).textureRect;
 
     quad2f mRect;
-    mRect.left   = mSFRect.left / fTexWidth;
-    mRect.right  = (mSFRect.left + mSFRect.width) / fTexWidth;
-    mRect.top    = mSFRect.top / fTexHeight;
-    mRect.bottom = (mSFRect.top + mSFRect.height) / fTexHeight;
+    mRect.left   = mSFRect.left / mTexRect.width();
+    mRect.right  = (mSFRect.left + mSFRect.width) / mTexRect.width();
+    mRect.top    = mSFRect.top / mTexRect.height();
+    mRect.bottom = (mSFRect.top + mSFRect.height) / mTexRect.height();
     return mRect;
 }
 

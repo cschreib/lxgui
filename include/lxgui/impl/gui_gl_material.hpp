@@ -4,6 +4,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_color.hpp>
+#include <lxgui/gui_quad2.hpp>
 
 #include <vector>
 #include <memory>
@@ -41,6 +42,16 @@ namespace gl
         material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE, bool bGPUOnly = false);
 
+        /// Constructor for atlas textures.
+        /** \param uiTextureHandle The handle to the texture object of the atlas
+        *   \param uiWidth         The width of the texture atlas
+        *   \param uiHeight        The height of the texture atlas
+        *   \param mRect           The position of this texture inside the atlas
+        *   \param mFilter         Use texture filtering or not (see set_filter())
+        */
+        material(uint uiTextureHandle, uint uiWidth, uint uiHeight, const quad2f mRect,
+            filter mFilter = filter::NONE);
+
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
@@ -49,35 +60,30 @@ namespace gl
         /// Destructor.
         ~material() override;
 
-        /// Returns the width of the underlying texture (if any).
-        /** \return The width of the underlying texture (if any)
+        /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
+        /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        float get_width() const override;
+        quad2f get_rect() const override;
 
-        /// Returns the height of the underlying texture (if any).
-        /** \return The height of the underlying texture (if any)
-        */
-        float get_height() const override;
-
-        /// Returns the physical width of the underlying texture (if any).
-        /** \return The physical width of the underlying texture (if any)
+        /// Returns the physical width in pixels of the canvas containing this texture (if any).
+        /** \return The physical width in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_width() const override;
+        float get_canvas_width() const override;
 
-        /// Returns the physical height of the underlying texture (if any).
-        /** \return The physical height of the underlying texture (if any)
+        /// Returns the physical height in pixels of the canvas containing this texture (if any).
+        /** \return The physical height in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_height() const override;
+        float get_canvas_height() const override;
 
         /// Resizes this texture.
         /** \param uiWidth  The new texture width
@@ -105,6 +111,11 @@ namespace gl
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Sets this material as the active one.
         void bind() const;
 
@@ -119,7 +130,7 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        std::vector<ub32color>&       get_data();
+        std::vector<ub32color>& get_data();
 
         /// Sets the color of one pixel.
         /** \param x      The coordinate of the pixel in the texture
@@ -129,14 +140,14 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        void                          set_pixel(uint x, uint y, const ub32color& mColor);
+        void set_pixel(uint x, uint y, const ub32color& mColor);
 
         /// Returns the color of one pixel (read only).
         /** \param x      The coordinate of the pixel in the texture
         *   \param y      The coordinate of the pixel in the texture
         *   \return The color of the pixel
         */
-        const ub32color&              get_pixel(uint x, uint y) const;
+        const ub32color& get_pixel(uint x, uint y) const;
 
         /// Returns the color of one pixel.
         /** \param x The coordinate of the pixel in the texture
@@ -146,7 +157,7 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        ub32color&                    get_pixel(uint x, uint y);
+        ub32color& get_pixel(uint x, uint y);
 
         /// Updates the texture that is in GPU memory.
         /** \note Whenever you modify pixels of the texture,
@@ -172,6 +183,11 @@ namespace gl
         */
         static void check_availability();
 
+        /// Returns the maximum size available for a texture, in pixels.
+        /** \return The maximum size available for a texture, in pixels
+        */
+        static uint get_max_size();
+
     private:
 
         uint   uiWidth_ = 0u, uiHeight_ = 0u;
@@ -179,6 +195,8 @@ namespace gl
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
         uint   uiTextureHandle_ = 0u;
+        quad2f mRect_;
+        bool   bIsOwner_ = false;
 
         std::vector<ub32color> pData_;
 

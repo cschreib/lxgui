@@ -4,6 +4,8 @@ set(SRCROOT ${TARGET_DIR}/src)
 add_library(lxgui
     ${SRCROOT}/gui_anchor.cpp
     ${SRCROOT}/gui_alive_checker.cpp
+    ${SRCROOT}/gui_atlas.cpp
+    ${SRCROOT}/gui_atlas_default.cpp
     ${SRCROOT}/gui_backdrop.cpp
     ${SRCROOT}/gui_button.cpp
     ${SRCROOT}/gui_button_glues.cpp
@@ -36,6 +38,7 @@ add_library(lxgui
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
     ${SRCROOT}/gui_manager_parser.cpp
+    ${SRCROOT}/gui_material.cpp
     ${SRCROOT}/gui_matrix4.cpp
     ${SRCROOT}/gui_out.cpp
     ${SRCROOT}/gui_region.cpp

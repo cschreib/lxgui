@@ -1,4 +1,5 @@
 #include "lxgui/impl/gui_gl_renderer.hpp"
+#include "lxgui/impl/gui_gl_atlas.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
 #include "lxgui/impl/gui_gl_rendertarget.hpp"
 #include "lxgui/impl/gui_gl_font.hpp"
@@ -52,6 +53,19 @@ renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[may
 #if defined(LXGUI_OPENGL3)
     compile_programs_();
     setup_buffers_();
+#endif
+}
+
+std::string renderer::get_name() const
+{
+#if defined(LXGUI_OPENGL3)
+#   if defined(WASM)
+    return "WebGL";
+#   else
+    return "OpenGL3";
+#   endif
+#else
+    return "OpenGL2";
 #endif
 }
 
@@ -147,9 +161,9 @@ void renderer::render_quad(const quad& mQuad) const
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(mQuad.mat.get());
-    if (mMat)
+    if (pMat)
     {
-        mMat->bind();
+        pMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -170,6 +184,7 @@ void renderer::render_quad(const quad& mQuad) const
         for (uint i = 0; i < 6; ++i)
         {
             uint j = ids[i];
+            float a = mQuad.v[j].col.a;
             glColor4f(mQuad.v[j].col.r*a, mQuad.v[j].col.g*a, mQuad.v[j].col.b*a, a); // Premultipled alpha
             glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
         }
@@ -200,10 +215,10 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
     static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
-    const gl::material* pMat = static_cast<const gl::material*>(mMaterial);
-    if (mMat)
+    const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
+    if (pMat)
     {
-        mMat->bind();
+        pMat->bind();
 
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
@@ -229,6 +244,7 @@ void renderer::render_quads(const gui::material* pMaterial, const std::vector<st
             for (uint i = 0; i < 6; ++i)
             {
                 uint j = ids[i];
+                float a = v[j].col.a;
                 glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);
             }
@@ -286,56 +302,64 @@ void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_ca
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBakedName = utils::to_string((int)mFilter) + '|' + sFileName;
-    std::map<std::string, std::weak_ptr<gui::material>>::iterator iter = lTextureList_.find(sBakedName);
-    if (iter != lTextureList_.end())
-    {
-        if (std::shared_ptr<gui::material> pLock = iter->second.lock())
-            return pLock;
-        else
-            lTextureList_.erase(iter);
-    }
+    if (!utils::ends_with(sFileName, ".png"))
+        throw gui::exception("gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
 
-    if (utils::ends_with(sFileName, ".png"))
-        return create_material_png(sFileName, mFilter);
+    return create_material_png(sFileName, mFilter);
+}
+
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
+{
+#if defined(WASM)
+    throw gui::exception("gui::gl::renderer", "WebGL has no native support for texture atlases.");
+#else
+    return std::make_shared<gl::atlas>(*this, mFilter);
+#endif
+}
+
+uint renderer::get_texture_max_size() const
+{
+    return material::get_max_size();
+}
+
+std::shared_ptr<gui::material> renderer::create_material(
+    std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
+{
+    auto pTex = std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
+    if (mLocation == pRenderTarget->get_rect())
+    {
+        return pTex;
+    }
     else
     {
-        gui::out << gui::warning << "gui::gl::renderer : Unsupported texture format '"
-            << sFileName << "'." << std::endl;
-        return nullptr;
+        return std::make_shared<gl::material>(pTex->get_handle_(),
+            pTex->get_canvas_width(), pTex->get_canvas_height(), mLocation, pTex->get_filter());
     }
 }
 
-std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
+std::shared_ptr<gui::render_target> renderer::create_render_target(
+    uint uiWidth, uint uiHeight, material::filter mFilter) const
 {
-    return std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
+    return std::make_shared<gl::render_target>(uiWidth, uiHeight, mFilter);
 }
 
-std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
 {
-    return std::make_shared<render_target>(uiWidth, uiHeight);
+    return std::make_shared<gl::font>(sFontFile, uiSize);
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+bool renderer::is_texture_atlas_natively_supported() const
 {
-    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
-    std::map<std::string, std::weak_ptr<gui::font>>::iterator iter = lFontList_.find(sFontName);
-    if (iter != lFontList_.end())
-    {
-        if (std::shared_ptr<gui::font> pLock = iter->second.lock())
-            return pLock;
-        else
-            lFontList_.erase(iter);
-    }
-
-    std::shared_ptr<gui::font> pFont = std::make_shared<gl::font>(sFontFile, uiSize);
-    lFontList_[sFontName] = pFont;
-    return pFont;
+#if defined(WASM)
+    return false;
+#else
+    return true;
+#endif
 }
 
-bool renderer::has_vertex_cache() const
+bool renderer::is_vertex_cache_supported() const
 {
 #if !defined(LXGUI_OPENGL3)
     return false;

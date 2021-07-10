@@ -26,7 +26,7 @@ int material::get_premultiplied_alpha_blend_mode()
 }
 
 material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
-    bool bRenderTarget, wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
+    bool bRenderTarget, wrap mWrap, filter mFilter) : pRenderer_(pRenderer), bIsOwner_(true)
 {
     SDL_RendererInfo mInfo;
     if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
@@ -74,10 +74,13 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
     uiRealWidth_ = iTextureRealWidth;
     uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = bRenderTarget;
+
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
-    bool bPreMultipliedAlphaSupported, wrap mWrap, filter mFilter) : pRenderer_(pRenderer)
+    bool bPreMultipliedAlphaSupported, wrap mWrap, filter mFilter) :
+    pRenderer_(pRenderer), bIsOwner_(true)
 {
     // Load file
     SDL_Surface* pSurface = IMG_Load(sFileName.c_str());
@@ -138,15 +141,38 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     uiRealWidth_ = iTextureRealWidth;
     uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = false;
+
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+}
+
+material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
+    filter mFilter) : pRenderer_(pRenderer), mRect_(mRect),
+    mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
+{
+    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    Uint32 uiTextureFormat = 0;
+    SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess,
+        &iTextureRealWidth, &iTextureRealHeight);
+
+    uiWidth_ = mRect_.width();
+    uiHeight_ = mRect_.height();
+    uiRealWidth_ = iTextureRealWidth;
+    uiRealHeight_ = iTextureRealHeight;
 }
 
 material::~material() noexcept
 {
-    if (pTexture_) SDL_DestroyTexture(pTexture_);
+    if (pTexture_ && bIsOwner_) SDL_DestroyTexture(pTexture_);
 }
 
 void material::set_wrap(wrap mWrap)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::sdl::material",
+            "A material in an atlas cannot change its wrapping mode.");
+    }
+
     mWrap_ = mWrap;
 }
 
@@ -157,7 +183,18 @@ material::wrap material::get_wrap() const
 
 void material::set_filter(filter mFilter)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::sdl::material",
+            "A material in an atlas cannot change its filtering.");
+    }
+
     mFilter_ = mFilter;
+}
+
+material::filter material::get_filter() const
+{
+    return mFilter_;
 }
 
 void material::premultiply_alpha(SDL_Surface* pSurface)
@@ -174,28 +211,28 @@ void material::premultiply_alpha(SDL_Surface* pSurface)
     }
 }
 
-float material::get_width() const
+quad2f material::get_rect() const
 {
-    return uiWidth_;
+    return mRect_;
 }
 
-float material::get_height() const
-{
-    return uiHeight_;
-}
-
-float material::get_real_width() const
+float material::get_canvas_width() const
 {
     return uiRealWidth_;
 }
 
-float material::get_real_height() const
+float material::get_canvas_height() const
 {
     return uiRealHeight_;
 }
 
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::sdl::material", "A material in an atlas cannot be resized.");
+    }
+
     if (!bRenderTarget_) return false;
 
     SDL_RendererInfo mInfo;
@@ -212,11 +249,13 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         }
     }
 
+    uiWidth_  = uiWidth;
+    uiHeight_ = uiHeight;
+    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {
-        uiWidth_      = uiWidth;
-        uiHeight_     = uiHeight;
-        // sdl is not efficient at resizing render texture, so use an exponential growth pattern
+        // SDL is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
         if (uiWidth > uiRealWidth_)
             uiRealWidth_  = uiWidth + uiWidth/2;
@@ -237,13 +276,11 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
     else
     {
-        uiWidth_  = uiWidth;
-        uiHeight_ = uiHeight;
         return false;
     }
 }
 
-ub32color* material::lock_pointer(uint* pPitch)
+const ub32color* material::lock_pointer(uint* pPitch) const
 {
     void* pPixelData = nullptr;
     int iPitch = 0;
@@ -258,7 +295,17 @@ ub32color* material::lock_pointer(uint* pPitch)
     return reinterpret_cast<ub32color*>(pPixelData);
 }
 
-void material::unlock_pointer()
+ub32color* material::lock_pointer(uint* pPitch)
+{
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::sdl::material", "A material in an atlas cannot update its data.");
+    }
+
+    return const_cast<ub32color*>(const_cast<const material*>(this)->lock_pointer(pPitch));
+}
+
+void material::unlock_pointer() const
 {
     SDL_UnlockTexture(pTexture_);
 }

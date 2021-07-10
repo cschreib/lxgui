@@ -3,6 +3,7 @@ set(SRCROOT ${TARGET_DIR}/src)
 
 add_library(lxgui-sfml
     ${SRCROOT}/gui_sfml.cpp
+    ${SRCROOT}/gui_sfml_atlas.cpp
     ${SRCROOT}/gui_sfml_font.cpp
     ${SRCROOT}/gui_sfml_renderer.cpp
     ${SRCROOT}/gui_sfml_material.cpp

@@ -1907,6 +1907,8 @@ void frame::update_borders_() const
     {
         check_position();
         pManager_->notify_hovered_frame_dirty();
+        if (pBackdrop_)
+            pBackdrop_->notify_borders_updated();
     }
 }
 

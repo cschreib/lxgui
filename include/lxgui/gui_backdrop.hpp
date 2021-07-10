@@ -3,6 +3,8 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+#include "lxgui/gui_material.hpp"
+#include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_quad2.hpp"
 
@@ -53,7 +55,7 @@ namespace gui
         /// Enables tilling for the background texture.
         /** \param bBackgroundTilling 'true' to enable tilling
         */
-        void set_backgrond_tilling(bool bBackgroundTilling);
+        void set_background_tilling(bool bBackgroundTilling);
 
         /// Checks if tilling is enabled for the background texture.
         /** \return 'true' if tilling is enabled for the background texture
@@ -159,44 +161,40 @@ namespace gui
         /// Renders this backdrop on the current render target.
         void render() const;
 
+        /// Tells this backdrop that its parent frame has changed dimensions.
+        void notify_borders_updated() const;
+
     private :
 
-        /// Defines the position of each edge sprite.
-        enum class edge_type
-        {
-            LEFT = 0,
-            RIGHT,
-            TOP,
-            BOTTOM,
-            TOPLEFT,
-            TOPRIGHT,
-            BOTTOMLEFT,
-            BOTTOMRIGHT
-        };
+        void update_cache_() const;
+        void update_background_(color mColor) const;
+        void update_edge_(color mColor) const;
 
-        /// Return the sprite for a given edge.
-        sprite& get_edge(edge_type mEdge) const;
+        frame* pParent_ = nullptr;
 
-        frame*      pParent_ = nullptr;
+        std::string               sBackgroundFile_;
+        color                     mBackgroundColor_ = color::EMPTY;
+        std::shared_ptr<material> pBackgroundTexture_;
+        bool                      bBackgroundTilling_ = false;
+        float                     fTileSize_ = 0.0f;
+        float                     fOriginalTileSize_ = 0.0f;
+        quad2f                    lBackgroundInsets_;
 
-        bool        bHasBackground_ = false;
-        std::string sBackgroundFile_;
-        color       mBackgroundColor_ = color::EMPTY;
+        std::string               sEdgeFile_;
+        color                     mEdgeColor_ = color::EMPTY;
+        std::shared_ptr<material> pEdgeTexture_;
+        quad2f                    lEdgeInsets_;
+        float                     fEdgeSize_ = 0.0f;
+        float                     fOriginalEdgeSize_ = 0.0f;
 
-        bool        bHasEdge_ = false;
-        std::string sEdgeFile_;
-        color       mEdgeColor_ = color::EMPTY;
+        color mVertexColor_ = color::WHITE;
 
-        mutable sprite               mBackground_;
-        mutable std::array<sprite,8> lEdgeList_;
-
-        bool   bBackgroundTilling_ = false;
-        float  fTileSize_ = 0.0f;
-        float  fOriginalTileSize_ = 0.0f;
-        quad2f lBackgroundInsets_;
-        quad2f lEdgeInsets_;
-        float  fEdgeSize_ = 0.0f;
-        float  fOriginalEdgeSize_ = 0.0f;
+        mutable bool bCacheDirty_ = true;
+        mutable float fCacheAlpha_ = std::numeric_limits<float>::quiet_NaN();
+        mutable std::vector<std::array<vertex,4>> lBackgroundQuads_;
+        mutable std::shared_ptr<vertex_cache>     pBackgroundCache_;
+        mutable std::vector<std::array<vertex,4>> lEdgeQuads_;
+        mutable std::shared_ptr<vertex_cache>     pEdgeCache_;
     };
 }
 }

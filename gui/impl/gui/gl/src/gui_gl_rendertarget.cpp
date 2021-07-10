@@ -27,10 +27,10 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-render_target::render_target(uint uiWidth, uint uiHeight)
+render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
 {
     pTexture_ = std::make_shared<gl::material>(
-        uiWidth, uiHeight, material::wrap::REPEAT, material::filter::NONE, true
+        uiWidth, uiHeight, material::wrap::REPEAT, mFilter, true
     );
 
     glGenFramebuffers(1, &uiFBOHandle_);
@@ -54,8 +54,8 @@ render_target::~render_target()
 
 void render_target::begin()
 {
-    float fWidth = pTexture_->get_real_width();
-    float fHeight = pTexture_->get_real_height();
+    float fWidth = pTexture_->get_canvas_width();
+    float fHeight = pTexture_->get_canvas_height();
 
     mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
 
@@ -75,24 +75,19 @@ void render_target::clear(const color& mColor)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-uint render_target::get_width() const
+quad2f render_target::get_rect() const
 {
-    return pTexture_->get_width();
+    return pTexture_->get_rect();
 }
 
-uint render_target::get_height() const
+uint render_target::get_canvas_width() const
 {
-    return pTexture_->get_height();
+    return pTexture_->get_canvas_width();
 }
 
-uint render_target::get_real_width() const
+uint render_target::get_canvas_height() const
 {
-    return pTexture_->get_real_width();
-}
-
-uint render_target::get_real_height() const
-{
-    return pTexture_->get_real_height();
+    return pTexture_->get_canvas_height();
 }
 
 bool render_target::set_dimensions(uint uiWidth, uint uiHeight)

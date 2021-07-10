@@ -5,7 +5,6 @@
 #include <lxgui/utils.hpp>
 
 #include <cmath>
-#include <iosfwd>
 #include <type_traits>
 
 namespace lxgui {
@@ -156,8 +155,8 @@ namespace gui
         return vector2<T>(mV.x*mValue, mV.y*mValue);
     }
 
-    template<typename T>
-    std::ostream& operator << (std::ostream& mStream, const vector2<T>& mV)
+    template<typename O, typename T>
+    O& operator << (O& mStream, const vector2<T>& mV)
     {
         return mStream << mV.x << ", " << mV.y;
     }

@@ -11,6 +11,7 @@
 namespace lxgui {
 namespace gui
 {
+
 backdrop::backdrop(frame* pParent) : pParent_(pParent)
 {
 }
@@ -20,7 +21,7 @@ void backdrop::copy_from(const backdrop& mBackdrop)
     this->set_background(mBackdrop.get_background_file());
     this->set_edge(mBackdrop.get_edge_file());
 
-    this->set_backgrond_tilling(mBackdrop.is_background_tilling());
+    this->set_background_tilling(mBackdrop.is_background_tilling());
     this->set_tile_size(mBackdrop.get_tile_size());
 
     if (mBackdrop.sBackgroundFile_.empty())
@@ -37,31 +38,35 @@ void backdrop::copy_from(const backdrop& mBackdrop)
 
 void backdrop::set_background(const std::string& sBackgroundFile)
 {
-    if (!sBackgroundFile.empty())
+    if (sBackgroundFile_ == sBackgroundFile) return;
+
+    bCacheDirty_ = true;
+    mBackgroundColor_ = color::EMPTY;
+
+    if (sBackgroundFile.empty())
     {
-        if (utils::file_exists(sBackgroundFile))
-        {
-            auto* pRenderer = pParent_->get_manager()->get_renderer();
-            mBackground_ = sprite(pRenderer, pRenderer->create_material(sBackgroundFile));
-            fTileSize_ = fOriginalTileSize_ = static_cast<float>(mBackground_.get_width());
-            mBackgroundColor_ = color::EMPTY;
-            bHasBackground_ = true;
-        }
-        else
-        {
-            gui::out << gui::warning << "backdrop : "
-                << "Cannot find file : \"" << sBackgroundFile << "\" for "
-                << pParent_->get_name() << "'s backdrop background file.\n"
-                << "No background will be drawn." << std::endl;
-
-            sBackgroundFile_ = "";
-            bHasBackground_ = false;
-            return;
-        }
+        pBackgroundTexture_ = nullptr;
+        sBackgroundFile_ = "";
+        return;
     }
-    else
-        bHasBackground_ = false;
 
+    if (!utils::file_exists(sBackgroundFile))
+    {
+        pBackgroundTexture_ = nullptr;
+        sBackgroundFile_ = "";
+
+        gui::out << gui::warning << "backdrop : "
+            << "Cannot find file : \"" << sBackgroundFile << "\" for "
+            << pParent_->get_name() << "'s backdrop background file.\n"
+            << "No background will be drawn." << std::endl;
+
+        return;
+    }
+
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+    pBackgroundTexture_ = pRenderer->create_atlas_material("GUI", sBackgroundFile);
+
+    fTileSize_ = fOriginalTileSize_ = static_cast<float>(pBackgroundTexture_->get_rect().width());
     sBackgroundFile_ = sBackgroundFile;
 }
 
@@ -72,15 +77,15 @@ const std::string& backdrop::get_background_file() const
 
 void backdrop::set_background_color(const color& mColor)
 {
+    if (mBackgroundColor_ == mColor) return;
+
+    bCacheDirty_ = true;
+
+    pBackgroundTexture_ = nullptr;
     mBackgroundColor_ = mColor;
     sBackgroundFile_ = "";
 
     fTileSize_ = fOriginalTileSize_ = 256.0f;
-    auto* pRenderer = pParent_->get_manager()->get_renderer();
-    mBackground_ = sprite(pRenderer, nullptr, fTileSize_, fTileSize_);
-    mBackground_.set_color(mColor);
-
-    bHasBackground_ = true;
 }
 
 color backdrop::get_background_color() const
@@ -88,12 +93,12 @@ color backdrop::get_background_color() const
     return mBackgroundColor_;
 }
 
-void backdrop::set_backgrond_tilling(bool bBackgroundTilling)
+void backdrop::set_background_tilling(bool bBackgroundTilling)
 {
-    bBackgroundTilling_ = bBackgroundTilling;
+    if (bBackgroundTilling_ == bBackgroundTilling) return;
 
-    if (!bBackgroundTilling_ && bHasBackground_)
-        mBackground_.set_texture_rect(0.0f, 0.0f, 1.0f, 1.0f, true);
+    bBackgroundTilling_ = bBackgroundTilling;
+    bCacheDirty_ = true;
 }
 
 bool backdrop::is_background_tilling() const
@@ -103,7 +108,10 @@ bool backdrop::is_background_tilling() const
 
 void backdrop::set_tile_size(float fTileSize)
 {
+    if (fTileSize_ == fTileSize) return;
+
     fTileSize_ = fTileSize;
+    bCacheDirty_ = true;
 }
 
 float backdrop::get_tile_size() const
@@ -113,12 +121,15 @@ float backdrop::get_tile_size() const
 
 void backdrop::set_background_insets(const quad2f& lInsets)
 {
+    if (lBackgroundInsets_ == lInsets) return;
+
     lBackgroundInsets_ = lInsets;
+    bCacheDirty_ = true;
 }
 
 void backdrop::set_background_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lBackgroundInsets_ = quad2f(fLeft, fRight, fTop, fBottom);
+    set_background_insets(quad2f(fLeft, fRight, fTop, fBottom));
 }
 
 const quad2f& backdrop::get_background_insets() const
@@ -128,12 +139,15 @@ const quad2f& backdrop::get_background_insets() const
 
 void backdrop::set_edge_insets(const quad2f& lInsets)
 {
+    if (lEdgeInsets_ == lInsets) return;
+
     lEdgeInsets_ = lInsets;
+    bCacheDirty_ = true;
 }
 
 void backdrop::set_edge_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lEdgeInsets_ = quad2f(fLeft, fRight, fTop, fBottom);
+    set_edge_insets(quad2f(fLeft, fRight, fTop, fBottom));
 }
 
 const quad2f& backdrop::get_edge_insets() const
@@ -143,67 +157,48 @@ const quad2f& backdrop::get_edge_insets() const
 
 void backdrop::set_edge(const std::string& sEdgeFile)
 {
-    if (!sEdgeFile.empty())
+    if (sEdgeFile == sEdgeFile_) return;
+
+    bCacheDirty_ = true;
+    mEdgeColor_ = color::EMPTY;
+
+    if (sEdgeFile.empty())
     {
-        if (utils::file_exists(sEdgeFile))
-        {
-            auto* pRenderer = pParent_->get_manager()->get_renderer();
-            std::shared_ptr<material> pMat = pRenderer->create_material(sEdgeFile);
-
-            if (pMat->get_width()/pMat->get_height() == 8.0f)
-            {
-                fEdgeSize_ = fOriginalEdgeSize_ = pMat->get_height();
-
-                for (uint i = 0; i < 8; ++i)
-                {
-                    lEdgeList_[i] = sprite(pRenderer,
-                        pMat, static_cast<float>(pMat->get_height()*i), 0.0f, fEdgeSize_, fEdgeSize_
-                    );
-                }
-
-                get_edge(edge_type::TOPLEFT).set_hot_spot(
-                    0.0f, 0.0f
-                );
-                get_edge(edge_type::TOPRIGHT).set_hot_spot(
-                    fOriginalEdgeSize_, 0.0f
-                );
-                get_edge(edge_type::BOTTOMLEFT).set_hot_spot(
-                    0.0f, fOriginalEdgeSize_
-                );
-                get_edge(edge_type::BOTTOMRIGHT).set_hot_spot(
-                    fOriginalEdgeSize_, fOriginalEdgeSize_
-                );
-
-                bHasEdge_ = true;
-                sEdgeFile_ = sEdgeFile;
-                mEdgeColor_ = color::EMPTY;
-            }
-            else
-            {
-                bHasEdge_ = false;
-                sEdgeFile_ = "";
-
-                gui::out << gui::error << "backdrop : "
-                    << "An edge file's width must be exactly 8 times greater than its height "
-                    << "(in " << sEdgeFile << ").\nNo edge will be drawn for "
-                    << pParent_->get_name() << "'s backdrop." << std::endl;
-            }
-        }
-        else
-        {
-            bHasEdge_ = false;
-            sEdgeFile_ = "";
-
-            gui::out << gui::warning << "backdrop : "
-                << "Cannot find file : \"" << sEdgeFile << "\" for " <<pParent_->get_name()
-                << "'s backdrop edge.\nNo edge will be drawn." << std::endl;
-        }
-    }
-    else
-    {
-        bHasEdge_ = false;
+        pEdgeTexture_ = nullptr;
         sEdgeFile_ = "";
+        return;
     }
+
+    if (!utils::file_exists(sEdgeFile))
+    {
+        pEdgeTexture_ = nullptr;
+        sEdgeFile_ = "";
+
+        gui::out << gui::warning << "backdrop : "
+            << "Cannot find file : \"" << sEdgeFile << "\" for " << pParent_->get_name()
+            << "'s backdrop edge.\nNo edge will be drawn." << std::endl;
+
+        return;
+    }
+
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+    pEdgeTexture_ = pRenderer->create_atlas_material("GUI", sEdgeFile);
+
+    if (pEdgeTexture_->get_rect().width()/pEdgeTexture_->get_rect().height() != 8.0f)
+    {
+        pEdgeTexture_ = nullptr;
+        sEdgeFile_ = "";
+
+        gui::out << gui::error << "backdrop : "
+            << "An edge texture width must be exactly 8 times greater than its height "
+            << "(in " << sEdgeFile << ").\nNo edge will be drawn for "
+            << pParent_->get_name() << "'s backdrop." << std::endl;
+
+        return;
+    }
+
+    fEdgeSize_ = fOriginalEdgeSize_ = pEdgeTexture_->get_rect().height();
+    sEdgeFile_ = sEdgeFile;
 }
 
 const std::string& backdrop::get_edge_file() const
@@ -213,6 +208,10 @@ const std::string& backdrop::get_edge_file() const
 
 void backdrop::set_edge_color(const color& mColor)
 {
+    if (mEdgeColor_ == mColor) return;
+
+    bCacheDirty_ = true;
+    pEdgeTexture_ = nullptr;
     mEdgeColor_ = mColor;
     sEdgeFile_ = "";
 
@@ -220,18 +219,6 @@ void backdrop::set_edge_color(const color& mColor)
         fEdgeSize_ = 1.0f;
 
     fOriginalEdgeSize_ = 1.0f;
-
-    for (auto& mEdge : lEdgeList_)
-    {
-        auto* pRenderer = pParent_->get_manager()->get_renderer();
-        mEdge = sprite(pRenderer, nullptr, 1.0f, 1.0f);
-        mEdge.set_color(mColor);
-    }
-
-    get_edge(edge_type::TOPLEFT).set_hot_spot(0.0f, 0.0f);
-    get_edge(edge_type::TOPRIGHT).set_hot_spot(1.0f, 0.0f);
-    get_edge(edge_type::BOTTOMLEFT).set_hot_spot(0.0f, 1.0f);
-    get_edge(edge_type::BOTTOMRIGHT).set_hot_spot(1.0f, 1.0f);
 }
 
 color backdrop::get_edge_color() const
@@ -241,7 +228,10 @@ color backdrop::get_edge_color() const
 
 void backdrop::set_edge_size(float fEdgeSize)
 {
+    if (fEdgeSize_ == fEdgeSize) return;
+
     fEdgeSize_ = fEdgeSize;
+    bCacheDirty_ = true;
 }
 
 float backdrop::get_edge_size() const
@@ -251,175 +241,325 @@ float backdrop::get_edge_size() const
 
 void backdrop::set_vertex_color(const color& mColor)
 {
-    if (bHasBackground_)
-        mBackground_.set_color(mColor);
+    if (mVertexColor_ == mColor) return;
 
-    if (bHasEdge_)
-    {
-        for (auto& mEdge : lEdgeList_) mEdge.set_color(mColor);
-    }
+    mVertexColor_ = mColor;
+    bCacheDirty_ = true;
 }
 
 void backdrop::render() const
 {
-    if (pParent_)
+    if (!pParent_) return;
+
+    float fAlpha = pParent_->get_effective_alpha();
+    if (fAlpha != fCacheAlpha_)
+        bCacheDirty_ = true;
+
+    update_cache_();
+
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+
+    if (pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY)
     {
-        float fAlpha = pParent_->get_effective_alpha();
+        if (pRenderer->is_vertex_cache_enabled())
+            pRenderer->render_cache(pBackgroundTexture_.get(), *pBackgroundCache_);
+        else
+            pRenderer->render_quads(pBackgroundTexture_.get(), lBackgroundQuads_);
+    }
 
-        sprite mTempSprite;
-        auto mGetSprite = [&](sprite& mSprite) -> sprite&
-        {
-            if (fAlpha != 1.0)
-            {
-                mTempSprite = mSprite;
-                color mColor(1.0, 1.0, 1.0, fAlpha);
-
-                for (uint uiIndex = 0; uiIndex < 4; ++uiIndex)
-                    mTempSprite.set_color(mSprite.get_color(uiIndex)*mColor, uiIndex);
-
-                return mTempSprite;
-            }
-            else
-            {
-                return mSprite;
-            }
-        };
-
-        const quad2f& lParentBorders = pParent_->get_borders();
-
-        if (bHasBackground_)
-        {
-            if (bBackgroundTilling_)
-            {
-                mBackground_.set_texture_rect(
-                    0.0f, 0.0f,
-                    (
-                        lParentBorders.right + lBackgroundInsets_.right -
-                        (lParentBorders.left + lBackgroundInsets_.left)
-                    )*fOriginalTileSize_/fTileSize_,
-                    (
-                        lParentBorders.bottom - lBackgroundInsets_.bottom -
-                        (lParentBorders.top   - lBackgroundInsets_.top)
-                    )*fOriginalTileSize_/fTileSize_
-                );
-            }
-
-            mGetSprite(mBackground_).render_2v(
-                lParentBorders.left   + lBackgroundInsets_.left,
-                lParentBorders.top    + lBackgroundInsets_.top,
-                lParentBorders.right  - lBackgroundInsets_.right,
-                lParentBorders.bottom - lBackgroundInsets_.bottom
-            );
-        }
-
-        if (bHasEdge_)
-        {
-            float fEdgeScale = fEdgeSize_/fOriginalEdgeSize_;
-
-            // render corners
-            mGetSprite(get_edge(edge_type::TOPLEFT)).render_ex(
-                lParentBorders.left + lEdgeInsets_.left,
-                lParentBorders.top  + lEdgeInsets_.top,
-                0.0f, fEdgeScale, fEdgeScale
-            );
-
-            mGetSprite(get_edge(edge_type::TOPRIGHT)).render_ex(
-                lParentBorders.right - lEdgeInsets_.right,
-                lParentBorders.top   + lEdgeInsets_.top,
-                0.0f, fEdgeScale, fEdgeScale
-            );
-
-            mGetSprite(get_edge(edge_type::BOTTOMLEFT)).render_ex(
-                lParentBorders.left   + lEdgeInsets_.left,
-                lParentBorders.bottom - lEdgeInsets_.bottom,
-                0.0f, fEdgeScale, fEdgeScale
-            );
-
-            mGetSprite(get_edge(edge_type::BOTTOMRIGHT)).render_ex(
-                lParentBorders.right  - lEdgeInsets_.right,
-                lParentBorders.bottom - lEdgeInsets_.bottom,
-                0.0f, fEdgeScale, fEdgeScale
-            );
-
-            // render sides
-            float fEdgeHeight = lParentBorders.bottom - lEdgeInsets_.bottom
-                - lParentBorders.top - lEdgeInsets_.top - 2.0f*fEdgeSize_;
-
-            if (fEdgeHeight > 0.0f)
-            {
-                mGetSprite(get_edge(edge_type::LEFT)).set_texture_rect(
-                    0.0f, 0.0f, fOriginalEdgeSize_, fEdgeHeight
-                );
-
-                mGetSprite(get_edge(edge_type::RIGHT)).set_texture_rect(
-                    fOriginalEdgeSize_, 0.0f, 2.0f*fOriginalEdgeSize_, fEdgeHeight
-                );
-
-                mGetSprite(get_edge(edge_type::LEFT)).render_2v(
-                    lParentBorders.left   + lEdgeInsets_.left,
-                    lParentBorders.top    + lEdgeInsets_.top    + fEdgeSize_,
-
-                    lParentBorders.left   + lEdgeInsets_.left   + fEdgeSize_,
-                    lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_
-                );
-
-                mGetSprite(get_edge(edge_type::RIGHT)).render_2v(
-                    lParentBorders.right  - lEdgeInsets_.right  - fEdgeSize_,
-                    lParentBorders.top    + lEdgeInsets_.top    + fEdgeSize_,
-
-                    lParentBorders.right  - lEdgeInsets_.right,
-                    lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_
-                );
-            }
-
-            float fEdgeWidth = lParentBorders.right - lEdgeInsets_.right
-                - lParentBorders.left - lEdgeInsets_.left - 2.0f*fEdgeSize_;
-
-            if (fEdgeWidth > 0.0f)
-            {
-                mGetSprite(get_edge(edge_type::TOP)).set_texture_rect(
-                    2.0f*fOriginalEdgeSize_, 0.0f, 3.0f*fOriginalEdgeSize_, fEdgeWidth
-                );
-
-                mGetSprite(get_edge(edge_type::BOTTOM)).set_texture_rect(
-                    3.0f*fOriginalEdgeSize_, 0.0f, 4.0f*fOriginalEdgeSize_, fEdgeWidth
-                );
-
-                mGetSprite(get_edge(edge_type::TOP)).render_4v(
-                    lParentBorders.right - lEdgeInsets_.right - fEdgeSize_,
-                    lParentBorders.top   + lEdgeInsets_.top,
-
-                    lParentBorders.right - lEdgeInsets_.right - fEdgeSize_,
-                    lParentBorders.top   + lEdgeInsets_.top   + fEdgeSize_,
-
-                    lParentBorders.left  + lEdgeInsets_.left  + fEdgeSize_,
-                    lParentBorders.top   + lEdgeInsets_.top   + fEdgeSize_,
-
-                    lParentBorders.left  + lEdgeInsets_.left  + fEdgeSize_,
-                    lParentBorders.top   + lEdgeInsets_.top
-                );
-
-                mGetSprite(get_edge(edge_type::BOTTOM)).render_4v(
-                    lParentBorders.right  - lEdgeInsets_.right  - fEdgeSize_,
-                    lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_,
-
-                    lParentBorders.right  - lEdgeInsets_.right  - fEdgeSize_,
-                    lParentBorders.bottom - lEdgeInsets_.bottom,
-
-                    lParentBorders.left   + lEdgeInsets_.left   + fEdgeSize_,
-                    lParentBorders.bottom - lEdgeInsets_.bottom,
-
-                    lParentBorders.left   + lEdgeInsets_.left   + fEdgeSize_,
-                    lParentBorders.bottom - lEdgeInsets_.bottom - fEdgeSize_
-                );
-            }
-        }
+    if (pEdgeTexture_ || mEdgeColor_ != color::EMPTY)
+    {
+        if (pRenderer->is_vertex_cache_enabled())
+            pRenderer->render_cache(pEdgeTexture_.get(), *pEdgeCache_);
+        else
+            pRenderer->render_quads(pEdgeTexture_.get(), lEdgeQuads_);
     }
 }
 
-sprite& backdrop::get_edge(edge_type mPoint) const
+void backdrop::notify_borders_updated() const
 {
-    return lEdgeList_[static_cast<uint>(mPoint)];
+    bCacheDirty_ = true;
 }
+
+void backdrop::update_cache_() const
+{
+    if (!bCacheDirty_) return;
+
+    lBackgroundQuads_.clear();
+    lEdgeQuads_.clear();
+
+    color mColor = mVertexColor_;
+
+    float fAlpha = pParent_->get_effective_alpha();
+    mColor.a *= fAlpha;
+
+    update_background_(mColor);
+    update_edge_(mColor);
+
+    fCacheAlpha_ = fAlpha;
+    bCacheDirty_ = false;
+}
+
+void repeat_wrap(std::vector<std::array<vertex,4>>& lOutput,
+    const quad2f& mSourceUVs, float fTileSize, bool bRotated, const color mColor,
+    const quad2f& mDestination)
+{
+    const auto mDTopLeft = mDestination.top_left();
+    const auto mSTopLeft = mSourceUVs.top_left();
+    const float fDestWidth = mDestination.width();
+    const float fDestHeight = mDestination.height();
+
+    float fSY = 0.0f;
+    while (fSY < fDestHeight)
+    {
+        float fDHeight = fTileSize;
+        float fSHeight = mSourceUVs.height();
+        if (fSY + fTileSize > fDestHeight)
+            fDHeight = fDestHeight - fSY;
+
+        float fSX = 0.0f;
+        while (fSX < fDestWidth)
+        {
+            float fDWidth = fTileSize;
+            float fSWidth = mSourceUVs.width();
+            if (fSX + fTileSize > fDestWidth)
+                fDWidth = fDestWidth - fSX;
+
+            lOutput.emplace_back();
+            auto& mQuad = lOutput.back();
+
+            mQuad[0].pos = mDTopLeft + vector2f(fSX,           fSY);
+            mQuad[1].pos = mDTopLeft + vector2f(fSX + fDWidth, fSY);
+            mQuad[2].pos = mDTopLeft + vector2f(fSX + fDWidth, fSY + fDHeight);
+            mQuad[3].pos = mDTopLeft + vector2f(fSX,           fSY + fDHeight);
+
+            if (bRotated)
+            {
+                fSHeight *= fDWidth/fTileSize;
+                fSWidth *= fDHeight/fTileSize;
+                mQuad[0].uvs = mSTopLeft + vector2f(0.0f,    fSHeight);
+                mQuad[1].uvs = mSTopLeft + vector2f(0.0f,    0.0f);
+                mQuad[2].uvs = mSTopLeft + vector2f(fSWidth, 0.0f);
+                mQuad[3].uvs = mSTopLeft + vector2f(fSWidth, fSHeight);
+            }
+            else
+            {
+                fSWidth *= fDWidth/fTileSize;
+                fSHeight *= fDHeight/fTileSize;
+                mQuad[0].uvs = mSTopLeft + vector2f(0.0f,    0.0f);
+                mQuad[1].uvs = mSTopLeft + vector2f(fSWidth, 0.0f);
+                mQuad[2].uvs = mSTopLeft + vector2f(fSWidth, fSHeight);
+                mQuad[3].uvs = mSTopLeft + vector2f(0.0f,    fSHeight);
+            }
+
+            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+
+            fSX += fDWidth;
+        }
+
+        fSY += fDHeight;
+    }
+}
+
+void backdrop::update_background_(color mColor) const
+{
+    if (!pBackgroundTexture_ && mBackgroundColor_ == color::EMPTY) return;
+
+    if (!pBackgroundTexture_)
+        mColor *= mBackgroundColor_;
+
+    auto mBorders = pParent_->get_borders();
+    mBorders.left += lBackgroundInsets_.left;
+    mBorders.right -= lBackgroundInsets_.right;
+    mBorders.top += lBackgroundInsets_.top;
+    mBorders.bottom -= lBackgroundInsets_.bottom;
+
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+
+    if (pBackgroundTexture_)
+    {
+        const vector2f mCanvasTL = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+        const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+        const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+
+        if (pRenderer->is_texture_atlas_enabled() && bBackgroundTilling_)
+        {
+            repeat_wrap(lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
+        }
+        else
+        {
+            lBackgroundQuads_.emplace_back();
+            auto& mQuad = lBackgroundQuads_.back();
+
+            mQuad[0].pos = mBorders.top_left();
+            mQuad[1].pos = mBorders.top_right();
+            mQuad[2].pos = mBorders.bottom_right();
+            mQuad[3].pos = mBorders.bottom_left();
+            mQuad[0].uvs = mCanvasUVs.top_left();
+            mQuad[1].uvs = mCanvasUVs.top_right();
+            mQuad[2].uvs = mCanvasUVs.bottom_right();
+            mQuad[3].uvs = mCanvasUVs.bottom_left();
+            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+        }
+    }
+    else
+    {
+        lBackgroundQuads_.emplace_back();
+        auto& mQuad = lBackgroundQuads_.back();
+
+        mQuad[0].pos = mBorders.top_left();
+        mQuad[1].pos = mBorders.top_right();
+        mQuad[2].pos = mBorders.bottom_right();
+        mQuad[3].pos = mBorders.bottom_left();
+        mQuad[0].uvs = vector2f(0.0f,0.0f);
+        mQuad[1].uvs = vector2f(1.0f,0.0f);
+        mQuad[2].uvs = vector2f(1.0f,1.0f);
+        mQuad[3].uvs = vector2f(0.0f,1.0f);
+
+        mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+    }
+
+    if (pRenderer->is_vertex_cache_enabled())
+    {
+        if (!pBackgroundCache_)
+            pBackgroundCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);
+
+        pBackgroundCache_->update(lBackgroundQuads_[0].data(), lBackgroundQuads_.size()*4);
+        lBackgroundQuads_.clear();
+    }
+}
+
+void backdrop::update_edge_(color mColor) const
+{
+    if (!pEdgeTexture_ && mEdgeColor_ == color::EMPTY) return;
+
+    if (!pEdgeTexture_)
+        mColor *= mEdgeColor_;
+
+    constexpr float fUVStep = 1.0f/8.0f;
+    auto mBorders = pParent_->get_borders();
+    mBorders.left += lEdgeInsets_.left;
+    mBorders.right -= lEdgeInsets_.right;
+    mBorders.top += lEdgeInsets_.top;
+    mBorders.bottom -= lEdgeInsets_.bottom;
+
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+
+    auto repeat_wrap_edge = [&](const quad2f& mSourceUVs, bool bRotated, const quad2f& mDestination)
+    {
+        if (pEdgeTexture_)
+        {
+            const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
+            const vector2f mCanvasBR = pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
+            const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+            if (pRenderer->is_texture_atlas_enabled())
+            {
+                repeat_wrap(lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
+            }
+            else
+            {
+                lEdgeQuads_.emplace_back();
+                auto& mQuad = lEdgeQuads_.back();
+
+                mQuad[0].pos = mDestination.top_left();
+                mQuad[1].pos = mDestination.top_right();
+                mQuad[2].pos = mDestination.bottom_right();
+                mQuad[3].pos = mDestination.bottom_left();
+
+                if (bRotated)
+                {
+                    float fFactor = mDestination.width() / fEdgeSize_;
+                    mQuad[0].uvs = mCanvasUVs.top_left() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                    mQuad[1].uvs = mCanvasUVs.top_left();
+                    mQuad[2].uvs = mCanvasUVs.top_right();
+                    mQuad[3].uvs = mCanvasUVs.top_right() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                }
+                else
+                {
+                    float fFactor = mDestination.height() / fEdgeSize_;
+                    mQuad[0].uvs = mCanvasUVs.top_left();
+                    mQuad[1].uvs = mCanvasUVs.top_right();
+                    mQuad[2].uvs = mCanvasUVs.top_right() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                    mQuad[3].uvs = mCanvasUVs.top_left() + vector2f(0.0, fFactor*mCanvasUVs.height());
+                }
+
+                mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+            }
+        }
+        else
+        {
+            lEdgeQuads_.emplace_back();
+            auto& mQuad = lEdgeQuads_.back();
+
+            mQuad[0].pos = mDestination.top_left();
+            mQuad[1].pos = mDestination.top_right();
+            mQuad[2].pos = mDestination.bottom_right();
+            mQuad[3].pos = mDestination.bottom_left();
+            mQuad[0].uvs = vector2f(0.0f,0.0f);
+            mQuad[1].uvs = vector2f(1.0f,0.0f);
+            mQuad[2].uvs = vector2f(1.0f,1.0f);
+            mQuad[3].uvs = vector2f(0.0f,1.0f);
+            mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
+        }
+    };
+
+    // Left edge
+    repeat_wrap_edge(quad2f(0.0f, fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.left, mBorders.left + fEdgeSize_,
+        mBorders.top + fEdgeSize_, mBorders.bottom - fEdgeSize_
+    ));
+
+    // Right edge
+    repeat_wrap_edge(quad2f(fUVStep, 2.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.right - fEdgeSize_, mBorders.right,
+        mBorders.top + fEdgeSize_, mBorders.bottom - fEdgeSize_
+    ));
+
+    // Top edge
+    repeat_wrap_edge(quad2f(2.0f*fUVStep, 3.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
+        mBorders.left + fEdgeSize_, mBorders.right - fEdgeSize_,
+        mBorders.top, mBorders.top + fEdgeSize_
+    ));
+
+    // Bottom edge
+    repeat_wrap_edge(quad2f(3.0f*fUVStep, 4.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
+        mBorders.left + fEdgeSize_, mBorders.right - fEdgeSize_,
+        mBorders.bottom - fEdgeSize_, mBorders.bottom
+    ));
+
+    // Top-left corner
+    repeat_wrap_edge(quad2f(4.0f*fUVStep, 5.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.left, mBorders.left + fEdgeSize_,
+        mBorders.top, mBorders.top + fEdgeSize_
+    ));
+
+    // Top-right corner
+    repeat_wrap_edge(quad2f(5.0f*fUVStep, 6.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.right - fEdgeSize_, mBorders.right,
+        mBorders.top, mBorders.top + fEdgeSize_
+    ));
+
+    // Bottom-left corner
+    repeat_wrap_edge(quad2f(6.0f*fUVStep, 7.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.left, mBorders.left + fEdgeSize_,
+        mBorders.bottom - fEdgeSize_, mBorders.bottom
+    ));
+
+    // Bottom-right corner
+    repeat_wrap_edge(quad2f(7.0f*fUVStep, 8.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+        mBorders.right - fEdgeSize_, mBorders.right,
+        mBorders.bottom - fEdgeSize_, mBorders.bottom
+    ));
+
+    if (pRenderer->is_vertex_cache_enabled())
+    {
+        if (!pEdgeCache_)
+            pEdgeCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);
+
+        pEdgeCache_->update(lEdgeQuads_[0].data(), lEdgeQuads_.size()*4);
+        lEdgeQuads_.clear();
+    }
+}
+
 }
 }

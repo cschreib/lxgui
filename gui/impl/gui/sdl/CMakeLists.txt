@@ -2,11 +2,12 @@ set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/sdl)
 set(SRCROOT ${TARGET_DIR}/src)
 
 add_library(lxgui-sdl
+    ${SRCROOT}/gui_sdl.cpp
+    ${SRCROOT}/gui_sdl_atlas.cpp
     ${SRCROOT}/gui_sdl_font.cpp
     ${SRCROOT}/gui_sdl_renderer.cpp
     ${SRCROOT}/gui_sdl_material.cpp
     ${SRCROOT}/gui_sdl_rendertarget.cpp
-    ${SRCROOT}/gui_sdl.cpp
 )
 
 # Need C++17

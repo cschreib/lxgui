@@ -3,6 +3,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
+#include <lxgui/gui_quad2.hpp>
 #include <lxgui/gui_color.hpp>
 
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -51,40 +52,43 @@ namespace sfml
         explicit material(const std::string& sFileName, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
+        /// Constructor for atlas textures.
+        /** \param mTexture  The atlas texture holding this material's texture
+        *   \param mLocation The location of the texture inside the atlas texture (in pixels)
+        *   \param mFilter   Use texture filtering or not (see set_filter())
+        */
+        explicit material(const sf::Texture& mTexture, const quad2f& mLocation,
+            filter mFilter = filter::NONE);
+
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
         material& operator = (material&& tex) = delete;
 
-        /// Returns the width of the underlying texture (if any).
-        /** \return The width of the underlying texture (if any)
+        /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
+        /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        float get_width() const override;
+        quad2f get_rect() const override;
 
-        /// Returns the height of the underlying texture (if any).
-        /** \return The height of the underlying texture (if any)
-        */
-        float get_height() const override;
-
-        /// Returns the physical width of the underlying texture (if any).
-        /** \return The physical width of the underlying texture (if any)
+        /// Returns the physical width in pixels of the canvas containing this texture (if any).
+        /** \return The physical width in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_width() const override;
+        float get_canvas_width() const override;
 
-        /// Returns the physical height of the underlying texture (if any).
-        /** \return The physical height of the underlying texture (if any)
+        /// Returns the physical height in pixels of the canvas containing this texture (if any).
+        /** \return The physical height in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_height() const override;
+        float get_canvas_height() const override;
 
         /// Resizes this texture.
         /** \param uiWidth  The new texture width
@@ -112,6 +116,11 @@ namespace sfml
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Returns the underlying SFML render texture object.
         /** return The underlying SFML render texture object
         */
@@ -126,12 +135,14 @@ namespace sfml
 
         uint   uiWidth_ = 0u, uiHeight_ = 0u;
         uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        quad2f mRect_;
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
 
-        bool              bRenderTarget_ = false;
-        sf::RenderTexture mRenderTexture_;
-        sf::Texture       mTexture_;
+        bool               bRenderTarget_ = false;
+        sf::RenderTexture  mRenderTexture_;
+        sf::Texture        mTexture_;
+        const sf::Texture* pAtlasTexture_ = nullptr;
 
         static const uint MAXIMUM_SIZE;
     };

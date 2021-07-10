@@ -43,7 +43,7 @@ uint next_pot(uint uiSize)
 }
 
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
-    uiWidth_(uiWidth), uiHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter)
+    uiWidth_(uiWidth), uiHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
 {
     if (ONLY_POWER_OF_TWO)
     {
@@ -86,6 +86,7 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         break;
     }
+
     switch (mFilter)
     {
     case filter::LINEAR :
@@ -103,15 +104,34 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
 
     if (!bGPUOnly)
         pData_.resize(uiWidth*uiHeight);
+
+    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+}
+
+material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
+    const quad2f mRect, filter mFilter) : mFilter_(mFilter),
+    uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
+{
+    uiWidth_ = mRect_.width();
+    uiHeight_ = mRect_.height();
+    uiRealWidth_ = uiWidth;
+    uiRealHeight_ = uiHeight;
 }
 
 material::~material()
 {
-    glDeleteTextures(1, &uiTextureHandle_);
+    if (bIsOwner_)
+        glDeleteTextures(1, &uiTextureHandle_);
 }
 
 void material::set_wrap(wrap mWrap)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::gl::material",
+            "A material in an atlas cannot change its wrapping mode.");
+    }
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
@@ -134,6 +154,12 @@ void material::set_wrap(wrap mWrap)
 
 void material::set_filter(filter mFilter)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::gl::material",
+            "A material in an atlas cannot change its filtering.");
+    }
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
@@ -152,6 +178,11 @@ void material::set_filter(filter mFilter)
     }
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
+}
+
+material::filter material::get_filter() const
+{
+    return mFilter_;
 }
 
 void material::bind() const
@@ -197,28 +228,28 @@ void material::premultiply_alpha()
     }
 }
 
-float material::get_width() const
+quad2f material::get_rect() const
 {
-    return uiWidth_;
+    return mRect_;
 }
 
-float material::get_height() const
-{
-    return uiHeight_;
-}
-
-float material::get_real_width() const
+float material::get_canvas_width() const
 {
     return uiRealWidth_;
 }
 
-float material::get_real_height() const
+float material::get_canvas_height() const
 {
     return uiRealHeight_;
 }
 
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::gl::material", "A material in an atlas cannot be resized.");
+    }
+
     uint uiRealWidth = uiWidth;
     uint uiRealHeight = uiHeight;
     if (ONLY_POWER_OF_TWO)
@@ -230,10 +261,12 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)
         return false;
 
+    uiWidth_  = uiWidth;
+    uiHeight_ = uiHeight;
+    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {
-        uiWidth_      = uiWidth;
-        uiHeight_     = uiHeight;
         uiRealWidth_  = uiRealWidth;
         uiRealHeight_ = uiRealHeight;
 
@@ -275,14 +308,17 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
     else
     {
-        uiWidth_  = uiWidth;
-        uiHeight_ = uiHeight;
         return false;
     }
 }
 
 void material::update_texture()
 {
+    if (!bIsOwner_)
+    {
+        throw gui::exception("gui::gl::material", "A material in an atlas cannot update its data.");
+    }
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
@@ -308,7 +344,6 @@ void material::check_availability()
 {
 #if !defined(LXGUI_OPENGL3)
     ONLY_POWER_OF_TWO = !renderer::is_gl_extension_supported("GL_ARB_texture_non_power_of_two");
-    gui::out << "Note : non power of two textures are " << (ONLY_POWER_OF_TWO ? "not " : "") << "supported." << std::endl;
 #else
     // Non-power-of-two textures are always supported in OpenGL 3 / OpenGL ES 3
     ONLY_POWER_OF_TWO = false;
@@ -317,8 +352,13 @@ void material::check_availability()
     int iMax = 0;
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &iMax);
     MAXIMUM_SIZE = iMax;
-    gui::out << "Note : maximum texture size is " << MAXIMUM_SIZE << "." << std::endl;
 }
+
+uint material::get_max_size()
+{
+    return MAXIMUM_SIZE;
+}
+
 }
 }
 }

@@ -57,6 +57,15 @@ namespace sdl
             bool bPreMultipliedAlphaSupported, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
+        /// Constructor for atlas textures.
+        /** \param pRenderer The SDL render to create the material for
+        *   \param pTexture  The texture object of the atlas
+        *   \param mRect     The position of this texture inside the atlas
+        *   \param mFilter   Use texture filtering or not (see set_filter())
+        */
+        material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
+            filter mFilter = filter::NONE);
+
         material(const material& tex) = delete;
         material(material&& tex) = delete;
         material& operator = (const material& tex) = delete;
@@ -65,35 +74,30 @@ namespace sdl
         /// Destructor.
         ~material() noexcept override;
 
-        /// Returns the width of the underlying texture (if any).
-        /** \return The width of the underlying texture (if any)
+        /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
+        /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        float get_width() const override;
+        quad2f get_rect() const override;
 
-        /// Returns the height of the underlying texture (if any).
-        /** \return The height of the underlying texture (if any)
-        */
-        float get_height() const override;
-
-        /// Returns the physical width of the underlying texture (if any).
-        /** \return The physical width of the underlying texture (if any)
+        /// Returns the physical width in pixels of the canvas containing this texture (if any).
+        /** \return The physical width in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_width() const override;
+        float get_canvas_width() const override;
 
-        /// Returns the physical height of the underlying texture (if any).
-        /** \return The physical height of the underlying texture (if any)
+        /// Returns the physical height in pixels of the canvas containing this texture (if any).
+        /** \return The physical height in pixels of the canvas containing this texture (if any)
         *   \note Some old hardware don't support textures that have non
         *         power of two dimensions. If the user creates such a material
         *         and its hardware doesn't support it, this class creates a
         *         bigger texture that has power of two dimensions (the
         *         "physical" dimensions).
         */
-        float get_real_height() const override;
+        float get_canvas_height() const override;
 
         /// Resizes this texture.
         /** \param uiWidth  The new texture width
@@ -126,6 +130,11 @@ namespace sdl
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Return the wrap mode of this texture.
         /** \return The wrap mode of this texture
         */
@@ -154,8 +163,11 @@ namespace sdl
         */
         ub32color* lock_pointer(uint* pPitch = nullptr);
 
+        /// \copydoc lock_pointer
+        const ub32color* lock_pointer(uint* pPitch = nullptr) const;
+
         /// Stops modifying the texture data and update the texture in GPU memory.
-        void unlock_pointer();
+        void unlock_pointer() const;
 
     private:
 
@@ -163,11 +175,13 @@ namespace sdl
 
         uint   uiWidth_ = 0u, uiHeight_ = 0u;
         uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        quad2f mRect_;
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
         bool   bRenderTarget_ = false;
 
         SDL_Texture* pTexture_ = nullptr;
+        bool         bIsOwner_ = false;
     };
 }
 }

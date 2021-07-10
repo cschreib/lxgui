@@ -873,8 +873,8 @@ void manager::begin(std::shared_ptr<render_target> pTarget) const
     float fWidth, fHeight;
     if (pTarget)
     {
-        fWidth = pTarget->get_real_width()/fScalingFactor_;
-        fHeight = pTarget->get_real_height()/fScalingFactor_;
+        fWidth = pTarget->get_canvas_width()/fScalingFactor_;
+        fHeight = pTarget->get_canvas_height()/fScalingFactor_;
     }
     else
     {

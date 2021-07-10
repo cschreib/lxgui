@@ -79,8 +79,8 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
 
     pTexture_ = std::make_shared<sdl::material>(pRenderer, uiFinalWidth, uiFinalHeight);
 
-    uint uiTextureRealWidth = pTexture_->get_real_width();
-    uint uiTextureRealHeight = pTexture_->get_real_height();
+    uint uiTextureRealWidth = pTexture_->get_canvas_width();
+    uint uiTextureRealHeight = pTexture_->get_canvas_height();
     fTextureWidth_ = static_cast<float>(uiTextureRealWidth);
     fTextureHeight_ = static_cast<float>(uiTextureRealHeight);
 
