@@ -74,67 +74,77 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html">   14</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1material.html">material</a></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    public :</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">   18</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">wrap</a></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555">REPEAT</a>,</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345">CLAMP</a></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        };</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">   24</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">filter</a></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">NONE</a>,</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046">LINEAR</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        };</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">material</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">~material</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__quad2_8hpp.html">lxgui/gui_quad2.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__vector2_8hpp.html">lxgui/gui_vector2.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html">   16</a></span>&#160;    <span class="keyword">class </span><a class="code" href="classlxgui_1_1gui_1_1material.html">material</a></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    public :</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">   20</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">wrap</a></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555">REPEAT</a>,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345">CLAMP</a></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        };</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">   26</a></span>&#160;        <span class="keyword">enum class</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">filter</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        {</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">NONE</a>,</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046">LINEAR</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        };</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">material</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">~material</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a789677d5f629ceebc30764a4490e2b7e">get_width</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">virtual</span> <a class="code" href="structlxgui_1_1gui_1_1quad2.html">quad2f</a> <a class="code" href="classlxgui_1_1gui_1_1material.html#af52766a8c1a30a0c2f3abda1b619f3bd">get_rect</a>() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#aafbf763b149c70789bb70fb08722dbfe">get_height</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#afa8b3dde1c4c0ebac611f9fb91291e9a">get_real_width</a>() <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">get_canvas_width</a>() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#ac89d6d59259a4a98035670b729e57fb9">get_real_height</a>() <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    };</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1gui_1_1material.html#a3e4436aba0e285b2bed3c3a0b90e6adb">get_canvas_height</a>() <span class="keyword">const</span> = 0;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> <a class="code" href="classlxgui_1_1gui_1_1material.html#a7f3e1928a2fee307fccf8b01d0051de6">get_canvas_uv</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>&amp; mTextureUV, <span class="keywordtype">bool</span> bFromNormalized) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> <a class="code" href="classlxgui_1_1gui_1_1material.html#ab925447032b1d365ce69ca55735b9e34">get_local_uv</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a>&amp; mCanvasUV, <span class="keywordtype">bool</span> bAsNormalized) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00024">gui_material.hpp:24</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">lxgui::gui::material::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00018">gui_material.hpp:18</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00026">gui_material.hpp:26</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47">lxgui::gui::material::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00020">gui_material.hpp:20</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abab1d55a8d34f58ed57122a94edcffe9"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">lxgui::gui::material::get_canvas_width</a></div><div class="ttdeci">virtual float get_canvas_width() const =0</div><div class="ttdoc">Returns the physical width in pixels of the canvas containing this texture (if any).</div></div>
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_afa8b3dde1c4c0ebac611f9fb91291e9a"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#afa8b3dde1c4c0ebac611f9fb91291e9a">lxgui::gui::material::get_real_width</a></div><div class="ttdeci">virtual float get_real_width() const =0</div><div class="ttdoc">Returns the physical width of the underlying texture (if any).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_ac89d6d59259a4a98035670b729e57fb9"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#ac89d6d59259a4a98035670b729e57fb9">lxgui::gui::material::get_real_height</a></div><div class="ttdeci">virtual float get_real_height() const =0</div><div class="ttdoc">Returns the physical height of the underlying texture (if any).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00014">gui_material.hpp:14</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a789677d5f629ceebc30764a4490e2b7e"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a789677d5f629ceebc30764a4490e2b7e">lxgui::gui::material::get_width</a></div><div class="ttdeci">virtual float get_width() const =0</div><div class="ttdoc">Returns the width of the underlying texture (if any).</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00016">gui_material.hpp:16</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a3e4436aba0e285b2bed3c3a0b90e6adb"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a3e4436aba0e285b2bed3c3a0b90e6adb">lxgui::gui::material::get_canvas_height</a></div><div class="ttdeci">virtual float get_canvas_height() const =0</div><div class="ttdoc">Returns the physical height in pixels of the canvas containing this texture (if any).</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_af52766a8c1a30a0c2f3abda1b619f3bd"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#af52766a8c1a30a0c2f3abda1b619f3bd">lxgui::gui::material::get_rect</a></div><div class="ttdeci">virtual quad2f get_rect() const =0</div><div class="ttdoc">Returns the pixel rect in pixels of the canvas containing this texture (if any).</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a7f3e1928a2fee307fccf8b01d0051de6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a7f3e1928a2fee307fccf8b01d0051de6">lxgui::gui::material::get_canvas_uv</a></div><div class="ttdeci">vector2f get_canvas_uv(const vector2f &amp;mTextureUV, bool bFromNormalized) const</div><div class="ttdoc">Returns normalised UV coordinates on the canvas, given local UV coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8cpp_source.html#l00007">gui_material.cpp:7</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">lxgui::gui::material::filter::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a2484e2c1ad0d1497f20d77b78aee1524"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a2484e2c1ad0d1497f20d77b78aee1524">lxgui::gui::material::material</a></div><div class="ttdeci">material()=default</div><div class="ttdoc">Constructor.</div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1quad2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad2.html">lxgui::gui::quad2&lt; float &gt;</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345">lxgui::gui::material::wrap::CLAMP</a></div><div class="ttdeci">@ CLAMP</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_aa7356cdaf760898e56e339bfaa2df7c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">lxgui::gui::material::~material</a></div><div class="ttdeci">virtual ~material()=default</div><div class="ttdoc">Destructor.</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_aafbf763b149c70789bb70fb08722dbfe"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#aafbf763b149c70789bb70fb08722dbfe">lxgui::gui::material::get_height</a></div><div class="ttdeci">virtual float get_height() const =0</div><div class="ttdoc">Returns the height of the underlying texture (if any).</div></div>
+<div class="ttc" id="agui__vector2_8hpp_html"><div class="ttname"><a href="gui__vector2_8hpp.html">gui_vector2.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_ab925447032b1d365ce69ca55735b9e34"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#ab925447032b1d365ce69ca55735b9e34">lxgui::gui::material::get_local_uv</a></div><div class="ttdeci">vector2f get_local_uv(const vector2f &amp;mCanvasUV, bool bAsNormalized) const</div><div class="ttdoc">Returns local UV coordinates on the texture, given canvas UV coordinates.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8cpp_source.html#l00027">gui_material.cpp:27</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046">lxgui::gui::material::filter::LINEAR</a></div><div class="ttdeci">@ LINEAR</div></div>
+<div class="ttc" id="agui__quad2_8hpp_html"><div class="ttname"><a href="gui__quad2_8hpp.html">gui_quad2.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a06057a88ec23992da5290ec7a7782e47a5be68175be14dfaa080165456c2e9555">lxgui::gui::material::wrap::REPEAT</a></div><div class="ttdeci">@ REPEAT</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 5 2021 07:26:27 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

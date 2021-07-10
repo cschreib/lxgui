@@ -98,9 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a92afc3cc27b506ddc701d881a1eb2ebf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#a92afc3cc27b506ddc701d881a1eb2ebf">get_background_color</a> () const</td></tr>
 <tr class="memdesc:a92afc3cc27b506ddc701d881a1eb2ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the background color.  <a href="classlxgui_1_1gui_1_1backdrop.html#a92afc3cc27b506ddc701d881a1eb2ebf">More...</a><br /></td></tr>
 <tr class="separator:a92afc3cc27b506ddc701d881a1eb2ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41bc4cd05e2ead9ca1044209987e0c5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#a41bc4cd05e2ead9ca1044209987e0c5d">set_backgrond_tilling</a> (bool bBackgroundTilling)</td></tr>
-<tr class="memdesc:a41bc4cd05e2ead9ca1044209987e0c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables tilling for the background texture.  <a href="classlxgui_1_1gui_1_1backdrop.html#a41bc4cd05e2ead9ca1044209987e0c5d">More...</a><br /></td></tr>
-<tr class="separator:a41bc4cd05e2ead9ca1044209987e0c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb551ab280f5a7f804f735dbae5bccdb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#aeb551ab280f5a7f804f735dbae5bccdb">set_background_tilling</a> (bool bBackgroundTilling)</td></tr>
+<tr class="memdesc:aeb551ab280f5a7f804f735dbae5bccdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables tilling for the background texture.  <a href="classlxgui_1_1gui_1_1backdrop.html#aeb551ab280f5a7f804f735dbae5bccdb">More...</a><br /></td></tr>
+<tr class="separator:aeb551ab280f5a7f804f735dbae5bccdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a056fb7b1797bf9aef2ac8c98226d8e7d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#a056fb7b1797bf9aef2ac8c98226d8e7d">is_background_tilling</a> () const</td></tr>
 <tr class="memdesc:a056fb7b1797bf9aef2ac8c98226d8e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if tilling is enabled for the background texture.  <a href="classlxgui_1_1gui_1_1backdrop.html#a056fb7b1797bf9aef2ac8c98226d8e7d">More...</a><br /></td></tr>
 <tr class="separator:a056fb7b1797bf9aef2ac8c98226d8e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,11 +152,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb0d7fd190a8411dfd7778499649cf5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#afb0d7fd190a8411dfd7778499649cf5d">render</a> () const</td></tr>
 <tr class="memdesc:afb0d7fd190a8411dfd7778499649cf5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this backdrop on the current render target.  <a href="classlxgui_1_1gui_1_1backdrop.html#afb0d7fd190a8411dfd7778499649cf5d">More...</a><br /></td></tr>
 <tr class="separator:afb0d7fd190a8411dfd7778499649cf5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afad05821460f07cacb056e5a11b45c83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1backdrop.html#afad05821460f07cacb056e5a11b45c83">notify_borders_updated</a> () const</td></tr>
+<tr class="memdesc:afad05821460f07cacb056e5a11b45c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this backdrop that its parent frame has changed dimensions.  <a href="classlxgui_1_1gui_1_1backdrop.html#afad05821460f07cacb056e5a11b45c83">More...</a><br /></td></tr>
+<tr class="separator:afad05821460f07cacb056e5a11b45c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Draws borders and background of a frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8hpp_source.html#l00017">17</a> of file <a class="el" href="gui__backdrop_8hpp_source.html">gui_backdrop.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8hpp_source.html#l00019">19</a> of file <a class="el" href="gui__backdrop_8hpp_source.html">gui_backdrop.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a09156aa311f3c0204607bdbbff1e9867"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09156aa311f3c0204607bdbbff1e9867">&#9670;&nbsp;</a></span>backdrop()</h2>
@@ -190,7 +193,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00014">14</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00015">15</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -219,7 +222,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00018">18</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00019">19</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -241,7 +244,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the background color. </p>
 <dl class="section return"><dt>Returns</dt><dd>The background color </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00086">86</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00091">91</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,7 +266,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's background file. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's background file </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00068">68</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00073">73</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -285,7 +288,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's background insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's background insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00135">135</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -307,7 +310,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the edge color. </p>
 <dl class="section return"><dt>Returns</dt><dd>The edge color </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00237">237</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00224">224</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -329,7 +332,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's edge file. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's edge file </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00209">209</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00204">204</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -351,7 +354,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's edge insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's edge insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00139">139</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00153">153</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -373,7 +376,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's edge size. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's edge size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00247">247</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00237">237</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -395,7 +398,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this backdrop's tile size. </p>
 <dl class="section return"><dt>Returns</dt><dd>This backdrop's tile size </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00109">109</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00117">117</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -417,7 +420,28 @@ Public Member Functions</h2></td></tr>
 <p>Checks if tilling is enabled for the background texture. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if tilling is enabled for the background texture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00099">99</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00104">104</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afad05821460f07cacb056e5a11b45c83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afad05821460f07cacb056e5a11b45c83">&#9670;&nbsp;</a></span>notify_borders_updated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::backdrop::notify_borders_updated </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tells this backdrop that its parent frame has changed dimensions. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00279">279</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -438,35 +462,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Renders this backdrop on the current render target. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00263">263</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a41bc4cd05e2ead9ca1044209987e0c5d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41bc4cd05e2ead9ca1044209987e0c5d">&#9670;&nbsp;</a></span>set_backgrond_tilling()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::backdrop::set_backgrond_tilling </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bBackgroundTilling</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Enables tilling for the background texture. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bBackgroundTilling</td><td>'true' to enable tilling </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00091">91</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00250">250</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -494,7 +490,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00038">38</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00039">39</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -523,7 +519,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This color can be used to tint the background texture if any or simply render a plain color background. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00073">73</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00078">78</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -551,7 +547,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00114">114</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00122">122</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -604,7 +600,35 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00119">119</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00130">130</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aeb551ab280f5a7f804f735dbae5bccdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb551ab280f5a7f804f735dbae5bccdb">&#9670;&nbsp;</a></span>set_background_tilling()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::backdrop::set_background_tilling </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bBackgroundTilling</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables tilling for the background texture. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bBackgroundTilling</td><td>'true' to enable tilling </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00096">96</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -646,7 +670,7 @@ Public Member Functions</h2></td></tr>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00158">158</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -675,7 +699,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This color can be used to tint the edge texture if any or simply render a plain color edge. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00214">214</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00209">209</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -703,7 +727,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00129">129</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00140">140</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -756,7 +780,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00134">134</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00148">148</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -785,7 +809,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Edges will be scaled by fEdgeSize/edgeTextureHeight. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00242">242</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00229">229</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -814,7 +838,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Tile will be scaled by fTileSize/backgroundTextureSize. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00104">104</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00109">109</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -842,7 +866,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00252">252</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__backdrop_8cpp_source.html#l00242">242</a> of file <a class="el" href="gui__backdrop_8cpp_source.html">gui_backdrop.cpp</a>.</p>
 
 </div>
 </div>
@@ -853,7 +877,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 5 2021 07:26:27 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

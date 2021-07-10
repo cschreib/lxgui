@@ -90,9 +90,9 @@ Inheritance diagram for lxgui::gui::sdl::render_target:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a89b1c3d731db1c58ae57f4efcc6a8403"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a89b1c3d731db1c58ae57f4efcc6a8403">render_target</a> (SDL_Renderer *pRenderer, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight)</td></tr>
-<tr class="memdesc:a89b1c3d731db1c58ae57f4efcc6a8403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a89b1c3d731db1c58ae57f4efcc6a8403">More...</a><br /></td></tr>
-<tr class="separator:a89b1c3d731db1c58ae57f4efcc6a8403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a634e113406a2e453cb231acde360fa38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a634e113406a2e453cb231acde360fa38">render_target</a> (SDL_Renderer *pRenderer, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>)</td></tr>
+<tr class="memdesc:a634e113406a2e453cb231acde360fa38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a634e113406a2e453cb231acde360fa38">More...</a><br /></td></tr>
+<tr class="separator:a634e113406a2e453cb231acde360fa38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9055b64c0e5e07b88877ce8d5f947aca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9055b64c0e5e07b88877ce8d5f947aca">begin</a> () override</td></tr>
 <tr class="memdesc:a9055b64c0e5e07b88877ce8d5f947aca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begins rendering on this target.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9055b64c0e5e07b88877ce8d5f947aca">More...</a><br /></td></tr>
 <tr class="separator:a9055b64c0e5e07b88877ce8d5f947aca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -102,21 +102,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f749d1920ee3d9d92f9fe964c389a7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7f749d1920ee3d9d92f9fe964c389a7d">clear</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor) override</td></tr>
 <tr class="memdesc:a7f749d1920ee3d9d92f9fe964c389a7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the content of this <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">render_target</a>.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a7f749d1920ee3d9d92f9fe964c389a7d">More...</a><br /></td></tr>
 <tr class="separator:a7f749d1920ee3d9d92f9fe964c389a7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad268f7f2ab6a7e857028ff85eba021b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#ad268f7f2ab6a7e857028ff85eba021b1">get_width</a> () const override</td></tr>
-<tr class="memdesc:ad268f7f2ab6a7e857028ff85eba021b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's width.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#ad268f7f2ab6a7e857028ff85eba021b1">More...</a><br /></td></tr>
-<tr class="separator:ad268f7f2ab6a7e857028ff85eba021b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2c6a1536d92ec4c0406c2f31a5340b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#ab2c6a1536d92ec4c0406c2f31a5340b0">get_height</a> () const override</td></tr>
-<tr class="memdesc:ab2c6a1536d92ec4c0406c2f31a5340b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's height.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#ab2c6a1536d92ec4c0406c2f31a5340b0">More...</a><br /></td></tr>
-<tr class="separator:ab2c6a1536d92ec4c0406c2f31a5340b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bf6d10ce2ab0d06420d3f4236e6023f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a2bf6d10ce2ab0d06420d3f4236e6023f">get_rect</a> () const override</td></tr>
+<tr class="memdesc:a2bf6d10ce2ab0d06420d3f4236e6023f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's pixel rect.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a2bf6d10ce2ab0d06420d3f4236e6023f">More...</a><br /></td></tr>
+<tr class="separator:a2bf6d10ce2ab0d06420d3f4236e6023f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76b94a5409a2b7a99cb1483cb69d7e5a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a76b94a5409a2b7a99cb1483cb69d7e5a">set_dimensions</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight) override</td></tr>
 <tr class="memdesc:a76b94a5409a2b7a99cb1483cb69d7e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this render target's dimensions.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a76b94a5409a2b7a99cb1483cb69d7e5a">More...</a><br /></td></tr>
 <tr class="separator:a76b94a5409a2b7a99cb1483cb69d7e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30791419fe2b4709e0bebbaffebb2936"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a30791419fe2b4709e0bebbaffebb2936">get_real_width</a> () const override</td></tr>
-<tr class="memdesc:a30791419fe2b4709e0bebbaffebb2936"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's real width.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a30791419fe2b4709e0bebbaffebb2936">More...</a><br /></td></tr>
-<tr class="separator:a30791419fe2b4709e0bebbaffebb2936"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1f5a1ea0b0c3c0683873e76a03f4bde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa1f5a1ea0b0c3c0683873e76a03f4bde">get_real_height</a> () const override</td></tr>
-<tr class="memdesc:aa1f5a1ea0b0c3c0683873e76a03f4bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's real height.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#aa1f5a1ea0b0c3c0683873e76a03f4bde">More...</a><br /></td></tr>
-<tr class="separator:aa1f5a1ea0b0c3c0683873e76a03f4bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd15c15d216f0aef88d1f1beb1c5bd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9bd15c15d216f0aef88d1f1beb1c5bd1">get_canvas_width</a> () const override</td></tr>
+<tr class="memdesc:a9bd15c15d216f0aef88d1f1beb1c5bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's canvas width.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a9bd15c15d216f0aef88d1f1beb1c5bd1">More...</a><br /></td></tr>
+<tr class="separator:a9bd15c15d216f0aef88d1f1beb1c5bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42da041eb1e4ce024053dd5089ec17a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a42da041eb1e4ce024053dd5089ec17a5">get_canvas_height</a> () const override</td></tr>
+<tr class="memdesc:a42da041eb1e4ce024053dd5089ec17a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's canvas height.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a42da041eb1e4ce024053dd5089ec17a5">More...</a><br /></td></tr>
+<tr class="separator:a42da041eb1e4ce024053dd5089ec17a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28ac483054fe010a22c4dfab3ec847f9"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html">sdl::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">get_material</a> ()</td></tr>
 <tr class="memdesc:a28ac483054fe010a22c4dfab3ec847f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the associated texture for rendering.  <a href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a28ac483054fe010a22c4dfab3ec847f9">More...</a><br /></td></tr>
 <tr class="separator:a28ac483054fe010a22c4dfab3ec847f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,8 +135,8 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="gui__sdl__rendertarget_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__sdl__rendertarget_8hpp_source.html">gui_sdl_rendertarget.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a89b1c3d731db1c58ae57f4efcc6a8403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89b1c3d731db1c58ae57f4efcc6a8403">&#9670;&nbsp;</a></span>render_target()</h2>
+<a id="a634e113406a2e453cb231acde360fa38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a634e113406a2e453cb231acde360fa38">&#9670;&nbsp;</a></span>render_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +157,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiHeight</em>&#160;</td>
+          <td class="paramname"><em>uiHeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -175,6 +178,7 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">uiWidth</td><td>The width of the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">render_target</a> </td></tr>
     <tr><td class="paramname">uiHeight</td><td>The height of the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">render_target</a> </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the target texture when displayed </td></tr>
   </table>
   </dd>
 </dl>
@@ -311,8 +315,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ab2c6a1536d92ec4c0406c2f31a5340b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2c6a1536d92ec4c0406c2f31a5340b0">&#9670;&nbsp;</a></span>get_height()</h2>
+<a id="a42da041eb1e4ce024053dd5089ec17a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42da041eb1e4ce024053dd5089ec17a5">&#9670;&nbsp;</a></span>get_canvas_height()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +325,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_height </td>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_canvas_height </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -334,10 +338,42 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns this render target's height. </p>
-<dl class="section return"><dt>Returns</dt><dd>This render target's height </dd></dl>
+<p>Returns this render target's canvas height. </p>
+<dl class="section return"><dt>Returns</dt><dd>This render target's canvas height </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#a51ad424b34fe323acc175b951fe78a80">lxgui::gui::render_target</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#afbd7a84278cc97bc4128bebd44b30c3c">lxgui::gui::render_target</a>.</p>
+
+</div>
+</div>
+<a id="a9bd15c15d216f0aef88d1f1beb1c5bd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bd15c15d216f0aef88d1f1beb1c5bd1">&#9670;&nbsp;</a></span>get_canvas_width()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_canvas_width </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns this render target's canvas width. </p>
+<dl class="section return"><dt>Returns</dt><dd>This render target's canvas width </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#ad09bbb93af531786644125d40b2ba746">lxgui::gui::render_target</a>.</p>
 
 </div>
 </div>
@@ -361,8 +397,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa1f5a1ea0b0c3c0683873e76a03f4bde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1f5a1ea0b0c3c0683873e76a03f4bde">&#9670;&nbsp;</a></span>get_real_height()</h2>
+<a id="a2bf6d10ce2ab0d06420d3f4236e6023f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bf6d10ce2ab0d06420d3f4236e6023f">&#9670;&nbsp;</a></span>get_rect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -371,7 +407,7 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_real_height </td>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> lxgui::gui::sdl::render_target::get_rect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -384,42 +420,10 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns this render target's real height. </p>
-<dl class="section return"><dt>Returns</dt><dd>This render target's real height </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
+<p>Returns this render target's pixel rect. </p>
+<dl class="section return"><dt>Returns</dt><dd>This render target's pixel rect </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#a7fd7be81209e598cae8db88c1852f89e">lxgui::gui::render_target</a>.</p>
-
-</div>
-</div>
-<a id="a30791419fe2b4709e0bebbaffebb2936"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30791419fe2b4709e0bebbaffebb2936">&#9670;&nbsp;</a></span>get_real_width()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_real_width </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns this render target's real width. </p>
-<dl class="section return"><dt>Returns</dt><dd>This render target's real width </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This is the physical size of the render target. On some systems, abitrary dimensions are not supported : they can be promoted to the nearest power of two from for example. </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#a180162bc3ed6c6070eb5fc14dd65d1cb">lxgui::gui::render_target</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#abeda86811321c154902ce2aa2f045452">lxgui::gui::render_target</a>.</p>
 
 </div>
 </div>
@@ -460,36 +464,6 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Returns the view matrix of this render target. </p>
 <dl class="section return"><dt>Returns</dt><dd>The view matrix of this render target </dd></dl>
-
-</div>
-</div>
-<a id="ad268f7f2ab6a7e857028ff85eba021b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad268f7f2ab6a7e857028ff85eba021b1">&#9670;&nbsp;</a></span>get_width()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::render_target::get_width </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns this render target's width. </p>
-<dl class="section return"><dt>Returns</dt><dd>This render target's width </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1render__target.html#a32711c39c90e56fd1c9f260dbf60e08b">lxgui::gui::render_target</a>.</p>
 
 </div>
 </div>
@@ -547,7 +521,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 5 2021 07:26:28 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

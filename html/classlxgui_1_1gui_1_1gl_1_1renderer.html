@@ -68,6 +68,8 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classlxgui_1_1gui_1_1gl_1_1renderer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::gui::gl::renderer Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
@@ -93,6 +95,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0d547f0b62b198b8dc1655e198503ff3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a0d547f0b62b198b8dc1655e198503ff3">renderer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowHeight, bool bInitGLEW=true)</td></tr>
 <tr class="memdesc:a0d547f0b62b198b8dc1655e198503ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a0d547f0b62b198b8dc1655e198503ff3">More...</a><br /></td></tr>
 <tr class="separator:a0d547f0b62b198b8dc1655e198503ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c0afe8b95daa16978cee34e480d7245"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a9c0afe8b95daa16978cee34e480d7245">get_name</a> () const override</td></tr>
+<tr class="memdesc:a9c0afe8b95daa16978cee34e480d7245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a human-readable name for this renderer.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a9c0afe8b95daa16978cee34e480d7245">More...</a><br /></td></tr>
+<tr class="separator:a9c0afe8b95daa16978cee34e480d7245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4589f2da4b04a93796e55ca6daf4c21e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4589f2da4b04a93796e55ca6daf4c21e">begin</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt; pTarget=nullptr) const override</td></tr>
 <tr class="memdesc:a4589f2da4b04a93796e55ca6daf4c21e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begins rendering on a particular render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4589f2da4b04a93796e55ca6daf4c21e">More...</a><br /></td></tr>
 <tr class="separator:a4589f2da4b04a93796e55ca6daf4c21e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,38 +119,104 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a19e933f0513af024161e3dae9bbc7d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a19e933f0513af024161e3dae9bbc7d7d">render_cache</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> *pMaterial, const <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &amp;mCache, const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mModelTransform) const override</td></tr>
 <tr class="memdesc:a19e933f0513af024161e3dae9bbc7d7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders a vertex cache.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a19e933f0513af024161e3dae9bbc7d7d">More...</a><br /></td></tr>
 <tr class="separator:a19e933f0513af024161e3dae9bbc7d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a624cc12ff0abf722cba7eb4d226edbb9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a624cc12ff0abf722cba7eb4d226edbb9">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
-<tr class="memdesc:a624cc12ff0abf722cba7eb4d226edbb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a624cc12ff0abf722cba7eb4d226edbb9">More...</a><br /></td></tr>
-<tr class="separator:a624cc12ff0abf722cba7eb4d226edbb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71b64b007a50d0403664b8d8d0b7f439"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a71b64b007a50d0403664b8d8d0b7f439">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt; pRenderTarget) const override</td></tr>
-<tr class="memdesc:a71b64b007a50d0403664b8d8d0b7f439"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a71b64b007a50d0403664b8d8d0b7f439">More...</a><br /></td></tr>
-<tr class="separator:a71b64b007a50d0403664b8d8d0b7f439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f89e8905195545d34dbab7f275b6028"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1f89e8905195545d34dbab7f275b6028">create_render_target</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight) const override</td></tr>
-<tr class="memdesc:a1f89e8905195545d34dbab7f275b6028"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1f89e8905195545d34dbab7f275b6028">More...</a><br /></td></tr>
-<tr class="separator:a1f89e8905195545d34dbab7f275b6028"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae274d20c3f6fe7b03537ab7148b71084"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ae274d20c3f6fe7b03537ab7148b71084">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) const override</td></tr>
-<tr class="memdesc:ae274d20c3f6fe7b03537ab7148b71084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ae274d20c3f6fe7b03537ab7148b71084">More...</a><br /></td></tr>
-<tr class="separator:ae274d20c3f6fe7b03537ab7148b71084"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6562c70a8ac3287bbbfa4fc7459808e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6562c70a8ac3287bbbfa4fc7459808e9">has_vertex_cache</a> () const override</td></tr>
-<tr class="memdesc:a6562c70a8ac3287bbbfa4fc7459808e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6562c70a8ac3287bbbfa4fc7459808e9">More...</a><br /></td></tr>
-<tr class="separator:a6562c70a8ac3287bbbfa4fc7459808e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564dace88b3e22f9982d7a999f35d3a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a564dace88b3e22f9982d7a999f35d3a5">get_texture_max_size</a> () const override</td></tr>
+<tr class="memdesc:a564dace88b3e22f9982d7a999f35d3a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum texture width/height (in pixels).  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a564dace88b3e22f9982d7a999f35d3a5">More...</a><br /></td></tr>
+<tr class="separator:a564dace88b3e22f9982d7a999f35d3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9d74a741d52d3710f969518444d1a69"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ac9d74a741d52d3710f969518444d1a69">is_texture_atlas_natively_supported</a> () const override</td></tr>
+<tr class="memdesc:ac9d74a741d52d3710f969518444d1a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports texture atlases natively.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ac9d74a741d52d3710f969518444d1a69">More...</a><br /></td></tr>
+<tr class="separator:ac9d74a741d52d3710f969518444d1a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33964aaac7ce21335483f09ebaaf053"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad33964aaac7ce21335483f09ebaaf053">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt; pRenderTarget, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mLocation) const override</td></tr>
+<tr class="memdesc:ad33964aaac7ce21335483f09ebaaf053"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a portion of a render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad33964aaac7ce21335483f09ebaaf053">More...</a><br /></td></tr>
+<tr class="separator:ad33964aaac7ce21335483f09ebaaf053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afac17536725def2ddbf24ca63ff02ece"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afac17536725def2ddbf24ca63ff02ece">create_render_target</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
+<tr class="memdesc:afac17536725def2ddbf24ca63ff02ece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afac17536725def2ddbf24ca63ff02ece">More...</a><br /></td></tr>
+<tr class="separator:afac17536725def2ddbf24ca63ff02ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6874405e69c001423c1d6dd8ba06478"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478">is_vertex_cache_supported</a> () const override</td></tr>
+<tr class="memdesc:ab6874405e69c001423c1d6dd8ba06478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478">More...</a><br /></td></tr>
+<tr class="separator:ab6874405e69c001423c1d6dd8ba06478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad914a78fa3f9541bb227100f137dfa29"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad914a78fa3f9541bb227100f137dfa29">create_vertex_cache</a> (<a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">gui::vertex_cache::type</a> mType) const override</td></tr>
 <tr class="memdesc:ad914a78fa3f9541bb227100f137dfa29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new empty vertex cache.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad914a78fa3f9541bb227100f137dfa29">More...</a><br /></td></tr>
 <tr class="separator:ad914a78fa3f9541bb227100f137dfa29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf0518eeaaf97bfce19547a48c4e764f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f">notify_window_resized</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewHeight) override</td></tr>
 <tr class="memdesc:adf0518eeaaf97bfce19547a48c4e764f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer that the render window has been resized.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f">More...</a><br /></td></tr>
 <tr class="separator:adf0518eeaaf97bfce19547a48c4e764f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac84e9bfa946e6c536950b6ac0a40430a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ac84e9bfa946e6c536950b6ac0a40430a">create_material</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const</td></tr>
+<tr class="memdesc:ac84e9bfa946e6c536950b6ac0a40430a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer.html#ac84e9bfa946e6c536950b6ac0a40430a">More...</a><br /></td></tr>
+<tr class="separator:ac84e9bfa946e6c536950b6ac0a40430a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html">render_target</a> &gt; pRenderTarget) const</td></tr>
+<tr class="memdesc:adb352d74d13a5bcfc4c6b505dda5843a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from an entire render target.  <a href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">More...</a><br /></td></tr>
+<tr class="separator:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e30dd80513947676e5f3a02466628df"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3e30dd80513947676e5f3a02466628df">is_texture_atlas_enabled</a> () const</td></tr>
+<tr class="memdesc:a3e30dd80513947676e5f3a02466628df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer has texture atlases enabled.  <a href="classlxgui_1_1gui_1_1renderer.html#a3e30dd80513947676e5f3a02466628df">More...</a><br /></td></tr>
+<tr class="separator:a3e30dd80513947676e5f3a02466628df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a147ba75beb23b3210a0f973c5ea2d1e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a147ba75beb23b3210a0f973c5ea2d1e7">set_texture_atlas_enabled</a> (bool bEnabled)</td></tr>
+<tr class="memdesc:a147ba75beb23b3210a0f973c5ea2d1e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables texture atlases.  <a href="classlxgui_1_1gui_1_1renderer.html#a147ba75beb23b3210a0f973c5ea2d1e7">More...</a><br /></td></tr>
+<tr class="separator:a147ba75beb23b3210a0f973c5ea2d1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bf21006aaf4d5a90fa8295bf84ede08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a4bf21006aaf4d5a90fa8295bf84ede08">get_texture_atlas_page_size</a> () const</td></tr>
+<tr class="memdesc:a4bf21006aaf4d5a90fa8295bf84ede08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the width/height of a texture atlas page (in pixels).  <a href="classlxgui_1_1gui_1_1renderer.html#a4bf21006aaf4d5a90fa8295bf84ede08">More...</a><br /></td></tr>
+<tr class="separator:a4bf21006aaf4d5a90fa8295bf84ede08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fd351c4d189d13eff23aca3c85bcc62"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8fd351c4d189d13eff23aca3c85bcc62">set_texture_atlas_page_size</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiPageSize)</td></tr>
+<tr class="memdesc:a8fd351c4d189d13eff23aca3c85bcc62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the width/height of a texture atlas page (in pixels).  <a href="classlxgui_1_1gui_1_1renderer.html#a8fd351c4d189d13eff23aca3c85bcc62">More...</a><br /></td></tr>
+<tr class="separator:a8fd351c4d189d13eff23aca3c85bcc62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fb63fd685cab6d9c4f452a2726d1f6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6fb63fd685cab6d9c4f452a2726d1f6a">get_num_texture_atlas_pages</a> () const</td></tr>
+<tr class="memdesc:a6fb63fd685cab6d9c4f452a2726d1f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Count the total number of texture atlas pages curently in use.  <a href="classlxgui_1_1gui_1_1renderer.html#a6fb63fd685cab6d9c4f452a2726d1f6a">More...</a><br /></td></tr>
+<tr class="separator:a6fb63fd685cab6d9c4f452a2726d1f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3d1265aefed7545b55be76ac843a508"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab3d1265aefed7545b55be76ac843a508">create_atlas_material</a> (const std::string &amp;sAtlasCategory, const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const</td></tr>
+<tr class="memdesc:ab3d1265aefed7545b55be76ac843a508"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer.html#ab3d1265aefed7545b55be76ac843a508">More...</a><br /></td></tr>
+<tr class="separator:ab3d1265aefed7545b55be76ac843a508"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e75eac1c32675fe8d3e34d862086042"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html">font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a6e75eac1c32675fe8d3e34d862086042">create_font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) const</td></tr>
+<tr class="memdesc:a6e75eac1c32675fe8d3e34d862086042"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="classlxgui_1_1gui_1_1renderer.html#a6e75eac1c32675fe8d3e34d862086042">More...</a><br /></td></tr>
+<tr class="separator:a6e75eac1c32675fe8d3e34d862086042"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adef82e16de48846f07b32d66ec385e9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a> () const</td></tr>
+<tr class="memdesc:adef82e16de48846f07b32d66ec385e9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer has enabled support for vertex caches.  <a href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">More...</a><br /></td></tr>
+<tr class="separator:adef82e16de48846f07b32d66ec385e9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc8106ba755340ef8afdc68631cbf9a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#afc8106ba755340ef8afdc68631cbf9a1">set_vertex_cache_enabled</a> (bool bEnabled)</td></tr>
+<tr class="memdesc:afc8106ba755340ef8afdc68631cbf9a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables vertex caches.  <a href="classlxgui_1_1gui_1_1renderer.html#afc8106ba755340ef8afdc68631cbf9a1">More...</a><br /></td></tr>
+<tr class="separator:afc8106ba755340ef8afdc68631cbf9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a751ee37acb94dca54c2b9fb5d4b227bc">auto_detect_settings</a> ()</td></tr>
+<tr class="memdesc:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically determines the best rendering settings for the current platform.  <a href="classlxgui_1_1gui_1_1renderer.html#a751ee37acb94dca54c2b9fb5d4b227bc">More...</a><br /></td></tr>
+<tr class="separator:a751ee37acb94dca54c2b9fb5d4b227bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:acc63a4763b22a82dafb93af247b81e17"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#acc63a4763b22a82dafb93af247b81e17">is_gl_extension_supported</a> (const std::string &amp;sExtension)</td></tr>
 <tr class="memdesc:acc63a4763b22a82dafb93af247b81e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a given OpenGL extension is supported by the machine.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#acc63a4763b22a82dafb93af247b81e17">More...</a><br /></td></tr>
 <tr class="separator:acc63a4763b22a82dafb93af247b81e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4493de71d18a1e0bb8278f370728df5f"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4493de71d18a1e0bb8278f370728df5f">create_material_</a> (const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter) const override</td></tr>
+<tr class="memdesc:a4493de71d18a1e0bb8278f370728df5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4493de71d18a1e0bb8278f370728df5f">More...</a><br /></td></tr>
+<tr class="separator:a4493de71d18a1e0bb8278f370728df5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc9abbd8378f92f974f8474b7ae66f05"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1atlas.html">gui::atlas</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afc9abbd8378f92f974f8474b7ae66f05">create_atlas_</a> (<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter) const override</td></tr>
+<tr class="memdesc:afc9abbd8378f92f974f8474b7ae66f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new atlas with a given texture filter mode.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afc9abbd8378f92f974f8474b7ae66f05">More...</a><br /></td></tr>
+<tr class="separator:afc9abbd8378f92f974f8474b7ae66f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a006a43bd7190b4fbd3f3a7055ff107b0"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a006a43bd7190b4fbd3f3a7055ff107b0">create_font_</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize) const override</td></tr>
+<tr class="memdesc:a006a43bd7190b4fbd3f3a7055ff107b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a006a43bd7190b4fbd3f3a7055ff107b0">More...</a><br /></td></tr>
+<tr class="separator:a006a43bd7190b4fbd3f3a7055ff107b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec606ca4ab2c67cd652c36560bf8a90"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas.html">atlas</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aeec606ca4ab2c67cd652c36560bf8a90">create_atlas_default_</a> (<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter) const</td></tr>
+<tr class="memdesc:aeec606ca4ab2c67cd652c36560bf8a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new atlas with a given texture filter mode (using default implementation).  <a href="classlxgui_1_1gui_1_1renderer.html#aeec606ca4ab2c67cd652c36560bf8a90">More...</a><br /></td></tr>
+<tr class="separator:aeec606ca4ab2c67cd652c36560bf8a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a5e8c5b1177f1253b375b85919a0912ba"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5e8c5b1177f1253b375b85919a0912ba">lTextureList_</a></td></tr>
+<tr class="separator:a5e8c5b1177f1253b375b85919a0912ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c8dd84cf2b989d95b3aa0c219cc531f"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1atlas.html">gui::atlas</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5c8dd84cf2b989d95b3aa0c219cc531f">lAtlasList_</a></td></tr>
+<tr class="separator:a5c8dd84cf2b989d95b3aa0c219cc531f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53e0831ec5d5073cf456e86b68c54bf"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#af53e0831ec5d5073cf456e86b68c54bf">lFontList_</a></td></tr>
+<tr class="separator:af53e0831ec5d5073cf456e86b68c54bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf333541bf929ea53be0404f82428465"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#aaf333541bf929ea53be0404f82428465">bTextureAtlasEnabled_</a> = true</td></tr>
+<tr class="separator:aaf333541bf929ea53be0404f82428465"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a715554c989abf76a8e8fef5253a589e9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a715554c989abf76a8e8fef5253a589e9">bVertexCacheEnabled_</a> = true</td></tr>
+<tr class="separator:a715554c989abf76a8e8fef5253a589e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8338d4344ff687567f3d8c75020b29b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8338d4344ff687567f3d8c75020b29b4">uiTextureAtlasPageSize_</a> = 0u</td></tr>
+<tr class="separator:a8338d4344ff687567f3d8c75020b29b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Open implementation of rendering. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__gl__renderer_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__gl__renderer_8hpp_source.html">gui_gl_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__gl__renderer_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__gl__renderer_8hpp_source.html">gui_gl_renderer.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0d547f0b62b198b8dc1655e198503ff3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d547f0b62b198b8dc1655e198503ff3">&#9670;&nbsp;</a></span>renderer()</h2>
@@ -201,6 +272,35 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a751ee37acb94dca54c2b9fb5d4b227bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a751ee37acb94dca54c2b9fb5d4b227bc">&#9670;&nbsp;</a></span>auto_detect_settings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::auto_detect_settings </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Automatically determines the best rendering settings for the current platform. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00102">102</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a4589f2da4b04a93796e55ca6daf4c21e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4589f2da4b04a93796e55ca6daf4c21e">&#9670;&nbsp;</a></span>begin()</h2>
 
@@ -237,8 +337,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae274d20c3f6fe7b03537ab7148b71084"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae274d20c3f6fe7b03537ab7148b71084">&#9670;&nbsp;</a></span>create_font()</h2>
+<a id="afc9abbd8378f92f974f8474b7ae66f05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc9abbd8378f92f974f8474b7ae66f05">&#9670;&nbsp;</a></span>create_atlas_()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +347,139 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a>&gt; lxgui::gui::gl::renderer::create_font </td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1atlas.html">gui::atlas</a>&gt; lxgui::gui::gl::renderer::create_atlas_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new atlas with a given texture filter mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new atlas </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#acb6f3bcc0995024a4dfd618a65b85325">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="aeec606ca4ab2c67cd652c36560bf8a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeec606ca4ab2c67cd652c36560bf8a90">&#9670;&nbsp;</a></span>create_atlas_default_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas.html">atlas</a>&gt; lxgui::gui::renderer::create_atlas_default_ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new atlas with a given texture filter mode (using default implementation). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new atlas </dd></dl>
+
+</div>
+</div>
+<a id="ab3d1265aefed7545b55be76ac843a508"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3d1265aefed7545b55be76ac843a508">&#9670;&nbsp;</a></span>create_atlas_material()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_atlas_material </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sAtlasCategory</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from a texture file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sAtlasCategory</td><td>The category of atlas in which to create the texture </td></tr>
+    <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd>
+<dd>
+The atlas category is a hint that the implementation can use to select the texture atlas in which to place this new texture. If a group of textures is known to be used to render objects that are often rendered consecutively (for example, various tiles of a background), they should be placed in the same category to maximize the chance of draw call batching. Conversely, if two texture are known to rarely be used in the same context (for example, a special effect particle texture and a UI button texture), they should not be placed in the same category, as this could otherwise fill up the atlas quickly, and reduce batching opportunities. </dd>
+<dd>
+Because of how texture atlases work, it is not possible to use texture coordinate wrapping for materials from an atlas. Trying to use coordinates outside the [0,1] range will start reading texture data from another material. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00107">107</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6e75eac1c32675fe8d3e34d862086042"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e75eac1c32675fe8d3e34d862086042">&#9670;&nbsp;</a></span>create_font()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt; lxgui::gui::renderer::create_font </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>sFontFile</em>, </td>
@@ -266,7 +498,55 @@ Static Public Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new font. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFontFile</td><td>The file from which to read the font </td></tr>
+    <tr><td class="paramname">uiSize</td><td>The requested size of the characters (in points) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Even though the gui has been designed to use vector fonts files (such as .ttf or .otf font formats), nothing prevents the implementation from using any other font type, including bitmap fonts. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00040">40</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a006a43bd7190b4fbd3f3a7055ff107b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a006a43bd7190b4fbd3f3a7055ff107b0">&#9670;&nbsp;</a></span>create_font_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a>&gt; lxgui::gui::gl::renderer::create_font_ </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFontFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -281,12 +561,61 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This implementation uses FreeType to load vector fonts and rasterize them. Bitmap fonts are not yet supported. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a019dc9217411bc3d81f585353905c36d">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a21c5d64f9c69eed5ad6d581dd860bdee">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
-<a id="a624cc12ff0abf722cba7eb4d226edbb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a624cc12ff0abf722cba7eb4d226edbb9">&#9670;&nbsp;</a></span>create_material() <span class="overload">[1/2]</span></h2>
+<a id="ac84e9bfa946e6c536950b6ac0a40430a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac84e9bfa946e6c536950b6ac0a40430a">&#9670;&nbsp;</a></span>create_material() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt; lxgui::gui::renderer::create_material </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from a texture file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00015">15</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad33964aaac7ce21335483f09ebaaf053"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad33964aaac7ce21335483f09ebaaf053">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,8 +626,148 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::gl::renderer::create_material </td>
           <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td>
+          <td class="paramname"><em>pRenderTarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mLocation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from a portion of a render target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pRenderTarget</td><td>The render target from which to read the pixels </td></tr>
+    <tr><td class="paramname">mLocation</td><td>The portion of the render target to use as material </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a197caac5385c16319f831c3b68934483">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="adb352d74d13a5bcfc4c6b505dda5843a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb352d74d13a5bcfc4c6b505dda5843a">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html">material</a> &gt; lxgui::gui::renderer::create_material </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt;&#160;</td>
+          <td class="paramname"><em>pRenderTarget</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from an entire render target. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pRenderTarget</td><td>The render target from which to read the pixels </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00151">151</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4493de71d18a1e0bb8278f370728df5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4493de71d18a1e0bb8278f370728df5f">&#9670;&nbsp;</a></span>create_material_()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::gl::renderer::create_material_ </td>
+          <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>sFileName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from a texture file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Only PNG textures are supported by this implementation (parsed by libpng). </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a02fc509c9f5afbcfe2bdefbc250ad8ae">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="afac17536725def2ddbf24ca63ff02ece"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afac17536725def2ddbf24ca63ff02ece">&#9670;&nbsp;</a></span>create_render_target()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a>&gt; lxgui::gui::gl::renderer::create_render_target </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiWidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiHeight</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -319,102 +788,17 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Creates a new material from a texture file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
-    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Only PNG textures are supported by this implementation (parsed by libpng). </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ae259495c173f20c63ad41adbed98b645">lxgui::gui::renderer</a>.</p>
-
-</div>
-</div>
-<a id="a71b64b007a50d0403664b8d8d0b7f439"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71b64b007a50d0403664b8d8d0b7f439">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::gl::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td>
-          <td class="paramname"><em>pRenderTarget</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from a render target. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pRenderTarget</td><td>The render target from which to read the pixels </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a289d5f563d65bc112bda89f484ef86b4">lxgui::gui::renderer</a>.</p>
-
-</div>
-</div>
-<a id="a1f89e8905195545d34dbab7f275b6028"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f89e8905195545d34dbab7f275b6028">&#9670;&nbsp;</a></span>create_render_target()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a>&gt; lxgui::gui::gl::renderer::create_render_target </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
 <p>Creates a new render target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">uiWidth</td><td>The width of the render target </td></tr>
     <tr><td class="paramname">uiHeight</td><td>The height of the render target </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the target texture when displayed </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3aa62f256de9c17d14612b6570824029">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a872a1391a40b16053c79d2528475d841">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -449,7 +833,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6562c70a8ac3287bbbfa4fc7459808e9" title="Checks if the renderer supports vertex caches.">has_vertex_cache()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>. </dd></dl>
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">lxgui::gui::renderer</a>.</p>
 
@@ -484,6 +868,126 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a9c0afe8b95daa16978cee34e480d7245"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c0afe8b95daa16978cee34e480d7245">&#9670;&nbsp;</a></span>get_name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::gl::renderer::get_name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a human-readable name for this renderer. </p>
+<dl class="section return"><dt>Returns</dt><dd>A human-readable name for this renderer </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a41116f975d193050736cab46458579b5">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="a6fb63fd685cab6d9c4f452a2726d1f6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fb63fd685cab6d9c4f452a2726d1f6a">&#9670;&nbsp;</a></span>get_num_texture_atlas_pages()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::renderer::get_num_texture_atlas_pages </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Count the total number of texture atlas pages curently in use. </p>
+<dl class="section return"><dt>Returns</dt><dd>The total number of texture atlas pages curently in use </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00080">80</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4bf21006aaf4d5a90fa8295bf84ede08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bf21006aaf4d5a90fa8295bf84ede08">&#9670;&nbsp;</a></span>get_texture_atlas_page_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::renderer::get_texture_atlas_page_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the width/height of a texture atlas page (in pixels). </p>
+<dl class="section return"><dt>Returns</dt><dd>The width/height of a texture atlas page (in pixels) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00067">67</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a564dace88b3e22f9982d7a999f35d3a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564dace88b3e22f9982d7a999f35d3a5">&#9670;&nbsp;</a></span>get_texture_max_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::gl::renderer::get_texture_max_size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the maximum texture width/height (in pixels). </p>
+<dl class="section return"><dt>Returns</dt><dd>The maximum texture width/height (in pixels) </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab211e68fc76e29f19ff59514b06198ec">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
 <a id="a67cb05518380d308f5093bea79d60b7f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a67cb05518380d308f5093bea79d60b7f">&#9670;&nbsp;</a></span>get_view()</h2>
 
@@ -515,36 +1019,6 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a6562c70a8ac3287bbbfa4fc7459808e9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6562c70a8ac3287bbbfa4fc7459808e9">&#9670;&nbsp;</a></span>has_vertex_cache()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool lxgui::gui::gl::renderer::has_vertex_cache </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if the renderer supports vertex caches. </p>
-<dl class="section return"><dt>Returns</dt><dd>'true' if supported, 'false' otherwise </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a97313a95b93417db0871f4ad941677ce">lxgui::gui::renderer</a>.</p>
-
-</div>
-</div>
 <a id="acc63a4763b22a82dafb93af247b81e17"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc63a4763b22a82dafb93af247b81e17">&#9670;&nbsp;</a></span>is_gl_extension_supported()</h2>
 
@@ -571,6 +1045,127 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Checks if a given OpenGL extension is supported by the machine. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if that is the case, 'false' else. </dd></dl>
+
+</div>
+</div>
+<a id="a3e30dd80513947676e5f3a02466628df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e30dd80513947676e5f3a02466628df">&#9670;&nbsp;</a></span>is_texture_atlas_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::renderer::is_texture_atlas_enabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the renderer has texture atlases enabled. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if enabled, 'false' otherwise </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00057">57</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ac9d74a741d52d3710f969518444d1a69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9d74a741d52d3710f969518444d1a69">&#9670;&nbsp;</a></span>is_texture_atlas_natively_supported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::gl::renderer::is_texture_atlas_natively_supported </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the renderer supports texture atlases natively. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if enabled, 'false' otherwise </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>If 'false', texture atlases will be implemented using a generic solution with render targets. </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a70320e04ca833fd715e0b2a21d62c61c">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
+<a id="adef82e16de48846f07b32d66ec385e9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adef82e16de48846f07b32d66ec385e9b">&#9670;&nbsp;</a></span>is_vertex_cache_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::renderer::is_vertex_cache_enabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the renderer has enabled support for vertex caches. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if vertex caches are supported and enabled, 'false' otherwise </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00092">92</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ab6874405e69c001423c1d6dd8ba06478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6874405e69c001423c1d6dd8ba06478">&#9670;&nbsp;</a></span>is_vertex_cache_supported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::gl::renderer::is_vertex_cache_supported </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the renderer supports vertex caches. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if supported, 'false' otherwise </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a9392358704bdd9970e0def4ab06cc9f0">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -670,7 +1265,7 @@ Static Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4589f2da4b04a93796e55ca6daf4c21e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1a75c41efa3f8eb9b6bdc5e5210b910e" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. This method is also more efficient than <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#af0ecdcaf3437b950a7330d135971bc61" title="Renders a set of quads.">render_quads()</a>, as the vertex data is already cached to the GPU and does not need sending again. However, not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a6562c70a8ac3287bbbfa4fc7459808e9" title="Checks if the renderer supports vertex caches.">has_vertex_cache()</a>. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function is meant to be called between <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a4589f2da4b04a93796e55ca6daf4c21e" title="Begins rendering on a particular render target.">begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a1a75c41efa3f8eb9b6bdc5e5210b910e" title="Ends rendering.">end()</a> only. When multiple quads share the same material, it is always more efficient to call this method than calling render_quad repeatedly, as it allows to reduce the number of draw calls. This method is also more efficient than <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#af0ecdcaf3437b950a7330d135971bc61" title="Renders a set of quads.">render_quads()</a>, as the vertex data is already cached to the GPU and does not need sending again. However, not all implementations support vertex caches. See <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>. </dd></dl>
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">lxgui::gui::renderer</a>.</p>
 
@@ -761,6 +1356,121 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a147ba75beb23b3210a0f973c5ea2d1e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a147ba75beb23b3210a0f973c5ea2d1e7">&#9670;&nbsp;</a></span>set_texture_atlas_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::set_texture_atlas_enabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bEnabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables/disables texture atlases. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bEnabled</td><td>'true' to enable texture atlases, 'false' to disable them </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Texture atlases are enabled by default. Changing this flag will only impact newly created materials. Existing materials will not be affected. </dd>
+<dd>
+In general, texture atlases only increase performance when vertex caches are supported and used (see <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>). The can actually decrease performance when vertex caches are not supported, if texture tiling is used a lot (e.g., in frame backdrop edges). It is therefore recommended to disable texture atlases if vertex caches are not supported. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00062">62</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a8fd351c4d189d13eff23aca3c85bcc62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fd351c4d189d13eff23aca3c85bcc62">&#9670;&nbsp;</a></span>set_texture_atlas_page_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::set_texture_atlas_page_size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
+          <td class="paramname"><em>uiPageSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the width/height of a texture atlas page (in pixels). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uiPageSize</td><td>The texture width/height in pixels </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Changing this value will only impact newly created atlas pages. Existing pages will not be affected. </dd>
+<dd>
+Increase this value to allow more materials to fit on a single atlas page, therefore improving performance. Decrease tihs value if the memory usage from atlas textures is too large. Set it to zero to fall back to the implementation-defined default value. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00075">75</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="afc8106ba755340ef8afdc68631cbf9a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8106ba755340ef8afdc68631cbf9a1">&#9670;&nbsp;</a></span>set_vertex_cache_enabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::renderer::set_vertex_cache_enabled </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bEnabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enables/disables vertex caches. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bEnabled</td><td>'true' to enable vertex caches, 'false' to disable them </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Even if enabled with this function, vertex caches may not be supported by the renderer, see <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478" title="Checks if the renderer supports vertex caches.">is_vertex_cache_supported()</a>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00097">97</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a69f7ef9315904fb01f01196671cc621e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69f7ef9315904fb01f01196671cc621e">&#9670;&nbsp;</a></span>set_view()</h2>
 
@@ -799,13 +1509,158 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aaf333541bf929ea53be0404f82428465"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf333541bf929ea53be0404f82428465">&#9670;&nbsp;</a></span>bTextureAtlasEnabled_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::renderer::bTextureAtlasEnabled_ = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00295">295</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a715554c989abf76a8e8fef5253a589e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a715554c989abf76a8e8fef5253a589e9">&#9670;&nbsp;</a></span>bVertexCacheEnabled_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::renderer::bVertexCacheEnabled_ = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00296">296</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5c8dd84cf2b989d95b3aa0c219cc531f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c8dd84cf2b989d95b3aa0c219cc531f">&#9670;&nbsp;</a></span>lAtlasList_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1atlas.html">gui::atlas</a>&gt; &gt; lxgui::gui::renderer::lAtlasList_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00292">292</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="af53e0831ec5d5073cf456e86b68c54bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af53e0831ec5d5073cf456e86b68c54bf">&#9670;&nbsp;</a></span>lFontList_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::weak_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a>&gt; &gt; lxgui::gui::renderer::lFontList_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00293">293</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a5e8c5b1177f1253b375b85919a0912ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e8c5b1177f1253b375b85919a0912ba">&#9670;&nbsp;</a></span>lTextureList_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::weak_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; &gt; lxgui::gui::renderer::lTextureList_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00291">291</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8338d4344ff687567f3d8c75020b29b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8338d4344ff687567f3d8c75020b29b4">&#9670;&nbsp;</a></span>uiTextureAtlasPageSize_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::renderer::uiTextureAtlasPageSize_ = 0u</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00297">297</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__gl__renderer_8hpp_source.html">gui_gl_renderer.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 5 2021 07:26:28 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
