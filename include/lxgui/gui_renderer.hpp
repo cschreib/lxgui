@@ -230,6 +230,9 @@ namespace gui
         */
         virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
 
+        /// Automatically determines the best rendering settings for the current platform.
+        void auto_detect_settings();
+
     protected:
 
         /// Creates a new material from a texture file.

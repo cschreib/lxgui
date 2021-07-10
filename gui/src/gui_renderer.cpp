@@ -74,6 +74,11 @@ void renderer::set_vertex_cache_enabled(bool bEnabled)
     bVertexCacheEnabled_ = bEnabled;
 }
 
+void renderer::auto_detect_settings()
+{
+    bTextureAtlasEnabled_ = is_vertex_cache_supported();
+}
+
 std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
     const std::string& sFileName, material::filter mFilter) const
 {
