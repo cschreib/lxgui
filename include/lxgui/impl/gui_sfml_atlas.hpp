@@ -22,7 +22,7 @@ namespace sfml
     public :
 
         /// Constructor.
-        explicit atlas_page(material::filter mFilter);
+        explicit atlas_page(const gui::renderer& mRenderer, material::filter mFilter);
 
     protected :
 

@@ -113,6 +113,11 @@ namespace gui
         */
         std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat) const;
 
+        /// Return the number of pages in this atlas.
+        /** \return The number of pages in this atlas
+        */
+        uint get_num_pages() const;
+
     protected :
 
         /// Create a new page in this atlas.

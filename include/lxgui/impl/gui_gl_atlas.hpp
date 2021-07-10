@@ -25,7 +25,7 @@ namespace gl
     public :
 
         /// Constructor.
-        explicit atlas_page(material::filter mFilter);
+        explicit atlas_page(const gui::renderer& mRenderer, material::filter mFilter);
 
         /// Destructor.
         ~atlas_page() override;
@@ -53,6 +53,7 @@ namespace gl
     private :
 
         uint uiTextureHandle_ = 0u;
+        uint uiSize_ = 0u;
     };
 
     /// A class that holds rendering data

@@ -9,8 +9,8 @@ namespace gui
 atlas_page_default::atlas_page_default(const renderer& mRenderer, material::filter mFilter) :
     atlas_page(mFilter), mRenderer_(mRenderer)
 {
-    uint uiMaxSize = mRenderer_.get_texture_max_size();
-    pTarget_ = mRenderer_.create_render_target(uiMaxSize, uiMaxSize, mFilter);
+    uint uiSize = mRenderer_.get_texture_atlas_page_size();
+    pTarget_ = mRenderer_.create_render_target(uiSize, uiSize, mFilter);
 }
 
 std::shared_ptr<gui::material> atlas_page_default::add_material_(const gui::material& mMat,
@@ -45,12 +45,12 @@ std::shared_ptr<gui::material> atlas_page_default::add_material_(const gui::mate
 
 float atlas_page_default::get_width() const
 {
-    return mRenderer_.get_texture_max_size();
+    return pTarget_->get_canvas_width();
 }
 
 float atlas_page_default::get_height() const
 {
-    return mRenderer_.get_texture_max_size();
+    return pTarget_->get_canvas_height();
 }
 
 

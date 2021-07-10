@@ -143,6 +143,27 @@ namespace gui
         */
         void set_texture_atlas_enabled(bool bEnabled);
 
+        /// Returns the width/height of a texture atlas page (in pixels).
+        /** \return The width/height of a texture atlas page (in pixels)
+        */
+        uint get_texture_atlas_page_size() const;
+
+        /// Set the width/height of a texture atlas page (in pixels).
+        /** \param uiPageSize The texture width/height in pixels
+        *   \note Changing this value will only impact newly created atlas pages.
+        *         Existing pages will not be affected.
+        *   \note Increase this value to allow more materials to fit on a single atlas
+        *         page, therefore improving performance. Decrease tihs value if the
+        *         memory usage from atlas textures is too large. Set it to zero
+        *         to fall back to the implementation-defined default value.
+        */
+        void set_texture_atlas_page_size(uint uiPageSize);
+
+        /// Count the total number of texture atlas pages curently in use.
+        /** \return The total number of texture atlas pages curently in use
+        */
+        uint get_num_texture_atlas_pages() const;
+
         /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
         *   \param sFileName      The name of the file
@@ -273,6 +294,7 @@ namespace gui
 
         bool bTextureAtlasEnabled_ = true;
         bool bVertexCacheEnabled_ = true;
+        uint uiTextureAtlasPageSize_ = 0u;
     };
 }
 }

@@ -37,6 +37,7 @@ void examples_setup_gui(gui::manager& mManager)
     std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
     std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
     std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
+    std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
 
     // The first thing to do is create the lua::state, and register any glue function
     // into the Lua state to call into your C++ application.

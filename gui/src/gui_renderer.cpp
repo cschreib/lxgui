@@ -64,6 +64,31 @@ void renderer::set_texture_atlas_enabled(bool bEnabled)
     bTextureAtlasEnabled_ = bEnabled;
 }
 
+uint renderer::get_texture_atlas_page_size() const
+{
+    if (uiTextureAtlasPageSize_ == 0u)
+        return std::min(4096u, get_texture_max_size());
+    else
+        return uiTextureAtlasPageSize_;
+}
+
+void renderer::set_texture_atlas_page_size(uint uiPageSize)
+{
+    uiTextureAtlasPageSize_ = uiPageSize;
+}
+
+uint renderer::get_num_texture_atlas_pages() const
+{
+    uint uiCount = 0;
+
+    for (const auto& mPage : lAtlasList_)
+    {
+        uiCount += mPage.second->get_num_pages();
+    }
+
+    return uiCount;
+}
+
 bool renderer::is_vertex_cache_enabled() const
 {
     return bVertexCacheEnabled_ && is_vertex_cache_supported();

@@ -167,6 +167,11 @@ std::shared_ptr<gui::material> atlas::add_material(const std::string& sFileName,
     }
 }
 
+uint atlas::get_num_pages() const
+{
+    return lPageList_.size();
+}
+
 void atlas::add_page_() const
 {
     lPageList_.push_back(create_page_());

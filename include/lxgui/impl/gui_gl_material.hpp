@@ -44,10 +44,13 @@ namespace gl
 
         /// Constructor for atlas textures.
         /** \param uiTextureHandle The handle to the texture object of the atlas
+        *   \param uiWidth         The width of the texture atlas
+        *   \param uiHeight        The height of the texture atlas
         *   \param mRect           The position of this texture inside the atlas
         *   \param mFilter         Use texture filtering or not (see set_filter())
         */
-        material(uint uiTextureHandle, const quad2f mRect, filter mFilter = filter::NONE);
+        material(uint uiTextureHandle, uint uiWidth, uint uiHeight, const quad2f mRect,
+            filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
         material(material&& tex) = delete;

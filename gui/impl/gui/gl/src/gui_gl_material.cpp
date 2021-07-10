@@ -108,13 +108,14 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
     mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(uint uiTextureHandle, const quad2f mRect, filter mFilter) : mFilter_(mFilter),
+material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
+    const quad2f mRect, filter mFilter) : mFilter_(mFilter),
     uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
 {
     uiWidth_ = mRect_.width();
     uiHeight_ = mRect_.height();
-    uiRealWidth_ = MAXIMUM_SIZE;
-    uiRealHeight_ = MAXIMUM_SIZE;
+    uiRealWidth_ = uiWidth;
+    uiRealHeight_ = uiHeight;
 }
 
 material::~material()

@@ -467,6 +467,7 @@ int main(int argc, char* argv[])
         std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
         std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
         std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
+        std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
 
         pManager->enable_caching(false);
 

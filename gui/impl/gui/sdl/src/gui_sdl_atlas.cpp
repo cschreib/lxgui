@@ -21,7 +21,7 @@ atlas_page::atlas_page(const renderer& mRenderer, material::filter mFilter) :
         throw gui::exception("gui::sdl::atlas_page", "Could not set filtering hint");
     }
 
-    uiSize_ = mRenderer_.get_texture_max_size();
+    uiSize_ = mRenderer_.get_texture_atlas_page_size();
 
     pTexture_ = SDL_CreateTexture(mRenderer_.get_sdl_renderer(),
         SDL_PIXELFORMAT_ABGR8888,

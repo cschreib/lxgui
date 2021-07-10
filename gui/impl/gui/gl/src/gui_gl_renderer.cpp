@@ -334,7 +334,8 @@ std::shared_ptr<gui::material> renderer::create_material(
     }
     else
     {
-        return std::make_shared<gl::material>(pTex->get_handle_(), mLocation, pTex->get_filter());
+        return std::make_shared<gl::material>(pTex->get_handle_(),
+            pTex->get_canvas_width(), pTex->get_canvas_height(), mLocation, pTex->get_filter());
     }
 }
 

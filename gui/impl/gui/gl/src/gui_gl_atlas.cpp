@@ -38,8 +38,10 @@ namespace gui {
 namespace gl
 {
 
-atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter)
+atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
 {
+    uiSize_ = mRenderer.get_texture_atlas_page_size();
+
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
@@ -47,7 +49,7 @@ atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter)
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-        gl::material::get_max_size(), gl::material::get_max_size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+        uiSize_, uiSize_, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
     );
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -94,24 +96,24 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    return std::make_shared<gl::material>(uiTextureHandle_, mLocation, mFilter_);
+    return std::make_shared<gl::material>(uiTextureHandle_, uiSize_, uiSize_, mLocation, mFilter_);
 }
 
 float atlas_page::get_width() const
 {
-    return gl::material::get_max_size();
+    return uiSize_;
 }
 
 float atlas_page::get_height() const
 {
-    return gl::material::get_max_size();
+    return uiSize_;
 }
 
 atlas::atlas(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
 std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 {
-    return std::make_unique<gl::atlas_page>(mFilter_);
+    return std::make_unique<gl::atlas_page>(mRenderer_, mFilter_);
 }
 
 }
