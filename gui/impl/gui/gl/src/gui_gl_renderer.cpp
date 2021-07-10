@@ -56,6 +56,19 @@ renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[may
 #endif
 }
 
+std::string renderer::get_name() const
+{
+#if defined(LXGUI_OPENGL3)
+#   if defined(WASM)
+    return "WebGL";
+#   else
+    return "OpenGL3";
+#   endif
+#else
+    return "OpenGL2";
+#endif
+}
+
 #if defined(LXGUI_OPENGL3)
 renderer::shader_cache::~shader_cache()
 {

@@ -30,6 +30,11 @@ namespace gl
         */
         explicit renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW = true);
 
+        /// Returns a human-readable name for this renderer.
+        /** \return A human-readable name for this renderer
+        */
+        std::string get_name() const override;
+
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */

@@ -57,6 +57,13 @@ renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRendere
     SDL_DestroyTexture(pTexture);
 }
 
+std::string renderer::get_name() const
+{
+    SDL_RendererInfo mRendererInfo;
+    SDL_GetRendererInfo(pRenderer_, &mRendererInfo);
+    return std::string("SDL (") + mRendererInfo.name + ")";
+}
+
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_)

@@ -24,6 +24,11 @@ renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow),
 {
 }
 
+std::string renderer::get_name() const
+{
+    return "SFML";
+}
+
 void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)

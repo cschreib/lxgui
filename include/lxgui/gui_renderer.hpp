@@ -33,6 +33,11 @@ namespace gui
         /// Destructor.
         virtual ~renderer() = default;
 
+        /// Returns a human-readable name for this renderer.
+        /** \return A human-readable name for this renderer
+        */
+        virtual std::string get_name() const = 0;
+
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
