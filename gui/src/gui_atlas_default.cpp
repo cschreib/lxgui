@@ -17,6 +17,8 @@ std::shared_ptr<gui::material> atlas_page_default::add_material_(const gui::mate
     const quad2f& mLocation)
 {
     mRenderer_.begin(pTarget_);
+    mRenderer_.set_view(matrix4f::view(
+        vector2f(pTarget_->get_canvas_width(), pTarget_->get_canvas_height())));
 
     std::vector<std::array<vertex,4>> mQuads;
     mQuads.emplace_back();
@@ -50,7 +52,6 @@ float atlas_page_default::get_height() const
 {
     return mRenderer_.get_texture_max_size();
 }
-
 
 
 atlas_default::atlas_default(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}

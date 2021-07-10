@@ -557,7 +557,7 @@ uint renderer::get_texture_max_size() const
 
 bool renderer::is_texture_atlas_natively_supported() const
 {
-    return false;
+    return true;
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
@@ -571,7 +571,7 @@ std::shared_ptr<gui::material> renderer::create_material(
     else
     {
         return std::make_shared<sdl::material>(pRenderer_,
-            pTex->get_texture(), mLocation, pTex->get_filter());
+            pTex->get_render_texture(), mLocation, pTex->get_filter());
     }
 }
 
