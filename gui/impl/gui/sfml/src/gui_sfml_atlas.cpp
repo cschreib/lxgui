@@ -43,7 +43,7 @@ float atlas_page::get_height() const
     return mTexture_.getSize().y;
 }
 
-atlas::atlas(material::filter mFilter) : gui::atlas(mFilter) {}
+atlas::atlas(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
 std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 {

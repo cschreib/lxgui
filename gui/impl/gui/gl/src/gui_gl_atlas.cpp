@@ -1,9 +1,12 @@
 #include "lxgui/impl/gui_gl_atlas.hpp"
 #include "lxgui/impl/gui_gl_material.hpp"
+#include "lxgui/impl/gui_gl_renderer.hpp"
 
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
+
+#if !defined(WASM)
 
 #if defined(WIN32)
     #define NOMINMAX
@@ -44,7 +47,7 @@ atlas_page::atlas_page(material::filter mFilter) : gui::atlas_page(mFilter)
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-        gl::material::maximum_size(), gl::material::maximum_size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+        gl::material::get_max_size(), gl::material::get_max_size(), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
     );
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -96,15 +99,15 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
 
 float atlas_page::get_width() const
 {
-    return gl::material::maximum_size();
+    return gl::material::get_max_size();
 }
 
 float atlas_page::get_height() const
 {
-    return gl::material::maximum_size();
+    return gl::material::get_max_size();
 }
 
-atlas::atlas(material::filter mFilter) : gui::atlas(mFilter) {}
+atlas::atlas(const renderer& mRenderer, material::filter mFilter) : gui::atlas(mRenderer, mFilter) {}
 
 std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 {
@@ -114,3 +117,5 @@ std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 }
 }
 }
+
+#endif

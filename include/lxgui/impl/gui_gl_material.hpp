@@ -108,6 +108,11 @@ namespace gl
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Sets this material as the active one.
         void bind() const;
 
@@ -122,7 +127,7 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        std::vector<ub32color>&       get_data();
+        std::vector<ub32color>& get_data();
 
         /// Sets the color of one pixel.
         /** \param x      The coordinate of the pixel in the texture
@@ -132,14 +137,14 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        void                          set_pixel(uint x, uint y, const ub32color& mColor);
+        void set_pixel(uint x, uint y, const ub32color& mColor);
 
         /// Returns the color of one pixel (read only).
         /** \param x      The coordinate of the pixel in the texture
         *   \param y      The coordinate of the pixel in the texture
         *   \return The color of the pixel
         */
-        const ub32color&              get_pixel(uint x, uint y) const;
+        const ub32color& get_pixel(uint x, uint y) const;
 
         /// Returns the color of one pixel.
         /** \param x The coordinate of the pixel in the texture
@@ -149,7 +154,7 @@ namespace gl
         *         update_texture() when you're done, so that the
         *         texture that is in the GPU memory gets updated.
         */
-        ub32color&                    get_pixel(uint x, uint y);
+        ub32color& get_pixel(uint x, uint y);
 
         /// Updates the texture that is in GPU memory.
         /** \note Whenever you modify pixels of the texture,
@@ -178,7 +183,7 @@ namespace gl
         /// Returns the maximum size available for a texture, in pixels.
         /** \return The maximum size available for a texture, in pixels
         */
-        static uint maximum_size();
+        static uint get_max_size();
 
     private:
 

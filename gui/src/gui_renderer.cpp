@@ -1,5 +1,6 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_atlas.hpp"
+#include "lxgui/gui_atlas_default.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_string.hpp"
 
@@ -53,7 +54,7 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
     return pFont;
 }
 
-bool renderer::has_texture_atlas() const
+bool renderer::is_texture_atlas_enabled() const
 {
     return bTextureAtlasEnabled_;
 }
@@ -63,10 +64,20 @@ void renderer::set_texture_atlas_enabled(bool bEnabled)
     bTextureAtlasEnabled_ = bEnabled;
 }
 
+bool renderer::is_vertex_cache_enabled() const
+{
+    return bVertexCacheEnabled_ && is_vertex_cache_supported();
+}
+
+void renderer::set_vertex_cache_enabled(bool bEnabled)
+{
+    bVertexCacheEnabled_ = bEnabled;
+}
+
 std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
     const std::string& sFileName, material::filter mFilter) const
 {
-    if (!has_texture_atlas())
+    if (!is_texture_atlas_enabled())
         return create_material(sFileName, mFilter);
 
     std::shared_ptr<gui::atlas> pAtlas;
@@ -80,7 +91,15 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
 
     if (!pAtlas)
     {
-        pAtlas = create_atlas_(mFilter);
+        if (is_texture_atlas_natively_supported())
+        {
+            pAtlas = create_atlas_(mFilter);
+        }
+        else
+        {
+            pAtlas = std::make_shared<atlas_default>(*this, mFilter);
+        }
+
         lAtlasList_[sBakedAtlasName] = pAtlas;
     }
 
@@ -99,6 +118,11 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
         return pTex;
 }
 
+std::shared_ptr<material> renderer::create_material(
+    std::shared_ptr<render_target> pRenderTarget) const
+{
+    return create_material(pRenderTarget, pRenderTarget->get_rect());
+}
 
 }
 }

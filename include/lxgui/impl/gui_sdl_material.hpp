@@ -130,6 +130,11 @@ namespace sdl
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Return the wrap mode of this texture.
         /** \return The wrap mode of this texture
         */

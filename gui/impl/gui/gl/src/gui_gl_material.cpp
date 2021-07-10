@@ -178,6 +178,11 @@ void material::set_filter(filter mFilter)
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 }
 
+material::filter material::get_filter() const
+{
+    return mFilter_;
+}
+
 void material::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
@@ -347,7 +352,7 @@ void material::check_availability()
     MAXIMUM_SIZE = iMax;
 }
 
-uint material::maximum_size()
+uint material::get_max_size()
 {
     return MAXIMUM_SIZE;
 }

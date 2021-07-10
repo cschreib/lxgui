@@ -297,12 +297,30 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-    return std::make_shared<gl::atlas>(mFilter);
+#if defined(WASM)
+    throw gui::exception("gui::gl::renderer", "WebGL has no native support for texture atlases.");
+#else
+    return std::make_shared<gl::atlas>(*this, mFilter);
+#endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
+uint renderer::get_texture_max_size() const
 {
-    return std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
+    return material::get_max_size();
+}
+
+std::shared_ptr<gui::material> renderer::create_material(
+    std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
+{
+    auto pTex = std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
+    if (mLocation == pRenderTarget->get_rect())
+    {
+        return pTex;
+    }
+    else
+    {
+        return std::make_shared<gl::material>(pTex->get_handle_(), mLocation, pTex->get_filter());
+    }
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(uint uiWidth, uint uiHeight) const
@@ -315,7 +333,16 @@ std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, 
     return std::make_shared<gl::font>(sFontFile, uiSize);
 }
 
-bool renderer::has_vertex_cache() const
+bool renderer::is_texture_atlas_natively_supported() const
+{
+#if defined(WASM)
+    return false;
+#else
+    return true;
+#endif
+}
+
+bool renderer::is_vertex_cache_supported() const
 {
 #if !defined(LXGUI_OPENGL3)
     return false;

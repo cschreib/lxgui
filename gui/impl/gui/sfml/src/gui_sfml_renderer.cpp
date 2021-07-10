@@ -192,19 +192,31 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-    return std::make_shared<sfml::atlas>(mFilter);
+    return std::make_shared<sfml::atlas>(*this, mFilter);
 }
 
-std::shared_ptr<gui::material> renderer::create_material(std::shared_ptr<gui::render_target> pRenderTarget) const
+uint renderer::get_texture_max_size() const
 {
-    try
+    return sf::Texture::getMaximumSize();
+}
+
+bool renderer::is_texture_atlas_natively_supported() const
+{
+    return true;
+}
+
+std::shared_ptr<gui::material> renderer::create_material(
+    std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
+{
+    auto pTex = std::static_pointer_cast<sfml::render_target>(pRenderTarget)->get_material().lock();
+    if (mLocation == pRenderTarget->get_rect())
     {
-        return std::static_pointer_cast<sfml::render_target>(pRenderTarget)->get_material().lock();
+        return pTex;
     }
-    catch (const std::exception& e)
+    else
     {
-        gui::out << gui::warning << e.what() << std::endl;
-        return nullptr;
+        return std::make_shared<sfml::material>(
+            pTex->get_render_texture()->getTexture(), mLocation, pTex->get_filter());
     }
 }
 
@@ -226,7 +238,7 @@ std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, 
     return std::make_shared<sfml::font>(sFontFile, uiSize);
 }
 
-bool renderer::has_vertex_cache() const
+bool renderer::is_vertex_cache_supported() const
 {
     return false;
 

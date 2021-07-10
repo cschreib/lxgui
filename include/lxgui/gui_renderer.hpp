@@ -7,6 +7,7 @@
 #include "lxgui/gui_vertexcache.hpp"
 
 #include <vector>
+#include <array>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -93,7 +94,7 @@ namespace gui
         *         repeatedly, as it allows to reduce the number of draw calls. This method
         *         is also more efficient than render_quads(), as the vertex data is
         *         already cached to the GPU and does not need sending again. However,
-        *         not all implementations support vertex caches. See has_vertex_cache().
+        *         not all implementations support vertex caches. See is_vertex_cache_supported().
         */
         virtual void render_cache(const material* pMaterial, const vertex_cache& mCache,
             const matrix4f& mModelTransform = matrix4f::IDENTITY) const = 0;
@@ -108,17 +109,29 @@ namespace gui
         std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const;
 
+        /// Returns the maximum texture width/height (in pixels).
+        /** \return The maximum texture width/height (in pixels)
+        */
+        virtual uint get_texture_max_size() const = 0;
+
+        /// Checks if the renderer supports texture atlases natively.
+        /** \return 'true' if enabled, 'false' otherwise
+        *   \note If 'false', texture atlases will be implemented using a generic
+        *         solution with render targets.
+        */
+        virtual bool is_texture_atlas_natively_supported() const = 0;
+
         /// Checks if the renderer has texture atlases enabled.
         /** \return 'true' if enabled, 'false' otherwise
         */
-        bool has_texture_atlas() const;
+        bool is_texture_atlas_enabled() const;
 
         /// Enables/disables texture atlases.
         /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
         *   \note Texture atlases are enabled by default. Changing this flag will only
         *         impact newly created materials. Existing materials will not be affected.
         *   \note In general, texture atlases only increase performance when vertex caches
-        *         are supported and used (see has_vertex_cache()). The can actually decrease
+        *         are supported and used (see is_vertex_cache_supported()). The can actually decrease
         *         performance when vertex caches are not supported, if texture tiling is
         *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
         *         disable texture atlases if vertex caches are not supported.
@@ -149,12 +162,20 @@ namespace gui
         std::shared_ptr<material> create_atlas_material(const std::string& sAtlasCategory,
             const std::string& sFileName, material::filter mFilter = material::filter::NONE) const;
 
-        /// Creates a new material from a render target.
+        /// Creates a new material from a portion of a render target.
         /** \param pRenderTarget The render target from which to read the pixels
+        *   \param mLocation     The portion of the render target to use as material
         *   \return The new material
         */
         virtual std::shared_ptr<material> create_material(
-            std::shared_ptr<render_target> pRenderTarget) const = 0;
+            std::shared_ptr<render_target> pRenderTarget, const quad2f& mLocation) const = 0;
+
+        /// Creates a new material from an entire render target.
+        /** \param pRenderTarget The render target from which to read the pixels
+        *   \return The new material
+        */
+        std::shared_ptr<material> create_material(
+            std::shared_ptr<render_target> pRenderTarget) const;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
@@ -175,11 +196,23 @@ namespace gui
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
         */
-        virtual bool has_vertex_cache() const = 0;
+        virtual bool is_vertex_cache_supported() const = 0;
+
+        /// Checks if the renderer has enabled support for vertex caches.
+        /** \return 'true' if vertex caches are supported and enabled, 'false' otherwise
+        */
+        bool is_vertex_cache_enabled() const;
+
+        /// Enables/disables vertex caches.
+        /** \param bEnabled 'true' to enable vertex caches, 'false' to disable them
+        *   \note Even if enabled with this function, vertex caches may not be supported
+        *         by the renderer, see is_vertex_cache_supported().
+        */
+        void set_vertex_cache_enabled(bool bEnabled);
 
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
-        *   \note Not all implementations support vertex caches. See has_vertex_cache().
+        *   \note Not all implementations support vertex caches. See is_vertex_cache_supported().
         */
         virtual std::shared_ptr<vertex_cache> create_vertex_cache(
             gui::vertex_cache::type mType) const = 0;
@@ -208,6 +241,12 @@ namespace gui
         */
         virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
 
+        /// Creates a new atlas with a given texture filter mode (using default implementation).
+        /** \param mFilter The filtering to apply to the texture
+        *   \return The new atlas
+        */
+        std::shared_ptr<atlas> create_atlas_default_(material::filter mFilter) const;
+
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
         *   \param uiSize    The requested size of the characters (in points)
@@ -223,6 +262,7 @@ namespace gui
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
         bool bTextureAtlasEnabled_ = true;
+        bool bVertexCacheEnabled_ = true;
     };
 }
 }

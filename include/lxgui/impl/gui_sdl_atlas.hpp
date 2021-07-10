@@ -19,6 +19,8 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
+    class renderer;
+
     /// A single texture holding multiple materials for efficient rendering
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::renderer.
@@ -28,7 +30,7 @@ namespace sdl
     public :
 
         /// Constructor.
-        explicit atlas_page(SDL_Renderer* pRenderer, material::filter mFilter);
+        explicit atlas_page(const renderer& mRenderer, material::filter mFilter);
 
         /// Destructor.
         ~atlas_page() override;
@@ -55,9 +57,9 @@ namespace sdl
 
     private :
 
-        SDL_Renderer* pRenderer_ = nullptr;
-        SDL_Texture*  pTexture_ = nullptr;
-        uint          uiSize_ = 0u;
+        const renderer& mRenderer_;
+        SDL_Texture*    pTexture_ = nullptr;
+        uint            uiSize_ = 0u;
     };
 
     /// A class that holds rendering data
@@ -70,10 +72,10 @@ namespace sdl
     public :
 
         /// Constructor for textures.
-        /** \param pRenderer The SDL render to create the atlas for
+        /** \parem mRenderer The renderer with witch to create this atlas
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        explicit atlas(SDL_Renderer* pRenderer, material::filter mFilter);
+        explicit atlas(const renderer& mRenderer, material::filter mFilter);
 
         atlas(const atlas& tex) = delete;
         atlas(atlas&& tex) = delete;
@@ -89,7 +91,7 @@ namespace sdl
 
     private :
 
-        SDL_Renderer* pRenderer_ = nullptr;
+        const renderer& mSDLRenderer_;
     };
 }
 }

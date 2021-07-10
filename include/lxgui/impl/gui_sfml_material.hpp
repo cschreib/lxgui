@@ -116,6 +116,11 @@ namespace sfml
         */
         void set_filter(filter mFilter);
 
+        /// Returns the filter mode of this texture.
+        /** \return The filter mode of this texture
+        */
+        filter get_filter() const;
+
         /// Returns the underlying SFML render texture object.
         /** return The underlying SFML render texture object
         */

@@ -12,31 +12,18 @@ namespace gui {
 namespace sdl
 {
 
-atlas_page::atlas_page(SDL_Renderer* pRenderer, material::filter mFilter) :
-    gui::atlas_page(mFilter), pRenderer_(pRenderer)
+atlas_page::atlas_page(const renderer& mRenderer, material::filter mFilter) :
+    gui::atlas_page(mFilter), mRenderer_(mRenderer)
 {
-    SDL_RendererInfo mInfo;
-    if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
-    {
-        throw gui::exception("gui::sdl::atlas_page", "Could not get renderer information.");
-    }
-
-    if (mInfo.max_texture_width != 0)
-    {
-        uiSize_ = mInfo.max_texture_width;
-    }
-    else
-    {
-        uiSize_ = 128u;
-    }
-
     // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == material::filter::NONE ? "0" : "1") == SDL_FALSE)
     {
         throw gui::exception("gui::sdl::atlas_page", "Could not set filtering hint");
     }
 
-    pTexture_ = SDL_CreateTexture(pRenderer,
+    uiSize_ = mRenderer_.get_texture_max_size();
+
+    pTexture_ = SDL_CreateTexture(mRenderer_.get_sdl_renderer(),
         SDL_PIXELFORMAT_ABGR8888,
         SDL_TEXTUREACCESS_STREAMING,
         uiSize_, uiSize_);
@@ -85,7 +72,8 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
         throw;
     }
 
-    return std::make_shared<sdl::material>(pRenderer_, pTexture_, mLocation, mFilter_);
+    return std::make_shared<sdl::material>(mRenderer_.get_sdl_renderer(),
+        pTexture_, mLocation, mFilter_);
 }
 
 float atlas_page::get_width() const
@@ -98,12 +86,12 @@ float atlas_page::get_height() const
     return uiSize_;
 }
 
-atlas::atlas(SDL_Renderer* pRenderer, material::filter mFilter) :
-    gui::atlas(mFilter), pRenderer_(pRenderer) {}
+atlas::atlas(const renderer& mRenderer, material::filter mFilter) :
+    gui::atlas(mRenderer, mFilter), mSDLRenderer_(mRenderer) {}
 
 std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 {
-    return std::make_unique<sdl::atlas_page>(pRenderer_, mFilter_);
+    return std::make_unique<sdl::atlas_page>(mSDLRenderer_, mFilter_);
 }
 
 }

@@ -15,6 +15,8 @@
 namespace lxgui {
 namespace gui
 {
+    class renderer;
+
     /// A single texture holding multiple materials for efficient rendering
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::renderer.
@@ -91,7 +93,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit atlas(material::filter mFilter);
+        explicit atlas(const renderer& mRenderer, material::filter mFilter);
 
         /// Destructor.
         virtual ~atlas() = default;
@@ -118,6 +120,7 @@ namespace gui
         */
         virtual std::unique_ptr<atlas_page> create_page_() const = 0;
 
+        const renderer&  mRenderer_;
         material::filter mFilter_ = material::filter::NONE;
 
     private :

@@ -149,20 +149,15 @@ material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f&
     filter mFilter) : pRenderer_(pRenderer), mRect_(mRect),
     mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
 {
-    SDL_RendererInfo mInfo;
-    if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
-    {
-        throw gui::exception("gui::sdl::material", "Could not get renderer information.");
-    }
-
-    uint uiMaxTextureSize = 128u;
-    if (mInfo.max_texture_width > 0)
-        uiMaxTextureSize = mInfo.max_texture_width;
+    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    Uint32 uiTextureFormat = 0;
+    SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess,
+        &iTextureRealWidth, &iTextureRealHeight);
 
     uiWidth_ = mRect_.width();
     uiHeight_ = mRect_.height();
-    uiRealWidth_ = uiMaxTextureSize;
-    uiRealHeight_ = uiMaxTextureSize;
+    uiRealWidth_ = iTextureRealWidth;
+    uiRealHeight_ = iTextureRealHeight;
 }
 
 material::~material() noexcept
@@ -195,6 +190,11 @@ void material::set_filter(filter mFilter)
     }
 
     mFilter_ = mFilter;
+}
+
+material::filter material::get_filter() const
+{
+    return mFilter_;
 }
 
 void material::premultiply_alpha(SDL_Surface* pSurface)

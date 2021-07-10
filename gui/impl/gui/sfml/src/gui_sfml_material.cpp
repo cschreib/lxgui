@@ -126,6 +126,11 @@ void material::set_filter(filter mFilter)
         mTexture_.setSmooth(mFilter == filter::LINEAR);
 }
 
+material::filter material::get_filter() const
+{
+    return mFilter_;
+}
+
 void material::premultiply_alpha(sf::Image& mData)
 {
     const uint uiWidth = mData.getSize().x;

@@ -11,6 +11,8 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
+    class renderer;
+
     /// A single texture holding multiple materials for efficient rendering
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::renderer.
@@ -57,9 +59,10 @@ namespace sfml
     public :
 
         /// Constructor for textures.
-        /** \param mFilter       Use texture filtering or not (see set_filter())
+        /** \parem mRenderer The renderer with witch to create this atlas
+        *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        explicit atlas(material::filter mFilter);
+        explicit atlas(const renderer& mRenderer, material::filter mFilter);
 
         atlas(const atlas& tex) = delete;
         atlas(atlas&& tex) = delete;

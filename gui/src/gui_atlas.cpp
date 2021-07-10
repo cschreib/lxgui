@@ -1,4 +1,6 @@
 #include "lxgui/gui_atlas.hpp"
+#include "lxgui/gui_vertex.hpp"
+#include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/utils_string.hpp"
@@ -118,7 +120,8 @@ std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) co
         return std::nullopt;
 }
 
-atlas::atlas(material::filter mFilter) : mFilter_(mFilter) {}
+atlas::atlas(const renderer& mRenderer, material::filter mFilter) :
+    mRenderer_(mRenderer), mFilter_(mFilter) {}
 
 std::shared_ptr<gui::material> atlas::fetch_material(const std::string& sFileName) const
 {

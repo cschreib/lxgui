@@ -261,7 +261,7 @@ void backdrop::render() const
 
     if (pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY)
     {
-        if (pRenderer->has_vertex_cache())
+        if (pRenderer->is_vertex_cache_enabled())
             pRenderer->render_cache(pBackgroundTexture_.get(), *pBackgroundCache_);
         else
             pRenderer->render_quads(pBackgroundTexture_.get(), lBackgroundQuads_);
@@ -269,7 +269,7 @@ void backdrop::render() const
 
     if (pEdgeTexture_ || mEdgeColor_ != color::EMPTY)
     {
-        if (pRenderer->has_vertex_cache())
+        if (pRenderer->is_vertex_cache_enabled())
             pRenderer->render_cache(pEdgeTexture_.get(), *pEdgeCache_);
         else
             pRenderer->render_quads(pEdgeTexture_.get(), lEdgeQuads_);
@@ -382,7 +382,7 @@ void backdrop::update_background_(color mColor) const
         const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
         const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
 
-        if (pRenderer->has_texture_atlas() && bBackgroundTilling_)
+        if (pRenderer->is_texture_atlas_enabled() && bBackgroundTilling_)
         {
             repeat_wrap(lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
         }
@@ -419,7 +419,7 @@ void backdrop::update_background_(color mColor) const
         mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
     }
 
-    if (pRenderer->has_vertex_cache())
+    if (pRenderer->is_vertex_cache_enabled())
     {
         if (!pBackgroundCache_)
             pBackgroundCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);
@@ -452,7 +452,7 @@ void backdrop::update_edge_(color mColor) const
             const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
             const vector2f mCanvasBR = pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
             const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
-            if (pRenderer->has_texture_atlas())
+            if (pRenderer->is_texture_atlas_enabled())
             {
                 repeat_wrap(lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
             }
@@ -551,7 +551,7 @@ void backdrop::update_edge_(color mColor) const
         mBorders.bottom - fEdgeSize_, mBorders.bottom
     ));
 
-    if (pRenderer->has_vertex_cache())
+    if (pRenderer->is_vertex_cache_enabled())
     {
         if (!pEdgeCache_)
             pEdgeCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);
