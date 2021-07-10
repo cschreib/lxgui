@@ -26,7 +26,7 @@ double get_time_delta(const timing_clock::time_point& mT1, const timing_clock::t
 void examples_setup_gui(gui::manager& mManager)
 {
     // Automatically select best settings
-    gui::renderer* pGUIRenderer = pManager->get_renderer();
+    gui::renderer* pGUIRenderer = mManager.get_renderer();
     pGUIRenderer->auto_detect_settings();
 
     std::cout << " Renderer settings:" << std::endl;
