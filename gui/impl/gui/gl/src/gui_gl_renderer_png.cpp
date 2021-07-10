@@ -105,6 +105,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
     catch (const gui::exception& e)
     {
         gui::out << gui::error << "gui::gl::manager : Error parsing " << sFileName << "." << std::endl;
+        gui::out << gui::error << e.what() <<  "" << std::endl;
 
         if (pReadStruct && pInfoStruct)
             png_destroy_read_struct(&pReadStruct, &pInfoStruct, nullptr);
