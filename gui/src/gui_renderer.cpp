@@ -1,6 +1,7 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_atlas_default.hpp"
+#include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_string.hpp"
 
@@ -10,6 +11,17 @@ namespace gui
 
 void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
 {
+}
+
+void renderer::render_quad(const quad& mQuad) const
+{
+    render_quads_(mQuad.mat.get(), {mQuad.v});
+}
+
+void renderer::render_quads(const material* pMaterial,
+    const std::vector<std::array<vertex,4>>& lQuadList) const
+{
+    render_quads_(pMaterial, lQuadList);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const

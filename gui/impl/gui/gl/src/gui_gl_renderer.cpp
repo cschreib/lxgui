@@ -153,62 +153,7 @@ matrix4f renderer::get_view() const
     return mCurrentViewMatrix_;
 }
 
-void renderer::render_quad(const quad& mQuad) const
-{
-#if !defined(LXGUI_OPENGL3)
-    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
-
-    glColor4ub(255, 255, 255, 255);
-
-    const gl::material* pMat = static_cast<const gl::material*>(mQuad.mat.get());
-    if (pMat)
-    {
-        pMat->bind();
-
-        glEnable(GL_TEXTURE_2D);
-        glBegin(GL_TRIANGLES);
-        for (uint i = 0; i < 6; ++i)
-        {
-            uint j = ids[i];
-            float a = mQuad.v[j].col.a;
-            glColor4f(mQuad.v[j].col.r*a, mQuad.v[j].col.g*a, mQuad.v[j].col.b*a, a); // Premultipled alpha
-            glTexCoord2f(mQuad.v[j].uvs.x, mQuad.v[j].uvs.y);
-            glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
-        }
-        glEnd();
-    }
-    else
-    {
-        glDisable(GL_TEXTURE_2D);
-        glBegin(GL_TRIANGLES);
-        for (uint i = 0; i < 6; ++i)
-        {
-            uint j = ids[i];
-            float a = mQuad.v[j].col.a;
-            glColor4f(mQuad.v[j].col.r*a, mQuad.v[j].col.g*a, mQuad.v[j].col.b*a, a); // Premultipled alpha
-            glVertex2f(mQuad.v[j].pos.x, mQuad.v[j].pos.y);
-        }
-        glEnd();
-    }
-#else
-    // Note: we rotate through a fairly large number of vertex caches
-    // rather than constantly reusing the same cache. This is because
-    // update_data() calls glBufferSubData(), which will wait for the
-    // previous draw call using this cache to finish before updating.
-    // If we rotate, it is more likely that the draw call is done, and
-    // that we don't have to wait.
-    const auto& pCache = pQuadCache_[uiQuadCycleCache_];
-    uiQuadCycleCache_ = (uiQuadCycleCache_ + 1) % CACHE_CYCLE_SIZE;
-
-    // Update vertex data
-    pCache->update_data(mQuad.v.data(), mQuad.v.size());
-
-    // Render
-    render_cache(mQuad.mat.get(), *pCache, matrix4f::IDENTITY);
-#endif
-}
-
-void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
 
 #if !defined(LXGUI_OPENGL3)

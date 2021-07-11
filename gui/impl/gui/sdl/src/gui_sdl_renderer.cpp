@@ -518,14 +518,7 @@ void renderer::render_quad(const sdl::material* pMat,
     }
 }
 
-void renderer::render_quad(const quad& mQuad) const
-{
-    const sdl::material* pMat = static_cast<const sdl::material*>(mQuad.mat.get());
-
-    render_quad(pMat, mQuad.v);
-}
-
-void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     const sdl::material* pMat = static_cast<const sdl::material*>(pMaterial);
 

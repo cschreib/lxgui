@@ -86,42 +86,7 @@ matrix4f renderer::get_view() const
     return mCurrentViewMatrix;
 }
 
-void renderer::render_quad(const quad& mQuad) const
-{
-    static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
-    static const uint n = ids.size();
-
-    const sfml::material* pMat = static_cast<const sfml::material*>(mQuad.mat.get());
-
-    const float fTexWidth = pMat ? pMat->get_canvas_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_canvas_height() : 1.0f;
-
-    sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size());
-    for (uint i = 0; i < n; ++i)
-    {
-        const uint j = ids[i];
-        sf::Vertex& mSFVertex = mArray[i];
-        const vertex& mVertex = mQuad.v[j];
-        const float a = mVertex.col.a;
-
-        mSFVertex.position.x  = mVertex.pos.x;
-        mSFVertex.position.y  = mVertex.pos.y;
-        mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
-        mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
-        mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
-        mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
-        mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
-        mSFVertex.color.a     = a*255;
-    }
-
-    sf::RenderStates mState;
-    mState.blendMode = sf::BlendMode(sf::BlendMode::One, sf::BlendMode::OneMinusSrcAlpha); // Premultiplied alpha
-    if (pMat)
-        mState.texture = pMat->get_texture();
-    pCurrentSFMLTarget_->draw(mArray, mState);
-}
-
-void renderer::render_quads(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
     static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
     static const uint n = ids.size();

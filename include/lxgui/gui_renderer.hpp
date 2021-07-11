@@ -76,7 +76,7 @@ namespace gui
         *   \note This function is meant to be called between begin() and
         *         end() only.
         */
-        virtual void render_quad(const quad& mQuad) const = 0;
+        void render_quad(const quad& mQuad) const;
 
         /// Renders a set of quads.
         /** \param pMaterial The material to use for rendering, or null if none
@@ -86,8 +86,8 @@ namespace gui
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        virtual void render_quads(const material* pMaterial,
-            const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
+        void render_quads(const material* pMaterial,
+            const std::vector<std::array<vertex,4>>& lQuadList) const;
 
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
@@ -255,6 +255,17 @@ namespace gui
         void auto_detect_settings();
 
     protected:
+
+        /// Renders a set of quads.
+        /** \param pMaterial The material to use for rendering, or null if none
+        *   \param lQuadList The list of the quads you want to render
+        *   \note This function is meant to be called between begin() and
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls.
+        */
+        virtual void render_quads_(const material* pMaterial,
+            const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file

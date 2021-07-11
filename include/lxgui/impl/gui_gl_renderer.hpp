@@ -68,13 +68,6 @@ namespace gl
         */
         matrix4f get_view() const override;
 
-        /// Renders a quad.
-        /** \param mQuad The quad to render on the current render target
-        *   \note This function is meant to be called between begin() and
-        *         end() only.
-        */
-        void render_quad(const quad& mQuad) const override;
-
         /// Renders a set of quads.
         /** \param pMaterial The material to use for rendering, or null if none
         *   \param lQuadList The list of the quads you want to render
@@ -83,7 +76,7 @@ namespace gl
         *         always more efficient to call this method than calling render_quad
         *         repeatedly, as it allows to reduce the number of draw calls.
         */
-        void render_quads(const gui::material* pMaterial,
+        void render_quads_(const gui::material* pMaterial,
             const std::vector<std::array<vertex,4>>& lQuadList) const override;
 
         /// Renders a vertex cache.
