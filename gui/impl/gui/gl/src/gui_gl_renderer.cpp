@@ -111,7 +111,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     uiPreviousTexture_ = static_cast<uint>(-1);
 #endif
 
-    set_view(mCurrentViewMatrix);
+    set_view_(mCurrentViewMatrix);
 }
 
 void renderer::end_() const
@@ -210,7 +210,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
     pCache->update(lQuadList[0].data(), lQuadList.size()*4);
 
     // Render
-    render_cache(pMaterial, *pCache, matrix4f::IDENTITY);
+    render_cache_(pMaterial, *pCache, matrix4f::IDENTITY);
 #endif
 }
 
