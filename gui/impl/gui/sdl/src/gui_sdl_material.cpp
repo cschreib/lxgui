@@ -226,6 +226,11 @@ float material::get_canvas_height() const
     return uiRealHeight_;
 }
 
+bool material::uses_same_texture(const gui::material& mOther) const
+{
+    return pTexture_ == static_cast<const sdl::material&>(mOther).pTexture_;
+}
+
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
     if (!bIsOwner_)

@@ -85,6 +85,11 @@ namespace gl
         */
         float get_canvas_height() const override;
 
+        /// Checks if another material is based on the same texture as the current material.
+        /** \return 'true' if both materials use the same texture, 'false' otherwise
+        */
+        bool uses_same_texture(const gui::material& mOther) const override;
+
         /// Resizes this texture.
         /** \param uiWidth  The new texture width
         *   \param uiHeight The new texture height

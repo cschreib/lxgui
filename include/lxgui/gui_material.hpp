@@ -64,6 +64,11 @@ namespace gui
         */
         virtual float get_canvas_height() const = 0;
 
+        /// Checks if another material is based on the same texture as the current material.
+        /** \return 'true' if both materials use the same texture, 'false' otherwise
+        */
+        virtual bool uses_same_texture(const material& mOther) const = 0;
+
         /// Returns normalised UV coordinates on the canvas, given local UV coordinates.
         /** \param mTextureUV      The original UV coordinates, local to this texture
         *   \param bFromNormalized Set to 'true' if input coordinates are normalised to [0,1]

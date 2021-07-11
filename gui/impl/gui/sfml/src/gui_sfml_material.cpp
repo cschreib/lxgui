@@ -168,6 +168,12 @@ float material::get_canvas_height() const
         return uiRealHeight_;
 }
 
+bool material::uses_same_texture(const gui::material& mOther) const
+{
+    return pAtlasTexture_ &&
+        pAtlasTexture_ == static_cast<const sfml::material&>(mOther).pAtlasTexture_;
+}
+
 bool material::set_dimensions(uint uiWidth, uint uiHeight)
 {
     if (pAtlasTexture_)
