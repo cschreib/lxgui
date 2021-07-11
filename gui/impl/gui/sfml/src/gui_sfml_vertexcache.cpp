@@ -29,7 +29,7 @@ void to_sfml(const vertex& v, sf::Vertex& sv)
     sv.texCoords.y = v.uvs.y;
 }
 
-void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPosition)
+void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
 {
     if (mType_ == type::QUADS)
     {
@@ -37,8 +37,8 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPo
 
         uint uiNumQuads = uiNumVertex/4u;
         uint uiNumVertexExpanded = uiNumQuads*6u;
-        if (uiNumVertexExpanded + uiPosition > mBuffer_.getVertexCount())
-            mBuffer_.create(uiNumVertexExpanded + uiPosition);
+        if (uiNumVertexExpanded > mBuffer_.getVertexCount())
+            mBuffer_.create(uiNumVertexExpanded);
 
         std::vector<sf::Vertex> lVertices(uiNumVertexExpanded);
         for (uint i = 0; i < uiNumVertexExpanded; ++i)
@@ -48,13 +48,13 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPo
             to_sfml(v, sv);
         }
 
-        mBuffer_.update(lVertices.data(), uiNumVertexExpanded, uiPosition);
-        uiNumVertex_ = std::max(uiNumVertex_, uiNumVertexExpanded + uiPosition);
+        mBuffer_.update(lVertices.data(), uiNumVertexExpanded, 0);
+        uiNumVertex_ = uiNumVertexExpanded;
     }
     else
     {
-        if (uiNumVertex + uiPosition > mBuffer_.getVertexCount())
-            mBuffer_.create(uiNumVertex + uiPosition);
+        if (uiNumVertex > mBuffer_.getVertexCount())
+            mBuffer_.create(uiNumVertex);
 
         std::vector<sf::Vertex> lVertices(uiNumVertex);
         for (uint i = 0; i < uiNumVertex; ++i)
@@ -64,19 +64,14 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPo
             to_sfml(v, sv);
         }
 
-        mBuffer_.update(lVertices.data(), uiNumVertex, uiPosition);
-        uiNumVertex_ = std::max(uiNumVertex_, uiNumVertex + uiPosition);
+        mBuffer_.update(lVertices.data(), uiNumVertex, 0);
+        uiNumVertex_ = uiNumVertex;
     }
 }
 
 uint vertex_cache::get_num_vertex() const
 {
     return uiNumVertex_;
-}
-
-void vertex_cache::clear()
-{
-    uiNumVertex_ = 0u;
 }
 
 const sf::VertexBuffer& vertex_cache::get_impl() const

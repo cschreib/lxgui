@@ -50,24 +50,10 @@ namespace gui
         /// Update the data stored in the cache to form new triangles.
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache
-        *   \param uiPosition  The position in the cache where vertices should be copied
         *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
         *         If the type if QUADS, uiNumVertex must be a multiple of 4.
-        *   \note The cache will automatically grow if there is not enough space to store
-        *         all the requested vertices. If you need the buffer to shrink in size,
-        *         call clear() before update().
         */
-        virtual void update(const vertex* lVertexData, uint uiNumVertex, uint uiPosition = 0u) = 0;
-
-        /// Returns the number of vertices currently stored in the cache.
-        /** \return The number of vertices currently stored in the cache
-        */
-        virtual uint get_num_vertex() const = 0;
-
-        /// Reset the size of this cache to zero.
-        /** \return The number of vertices currently stored in the cache
-        */
-        virtual void clear() = 0;
+        virtual void update(const vertex* lVertexData, uint uiNumVertex) = 0;
 
     protected:
 

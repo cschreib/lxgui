@@ -42,9 +42,8 @@ namespace gl
         /// Update the data stored in the cache, reusing existing indices.
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache
-        *   \param uiPosition  The position in the cache where vertices should be copied
         */
-        void update_data(const vertex* lVertexData, uint uiNumVertex, uint uiPosition);
+        void update_data(const vertex* lVertexData, uint uiNumVertex);
 
         /// Update the indices stored in the cache, reusing existing data.
         /** \param lVertexIndices The indices to use for drawing triangles
@@ -65,21 +64,10 @@ namespace gl
         /// Update the data stored in the cache to form new triangles.
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache
-        *   \param uiPosition  The position in the cache where vertices should be copied
         *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
         *         If the type if QUADS, uiNumVertex must be a multiple of 4.
         */
-        void update(const vertex* lVertexData, uint uiNumVertex, uint uiPosition) override;
-
-        /// Returns the number of vertices currently stored in the cache.
-        /** \return The number of vertices currently stored in the cache
-        */
-        uint get_num_vertex() const override;
-
-        /// Reset the size of this cache to zero.
-        /** \return The number of vertices currently stored in the cache
-        */
-        void clear() override;
+        void update(const vertex* lVertexData, uint uiNumVertex) override;
 
         /// Renders the cache.
         /** \note This does not bind the material, just binds the cache and renders it

@@ -62,34 +62,21 @@ vertex_cache::~vertex_cache()
     glDeleteBuffers(lBuffers.size(), lBuffers.data());
 }
 
-void vertex_cache::update_data(const vertex* lVertexData, uint uiNumVertex, uint uiPosition)
+void vertex_cache::update_data(const vertex* lVertexData, uint uiNumVertex)
 {
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
 
-    uint uiMaxIndex = uiNumVertex + uiPosition;
-
-    if (uiMaxIndex > uiCurrentCapacityVertex_)
+    if (uiNumVertex > uiCurrentCapacityVertex_)
     {
-        if (uiPosition == 0)
-        {
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertex)*uiMaxIndex, lVertexData, GL_DYNAMIC_DRAW);
-        }
-        else
-        {
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertex)*uiMaxIndex, nullptr, GL_DYNAMIC_DRAW);
-            glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertex)*uiPosition,
-                sizeof(vertex)*uiNumVertex, lVertexData);
-        }
-
-        uiCurrentCapacityVertex_ = uiMaxIndex;
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * uiNumVertex, lVertexData, GL_DYNAMIC_DRAW);
+        uiCurrentCapacityVertex_ = uiNumVertex;
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, sizeof(vertex)*uiPosition,
-            sizeof(vertex)*uiNumVertex, lVertexData);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertex) * uiNumVertex, lVertexData);
     }
 
-    uiCurrentSizeVertex_ = std::max(uiCurrentSizeVertex_, uiMaxIndex);
+    uiCurrentSizeVertex_ = uiNumVertex;
 }
 
 void vertex_cache::update_indices(const uint* lVertexIndices, uint uiNumIndices)
@@ -98,13 +85,12 @@ void vertex_cache::update_indices(const uint* lVertexIndices, uint uiNumIndices)
 
     if (uiNumIndices > uiCurrentCapacityIndex_)
     {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*uiNumIndices,
-            lVertexIndices, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * uiNumIndices, lVertexIndices, GL_DYNAMIC_DRAW);
         uiCurrentCapacityIndex_ = uiNumIndices;
     }
     else
     {
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint)*uiNumIndices, lVertexIndices);
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint) * uiNumIndices, lVertexIndices);
     }
 
     uiCurrentSizeIndex_ = uiNumIndices;
@@ -123,7 +109,7 @@ void vertex_cache::update_indices_if_grow(const uint* lVertexIndices, uint uiNum
     }
 }
 
-void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPosition)
+void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
 {
     if (mType_ == type::QUADS)
     {
@@ -138,10 +124,10 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPo
         }
 
         // Update the vertex data
-        update_data(lVertexData, uiNumVertex, uiPosition);
+        update_data(lVertexData, uiNumVertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        uint uiNumIndices = (uiNumVertex/4u)*6u + uiPosition;
+        uint uiNumIndices = (uiNumVertex/4u)*6u;
         if (uiNumIndices > lRepeatedIds.size())
         {
             uint uiOldSize = lRepeatedIds.size();
@@ -167,10 +153,10 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex, uint uiPo
         }
 
         // Update the vertex data
-        update_data(lVertexData, uiNumVertex, uiPosition);
+        update_data(lVertexData, uiNumVertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        uint uiNumIndices = uiNumVertex + uiPosition;
+        uint uiNumIndices = uiNumVertex;
         if (uiNumIndices > lRepeatedIds.size())
         {
             uint uiOldSize = lRepeatedIds.size();
@@ -191,17 +177,6 @@ void vertex_cache::render() const
     glBindVertexArray(uiVertexArray_);
     glDrawElements(GL_TRIANGLES, uiCurrentSizeIndex_, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-}
-
-uint vertex_cache::get_num_vertex() const
-{
-    return uiCurrentSizeIndex_;
-}
-
-void vertex_cache::clear()
-{
-    uiCurrentSizeIndex_ = 0u;
-    uiCurrentSizeVertex_ = 0u;
 }
 
 }

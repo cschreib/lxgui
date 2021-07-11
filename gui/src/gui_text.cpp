@@ -871,7 +871,6 @@ void text::update_() const
             }
         }
 
-        pVertexCache_->clear();
         pVertexCache_->update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);
     }
 
