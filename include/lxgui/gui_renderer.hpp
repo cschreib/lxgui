@@ -372,13 +372,19 @@ namespace gui
         mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
-        bool bTextureAtlasEnabled_ = true;
-        bool bVertexCacheEnabled_ = true;
+        mutable bool bTextureAtlasEnabled_ = true;
+        mutable bool bVertexCacheEnabled_ = true;
         uint uiTextureAtlasPageSize_ = 0u;
         mutable bool bQuadBatchingEnabled_ = true;
 
+        struct quad_batcher
+        {
+            std::vector<std::array<vertex,4>> lData;
+            std::shared_ptr<vertex_cache> pCache;
+        };
+
         static constexpr uint BATCHING_CACHE_CYCLE_SIZE = 16u;
-        mutable std::array<std::shared_ptr<vertex_cache>,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
+        mutable std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
         mutable const gui::material* pPreviousMaterial_ = nullptr;
         mutable uint uiCurrentQuadCache_ = 0u;
     };

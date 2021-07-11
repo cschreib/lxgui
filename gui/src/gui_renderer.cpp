@@ -15,23 +15,26 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
     {
         pPreviousMaterial_ = nullptr;
 
-        try
+        if (is_vertex_cache_enabled())
         {
-            if (lQuadCache_[0] == nullptr)
+            try
             {
-                for (uint uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex)
+                if (lQuadCache_[0].pCache == nullptr)
                 {
-                    lQuadCache_[uiIndex] = create_vertex_cache(vertex_cache::type::QUADS);
+                    for (uint uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex)
+                    {
+                        lQuadCache_[uiIndex].pCache = create_vertex_cache(vertex_cache::type::QUADS);
+                    }
                 }
             }
-        }
-        catch (const std::exception& e)
-        {
-            gui::out << gui::warning << e.what() << std::endl;
-            gui::out << gui::warning << "gui::renderer : Failed to create caches for quad batching. "
-                "Batching will be disabled." << std::endl;
+            catch (const std::exception& e)
+            {
+                gui::out << gui::warning << e.what() << std::endl;
+                gui::out << gui::warning << "gui::renderer : Failed to create caches for quad batching. "
+                    "Vertex caches will be disabled." << std::endl;
 
-            bQuadBatchingEnabled_ = false;
+                bVertexCacheEnabled_ = false;
+            }
         }
     }
 
@@ -91,16 +94,25 @@ void renderer::render_quads(const material* pMaterial,
     }
 
     // Add to the cache
-    auto& mCache = *lQuadCache_[uiCurrentQuadCache_];
-    mCache.update(lQuadList[0].data(), lQuadList.size()*4, mCache.get_num_vertex());
+    auto& mCache = lQuadCache_[uiCurrentQuadCache_];
+    mCache.lData.insert(mCache.lData.end(), lQuadList.begin(), lQuadList.end());
 }
 
 void renderer::flush_quad_batch() const
 {
-    if (lQuadCache_[uiCurrentQuadCache_]->get_num_vertex() == 0u)
+    auto& mCache = lQuadCache_[uiCurrentQuadCache_];
+    if (mCache.lData.size() == 0u)
         return;
 
-    render_cache_(pPreviousMaterial_, *lQuadCache_[uiCurrentQuadCache_], matrix4f::IDENTITY);
+    if (mCache.pCache)
+    {
+        mCache.pCache->update(mCache.lData[0].data(), mCache.lData.size()*4);
+        render_cache_(pPreviousMaterial_, *mCache.pCache, matrix4f::IDENTITY);
+    }
+    else
+    {
+        render_quads_(pPreviousMaterial_, mCache.lData);
+    }
 
     pPreviousMaterial_ = nullptr;
 
@@ -108,7 +120,7 @@ void renderer::flush_quad_batch() const
     if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
         uiCurrentQuadCache_ = 0u;
 
-    lQuadCache_[uiCurrentQuadCache_]->clear();
+    lQuadCache_[uiCurrentQuadCache_].lData.clear();
 }
 
 void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,
