@@ -29,7 +29,7 @@ std::string renderer::get_name() const
     return "SFML";
 }
 
-void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_ || pCurrentSFMLTarget_)
         throw gui::exception("gui::sfml::renderer", "Missing call to end()");
@@ -48,7 +48,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     }
 }
 
-void renderer::end() const
+void renderer::end_() const
 {
     if (pCurrentTarget_)
         pCurrentTarget_->end();
@@ -57,7 +57,7 @@ void renderer::end() const
     pCurrentSFMLTarget_ = nullptr;
 }
 
-void renderer::set_view(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix) const
 {
     static const float RAD_TO_DEG = 180.0f/std::acos(-1.0f);
 
@@ -134,7 +134,7 @@ sf::Transform to_sfml(const matrix4f& mMatrix)
     );
 }
 
-void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
+void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
     throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");

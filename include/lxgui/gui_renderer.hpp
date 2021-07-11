@@ -41,10 +41,22 @@ namespace gui
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        virtual void begin(std::shared_ptr<render_target> pTarget = nullptr) const = 0;
+        void begin(std::shared_ptr<render_target> pTarget = nullptr) const;
 
         /// Ends rendering.
-        virtual void end() const = 0;
+        void end() const;
+
+        /// Flushes any pending quad batch render operation.
+        /** \note If is_quad_batching_enabled(), quad rendering is done in batches.
+        *         This means that the quads are not actually rendered until this
+        *         function is called. This is done automatically in end(), when
+        *         trying to render something that is no included in the batching system
+        *         such as render_cache(), or when changing the global state of the render
+        *         such as with set_view(). If you have your own rendering operations
+        *         that are not going through this renderer, make sure you call this
+        *         function before doing your own rendering.
+        */
+        void flush_quad_batch() const;
 
         /// Sets the view matrix to use when rendering (viewport).
         /** \param mViewMatrix The view matrix
@@ -61,7 +73,7 @@ namespace gui
         *            backends, the view matrix will be simplified to a simpler 2D translate +
         *            rotate + scale transform, or even just translate + scale.
         */
-        virtual void set_view(const matrix4f& mViewMatrix) const = 0;
+        void set_view(const matrix4f& mViewMatrix) const;
 
         /// Returns the current view matrix to use when rendering (viewport).
         /** \return The current view matrix to use when rendering
@@ -89,6 +101,23 @@ namespace gui
         void render_quads(const material* pMaterial,
             const std::vector<std::array<vertex,4>>& lQuadList) const;
 
+        /// Checks if the renderer has quad render batching enabled.
+        /** \return 'true' if enabled, 'false' otherwise
+        */
+        bool is_quad_batching_enabled() const;
+
+        /// Enables/disables quad batching.
+        /** \param bEnabled 'true' to enable quad batching, 'false' to disable it
+        *   \note Quad batching is enabled by default.
+        *   \note When quad batching is disabled, each call to render_quads() renders
+        *         immediately to the screen. This can lead to a large number of draw
+        *         calls. With quad batching enabled, the renderer accumulates quads
+        *         into a local cache, and only renders them when necessary
+        *         (i.e., when the texture changes, when another immediate rendering
+        *         call is requested, or the frame ends).
+        */
+        void set_quad_batching_enabled(bool bEnabled);
+
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
         *   \param mCache          The vertex cache
@@ -101,8 +130,8 @@ namespace gui
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See is_vertex_cache_supported().
         */
-        virtual void render_cache(const material* pMaterial, const vertex_cache& mCache,
-            const matrix4f& mModelTransform = matrix4f::IDENTITY) const = 0;
+        void render_cache(const material* pMaterial, const vertex_cache& mCache,
+            const matrix4f& mModelTransform = matrix4f::IDENTITY) const;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
@@ -256,6 +285,31 @@ namespace gui
 
     protected:
 
+        /// Begins rendering on a particular render target.
+        /** \param pTarget The render target (main screen if nullptr)
+        */
+        virtual void begin_(std::shared_ptr<render_target> pTarget) const = 0;
+
+        /// Ends rendering.
+        virtual void end_() const = 0;
+
+        /// Sets the view matrix to use when rendering (viewport).
+        /** \param mViewMatrix The view matrix
+        *   \note This function is called by default in begin(), which resets the
+        *         view to span the entire render target (or the entire screen). Therefore
+        *         it is only necessary to use this function when a custom view is required.
+        *         The view matrix converts custom "world" coordinates into screen-space
+        *         coordinates, where the X and Y coordinates represent the horizontal and
+        *         vertical dimensions on the screen, respectively, and range from -1 to +1.
+        *         In screen-space coordinates, the top-left corner of the screen has
+        *         coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1).
+        *   \warning Although the view is specified here as a matrix for maximum flexibility,
+        *            some backends do not actually support arbitrary view matrices. For such
+        *            backends, the view matrix will be simplified to a simpler 2D translate +
+        *            rotate + scale transform, or even just translate + scale.
+        */
+        virtual void set_view_(const matrix4f& mViewMatrix) const = 0;
+
         /// Renders a set of quads.
         /** \param pMaterial The material to use for rendering, or null if none
         *   \param lQuadList The list of the quads you want to render
@@ -266,6 +320,21 @@ namespace gui
         */
         virtual void render_quads_(const material* pMaterial,
             const std::vector<std::array<vertex,4>>& lQuadList) const = 0;
+
+        /// Renders a vertex cache.
+        /** \param pMaterial       The material to use for rendering, or null if none
+        *   \param mCache          The vertex cache
+        *   \param mModelTransform The transformation matrix to apply to vertices
+        *   \note This function is meant to be called between begin() and
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls. This method
+        *         is also more efficient than render_quads(), as the vertex data is
+        *         already cached to the GPU and does not need sending again. However,
+        *         not all implementations support vertex caches. See is_vertex_cache_supported().
+        */
+        virtual void render_cache_(const material* pMaterial, const vertex_cache& mCache,
+            const matrix4f& mModelTransform) const = 0;
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
@@ -306,6 +375,12 @@ namespace gui
         bool bTextureAtlasEnabled_ = true;
         bool bVertexCacheEnabled_ = true;
         uint uiTextureAtlasPageSize_ = 0u;
+        mutable bool bQuadBatchingEnabled_ = true;
+
+        static constexpr uint BATCHING_CACHE_CYCLE_SIZE = 16u;
+        mutable std::array<std::shared_ptr<vertex_cache>,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
+        mutable const gui::material* pPreviousMaterial_ = nullptr;
+        mutable uint uiCurrentQuadCache_ = 0u;
     };
 }
 }

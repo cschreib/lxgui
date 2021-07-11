@@ -468,6 +468,7 @@ int main(int argc, char* argv[])
         std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
         std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
         std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
+        std::cout << "  Quad batching enabled: " << pGUIRenderer->is_quad_batching_enabled() << std::endl;
 
         pManager->enable_caching(false);
 

@@ -34,10 +34,10 @@ namespace sfml
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
         */
-        void begin(std::shared_ptr<gui::render_target> pTarget = nullptr) const override;
+        void begin_(std::shared_ptr<gui::render_target> pTarget) const override;
 
         /// Ends rendering.
-        void end() const override;
+        void end_() const override;
 
         /// Sets the view matrix to use when rendering (viewport).
         /** \param mViewMatrix The view matrix
@@ -54,7 +54,7 @@ namespace sfml
         *            backends, the view matrix will be simplified to a simpler 2D translate +
         *            rotate + scale transform, or even just translate + scale.
         */
-        void set_view(const matrix4f& mViewMatrix) const override;
+        void set_view_(const matrix4f& mViewMatrix) const override;
 
         /// Returns the current view matrix to use when rendering (viewport).
         /** \return The current view matrix to use when rendering
@@ -99,7 +99,7 @@ namespace sfml
         *         already cached to the GPU and does not need sending again. However,
         *         not all implementations support vertex caches. See is_vertex_cache_supported().
         */
-        void render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
+        void render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
             const matrix4f& mModelTransform) const override;
 
         /// Creates a new material from a portion of a render target.

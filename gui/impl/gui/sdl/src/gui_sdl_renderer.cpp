@@ -64,7 +64,7 @@ std::string renderer::get_name() const
     return std::string("SDL (") + mRendererInfo.name + ")";
 }
 
-void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
 {
     if (pCurrentTarget_)
         throw gui::exception("gui::sdl::renderer", "Missing call to end()");
@@ -84,7 +84,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     mViewMatrix_ = mTargetViewMatrix_;
 }
 
-void renderer::end() const
+void renderer::end_() const
 {
     if (pCurrentTarget_)
         pCurrentTarget_->end();
@@ -92,7 +92,7 @@ void renderer::end() const
     pCurrentTarget_ = nullptr;
 }
 
-void renderer::set_view(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix) const
 {
     mRawViewMatrix_ = mViewMatrix;
     mViewMatrix_ = mViewMatrix*matrix4f::invert(mTargetViewMatrix_);
@@ -528,7 +528,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
     }
 }
 
-void renderer::render_cache(const gui::material*, const gui::vertex_cache&, const matrix4f&) const
+void renderer::render_cache_(const gui::material*, const gui::vertex_cache&, const matrix4f&) const
 {
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }

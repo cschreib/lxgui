@@ -9,19 +9,125 @@ namespace lxgui {
 namespace gui
 {
 
-void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+void renderer::begin(std::shared_ptr<render_target> pTarget) const
 {
+    if (is_quad_batching_enabled())
+    {
+        pPreviousMaterial_ = nullptr;
+
+        try
+        {
+            if (lQuadCache_[0] == nullptr)
+            {
+                for (uint uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex)
+                {
+                    lQuadCache_[uiIndex] = create_vertex_cache(vertex_cache::type::QUADS);
+                }
+            }
+        }
+        catch (const std::exception& e)
+        {
+            gui::out << gui::warning << e.what() << std::endl;
+            gui::out << gui::warning << "gui::renderer : Failed to create caches for quad batching. "
+                "Batching will be disabled." << std::endl;
+
+            bQuadBatchingEnabled_ = false;
+        }
+    }
+
+    begin_(pTarget);
+}
+
+void renderer::end() const
+{
+    if (is_quad_batching_enabled())
+        flush_quad_batch();
+
+    end_();
+}
+
+void renderer::set_view(const matrix4f& mViewMatrix) const
+{
+    if (is_quad_batching_enabled())
+        flush_quad_batch();
+
+    set_view_(mViewMatrix);
 }
 
 void renderer::render_quad(const quad& mQuad) const
 {
-    render_quads_(mQuad.mat.get(), {mQuad.v});
+    render_quads(mQuad.mat.get(), {mQuad.v});
+}
+
+bool uses_same_texture(const material* pMat1, const material* pMat2)
+{
+    if (pMat1 == pMat2)
+        return true;
+
+    if (pMat1 && pMat2 && pMat1->uses_same_texture(*pMat2))
+        return true;
+
+    return false;
 }
 
 void renderer::render_quads(const material* pMaterial,
     const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    render_quads_(pMaterial, lQuadList);
+    if (lQuadList.empty())
+        return;
+
+    if (!is_quad_batching_enabled())
+    {
+        // Render immediately
+        render_quads_(pMaterial, lQuadList);
+        return;
+    }
+
+    if (!uses_same_texture(pMaterial, pPreviousMaterial_))
+    {
+        // Render current cache and start a new one
+        flush_quad_batch();
+        pPreviousMaterial_ = pMaterial;
+    }
+
+    // Add to the cache
+    auto& mCache = *lQuadCache_[uiCurrentQuadCache_];
+    mCache.update(lQuadList[0].data(), lQuadList.size()*4, mCache.get_num_vertex());
+}
+
+void renderer::flush_quad_batch() const
+{
+    if (lQuadCache_[uiCurrentQuadCache_]->get_num_vertex() == 0u)
+        return;
+
+    render_cache_(pPreviousMaterial_, *lQuadCache_[uiCurrentQuadCache_], matrix4f::IDENTITY);
+
+    pPreviousMaterial_ = nullptr;
+
+    ++uiCurrentQuadCache_;
+    if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
+        uiCurrentQuadCache_ = 0u;
+
+    lQuadCache_[uiCurrentQuadCache_]->clear();
+}
+
+void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,
+    const matrix4f& mModelTransform) const
+{
+    if (is_quad_batching_enabled())
+        flush_quad_batch();
+
+    render_cache_(pMaterial, mCache, mModelTransform);
+}
+
+bool renderer::is_quad_batching_enabled() const
+{
+    return bQuadBatchingEnabled_&& is_vertex_cache_supported();
+}
+
+void renderer::set_quad_batching_enabled(bool bEnabled)
+{
+    bQuadBatchingEnabled_ = bEnabled;
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
@@ -164,6 +270,10 @@ std::shared_ptr<material> renderer::create_material(
     std::shared_ptr<render_target> pRenderTarget) const
 {
     return create_material(pRenderTarget, pRenderTarget->get_rect());
+}
+
+void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+{
 }
 
 }

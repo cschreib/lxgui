@@ -261,7 +261,7 @@ void backdrop::render() const
 
     if (pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY)
     {
-        if (pRenderer->is_vertex_cache_enabled())
+        if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
             pRenderer->render_cache(pBackgroundTexture_.get(), *pBackgroundCache_);
         else
             pRenderer->render_quads(pBackgroundTexture_.get(), lBackgroundQuads_);
@@ -269,7 +269,7 @@ void backdrop::render() const
 
     if (pEdgeTexture_ || mEdgeColor_ != color::EMPTY)
     {
-        if (pRenderer->is_vertex_cache_enabled())
+        if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
             pRenderer->render_cache(pEdgeTexture_.get(), *pEdgeCache_);
         else
             pRenderer->render_quads(pEdgeTexture_.get(), lEdgeQuads_);
@@ -419,7 +419,7 @@ void backdrop::update_background_(color mColor) const
         mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
     }
 
-    if (pRenderer->is_vertex_cache_enabled())
+    if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
     {
         if (!pBackgroundCache_)
             pBackgroundCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);
@@ -551,7 +551,7 @@ void backdrop::update_edge_(color mColor) const
         mBorders.bottom - fEdgeSize_, mBorders.bottom
     ));
 
-    if (pRenderer->is_vertex_cache_enabled())
+    if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
     {
         if (!pEdgeCache_)
             pEdgeCache_ = pRenderer->create_vertex_cache(vertex_cache::type::QUADS);

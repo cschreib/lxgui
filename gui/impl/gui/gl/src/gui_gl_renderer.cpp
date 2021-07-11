@@ -76,7 +76,7 @@ renderer::shader_cache::~shader_cache()
 }
 #endif
 
-void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
 {
     matrix4f mCurrentViewMatrix;
 
@@ -114,7 +114,7 @@ void renderer::begin(std::shared_ptr<gui::render_target> pTarget) const
     set_view(mCurrentViewMatrix);
 }
 
-void renderer::end() const
+void renderer::end_() const
 {
 #if defined(LXGUI_OPENGL3)
 #endif
@@ -126,7 +126,7 @@ void renderer::end() const
     }
 }
 
-void renderer::set_view(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix) const
 {
     mCurrentViewMatrix_ = mViewMatrix;
 
@@ -215,7 +215,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 #endif
 }
 
-void renderer::render_cache(const gui::material* pMaterial, const gui::vertex_cache& mCache,
+void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
 #if !defined(LXGUI_OPENGL3)
