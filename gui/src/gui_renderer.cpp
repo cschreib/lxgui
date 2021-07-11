@@ -234,12 +234,8 @@ void renderer::auto_detect_settings()
     bTextureAtlasEnabled_ = is_vertex_cache_supported();
 }
 
-std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
-    const std::string& sFileName, material::filter mFilter) const
+atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const
 {
-    if (!is_texture_atlas_enabled())
-        return create_material(sFileName, mFilter);
-
     std::shared_ptr<gui::atlas> pAtlas;
 
     std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
@@ -263,7 +259,18 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
         lAtlasList_[sBakedAtlasName] = pAtlas;
     }
 
-    auto pTex = pAtlas->fetch_material(sFileName);
+    return *pAtlas;
+}
+
+std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAtlasCategory,
+    const std::string& sFileName, material::filter mFilter) const
+{
+    if (!is_texture_atlas_enabled())
+        return create_material(sFileName, mFilter);
+
+    auto& mAtlas = get_atlas_(sAtlasCategory, mFilter);
+
+    auto pTex = mAtlas.fetch_material(sFileName);
     if (pTex)
         return pTex;
 
@@ -271,11 +278,37 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
     if (!pTex)
         return nullptr;
 
-    auto pAddedTex = pAtlas->add_material(sFileName, *pTex);
+    auto pAddedTex = mAtlas.add_material(sFileName, *pTex);
     if (pAddedTex)
         return pAddedTex;
     else
         return pTex;
+}
+
+std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCategory,
+    const std::string& sFontFile, uint uiSize) const
+{
+    if (!is_texture_atlas_enabled())
+        return create_font(sFontFile, uiSize);
+
+    auto mFilter = material::filter::NONE;
+    auto& mAtlas = get_atlas_(sAtlasCategory, mFilter);
+
+    std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
+
+    auto pFont = mAtlas.fetch_font(sFontName);
+    if (pFont)
+        return pFont;
+
+    pFont = create_font(sFontFile, uiSize);
+    if (!pFont)
+        return nullptr;
+
+    if (mAtlas.add_font(sFontName, pFont))
+        return pFont;
+
+    lFontList_[sFontName] = pFont;
+    return pFont;
 }
 
 std::shared_ptr<material> renderer::create_material(

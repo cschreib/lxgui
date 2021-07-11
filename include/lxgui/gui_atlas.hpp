@@ -16,6 +16,7 @@ namespace lxgui {
 namespace gui
 {
     class renderer;
+    class font;
 
     /// A single texture holding multiple materials for efficient rendering
     /** This is an abstract class that must be implemented
@@ -39,11 +40,23 @@ namespace gui
 
         /// Creates a new material from a texture file.
         /** \param sFileName The name of the file
-        *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
+        *   \param mMat      The material to add to this page
+        *   \return The new material (or nullptr if the material could not fit)
         */
         std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat);
+
+        /// Find a font in this page (nullptr if not found).
+        /** \param sFontName The name+size of the font
+        *   \return The font (nullptr if not found)
+        */
+        std::shared_ptr<font> fetch_font(const std::string& sFontName) const;
+
+        /// Creates a new font from a texture file.
+        /** \param sFontName The name of the file
+        *   \param mFont     The font to add to this page
+        *   \return The new font (or nullptr if the font could not fit)
+        */
+        bool add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont);
 
         /// Checks if this page is empty (contains no materials).
         /** \return 'true' if the page is empty, 'false' otherwise
@@ -82,6 +95,7 @@ namespace gui
         std::optional<quad2f> find_location_(float fWidth, float fHeight) const;
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
+        mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
     };
 
     /// A class that holds multiple materials for efficient rendering
@@ -104,14 +118,25 @@ namespace gui
         */
         std::shared_ptr<material> fetch_material(const std::string& sFileName) const;
 
-        /// Creates a new material from a texture file.
-        /** \param sFileName The name of the file from which the
-        *   \param mMat The material to add to this atlas
+        /// Add a new material to the atlas.
+        /** \param sFileName The name of the file
+        *   \param mMat      The material to add to this atlas
         *   \return The new material
-        *   \note Supported texture formats are defined by implementation.
-        *         The gui library is completely unaware of this.
         */
         std::shared_ptr<material> add_material(const std::string& sFileName, const material& mMat) const;
+
+        /// Find a font in this atlas (nullptr if not found).
+        /** \param sFontName The name of the font+size
+        *   \return The font (nullptr if not found)
+        */
+        std::shared_ptr<font> fetch_font(const std::string& sFontName) const;
+
+        /// Add a new font to the atlas.
+        /** \param sFontName The name of the font+size
+        *   \param pFont     The font to add to this atlas
+        *   \return 'true' if the font was added to this atlas, 'false' otherwise
+        */
+        bool add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) const;
 
         /// Return the number of pages in this atlas.
         /** \return The number of pages in this atlas

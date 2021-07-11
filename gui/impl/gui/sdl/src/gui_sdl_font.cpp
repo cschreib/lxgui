@@ -81,8 +81,8 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
 
     uint uiTextureRealWidth = pTexture_->get_canvas_width();
     uint uiTextureRealHeight = pTexture_->get_canvas_height();
-    fTextureWidth_ = static_cast<float>(uiTextureRealWidth);
-    fTextureHeight_ = static_cast<float>(uiTextureRealHeight);
+    float fTextureWidth = static_cast<float>(uiTextureRealWidth);
+    float fTextureHeight = static_cast<float>(uiTextureRealHeight);
 
     uint uiPitch = 0;
     ub32color* pTexturePixels = pTexture_->lock_pointer(&uiPitch);
@@ -149,10 +149,10 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
 
         SDL_FreeSurface(pGlyphSurface);
 
-        mCI.mUVs.left   = x/fTextureWidth_;
-        mCI.mUVs.top    = y/fTextureHeight_;
-        mCI.mUVs.right  = (x + iAdvance)/fTextureWidth_;
-        mCI.mUVs.bottom = (y + uiGlyphHeight)/fTextureHeight_;
+        mCI.mUVs.left   = x/fTextureWidth;
+        mCI.mUVs.top    = y/fTextureHeight;
+        mCI.mUVs.right  = (x + iAdvance)/fTextureWidth;
+        mCI.mUVs.bottom = (y + uiGlyphHeight)/fTextureHeight;
 
         lCharacterList_[cp] = mCI;
 
@@ -165,7 +165,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
     if (TTF_GlyphMetrics(pFont, 32, &iMinX, &iMaxX, &iMinY, &iMaxY, &iAdvance) == 0)
     {
         lCharacterList_[32].mUVs.left = 0.0f;
-        lCharacterList_[32].mUVs.right = iAdvance/fTextureWidth_;
+        lCharacterList_[32].mUVs.right = iAdvance/fTextureWidth;
         lCharacterList_[9].mUVs.left = 0.0f;
         lCharacterList_[9].mUVs.right = 4.0f*lCharacterList_[32].mUVs.right;
     }
@@ -197,7 +197,9 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return quad2f{};
 
-    return lCharacterList_[uiChar].mUVs;
+    vector2f mTopLeft = pTexture_->get_canvas_uv(lCharacterList_[uiChar].mUVs.top_left(), true);
+    vector2f mBottomRight = pTexture_->get_canvas_uv(lCharacterList_[uiChar].mUVs.bottom_right(), true);
+    return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
 quad2f font::get_character_bounds(char32_t uiChar) const
@@ -205,8 +207,8 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     if (uiChar < 32 || uiChar > 255) return quad2f{};
 
     const auto& mCharacterInfo = lCharacterList_[uiChar];
-    const float fCharWidth = mCharacterInfo.mUVs.width()*fTextureWidth_;
-    const float fCharHeight = mCharacterInfo.mUVs.height()*fTextureHeight_;
+    const float fCharWidth = mCharacterInfo.mUVs.width()*pTexture_->get_rect().width();
+    const float fCharHeight = mCharacterInfo.mUVs.height()*pTexture_->get_rect().height();
 
     return quad2f(0.0f, fCharWidth, fYOffset_, fYOffset_ + fCharHeight);
 }
@@ -215,14 +217,14 @@ float font::get_character_width(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return 0.0f;
 
-    return lCharacterList_[uiChar].mUVs.width()*fTextureWidth_;
+    return lCharacterList_[uiChar].mUVs.width()*pTexture_->get_rect().width();
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return 0.0f;
 
-    return lCharacterList_[uiChar].mUVs.height()*fTextureHeight_;
+    return lCharacterList_[uiChar].mUVs.height()*pTexture_->get_rect().height();
 }
 
 float font::get_character_kerning(char32_t, char32_t) const
@@ -235,6 +237,12 @@ std::weak_ptr<gui::material> font::get_texture() const
 {
     return pTexture_;
 }
+
+void font::update_texture(std::shared_ptr<gui::material> pMat)
+{
+    pTexture_ = std::static_pointer_cast<sdl::material>(pMat);
+}
+
 }
 }
 }

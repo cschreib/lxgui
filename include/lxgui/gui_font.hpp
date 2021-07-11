@@ -74,6 +74,11 @@ namespace gui
         /** \return The underlying material to use for rendering
         */
         virtual std::weak_ptr<material> get_texture() const = 0;
+
+        /// Update the material to use for rendering.
+        /** \param pMat The material to use for rendering
+        */
+        virtual void update_texture(std::shared_ptr<material> pMat) = 0;
     };
 }
 }

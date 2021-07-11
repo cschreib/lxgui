@@ -245,7 +245,9 @@ void font_string::set_font(const std::string& sFontName, float fHeight)
     uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight);
 
     renderer* pRenderer = pManager_->get_renderer();
-    pText_ = std::unique_ptr<text>(new text(pRenderer, pRenderer->create_font(sFontName, uiPixelHeight)));
+    pText_ = std::unique_ptr<text>(new text(pRenderer,
+        pRenderer->create_atlas_font("GUI", sFontName, uiPixelHeight)));
+
     pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);

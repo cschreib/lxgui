@@ -84,10 +84,13 @@ namespace sdl
         */
         std::weak_ptr<gui::material> get_texture() const override;
 
+        /// Update the material to use for rendering.
+        /** \param pMat The material to use for rendering
+        */
+        void update_texture(std::shared_ptr<gui::material> pMat) override;
+
     private :
 
-        float fTextureWidth_ = 0.0f;
-        float fTextureHeight_ = 0.0f;
         float fYOffset_ = 0.0f;
         uint uiSize_ = 0u;
 

@@ -80,10 +80,12 @@ namespace gl
         */
         std::weak_ptr<gui::material> get_texture() const override;
 
-    private :
+        /// Update the material to use for rendering.
+        /** \param pMat The material to use for rendering
+        */
+        void update_texture(std::shared_ptr<gui::material> pMat) override;
 
-        float fTextureWidth_ = 0.0f;
-        float fTextureHeight_ = 0.0f;
+    private :
 
         std::shared_ptr<gl::material> pTexture_;
         std::vector<character_info> lCharacterList_;

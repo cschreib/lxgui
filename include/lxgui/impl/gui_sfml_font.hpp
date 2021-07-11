@@ -75,6 +75,11 @@ namespace sfml
         */
         std::weak_ptr<gui::material> get_texture() const override;
 
+        /// Update the material to use for rendering.
+        /** \param pMat The material to use for rendering
+        */
+        void update_texture(std::shared_ptr<gui::material> pMat) override;
+
     private :
 
         sf::Font                        mFont_;

@@ -39,16 +39,18 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
 
-    const quad2f mTexRect = pTexture_->get_rect();
-
     const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false).textureRect;
+    const quad2f& mTexRect = pTexture_->get_rect();
 
     quad2f mRect;
     mRect.left   = mSFRect.left / mTexRect.width();
     mRect.right  = (mSFRect.left + mSFRect.width) / mTexRect.width();
     mRect.top    = mSFRect.top / mTexRect.height();
     mRect.bottom = (mSFRect.top + mSFRect.height) / mTexRect.height();
-    return mRect;
+
+    vector2f mTopLeft = pTexture_->get_canvas_uv(mRect.top_left(), true);
+    vector2f mBottomRight = pTexture_->get_canvas_uv(mRect.bottom_right(), true);
+    return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
 quad2f font::get_character_bounds(char32_t uiChar) const
@@ -93,6 +95,12 @@ std::weak_ptr<gui::material> font::get_texture() const
 {
     return pTexture_;
 }
+
+void font::update_texture(std::shared_ptr<gui::material> pMat)
+{
+    pTexture_ = std::static_pointer_cast<sfml::material>(pMat);
+}
+
 }
 }
 }

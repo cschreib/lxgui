@@ -250,6 +250,18 @@ namespace gui
         */
         std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
 
+        /// Creates a new font.
+        /** \param sAtlasCategory The category of atlas in which to create the font texture
+        *   \param sFontFile      The file from which to read the font
+        *   \param uiSize         The requested size of the characters (in points)
+        *   \note Even though the gui has been designed to use vector fonts files
+        *         (such as .ttf or .otf font formats), nothing prevents the implementation
+        *         from using any other font type, including bitmap fonts.
+        *   \note See create_atlas_material() for more information on atlases.
+        */
+        std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
+            const std::string& sFontFile, uint uiSize) const;
+
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
         */
@@ -367,6 +379,8 @@ namespace gui
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
             uint uiSize) const = 0;
+
+        atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;

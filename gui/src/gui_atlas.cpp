@@ -1,6 +1,7 @@
 #include "lxgui/gui_atlas.hpp"
 #include "lxgui/gui_vertex.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_font.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_exception.hpp"
 #include "lxgui/utils_string.hpp"
@@ -46,11 +47,55 @@ std::shared_ptr<gui::material> atlas_page::add_material(const std::string& sFile
     }
 }
 
+std::shared_ptr<font> atlas_page::fetch_font(const std::string& sFontName) const
+{
+    auto mIter = lFontList_.find(sFontName);
+    if (mIter != lFontList_.end())
+    {
+        if (std::shared_ptr<gui::font> pLock = mIter->second.lock())
+            return pLock;
+        else
+            lFontList_.erase(mIter);
+    }
+
+    return nullptr;
+}
+
+bool atlas_page::add_font(const std::string& sFontName,
+    std::shared_ptr<gui::font> pFont)
+{
+    try
+    {
+        const auto& mMat = *pFont->get_texture().lock();
+        const auto mRect = mMat.get_rect();
+        const auto mLocation = find_location_(mRect.width(), mRect.height());
+        if (!mLocation.has_value())
+            return false;
+
+        std::shared_ptr<gui::material> pTex = add_material_(mMat, mLocation.value());
+        pFont->update_texture(pTex);
+
+        lFontList_[sFontName] = pFont;
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        gui::out << gui::warning << e.what() << std::endl;
+        return false;
+    }
+}
+
 bool atlas_page::empty() const
 {
     for (const auto& pMat : lTextureList_)
     {
         if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
+            return false;
+    }
+
+    for (const auto& pFont : lFontList_)
+    {
+        if (std::shared_ptr<gui::font> pLock = pFont.second.lock())
             return false;
     }
 
@@ -77,6 +122,16 @@ std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) co
         if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
         {
             lOccupiedSpace.push_back(pLock->get_rect());
+            fMaxWidth = std::max(fMaxWidth, lOccupiedSpace.back().right);
+            fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
+        }
+    }
+
+    for (const auto& pFont : lFontList_)
+    {
+        if (std::shared_ptr<gui::font> pLock = pFont.second.lock())
+        {
+            lOccupiedSpace.push_back(pLock->get_texture().lock()->get_rect());
             fMaxWidth = std::max(fMaxWidth, lOccupiedSpace.back().right);
             fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
         }
@@ -147,7 +202,7 @@ std::shared_ptr<gui::material> atlas::add_material(const std::string& sFileName,
 
             if (lPage->empty())
             {
-                gui::out << gui::warning << "Could not fit '" << sFileName <<
+                gui::out << gui::warning << "Could not fit texture '" << sFileName <<
                     "' on any atlas page." << std::endl;
                 return nullptr;
             }
@@ -164,6 +219,48 @@ std::shared_ptr<gui::material> atlas::add_material(const std::string& sFileName,
     {
         gui::out << gui::warning << e.what() << std::endl;
         return nullptr;
+    }
+}
+
+std::shared_ptr<gui::font> atlas::fetch_font(const std::string& sFontName) const
+{
+    for (const auto& pPage : lPageList_)
+    {
+        auto pFont = pPage->fetch_font(sFontName);
+        if (pFont)
+            return pFont;
+    }
+
+    return nullptr;
+}
+
+bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) const
+{
+    try
+    {
+        for (const auto& lPage : lPageList_)
+        {
+            if (lPage->add_font(sFontName, pFont))
+                return true;
+
+            if (lPage->empty())
+            {
+                gui::out << gui::warning << "Could not fit font '" << sFontName <<
+                    "' on any atlas page." << std::endl;
+                return false;
+            }
+        }
+
+        add_page_();
+        if (lPageList_.back()->add_font(sFontName, pFont))
+            return true;
+
+        return false;
+    }
+    catch (const std::exception& e)
+    {
+        gui::out << gui::warning << e.what() << std::endl;
+        return false;
     }
 }
 
