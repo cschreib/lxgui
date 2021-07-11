@@ -207,7 +207,8 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
     uiArrayCycleCache_ = (uiArrayCycleCache_ + 1) % CACHE_CYCLE_SIZE;
 
     // Update vertex data
-    pCache->update(lQuadList[0].data(), lQuadList.size()*4);
+    pCache->clear();
+    pCache->update(lQuadList[0].data(), lQuadList.size()*4, 0u);
 
     // Render
     render_cache(pMaterial, *pCache, matrix4f::IDENTITY);
