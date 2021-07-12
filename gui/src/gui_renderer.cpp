@@ -15,7 +15,7 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
 
     if (is_quad_batching_enabled())
     {
-        pPreviousMaterial_ = nullptr;
+        pCurrentMaterial_ = nullptr;
 
         if (is_vertex_cache_enabled())
         {
@@ -48,7 +48,7 @@ void renderer::end() const
     if (is_quad_batching_enabled())
     {
         flush_quad_batch();
-        uiBatchCount_ = 0;
+        uiLastFrameBatchCount_ = uiBatchCount_;
     }
 
     end_();
@@ -69,12 +69,15 @@ void renderer::render_quad(const quad& mQuad) const
     render_quads(mQuad.mat.get(), {mQuad.v});
 }
 
-bool uses_same_texture(const material* pMat1, const material* pMat2)
+bool renderer::uses_same_texture_(const material* pMat1, const material* pMat2) const
 {
     if (pMat1 == pMat2)
         return true;
 
     if (pMat1 && pMat2 && pMat1->uses_same_texture(*pMat2))
+        return true;
+
+    if (is_texture_atlas_enabled() && is_texture_vertex_color_supported() && (!pMat1 || !pMat2))
         return true;
 
     return false;
@@ -93,29 +96,29 @@ void renderer::render_quads(const material* pMaterial,
         return;
     }
 
-    bool bNoMaterialNoFlush = !pMaterial && is_texture_atlas_enabled();
-
-    if (!bPreviousMaterialIsAny_ && !bNoMaterialNoFlush &&
-        !uses_same_texture(pMaterial, pPreviousMaterial_))
+    if (!uses_same_texture_(pMaterial, pCurrentMaterial_))
     {
-        // Render current cache and start a new one
+        // Render current batch and start a new one
         flush_quad_batch();
+        pCurrentMaterial_ = pMaterial;
     }
 
-    if (bNoMaterialNoFlush)
+    if (lQuadCache_[uiCurrentQuadCache_].lData.empty())
     {
-        bPreviousMaterialIsAny_ = true;
+        // Start a new batch
+        pCurrentMaterial_ = pMaterial;
     }
-    else
+
+    if (!pCurrentMaterial_)
     {
-        pPreviousMaterial_ = pMaterial;
-        bPreviousMaterialIsAny_ = false;
+        // Previous quads had no material, override with the new one
+        pCurrentMaterial_ = pMaterial;
     }
 
     // Add to the cache
     auto& mCache = lQuadCache_[uiCurrentQuadCache_];
 
-    if (bNoMaterialNoFlush)
+    if (!pMaterial && is_texture_atlas_enabled() && is_texture_vertex_color_supported())
     {
         // To allow quads with no texture to enter the batch
         // with atlas textures, we just change their UV coordinates
@@ -140,22 +143,21 @@ void renderer::render_quads(const material* pMaterial,
 void renderer::flush_quad_batch() const
 {
     auto& mCache = lQuadCache_[uiCurrentQuadCache_];
-    if (mCache.lData.size() == 0u)
+    if (mCache.lData.empty())
         return;
 
     if (mCache.pCache)
     {
         mCache.pCache->update(mCache.lData[0].data(), mCache.lData.size()*4);
-        render_cache_(pPreviousMaterial_, *mCache.pCache, matrix4f::IDENTITY);
+        render_cache_(pCurrentMaterial_, *mCache.pCache, matrix4f::IDENTITY);
     }
     else
     {
-        render_quads_(pPreviousMaterial_, mCache.lData);
+        render_quads_(pCurrentMaterial_, mCache.lData);
     }
 
     mCache.lData.clear();
-    pPreviousMaterial_ = nullptr;
-    bPreviousMaterialIsAny_ = false;
+    pCurrentMaterial_ = nullptr;
 
     ++uiCurrentQuadCache_;
     if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
@@ -177,7 +179,7 @@ void renderer::render_cache(const material* pMaterial, const vertex_cache& mCach
 
 bool renderer::is_quad_batching_enabled() const
 {
-    return bQuadBatchingEnabled_&& is_vertex_cache_supported();
+    return bQuadBatchingEnabled_;
 }
 
 void renderer::set_quad_batching_enabled(bool bEnabled)

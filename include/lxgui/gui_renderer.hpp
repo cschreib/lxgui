@@ -49,12 +49,15 @@ namespace gui
         /// Flushes any pending quad batch render operation.
         /** \note If is_quad_batching_enabled(), quad rendering is done in batches.
         *         This means that the quads are not actually rendered until this
-        *         function is called. This is done automatically in end(), when
-        *         trying to render something that is no included in the batching system
-        *         such as render_cache(), or when changing the global state of the render
-        *         such as with set_view(). If you have your own rendering operations
-        *         that are not going through this renderer, make sure you call this
-        *         function before doing your own rendering.
+        *         function is called. The renderer calls this function automatically in
+        *         various situations: when calling end(), when trying to render something
+        *         that is no included in the batching system (such as render_cache()), or
+        *         when changing the global state of the render (such as with set_view()).
+        *         If you have your own rendering operations that are not going through this
+        *         renderer (like raw OpenGL calls), make sure you call this function before
+        *         doing your own rendering.
+        *   \note This function is meant to be called between begin() and
+        *         end() only.
         */
         void flush_quad_batch() const;
 
@@ -310,6 +313,12 @@ namespace gui
         /// Automatically determines the best rendering settings for the current platform.
         void auto_detect_settings();
 
+        /// Returns the number of batches of vertices sent to the GPU during the last frame.
+        /** \return The number of batches of vertices sent to the GPU during the last frame
+        *   \note This will be zero unless is_quad_batching_enabled() is 'true'.
+        */
+        uint get_batch_count() const;
+
     protected:
 
         /// Begins rendering on a particular render target.
@@ -401,23 +410,28 @@ namespace gui
         mutable std::unordered_map<std::string, std::shared_ptr<gui::atlas>>  lAtlasList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
 
+    private :
+
+        bool uses_same_texture_(const material* pMat1, const material* pMat2) const;
+
         mutable bool bTextureAtlasEnabled_ = true;
         mutable bool bVertexCacheEnabled_ = true;
-        uint uiTextureAtlasPageSize_ = 0u;
         mutable bool bQuadBatchingEnabled_ = true;
+        uint         uiTextureAtlasPageSize_ = 0u;
 
         struct quad_batcher
         {
             std::vector<std::array<vertex,4>> lData;
-            std::shared_ptr<vertex_cache> pCache;
+            std::shared_ptr<vertex_cache>     pCache;
         };
 
         static constexpr uint BATCHING_CACHE_CYCLE_SIZE = 16u;
         mutable std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
-        mutable const gui::material* pPreviousMaterial_ = nullptr;
-        mutable bool bPreviousMaterialIsAny_ = false;
-        mutable uint uiCurrentQuadCache_ = 0u;
-        mutable uint uiBatchCount_ = 0u;
+
+        mutable const gui::material* pCurrentMaterial_ = nullptr;
+        mutable uint                 uiCurrentQuadCache_ = 0u;
+        mutable uint                 uiBatchCount_ = 0u;
+        mutable uint                 uiLastFrameBatchCount_ = 0u;
     };
 }
 }
