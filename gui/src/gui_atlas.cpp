@@ -272,6 +272,8 @@ uint atlas::get_num_pages() const
 void atlas::add_page_() const
 {
     lPageList_.push_back(create_page_());
+
+    // TODO: need to make first pixel white in atlas page
 }
 
 }

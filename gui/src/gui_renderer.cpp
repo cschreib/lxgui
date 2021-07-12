@@ -86,16 +86,48 @@ void renderer::render_quads(const material* pMaterial,
         return;
     }
 
-    if (!uses_same_texture(pMaterial, pPreviousMaterial_))
+    bool bNoMaterialNoFlush = !pMaterial && is_texture_atlas_enabled();
+
+    if (!bPreviousMaterialIsAny_ && !bNoMaterialNoFlush &&
+        !uses_same_texture(pMaterial, pPreviousMaterial_))
     {
         // Render current cache and start a new one
         flush_quad_batch();
+    }
+
+    if (bNoMaterialNoFlush)
+    {
+        bPreviousMaterialIsAny_ = true;
+    }
+    else
+    {
         pPreviousMaterial_ = pMaterial;
+        bPreviousMaterialIsAny_ = false;
     }
 
     // Add to the cache
     auto& mCache = lQuadCache_[uiCurrentQuadCache_];
-    mCache.lData.insert(mCache.lData.end(), lQuadList.begin(), lQuadList.end());
+
+    if (bNoMaterialNoFlush)
+    {
+        // To allow quads with no texture to enter the batch
+        // with atlas textures, we just change their UV coordinates
+        // to map to the first top-left pixel of the atlas, which is always white.
+        mCache.lData.reserve(mCache.lData.size() + lQuadList.size());
+        for (const auto& mOrigQuad : lQuadList)
+        {
+            mCache.lData.push_back(mOrigQuad);
+            auto& mQuad = mCache.lData.back();
+            mQuad[0].uvs = vector2f(0.0f, 0.0f);
+            mQuad[1].uvs = vector2f(1e-6f, 0.0f);
+            mQuad[2].uvs = vector2f(1e-6f, 1e-6f);
+            mQuad[3].uvs = vector2f(0.0f, 1e-6f);
+        }
+    }
+    else
+    {
+        mCache.lData.insert(mCache.lData.end(), lQuadList.begin(), lQuadList.end());
+    }
 }
 
 void renderer::flush_quad_batch() const
@@ -114,13 +146,13 @@ void renderer::flush_quad_batch() const
         render_quads_(pPreviousMaterial_, mCache.lData);
     }
 
+    mCache.lData.clear();
     pPreviousMaterial_ = nullptr;
+    bPreviousMaterialIsAny_ = false;
 
     ++uiCurrentQuadCache_;
     if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
         uiCurrentQuadCache_ = 0u;
-
-    lQuadCache_[uiCurrentQuadCache_].lData.clear();
 }
 
 void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,

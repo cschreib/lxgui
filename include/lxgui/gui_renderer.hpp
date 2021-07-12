@@ -400,6 +400,7 @@ namespace gui
         static constexpr uint BATCHING_CACHE_CYCLE_SIZE = 16u;
         mutable std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
         mutable const gui::material* pPreviousMaterial_ = nullptr;
+        mutable bool bPreviousMaterialIsAny_ = false;
         mutable uint uiCurrentQuadCache_ = 0u;
     };
 }
