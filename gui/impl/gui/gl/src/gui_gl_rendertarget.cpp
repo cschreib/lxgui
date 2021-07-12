@@ -29,9 +29,7 @@ namespace gl
 {
 render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
 {
-    pTexture_ = std::make_shared<gl::material>(
-        uiWidth, uiHeight, material::wrap::REPEAT, mFilter, true
-    );
+    pTexture_ = std::make_shared<gl::material>(uiWidth, uiHeight, material::wrap::REPEAT, mFilter);
 
     glGenFramebuffers(1, &uiFBOHandle_);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);

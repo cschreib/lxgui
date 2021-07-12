@@ -108,9 +108,8 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 
     uiFinalWidth = uiTexSide;
 
-    pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
-
-    std::fill(pTexture_->get_data().begin(), pTexture_->get_data().end(), ub32color(0, 0, 0, 0));
+    std::vector<ub32color> lData(uiFinalWidth*uiFinalHeight);
+    std::fill(lData.begin(), lData.end(), ub32color(0, 0, 0, 0));
 
     lCharacterList_.resize(uiMaxChar + 1);
 
@@ -161,8 +160,11 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
             int iYBearing = iMaxBearingY - (mFace->glyph->metrics.horiBearingY >> 6);
 
             for (int j = 0; j < int(mFace->glyph->bitmap.rows);  ++j)
-            for (int i = 0; i < int(mFace->glyph->bitmap.width); ++i, ++sBuffer)
-                pTexture_->set_pixel(x + i + uiXBearing, y + j + iYBearing, ub32color(255, 255, 255, *sBuffer));
+            {
+                uint uiRowOffset = (y + j + iYBearing)*uiFinalWidth;
+                for (int i = 0; i < int(mFace->glyph->bitmap.width); ++i, ++sBuffer)
+                    lData[x + i + uiXBearing + uiRowOffset] = ub32color(255, 255, 255, *sBuffer);
+            }
         }
 
         if (bKerning_)
@@ -200,9 +202,10 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
 
     FT_Done_FreeType(mFT);
 
-    pTexture_->premultiply_alpha();
-    pTexture_->update_texture();
-    pTexture_->clear_cache_data_();
+    gl::material::premultiply_alpha(lData);
+
+    pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
+    pTexture_->update_texture(lData);
 }
 
 uint font::get_size() const

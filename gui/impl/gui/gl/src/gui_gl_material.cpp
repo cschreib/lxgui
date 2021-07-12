@@ -42,8 +42,8 @@ uint next_pot(uint uiSize)
     return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(uiSize))));
 }
 
-material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool bGPUOnly) :
-    uiWidth_(uiWidth), uiHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
+material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
+    mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
 {
     if (ONLY_POWER_OF_TWO)
     {
@@ -102,18 +102,13 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter, bool
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    if (!bGPUOnly)
-        pData_.resize(uiWidth*uiHeight);
-
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = quad2f(0, uiWidth, 0, uiHeight);
 }
 
 material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
     const quad2f mRect, filter mFilter) : mFilter_(mFilter),
     uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
 {
-    uiWidth_ = mRect_.width();
-    uiHeight_ = mRect_.height();
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;
 }
@@ -190,37 +185,10 @@ void material::bind() const
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
 }
 
-const std::vector<ub32color>& material::get_data() const
+void material::premultiply_alpha(std::vector<ub32color>& lData)
 {
-    return pData_;
-}
-
-std::vector<ub32color>& material::get_data()
-{
-    return pData_;
-}
-
-void material::set_pixel(uint x, uint y, const ub32color& mColor)
-{
-    pData_[x + y*uiWidth_] = mColor;
-}
-
-const ub32color& material::get_pixel(uint x, uint y) const
-{
-    return pData_[x + y*uiWidth_];
-}
-
-ub32color& material::get_pixel(uint x, uint y)
-{
-    return pData_[x + y*uiWidth_];
-}
-
-void material::premultiply_alpha()
-{
-    uint imax = uiWidth_*uiHeight_;
-    for (uint i = 0; i < imax; ++i)
+    for (auto& c : lData)
     {
-        ub32color& c = pData_[i];
         float a = c.a/255.0f;
         c.r *= a;
         c.g *= a;
@@ -266,9 +234,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)
         return false;
 
-    uiWidth_  = uiWidth;
-    uiHeight_ = uiHeight;
-    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_    = quad2f(0, uiWidth, 0, uiHeight);
 
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {
@@ -317,27 +283,17 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
 }
 
-void material::update_texture()
+void material::update_texture(const std::vector<ub32color>& lData)
 {
-    if (!bIsOwner_)
-    {
-        throw gui::exception("gui::gl::material", "A material in an atlas cannot update its data.");
-    }
-
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, uiWidth_, uiHeight_,
-        GL_RGBA, GL_UNSIGNED_BYTE, pData_.data()
+    glTexSubImage2D(GL_TEXTURE_2D, 0, mRect_.left, mRect_.top, mRect_.width(), mRect_.height(),
+        GL_RGBA, GL_UNSIGNED_BYTE, lData.data()
     );
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
-}
-
-void material::clear_cache_data_()
-{
-    pData_.clear();
 }
 
 uint material::get_handle_() const

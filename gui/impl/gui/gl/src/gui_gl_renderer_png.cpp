@@ -81,24 +81,23 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
         png_uint_32 uiWidth  = png_get_image_width(pReadStruct, pInfoStruct);
         png_uint_32 uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
 
-        std::unique_ptr<png_bytep[]> pRows(new png_bytep[uiHeight]);
-        std::shared_ptr<material>  pTex = std::make_shared<gui::gl::material>(
-            uiWidth, uiHeight, material::wrap::REPEAT, mFilter
-        );
+        std::vector<ub32color> lData(uiWidth*uiHeight);
+        std::vector<png_bytep> lRows(uiHeight);
 
-        png_bytep* pTempRows = pRows.get();
-        ub32color* pTempData = pTex->get_data().data();
         for (uint i = 0; i < uiHeight; ++i)
-            pTempRows[i] = reinterpret_cast<png_bytep>(pTempData + i*uiWidth);
+            lRows[i] = reinterpret_cast<png_bytep>(lData.data() + i*uiWidth);
 
-        png_read_image(pReadStruct, pTempRows);
+        png_read_image(pReadStruct, lRows.data());
 
         png_destroy_read_struct(&pReadStruct, &pInfoStruct, nullptr);
 
-        pTex->premultiply_alpha();
-        pTex->update_texture();
-        pTex->clear_cache_data_();
-        lTextureList_[sFileName] = pTex;
+        material::premultiply_alpha(lData);
+
+        std::shared_ptr<material> pTex = std::make_shared<gui::gl::material>(
+            uiWidth, uiHeight, material::wrap::REPEAT, mFilter
+        );
+
+        pTex->update_texture(lData);
 
         return std::move(pTex);
     }

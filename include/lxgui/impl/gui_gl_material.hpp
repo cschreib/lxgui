@@ -36,11 +36,9 @@ namespace gl
         *   \param uiHeight The requested texture height
         *   \param mWrap    How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter  Use texture filtering or not (see set_filter())
-        *   \param bGPUOnly If 'false', a copy of the texture is kept in CPU memory (RAM). Else
-        *                   the texture only resides in GPU memory (used by render_target).
         */
         material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
-            filter mFilter = filter::NONE, bool bGPUOnly = false);
+            filter mFilter = filter::NONE);
 
         /// Constructor for atlas textures.
         /** \param uiTextureHandle The handle to the texture object of the atlas
@@ -99,10 +97,11 @@ namespace gl
         bool set_dimensions(uint uiWidth, uint uiHeight);
 
         /// Premultiplies the texture by alpha component.
-        /** \note Premultiplied alpha is a rendering technique that allows perfect
+        /** \param lData The pixel data to pre-multiply
+        *   \note Premultiplied alpha is a rendering technique that allows perfect
         *         alpha blending when using render targets.
         */
-        void premultiply_alpha();
+        static void premultiply_alpha(std::vector<ub32color>& lData);
 
         /// Sets the wrap mode of this texture.
         /** \param mWrap How to adjust texture coordinates that are outside the [0,1] range
@@ -124,57 +123,10 @@ namespace gl
         /// Sets this material as the active one.
         void bind() const;
 
-        /// Returns the cached texture data (read only).
-        /** \return The cached texture data (read only)
-        */
-        const std::vector<ub32color>& get_data() const;
-
-        /// Returns the cached texture data (read and write).
-        /** \return The cached texture data (read and write)
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        std::vector<ub32color>& get_data();
-
-        /// Sets the color of one pixel.
-        /** \param x      The coordinate of the pixel in the texture
-        *   \param y      The coordinate of the pixel in the texture
-        *   \param mColor The new color of the pixel
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        void set_pixel(uint x, uint y, const ub32color& mColor);
-
-        /// Returns the color of one pixel (read only).
-        /** \param x      The coordinate of the pixel in the texture
-        *   \param y      The coordinate of the pixel in the texture
-        *   \return The color of the pixel
-        */
-        const ub32color& get_pixel(uint x, uint y) const;
-
-        /// Returns the color of one pixel.
-        /** \param x The coordinate of the pixel in the texture
-        *   \param y The coordinate of the pixel in the texture
-        *   \return The color of the pixel
-        *   \note If you modify the texture data, you need to call
-        *         update_texture() when you're done, so that the
-        *         texture that is in the GPU memory gets updated.
-        */
-        ub32color& get_pixel(uint x, uint y);
-
         /// Updates the texture that is in GPU memory.
-        /** \note Whenever you modify pixels of the texture,
-        *         remember to call this function when you're done,
-        *         else your changes won't be applied to the GPU.
+        /** \param lData The new pixel data
         */
-        void update_texture();
-
-        /// Removes the cached texture data (in CPU memory).
-        /** \note For internal use.
-        */
-        void clear_cache_data_();
+        void update_texture(const std::vector<ub32color>& lData);
 
         /// Returns the OpenGL texture handle.
         /** \note For internal use.
@@ -195,15 +147,12 @@ namespace gl
 
     private:
 
-        uint   uiWidth_ = 0u, uiHeight_ = 0u;
         uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
         wrap   mWrap_ = wrap::REPEAT;
         filter mFilter_ = filter::NONE;
         uint   uiTextureHandle_ = 0u;
         quad2f mRect_;
         bool   bIsOwner_ = false;
-
-        std::vector<ub32color> pData_;
 
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;
