@@ -104,6 +104,8 @@ bool atlas_page::empty() const
 
 std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) const
 {
+    constexpr float fPadding = 1.0f; // pixels
+
     quad2f mStartQuad(0, fWidth, 0, fHeight);
     if (empty())
         return mStartQuad;
@@ -117,11 +119,18 @@ std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) co
     float fMaxWidth = 0.0f;
     float fMaxHeight = 0.0f;
 
+    auto apply_padding = [&](quad2f mRect)
+    {
+        mRect.right += fPadding;
+        mRect.bottom += fPadding;
+        return mRect;
+    };
+
     for (const auto& pMat : lTextureList_)
     {
         if (std::shared_ptr<gui::material> pLock = pMat.second.lock())
         {
-            lOccupiedSpace.push_back(pLock->get_rect());
+            lOccupiedSpace.push_back(apply_padding(pLock->get_rect()));
             fMaxWidth = std::max(fMaxWidth, lOccupiedSpace.back().right);
             fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
         }
@@ -131,7 +140,7 @@ std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) co
     {
         if (std::shared_ptr<gui::font> pLock = pFont.second.lock())
         {
-            lOccupiedSpace.push_back(pLock->get_texture().lock()->get_rect());
+            lOccupiedSpace.push_back(apply_padding(pLock->get_texture().lock()->get_rect()));
             fMaxWidth = std::max(fMaxWidth, lOccupiedSpace.back().right);
             fMaxHeight = std::max(fMaxHeight, lOccupiedSpace.back().bottom);
         }
