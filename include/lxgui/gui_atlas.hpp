@@ -96,9 +96,6 @@ namespace gui
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
-
-        friend class atlas;
-        std::shared_ptr<gui::material> pFirstPixel_;
     };
 
     /// A class that holds multiple materials for efficient rendering
@@ -163,7 +160,13 @@ namespace gui
         */
         void add_page_() const;
 
-        mutable std::vector<std::unique_ptr<atlas_page>> lPageList_;
+        struct page_item
+        {
+            std::unique_ptr<atlas_page> pPage;
+            std::shared_ptr<material>   pNoTextureMat;
+        };
+
+        mutable std::vector<page_item> lPageList_;
     };
 }
 }
