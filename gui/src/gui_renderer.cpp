@@ -11,6 +11,8 @@ namespace gui
 
 void renderer::begin(std::shared_ptr<render_target> pTarget) const
 {
+    uiBatchCount_ = 0;
+
     if (is_quad_batching_enabled())
     {
         pPreviousMaterial_ = nullptr;
@@ -44,7 +46,10 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
 void renderer::end() const
 {
     if (is_quad_batching_enabled())
+    {
         flush_quad_batch();
+        uiBatchCount_ = 0;
+    }
 
     end_();
 }
@@ -52,7 +57,9 @@ void renderer::end() const
 void renderer::set_view(const matrix4f& mViewMatrix) const
 {
     if (is_quad_batching_enabled())
+    {
         flush_quad_batch();
+    }
 
     set_view_(mViewMatrix);
 }
@@ -153,13 +160,17 @@ void renderer::flush_quad_batch() const
     ++uiCurrentQuadCache_;
     if (uiCurrentQuadCache_ == BATCHING_CACHE_CYCLE_SIZE)
         uiCurrentQuadCache_ = 0u;
+
+    ++uiBatchCount_;
 }
 
 void renderer::render_cache(const material* pMaterial, const vertex_cache& mCache,
     const matrix4f& mModelTransform) const
 {
     if (is_quad_batching_enabled())
+    {
         flush_quad_batch();
+    }
 
     render_cache_(pMaterial, mCache, mModelTransform);
 }

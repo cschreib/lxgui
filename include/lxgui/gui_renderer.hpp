@@ -412,6 +412,7 @@ namespace gui
         mutable const gui::material* pPreviousMaterial_ = nullptr;
         mutable bool bPreviousMaterialIsAny_ = false;
         mutable uint uiCurrentQuadCache_ = 0u;
+        mutable uint uiBatchCount_ = 0u;
     };
 }
 }
