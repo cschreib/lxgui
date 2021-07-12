@@ -276,7 +276,9 @@ void renderer::set_vertex_cache_enabled(bool bEnabled)
 
 void renderer::auto_detect_settings()
 {
-    bTextureAtlasEnabled_ = is_vertex_cache_supported();
+    bVertexCacheEnabled_ = true;
+    bTextureAtlasEnabled_ = true;
+    bQuadBatchingEnabled_ = true;
 }
 
 atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const
