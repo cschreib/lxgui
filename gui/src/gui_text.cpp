@@ -315,7 +315,7 @@ void text::render(float fX, float fY) const
     vector2f mOffset(round_to_pixel_(fX), round_to_pixel_(fY));
 
     const material* pMat = pFont_->get_texture().lock().get();
-    if (pRenderer_->is_vertex_cache_enabled())
+    if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
     {
         pRenderer_->render_cache(pMat, *pVertexCache_, matrix4f::translation(mOffset));
     }
@@ -856,7 +856,7 @@ void text::update_() const
         fH_ = 0.0f;
     }
 
-    if (pRenderer_->is_vertex_cache_enabled())
+    if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
     {
         if (!pVertexCache_)
             pVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
