@@ -273,7 +273,14 @@ void atlas::add_page_() const
 {
     lPageList_.push_back(create_page_());
 
-    // TODO: need to make first pixel white in atlas page
+    // Add a white pixel as the first material in the atlas.
+    // This can be used for optimizing quad batching, to render
+    // quads with no texture.
+    ub32color mPixel(255,255,255,255);
+    auto pTex = mRenderer_.create_material(1u, 1u, &mPixel);
+
+    pTex = lPageList_.back()->add_material("", *pTex);
+    lPageList_.back()->pFirstPixel_ = pTex;
 }
 
 }

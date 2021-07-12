@@ -96,6 +96,9 @@ namespace gui
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;
+
+        friend class atlas;
+        std::shared_ptr<gui::material> pFirstPixel_;
     };
 
     /// A class that holds multiple materials for efficient rendering
