@@ -9,6 +9,15 @@
 namespace lxgui {
 namespace gui
 {
+    struct ub32color
+    {
+        using chanel = unsigned char;
+
+        ub32color() = default;
+        ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
+        chanel r, g, b, a;
+    };
+
     /// A class that holds rendering data
     /** This is an abstract class that must be implemented
     *   and created by the corresponding gui::renderer.

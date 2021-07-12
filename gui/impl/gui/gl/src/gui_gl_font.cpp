@@ -205,7 +205,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize)
     gl::material::premultiply_alpha(lData);
 
     pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
-    pTexture_->update_texture(lData);
+    pTexture_->update_texture(lData.data());
 }
 
 uint font::get_size() const

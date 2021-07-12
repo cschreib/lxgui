@@ -232,6 +232,16 @@ namespace gui
         std::shared_ptr<material> create_material(
             std::shared_ptr<render_target> pRenderTarget) const;
 
+        /// Creates a new material from arbitrary pixel data.
+        /** \param uiWidth    The width of the material
+        *   \param uiHeight   The height of the material
+        *   \param pPixelData The color data for all the pixels in the material
+        *   \param mFilter    The filtering to apply to the texture
+        *   \return The new material
+        */
+        virtual std::shared_ptr<material> create_material(uint uiWidth, uint uiHeight,
+            const ub32color* pPixelData, material::filter mFilter = material::filter::NONE) const = 0;
+
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target
         *   \param uiHeight The height of the render target

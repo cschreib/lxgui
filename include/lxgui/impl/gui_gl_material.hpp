@@ -13,15 +13,6 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-    struct ub32color
-    {
-        using chanel = unsigned char;
-
-        ub32color() = default;
-        ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
-        chanel r, g, b, a;
-    };
-
     /// A class that holds rendering data
     /** This implementation can contain either a plain color
     *   or a real OpenGL texture. It is also used by the
@@ -124,9 +115,9 @@ namespace gl
         void bind() const;
 
         /// Updates the texture that is in GPU memory.
-        /** \param lData The new pixel data
+        /** \param pData The new pixel data
         */
-        void update_texture(const std::vector<ub32color>& lData);
+        void update_texture(const ub32color* pData);
 
         /// Returns the OpenGL texture handle.
         /** \note For internal use.

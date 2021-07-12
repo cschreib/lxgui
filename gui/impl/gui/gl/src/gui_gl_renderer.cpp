@@ -269,6 +269,17 @@ uint renderer::get_texture_max_size() const
     return material::get_max_size();
 }
 
+std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
+    const ub32color* pPixelData, material::filter mFilter) const
+{
+    std::shared_ptr<gl::material> pTex = std::make_shared<gl::material>(
+        uiWidth, uiHeight, material::wrap::REPEAT, mFilter);
+
+    pTex->update_texture(pPixelData);
+
+    return pTex;
+}
+
 std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
 {

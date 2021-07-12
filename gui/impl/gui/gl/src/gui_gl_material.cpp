@@ -283,14 +283,14 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     }
 }
 
-void material::update_texture(const std::vector<ub32color>& lData)
+void material::update_texture(const ub32color* pData)
 {
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexSubImage2D(GL_TEXTURE_2D, 0, mRect_.left, mRect_.top, mRect_.width(), mRect_.height(),
-        GL_RGBA, GL_UNSIGNED_BYTE, lData.data()
+        GL_RGBA, GL_UNSIGNED_BYTE, pData
     );
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);

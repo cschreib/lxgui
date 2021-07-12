@@ -17,15 +17,6 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-    struct ub32color
-    {
-        using chanel = unsigned char;
-
-        ub32color() = default;
-        ub32color(chanel tr, chanel tg, chanel tb, chanel ta) : r(tr), g(tg), b(tb), a(ta) {}
-        chanel r, g, b, a;
-    };
-
     /// A class that holds rendering data
     /** This implementation can contain either a plain color
     *   or a real SDL_Texture. It is also used by the

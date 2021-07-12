@@ -560,6 +560,27 @@ bool renderer::is_texture_atlas_natively_supported() const
     return true;
 }
 
+std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
+    const ub32color* pPixelData, material::filter mFilter) const
+{
+    std::shared_ptr<sdl::material> pTex = std::make_shared<sdl::material>(
+        pRenderer_, uiWidth, uiHeight, false, material::wrap::REPEAT, mFilter);
+
+    uint uiPitch = 0u;
+    ub32color* pTexData = pTex->lock_pointer(&uiPitch);
+
+    for (uint uiY = 0u; uiY < uiHeight; ++uiY)
+    {
+        const ub32color* pPixelDataRow = pPixelData + uiY*uiWidth;
+        ub32color* pTexDataRow = pTexData + uiY*uiPitch;
+        std::copy(pPixelDataRow, pPixelDataRow + uiWidth, pTexDataRow);
+    }
+
+    pTex->unlock_pointer();
+
+    return pTex;
+}
+
 std::shared_ptr<gui::material> renderer::create_material(
     std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
 {

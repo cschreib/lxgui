@@ -126,6 +126,11 @@ namespace sfml
         */
         filter get_filter() const;
 
+        /// Updates the texture that is in GPU memory.
+        /** \param pData The new pixel data
+        */
+        void update_texture(const ub32color* pData);
+
         /// Returns the underlying SFML render texture object.
         /** return The underlying SFML render texture object
         */

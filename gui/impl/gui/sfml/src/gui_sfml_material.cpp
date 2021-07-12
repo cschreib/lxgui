@@ -131,6 +131,22 @@ material::filter material::get_filter() const
     return mFilter_;
 }
 
+void material::update_texture(const ub32color* pData)
+{
+    if (bRenderTarget_)
+    {
+        throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
+    }
+
+    if (pAtlasTexture_)
+    {
+        throw gui::exception("gui::sfml::material", "A material in an atlas cannot be updated.");
+    }
+
+    mTexture_.update(reinterpret_cast<const sf::Uint8*>(pData),
+        mRect_.width(), mRect_.height(), mRect_.left, mRect_.top);
+}
+
 void material::premultiply_alpha(sf::Image& mData)
 {
     const uint uiWidth = mData.getSize().x;

@@ -97,7 +97,7 @@ std::shared_ptr<gui::material> renderer::create_material_png(const std::string& 
             uiWidth, uiHeight, material::wrap::REPEAT, mFilter
         );
 
-        pTex->update_texture(lData);
+        pTex->update_texture(lData.data());
 
         return std::move(pTex);
     }

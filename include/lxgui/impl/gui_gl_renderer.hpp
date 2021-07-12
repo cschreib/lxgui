@@ -106,6 +106,17 @@ namespace gl
         */
         bool is_texture_atlas_natively_supported() const override;
 
+        /// Creates a new material from arbitrary pixel data.
+        /** \param uiWidth    The width of the material
+        *   \param uiHeight   The height of the material
+        *   \param pPixelData The color data for all the pixels in the material
+        *   \param mFilter    The filtering to apply to the texture
+        *   \return The new material
+        */
+        std::shared_ptr<gui::material> create_material(uint uiWidth, uint uiHeight,
+            const ub32color* pPixelData,
+            material::filter mFilter = material::filter::NONE) const override;
+
         /// Creates a new material from a portion of a render target.
         /** \param pRenderTarget The render target from which to read the pixels
         *   \param mLocation     The portion of the render target to use as material
