@@ -315,6 +315,11 @@ bool renderer::is_texture_atlas_natively_supported() const
 #endif
 }
 
+bool renderer::is_texture_vertex_color_supported() const
+{
+    return true;
+}
+
 bool renderer::is_vertex_cache_supported() const
 {
 #if !defined(LXGUI_OPENGL3)

@@ -38,6 +38,7 @@ void examples_setup_gui(gui::manager& mManager)
     std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_natively_supported() << std::endl;
     std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
     std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
+    std::cout << "  Texture per-vertex color supported: " << pGUIRenderer->is_texture_vertex_color_supported() << std::endl;
     std::cout << "  Quad batching enabled: " << pGUIRenderer->is_quad_batching_enabled() << std::endl;
 
     // The first thing to do is create the lua::state, and register any glue function

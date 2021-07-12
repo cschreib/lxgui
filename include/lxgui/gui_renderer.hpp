@@ -101,6 +101,11 @@ namespace gui
         void render_quads(const material* pMaterial,
             const std::vector<std::array<vertex,4>>& lQuadList) const;
 
+        /// Checks if the renderer supports setting colors for each vertex of a textured quad.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        virtual bool is_texture_vertex_color_supported() const = 0;
+
         /// Checks if the renderer has quad render batching enabled.
         /** \return 'true' if enabled, 'false' otherwise
         */

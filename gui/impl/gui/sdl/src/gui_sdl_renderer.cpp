@@ -560,6 +560,16 @@ bool renderer::is_texture_atlas_natively_supported() const
     return true;
 }
 
+bool renderer::is_texture_vertex_color_supported() const
+{
+    return false;
+}
+
+bool renderer::is_vertex_cache_supported() const
+{
+    return false;
+}
+
 std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
     const ub32color* pPixelData, material::filter mFilter) const
 {
@@ -606,11 +616,6 @@ std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, 
 {
     return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
         bPreMultipliedAlphaSupported_);
-}
-
-bool renderer::is_vertex_cache_supported() const
-{
-    return false;
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const

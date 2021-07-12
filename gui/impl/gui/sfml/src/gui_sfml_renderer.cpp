@@ -175,6 +175,11 @@ bool renderer::is_texture_atlas_natively_supported() const
     return true;
 }
 
+bool renderer::is_texture_vertex_color_supported() const
+{
+    return true;
+}
+
 std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
     const ub32color* pPixelData, material::filter mFilter) const
 {

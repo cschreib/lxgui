@@ -106,6 +106,11 @@ namespace gl
         */
         bool is_texture_atlas_natively_supported() const override;
 
+        /// Checks if the renderer supports setting colors for each vertex of a textured quad.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        bool is_texture_vertex_color_supported() const override;
+
         /// Creates a new material from arbitrary pixel data.
         /** \param uiWidth    The width of the material
         *   \param uiHeight   The height of the material
