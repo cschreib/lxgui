@@ -441,8 +441,8 @@ void text::update_() const
     if (!bReady_ || !bUpdateCache_) return;
 
     // Update the line list, read format tags, do word wrapping, ...
-    std::vector<line>      lLineList;
-    std::map<uint, format> lFormatList;
+    std::vector<line>                lLineList;
+    std::unordered_map<uint, format> lFormatList;
 
     DEBUG_LOG("     Get max line nbr");
     uint uiMaxLineNbr, uiCounter = 0;
@@ -476,7 +476,7 @@ void text::update_() const
             line mLine;
             mLine.fWidth = 0.0f;
 
-            std::map<uint, format> lTempFormatList;
+            std::unordered_map<uint, format> lTempFormatList;
 
             bool bDone = false;
             DEBUG_LOG("     Read chars");
@@ -808,18 +808,22 @@ void text::update_() const
             for (auto iterChar : utils::range::iterator(mLine.sCaption))
             {
                 // Format our text
-                if (bFormattingEnabled_ && lFormatList.find(uiCounter) != lFormatList.end())
+                if (bFormattingEnabled_)
                 {
-                    const format& mFormat = lFormatList[uiCounter];
-                    switch (mFormat.mColorAction)
+                    auto lFormatIter = lFormatList.find(uiCounter);
+                    if (lFormatIter != lFormatList.end())
                     {
-                        case color_action::SET :
-                            mColor = mFormat.mColor;
-                            break;
-                        case color_action::RESET :
-                            mColor = color::EMPTY;
-                            break;
-                        default : break;
+                        const format& mFormat = lFormatIter->second;
+                        switch (mFormat.mColorAction)
+                        {
+                            case color_action::SET :
+                                mColor = mFormat.mColor;
+                                break;
+                            case color_action::RESET :
+                                mColor = color::EMPTY;
+                                break;
+                            default : break;
+                        }
                     }
                 }
 

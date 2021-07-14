@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 #include <array>
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 namespace lxgui {
@@ -410,8 +410,8 @@ namespace input
         std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_;
         std::array<bool,   MOUSE_BUTTON_NUMBER> lMouseLong_;
 
-        std::map<std::string, bool> lClickGroupList_;
-        std::map<std::string, bool> lForcedClickGroupList_;
+        std::unordered_map<std::string, bool> lClickGroupList_;
+        std::unordered_map<std::string, bool> lForcedClickGroupList_;
 
         float        fScalingFactor_ = 1.0f;
         float        fMX_ = 0.0f, fMY_ = 0.0f;

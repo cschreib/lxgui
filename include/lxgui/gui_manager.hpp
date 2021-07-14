@@ -15,7 +15,8 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <map>
+#include <unordered_map>
+#include <tuple>
 #include <array>
 #include <functional>
 #include <memory>
@@ -746,23 +747,29 @@ namespace gui
 
         bool                            bInputEnabled_ = true;
         std::unique_ptr<input::manager> pInputManager_;
-        std::map<input::key, std::map<input::key, std::map<input::key, std::string>>> lKeyBindingList_;
 
-        std::map<std::string, uiobject*> lNamedObjectList_;
-        std::map<std::string, uiobject*> lNamedVirtualObjectList_;
+        template<typename T>
+        using key_map = std::unordered_map<input::key,T>;
+        template<typename T>
+        using string_map = std::unordered_map<std::string,T>;
 
-        std::map<uint, uiobject*> lObjectList_;
-        root_frame_list           lRootFrameList_;
+        key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
-        std::vector<std::string> lGUIDirectoryList_;
-        addon*                   pCurrentAddOn_ = nullptr;
-        std::map<std::string, std::map<std::string, addon>> lAddOnList_;
+        string_map<uiobject*> lNamedObjectList_;
+        string_map<uiobject*> lNamedVirtualObjectList_;
 
-        std::map<uint, frame*>         lFrameList_;
-        bool                           bObjectMoved_ = false;
-        frame*                         pHoveredFrame_ = nullptr;
-        bool                           bUpdateHoveredFrame_ = false;
-        focus_frame*                   pFocusedFrame_ = nullptr;
+        std::unordered_map<uint, uiobject*> lObjectList_;
+        std::unordered_map<uint, frame*>    lFrameList_;
+        root_frame_list                     lRootFrameList_;
+
+        std::vector<std::string>      lGUIDirectoryList_;
+        addon*                        pCurrentAddOn_ = nullptr;
+        string_map<string_map<addon>> lAddOnList_;
+
+        bool         bObjectMoved_ = false;
+        frame*       pHoveredFrame_ = nullptr;
+        bool         bUpdateHoveredFrame_ = false;
+        focus_frame* pFocusedFrame_ = nullptr;
 
         uiobject* pMovedObject_ = nullptr;
         uiobject* pSizedObject_ = nullptr;
@@ -791,8 +798,8 @@ namespace gui
         std::shared_ptr<render_target> pRenderTarget_;
         sprite                         mSprite_;
 
-        std::map<std::string, std::function<std::unique_ptr<frame>(manager*)>>          lCustomFrameList_;
-        std::map<std::string, std::function<std::unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
+        string_map<std::function<std::unique_ptr<frame>(manager*)>>          lCustomFrameList_;
+        string_map<std::function<std::unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
 
         std::string                    sLocale_;
         std::unique_ptr<event_manager> pEventManager_;

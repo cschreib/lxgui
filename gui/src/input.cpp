@@ -36,7 +36,7 @@ void manager::block_input(const std::string& sGroupName)
 
 bool manager::can_receive_input(const std::string& sGroupName) const
 {
-    std::map<std::string, bool>::const_iterator iter = lClickGroupList_.find(sGroupName);
+    auto iter = lClickGroupList_.find(sGroupName);
     if (iter != lClickGroupList_.end() && !iter->second)
     {
         iter = lForcedClickGroupList_.find(sGroupName);

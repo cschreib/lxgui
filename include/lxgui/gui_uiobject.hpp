@@ -56,14 +56,16 @@ namespace gui
     /** \endcond
     */
 
+    /// ID of a layer for rendering inside a frame.
     enum class layer_type
     {
-        BACKGROUND,
-        BORDER,
-        ARTWORK,
-        OVERLAY,
-        HIGHLIGHT,
-        SPECIALHIGH
+        BACKGROUND = 0,
+        BORDER = 1,
+        ARTWORK = 2,
+        OVERLAY = 3,
+        HIGHLIGHT = 4,
+        SPECIALHIGH = 5,
+        ENUM_SIZE
     };
 
     class frame;

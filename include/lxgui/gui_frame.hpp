@@ -14,6 +14,7 @@
 #include <list>
 #include <functional>
 #include <limits>
+#include <unordered_map>
 
 namespace lxgui {
 namespace gui
@@ -955,14 +956,18 @@ namespace gui
         child_list  lChildList_;
         region_list lRegionList_;
 
-        std::map<layer_type, layer>           lLayerList_;
-        std::map<std::string, std::string>    lDefinedScriptList_;
-        std::map<std::string, script_info>    lXMLScriptInfoList_;
-        std::vector<std::string>              lQueuedEventList_;
-        std::set<std::string>                 lRegEventList_;
-        std::set<std::string>                 lRegDragList_;
+        static constexpr uint num_layers = static_cast<uint>(layer_type::ENUM_SIZE);
 
-        std::map<std::string, script_handler> lDefinedHandlerList_;
+        std::array<layer,num_layers> lLayerList_;
+
+        std::unordered_map<std::string, std::string>    lDefinedScriptList_;
+        std::unordered_map<std::string, script_info>    lXMLScriptInfoList_;
+        std::unordered_map<std::string, script_handler> lDefinedHandlerList_;
+
+        std::vector<std::string> lQueuedEventList_;
+        std::set<std::string>    lRegEventList_;
+        std::set<std::string>    lRegDragList_;
+
 
         addon* pAddOn_ = nullptr;
 

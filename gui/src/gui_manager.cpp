@@ -293,7 +293,7 @@ bool manager::add_uiobject(uiobject* pObj)
         return false;
     }
 
-    std::map<std::string, uiobject*>* lNamedList;
+    std::unordered_map<std::string, uiobject*>* lNamedList;
     if (pObj->is_virtual())
     {
         if (pObj->get_parent())
@@ -310,7 +310,7 @@ bool manager::add_uiobject(uiobject* pObj)
     else
         lNamedList = &lNamedObjectList_;
 
-    std::map<std::string, uiobject*>::iterator iterNamedObj = lNamedList->find(pObj->get_name());
+    auto iterNamedObj = lNamedList->find(pObj->get_name());
     if (iterNamedObj == lNamedList->end())
     {
         const uint i = get_new_object_id_();
@@ -409,7 +409,7 @@ manager::root_frame_list_view manager::get_root_frames() const
 
 const uiobject* manager::get_uiobject(uint uiID) const
 {
-    std::map<uint, uiobject*>::const_iterator mIter = lObjectList_.find(uiID);
+    auto mIter = lObjectList_.find(uiID);
     if (mIter != lObjectList_.end())
         return mIter->second;
     else
@@ -418,7 +418,7 @@ const uiobject* manager::get_uiobject(uint uiID) const
 
 uiobject* manager::get_uiobject(uint uiID)
 {
-    std::map<uint, uiobject*>::iterator mIter = lObjectList_.find(uiID);
+    auto mIter = lObjectList_.find(uiID);
     if (mIter != lObjectList_.end())
         return mIter->second;
     else
@@ -459,7 +459,7 @@ const uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVi
 {
     if (bVirtual)
     {
-        std::map<std::string, uiobject*>::const_iterator iter = lNamedVirtualObjectList_.find(sName);
+        auto iter = lNamedVirtualObjectList_.find(sName);
         if (iter != lNamedVirtualObjectList_.end())
             return iter->second;
         else
@@ -467,7 +467,7 @@ const uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVi
     }
     else
     {
-        std::map<std::string, uiobject*>::const_iterator iter = lNamedObjectList_.find(sName);
+        auto iter = lNamedObjectList_.find(sName);
         if (iter != lNamedObjectList_.end())
             return iter->second;
         else
@@ -479,7 +479,7 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
 {
     if (bVirtual)
     {
-        std::map<std::string, uiobject*>::iterator iter = lNamedVirtualObjectList_.find(sName);
+        auto iter = lNamedVirtualObjectList_.find(sName);
         if (iter != lNamedVirtualObjectList_.end())
             return iter->second;
         else
@@ -487,7 +487,7 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
     }
     else
     {
-        std::map<std::string, uiobject*>::iterator iter = lNamedObjectList_.find(sName);
+        auto iter = lNamedObjectList_.find(sName);
         if (iter != lNamedObjectList_.end())
             return iter->second;
         else
@@ -517,85 +517,84 @@ const lua::state& manager::get_luapp() const
 
 void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
 {
-    std::map<std::string, addon>& lAddOns = lAddOnList_[sAddOnDirectory];
-    if (lAddOns.find(sAddOnName) == lAddOns.end())
+    auto& lAddOns = lAddOnList_[sAddOnDirectory];
+    if (lAddOns.find(sAddOnName) != lAddOns.end())
+        return;
+
+    addon mAddOn;
+    mAddOn.bEnabled = true;
+    mAddOn.sMainDirectory = utils::cut(sAddOnDirectory, "/").back();
+    mAddOn.sDirectory = sAddOnDirectory + "/" + sAddOnName;
+
+    std::string sTOCFile = mAddOn.sDirectory + "/" + sAddOnName + ".toc";
+    std::ifstream mFile(sTOCFile);
+    if (!mFile.is_open())
+        return;
+
+    while (!mFile.eof())
     {
-        addon mAddOn;
-        mAddOn.bEnabled = true;
-        mAddOn.sMainDirectory = utils::cut(sAddOnDirectory, "/").back();
-        mAddOn.sDirectory = sAddOnDirectory + "/" + sAddOnName;
+        std::string sLine; getline(mFile, sLine);
+        if (sLine.empty())
+            continue;
 
-        std::string sTOCFile = mAddOn.sDirectory + "/" + sAddOnName + ".toc";
-        std::ifstream mFile(sTOCFile);
-
-        if (mFile.is_open())
+        utils::replace(sLine, "\r", "");
+        if (sLine[0] == '#' && sLine[1] == '#')
         {
-            while (!mFile.eof())
+            sLine.erase(0, 2);
+            utils::trim(sLine, ' ');
+            std::vector<std::string> lArgs = utils::cut(sLine, ":", 1);
+            if (lArgs.size() == 2)
             {
-                std::string sLine; getline(mFile, sLine);
-                if (sLine.empty())
-                    continue;
-
-                utils::replace(sLine, "\r", "");
-                if (sLine[0] == '#' && sLine[1] == '#')
+                std::string sKey = lArgs[0];
+                utils::trim(sKey, ' ');
+                std::string sValue = lArgs[1];
+                utils::trim(sValue, ' ');
+                if (sKey == "Interface")
                 {
-                    sLine.erase(0, 2);
-                    utils::trim(sLine, ' ');
-                    std::vector<std::string> lArgs = utils::cut(sLine, ":", 1);
-                    if (lArgs.size() == 2)
-                    {
-                        std::string sKey = lArgs[0];
-                        utils::trim(sKey, ' ');
-                        std::string sValue = lArgs[1];
-                        utils::trim(sValue, ' ');
-                        if (sKey == "Interface")
-                        {
-                            mAddOn.sUIVersion = sValue;
+                    mAddOn.sUIVersion = sValue;
 
-                            if (mAddOn.sUIVersion == sUIVersion_)
-                                mAddOn.bEnabled = true;
-                            else
-                            {
-                                gui::out << gui::warning << "gui::manager : "
-                                    << "Wrong UI version for \"" << sAddOnName << "\" (got : "
-                                    << mAddOn.sUIVersion << ", expected : " << sUIVersion_
-                                    << "). AddOn disabled." << std::endl;
-                                mAddOn.bEnabled = false;
-                            }
-                        }
-                        else if (sKey == "Title")
-                            mAddOn.sName = sValue;
-                        else if (sKey == "Version")
-                            mAddOn.sVersion = sValue;
-                        else if (sKey == "Author")
-                            mAddOn.sAuthor = sValue;
-                        else if (sKey == "SavedVariables")
-                        {
-                            for (auto sVar : utils::cut(sValue, ","))
-                            {
-                                utils::trim(sVar, ' ');
-                                if (!utils::has_no_content(sVar))
-                                    mAddOn.lSavedVariableList.push_back(std::move(sVar));
-                            }
-                        }
+                    if (mAddOn.sUIVersion == sUIVersion_)
+                        mAddOn.bEnabled = true;
+                    else
+                    {
+                        gui::out << gui::warning << "gui::manager : "
+                            << "Wrong UI version for \"" << sAddOnName << "\" (got : "
+                            << mAddOn.sUIVersion << ", expected : " << sUIVersion_
+                            << "). AddOn disabled." << std::endl;
+                        mAddOn.bEnabled = false;
                     }
                 }
-                else
+                else if (sKey == "Title")
+                    mAddOn.sName = sValue;
+                else if (sKey == "Version")
+                    mAddOn.sVersion = sValue;
+                else if (sKey == "Author")
+                    mAddOn.sAuthor = sValue;
+                else if (sKey == "SavedVariables")
                 {
-                    utils::trim(sLine, ' ');
-                    if (sLine.find(".lua") != sLine.npos || sLine.find(".xml") != sLine.npos)
-                        mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
+                    for (auto sVar : utils::cut(sValue, ","))
+                    {
+                        utils::trim(sVar, ' ');
+                        if (!utils::has_no_content(sVar))
+                            mAddOn.lSavedVariableList.push_back(std::move(sVar));
+                    }
                 }
             }
-
-            mFile.close();
-
-            if (mAddOn.sName.empty())
-                gui::out << gui::error << "gui::manager : Missing addon name in " << sTOCFile << "." << std::endl;
-            else
-                lAddOns[sAddOnName] = mAddOn;
+        }
+        else
+        {
+            utils::trim(sLine, ' ');
+            if (sLine.find(".lua") != sLine.npos || sLine.find(".xml") != sLine.npos)
+                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
         }
     }
+
+    mFile.close();
+
+    if (mAddOn.sName.empty())
+        gui::out << gui::error << "gui::manager : Missing addon name in " << sTOCFile << "." << std::endl;
+    else
+        lAddOns[sAddOnName] = mAddOn;
 }
 
 void manager::load_addon_files_(addon* pAddOn)
@@ -657,7 +656,7 @@ void manager::load_addon_directory_(const std::string& sDirectory)
     std::vector<addon*> lAddOnStack;
     bool bCore = false;
 
-    std::map<std::string, addon>& lAddOns = lAddOnList_[sDirectory];
+    auto& lAddOns = lAddOnList_[sDirectory];
 
     std::ifstream mFile(sDirectory + "/addons.txt");
     if (mFile.is_open())

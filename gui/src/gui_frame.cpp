@@ -60,7 +60,7 @@ void frame::render()
             pBackdrop_->render();
 
         // Render child regions
-        for (auto& mLayer : utils::range::value(lLayerList_))
+        for (auto& mLayer : lLayerList_)
         {
             if (mLayer.bDisabled) continue;
 
@@ -504,7 +504,7 @@ void frame::check_position() const
 
 void frame::disable_draw_layer(layer_type mLayerID)
 {
-    layer& mLayer = lLayerList_[mLayerID];
+    layer& mLayer = lLayerList_[static_cast<uint>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = true;
@@ -514,7 +514,7 @@ void frame::disable_draw_layer(layer_type mLayerID)
 
 void frame::enable_draw_layer(layer_type mLayerID)
 {
-    layer& mLayer = lLayerList_[mLayerID];
+    layer& mLayer = lLayerList_[static_cast<uint>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = false;
@@ -1290,14 +1290,14 @@ int l_xml_error(lua_State* pLua)
 
 void frame::on_script(const std::string& sScriptName, event* pEvent)
 {
-    std::map<std::string, script_handler>::const_iterator iterH = lDefinedHandlerList_.find(sScriptName);
+    auto iterH = lDefinedHandlerList_.find(sScriptName);
     if (iterH != lDefinedHandlerList_.end())
     {
         if (iterH->second)
             iterH->second(*this, pEvent);
     }
 
-    std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
+    auto iter = lDefinedScriptList_.find(sScriptName);
     if (iter == lDefinedScriptList_.end())
         return;
 
@@ -1943,20 +1943,20 @@ void frame::update(float fDelta)
     {
         DEBUG_LOG("   Build layers");
         // Clear layers' content
-        for (auto& mLayer : utils::range::value(lLayerList_))
+        for (auto& mLayer : lLayerList_)
             mLayer.lRegionList.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
         for (auto* pRegion : get_regions())
         {
             if (pRegion->get_object_type() != "font_string")
-                lLayerList_[pRegion->get_draw_layer()].lRegionList.push_back(pRegion);
+                lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
         for (auto* pRegion : get_regions())
         {
             if (pRegion->get_object_type() == "font_string")
-                lLayerList_[pRegion->get_draw_layer()].lRegionList.push_back(pRegion);
+                lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
         bBuildLayerList_ = false;
