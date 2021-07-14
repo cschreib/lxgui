@@ -479,7 +479,7 @@ int main(int argc, char* argv[])
         std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
         std::cout << "  Vertex cache supported: " << pGUIRenderer->is_vertex_cache_supported() << std::endl;
         std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
-        std::cout << "  Texture atlas natively supported: " << pGUIRenderer->is_texture_atlas_supported() << std::endl;
+        std::cout << "  Texture atlas supported: " << pGUIRenderer->is_texture_atlas_supported() << std::endl;
         std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
         std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
         std::cout << "  Texture per-vertex color supported: " << pGUIRenderer->is_texture_vertex_color_supported() << std::endl;
