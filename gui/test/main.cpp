@@ -80,8 +80,8 @@ struct main_loop_context
     bool bFocus = true;
     float fDelta = 0.1f;
     timing_clock::time_point mPrevTime;
-    timing_clock::time_point mFirstTime;
     uint uiFrameCount = 0;
+    float fAccumulatedTime = 0.0;
 
     gui::manager* pManager = nullptr;
 
@@ -249,6 +249,7 @@ void main_loop(void* pTypeErasedData)
 #endif
 
     // Update the gui
+    timing_clock::time_point mStart = timing_clock::now();
     mContext.pManager->update(mContext.fDelta);
 
     // Clear the window
@@ -273,6 +274,9 @@ void main_loop(void* pTypeErasedData)
 #elif defined(GLSDL_GUI)
     SDL_GL_SwapWindow(mContext.pWindow);
 #endif
+    timing_clock::time_point mEnd = timing_clock::now();
+    mContext.fAccumulatedTime += std::chrono::duration_cast<std::chrono::microseconds>(
+        mEnd - mStart).count() / 1e6;
 
     timing_clock::time_point mCurrentTime = timing_clock::now();
     mContext.fDelta = std::chrono::duration_cast<std::chrono::microseconds>(
@@ -516,7 +520,20 @@ int main(int argc, char* argv[])
         std::cout << " Reading gui files..." << std::endl;
         pManager->read_files();
 
-        // Create GUI by code :
+        // Create context for the main loop
+        main_loop_context mContext;
+        mContext.pManager = pManager.get();
+
+    #if defined(SDL_GUI)
+        mContext.pRenderer = pRenderer.get();
+    #elif defined(GLSDL_GUI)
+        mContext.pWindow = pWindow.get();
+        mContext.pGLContext = mGLContext.pContext;
+    #elif defined(SFML_GUI) || defined(GLSFML_GUI)
+        mContext.pWindow = &mWindow;
+    #endif
+
+        // Create GUI by code:
 
         // Create the Frame
         // A "root" frame has no parent and is directly owned by the gui::manager.
@@ -557,21 +574,25 @@ int main(int argc, char* argv[])
             "main.cpp", 152 // You can provide the location of the Lua source, for error handling
         );*/
 
-        // Or in C++
-        float update_time = 0.5f, timer = 1.0f;
-        int frames = 0;
+
+        // Or in C++:
+
+        float timer = 1.0f;
         pFrame->define_script("OnUpdate",
-            [=](gui::frame* self, gui::event* event) mutable {
+            [&](gui::frame* self, gui::event* event) mutable {
                 float delta = event->get<float>(0);
                 timer += delta;
-                ++frames;
 
-                if (timer > update_time) {
+                if (timer > 0.5f) {
+                    float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
+
                     gui::font_string* text = self->get_region<gui::font_string>("Text");
-                    text->set_text(U"(created in C++)\nFPS : "+utils::to_ustring(floor(frames/timer)));
+                    text->set_text(U"(created in C++)\nFrame time (us) : "+
+                        utils::to_ustring(std::round(fFrameTime)));
 
                     timer = 0.0f;
-                    frames = 0;
+                    mContext.uiFrameCount = 0;
+                    mContext.fAccumulatedTime = 0;
                 }
             }
         );
@@ -580,20 +601,7 @@ int main(int argc, char* argv[])
         pFrame->notify_loaded();
 
         // Start the main loop
-
-        main_loop_context mContext;
         mContext.mPrevTime = timing_clock::now();
-        mContext.mFirstTime = mContext.mPrevTime;
-        mContext.pManager = pManager.get();
-
-    #if defined(SDL_GUI)
-        mContext.pRenderer = pRenderer.get();
-    #elif defined(GLSDL_GUI)
-        mContext.pWindow = pWindow.get();
-        mContext.pGLContext = mGLContext.pContext;
-    #elif defined(SFML_GUI) || defined(GLSFML_GUI)
-        mContext.pWindow = &mWindow;
-    #endif
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -606,9 +614,7 @@ int main(int argc, char* argv[])
         }
     #endif
 
-        float fTotalTime = std::chrono::duration_cast<std::chrono::microseconds>(
-            timing_clock::now() - mContext.mFirstTime).count() / 1e6;
-        std::cout << "End of loop, mean FPS : " << mContext.uiFrameCount/fTotalTime << std::endl;
+        std::cout << "End of loop." << std::endl;
     }
     catch (const std::exception& e)
     {
