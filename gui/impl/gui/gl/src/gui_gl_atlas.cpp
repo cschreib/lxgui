@@ -6,14 +6,13 @@
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
-#if !defined(WASM)
-
 #if defined(WIN32)
     #define NOMINMAX
     #include <windows.h>
 #endif
 
 #if !defined(WASM)
+    #include <GL/glew.h>
     #if defined(MACOSX)
         #include <OpenGL/gl.h>
     #else
@@ -84,9 +83,16 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
+    uint uiFBO = 0;
+    glGenFramebuffers(1, &uiFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGLMat.get_handle_(), 0);
+
     std::vector<ub32color> lData(mLocation.width()*mLocation.height());
-    glBindTexture(GL_TEXTURE_2D, mGLMat.get_handle_());
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
+    glReadPixels(0, 0, mLocation.width(), mLocation.height(), GL_RGBA, GL_UNSIGNED_BYTE, lData.data());
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDeleteFramebuffers(1, &uiFBO);
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexSubImage2D(GL_TEXTURE_2D, 0,
@@ -119,5 +125,3 @@ std::unique_ptr<gui::atlas_page> atlas::create_page_() const
 }
 }
 }
-
-#endif

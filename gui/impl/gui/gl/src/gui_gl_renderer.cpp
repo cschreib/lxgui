@@ -258,11 +258,7 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
 {
-#if defined(WASM)
-    throw gui::exception("gui::gl::renderer", "WebGL has no native support for texture atlases.");
-#else
     return std::make_shared<gl::atlas>(*this, mFilter);
-#endif
 }
 
 uint renderer::get_texture_max_size() const
@@ -307,13 +303,9 @@ std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, 
     return std::make_shared<gl::font>(sFontFile, uiSize);
 }
 
-bool renderer::is_texture_atlas_natively_supported() const
+bool renderer::is_texture_atlas_supported() const
 {
-#if defined(WASM)
-    return false;
-#else
     return true;
-#endif
 }
 
 bool renderer::is_texture_vertex_color_supported() const

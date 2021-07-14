@@ -5,8 +5,6 @@
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_atlas.hpp>
 
-#if !defined(WASM)
-
 #include <vector>
 #include <memory>
 
@@ -86,7 +84,5 @@ namespace gl
 }
 }
 }
-
-#endif
 
 #endif

@@ -555,7 +555,7 @@ uint renderer::get_texture_max_size() const
     return uiTextureMaxSize_;
 }
 
-bool renderer::is_texture_atlas_natively_supported() const
+bool renderer::is_texture_atlas_supported() const
 {
     return true;
 }

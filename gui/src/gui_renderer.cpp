@@ -1,6 +1,6 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_atlas.hpp"
-#include "lxgui/gui_atlas_default.hpp"
+#include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/utils_string.hpp"
@@ -231,7 +231,7 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
 bool renderer::is_texture_atlas_enabled() const
 {
-    return bTextureAtlasEnabled_;
+    return bTextureAtlasEnabled_ && is_texture_atlas_supported();
 }
 
 void renderer::set_texture_atlas_enabled(bool bEnabled)
@@ -294,15 +294,7 @@ atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter 
 
     if (!pAtlas)
     {
-        if (is_texture_atlas_natively_supported())
-        {
-            pAtlas = create_atlas_(mFilter);
-        }
-        else
-        {
-            pAtlas = std::make_shared<atlas_default>(*this, mFilter);
-        }
-
+        pAtlas = create_atlas_(mFilter);
         lAtlasList_[sBakedAtlasName] = pAtlas;
     }
 

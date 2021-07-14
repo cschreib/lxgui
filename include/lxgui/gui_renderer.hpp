@@ -161,7 +161,7 @@ namespace gui
         *   \note If 'false', texture atlases will be implemented using a generic
         *         solution with render targets.
         */
-        virtual bool is_texture_atlas_natively_supported() const = 0;
+        virtual bool is_texture_atlas_supported() const = 0;
 
         /// Checks if the renderer has texture atlases enabled.
         /** \return 'true' if enabled, 'false' otherwise

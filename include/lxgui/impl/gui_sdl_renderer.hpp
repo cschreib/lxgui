@@ -111,7 +111,7 @@ namespace sdl
         *   \note If 'false', texture atlases will be implemented using a generic
         *         solution with render targets.
         */
-        bool is_texture_atlas_natively_supported() const override;
+        bool is_texture_atlas_supported() const override;
 
         /// Checks if the renderer supports setting colors for each vertex of a textured quad.
         /** \return 'true' if supported, 'false' otherwise
