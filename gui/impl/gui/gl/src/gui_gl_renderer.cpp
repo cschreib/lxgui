@@ -58,14 +58,15 @@ renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[may
 
 std::string renderer::get_name() const
 {
+    std::string sFullVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
 #   if defined(WASM)
-    return "WebGL";
+    return "WebGL (" + sFullVersion + ")";
 #   else
-    return "OpenGL3";
+    return "OpenGL (" + sFullVersion + ")";
 #   endif
 #else
-    return "OpenGL2";
+    return "OpenGL fixed pipeline (" + sFullVersion + ")";
 #endif
 }
 
