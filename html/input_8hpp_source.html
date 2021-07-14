@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
@@ -293,8 +293,8 @@ $(function() {
 <div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        std::array&lt;double, MOUSE_BUTTON_NUMBER&gt; lMouseDelay_;</div>
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        std::array&lt;bool,   MOUSE_BUTTON_NUMBER&gt; lMouseLong_;</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        std::map&lt;std::string, bool&gt; lClickGroupList_;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        std::map&lt;std::string, bool&gt; lForcedClickGroupList_;</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;        std::unordered_map&lt;std::string, bool&gt; lClickGroupList_;</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;        std::unordered_map&lt;std::string, bool&gt; lForcedClickGroupList_;</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <span class="keywordtype">float</span>        fScalingFactor_ = 1.0f;</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keywordtype">float</span>        fMX_ = 0.0f, fMY_ = 0.0f;</div>
@@ -387,7 +387,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1input_1_1manager_html_a4f67e3b34e39a943442495c5d399d6dc"><div class="ttname"><a href="classlxgui_1_1input_1_1manager.html#a4f67e3b34e39a943442495c5d399d6dc">lxgui::input::manager::get_mouse_wheel</a></div><div class="ttdeci">float get_mouse_wheel() const</div><div class="ttdoc">Returns the rolling ammount of the mouse wheel.</div><div class="ttdef"><b>Definition:</b> <a href="input_8cpp_source.html#l00633">input.cpp:633</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:37 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

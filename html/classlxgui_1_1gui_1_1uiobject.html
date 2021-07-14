@@ -486,7 +486,7 @@ Friends</h2></td></tr>
 </ul>
 <p>If you specify two constraints on the same point (for example: <code>TOPLEFT</code> and <code>BOTTOMLEFT</code> both constrain the min X coordinate), the most stringent constraint always wins. Constraints on the midpoints are more subtle however, as they will always be discarded when both the min and max are constrained. For example, consider an object <code>A</code> of fixed size 30x30 and some other object <code>B</code> of fixed size 40x40. If we anchor the <code>RIGHT</code> of <code>A</code> to the <code>LEFT</code> of <code>B</code>, <code>A</code>'s <em>vertical</em> center will be automatically aligned with <code>B</code>'s vertical center. This is the effect of the midpoint constraint. Now, if we further anchor the <code>TOP</code> of <code>A</code> to the <code>TOP</code> of <code>B</code>, we have more than one anchor constraining the vertical extents of <code>A</code> (see "Sizing" above), therefore <code>A</code>'s fixed height of 30 pixels will be ignored from now on. It will shrink to a height of 20 pixels, i.e., the distance between <code>B</code>'s top edge and its vertical center. Finally, if we further anchor the <code>BOTTOM</code> of <code>A</code> to the <code>BOTTOM</code> of <code>B</code>, the constraint on <code>A</code>'s midpoint will be ignored: <code>A</code> will be enlarged to a height of 40 pixels, i.e., the distance between <code>B</code>'s top and bottom edges. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00183">183</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00185">185</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a439db5d0bf0a297a2bac46d1345f2409"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a439db5d0bf0a297a2bac46d1345f2409">&#9670;&nbsp;</a></span>uiobject()</h2>
@@ -1519,7 +1519,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this widget is of the provided type. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this widget is of the provided type </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00429">429</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00431">431</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3321,7 +3321,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00765">765</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00767">767</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3361,7 +3361,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00786">786</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3386,7 +3386,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00729">729</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00731">731</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3410,7 +3410,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00745">745</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00747">747</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3434,7 +3434,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00746">746</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00748">748</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3458,7 +3458,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00732">732</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00734">734</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3482,7 +3482,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00730">730</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3506,7 +3506,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00733">733</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00735">735</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3530,7 +3530,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00727">727</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00729">729</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3554,7 +3554,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00751">751</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00753">753</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3578,7 +3578,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00731">731</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00733">733</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3602,7 +3602,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00694">694</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00696">696</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3626,7 +3626,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00749">749</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00751">751</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3650,7 +3650,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00748">748</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00750">750</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3674,7 +3674,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00746">746</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3698,7 +3698,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00753">753</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00755">755</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3722,7 +3722,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00739">739</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00741">741</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3746,7 +3746,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00742">742</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00744">744</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3770,7 +3770,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00741">741</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00743">743</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3794,7 +3794,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00735">735</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00737">737</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3818,7 +3818,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00740">740</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00742">742</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3842,7 +3842,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00737">737</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00739">739</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3866,7 +3866,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00726">726</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00728">728</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3890,7 +3890,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00719">719</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00721">721</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3914,7 +3914,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00725">725</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00727">727</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3938,7 +3938,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00723">723</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00725">725</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3962,7 +3962,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00721">721</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00723">723</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -3986,7 +3986,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00722">722</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00724">724</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4010,7 +4010,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00724">724</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00726">726</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -4023,7 +4023,7 @@ template&lt;typename ObjectType &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:37 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

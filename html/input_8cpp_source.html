@@ -107,7 +107,7 @@ $(function() {
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="classlxgui_1_1input_1_1manager.html#abbc78c23871fe1d1129eedc4e345e0f5">   37</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1input_1_1manager.html#abbc78c23871fe1d1129eedc4e345e0f5">manager::can_receive_input</a>(<span class="keyword">const</span> std::string&amp; sGroupName)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::map&lt;std::string, bool&gt;::const_iterator iter = lClickGroupList_.find(sGroupName);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">auto</span> iter = lClickGroupList_.find(sGroupName);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span> (iter != lClickGroupList_.end() &amp;&amp; !iter-&gt;second)</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        iter = lForcedClickGroupList_.find(sGroupName);</div>
@@ -1042,7 +1042,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1input_html_a04683760bde02caaf8b7848bbe472fada177f889a69af9ce30f57ad1244d28bdc"><div class="ttname"><a href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fada177f889a69af9ce30f57ad1244d28bdc">lxgui::input::key::K_WEBBACK</a></div><div class="ttdeci">@ K_WEBBACK</div><div class="ttdoc">Web Forward.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:36 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

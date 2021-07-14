@@ -121,21 +121,22 @@ $(function() {
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        std::weak_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ca377cc252dcf520c70a3d4bff621af">get_texture</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    private :</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordtype">float</span> fTextureWidth_ = 0.0f;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">float</span> fTextureHeight_ = 0.0f;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordtype">float</span> fYOffset_ = 0.0f;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize_ = 0u;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a636bb84576cd856708bb57fd867c7e7a">update_texture</a>(std::shared_ptr&lt;gui::material&gt; pMat) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    private :</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        std::shared_ptr&lt;sdl::material&gt; pTexture_;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        std::vector&lt;character_info&gt;    lCharacterList_;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    };</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordtype">float</span> fYOffset_ = 0.0f;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize_ = 0u;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        std::shared_ptr&lt;sdl::material&gt; pTexture_;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        std::vector&lt;character_info&gt;    lCharacterList_;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    };</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;}</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1font_html_a2b57c4bb1e9bdfed7a08355730f7b177"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">lxgui::gui::sdl::font::get_size</a></div><div class="ttdeci">uint get_size() const override</div><div class="ttdoc">Get the size of the font in pixels.</div></div>
@@ -147,6 +148,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1font_html_a4ca377cc252dcf520c70a3d4bff621af"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ca377cc252dcf520c70a3d4bff621af">lxgui::gui::sdl::font::get_texture</a></div><div class="ttdeci">std::weak_ptr&lt; gui::material &gt; get_texture() const override</div><div class="ttdoc">Returns the underlying material to use for rendering.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1font_html_a087b3a47cc8628e87652220806d2059d"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a087b3a47cc8628e87652220806d2059d">lxgui::gui::sdl::font::get_character_uvs</a></div><div class="ttdeci">quad2f get_character_uvs(char32_t uiChar) const override</div><div class="ttdoc">Returns the uv coordinates of a character on the texture.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1font_html_a6755ef59df6737a4c513aa76c6f7f9f1"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a6755ef59df6737a4c513aa76c6f7f9f1">lxgui::gui::sdl::font::get_character_width</a></div><div class="ttdeci">float get_character_width(char32_t uiChar) const override</div><div class="ttdoc">Returns the width of a character in pixels.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sdl_1_1font_html_a636bb84576cd856708bb57fd867c7e7a"><div class="ttname"><a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a636bb84576cd856708bb57fd867c7e7a">lxgui::gui::sdl::font::update_texture</a></div><div class="ttdeci">void update_texture(std::shared_ptr&lt; gui::material &gt; pMat) override</div><div class="ttdoc">Update the material to use for rendering.</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1quad2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad2.html">lxgui::gui::quad2&lt; float &gt;</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1sdl_1_1character__info_html_aab3aa3da79a922c4dcf233a50e9a1684"><div class="ttname"><a href="structlxgui_1_1gui_1_1sdl_1_1character__info.html#aab3aa3da79a922c4dcf233a50e9a1684">lxgui::gui::sdl::character_info::uiCodePoint</a></div><div class="ttdeci">uint uiCodePoint</div><div class="ttdef"><b>Definition:</b> <a href="gui__sdl__font_8hpp_source.html#l00019">gui_sdl_font.hpp:19</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
@@ -158,7 +160,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1sdl_1_1character__info_html_ab901d2d07a6d9f89d16f9bc123aabd95"><div class="ttname"><a href="structlxgui_1_1gui_1_1sdl_1_1character__info.html#ab901d2d07a6d9f89d16f9bc123aabd95">lxgui::gui::sdl::character_info::mUVs</a></div><div class="ttdeci">quad2f mUVs</div><div class="ttdef"><b>Definition:</b> <a href="gui__sdl__font_8hpp_source.html#l00020">gui_sdl_font.hpp:20</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:37 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

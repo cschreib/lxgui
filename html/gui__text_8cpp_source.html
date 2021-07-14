@@ -386,9 +386,9 @@ $(function() {
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1vector2.html">vector2f</a> mOffset(round_to_pixel_(fX), round_to_pixel_(fY));</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160; </div>
 <div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">material</a>* pMat = pFont_-&gt;get_texture().lock().get();</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>())</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>() &amp;&amp; !pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">is_quad_batching_enabled</a>())</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    {</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">render_cache</a>(pMat, *pVertexCache_, <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#aac6ab18ade09275a6a335ea80a334cb3">matrix4f::translation</a>(mOffset));</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a2029515d8f2c89ae383b382206e4dfd7">render_cache</a>(pMat, *pVertexCache_, <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#aac6ab18ade09275a6a335ea80a334cb3">matrix4f::translation</a>(mOffset));</div>
 <div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    }</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    {</div>
@@ -404,7 +404,7 @@ $(function() {
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;            }</div>
 <div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        }</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">render_quads</a>(pMat, lQuadsCopy);</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a23aa4f4561c54e5727dbf20c7b6dda8a">render_quads</a>(pMat, lQuadsCopy);</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
 <div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;}</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
@@ -452,7 +452,7 @@ $(function() {
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    }</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
 <div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">material</a>* pMat = pFont_-&gt;get_texture().lock().get();</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">render_quads</a>(pMat, lQuadsCopy);</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a23aa4f4561c54e5727dbf20c7b6dda8a">render_quads</a>(pMat, lQuadsCopy);</div>
 <div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;}</div>
 <div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160; </div>
 <div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#a68e4297111fbbb8e7746f39415f7636d">  387</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="namespacelxgui_1_1gui.html#a68e4297111fbbb8e7746f39415f7636d">get_format</a>(utils::ustring::const_iterator&amp; iterChar, utils::ustring::const_iterator iterEnd,</div>
@@ -512,8 +512,8 @@ $(function() {
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    <span class="keywordflow">if</span> (!bReady_ || !bUpdateCache_) <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="comment">// Update the line list, read format tags, do word wrapping, ...</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    std::vector&lt;line&gt;      lLineList;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    std::map&lt;uint, format&gt; lFormatList;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    std::vector&lt;line&gt;                lLineList;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    std::unordered_map&lt;uint, format&gt; lFormatList;</div>
 <div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
 <div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <a class="code" href="gui__text_8cpp.html#a5d2f30bd1cbcf49f829a7e8eb6173c06">DEBUG_LOG</a>(<span class="stringliteral">&quot;     Get max line nbr&quot;</span>);</div>
 <div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiMaxLineNbr, uiCounter = 0;</div>
@@ -547,7 +547,7 @@ $(function() {
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;            line mLine;</div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;            mLine.fWidth = 0.0f;</div>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;            std::map&lt;uint, format&gt; lTempFormatList;</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;            std::unordered_map&lt;uint, format&gt; lTempFormatList;</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;            <span class="keywordtype">bool</span> bDone = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;            <a class="code" href="gui__text_8cpp.html#a5d2f30bd1cbcf49f829a7e8eb6173c06">DEBUG_LOG</a>(<span class="stringliteral">&quot;     Read chars&quot;</span>);</div>
@@ -879,115 +879,119 @@ $(function() {
 <div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span> iterChar : <a class="code" href="namespacelxgui_1_1utils_1_1range.html#ade4539ff30e8dee8582c0dc6fcef4280">utils::range::iterator</a>(mLine.sCaption))</div>
 <div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;            {</div>
 <div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;                <span class="comment">// Format our text</span></div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                <span class="keywordflow">if</span> (bFormattingEnabled_ &amp;&amp; lFormatList.find(uiCounter) != lFormatList.end())</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;                <span class="keywordflow">if</span> (bFormattingEnabled_)</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;                {</div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;                    <span class="keyword">const</span> format&amp; mFormat = lFormatList[uiCounter];</div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;                    <span class="keywordflow">switch</span> (mFormat.mColorAction)</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;                    <span class="keyword">auto</span> lFormatIter = lFormatList.find(uiCounter);</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;                    <span class="keywordflow">if</span> (lFormatIter != lFormatList.end())</div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;                    {</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;                        <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2a8c52684db8f49511e9b44471716bf164">color_action::SET</a> :</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;                            mColor = mFormat.mColor;</div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;                        <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2ab5859d8721cfdc0312b2838b9c985bc1">color_action::RESET</a> :</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;                            mColor = <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>;</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;                            <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;                        default : <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;                    }</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;                }</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;                std::array&lt;vertex,4&gt; lVertexList = create_letter_quad_(*iterChar);</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;                {</div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;                    lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;                    lVertexList[i].col = mColor;</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;                }</div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;                lQuadList_.push_back(lVertexList);</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;                ++uiCounter;</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;                        <span class="keyword">const</span> format&amp; mFormat = lFormatIter-&gt;second;</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;                        <span class="keywordflow">switch</span> (mFormat.mColorAction)</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;                        {</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;                            <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2a8c52684db8f49511e9b44471716bf164">color_action::SET</a> :</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;                                mColor = mFormat.mColor;</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;                                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;                            <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2ab5859d8721cfdc0312b2838b9c985bc1">color_action::RESET</a> :</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;                                mColor = <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;                                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;                            default : <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;                        }</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;                    }</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;                }</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160; </div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;                std::array&lt;vertex,4&gt; lVertexList = create_letter_quad_(*iterChar);</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;                <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;                {</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;                    lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;                    lVertexList[i].col = mColor;</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;                }</div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;                <span class="keywordflow">if</span> (*iterChar == U<span class="charliteral">&#39;\n&#39;</span>) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;                lQuadList_.push_back(lVertexList);</div>
 <div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;                <span class="keywordtype">float</span> fKerning = 0.0f;</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;                <span class="keyword">auto</span> iterNext = iterChar + 1;</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;                <span class="keywordflow">if</span> (iterNext != mLine.sCaption.end() &amp;&amp;</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;                    !utils::is_whitespace(*iterNext) &amp;&amp; !utils::is_whitespace(*iterChar))</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;                {</div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;                    fKerning = <a class="code" href="classlxgui_1_1gui_1_1text.html#af9499ffc75d6e8eb9102c3c6894eb863">get_character_kerning</a>(*iterChar, *iterNext);</div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;                }</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160; </div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;                fX += <a class="code" href="classlxgui_1_1gui_1_1text.html#aa7dbed66badd28564639f0a84ae6dc0b">get_character_width</a>(*iterChar) + fKerning + fTracking_;</div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;            }</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160; </div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;            fY += <a class="code" href="classlxgui_1_1gui_1_1text.html#abbfe07b421d6fa792c5d8f6c2145739b">get_line_height</a>()*fLineSpacing_;</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;        }</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    }</div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    {</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;        fW_ = 0.0f;</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;        fH_ = 0.0f;</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    }</div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>())</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    {</div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;        <span class="keywordflow">if</span> (!pVertexCache_)</div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;            pVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160; </div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;        std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadsCopy = lQuadList_;</div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; mQuad : lQuadsCopy)</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;        {</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;            <span class="keywordflow">if</span> (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>)</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;            {</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;                mQuad[i].col = mColor_;</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;            }</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;        }</div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160; </div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;        pVertexCache_-&gt;update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);</div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    }</div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160; </div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    bUpdateCache_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;}</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160; </div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mQuad = pFont_-&gt;get_character_bounds(uiChar)*fScalingFactor_;</div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    mQuad.left = round_to_pixel_(mQuad.left);</div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    mQuad.top = round_to_pixel_(mQuad.top);</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);</div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160; </div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    std::array&lt;vertex,4&gt; lVertexList;</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    lVertexList[0].pos = mQuad.top_left();</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    lVertexList[1].pos = mQuad.top_right();</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    lVertexList[2].pos = mQuad.bottom_right();</div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    lVertexList[3].pos = mQuad.bottom_left();</div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160; </div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mUVs = pFont_-&gt;get_character_uvs(uiChar);</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    lVertexList[0].uvs = mUVs.top_left();</div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    lVertexList[1].uvs = mUVs.top_right();</div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    lVertexList[2].uvs = mUVs.bottom_right();</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    lVertexList[3].uvs = mUVs.bottom_left();</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160; </div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keywordflow">return</span> lVertexList;</div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;}</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160; </div>
-<div class="line"><a name="l00903"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">  903</a></span>&#160;<a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">text::create_letter_quad</a>(char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mOutput;</div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#a3d5403530ec8570e527ec4bec092b13a">mat</a> = pFont_-&gt;get_texture().lock();</div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617">v</a> = create_letter_quad_(uiChar);</div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160; </div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <span class="keywordflow">return</span> mOutput;</div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;}</div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160; </div>
-<div class="line"><a name="l00912"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">  912</a></span>&#160;<span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">text::get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    update_();</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    <span class="keywordflow">return</span> lQuadList_[uiIndex];</div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;}</div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;}</div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;}</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;                ++uiCounter;</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;                <span class="keywordflow">if</span> (*iterChar == U<span class="charliteral">&#39;\n&#39;</span>) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160; </div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;                <span class="keywordtype">float</span> fKerning = 0.0f;</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;                <span class="keyword">auto</span> iterNext = iterChar + 1;</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;                <span class="keywordflow">if</span> (iterNext != mLine.sCaption.end() &amp;&amp;</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;                    !utils::is_whitespace(*iterNext) &amp;&amp; !utils::is_whitespace(*iterChar))</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;                {</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;                    fKerning = <a class="code" href="classlxgui_1_1gui_1_1text.html#af9499ffc75d6e8eb9102c3c6894eb863">get_character_kerning</a>(*iterChar, *iterNext);</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;                }</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;                fX += <a class="code" href="classlxgui_1_1gui_1_1text.html#aa7dbed66badd28564639f0a84ae6dc0b">get_character_width</a>(*iterChar) + fKerning + fTracking_;</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;            }</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160; </div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;            fY += <a class="code" href="classlxgui_1_1gui_1_1text.html#abbfe07b421d6fa792c5d8f6c2145739b">get_line_height</a>()*fLineSpacing_;</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;        }</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    }</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    {</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;        fW_ = 0.0f;</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;        fH_ = 0.0f;</div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    }</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160; </div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>() &amp;&amp; !pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">is_quad_batching_enabled</a>())</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    {</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;        <span class="keywordflow">if</span> (!pVertexCache_)</div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;            pVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160; </div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;        std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadsCopy = lQuadList_;</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; mQuad : lQuadsCopy)</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;        {</div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;            <span class="keywordflow">if</span> (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>)</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;            {</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;                mQuad[i].col = mColor_;</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;            }</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;        }</div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160; </div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;        pVertexCache_-&gt;update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    }</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160; </div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    bUpdateCache_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;}</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160; </div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mQuad = pFont_-&gt;get_character_bounds(uiChar)*fScalingFactor_;</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    mQuad.left = round_to_pixel_(mQuad.left);</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    mQuad.top = round_to_pixel_(mQuad.top);</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    std::array&lt;vertex,4&gt; lVertexList;</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;    lVertexList[0].pos = mQuad.top_left();</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;    lVertexList[1].pos = mQuad.top_right();</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    lVertexList[2].pos = mQuad.bottom_right();</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    lVertexList[3].pos = mQuad.bottom_left();</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160; </div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mUVs = pFont_-&gt;get_character_uvs(uiChar);</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    lVertexList[0].uvs = mUVs.top_left();</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    lVertexList[1].uvs = mUVs.top_right();</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    lVertexList[2].uvs = mUVs.bottom_right();</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    lVertexList[3].uvs = mUVs.bottom_left();</div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160; </div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    <span class="keywordflow">return</span> lVertexList;</div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;}</div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
+<div class="line"><a name="l00907"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">  907</a></span>&#160;<a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">text::create_letter_quad</a>(char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mOutput;</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#a3d5403530ec8570e527ec4bec092b13a">mat</a> = pFont_-&gt;get_texture().lock();</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617">v</a> = create_letter_quad_(uiChar);</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160; </div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    <span class="keywordflow">return</span> mOutput;</div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;}</div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
+<div class="line"><a name="l00916"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">  916</a></span>&#160;<span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">text::get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    update_();</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    <span class="keywordflow">return</span> lQuadList_[uiIndex];</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;}</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160; </div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;}</div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a015791420a86dd9f8bdcaf76466c93b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">lxgui::gui::quad2f</a></div><div class="ttdeci">quad2&lt; float &gt; quad2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__quad2_8hpp_source.html#l00160">gui_quad2.hpp:160</a></div></div>
 <div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
@@ -995,7 +999,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_acc084764c66c0a8edbc32d0445fd5d5d"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#acc084764c66c0a8edbc32d0445fd5d5d">lxgui::gui::text::set_box_width</a></div><div class="ttdeci">void set_box_width(float fBoxW)</div><div class="ttdoc">Sets the width of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00088">gui_text.cpp:88</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a822189712a4b311440400167d67de7a5a21507b40c80068eda19865706fdc2403"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5a21507b40c80068eda19865706fdc2403">lxgui::gui::text::alignment::RIGHT</a></div><div class="ttdeci">@ RIGHT</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a55796f8ca2e6fda95e0058c17c05af42"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a55796f8ca2e6fda95e0058c17c05af42">lxgui::gui::renderer::render_quads</a></div><div class="ttdeci">virtual void render_quads(const material *pMaterial, const std::vector&lt; std::array&lt; vertex, 4 &gt;&gt; &amp;lQuadList) const =0</div><div class="ttdoc">Renders a set of quads.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_abe6aac465376c8ca5a177c10d62e5049"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#abe6aac465376c8ca5a177c10d62e5049">lxgui::gui::color::r</a></div><div class="ttdeci">channel r</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
 <div class="ttc" id="agui__sprite_8hpp_html"><div class="ttname"><a href="gui__sprite_8hpp.html">gui_sprite.hpp</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1matrix4f_html_aac6ab18ade09275a6a335ea80a334cb3"><div class="ttname"><a href="structlxgui_1_1gui_1_1matrix4f.html#aac6ab18ade09275a6a335ea80a334cb3">lxgui::gui::matrix4f::translation</a></div><div class="ttdeci">static matrix4f translation(const vector2f &amp;dx)</div><div class="ttdef"><b>Definition:</b> <a href="gui__matrix4_8cpp_source.html#l00032">gui_matrix4.cpp:32</a></div></div>
@@ -1011,7 +1014,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a1fa19a54decf7547194c7350a828737fa6705777b712ee811e76fb07162081d63"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa6705777b712ee811e76fb07162081d63">lxgui::gui::text::vertical_alignment::TOP</a></div><div class="ttdeci">@ TOP</div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a68e4297111fbbb8e7746f39415f7636d"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a68e4297111fbbb8e7746f39415f7636d">lxgui::gui::get_format</a></div><div class="ttdeci">bool get_format(utils::ustring::const_iterator &amp;iterChar, utils::ustring::const_iterator iterEnd, text::format &amp;mFormat)</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00387">gui_text.cpp:387</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_ab9665c06bc9a32a2f7ca50ba1d600e36"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#ab9665c06bc9a32a2f7ca50ba1d600e36">lxgui::gui::text::get_tracking</a></div><div class="ttdeci">float get_tracking() const</div><div class="ttdoc">Returns this text's tracking.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00250">gui_text.cpp:250</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00016">gui_material.hpp:16</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00025">gui_material.hpp:25</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a3492b4c32e4c85abb07be9d77d522f01"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a3492b4c32e4c85abb07be9d77d522f01">lxgui::gui::color::a</a></div><div class="ttdeci">channel a</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a1fa19a54decf7547194c7350a828737f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737f">lxgui::gui::text::vertical_alignment</a></div><div class="ttdeci">vertical_alignment</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8hpp_source.html#l00052">gui_text.hpp:52</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_afadb0bd0db200a8daded9e100339a65e"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#afadb0bd0db200a8daded9e100339a65e">lxgui::gui::text::set_scaling_factor</a></div><div class="ttdeci">void set_scaling_factor(float fScalingFactor)</div><div class="ttdoc">Set the scaling factor to use when rendering glyphs.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00036">gui_text.cpp:36</a></div></div>
@@ -1023,9 +1026,9 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a31f17ba8f05283b2c533e7a228ae1cbf"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a31f17ba8f05283b2c533e7a228ae1cbf">lxgui::gui::text::get_remove_starting_spaces</a></div><div class="ttdeci">bool get_remove_starting_spaces() const</div><div class="ttdoc">Checks if starting spaces removing is active.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00278">gui_text.cpp:278</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a4bf5aef3cbd71d40a20db6f5507c0adf"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a4bf5aef3cbd71d40a20db6f5507c0adf">lxgui::gui::text::set_line_spacing</a></div><div class="ttdeci">void set_line_spacing(float fLineSpacing)</div><div class="ttdoc">Sets this text's line spacing.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00255">gui_text.cpp:255</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aca9c8add29980915ddf04b59d7a108d2a8c52684db8f49511e9b44471716bf164"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2a8c52684db8f49511e9b44471716bf164">lxgui::gui::text::color_action::SET</a></div><div class="ttdeci">@ SET</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a9d77a8951b29d49f6660b20c8c18b63f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">lxgui::gui::text::create_letter_quad</a></div><div class="ttdeci">quad create_letter_quad(char32_t uiChar) const</div><div class="ttdoc">Creates a quad that contains the provided character.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00903">gui_text.cpp:903</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a9d77a8951b29d49f6660b20c8c18b63f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">lxgui::gui::text::create_letter_quad</a></div><div class="ttdeci">quad create_letter_quad(char32_t uiChar) const</div><div class="ttdoc">Creates a quad that contains the provided character.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00907">gui_text.cpp:907</a></div></div>
 <div class="ttc" id="agui__matrix4_8hpp_html"><div class="ttname"><a href="gui__matrix4_8hpp.html">gui_matrix4.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a0ab59dc9d28b6abf80b70f3de3dbc45c"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">lxgui::gui::text::get_letter_quad</a></div><div class="ttdeci">const std::array&lt; vertex, 4 &gt; &amp; get_letter_quad(uint uiIndex) const</div><div class="ttdoc">Returns the quad for the letter at the provided index (position, texture coords, color).</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00912">gui_text.cpp:912</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a0ab59dc9d28b6abf80b70f3de3dbc45c"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">lxgui::gui::text::get_letter_quad</a></div><div class="ttdeci">const std::array&lt; vertex, 4 &gt; &amp; get_letter_quad(uint uiIndex) const</div><div class="ttdoc">Returns the quad for the letter at the provided index (position, texture coords, color).</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00916">gui_text.cpp:916</a></div></div>
 <div class="ttc" id="agui__material_8hpp_html"><div class="ttname"><a href="gui__material_8hpp.html">gui_material.hpp</a></div></div>
 <div class="ttc" id="agui__text_8cpp_html_a5d2f30bd1cbcf49f829a7e8eb6173c06"><div class="ttname"><a href="gui__text_8cpp.html#a5d2f30bd1cbcf49f829a7e8eb6173c06">DEBUG_LOG</a></div><div class="ttdeci">#define DEBUG_LOG(msg)</div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
@@ -1038,14 +1041,15 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1utils_1_1range_html_ade4539ff30e8dee8582c0dc6fcef4280"><div class="ttname"><a href="namespacelxgui_1_1utils_1_1range.html#ade4539ff30e8dee8582c0dc6fcef4280">lxgui::utils::range::iterator</a></div><div class="ttdeci">range_impl::iterator_range&lt; T &gt; iterator(T &amp;lContainer)</div><div class="ttdoc">Expose the iterator rather than the element.</div><div class="ttdef"><b>Definition:</b> <a href="utils__range_8hpp_source.html#l00094">utils_range.hpp:94</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a672377ce56e148c4441b58eb32958032"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a672377ce56e148c4441b58eb32958032">lxgui::gui::text::set_dimensions</a></div><div class="ttdeci">void set_dimensions(float fW, float fH)</div><div class="ttdoc">Sets the dimensions of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00079">gui_text.cpp:79</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a7981ae191bd3d8ae10886665f0b85ad0"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a7981ae191bd3d8ae10886665f0b85ad0">lxgui::gui::text::set_tracking</a></div><div class="ttdeci">void set_tracking(float fTracking)</div><div class="ttdoc">Sets this text's tracking.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00241">gui_text.cpp:241</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a2029515d8f2c89ae383b382206e4dfd7"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a2029515d8f2c89ae383b382206e4dfd7">lxgui::gui::renderer::render_cache</a></div><div class="ttdeci">void render_cache(const material *pMaterial, const vertex_cache &amp;mCache, const matrix4f &amp;mModelTransform=matrix4f::IDENTITY) const</div><div class="ttdoc">Renders a vertex cache.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00169">gui_renderer.cpp:169</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00147">gui_vector2.hpp:147</a></div></div>
 <div class="ttc" id="autils__range_8hpp_html"><div class="ttname"><a href="utils__range_8hpp.html">utils_range.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_af9499ffc75d6e8eb9102c3c6894eb863"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#af9499ffc75d6e8eb9102c3c6894eb863">lxgui::gui::text::get_character_kerning</a></div><div class="ttdeci">float get_character_kerning(char32_t uiChar1, char32_t uiChar2) const</div><div class="ttdoc">Returns the kerning between two characters.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00208">gui_text.cpp:208</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a23aa4f4561c54e5727dbf20c7b6dda8a"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a23aa4f4561c54e5727dbf20c7b6dda8a">lxgui::gui::renderer::render_quads</a></div><div class="ttdeci">void render_quads(const material *pMaterial, const std::vector&lt; std::array&lt; vertex, 4 &gt;&gt; &amp;lQuadList) const</div><div class="ttdoc">Renders a set of quads.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00086">gui_renderer.cpp:86</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_abd1d346eaa1812f4a0411e1e4767014f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#abd1d346eaa1812f4a0411e1e4767014f">lxgui::gui::text::set_alignment</a></div><div class="ttdeci">void set_alignment(const alignment &amp;mAlign)</div><div class="ttdoc">Sets text alignment.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00213">gui_text.cpp:213</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a1d3283a8f05b1d16df0ca7e1b7500735"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a1d3283a8f05b1d16df0ca7e1b7500735">lxgui::gui::text::get_line_spacing</a></div><div class="ttdeci">float get_line_spacing() const</div><div class="ttdoc">Returns this text's line spacing.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00264">gui_text.cpp:264</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a9b998ee04d3ce5de3b8c81aa5ce70076"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a9b998ee04d3ce5de3b8c81aa5ce70076">lxgui::gui::text::get_box_height</a></div><div class="ttdeci">float get_box_height() const</div><div class="ttdoc">Returns the height of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00125">gui_text.cpp:125</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_abdc929ef9888c48775f7456d71ab9ebe"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#abdc929ef9888c48775f7456d71ab9ebe">lxgui::gui::text::get_num_lines</a></div><div class="ttdeci">uint get_num_lines() const</div><div class="ttdoc">Returns the number of text lines.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00146">gui_text.cpp:146</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_ab869ebda568d50c8ccc9cc69188f35c8"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#ab869ebda568d50c8ccc9cc69188f35c8">lxgui::gui::renderer::render_cache</a></div><div class="ttdeci">virtual void render_cache(const material *pMaterial, const vertex_cache &amp;mCache, const matrix4f &amp;mModelTransform=matrix4f::IDENTITY) const =0</div><div class="ttdoc">Renders a vertex cache.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a52ad185fb30c71b881b12f7099e647c8"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a52ad185fb30c71b881b12f7099e647c8">lxgui::gui::color::g</a></div><div class="ttdeci">channel g</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a2761e07265c28187a053738ac1b18c49"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a2761e07265c28187a053738ac1b18c49">lxgui::gui::text::get_box_width</a></div><div class="ttdeci">float get_box_width() const</div><div class="ttdoc">Returns the width of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00120">gui_text.cpp:120</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a6b3983cc988d72c10d17b39b6c06a86b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a6b3983cc988d72c10d17b39b6c06a86b">lxgui::gui::text::set_remove_starting_spaces</a></div><div class="ttdeci">void set_remove_starting_spaces(bool bRemoveStartingSpaces)</div><div class="ttdoc">Allows removal of a line's starting spaces.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00269">gui_text.cpp:269</a></div></div>
@@ -1053,11 +1057,12 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a37b76134e2746e9336ffcc8565e25085"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">lxgui::gui::renderer::create_vertex_cache</a></div><div class="ttdeci">virtual std::shared_ptr&lt; vertex_cache &gt; create_vertex_cache(gui::vertex_cache::type mType) const =0</div><div class="ttdoc">Creates a new empty vertex cache.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_ade163447c75c3e49736b7af8966ae10c"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#ade163447c75c3e49736b7af8966ae10c">lxgui::gui::text::get_text</a></div><div class="ttdeci">const utils::ustring &amp; get_text() const</div><div class="ttdoc">Returns the text that will be rendered (unicode character set).</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00058">gui_text.cpp:58</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a81b1799bf4d5a8e12799775378bc7138"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a81b1799bf4d5a8e12799775378bc7138">lxgui::gui::text::get_height</a></div><div class="ttdeci">float get_height() const</div><div class="ttdoc">Returns the height of the rendered text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00113">gui_text.cpp:113</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_adef82e16de48846f07b32d66ec385e9b"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">lxgui::gui::renderer::is_vertex_cache_enabled</a></div><div class="ttdeci">bool is_vertex_cache_enabled() const</div><div class="ttdoc">Checks if the renderer has enabled support for vertex caches.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00092">gui_renderer.cpp:92</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_adef82e16de48846f07b32d66ec385e9b"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">lxgui::gui::renderer::is_vertex_cache_enabled</a></div><div class="ttdeci">bool is_vertex_cache_enabled() const</div><div class="ttdoc">Checks if the renderer has enabled support for vertex caches.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00267">gui_renderer.cpp:267</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a3d8ee187ee3c4de4d43208ecd3d6fe75"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">lxgui::gui::color::EMPTY</a></div><div class="ttdeci">static const color EMPTY</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00047">gui_color.hpp:47</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aebbb5213b13fdad1f7b6a52998fe8d17"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aebbb5213b13fdad1f7b6a52998fe8d17">lxgui::gui::text::render_ex</a></div><div class="ttdeci">void render_ex(float fX, float fY, float fRot, float fHScale=1.0f, float fVScale=1.0f) const</div><div class="ttdoc">Deforms this text and render it on the current render target.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00340">gui_text.cpp:340</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1text_1_1format_html_ad7098d28fcb5e1e7619fea3323a8a529"><div class="ttname"><a href="structlxgui_1_1gui_1_1text_1_1format.html#ad7098d28fcb5e1e7619fea3323a8a529">lxgui::gui::text::format::mColor</a></div><div class="ttdeci">color mColor</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8hpp_source.html#l00041">gui_text.hpp:41</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_a1425d8c572c71b7e320e5366098c9d81"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">lxgui::gui::renderer::is_quad_batching_enabled</a></div><div class="ttdeci">bool is_quad_batching_enabled() const</div><div class="ttdoc">Checks if the renderer has quad render batching enabled.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00180">gui_renderer.cpp:180</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html">lxgui::gui::renderer</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8hpp_source.html#l00026">gui_renderer.hpp:26</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aed9e943075974c1b401ce53acd94e295"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aed9e943075974c1b401ce53acd94e295">lxgui::gui::text::text</a></div><div class="ttdeci">text(const renderer *pRenderer, std::shared_ptr&lt; gui::font &gt; pFont)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00019">gui_text.cpp:19</a></div></div>
@@ -1077,7 +1082,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a42015b3194ce8492336f4adce570d73b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a42015b3194ce8492336f4adce570d73b">lxgui::gui::text::get_width</a></div><div class="ttdeci">float get_width() const</div><div class="ttdoc">Returns the width of the rendered text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00106">gui_text.cpp:106</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:36 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

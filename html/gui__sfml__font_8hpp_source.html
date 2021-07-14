@@ -114,18 +114,21 @@ $(function() {
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::weak_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">get_texture</a>() <span class="keyword">const override</span>;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    private :</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        sf::Font                        mFont_;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>                            uiSize_ = 0u;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>                            uiSizeSFML_ = 0u;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        std::shared_ptr&lt;sfml::material&gt; pTexture_;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    };</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">update_texture</a>(std::shared_ptr&lt;gui::material&gt; pMat) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    private :</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        sf::Font                        mFont_;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>                            uiSize_ = 0u;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>                            uiSizeSFML_ = 0u;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        std::shared_ptr&lt;sfml::material&gt; pTexture_;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    };</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
 <div class="ttc" id="agui__sfml__material_8hpp_html"><div class="ttname"><a href="gui__sfml__material_8hpp.html">gui_sfml_material.hpp</a></div></div>
@@ -143,9 +146,10 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1font_html_a84cbb12a499689e54d67cbb4b982f381"><div class="ttname"><a href="classlxgui_1_1gui_1_1font.html#a84cbb12a499689e54d67cbb4b982f381">lxgui::gui::font::font</a></div><div class="ttdeci">font()=default</div><div class="ttdoc">Constructor.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1font_html_ae9709020d9306717699298eed2afdeab"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font::get_size</a></div><div class="ttdeci">uint get_size() const override</div><div class="ttdoc">Get the size of the font in pixels.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1font_html_a2ae4eda8edd9def2e39beb25129fd2f0"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1font.html#a2ae4eda8edd9def2e39beb25129fd2f0">lxgui::gui::sfml::font::get_character_height</a></div><div class="ttdeci">float get_character_height(char32_t uiChar) const override</div><div class="ttdoc">Returns the height of a character in pixels.</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1sfml_1_1font_html_a3747bb1ab237be6518a81237db210897"><div class="ttname"><a href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">lxgui::gui::sfml::font::update_texture</a></div><div class="ttdeci">void update_texture(std::shared_ptr&lt; gui::material &gt; pMat) override</div><div class="ttdoc">Update the material to use for rendering.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:31 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:37 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

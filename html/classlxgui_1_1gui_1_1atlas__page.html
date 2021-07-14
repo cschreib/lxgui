@@ -85,10 +85,9 @@ Inheritance diagram for lxgui::gui::atlas_page:</div>
  <div class="center">
   <img src="classlxgui_1_1gui_1_1atlas__page.png" usemap="#lxgui::gui::atlas_5Fpage_map" alt=""/>
   <map id="lxgui::gui::atlas_5Fpage_map" name="lxgui::gui::atlas_5Fpage_map">
-<area href="classlxgui_1_1gui_1_1atlas__page__default.html" title="Default implementation for atlas_page." alt="lxgui::gui::atlas_page_default" shape="rect" coords="0,56,173,80"/>
-<area href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::gl::atlas_page" shape="rect" coords="183,56,356,80"/>
-<area href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::sdl::atlas_page" shape="rect" coords="366,56,539,80"/>
-<area href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::sfml::atlas_page" shape="rect" coords="549,56,722,80"/>
+<area href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::gl::atlas_page" shape="rect" coords="0,56,156,80"/>
+<area href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::sdl::atlas_page" shape="rect" coords="166,56,322,80"/>
+<area href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html" title="A single texture holding multiple materials for efficient rendering." alt="lxgui::gui::sfml::atlas_page" shape="rect" coords="332,56,488,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -106,6 +105,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3e18f0116f81fc3702c8ec8cc652f8ba"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#a3e18f0116f81fc3702c8ec8cc652f8ba">add_material</a> (const std::string &amp;sFileName, const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;mMat)</td></tr>
 <tr class="memdesc:a3e18f0116f81fc3702c8ec8cc652f8ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1atlas__page.html#a3e18f0116f81fc3702c8ec8cc652f8ba">More...</a><br /></td></tr>
 <tr class="separator:a3e18f0116f81fc3702c8ec8cc652f8ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c46f91b48b8a8a50dbbdee07a52d8fa"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#a2c46f91b48b8a8a50dbbdee07a52d8fa">fetch_font</a> (const std::string &amp;sFontName) const</td></tr>
+<tr class="memdesc:a2c46f91b48b8a8a50dbbdee07a52d8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a font in this page (nullptr if not found).  <a href="classlxgui_1_1gui_1_1atlas__page.html#a2c46f91b48b8a8a50dbbdee07a52d8fa">More...</a><br /></td></tr>
+<tr class="separator:a2c46f91b48b8a8a50dbbdee07a52d8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4da772a491a6ae2fd1a189d271243ac9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#a4da772a491a6ae2fd1a189d271243ac9">add_font</a> (const std::string &amp;sFontName, std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt; pFont)</td></tr>
+<tr class="memdesc:a4da772a491a6ae2fd1a189d271243ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new font from a texture file.  <a href="classlxgui_1_1gui_1_1atlas__page.html#a4da772a491a6ae2fd1a189d271243ac9">More...</a><br /></td></tr>
+<tr class="separator:a4da772a491a6ae2fd1a189d271243ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afec76b71bb7cd93052a7c2f9a124bd1d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">empty</a> () const</td></tr>
 <tr class="memdesc:afec76b71bb7cd93052a7c2f9a124bd1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this page is empty (contains no materials).  <a href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">More...</a><br /></td></tr>
 <tr class="separator:afec76b71bb7cd93052a7c2f9a124bd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,7 +136,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>A single texture holding multiple materials for efficient rendering. </p>
 <p>This is an abstract class that must be implemented and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8hpp_source.html#l00024">24</a> of file <a class="el" href="gui__atlas_8hpp_source.html">gui_atlas.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__atlas_8hpp_source.html">gui_atlas.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adeb9867ed88f9d88741a734563d82adc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adeb9867ed88f9d88741a734563d82adc">&#9670;&nbsp;</a></span>atlas_page()</h2>
@@ -159,7 +164,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00012">12</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00013">13</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
 
 </div>
 </div>
@@ -193,6 +198,46 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4da772a491a6ae2fd1a189d271243ac9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4da772a491a6ae2fd1a189d271243ac9">&#9670;&nbsp;</a></span>add_font()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::atlas_page::add_font </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFontName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">gui::font</a> &gt;&#160;</td>
+          <td class="paramname"><em>pFont</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Creates a new font from a texture file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFontName</td><td>The name of the file </td></tr>
+    <tr><td class="paramname">mFont</td><td>The font to add to this page </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new font (or nullptr if the font could not fit) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00064">64</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a3e18f0116f81fc3702c8ec8cc652f8ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3e18f0116f81fc3702c8ec8cc652f8ba">&#9670;&nbsp;</a></span>add_material()</h2>
 
@@ -223,13 +268,13 @@ Protected Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sFileName</td><td>The name of the file </td></tr>
+    <tr><td class="paramname">mMat</td><td>The material to add to this page </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Supported texture formats are defined by implementation. The gui library is completely unaware of this. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material (or nullptr if the material could not fit) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00028">28</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00029">29</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
 
 </div>
 </div>
@@ -277,7 +322,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A new material pointing to inside this page </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#a212d931950ce51a0ad8b1382c7761e14">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#a4c98acb1040f94348239d1fcd46263ac">lxgui::gui::gl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#ae8c7d7e93d4ea3cc754cfd321bb450f0">lxgui::gui::sfml::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1atlas__page__default.html#a10335e0bb5bd930f800443a0537ef48f">lxgui::gui::atlas_page_default</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#a212d931950ce51a0ad8b1382c7761e14">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#a4c98acb1040f94348239d1fcd46263ac">lxgui::gui::gl::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#ae8c7d7e93d4ea3cc754cfd321bb450f0">lxgui::gui::sfml::atlas_page</a>.</p>
 
 </div>
 </div>
@@ -299,7 +344,36 @@ Protected Attributes</h2></td></tr>
 <p>Checks if this page is empty (contains no materials). </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the page is empty, 'false' otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00049">49</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00088">88</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a2c46f91b48b8a8a50dbbdee07a52d8fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c46f91b48b8a8a50dbbdee07a52d8fa">&#9670;&nbsp;</a></span>fetch_font()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1font.html">font</a> &gt; lxgui::gui::atlas_page::fetch_font </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sFontName</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find a font in this page (nullptr if not found). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sFontName</td><td>The name+size of the font </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The font (nullptr if not found) </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00050">50</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
 
 </div>
 </div>
@@ -328,7 +402,7 @@ Protected Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The material (nullptr if not found) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00014">14</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8cpp_source.html#l00015">15</a> of file <a class="el" href="gui__atlas_8cpp_source.html">gui_atlas.cpp</a>.</p>
 
 </div>
 </div>
@@ -358,7 +432,7 @@ Protected Attributes</h2></td></tr>
 <p>Return the height of this page (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>The height of this page (in pixels) </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#ace49a57a882e65a1f84304fb271ae2ea">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#ad487194f6b94186c80364f5b8ac52508">lxgui::gui::gl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#ae51da51785fd1e661ef70aee9ce02b51">lxgui::gui::sfml::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1atlas__page__default.html#ac9f5194ff48879dda6ef389ca60228b5">lxgui::gui::atlas_page_default</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#ace49a57a882e65a1f84304fb271ae2ea">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#ad487194f6b94186c80364f5b8ac52508">lxgui::gui::gl::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#ae51da51785fd1e661ef70aee9ce02b51">lxgui::gui::sfml::atlas_page</a>.</p>
 
 </div>
 </div>
@@ -388,7 +462,7 @@ Protected Attributes</h2></td></tr>
 <p>Return the width of this page (in pixels). </p>
 <dl class="section return"><dt>Returns</dt><dd>The width of this page (in pixels) </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#a3581820fcf85a7798ce1145df400619a">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#a5e14b37e484d5e8f18982864e621d938">lxgui::gui::gl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#a4f7c01976a9ff3380eaa9a6fbaca6243">lxgui::gui::sfml::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1atlas__page__default.html#a4f23fff1f9b3bb1fd7f1707a32731a8d">lxgui::gui::atlas_page_default</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#a3581820fcf85a7798ce1145df400619a">lxgui::gui::sdl::atlas_page</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#a5e14b37e484d5e8f18982864e621d938">lxgui::gui::gl::atlas_page</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#a4f7c01976a9ff3380eaa9a6fbaca6243">lxgui::gui::sfml::atlas_page</a>.</p>
 
 </div>
 </div>
@@ -413,7 +487,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__atlas_8hpp_source.html#l00073">73</a> of file <a class="el" href="gui__atlas_8hpp_source.html">gui_atlas.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__atlas_8hpp_source.html#l00086">86</a> of file <a class="el" href="gui__atlas_8hpp_source.html">gui_atlas.hpp</a>.</p>
 
 </div>
 </div>
@@ -424,7 +498,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:37 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

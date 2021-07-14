@@ -113,6 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a82b3eba401e2dfc6f66e9e05a3d7ce0b"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">get_texture</a> () const override</td></tr>
 <tr class="memdesc:a82b3eba401e2dfc6f66e9e05a3d7ce0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the underlying material to use for rendering.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">More...</a><br /></td></tr>
 <tr class="separator:a82b3eba401e2dfc6f66e9e05a3d7ce0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3747bb1ab237be6518a81237db210897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">update_texture</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt; pMat) override</td></tr>
+<tr class="memdesc:a3747bb1ab237be6518a81237db210897"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the material to use for rendering.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">More...</a><br /></td></tr>
+<tr class="separator:a3747bb1ab237be6518a81237db210897"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A texture containing characters. </p>
@@ -416,13 +419,49 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3747bb1ab237be6518a81237db210897"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3747bb1ab237be6518a81237db210897">&#9670;&nbsp;</a></span>update_texture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::sfml::font::update_texture </td>
+          <td>(</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td>
+          <td class="paramname"><em>pMat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update the material to use for rendering. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pMat</td><td>The material to use for rendering </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1font.html#adeaf5483a81cfdf5b9f5d7e9a1b1b642">lxgui::gui::font</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__sfml__font_8hpp_source.html">gui_sfml_font.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:38 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

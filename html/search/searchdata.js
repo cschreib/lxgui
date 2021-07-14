@@ -6,9 +6,9 @@ var indexSectionsWithContent =
   3: "gilux",
   4: "abcdefghiklmnopqrstuvwz~",
   5: "abcdefghiklmnoprstuvwxyz",
-  6: "bcdefhilmpqrsuv",
+  6: "bcdefilmpqrsuv",
   7: "abcfklmostvw",
-  8: "abcdfhklmnopqrstuvxy",
+  8: "abcdefhklmnopqrstuvxy",
   9: "bdf",
   10: "dlms",
   11: "l"

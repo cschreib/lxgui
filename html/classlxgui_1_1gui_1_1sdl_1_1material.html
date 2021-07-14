@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ea2ecf4ecfc6e5d30c3a1c18448ba35"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a4ea2ecf4ecfc6e5d30c3a1c18448ba35">get_canvas_height</a> () const override</td></tr>
 <tr class="memdesc:a4ea2ecf4ecfc6e5d30c3a1c18448ba35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the physical height in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a4ea2ecf4ecfc6e5d30c3a1c18448ba35">More...</a><br /></td></tr>
 <tr class="separator:a4ea2ecf4ecfc6e5d30c3a1c18448ba35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa11392b29d9d86106ea43b7bc2ca8a17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#aa11392b29d9d86106ea43b7bc2ca8a17">uses_same_texture</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &amp;mOther) const override</td></tr>
+<tr class="memdesc:aa11392b29d9d86106ea43b7bc2ca8a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if another material is based on the same texture as the current material.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#aa11392b29d9d86106ea43b7bc2ca8a17">More...</a><br /></td></tr>
+<tr class="separator:aa11392b29d9d86106ea43b7bc2ca8a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a875d497ec505b72444d8f09b6b974f78"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a875d497ec505b72444d8f09b6b974f78">set_dimensions</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight)</td></tr>
 <tr class="memdesc:a875d497ec505b72444d8f09b6b974f78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes this texture.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a875d497ec505b72444d8f09b6b974f78">More...</a><br /></td></tr>
 <tr class="separator:a875d497ec505b72444d8f09b6b974f78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,10 +158,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae3da5a51063b2e85158c918e3543925f"><td class="memItemLeft" align="right" valign="top">SDL_Renderer *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">get_renderer</a> ()</td></tr>
 <tr class="memdesc:ae3da5a51063b2e85158c918e3543925f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the SDL renderer object that this material was created on.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">More...</a><br /></td></tr>
 <tr class="separator:ae3da5a51063b2e85158c918e3543925f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c8b5a97b4099d16b9cb840bc6ae1933"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1sdl_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a7c8b5a97b4099d16b9cb840bc6ae1933">lock_pointer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *pPitch=nullptr)</td></tr>
+<tr class="memitem:a7c8b5a97b4099d16b9cb840bc6ae1933"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a7c8b5a97b4099d16b9cb840bc6ae1933">lock_pointer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *pPitch=nullptr)</td></tr>
 <tr class="memdesc:a7c8b5a97b4099d16b9cb840bc6ae1933"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a7c8b5a97b4099d16b9cb840bc6ae1933">More...</a><br /></td></tr>
 <tr class="separator:a7c8b5a97b4099d16b9cb840bc6ae1933"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94886bf391762b131029a1d8d486cb69"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlxgui_1_1gui_1_1sdl_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a94886bf391762b131029a1d8d486cb69">lock_pointer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *pPitch=nullptr) const</td></tr>
+<tr class="memitem:a94886bf391762b131029a1d8d486cb69"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a94886bf391762b131029a1d8d486cb69">lock_pointer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *pPitch=nullptr) const</td></tr>
 <tr class="memdesc:a94886bf391762b131029a1d8d486cb69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the texture data, which can be modified.  <a href="classlxgui_1_1gui_1_1sdl_1_1material.html#a94886bf391762b131029a1d8d486cb69">More...</a><br /></td></tr>
 <tr class="separator:a94886bf391762b131029a1d8d486cb69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31bcfe714c7db412f861b4090ad74a83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a31bcfe714c7db412f861b4090ad74a83">unlock_pointer</a> () const</td></tr>
@@ -184,7 +187,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A class that holds rendering data. </p>
 <p>This implementation can contain either a plain color or a real SDL_Texture. It is also used by the <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">gui::sdl::render_target</a> class to store the output data. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__material_8hpp_source.html#l00034">34</a> of file <a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sdl__material_8hpp_source.html#l00025">25</a> of file <a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="abd57defc7bd316b1dbf3c9c4125ed5c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd57defc7bd316b1dbf3c9c4125ed5c6">&#9670;&nbsp;</a></span>filter</h2>
@@ -210,7 +213,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="abd57defc7bd316b1dbf3c9c4125ed5c6aaac544aacc3615aada24897a215f5046"></a>LINEAR&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00026">26</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00035">35</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -238,7 +241,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a06057a88ec23992da5290ec7a7782e47aecf301fe86e23bb2bf5155bbef3b1345"></a>CLAMP&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00029">29</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -820,7 +823,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1sdl_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
+          <td class="memname"><a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *&#160;</td>
           <td class="paramname"><em>pPitch</em> = <code>nullptr</code></td><td>)</td>
@@ -848,7 +851,7 @@ Static Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structlxgui_1_1gui_1_1sdl_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
+          <td class="memname">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a>* lxgui::gui::sdl::material::lock_pointer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> *&#160;</td>
           <td class="paramname"><em>pPitch</em> = <code>nullptr</code></td><td>)</td>
@@ -1061,13 +1064,44 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aa11392b29d9d86106ea43b7bc2ca8a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa11392b29d9d86106ea43b7bc2ca8a17">&#9670;&nbsp;</a></span>uses_same_texture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lxgui::gui::sdl::material::uses_same_texture </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &amp;&#160;</td>
+          <td class="paramname"><em>mOther</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if another material is based on the same texture as the current material. </p>
+<dl class="section return"><dt>Returns</dt><dd>'true' if both materials use the same texture, 'false' otherwise </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1material.html#a9266bfe8059700d4f869408495687f70">lxgui::gui::material</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__sdl__material_8hpp_source.html">gui_sdl_material.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:32 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:38 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -121,6 +121,9 @@ $(function() {
 <li>get_argument_count()
 : <a class="el" href="classlxgui_1_1lua_1_1function.html#ab826efa179584c36903f8a3cffbf88ec">lxgui::lua::function</a>
 </li>
+<li>get_atlas_()
+: <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a55dd91f784991f7baa20e37c9174a0e3">lxgui::gui::renderer</a>
+</li>
 <li>get_attribute()
 : <a class="el" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">lxgui::xml::block</a>
 </li>
@@ -147,6 +150,9 @@ $(function() {
 </li>
 <li>get_base()
 : <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8d66120812ce83740900548df74b9f1f">lxgui::gui::uiobject</a>
+</li>
+<li>get_batch_count()
+: <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3c186c420171531c2fdeac0e9ee5b75d">lxgui::gui::renderer</a>
 </li>
 <li>get_blend_mode()
 : <a class="el" href="classlxgui_1_1gui_1_1sprite.html#a81856a5689dd5848dad0dd8d7e00c728">lxgui::gui::sprite</a>
@@ -281,8 +287,7 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#afa9b90405c278957487845a00adc9793">lxgui::gui::edit_box</a>
 </li>
 <li>get_data()
-: <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a579d9020c857f32fe5135aff6fcccba7">lxgui::gui::gl::material</a>
-, <a class="el" href="classlxgui_1_1lua_1_1argument.html#a0a88f552758d3912a69bd16504981196">lxgui::lua::argument</a>
+: <a class="el" href="classlxgui_1_1lua_1_1argument.html#a0a88f552758d3912a69bd16504981196">lxgui::lua::argument</a>
 </li>
 <li>get_def_child_number()
 : <a class="el" href="classlxgui_1_1xml_1_1block.html#af99e24ef5b9edfc9fbba6efe9a8d681d">lxgui::xml::block</a>
@@ -395,7 +400,6 @@ $(function() {
 </li>
 <li>get_height()
 : <a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#a41c0c2c3ea10a347e9db17a11b259291">lxgui::gui::atlas_page</a>
-, <a class="el" href="classlxgui_1_1gui_1_1atlas__page__default.html#ac9f5194ff48879dda6ef389ca60228b5">lxgui::gui::atlas_page_default</a>
 , <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#ad487194f6b94186c80364f5b8ac52508">lxgui::gui::gl::atlas_page</a>
 , <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#ace49a57a882e65a1f84304fb271ae2ea">lxgui::gui::sdl::atlas_page</a>
 , <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#ae51da51785fd1e661ef70aee9ce02b51">lxgui::gui::sfml::atlas_page</a>
@@ -686,7 +690,7 @@ $(function() {
 </li>
 <li>get_parent()
 : <a class="el" href="classlxgui_1_1gui_1_1anchor.html#ae1605b51c86411213c058379953859f4">lxgui::gui::anchor</a>
-, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a63a009498fe1ee01bb23407a29c94621">lxgui::gui::uiobject</a>
+, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a7eb931996e22abebaa831a3d942a1412">lxgui::gui::uiobject</a>
 , <a class="el" href="classlxgui_1_1xml_1_1block.html#a85c8739a0b3768cb87aa54ef577287ed">lxgui::xml::block</a>
 </li>
 <li>get_parent_point()
@@ -698,9 +702,6 @@ $(function() {
 <li>get_period()
 : <a class="el" href="classlxgui_1_1gui_1_1periodic__timer.html#aeefba211707c99b3eae597c02a3467f5">lxgui::gui::periodic_timer</a>
 </li>
-<li>get_pixel()
-: <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a6052e7160aae9b20c08c847eb0aa79fc">lxgui::gui::gl::material</a>
-</li>
 <li>get_point()
 : <a class="el" href="classlxgui_1_1gui_1_1anchor.html#ad62e00b78015f3d43009d1dc674697c9">lxgui::gui::anchor</a>
 , <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0af7e3add8eb8aae995dfad42d21131a">lxgui::gui::uiobject</a>
@@ -709,7 +710,7 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a7c39cccab7c0a692782882c0bca69f1d">lxgui::gui::uiobject</a>
 </li>
 <li>get_predefined_block()
-: <a class="el" href="classlxgui_1_1xml_1_1document.html#a1ca42d88a7c8436563530c13f45cd9fa">lxgui::xml::document</a>
+: <a class="el" href="classlxgui_1_1xml_1_1document.html#a7e8f728f769aa09ff78843e1ae70c88a">lxgui::xml::document</a>
 </li>
 <li>get_premultiplied_alpha_blend_mode()
 : <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a817c2e7453c1f404c18a19c3b23f6c3f">lxgui::gui::sdl::material</a>
@@ -768,7 +769,7 @@ $(function() {
 </li>
 <li>get_renderer()
 : <a class="el" href="classlxgui_1_1gui_1_1frame.html#a8826477a4a83aab2692bebc73cf5af1d">lxgui::gui::frame</a>
-, <a class="el" href="classlxgui_1_1gui_1_1manager.html#a9b25bb17fd2d7644f09760bc6618a7fe">lxgui::gui::manager</a>
+, <a class="el" href="classlxgui_1_1gui_1_1manager.html#a8a480a784e2d4f10bcfa64bc280aa460">lxgui::gui::manager</a>
 , <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#ae3da5a51063b2e85158c918e3543925f">lxgui::gui::sdl::material</a>
 </li>
 <li>get_right()
@@ -814,7 +815,7 @@ $(function() {
 , <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font</a>
 </li>
 <li>get_source()
-: <a class="el" href="classlxgui_1_1input_1_1manager.html#aa1363104f27f0eb8fb7d48aed3f51640">lxgui::input::manager</a>
+: <a class="el" href="classlxgui_1_1input_1_1manager.html#a6f73f3e2ed504834d3b6a524163af742">lxgui::input::manager</a>
 </li>
 <li>get_spacing()
 : <a class="el" href="classlxgui_1_1gui_1_1font__string.html#ae7aea8a83e36ea8292162b0f10f525e5">lxgui::gui::font_string</a>
@@ -834,8 +835,8 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1anchor.html#a0d95658fce5cf25a5142c5516920035c">lxgui::gui::anchor</a>
 </li>
 <li>get_string_width()
-: <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a30c1e6cea147ca00e201738f5a02d4b0">lxgui::gui::font_string</a>
-, <a class="el" href="classlxgui_1_1gui_1_1text.html#ae2f0f1862ee927fe13023136884ab123">lxgui::gui::text</a>
+: <a class="el" href="classlxgui_1_1gui_1_1font__string.html#ac216d9438510a06baa2ebbe95421624b">lxgui::gui::font_string</a>
+, <a class="el" href="classlxgui_1_1gui_1_1text.html#ab985ab6866e4030e7b49ab948d4d5023">lxgui::gui::text</a>
 </li>
 <li>get_target_height()
 : <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aed20aebcfa87531e2fc964c4a8010e82">lxgui::gui::frame_renderer</a>
@@ -915,8 +916,8 @@ $(function() {
 , <a class="el" href="classlxgui_1_1lua_1_1state.html#a9fac2a1b5afc8f0e252eb1985240b321">lxgui::lua::state</a>
 </li>
 <li>get_top_level_renderer()
-: <a class="el" href="classlxgui_1_1gui_1_1frame.html#abfee109c37481f422d6cf519ce801f7e">lxgui::gui::frame</a>
-, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab21fd9d817911b7b6be557aed931885d">lxgui::gui::uiobject</a>
+: <a class="el" href="classlxgui_1_1gui_1_1frame.html#a308e09de8e58b3cf848c0dc0073adc97">lxgui::gui::frame</a>
+, <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab0243542aa9877e4381f584214b1b419">lxgui::gui::uiobject</a>
 </li>
 <li>get_tracking()
 : <a class="el" href="classlxgui_1_1gui_1_1text.html#ab9665c06bc9a32a2f7ca50ba1d600e36">lxgui::gui::text</a>
@@ -931,7 +932,7 @@ $(function() {
 : <a class="el" href="classlxgui_1_1lua_1_1state.html#ae67cf017f9ca065717a915f382a81022">lxgui::lua::state</a>
 </li>
 <li>get_uiobject()
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a23f5eddaf4a85bf961fb87626b3f119e">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad12a022b0b73aea71c2054b8adf3f30d">lxgui::gui::manager</a>
 </li>
 <li>get_uiobject_by_name()
 : <a class="el" href="classlxgui_1_1gui_1_1manager.html#a0760b875a72b2b7e932e16914721ebdc">lxgui::gui::manager</a>
@@ -979,7 +980,6 @@ $(function() {
 </li>
 <li>get_width()
 : <a class="el" href="classlxgui_1_1gui_1_1atlas__page.html#aae44a22fd4bdb94a242b5bc85715ed2d">lxgui::gui::atlas_page</a>
-, <a class="el" href="classlxgui_1_1gui_1_1atlas__page__default.html#a4f23fff1f9b3bb1fd7f1707a32731a8d">lxgui::gui::atlas_page_default</a>
 , <a class="el" href="classlxgui_1_1gui_1_1gl_1_1atlas__page.html#a5e14b37e484d5e8f18982864e621d938">lxgui::gui::gl::atlas_page</a>
 , <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1atlas__page.html#a3581820fcf85a7798ce1145df400619a">lxgui::gui::sdl::atlas_page</a>
 , <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1atlas__page.html#a4f7c01976a9ff3380eaa9a6fbaca6243">lxgui::gui::sfml::atlas_page</a>
@@ -1004,7 +1004,7 @@ $(function() {
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 10 2021 15:20:33 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jul 14 2021 19:33:38 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
