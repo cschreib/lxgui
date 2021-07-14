@@ -388,12 +388,6 @@ namespace gui
         */
         virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
 
-        /// Creates a new atlas with a given texture filter mode (using default implementation).
-        /** \param mFilter The filtering to apply to the texture
-        *   \return The new atlas
-        */
-        std::shared_ptr<atlas> create_atlas_default_(material::filter mFilter) const;
-
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
         *   \param uiSize    The requested size of the characters (in points)
