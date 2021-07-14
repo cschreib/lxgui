@@ -1053,7 +1053,7 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
 
 void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
 {
-    std::map<std::string, handler>::iterator iterH = lDefinedHandlerList_.find(sScriptName);
+    auto iterH = lDefinedHandlerList_.find(sScriptName);
     if (iterH != lDefinedHandlerList_.end())
         lDefinedHandlerList_.erase(iterH);
 
@@ -1088,9 +1088,9 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
 }
 
-void frame::define_script(const std::string& sScriptName, handler mHandler)
+void frame::define_script(const std::string& sScriptName, const script_handler& mHandler)
 {
-    std::map<std::string, std::string>::iterator iter = lDefinedScriptList_.find(sScriptName);
+    auto iter = lDefinedScriptList_.find(sScriptName);
     if (iter != lDefinedScriptList_.end())
         lDefinedScriptList_.erase(iter);
 
@@ -1099,13 +1099,13 @@ void frame::define_script(const std::string& sScriptName, handler mHandler)
 
 void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
 {
-    std::map<std::string, script_info>::iterator iter = lXMLScriptInfoList_.find(sScriptName);
+    auto iter = lXMLScriptInfoList_.find(sScriptName);
     if (iter != lXMLScriptInfoList_.end())
         lXMLScriptInfoList_.erase(iter);
 
     if (bDefined)
     {
-        std::map<std::string, handler>::iterator iter2 = lDefinedHandlerList_.find(sScriptName);
+        auto iter2 = lDefinedHandlerList_.find(sScriptName);
         if (iter2 != lDefinedHandlerList_.end())
             lDefinedHandlerList_.erase(iter2);
 
@@ -1290,11 +1290,11 @@ int l_xml_error(lua_State* pLua)
 
 void frame::on_script(const std::string& sScriptName, event* pEvent)
 {
-    std::map<std::string, handler>::const_iterator iterH = lDefinedHandlerList_.find(sScriptName);
+    std::map<std::string, script_handler>::const_iterator iterH = lDefinedHandlerList_.find(sScriptName);
     if (iterH != lDefinedHandlerList_.end())
     {
         if (iterH->second)
-            iterH->second(this, pEvent);
+            iterH->second(*this, pEvent);
     }
 
     std::map<std::string, std::string>::const_iterator iter = lDefinedScriptList_.find(sScriptName);
@@ -1360,7 +1360,7 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
 
     // Copy info, in case frame is deleted
     script_info mScriptInfo;
-    std::map<std::string, script_info>::iterator iterInfo = lXMLScriptInfoList_.find(sScriptName);
+    auto iterInfo = lXMLScriptInfoList_.find(sScriptName);
     if (iterInfo != lXMLScriptInfoList_.end())
         mScriptInfo = iterInfo->second;
 

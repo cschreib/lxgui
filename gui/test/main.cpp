@@ -579,14 +579,14 @@ int main(int argc, char* argv[])
 
         float timer = 1.0f;
         pFrame->define_script("OnUpdate",
-            [&](gui::frame* self, gui::event* event) mutable {
+            [&](gui::frame& self, gui::event* event) mutable {
                 float delta = event->get<float>(0);
                 timer += delta;
 
                 if (timer > 0.5f) {
                     float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
 
-                    gui::font_string* text = self->get_region<gui::font_string>("Text");
+                    gui::font_string* text = self.get_region<gui::font_string>("Text");
                     text->set_text(U"(created in C++)\nFrame time (us) : "+
                         utils::to_ustring(std::round(fFrameTime)));
 

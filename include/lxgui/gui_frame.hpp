@@ -597,13 +597,13 @@ namespace gui
         void define_script(const std::string& sScriptName, const std::string& sContent,
             const std::string& sFile, uint uiLineNbr);
 
-        typedef std::function<void(frame*, event*)> handler;
+        using script_handler = std::function<void(frame&, event*)>;
 
         /// Registers a handler script to this frame.
         /** \param sScriptName The name of the script
         *   \param mHandler    The handler ot the script
         */
-        void define_script(const std::string& sScriptName, handler mHandler);
+        void define_script(const std::string& sScriptName, const script_handler& mHandler);
 
         /// Tells this frame that a script has been defined.
         /** \param sScriptName The name of the script
@@ -955,14 +955,14 @@ namespace gui
         child_list  lChildList_;
         region_list lRegionList_;
 
-        std::map<layer_type, layer>                lLayerList_;
-        std::map<std::string, std::string>         lDefinedScriptList_;
-        std::map<std::string, script_info>         lXMLScriptInfoList_;
-        std::vector<std::string>                   lQueuedEventList_;
-        std::set<std::string>                      lRegEventList_;
-        std::set<std::string>                      lRegDragList_;
+        std::map<layer_type, layer>           lLayerList_;
+        std::map<std::string, std::string>    lDefinedScriptList_;
+        std::map<std::string, script_info>    lXMLScriptInfoList_;
+        std::vector<std::string>              lQueuedEventList_;
+        std::set<std::string>                 lRegEventList_;
+        std::set<std::string>                 lRegDragList_;
 
-        std::map<std::string, handler> lDefinedHandlerList_;
+        std::map<std::string, script_handler> lDefinedHandlerList_;
 
         addon* pAddOn_ = nullptr;
 

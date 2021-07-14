@@ -122,13 +122,13 @@ void examples_setup_gui(gui::manager& mManager)
     float update_time = 0.5f, timer = 1.0f;
     int frames = 0;
     pFrame->define_script("OnUpdate",
-        [=](gui::frame* self, gui::event* event) mutable {
+        [=](gui::frame& self, gui::event* event) mutable {
             float delta = event->get<float>(0);
             timer += delta;
             ++frames;
 
             if (timer > update_time) {
-                gui::font_string* text = self->get_region<gui::font_string>("Text");
+                gui::font_string* text = self.get_region<gui::font_string>("Text");
                 text->set_text(U"(created in C++)\nFPS : "+utils::to_ustring(floor(frames/timer)));
 
                 timer = 0.0f;
