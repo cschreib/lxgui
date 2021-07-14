@@ -100,16 +100,13 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); // Premultipled alpha
     glDisable(GL_CULL_FACE);
 
-#if !defined(LXGUI_OPENGL3)
-    glDisable(GL_LIGHTING);
-    glDisable(GL_ALPHA_TEST);
-#else
-    glActiveTexture(GL_TEXTURE0);
-#endif
-
 #if defined(LXGUI_OPENGL3)
+    glActiveTexture(GL_TEXTURE0);
     glUseProgram(pShaderCache_->uiProgram_);
     uiPreviousTexture_ = static_cast<uint>(-1);
+#else
+    glDisable(GL_LIGHTING);
+    glDisable(GL_ALPHA_TEST);
 #endif
 
     set_view_(mCurrentViewMatrix);
@@ -117,9 +114,6 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
 
 void renderer::end_() const
 {
-#if defined(LXGUI_OPENGL3)
-#endif
-
     if (pCurrentTarget_)
     {
         pCurrentTarget_->end();
@@ -139,13 +133,13 @@ void renderer::set_view_(const matrix4f& mViewMatrix) const
             mCorrectedView(i,1) *= -1.0f;
     }
 
-#if !defined(LXGUI_OPENGL3)
+#if defined(LXGUI_OPENGL3)
+    glUniformMatrix4fv(pShaderCache_->iProjLocation_, 1, GL_FALSE, mCorrectedView.data);
+#else
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(mCorrectedView.data);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-#else
-    glUniformMatrix4fv(pShaderCache_->iProjLocation_, 1, GL_FALSE, mCorrectedView.data);
 #endif
 }
 
