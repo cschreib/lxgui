@@ -300,12 +300,7 @@ void main_loop(void* pTypeErasedData)
 
 int main(int argc, char* argv[])
 {
-#if !defined(WASM)
-    // Redirect output from the standard output to a file
-    std::fstream mLogCout("cout.txt", std::ios::out);
-    auto* pOldBuffer = std::cout.rdbuf();
-    std::cout.rdbuf(mLogCout.rdbuf());
-#endif
+    auto* pOldCoutBuffer = std::cout.rdbuf();
 
     try
     {
@@ -314,6 +309,7 @@ int main(int argc, char* argv[])
         bool bFullScreen    = false;
         std::string sLocale = "enGB";
         float fScaleFactor  = 1.0f;
+        bool bPrintToLog    = false;
 
         // Read some configuration data
         if (utils::file_exists("config.lua"))
@@ -325,16 +321,30 @@ int main(int argc, char* argv[])
             bFullScreen    = mLua.get_global_bool("fullscreen",     false, false);
             sLocale        = mLua.get_global_string("locale",       false, "enGB");
             fScaleFactor   = mLua.get_global_double("scale_factor", false, 1.0);
+            bPrintToLog    = mLua.get_global_bool("print_to_log",   false, false);
         }
 
-    #if defined(WASM)
-        // Redirect output from the gui library to the standard output
-        gui::out.rdbuf(std::cout.rdbuf());
-    #else
-        // Redirect output from the gui library to a log file
-        std::fstream mGUI("gui.txt", std::ios::out);
-        gui::out.rdbuf(mGUI.rdbuf());
-    #endif
+#if defined(WASM)
+        // In WebAssembly builds, never print to a log file, because we don't have
+        // disk write access. Just use the console.
+        bPrintToLog = false;
+#endif
+
+        if (!bPrintToLog)
+        {
+            // Redirect output from the gui library to the standard output
+            gui::out.rdbuf(std::cout.rdbuf());
+        }
+        else
+        {
+            // Redirect output from the standard output to a file
+            std::fstream mLogCout("cout.txt", std::ios::out);
+            std::cout.rdbuf(mLogCout.rdbuf());
+
+            // Redirect output from the gui library to a log file
+            std::fstream mGUI("gui.txt", std::ios::out);
+            gui::out.rdbuf(mGUI.rdbuf());
+        }
 
         // Create a window
         std::cout << "Creating window..." << std::endl;
@@ -612,10 +622,7 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "End of program." << std::endl;
-
-#if !defined(WASM)
-    std::cout.rdbuf(pOldBuffer);
-#endif
+    std::cout.rdbuf(pOldCoutBuffer);
 
     return 0;
 }
