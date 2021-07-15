@@ -468,7 +468,10 @@ void backdrop::update_edge_(color mColor) const
 
                 if (fEdgeSize_ <= 1.0f)
                 {
-                    mQuad[0].uvs = mQuad[1].uvs = mQuad[2].uvs = mQuad[3].uvs = mCanvasUVs.top_left();
+                    mQuad[0].uvs = mCanvasUVs.top_left();
+                    mQuad[1].uvs = mCanvasUVs.top_right();
+                    mQuad[2].uvs = mCanvasUVs.bottom_right();
+                    mQuad[3].uvs = mCanvasUVs.bottom_left();
                 }
                 else
                 {
