@@ -35,31 +35,6 @@ namespace gl
         */
         std::string get_name() const override;
 
-        /// Begins rendering on a particular render target.
-        /** \param pTarget The render target (main screen if nullptr)
-        */
-        void begin_(std::shared_ptr<gui::render_target> pTarget) const override;
-
-        /// Ends rendering.
-        void end_() const override;
-
-        /// Sets the view matrix to use when rendering (viewport).
-        /** \param mViewMatrix The view matrix
-        *   \note This function is called by default in begin(), which resets the
-        *         view to span the entire render target (or the entire screen). Therefore
-        *         it is only necessary to use this function when a custom view is required.
-        *         The view matrix converts custom "world" coordinates into screen-space
-        *         coordinates, where the X and Y coordinates represent the horizontal and
-        *         vertical dimensions on the screen, respectively, and range from -1 to +1.
-        *         In screen-space coordinates, the top-left corner of the screen has
-        *         coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1).
-        *   \warning Although the view is specified here as a matrix for maximum flexibility,
-        *            some backends do not actually support arbitrary view matrices. For such
-        *            backends, the view matrix will be simplified to a simpler 2D translate +
-        *            rotate + scale transform, or even just translate + scale.
-        */
-        void set_view_(const matrix4f& mViewMatrix) const override;
-
         /// Returns the current view matrix to use when rendering (viewport).
         /** \return The current view matrix to use when rendering
         *   \note See set_view() for more information. The returned matrix may be different
@@ -67,32 +42,6 @@ namespace gl
         *         support certain transformations.
         */
         matrix4f get_view() const override;
-
-        /// Renders a set of quads.
-        /** \param pMaterial The material to use for rendering, or null if none
-        *   \param lQuadList The list of the quads you want to render
-        *   \note This function is meant to be called between begin() and
-        *         end() only. When multiple quads share the same material, it is
-        *         always more efficient to call this method than calling render_quad
-        *         repeatedly, as it allows to reduce the number of draw calls.
-        */
-        void render_quads_(const gui::material* pMaterial,
-            const std::vector<std::array<vertex,4>>& lQuadList) const override;
-
-        /// Renders a vertex cache.
-        /** \param pMaterial       The material to use for rendering, or null if none
-        *   \param mCache          The vertex cache
-        *   \param mModelTransform The transformation matrix to apply to vertices
-        *   \note This function is meant to be called between begin() and
-        *         end() only. When multiple quads share the same material, it is
-        *         always more efficient to call this method than calling render_quad
-        *         repeatedly, as it allows to reduce the number of draw calls. This method
-        *         is also more efficient than render_quads(), as the vertex data is
-        *         already cached to the GPU and does not need sending again. However,
-        *         not all implementations support vertex caches. See is_vertex_cache_supported().
-        */
-        void render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
-            const matrix4f& mModelTransform) const override;
 
         /// Returns the maximum texture width/height (in pixels).
         /** \return The maximum texture width/height (in pixels)
@@ -191,6 +140,61 @@ namespace gl
         std::shared_ptr<gui::font> create_font_(const std::string& sFontFile,
             uint uiSize) const override;
 
+        /// Begins rendering on a particular render target.
+        /** \param pTarget The render target (main screen if nullptr)
+        */
+        void begin_(std::shared_ptr<gui::render_target> pTarget) const override;
+
+        /// Ends rendering.
+        void end_() const override;
+
+        /// Sets the view matrix to use when rendering (viewport).
+        /** \param mViewMatrix The view matrix
+        *   \note This function is called by default in begin(), which resets the
+        *         view to span the entire render target (or the entire screen). Therefore
+        *         it is only necessary to use this function when a custom view is required.
+        *         The view matrix converts custom "world" coordinates into screen-space
+        *         coordinates, where the X and Y coordinates represent the horizontal and
+        *         vertical dimensions on the screen, respectively, and range from -1 to +1.
+        *         In screen-space coordinates, the top-left corner of the screen has
+        *         coordinates (-1,-1), and the bottom-left corner of the screen is (+1,+1).
+        *   \warning Although the view is specified here as a matrix for maximum flexibility,
+        *            some backends do not actually support arbitrary view matrices. For such
+        *            backends, the view matrix will be simplified to a simpler 2D translate +
+        *            rotate + scale transform, or even just translate + scale.
+        */
+        void set_view_(const matrix4f& mViewMatrix) const override;
+
+        /// Renders a set of quads.
+        /** \param pMaterial The material to use for rendering, or null if none
+        *   \param lQuadList The list of the quads you want to render
+        *   \note This function is meant to be called between begin() and
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls.
+        */
+        void render_quads_(const gui::material* pMaterial,
+            const std::vector<std::array<vertex,4>>& lQuadList) const override;
+
+        /// Renders a vertex cache.
+        /** \param pMaterial       The material to use for rendering, or null if none
+        *   \param mCache          The vertex cache
+        *   \param mModelTransform The transformation matrix to apply to vertices
+        *   \note This function is meant to be called between begin() and
+        *         end() only. When multiple quads share the same material, it is
+        *         always more efficient to call this method than calling render_quad
+        *         repeatedly, as it allows to reduce the number of draw calls. This method
+        *         is also more efficient than render_quads(), as the vertex data is
+        *         already cached to the GPU and does not need sending again. However,
+        *         not all implementations support vertex caches. See is_vertex_cache_supported().
+        *         Note finally that rendering a vertex cache always triggers a draw
+        *         call, no matter what, even when quad batching is enabled. For this reason,
+        *         if quad batching is enabled, only use vertex caches for large vertex arrays
+        *         and not for just a handful of quads. Benchmark when in doubt.
+        */
+        void render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
+            const matrix4f& mModelTransform) const override;
+
     private :
 
         void update_view_matrix_() const;
@@ -199,7 +203,7 @@ namespace gl
         void setup_buffers_();
     #endif
 
-        std::shared_ptr<gui::material> create_material_png(const std::string& sFileName,
+        std::shared_ptr<gui::material> create_material_png_(const std::string& sFileName,
             material::filter mFilter) const;
 
         uint uiWindowWidth_ = 0u;

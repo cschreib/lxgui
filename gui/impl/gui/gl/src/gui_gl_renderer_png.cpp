@@ -24,7 +24,8 @@ void read_data(png_structp pReadStruct, png_bytep pData, png_size_t uiLength)
     static_cast<std::ifstream*>(p)->read(reinterpret_cast<char*>(pData), uiLength);
 }
 
-std::shared_ptr<gui::material> renderer::create_material_png(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_png_(
+    const std::string& sFileName, material::filter mFilter) const
 {
     std::ifstream mFile(sFileName, std::ios::binary);
     if (!mFile.is_open())

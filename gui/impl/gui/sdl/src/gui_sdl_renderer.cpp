@@ -312,7 +312,7 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     return mData;
 }
 
-void renderer::render_quad(const sdl::material* pMat,
+void renderer::render_quad_(const sdl::material* pMat,
     const std::array<vertex,4>& lVertexList) const
 {
     auto lViewList = lVertexList;
@@ -524,7 +524,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 
     for (uint k = 0; k < lQuadList.size(); ++k)
     {
-        render_quad(pMat, lQuadList[k]);
+        render_quad_(pMat, lQuadList[k]);
     }
 }
 

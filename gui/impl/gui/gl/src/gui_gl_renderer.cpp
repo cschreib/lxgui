@@ -247,7 +247,7 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
     if (!utils::ends_with(sFileName, ".png"))
         throw gui::exception("gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
 
-    return create_material_png(sFileName, mFilter);
+    return create_material_png_(sFileName, mFilter);
 }
 
 std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
