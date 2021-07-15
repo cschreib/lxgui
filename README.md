@@ -31,7 +31,8 @@ For the input implementation, back-ends are provided using either SFML2 or SDL2.
 
 The WebAssembly build supports all back-ends except SFML.
 
-**List of the available widgets**:
+
+# List of the available widgets
 
 * **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
 * **layered_region** (abstract): can be rendered on the screen.
@@ -45,10 +46,15 @@ The WebAssembly build supports all back-ends except SFML.
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
-**List of configurable rendering options**:
-- Enable/disable vertex caches (VBOs). When supported by the rendering back-end, vertex caches always improve performance by reducing the transfer of data between the CPU and GPU. They are therefore enabled by default, if supported. This is currently supported on all back-ends except SDL and the "legacy" OpenGL fixed-pipeline.
-- Enable/disable texture atlases. Texture atlases combine multiple textures into a single GPU texture, so that multiple objects can be drawn with fewer GPU state changes. This reduces the number of draw calls, and can improve performance. However, this also disables automatic texture tiling, which requires creating more vertices when tiling is needed. This can severly decrease performance unless those vertices are put in a vertex cache. Therefore, texture atlases are enabled by default only for back-ends that support vertex caches.
+
+# List of configurable rendering options
+
+- Enable/disable vertex caches (VBOs). When supported by the rendering back-end, vertex caches always improve performance by reducing the transfer of data between the CPU and GPU. This is currently supported on all back-ends except SDL and the "legacy" OpenGL fixed-pipeline.
+- Enable/disable quad batching. When enabled, quads sharing the same texture and rendering modes (i.e., blend mode, view) are accumulated into a vertex array on the CPU, which is then sent to the GPU and drawn in a single operation. This reduces the number of draw calls, and synchronization points between the CPU and GPU, hence can significantly improve performances. This is particularly the case on platforms where draw calls are expensive, like WebAssembly.
+- Enable/disable texture atlases. Texture atlases combine multiple textures into a single GPU texture, so that multiple objects can be drawn with fewer GPU state changes. This reduces the number of draw calls, and can improve performance, particularly when quad batching is enabled. However, this also disables automatic texture tiling, which requires creating more vertices when tiling is needed. This can decrease performance if neither quad batching nor vertex caches are enabled.
 - Texture atlas page size. This defaults to 4096 (or lower, if the back-end does not support textures of this size). This provides a decent amount of batching without using too much memory. This can be increased to improve draw call batching if the machine has enough free GPU memory.
+
+All options are enabled by default (if supported), which should offer the best performance in most cases. But it can be that your particular use case does not benefit as much from the various caching and batching implementations; this can be easily checked by trying various combinations of these options, and selecting the combination that offers the best performances for your particular use case.
 
 
 # Getting started
