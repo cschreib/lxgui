@@ -303,8 +303,8 @@ void scroll_frame::rebuild_scroll_render_target_()
         return;
 
     float fFactor = pManager_->get_interface_scaling_factor();
-    float fScaledWidth = fAbsWidth_*fFactor;
-    float fScaledHeight = fAbsHeight_*fFactor;
+    float fScaledWidth = std::round(fAbsWidth_*fFactor);
+    float fScaledHeight = std::round(fAbsHeight_*fFactor);
 
     if (pScrollRenderTarget_)
     {
