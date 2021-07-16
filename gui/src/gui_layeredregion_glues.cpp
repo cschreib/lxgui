@@ -52,12 +52,13 @@ int lua_layered_region::_get_draw_layer(lua_State* pLua)
 
     switch (get_object()->get_draw_layer())
     {
-        case layer_type::BACKGROUND : mFunc.push(std::string("BACKGROUND")); break;
-        case layer_type::BORDER : mFunc.push(std::string("BORDER")); break;
-        case layer_type::ARTWORK : mFunc.push(std::string("ARTWORK")); break;
-        case layer_type::OVERLAY : mFunc.push(std::string("OVERLAY")); break;
-        case layer_type::HIGHLIGHT : mFunc.push(std::string("HIGHLIGHT")); break;
+        case layer_type::BACKGROUND :  mFunc.push(std::string("BACKGROUND")); break;
+        case layer_type::BORDER :      mFunc.push(std::string("BORDER")); break;
+        case layer_type::ARTWORK :     mFunc.push(std::string("ARTWORK")); break;
+        case layer_type::OVERLAY :     mFunc.push(std::string("OVERLAY")); break;
+        case layer_type::HIGHLIGHT :   mFunc.push(std::string("HIGHLIGHT")); break;
         case layer_type::SPECIALHIGH : mFunc.push(std::string("SPECIALHIGH")); break;
+        case layer_type::ENUM_SIZE :   break;
     }
 
     return mFunc.on_return();
