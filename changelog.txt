@@ -17,9 +17,9 @@ Major changes:
  - gui: added quad batching to speed up rendering
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:
     - the frame itself is created (without any of its regions or children)
-    - the special regions are parsed (e.g., slider thumb texture, button texture, etc.)
+    - the special regions are created (e.g., slider thumb texture, button texture, etc.)
     - the regions are created, in order of declaration in the XML file
-    - the special frames are parsed (e.g., scroll child)
+    - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
 
 Other changes:
