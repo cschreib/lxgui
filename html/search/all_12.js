@@ -1,7 +1,7 @@
 var searchData=
 [
   ['table_1498',['TABLE',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34bbae0aee41ddd6a73697584a20afc6',1,'lxgui::lua']]],
-  ['text_1499',['text',['../classlxgui_1_1gui_1_1text.html',1,'lxgui::gui::text'],['../classlxgui_1_1gui_1_1text.html#aed9e943075974c1b401ce53acd94e295',1,'lxgui::gui::text::text()']]],
+  ['text_1499',['text',['../classlxgui_1_1gui_1_1text.html',1,'lxgui::gui::text'],['../classlxgui_1_1gui_1_1text.html#a362a76c3c1f8eb126ca90dde7296ce4a',1,'lxgui::gui::text::text()']]],
   ['texture_1500',['texture',['../classlxgui_1_1gui_1_1texture.html',1,'lxgui::gui::texture'],['../classlxgui_1_1gui_1_1texture.html#a56705d0abbc7d2f86ae471861a124b87',1,'lxgui::gui::texture::texture()']]],
   ['thread_1501',['THREAD',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba57f8b9e1bf05e9058d703c68ac2d53b0',1,'lxgui::lua']]],
   ['ticks_1502',['ticks',['../classlxgui_1_1gui_1_1periodic__timer.html#ae3b1e1d8f75de7577842d88e87245501',1,'lxgui::gui::periodic_timer']]],
@@ -11,7 +11,7 @@ var searchData=
   ['toggle_5finput_1506',['toggle_input',['../classlxgui_1_1gui_1_1manager.html#ad86e9797673c7860894b89914d8f5211',1,'lxgui::gui::manager']]],
   ['toggle_5fmouse_5fgrab_1507',['toggle_mouse_grab',['../classlxgui_1_1input_1_1sdl_1_1source.html#a948b5e1a7552efce8a2506a16c64dfbf',1,'lxgui::input::sdl::source::toggle_mouse_grab()'],['../classlxgui_1_1input_1_1sfml_1_1source.html#af5be3eb0862f003bc3fbcfc5348325dc',1,'lxgui::input::sfml::source::toggle_mouse_grab()'],['../classlxgui_1_1input_1_1source.html#a876d0c27c5a59afd0136ca3aab8129eb',1,'lxgui::input::source::toggle_mouse_grab()']]],
   ['tooltip_1508',['TOOLTIP',['../namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6ad324c1dd47c2c44f621c1e67dfecb915',1,'lxgui::gui']]],
-  ['top_1509',['top',['../structlxgui_1_1gui_1_1quad2.html#ab5945b6072dac13a86a8a2a7c80aabae',1,'lxgui::gui::quad2::top()'],['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa6705777b712ee811e76fb07162081d63',1,'lxgui::gui::text::TOP()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a6705777b712ee811e76fb07162081d63',1,'lxgui::gui::TOP()']]],
+  ['top_1509',['TOP',['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa6705777b712ee811e76fb07162081d63',1,'lxgui::gui::text::TOP()'],['../structlxgui_1_1gui_1_1quad2.html#ab5945b6072dac13a86a8a2a7c80aabae',1,'lxgui::gui::quad2::top()'],['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4a6705777b712ee811e76fb07162081d63',1,'lxgui::gui::TOP()']]],
   ['top_5fleft_1510',['top_left',['../structlxgui_1_1gui_1_1quad2.html#a9e357c74365a3429edf860bf51402839',1,'lxgui::gui::quad2']]],
   ['top_5fright_1511',['top_right',['../structlxgui_1_1gui_1_1quad2.html#a63dd02e6b0c3557de8fa5de3f15e14d5',1,'lxgui::gui::quad2']]],
   ['topleft_1512',['TOPLEFT',['../namespacelxgui_1_1gui.html#a098b8f936fecbc9ea3f70c0da1e239c4aed96b9a1a064455ac8ce7f641f3170dc',1,'lxgui::gui']]],
