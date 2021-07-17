@@ -68,6 +68,18 @@ atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter)
     }
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
+
+    // Clear texture data (makes WebGL happy)
+    uint uiFBO = 0;
+    glGenFramebuffers(1, &uiFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, uiTextureHandle_, 0);
+
+    float lClearColor[4] = {0, 0, 0, 0};
+    glClearBufferfv(GL_COLOR, 0, lClearColor);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDeleteFramebuffers(1, &uiFBO);
 }
 
 atlas_page::~atlas_page()
