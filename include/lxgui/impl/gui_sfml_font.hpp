@@ -24,9 +24,10 @@ namespace sfml
 
         /// Constructor.
         /** \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size in pixels of the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \param uiOutline The thickness of the outline (in points)
         */
-        font(const std::string& sFontFile, uint uiSize);
+        font(const std::string& sFontFile, uint uiSize, uint uiOutline);
 
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
@@ -85,6 +86,7 @@ namespace sfml
         sf::Font                        mFont_;
         uint                            uiSize_ = 0u;
         uint                            uiSizeSFML_ = 0u;
+        uint                            uiOutline_ = 0u;
         std::shared_ptr<sfml::material> pTexture_;
     };
 }

@@ -130,11 +130,12 @@ namespace sdl
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
         *   \param uiSize    The requested size of the characters (in points)
+        *   \param uiOutline The thickness of the outline (in points)
         *   \note This implementation uses FreeType to load vector fonts and rasterize them.
         *         Bitmap fonts are not yet supported.
         */
         std::shared_ptr<gui::font> create_font_(const std::string& sFontFile,
-            uint uiSize) const override;
+            uint uiSize, uint uiOutline) const override;
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)

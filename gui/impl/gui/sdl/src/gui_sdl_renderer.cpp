@@ -612,9 +612,10 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
     return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
+    uint uiOutline) const
 {
-    return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize,
+    return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize, uiOutline,
         bPreMultipliedAlphaSupported_);
 }
 

@@ -11,7 +11,8 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0))
+font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
+    uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0)), uiOutline_(uiOutline)
 {
     if (!mFont_.loadFromFile(sFontFile))
     {
@@ -22,7 +23,7 @@ font::font(const std::string& sFontFile, uint uiSize) : uiSize_(uiSize), uiSizeS
     // in order for SFLM to draw them on its internal texture
     for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
     {
-        mFont_.getGlyph(cp, uiSizeSFML_, false);
+        mFont_.getGlyph(cp, uiSizeSFML_, false, uiOutline);
     }
 
     sf::Image mData = mFont_.getTexture(uiSizeSFML_).copyToImage();
@@ -39,7 +40,7 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 {
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
 
-    const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false).textureRect;
+    const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).textureRect;
     const quad2f& mTexRect = pTexture_->get_rect();
 
     quad2f mRect;
@@ -58,30 +59,31 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
 
     const float fYOffset = uiSize_;
+    const float fOffset = static_cast<float>(uiOutline_);
 
-    const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false).bounds;
+    const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).bounds;
 
     quad2f mRect;
-    mRect.left   = 0.0f;
-    mRect.right  = mSFRect.width;
-    mRect.top    = mSFRect.top + fYOffset;
-    mRect.bottom = mSFRect.top + mSFRect.height + fYOffset;
+    mRect.left   = -fOffset;
+    mRect.right  = -fOffset + mSFRect.width;
+    mRect.top    = -fOffset + mSFRect.top + fYOffset;
+    mRect.bottom = -fOffset + mSFRect.top + mSFRect.height + fYOffset;
     return mRect;
 }
 
 float font::get_character_width(char32_t uiChar) const
 {
-    if (uiChar == 9) return 4*mFont_.getGlyph(uiMinChar, uiSizeSFML_, false).advance;
+    if (uiChar == 9) return 4*mFont_.getGlyph(uiMinChar, uiSizeSFML_, false, uiOutline_).advance;
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSizeSFML_, false).advance;
+    return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).advance;
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
     if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSizeSFML_, false).bounds.height;
+    return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).bounds.height;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const

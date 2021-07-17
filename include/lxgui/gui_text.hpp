@@ -58,9 +58,11 @@ namespace gui
 
         /// Constructor.
         /** \param pRenderer The renderer instance to use
-        *   \param pFont The font to use for rendering
+        *   \param pFont        The font to use for rendering
+        *   \param pOutlineFont The font to use for outlines
         */
-        explicit text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont);
+        explicit text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont,
+            std::shared_ptr<gui::font> pOutlineFont);
 
         /// Returns the height of one line (constant).
         /** \return The height of one line (constant)
@@ -324,7 +326,9 @@ namespace gui
         void update_() const;
         void notify_cache_dirty_() const;
         float round_to_pixel_(float fValue) const;
+        std::array<vertex,4> create_letter_quad_(gui::font& mFont, char32_t uiChar) const;
         std::array<vertex,4> create_letter_quad_(char32_t uiChar) const;
+        std::array<vertex,4> create_outline_letter_quad_(char32_t uiChar) const;
 
         const renderer* pRenderer_ = nullptr;
 
@@ -344,14 +348,18 @@ namespace gui
         vertical_alignment mVertAlign_ = vertical_alignment::MIDDLE;
 
         std::shared_ptr<font> pFont_;
+        std::shared_ptr<font> pOutlineFont_;
         utils::ustring        sUnicodeText_;
 
         mutable bool  bUpdateCache_ = false;
         mutable float fW_ = 0.0f;
         mutable float fH_ = 0.0f;
         mutable uint  uiNumLines_ = 0u;
+
         mutable std::vector<std::array<vertex,4>> lQuadList_;
-        mutable std::shared_ptr<vertex_cache> pVertexCache_;
+        mutable std::shared_ptr<vertex_cache>     pVertexCache_;
+        mutable std::vector<std::array<vertex,4>> lOutlineQuadList_;
+        mutable std::shared_ptr<vertex_cache>     pOutlineVertexCache_;
     };
 }
 }

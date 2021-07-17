@@ -212,9 +212,13 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
     }
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize,
+    uint uiOutline) const
 {
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
+    if (uiOutline > 0u)
+        sFontName += "|" + utils::to_string(uiOutline);
+
     auto mIter = lFontList_.find(sFontName);
     if (mIter != lFontList_.end())
     {
@@ -224,7 +228,8 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
             lFontList_.erase(mIter);
     }
 
-    std::shared_ptr<gui::font> pFont = create_font_(sFontFile, uiSize);
+    std::shared_ptr<gui::font> pFont = create_font_(sFontFile, uiSize, uiOutline);
+
     lFontList_[sFontName] = pFont;
     return pFont;
 }
@@ -325,21 +330,23 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
 }
 
 std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCategory,
-    const std::string& sFontFile, uint uiSize) const
+    const std::string& sFontFile, uint uiSize, uint uiOutline) const
 {
     if (!is_texture_atlas_enabled())
-        return create_font(sFontFile, uiSize);
+        return create_font(sFontFile, uiSize, uiOutline);
 
     auto mFilter = material::filter::NONE;
     auto& mAtlas = get_atlas_(sAtlasCategory, mFilter);
 
     std::string sFontName = sFontFile + "|" + utils::to_string(uiSize);
+    if (uiOutline > 0u)
+        sFontName += "|" + utils::to_string(uiOutline);
 
     auto pFont = mAtlas.fetch_font(sFontName);
     if (pFont)
         return pFont;
 
-    pFont = create_font(sFontFile, uiSize);
+    pFont = create_font(sFontFile, uiSize, uiOutline);
     if (!pFont)
         return nullptr;
 

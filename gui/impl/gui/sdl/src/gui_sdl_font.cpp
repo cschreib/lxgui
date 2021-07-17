@@ -14,8 +14,8 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
-    bool bPreMultipliedAlphaSupported) : uiSize_(uiSize)
+font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
+    bool bPreMultipliedAlphaSupported) : uiSize_(uiSize), uiOutline_(uiOutline)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -31,6 +31,9 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
             sFontFile+"' at size "+utils::to_string(uiSize)+": "+
             std::string(TTF_GetError())+".");
     }
+
+    if (uiOutline > 0)
+        TTF_SetFontOutline(pFont, uiOutline);
 
     // Add some space between letters to prevent artifacts
     uint uiSpacing = 1;
@@ -54,6 +57,9 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
         if (iCharWidth > iMaxWidth)
             iMaxWidth = iCharWidth;
     }
+
+    iMaxHeight = iMaxHeight + 2*uiOutline;
+    iMaxWidth = iMaxWidth + 2*uiOutline;
 
     // Calculate the size of the texture
     size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*(uiMaxChar - uiMinChar + 1);
@@ -149,6 +155,8 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
 
         SDL_FreeSurface(pGlyphSurface);
 
+        iAdvance = std::max(iAdvance, (int)uiGlyphWidth);
+
         mCI.mUVs.left   = x/fTextureWidth;
         mCI.mUVs.top    = y/fTextureHeight;
         mCI.mUVs.right  = (x + iAdvance)/fTextureWidth;
@@ -157,7 +165,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
         lCharacterList_[cp] = mCI;
 
         // Advance a column
-        x += (std::max((uint)iAdvance, uiGlyphWidth) + uiSpacing);
+        x += iAdvance + uiSpacing;
     }
 
     // Get the width of a space ' ' (32) and tab '\t' (9)
@@ -206,25 +214,26 @@ quad2f font::get_character_bounds(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return quad2f{};
 
-    const auto& mCharacterInfo = lCharacterList_[uiChar];
-    const float fCharWidth = mCharacterInfo.mUVs.width()*pTexture_->get_rect().width();
-    const float fCharHeight = mCharacterInfo.mUVs.height()*pTexture_->get_rect().height();
+    const float fCharWidth = get_character_width(uiChar);
+    const float fCharHeight = get_character_height(uiChar);
+    const float fOffset = static_cast<float>(uiOutline_);
 
-    return quad2f(0.0f, fCharWidth, fYOffset_, fYOffset_ + fCharHeight);
+    return quad2f(-fOffset, fOffset + fCharWidth,
+        -fOffset + fYOffset_, fOffset + fYOffset_ + fCharHeight);
 }
 
 float font::get_character_width(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return 0.0f;
 
-    return lCharacterList_[uiChar].mUVs.width()*pTexture_->get_rect().width();
+    return lCharacterList_[uiChar].mUVs.width()*pTexture_->get_rect().width() - 2*uiOutline_;
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
     if (uiChar < 32 || uiChar > 255) return 0.0f;
 
-    return lCharacterList_[uiChar].mUVs.height()*pTexture_->get_rect().height();
+    return lCharacterList_[uiChar].mUVs.height()*pTexture_->get_rect().height() - 2*uiOutline_;
 }
 
 float font::get_character_kerning(char32_t, char32_t) const

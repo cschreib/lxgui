@@ -63,24 +63,6 @@ void font_string::render()
         pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
     }
 
-    if (bIsOutlined_)
-    {
-        float fOutlineAlpha = std::pow(mTextColor_.a*mColor.a,
-            1.0/static_cast<float>(OUTLINE_QUALITY));
-
-        pText_->set_color(color(0, 0, 0, fOutlineAlpha), true);
-        for (uint i = 0; i < OUTLINE_QUALITY; ++i)
-        {
-            static const float PI2 = 2.0f*std::acos(-1.0f);
-            const float fAngle = PI2*static_cast<float>(i)/static_cast<float>(OUTLINE_QUALITY);
-
-            pText_->render(
-                fX + OUTLINE_THICKNESS*std::cos(fAngle),
-                fY + OUTLINE_THICKNESS*std::sin(fAngle)
-            );
-        }
-    }
-
     pText_->set_color(mTextColor_*mColor);
     pText_->render(fX, fY);
 }
@@ -175,6 +157,9 @@ void font_string::set_outlined(bool bIsOutlined)
     if (bIsOutlined_ != bIsOutlined)
     {
         bIsOutlined_ = bIsOutlined;
+
+        create_text_object_();
+
         notify_renderer_need_redraw();
     }
 }
@@ -237,16 +222,25 @@ void font_string::notify_scaling_factor_updated()
         set_font(sFontName_, fHeight_);
 }
 
-void font_string::set_font(const std::string& sFontName, float fHeight)
+void font_string::create_text_object_()
 {
-    sFontName_ = sFontName;
-    fHeight_ = fHeight;
+    if (sFontName_.empty()) return;
 
-    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight);
+    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight_);
 
     renderer* pRenderer = pManager_->get_renderer();
+
+    std::shared_ptr<gui::font> pOutlineFont;
+    if (bIsOutlined_)
+    {
+        pOutlineFont = pRenderer->create_atlas_font(
+            "GUI", sFontName_, uiPixelHeight,
+            std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))));
+    }
+
     pText_ = std::unique_ptr<text>(new text(pRenderer,
-        pRenderer->create_atlas_font("GUI", sFontName, uiPixelHeight)));
+        pRenderer->create_atlas_font("GUI", sFontName_, uiPixelHeight),
+        pOutlineFont));
 
     pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
@@ -256,6 +250,14 @@ void font_string::set_font(const std::string& sFontName, float fHeight)
     pText_->set_tracking(fSpacing_);
     pText_->enable_word_wrap(bCanWordWrap_, bAddEllipsis_);
     pText_->enable_formatting(bFormattingEnabled_);
+}
+
+void font_string::set_font(const std::string& sFontName, float fHeight)
+{
+    sFontName_ = sFontName;
+    fHeight_ = fHeight;
+
+    create_text_object_();
 
     if (!bVirtual_)
     {

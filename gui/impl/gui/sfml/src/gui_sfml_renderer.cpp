@@ -212,9 +212,10 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
     return std::make_shared<sfml::render_target>(uiWidth, uiHeight, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize) const
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
+    uint uiOutline) const
 {
-    return std::make_shared<sfml::font>(sFontFile, uiSize);
+    return std::make_shared<sfml::font>(sFontFile, uiSize, uiOutline);
 }
 
 bool renderer::is_vertex_cache_supported() const

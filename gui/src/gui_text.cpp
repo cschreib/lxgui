@@ -16,8 +16,9 @@ namespace lxgui {
 namespace gui
 {
 
-text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont) :
-    pRenderer_(pRenderer), pFont_(std::move(pFont))
+text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont,
+    std::shared_ptr<gui::font> pOutlineFont) :
+    pRenderer_(pRenderer), pFont_(std::move(pFont)), pOutlineFont_(pOutlineFont)
 {
     if (!pFont_)
         return;
@@ -313,6 +314,26 @@ void text::render(float fX, float fY) const
     update_();
 
     vector2f mOffset(round_to_pixel_(fX), round_to_pixel_(fY));
+
+    if (pOutlineFont_)
+    {
+        const material* pMat = pOutlineFont_->get_texture().lock().get();
+        if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
+        {
+            pRenderer_->render_cache(pMat, *pOutlineVertexCache_, matrix4f::translation(mOffset));
+        }
+        else
+        {
+            std::vector<std::array<vertex,4>> lQuadsCopy = lOutlineQuadList_;
+            for (auto& mQuad : lQuadsCopy)
+            for (uint i = 0; i < 4; ++i)
+            {
+                mQuad[i].pos += mOffset;
+            }
+
+            pRenderer_->render_quads(pMat, lQuadsCopy);
+        }
+    }
 
     const material* pMat = pFont_->get_texture().lock().get();
     if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
@@ -721,6 +742,7 @@ void text::update_() const
     uiNumLines_ = lLineList.size();
 
     lQuadList_.clear();
+    lOutlineQuadList_.clear();
 
     if (!lLineList.empty())
     {
@@ -827,6 +849,18 @@ void text::update_() const
                     }
                 }
 
+                if (pOutlineFont_)
+                {
+                    std::array<vertex,4> lVertexList = create_outline_letter_quad_(*iterChar);
+                    for (uint i = 0; i < 4; ++i)
+                    {
+                        lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                        lVertexList[i].col = color::BLACK;
+                    }
+
+                    lOutlineQuadList_.push_back(lVertexList);
+                }
+
                 std::array<vertex,4> lVertexList = create_letter_quad_(*iterChar);
                 for (uint i = 0; i < 4; ++i)
                 {
@@ -862,6 +896,11 @@ void text::update_() const
 
     if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
     {
+        if (!pOutlineVertexCache_)
+            pOutlineVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
+
+        pOutlineVertexCache_->update(lOutlineQuadList_[0].data(), lOutlineQuadList_.size()*4);
+
         if (!pVertexCache_)
             pVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
 
@@ -881,9 +920,9 @@ void text::update_() const
     bUpdateCache_ = false;
 }
 
-std::array<vertex,4> text::create_letter_quad_(char32_t uiChar) const
+std::array<vertex,4> text::create_letter_quad_(gui::font& mFont, char32_t uiChar) const
 {
-    quad2f mQuad = pFont_->get_character_bounds(uiChar)*fScalingFactor_;
+    quad2f mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;
     mQuad.left = round_to_pixel_(mQuad.left);
     mQuad.top = round_to_pixel_(mQuad.top);
     mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);
@@ -895,13 +934,23 @@ std::array<vertex,4> text::create_letter_quad_(char32_t uiChar) const
     lVertexList[2].pos = mQuad.bottom_right();
     lVertexList[3].pos = mQuad.bottom_left();
 
-    quad2f mUVs = pFont_->get_character_uvs(uiChar);
+    quad2f mUVs = mFont.get_character_uvs(uiChar);
     lVertexList[0].uvs = mUVs.top_left();
     lVertexList[1].uvs = mUVs.top_right();
     lVertexList[2].uvs = mUVs.bottom_right();
     lVertexList[3].uvs = mUVs.bottom_left();
 
     return lVertexList;
+}
+
+std::array<vertex,4> text::create_letter_quad_(char32_t uiChar) const
+{
+    return create_letter_quad_(*pFont_, uiChar);
+}
+
+std::array<vertex,4> text::create_outline_letter_quad_(char32_t uiChar) const
+{
+    return create_letter_quad_(*pOutlineFont_, uiChar);
 }
 
 quad text::create_letter_quad(char32_t uiChar) const

@@ -282,6 +282,8 @@ namespace gui
         void parse_attributes_(xml::block* pBlock) override;
         void parse_shadow_block_(xml::block* pBlock);
 
+        void create_text_object_();
+
         void update_borders_() const override;
 
         mutable std::unique_ptr<text> pText_;

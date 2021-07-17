@@ -31,10 +31,11 @@ namespace sdl
         /// Constructor.
         /** \param pRenderer The SDL render to create the font for
         *   \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size in pixels of the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \param uiOutline The thickness of the outline (in points)
         *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         */
-        font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize,
+        font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
             bool bPreMultipliedAlphaSupported);
 
         /// Get the size of the font in pixels.
@@ -93,6 +94,7 @@ namespace sdl
 
         float fYOffset_ = 0.0f;
         uint uiSize_ = 0u;
+        uint uiOutline_ = 0u;
 
         std::shared_ptr<sdl::material> pTexture_;
         std::vector<character_info>    lCharacterList_;

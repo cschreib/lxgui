@@ -29,9 +29,10 @@ namespace gl
 
         /// Constructor.
         /** \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size in pixels of the font
+        *   \param uiSize    The requested size of the characters (in points)
+        *   \param uiOutline The thickness of the outline (in points)
         */
-        font(const std::string& sFontFile, uint uiSize);
+        font(const std::string& sFontFile, uint uiSize, uint uiOutline);
 
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
@@ -93,6 +94,7 @@ namespace gl
         uint uiSize_ = 0u;
         float fYOffset_ = 0.0f;
         bool bKerning_ = false;
+        uint uiOutline_ = 0u;
     };
 }
 }

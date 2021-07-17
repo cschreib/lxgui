@@ -264,25 +264,31 @@ namespace gui
             material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new font.
-        /** \param sFontFile The file from which to read the font
-        *   \param uiSize    The requested size of the characters (in points)
+        /** \param sFontFile  The file from which to read the font
+        *   \param uiSize     The requested size of the characters (in points)
+        *   \param uiOutline  The thickness of the outline (in points)
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
+        *   \note If an outline thickness other than zero is requested, only the
+        *         outline itself will be rendered by the returned font. A non-outlined font
+        *         must be rendered above the outlined font to fill the actual characters.
         */
-        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize) const;
+        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize,
+            uint uiOutline = 0u) const;
 
         /// Creates a new font.
         /** \param sAtlasCategory The category of atlas in which to create the font texture
         *   \param sFontFile      The file from which to read the font
         *   \param uiSize         The requested size of the characters (in points)
+        *   \param uiOutline      The thickness of the outline (in points)
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         *   \note See create_atlas_material() for more information on atlases.
         */
         std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
-            const std::string& sFontFile, uint uiSize) const;
+            const std::string& sFontFile, uint uiSize, uint uiOutline = 0u) const;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
@@ -399,12 +405,13 @@ namespace gui
         /// Creates a new font.
         /** \param sFontFile The file from which to read the font
         *   \param uiSize    The requested size of the characters (in points)
+        *   \param uiOutline The thickness of the outline (in points)
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
-            uint uiSize) const = 0;
+            uint uiSize, uint uiOutline) const = 0;
 
         atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
 
