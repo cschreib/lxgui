@@ -162,6 +162,14 @@ void main_loop(void* pTypeErasedData)
                     case SDLK_r:
                         mContext.pManager->reload_ui();
                         break;
+                    case SDLK_b:
+                        mContext.pManager->get_renderer()->set_quad_batching_enabled(
+                            !mContext.pManager->get_renderer()->is_quad_batching_enabled());
+                        break;
+                    case SDLK_a:
+                        mContext.pManager->get_renderer()->set_texture_atlas_enabled(
+                            !mContext.pManager->get_renderer()->is_texture_atlas_enabled());
+                        break;
                     default:
                         break;
                 }
@@ -221,6 +229,14 @@ void main_loop(void* pTypeErasedData)
                         break;
                     case sf::Keyboard::Key::R:
                         mContext.pManager->reload_ui();
+                        break;
+                    case sf::Keyboard::Key::B:
+                        mContext.pManager->get_renderer()->set_quad_batching_enabled(
+                            !mContext.pManager->get_renderer()->is_quad_batching_enabled());
+                        break;
+                    case sf::Keyboard::Key::A:
+                        mContext.pManager->get_renderer()->set_texture_atlas_enabled(
+                            !mContext.pManager->get_renderer()->is_texture_atlas_enabled());
                         break;
                     default:
                         break;
