@@ -112,9 +112,11 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
 
         // Calculate the size of the texture
         size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*(uiMaxChar - uiMinChar + 1);
+        uint uiTexSide = static_cast<uint>(std::sqrt(static_cast<float>(uiTexSize)));
 
-        uint uiTexSide = static_cast<uint>(::sqrt((float)uiTexSize));
+        // Add a bit of overhead since we won't be able to tile this area perfectly
         uiTexSide += std::max(iMaxWidth, iMaxHeight);
+        uiTexSize = uiTexSide*uiTexSide;
 
         // Round up to nearest power of two
         {
@@ -124,13 +126,13 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
             uiTexSide = i;
         }
 
-        size_t uiFinalWidth, uiFinalHeight;
-        if (uiTexSide*uiTexSide/2 >= uiTexSize)
-            uiFinalHeight = uiTexSide/2;
-        else
-            uiFinalHeight = uiTexSide;
+        // Set up area as square
+        size_t uiFinalWidth = uiTexSide;
+        size_t uiFinalHeight = uiTexSide;
 
-        uiFinalWidth = uiTexSide;
+        // Reduce height if we don't actually need a square
+        if (uiFinalWidth*uiFinalHeight/2 >= uiTexSize)
+            uiFinalHeight = uiFinalHeight/2;
 
         std::vector<ub32color> lData(uiFinalWidth*uiFinalHeight);
         std::fill(lData.begin(), lData.end(), ub32color(0, 0, 0, 0));
