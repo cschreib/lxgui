@@ -43,7 +43,7 @@ uint next_pot(uint uiSize)
 }
 
 material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
-    mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
+    gui::material(false), mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
 {
     if (ONLY_POWER_OF_TWO)
     {
@@ -106,8 +106,9 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
 }
 
 material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
-    const quad2f mRect, filter mFilter) : mFilter_(mFilter),
-    uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
+    const quad2f mRect, filter mFilter) :
+    gui::material(true), mFilter_(mFilter), uiTextureHandle_(uiTextureHandle),
+    mRect_(mRect), bIsOwner_(false)
 {
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;

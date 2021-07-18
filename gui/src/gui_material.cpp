@@ -4,6 +4,10 @@ namespace lxgui {
 namespace gui
 {
 
+material::material(bool bIsAtlas) : bIsAtlas_(bIsAtlas)
+{
+}
+
 vector2f material::get_canvas_uv(const vector2f& mTextureUV, bool bFromNormalized) const
 {
     const quad2f mQuad = get_rect();
@@ -42,6 +46,11 @@ vector2f material::get_local_uv(const vector2f& mCanvasUV, bool bAsNormalized) c
     }
 
     return mPixelUV;
+}
+
+bool material::is_in_atlas() const
+{
+    return bIsAtlas_;
 }
 
 }

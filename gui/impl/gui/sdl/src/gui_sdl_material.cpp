@@ -26,7 +26,8 @@ int material::get_premultiplied_alpha_blend_mode()
 }
 
 material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
-    bool bRenderTarget, wrap mWrap, filter mFilter) : pRenderer_(pRenderer), bIsOwner_(true)
+    bool bRenderTarget, wrap mWrap, filter mFilter) :
+    gui::material(false), pRenderer_(pRenderer), bIsOwner_(true)
 {
     SDL_RendererInfo mInfo;
     if (SDL_GetRendererInfo(pRenderer, &mInfo) != 0)
@@ -80,7 +81,7 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
 
 material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     bool bPreMultipliedAlphaSupported, wrap mWrap, filter mFilter) :
-    pRenderer_(pRenderer), bIsOwner_(true)
+    gui::material(false), pRenderer_(pRenderer), bIsOwner_(true)
 {
     // Load file
     SDL_Surface* pSurface = IMG_Load(sFileName.c_str());
@@ -147,7 +148,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
 
 material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
     filter mFilter) : pRenderer_(pRenderer), mRect_(mRect),
-    mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
+    gui::material(true), mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
 {
     int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
     Uint32 uiTextureFormat = 0;

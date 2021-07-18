@@ -39,7 +39,7 @@ namespace gui
         };
 
         /// Constructor.
-        material() = default;
+        material(bool bIsAtlas);
 
         /// Destructor.
         virtual ~material() = default;
@@ -91,6 +91,15 @@ namespace gui
         *                        and 'false' if output coordinates should be in pixels
         */
         vector2f get_local_uv(const vector2f& mCanvasUV, bool bAsNormalized) const;
+
+        /// Checks if the material is embedded in an atlas.
+        /** \return 'true' if the material is inside an atlas, 'false' otherwise.
+        */
+        bool is_in_atlas() const;
+
+    protected:
+
+        bool bIsAtlas_ = false;
     };
 }
 }

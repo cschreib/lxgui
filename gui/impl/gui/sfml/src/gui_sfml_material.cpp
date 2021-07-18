@@ -9,8 +9,8 @@ namespace gui {
 namespace sfml
 {
 material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, filter mFilter) :
-    uiWidth_(uiWidth), uiHeight_(uiHeight), uiRealWidth_(uiWidth), uiRealHeight_(uiHeight),
-    mWrap_(mWrap), mFilter_(mFilter)
+    gui::material(false), uiWidth_(uiWidth), uiHeight_(uiHeight),
+    uiRealWidth_(uiWidth), uiRealHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter)
 {
     if (uiRealWidth_ > sf::Texture::getMaximumSize() ||
         uiRealHeight_ > sf::Texture::getMaximumSize())
@@ -47,7 +47,7 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
     mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(const sf::Image& mData, wrap mWrap, filter mFilter)
+material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::material(false)
 {
     bRenderTarget_ = false;
     mTexture_.loadFromImage(mData);
@@ -65,7 +65,7 @@ material::material(const sf::Image& mData, wrap mWrap, filter mFilter)
     mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(const std::string& sFileName, wrap mWrap, filter mFilter)
+material::material(const std::string& sFileName, wrap mWrap, filter mFilter) : gui::material(false)
 {
     bRenderTarget_ = false;
     sf::Image mData;
@@ -87,7 +87,8 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter)
     mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(const sf::Texture& mTexture, const quad2f& mLocation, filter mFilter)
+material::material(const sf::Texture& mTexture, const quad2f& mLocation, filter mFilter) :
+    gui::material(true)
 {
     mRect_ = mLocation;
     mFilter_ = mFilter;
