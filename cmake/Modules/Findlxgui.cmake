@@ -213,13 +213,26 @@ if(LXGUI_FOUND)
                 message(ERROR ": the OpenGL implementation of the GUI requires OpenGL, GLEW, freetype, libpng and zlib")
             endif()
         else()
-            message(STATUS "Found lxgui-gl")
-            set(LXGUI_GUI_GL_FOUND TRUE)
+            find_package(Freetype)
 
-            set(LXGUI_GUI_GL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
-            set(LXGUI_GUI_GL_LIBRARIES ${LXGUI_GUI_GL_LIBRARY})
-            set(LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_LIBPNG=1 -s USE_FREETYPE=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=3")
-            mark_as_advanced(LXGUI_GUI_GL_INCLUDE_DIRS LXGUI_GUI_GL_LIBRARIES)
+            if(FREETYPE_FOUND)
+                message(STATUS "Found lxgui-gl")
+                set(LXGUI_GUI_GL_FOUND TRUE)
+
+                set(LXGUI_GUI_GL_INCLUDE_DIRS
+                    ${LXGUI_IMPL_INCLUDE_DIR}
+                    ${FREETYPE_INCLUDE_DIRS})
+                set(LXGUI_GUI_GL_LIBRARIES
+                    ${LXGUI_GUI_GL_LIBRARY}
+                    ${FREETYPE_LIBRARY})
+
+                set(LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_LIBPNG=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=3")
+
+                mark_as_advanced(LXGUI_GUI_GL_INCLUDE_DIRS LXGUI_GUI_GL_LIBRARIES LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN)
+            else()
+                message(ERROR ": the OpenGL implementation of the GUI requires freetype")
+            endif()
+
         endif()
     endif()
 
