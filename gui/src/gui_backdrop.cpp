@@ -431,9 +431,9 @@ void backdrop::update_background_(color mColor) const
         mQuad[2].pos = mBorders.bottom_right();
         mQuad[3].pos = mBorders.bottom_left();
         mQuad[0].uvs = vector2f(0.0f,0.0f);
-        mQuad[1].uvs = vector2f(1.0f,0.0f);
-        mQuad[2].uvs = vector2f(1.0f,1.0f);
-        mQuad[3].uvs = vector2f(0.0f,1.0f);
+        mQuad[1].uvs = vector2f(0.0f,0.0f);
+        mQuad[2].uvs = vector2f(0.0f,0.0f);
+        mQuad[3].uvs = vector2f(0.0f,0.0f);
 
         mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
     }
@@ -525,9 +525,9 @@ void backdrop::update_edge_(color mColor) const
             mQuad[2].pos = mDestination.bottom_right();
             mQuad[3].pos = mDestination.bottom_left();
             mQuad[0].uvs = vector2f(0.0f,0.0f);
-            mQuad[1].uvs = vector2f(1.0f,0.0f);
-            mQuad[2].uvs = vector2f(1.0f,1.0f);
-            mQuad[3].uvs = vector2f(0.0f,1.0f);
+            mQuad[1].uvs = vector2f(0.0f,0.0f);
+            mQuad[2].uvs = vector2f(0.0f,0.0f);
+            mQuad[3].uvs = vector2f(0.0f,0.0f);
             mQuad[0].col = mQuad[1].col = mQuad[2].col = mQuad[3].col = mColor;
         }
     };

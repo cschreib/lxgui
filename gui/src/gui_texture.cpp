@@ -294,6 +294,8 @@ void texture::set_gradient(const gradient& mGradient)
     mGradient_ = mGradient;
     auto* pRenderer = pManager_->get_renderer();
     mSprite_ = sprite(pRenderer, nullptr, 256, 256);
+    mSprite_.set_texture_rect({0.0f, 0.0f, 0.0f, 0.0f}, true);
+    lTexCoord_ = mSprite_.get_texture_coords(true);
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
@@ -425,6 +427,8 @@ void texture::set_color(const color& mColor)
     auto* pRenderer = pManager_->get_renderer();
     mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     mSprite_.set_color(mColor);
+    mSprite_.set_texture_rect({0.0f, 0.0f, 0.0f, 0.0f}, true);
+    lTexCoord_ = mSprite_.get_texture_coords(true);
 
     bHasSprite_ = true;
     notify_renderer_need_redraw();
