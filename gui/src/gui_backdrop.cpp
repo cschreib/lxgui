@@ -255,21 +255,40 @@ void backdrop::render() const
     if (fAlpha != fCacheAlpha_)
         bCacheDirty_ = true;
 
+    auto* pRenderer = pParent_->get_manager()->get_renderer();
+    bool bUseVertexCache = pRenderer->is_vertex_cache_enabled() &&
+                           !pRenderer->is_quad_batching_enabled();
+
+    bool bHasBackground = pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY;
+    bool bHasEdge = pEdgeTexture_ || mEdgeColor_ != color::EMPTY;
+
+    if (bHasBackground)
+    {
+        if ((bUseVertexCache && !pBackgroundCache_) ||
+            (!bUseVertexCache && lBackgroundQuads_.empty()))
+            bCacheDirty_ = true;
+    }
+
+    if (bHasEdge)
+    {
+        if ((bUseVertexCache && !pEdgeCache_) ||
+            (!bUseVertexCache && lEdgeQuads_.empty()))
+            bCacheDirty_ = true;
+    }
+
     update_cache_();
 
-    auto* pRenderer = pParent_->get_manager()->get_renderer();
-
-    if (pBackgroundTexture_ || mBackgroundColor_ != color::EMPTY)
+    if (bHasBackground)
     {
-        if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
+        if (bUseVertexCache && pBackgroundCache_)
             pRenderer->render_cache(pBackgroundTexture_.get(), *pBackgroundCache_);
         else
             pRenderer->render_quads(pBackgroundTexture_.get(), lBackgroundQuads_);
     }
 
-    if (pEdgeTexture_ || mEdgeColor_ != color::EMPTY)
+    if (bHasEdge)
     {
-        if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())
+        if (bUseVertexCache && pEdgeCache_)
             pRenderer->render_cache(pEdgeTexture_.get(), *pEdgeCache_);
         else
             pRenderer->render_quads(pEdgeTexture_.get(), lEdgeQuads_);

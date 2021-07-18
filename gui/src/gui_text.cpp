@@ -308,8 +308,14 @@ void text::enable_formatting(bool bFormatting)
 
 void text::render(float fX, float fY) const
 {
-    if (!bReady_)
+    if (!bReady_ || sUnicodeText_.empty())
         return;
+
+    bool bUseVertexCache = pRenderer_->is_vertex_cache_enabled() &&
+                           !pRenderer_->is_quad_batching_enabled();
+
+    if ((bUseVertexCache && !pVertexCache_) || (bUseVertexCache && lQuadList_.empty()))
+        bUpdateCache_ = true;
 
     update_();
 
@@ -318,7 +324,7 @@ void text::render(float fX, float fY) const
     if (pOutlineFont_)
     {
         const material* pMat = pOutlineFont_->get_texture().lock().get();
-        if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
+        if (bUseVertexCache && pOutlineVertexCache_)
         {
             pRenderer_->render_cache(pMat, *pOutlineVertexCache_, matrix4f::translation(mOffset));
         }
@@ -336,7 +342,7 @@ void text::render(float fX, float fY) const
     }
 
     const material* pMat = pFont_->get_texture().lock().get();
-    if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
+    if (bUseVertexCache && pVertexCache_)
     {
         pRenderer_->render_cache(pMat, *pVertexCache_, matrix4f::translation(mOffset));
     }
