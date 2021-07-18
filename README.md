@@ -181,7 +181,7 @@ vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 
 # Webassembly setup
 
-The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, libpng, and Freetype are all already provided by default in Emscripten, so the only required dependency to setup is Lua. A pre-compiled Lua library is provided in dependencies/wasm.zip, but you can also build it from source yourself.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (the Freetype version in Emscripten is too old). Pre-compiled libraries are provided in dependencies/wasm.zip, but you can also build them from source yourself easily.
 
 The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: at the time of writing this, and on my desktop machine, the SDL2 back-end is slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both run at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
 
