@@ -77,8 +77,13 @@ bool renderer::uses_same_texture_(const material* pMat1, const material* pMat2) 
     if (pMat1 && pMat2 && pMat1->uses_same_texture(*pMat2))
         return true;
 
-    if (is_texture_atlas_enabled() && is_texture_vertex_color_supported() && (!pMat1 || !pMat2))
-        return true;
+    if (is_texture_vertex_color_supported())
+    {
+        if (pMat1 && pMat1->is_in_atlas() && !pMat2)
+            return true;
+        if (pMat2 && pMat2->is_in_atlas() && !pMat1)
+            return true;
+    }
 
     return false;
 }
