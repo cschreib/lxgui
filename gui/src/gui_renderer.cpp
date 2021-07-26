@@ -133,10 +133,7 @@ void renderer::render_quads(const material* pMaterial,
         {
             mCache.lData.push_back(mOrigQuad);
             auto& mQuad = mCache.lData.back();
-            mQuad[0].uvs = vector2f(0.0f, 0.0f);
-            mQuad[1].uvs = vector2f(1e-6f, 0.0f);
-            mQuad[2].uvs = vector2f(1e-6f, 1e-6f);
-            mQuad[3].uvs = vector2f(0.0f, 1e-6f);
+            mQuad[0].uvs = mQuad[1].uvs = mQuad[2].uvs = mQuad[3].uvs = vector2f(0.0f, 0.0f);
         }
     }
     else
