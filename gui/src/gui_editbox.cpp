@@ -974,33 +974,35 @@ void edit_box::update_font_string_()
 
 void edit_box::update_carret_position_()
 {
-    if (pFontString_ && pFontString_->get_text_object() && pCarret_)
+    if (!pFontString_ || !pFontString_->get_text_object() || !pCarret_)
+        return;
+
+    if (sUnicodeText_.empty())
     {
-        if (sUnicodeText_.empty())
+        anchor_point mPoint;
+        float fOffset = 0.0f;
+        switch (pFontString_->get_justify_h())
         {
-            anchor_point mPoint;
-            float fOffset = 0.0f;
-            switch (pFontString_->get_justify_h())
-            {
-                case text::alignment::LEFT :
-                    mPoint = anchor_point::LEFT;
-                    fOffset = lTextInsets_.left - 1;
-                    break;
-                case text::alignment::CENTER :
-                    mPoint = anchor_point::CENTER;
-                    break;
-                case text::alignment::RIGHT :
-                    mPoint = anchor_point::RIGHT;
-                    fOffset = -lTextInsets_.right - 1;
-                    break;
-                default : mPoint = anchor_point::LEFT; break;
-            }
-            pCarret_->set_abs_point(
-                anchor_point::CENTER, sName_, mPoint, fOffset, 0
-            );
-            return;
+            case text::alignment::LEFT :
+                mPoint = anchor_point::LEFT;
+                fOffset = lTextInsets_.left - 1;
+                break;
+            case text::alignment::CENTER :
+                mPoint = anchor_point::CENTER;
+                break;
+            case text::alignment::RIGHT :
+                mPoint = anchor_point::RIGHT;
+                fOffset = -lTextInsets_.right - 1;
+                break;
+            default : mPoint = anchor_point::LEFT; break;
         }
 
+        pCarret_->set_abs_point(
+            anchor_point::CENTER, sName_, mPoint, fOffset, 0
+        );
+    }
+    else
+    {
         text* pText = pFontString_->get_text_object();
         utils::ustring::iterator iterDisplayCarret;
 
@@ -1056,8 +1058,10 @@ void edit_box::update_carret_position_()
             iterDisplayCarret = sDisplayedText_.begin() + uiCarretPos;
         }
         else
-            iterDisplayCarret = sDisplayedText_.begin() + (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
-
+        {
+            iterDisplayCarret = sDisplayedText_.begin() +
+                (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
+        }
 
         float fYOffset = (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing());
 
@@ -1072,13 +1076,13 @@ void edit_box::update_carret_position_()
         pCarret_->set_abs_point(
             anchor_point::CENTER, sName_, anchor_point::LEFT, fXOffset, fYOffset
         );
-
-        mCarretTimer_.zero();
-        if (bFocus_)
-            pCarret_->show();
-        else
-            pCarret_->hide();
     }
+
+    mCarretTimer_.zero();
+    if (bFocus_)
+        pCarret_->show();
+    else
+        pCarret_->hide();
 }
 
 bool edit_box::add_char_(char32_t sUnicode)
