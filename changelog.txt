@@ -110,6 +110,7 @@ Other changes:
  - gui: fixed hovered frame not updated when hide/show is called
  - gui: fixed OnEnter/OnLeave not always triggered hide/show is called
  - gui: fixed set_alpha() not doing anything
+ - gui: fixed focus_frame::set_auto_focus() not doing anything
  - xml: now parsing standard XML comments
 
 v1.2.0:

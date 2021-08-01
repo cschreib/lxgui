@@ -743,12 +743,6 @@ void edit_box::notify_focus(bool bFocus)
     }
 }
 
-void edit_box::notify_invisible(bool bTriggerEvents)
-{
-    set_focus(false);
-    frame::notify_invisible(bTriggerEvents);
-}
-
 void edit_box::notify_scaling_factor_updated()
 {
     uiobject::notify_scaling_factor_updated();
