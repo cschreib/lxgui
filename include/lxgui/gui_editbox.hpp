@@ -392,6 +392,9 @@ namespace gui
         */
         void notify_invisible(bool bTriggerEvents = true) override;
 
+        /// Tells this widget that the global interface scaling factor has changed.
+        void notify_scaling_factor_updated() override;
+
         /// Returns this widget's Lua glue.
         void create_glue() override;
 

@@ -749,6 +749,17 @@ void edit_box::notify_invisible(bool bTriggerEvents)
     frame::notify_invisible(bTriggerEvents);
 }
 
+void edit_box::notify_scaling_factor_updated()
+{
+    uiobject::notify_scaling_factor_updated();
+
+    if (pFontString_)
+    {
+        pFontString_->notify_scaling_factor_updated();
+        create_carret_();
+    }
+}
+
 font_string* edit_box::get_font_string()
 {
     return pFontString_;
@@ -774,6 +785,8 @@ void edit_box::set_font_string(font_string* pFont)
     );
 
     pFontString_->enable_formatting(false);
+
+    create_carret_();
 }
 
 void edit_box::set_font(const std::string& sFontName, float fHeight)
@@ -803,6 +816,8 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
     }
 
     pFontString_->set_font(sFontName, fHeight);
+
+    create_carret_();
 }
 
 std::unique_ptr<font_string> edit_box::create_font_string_()
@@ -854,31 +869,41 @@ void edit_box::create_carret_()
     if (!pFontString_ || !pFontString_->get_text_object() || is_virtual())
         return;
 
-    std::unique_ptr<texture> pCarret(new texture(pManager_));
-    pCarret->set_special();
-    pCarret->set_parent(this);
-    pCarret->set_draw_layer(layer_type::HIGHLIGHT);
-    pCarret->set_name("$parentCarret");
-
-    if (!pManager_->add_uiobject(pCarret.get()))
+    if (!pCarret_)
     {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Trying to create carret texture for \""+sName_+"\", "
-            "but its name was already taken : \""+pCarret->get_name()+"\". Skipped." << std::endl;
-        return;
-    }
+        std::unique_ptr<texture> pCarret(new texture(pManager_));
+        pCarret->set_special();
+        pCarret->set_parent(this);
+        pCarret->set_draw_layer(layer_type::HIGHLIGHT);
+        pCarret->set_name("$parentCarret");
 
-    pCarret->create_glue();
+        if (!pManager_->add_uiobject(pCarret.get()))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                "Trying to create carret texture for \""+sName_+"\", "
+                "but its name was already taken : \""+pCarret->get_name()+"\". Skipped." << std::endl;
+            return;
+        }
+
+        pCarret->create_glue();
+
+        sprite mSprite(pManager_->get_renderer(), pFontString_->get_text_object()->create_letter_quad(U'|'));
+        mSprite.set_color(pFontString_->get_text_color());
+
+        pCarret->set_sprite(std::move(mSprite));
+        pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
+
+        pCarret->notify_loaded();
+        pCarret_ = pCarret.get();
+        add_region(std::move(pCarret));
+    }
 
     sprite mSprite(pManager_->get_renderer(), pFontString_->get_text_object()->create_letter_quad(U'|'));
     mSprite.set_color(pFontString_->get_text_color());
 
-    pCarret->set_sprite(std::move(mSprite));
-    pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
+    pCarret_->set_sprite(std::move(mSprite));
 
-    pCarret->notify_loaded();
-    pCarret_ = pCarret.get();
-    add_region(std::move(pCarret));
+    update_carret_position_();
 }
 
 void edit_box::check_text_()
@@ -1051,6 +1076,8 @@ void edit_box::update_carret_position_()
         mCarretTimer_.zero();
         if (bFocus_)
             pCarret_->show();
+        else
+            pCarret_->hide();
     }
 }
 
