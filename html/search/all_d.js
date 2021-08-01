@@ -23,8 +23,6 @@ var searchData=
   ['operator_3e_3e_1127',['operator&gt;&gt;',['../namespacelxgui_1_1gui.html#ac3eb0797f9a6420072ce91cb11948d10',1,'lxgui::gui']]],
   ['orientation_1128',['orientation',['../classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0',1,'lxgui::gui::gradient::orientation()'],['../classlxgui_1_1gui_1_1slider.html#a40fecc5cac7730c3778acbde1b57dfb1',1,'lxgui::gui::slider::orientation()'],['../classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45',1,'lxgui::gui::status_bar::orientation()']]],
   ['out_1129',['out',['../classlxgui_1_1xml_1_1document.html#a69043c7d2818aafd4a42fa89427f8574',1,'lxgui::xml::document::out()'],['../namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7',1,'lxgui::gui::out()'],['../namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057',1,'lxgui::gui::out(std::cout.rdbuf())']]],
-  ['outline_5fquality_1130',['OUTLINE_QUALITY',['../namespacelxgui_1_1gui.html#a1d2ce4a22e7276b914d7a1279d966894',1,'lxgui::gui']]],
-  ['outline_5fthickness_1131',['OUTLINE_THICKNESS',['../namespacelxgui_1_1gui.html#a0672436c6bcf231aef7a7528b16e0e6e',1,'lxgui::gui']]],
-  ['overlaps_1132',['overlaps',['../structlxgui_1_1gui_1_1quad2.html#aa6fe74087218a3567839029e580391c3',1,'lxgui::gui::quad2']]],
-  ['overlay_1133',['OVERLAY',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a0395ef37aaf2724781e56e74c9cca583',1,'lxgui::gui']]]
+  ['overlaps_1130',['overlaps',['../structlxgui_1_1gui_1_1quad2.html#aa6fe74087218a3567839029e580391c3',1,'lxgui::gui::quad2']]],
+  ['overlay_1131',['OVERLAY',['../namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85a0395ef37aaf2724781e56e74c9cca583',1,'lxgui::gui']]]
 ];

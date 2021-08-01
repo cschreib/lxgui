@@ -246,6 +246,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac8350bd703dca5940ba294aae155e9fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#ac8350bd703dca5940ba294aae155e9fa">notify_invisible</a> (bool bTriggerEvents=true) override</td></tr>
 <tr class="memdesc:ac8350bd703dca5940ba294aae155e9fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies this widget that it is no longer visible on screen.  <a href="classlxgui_1_1gui_1_1edit__box.html#ac8350bd703dca5940ba294aae155e9fa">More...</a><br /></td></tr>
 <tr class="separator:ac8350bd703dca5940ba294aae155e9fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a124fb4433aaad85f96a8d77fa28a737b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">notify_scaling_factor_updated</a> () override</td></tr>
+<tr class="memdesc:a124fb4433aaad85f96a8d77fa28a737b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that the global interface scaling factor has changed.  <a href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">More...</a><br /></td></tr>
+<tr class="separator:a124fb4433aaad85f96a8d77fa28a737b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fc17014b29a012d33984248e9be2e60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a3fc17014b29a012d33984248e9be2e60">create_glue</a> () override</td></tr>
 <tr class="memdesc:a3fc17014b29a012d33984248e9be2e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's Lua glue.  <a href="classlxgui_1_1gui_1_1edit__box.html#a3fc17014b29a012d33984248e9be2e60">More...</a><br /></td></tr>
 <tr class="separator:a3fc17014b29a012d33984248e9be2e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,9 +585,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af0311d934dd0ec8ccc24b0683c5bdb80"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#af0311d934dd0ec8ccc24b0683c5bdb80">notify_borders_need_update</a> () const</td></tr>
 <tr class="memdesc:af0311d934dd0ec8ccc24b0683c5bdb80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that its borders need updating.  <a href="classlxgui_1_1gui_1_1uiobject.html#af0311d934dd0ec8ccc24b0683c5bdb80">More...</a><br /></td></tr>
 <tr class="separator:af0311d934dd0ec8ccc24b0683c5bdb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa903a563fc43fbb3885343d791f4183"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#afa903a563fc43fbb3885343d791f4183">notify_scaling_factor_updated</a> ()</td></tr>
-<tr class="memdesc:afa903a563fc43fbb3885343d791f4183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this widget that the global interface scaling factor has changed.  <a href="classlxgui_1_1gui_1_1uiobject.html#afa903a563fc43fbb3885343d791f4183">More...</a><br /></td></tr>
-<tr class="separator:afa903a563fc43fbb3885343d791f4183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9495ea62744d78b7f5d8a522c32eef97"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a9495ea62744d78b7f5d8a522c32eef97">get_name</a> () const</td></tr>
 <tr class="memdesc:a9495ea62744d78b7f5d8a522c32eef97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this widget's name.  <a href="classlxgui_1_1gui_1_1uiobject.html#a9495ea62744d78b7f5d8a522c32eef97">More...</a><br /></td></tr>
 <tr class="separator:a9495ea62744d78b7f5d8a522c32eef97"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1288,7 +1288,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01057">1057</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01084">1084</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1588,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00884">884</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00909">909</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1704,7 +1704,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00852">852</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00867">867</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1842,7 +1842,7 @@ This function takes care of the basic initializing : you can directly use the cr
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00808">808</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00823">823</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -1926,7 +1926,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00818">818</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00833">833</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -3210,7 +3210,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> used to render the content. </p>
 <dl class="section return"><dt>Returns</dt><dd>The <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> used to render the content </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00752">752</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00763">763</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -3391,7 +3391,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01139">1139</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01166">1166</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -5423,7 +5423,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01178">1178</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01205">1205</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -5451,7 +5451,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01191">1191</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01218">1218</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -5479,7 +5479,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01231">1231</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01258">1258</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -5790,8 +5790,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="afa903a563fc43fbb3885343d791f4183"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa903a563fc43fbb3885343d791f4183">&#9670;&nbsp;</a></span>notify_scaling_factor_updated()</h2>
+<a id="a124fb4433aaad85f96a8d77fa28a737b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a124fb4433aaad85f96a8d77fa28a737b">&#9670;&nbsp;</a></span>notify_scaling_factor_updated()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5800,7 +5800,7 @@ template&lt;typename ObjectType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::uiobject::notify_scaling_factor_updated </td>
+          <td class="memname">void lxgui::gui::edit_box::notify_scaling_factor_updated </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -5808,16 +5808,16 @@ template&lt;typename ObjectType &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Tells this widget that the global interface scaling factor has changed. </p>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#afa903a563fc43fbb3885343d791f4183">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01034">1034</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00752">752</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -6493,7 +6493,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01264">1264</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01291">1291</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -6879,7 +6879,7 @@ Only works for top level frames. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01103">1103</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l01130">1130</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -7844,7 +7844,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00779">779</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00792">792</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -7872,7 +7872,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00757">757</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00768">768</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -9865,7 +9865,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00950">950</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00975">975</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -9892,7 +9892,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00908">908</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00933">933</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -9919,7 +9919,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00939">939</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8cpp_source.html#l00964">964</a> of file <a class="el" href="gui__editbox_8cpp_source.html">gui_editbox.cpp</a>.</p>
 
 </div>
 </div>
@@ -9995,7 +9995,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00441">441</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00444">444</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10139,7 +10139,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00441">441</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10499,7 +10499,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00440">440</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00443">443</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10547,7 +10547,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00436">436</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00439">439</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10571,7 +10571,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00439">439</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00442">442</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10595,7 +10595,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00437">437</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00440">440</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10643,7 +10643,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00449">449</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00452">452</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10739,7 +10739,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00401">401</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00404">404</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10763,7 +10763,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00452">452</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00455">455</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -10787,7 +10787,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00463">463</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00466">466</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11123,7 +11123,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00430">430</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00433">433</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11147,7 +11147,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00431">431</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00434">434</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11387,7 +11387,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00455">455</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00458">458</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11579,7 +11579,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00460">460</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00463">463</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11651,7 +11651,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00453">453</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00456">456</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11675,7 +11675,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00446">446</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00449">449</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11699,7 +11699,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00464">464</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00467">467</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11723,7 +11723,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00462">462</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00465">465</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11843,7 +11843,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00451">451</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00454">454</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11867,7 +11867,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00459">459</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00462">462</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -11891,7 +11891,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00445">445</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00448">448</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12059,7 +12059,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00443">443</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00446">446</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12083,7 +12083,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00429">429</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00432">432</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12179,7 +12179,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00428">428</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00431">431</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12203,7 +12203,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00457">457</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00460">460</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12227,7 +12227,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00433">433</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00436">436</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12275,7 +12275,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00456">456</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00459">459</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12299,7 +12299,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00435">435</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12323,7 +12323,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00434">434</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00437">437</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12347,7 +12347,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00448">448</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00451">451</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12371,7 +12371,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00447">447</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__editbox_8hpp_source.html#l00450">450</a> of file <a class="el" href="gui__editbox_8hpp_source.html">gui_editbox.hpp</a>.</p>
 
 </div>
 </div>
@@ -12384,7 +12384,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Jul 26 2021 07:26:36 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Aug 1 2021 12:36:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

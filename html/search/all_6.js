@@ -13,7 +13,7 @@ var searchData=
   ['get_5faddon_316',['get_addon',['../classlxgui_1_1gui_1_1frame.html#af52f01a730a273d8a6e13463f3f3e59c',1,'lxgui::gui::frame']]],
   ['get_5fadjusted_5fscript_5fname_317',['get_adjusted_script_name',['../classlxgui_1_1gui_1_1frame.html#a134967db9e94b900b272a8fa0eaf1ea2',1,'lxgui::gui::frame']]],
   ['get_5falignment_318',['get_alignment',['../classlxgui_1_1gui_1_1text.html#a8598605d995a9d94de835e142b4aaaf7',1,'lxgui::gui::text']]],
-  ['get_5falpha_319',['get_alpha',['../classlxgui_1_1gui_1_1uiobject.html#ad35e6bb258dfc94fe8a36aaa97190b37',1,'lxgui::gui::uiobject']]],
+  ['get_5falpha_319',['get_alpha',['../classlxgui_1_1gui_1_1text.html#a0cb7c5809eea95eb5d7098e81569d225',1,'lxgui::gui::text::get_alpha()'],['../classlxgui_1_1gui_1_1uiobject.html#ad35e6bb258dfc94fe8a36aaa97190b37',1,'lxgui::gui::uiobject::get_alpha()']]],
   ['get_5fanchor_5fpoint_320',['get_anchor_point',['../classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce',1,'lxgui::gui::anchor']]],
   ['get_5fanchored_5fobjects_321',['get_anchored_objects',['../classlxgui_1_1gui_1_1uiobject.html#a5a416c50debab258d630c46efb8fbc63',1,'lxgui::gui::uiobject']]],
   ['get_5fapparent_5fheight_322',['get_apparent_height',['../classlxgui_1_1gui_1_1uiobject.html#aa68ef9258844811816a8e167f80ede4d',1,'lxgui::gui::uiobject']]],
