@@ -11,8 +11,6 @@
 namespace lxgui {
 namespace gui
 {
-const uint  OUTLINE_QUALITY   = 10;
-const float OUTLINE_THICKNESS = 2.0f;
 
 font_string::font_string(manager* pManager) : layered_region(pManager)
 {
@@ -570,5 +568,6 @@ void font_string::update_borders_() const
     }
     DEBUG_LOG("  @");
 }
+
 }
 }
