@@ -77,6 +77,20 @@ const color& text::get_color() const
     return mColor_;
 }
 
+void text::set_alpha(float fAlpha)
+{
+    if (fAlpha == fAlpha_) return;
+
+    fAlpha_ = fAlpha;
+    if (pRenderer_->is_vertex_cache_enabled())
+        notify_cache_dirty_();
+}
+
+float text::get_alpha() const
+{
+    return fAlpha_;
+}
+
 void text::set_dimensions(float fW, float fH)
 {
     if (fBoxW_ != fW || fBoxH_ != fH)
@@ -335,6 +349,7 @@ void text::render(float fX, float fY) const
             for (uint i = 0; i < 4; ++i)
             {
                 mQuad[i].pos += mOffset;
+                mQuad[i].col.a *= fAlpha_;
             }
 
             pRenderer_->render_quads(pMat, lQuadsCopy);
@@ -358,6 +373,8 @@ void text::render(float fX, float fY) const
             {
                 mQuad[i].col = mColor_;
             }
+
+            mQuad[i].col.a *= fAlpha_;
         }
 
         pRenderer_->render_quads(pMat, lQuadsCopy);
@@ -389,6 +406,8 @@ void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScal
             {
                 mQuad[i].col = mColor_;
             }
+
+            mQuad[i].col.a *= fAlpha_;
         }
     }
     else
@@ -404,6 +423,8 @@ void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScal
             {
                 mQuad[i].col = mColor_;
             }
+
+            mQuad[i].col.a *= fAlpha_;
         }
     }
 
@@ -918,6 +939,8 @@ void text::update_() const
             {
                 mQuad[i].col = mColor_;
             }
+
+            mQuad[i].col.a *= fAlpha_;
         }
 
         pVertexCache_->update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);

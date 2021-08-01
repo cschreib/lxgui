@@ -108,6 +108,16 @@ namespace gui
         */
         const color& get_color() const;
 
+        /// Sets this text's transparency (alpha).
+        /** \param fAlpha The new alpha value
+        */
+        void set_alpha(float fAlpha);
+
+        /// Returns this text's transparency (alpha).
+        /** \return This text's transparency (alpha)
+        */
+        float get_alpha() const;
+
         /// Sets the dimensions of the text box.
         /** \param fW The new witdh
         *   \param fH The new height
@@ -341,6 +351,7 @@ namespace gui
         bool  bAddEllipsis_ = false;
         color mColor_ = color::WHITE;
         bool  bForceColor_ = false;
+        float fAlpha_ = 1.0f;
         bool  bFormattingEnabled_ = false;
         float fBoxW_ = std::numeric_limits<float>::infinity();
         float fBoxH_ = std::numeric_limits<float>::infinity();

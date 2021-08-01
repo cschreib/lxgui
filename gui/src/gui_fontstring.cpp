@@ -55,15 +55,15 @@ void font_string::render()
     fX += fXOffset_;
     fY += fYOffset_;
 
-    color mColor(1.0, 1.0, 1.0, get_effective_alpha());
+    pText_->set_alpha(get_effective_alpha());
 
     if (bHasShadow_)
     {
-        pText_->set_color(mShadowColor_*mColor, true);
+        pText_->set_color(mShadowColor_, true);
         pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
     }
 
-    pText_->set_color(mTextColor_*mColor);
+    pText_->set_color(mTextColor_);
     pText_->render(fX, fY);
 }
 
