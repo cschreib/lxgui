@@ -43,6 +43,15 @@ namespace gui
             return mVec;
         }
 
+        vector2<float_type> get_normal() const noexcept
+        {
+            vector2<float_type> mVec(static_cast<float_type>(-y), static_cast<float_type>(x));
+            const typename vector2<float_type>::float_type mNorm = get_norm();
+            mVec.x /= mNorm;
+            mVec.y /= mNorm;
+            return mVec;
+        }
+
         vector2 get_rotated(float_type mAngle) const noexcept
         {
             vector2<float_type> mVec(static_cast<float_type>(x), static_cast<float_type>(y));
