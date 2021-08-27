@@ -147,8 +147,8 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
 }
 
 material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
-    filter mFilter) : pRenderer_(pRenderer), mRect_(mRect),
-    gui::material(true), mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
+    filter mFilter) : gui::material(true), pRenderer_(pRenderer), mRect_(mRect),
+    mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
 {
     int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
     Uint32 uiTextureFormat = 0;
