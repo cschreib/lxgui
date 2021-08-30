@@ -12,9 +12,237 @@
 
 #include <map>
 
+// #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
+#define DEBUG_LOG(msg)
+
 namespace lxgui {
 namespace gui
 {
+
+namespace parser
+{
+    enum class color_action
+    {
+        NONE,
+        SET,
+        RESET
+    };
+
+    struct format
+    {
+        color        mColor = color::WHITE;
+        color_action mColorAction = color_action::NONE;
+    };
+
+    using line_item = std::variant<char32_t, format>;
+
+    struct line
+    {
+        std::vector<line_item> lContent;
+        float                  fWidth = 0.0f;
+    };
+
+    std::vector<line_item> parse_string(const utils::ustring& sCaption, bool bFormattingEnabled)
+    {
+        std::vector<line_item> lContent;
+        for (auto iterChar = sCaption.begin(); iterChar != sCaption.end(); ++iterChar)
+        {
+            // Read format tags
+            if (*iterChar == U'|' && bFormattingEnabled)
+            {
+                ++iterChar;
+                if (iterChar == sCaption.end()) break;
+
+                if (*iterChar != U'|')
+                {
+                    format mFormat;
+                    if (*iterChar == 'r')
+                    {
+                        mFormat.mColorAction = color_action::RESET;
+                    }
+                    else if (*iterChar == 'c')
+                    {
+                        mFormat.mColorAction = color_action::SET;
+
+                        auto mReadTwo = [&](float& fOut)
+                        {
+                            ++iterChar;
+                            if (iterChar == sCaption.end()) return false;
+                            std::string sColorPart(2, '0');
+                            sColorPart[0] = *iterChar;
+                            ++iterChar;
+                            if (iterChar == sCaption.end()) return false;
+                            sColorPart[1] = *iterChar;
+                            fOut = utils::hex_to_uint(sColorPart)/255.0f;
+                            return true;
+                        };
+
+                        if (!mReadTwo(mFormat.mColor.a)) continue;
+                        if (!mReadTwo(mFormat.mColor.r)) continue;
+                        if (!mReadTwo(mFormat.mColor.g)) continue;
+                        if (!mReadTwo(mFormat.mColor.b)) continue;
+                    }
+
+                    lContent.push_back(mFormat);
+
+                    if (iterChar != sCaption.end()) continue;
+                    if (iterChar == sCaption.end()) break;
+                }
+            }
+
+            // Add characters
+            lContent.push_back(*iterChar);
+        }
+
+        return lContent;
+    }
+
+    bool is_whitespace(const line_item& mItem)
+    {
+        return std::visit([](const auto& mValue)
+        {
+            using type = std::decay_t<decltype(mValue)>;
+            if constexpr (std::is_same_v<type, char32_t>)
+            {
+                return utils::is_whitespace(mValue);
+            }
+            else
+            {
+                return false;
+            }
+        }, mItem);
+    }
+
+    bool is_word(const line_item& mItem)
+    {
+        return std::visit([](const auto& mValue)
+        {
+            using type = std::decay_t<decltype(mValue)>;
+            if constexpr (std::is_same_v<type, char32_t>)
+            {
+                return !utils::is_whitespace(mValue);
+            }
+            else
+            {
+                return false;
+            }
+        }, mItem);
+    }
+
+    bool is_character(const line_item& mItem)
+    {
+        return mItem.index() == 0u;
+    }
+
+    bool is_character(const line_item& mItem, char32_t uiChar)
+    {
+        return mItem.index() == 0u && std::get<char32_t>(mItem) == uiChar;
+    }
+
+    float get_width(const text& mText, const line_item& mItem)
+    {
+        return std::visit([&](const auto& mValue)
+        {
+            using type = std::decay_t<decltype(mValue)>;
+            if constexpr (std::is_same_v<type, char32_t>)
+            {
+                return mText.get_character_width(mValue);
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }, mItem);
+    }
+
+    float get_kerning(const text& mText, const line_item& mItem1, const line_item& mItem2)
+    {
+        return std::visit([&](const auto& mValue1)
+        {
+            using type1 = std::decay_t<decltype(mValue1)>;
+            if constexpr (std::is_same_v<type1, char32_t>)
+            {
+                return std::visit([&](const auto& mValue2)
+                {
+                    using type2 = std::decay_t<decltype(mValue2)>;
+                    if constexpr (std::is_same_v<type2, char32_t>)
+                    {
+                        return mText.get_character_kerning(mValue1, mValue2);
+                    }
+                    else
+                    {
+                        return 0.0f;
+                    }
+                }, mItem2);
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }, mItem1);
+    }
+
+    float get_tracking(const text& mText, const line_item& mItem)
+    {
+        return std::visit([&](const auto& mValue)
+        {
+            using type = std::decay_t<decltype(mValue)>;
+            if constexpr (std::is_same_v<type, char32_t>)
+            {
+                if (mValue != U'\n')
+                    return mText.get_tracking();
+                else
+                    return 0.0f;
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }, mItem);
+    }
+
+    float get_full_advance(const text& mText, std::vector<line_item>::const_iterator iterChar,
+        std::vector<line_item>::const_iterator iterEnd)
+    {
+        float fAdvance = parser::get_width(mText, *iterChar)
+            + parser::get_tracking(mText, *iterChar);
+
+        const auto iterNext = iterChar + 1;
+        if (iterNext != iterEnd)
+        {
+            if (!parser::is_whitespace(*iterChar) && !parser::is_whitespace(*iterNext))
+                fAdvance += parser::get_kerning(mText, *iterChar, *iterNext);
+        }
+
+        return fAdvance;
+    }
+
+    float get_string_width(const text& mText, const std::vector<line_item>& lContent)
+    {
+        float fWidth = 0.0f;
+        float fMaxWidth = 0.0f;
+
+        for (auto iterChar : utils::range::iterator(lContent))
+        {
+            if (parser::is_character(*iterChar, U'\n'))
+            {
+                if (fWidth > fMaxWidth)
+                    fMaxWidth = fWidth;
+
+                fWidth = 0.0f;
+            }
+            else
+            {
+                fWidth += parser::get_full_advance(mText, iterChar, lContent.end());
+            }
+        }
+
+        if (fWidth > fMaxWidth)
+            fMaxWidth = fWidth;
+
+        return fMaxWidth;
+    }
+}
 
 text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont,
     std::shared_ptr<gui::font> pOutlineFont) :
@@ -174,35 +402,7 @@ float text::get_string_width(const utils::ustring& sString) const
     if (!bReady_)
         return 0.0f;
 
-    float fWidth = 0.0f;
-    float fMaxWidth = 0.0f;
-
-    for (auto iterChar : utils::range::iterator(sString))
-    {
-        if (*iterChar == U'\n')
-        {
-            if (fWidth > fMaxWidth)
-                fMaxWidth = fWidth;
-
-            fWidth = 0.0f;
-        }
-        else
-        {
-            fWidth += get_character_width(*iterChar) + fTracking_;
-
-            auto iterNext = iterChar + 1;
-            if (iterNext != sString.end())
-            {
-                if (!utils::is_whitespace(*iterChar) && !utils::is_whitespace(*iterNext))
-                    fWidth += get_character_kerning(*iterChar, *iterNext);
-            }
-        }
-    }
-
-    if (fWidth > fMaxWidth)
-        fMaxWidth = fWidth;
-
-    return fMaxWidth;
+    return parser::get_string_width(*this, parser::parse_string(sString, bFormattingEnabled_));
 }
 
 float text::get_character_width(char32_t uiChar) const
@@ -432,45 +632,6 @@ void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScal
     pRenderer_->render_quads(pMat, lQuadsCopy);
 }
 
-bool get_format(utils::ustring::const_iterator& iterChar, utils::ustring::const_iterator iterEnd,
-    text::format& mFormat)
-{
-    if (*iterChar == 'r')
-    {
-        mFormat.mColorAction = text::color_action::RESET;
-    }
-    else if (*iterChar == 'c')
-    {
-        mFormat.mColorAction = text::color_action::SET;
-
-        auto fuReadTwo = [&](float& fOut)
-        {
-            ++iterChar;
-            if (iterChar == iterEnd) return false;
-            std::string sColorPart(2, '0');
-            sColorPart[0] = *iterChar;
-            ++iterChar;
-            if (iterChar == iterEnd) return false;
-            sColorPart[1] = *iterChar;
-            fOut = utils::hex_to_uint(sColorPart)/255.0f;
-            return true;
-        };
-
-        if (!fuReadTwo(mFormat.mColor.a)) return false;
-        if (!fuReadTwo(mFormat.mColor.r)) return false;
-        if (!fuReadTwo(mFormat.mColor.g)) return false;
-        if (!fuReadTwo(mFormat.mColor.b)) return false;
-    }
-
-    return true;
-}
-
-struct line
-{
-    utils::ustring sCaption;
-    float          fWidth = 0.0f;
-};
-
 void text::notify_cache_dirty_() const
 {
     bUpdateCache_ = true;
@@ -483,17 +644,13 @@ float text::round_to_pixel_(float fValue) const
 
 void text::update_() const
 {
-    // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
-
     if (!bReady_ || !bUpdateCache_) return;
 
     // Update the line list, read format tags, do word wrapping, ...
-    std::vector<line>                lLineList;
-    std::unordered_map<uint, format> lFormatList;
+    std::vector<parser::line> lLineList;
 
     DEBUG_LOG("     Get max line nbr");
-    uint uiMaxLineNbr, uiCounter = 0;
+    uint uiMaxLineNbr;
     if (fBoxH_ != 0.0f && !std::isinf(fBoxH_))
     {
         if (fBoxH_ < get_line_height())
@@ -514,110 +671,89 @@ void text::update_() const
         std::vector<utils::ustring> lManualLineList = utils::cut_each(sUnicodeText_, U"\n");
         for (auto iterManual : utils::range::iterator(lManualLineList))
         {
-            const utils::ustring& sManualLine = *iterManual;
+            DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
-            DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(sManualLine) + "'");
+            // Parse the line
+            std::vector<parser::line_item> lParsedContent =
+                parser::parse_string(*iterManual, bFormattingEnabled_);
 
             // Make a temporary line array
-            std::vector<line> lLines;
+            std::vector<parser::line> lLines;
 
-            line mLine;
+            parser::line mLine;
             mLine.fWidth = 0.0f;
 
-            std::unordered_map<uint, format> lTempFormatList;
-
             bool bDone = false;
-            DEBUG_LOG("     Read chars");
-            for (auto iterChar1 = sManualLine.begin(); iterChar1 != sManualLine.end(); ++iterChar1)
+            for (auto iterChar1 = lParsedContent.begin(); iterChar1 != lParsedContent.end(); ++iterChar1)
             {
-                DEBUG_LOG("      char '" + utils::to_string(*iterChar1) + "'");
-                DEBUG_LOG("      Read format");
-                // Read format tags
-                if (*iterChar1 == U'|' && bFormattingEnabled_)
-                {
-                    ++iterChar1;
-                    if (iterChar1 == sManualLine.end()) break;
-
-                    if (*iterChar1 != U'|')
-                    {
-                        text::format mFormat;
-                        if (get_format(iterChar1, sManualLine.end(), mFormat))
-                            lTempFormatList[uiCounter+mLine.sCaption.size()] = mFormat;
-
-                        if (iterChar1 != sManualLine.end()) continue;
-                        if (iterChar1 == sManualLine.end()) break;
-                    }
-                }
-
                 DEBUG_LOG("      Get width");
-                mLine.fWidth += get_character_width(*iterChar1) + fTracking_;
-                auto iterNext = iterChar1 + 1;
-                if (!utils::is_whitespace(*iterChar1) && iterNext != sManualLine.end() &&
-                    !utils::is_whitespace(*iterNext))
-                {
-                    mLine.fWidth += get_character_kerning(*iterChar1, *iterNext);
-                }
-
-                mLine.sCaption += *iterChar1;
+                // FIXME: advance should be based on prev char, not next char
+                mLine.fWidth += parser::get_full_advance(*this, iterChar1, lParsedContent.end());
+                mLine.lContent.push_back(*iterChar1);
 
                 if (round_to_pixel_(mLine.fWidth - fBoxW_) > 0)
                 {
                     DEBUG_LOG("      Box break " + utils::to_string(mLine.fWidth) + " > " + utils::to_string(fBoxW_));
+
                     // Whoops, the line is too long...
-                    if (mLine.sCaption.find_first_of(U" \t\n\r") != mLine.sCaption.npos && bWordWrap_)
+                    auto mIterSpace = std::find_if(mLine.lContent.begin(), mLine.lContent.end(),
+                        &parser::is_whitespace);
+
+                    if (mIterSpace != mLine.lContent.end() && bWordWrap_)
                     {
                         DEBUG_LOG("       Spaced");
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
-                        utils::ustring::iterator iterChar2 = mLine.sCaption.end();
-                        utils::ustring sErasedString;
+                        auto iterChar2 = iterChar1 + 1;
+                        const auto iterBegin = iterChar2 - mLine.lContent.size();
+                        std::vector<parser::line_item> lErasedContent;
                         uint uiCharToErase = 0;
-                        float fErasedWidth = 0.0f;
+                        float fLastWordWidth = 0.0f;
                         bool bLastWasWord = false;
-                        while (mLine.fWidth > fBoxW_ && iterChar2 != mLine.sCaption.begin())
+                        while (mLine.fWidth > fBoxW_ && iterChar2 != iterBegin)
                         {
                             --iterChar2;
-                            if (utils::is_whitespace(*iterChar2))
+
+                            if (parser::is_whitespace(*iterChar2))
                             {
-                                if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fErasedWidth > fBoxW_)
+                                if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fLastWordWidth > fBoxW_)
                                 {
-                                    mLine.fWidth -= fErasedWidth + get_character_width(U' ') + fTracking_;
-                                    sErasedString.insert(sErasedString.begin(), *iterChar2);
-                                    fErasedWidth = 0.0f;
+                                    fLastWordWidth += parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                    lErasedContent.insert(lErasedContent.begin(), *iterChar2);
                                     ++uiCharToErase;
+
+                                    mLine.fWidth -= fLastWordWidth;
+                                    fLastWordWidth = 0.0f;
                                 }
                                 else
                                     break;
                             }
                             else
                             {
-                                fErasedWidth += get_character_width(*iterChar2) + fTracking_;
-                                sErasedString.insert(sErasedString.begin(), *iterChar2);
+                                fLastWordWidth += parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                lErasedContent.insert(lErasedContent.begin(), *iterChar2);
                                 ++uiCharToErase;
+
                                 bLastWasWord = true;
                             }
                         }
 
                         if (bRemoveStartingSpaces_)
                         {
-                            while (iterChar2 != mLine.sCaption.end() && utils::is_whitespace(*iterChar2))
+                            while (iterChar2 != iterChar1 + 1 && parser::is_whitespace(*iterChar2))
                             {
                                 --uiCharToErase;
-                                sErasedString.erase(0, 1);
+                                lErasedContent.erase(lErasedContent.begin());
                                 ++iterChar2;
                             }
                         }
 
-                        mLine.sCaption.erase(mLine.sCaption.size() - uiCharToErase, uiCharToErase);
-
+                        mLine.fWidth -= fLastWordWidth;
+                        mLine.lContent.erase(mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
                         lLines.push_back(mLine);
-                        for (auto& mFormat : lTempFormatList)
-                            lFormatList.insert(mFormat);
 
-                        lTempFormatList.clear();
-                        uiCounter += mLine.sCaption.size();
-                        mLine.fWidth = get_string_width(sErasedString);
-                        mLine.sCaption = sErasedString;
+                        mLine.fWidth = parser::get_string_width(*this, lErasedContent);
+                        mLine.lContent = lErasedContent;
                     }
                     else
                     {
@@ -629,34 +765,41 @@ void text::update_() const
                         if (bAddEllipsis_)
                         {
                             DEBUG_LOG("       Ellipsis");
-                            float fWordWidth = 3.0f*(get_character_width(U'.') + fTracking_);
-                            utils::ustring::iterator iterChar2 = mLine.sCaption.end();
+                            // FIXME: this doesn't account for kerning between the "..." and prev char
+                            float fWordWidth = get_string_width(U"...");
+                            auto iterChar2 = iterChar1 + 1;
+                            const auto iterBegin = iterChar2 - mLine.lContent.size();
                             uint uiCharToErase = 0;
-                            while ((mLine.fWidth + fWordWidth > fBoxW_) && (iterChar2 != mLine.sCaption.begin()))
+                            while (mLine.fWidth + fWordWidth > fBoxW_ && iterChar2 != iterBegin)
                             {
                                 --iterChar2;
-                                mLine.fWidth -= get_character_width(*iterChar2) + fTracking_;
+                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, lParsedContent.end());
                                 ++uiCharToErase;
                             }
 
                             DEBUG_LOG("       Char to erase : " + utils::to_string(uiCharToErase) + " / "
-                                + utils::to_string(mLine.sCaption.size()));
+                                + utils::to_string(mLine.lContent.size()));
 
-                            mLine.sCaption.erase(mLine.sCaption.size() - uiCharToErase, uiCharToErase);
-                            mLine.sCaption += U"...";
+                            mLine.lContent.erase(mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
+                            mLine.lContent.push_back(U'.');
+                            mLine.lContent.push_back(U'.');
+                            mLine.lContent.push_back(U'.');
+                            mLine.fWidth += fWordWidth;
                         }
                         else
                         {
                             DEBUG_LOG("       Truncate");
-                            utils::ustring::iterator iterChar2 = mLine.sCaption.end();
+                            auto iterChar2 = iterChar1 + 1;
+                            const auto iterBegin = iterChar2 - mLine.lContent.size();
                             uint uiCharToErase = 0;
-                            while (mLine.fWidth  > fBoxW_ && iterChar2 != mLine.sCaption.begin())
+                            while (mLine.fWidth > fBoxW_ && iterChar2 != iterBegin)
                             {
                                 --iterChar2;
-                                mLine.fWidth -= get_character_width(*iterChar2) + fTracking_;
+                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, lParsedContent.end());
                                 ++uiCharToErase;
                             }
-                            mLine.sCaption.erase(mLine.sCaption.size() - uiCharToErase, uiCharToErase);
+
+                            mLine.lContent.erase(mLine.lContent.end() - uiCharToErase, mLine.lContent.end());
                         }
 
                         if (!bWordWrap_)
@@ -664,73 +807,44 @@ void text::update_() const
                             DEBUG_LOG("       Display single line");
                             // Word wrap is disabled, so we can only display one line anyway.
                             lLineList.push_back(mLine);
-                            for (const auto& mFormat : lTempFormatList)
-                                lFormatList[mFormat.first] = mFormat.second;
-
                             bDone = true;
                             break;
                         }
 
+                        // Add the line
+                        lLines.push_back(mLine);
+                        mLine.fWidth = 0.0f;
+                        mLine.lContent.clear();
+
                         DEBUG_LOG("       Continue");
+
+                        // Skip all following content (which we cannot display) until next whitespace
                         auto iterTemp = iterChar1;
-                        size_t pos = sManualLine.find(U" ", iterChar1 - sManualLine.begin());
-                        if (pos == sManualLine.npos)
-                            iterChar1 = sManualLine.end();
-                        else
-                            iterChar1 = sManualLine.begin() + pos;
+                        iterChar1 = std::find_if(iterChar1, lParsedContent.end(),
+                            &parser::is_whitespace);
 
-                        if (iterChar1 != sManualLine.end())
-                        {
-                            // Read cut format tags
-                            if (bFormattingEnabled_)
-                            {
-                                while (iterTemp != iterChar1)
-                                {
-                                    if (*iterTemp == U'|')
-                                    {
-                                        ++iterTemp;
-                                        if (iterTemp == iterChar1) break;
-
-                                        if (*iterTemp != U'|')
-                                        {
-                                            text::format mFormat;
-                                            if (get_format(iterTemp, iterChar1, mFormat))
-                                            {
-                                                lTempFormatList[uiCounter+mLine.sCaption.size()] = mFormat;
-                                            }
-                                        }
-                                    }
-
-                                    if (iterTemp != iterChar1)
-                                        ++iterTemp;
-                                }
-                            }
-
-                            // Look for the next word
-                            while (iterChar1 != sManualLine.end() && utils::is_whitespace(*iterChar1))
-                            {
-                                ++iterChar1;
-                            }
-
-                            // Add the line
-                            if (iterChar1 != sManualLine.end())
-                            {
-                                --iterChar1;
-                                lLines.push_back(mLine);
-                                uiCounter += mLine.sCaption.size();
-
-                                for (auto& mFormat : lTempFormatList)
-                                    lFormatList.insert(std::move(mFormat));
-
-                                lTempFormatList.clear();
-                                mLine.fWidth = 0.0f;
-                                mLine.sCaption.clear();
-                            }
-                            else
-                                break;
-                        }
-                        else
+                        if (iterChar1 == lParsedContent.end())
                             break;
+
+                        // Apply the format tags that were cut
+                        for (; iterTemp != iterChar1; ++iterTemp)
+                        {
+                            std::visit([&](const auto& mValue)
+                            {
+                                using type = std::decay_t<decltype(mValue)>;
+                                if constexpr (std::is_same_v<type, parser::format>)
+                                {
+                                    mLine.lContent.push_back(mValue);
+                                }
+                            }, *iterTemp);
+                        }
+
+                        // Look for the next word
+                        iterChar1 = std::find_if(iterChar1, lParsedContent.end(), &parser::is_word);
+                        if (iterChar1 != lParsedContent.end())
+                            break;
+
+                        --iterChar1;
                     }
                 }
             }
@@ -740,15 +854,9 @@ void text::update_() const
             DEBUG_LOG("     End");
 
             if (iterManual != lManualLineList.end() - 1)
-                mLine.sCaption += U"\n";
+                mLine.lContent.push_back(U'\n');
 
             lLines.push_back(mLine);
-            uiCounter += mLine.sCaption.size();
-
-            for (auto& mFormat : lTempFormatList)
-                lFormatList.insert(mFormat);
-
-            lTempFormatList.clear();
 
             // Add the maximum number of line to this text
             for (auto& sLine : lLines)
@@ -836,7 +944,6 @@ void text::update_() const
             }
         }
 
-        uiCounter = 0;
         color mColor = color::EMPTY;
 
         for (const auto& mLine : lLineList)
@@ -854,62 +961,50 @@ void text::update_() const
                     break;
             }
 
-            for (auto iterChar : utils::range::iterator(mLine.sCaption))
+            for (auto iterChar : utils::range::iterator(mLine.lContent))
             {
-                // Format our text
-                if (bFormattingEnabled_)
+                std::visit([&](const auto& mValue)
                 {
-                    auto lFormatIter = lFormatList.find(uiCounter);
-                    if (lFormatIter != lFormatList.end())
+                    using type = std::decay_t<decltype(mValue)>;
+                    if constexpr (std::is_same_v<type, parser::format>)
                     {
-                        const format& mFormat = lFormatIter->second;
-                        switch (mFormat.mColorAction)
+                        switch (mValue.mColorAction)
                         {
-                            case color_action::SET :
-                                mColor = mFormat.mColor;
+                            case parser::color_action::SET :
+                                mColor = mValue.mColor;
                                 break;
-                            case color_action::RESET :
+                            case parser::color_action::RESET :
                                 mColor = color::EMPTY;
                                 break;
                             default : break;
                         }
                     }
-                }
-
-                if (pOutlineFont_)
-                {
-                    std::array<vertex,4> lVertexList = create_outline_letter_quad_(*iterChar);
-                    for (uint i = 0; i < 4; ++i)
+                    else if constexpr (std::is_same_v<type, char32_t>)
                     {
-                        lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                        lVertexList[i].col = color::BLACK;
+                        if (pOutlineFont_)
+                        {
+                            std::array<vertex,4> lVertexList = create_outline_letter_quad_(mValue);
+                            for (uint i = 0; i < 4; ++i)
+                            {
+                                lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                                lVertexList[i].col = color::BLACK;
+                            }
+
+                            lOutlineQuadList_.push_back(lVertexList);
+                        }
+
+                        std::array<vertex,4> lVertexList = create_letter_quad_(mValue);
+                        for (uint i = 0; i < 4; ++i)
+                        {
+                            lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                            lVertexList[i].col = mColor;
+                        }
+
+                        lQuadList_.push_back(lVertexList);
                     }
+                }, *iterChar);
 
-                    lOutlineQuadList_.push_back(lVertexList);
-                }
-
-                std::array<vertex,4> lVertexList = create_letter_quad_(*iterChar);
-                for (uint i = 0; i < 4; ++i)
-                {
-                    lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                    lVertexList[i].col = mColor;
-                }
-
-                lQuadList_.push_back(lVertexList);
-
-                ++uiCounter;
-
-                if (*iterChar == U'\n') continue;
-
-                float fKerning = 0.0f;
-                auto iterNext = iterChar + 1;
-                if (iterNext != mLine.sCaption.end() &&
-                    !utils::is_whitespace(*iterNext) && !utils::is_whitespace(*iterChar))
-                {
-                    fKerning = get_character_kerning(*iterChar, *iterNext);
-                }
-
-                fX += get_character_width(*iterChar) + fKerning + fTracking_;
+                fX += parser::get_full_advance(*this, iterChar, mLine.lContent.end());
             }
 
             fY += get_line_height()*fLineSpacing_;

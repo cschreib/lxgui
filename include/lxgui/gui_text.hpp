@@ -28,20 +28,6 @@ namespace gui
     {
     public :
 
-        enum class color_action
-        {
-            NONE,
-            SET,
-            RESET
-        };
-
-        /// Contains information about the text at a given position
-        struct format
-        {
-            color        mColor = color::WHITE;
-            color_action mColorAction = color_action::NONE;
-        };
-
         enum class alignment
         {
             LEFT,
