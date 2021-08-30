@@ -35,7 +35,7 @@ var searchData=
   ['close_5fui_150',['close_ui',['../classlxgui_1_1gui_1_1manager.html#a7c3661877269b651d8405649342ca28d',1,'lxgui::gui::manager']]],
   ['col_151',['col',['../structlxgui_1_1gui_1_1vertex.html#a3cc83f14064d9202a4dcc93614b7f176',1,'lxgui::gui::vertex']]],
   ['color_152',['color',['../classlxgui_1_1gui_1_1color.html',1,'lxgui::gui::color'],['../classlxgui_1_1gui_1_1color.html#a7c2968f36a9497936099a5751936d9cb',1,'lxgui::gui::color::color()=default'],['../classlxgui_1_1gui_1_1color.html#aade1b96e5d319f55c567da95f126fa9f',1,'lxgui::gui::color::color(channel nr, channel ng, channel nb, channel na=1.0f) noexcept'],['../classlxgui_1_1gui_1_1color.html#af08a6796870dd64b74e7517d01ca1a1b',1,'lxgui::gui::color::color(const std::string &amp;s)']]],
-  ['color_5faction_153',['color_action',['../classlxgui_1_1gui_1_1text.html#aca9c8add29980915ddf04b59d7a108d2',1,'lxgui::gui::text']]],
+  ['color_5faction_153',['color_action',['../namespacelxgui_1_1gui_1_1parser.html#a3fbdc26620f88c54947c5fc8b312db8f',1,'lxgui::gui::parser']]],
   ['const_5fiterator_154',['const_iterator',['../classlxgui_1_1utils_1_1sorted__vector.html#a8ea79fd8c8d75b153fa8ff98fefc6b23',1,'lxgui::utils::sorted_vector']]],
   ['const_5freverse_5fiterator_155',['const_reverse_iterator',['../classlxgui_1_1utils_1_1sorted__vector.html#a28438f15bc671a2a66a181b76fbf79a7',1,'lxgui::utils::sorted_vector']]],
   ['constrain_5fthumb_5f_156',['constrain_thumb_',['../classlxgui_1_1gui_1_1slider.html#a1cbd11681c694c49c9e5821cb3170d78',1,'lxgui::gui::slider']]],

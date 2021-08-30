@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lxgui_20documentation_3329',['lxgui documentation',['../index.html',1,'']]]
+  ['lxgui_20documentation_3339',['lxgui documentation',['../index.html',1,'']]]
 ];

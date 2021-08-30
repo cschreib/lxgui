@@ -81,6 +81,8 @@ $(function() {
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacelxgui_1_1gui_1_1gl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1gl.html">gl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacelxgui_1_1gui_1_1parser"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html">parser</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui_1_1gui_1_1sdl"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1sdl.html">sdl</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui_1_1gui_1_1sfml"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1sfml.html">sfml</a></td></tr>
@@ -354,8 +356,6 @@ Functions</h2></td></tr>
 <tr class="separator:afb2351f51365c9fbf555f43851a3d0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21e37025213ed926fae068855e825705"><td class="memItemLeft" align="right" valign="top">std::array&lt; float, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a21e37025213ed926fae068855e825705">select_uvs</a> (const std::array&lt; float, 8 &gt; &amp;uvs)</td></tr>
 <tr class="separator:a21e37025213ed926fae068855e825705"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68e4297111fbbb8e7746f39415f7636d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a68e4297111fbbb8e7746f39415f7636d">get_format</a> (utils::ustring::const_iterator &amp;iterChar, utils::ustring::const_iterator iterEnd, <a class="el" href="structlxgui_1_1gui_1_1text_1_1format.html">text::format</a> &amp;mFormat)</td></tr>
-<tr class="separator:a68e4297111fbbb8e7746f39415f7636d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a4cd6e508f23f9e5d30c4a0a7327a8f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a7a4cd6e508f23f9e5d30c4a0a7327a8f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a7a4cd6e508f23f9e5d30c4a0a7327a8f">operator+</a> (const <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; T &gt; &amp;mOffset, const <a class="el" href="structlxgui_1_1gui_1_1quad2.html">quad2</a>&lt; T &gt; &amp;mQuad) noexcept</td></tr>
 <tr class="separator:a7a4cd6e508f23f9e5d30c4a0a7327a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -827,42 +827,6 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a68e4297111fbbb8e7746f39415f7636d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68e4297111fbbb8e7746f39415f7636d">&#9670;&nbsp;</a></span>get_format()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool lxgui::gui::get_format </td>
-          <td>(</td>
-          <td class="paramtype">utils::ustring::const_iterator &amp;&#160;</td>
-          <td class="paramname"><em>iterChar</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">utils::ustring::const_iterator&#160;</td>
-          <td class="paramname"><em>iterEnd</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structlxgui_1_1gui_1_1text_1_1format.html">text::format</a> &amp;&#160;</td>
-          <td class="paramname"><em>mFormat</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00435">435</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -2119,7 +2083,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Aug 27 2021 07:05:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Aug 30 2021 16:15:52 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
