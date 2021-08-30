@@ -134,6 +134,11 @@ namespace parser
         return mItem.index() == 0u;
     }
 
+    bool is_format(const line_item& mItem)
+    {
+        return mItem.index() == 1u;
+    }
+
     bool is_character(const line_item& mItem, char32_t uiChar)
     {
         return mItem.index() == 0u && std::get<char32_t>(mItem) == uiChar;
@@ -202,16 +207,22 @@ namespace parser
     }
 
     float get_full_advance(const text& mText, std::vector<line_item>::const_iterator iterChar,
-        std::vector<line_item>::const_iterator iterEnd)
+        std::vector<line_item>::const_iterator iterBegin)
     {
-        float fAdvance = parser::get_width(mText, *iterChar)
-            + parser::get_tracking(mText, *iterChar);
+        float fAdvance = parser::get_width(mText, *iterChar);
 
-        const auto iterNext = iterChar + 1;
-        if (iterNext != iterEnd)
+        auto iterPrev = iterChar;
+        while (iterPrev != iterBegin)
         {
-            if (!parser::is_whitespace(*iterChar) && !parser::is_whitespace(*iterNext))
-                fAdvance += parser::get_kerning(mText, *iterChar, *iterNext);
+            --iterPrev;
+            if (parser::is_format(*iterPrev)) continue;
+
+            fAdvance += parser::get_tracking(mText, *iterChar);
+
+            if (!parser::is_whitespace(*iterChar) && !parser::is_whitespace(*iterPrev))
+                fAdvance += parser::get_kerning(mText, *iterPrev, *iterChar);
+
+            break;
         }
 
         return fAdvance;
@@ -233,7 +244,7 @@ namespace parser
             }
             else
             {
-                fWidth += parser::get_full_advance(mText, iterChar, lContent.end());
+                fWidth += parser::get_full_advance(mText, iterChar, lContent.begin());
             }
         }
 
@@ -680,6 +691,7 @@ void text::update_() const
             // Make a temporary line array
             std::vector<parser::line> lLines;
 
+            auto iterLineBegin = lParsedContent.begin();
             parser::line mLine;
             mLine.fWidth = 0.0f;
 
@@ -687,8 +699,7 @@ void text::update_() const
             for (auto iterChar1 = lParsedContent.begin(); iterChar1 != lParsedContent.end(); ++iterChar1)
             {
                 DEBUG_LOG("      Get width");
-                // FIXME: advance should be based on prev char, not next char
-                mLine.fWidth += parser::get_full_advance(*this, iterChar1, lParsedContent.end());
+                mLine.fWidth += parser::get_full_advance(*this, iterChar1, iterLineBegin);
                 mLine.lContent.push_back(*iterChar1);
 
                 if (round_to_pixel_(mLine.fWidth - fBoxW_) > 0)
@@ -705,12 +716,11 @@ void text::update_() const
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
                         auto iterChar2 = iterChar1 + 1;
-                        const auto iterBegin = iterChar2 - mLine.lContent.size();
                         std::vector<parser::line_item> lErasedContent;
                         uint uiCharToErase = 0;
                         float fLastWordWidth = 0.0f;
                         bool bLastWasWord = false;
-                        while (mLine.fWidth > fBoxW_ && iterChar2 != iterBegin)
+                        while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin)
                         {
                             --iterChar2;
 
@@ -718,7 +728,7 @@ void text::update_() const
                             {
                                 if (!bLastWasWord || bRemoveStartingSpaces_ || mLine.fWidth - fLastWordWidth > fBoxW_)
                                 {
-                                    fLastWordWidth += parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                    fLastWordWidth += parser::get_full_advance(*this, iterChar2, iterLineBegin);
                                     lErasedContent.insert(lErasedContent.begin(), *iterChar2);
                                     ++uiCharToErase;
 
@@ -730,7 +740,7 @@ void text::update_() const
                             }
                             else
                             {
-                                fLastWordWidth += parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                fLastWordWidth += parser::get_full_advance(*this, iterChar2, iterLineBegin);
                                 lErasedContent.insert(lErasedContent.begin(), *iterChar2);
                                 ++uiCharToErase;
 
@@ -754,6 +764,7 @@ void text::update_() const
 
                         mLine.fWidth = parser::get_string_width(*this, lErasedContent);
                         mLine.lContent = lErasedContent;
+                        iterLineBegin = iterChar1 - (mLine.lContent.size() - 1u);
                     }
                     else
                     {
@@ -768,12 +779,11 @@ void text::update_() const
                             // FIXME: this doesn't account for kerning between the "..." and prev char
                             float fWordWidth = get_string_width(U"...");
                             auto iterChar2 = iterChar1 + 1;
-                            const auto iterBegin = iterChar2 - mLine.lContent.size();
                             uint uiCharToErase = 0;
-                            while (mLine.fWidth + fWordWidth > fBoxW_ && iterChar2 != iterBegin)
+                            while (mLine.fWidth + fWordWidth > fBoxW_ && iterChar2 != iterLineBegin)
                             {
                                 --iterChar2;
-                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, iterLineBegin);
                                 ++uiCharToErase;
                             }
 
@@ -790,12 +800,11 @@ void text::update_() const
                         {
                             DEBUG_LOG("       Truncate");
                             auto iterChar2 = iterChar1 + 1;
-                            const auto iterBegin = iterChar2 - mLine.lContent.size();
                             uint uiCharToErase = 0;
-                            while (mLine.fWidth > fBoxW_ && iterChar2 != iterBegin)
+                            while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin)
                             {
                                 --iterChar2;
-                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, lParsedContent.end());
+                                mLine.fWidth -= parser::get_full_advance(*this, iterChar2, iterLineBegin);
                                 ++uiCharToErase;
                             }
 
@@ -845,6 +854,7 @@ void text::update_() const
                             break;
 
                         --iterChar1;
+                        iterLineBegin = iterChar1;
                     }
                 }
             }
@@ -1004,7 +1014,7 @@ void text::update_() const
                     }
                 }, *iterChar);
 
-                fX += parser::get_full_advance(*this, iterChar, mLine.lContent.end());
+                fX += parser::get_full_advance(*this, iterChar, mLine.lContent.begin());
             }
 
             fY += get_line_height()*fLineSpacing_;
