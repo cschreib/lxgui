@@ -55,14 +55,14 @@ namespace parser
 
                 if (*iterChar != U'|')
                 {
-                    if (*iterChar == 'r')
+                    if (*iterChar == U'r')
                     {
                         format mFormat;
                         mFormat.mColorAction = color_action::RESET;
                         lContent.push_back(mFormat);
                         continue;
                     }
-                    else if (*iterChar == 'c')
+                    else if (*iterChar == U'c')
                     {
                         format mFormat;
                         mFormat.mColorAction = color_action::SET;
@@ -71,12 +71,12 @@ namespace parser
                         {
                             ++iterChar;
                             if (iterChar == sCaption.end()) return false;
-                            std::string sColorPart(2, '0');
+                            utils::ustring sColorPart(2, U'0');
                             sColorPart[0] = *iterChar;
                             ++iterChar;
                             if (iterChar == sCaption.end()) return false;
                             sColorPart[1] = *iterChar;
-                            fOut = utils::hex_to_uint(sColorPart)/255.0f;
+                            fOut = utils::hex_to_uint(utils::unicode_to_utf8(sColorPart))/255.0f;
                             return true;
                         };
 
