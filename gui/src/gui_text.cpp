@@ -55,13 +55,16 @@ namespace parser
 
                 if (*iterChar != U'|')
                 {
-                    format mFormat;
                     if (*iterChar == 'r')
                     {
+                        format mFormat;
                         mFormat.mColorAction = color_action::RESET;
+                        lContent.push_back(mFormat);
+                        continue;
                     }
                     else if (*iterChar == 'c')
                     {
+                        format mFormat;
                         mFormat.mColorAction = color_action::SET;
 
                         auto mReadTwo = [&](float& fOut)
@@ -77,16 +80,14 @@ namespace parser
                             return true;
                         };
 
-                        if (!mReadTwo(mFormat.mColor.a)) continue;
-                        if (!mReadTwo(mFormat.mColor.r)) continue;
-                        if (!mReadTwo(mFormat.mColor.g)) continue;
-                        if (!mReadTwo(mFormat.mColor.b)) continue;
+                        if (!mReadTwo(mFormat.mColor.a)) break;
+                        if (!mReadTwo(mFormat.mColor.r)) break;
+                        if (!mReadTwo(mFormat.mColor.g)) break;
+                        if (!mReadTwo(mFormat.mColor.b)) break;
+
+                        lContent.push_back(mFormat);
+                        continue;
                     }
-
-                    lContent.push_back(mFormat);
-
-                    if (iterChar != sCaption.end()) continue;
-                    if (iterChar == sCaption.end()) break;
                 }
             }
 
@@ -954,7 +955,7 @@ void text::update_() const
             }
         }
 
-        color mColor = color::EMPTY;
+        std::vector<color> lColorStack;
 
         for (const auto& mLine : lLineList)
         {
@@ -981,10 +982,10 @@ void text::update_() const
                         switch (mValue.mColorAction)
                         {
                             case parser::color_action::SET :
-                                mColor = mValue.mColor;
+                                lColorStack.push_back(mValue.mColor);
                                 break;
                             case parser::color_action::RESET :
-                                mColor = color::EMPTY;
+                                lColorStack.pop_back();
                                 break;
                             default : break;
                         }
@@ -1007,7 +1008,7 @@ void text::update_() const
                         for (uint i = 0; i < 4; ++i)
                         {
                             lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
-                            lVertexList[i].col = mColor;
+                            lVertexList[i].col = lColorStack.empty() ? color::EMPTY : lColorStack.back();
                         }
 
                         lQuadList_.push_back(lVertexList);
