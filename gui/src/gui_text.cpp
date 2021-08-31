@@ -34,17 +34,17 @@ namespace parser
         color_action mColorAction = color_action::NONE;
     };
 
-    using line_item = std::variant<char32_t, format>;
+    using item = std::variant<char32_t, format>;
 
     struct line
     {
-        std::vector<line_item> lContent;
-        float                  fWidth = 0.0f;
+        std::vector<item> lContent;
+        float             fWidth = 0.0f;
     };
 
-    std::vector<line_item> parse_string(const utils::ustring& sCaption, bool bFormattingEnabled)
+    std::vector<item> parse_string(const utils::ustring& sCaption, bool bFormattingEnabled)
     {
-        std::vector<line_item> lContent;
+        std::vector<item> lContent;
         for (auto iterChar = sCaption.begin(); iterChar != sCaption.end(); ++iterChar)
         {
             // Read format tags
@@ -98,7 +98,7 @@ namespace parser
         return lContent;
     }
 
-    bool is_whitespace(const line_item& mItem)
+    bool is_whitespace(const item& mItem)
     {
         return std::visit([](const auto& mValue)
         {
@@ -114,7 +114,7 @@ namespace parser
         }, mItem);
     }
 
-    bool is_word(const line_item& mItem)
+    bool is_word(const item& mItem)
     {
         return std::visit([](const auto& mValue)
         {
@@ -130,22 +130,22 @@ namespace parser
         }, mItem);
     }
 
-    bool is_character(const line_item& mItem)
+    bool is_character(const item& mItem)
     {
         return mItem.index() == 0u;
     }
 
-    bool is_format(const line_item& mItem)
+    bool is_format(const item& mItem)
     {
         return mItem.index() == 1u;
     }
 
-    bool is_character(const line_item& mItem, char32_t uiChar)
+    bool is_character(const item& mItem, char32_t uiChar)
     {
         return mItem.index() == 0u && std::get<char32_t>(mItem) == uiChar;
     }
 
-    float get_width(const text& mText, const line_item& mItem)
+    float get_width(const text& mText, const item& mItem)
     {
         return std::visit([&](const auto& mValue)
         {
@@ -161,7 +161,7 @@ namespace parser
         }, mItem);
     }
 
-    float get_kerning(const text& mText, const line_item& mItem1, const line_item& mItem2)
+    float get_kerning(const text& mText, const item& mItem1, const item& mItem2)
     {
         return std::visit([&](const auto& mValue1)
         {
@@ -188,7 +188,7 @@ namespace parser
         }, mItem1);
     }
 
-    float get_tracking(const text& mText, const line_item& mItem)
+    float get_tracking(const text& mText, const item& mItem)
     {
         return std::visit([&](const auto& mValue)
         {
@@ -207,8 +207,8 @@ namespace parser
         }, mItem);
     }
 
-    float get_full_advance(const text& mText, std::vector<line_item>::const_iterator iterChar,
-        std::vector<line_item>::const_iterator iterBegin)
+    float get_full_advance(const text& mText, std::vector<item>::const_iterator iterChar,
+        std::vector<item>::const_iterator iterBegin)
     {
         float fAdvance = parser::get_width(mText, *iterChar);
 
@@ -229,7 +229,7 @@ namespace parser
         return fAdvance;
     }
 
-    float get_string_width(const text& mText, const std::vector<line_item>& lContent)
+    float get_string_width(const text& mText, const std::vector<item>& lContent)
     {
         float fWidth = 0.0f;
         float fMaxWidth = 0.0f;
@@ -686,7 +686,7 @@ void text::update_() const
             DEBUG_LOG("     Line : '" + utils::unicode_to_utf8(*iterManual) + "'");
 
             // Parse the line
-            std::vector<parser::line_item> lParsedContent =
+            std::vector<parser::item> lParsedContent =
                 parser::parse_string(*iterManual, bFormattingEnabled_);
 
             // Make a temporary line array
@@ -717,7 +717,7 @@ void text::update_() const
                         // There are several words on this line, we'll
                         // be able to put the last one on the next line
                         auto iterChar2 = iterChar1 + 1;
-                        std::vector<parser::line_item> lErasedContent;
+                        std::vector<parser::item> lErasedContent;
                         uint uiCharToErase = 0;
                         float fLastWordWidth = 0.0f;
                         bool bLastWasWord = false;
