@@ -34,7 +34,15 @@ namespace parser
         color_action mColorAction = color_action::NONE;
     };
 
-    using item = std::variant<char32_t, format>;
+    struct texture
+    {
+        std::string               sFileName;
+        float                     fWidth = 0.0f;
+        float                     fHeight = 0.0f;
+        std::shared_ptr<material> pMaterial;
+    };
+
+    using item = std::variant<char32_t, format, texture>;
 
     struct line
     {
@@ -42,7 +50,8 @@ namespace parser
         float             fWidth = 0.0f;
     };
 
-    std::vector<item> parse_string(const utils::ustring& sCaption, bool bFormattingEnabled)
+    std::vector<item> parse_string(const text& mText, const utils::ustring& sCaption,
+        bool bFormattingEnabled)
     {
         std::vector<item> lContent;
         for (auto iterChar = sCaption.begin(); iterChar != sCaption.end(); ++iterChar)
@@ -60,7 +69,6 @@ namespace parser
                         format mFormat;
                         mFormat.mColorAction = color_action::RESET;
                         lContent.push_back(mFormat);
-                        continue;
                     }
                     else if (*iterChar == U'c')
                     {
@@ -86,8 +94,45 @@ namespace parser
                         if (!mReadTwo(mFormat.mColor.b)) break;
 
                         lContent.push_back(mFormat);
-                        continue;
                     }
+                    else if (*iterChar == U'T')
+                    {
+                        ++iterChar;
+
+                        const auto uiBegin = iterChar - sCaption.begin();
+                        const auto uiPos = sCaption.find(U"|t", uiBegin);
+                        if (uiPos == sCaption.npos) break;
+
+                        const std::string sExtracted = utils::unicode_to_utf8(
+                            sCaption.substr(uiBegin, uiPos - uiBegin));
+
+                        const auto lWords = utils::cut(sExtracted, ":");
+                        if (!lWords.empty())
+                        {
+                            texture mTexture;
+                            mTexture.pMaterial = mText.get_renderer()->create_material(lWords[0]);
+                            if (lWords.size() == 2)
+                            {
+                                mTexture.fWidth = mTexture.fHeight = utils::string_to_float(lWords[1]);
+                            }
+                            else if (lWords.size() > 2)
+                            {
+                                mTexture.fWidth = utils::string_to_float(lWords[1]);
+                                mTexture.fHeight = utils::string_to_float(lWords[2]);
+                            }
+                            else
+                            {
+                                mTexture.fWidth = mTexture.fHeight =
+                                    std::numeric_limits<float>::quiet_NaN();
+                            }
+
+                            lContent.push_back(mTexture);
+                        }
+
+                        iterChar += sExtracted.size() + 1;
+                    }
+
+                    continue;
                 }
             }
 
@@ -154,6 +199,13 @@ namespace parser
             {
                 return mText.get_character_width(mValue);
             }
+            else if constexpr (std::is_same_v<type, texture>)
+            {
+                if (std::isnan(mValue.fWidth))
+                    return mText.get_line_height();
+                else
+                    return mValue.fWidth*mText.get_scaling_factor();
+            }
             else
             {
                 return 0.0f;
@@ -207,10 +259,11 @@ namespace parser
         }, mItem);
     }
 
-    float get_full_advance(const text& mText, std::vector<item>::const_iterator iterChar,
+    std::pair<float,float> get_advance(const text& mText, std::vector<item>::const_iterator iterChar,
         std::vector<item>::const_iterator iterBegin)
     {
         float fAdvance = parser::get_width(mText, *iterChar);
+        float fKerning = 0.0f;
 
         auto iterPrev = iterChar;
         while (iterPrev != iterBegin)
@@ -218,15 +271,22 @@ namespace parser
             --iterPrev;
             if (parser::is_format(*iterPrev)) continue;
 
-            fAdvance += parser::get_tracking(mText, *iterChar);
+            fKerning = parser::get_tracking(mText, *iterChar);
 
             if (!parser::is_whitespace(*iterChar) && !parser::is_whitespace(*iterPrev))
-                fAdvance += parser::get_kerning(mText, *iterPrev, *iterChar);
+                fKerning += parser::get_kerning(mText, *iterPrev, *iterChar);
 
             break;
         }
 
-        return fAdvance;
+        return std::make_pair(fKerning, fAdvance);
+    }
+
+    float get_full_advance(const text& mText, std::vector<item>::const_iterator iterChar,
+        std::vector<item>::const_iterator iterBegin)
+    {
+        const auto mAdvance = get_advance(mText, iterChar, iterBegin);
+        return mAdvance.first + mAdvance.second;
     }
 
     float get_string_width(const text& mText, const std::vector<item>& lContent)
@@ -414,7 +474,8 @@ float text::get_string_width(const utils::ustring& sString) const
     if (!bReady_)
         return 0.0f;
 
-    return parser::get_string_width(*this, parser::parse_string(sString, bFormattingEnabled_));
+    return parser::get_string_width(*this,
+        parser::parse_string(*this, sString, bFormattingEnabled_));
 }
 
 float text::get_character_width(char32_t uiChar) const
@@ -591,6 +652,17 @@ void text::render(float fX, float fY) const
 
         pRenderer_->render_quads(pMat, lQuadsCopy);
     }
+
+    for (auto mQuad : lIconsList_)
+    {
+        for (uint i = 0; i < 4; ++i)
+        {
+            mQuad.v[i].pos += mOffset;
+            mQuad.v[i].col.a *= fAlpha_;
+        }
+
+        pRenderer_->render_quad(mQuad);
+    }
 }
 
 void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScale) const
@@ -687,7 +759,7 @@ void text::update_() const
 
             // Parse the line
             std::vector<parser::item> lParsedContent =
-                parser::parse_string(*iterManual, bFormattingEnabled_);
+                parser::parse_string(*this, *iterManual, bFormattingEnabled_);
 
             // Make a temporary line array
             std::vector<parser::line> lLines;
@@ -889,6 +961,7 @@ void text::update_() const
 
     lQuadList_.clear();
     lOutlineQuadList_.clear();
+    lIconsList_.clear();
 
     if (!lLineList.empty())
     {
@@ -974,6 +1047,10 @@ void text::update_() const
 
             for (auto iterChar : utils::range::iterator(mLine.lContent))
             {
+                const auto mAdvance = parser::get_advance(*this, iterChar, mLine.lContent.begin());
+
+                fX += mAdvance.first;
+
                 std::visit([&](const auto& mValue)
                 {
                     using type = std::decay_t<decltype(mValue)>;
@@ -989,6 +1066,41 @@ void text::update_() const
                                 break;
                             default : break;
                         }
+                    }
+                    else if constexpr (std::is_same_v<type, parser::texture>)
+                    {
+                        float fTexWidth = 0.0f, fTexHeight = 0.0f;
+                        if (std::isnan(mValue.fWidth))
+                        {
+                            fTexWidth = get_line_height();
+                            fTexHeight = get_line_height();
+                        }
+                        else
+                        {
+                            fTexWidth = mValue.fWidth*get_scaling_factor();
+                            fTexHeight = mValue.fHeight*get_scaling_factor();
+                        }
+
+                        fTexWidth  = round_to_pixel_(fTexWidth);
+                        fTexHeight = round_to_pixel_(fTexHeight);
+
+                        quad mIcon;
+                        mIcon.mat = mValue.pMaterial;
+                        mIcon.v[0].pos = vector2f(0.0f,      0.0f);
+                        mIcon.v[1].pos = vector2f(fTexWidth, 0.0f);
+                        mIcon.v[2].pos = vector2f(fTexWidth, fTexHeight);
+                        mIcon.v[3].pos = vector2f(0.0f,      fTexHeight);
+                        mIcon.v[0].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+                        mIcon.v[1].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 0.0f), true);
+                        mIcon.v[2].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+                        mIcon.v[3].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
+
+                        for (uint i = 0; i < 4; ++i)
+                        {
+                            mIcon.v[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
+                        }
+
+                        lIconsList_.push_back(mIcon);
                     }
                     else if constexpr (std::is_same_v<type, char32_t>)
                     {
@@ -1015,7 +1127,7 @@ void text::update_() const
                     }
                 }, *iterChar);
 
-                fX += parser::get_full_advance(*this, iterChar, mLine.lContent.begin());
+                fX += mAdvance.second;
             }
 
             fY += get_line_height()*fLineSpacing_;
@@ -1101,6 +1213,11 @@ const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
 {
     update_();
     return lQuadList_[uiIndex];
+}
+
+const renderer* text::get_renderer() const
+{
+    return pRenderer_;
 }
 
 }

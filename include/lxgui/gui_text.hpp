@@ -317,6 +317,11 @@ namespace gui
         */
         quad create_letter_quad(char32_t uiChar) const;
 
+        /// Returns the renderer used to render this text.
+        /** \return The renderer used to render this text
+        */
+        const renderer* get_renderer() const;
+
     private :
 
         void update_() const;
@@ -357,6 +362,7 @@ namespace gui
         mutable std::shared_ptr<vertex_cache>     pVertexCache_;
         mutable std::vector<std::array<vertex,4>> lOutlineQuadList_;
         mutable std::shared_ptr<vertex_cache>     pOutlineVertexCache_;
+        mutable std::vector<quad>                 lIconsList_;
     };
 }
 }

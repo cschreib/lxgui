@@ -23,9 +23,10 @@ function FSTest.on_update(dt)
     FontstringTestFrameText:set_text("FPS : "..FSTest.FPS.."\n(created in XML/Lua)");
 end
 
-FSTest.big_text = "Hello and welcome in the |cFF3FA7F3gui test program|r !\n\n"
-    .."Here is the list of all gui elements that you should see on the screen :\n"
-    .."  - a |cFFFFC109simple texture|r and a |cFFFFC109small gradient|r above it. "
+FSTest.big_text = "Hello and welcome to the |cFF3FA7F3GUI test program|r !\n\n"
+    .."Here is the list of all GUI elements that you should see on the screen :\n"
+    .."  - a |cFFFFC109simple texture|r (like this |Tinterface/texture_test/texture.png|t) "
+    .."and a |cFFFFC109small gradient|r above it. "
     .."They are located in the bottom left corner of the screen, right below this text.\n"
     .."  - an |cFFFFC109FPS meter|r, and an |cFFFFC109FPS gauge|r, at the bottom right "
     .."corner of the screen.\n"
@@ -34,13 +35,13 @@ FSTest.big_text = "Hello and welcome in the |cFF3FA7F3gui test program|r !\n\n"
     .."  - a |cFFFFC109color selector|r at the top left corner of the screen.\n"
     .."  - a |cFFFFC109file selector|r in the middle.\n\n"
     .."If you see all these elements, then voilà : |cFF3FA7F3you have successfully "
-    .."installed the gui library !|r";
+    .."installed the GUI library !|r";
 
 FSTest.controls = "|cFF3FA7F3Controls|r\n\n"
     .."Exit the test : |cFFFFC109[Escape]|r - \n"
     .."Toggle caching : |cFFFFC109[C]|r - \n"
-    .."Reload the gui : |cFFFFC109[R]|r - \n"
-    .."Serialize the gui in gui.log : |cFFFFC109[P]|r - \n\n"
+    .."Reload the GUI : |cFFFFC109[R]|r - \n"
+    .."Serialize the GUI in gui.log : |cFFFFC109[P]|r - \n\n"
     .."Also note that you can interact with the two frames (the color selector "
     .."and the file browser) : you can move them by dragging their title bar ("
     .."also called 'TitleRegion'), and you can resize them by dragging their edges."

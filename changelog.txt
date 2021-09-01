@@ -15,6 +15,7 @@ Major changes:
  - gui: added vertex_cache to speed up rendering (only available with OpenGL renderer)
  - gui: added texture atlases to speed up rendering
  - gui: added quad batching to speed up rendering
+ - gui: font_string can now render icons/smileys mixed with the rendered text
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:
     - the frame itself is created (without any of its regions or children)
     - the special regions are created (e.g., slider thumb texture, button texture, etc.)

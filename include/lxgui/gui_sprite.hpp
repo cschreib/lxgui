@@ -40,7 +40,7 @@ namespace gui
     {
         std::array<vertex, 4>     v;
         std::shared_ptr<material> mat;
-        blend_mode                blend;
+        blend_mode                blend = blend_mode::NORMAL;
     };
 
     /// Use to draw a texture on the screen
