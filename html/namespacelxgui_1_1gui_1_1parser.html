@@ -76,8 +76,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a5f4d886cd6991c10e658d053f0eabe30"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> = std::variant&lt; char32_t, format &gt;</td></tr>
-<tr class="separator:a5f4d886cd6991c10e658d053f0eabe30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e4f4dedfdde67f5fafea33d6b9714e4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> = std::variant&lt; char32_t, format, texture &gt;</td></tr>
+<tr class="separator:a4e4f4dedfdde67f5fafea33d6b9714e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -89,43 +89,45 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8de6a5d65ce6032a45445bf64bbe191e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a8de6a5d65ce6032a45445bf64bbe191e">parse_string</a> (const utils::ustring &amp;sCaption, bool bFormattingEnabled)</td></tr>
-<tr class="separator:a8de6a5d65ce6032a45445bf64bbe191e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0d8d66e67987b428ab312f6c82650ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#ac0d8d66e67987b428ab312f6c82650ff">is_whitespace</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:ac0d8d66e67987b428ab312f6c82650ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a717bb2185ccdfb2d25e4e9f0c9c8e605"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a717bb2185ccdfb2d25e4e9f0c9c8e605">is_word</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:a717bb2185ccdfb2d25e4e9f0c9c8e605"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a145b204d3be5542ea97acc17e9bb5425"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a145b204d3be5542ea97acc17e9bb5425">is_character</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:a145b204d3be5542ea97acc17e9bb5425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f5b45942ddeeb76797b6b79b308fb61"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a9f5b45942ddeeb76797b6b79b308fb61">is_format</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:a9f5b45942ddeeb76797b6b79b308fb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0148e56271ef4a73499455e62ad8591e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a0148e56271ef4a73499455e62ad8591e">is_character</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem, char32_t uiChar)</td></tr>
-<tr class="separator:a0148e56271ef4a73499455e62ad8591e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa98bef25dd2aa28e8aa0e794484ce9bc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#aa98bef25dd2aa28e8aa0e794484ce9bc">get_width</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:aa98bef25dd2aa28e8aa0e794484ce9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31eae70322c435ddee68b263b35cbf52"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a31eae70322c435ddee68b263b35cbf52">get_kerning</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem1, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem2)</td></tr>
-<tr class="separator:a31eae70322c435ddee68b263b35cbf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5df8aa0b52071a9c3192c0f19e60dc8e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5df8aa0b52071a9c3192c0f19e60dc8e">get_tracking</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;mItem)</td></tr>
-<tr class="separator:a5df8aa0b52071a9c3192c0f19e60dc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71f6828d250a144a59625cb272f2ffec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a71f6828d250a144a59625cb272f2ffec">get_full_advance</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt;::const_iterator iterChar, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt;::const_iterator iterBegin)</td></tr>
-<tr class="separator:a71f6828d250a144a59625cb272f2ffec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19428177d9f9859b4f6258ae5f86d393"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a19428177d9f9859b4f6258ae5f86d393">get_string_width</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt; &amp;lContent)</td></tr>
-<tr class="separator:a19428177d9f9859b4f6258ae5f86d393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60e0bb999b3b3025ea6f90f5c8dd9103"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a60e0bb999b3b3025ea6f90f5c8dd9103">parse_string</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const utils::ustring &amp;sCaption, bool bFormattingEnabled)</td></tr>
+<tr class="separator:a60e0bb999b3b3025ea6f90f5c8dd9103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4abc075fa4de30106ba318826f6cbb1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4abc075fa4de30106ba318826f6cbb1a">is_whitespace</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:a4abc075fa4de30106ba318826f6cbb1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab17b4653cc8633e73ca7323d2df96aff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#ab17b4653cc8633e73ca7323d2df96aff">is_word</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:ab17b4653cc8633e73ca7323d2df96aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45c071397ab2a1664619cf83ba3493a5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a45c071397ab2a1664619cf83ba3493a5">is_character</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:a45c071397ab2a1664619cf83ba3493a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8104066e9a1331f8b04ed5d18ac6fea4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a8104066e9a1331f8b04ed5d18ac6fea4">is_format</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:a8104066e9a1331f8b04ed5d18ac6fea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82f7c444fb1f8f56355b38ce5c3adf3f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a82f7c444fb1f8f56355b38ce5c3adf3f">is_character</a> (const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem, char32_t uiChar)</td></tr>
+<tr class="separator:a82f7c444fb1f8f56355b38ce5c3adf3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebb54dec15302736c582727100815528"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#aebb54dec15302736c582727100815528">get_width</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:aebb54dec15302736c582727100815528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3ad3a13778defa8397525b070772362"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#ae3ad3a13778defa8397525b070772362">get_kerning</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem1, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem2)</td></tr>
+<tr class="separator:ae3ad3a13778defa8397525b070772362"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a567ac4d8ed010503871c8a8d67c80be1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a567ac4d8ed010503871c8a8d67c80be1">get_tracking</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;mItem)</td></tr>
+<tr class="separator:a567ac4d8ed010503871c8a8d67c80be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c4b08385fff336795412a6ae49b8a46"><td class="memItemLeft" align="right" valign="top">std::pair&lt; float, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5c4b08385fff336795412a6ae49b8a46">get_advance</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator iterChar, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator iterBegin)</td></tr>
+<tr class="separator:a5c4b08385fff336795412a6ae49b8a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83e35cae1a9a33fc5909757b4e225888"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a83e35cae1a9a33fc5909757b4e225888">get_full_advance</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator iterChar, std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator iterBegin)</td></tr>
+<tr class="separator:a83e35cae1a9a33fc5909757b4e225888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaef56bbbbc3b9386d7c96c7511005b87"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui_1_1parser.html#aaef56bbbbc3b9386d7c96c7511005b87">get_string_width</a> (const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;mText, const std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt; &amp;lContent)</td></tr>
+<tr class="separator:aaef56bbbbc3b9386d7c96c7511005b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a5f4d886cd6991c10e658d053f0eabe30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f4d886cd6991c10e658d053f0eabe30">&#9670;&nbsp;</a></span>line_item</h2>
+<a id="a4e4f4dedfdde67f5fafea33d6b9714e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4f4dedfdde67f5fafea33d6b9714e4">&#9670;&nbsp;</a></span>item</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">lxgui::gui::parser::line_item</a> = typedef std::variant&lt;char32_t, format&gt;</td>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">lxgui::gui::parser::item</a> = typedef std::variant&lt;char32_t, format, texture&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00037">37</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00045">45</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -160,8 +162,44 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a71f6828d250a144a59625cb272f2ffec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71f6828d250a144a59625cb272f2ffec">&#9670;&nbsp;</a></span>get_full_advance()</h2>
+<a id="a5c4b08385fff336795412a6ae49b8a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c4b08385fff336795412a6ae49b8a46">&#9670;&nbsp;</a></span>get_advance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;float,float&gt; lxgui::gui::parser::get_advance </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;&#160;</td>
+          <td class="paramname"><em>mText</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator&#160;</td>
+          <td class="paramname"><em>iterChar</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator&#160;</td>
+          <td class="paramname"><em>iterBegin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00262">262</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a83e35cae1a9a33fc5909757b4e225888"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83e35cae1a9a33fc5909757b4e225888">&#9670;&nbsp;</a></span>get_full_advance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -175,13 +213,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt;::const_iterator&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator&#160;</td>
           <td class="paramname"><em>iterChar</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt;::const_iterator&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt;::const_iterator&#160;</td>
           <td class="paramname"><em>iterBegin</em>&#160;</td>
         </tr>
         <tr>
@@ -192,12 +230,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00209">209</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00285">285</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a31eae70322c435ddee68b263b35cbf52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31eae70322c435ddee68b263b35cbf52">&#9670;&nbsp;</a></span>get_kerning()</h2>
+<a id="ae3ad3a13778defa8397525b070772362"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3ad3a13778defa8397525b070772362">&#9670;&nbsp;</a></span>get_kerning()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -211,13 +249,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem2</em>&#160;</td>
         </tr>
         <tr>
@@ -228,12 +266,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00163">163</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00216">216</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a19428177d9f9859b4f6258ae5f86d393"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19428177d9f9859b4f6258ae5f86d393">&#9670;&nbsp;</a></span>get_string_width()</h2>
+<a id="aaef56bbbbc3b9386d7c96c7511005b87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaef56bbbbc3b9386d7c96c7511005b87">&#9670;&nbsp;</a></span>get_string_width()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -247,7 +285,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>lContent</em>&#160;</td>
         </tr>
         <tr>
@@ -258,12 +296,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00231">231</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00292">292</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a5df8aa0b52071a9c3192c0f19e60dc8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5df8aa0b52071a9c3192c0f19e60dc8e">&#9670;&nbsp;</a></span>get_tracking()</h2>
+<a id="a567ac4d8ed010503871c8a8d67c80be1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a567ac4d8ed010503871c8a8d67c80be1">&#9670;&nbsp;</a></span>get_tracking()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -277,7 +315,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em>&#160;</td>
         </tr>
         <tr>
@@ -288,12 +326,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00190">190</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00243">243</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="aa98bef25dd2aa28e8aa0e794484ce9bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa98bef25dd2aa28e8aa0e794484ce9bc">&#9670;&nbsp;</a></span>get_width()</h2>
+<a id="aebb54dec15302736c582727100815528"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebb54dec15302736c582727100815528">&#9670;&nbsp;</a></span>get_width()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -307,7 +345,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em>&#160;</td>
         </tr>
         <tr>
@@ -318,12 +356,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00147">147</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00193">193</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a145b204d3be5542ea97acc17e9bb5425"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a145b204d3be5542ea97acc17e9bb5425">&#9670;&nbsp;</a></span>is_character() <span class="overload">[1/2]</span></h2>
+<a id="a45c071397ab2a1664619cf83ba3493a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45c071397ab2a1664619cf83ba3493a5">&#9670;&nbsp;</a></span>is_character() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -331,19 +369,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool lxgui::gui::parser::is_character </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00132">132</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00178">178</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a0148e56271ef4a73499455e62ad8591e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0148e56271ef4a73499455e62ad8591e">&#9670;&nbsp;</a></span>is_character() <span class="overload">[2/2]</span></h2>
+<a id="a82f7c444fb1f8f56355b38ce5c3adf3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82f7c444fb1f8f56355b38ce5c3adf3f">&#9670;&nbsp;</a></span>is_character() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +389,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool lxgui::gui::parser::is_character </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em>, </td>
         </tr>
         <tr>
@@ -368,12 +406,12 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00142">142</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00188">188</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a9f5b45942ddeeb76797b6b79b308fb61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f5b45942ddeeb76797b6b79b308fb61">&#9670;&nbsp;</a></span>is_format()</h2>
+<a id="a8104066e9a1331f8b04ed5d18ac6fea4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8104066e9a1331f8b04ed5d18ac6fea4">&#9670;&nbsp;</a></span>is_format()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,19 +419,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool lxgui::gui::parser::is_format </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00137">137</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00183">183</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="ac0d8d66e67987b428ab312f6c82650ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0d8d66e67987b428ab312f6c82650ff">&#9670;&nbsp;</a></span>is_whitespace()</h2>
+<a id="a4abc075fa4de30106ba318826f6cbb1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4abc075fa4de30106ba318826f6cbb1a">&#9670;&nbsp;</a></span>is_whitespace()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,19 +439,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool lxgui::gui::parser::is_whitespace </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00100">100</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00146">146</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a717bb2185ccdfb2d25e4e9f0c9c8e605"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a717bb2185ccdfb2d25e4e9f0c9c8e605">&#9670;&nbsp;</a></span>is_word()</h2>
+<a id="ab17b4653cc8633e73ca7323d2df96aff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab17b4653cc8633e73ca7323d2df96aff">&#9670;&nbsp;</a></span>is_word()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -421,26 +459,32 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool lxgui::gui::parser::is_word </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a> &amp;&#160;</td>
           <td class="paramname"><em>mItem</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00116">116</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00162">162</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a8de6a5d65ce6032a45445bf64bbe191e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8de6a5d65ce6032a45445bf64bbe191e">&#9670;&nbsp;</a></span>parse_string()</h2>
+<a id="a60e0bb999b3b3025ea6f90f5c8dd9103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60e0bb999b3b3025ea6f90f5c8dd9103">&#9670;&nbsp;</a></span>parse_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a5f4d886cd6991c10e658d053f0eabe30">line_item</a>&gt; lxgui::gui::parser::parse_string </td>
+          <td class="memname">std::vector&lt;<a class="el" href="namespacelxgui_1_1gui_1_1parser.html#a4e4f4dedfdde67f5fafea33d6b9714e4">item</a>&gt; lxgui::gui::parser::parse_string </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1text.html">text</a> &amp;&#160;</td>
+          <td class="paramname"><em>mText</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const utils::ustring &amp;&#160;</td>
           <td class="paramname"><em>sCaption</em>, </td>
         </tr>
@@ -458,14 +502,14 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00045">45</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00053">53</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 30 2021 16:15:53 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 1 2021 08:07:21 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

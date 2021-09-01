@@ -132,6 +132,13 @@ Typedefs</h2></td></tr>
 <p>Child classes:EditBox}. @classmod FocusFrame</p>
 <p>ALayeredRegion} that can draw text on the screen. This class holds a string and a reference to a font, which is used to draw the string on the screen. The appearance of the string can be changed (font, size, color, alignment, wrapping). In addition, it is possible to change the color of a portion of the string, for example to highlight a particular name.</p>
 <p><b>Sizing.</b> TheFontString} class has a special property when it comes to determining the size of its region on the screen, hence how other object anchor to it, and how it anchors to other objects. See the documentation forUIObject} for more information on anchors. While otherUIObject}s must either have a fixed size or more than two anchors constraining their size, theFontString} does not. If only one anchor is specified, the width and height of theFontString} will be determined by the area occupied by the displayed text, however long and tall this may be. If the width is already constrained by the fixed size or anchors, then the text will word wrap (if allowed) and the FontString}'s height will be as tall as the height of the wrapped text. Finally, if both the width and height are constrained by fixed sizes or anchors, the text will simply word wrap (if allowed) and be cut to fit in the specified area.</p>
+<p><b>Formatting.</b> IfFontString:is_formatting_enabled} is true (default), the string displayed by theFontString} class can have special formatting. This is done by entering the pipe <code>|</code> character, followed by a command:</p>
+<ul>
+<li><code>|caarrggbb</code> sets the color of the text. <code>aa</code>, <code>rr</code>, <code>gg</code>, and <code>bb</code> must be two-digit hexadecimal values representing each color component. For example, an opaque red color would be <code>|cffff0000</code>, while a semi-transparent blue would be <code>|c880000ff</code>.</li>
+<li><code>|r</code> cancels the change of color from the previous <code>|c[...]</code> command. Color change commands stack up, and can be nested. In the formatted string <code>|cffff0000 hello |cff00ff00 world |r example |r formatting</code>, the word <code>hello</code> would be displayed in red, <code>world</code> in blue, <code>example</code> in red again, and <code>formatting</code> would be of whatever color is the default for theFontString} object (see FontString:get_text_color}).</li>
+<li><code>|Tpath/to/texture.png:w:h|t</code> displays a texture. The command parameters must be contained within an opening <code>|T</code> and a closing <code>|t</code>. The parameters are separated by colons <code>:</code>. The first parameter must be the path to the texture file, and it is mandatory. The other two parameters are optional, and define the size of the displayed texture. If omitted, the texture will be displayed as a square matching the size of the current font. If only <code>w</code> is supplied, the texture will be displayed as a square of size <code>w</code> pixels. If both <code>w</code> and <code>h</code> are supplied, they set the width and height of the displayed texture, in pixels.</li>
+<li><code>||</code> displays a single <code>|</code> character.</li>
+</ul>
 <p>Inherits all methods from:UIObject},LayeredRegion}.</p>
 <p>Child classes: none. @classmod FontString</p>
 <p>AUIObject} that can contain other objects and react to events. This class, which is at the core of the UI design, can contain otherFrame}s as "children", andLayeredRegion}s sorted by layers (text, images, ...). A frame can also react to events, and register callbacks to be executed on particular events (key presses, etc.) or on every tick.</p>
@@ -284,7 +291,7 @@ Typedefs</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Aug 30 2021 16:15:52 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Sep 1 2021 08:07:21 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
