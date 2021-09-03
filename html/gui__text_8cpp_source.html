@@ -1161,138 +1161,141 @@ $(function() {
 <div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;                        mIcon.v[1].pos = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(fTexWidth, 0.0f);</div>
 <div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;                        mIcon.v[2].pos = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(fTexWidth, fTexHeight);</div>
 <div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;                        mIcon.v[3].pos = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(0.0f,      fTexHeight);</div>
-<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;                        mIcon.v[0].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(0.0f, 0.0f), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;                        mIcon.v[1].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(1.0f, 0.0f), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;                        mIcon.v[2].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(1.0f, 1.0f), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;                        mIcon.v[3].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(0.0f, 1.0f), <span class="keyword">true</span>);</div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160; </div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;                        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;                        {</div>
-<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;                            mIcon.v[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
-<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;                        }</div>
-<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160; </div>
-<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;                        lIconsList_.push_back(mIcon);</div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;                    }</div>
-<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;type, char32_t&gt;)</div>
-<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;                    {</div>
-<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;                        <span class="keywordflow">if</span> (pOutlineFont_)</div>
-<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;                        {</div>
-<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;                            std::array&lt;vertex,4&gt; lVertexList = create_outline_letter_quad_(mValue);</div>
-<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;                            <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;                            {</div>
-<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;                                lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;                                lVertexList[i].col = <a class="code" href="classlxgui_1_1gui_1_1color.html#a2dabec68926b66bba2a93472d8b275a3">color::BLACK</a>;</div>
-<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;                            }</div>
-<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160; </div>
-<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;                            lOutlineQuadList_.push_back(lVertexList);</div>
-<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;                        }</div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;                        <span class="keywordflow">if</span> (mIcon.mat)</div>
+<div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160;                        {</div>
+<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;                            mIcon.v[0].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(0.0f, 0.0f), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;                            mIcon.v[1].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(1.0f, 0.0f), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;                            mIcon.v[2].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(1.0f, 1.0f), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;                            mIcon.v[3].uvs = mIcon.mat-&gt;get_canvas_uv(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(0.0f, 1.0f), <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01099"></a><span class="lineno"> 1099</span>&#160;                        }</div>
+<div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160; </div>
+<div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;                        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160;                        {</div>
+<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;                            mIcon.v[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
+<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;                        }</div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160; </div>
+<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;                        lIconsList_.push_back(mIcon);</div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;                    }</div>
+<div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> constexpr (std::is_same_v&lt;type, char32_t&gt;)</div>
+<div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;                    {</div>
+<div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;                        <span class="keywordflow">if</span> (pOutlineFont_)</div>
+<div class="line"><a name="l01111"></a><span class="lineno"> 1111</span>&#160;                        {</div>
+<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;                            std::array&lt;vertex,4&gt; lVertexList = create_outline_letter_quad_(mValue);</div>
+<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;                            <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160;                            {</div>
+<div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;                                lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
+<div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160;                                lVertexList[i].col = <a class="code" href="classlxgui_1_1gui_1_1color.html#a2dabec68926b66bba2a93472d8b275a3">color::BLACK</a>;</div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;                            }</div>
 <div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160; </div>
-<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;                        std::array&lt;vertex,4&gt; lVertexList = create_letter_quad_(mValue);</div>
-<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;                        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;                        {</div>
-<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;                            lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
-<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;                            lVertexList[i].col = lColorStack.empty() ? <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a> : lColorStack.back();</div>
-<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;                        }</div>
-<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160; </div>
-<div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;                        lQuadList_.push_back(lVertexList);</div>
-<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;                    }</div>
-<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;                }, *iterChar);</div>
-<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160; </div>
-<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;                fX += mAdvance.second;</div>
-<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;            }</div>
+<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;                            lOutlineQuadList_.push_back(lVertexList);</div>
+<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;                        }</div>
+<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160; </div>
+<div class="line"><a name="l01122"></a><span class="lineno"> 1122</span>&#160;                        std::array&lt;vertex,4&gt; lVertexList = create_letter_quad_(mValue);</div>
+<div class="line"><a name="l01123"></a><span class="lineno"> 1123</span>&#160;                        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l01124"></a><span class="lineno"> 1124</span>&#160;                        {</div>
+<div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;                            lVertexList[i].pos += <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(round_to_pixel_(fX), round_to_pixel_(fY));</div>
+<div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;                            lVertexList[i].col = lColorStack.empty() ? <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a> : lColorStack.back();</div>
+<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;                        }</div>
+<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160; </div>
+<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160;                        lQuadList_.push_back(lVertexList);</div>
+<div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;                    }</div>
+<div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160;                }, *iterChar);</div>
 <div class="line"><a name="l01132"></a><span class="lineno"> 1132</span>&#160; </div>
-<div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;            fY += <a class="code" href="classlxgui_1_1gui_1_1text.html#abbfe07b421d6fa792c5d8f6c2145739b">get_line_height</a>()*fLineSpacing_;</div>
-<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;        }</div>
-<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;    }</div>
-<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;    {</div>
-<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;        fW_ = 0.0f;</div>
-<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;        fH_ = 0.0f;</div>
-<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;    }</div>
-<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160; </div>
-<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>() &amp;&amp; !pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">is_quad_batching_enabled</a>())</div>
-<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    {</div>
-<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160;        <span class="keywordflow">if</span> (!pOutlineVertexCache_)</div>
-<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;            pOutlineVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
-<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160; </div>
-<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;        pOutlineVertexCache_-&gt;update(lOutlineQuadList_[0].data(), lOutlineQuadList_.size()*4);</div>
-<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160; </div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;        <span class="keywordflow">if</span> (!pVertexCache_)</div>
-<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;            pVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
+<div class="line"><a name="l01133"></a><span class="lineno"> 1133</span>&#160;                fX += mAdvance.second;</div>
+<div class="line"><a name="l01134"></a><span class="lineno"> 1134</span>&#160;            }</div>
+<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160; </div>
+<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;            fY += <a class="code" href="classlxgui_1_1gui_1_1text.html#abbfe07b421d6fa792c5d8f6c2145739b">get_line_height</a>()*fLineSpacing_;</div>
+<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160;        }</div>
+<div class="line"><a name="l01138"></a><span class="lineno"> 1138</span>&#160;    }</div>
+<div class="line"><a name="l01139"></a><span class="lineno"> 1139</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l01140"></a><span class="lineno"> 1140</span>&#160;    {</div>
+<div class="line"><a name="l01141"></a><span class="lineno"> 1141</span>&#160;        fW_ = 0.0f;</div>
+<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;        fH_ = 0.0f;</div>
+<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    }</div>
+<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160; </div>
+<div class="line"><a name="l01145"></a><span class="lineno"> 1145</span>&#160;    <span class="keywordflow">if</span> (pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#adef82e16de48846f07b32d66ec385e9b">is_vertex_cache_enabled</a>() &amp;&amp; !pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">is_quad_batching_enabled</a>())</div>
+<div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    {</div>
+<div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;        <span class="keywordflow">if</span> (!pOutlineVertexCache_)</div>
+<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;            pOutlineVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160; </div>
+<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;        pOutlineVertexCache_-&gt;update(lOutlineQuadList_[0].data(), lOutlineQuadList_.size()*4);</div>
 <div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160; </div>
-<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;        std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadsCopy = lQuadList_;</div>
-<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; mQuad : lQuadsCopy)</div>
-<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
-<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;        {</div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;            <span class="keywordflow">if</span> (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>)</div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;            {</div>
-<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;                mQuad[i].col = mColor_;</div>
-<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;            }</div>
-<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160; </div>
-<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;            mQuad[i].col.<a class="code" href="classlxgui_1_1gui_1_1color.html#a3492b4c32e4c85abb07be9d77d522f01">a</a> *= fAlpha_;</div>
-<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;        }</div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;        <span class="keywordflow">if</span> (!pVertexCache_)</div>
+<div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;            pVertexCache_ = pRenderer_-&gt;<a class="code" href="classlxgui_1_1gui_1_1renderer.html#a37b76134e2746e9336ffcc8565e25085">create_vertex_cache</a>(<a class="code" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6dea23d5348dd7bef544d6341bec3480287f">vertex_cache::type::QUADS</a>);</div>
+<div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160; </div>
+<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;        std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadsCopy = lQuadList_;</div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; mQuad : lQuadsCopy)</div>
+<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> i = 0; i &lt; 4; ++i)</div>
+<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;        {</div>
+<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;            <span class="keywordflow">if</span> (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == <a class="code" href="classlxgui_1_1gui_1_1color.html#a3d8ee187ee3c4de4d43208ecd3d6fe75">color::EMPTY</a>)</div>
+<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;            {</div>
+<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;                mQuad[i].col = mColor_;</div>
+<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;            }</div>
 <div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160; </div>
-<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;        pVertexCache_-&gt;update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);</div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    }</div>
+<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;            mQuad[i].col.<a class="code" href="classlxgui_1_1gui_1_1color.html#a3492b4c32e4c85abb07be9d77d522f01">a</a> *= fAlpha_;</div>
+<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;        }</div>
 <div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160; </div>
-<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;    bUpdateCache_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;}</div>
+<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;        pVertexCache_-&gt;update(lQuadsCopy[0].data(), lQuadsCopy.size()*4);</div>
+<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    }</div>
 <div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160; </div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(gui::font&amp; mFont, char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;</div>
-<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;    mQuad.left = round_to_pixel_(mQuad.left);</div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    mQuad.top = round_to_pixel_(mQuad.top);</div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);</div>
-<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);</div>
-<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160; </div>
-<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    std::array&lt;vertex,4&gt; lVertexList;</div>
-<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;    lVertexList[0].pos = mQuad.top_left();</div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;    lVertexList[1].pos = mQuad.top_right();</div>
-<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;    lVertexList[2].pos = mQuad.bottom_right();</div>
-<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;    lVertexList[3].pos = mQuad.bottom_left();</div>
-<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160; </div>
-<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mUVs = mFont.get_character_uvs(uiChar);</div>
-<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;    lVertexList[0].uvs = mUVs.top_left();</div>
-<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    lVertexList[1].uvs = mUVs.top_right();</div>
-<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    lVertexList[2].uvs = mUVs.bottom_right();</div>
-<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;    lVertexList[3].uvs = mUVs.bottom_left();</div>
-<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160; </div>
-<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    <span class="keywordflow">return</span> lVertexList;</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;}</div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    bUpdateCache_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;}</div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160; </div>
+<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(gui::font&amp; mFont, char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;</div>
+<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    mQuad.left = round_to_pixel_(mQuad.left);</div>
+<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;    mQuad.top = round_to_pixel_(mQuad.top);</div>
+<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);</div>
+<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160; </div>
+<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;    std::array&lt;vertex,4&gt; lVertexList;</div>
+<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;    lVertexList[0].pos = mQuad.top_left();</div>
+<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;    lVertexList[1].pos = mQuad.top_right();</div>
+<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;    lVertexList[2].pos = mQuad.bottom_right();</div>
+<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;    lVertexList[3].pos = mQuad.bottom_left();</div>
+<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160; </div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> mUVs = mFont.get_character_uvs(uiChar);</div>
+<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;    lVertexList[0].uvs = mUVs.top_left();</div>
+<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    lVertexList[1].uvs = mUVs.top_right();</div>
+<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    lVertexList[2].uvs = mUVs.bottom_right();</div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;    lVertexList[3].uvs = mUVs.bottom_left();</div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160; </div>
-<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;    <span class="keywordflow">return</span> create_letter_quad_(*pFont_, uiChar);</div>
-<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;}</div>
-<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160; </div>
-<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;std::array&lt;vertex,4&gt; text::create_outline_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;    <span class="keywordflow">return</span> create_letter_quad_(*pOutlineFont_, uiChar);</div>
-<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;}</div>
-<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160; </div>
-<div class="line"><a name="l01203"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f"> 1203</a></span>&#160;<a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">text::create_letter_quad</a>(char32_t uiChar)<span class="keyword"> const</span></div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mOutput;</div>
-<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#a3d5403530ec8570e527ec4bec092b13a">mat</a> = pFont_-&gt;get_texture().lock();</div>
-<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617">v</a> = create_letter_quad_(uiChar);</div>
-<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160; </div>
-<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    <span class="keywordflow">return</span> mOutput;</div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;}</div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordflow">return</span> lVertexList;</div>
+<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;}</div>
+<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160; </div>
+<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;std::array&lt;vertex,4&gt; text::create_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;    <span class="keywordflow">return</span> create_letter_quad_(*pFont_, uiChar);</div>
+<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;}</div>
+<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160; </div>
+<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;std::array&lt;vertex,4&gt; text::create_outline_letter_quad_(char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;    <span class="keywordflow">return</span> create_letter_quad_(*pOutlineFont_, uiChar);</div>
+<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;}</div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160; </div>
+<div class="line"><a name="l01206"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f"> 1206</a></span>&#160;<a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">text::create_letter_quad</a>(char32_t uiChar)<span class="keyword"> const</span></div>
+<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> mOutput;</div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#a3d5403530ec8570e527ec4bec092b13a">mat</a> = pFont_-&gt;get_texture().lock();</div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;    mOutput.<a class="code" href="structlxgui_1_1gui_1_1quad.html#aaee863ba3c49ce1af0fc3db69c786617">v</a> = create_letter_quad_(uiChar);</div>
 <div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160; </div>
-<div class="line"><a name="l01212"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c"> 1212</a></span>&#160;<span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">text::get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex)<span class="keyword"> const</span></div>
-<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160;    update_();</div>
-<div class="line"><a name="l01215"></a><span class="lineno"> 1215</span>&#160;    <span class="keywordflow">return</span> lQuadList_[uiIndex];</div>
-<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;}</div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160; </div>
-<div class="line"><a name="l01218"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137"> 1218</a></span>&#160;<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>* <a class="code" href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137">text::get_renderer</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;    <span class="keywordflow">return</span> pRenderer_;</div>
-<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;}</div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160; </div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;}</div>
+<div class="line"><a name="l01212"></a><span class="lineno"> 1212</span>&#160;    <span class="keywordflow">return</span> mOutput;</div>
+<div class="line"><a name="l01213"></a><span class="lineno"> 1213</span>&#160;}</div>
+<div class="line"><a name="l01214"></a><span class="lineno"> 1214</span>&#160; </div>
+<div class="line"><a name="l01215"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c"> 1215</a></span>&#160;<span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">text::get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex)<span class="keyword"> const</span></div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    update_();</div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160;    <span class="keywordflow">return</span> lQuadList_[uiIndex];</div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;}</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160; </div>
+<div class="line"><a name="l01221"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137"> 1221</a></span>&#160;<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>* <a class="code" href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137">text::get_renderer</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;    <span class="keywordflow">return</span> pRenderer_;</div>
 <div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;}</div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160; </div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;}</div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a015791420a86dd9f8bdcaf76466c93b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">lxgui::gui::quad2f</a></div><div class="ttdeci">quad2&lt; float &gt; quad2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__quad2_8hpp_source.html#l00160">gui_quad2.hpp:160</a></div></div>
 <div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
@@ -1333,9 +1336,9 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a31f17ba8f05283b2c533e7a228ae1cbf"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a31f17ba8f05283b2c533e7a228ae1cbf">lxgui::gui::text::get_remove_starting_spaces</a></div><div class="ttdeci">bool get_remove_starting_spaces() const</div><div class="ttdoc">Checks if starting spaces removing is active.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00566">gui_text.cpp:566</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_1_1parser_html_a60e0bb999b3b3025ea6f90f5c8dd9103"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1parser.html#a60e0bb999b3b3025ea6f90f5c8dd9103">lxgui::gui::parser::parse_string</a></div><div class="ttdeci">std::vector&lt; item &gt; parse_string(const text &amp;mText, const utils::ustring &amp;sCaption, bool bFormattingEnabled)</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00053">gui_text.cpp:53</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a4bf5aef3cbd71d40a20db6f5507c0adf"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a4bf5aef3cbd71d40a20db6f5507c0adf">lxgui::gui::text::set_line_spacing</a></div><div class="ttdeci">void set_line_spacing(float fLineSpacing)</div><div class="ttdoc">Sets this text's line spacing.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00543">gui_text.cpp:543</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a9d77a8951b29d49f6660b20c8c18b63f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">lxgui::gui::text::create_letter_quad</a></div><div class="ttdeci">quad create_letter_quad(char32_t uiChar) const</div><div class="ttdoc">Creates a quad that contains the provided character.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01203">gui_text.cpp:1203</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a9d77a8951b29d49f6660b20c8c18b63f"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">lxgui::gui::text::create_letter_quad</a></div><div class="ttdeci">quad create_letter_quad(char32_t uiChar) const</div><div class="ttdoc">Creates a quad that contains the provided character.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01206">gui_text.cpp:1206</a></div></div>
 <div class="ttc" id="agui__matrix4_8hpp_html"><div class="ttname"><a href="gui__matrix4_8hpp.html">gui_matrix4.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a0ab59dc9d28b6abf80b70f3de3dbc45c"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">lxgui::gui::text::get_letter_quad</a></div><div class="ttdeci">const std::array&lt; vertex, 4 &gt; &amp; get_letter_quad(uint uiIndex) const</div><div class="ttdoc">Returns the quad for the letter at the provided index (position, texture coords, color).</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01212">gui_text.cpp:1212</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a0ab59dc9d28b6abf80b70f3de3dbc45c"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">lxgui::gui::text::get_letter_quad</a></div><div class="ttdeci">const std::array&lt; vertex, 4 &gt; &amp; get_letter_quad(uint uiIndex) const</div><div class="ttdoc">Returns the quad for the letter at the provided index (position, texture coords, color).</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01215">gui_text.cpp:1215</a></div></div>
 <div class="ttc" id="agui__material_8hpp_html"><div class="ttname"><a href="gui__material_8hpp.html">gui_material.hpp</a></div></div>
 <div class="ttc" id="agui__text_8cpp_html_a5d2f30bd1cbcf49f829a7e8eb6173c06"><div class="ttname"><a href="gui__text_8cpp.html#a5d2f30bd1cbcf49f829a7e8eb6173c06">DEBUG_LOG</a></div><div class="ttdeci">#define DEBUG_LOG(msg)</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00016">gui_text.cpp:16</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1vector2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1vector2.html">lxgui::gui::vector2&lt; float &gt;</a></div></div>
@@ -1390,7 +1393,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aac7465a68c4eabd234fee462e372ce8e"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aac7465a68c4eabd234fee462e372ce8e">lxgui::gui::text::get_color</a></div><div class="ttdeci">const color &amp; get_color() const</div><div class="ttdoc">Returns this text's default color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00375">gui_text.cpp:375</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a538a32710b0b089edbbe7eee7b63ede5"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a538a32710b0b089edbbe7eee7b63ede5">lxgui::gui::text::set_vertical_alignment</a></div><div class="ttdeci">void set_vertical_alignment(const vertical_alignment &amp;mVertAlign)</div><div class="ttdoc">Sets text vertical alignment.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00510">gui_text.cpp:510</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_afd79f91a82ec530fce39912d7f027125"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#afd79f91a82ec530fce39912d7f027125">lxgui::gui::text::is_word_wrap_enabled</a></div><div class="ttdeci">bool is_word_wrap_enabled() const</div><div class="ttdoc">Checks if word wrap is enabled.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00581">gui_text.cpp:581</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_ad73b541bdc4f5a9c368b3bea932c2137"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137">lxgui::gui::text::get_renderer</a></div><div class="ttdeci">const renderer * get_renderer() const</div><div class="ttdoc">Returns the renderer used to render this text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01218">gui_text.cpp:1218</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_ad73b541bdc4f5a9c368b3bea932c2137"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#ad73b541bdc4f5a9c368b3bea932c2137">lxgui::gui::text::get_renderer</a></div><div class="ttdeci">const renderer * get_renderer() const</div><div class="ttdoc">Returns the renderer used to render this text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l01221">gui_text.cpp:1221</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_af63f4aaadc1ad0482c727dac6cbb9c33"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#af63f4aaadc1ad0482c727dac6cbb9c33">lxgui::gui::text::set_box_height</a></div><div class="ttdeci">void set_box_height(float fBoxH)</div><div class="ttdoc">Sets the height of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00412">gui_text.cpp:412</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_1_1parser_html_a8104066e9a1331f8b04ed5d18ac6fea4"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1parser.html#a8104066e9a1331f8b04ed5d18ac6fea4">lxgui::gui::parser::is_format</a></div><div class="ttdeci">bool is_format(const item &amp;mItem)</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00183">gui_text.cpp:183</a></div></div>
 <div class="ttc" id="astructlxgui_1_1gui_1_1quad_html_a3d5403530ec8570e527ec4bec092b13a"><div class="ttname"><a href="structlxgui_1_1gui_1_1quad.html#a3d5403530ec8570e527ec4bec092b13a">lxgui::gui::quad::mat</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; mat</div><div class="ttdef"><b>Definition:</b> <a href="gui__sprite_8hpp_source.html#l00042">gui_sprite.hpp:42</a></div></div>
@@ -1400,7 +1403,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a42015b3194ce8492336f4adce570d73b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a42015b3194ce8492336f4adce570d73b">lxgui::gui::text::get_width</a></div><div class="ttdeci">float get_width() const</div><div class="ttdoc">Returns the width of the rendered text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00421">gui_text.cpp:421</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Sep 1 2021 08:07:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
