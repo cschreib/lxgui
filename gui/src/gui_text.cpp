@@ -1090,10 +1090,13 @@ void text::update_() const
                         mIcon.v[1].pos = vector2f(fTexWidth, 0.0f);
                         mIcon.v[2].pos = vector2f(fTexWidth, fTexHeight);
                         mIcon.v[3].pos = vector2f(0.0f,      fTexHeight);
-                        mIcon.v[0].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 0.0f), true);
-                        mIcon.v[1].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 0.0f), true);
-                        mIcon.v[2].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 1.0f), true);
-                        mIcon.v[3].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
+                        if (mIcon.mat)
+                        {
+                            mIcon.v[0].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 0.0f), true);
+                            mIcon.v[1].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 0.0f), true);
+                            mIcon.v[2].uvs = mIcon.mat->get_canvas_uv(vector2f(1.0f, 1.0f), true);
+                            mIcon.v[3].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
+                        }
 
                         for (uint i = 0; i < 4; ++i)
                         {
