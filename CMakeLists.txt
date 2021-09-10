@@ -166,6 +166,7 @@ set(SOL_SAFE_NUMERICS TRUE)
 set(SOL_PRINT_ERRORS FALSE)
 
 # add the subdirectories
+add_subdirectory(fmt)
 add_subdirectory(utils)
 add_subdirectory(xml)
 add_subdirectory(luapp)

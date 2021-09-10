@@ -33,6 +33,8 @@ add_library(lxgui
     ${SRCROOT}/gui_layeredregion.cpp
     ${SRCROOT}/gui_layeredregion_glues.cpp
     ${SRCROOT}/gui_layeredregion_parser.cpp
+    ${SRCROOT}/gui_localizer.cpp
+    ${SRCROOT}/gui_localizer_glues.cpp
     ${SRCROOT}/gui_lunar.cpp
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
@@ -71,6 +73,7 @@ target_compile_features(lxgui PRIVATE cxx_std_17)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/sol2/include)
 target_include_directories(lxgui PUBLIC ${LUA_INCLUDE_DIR})
+target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/fmt/include)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp")

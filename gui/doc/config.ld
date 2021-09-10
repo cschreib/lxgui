@@ -17,7 +17,8 @@ file = {
     '../src/gui_layeredregion_glues.cpp',
     '../src/gui_fontstring_glues.cpp',
     '../src/gui_texture_glues.cpp',
-    '../src/gui_manager_glues.cpp'
+    '../src/gui_manager_glues.cpp',
+    '../src/gui_localizer_glues.cpp'
 }
 no_summary = false
 no_return_or_parms = false

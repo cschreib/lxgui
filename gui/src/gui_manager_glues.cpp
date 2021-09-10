@@ -282,21 +282,6 @@ int l_delete_frame(lua_State* pLua)
     return mFunc.on_return();
 }
 
-/** @function get_locale
-*/
-int l_get_locale(lua_State* pLua)
-{
-    lua::function mFunc("get_locale", pLua, 1);
-    lua::state& mState = mFunc.get_state();
-    mState.get_global("_MGR");
-    manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
-    mState.pop();
-
-    mFunc.push(pGUIMgr->get_locale());
-
-    return mFunc.on_return();
-}
-
 /** Sets the global interface scaling factor.
 *   @function set_interface_scaling_factor
 *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and textures, etc.)
@@ -331,5 +316,25 @@ int l_log(lua_State* pLua)
 
     return mFunc.on_return();
 }
+
+/** Closes the whole GUI and re-loads addons from files.
+* For safety reasons, the re-loading operation will not be triggered instantaneously.
+* The GUI will be reloaded at the end of the current update tick, when it is safe to do so.
+* @function reload_ui
+*/
+int l_reload_ui(lua_State* pLua)
+{
+    lua::function mFunc("reload_ui", pLua);
+
+    lua::state& mState = mFunc.get_state();
+    mState.get_global("_MGR");
+    manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
+    mState.pop();
+
+    pGUIMgr->reload_ui();
+
+    return mFunc.on_return();
+}
+
 }
 }

@@ -85,7 +85,6 @@ int main(int argc, char* argv[])
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
-        const std::string sLocale = "enGB";
 
         // Define the input manager
         std::unique_ptr<input::source> pInputSource;
@@ -107,9 +106,7 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRenderer),
-            // The locale
-            sLocale
+            std::move(pRenderer)
         ));
 
         pManager->enable_caching(false);

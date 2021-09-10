@@ -1,6 +1,7 @@
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_localizer.hpp"
 
 #include <lxgui/xml_document.hpp>
 
@@ -28,9 +29,14 @@ void font_string::parse_attributes_(xml::block* pBlock)
     );
 
     if (pBlock->is_provided("text") || !bInherits_)
-        set_text(utils::utf8_to_unicode(pBlock->get_attribute("text")));
+    {
+        set_text(utils::utf8_to_unicode(
+            pManager_->get_localizer().localize(pBlock->get_attribute("text"))));
+    }
+
     if (pBlock->is_provided("nonspacewrap") || !bInherits_)
         set_non_space_wrap(utils::string_to_bool(pBlock->get_attribute("nonspacewrap")));
+
     if (pBlock->is_provided("spacing") || !bInherits_)
         set_spacing(utils::string_to_float(pBlock->get_attribute("spacing")));
 

@@ -2,6 +2,8 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_localizer.hpp"
 
 #include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
@@ -14,7 +16,10 @@ void button::parse_attributes_(xml::block* pBlock)
     frame::parse_attributes_(pBlock);
 
     if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
-        set_text(utils::utf8_to_unicode(pBlock->get_attribute("text")));
+    {
+        set_text(utils::utf8_to_unicode(
+            pManager_->get_localizer().localize(pBlock->get_attribute("text"))));
+    }
 }
 
 void button::parse_all_blocks_before_children_(xml::block* pBlock)

@@ -41,8 +41,7 @@ int main(int argc, char* argv[])
         std::cout << "Creating gui manager..." << std::endl;
 
         // Use full SFML implementation
-        const std::string sLocale = "enGB";
-        std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow, sLocale);
+        std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
         pManager->enable_caching(false);
 
         // Setup the GUI (see examples_common.cpp)

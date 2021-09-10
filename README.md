@@ -203,13 +203,8 @@ Setting up the GUI in C++ is rather straight forward:
 // Create an SFML render window, for example
 sf::RenderWindow mWindow;
 
-// Define the language that will be used by the interface
-// (purely informative: it's always up to each addon to localize
-// itself according to this value).
-const std::string sLocale = "enGB";
-
 // Initialize the GUI
-std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow, sLocale);
+std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
 input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(

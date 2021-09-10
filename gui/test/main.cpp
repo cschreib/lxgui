@@ -7,6 +7,7 @@
 #include <lxgui/gui_scrollframe.hpp>
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
+#include <lxgui/gui_localizer.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 #include <lxgui/luapp_state.hpp>
@@ -327,7 +328,6 @@ int main(int argc, char* argv[])
         uint uiWindowWidth  = 800;
         uint uiWindowHeight = 600;
         bool bFullScreen    = false;
-        std::string sLocale = "enGB";
         float fScaleFactor  = 1.0f;
         bool bPrintToLog    = false;
 
@@ -339,7 +339,6 @@ int main(int argc, char* argv[])
             uiWindowWidth  = mLua.get_global_int("window_width",    false, 800);
             uiWindowHeight = mLua.get_global_int("window_height",   false, 600);
             bFullScreen    = mLua.get_global_bool("fullscreen",     false, false);
-            sLocale        = mLua.get_global_string("locale",       false, "enGB");
             fScaleFactor   = mLua.get_global_double("scale_factor", false, 1.0);
             bPrintToLog    = mLua.get_global_bool("print_to_log",   false, false);
         }
@@ -474,22 +473,24 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRenderer),
-            // The locale
-            sLocale
+            std::move(pRenderer)
         ));
     #elif defined(SDL_GUI)
         // Use full SDL implementation
-        pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get(), sLocale);
+        pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get());
     #elif defined(SFML_GUI)
         // Use full SFML implementation
-        pManager = gui::sfml::create_manager(mWindow, sLocale);
+        pManager = gui::sfml::create_manager(mWindow);
     #endif
 
         // Automatically select best settings
         gui::renderer* pGUIRenderer = pManager->get_renderer();
         pGUIRenderer->auto_detect_settings();
 
+        std::cout << " Preferred languages: ";
+        for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
+            std::cout << sLanguage << ", ";
+        std::cout << std::endl;
         std::cout << " Renderer settings:" << std::endl;
         std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
         std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;

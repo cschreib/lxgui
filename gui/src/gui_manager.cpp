@@ -7,6 +7,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_event.hpp"
@@ -44,14 +45,14 @@ namespace gui
 int l_set_key_binding(lua_State* pLua);
 int l_create_frame(lua_State* pLua);
 int l_delete_frame(lua_State* pLua);
-int l_get_locale(lua_State* pLua);
 int l_set_interface_scaling_factor(lua_State* pLua);
 int l_log(lua_State* pLua);
+int l_reload_ui(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source> pInputSource,
-    std::unique_ptr<renderer> pRenderer, const std::string& sLocale) :
+    std::unique_ptr<renderer> pRenderer) :
     event_receiver(nullptr),
-    pInputManager_(new input::manager(std::move(pInputSource))), sLocale_(sLocale),
+    pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
     pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
@@ -65,6 +66,8 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     uiScreenHeight_ = pInputManager_->get_window_height();
 
     set_interface_scaling_factor(1.0f);
+
+    pLocalizer_ = std::unique_ptr<localizer>(new localizer());
 }
 
 manager::~manager()
@@ -763,9 +766,11 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLua_->reg("set_key_binding",              l_set_key_binding);
     pLua_->reg("create_frame",                 l_create_frame);
     pLua_->reg("delete_frame",                 l_delete_frame);
-    pLua_->reg("get_locale",                   l_get_locale);
     pLua_->reg("set_interface_scaling_factor", l_set_interface_scaling_factor);
     pLua_->reg("log",                          l_log);
+    pLua_->reg("reload_ui",                    l_reload_ui);
+
+    pLocalizer_->register_on_lua(*pSol_);
 
     pLuaRegs_ = pLuaRegs;
     if (pLuaRegs_)
@@ -788,7 +793,10 @@ void manager::read_files()
 
 void manager::load_ui()
 {
+    pLocalizer_->clear_translations();
+
     create_lua(pLuaRegs_);
+
     read_files();
 }
 
@@ -850,19 +858,18 @@ void manager::close_ui()
 
 void manager::reload_ui()
 {
-    if (bUpdating_)
-        bReloadUI_ = true;
-    else
-        reload_ui_();
+    bReloadUI_ = true;
 }
 
-void manager::reload_ui_()
+void manager::reload_ui_now()
 {
     gui::out << "Closing UI..." << std::endl;
     close_ui();
     gui::out << "Done. Loading UI..." << std::endl;
     load_ui();
     gui::out << "Done." << std::endl;
+
+    bReloadUI_ = false;
 }
 
 void manager::begin(std::shared_ptr<render_target> pTarget) const
@@ -1057,10 +1064,7 @@ void manager::update(float fDelta)
     bUpdating_ = false;
 
     if (bReloadUI_)
-    {
-        bReloadUI_ = false;
-        reload_ui_();
-    }
+        reload_ui_now();
 }
 
 void manager::clear_hovered_frame_()
@@ -1669,9 +1673,15 @@ input::manager* manager::get_input_manager()
     return pInputManager_.get();
 }
 
-const std::string& manager::get_locale() const
+localizer& manager::get_localizer()
 {
-    return sLocale_;
+    return *pLocalizer_;
 }
+
+const localizer& manager::get_localizer() const
+{
+    return *pLocalizer_;
+}
+
 }
 }
