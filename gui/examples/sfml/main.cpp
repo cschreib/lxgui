@@ -2,7 +2,7 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 
-#if defined(WIN32)
+#if defined(LXGUI_PLATFORM_WINDOWS)
     #include <windows.h>
     #if defined(MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")

@@ -54,7 +54,7 @@ std::vector<std::string> get_default_languages()
             return lOutput;
     }
 
-#if defined(WIN32)
+#if defined(LXGUI_PLATFORM_WINDOWS)
     // If LANGUAGE is not specified, on Windows, try OS-specific function.
 
 #endif

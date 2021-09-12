@@ -10,20 +10,20 @@
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
-#ifdef WIN32
+#if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX
     #include <windows.h>
 #endif
 
-#if !defined(WASM)
+#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
     #include <GL/glew.h>
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
     #else
         #include <GL/gl.h>
     #endif
 #else
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGLES/ES3/gl.h>
     #else
         #include <GLES3/gl3.h>
@@ -42,7 +42,7 @@ thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_
 renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[maybe_unused]]) :
     uiWindowWidth_(uiWindowWidth), uiWindowHeight_(uiWindowHeight)
 {
-#if !defined(WASM)
+#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
     if (bInitGLEW)
         glewInit();
 #endif
@@ -60,7 +60,7 @@ std::string renderer::get_name() const
 {
     std::string sFullVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
-#   if defined(WASM)
+#   if defined(LXGUI_PLATFORM_EMSCRIPTEN)
     return "WebGL (" + sFullVersion + ")";
 #   else
     return "OpenGL (" + sFullVersion + ")";

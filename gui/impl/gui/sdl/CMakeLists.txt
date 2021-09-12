@@ -17,14 +17,14 @@ target_include_directories(lxgui-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
 target_link_libraries(lxgui-sdl PUBLIC lxgui)
-if (NOT EMSCRIPTEN)
+if (NOT LXGUI_PLATFORM_EMSCRIPTEN)
     target_link_libraries(lxgui-sdl PUBLIC SDL2::SDL2)
     target_link_libraries(lxgui-sdl PRIVATE SDL2::image)
     target_link_libraries(lxgui-sdl PRIVATE SDL2::TTF)
 else()
-    set(SDL_EMSCRIPTEN_USE_FLAGS "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2")
-    set_target_properties(lxgui-sdl PROPERTIES COMPILE_FLAGS ${SDL_EMSCRIPTEN_USE_FLAGS})
-    set_target_properties(lxgui-sdl PROPERTIES LINK_FLAGS ${SDL_EMSCRIPTEN_USE_FLAGS})
+    set(LXGUI_SDL_EMSCRIPTEN_USE_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2")
+    set_target_properties(lxgui-sdl PROPERTIES COMPILE_FLAGS ${LXGUI_SDL_EMSCRIPTEN_USE_FLAGS})
+    set_target_properties(lxgui-sdl PROPERTIES LINK_FLAGS ${LXGUI_SDL_EMSCRIPTEN_USE_FLAGS})
 endif()
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sd*.hpp)

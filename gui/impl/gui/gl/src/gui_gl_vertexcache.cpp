@@ -3,20 +3,20 @@
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
-#if defined(WIN32)
+#if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX
     #include <windows.h>
 #endif
 
-#if !defined(WASM)
+#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
     #include <GL/glew.h>
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
     #else
         #include <GL/gl.h>
     #endif
 #else
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGLES/ES3/gl.h>
     #else
         #include <GLES3/gl3.h>

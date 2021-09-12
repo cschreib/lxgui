@@ -15,7 +15,7 @@ target_include_directories(lxgui-utils PUBLIC ${PROJECT_SOURCE_DIR}/include)
 # needed dependencies
 target_compile_definitions(lxgui-utils PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
 target_link_libraries(lxgui-utils PRIVATE utf8::cpp)
-if(UNIX AND NOT (APPLE OR EMSCRIPTEN))
+if(LXGUI_PLATFORM_LINUX)
     target_link_libraries(lxgui-utils PUBLIC m stdc++ stdc++fs)
 endif()
 

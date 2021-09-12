@@ -3,14 +3,6 @@ cmake_minimum_required(VERSION 3.8)
 # Start new project
 project(lxgui-test-opengl-sfml CXX)
 
-if (APPLE)
-    add_definitions(-DMACOSX)
-elseif (UNIX)
-    add_definitions(-DLINUX)
-elseif (WINDOWS)
-    add_definitions(-DWIN32)
-endif()
-
 # Add the directory containing Findlxgui.cmake to the model path
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../../../cmake/Modules")
 
@@ -38,6 +30,6 @@ target_link_libraries(lxgui-test-opengl-sfml PRIVATE
     lxgui::lxgui) # core library
 
 # Platform-specific stuff
-if(WINDOWS AND MSVC)
+if(LXGUI_PLATFORM_WINDOWS AND MSVC)
     target_link_libraries(lxgui-test-opengl-sfml PRIVATE user32)
 endif()
