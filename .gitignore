@@ -10,3 +10,4 @@ gui/doc/*.log
 compile_commands.json
 dependencies/lib
 dependencies/include
+include/lxgui/lxgui.hpp
