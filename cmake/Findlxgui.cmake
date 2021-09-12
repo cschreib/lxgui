@@ -30,6 +30,14 @@
 # LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the OpenGL GUI implementation.
 # LXGUI_GUI_SDL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the SDL GUI implementation.
 # LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN, the compiler/linker flags required for the SDL input implementation.
+#
+# Finally, the module exports the following targets:
+# lxgui::lxgui, the core library
+# lxgui::gui::gl, the OpenGL implementation library
+# lxgui::gui::sdl, the SDL implementation library
+# lxgui::gui::sfml, the SFML implementation library
+# lxgui::input::sdl, the SDL input implementation library
+# lxgui::input::sfml, the SFML input implementation library
 
 find_path(LXGUI_INCLUDE_DIR
     NAMES lxgui/lxgui.hpp DOC "Path to lxgui include directory."
@@ -167,7 +175,6 @@ set(LXGUI_INPUT_SDL_FOUND FALSE)
 set(LXGUI_INCLUDE_DIRS ${LXGUI_INCLUDE_DIR} ${LUA_INCLUDE_DIR} ${LXGUI_SOL_INCLUDE_DIR})
 set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_LUAPP_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY} ${LUA_LIBRARIES} ${FMT_LIBRARIES})
 
-
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(LXGUI_EMSCRIPTEN TRUE)
     set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0")
@@ -181,6 +188,13 @@ if(UNIX AND NOT (APPLE OR LXGUI_EMSCRIPTEN))
 endif()
 
 if(LXGUI_FOUND)
+    if(NOT TARGET lxgui::lxgui)
+        add_library(lxgui::lxgui UNKNOWN IMPORTED)
+        set_target_properties(lxgui::lxgui PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_INCLUDE_DIRS}")
+        set_target_properties(lxgui::lxgui PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_LIBRARIES}")
+        set_target_properties(lxgui::lxgui PROPERTIES IMPORTED_LOCATION "${LXGUI_LIBRARY}")
+    endif()
+
     if(LXGUI_GUI_GL_LIBRARY)
         if(NOT LXGUI_EMSCRIPTEN)
             cmake_policy(SET CMP0072 "NEW")
@@ -235,6 +249,13 @@ if(LXGUI_FOUND)
             endif()
 
         endif()
+
+        if(LXGUI_GUI_GL_FOUND AND NOT TARGET lxgui::gui::gl)
+            add_library(lxgui::gui::gl UNKNOWN IMPORTED)
+            set_target_properties(lxgui::gui::gl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_GUI_GL_INCLUDE_DIRS}")
+            set_target_properties(lxgui::gui::gl PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_GUI_GL_LIBRARIES}")
+            set_target_properties(lxgui::gui::gl PROPERTIES IMPORTED_LOCATION "${LXGUI_GUI_GL_LIBRARY}")
+        endif()
     endif()
 
     if(NOT LXGUI_EMSCRIPTEN)
@@ -263,6 +284,13 @@ if(LXGUI_FOUND)
         else()
             unset(LXGUI_GUI_SFML_LIBRARY)
         endif()
+
+        if(LXGUI_GUI_SFML_FOUND AND NOT TARGET lxgui::gui::sfml)
+            add_library(lxgui::gui::sfml UNKNOWN IMPORTED)
+            set_target_properties(lxgui::gui::sfml PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_GUI_SFML_INCLUDE_DIRS}")
+            set_target_properties(lxgui::gui::sfml PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_GUI_SFML_LIBRARIES}")
+            set_target_properties(lxgui::gui::sfml PROPERTIES IMPORTED_LOCATION "${LXGUI_GUI_SFML_LIBRARY}")
+        endif()
     endif()
 
     if(LXGUI_INPUT_SFML_LIBRARY)
@@ -286,6 +314,13 @@ if(LXGUI_FOUND)
             endif()
         else()
             unset(LXGUI_INPUT_SFML_LIBRARY)
+        endif()
+
+        if(LXGUI_INPUT_SFML_FOUND AND NOT TARGET lxgui::input::sfml)
+            add_library(lxgui::input::sfml UNKNOWN IMPORTED)
+            set_target_properties(lxgui::input::sfml PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_INPUT_SFML_INCLUDE_DIRS}")
+            set_target_properties(lxgui::input::sfml PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_INPUT_SFML_LIBRARIES}")
+            set_target_properties(lxgui::input::sfml PROPERTIES IMPORTED_LOCATION "${LXGUI_INPUT_SFML_LIBRARY}")
         endif()
     endif()
 
@@ -327,6 +362,13 @@ if(LXGUI_FOUND)
             set(LXGUI_GUI_SDL_LIBRARIES ${LXGUI_GUI_SDL_LIBRARY})
             set(LXGUI_GUI_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]' -s USE_SDL_TTF=2 -s MIN_WEBGL_VERSION=1")
         endif()
+
+        if(LXGUI_GUI_SDL_FOUND AND NOT TARGET lxgui::gui::sdl)
+            add_library(lxgui::gui::sdl UNKNOWN IMPORTED)
+            set_target_properties(lxgui::gui::sdl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_GUI_SDL_INCLUDE_DIRS}")
+            set_target_properties(lxgui::gui::sdl PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_GUI_SDL_LIBRARIES}")
+            set_target_properties(lxgui::gui::sdl PROPERTIES IMPORTED_LOCATION "${LXGUI_GUI_SDL_LIBRARY}")
+        endif()
     endif()
 
     if(LXGUI_INPUT_SDL_LIBRARY)
@@ -354,6 +396,13 @@ if(LXGUI_FOUND)
             set(LXGUI_INPUT_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
             set(LXGUI_INPUT_SDL_LIBRARIES ${LXGUI_INPUT_SDL_LIBRARY})
             set(LXGUI_INPUT_SDL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='[\"png\"]'")
+        endif()
+
+        if(LXGUI_INPUT_SDL_FOUND AND NOT TARGET lxgui::input::sdl)
+            add_library(lxgui::input::sdl UNKNOWN IMPORTED)
+            set_target_properties(lxgui::input::sdl PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_INPUT_SDL_INCLUDE_DIRS}")
+            set_target_properties(lxgui::input::sdl PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_INPUT_SDL_LIBRARIES}")
+            set_target_properties(lxgui::input::sdl PROPERTIES IMPORTED_LOCATION "${LXGUI_INPUT_SDL_LIBRARY}")
         endif()
     endif()
 endif()

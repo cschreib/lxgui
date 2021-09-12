@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # Start new project
 project(lxgui-test-opengl-sdl-emscripten CXX)
@@ -20,18 +20,14 @@ add_executable(lxgui-test-opengl-sdl-emscripten
 # We need C++17
 target_compile_features(lxgui-test-opengl-sdl-emscripten PRIVATE cxx_std_17)
 
-# lxgui include dirs
-target_include_directories(lxgui-test-opengl-sdl-emscripten PRIVATE
-    ${PROJECT_SOURCE_DIR}/../common # shared headers for all examples
-    ${LXGUI_INCLUDE_DIRS} # core library
-    ${LXGUI_GUI_GL_INCLUDE_DIRS} # OpenGL rendering implementation
-    ${LXGUI_INPUT_SDL_INCLUDE_DIRS}) # SDL input implementation
+# Include dirs (shared headers for all examples)
+target_include_directories(lxgui-test-opengl-sdl-emscripten PRIVATE ${PROJECT_SOURCE_DIR}/../common)
 
 # lxgui libraries
-target_link_libraries(lxgui-test-opengl-sdl-emscripten
-    ${LXGUI_GUI_GL_LIBRARIES} # OpenGL rendering implementation
-    ${LXGUI_INPUT_SDL_LIBRARIES} # SDL input implementation
-    ${LXGUI_LIBRARIES}) # core library
+target_link_libraries(lxgui-test-opengl-sdl-emscripten PRIVATE
+    lxgui::gui::gl # OpenGL rendering implementation
+    lxgui::input::sdl # SDL input implementation
+    lxgui::lxgui) # core library
 
 # Setup Emscripten-specific stuff
 # Setup compilation options

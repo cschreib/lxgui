@@ -67,13 +67,16 @@ add_library(lxgui
     ${SRCROOT}/input_source.cpp
 )
 
-# Need C++17
+# need C++17
 target_compile_features(lxgui PRIVATE cxx_std_17)
 
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/sol2/include)
-target_include_directories(lxgui PUBLIC ${LUA_INCLUDE_DIR})
-target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/fmt/include)
+
+# needed dependencies
+target_link_libraries(lxgui PUBLIC lxgui-luapp)
+target_link_libraries(lxgui PUBLIC lxgui-utils)
+target_link_libraries(lxgui PUBLIC lxgui-xml)
+target_link_libraries(lxgui PUBLIC fmt::fmt)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp")
@@ -86,4 +89,3 @@ file(GLOB_RECURSE files ${PROJECT_SOURCE_DIR}/sol2/include/sol/*)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/sol2/include/sol DESTINATION include)
 install(FILES ${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
 install(TARGETS lxgui ARCHIVE DESTINATION lib)
-

@@ -11,16 +11,18 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_vertexcache.cpp
 )
 
-# Need C++17
+# need C++17
 target_compile_features(lxgui-gl PRIVATE cxx_std_17)
 
 target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(lxgui-gl PUBLIC ${FREETYPE_INCLUDE_DIRS})
+
+# needed dependencies
+target_link_libraries(lxgui-gl PUBLIC lxgui)
+target_link_libraries(lxgui-gl PRIVATE Freetype::Freetype)
 if (NOT EMSCRIPTEN)
-    target_include_directories(lxgui-gl PUBLIC ${PNG_INCLUDE_DIR})
-    target_include_directories(lxgui-gl PUBLIC ${ZLIB_INCLUDE_DIR})
-    target_include_directories(lxgui-gl PUBLIC ${OPENGL_INCLUDE_DIR})
-    target_include_directories(lxgui-gl PUBLIC ${GLEW_INCLUDE_DIR})
+    target_link_libraries(lxgui-gl PUBLIC OpenGL::GL)
+    target_link_libraries(lxgui-gl PRIVATE PNG::PNG)
+    target_link_libraries(lxgui-gl PRIVATE GLEW::GLEW)
 else()
     set(GL_EMSCRIPTEN_USE_FLAGS "-s USE_LIBPNG=1 -s MIN_WEBGL_VERSION=2")
     set_target_properties(lxgui-gl PROPERTIES COMPILE_FLAGS ${GL_EMSCRIPTEN_USE_FLAGS})

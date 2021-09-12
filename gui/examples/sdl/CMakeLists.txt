@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # Start new project
 project(lxgui-test-sdl CXX)
@@ -28,23 +28,16 @@ add_executable(lxgui-test-sdl
 # We need C++17
 target_compile_features(lxgui-test-sdl PRIVATE cxx_std_17)
 
-# lxgui include dirs
-target_include_directories(lxgui-test-sdl PRIVATE
-    ${PROJECT_SOURCE_DIR}/../common # shared headers for all examples
-    ${LXGUI_INCLUDE_DIRS} # core library
-    ${LXGUI_GUI_SDL_INCLUDE_DIRS} # SDL rendering implementation
-    ${LXGUI_INPUT_SDL_INCLUDE_DIRS}) # SDL input implementation
+# Include dirs (shared headers for all examples)
+target_include_directories(lxgui-test-sdl PRIVATE ${PROJECT_SOURCE_DIR}/../common)
 
 # lxgui libraries
 target_link_libraries(lxgui-test-sdl
-    ${LXGUI_GUI_SDL_LIBRARIES} # SDL rendering implementation
-    ${LXGUI_INPUT_SDL_LIBRARIES} # SDL input implementation
-    ${LXGUI_LIBRARIES}) # core library
+    lxgui::gui::sdl # SDL rendering implementation
+    lxgui::input::sdl # SDL input implementation
+    lxgui::lxgui) # core library
 
 # Platform-specific stuff
 if(WINDOWS AND MSVC)
-    target_link_libraries(lxgui-test-sdl user32)
-endif()
-if(UNIX AND NOT (APPLE OR EMSCRIPTEN))
-    target_link_libraries(lxgui-test-sdl X11 m stdc++)
+    target_link_libraries(lxgui-test-sdl PRIVATE user32)
 endif()

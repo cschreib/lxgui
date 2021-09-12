@@ -5,8 +5,6 @@
 #include <lxgui/gui_vector2.hpp>
 #include <lxgui/input_source.hpp>
 
-#include <SDL_events.h>
-
 #include <chrono>
 #include <unordered_map>
 #include <memory>
@@ -14,6 +12,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Cursor;
+union SDL_Event;
 
 namespace lxgui {
 namespace input {

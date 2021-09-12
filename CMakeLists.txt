@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
@@ -18,7 +18,6 @@ lxgui_set_option(LXGUI_BUILD_GUI_SDL_IMPL TRUE BOOL "Build the SDL gui implement
 lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input implementation")
 lxgui_set_option(LXGUI_BUILD_INPUT_SDL_IMPL TRUE BOOL "Build the SDL input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
-lxgui_set_option(LXGUI_BUILD_EXAMPLES FALSE BOOL "Build the example programs")
 lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
@@ -26,8 +25,8 @@ lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation t
 project(lxgui)
 
 # setup version numbers
-set(VERSION_MAJOR 2)
-set(VERSION_MINOR 0)
+set(LXGUI_VERSION_MAJOR 2)
+set(LXGUI_VERSION_MINOR 0)
 
 # check compiler version for C++17 features
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
@@ -143,34 +142,44 @@ elseif (WINDOWS)
     add_definitions(-DWIN32)
 endif()
 
-# find libraries
+# configure dependencies
+set(SDL2_BUILDING_LIBRARY TRUE)
+
+# find dependencies
 cmake_policy(SET CMP0072 "NEW")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
+
 find_package(Lua REQUIRED)
 find_package(Freetype)
 if(NOT EMSCRIPTEN)
-find_package(PNG)
-find_package(ZLIB)
-find_package(SFML 2 COMPONENTS system window graphics)
-find_package(GLEW)
-find_package(OpenGL)
-find_package(SDL2)
-find_package(SDL2_image)
-find_package(SDL2_ttf)
+    find_package(PNG)
+    find_package(ZLIB)
+    find_package(SFML 2 COMPONENTS system window graphics)
+    find_package(GLEW)
+    find_package(OpenGL)
+    find_package(SDL2)
+    find_package(SDL2_image)
+    find_package(SDL2_ttf)
 endif()
+
 if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_LESS 5.2)
     set(LXGUI_LUA51 TRUE)
 endif()
 
+# add the subdirectories for dependencies
+add_subdirectory(extern/fmt)
+add_subdirectory(extern/utfcpp)
 set(SOL_SAFE_NUMERICS TRUE)
 set(SOL_PRINT_ERRORS FALSE)
+add_subdirectory(extern/sol2)
 
-# add the subdirectories
-add_subdirectory(fmt)
+# add the subdirectories for core library components
 add_subdirectory(utils)
 add_subdirectory(xml)
 add_subdirectory(luapp)
 add_subdirectory(gui)
+
+# add the subdirectories for back-ends
 if(LXGUI_BUILD_GUI_GL_IMPL)
     if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND) OR EMSCRIPTEN)
         add_subdirectory(gui/impl/gui/gl)
@@ -217,6 +226,8 @@ if(LXGUI_BUILD_INPUT_SDL_IMPL)
         set(LXGUI_BUILD_INPUT_SDL_IMPL FALSE)
     endif()
 endif()
+
+# add the subdirectory for the test application
 if(LXGUI_BUILD_TEST)
     if(EMSCRIPTEN AND NOT (LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL" OR LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL"))
         message(WARNING "Warning: the test program only supports SDL or OPENGL_SDL when compiled with Emscripten")
@@ -249,11 +260,4 @@ if(LXGUI_BUILD_TEST)
     else()
         message(ERROR ": unknown implementation ${LXGUI_TEST_IMPLEMENTATION}")
     endif()
-endif()
-
-if(LXGUI_BUILD_EXAMPLES)
-    add_subdirectory(gui/examples/opengl-sdl)
-    add_subdirectory(gui/examples/sdl)
-    add_subdirectory(gui/examples/opengl-sfml)
-    add_subdirectory(gui/examples/sfml)
 endif()

@@ -38,10 +38,10 @@ module will automatically add the -framework Cocoa on your behalf.
 
 
 
-Additional Note: If you see an empty SDL2_LIBRARY_TEMP in your
+Additional Note: If you see an empty SDL2_LIBRARIES_TEMP in your
 configuration and no SDL2_LIBRARIES, it means CMake did not find your SDL
 library (SDL.dll, libsdl.so, SDL.framework, etc).  Set
-SDL2_LIBRARY_TEMP to point to your SDL library, and configure again.
+SDL2_LIBRARIES_TEMP to point to your SDL library, and configure again.
 Similarly, if you see an empty SDL2MAIN_LIBRARY, you should set this
 value as appropriate.  These values are used to generate the final
 SDL2_LIBRARIES variable, but when these values are unset, SDL2_LIBRARIES
@@ -86,7 +86,7 @@ else()
   set(VC_LIB_PATH_SUFFIX lib/x86)
 endif()
 
-find_library(SDL2_LIBRARY_TEMP
+find_library(SDL2_LIBRARY
   NAMES SDL2
   HINTS
     ENV SDL2DIR
@@ -95,8 +95,8 @@ find_library(SDL2_LIBRARY_TEMP
 
 # Hide this cache variable from the user, it's an internal implementation
 # detail. The documented library variable for the user is SDL2_LIBRARIES
-# which is derived from SDL2_LIBRARY_TEMP further below.
-set_property(CACHE SDL2_LIBRARY_TEMP PROPERTY TYPE INTERNAL)
+# which is derived from SDL2_LIBRARY further below.
+set_property(CACHE SDL2_LIBRARY PROPERTY TYPE INTERNAL)
 
 if(NOT SDL2_BUILDING_LIBRARY)
   if(NOT SDL2_INCLUDE_DIRS MATCHES ".framework")
@@ -129,12 +129,13 @@ if(MINGW)
   set(MINGW32_LIBRARY mingw32 "-mwindows" CACHE STRING "link flags for MinGW")
 endif()
 
-if(SDL2_LIBRARY_TEMP)
+if(SDL2_LIBRARY)
+  set(SDL2_LIBRARIES_TEMP ${SDL2_LIBRARY})
   # For SDLmain
   if(SDL2MAIN_LIBRARY AND NOT SDL2_BUILDING_LIBRARY)
-    list(FIND SDL2_LIBRARY_TEMP "${SDL2MAIN_LIBRARY}" _SDL2_MAIN_INDEX)
+    list(FIND SDL2_LIBRARY "${SDL2MAIN_LIBRARY}" _SDL2_MAIN_INDEX)
     if(_SDL2_MAIN_INDEX EQUAL -1)
-      set(SDL2_LIBRARY_TEMP "${SDL2MAIN_LIBRARY}" ${SDL2_LIBRARY_TEMP})
+      set(SDL2_LIBRARIES_TEMP "${SDL2MAIN_LIBRARY}" ${SDL2_LIBRARIES_TEMP})
     endif()
     unset(_SDL2_MAIN_INDEX)
   endif()
@@ -146,23 +147,23 @@ if(SDL2_LIBRARY_TEMP)
   # So I use a temporary variable until the end so I can set the
   # "real" variable in one-shot.
   if(APPLE)
-    set(SDL2_LIBRARY_TEMP ${SDL2_LIBRARY_TEMP} "-framework Cocoa")
+    set(SDL2_LIBRARIES_TEMP ${SDL2_LIBRARIES_TEMP} "-framework Cocoa")
   endif()
 
   # For threads, as mentioned Apple doesn't need this.
   # In fact, there seems to be a problem if I used the Threads package
   # and try using this line, so I'm just skipping it entirely for OS X.
   if(NOT APPLE)
-    set(SDL2_LIBRARY_TEMP ${SDL2_LIBRARY_TEMP} ${CMAKE_THREAD_LIBS_INIT})
+    set(SDL2_LIBRARIES_TEMP ${SDL2_LIBRARIES_TEMP} ${CMAKE_THREAD_LIBS_INIT})
   endif()
 
   # For MinGW library
   if(MINGW)
-    set(SDL2_LIBRARY_TEMP ${MINGW32_LIBRARY} ${SDL2_LIBRARY_TEMP})
+    set(SDL2_LIBRARIES_TEMP ${MINGW32_LIBRARY} ${SDL2_LIBRARIES_TEMP})
   endif()
 
   # Set the final string here so the GUI reflects the final state.
-  set(SDL2_LIBRARIES ${SDL2_LIBRARY_TEMP} CACHE STRING "Where the SDL Library can be found")
+  set(SDL2_LIBRARIES ${SDL2_LIBRARIES_TEMP} CACHE STRING "Where the SDL Library can be found")
 endif()
 
 if(SDL2_INCLUDE_DIRS AND EXISTS "${SDL2_INCLUDE_DIRS}/SDL_version.h")
@@ -183,10 +184,18 @@ endif()
 
 include(FindPackageHandleStandardArgs)
 
-# for backward compatibility
-set(SDL2_LIBRARY ${SDL2_LIBRARIES})
-set(SDL2_INCLUDE_DIR ${SDL2_INCLUDE_DIRS})
-
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2
                                   REQUIRED_VARS SDL2_LIBRARIES SDL2_INCLUDE_DIRS
                                   VERSION_VAR SDL2_VERSION_STRING)
+
+if (SDL2_FOUND)
+  if(NOT TARGET SDL2::SDL2)
+      add_library(SDL2::SDL2 UNKNOWN IMPORTED)
+      set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIRS}")
+      set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}")
+      set_target_properties(SDL2::SDL2 PROPERTIES IMPORTED_LOCATION "${SDL2_LIBRARY}")
+      if(NOT APPLE)
+        target_link_libraries(SDL2::SDL2 INTERFACE Threads::Threads)
+      endif()
+  endif()
+endif()

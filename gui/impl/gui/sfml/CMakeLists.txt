@@ -11,13 +11,15 @@ add_library(lxgui-sfml
     ${SRCROOT}/gui_sfml_vertexcache.cpp
 )
 
-# Need C++17
+# need C++17
 target_compile_features(lxgui-sfml PRIVATE cxx_std_17)
 
 target_include_directories(lxgui-sfml PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(lxgui-sfml PUBLIC ${SFML_INCLUDE_DIR})
+
+# needed dependencies
+target_link_libraries(lxgui-sfml PUBLIC lxgui)
+target_link_libraries(lxgui-sfml PUBLIC sfml::graphics)
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sfml*.hpp)
 install(FILES ${files} DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-sfml ARCHIVE DESTINATION lib)
-

@@ -1,5 +1,22 @@
 ![Build Status](https://github.com/cschreib/lxgui/actions/workflows/cmake.yml/badge.svg) ![Build Status](https://github.com/cschreib/lxgui/actions/workflows/doc.yml/badge.svg)
 
+<!-- MarkdownTOC autolink="true" -->
+
+- [What is lxgui?](#what-is-lxgui)
+- [List of the available widgets](#list-of-the-available-widgets)
+- [List of configurable rendering options](#list-of-configurable-rendering-options)
+- [Getting started](#getting-started)
+    - [Build for for Linux, OSX, Windows](#build-for-for-linux-osx-windows)
+        - [Required dependencies \(for all back-ends\)](#required-dependencies-for-all-back-ends)
+        - [Dependencies for pure SFML back-end](#dependencies-for-pure-sfml-back-end)
+        - [Dependencies for pure SDL back-end](#dependencies-for-pure-sdl-back-end)
+        - [Dependencies for OpenGL + SFML back-end](#dependencies-for-opengl--sfml-back-end)
+        - [Dependencies for OpenGL + SDL back-end](#dependencies-for-opengl--sdl-back-end)
+    - [Build for WebAssembly / Emscripten](#build-for-webassembly--emscripten)
+- [How do I use it? A tutorial.](#how-do-i-use-it-a-tutorial)
+
+<!-- /MarkdownTOC -->
+
 # What is lxgui?
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
@@ -27,7 +44,7 @@ The second available rendering back-end uses [SFML2](https://www.sfml-dev.org/) 
 
 The third rendering back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading.
 
-For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input backend also depends on SDL2_image (for loading cursor files).
+For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input back-end also depends on SDL2_image (for loading cursor files).
 
 The WebAssembly build supports all back-ends except SFML.
 
@@ -58,6 +75,7 @@ All options are enabled by default (if supported), which should offer the best p
 
 
 # Getting started
+
 First, clone the project
 ```
 git clone https://github.com/cschreib/lxgui
@@ -65,7 +83,23 @@ git clone https://github.com/cschreib/lxgui
 
 Ensure your c++ compiler is up to date. Lxgui requires a compiler that is c++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or VisualStudio >= 2017).
 
-Install the required dependencies for your operating system.
+Install the required dependencies for your operating system, following the instructions in the next section.
+
+
+## Build for for Linux, OSX, Windows
+
+Make your choice of rendering and input back-end from within the following sub-sections, and install all the appropriate dependencies listed below. Once this is done, you can build and install lxgui with the standard cmake commands:
+
+```
+mkdir build
+cd build
+cmake ../ <your CMake options here>
+cmake --build .
+cmake --install .
+```
+
+
+### Required dependencies (for all back-ends)
 
 - dnf based distros (Fedora):
 ```
@@ -92,7 +126,8 @@ git submodule update --init
 ```
 
 
-# Full SFML setup
+### Dependencies for pure SFML back-end
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SFML-devel
@@ -114,7 +149,8 @@ vcpkg install sfml
 ```
 
 
-# Full SDL setup
+### Dependencies for pure SDL back-end
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel SDL2_ttf-devel
@@ -136,7 +172,8 @@ vcpkg install sdl2 sdl2-ttf sdl2-image
 ```
 
 
-# OpenGL + SFML setup
+### Dependencies for OpenGL + SFML back-end
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y freetype-devel SFML-devel mesa-libGLU-devel
@@ -157,7 +194,8 @@ brew install sfml zlib libpng freetype glew
 vcpkg install sfml zlib libpng freetype glew
 ```
 
-# OpenGL + SDL setup
+
+### Dependencies for OpenGL + SDL back-end
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel freetype-devel mesa-libGLU-devel
@@ -179,19 +217,20 @@ vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 ```
 
 
-# Webassembly setup
+## Build for WebAssembly / Emscripten
 
-The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (the Freetype version in Emscripten is too old). Pre-compiled libraries are provided in dependencies/wasm.zip, but you can also build them from source yourself easily.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (at the time of writing this guide, the Freetype version in Emscripten was too old). Pre-compiled libraries are provided in `dependencies/wasm.zip`, but you can also build them from source yourself easily.
 
-The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: at the time of writing this, and on my desktop machine, the SDL2 back-end is slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both run at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: earlier in the development of lxgui, and on my desktop machine, the SDL2 back-end was slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both ran at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
 
-With Emscripten installed and sourced in your current terminal, run
+With Emscripten [installed and sourced](https://emscripten.org/docs/getting_started/downloads.html) in your current terminal, run
 
 ```
 mkdir build
 cd build
-emcmake cmake ../
+emcmake cmake ../ <your CMake options here>
 emmake make
+emmake make install
 ```
 
 

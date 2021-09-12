@@ -1,16 +1,18 @@
 set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/input/sfml)
 set(SRCROOT ${TARGET_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${LUA_INCLUDE_DIR})
-include_directories(${SFML_INCLUDE_DIR})
 
 add_library(lxgui-input-sfml
-    ${SRCROOT}/input_sfml_source
+    ${SRCROOT}/input_sfml_source.cpp
 )
 
-# Need C++17
+# need C++17
 target_compile_features(lxgui-input-sfml PRIVATE cxx_std_17)
+
+target_include_directories(lxgui-input-sfml PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+# needed dependencies
+target_link_libraries(lxgui-input-sfml PUBLIC lxgui)
+target_link_libraries(lxgui-input-sfml PUBLIC sfml::graphics)
 
 install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/impl/input_sfml_source.hpp DESTINATION include/lxgui/impl)
 install(TARGETS lxgui-input-sfml ARCHIVE DESTINATION lib)
-

@@ -813,9 +813,9 @@ namespace gui
     public :
 
         explicit lua_uiobject(lua_State* luaVM);
-        virtual ~lua_uiobject();
+        ~lua_uiobject() override;
 
-        virtual void notify_deleted();
+        void notify_deleted() override;
 
         uiobject* get_object();
         const std::string& get_name() const;
