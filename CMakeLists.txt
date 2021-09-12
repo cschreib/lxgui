@@ -168,6 +168,7 @@ if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_
 endif()
 
 # add the subdirectories for dependencies
+set(FMT_INSTALL TRUE)
 add_subdirectory(extern/fmt)
 add_subdirectory(extern/utfcpp)
 set(SOL_SAFE_NUMERICS TRUE)
