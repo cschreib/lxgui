@@ -15,7 +15,7 @@
     #include <windows.h>
 #endif
 
-#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     #include <GL/glew.h>
     #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
@@ -42,7 +42,7 @@ thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_
 renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[maybe_unused]]) :
     uiWindowWidth_(uiWindowWidth), uiWindowHeight_(uiWindowHeight)
 {
-#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     if (bInitGLEW)
         glewInit();
 #endif
@@ -60,7 +60,7 @@ std::string renderer::get_name() const
 {
     std::string sFullVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
 #if defined(LXGUI_OPENGL3)
-#   if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#   if defined(LXGUI_COMPILER_EMSCRIPTEN)
     return "WebGL (" + sFullVersion + ")";
 #   else
     return "OpenGL (" + sFullVersion + ")";

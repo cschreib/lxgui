@@ -13,13 +13,13 @@ add_library(lxgui-gl
 
 # need C++17
 target_compile_features(lxgui-gl PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
 target_link_libraries(lxgui-gl PUBLIC lxgui)
 target_link_libraries(lxgui-gl PRIVATE Freetype::Freetype)
-if (NOT LXGUI_PLATFORM_EMSCRIPTEN)
+if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-gl PUBLIC OpenGL::GL)
     target_link_libraries(lxgui-gl PRIVATE PNG::PNG)
     target_link_libraries(lxgui-gl PRIVATE GLEW::GLEW)

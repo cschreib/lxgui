@@ -5,7 +5,7 @@
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #include <windows.h>
-    #if defined(MSVC)
+    #if defined(LXGUI_COMPILER_MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
 #endif

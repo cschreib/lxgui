@@ -12,12 +12,12 @@ add_library(lxgui-sdl
 
 # need C++17
 target_compile_features(lxgui-sdl PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
 target_link_libraries(lxgui-sdl PUBLIC lxgui)
-if (NOT LXGUI_PLATFORM_EMSCRIPTEN)
+if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-sdl PUBLIC SDL2::SDL2)
     target_link_libraries(lxgui-sdl PRIVATE SDL2::image)
     target_link_libraries(lxgui-sdl PRIVATE SDL2::TTF)

@@ -60,10 +60,10 @@
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #include <windows.h>
-    #if defined(MSVC)
+    #if defined(LXGUI_COMPILER_MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
-#elif defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#elif defined(LXGUI_COMPILER_EMSCRIPTEN)
     #include <emscripten.h>
 #endif
 
@@ -100,7 +100,7 @@ struct main_loop_context
 
 void main_loop(void* pTypeErasedData)
 {
-#if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
     try
     {
 #endif
@@ -118,7 +118,7 @@ void main_loop(void* pTypeErasedData)
         {
             if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
             {
-            #if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+            #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
                 return;
             #else
@@ -143,7 +143,7 @@ void main_loop(void* pTypeErasedData)
                 {
                     case SDLK_ESCAPE:
                     {
-                    #if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                         emscripten_cancel_main_loop();
                         return;
                     #else
@@ -187,7 +187,7 @@ void main_loop(void* pTypeErasedData)
     {
         if (mEvent.type == sf::Event::Closed)
         {
-            #if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+            #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
                 return;
             #else
@@ -211,7 +211,7 @@ void main_loop(void* pTypeErasedData)
                 {
                     case sf::Keyboard::Key::Escape:
                     {
-                    #if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                         emscripten_cancel_main_loop();
                         return;
                     #else
@@ -302,7 +302,7 @@ void main_loop(void* pTypeErasedData)
 
     ++mContext.uiFrameCount;
 
-#if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
     }
     catch (const std::exception& e)
     {
@@ -343,7 +343,7 @@ int main(int argc, char* argv[])
             bPrintToLog    = mLua.get_global_bool("print_to_log",   false, false);
         }
 
-#if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
         // In WebAssembly builds, never print to a log file, because we don't have
         // disk write access. Just use the console.
         bPrintToLog = false;
@@ -622,7 +622,7 @@ int main(int argc, char* argv[])
 
         std::cout << "Entering loop..." << std::endl;
 
-    #if defined(LXGUI_PLATFORM_EMSCRIPTEN)
+    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
         emscripten_set_main_loop_arg(main_loop, &mContext, -1, 1);
     #else
         while (mContext.bRunning)

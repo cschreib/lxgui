@@ -15,8 +15,11 @@
 #define FMT_HEADER_ONLY 0
 // Configure OpenGL version
 #define LXGUI_OPENGL3
+/* #undef GL_SILENCE_DEPRECATION */
 // Configure platform
-#define LXGUI_PLATFORM_EMSCRIPTEN
-/* #undef LXGUI_PLATFORM_LINUX */
+/* #undef LXGUI_COMPILER_EMSCRIPTEN */
+/* #undef LXGUI_COMPILER_MSVC */
+/* #undef LXGUI_PLATFORM_WASM */
+#define LXGUI_PLATFORM_LINUX
 /* #undef LXGUI_PLATFORM_OSX */
 /* #undef LXGUI_PLATFORM_WINDOWS */

@@ -8,7 +8,7 @@ add_library(lxgui-xml
 
 # need C++17
 target_compile_features(lxgui-xml PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-xml PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies

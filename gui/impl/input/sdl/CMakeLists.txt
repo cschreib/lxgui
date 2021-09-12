@@ -7,12 +7,12 @@ add_library(lxgui-input-sdl
 
 # need C++17
 target_compile_features(lxgui-input-sdl PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-input-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
 target_link_libraries(lxgui-input-sdl PUBLIC lxgui)
-if (NOT LXGUI_PLATFORM_EMSCRIPTEN)
+if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-input-sdl PUBLIC SDL2::SDL2)
     target_link_libraries(lxgui-input-sdl PRIVATE SDL2::image)
 else()

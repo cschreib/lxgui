@@ -7,7 +7,7 @@ add_library(lxgui-input-sfml
 
 # need C++17
 target_compile_features(lxgui-input-sfml PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-input-sfml PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies

@@ -8,7 +8,7 @@ add_executable(lxgui-test
 
 # need C++17
 target_compile_features(lxgui-test PRIVATE cxx_std_17)
-
+lxgui_set_warning_level(lxgui-utils)
 target_include_directories(lxgui-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 if (EMSCRIPTEN)

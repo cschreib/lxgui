@@ -11,7 +11,7 @@
     #include <windows.h>
 #endif
 
-#if !defined(LXGUI_PLATFORM_EMSCRIPTEN)
+#if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     #include <GL/glew.h>
     #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
