@@ -145,7 +145,7 @@ endif()
 
 # find libraries
 cmake_policy(SET CMP0072 "NEW")
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
 find_package(Lua REQUIRED)
 find_package(Freetype)
 if(NOT EMSCRIPTEN)
