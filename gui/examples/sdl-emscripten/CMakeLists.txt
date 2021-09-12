@@ -25,7 +25,7 @@ target_include_directories(lxgui-test-sdl-emscripten PRIVATE ${PROJECT_SOURCE_DI
 
 # lxgui libraries
 target_link_libraries(lxgui-test-sdl-emscripten PRIVATE
-    lxgui::gui:sdl # SDL rendering implementation
+    lxgui::gui::sdl # SDL rendering implementation
     lxgui::input::sdl # SDL input implementation
     lxgui::lxgui) # core library
 

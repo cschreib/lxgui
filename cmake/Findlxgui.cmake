@@ -193,7 +193,7 @@ if(LXGUI_FOUND)
         set_target_properties(lxgui::lxgui PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LXGUI_INCLUDE_DIRS}")
         set_target_properties(lxgui::lxgui PROPERTIES INTERFACE_LINK_LIBRARIES "${LXGUI_LIBRARIES}")
         set_target_properties(lxgui::lxgui PROPERTIES IMPORTED_LOCATION "${LXGUI_LIBRARY}")
-        target_link_libraries(lxgui::lxgui INTERFACE Lua::Lua)
+        target_link_libraries(lxgui::lxgui INTERFACE lua::lua)
         target_link_libraries(lxgui::lxgui INTERFACE fmt::fmt)
     endif()
 
