@@ -19,6 +19,8 @@ lxgui_set_option(LXGUI_BUILD_INPUT_SFML_IMPL TRUE BOOL "Build the SFML input imp
 lxgui_set_option(LXGUI_BUILD_INPUT_SDL_IMPL TRUE BOOL "Build the SDL input implementation")
 lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
 lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
+lxgui_set_option(LXGUI_BUILD_FMT TRUE BOOL "Build the fmtlib dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
@@ -152,6 +154,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
 
 find_package(Lua REQUIRED)
 find_package(Freetype)
+
 if(NOT LXGUI_COMPILER_EMSCRIPTEN)
     find_package(PNG)
     find_package(ZLIB)
@@ -168,12 +171,22 @@ if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_
 endif()
 
 # add the subdirectories for dependencies
-set(FMT_INSTALL TRUE)
-add_subdirectory(extern/fmt)
 add_subdirectory(extern/utfcpp)
+
+if(LXGUI_BUILD_FMT)
+    set(FMT_INSTALL TRUE)
+    add_subdirectory(extern/fmt)
+else()
+    find_package(fmt REQUIRED)
+endif()
+
 set(SOL_SAFE_NUMERICS TRUE)
 set(SOL_PRINT_ERRORS FALSE)
-add_subdirectory(extern/sol2)
+if(LXGUI_BUILD_SOL2)
+    add_subdirectory(extern/sol2)
+else()
+    find_package(sol2 REQUIRED)
+endif()
 
 # add the subdirectories for core library components
 add_subdirectory(utils)

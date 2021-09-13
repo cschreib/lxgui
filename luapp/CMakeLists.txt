@@ -17,7 +17,7 @@ target_include_directories(lxgui-luapp PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
 target_link_libraries(lxgui-luapp PUBLIC lxgui::utils)
-target_link_libraries(lxgui-luapp PUBLIC lua::lua)
+target_link_libraries(lxgui-luapp PUBLIC Lua::Lua)
 target_link_libraries(lxgui-luapp PUBLIC sol2::sol2)
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/lu*.hpp)
