@@ -6,13 +6,15 @@ add_library(lxgui-xml
     ${SRCROOT}/xml_document.cpp
 )
 
+add_library(lxgui::xml ALIAS lxgui-xml)
+
 # need C++17
 target_compile_features(lxgui-xml PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui-xml)
 target_include_directories(lxgui-xml PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
-target_link_libraries(lxgui-xml PUBLIC lxgui-utils)
+target_link_libraries(lxgui-xml PUBLIC lxgui::utils)
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/xml*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)

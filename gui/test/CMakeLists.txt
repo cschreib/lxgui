@@ -8,7 +8,7 @@ add_executable(lxgui-test
 
 # need C++17
 target_compile_features(lxgui-test PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui-test)
 target_include_directories(lxgui-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 if (EMSCRIPTEN)
@@ -34,20 +34,20 @@ elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SFML")
 endif()
 
 if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
-    target_link_libraries(lxgui-test PRIVATE lxgui-gl)
-    target_link_libraries(lxgui-test PRIVATE lxgui-input-sfml)
+    target_link_libraries(lxgui-test PRIVATE lxgui::gui::gl)
+    target_link_libraries(lxgui-test PRIVATE lxgui::input::sfml)
 elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
-    target_link_libraries(lxgui-test PRIVATE lxgui-gl)
-    target_link_libraries(lxgui-test PRIVATE lxgui-input-sdl)
+    target_link_libraries(lxgui-test PRIVATE lxgui::gui::gl)
+    target_link_libraries(lxgui-test PRIVATE lxgui::input::sdl)
 elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL")
-    target_link_libraries(lxgui-test PRIVATE lxgui-sdl)
-    target_link_libraries(lxgui-test PRIVATE lxgui-input-sdl)
+    target_link_libraries(lxgui-test PRIVATE lxgui::gui::sdl)
+    target_link_libraries(lxgui-test PRIVATE lxgui::input::sdl)
 elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SFML")
-    target_link_libraries(lxgui-test PRIVATE lxgui-sfml)
-    target_link_libraries(lxgui-test PRIVATE lxgui-input-sfml)
+    target_link_libraries(lxgui-test PRIVATE lxgui::gui::sfml)
+    target_link_libraries(lxgui-test PRIVATE lxgui::input::sfml)
 endif()
 
-target_link_libraries(lxgui-test PRIVATE lxgui)
+target_link_libraries(lxgui-test PRIVATE lxgui::lxgui)
 
 if(WINDOWS AND MSVC)
     target_link_libraries(lxgui-test PRIVATE user32)

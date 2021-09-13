@@ -8,12 +8,15 @@ add_library(lxgui-luapp
     ${SRCROOT}/luapp_state.cpp
 )
 
+add_library(lxgui::luapp ALIAS lxgui-luapp)
+
 # need C++17
 target_compile_features(lxgui-luapp PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui-luapp)
 target_include_directories(lxgui-luapp PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
+target_link_libraries(lxgui-luapp PUBLIC lxgui::utils)
 target_link_libraries(lxgui-luapp PUBLIC lua::lua)
 target_link_libraries(lxgui-luapp PUBLIC sol2::sol2)
 

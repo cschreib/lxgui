@@ -5,13 +5,15 @@ add_library(lxgui-input-sdl
     ${SRCROOT}/input_sdl_source.cpp
 )
 
+add_library(lxgui::input::sdl ALIAS lxgui-input-sdl)
+
 # need C++17
 target_compile_features(lxgui-input-sdl PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui-input-sdl)
 target_include_directories(lxgui-input-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
-target_link_libraries(lxgui-input-sdl PUBLIC lxgui)
+target_link_libraries(lxgui-input-sdl PUBLIC lxgui::lxgui)
 if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-input-sdl PUBLIC SDL2::SDL2)
     target_link_libraries(lxgui-input-sdl PRIVATE SDL2::image)

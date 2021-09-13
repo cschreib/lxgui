@@ -11,13 +11,15 @@ add_library(lxgui-gl
     ${SRCROOT}/gui_gl_vertexcache.cpp
 )
 
+add_library(lxgui::gui::gl ALIAS lxgui-gl)
+
 # need C++17
 target_compile_features(lxgui-gl PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui-gl)
 target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
-target_link_libraries(lxgui-gl PUBLIC lxgui)
+target_link_libraries(lxgui-gl PUBLIC lxgui::lxgui)
 target_link_libraries(lxgui-gl PRIVATE Freetype::Freetype)
 if (NOT LXGUI_COMPILER_EMSCRIPTEN)
     target_link_libraries(lxgui-gl PUBLIC OpenGL::GL)

@@ -7,6 +7,8 @@ add_library(lxgui-utils
     ${SRCROOT}/utils_string.cpp
 )
 
+add_library(lxgui::utils ALIAS lxgui-utils)
+
 # need C++17
 target_compile_features(lxgui-utils PRIVATE cxx_std_17)
 lxgui_set_warning_level(lxgui-utils)

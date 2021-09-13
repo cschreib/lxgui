@@ -67,15 +67,17 @@ add_library(lxgui
     ${SRCROOT}/input_source.cpp
 )
 
+add_library(lxgui::lxgui ALIAS lxgui)
+
 # need C++17
 target_compile_features(lxgui PRIVATE cxx_std_17)
-lxgui_set_warning_level(lxgui-utils)
+lxgui_set_warning_level(lxgui)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
-target_link_libraries(lxgui PUBLIC lxgui-luapp)
-target_link_libraries(lxgui PUBLIC lxgui-utils)
-target_link_libraries(lxgui PUBLIC lxgui-xml)
+target_link_libraries(lxgui PUBLIC lxgui::luapp)
+target_link_libraries(lxgui PUBLIC lxgui::utils)
+target_link_libraries(lxgui PUBLIC lxgui::xml)
 target_link_libraries(lxgui PUBLIC fmt::fmt)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
