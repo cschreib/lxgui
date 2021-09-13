@@ -15,6 +15,7 @@ namespace lxgui {
 namespace gui
 {
 
+/// Utility class to translate strings for display in GUI.
 class localizer
 {
     using mapped_item = std::variant<std::string, sol::protected_function>;

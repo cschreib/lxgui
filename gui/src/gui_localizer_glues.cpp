@@ -11,15 +11,15 @@
 *   for translating text for display in the GUI.
 *
 *   **Translating text.** When creating a button in the GUI, it is tempting to set its
-*   displayed directly like `button:set_text("Cancel")`, hence hard-coding the text in
-*   the code. This works totally fine, provided that English is the only language you
+*   displayed text directly like `button:set_text("Cancel")`, hence hard-coding the text
+*   in the code. This works totally fine, provided that English is the only language you
 *   only ever want to display to your users. If you want your game to be accessible to
 *   users from countries where English is not the native language, you will want to
 *   make that text translatable. This is what this module is for.
 *
 *   **Translatable string codes.** The first change needed is to stop hard-coding *any*
 *   form of text in your GUI code (be it XML or Lua). All text should be replaced by a
-*   "translatable string codes", such as `"{button_cancel}"`. The purpose of this code is
+*   "translatable string code", such as `"{button_cancel}"`. The purpose of this code is
 *   to uniquely represent this string you need to display, without giving it an actual
 *   content. The string `"{button_cancel}"` will not itself be displayed on the screen;
 *   instead, the localization system will search for a translation of that string and
@@ -53,7 +53,10 @@
 *   and `{REGION}` is a two-letter uppercase string identifying the regional dialect
 *   of this language (e.g., `US` for United States, `GB` for Great Britain, etc.).
 *   The currently configured languages (see the @{get_preferred_languages} function)
-*   determine which translation file gets loaded. You can also add additional folders
+*   determine which translation file gets loaded. If no translation file exists for the
+*   preferred languages, the next best translation will be chosen by ignoring the
+*   `{REGION}` code (i.e., if the preferred language is `enGB`, this enables automatic
+*   fallback to `enUS` if `enGB` is not found). You can also add additional folders
 *   to scan using the @{load_translations} function, and load a specific translation file
 *   using the @{load_translation_file} function.
 *
@@ -150,8 +153,8 @@
 *           end
 *       end,
 *
-*   This can be used to complex support language rules like adding an "s" to plurals
-*   of nouns in French:
+*   This can be used to implement complex support language rules like adding an "s" to
+*   plurals of nouns in French:
 *
 *       -- Table for plurals that are not obtained by just adding "s"
 *       special_plurals = {
