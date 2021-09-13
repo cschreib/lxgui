@@ -49,6 +49,6 @@ endif()
 
 target_link_libraries(lxgui-test PRIVATE lxgui::lxgui)
 
-if(WINDOWS AND MSVC)
+if(LXGUI_PLATFORM_WINDOWS AND LXGUI_COMPILER_MSVC)
     target_link_libraries(lxgui-test PRIVATE user32)
 endif()
