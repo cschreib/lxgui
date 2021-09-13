@@ -6,7 +6,7 @@
 - [List of the available widgets](#list-of-the-available-widgets)
 - [List of configurable rendering options](#list-of-configurable-rendering-options)
 - [Getting started](#getting-started)
-    - [Build for for Linux, OSX, Windows](#build-for-for-linux-osx-windows)
+    - [Build for Linux, OSX, Windows](#build-for-linux-osx-windows)
         - [Required dependencies \(for all back-ends\)](#required-dependencies-for-all-back-ends)
         - [Dependencies for pure SFML back-end](#dependencies-for-pure-sfml-back-end)
         - [Dependencies for pure SDL back-end](#dependencies-for-pure-sdl-back-end)
@@ -76,26 +76,26 @@ All options are enabled by default (if supported), which should offer the best p
 
 # Getting started
 
-First, clone the project
+Firstly, ensure your C++ compiler is up to date. This library requires a compiler that is C++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or Visual Studio >= 2017).
+
+Then, clone the project, including the submodules (this is important! the library will not compile otherwise):
 ```
-git clone https://github.com/cschreib/lxgui
+git clone --recurse-submodules https://github.com/cschreib/lxgui
 ```
 
-Ensure your c++ compiler is up to date. Lxgui requires a compiler that is c++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or VisualStudio >= 2017).
-
-Install the required dependencies for your operating system, following the instructions in the next section.
+The rest of the build instructions depends on your target operating system; please follow the instructions in the next sections accordingly.
 
 
-## Build for for Linux, OSX, Windows
+## Build for Linux, OSX, Windows
 
-Make your choice of rendering and input back-end from within the following sub-sections, and install all the appropriate dependencies listed below. Once this is done, you can build and install lxgui with the standard cmake commands:
+Make your choice of rendering and input back-end from within the following sub-sections, and install all the appropriate dependencies listed there. Once this is done, you can build and install lxgui with the standard cmake commands:
 
 ```
 mkdir build
 cd build
 cmake ../ <your CMake options here>
-cmake --build .
-cmake --install .
+cmake --build . --config Release
+cmake --install . --config Release
 ```
 
 
@@ -105,7 +105,6 @@ cmake --install .
 ```
 sudo dnf install -y lua-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install liblua5.2-dev
@@ -119,12 +118,6 @@ sudo apt install liblua5.2-dev
  vcpkg install lua
 ```
 
-Finally, initialize the submodules.
-```
-cd lxgui
-git submodule update --init
-```
-
 
 ### Dependencies for pure SFML back-end
 
@@ -132,17 +125,14 @@ git submodule update --init
 ```
 sudo dnf install -y SFML-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsfml-dev
 ```
-
 - OSX:
 ```
 brew install sfml
 ```
-
 - Windows:
 ```
 vcpkg install sfml
@@ -155,17 +145,14 @@ vcpkg install sfml
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel SDL2_ttf-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev
 ```
-
 - OSX:
 ```
 brew install sdl2 sdl2_ttf sdl2_image
 ```
-
 - Windows:
 ```
 vcpkg install sdl2 sdl2-ttf sdl2-image
@@ -178,12 +165,10 @@ vcpkg install sdl2 sdl2-ttf sdl2-image
 ```
 sudo dnf install -y freetype-devel SFML-devel mesa-libGLU-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsfml-dev libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
 ```
-
 - OSX:
 ```
 brew install sfml zlib libpng freetype glew
