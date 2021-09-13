@@ -139,7 +139,7 @@ elseif (UNIX)
 elseif (WINDOWS)
     set(LXGUI_PLATFORM_WINDOWS TRUE)
     if(MSVC)
-        set(LXGUI_COMPILER_MSCV TRUE)
+        set(LXGUI_COMPILER_MSVC TRUE)
     endif()
 endif()
 
