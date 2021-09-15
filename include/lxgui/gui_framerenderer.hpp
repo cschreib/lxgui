@@ -27,7 +27,7 @@ namespace gui
         /** \param pFrame    The frame to render
         *   \param bRendered 'true' if this renderer needs to render that new object
         */
-        virtual void notify_rendered_frame(frame* pFrame, bool bManuallyRendered);
+        virtual void notify_rendered_frame(frame* pFrame, bool bRendered);
 
         /// Tells this renderer that a frame has changed strata.
         /** \param pFrame The frame which has changed

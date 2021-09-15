@@ -140,8 +140,8 @@ namespace gui
         void set_parent_point(anchor_point mParentPoint);
 
         /// Sets this anchor's absolute offset.
-        /** \param iX The new horizontal offset
-        *   \param iY The new vertical offset
+        /** \param fX The new horizontal offset
+        *   \param fY The new vertical offset
         */
         void set_abs_offset(float fX, float fY);
 
