@@ -11,7 +11,7 @@ target_compile_features(lxgui-test PRIVATE cxx_std_17)
 lxgui_set_warning_level(lxgui-test)
 target_include_directories(lxgui-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
-if (EMSCRIPTEN)
+if(LXGUI_COMPILER_EMSCRIPTEN)
     set(CMAKE_EXECUTABLE_SUFFIX .html)
     set(TEST_EMSCRIPTEN_FLAGS "${LXGUI_EMSCRIPTEN_FLAGS} -s ALLOW_MEMORY_GROWTH=1 --preload-file ${PROJECT_SOURCE_DIR}/gui/bin/interface@interface")
     if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
