@@ -117,8 +117,8 @@ public:
     *   \return The translated string, or sKey if not found or an error occurred.
     *   \note .
     */
-    template<typename T, typename ... Args>
-    std::string localize(T&& sKey, Args&& ... mArgs) const
+    template<typename ... Args>
+    std::string localize(const std::string& sKey, Args&& ... mArgs) const
     {
         if (!is_key_valid_(sKey)) return sKey;
 
