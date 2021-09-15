@@ -5,6 +5,7 @@
 #include <lxgui/utils.hpp>
 
 #include <memory>
+#include <limits>
 
 namespace lxgui {
 namespace gui {
@@ -81,9 +82,9 @@ namespace gl
         uint uiCurrentSizeIndex_ = 0u;
         uint uiCurrentCapacityVertex_ = 0u;
         uint uiCurrentCapacityIndex_ = 0u;
-        uint uiVertexArray_ = (uint)-1;
-        uint uiVertexBuffer_ = (uint)-1;
-        uint uiIndexBuffer_ = (uint)-1;
+        uint uiVertexArray_ = std::numeric_limits<uint>::max();
+        uint uiVertexBuffer_ = std::numeric_limits<uint>::max();
+        uint uiIndexBuffer_ = std::numeric_limits<uint>::max();
     };
 }
 }

@@ -7,6 +7,8 @@
 #include "lxgui/gui_gradient.hpp"
 #include "lxgui/gui_sprite.hpp"
 
+#include <limits>
+
 namespace lxgui {
 namespace gui
 {
@@ -200,7 +202,7 @@ namespace gui
         *         for each pixel, the original color is multiplied
         *         by this vertex color.
         */
-        void set_vertex_color(const color& mColor, uint uiIndex = (uint)-1);
+        void set_vertex_color(const color& mColor, uint uiIndex = std::numeric_limits<uint>::max());
 
         /// Creates the associated Lua glue.
         void create_glue() override;
