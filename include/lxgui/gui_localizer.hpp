@@ -44,7 +44,7 @@ public:
     void set_locale(std::locale mLocale);
 
     /// Changes the current language (used to translate messages and strings).
-    /** \param sLanguages A list of languages
+    /** \param lLanguages A list of languages
     *   \details This function specifies which languages to use for translating messages. The
     *            languages listed in the supplied array will be tried one after the other, until a
     *            translation is found. Each language in the list must be formatted as
