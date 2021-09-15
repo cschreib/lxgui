@@ -21,6 +21,7 @@
 #include <array>
 #include <vector>
 #include <memory>
+#include <limits>
 
 namespace lxgui {
 namespace gui
@@ -138,7 +139,7 @@ namespace gui
         *         a single vertex's color.<br>
         *         Index 0 is for top left, index 1 is for top right, ...
         */
-        void set_color(const color& mColor, uint uiIndex = (uint)(-1));
+        void set_color(const color& mColor, uint uiIndex = std::numeric_limits<uint>::max());
 
         /// Makes this sprite colorless.
         /** \param bDesaturated 'true' to desaturate the texture/color
