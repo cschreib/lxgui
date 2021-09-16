@@ -204,23 +204,23 @@ void localizer::clear_translations()
     lMap_.clear();
 }
 
-bool localizer::is_key_valid_(const std::string& sKey) const
+bool localizer::is_key_valid_(std::string_view sKey) const
 {
     return !sKey.empty() && sKey.front() == '{' && sKey.back() == '}';
 }
 
-localizer::map_type::const_iterator localizer::find_key_(const std::string& sKey) const
+localizer::map_type::const_iterator localizer::find_key_(std::string_view sKey) const
 {
-    std::string sSubstring = sKey.substr(1, sKey.size() - 2);
+    auto sSubstring = sKey.substr(1, sKey.size() - 2);
     return lMap_.find(sSubstring);
 }
 
-std::string localizer::localize(const std::string& sKey, sol::variadic_args mVArgs) const
+std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs) const
 {
-    if (!is_key_valid_(sKey)) return sKey;
+    if (!is_key_valid_(sKey)) return std::string{sKey};
 
     auto mIter = find_key_(sKey);
-    if (mIter == lMap_.end()) return sKey;
+    if (mIter == lMap_.end()) return std::string{sKey};
 
     return std::visit([&](const auto& item)
     {
@@ -253,7 +253,7 @@ std::string localizer::localize(const std::string& sKey, sol::variadic_args mVAr
             {
                 sol::error mError = mResult;
                 gui::out << gui::error << "gui::locale : " << mError.what() << std::endl;
-                return sKey;
+                return std::string{sKey};
             }
 
             if (mResult.begin() != mResult.end())
@@ -263,7 +263,7 @@ std::string localizer::localize(const std::string& sKey, sol::variadic_args mVAr
                     return mFirst.template as<std::string>();
             }
 
-            return sKey;
+            return std::string{sKey};
         }
     }, mIter->second);
 }

@@ -6,6 +6,7 @@
 #include <sol/variadic_args.hpp>
 
 #include <string>
+#include <string_view>
 #include <locale>
 #include <unordered_map>
 #include <variant>
@@ -26,8 +27,8 @@ class localizer
     sol::state mLua_;
     map_type lMap_;
 
-    bool is_key_valid_(const std::string& sKey) const;
-    map_type::const_iterator find_key_(const std::string& sKey) const;
+    bool is_key_valid_(std::string_view sKey) const;
+    map_type::const_iterator find_key_(std::string_view sKey) const;
     void reset_language_fallback_();
 
 public:
@@ -108,22 +109,26 @@ public:
     *   \return The translated string, or sKey if not found or an error occurred.
     *   \note See the other overload for more information.
     */
-    std::string localize(const std::string& sKey, sol::variadic_args mVArgs) const;
+    std::string localize(std::string_view sKey, sol::variadic_args mVArgs) const;
 
     /// Translates a string with a certain number of arguments from C++ (zero or many).
     /** \param sKey  The key identifying the sentence / text to translate (e.g., "{player_health}").
     *                Must start with '{' and end with '}'.
     *   \param mArgs A variadic list of translation input arguments.
     *   \return The translated string, or sKey if not found or an error occurred.
-    *   \note .
+    *   \details This function will search the translation database (created from loading
+    *            translations with load_translations() or load_translation_file()) for a
+    *            string matching sKey. If one is found, it will forward the supplied arguments
+    *            to the translated formatting function, which will insert the arguments at
+    *            the proper place for the selected language.
     */
     template<typename ... Args>
-    std::string localize(const std::string& sKey, Args&& ... mArgs) const
+    std::string localize(std::string_view sKey, Args&& ... mArgs) const
     {
-        if (!is_key_valid_(sKey)) return sKey;
+        if (!is_key_valid_(sKey)) return std::string{sKey};
 
         auto mIter = find_key_(sKey);
-        if (mIter == lMap_.end()) return sKey;
+        if (mIter == lMap_.end()) return std::string{sKey};
 
         return std::visit([&](const auto& mItem)
         {
@@ -144,9 +149,9 @@ public:
                     if (mFirst.template is<std::string>())
                         return mFirst.template as<std::string>();
                     else
-                        return sKey;
+                        return std::string{sKey};
                 } else
-                    return sKey;
+                    return std::string{sKey};
             }
         }, mIter->second);
     }
