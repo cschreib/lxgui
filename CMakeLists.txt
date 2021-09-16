@@ -34,7 +34,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
     # -g -fsanitize=address -s INITIAL_MEMORY=200MB
     set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
-elseif(CMAKE_COMPILER_IS_GNUCXX)
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
                     OUTPUT_VARIABLE GCC_VERSION)
 
@@ -46,7 +46,7 @@ elseif(CMAKE_COMPILER_IS_GNUCXX)
     if(GCC_VERSION VERSION_LESS 8.0)
         message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with gcc 8 or higher (your version: ${GCC_VERSION}). Please upgrade your compiler.")
     endif()
-elseif(MSVC)
+elseif("#{CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     if(MSVC_VERSION VERSION_LESS 1910)
         message(ERROR ": lxgui requires advanced features from the C++17 norm that are only available with MSVC 2017 or higher (version 1910, your version: ${MSVC_VERSION}). Please upgrade your compiler.")
     endif()
@@ -66,9 +66,9 @@ endif()
 
 # define macro to enable relevant warnings for a target
 macro(lxgui_set_warning_level target)
-    if(CMAKE_COMPILER_IS_GNUCXX)
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         target_compile_options(${target} PRIVATE -Wall)
-    elseif(MSVC)
+    elseif("#{CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         target_compile_options(${target} PRIVATE /W4)
         target_compile_options(${target} PRIVATE /GR)
         target_compile_options(${target} PRIVATE /EHs)
