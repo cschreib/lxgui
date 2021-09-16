@@ -1,6 +1,7 @@
 #ifndef LXGUI_GUI_LOCALIZER_HPP
 #define LXGUI_GUI_LOCALIZER_HPP
 
+#include <lxgui/lxgui.hpp>
 #include <fmt/format.h>
 #include <sol/state.hpp>
 #include <sol/variadic_args.hpp>
