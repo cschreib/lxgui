@@ -77,7 +77,7 @@ public:
     // fill method table with methods from class T
     for (lunar_binding<T> *l = T::methods; l->name; l++) {
       lua_pushstring(L, l->name);
-      lua_pushlightuserdata(L, (void*)l);
+      lua_pushlightuserdata(L, static_cast<void*>(l));
       lua_pushcclosure(L, thunk, 1);
       lua_settable(L, methods);
     }
