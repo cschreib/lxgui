@@ -35,7 +35,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     # -g -fsanitize=address -s INITIAL_MEMORY=200MB
     set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0 -s MAX_WEBGL_VERSION=3")
 elseif(CMAKE_COMPILER_IS_GNUCXX)
-    execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpfullversion -dumpversion
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -dumpfullversion -dumpversion
                     OUTPUT_VARIABLE GCC_VERSION)
 
     string(REGEX MATCHALL "[0-9]+" GCC_VERSION_COMPONENTS ${GCC_VERSION})
