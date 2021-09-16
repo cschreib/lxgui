@@ -29,7 +29,7 @@ lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation t
 project(lxgui LANGUAGES CXX VERSION 2.0)
 
 # check compiler versions
-if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     # Debugging options that can be added to LXGUI_EMSCRIPTEN_FLAGS:
     # -g -s SAFE_HEAP=1 -s WARN_UNALIGNED=1 -s ASSERTIONS=2
     # -g -fsanitize=address -s INITIAL_MEMORY=200MB
@@ -126,7 +126,7 @@ macro(lxgui_set_warning_level target)
 endmacro()
 
 # set OS preprocessor defines
-if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     set(LXGUI_PLATFORM_WASM TRUE)
     set(LXGUI_COMPILER_EMSCRIPTEN TRUE)
     if(NOT ${LXGUI_OPENGL3})
@@ -140,7 +140,7 @@ elseif (UNIX)
     set(LXGUI_PLATFORM_LINUX TRUE)
 elseif (WIN32)
     set(LXGUI_PLATFORM_WINDOWS TRUE)
-    if(MSVC)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(LXGUI_COMPILER_MSVC TRUE)
     endif()
 endif()
