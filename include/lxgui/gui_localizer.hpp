@@ -19,8 +19,9 @@ namespace gui
 /// Utility class to translate strings for display in GUI.
 class localizer
 {
+    using hash_type = std::size_t;
     using mapped_item = std::variant<std::string, sol::protected_function>;
-    using map_type = std::unordered_map<std::string, mapped_item>;
+    using map_type = std::unordered_map<hash_type, mapped_item>;
 
     std::locale mLocale_;
     std::vector<std::string> lLanguages_;

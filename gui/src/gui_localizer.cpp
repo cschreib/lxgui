@@ -9,6 +9,7 @@
 #include <sol/state.hpp>
 #include <cstring>
 #include <cstdlib>
+#include <functional>
 
 namespace lxgui {
 namespace gui
@@ -185,9 +186,9 @@ void localizer::load_translation_file(const std::string& sFilename) try
         std::string ks = mKey.as<std::string>();
 
         if (mValue.is<std::string>())
-            lMap_.insert(std::make_pair(std::move(ks), mValue.as<std::string>()));
+            lMap_.insert(std::make_pair(std::hash<std::string>{}(ks), mValue.as<std::string>()));
         else if (mValue.is<sol::protected_function>())
-            lMap_.insert(std::make_pair(std::move(ks), mValue.as<sol::protected_function>()));
+            lMap_.insert(std::make_pair(std::hash<std::string>{}(ks), mValue.as<sol::protected_function>()));
     });
 
     // Keep a copy so variables/functions remain alive
@@ -212,7 +213,7 @@ bool localizer::is_key_valid_(std::string_view sKey) const
 localizer::map_type::const_iterator localizer::find_key_(std::string_view sKey) const
 {
     auto sSubstring = sKey.substr(1, sKey.size() - 2);
-    return lMap_.find(sSubstring);
+    return lMap_.find(std::hash<std::string_view>{}(sSubstring));
 }
 
 std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs) const
