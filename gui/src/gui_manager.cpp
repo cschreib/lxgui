@@ -602,6 +602,8 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
 
 void manager::load_addon_files_(addon* pAddOn)
 {
+    pLocalizer_->load_translations(pAddOn->sDirectory);
+
     pCurrentAddOn_ = pAddOn;
     for (const auto& sFile : pAddOn->lFileList)
     {
@@ -793,8 +795,6 @@ void manager::read_files()
 
 void manager::load_ui()
 {
-    pLocalizer_->clear_translations();
-
     create_lua(pLuaRegs_);
 
     read_files();
@@ -853,6 +853,8 @@ void manager::close_ui()
         bClosed_ = true;
         bLoadingUI_ = false;
         pCurrentAddOn_ = nullptr;
+
+        pLocalizer_->clear_translations();
     }
 }
 
