@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
 
-if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
+if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
     add_subdirectory(opengl-sdl-emscripten)
     add_subdirectory(sdl-emscripten)
 else()
