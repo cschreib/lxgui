@@ -24,11 +24,7 @@ lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
-project(lxgui)
-
-# setup version numbers
-set(LXGUI_VERSION_MAJOR 2)
-set(LXGUI_VERSION_MINOR 0)
+project(lxgui LANGUAGES CXX VERSION 2.0)
 
 # check compiler versions
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
