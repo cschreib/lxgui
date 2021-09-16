@@ -3,6 +3,7 @@
 #include <lxgui/input.hpp>
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
+    #define NOMINMAX
     #include <windows.h>
     #if defined(LXGUI_COMPILER_MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
