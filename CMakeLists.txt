@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.8)
+cmake_policy(SET CMP0048 "NEW")
+cmake_policy(SET CMP0072 "NEW")
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
@@ -147,7 +149,6 @@ endif()
 set(SDL2_BUILDING_LIBRARY TRUE)
 
 # find dependencies
-cmake_policy(SET CMP0072 "NEW")
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/" ${CMAKE_MODULE_PATH})
 
 find_package(Lua REQUIRED)
