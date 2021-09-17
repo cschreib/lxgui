@@ -27,8 +27,8 @@ namespace gui
         void render() override;
 
         /// Checks if the provided coordinates are inside this region.
-        /** \param iX The horizontal coordinate
-        *   \param iY The vertical coordinate
+        /** \param fX The horizontal coordinate
+        *   \param fY The vertical coordinate
         *   \return 'true' if the provided coordinates are inside this region
         */
         virtual bool is_in_region(float fX, float fY) const;

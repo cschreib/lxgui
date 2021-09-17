@@ -139,6 +139,7 @@ namespace input
 
         /// Checks if a mouse button is being pressed.
         /** \param mID    The ID code of the mouse button you're interested in
+        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the mouse button is being pressed
         */
         bool mouse_is_down(mouse_button mID, bool bForce = false) const;
@@ -152,7 +153,6 @@ namespace input
 
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return Elapsed time since the mouse button has been pressed
         */
         double get_mouse_down_duration(mouse_button mKey) const;

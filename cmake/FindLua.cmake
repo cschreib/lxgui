@@ -204,6 +204,13 @@ if (LUA_LIBRARY)
     else ()
         set(LUA_LIBRARIES "${LUA_LIBRARY}")
     endif ()
+
+    if(NOT TARGET Lua::Lua)
+        add_library(Lua::Lua UNKNOWN IMPORTED)
+        set_target_properties(Lua::Lua PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${LUA_INCLUDE_DIR}")
+        set_target_properties(Lua::Lua PROPERTIES INTERFACE_LINK_LIBRARIES "${LUA_LIBRARIES}")
+        set_target_properties(Lua::Lua PROPERTIES IMPORTED_LOCATION "${LUA_LIBRARY}")
+    endif()
 endif ()
 
 # handle the QUIETLY and REQUIRED arguments and set LUA_FOUND to TRUE if

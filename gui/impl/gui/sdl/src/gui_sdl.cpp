@@ -8,12 +8,11 @@ namespace gui {
 namespace sdl
 {
 std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer,
-    const std::string& sLocale, bool bInitialiseSDLImage)
+    bool bInitialiseSDLImage)
 {
     return std::unique_ptr<gui::manager>(new gui::manager(
         std::unique_ptr<input::source>(new input::sdl::source(pWindow, pRenderer, bInitialiseSDLImage)),
-        std::unique_ptr<gui::renderer>(new gui::sdl::renderer(pRenderer, false)),
-        sLocale
+        std::unique_ptr<gui::renderer>(new gui::sdl::renderer(pRenderer, false))
     ));
 }
 }

@@ -7,6 +7,7 @@
 #include <lxgui/gui_scrollframe.hpp>
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
+#include <lxgui/gui_localizer.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 #include <lxgui/luapp_state.hpp>
@@ -26,7 +27,7 @@
     #include <lxgui/impl/gui_gl_renderer.hpp>
     #include <lxgui/impl/input_sfml_source.hpp>
     #include <SFML/Window.hpp>
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
     #else
         #include <GL/gl.h>
@@ -37,7 +38,7 @@
     #include <lxgui/impl/input_sdl_source.hpp>
     #define SDL_MAIN_HANDLED
     #include <SDL.h>
-    #if defined(MACOSX)
+    #if defined(LXGUI_PLATFORM_OSX)
         #include <OpenGL/gl.h>
     #else
         #include <GL/gl.h>
@@ -57,12 +58,13 @@
 #endif
 
 
-#if defined(WIN32)
+#if defined(LXGUI_PLATFORM_WINDOWS)
+    #define NOMINMAX
     #include <windows.h>
-    #if defined(MSVC)
+    #if defined(LXGUI_COMPILER_MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
-#elif defined(WASM)
+#elif defined(LXGUI_COMPILER_EMSCRIPTEN)
     #include <emscripten.h>
 #endif
 
@@ -99,7 +101,7 @@ struct main_loop_context
 
 void main_loop(void* pTypeErasedData)
 {
-#if defined(WASM)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
     try
     {
 #endif
@@ -117,7 +119,7 @@ void main_loop(void* pTypeErasedData)
         {
             if (mEvent.window.event == SDL_WINDOWEVENT_CLOSE)
             {
-            #if defined(WASM)
+            #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
                 return;
             #else
@@ -142,7 +144,7 @@ void main_loop(void* pTypeErasedData)
                 {
                     case SDLK_ESCAPE:
                     {
-                    #if defined(WASM)
+                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                         emscripten_cancel_main_loop();
                         return;
                     #else
@@ -186,7 +188,7 @@ void main_loop(void* pTypeErasedData)
     {
         if (mEvent.type == sf::Event::Closed)
         {
-            #if defined(WASM)
+            #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                 emscripten_cancel_main_loop();
                 return;
             #else
@@ -210,7 +212,7 @@ void main_loop(void* pTypeErasedData)
                 {
                     case sf::Keyboard::Key::Escape:
                     {
-                    #if defined(WASM)
+                    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
                         emscripten_cancel_main_loop();
                         return;
                     #else
@@ -301,7 +303,7 @@ void main_loop(void* pTypeErasedData)
 
     ++mContext.uiFrameCount;
 
-#if defined(WASM)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
     }
     catch (const std::exception& e)
     {
@@ -327,7 +329,6 @@ int main(int argc, char* argv[])
         uint uiWindowWidth  = 800;
         uint uiWindowHeight = 600;
         bool bFullScreen    = false;
-        std::string sLocale = "enGB";
         float fScaleFactor  = 1.0f;
         bool bPrintToLog    = false;
 
@@ -339,12 +340,11 @@ int main(int argc, char* argv[])
             uiWindowWidth  = mLua.get_global_int("window_width",    false, 800);
             uiWindowHeight = mLua.get_global_int("window_height",   false, 600);
             bFullScreen    = mLua.get_global_bool("fullscreen",     false, false);
-            sLocale        = mLua.get_global_string("locale",       false, "enGB");
             fScaleFactor   = mLua.get_global_double("scale_factor", false, 1.0);
             bPrintToLog    = mLua.get_global_bool("print_to_log",   false, false);
         }
 
-#if defined(WASM)
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
         // In WebAssembly builds, never print to a log file, because we don't have
         // disk write access. Just use the console.
         bPrintToLog = false;
@@ -474,22 +474,24 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRenderer),
-            // The locale
-            sLocale
+            std::move(pRenderer)
         ));
     #elif defined(SDL_GUI)
         // Use full SDL implementation
-        pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get(), sLocale);
+        pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get());
     #elif defined(SFML_GUI)
         // Use full SFML implementation
-        pManager = gui::sfml::create_manager(mWindow, sLocale);
+        pManager = gui::sfml::create_manager(mWindow);
     #endif
 
         // Automatically select best settings
         gui::renderer* pGUIRenderer = pManager->get_renderer();
         pGUIRenderer->auto_detect_settings();
 
+        std::cout << " Preferred languages: ";
+        for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
+            std::cout << sLanguage << ", ";
+        std::cout << std::endl;
         std::cout << " Renderer settings:" << std::endl;
         std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
         std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
@@ -621,7 +623,7 @@ int main(int argc, char* argv[])
 
         std::cout << "Entering loop..." << std::endl;
 
-    #if defined(WASM)
+    #if defined(LXGUI_COMPILER_EMSCRIPTEN)
         emscripten_set_main_loop_arg(main_loop, &mContext, -1, 1);
     #else
         while (mContext.bRunning)

@@ -588,7 +588,7 @@ std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHe
 
     pTex->unlock_pointer();
 
-    return pTex;
+    return std::move(pTex);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
@@ -597,7 +597,7 @@ std::shared_ptr<gui::material> renderer::create_material(
     auto pTex = std::static_pointer_cast<sdl::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())
     {
-        return pTex;
+        return std::move(pTex);
     }
     else
     {

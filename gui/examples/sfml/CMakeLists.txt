@@ -1,18 +1,10 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # Start new project
-project(lxgui-test-sfml CXX)
-
-if (APPLE)
-    add_definitions(-DMACOSX)
-elseif (UNIX)
-    add_definitions(-DLINUX)
-elseif (WINDOWS)
-    add_definitions(-DWIN32)
-endif()
+project(lxgui-test-sfml LANGUAGES CXX VERSION 2.0)
 
 # Add the directory containing Findlxgui.cmake to the model path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../../../cmake/Modules")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../../cmake" ${CMAKE_MODULE_PATH})
 
 # Find lxgui and dependencies
 find_package(lxgui 2)
@@ -28,23 +20,16 @@ add_executable(lxgui-test-sfml
 # We need C++17
 target_compile_features(lxgui-test-sfml PRIVATE cxx_std_17)
 
-# lxgui include dirs
-target_include_directories(lxgui-test-sfml PRIVATE
-    ${PROJECT_SOURCE_DIR}/../common # shared headers for all examples
-    ${LXGUI_INCLUDE_DIRS} # core library
-    ${LXGUI_GUI_SFML_INCLUDE_DIRS} # SFML rendering implementation
-    ${LXGUI_INPUT_SFML_INCLUDE_DIRS}) # SFML input implementation
+# Include dirs (shared headers for all examples)
+target_include_directories(lxgui-test-sfml PRIVATE ${PROJECT_SOURCE_DIR}/../common)
 
 # lxgui libraries
-target_link_libraries(lxgui-test-sfml
-    ${LXGUI_GUI_SFML_LIBRARIES} # SFML rendering implementation
-    ${LXGUI_INPUT_SFML_LIBRARIES} # SFML input implementation
-    ${LXGUI_LIBRARIES}) # core library
+target_link_libraries(lxgui-test-sfml PRIVATE
+    lxgui::gui::sfml # SFML rendering implementation
+    lxgui::input::sfml # SFML input implementation
+    lxgui::lxgui) # core library
 
 # Platform-specific stuff
-if(WINDOWS AND MSVC)
-    target_link_libraries(lxgui-test-sfml user32)
-endif()
-if(UNIX AND NOT (APPLE OR EMSCRIPTEN))
-    target_link_libraries(lxgui-test-sfml X11 m stdc++)
+if(LXGUI_PLATFORM_WINDOWS AND MSVC)
+    target_link_libraries(lxgui-test-sfml PRIVATE user32)
 endif()

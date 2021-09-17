@@ -1,18 +1,10 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # Start new project
-project(lxgui-test-opengl-sdl CXX)
-
-if (APPLE)
-    add_definitions(-DMACOSX)
-elseif (UNIX)
-    add_definitions(-DLINUX)
-elseif (WINDOWS)
-    add_definitions(-DWIN32)
-endif()
+project(lxgui-test-opengl-sdl LANGUAGES CXX VERSION 2.0)
 
 # Add the directory containing Findlxgui.cmake to the model path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../../../cmake/Modules")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../../cmake" ${CMAKE_MODULE_PATH})
 
 # Find lxgui and dependencies
 find_package(lxgui 2)
@@ -28,23 +20,16 @@ add_executable(lxgui-test-opengl-sdl
 # We need C++17
 target_compile_features(lxgui-test-opengl-sdl PRIVATE cxx_std_17)
 
-# lxgui include dirs
-target_include_directories(lxgui-test-opengl-sdl PRIVATE
-    ${PROJECT_SOURCE_DIR}/../common # shared headers for all examples
-    ${LXGUI_INCLUDE_DIRS} # core library
-    ${LXGUI_GUI_GL_INCLUDE_DIRS} # OpenGL rendering implementation
-    ${LXGUI_INPUT_SDL_INCLUDE_DIRS}) # SDL input implementation
+# Include dirs (shared headers for all examples)
+target_include_directories(lxgui-test-opengl-sdl PRIVATE ${PROJECT_SOURCE_DIR}/../common)
 
 # lxgui libraries
-target_link_libraries(lxgui-test-opengl-sdl
-    ${LXGUI_GUI_GL_LIBRARIES} # OpenGL rendering implementation
-    ${LXGUI_INPUT_SDL_LIBRARIES} # SDL input implementation
-    ${LXGUI_LIBRARIES}) # core library
+target_link_libraries(lxgui-test-opengl-sdl PRIVATE
+    lxgui::gui::gl # OpenGL rendering implementation
+    lxgui::input::sdl # SDL input implementation
+    lxgui::lxgui) # core library
 
 # Platform-specific stuff
-if(WINDOWS AND MSVC)
-    target_link_libraries(lxgui-test-opengl-sdl user32)
-endif()
-if(UNIX AND NOT (APPLE OR EMSCRIPTEN))
-    target_link_libraries(lxgui-test-opengl-sdl X11 m stdc++)
+if(LXGUI_PLATFORM_WINDOWS AND MSVC)
+    target_link_libraries(lxgui-test-opengl-sdl PRIVATE user32)
 endif()

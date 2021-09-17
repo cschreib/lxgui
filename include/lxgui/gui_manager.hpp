@@ -42,6 +42,7 @@ namespace gui
     class frame;
     class focus_frame;
     class renderer;
+    class localizer;
     struct quad;
     struct vertex;
 
@@ -80,10 +81,9 @@ namespace gui
         /// Constructor.
         /** \param pInputSource The input source to use
         *   \param pRenderer    The renderer implementation
-        *   \param sLocale      The name of the game locale ("enGB", ...)
         */
         manager(std::unique_ptr<input::source> pInputSource,
-                std::unique_ptr<renderer> pRenderer, const std::string& sLocale);
+                std::unique_ptr<renderer> pRenderer);
 
         /// Destructor.
         ~manager() override;
@@ -412,30 +412,36 @@ namespace gui
         *   \note See load_ui().
         *   \note See create_lua().
         *   \warning Do not call this function while the manager is running update()
-        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void read_files();
 
         /// Loads the UI.
         /** \note Calls create_lua() then read_files().
         *   \warning Do not call this function while the manager is running update()
-        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void load_ui();
 
         /// Closes the UI, deletes widgets.
         /** \warning Do not call this function while the manager is running update()
-        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void close_ui();
 
-        /// Closes the current UI and load it again.
-        /** \note Calls close_ui() then load_ui(). If called from within a frame's callback,
-        *         the UI will be reloaded at the end of the current update() call. Is is
-        *         therefore safe. If called from any other location, the UI will be reloaded
-        *         immediately.
+        /// Closes the UI and load it again (at the end of the current or next update()).
+        /** \note Because the actual re-loading is deferred to the end of the current update() call,
+        *         or to the end of the next update() call, it is safe to call this function at any
+        *         time. If you need to reload the UI without delay, use reload_ui_now().
         */
         void reload_ui();
+
+        /// Closes the UI and load it again (immediately).
+        /** \note Calls close_ui() then load_ui().
+        *   \warning Do not call this function while the manager is running update()
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        */
+        void reload_ui_now();
 
         /// Tells the rendering back-end to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)
@@ -674,10 +680,15 @@ namespace gui
         */
         input::manager* get_input_manager();
 
-        /// Returns the current game locale ("enGB", ...).
-        /** \return The current game locale
+        /// Returns the object used for localizing strings.
+        /** \return The current localizer
         */
-        const std::string& get_locale() const;
+        localizer& get_localizer();
+
+        /// Returns the object used for localizing strings.
+        /** \return The current localizer
+        */
+        const localizer& get_localizer() const;
 
         /// Struct holding core information about a frame, parsed from XML.
         struct xml_core_attributes
@@ -704,7 +715,6 @@ namespace gui
     private :
 
         void register_lua_manager_();
-        void reload_ui_();
 
         void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
         void load_addon_files_(addon* pAddOn);
@@ -801,7 +811,7 @@ namespace gui
         string_map<std::function<std::unique_ptr<frame>(manager*)>>          lCustomFrameList_;
         string_map<std::function<std::unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
 
-        std::string                    sLocale_;
+        std::unique_ptr<localizer>     pLocalizer_;
         std::unique_ptr<event_manager> pEventManager_;
         std::unique_ptr<renderer>      pRenderer_;
     };

@@ -156,10 +156,10 @@ namespace xml
 
             xml_state();
 
-            std::string read_tag_name(const std::string& sTagContent) const;
-            void  read_opening_tag(const std::string& sTagContent);
-            void  read_single_tag(const std::string& sTagContent);
-            void  read_ending_tag(const std::string& sTagContent);
+            std::string read_tag_name(const std::string& sTagContent) const override;
+            void  read_opening_tag(const std::string& sTagContent) override;
+            void  read_single_tag(const std::string& sTagContent) override;
+            void  read_ending_tag(const std::string& sTagContent) override;
         };
         friend class xml_state;
 
@@ -169,10 +169,10 @@ namespace xml
 
             def_state();
 
-            std::string read_tag_name(const std::string& sTagContent) const;
-            void  read_opening_tag(const std::string& sTagContent);
-            void  read_single_tag(const std::string& sTagContent);
-            void  read_ending_tag(const std::string& sTagContent);
+            std::string read_tag_name(const std::string& sTagContent) const override;
+            void  read_opening_tag(const std::string& sTagContent) override;
+            void  read_single_tag(const std::string& sTagContent) override;
+            void  read_ending_tag(const std::string& sTagContent) override;
 
         private :
 

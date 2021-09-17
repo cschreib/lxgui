@@ -188,7 +188,7 @@ std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHe
 
     pTex->update_texture(pPixelData);
 
-    return pTex;
+    return std::move(pTex);
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
@@ -197,7 +197,7 @@ std::shared_ptr<gui::material> renderer::create_material(
     auto pTex = std::static_pointer_cast<sfml::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())
     {
-        return pTex;
+        return std::move(pTex);
     }
     else
     {

@@ -33,6 +33,8 @@ add_library(lxgui
     ${SRCROOT}/gui_layeredregion.cpp
     ${SRCROOT}/gui_layeredregion_glues.cpp
     ${SRCROOT}/gui_layeredregion_parser.cpp
+    ${SRCROOT}/gui_localizer.cpp
+    ${SRCROOT}/gui_localizer_glues.cpp
     ${SRCROOT}/gui_lunar.cpp
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
@@ -65,22 +67,25 @@ add_library(lxgui
     ${SRCROOT}/input_source.cpp
 )
 
-# Need C++17
-target_compile_features(lxgui PRIVATE cxx_std_17)
+add_library(lxgui::lxgui ALIAS lxgui)
 
+# need C++17
+target_compile_features(lxgui PRIVATE cxx_std_17)
+lxgui_set_warning_level(lxgui)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/sol2/include)
-target_include_directories(lxgui PUBLIC ${LUA_INCLUDE_DIR})
+
+# needed dependencies
+target_link_libraries(lxgui PUBLIC lxgui::luapp)
+target_link_libraries(lxgui PUBLIC lxgui::utils)
+target_link_libraries(lxgui PUBLIC lxgui::xml)
+target_link_libraries(lxgui PUBLIC fmt::fmt)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
-               "${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp")
+               "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
 install(FILES ${files} DESTINATION include/lxgui)
-file(GLOB_RECURSE files ${PROJECT_SOURCE_DIR}/sol2/include/sol/*)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/sol2/include/sol DESTINATION include)
-install(FILES ${CMAKE_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
+install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
 install(TARGETS lxgui ARCHIVE DESTINATION lib)
-

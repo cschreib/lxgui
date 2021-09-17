@@ -8,6 +8,7 @@
 #include <SDL_video.h>
 #include <SDL_clipboard.h>
 #include <SDL_image.h>
+#include <SDL_events.h>
 
 namespace lxgui {
 namespace input {

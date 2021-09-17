@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.8)
 
 # Start new project
-project(lxgui-test-sdl-emscripten CXX)
+project(lxgui-test-sdl-emscripten LANGUAGES CXX VERSION 2.0)
 
 # Add the directory containing Findlxgui.cmake to the model path
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../../../cmake/Modules")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../../cmake" ${CMAKE_MODULE_PATH})
 
 # Find lxgui and dependencies
 find_package(lxgui 2)
@@ -20,18 +20,14 @@ add_executable(lxgui-test-sdl-emscripten
 # We need C++17
 target_compile_features(lxgui-test-sdl-emscripten PRIVATE cxx_std_17)
 
-# lxgui include dirs
-target_include_directories(lxgui-test-sdl-emscripten PRIVATE
-    ${PROJECT_SOURCE_DIR}/../common # shared headers for all examples
-    ${LXGUI_INCLUDE_DIRS} # core library
-    ${LXGUI_GUI_SDL_INCLUDE_DIRS} # SDL rendering implementation
-    ${LXGUI_INPUT_SDL_INCLUDE_DIRS}) # SDL input implementation
+# Include dirs (shared headers for all examples)
+target_include_directories(lxgui-test-sdl-emscripten PRIVATE ${PROJECT_SOURCE_DIR}/../common)
 
 # lxgui libraries
-target_link_libraries(lxgui-test-sdl-emscripten
-    ${LXGUI_GUI_SDL_LIBRARIES} # SDL rendering implementation
-    ${LXGUI_INPUT_SDL_LIBRARIES} # SDL input implementation
-    ${LXGUI_LIBRARIES}) # core library
+target_link_libraries(lxgui-test-sdl-emscripten PRIVATE
+    lxgui::gui::sdl # SDL rendering implementation
+    lxgui::input::sdl # SDL input implementation
+    lxgui::lxgui) # core library
 
 # Setup Emscripten-specific stuff
 # Setup compilation options

@@ -3,9 +3,10 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 
-#if defined(WIN32)
+#if defined(LXGUI_PLATFORM_WINDOWS)
+    #define NOMINMAX
     #include <windows.h>
-    #if defined(MSVC)
+    #if defined(LXGUI_COMPILER_MSVC)
         #pragma comment(linker, "/entry:mainCRTStartup")
     #endif
 #endif
@@ -19,7 +20,7 @@
 #include <lxgui/impl/input_sdl_source.hpp>
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
-#if defined(MACOSX)
+#if defined(LXGUI_PLATFORM_OSX)
     #include <OpenGL/gl.h>
 #else
     #include <GL/gl.h>
@@ -85,7 +86,6 @@ int main(int argc, char* argv[])
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
-        const std::string sLocale = "enGB";
 
         // Define the input manager
         std::unique_ptr<input::source> pInputSource;
@@ -107,9 +107,7 @@ int main(int argc, char* argv[])
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
-            std::move(pRenderer),
-            // The locale
-            sLocale
+            std::move(pRenderer)
         ));
 
         pManager->enable_caching(false);

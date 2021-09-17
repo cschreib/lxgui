@@ -1,5 +1,22 @@
 ![Build Status](https://github.com/cschreib/lxgui/actions/workflows/cmake.yml/badge.svg) ![Build Status](https://github.com/cschreib/lxgui/actions/workflows/doc.yml/badge.svg)
 
+<!-- MarkdownTOC autolink="true" -->
+
+- [What is lxgui?](#what-is-lxgui)
+- [List of the available widgets](#list-of-the-available-widgets)
+- [List of configurable rendering options](#list-of-configurable-rendering-options)
+- [Getting started](#getting-started)
+    - [Build for Linux, OSX, Windows](#build-for-linux-osx-windows)
+        - [Required dependencies \(for all back-ends\)](#required-dependencies-for-all-back-ends)
+        - [Dependencies for pure SFML back-end](#dependencies-for-pure-sfml-back-end)
+        - [Dependencies for pure SDL back-end](#dependencies-for-pure-sdl-back-end)
+        - [Dependencies for OpenGL + SFML back-end](#dependencies-for-opengl--sfml-back-end)
+        - [Dependencies for OpenGL + SDL back-end](#dependencies-for-opengl--sdl-back-end)
+    - [Build for WebAssembly / Emscripten](#build-for-webassembly--emscripten)
+- [How do I use it? A tutorial.](#how-do-i-use-it-a-tutorial)
+
+<!-- /MarkdownTOC -->
+
 # What is lxgui?
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
@@ -10,6 +27,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **Design with XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of Lua+XML is not required.
+* **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages with roman characters (and their accentuated variants) are supported.
 * **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 * **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
 
@@ -27,7 +45,7 @@ The second available rendering back-end uses [SFML2](https://www.sfml-dev.org/) 
 
 The third rendering back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading.
 
-For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input backend also depends on SDL2_image (for loading cursor files).
+For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input back-end also depends on SDL2_image (for loading cursor files).
 
 The WebAssembly build supports all back-ends except SFML.
 
@@ -58,20 +76,36 @@ All options are enabled by default (if supported), which should offer the best p
 
 
 # Getting started
-First, clone the project
+
+Firstly, ensure your C++ compiler is up to date. This library requires a compiler that is C++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or Visual Studio >= 2017).
+
+Then, clone the project, including the submodules (this is important! the library will not compile otherwise):
 ```
-git clone https://github.com/cschreib/lxgui
+git clone --recurse-submodules https://github.com/cschreib/lxgui
 ```
 
-Ensure your c++ compiler is up to date. Lxgui requires a compiler that is c++17 compliant (GCC >= 8, clang >= 7, Apple-Clang >= 11, or VisualStudio >= 2017).
+The rest of the build instructions depends on your target operating system; please follow the instructions in the next sections accordingly.
 
-Install the required dependencies for your operating system.
+
+## Build for Linux, OSX, Windows
+
+Make your choice of rendering and input back-end from within the following sub-sections, and install all the appropriate dependencies listed there. Once this is done, you can build and install lxgui with the standard cmake commands:
+
+```
+mkdir build
+cd build
+cmake ../ <your CMake options here>
+cmake --build . --config Release
+cmake --install . --config Release
+```
+
+
+### Required dependencies (for all back-ends)
 
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y lua-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install liblua5.2-dev
@@ -85,68 +119,57 @@ sudo apt install liblua5.2-dev
  vcpkg install lua
 ```
 
-Finally, initialize the submodules.
-```
-cd lxgui
-git submodule update --init
-```
 
+### Dependencies for pure SFML back-end
 
-# Full SFML setup
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SFML-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsfml-dev
 ```
-
 - OSX:
 ```
 brew install sfml
 ```
-
 - Windows:
 ```
 vcpkg install sfml
 ```
 
 
-# Full SDL setup
+### Dependencies for pure SDL back-end
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel SDL2_ttf-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev
 ```
-
 - OSX:
 ```
 brew install sdl2 sdl2_ttf sdl2_image
 ```
-
 - Windows:
 ```
 vcpkg install sdl2 sdl2-ttf sdl2-image
 ```
 
 
-# OpenGL + SFML setup
+### Dependencies for OpenGL + SFML back-end
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y freetype-devel SFML-devel mesa-libGLU-devel
 ```
-
 - apt based distros (Debian, Ubuntu):
 ```
 sudo apt install libsfml-dev libz-dev libpng-dev libfreetype6-dev libglew-dev libglu1-mesa-dev
 ```
-
 - OSX:
 ```
 brew install sfml zlib libpng freetype glew
@@ -157,7 +180,8 @@ brew install sfml zlib libpng freetype glew
 vcpkg install sfml zlib libpng freetype glew
 ```
 
-# OpenGL + SDL setup
+
+### Dependencies for OpenGL + SDL back-end
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel freetype-devel mesa-libGLU-devel
@@ -179,19 +203,20 @@ vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 ```
 
 
-# Webassembly setup
+## Build for WebAssembly / Emscripten
 
-The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (the Freetype version in Emscripten is too old). Pre-compiled libraries are provided in dependencies/wasm.zip, but you can also build them from source yourself easily.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (at the time of writing this guide, the Freetype version in Emscripten was too old). Pre-compiled libraries are provided in `dependencies/wasm.zip`, but you can also build them from source yourself easily.
 
-The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: at the time of writing this, and on my desktop machine, the SDL2 back-end is slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both run at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
+The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: earlier in the development of lxgui, and on my desktop machine, the SDL2 back-end was slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both ran at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
 
-With Emscripten installed and sourced in your current terminal, run
+With Emscripten [installed and sourced](https://emscripten.org/docs/getting_started/downloads.html) in your current terminal, run
 
 ```
 mkdir build
 cd build
-emcmake cmake ../
+emcmake cmake ../ <your CMake options here>
 emmake make
+emmake make install
 ```
 
 
@@ -203,13 +228,8 @@ Setting up the GUI in C++ is rather straight forward:
 // Create an SFML render window, for example
 sf::RenderWindow mWindow;
 
-// Define the language that will be used by the interface
-// (purely informative: it's always up to each addon to localize
-// itself according to this value).
-const std::string sLocale = "enGB";
-
 // Initialize the GUI
-std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow, sLocale);
+std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
 input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(

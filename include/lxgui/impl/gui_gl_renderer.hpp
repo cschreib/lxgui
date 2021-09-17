@@ -12,6 +12,7 @@
 
 #include <memory>
 #include <array>
+#include <limits>
 
 namespace lxgui {
 namespace gui {
@@ -237,7 +238,7 @@ namespace gl
         mutable uint uiQuadCycleCache_ = 0u;
         mutable uint uiArrayCycleCache_ = 0u;
 
-        mutable uint uiPreviousTexture_ = (uint)-1;
+        mutable uint uiPreviousTexture_ = std::numeric_limits<uint>::max();
     #endif
     };
 }
