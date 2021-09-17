@@ -72,7 +72,7 @@ $(function() {
 <a href="lunar_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_lunar_h</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_lunar_h</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;lxgui/lxgui.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;lua.h&gt;</span></div>
@@ -148,7 +148,7 @@ $(function() {
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// fill method table with methods from class T</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">for</span> (<a class="code" href="structlxgui_1_1lua_1_1lunar__binding.html">lunar_binding&lt;T&gt;</a> *l = T::methods; l-&gt;<a class="code" href="structlxgui_1_1lua_1_1lunar__binding.html#a058c3b721421412f414f473848aa46dc">name</a>; l++) {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;      lua_pushstring(L, l-&gt;name);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      lua_pushlightuserdata(L, (<span class="keywordtype">void</span>*)l);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      lua_pushlightuserdata(L, <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(l));</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      lua_pushcclosure(L, thunk, 1);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      lua_settable(L, methods);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
@@ -369,7 +369,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1lua_1_1Lunar_html_ac59dffc807e01d773d39d4218f032d3c"><div class="ttname"><a href="classlxgui_1_1lua_1_1Lunar.html#ac59dffc807e01d773d39d4218f032d3c">lxgui::lua::Lunar::reg</a></div><div class="ttdeci">static void reg(lua_State *L)</div><div class="ttdef"><b>Definition:</b> <a href="lunar_8hpp_source.html#l00023">lunar.hpp:23</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1Lunar_html_ad3303b16f16315a7e3b80049d80c9a0f"><div class="ttname"><a href="classlxgui_1_1lua_1_1Lunar.html#ad3303b16f16315a7e3b80049d80c9a0f">lxgui::lua::Lunar::push</a></div><div class="ttdeci">static int push(lua_State *L, T *obj, bool gc=false)</div><div class="ttdef"><b>Definition:</b> <a href="lunar_8hpp_source.html#l00121">lunar.hpp:121</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1Lunar_html_aee74a3b6b66c275d66b95725b1348318"><div class="ttname"><a href="classlxgui_1_1lua_1_1Lunar.html#aee74a3b6b66c275d66b95725b1348318">lxgui::lua::Lunar::check</a></div><div class="ttdeci">static T * check(lua_State *L, int narg)</div><div class="ttdef"><b>Definition:</b> <a href="lunar_8hpp_source.html#l00148">lunar.hpp:148</a></div></div>
-<div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1Lunar_html_a3132dbf669a0de67d4492ec722453efc"><div class="ttname"><a href="classlxgui_1_1lua_1_1Lunar.html#a3132dbf669a0de67d4492ec722453efc">lxgui::lua::Lunar::push_new</a></div><div class="ttdeci">static T * push_new(lua_State *L)</div><div class="ttdef"><b>Definition:</b> <a href="lunar_8hpp_source.html#l00196">lunar.hpp:196</a></div></div>
 <div class="ttc" id="astructlxgui_1_1lua_1_1lunar__binding_html_a486072451e21dce57a42e6a536d563d8"><div class="ttname"><a href="structlxgui_1_1lua_1_1lunar__binding.html#a486072451e21dce57a42e6a536d563d8">lxgui::lua::lunar_binding::mfunc</a></div><div class="ttdeci">mfp mfunc</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00019">luapp_lua_fwd.hpp:19</a></div></div>
 <div class="ttc" id="astructlxgui_1_1lua_1_1lunar__binding_html"><div class="ttname"><a href="structlxgui_1_1lua_1_1lunar__binding.html">lxgui::lua::lunar_binding</a></div><div class="ttdoc">Binds a C++ member function to a Lua function.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00014">luapp_lua_fwd.hpp:14</a></div></div>
@@ -381,7 +380,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1lua_1_1Lunar_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1Lunar.html">lxgui::lua::Lunar</a></div><div class="ttdef"><b>Definition:</b> <a href="lunar_8hpp_source.html#l00019">lunar.hpp:19</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -98,9 +98,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aedfc5efc09cb88234b17794e8c00e92c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aedfc5efc09cb88234b17794e8c00e92c">notify_strata_needs_redraw</a> (<a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mStrata) const</td></tr>
 <tr class="memdesc:aedfc5efc09cb88234b17794e8c00e92c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that one of its widget requires redraw.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#aedfc5efc09cb88234b17794e8c00e92c">More...</a><br /></td></tr>
 <tr class="separator:aedfc5efc09cb88234b17794e8c00e92c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a1c5e77502bb33bf750ec52c6ce3acf94">notify_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bManuallyRendered)</td></tr>
-<tr class="memdesc:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a1c5e77502bb33bf750ec52c6ce3acf94">More...</a><br /></td></tr>
-<tr class="separator:a1c5e77502bb33bf750ec52c6ce3acf94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafd6a1f9a4b09815534a657a118676b0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aafd6a1f9a4b09815534a657a118676b0">notify_rendered_frame</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, bool bRendered)</td></tr>
+<tr class="memdesc:aafd6a1f9a4b09815534a657a118676b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that it should (or not) render another frame.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#aafd6a1f9a4b09815534a657a118676b0">More...</a><br /></td></tr>
+<tr class="separator:aafd6a1f9a4b09815534a657a118676b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85fc50efee56835be9a8d9057aa8fe1b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#a85fc50efee56835be9a8d9057aa8fe1b">notify_frame_strata_changed</a> (<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pFrame, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mOldStrata, <a class="el" href="namespacelxgui_1_1gui.html#a6f62faad68736da3e6df7e8d92c293a6">frame_strata</a> mNewStrata)</td></tr>
 <tr class="memdesc:a85fc50efee56835be9a8d9057aa8fe1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this renderer that a frame has changed strata.  <a href="classlxgui_1_1gui_1_1frame__renderer.html#a85fc50efee56835be9a8d9057aa8fe1b">More...</a><br /></td></tr>
 <tr class="separator:a85fc50efee56835be9a8d9057aa8fe1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -513,8 +513,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1c5e77502bb33bf750ec52c6ce3acf94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c5e77502bb33bf750ec52c6ce3acf94">&#9670;&nbsp;</a></span>notify_rendered_frame()</h2>
+<a id="aafd6a1f9a4b09815534a657a118676b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafd6a1f9a4b09815534a657a118676b0">&#9670;&nbsp;</a></span>notify_rendered_frame()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -532,7 +532,7 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bManuallyRendered</em>&#160;</td>
+          <td class="paramname"><em>bRendered</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -809,7 +809,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:25:00 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

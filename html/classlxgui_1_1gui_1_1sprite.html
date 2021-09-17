@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2d30612b06c3a5c4767c2dd63bda7aaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a2d30612b06c3a5c4767c2dd63bda7aaa">set_quad</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt; &amp;lVertexArray)</td></tr>
 <tr class="memdesc:a2d30612b06c3a5c4767c2dd63bda7aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this sprite's internal quad.  <a href="classlxgui_1_1gui_1_1sprite.html#a2d30612b06c3a5c4767c2dd63bda7aaa">More...</a><br /></td></tr>
 <tr class="separator:a2d30612b06c3a5c4767c2dd63bda7aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad29237d5e5e75053c1c0deacc77893f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#ad29237d5e5e75053c1c0deacc77893f7">set_color</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex=(<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>)(-1))</td></tr>
-<tr class="memdesc:ad29237d5e5e75053c1c0deacc77893f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the color of this sprite.  <a href="classlxgui_1_1gui_1_1sprite.html#ad29237d5e5e75053c1c0deacc77893f7">More...</a><br /></td></tr>
-<tr class="separator:ad29237d5e5e75053c1c0deacc77893f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c37fe7ca9ebccf403aa1514c97b8a88"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#a4c37fe7ca9ebccf403aa1514c97b8a88">set_color</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex=std::numeric_limits&lt; <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> &gt;::max())</td></tr>
+<tr class="memdesc:a4c37fe7ca9ebccf403aa1514c97b8a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the color of this sprite.  <a href="classlxgui_1_1gui_1_1sprite.html#a4c37fe7ca9ebccf403aa1514c97b8a88">More...</a><br /></td></tr>
+<tr class="separator:a4c37fe7ca9ebccf403aa1514c97b8a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf6a6f4c4d57bf65635e1fdb23dbbb15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sprite.html#adf6a6f4c4d57bf65635e1fdb23dbbb15">set_desaturated</a> (bool bDesaturated)</td></tr>
 <tr class="memdesc:adf6a6f4c4d57bf65635e1fdb23dbbb15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes this sprite colorless.  <a href="classlxgui_1_1gui_1_1sprite.html#adf6a6f4c4d57bf65635e1fdb23dbbb15">More...</a><br /></td></tr>
 <tr class="separator:adf6a6f4c4d57bf65635e1fdb23dbbb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,7 +161,7 @@ Public Member Functions</h2></td></tr>
 <p>This class is meant to simplify rendering of 2D elements. Everything can be done with a quad struct, but it's really not simple to use.<br  />
  Thanks to this class, the only thing you have to do to acheive interesting effects is calling 2 or 3 functions and let the magic do the rest. </p><dl class="section note"><dt>Note</dt><dd>This is a class, that <em>can</em> be inherited from if needed, and created by manager_impl. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__sprite_8hpp_source.html#l00057">57</a> of file <a class="el" href="gui__sprite_8hpp_source.html">gui_sprite.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sprite_8hpp_source.html#l00058">58</a> of file <a class="el" href="gui__sprite_8hpp_source.html">gui_sprite.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af1fbed2682bf3dfcbc0bcfefd1f0a776"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af1fbed2682bf3dfcbc0bcfefd1f0a776">&#9670;&nbsp;</a></span>sprite() <span class="overload">[1/5]</span></h2>
@@ -789,8 +789,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad29237d5e5e75053c1c0deacc77893f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad29237d5e5e75053c1c0deacc77893f7">&#9670;&nbsp;</a></span>set_color()</h2>
+<a id="a4c37fe7ca9ebccf403aa1514c97b8a88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c37fe7ca9ebccf403aa1514c97b8a88">&#9670;&nbsp;</a></span>set_color()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -805,7 +805,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiIndex</em> = <code>(<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>)(-1)</code>&#160;</td>
+          <td class="paramname"><em>uiIndex</em> = <code>std::numeric_limits&lt;<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&gt;::max()</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1086,7 +1086,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:25:00 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:43 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

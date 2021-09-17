@@ -72,7 +72,7 @@ $(function() {
 <a href="xml__document_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_XML_DOCUMENT_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_XML_DOCUMENT_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;lxgui/lxgui.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="xml__block_8hpp.html">lxgui/xml_block.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -175,10 +175,10 @@ $(function() {
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;            xml_state();</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            std::string read_tag_name(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">void</span>  read_opening_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordtype">void</span>  read_single_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordtype">void</span>  read_ending_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            std::string read_tag_name(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">void</span>  read_opening_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordtype">void</span>  read_single_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <span class="keywordtype">void</span>  read_ending_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        };</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">friend</span> <span class="keyword">class </span>xml_state;</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
@@ -188,10 +188,10 @@ $(function() {
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            def_state();</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            std::string read_tag_name(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordtype">void</span>  read_opening_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordtype">void</span>  read_single_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <span class="keywordtype">void</span>  read_ending_tag(<span class="keyword">const</span> std::string&amp; sTagContent);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            std::string read_tag_name(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;            <span class="keywordtype">void</span>  read_opening_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <span class="keywordtype">void</span>  read_single_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            <span class="keywordtype">void</span>  read_ending_tag(<span class="keyword">const</span> std::string&amp; sTagContent) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        private :</div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
@@ -251,7 +251,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_a454e490be854ced7bb27c89da6964b67"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#a454e490be854ced7bb27c89da6964b67">lxgui::xml::document::block</a></div><div class="ttdeci">friend class block</div><div class="ttdef"><b>Definition:</b> <a href="xml__document_8hpp_source.html#l00018">xml_document.hpp:18</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_ab0b647b9d817dbdb98de6c0876132a2e"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#ab0b647b9d817dbdb98de6c0876132a2e">lxgui::xml::document::check</a></div><div class="ttdeci">bool check(const std::string &amp;sPreProcCommands=&quot;&quot;)</div><div class="ttdoc">Parses and validates the XML file.</div></div>
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_aeef4d6265f1fed243707ae65d7219b99"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#aeef4d6265f1fed243707ae65d7219b99">lxgui::xml::document::get_current_location</a></div><div class="ttdeci">std::string get_current_location() const</div><div class="ttdoc">Returns the current parsing location.</div></div>
-<div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_a69043c7d2818aafd4a42fa89427f8574"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#a69043c7d2818aafd4a42fa89427f8574">lxgui::xml::document::out</a></div><div class="ttdeci">std::ostream out</div><div class="ttdef"><b>Definition:</b> <a href="xml__document_8hpp_source.html#l00113">xml_document.hpp:113</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_af31d24cb6a62558820f1a9ca0d808185"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#af31d24cb6a62558820f1a9ca0d808185">lxgui::xml::document::document</a></div><div class="ttdeci">document(const std::string &amp;sDefFileName, std::ostream &amp;mOut=std::cout)</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="axml__block_8hpp_html"><div class="ttname"><a href="xml__block_8hpp.html">xml_block.hpp</a></div></div>
@@ -261,7 +260,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1xml_1_1document_html_a7754ff137b90180711ca7dca0c3bd199"><div class="ttname"><a href="classlxgui_1_1xml_1_1document.html#a7754ff137b90180711ca7dca0c3bd199">lxgui::xml::document::set_invalid</a></div><div class="ttdeci">void set_invalid()</div><div class="ttdoc">Flags this Document as invalid.</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

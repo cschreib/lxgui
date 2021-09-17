@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>lxgui</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Manager.html">Manager</a></li>
+  <li><strong>Localization</strong></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/UIObject.html">UIObject</a></li>
+  <li><a href="../classes/Frame.html">Frame</a></li>
+  <li><a href="../classes/Button.html">Button</a></li>
+  <li><a href="../classes/CheckButton.html">CheckButton</a></li>
+  <li><a href="../classes/FocusFrame.html">FocusFrame</a></li>
+  <li><a href="../classes/EditBox.html">EditBox</a></li>
+  <li><a href="../classes/ScrollFrame.html">ScrollFrame</a></li>
+  <li><a href="../classes/Slider.html">Slider</a></li>
+  <li><a href="../classes/StatusBar.html">StatusBar</a></li>
+  <li><a href="../classes/LayeredRegion.html">LayeredRegion</a></li>
+  <li><a href="../classes/FontString.html">FontString</a></li>
+  <li><a href="../classes/Texture.html">Texture</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Localization</code></h1>
+<p>Global functions for localization / translation of text.</p>
+<p>
+
+<p>   The functions listed on this page are registered in the
+   Lua state as globals, and as such are accessible from
+   anywhere automatically. They provide all necessary functionalities
+   for translating text for display in the GUI.</p>
+
+<p>   <strong>Translating text.</strong> When creating a button in the GUI, it is tempting to set its
+   displayed text directly like <code>button:set_text(&quot;Cancel&quot;)</code>, hence hard-coding the text
+   in the code. This works totally fine, provided that English is the only language you
+   only ever want to display to your users. If you want your game to be accessible to
+   users from countries where English is not the native language, you will want to
+   make that text translatable. This is what this module is for.</p>
+
+<p>   <strong>Translatable string codes.</strong> The first change needed is to stop hard-coding <em>any</em>
+   form of text in your GUI code (be it XML or Lua). All text should be replaced by a
+   "translatable string code", such as <code>&quot;{button_cancel}&quot;</code>. The purpose of this code is
+   to uniquely represent this string you need to display, without giving it an actual
+   content. The string <code>&quot;{button_cancel}&quot;</code> will not itself be displayed on the screen;
+   instead, the localization system will search for a translation of that string and
+   return the appropriate text (<code>&quot;Cancel&quot;</code> for English, <code>&quot;Annuler&quot;</code> for French, etc.).</p>
+
+<p>   The translation is automatic when the string code is set in the XML attributes,
+   like the <code>text</code> attribute of the <a href="../classes/FontString.html#">FontString</a> or <a href="../classes/Button.html#">Button</a> objects. This is only
+   appropriate for translations that do not require additional inputs (see below).</p>
+
+
+<pre>
+&lt;Button name=<span class="string">"$parentButton"</span> text=<span class="string">"{button_cancel}"</span>&gt;
+   ...
+&lt;/Button&gt;
+</pre>
+
+<p>   When setting the string code from Lua, e.g. by calling <code>set_text(&quot;...&quot;)</code>, the
+   translation needs to be explicit. This is done by calling the <a href="../modules/Localization.html#localize_string">localize_string</a>
+   function, for example:</p>
+
+
+<pre>
+button:set_text(localize_string(<span class="string">"{button_cancel}"</span>))
+</pre>
+
+<p>   <strong>Creating translations.</strong> Once all the GUI code uses translatable string codes, all
+   that remains is to write the translations for each string, in all the languages you
+   want to support. The translation system is easily extensible: it is possible to add
+   more languages or more translatable text at any point. Therefore, even if you are
+   lacking translators for all the languages you need, it is a good practice to start
+   writing at least the English translations (or whatever is your native language),
+   and add the rest later.</p>
+
+<p>   Each addon folder is automatically scanned for translations when the GUI is loaded.
+   Translation files are Lua scripts, with name <code>{lang}{REGION}.lua</code>, where <code>{lang}</code>
+   is a two-letter lowercase string identifying the language (e.g., <code>en</code> for English)
+   and <code>{REGION}</code> is a two-letter uppercase string identifying the regional dialect
+   of this language (e.g., <code>US</code> for United States, <code>GB</code> for Great Britain, etc.).
+   The currently configured languages (see the <a href="../modules/Localization.html#get_preferred_languages">get_preferred_languages</a> function)
+   determine which translation file gets loaded. If no translation file exists for the
+   preferred languages, the next best translation will be chosen by ignoring the
+   <code>{REGION}</code> code (i.e., if the preferred language is <code>enGB</code>, this enables automatic
+   fallback to <code>enUS</code> if <code>enGB</code> is not found). You can also add additional folders
+   to scan using the <a href="../modules/Localization.html#load_translations">load_translations</a> function, and load a specific translation file
+   using the <a href="../modules/Localization.html#load_translation_file">load_translation_file</a> function.</p>
+
+<p>   The format of a translation file is simple. It must be a Lua script defining a
+   table named <code>localize</code>. Each entry in this table will add a new translation to
+   the translation database, which is global to the entire GUI (hence, a translation
+   defined in one addon can be reused in another addon). An entry in the table must be
+   a key + value pair, where the key is the translatable string code (stripped of its
+   surrounding braces <code>{}</code>) and the value is the translation. The translation can be
+   specified as a simple formatted string (see below), or as a full blown Lua function.</p>
+
+<p>   If a translatable string code is duplicated in two addons, it will get over-written
+   by whichever addon is loaded last.</p>
+
+<p>   <strong>Formatted translation strings.</strong> While most translation strings will be simple
+   static strings to be displayed as-is, such as <code>&quot;Cancel&quot;</code>, it is also possible to
+   display dynamic data inside the translated text. One example would be displaying
+   a message like "Player1 has lost 10 HP.". There are two dynamic elements in this
+   sentence, "Player1" and "10", which cannot be hard-coded into the translation.
+   To support this, the translation must be done explicitly in Lua, by supplying
+   these two dynamic values to the translation function. For example:</p>
+
+
+<pre>
+<span class="keyword">local</span> player = <span class="string">"Player1"</span>
+<span class="keyword">local</span> hp_lost = <span class="number">10</span>
+message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>, player, hp_lost))
+</pre>
+
+<p>   The translation must then refer to these dynamic elements to include them in the
+   displayed test. Dynamic elements are always indicated with pairs of braces <code>{}</code>.
+   Inside the braces, you can supply additional modifiers which will affect how the
+   data is being displayed. This follows the <a href="https://fmt.dev/latest/syntax.html">fmtlib</a>
+   syntax. For example, the message above can be represented with the string</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="string">"{} has lost {} HP."</span>,
+</pre>
+
+<p>   By default, dynamic elements will be displayed in the same order as they are
+   supplied to the <a href="../modules/Localization.html#localize_string">localize_string</a> function. You can override this by explicitly
+   specifying the position of the argument (recommended, even if the order
+   is the same):</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1} HP."</span>,
+</pre>
+
+<p>   This allows re-using a single element multiple times, e.g.:</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1} HP ({0} is hurt!)."</span>,
+</pre>
+
+<p>   Numbers will be displayed with a very simple, locale-independent formatting
+   by default. This is fine for most uses (small integers), but might be confusing
+   when displaying fractional values, or very large numbers. In general, it is
+   preferable to rely on the user's locale for this, and this can be enabled
+   by the <code>L</code> modifier (recommended for displaying all numbers):</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="string">"{0} has lost {1:L} HP."</span>,
+</pre>
+
+<p>   <strong>Translation functions.</strong> In some cases, the translation is too complex to
+   be supported with the formatting syntax described above. This includes cases
+   where a word needs to be modified based on gender, quantity, or other properties,
+   in ways very specific to the user's language.</p>
+
+<p>   This is where translation functions can be used instead of strings. Reusing the
+   example from the previous section, an equivalent as a translation function could
+   be:</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
+    <span class="keyword">return</span> player..<span class="string">" has lost "</span>..hp_lost..<span class="string">" HP."</span>
+<span class="keyword">end</span>,
+</pre>
+
+<p>   Now, we can actually change the displayed text based on how much HP have been lost:</p>
+
+
+<pre>
+[<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
+    <span class="keyword">if</span> hp_lost &gt; <span class="number">10</span> <span class="keyword">then</span>
+        <span class="keyword">return</span> player..<span class="string">" has lost "</span>..hp_lost..<span class="string">" HP!!! Ouch."</span>
+    <span class="keyword">elseif</span> hp_lost == <span class="number">0</span> <span class="keyword">then</span>
+        <span class="keyword">return</span> player..<span class="string">" has lost no HP. This had no effect."</span>
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> player..<span class="string">" has lost "</span>..hp_lost..<span class="string">" HP."</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>,
+</pre>
+
+<p>   By default, the numbers printed this way may not be identical to the ones obtained
+   from translation strings such as <code>&quot;{} has lost {} HP.&quot;</code>. This is because Lua
+   has its own number formatting rules. To ensure consistency with the rest of the
+   translations, you should use the <a href="../modules/Localization.html#localize_string">localize_string</a> function as much as possible:</p>
+
+<pre>
+[<span class="string">"player_lost_hp_high"</span>] = <span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
+[<span class="string">"player_lost_hp_zero"</span>] = <span class="string">"{0} has lost no HP. This had no effect."</span>,
+[<span class="string">"player_lost_hp_normal"</span>] = <span class="string">"{0} has lost {1:L} HP."</span>,
+[<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
+    <span class="keyword">if</span> hp_lost &gt; <span class="number">10</span> <span class="keyword">then</span>
+        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_high}"</span>, player, hp_lost)
+    <span class="keyword">elseif</span> hp_lost == <span class="number">0</span> <span class="keyword">then</span>
+        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_zero}"</span>, player)
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_normal}"</span>, player, hp_lost)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>,
+</pre>
+
+<p>   This can be used to implement complex support language rules like adding an "s" to
+   plurals of nouns in French:</p>
+
+
+<pre>
+<span class="comment">-- Table for plurals that are not obtained by just adding "s"
+</span>special_plurals = {
+    [<span class="string">"cheval"</span>] = <span class="string">"chevaux"</span>,
+    [<span class="string">"choux"</span>] = <span class="string">"choux"</span>,
+    <span class="comment">-- etc...
+</span>}
+
+<span class="keyword">function</span> plural_modifier(word, quantity)
+    <span class="keyword">if</span> quantity &gt; <span class="number">1</span> <span class="keyword">then</span>
+        <span class="keyword">local</span> special = special_plurals[word]
+        <span class="keyword">if</span> special ~= <span class="keyword">nil</span>
+            <span class="keyword">return</span> special
+        <span class="keyword">else</span>
+            <span class="keyword">return</span> word..<span class="string">"s"</span>
+        <span class="keyword">end</span>
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> word
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- English translation would be: "Player1 ate 3 apples."
+</span>localize = {
+    [<span class="string">"object_apple"</span>] = <span class="string">"pomme"</span>,
+    [<span class="string">"object_horse"</span>] = <span class="string">"cheval"</span>,
+    [<span class="string">"object_cabbage"</span>] = <span class="string">"choux"</span>,
+    [<span class="string">"player_ate_objects_zero"</span>] = <span class="string">"{0} n'a pas mangé de {1}."</span>,
+    [<span class="string">"player_ate_objects_some"</span>] = <span class="string">"{0} a mangé {1} {2}."</span>,
+    [<span class="string">"player_ate_objects"</span>] = <span class="keyword">function</span> (player, quantity, object)
+        <span class="keyword">local</span> object_name = localize_string(object)
+        <span class="keyword">if</span> quantity == <span class="number">0</span> <span class="keyword">then</span>
+            <span class="keyword">return</span> localize_string(<span class="string">"{player_ate_objects_zero}"</span>,
+                player, object_name)
+        <span class="keyword">else</span>
+            object_name = plural_modifier(object_name, quantity)
+            <span class="keyword">return</span> localize_string(<span class="string">"{player_ate_objects_some}"</span>,
+                player, quantity, object_name)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>,
+}
+</pre>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#get_preferred_languages">get_preferred_languages()</a></td>
+	<td class="summary">Returns the preferred languages to display the GUI.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_preferred_languages">set_preferred_languages(languages)</a></td>
+	<td class="summary">Sets the preferred languages to display the GUI.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#load_translations">load_translations(folder)</a></td>
+	<td class="summary">Loads translations from a folder.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#load_translation_file">load_translation_file(filename)</a></td>
+	<td class="summary">Loads translations form a file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#localize_string">localize_string(message, ...)</a></td>
+	<td class="summary">Translate a string or message, with arguments.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "get_preferred_languages"></a>
+    <strong>get_preferred_languages()</strong>
+    </dt>
+    <dd>
+    Returns the preferred languages to display the GUI.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        A table listing the languages selected to display the UI
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "set_preferred_languages"></a>
+    <strong>set_preferred_languages(languages)</strong>
+    </dt>
+    <dd>
+    Sets the preferred languages to display the GUI.
+   The languages must be listed in order of decreasing preference. They must be of the form
+   <code>{language}{REGION}</code> where <code>{language}</code> is a two-letter lower case word identifying the
+   main language, and <code>{REGION}</code> is a two-letter upper case word identifying the dialect or
+   regional variant of the language (e.g., "enUS" for United States of America English, and
+   "enGB" for Great Britain English). This change will not take effect until the GUI is
+   re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">languages</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         A table listing the languages to use to display the GUI
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "load_translations"></a>
+    <strong>load_translations(folder)</strong>
+    </dt>
+    <dd>
+    Loads translations from a folder.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">folder</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The folder to search for translations
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "load_translation_file"></a>
+    <strong>load_translation_file(filename)</strong>
+    </dt>
+    <dd>
+    Loads translations form a file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filename</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The file from which to read new translations
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "localize_string"></a>
+    <strong>localize_string(message, ...)</strong>
+    </dt>
+    <dd>
+    Translate a string or message, with arguments.
+   The arguments are passed as individual parameters after the string to translate.
+   There can be as many arguments are needed (including zero).
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">message</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The translatable string code (e.g., "{player_health}")
+        </li>
+        <li><span class="parameter">...</span>
+         Data to display in the translatable string (e.g., the player's health value).
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        The translated message encoded as UTF-8.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-09-17 07:25:43 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

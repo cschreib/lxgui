@@ -72,7 +72,7 @@ $(function() {
 <a href="gui__uiobject_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_GUI_UIOBJECT_HPP</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_UIOBJECT_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="lxgui_8hpp.html">lxgui/lxgui.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;lxgui/lxgui.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils_8hpp.html">lxgui/utils.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__anchor_8hpp.html">lxgui/gui_anchor.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__vector2_8hpp.html">lxgui/gui_vector2.hpp</a>&quot;</span></div>
@@ -513,9 +513,9 @@ $(function() {
 <div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    public :</div>
 <div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160; </div>
 <div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;        <span class="keyword">explicit</span> lua_uiobject(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* luaVM);</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;        <span class="keyword">virtual</span> ~lua_uiobject();</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;        ~lua_uiobject() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160; </div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        <span class="keyword">virtual</span> <span class="keywordtype">void</span> notify_deleted();</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;        <span class="keywordtype">void</span> notify_deleted() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
 <div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;        uiobject* get_object();</div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        <span class="keyword">const</span> std::string&amp; get_name() <span class="keyword">const</span>;</div>
@@ -639,7 +639,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae149838be66198ca104c3e6e96ca04a9"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae149838be66198ca104c3e6e96ca04a9">lxgui::gui::uiobject::get_lua_name</a></div><div class="ttdeci">const std::string &amp; get_lua_name() const</div><div class="ttdoc">Returns this widget's Lua name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00185">gui_uiobject.cpp:185</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ac123cbf269320314d1232cda3df910c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ac123cbf269320314d1232cda3df910c6">lxgui::gui::uiobject::pInheritance_</a></div><div class="ttdeci">uiobject * pInheritance_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00728">gui_uiobject.hpp:728</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1state_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html">lxgui::lua::state</a></div><div class="ttdoc">Lua wrapper.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__state_8hpp_source.html#l00041">luapp_state.hpp:41</a></div></div>
-<div class="ttc" id="alxgui_8hpp_html"><div class="ttname"><a href="lxgui_8hpp.html">lxgui.hpp</a></div></div>
 <div class="ttc" id="agui__anchor_8hpp_html"><div class="ttname"><a href="gui__anchor_8hpp.html">gui_anchor.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_af8d65e458d972a3f07526349d9d6abdb"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#af8d65e458d972a3f07526349d9d6abdb">lxgui::gui::uiobject::bReady_</a></div><div class="ttdeci">bool bReady_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00735">gui_uiobject.hpp:735</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae85d704996e86a6c87054a75eef0e7c4"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae85d704996e86a6c87054a75eef0e7c4">lxgui::gui::uiobject::get_manager</a></div><div class="ttdeci">manager * get_manager()</div><div class="ttdoc">Returns this widget's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00087">gui_uiobject.cpp:87</a></div></div>
@@ -685,7 +684,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a05c427f81749830f69442cc3d79dfdc5"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a05c427f81749830f69442cc3d79dfdc5">lxgui::gui::uiobject::bNewlyCreated_</a></div><div class="ttdeci">bool bNewlyCreated_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00730">gui_uiobject.hpp:730</a></div></div>
 <div class="ttc" id="aluapp__lua__fwd_8hpp_html_a28186297f2e9f2de0652504633de8fb3"><div class="ttname"><a href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></div><div class="ttdeci">struct lua_State lua_State</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00006">luapp_lua_fwd.hpp:6</a></div></div>
 <div class="ttc" id="agui__strata_8hpp_html"><div class="ttname"><a href="gui__strata_8hpp.html">gui_strata.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00049">gui_manager.hpp:49</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html">lxgui::gui::manager</a></div><div class="ttdoc">Manages the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00050">gui_manager.hpp:50</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a4b7384dd63e5b5e88332b8dae845944d"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a4b7384dd63e5b5e88332b8dae845944d">lxgui::gui::uiobject::sLuaName_</a></div><div class="ttdeci">std::string sLuaName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00725">gui_uiobject.hpp:725</a></div></div>
 <div class="ttc" id="agui__vector2_8hpp_html"><div class="ttname"><a href="gui__vector2_8hpp.html">gui_vector2.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a54e579037d3048f0d1d0609f77bb25d4"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a54e579037d3048f0d1d0609f77bb25d4">lxgui::gui::uiobject::set_abs_height</a></div><div class="ttdeci">virtual void set_abs_height(float fAbsHeight)</div><div class="ttdoc">Changes this widget's absolute height (in pixels).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00345">gui_uiobject.cpp:345</a></div></div>
@@ -723,7 +722,7 @@ $(function() {
 <div class="ttc" id="agui__exception_8hpp_html"><div class="ttname"><a href="gui__exception_8hpp.html">gui_exception.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

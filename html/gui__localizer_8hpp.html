@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/lxgui.hpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/gui_localizer.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -65,29 +65,43 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">lxgui.hpp</div>  </div>
+<div class="title">gui_localizer.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="lxgui_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">// lxgui - Lua and XML Graphical User Interface</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">//                                    by Corentin Schreiber.</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">// This work is released under the MIT licence.</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">// Configure version number</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="lxgui_8hpp.html#a6a129e1eb549d8888cb5defb423830df">    7</a></span>&#160;<span class="preprocessor">#define LXGUI_VERSION_MAJOR 2</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="lxgui_8hpp.html#a69b7dc6d376f5960de85eda8ea63120c">    8</a></span>&#160;<span class="preprocessor">#define LXGUI_VERSION_MINOR 0</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// Configure lua verion</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">/* #undef LXGUI_LUA51 */</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="lxgui_8hpp.html#ae6f5c5776e43cc5ea88daa1734ff5c67">   12</a></span>&#160;<span class="preprocessor">#define SOL_SAFE_NUMERICS 1</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="lxgui_8hpp.html#a9b336849f72b70b54cdc292f391fc103">   13</a></span>&#160;<span class="preprocessor">#define SOL_PRINT_ERRORS 0</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// Configure OpenGL version</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="lxgui_8hpp.html#a60a94c1d18a4355607308e0669f7b250">   15</a></span>&#160;<span class="preprocessor">#define LXGUI_OPENGL3</span></div>
-</div><!-- fragment --></div><!-- contents -->
+<div class="textblock"><code>#include &lt;lxgui/lxgui.hpp&gt;</code><br />
+<code>#include &lt;fmt/format.h&gt;</code><br />
+<code>#include &lt;sol/state.hpp&gt;</code><br />
+<code>#include &lt;sol/variadic_args.hpp&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;locale&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;variant&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+</div>
+<p><a href="gui__localizer_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1localizer.html">lxgui::gui::localizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class to translate strings for display in GUI.  <a href="classlxgui_1_1gui_1_1localizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacelxgui"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui.html">lxgui</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacelxgui_1_1gui"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html">lxgui::gui</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

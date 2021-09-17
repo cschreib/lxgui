@@ -159,6 +159,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1level.html">level</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains <a class="el" href="classlxgui_1_1gui_1_1frame.html" title="A uiobject that can contain other objects and react to events.">gui::frame</a>.  <a href="structlxgui_1_1gui_1_1level.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1localizer.html">localizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility class to translate strings for display in GUI.  <a href="classlxgui_1_1gui_1_1localizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manages the user interface.  <a href="classlxgui_1_1gui_1_1manager.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -322,18 +325,24 @@ Functions</h2></td></tr>
 <tr class="separator:af7883b791709545509a95db5de251f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1417131ce04efe31b8e95d581499167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">print_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
 <tr class="separator:a1417131ce04efe31b8e95d581499167b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad498f8f96ba0092d0defb354141aea2d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad498f8f96ba0092d0defb354141aea2d">to_upper</a> (std::string sStr)</td></tr>
+<tr class="separator:ad498f8f96ba0092d0defb354141aea2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9de6052853a1342a1c07efff66f5d1c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ae9de6052853a1342a1c07efff66f5d1c">to_lower</a> (std::string sStr)</td></tr>
+<tr class="separator:ae9de6052853a1342a1c07efff66f5d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef6d5fcf4399dac6efcab47cfde0c97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#abef6d5fcf4399dac6efcab47cfde0c97">get_default_languages</a> ()</td></tr>
+<tr class="separator:abef6d5fcf4399dac6efcab47cfde0c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15505125f36d23fcf5b3229787c69fb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a15505125f36d23fcf5b3229787c69fb4">l_set_key_binding</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:a15505125f36d23fcf5b3229787c69fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab57f5484aaf8d777a0bf264b0fded9db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ab57f5484aaf8d777a0bf264b0fded9db">l_create_frame</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:ab57f5484aaf8d777a0bf264b0fded9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af69c4e8718ce2068d7af1fca2a7cc7e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#af69c4e8718ce2068d7af1fca2a7cc7e0">l_delete_frame</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:af69c4e8718ce2068d7af1fca2a7cc7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f4ec34d84cfc5528a280a290282199"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ac2f4ec34d84cfc5528a280a290282199">l_get_locale</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
-<tr class="separator:ac2f4ec34d84cfc5528a280a290282199"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b7de2391dc5d5a78960adc65136b586"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a4b7de2391dc5d5a78960adc65136b586">l_set_interface_scaling_factor</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:a4b7de2391dc5d5a78960adc65136b586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3b90770ac56be63781818d286ea24b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad3b90770ac56be63781818d286ea24b8">l_log</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:ad3b90770ac56be63781818d286ea24b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a163eafac7476d9e4d6470b7d2865127c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a163eafac7476d9e4d6470b7d2865127c">l_reload_ui</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
+<tr class="separator:a163eafac7476d9e4d6470b7d2865127c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f1fa969196a912c2dc021f849acde2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a85f1fa969196a912c2dc021f849acde2">gui_out</a> (const std::string &amp;sMessage)</td></tr>
 <tr class="separator:a85f1fa969196a912c2dc021f849acde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43b0bef484deb0a69264fb56c7c1a42a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a43b0bef484deb0a69264fb56c7c1a42a">build_identity</a> ()</td></tr>
@@ -591,7 +600,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a246cb1ee567c201f149a8765e79c0b8fa2cdf52a55876063ec93b7d18bc741f6c"></a>MUL&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__sprite_8hpp_source.html#l00032">32</a> of file <a class="el" href="gui__sprite_8hpp_source.html">gui_sprite.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sprite_8hpp_source.html#l00033">33</a> of file <a class="el" href="gui__sprite_8hpp_source.html">gui_sprite.hpp</a>.</p>
 
 </div>
 </div>
@@ -830,6 +839,25 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
+<a id="abef6d5fcf4399dac6efcab47cfde0c97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abef6d5fcf4399dac6efcab47cfde0c97">&#9670;&nbsp;</a></span>get_default_languages()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; lxgui::gui::get_default_languages </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00034">34</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+
+</div>
+</div>
 <a id="a85f1fa969196a912c2dc021f849acde2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a85f1fa969196a912c2dc021f849acde2">&#9670;&nbsp;</a></span>gui_out()</h2>
 
@@ -846,7 +874,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00741">741</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager_8cpp_source.html#l00746">746</a> of file <a class="el" href="gui__manager_8cpp_source.html">gui_manager.cpp</a>.</p>
 
 </div>
 </div>
@@ -1008,27 +1036,6 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="ac2f4ec34d84cfc5528a280a290282199"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2f4ec34d84cfc5528a280a290282199">&#9670;&nbsp;</a></span>l_get_locale()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int lxgui::gui::l_get_locale </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
-          <td class="paramname"><em>pLua</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>@function get_locale </p>
-
-<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00287">287</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
-
-</div>
-</div>
 <a id="ad3b90770ac56be63781818d286ea24b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3b90770ac56be63781818d286ea24b8">&#9670;&nbsp;</a></span>l_log()</h2>
 
@@ -1046,7 +1053,28 @@ template&lt;typename ObjectType &gt; </div>
 </div><div class="memdoc">
 <p>@function log </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00324">324</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00309">309</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a163eafac7476d9e4d6470b7d2865127c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a163eafac7476d9e4d6470b7d2865127c">&#9670;&nbsp;</a></span>l_reload_ui()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int lxgui::gui::l_reload_ui </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
+          <td class="paramname"><em>pLua</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Closes the whole GUI and re-loads addons from files. For safety reasons, the re-loading operation will not be triggered instantaneously. The GUI will be reloaded at the end of the current update tick, when it is safe to do so. @function reload_ui </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00325">325</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1100,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00304">304</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00289">289</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
 
 </div>
 </div>
@@ -2033,6 +2061,46 @@ template&lt;typename O , typename T &gt; </div>
 
 </div>
 </div>
+<a id="ae9de6052853a1342a1c07efff66f5d1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9de6052853a1342a1c07efff66f5d1c">&#9670;&nbsp;</a></span>to_lower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::to_lower </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sStr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00026">26</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad498f8f96ba0092d0defb354141aea2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad498f8f96ba0092d0defb354141aea2d">&#9670;&nbsp;</a></span>to_upper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::to_upper </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>sStr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00018">18</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="abf2ac19edd1a7ce40ebf7a29b96ecf48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf2ac19edd1a7ce40ebf7a29b96ecf48">&#9670;&nbsp;</a></span>error</h2>
@@ -2083,7 +2151,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 3 2021 07:24:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
