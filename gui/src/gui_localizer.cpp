@@ -77,8 +77,15 @@ std::vector<std::string> get_default_languages()
     return {"enUS"};
 }
 
-localizer::localizer() : mLocale_(std::locale("")), lLanguages_(get_default_languages())
+localizer::localizer() : lLanguages_(get_default_languages())
 {
+    try {
+        // Try to set locale to system default
+        mLocale_ = std::locale("");
+    } catch (const std::exception& mException) {
+        gui::out << gui::error << "gui::locale : " << mException.what() << std::endl;
+    }
+
     mLua_.open_libraries(
         sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
         sol::lib::os, sol::lib::string, sol::lib::debug
