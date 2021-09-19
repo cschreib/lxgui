@@ -422,23 +422,19 @@ void frame::check_position() const
     if (lBorderList_.right - lBorderList_.left < fMinWidth_)
     {
         lBorderList_.right = lBorderList_.left + fMinWidth_;
-        fAbsWidth_ = fMinWidth_;
     }
     else if (lBorderList_.right - lBorderList_.left > fMaxWidth_)
     {
         lBorderList_.right = lBorderList_.left + fMaxWidth_;
-        fAbsWidth_ = fMaxWidth_;
     }
 
     if (lBorderList_.bottom - lBorderList_.top < fMinHeight_)
     {
         lBorderList_.bottom = lBorderList_.top + fMinHeight_;
-        fAbsHeight_ = fMinHeight_;
     }
     else if (lBorderList_.bottom - lBorderList_.top > fMaxHeight_)
     {
         lBorderList_.bottom = lBorderList_.top + fMaxHeight_;
-        fAbsHeight_ = fMaxHeight_;
     }
 
     if (bIsClampedToScreen_)
@@ -448,7 +444,8 @@ void frame::check_position() const
 
         if (lBorderList_.right > fScreenW)
         {
-            if (lBorderList_.right - lBorderList_.left > fScreenW)
+            float fWidth = lBorderList_.right - lBorderList_.left;
+            if (fWidth > fScreenW)
             {
                 lBorderList_.left = 0;
                 lBorderList_.right = fScreenW;
@@ -456,11 +453,13 @@ void frame::check_position() const
             else
             {
                 lBorderList_.right = fScreenW;
-                lBorderList_.left = fScreenW - fAbsWidth_;
+                lBorderList_.left = fScreenW - fWidth;
             }
         }
+
         if (lBorderList_.left < 0)
         {
+            float fWidth = lBorderList_.right - lBorderList_.left;
             if (lBorderList_.right - lBorderList_.left > fScreenW)
             {
                 lBorderList_.left = 0;
@@ -469,13 +468,14 @@ void frame::check_position() const
             else
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = fAbsWidth_;
+                lBorderList_.right = fWidth;
             }
         }
 
         if (lBorderList_.bottom > fScreenH)
         {
-            if (lBorderList_.bottom - lBorderList_.top > fScreenH)
+            float fHeight = lBorderList_.bottom - lBorderList_.top;
+            if (fHeight > fScreenH)
             {
                 lBorderList_.top = 0;
                 lBorderList_.bottom = fScreenH;
@@ -483,12 +483,14 @@ void frame::check_position() const
             else
             {
                 lBorderList_.bottom = fScreenH;
-                lBorderList_.top = fScreenH - fAbsHeight_;
+                lBorderList_.top = fScreenH - fHeight;
             }
         }
+
         if (lBorderList_.top < 0)
         {
-            if (lBorderList_.bottom - lBorderList_.top > fScreenH)
+            float fHeight = lBorderList_.bottom - lBorderList_.top;
+            if (fHeight > fScreenH)
             {
                 lBorderList_.top = 0;
                 lBorderList_.bottom = fScreenH;
@@ -496,7 +498,7 @@ void frame::check_position() const
             else
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = fAbsHeight_;
+                lBorderList_.bottom = fHeight;
             }
         }
     }
@@ -2007,15 +2009,17 @@ void frame::update(float fDelta)
         lChildList_.erase(mIterRemove, lChildList_.end());
     }
 
-    if (fOldWidth_ != fAbsWidth_ || fOldHeight_ != fAbsHeight_)
+    float fNewWidth = get_apparent_width();
+    float fNewHeight = get_apparent_height();
+    if (fOldWidth_ != fNewWidth || fOldHeight_ != fNewHeight)
     {
         DEBUG_LOG("   On size changed");
         on_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 
-        fOldWidth_  = fAbsWidth_;
-        fOldHeight_ = fAbsHeight_;
+        fOldWidth_  = fNewWidth;
+        fOldHeight_ = fNewHeight;
     }
 
     DEBUG_LOG("   .");

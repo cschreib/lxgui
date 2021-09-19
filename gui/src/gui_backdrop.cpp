@@ -319,7 +319,7 @@ void backdrop::update_cache_() const
     bCacheDirty_ = false;
 }
 
-void repeat_wrap(std::vector<std::array<vertex,4>>& lOutput,
+void repeat_wrap(const frame* pParent, std::vector<std::array<vertex,4>>& lOutput,
     const quad2f& mSourceUVs, float fTileSize, bool bRotated, const color mColor,
     const quad2f& mDestination)
 {
@@ -347,10 +347,10 @@ void repeat_wrap(std::vector<std::array<vertex,4>>& lOutput,
             lOutput.emplace_back();
             auto& mQuad = lOutput.back();
 
-            mQuad[0].pos = mDTopLeft + vector2f(fSX,           fSY);
-            mQuad[1].pos = mDTopLeft + vector2f(fSX + fDWidth, fSY);
-            mQuad[2].pos = mDTopLeft + vector2f(fSX + fDWidth, fSY + fDHeight);
-            mQuad[3].pos = mDTopLeft + vector2f(fSX,           fSY + fDHeight);
+            mQuad[0].pos = pParent->round_to_pixel(mDTopLeft + vector2f(fSX,           fSY));
+            mQuad[1].pos = pParent->round_to_pixel(mDTopLeft + vector2f(fSX + fDWidth, fSY));
+            mQuad[2].pos = pParent->round_to_pixel(mDTopLeft + vector2f(fSX + fDWidth, fSY + fDHeight));
+            mQuad[3].pos = pParent->round_to_pixel(mDTopLeft + vector2f(fSX,           fSY + fDHeight));
 
             if (bRotated)
             {
@@ -403,17 +403,17 @@ void backdrop::update_background_(color mColor) const
 
         if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fTileSize_ > 1.0f)
         {
-            repeat_wrap(lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
+            repeat_wrap(pParent_, lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
         }
         else
         {
             lBackgroundQuads_.emplace_back();
             auto& mQuad = lBackgroundQuads_.back();
 
-            mQuad[0].pos = mBorders.top_left();
-            mQuad[1].pos = mBorders.top_right();
-            mQuad[2].pos = mBorders.bottom_right();
-            mQuad[3].pos = mBorders.bottom_left();
+            mQuad[0].pos = pParent_->round_to_pixel(mBorders.top_left());
+            mQuad[1].pos = pParent_->round_to_pixel(mBorders.top_right());
+            mQuad[2].pos = pParent_->round_to_pixel(mBorders.bottom_right());
+            mQuad[3].pos = pParent_->round_to_pixel(mBorders.bottom_left());
             mQuad[0].uvs = mCanvasUVs.top_left();
             mQuad[1].uvs = mCanvasUVs.top_right();
             mQuad[2].uvs = mCanvasUVs.bottom_right();
@@ -426,10 +426,10 @@ void backdrop::update_background_(color mColor) const
         lBackgroundQuads_.emplace_back();
         auto& mQuad = lBackgroundQuads_.back();
 
-        mQuad[0].pos = mBorders.top_left();
-        mQuad[1].pos = mBorders.top_right();
-        mQuad[2].pos = mBorders.bottom_right();
-        mQuad[3].pos = mBorders.bottom_left();
+        mQuad[0].pos = pParent_->round_to_pixel(mBorders.top_left());
+        mQuad[1].pos = pParent_->round_to_pixel(mBorders.top_right());
+        mQuad[2].pos = pParent_->round_to_pixel(mBorders.bottom_right());
+        mQuad[3].pos = pParent_->round_to_pixel(mBorders.bottom_left());
         mQuad[0].uvs = vector2f(0.0f,0.0f);
         mQuad[1].uvs = vector2f(0.0f,0.0f);
         mQuad[2].uvs = vector2f(0.0f,0.0f);
@@ -473,17 +473,17 @@ void backdrop::update_edge_(color mColor) const
             const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
             if (pEdgeTexture_->is_in_atlas() && fEdgeSize_ > 1.0f)
             {
-                repeat_wrap(lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
+                repeat_wrap(pParent_, lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
             }
             else
             {
                 lEdgeQuads_.emplace_back();
                 auto& mQuad = lEdgeQuads_.back();
 
-                mQuad[0].pos = mDestination.top_left();
-                mQuad[1].pos = mDestination.top_right();
-                mQuad[2].pos = mDestination.bottom_right();
-                mQuad[3].pos = mDestination.bottom_left();
+                mQuad[0].pos = pParent_->round_to_pixel(mDestination.top_left());
+                mQuad[1].pos = pParent_->round_to_pixel(mDestination.top_right());
+                mQuad[2].pos = pParent_->round_to_pixel(mDestination.bottom_right());
+                mQuad[3].pos = pParent_->round_to_pixel(mDestination.bottom_left());
 
                 if (fEdgeSize_ <= 1.0f)
                 {
@@ -520,10 +520,10 @@ void backdrop::update_edge_(color mColor) const
             lEdgeQuads_.emplace_back();
             auto& mQuad = lEdgeQuads_.back();
 
-            mQuad[0].pos = mDestination.top_left();
-            mQuad[1].pos = mDestination.top_right();
-            mQuad[2].pos = mDestination.bottom_right();
-            mQuad[3].pos = mDestination.bottom_left();
+            mQuad[0].pos = pParent_->round_to_pixel(mDestination.top_left());
+            mQuad[1].pos = pParent_->round_to_pixel(mDestination.top_right());
+            mQuad[2].pos = pParent_->round_to_pixel(mDestination.bottom_right());
+            mQuad[3].pos = pParent_->round_to_pixel(mDestination.bottom_left());
             mQuad[0].uvs = vector2f(0.0f,0.0f);
             mQuad[1].uvs = vector2f(0.0f,0.0f);
             mQuad[2].uvs = vector2f(0.0f,0.0f);

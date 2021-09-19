@@ -95,15 +95,15 @@ void texture::render()
                 mTempSprite.set_color(mSprite_.get_color(uiIndex)*mColor, uiIndex);
 
             mTempSprite.render_2v(
-                lBorderList_.left,  lBorderList_.top,
-                lBorderList_.right, lBorderList_.bottom
+                round_to_pixel(lBorderList_.left),  round_to_pixel(lBorderList_.top),
+                round_to_pixel(lBorderList_.right), round_to_pixel(lBorderList_.bottom)
             );
         }
         else
         {
             mSprite_.render_2v(
-                lBorderList_.left,  lBorderList_.top,
-                lBorderList_.right, lBorderList_.bottom
+                round_to_pixel(lBorderList_.left),  round_to_pixel(lBorderList_.top),
+                round_to_pixel(lBorderList_.right), round_to_pixel(lBorderList_.bottom)
             );
         }
     }

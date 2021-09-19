@@ -1192,8 +1192,8 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
         pSizedObject_->clear_all_points();
         pSizedObject_->set_abs_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
 
-        fResizeStartW_ = pSizedObject_->get_abs_width();
-        fResizeStartH_ = pSizedObject_->get_abs_height();
+        fResizeStartW_ = pSizedObject_->get_apparent_width();
+        fResizeStartH_ = pSizedObject_->get_apparent_height();
 
         if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT)
         {

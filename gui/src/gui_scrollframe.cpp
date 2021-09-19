@@ -127,20 +127,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -fHorizontalScroll_, -fVerticalScroll_);
 
-        fHorizontalScrollRange_ = pScrollChild_->get_abs_width() - fAbsWidth_;
-        if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
-
-        fVerticalScrollRange_ = pScrollChild_->get_abs_height() - fAbsHeight_;
-        if (fVerticalScrollRange_ < 0) fVerticalScrollRange_ = 0;
-
-        if (!is_virtual())
-        {
-            alive_checker mChecker(this);
-            on_script("OnScrollRangeChanged");
-            if (!mChecker.is_alive())
-                return;
-        }
-
+        update_scroll_range_();
         bUpdateScrollRange_ = false;
     }
 
@@ -203,8 +190,8 @@ void scroll_frame::update(float fDelta)
 
     if (pScrollChild_)
     {
-        fOldChildWidth = pScrollChild_->get_abs_width();
-        fOldChildHeight = pScrollChild_->get_abs_height();
+        fOldChildWidth = pScrollChild_->get_apparent_width();
+        fOldChildHeight = pScrollChild_->get_apparent_height();
     }
 
     alive_checker mChecker(this);
@@ -212,8 +199,8 @@ void scroll_frame::update(float fDelta)
     if (!mChecker.is_alive())
         return;
 
-    if (pScrollChild_ && (fOldChildWidth != pScrollChild_->get_abs_width() ||
-        fOldChildHeight != pScrollChild_->get_abs_height()))
+    if (pScrollChild_ && (fOldChildWidth != pScrollChild_->get_apparent_width() ||
+        fOldChildHeight != pScrollChild_->get_apparent_height()))
     {
         bUpdateScrollRange_ = true;
         bRedrawScrollRenderTarget_ = true;
@@ -247,10 +234,10 @@ void scroll_frame::update(float fDelta)
 
 void scroll_frame::update_scroll_range_()
 {
-    fHorizontalScrollRange_ = pScrollChild_->get_abs_width() - fAbsWidth_;
+    fHorizontalScrollRange_ = pScrollChild_->get_apparent_width() - get_apparent_width();
     if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
 
-    fVerticalScrollRange_ = pScrollChild_->get_abs_height() - fAbsHeight_;
+    fVerticalScrollRange_ = pScrollChild_->get_apparent_height() - get_apparent_height();
     if (fVerticalScrollRange_ < 0) fVerticalScrollRange_ = 0;
 
     if (!is_virtual())
@@ -299,12 +286,12 @@ void scroll_frame::notify_scaling_factor_updated()
 
 void scroll_frame::rebuild_scroll_render_target_()
 {
-    if (fAbsWidth_ == 0 || fAbsHeight_ == 0)
+    if (get_apparent_width() <= 0 || get_apparent_height() <= 0)
         return;
 
     float fFactor = pManager_->get_interface_scaling_factor();
-    float fScaledWidth = std::round(fAbsWidth_*fFactor);
-    float fScaledHeight = std::round(fAbsHeight_*fFactor);
+    float fScaledWidth = std::round(get_apparent_width()*fFactor);
+    float fScaledHeight = std::round(get_apparent_height()*fFactor);
 
     if (pScrollRenderTarget_)
     {

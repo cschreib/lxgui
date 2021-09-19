@@ -309,7 +309,7 @@ bool uiobject::is_visible() const
 
 void uiobject::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
 {
-    if (fAbsWidth_  != fAbsWidth || fAbsHeight_ != fAbsHeight)
+    if (fAbsWidth_ != fAbsWidth || fAbsHeight_ != fAbsHeight)
     {
         if (!bVirtual_)
             pManager_->notify_object_moved();
@@ -820,10 +820,17 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     }
 }
 
-float uiobject::round_to_pixel_(float fValue) const
+float uiobject::round_to_pixel(float fValue) const
 {
     float fScalingFactor = pManager_->get_interface_scaling_factor();
     return std::floor(fValue*fScalingFactor)/fScalingFactor;
+}
+
+vector2f uiobject::round_to_pixel(const vector2f& mPosition) const
+{
+    float fScalingFactor = pManager_->get_interface_scaling_factor();
+    return vector2f(std::floor(mPosition.x*fScalingFactor)/fScalingFactor,
+                    std::floor(mPosition.y*fScalingFactor)/fScalingFactor);
 }
 
 void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
@@ -951,9 +958,6 @@ void uiobject::update_borders_() const
                 fBottom = fTop+1;
 
             lBorderList_ = quad2f(fLeft, fRight, fTop, fBottom);
-
-            fAbsWidth_  = fRight - fLeft;
-            fAbsHeight_  = fBottom - fTop;
         }
         else
             lBorderList_ = quad2f::ZERO;
@@ -965,11 +969,6 @@ void uiobject::update_borders_() const
         lBorderList_ = quad2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
         bReady_ = false;
     }
-
-    lBorderList_.left = round_to_pixel_(lBorderList_.left);
-    lBorderList_.right = round_to_pixel_(lBorderList_.right);
-    lBorderList_.top = round_to_pixel_(lBorderList_.top);
-    lBorderList_.bottom = round_to_pixel_(lBorderList_.bottom);
 
     if (bReady_ || (!bReady_ && bOldReady))
     {

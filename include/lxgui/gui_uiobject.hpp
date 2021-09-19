@@ -559,6 +559,18 @@ namespace gui
         */
         const std::array<std::optional<anchor>,9>& get_point_list() const;
 
+        /// Round an absolute position on screen to the nearest physical pixel.
+        /** \param fValue The input absolute position (can be fractional)
+        *   \return The position of the nearest physical pixel
+        */
+        float round_to_pixel(float fValue) const;
+
+        /// Round an absolute position on screen to the nearest physical pixel.
+        /** \param mPosition The input absolute position (can be fractional)
+        *   \return The position of the nearest physical pixel
+        */
+        vector2f round_to_pixel(const vector2f& mPosition) const;
+
         /// Notifies this widget that another one is anchored to it.
         /** \param pObj      The anchored widget
         *   \param bAnchored 'true' if it is anchored, 'false' if it's no longer the case
@@ -706,8 +718,6 @@ namespace gui
                            float& fBottom, float& fXCenter, float& fYCenter) const;
 
         void make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
-
-        float round_to_pixel_(float fValue) const;
 
         virtual void update_borders_() const;
         virtual void update_anchors_();
