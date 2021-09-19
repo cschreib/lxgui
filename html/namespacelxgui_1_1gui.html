@@ -297,8 +297,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a15da843c8047a7cd44b8775d366a5c04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a15da843c8047a7cd44b8775d366a5c04">repeat_wrap</a> (std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lOutput, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mSourceUVs, float fTileSize, bool bRotated, const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> mColor, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mDestination)</td></tr>
-<tr class="separator:a15da843c8047a7cd44b8775d366a5c04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed39669194a950dacd09b4b81941f15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a9ed39669194a950dacd09b4b81941f15">repeat_wrap</a> (const <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *pParent, std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;lOutput, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mSourceUVs, float fTileSize, bool bRotated, const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> mColor, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mDestination)</td></tr>
+<tr class="separator:a9ed39669194a950dacd09b4b81941f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a673f98202e87b953f2941b7f2af532d7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a673f98202e87b953f2941b7f2af532d7">h2_to_rgb</a> (float v1, float v2, float h) noexcept</td></tr>
 <tr class="separator:a673f98202e87b953f2941b7f2af532d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3bbc40d5c4fb4dc064700ce7cc486fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ab3bbc40d5c4fb4dc064700ce7cc486fc">operator+</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;c1, const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;c2) noexcept</td></tr>
@@ -771,7 +771,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00767">767</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00777">777</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -803,7 +803,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a5c223d416d9cc685e4f64d911e7b9cf2" title="Obtain a pointer to a derived class.">down_cast(const uiobject*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00800">800</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00810">810</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -835,7 +835,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00788">788</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00798">798</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -954,7 +954,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01003">1003</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01005">1005</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -990,7 +990,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01040">1040</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01042">1042</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1141,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01256">1256</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01258">1258</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1957,8 +1957,8 @@ template&lt;typename O , typename T &gt; </div>
 
 </div>
 </div>
-<a id="a15da843c8047a7cd44b8775d366a5c04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15da843c8047a7cd44b8775d366a5c04">&#9670;&nbsp;</a></span>repeat_wrap()</h2>
+<a id="a9ed39669194a950dacd09b4b81941f15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ed39669194a950dacd09b4b81941f15">&#9670;&nbsp;</a></span>repeat_wrap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1966,6 +1966,12 @@ template&lt;typename O , typename T &gt; </div>
         <tr>
           <td class="memname">void lxgui::gui::repeat_wrap </td>
           <td>(</td>
+          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> *&#160;</td>
+          <td class="paramname"><em>pParent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">std::vector&lt; std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1vertex.html">vertex</a>, 4 &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>lOutput</em>, </td>
         </tr>
@@ -2151,7 +2157,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Sep 17 2021 07:25:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 19 2021 20:27:29 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
