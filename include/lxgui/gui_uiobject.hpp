@@ -68,6 +68,17 @@ namespace gui
         ENUM_SIZE
     };
 
+    /// Rounding method for points to pixels conversions.
+    enum class rounding_method
+    {
+        /// Equivalent to round()
+        NEAREST,
+        /// Equivalent to ceil()
+        UP,
+        /// Equivalent to floor()
+        DOWN
+    };
+
     class frame;
     class frame_renderer;
 
@@ -561,15 +572,17 @@ namespace gui
 
         /// Round an absolute position on screen to the nearest physical pixel.
         /** \param fValue The input absolute position (can be fractional)
+        *   \param mMethod   The rounding method
         *   \return The position of the nearest physical pixel
         */
-        float round_to_pixel(float fValue) const;
+        float round_to_pixel(float fValue, rounding_method mMethod = rounding_method::NEAREST) const;
 
         /// Round an absolute position on screen to the nearest physical pixel.
         /** \param mPosition The input absolute position (can be fractional)
+        *   \param mMethod   The rounding method
         *   \return The position of the nearest physical pixel
         */
-        vector2f round_to_pixel(const vector2f& mPosition) const;
+        vector2f round_to_pixel(const vector2f& mPosition, rounding_method mMethod = rounding_method::NEAREST) const;
 
         /// Notifies this widget that another one is anchored to it.
         /** \param pObj      The anchored widget

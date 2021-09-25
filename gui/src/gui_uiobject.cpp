@@ -820,17 +820,35 @@ void uiobject::notify_anchored_object(uiobject* pObj, bool bAnchored) const
     }
 }
 
-float uiobject::round_to_pixel(float fValue) const
+float uiobject::round_to_pixel(float fValue, rounding_method mMethod) const
 {
     float fScalingFactor = pManager_->get_interface_scaling_factor();
-    return std::floor(fValue*fScalingFactor)/fScalingFactor;
+    switch (mMethod)
+    {
+    case rounding_method::NEAREST:
+        return std::round(fValue*fScalingFactor)/fScalingFactor;
+    case rounding_method::UP:
+        return std::ceil(fValue*fScalingFactor)/fScalingFactor;
+    case rounding_method::DOWN:
+        return std::floor(fValue*fScalingFactor)/fScalingFactor;
+    }
 }
 
-vector2f uiobject::round_to_pixel(const vector2f& mPosition) const
+vector2f uiobject::round_to_pixel(const vector2f& mPosition, rounding_method mMethod) const
 {
     float fScalingFactor = pManager_->get_interface_scaling_factor();
-    return vector2f(std::floor(mPosition.x*fScalingFactor)/fScalingFactor,
-                    std::floor(mPosition.y*fScalingFactor)/fScalingFactor);
+    switch (mMethod)
+    {
+    case rounding_method::NEAREST:
+        return vector2f(std::round(mPosition.x*fScalingFactor)/fScalingFactor,
+                        std::round(mPosition.y*fScalingFactor)/fScalingFactor);
+    case rounding_method::UP:
+        return vector2f(std::ceil(mPosition.x*fScalingFactor)/fScalingFactor,
+                        std::ceil(mPosition.y*fScalingFactor)/fScalingFactor);
+    case rounding_method::DOWN:
+        return vector2f(std::floor(mPosition.x*fScalingFactor)/fScalingFactor,
+                        std::floor(mPosition.y*fScalingFactor)/fScalingFactor);
+    }
 }
 
 void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
@@ -943,12 +961,15 @@ void uiobject::update_borders_() const
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
         float fXCenter = 0.0f, fYCenter = 0.0f;
 
+        float fRoundedWidth = round_to_pixel(fAbsWidth_, rounding_method::UP);
+        float fRoundedHeight = round_to_pixel(fAbsHeight_, rounding_method::UP);
+
         DEBUG_LOG("  Read anchors");
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
 
         DEBUG_LOG("  Make borders");
-        make_borders_(fTop,  fBottom, fYCenter, fAbsHeight_);
-        make_borders_(fLeft, fRight,  fXCenter, fAbsWidth_);
+        make_borders_(fTop,  fBottom, fYCenter, fRoundedHeight);
+        make_borders_(fLeft, fRight,  fXCenter, fRoundedWidth);
 
         if (bReady_)
         {
@@ -969,6 +990,11 @@ void uiobject::update_borders_() const
         lBorderList_ = quad2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
         bReady_ = false;
     }
+
+    lBorderList_.left = round_to_pixel(lBorderList_.left);
+    lBorderList_.right = round_to_pixel(lBorderList_.right);
+    lBorderList_.top = round_to_pixel(lBorderList_.top);
+    lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
     if (bReady_ || (!bReady_ && bOldReady))
     {

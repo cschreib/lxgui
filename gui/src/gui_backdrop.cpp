@@ -401,9 +401,10 @@ void backdrop::update_background_(color mColor) const
         const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
         const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
 
-        if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fTileSize_ > 1.0f)
+        float fRoundedTileSize = pParent_->round_to_pixel(fTileSize_, rounding_method::UP);
+        if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fRoundedTileSize > 1.0f)
         {
-            repeat_wrap(pParent_, lBackgroundQuads_, mCanvasUVs, fTileSize_, false, mColor, mBorders);
+            repeat_wrap(pParent_, lBackgroundQuads_, mCanvasUVs, fRoundedTileSize, false, mColor, mBorders);
         }
         else
         {
@@ -463,6 +464,7 @@ void backdrop::update_edge_(color mColor) const
     mBorders.bottom -= lEdgeInsets_.bottom;
 
     auto* pRenderer = pParent_->get_manager()->get_renderer();
+    const float fRoundedEdgeSize = pParent_->round_to_pixel(fEdgeSize_, rounding_method::UP);
 
     auto repeat_wrap_edge = [&](const quad2f& mSourceUVs, bool bRotated, const quad2f& mDestination)
     {
@@ -471,9 +473,10 @@ void backdrop::update_edge_(color mColor) const
             const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
             const vector2f mCanvasBR = pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
             const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
-            if (pEdgeTexture_->is_in_atlas() && fEdgeSize_ > 1.0f)
+
+            if (pEdgeTexture_->is_in_atlas() && fRoundedEdgeSize > 1.0f)
             {
-                repeat_wrap(pParent_, lEdgeQuads_, mCanvasUVs, fEdgeSize_, bRotated, mColor, mDestination);
+                repeat_wrap(pParent_, lEdgeQuads_, mCanvasUVs, fRoundedEdgeSize, bRotated, mColor, mDestination);
             }
             else
             {
@@ -485,7 +488,7 @@ void backdrop::update_edge_(color mColor) const
                 mQuad[2].pos = pParent_->round_to_pixel(mDestination.bottom_right());
                 mQuad[3].pos = pParent_->round_to_pixel(mDestination.bottom_left());
 
-                if (fEdgeSize_ <= 1.0f)
+                if (fRoundedEdgeSize <= 1.0f)
                 {
                     mQuad[0].uvs = mCanvasUVs.top_left();
                     mQuad[1].uvs = mCanvasUVs.top_right();
@@ -496,7 +499,7 @@ void backdrop::update_edge_(color mColor) const
                 {
                     if (bRotated)
                     {
-                        float fFactor = mDestination.width() / fEdgeSize_;
+                        float fFactor = mDestination.width() / fRoundedEdgeSize;
                         mQuad[0].uvs = mCanvasUVs.top_left() + vector2f(0.0, fFactor*mCanvasUVs.height());
                         mQuad[1].uvs = mCanvasUVs.top_left();
                         mQuad[2].uvs = mCanvasUVs.top_right();
@@ -504,7 +507,7 @@ void backdrop::update_edge_(color mColor) const
                     }
                     else
                     {
-                        float fFactor = mDestination.height() / fEdgeSize_;
+                        float fFactor = mDestination.height() / fRoundedEdgeSize;
                         mQuad[0].uvs = mCanvasUVs.top_left();
                         mQuad[1].uvs = mCanvasUVs.top_right();
                         mQuad[2].uvs = mCanvasUVs.top_right() + vector2f(0.0, fFactor*mCanvasUVs.height());
@@ -534,50 +537,50 @@ void backdrop::update_edge_(color mColor) const
 
     // Left edge
     repeat_wrap_edge(quad2f(0.0f, fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.left, mBorders.left + fEdgeSize_,
-        mBorders.top + fEdgeSize_, mBorders.bottom - fEdgeSize_
+        mBorders.left, mBorders.left + fRoundedEdgeSize,
+        mBorders.top + fRoundedEdgeSize, mBorders.bottom - fRoundedEdgeSize
     ));
 
     // Right edge
     repeat_wrap_edge(quad2f(fUVStep, 2.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.right - fEdgeSize_, mBorders.right,
-        mBorders.top + fEdgeSize_, mBorders.bottom - fEdgeSize_
+        mBorders.right - fRoundedEdgeSize, mBorders.right,
+        mBorders.top + fRoundedEdgeSize, mBorders.bottom - fRoundedEdgeSize
     ));
 
     // Top edge
     repeat_wrap_edge(quad2f(2.0f*fUVStep, 3.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
-        mBorders.left + fEdgeSize_, mBorders.right - fEdgeSize_,
-        mBorders.top, mBorders.top + fEdgeSize_
+        mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize,
+        mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Bottom edge
     repeat_wrap_edge(quad2f(3.0f*fUVStep, 4.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
-        mBorders.left + fEdgeSize_, mBorders.right - fEdgeSize_,
-        mBorders.bottom - fEdgeSize_, mBorders.bottom
+        mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize,
+        mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));
 
     // Top-left corner
     repeat_wrap_edge(quad2f(4.0f*fUVStep, 5.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.left, mBorders.left + fEdgeSize_,
-        mBorders.top, mBorders.top + fEdgeSize_
+        mBorders.left, mBorders.left + fRoundedEdgeSize,
+        mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Top-right corner
     repeat_wrap_edge(quad2f(5.0f*fUVStep, 6.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.right - fEdgeSize_, mBorders.right,
-        mBorders.top, mBorders.top + fEdgeSize_
+        mBorders.right - fRoundedEdgeSize, mBorders.right,
+        mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Bottom-left corner
     repeat_wrap_edge(quad2f(6.0f*fUVStep, 7.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.left, mBorders.left + fEdgeSize_,
-        mBorders.bottom - fEdgeSize_, mBorders.bottom
+        mBorders.left, mBorders.left + fRoundedEdgeSize,
+        mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));
 
     // Bottom-right corner
     repeat_wrap_edge(quad2f(7.0f*fUVStep, 8.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
-        mBorders.right - fEdgeSize_, mBorders.right,
-        mBorders.bottom - fEdgeSize_, mBorders.bottom
+        mBorders.right - fRoundedEdgeSize, mBorders.right,
+        mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));
 
     if (pRenderer->is_vertex_cache_enabled() && !pRenderer->is_quad_batching_enabled())

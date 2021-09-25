@@ -514,6 +514,9 @@ void font_string::update_borders_() const
         else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
             fBoxHeight = fBottom - fTop;
 
+        fBoxWidth = round_to_pixel(fBoxWidth, rounding_method::UP);
+        fBoxHeight = round_to_pixel(fBoxHeight, rounding_method::UP);
+
         pText_->set_dimensions(fBoxWidth, fBoxHeight);
 
         DEBUG_LOG("  Make borders");
@@ -555,6 +558,11 @@ void font_string::update_borders_() const
         lBorderList_ = quad2f(0.0, 0.0, fBoxWidth, fBoxHeight);
         bReady_ = false;
     }
+
+    lBorderList_.left = round_to_pixel(lBorderList_.left);
+    lBorderList_.right = round_to_pixel(lBorderList_.right);
+    lBorderList_.top = round_to_pixel(lBorderList_.top);
+    lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
     if (bReady_ || (!bReady_ && bOldReady))
     {
