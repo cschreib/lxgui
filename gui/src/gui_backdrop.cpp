@@ -401,7 +401,7 @@ void backdrop::update_background_(color mColor) const
         const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
         const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
 
-        float fRoundedTileSize = pParent_->round_to_pixel(fTileSize_, rounding_method::UP);
+        float fRoundedTileSize = pParent_->round_to_pixel(fTileSize_, rounding_method::NEAREST_NOT_ZERO);
         if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fRoundedTileSize > 1.0f)
         {
             repeat_wrap(pParent_, lBackgroundQuads_, mCanvasUVs, fRoundedTileSize, false, mColor, mBorders);
@@ -464,7 +464,7 @@ void backdrop::update_edge_(color mColor) const
     mBorders.bottom -= lEdgeInsets_.bottom;
 
     auto* pRenderer = pParent_->get_manager()->get_renderer();
-    const float fRoundedEdgeSize = pParent_->round_to_pixel(fEdgeSize_, rounding_method::UP);
+    const float fRoundedEdgeSize = pParent_->round_to_pixel(fEdgeSize_, rounding_method::NEAREST_NOT_ZERO);
 
     auto repeat_wrap_edge = [&](const quad2f& mSourceUVs, bool bRotated, const quad2f& mDestination)
     {

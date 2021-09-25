@@ -82,6 +82,8 @@ float anchor::get_abs_x() const
         else
             fOffset = fRelOffX_*fParentWidth_;
 
+        fOffset = pObj_->round_to_pixel(fOffset, rounding_method::NEAREST_NOT_ZERO);
+
         float fParentOffset = 0.0f;
         switch (mParentPoint_)
         {
@@ -131,6 +133,8 @@ float anchor::get_abs_y() const
             fOffset = fAbsOffY_;
         else
             fOffset = fRelOffY_*fParentHeight_;
+
+        fOffset = pObj_->round_to_pixel(fOffset, rounding_method::NEAREST_NOT_ZERO);
 
         float fParentOffset = 0.0f;
         switch (mParentPoint_)

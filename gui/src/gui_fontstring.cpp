@@ -514,8 +514,8 @@ void font_string::update_borders_() const
         else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
             fBoxHeight = fBottom - fTop;
 
-        fBoxWidth = round_to_pixel(fBoxWidth, rounding_method::UP);
-        fBoxHeight = round_to_pixel(fBoxHeight, rounding_method::UP);
+        fBoxWidth = round_to_pixel(fBoxWidth, rounding_method::NEAREST_NOT_ZERO);
+        fBoxHeight = round_to_pixel(fBoxHeight, rounding_method::NEAREST_NOT_ZERO);
 
         pText_->set_dimensions(fBoxWidth, fBoxHeight);
 

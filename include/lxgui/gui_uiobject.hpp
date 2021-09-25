@@ -73,6 +73,8 @@ namespace gui
     {
         /// Equivalent to round()
         NEAREST,
+        /// Equivalent to round() but only returns 0 if input is exactly 0
+        NEAREST_NOT_ZERO,
         /// Equivalent to ceil()
         UP,
         /// Equivalent to floor()
