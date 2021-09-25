@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vertical_5falignment_3145',['vertical_alignment',['../classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737f',1,'lxgui::gui::text']]]
+  ['type_3147',['type',['../classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de',1,'lxgui::gui::vertex_cache::type()'],['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1b',1,'lxgui::lua::type()']]]
 ];

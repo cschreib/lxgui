@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['type_3144',['type',['../classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de',1,'lxgui::gui::vertex_cache::type()'],['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1b',1,'lxgui::lua::type()']]]
+  ['start_5ftype_3145',['start_type',['../classlxgui_1_1gui_1_1periodic__timer.html#a031a8573b66178d62d1a16ec6339c15f',1,'lxgui::gui::periodic_timer']]],
+  ['state_3146',['state',['../classlxgui_1_1gui_1_1button.html#a42d6442bdeb36a231bad4d5fbf1669b6',1,'lxgui::gui::button']]]
 ];

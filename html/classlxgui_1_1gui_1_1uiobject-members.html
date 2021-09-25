@@ -161,8 +161,8 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a395ae6dd405107c1cc31fb07a11da1de">release_from_parent</a>()</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ac85cef80e2d74cba21251efb2979a6b7">remove_glue</a>()</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5b2653e4cf1e11947a4b18f5007499b2">render</a>()=0</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a24815e9ae02fd269ce3d1ec7cf61b513">round_to_pixel</a>(float fValue) const</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a0ab6fe79cf1f3b223dbfc3481f2d19d0">round_to_pixel</a>(const vector2f &amp;mPosition) const</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a3ee14b407af1048cac7d96e57d557199">round_to_pixel</a>(float fValue, rounding_method mMethod=rounding_method::NEAREST) const</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ac9e60b902f3d900f3397934bc9529e77">round_to_pixel</a>(const vector2f &amp;mPosition, rounding_method mMethod=rounding_method::NEAREST) const</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aaef412e12cd0af0e855e79ab5bebd701">serialize</a>(const std::string &amp;sTab) const</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a64facd950e17e8a833215d1a2d4c5c7d">set_abs_dimensions</a>(float fAbsWidth, float fAbsHeight)</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a54e579037d3048f0d1d0609f77bb25d4">set_abs_height</a>(float fAbsHeight)</td><td class="entry"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html">lxgui::gui::uiobject</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
@@ -199,7 +199,7 @@ $(function() {
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 19 2021 20:27:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Sep 25 2021 13:45:36 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
