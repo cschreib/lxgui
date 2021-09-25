@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['nearest_3332',['NEAREST',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12aad135772d7cf93dd0ccf9d2474b34e6a',1,'lxgui::gui']]],
-  ['nil_3333',['NIL',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1babc0b1e8b63f3f00318eee5aeabc14255',1,'lxgui::lua']]],
-  ['none_3334',['NONE',['../classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::material::NONE()'],['../classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036ab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::texture::NONE()'],['../namespacelxgui_1_1gui_1_1parser.html#a3fbdc26620f88c54947c5fc8b312db8fab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::parser::NONE()'],['../namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3bab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::NONE()'],['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1bab50339a10e1de285ac99d4c3990b8693',1,'lxgui::lua::NONE()']]],
-  ['normal_3335',['NORMAL',['../namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8fa1e23852820b9154316c7c06e2b7ba051',1,'lxgui::gui']]],
-  ['now_3336',['NOW',['../classlxgui_1_1gui_1_1periodic__timer.html#a031a8573b66178d62d1a16ec6339c15fa3dce1fce9ac06d1349dfbd9186289385',1,'lxgui::gui::periodic_timer']]],
-  ['number_3337',['NUMBER',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::lua::NUMBER()'],['../namespacelxgui_1_1xml.html#a1bcf42a37d7676a4751e73aee325716ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::xml::NUMBER()']]]
+  ['nearest_3333',['NEAREST',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12aad135772d7cf93dd0ccf9d2474b34e6a',1,'lxgui::gui']]],
+  ['nearest_5fnot_5fzero_3334',['NEAREST_NOT_ZERO',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12adf3396fde20f1e3d796f285f33539216',1,'lxgui::gui']]],
+  ['nil_3335',['NIL',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1babc0b1e8b63f3f00318eee5aeabc14255',1,'lxgui::lua']]],
+  ['none_3336',['NONE',['../classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::material::NONE()'],['../classlxgui_1_1gui_1_1texture.html#a61087abd47b04a2115158d51de211036ab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::texture::NONE()'],['../namespacelxgui_1_1gui_1_1parser.html#a3fbdc26620f88c54947c5fc8b312db8fab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::parser::NONE()'],['../namespacelxgui_1_1gui.html#a67c9e76e9b8193bc3dc1b67c1f255f3bab50339a10e1de285ac99d4c3990b8693',1,'lxgui::gui::NONE()'],['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1bab50339a10e1de285ac99d4c3990b8693',1,'lxgui::lua::NONE()']]],
+  ['normal_3337',['NORMAL',['../namespacelxgui_1_1gui.html#a246cb1ee567c201f149a8765e79c0b8fa1e23852820b9154316c7c06e2b7ba051',1,'lxgui::gui']]],
+  ['now_3338',['NOW',['../classlxgui_1_1gui_1_1periodic__timer.html#a031a8573b66178d62d1a16ec6339c15fa3dce1fce9ac06d1349dfbd9186289385',1,'lxgui::gui::periodic_timer']]],
+  ['number_3339',['NUMBER',['../namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::lua::NUMBER()'],['../namespacelxgui_1_1xml.html#a1bcf42a37d7676a4751e73aee325716ba34f55eca38e0605a84f169ff61a2a396',1,'lxgui::xml::NUMBER()']]]
 ];
