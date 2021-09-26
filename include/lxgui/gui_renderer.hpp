@@ -21,6 +21,7 @@ namespace gui
     class color;
     struct quad;
     struct vertex;
+    struct code_point_range;
 
     /// Abstract type for implementation specific management
     class renderer
@@ -37,6 +38,104 @@ namespace gui
         /** \return A human-readable name for this renderer
         */
         virtual std::string get_name() const = 0;
+
+        /// Checks if the renderer supports setting colors for each vertex of a textured quad.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        virtual bool is_texture_vertex_color_supported() const = 0;
+
+        /// Checks if the renderer has quad render batching enabled.
+        /** \return 'true' if enabled, 'false' otherwise
+        */
+        bool is_quad_batching_enabled() const;
+
+        /// Enables/disables quad batching.
+        /** \param bEnabled 'true' to enable quad batching, 'false' to disable it
+        *   \note Quad batching is enabled by default.
+        *   \note When quad batching is disabled, each call to render_quads() renders
+        *         immediately to the screen. This can lead to a large number of draw
+        *         calls. With quad batching enabled, the renderer accumulates quads
+        *         into a local cache, and only renders them when necessary
+        *         (i.e., when the texture changes, when another immediate rendering
+        *         call is requested, or the frame ends).
+        */
+        void set_quad_batching_enabled(bool bEnabled);
+
+        /// Returns the maximum texture width/height (in pixels).
+        /** \return The maximum texture width/height (in pixels)
+        */
+        virtual uint get_texture_max_size() const = 0;
+
+        /// Checks if the renderer supports texture atlases natively.
+        /** \return 'true' if enabled, 'false' otherwise
+        *   \note If 'false', texture atlases will be implemented using a generic
+        *         solution with render targets.
+        */
+        virtual bool is_texture_atlas_supported() const = 0;
+
+        /// Checks if the renderer has texture atlases enabled.
+        /** \return 'true' if enabled, 'false' otherwise
+        */
+        bool is_texture_atlas_enabled() const;
+
+        /// Enables/disables texture atlases.
+        /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
+        *   \note Texture atlases are enabled by default. Changing this flag will only
+        *         impact newly created materials. Existing materials will not be affected.
+        *   \note In general, texture atlases only increase performance when vertex caches
+        *         are supported and used (see is_vertex_cache_supported()). The can actually decrease
+        *         performance when vertex caches are not supported, if texture tiling is
+        *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
+        *         disable texture atlases if vertex caches are not supported.
+        */
+        void set_texture_atlas_enabled(bool bEnabled);
+
+        /// Returns the width/height of a texture atlas page (in pixels).
+        /** \return The width/height of a texture atlas page (in pixels)
+        */
+        uint get_texture_atlas_page_size() const;
+
+        /// Set the width/height of a texture atlas page (in pixels).
+        /** \param uiPageSize The texture width/height in pixels
+        *   \note Changing this value will only impact newly created atlas pages.
+        *         Existing pages will not be affected.
+        *   \note Increase this value to allow more materials to fit on a single atlas
+        *         page, therefore improving performance. Decrease tihs value if the
+        *         memory usage from atlas textures is too large. Set it to zero
+        *         to fall back to the implementation-defined default value.
+        */
+        void set_texture_atlas_page_size(uint uiPageSize);
+
+        /// Count the total number of texture atlas pages curently in use.
+        /** \return The total number of texture atlas pages curently in use
+        */
+        uint get_num_texture_atlas_pages() const;
+
+        /// Checks if the renderer supports vertex caches.
+        /** \return 'true' if supported, 'false' otherwise
+        */
+        virtual bool is_vertex_cache_supported() const = 0;
+
+        /// Checks if the renderer has enabled support for vertex caches.
+        /** \return 'true' if vertex caches are supported and enabled, 'false' otherwise
+        */
+        bool is_vertex_cache_enabled() const;
+
+        /// Enables/disables vertex caches.
+        /** \param bEnabled 'true' to enable vertex caches, 'false' to disable them
+        *   \note Even if enabled with this function, vertex caches may not be supported
+        *         by the renderer, see is_vertex_cache_supported().
+        */
+        void set_vertex_cache_enabled(bool bEnabled);
+
+        /// Automatically determines the best rendering settings for the current platform.
+        void auto_detect_settings();
+
+        /// Returns the number of batches of vertices sent to the GPU during the last frame.
+        /** \return The number of batches of vertices sent to the GPU during the last frame
+        *   \note This will be zero unless is_quad_batching_enabled() is 'true'.
+        */
+        uint get_batch_count() const;
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -104,28 +203,6 @@ namespace gui
         void render_quads(const material* pMaterial,
             const std::vector<std::array<vertex,4>>& lQuadList) const;
 
-        /// Checks if the renderer supports setting colors for each vertex of a textured quad.
-        /** \return 'true' if supported, 'false' otherwise
-        */
-        virtual bool is_texture_vertex_color_supported() const = 0;
-
-        /// Checks if the renderer has quad render batching enabled.
-        /** \return 'true' if enabled, 'false' otherwise
-        */
-        bool is_quad_batching_enabled() const;
-
-        /// Enables/disables quad batching.
-        /** \param bEnabled 'true' to enable quad batching, 'false' to disable it
-        *   \note Quad batching is enabled by default.
-        *   \note When quad batching is disabled, each call to render_quads() renders
-        *         immediately to the screen. This can lead to a large number of draw
-        *         calls. With quad batching enabled, the renderer accumulates quads
-        *         into a local cache, and only renders them when necessary
-        *         (i.e., when the texture changes, when another immediate rendering
-        *         call is requested, or the frame ends).
-        */
-        void set_quad_batching_enabled(bool bEnabled);
-
         /// Renders a vertex cache.
         /** \param pMaterial       The material to use for rendering, or null if none
         *   \param mCache          The vertex cache
@@ -154,56 +231,6 @@ namespace gui
         */
         std::shared_ptr<material> create_material(const std::string& sFileName,
             material::filter mFilter = material::filter::NONE) const;
-
-        /// Returns the maximum texture width/height (in pixels).
-        /** \return The maximum texture width/height (in pixels)
-        */
-        virtual uint get_texture_max_size() const = 0;
-
-        /// Checks if the renderer supports texture atlases natively.
-        /** \return 'true' if enabled, 'false' otherwise
-        *   \note If 'false', texture atlases will be implemented using a generic
-        *         solution with render targets.
-        */
-        virtual bool is_texture_atlas_supported() const = 0;
-
-        /// Checks if the renderer has texture atlases enabled.
-        /** \return 'true' if enabled, 'false' otherwise
-        */
-        bool is_texture_atlas_enabled() const;
-
-        /// Enables/disables texture atlases.
-        /** \param bEnabled 'true' to enable texture atlases, 'false' to disable them
-        *   \note Texture atlases are enabled by default. Changing this flag will only
-        *         impact newly created materials. Existing materials will not be affected.
-        *   \note In general, texture atlases only increase performance when vertex caches
-        *         are supported and used (see is_vertex_cache_supported()). The can actually decrease
-        *         performance when vertex caches are not supported, if texture tiling is
-        *         used a lot (e.g., in frame backdrop edges). It is therefore recommended to
-        *         disable texture atlases if vertex caches are not supported.
-        */
-        void set_texture_atlas_enabled(bool bEnabled);
-
-        /// Returns the width/height of a texture atlas page (in pixels).
-        /** \return The width/height of a texture atlas page (in pixels)
-        */
-        uint get_texture_atlas_page_size() const;
-
-        /// Set the width/height of a texture atlas page (in pixels).
-        /** \param uiPageSize The texture width/height in pixels
-        *   \note Changing this value will only impact newly created atlas pages.
-        *         Existing pages will not be affected.
-        *   \note Increase this value to allow more materials to fit on a single atlas
-        *         page, therefore improving performance. Decrease tihs value if the
-        *         memory usage from atlas textures is too large. Set it to zero
-        *         to fall back to the implementation-defined default value.
-        */
-        void set_texture_atlas_page_size(uint uiPageSize);
-
-        /// Count the total number of texture atlas pages curently in use.
-        /** \return The total number of texture atlas pages curently in use
-        */
-        uint get_num_texture_atlas_pages() const;
 
         /// Creates a new material from a texture file.
         /** \param sAtlasCategory The category of atlas in which to create the texture
@@ -264,9 +291,10 @@ namespace gui
             material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new font.
-        /** \param sFontFile  The file from which to read the font
-        *   \param uiSize     The requested size of the characters (in points)
-        *   \param uiOutline  The thickness of the outline (in points)
+        /** \param sFontFile   The file from which to read the font
+        *   \param uiSize      The requested size of the characters (in points)
+        *   \param uiOutline   The thickness of the outline (in points)
+        *   \param lCodePoints The list of Unicode characters to load
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
@@ -275,37 +303,22 @@ namespace gui
         *         must be rendered above the outlined font to fill the actual characters.
         */
         std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize,
-            uint uiOutline = 0u) const;
+            uint uiOutline, const std::vector<code_point_range>& lCodePoints) const;
 
         /// Creates a new font.
         /** \param sAtlasCategory The category of atlas in which to create the font texture
         *   \param sFontFile      The file from which to read the font
         *   \param uiSize         The requested size of the characters (in points)
         *   \param uiOutline      The thickness of the outline (in points)
+        *   \param lCodePoints    The list of Unicode characters to load
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         *   \note See create_atlas_material() for more information on atlases.
         */
         std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
-            const std::string& sFontFile, uint uiSize, uint uiOutline = 0u) const;
-
-        /// Checks if the renderer supports vertex caches.
-        /** \return 'true' if supported, 'false' otherwise
-        */
-        virtual bool is_vertex_cache_supported() const = 0;
-
-        /// Checks if the renderer has enabled support for vertex caches.
-        /** \return 'true' if vertex caches are supported and enabled, 'false' otherwise
-        */
-        bool is_vertex_cache_enabled() const;
-
-        /// Enables/disables vertex caches.
-        /** \param bEnabled 'true' to enable vertex caches, 'false' to disable them
-        *   \note Even if enabled with this function, vertex caches may not be supported
-        *         by the renderer, see is_vertex_cache_supported().
-        */
-        void set_vertex_cache_enabled(bool bEnabled);
+            const std::string& sFontFile, uint uiSize, uint uiOutline,
+            const std::vector<code_point_range>& lCodePoints) const;
 
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
@@ -319,15 +332,6 @@ namespace gui
         *   \param uiNewHeight The new window height
         */
         virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
-
-        /// Automatically determines the best rendering settings for the current platform.
-        void auto_detect_settings();
-
-        /// Returns the number of batches of vertices sent to the GPU during the last frame.
-        /** \return The number of batches of vertices sent to the GPU during the last frame
-        *   \note This will be zero unless is_quad_batching_enabled() is 'true'.
-        */
-        uint get_batch_count() const;
 
     protected:
 
@@ -403,15 +407,16 @@ namespace gui
         virtual std::shared_ptr<atlas> create_atlas_(material::filter mFilter) const = 0;
 
         /// Creates a new font.
-        /** \param sFontFile The file from which to read the font
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \param uiOutline The thickness of the outline (in points)
+        /** \param sFontFile   The file from which to read the font
+        *   \param uiSize      The requested size of the characters (in points)
+        *   \param uiOutline   The thickness of the outline (in points)
+        *   \param lCodePoints The list of Unicode characters to load
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
-            uint uiSize, uint uiOutline) const = 0;
+            uint uiSize, uint uiOutline, const std::vector<code_point_range>& lCodePoints) const = 0;
 
         atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
 

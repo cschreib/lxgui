@@ -613,10 +613,10 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
-    uint uiOutline) const
+    uint uiOutline, const std::vector<code_point_range>& lCodePoints) const
 {
     return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize, uiOutline,
-        bPreMultipliedAlphaSupported_);
+        lCodePoints, bPreMultipliedAlphaSupported_);
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const

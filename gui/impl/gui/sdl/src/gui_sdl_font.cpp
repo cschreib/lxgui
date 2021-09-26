@@ -15,6 +15,7 @@ namespace gui {
 namespace sdl
 {
 font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
+    const std::vector<code_point_range>& lCodePoints,
     bool bPreMultipliedAlphaSupported) : uiSize_(uiSize), uiOutline_(uiOutline)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)

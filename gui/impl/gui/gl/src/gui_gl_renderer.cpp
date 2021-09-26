@@ -293,9 +293,9 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
-    uint uiOutline) const
+    uint uiOutline, const std::vector<code_point_range>& lCodePoints) const
 {
-    return std::make_shared<gl::font>(sFontFile, uiSize, uiOutline);
+    return std::make_shared<gl::font>(sFontFile, uiSize, uiOutline, lCodePoints);
 }
 
 bool renderer::is_texture_atlas_supported() const

@@ -12,12 +12,14 @@ struct SDL_Renderer;
 
 namespace lxgui {
 namespace gui {
+    struct code_point_range;
+
 namespace sdl
 {
     struct character_info
     {
-        uint   uiCodePoint;
-        quad2f mUVs;
+        char32_t uiCodePoint;
+        quad2f   mUVs;
     };
 
     /// A texture containing characters
@@ -29,13 +31,15 @@ namespace sdl
     public :
 
         /// Constructor.
-        /** \param pRenderer The SDL render to create the font for
-        *   \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \param uiOutline The thickness of the outline (in points)
+        /** \param pRenderer   The SDL render to create the font for
+        *   \param sFontFile   The name of the font file to read
+        *   \param uiSize      The requested size of the characters (in points)
+        *   \param uiOutline   The thickness of the outline (in points)
+        *   \param lCodePoints The list of Unicode characters to load
         *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         */
         font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
+            const std::vector<code_point_range>& lCodePoints,
             bool bPreMultipliedAlphaSupported);
 
         /// Get the size of the font in pixels.

@@ -135,6 +135,58 @@ const std::vector<std::string>& localizer::get_preferred_languages() const
     return lLanguages_;
 }
 
+void localizer::clear_allowed_code_points()
+{
+    lCodePoints_.clear();
+}
+
+void localizer::add_allowed_code_points(const code_point_range& mRange)
+{
+    code_point_range mTestRange = mRange;
+    auto mIter = lCodePoints_.begin();
+
+    do
+    {
+        // Find next overlapping range
+        mIter = std::find_if(lCodePoints_.begin(), lCodePoints_.end(), [&](const auto& mOther)
+        {
+            return (mTestRange.uiFirst >= mOther.uiFirst && mTestRange.uiFirst <= mOther.uiLast) ||
+                   (mTestRange.uiLast  >= mOther.uiFirst && mTestRange.uiLast  <= mOther.uiLast) ||
+                   (mOther.uiFirst >= mTestRange.uiFirst && mOther.uiFirst <= mTestRange.uiLast) ||
+                   (mOther.uiLast  >= mTestRange.uiFirst && mOther.uiLast  <= mTestRange.uiLast);
+        });
+
+        if (mIter != lCodePoints_.end())
+        {
+            // Combine the ranges
+            mTestRange.uiFirst = std::min(mTestRange.uiFirst, mIter->uiFirst);
+            mTestRange.uiLast = std::max(mTestRange.uiLast, mIter->uiLast);
+
+            // Erase the overlap
+            lCodePoints_.erase(mIter);
+        }
+    } while (mIter != lCodePoints_.end());
+
+    // Add the new range
+    lCodePoints_.push_back(mTestRange);
+
+    // Sort by ascending code point
+    std::sort(lCodePoints_.begin(), lCodePoints_.end(), [](const auto& mLeft, const auto& mRight)
+    {
+        return mLeft.uiFirst < mRight.uiFirst;
+    });
+}
+
+void localizer::add_allowed_code_points(const std::string& sUnicodeGroup)
+{
+    // TODO
+}
+
+const std::vector<code_point_range>& localizer::get_allowed_code_points() const
+{
+    return lCodePoints_;
+}
+
 void localizer::load_translations(const std::string& sFolderPath)
 {
     // First, look for an exact match

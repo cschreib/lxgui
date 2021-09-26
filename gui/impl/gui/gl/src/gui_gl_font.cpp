@@ -18,11 +18,41 @@
 static constexpr lxgui::uint uiMinChar = 32;
 static constexpr lxgui::uint uiMaxChar = 255;
 
+namespace
+{
+    // Global state for the Freetype library (one per thread)
+    thread_local uint uiFTCount = 0u;
+    thread_local FT_Library mSharedFT = nullptr;
+
+    FT_Library get_freetype()
+    {
+        if (uiFTCount == 0u)
+        {
+            if (FT_Init_FreeType(&mSharedFT))
+                throw lxgui::gui::exception("gui::gl::font", "Error initializing FreeType !");
+        }
+
+        ++uiFTCount;
+        return mSharedFT;
+    }
+
+    void release_freetype()
+    {
+        if (uiFTCount != 0u)
+        {
+            --uiFTCount;
+            if (uiFTCount == 0u)
+                FT_Done_FreeType(mSharedFT);
+        }
+    }
+}
+
 namespace lxgui {
 namespace gui {
 namespace gl
 {
-font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
+font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+    const std::vector<code_point_range>& lCodePoints) :
     uiSize_(uiSize), uiOutline_(uiOutline)
 {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
@@ -39,11 +69,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
     if (!utils::file_exists(sFontFile))
         throw gui::exception("gui::gl::font", "Cannot find file \""+sFontFile+"\".");
 
-    FT_Library mFT;
-    if (FT_Init_FreeType(&mFT))
-        throw gui::exception("gui::gl::font", "Error initializing FreeType !");
-
-    FT_Face mFace = nullptr;
+    FT_Library mFT = get_freetype();
     FT_Stroker mStroker = nullptr;
     FT_Glyph mGlyph = nullptr;
 
@@ -52,7 +78,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
         // Add some space between letters to prevent artifacts
         uint uiSpacing = 1;
 
-        if (FT_New_Face(mFT, sFontFile.c_str(), 0, &mFace))
+        if (FT_New_Face(mFT, sFontFile.c_str(), 0, &mFace_))
         {
             throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
                 "\" : cannot load face."
@@ -69,7 +95,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
             }
         }
 
-        if (FT_Set_Char_Size(mFace, uiSize*64, uiSize*64, 96, 96))
+        if (FT_Set_Char_Size(mFace_, uiSize*64, uiSize*64, 96, 96))
         {
             throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
                 "\" : cannot set font size."
@@ -85,21 +111,21 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
         // Calculate maximum width, height and bearing
         for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
         {
-            if (FT_Load_Char(mFace, cp, iLoadFlags))
+            if (FT_Load_Char(mFace_, cp, iLoadFlags))
                 continue;
 
-            int iCharHeight = 2*(mFace->glyph->bitmap.rows << 6)
-                - mFace->glyph->metrics.horiBearingY;
+            int iCharHeight = 2*(mFace_->glyph->bitmap.rows << 6)
+                - mFace_->glyph->metrics.horiBearingY;
 
             if (iCharHeight > iMaxHeight)
                 iMaxHeight = iCharHeight;
 
-            if (mFace->glyph->metrics.horiBearingY > iMaxBearingY)
-                iMaxBearingY = mFace->glyph->metrics.horiBearingY;
+            if (mFace_->glyph->metrics.horiBearingY > iMaxBearingY)
+                iMaxBearingY = mFace_->glyph->metrics.horiBearingY;
 
             int iCharWidth = std::max(
-                int(mFace->glyph->bitmap.width) + int(mFace->glyph->metrics.horiBearingX >> 6),
-                int(mFace->glyph->advance.x >> 6)
+                int(mFace_->glyph->bitmap.width) + int(mFace_->glyph->metrics.horiBearingX >> 6),
+                int(mFace_->glyph->advance.x >> 6)
             );
 
             if (iCharWidth > iMaxWidth)
@@ -142,34 +168,31 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
         size_t x = 0, y = 0;
         character_info mCI;
 
-        if (FT_HAS_KERNING(mFace))
+        if (FT_HAS_KERNING(mFace_))
             bKerning_ = true;
 
-        if (FT_IS_SCALABLE(mFace))
+        if (FT_IS_SCALABLE(mFace_))
         {
-            FT_Fixed mScale = mFace->size->metrics.y_scale;
-            fYOffset_ = FT_CEIL(FT_MulFix(mFace->descender, mScale));
+            FT_Fixed mScale = mFace_->size->metrics.y_scale;
+            fYOffset_ = FT_CEIL(FT_MulFix(mFace_->descender, mScale));
         }
         else
         {
-            fYOffset_ = FT_CEIL(mFace->size->metrics.descender);
+            fYOffset_ = FT_CEIL(mFace_->size->metrics.descender);
         }
-
-        if (bKerning_)
-            mCI.lKerningInfo.resize(uiMaxChar + 1);
 
         for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
         {
             mCI.uiCodePoint = cp;
 
-            if (FT_Load_Char(mFace, cp, iLoadFlags))
+            if (FT_Load_Char(mFace_, cp, iLoadFlags))
             {
                 gui::out << gui::warning << "gui::gl::font : Cannot load character " << cp
                     << " in font \"" << sFontFile << "\"." << std::endl;
                 continue;
             }
 
-            if (FT_Get_Glyph(mFace->glyph, &mGlyph))
+            if (FT_Get_Glyph(mFace_->glyph, &mGlyph))
                 continue;
 
             if (mGlyph->format == FT_GLYPH_FORMAT_OUTLINE && uiOutline > 0)
@@ -182,10 +205,10 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
             FT_Glyph_To_Bitmap(&mGlyph, FT_RENDER_MODE_NORMAL, nullptr, true);
             FT_Bitmap& mBitmap = reinterpret_cast<FT_BitmapGlyph>(mGlyph)->bitmap;
 
-            size_t uiXBearing = std::max(0, int(mFace->glyph->metrics.horiBearingX >> 6));
+            size_t uiXBearing = std::max(0, int(mFace_->glyph->metrics.horiBearingX >> 6));
 
             FT_Int iAdvance = std::max(
-                int(uiXBearing + mBitmap.width), int(mFace->glyph->advance.x >> 6)
+                int(uiXBearing + mBitmap.width), int(mFace_->glyph->advance.x >> 6)
             );
 
             // If at end of row, jump to next line
@@ -198,7 +221,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
             ub32color::chanel* sBuffer = mBitmap.buffer;
             if (sBuffer)
             {
-                int iYBearing = iMaxBearingY - (mFace->glyph->metrics.horiBearingY >> 6);
+                int iYBearing = iMaxBearingY - (mFace_->glyph->metrics.horiBearingY >> 6);
 
                 for (int j = 0; j < int(mBitmap.rows);  ++j)
                 {
@@ -210,19 +233,6 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
 
             FT_Done_Glyph(mGlyph);
             mGlyph = nullptr;
-
-            if (bKerning_)
-            {
-                FT_Vector kern;
-                unsigned int prev, next;
-                for (uint cp2 = uiMinChar; cp2 <= uiMaxChar; ++cp2)
-                {
-                    prev = FT_Get_Char_Index(mFace, cp);
-                    next = FT_Get_Char_Index(mFace, cp2);
-                    if (!FT_Get_Kerning(mFace, prev, next, FT_KERNING_UNFITTED, &kern))
-                        mCI.lKerningInfo[cp2] = vector2f(kern.x >> 6, kern.y >> 6);
-                }
-            }
 
             mCI.mUVs.left   = x/float(uiFinalWidth);
             mCI.mUVs.top    = y/float(uiFinalHeight);
@@ -236,17 +246,15 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
         }
 
         // Get the width of a space ' ' (32) and tab '\t' (9)
-        if (!FT_Load_Char(mFace, 32, iLoadFlags))
+        if (!FT_Load_Char(mFace_, 32, iLoadFlags))
         {
             lCharacterList_[32].mUVs.left = 0.0f;
-            lCharacterList_[32].mUVs.right = (mFace->glyph->advance.x >> 6)/float(uiFinalWidth);
+            lCharacterList_[32].mUVs.right = (mFace_->glyph->advance.x >> 6)/float(uiFinalWidth);
             lCharacterList_[9].mUVs.left = 0.0f;
             lCharacterList_[9].mUVs.right = 4.0f*lCharacterList_[32].mUVs.right;
         }
 
         FT_Stroker_Done(mStroker);
-        FT_Done_Face(mFace);
-        FT_Done_FreeType(mFT);
 
         gl::material::premultiply_alpha(lData);
 
@@ -257,10 +265,16 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline) :
     {
         if (mGlyph) FT_Done_Glyph(mGlyph);
         if (mStroker) FT_Stroker_Done(mStroker);
-        if (mFace) FT_Done_Face(mFace);
-        FT_Done_FreeType(mFT);
+        if (mFace_) FT_Done_Face(mFace_);
+        release_freetype();
         throw;
     }
+}
+
+font::~font()
+{
+    if (mFace_) FT_Done_Face(mFace_);
+    release_freetype();
 }
 
 uint font::get_size() const
@@ -301,10 +315,16 @@ float font::get_character_height(char32_t uiChar) const
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 {
-    if (uiChar1 < uiMinChar || uiChar1 > uiMaxChar || uiChar2 < uiMinChar || uiChar2 > uiMaxChar) return 0.0f;
-
     if (bKerning_)
-        return lCharacterList_[uiChar1].lKerningInfo[uiChar2].x;
+    {
+        FT_Vector mKerning;
+        uint uiPrev = FT_Get_Char_Index(mFace_, uiChar1);
+        uint uiNext = FT_Get_Char_Index(mFace_, uiChar2);
+        if (!FT_Get_Kerning(mFace_, uiPrev, uiNext, FT_KERNING_UNFITTED, &mKerning))
+            return mKerning.x >> 6;
+        else
+            return 0.0f;
+    }
     else
         return 0.0f;
 }

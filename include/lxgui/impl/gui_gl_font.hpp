@@ -7,15 +7,19 @@
 #include <lxgui/gui_font.hpp>
 #include <vector>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace lxgui {
 namespace gui {
+    struct code_point_range;
+
 namespace gl
 {
     struct character_info
     {
-        uint                  uiCodePoint;
+        char32_t              uiCodePoint;
         quad2f                mUVs;
-        std::vector<vector2f> lKerningInfo;
     };
 
     /// A texture containing characters
@@ -28,11 +32,16 @@ namespace gl
     public :
 
         /// Constructor.
-        /** \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \param uiOutline The thickness of the outline (in points)
+        /** \param sFontFile   The name of the font file to read
+        *   \param uiSize      The requested size of the characters (in points)
+        *   \param uiOutline   The thickness of the outline (in points)
+        *   \param lCodePoints The list of Unicode characters to load
         */
-        font(const std::string& sFontFile, uint uiSize, uint uiOutline);
+        font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+            const std::vector<code_point_range>& lCodePoints);
+
+        /// Destructor.
+        ~font() override;
 
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
@@ -90,6 +99,8 @@ namespace gl
 
         std::shared_ptr<gl::material> pTexture_;
         std::vector<character_info> lCharacterList_;
+
+        FT_Face mFace_ = nullptr;
 
         uint uiSize_ = 0u;
         float fYOffset_ = 0.0f;

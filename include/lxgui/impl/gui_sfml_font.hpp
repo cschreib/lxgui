@@ -12,6 +12,8 @@
 
 namespace lxgui {
 namespace gui {
+    struct code_point_range;
+
 namespace sfml
 {
     /// A texture containing characters
@@ -23,11 +25,13 @@ namespace sfml
     public :
 
         /// Constructor.
-        /** \param sFontFile The name of the font file to read
-        *   \param uiSize    The requested size of the characters (in points)
-        *   \param uiOutline The thickness of the outline (in points)
+        /** \param sFontFile   The name of the font file to read
+        *   \param uiSize      The requested size of the characters (in points)
+        *   \param uiOutline   The thickness of the outline (in points)
+        *   \param lCodePoints The list of Unicode characters to load
         */
-        font(const std::string& sFontFile, uint uiSize, uint uiOutline);
+        font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+            const std::vector<code_point_range>& lCodePoints);
 
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels

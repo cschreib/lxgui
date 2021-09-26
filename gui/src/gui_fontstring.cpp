@@ -5,6 +5,7 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
+#include "lxgui/gui_localizer.hpp"
 
 #include <sstream>
 
@@ -228,16 +229,19 @@ void font_string::create_text_object_()
 
     renderer* pRenderer = pManager_->get_renderer();
 
+    const auto& lCodePoints = pManager_->get_localizer().get_allowed_code_points();
+
     std::shared_ptr<gui::font> pOutlineFont;
     if (bIsOutlined_)
     {
         pOutlineFont = pRenderer->create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
-            std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))));
+            std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))),
+            lCodePoints);
     }
 
     pText_ = std::unique_ptr<text>(new text(pRenderer,
-        pRenderer->create_atlas_font("GUI", sFontName_, uiPixelHeight),
+        pRenderer->create_atlas_font("GUI", sFontName_, uiPixelHeight, 0u, lCodePoints),
         pOutlineFont));
 
     pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
