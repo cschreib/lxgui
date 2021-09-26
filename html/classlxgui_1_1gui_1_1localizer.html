@@ -104,6 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a30c25dcabb9fa6416fe369ba7fcf4270"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1localizer.html#a30c25dcabb9fa6416fe369ba7fcf4270">clear_translations</a> ()</td></tr>
 <tr class="memdesc:a30c25dcabb9fa6416fe369ba7fcf4270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all previously loaded translations.  <a href="classlxgui_1_1gui_1_1localizer.html#a30c25dcabb9fa6416fe369ba7fcf4270">More...</a><br /></td></tr>
 <tr class="separator:a30c25dcabb9fa6416fe369ba7fcf4270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb83064072d1093235c304b3039e6de9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1localizer.html#abb83064072d1093235c304b3039e6de9">format_string</a> (std::string_view sMessage, sol::variadic_args mVArgs) const</td></tr>
+<tr class="memdesc:abb83064072d1093235c304b3039e6de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates a string with a certain number of arguments from Lua (zero or many).  <a href="classlxgui_1_1gui_1_1localizer.html#abb83064072d1093235c304b3039e6de9">More...</a><br /></td></tr>
+<tr class="separator:abb83064072d1093235c304b3039e6de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ea0dde6a028586038b59c1959a5b469"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1localizer.html#a0ea0dde6a028586038b59c1959a5b469">localize</a> (std::string_view sKey, sol::variadic_args mVArgs) const</td></tr>
 <tr class="memdesc:a0ea0dde6a028586038b59c1959a5b469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Translates a string with a certain number of arguments from Lua (zero or many).  <a href="classlxgui_1_1gui_1_1localizer.html#a0ea0dde6a028586038b59c1959a5b469">More...</a><br /></td></tr>
 <tr class="separator:a0ea0dde6a028586038b59c1959a5b469"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,7 +162,48 @@ Public Member Functions</h2></td></tr>
 
 <p>Removes all previously loaded translations. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00210">210</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00214">214</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abb83064072d1093235c304b3039e6de9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb83064072d1093235c304b3039e6de9">&#9670;&nbsp;</a></span>format_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lxgui::gui::localizer::format_string </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sMessage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::variadic_args&#160;</td>
+          <td class="paramname"><em>mVArgs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Translates a string with a certain number of arguments from Lua (zero or many). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sMessage</td><td>The string to format (e.g., "Player {0} has {1} HP."). </td></tr>
+    <tr><td class="paramname">mVArgs</td><td>A variadic list of formatting input arguments from a Sol Lua state. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The formatted string.</dd></dl>
+<p>The string to format must follow the rules of libfmt format strings. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00230">230</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -181,7 +225,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the current locale (used to format numbers). </p>
 <dl class="section return"><dt>Returns</dt><dd>The current locale. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00124">124</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00128">128</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -203,7 +247,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the list of code names of the preferred languages (used to translate messages and strings). </p>
 <dl class="section return"><dt>Returns</dt><dd>The list of code name of the preferred languages. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00129">129</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00133">133</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -232,7 +276,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The file must be a Lua script. It will be loaded in a sandboxed Lua state (independent of the Lua state of the GUI). The script must define a table called "localize", which will be scanned to add new translations for the current locale (each file must only contain translations for one language; separate different languages into different files). Each item of the table must have a string key identifying the localized content, e.g., "player_health". This key must be the same for all languages, and serves to uniquely identify the translatable sentence / text. The format of this string is arbitrary. The value of each element must be either a string, of a function. If the value is a string, it must be a fmtlib format string. For example: "{0:L} HP" expects one input argument (here a number representing the player's health). If the value of this argument is 5000 and the locale is enUS, this will result in "5,000 HP". If the value is a Lua function, it must take the same number of input values in all languages, and must return a translated string. See <a class="el" href="classlxgui_1_1gui_1_1localizer.html#a0ea0dde6a028586038b59c1959a5b469" title="Translates a string with a certain number of arguments from Lua (zero or many).">localize()</a> for more information on translation arguments. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00173">173</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00177">177</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -261,7 +305,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Based on the current language (see get_language()), this function will scan files in the supplied folder with name "{language}{REGION}.lua", and pick the combination of "language" and "REGION" closest to the currently configured language. It then loads translations from this file using <a class="el" href="classlxgui_1_1gui_1_1localizer.html#ae43c342602d51f30cf7420941545d67a" title="Loads new translations from a file.">load_translation_file()</a> (see the documentation of this function for more information). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00134">134</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00138">138</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -312,7 +356,7 @@ template&lt;typename ... Args&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The translated string, or sKey if not found or an error occurred.</dd></dl>
 <p>This function will search the translation database (created from loading translations with <a class="el" href="classlxgui_1_1gui_1_1localizer.html#ad1e5be9b555a844ded82de3af491298c" title="Loads new translations from a folder, selecting the language automatically.">load_translations()</a> or <a class="el" href="classlxgui_1_1gui_1_1localizer.html#ae43c342602d51f30cf7420941545d67a" title="Loads new translations from a file.">load_translation_file()</a>) for a string matching sKey. If one is found, it will forward the supplied arguments to the translated formatting function, which will insert the arguments at the proper place for the selected language. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8hpp_source.html#l00128">128</a> of file <a class="el" href="gui__localizer_8hpp_source.html">gui_localizer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8hpp_source.html#l00136">136</a> of file <a class="el" href="gui__localizer_8hpp_source.html">gui_localizer.hpp</a>.</p>
 
 </div>
 </div>
@@ -353,7 +397,7 @@ template&lt;typename ... Args&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The translated string, or sKey if not found or an error occurred. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See the other overload for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00226">226</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00252">252</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -409,7 +453,7 @@ template&lt;typename ... Args&gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This function should only be called before the UI is loaded. If you need to change the locale after the UI has been loaded: close the UI, set the locale, and load the UI again. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00103">103</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00107">107</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -438,7 +482,7 @@ template&lt;typename ... Args&gt; </div>
 </dl>
 <p>This function specifies which languages to use for translating messages. The languages listed in the supplied array will be tried one after the other, until a translation is found. Each language in the list must be formatted as "{language}{REGION}" with "{language}" a two-letter lower case word, and "{REGION}" a two-letter upper case word. For example: "enUS" for United State English, and "enGB" for British English, "frFR" for mainland French, etc. The default value is {"enUS"}. </p><dl class="section note"><dt>Note</dt><dd>This function should only be called before the UI is loaded. If you need to change the language after the UI has been loaded: close the UI, set the language, and load the UI again. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00112">112</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00116">116</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -449,7 +493,7 @@ template&lt;typename ... Args&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Sep 25 2021 16:41:42 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Sep 26 2021 08:37:01 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
