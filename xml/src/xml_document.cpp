@@ -36,7 +36,7 @@ document::document(const std::string& sDefFileName, std::ostream& mOut) :
 }
 
 document::document(const std::string& sFileName, const std::string& sDefFileName, std::ostream& mOut) :
-    out(mOut.rdbuf()),sFileName_(sFileName), sDefFileName_(sDefFileName)
+    out(mOut.rdbuf()), sFileName_(sFileName), sDefFileName_(sDefFileName)
 {
     mXMLState_.set_document(this);
     mDefState_.set_document(this);
