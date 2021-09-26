@@ -37,6 +37,8 @@ There are plenty of different GUI libraries out there. They all have something t
 
 ![Sample screenshot](/gui/test/expected.png)
 
+This screenshot was generated on a Release (optimised) build of lxgui with the OpenGL+SFML back-end, on a system running Linux Mint 20.2, with a Ryzen 5 2600 CPU, 16GB of RAM, an Nvidia GTX 960 2GB GPU with proprietary drivers, and a standard resolution monitor.
+
 **Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
 
 The first available rendering back-end uses raw OpenGL. It depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance.
