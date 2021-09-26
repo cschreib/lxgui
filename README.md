@@ -37,7 +37,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 ![Sample screenshot](/gui/test/expected.png)
 
-**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
+**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
 
 The first available rendering back-end uses raw OpenGL. It depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance.
 
@@ -102,6 +102,8 @@ cmake --install . --config Release
 
 ### Required dependencies (for all back-ends)
 
+Install Lua (>5.1):
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y lua-devel
@@ -121,6 +123,8 @@ sudo apt install liblua5.2-dev
 
 
 ### Dependencies for pure SFML back-end
+
+Install SFML2:
 
 - dnf based distros (Fedora):
 ```
@@ -142,6 +146,8 @@ vcpkg install sfml
 
 ### Dependencies for pure SDL back-end
 
+Install SDL2, SDL2_image, and SDL2_ttf:
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel SDL2_ttf-devel
@@ -161,6 +167,8 @@ vcpkg install sdl2 sdl2-ttf sdl2-image
 
 
 ### Dependencies for OpenGL + SFML back-end
+
+Install OpenGL, Freetype, libpng, and SFML2:
 
 - dnf based distros (Fedora):
 ```
@@ -182,6 +190,9 @@ vcpkg install sfml zlib libpng freetype glew
 
 
 ### Dependencies for OpenGL + SDL back-end
+
+Install OpenGL, Freetype, libpng, SDL2, and SDL2_image:
+
 - dnf based distros (Fedora):
 ```
 sudo dnf install -y SDL2-devel SDL2_image-devel freetype-devel mesa-libGLU-devel
@@ -205,7 +216,7 @@ vcpkg install sdl2 sdl2-image zlib libpng freetype glew
 
 ## Build for WebAssembly / Emscripten
 
-The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering. SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (at the time of writing this guide, the Freetype version in Emscripten was too old). Pre-compiled libraries are provided in `dependencies/wasm.zip`, but you can also build them from source yourself easily.
+The WebAssembly build only supports the SDL2 back-end for input, and either the SDL2 or OpenGL back-ends for rendering (programmable pipeline only; the legacy fixed pipeline is not supported in WebGL). SDL2, OpenGL, and libpng are all already provided by default in Emscripten, so the only required dependency to setup is Lua and Freetype (at the time of writing this guide, the Freetype version in Emscripten was too old). Pre-compiled libraries are provided in `dependencies/wasm.zip`, but you can also build them from source yourself easily.
 
 The SDL2 rendering back-end will support all platforms supported by SDL2, which should cover pretty much everything, but it may run slower on some platforms. The OpenGL back-end uses OpenGL ES 3, hence will only run on platforms supporting WebGL2, but it should provide the best performance. In practice, performance is highly dependent on the the host platform and browser. For example: earlier in the development of lxgui, and on my desktop machine, the SDL2 back-end was slower (30 FPS) than the OpenGL back-end (40 FPS) in Firefox, but in Chrome they both ran at the maximum 60 FPS. This is likely to change in the future, with browser updates and changes in the lxgui implementation.
 
@@ -222,13 +233,13 @@ emmake make install
 
 # How do I use it? A tutorial.
 
-Setting up the GUI in C++ is rather straight forward:
+Setting up the GUI in C++ is rather straightforward. The example code below is based on the SFML back-end, but can be adapted to other back-ends easily (see examples for help).
 
 ```c++
-// Create an SFML render window, for example
+// Create an SFML render window
 sf::RenderWindow mWindow;
 
-// Initialize the GUI
+// Initialize the GUI using the SFML back-end
 std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
@@ -236,13 +247,18 @@ input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
     pManager->get_input_manager()->get_source()
 );
 
-// Load files:
-//  - first set the directory in which the interface is located
+// Load GUI addons:
+// In lxgui, the GUI is formed of multiple modular "addons", which each define
+// the appearance and behavior of a specific GUI element (e.g., one addon for
+// the player status bars, one addon for the inventory, etc.).
+// See below for an example addon.
+
+//  - First set the directory in which the GUI addons are located
 pManager->add_addon_directory("interface");
-//  - create the Lua state
+//  - Then create the Lua state
 pManager->create_lua([&pManager](){
     // This code might be called again later on, for example when one
-    // reloads the GUI (the lua state is destroyed and created again).
+    // reloads the GUI (the Lua state is destroyed and created again).
     //  - register the needed widgets
     pManager->register_region_type<gui::texture>();
     pManager->register_region_type<gui::font_string>();
@@ -251,11 +267,11 @@ pManager->create_lua([&pManager](){
     pManager->register_frame_type<gui::edit_box>();
     pManager->register_frame_type<gui::scroll_frame>();
     pManager->register_frame_type<gui::status_bar>();
-    //  - register additional lua "glue" functions if needed
+    //  - register your own additional Lua "glue" functions, if needed
     // ...
 });
 
-//  - and eventually load all files
+//  - and eventually load all addons
 pManager->read_files();
 
 // Start the main loop
@@ -269,7 +285,7 @@ while (true)
         // ...
 
         // Send these to the input manager
-        pSFMLHandler->on_sfml_event(mEvent);
+        pSFMLInput->on_sfml_event(mEvent);
     }
 
     // Compute time spent since last GUI update
@@ -286,9 +302,9 @@ while (true)
 // Resources are cleared up automatically on destruction
 ```
 
-With these few lines of code, you can then create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
+With these few lines of code, you can create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
 
-First create a new addon, by going to the "interface" folder, and creating a new folder "FPSCounter". In this folder, we create a "table of content" file which lists all the .xml and .lua files this addons uses, and some other informations (addon author, GUI version, saved variables, ...). It has to be called "FPSCounter.toc":
+First create a new addon, by going to the `interface` folder, and creating a new folder `FPSCounter`. In this folder, we create a "table of content" file which lists all the `*.xml` and `*.lua` files this addons uses, and some other informations (addon author, GUI version, saved variables, ...). It has to be called `FPSCounter.toc` (after the name of the addon directory):
 
 ```
 ## Interface: 0001
@@ -300,7 +316,7 @@ First create a new addon, by going to the "interface" folder, and creating a new
 addon.xml
 ```
 
-As you can see, we will only require a single .xml file : "addon.xml". Let's create it in the same folder. Every XML file must contain a <Ui> tag :
+As you can see, we will only require a single XML file: `addon.xml`. Let's create it in the same folder. Every XML file must contain a `<Ui>` tag:
 
 ```xml
 <Ui>
@@ -318,7 +334,7 @@ Then, within this tag, we need to create a frame (which is more or less a GUI co
     </Frame>
 ```
 
-This creates a Frame named "FPSCounter" that fills the whole screen: the <Anchor> tags forces the top-left and bottom-right corners to match the screen's top-left and bottom-right corners. Now, within the Frame, we create a FontString object, that can render text:
+This creates a Frame named `FPSCounter` that fills the whole screen: the `<Anchor>` tags forces the top-left and bottom-right corners to match the screen's top-left and bottom-right corners. Now, within the Frame, we create a FontString object, which can render text:
 
 ```xml
     <Frame name="FPSCounter">
@@ -341,9 +357,13 @@ This creates a Frame named "FPSCounter" that fills the whole screen: the <Anchor
     </Frame>
 ```
 
-We've named our FontString "$parentText": "$parent" gets replaced by it's parent name, so in the end it is called "FPSCounterText". Intuitively, the "font" attribute specifies which font file to use for rendering (can be a .ttf or .otf file), "fontHeight" the size of the font, "justifyH" and "justifyV" gives the horizontal and vertical alignment, and "outline" creates a black border around the letters, so that it is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset, and give it a green color.
+We named our FontString `$parentText`. In names, `$parent` gets automatically replaced by the name of the object's parent; in this case, its full name will end up as `FPSCounterText`.
 
-Now that the GUI structure is in place, we still need to display the number of frame per second. To do so, we will define two "scripts" for the "FPSCounter" Frame:
+Intuitively, the `font` attribute specifies which font file to use for rendering (can be a `*.ttf` or `*.otf` file), `fontHeight` the size of the font (in points), `justifyH` and `justifyV` specify the horizontal and vertical alignment, and `outline` creates a black border around the letters, so that the text is readable regardless of the background content. We anchor it at the bottom right corner of its parent frame, with a small offset in the `<Offset>` tag (also specified in points), and give it a green color with the `<Color>` tag.
+
+NB: the GUI positioning is done in "points". By default, on traditional displays a point is equivalent to a pixel, but it can be equivalent to two or more pixels on modern hi-DPI displays. In addition, the GUI can always be rescaled by an abitrary scaling factor (in the same way that you can zoom on a web page in your browser). This rescaling factor is set to `1.0` by default, but changing its value also changes the number of pixels per points.
+
+Now that the GUI structure is in place, we still need to display the number of frame per second. To do so, we will define two "scripts" for the `FPSCounter` Frame:
 
 ```xml
         <Scripts>
@@ -369,10 +389,11 @@ Now that the GUI structure is in place, we still need to display the number of f
         </Scripts>
 ```
 
-The "OnLoad" script gets executed only once, when the Frame is created. It is used here to initialize some variables. The "OnUpdate" script is called every frame (use it carefully...). It provides the time elapsed since last update in the "arg1" variable.  We use it to record the number of frames that are rendered, and update the FPS counter every half seconds.
-The "self" variable in Lua is the equivalent of "this" in C++: it is a reference to the "FPSCounter" Frame. Note that, since we've called the FontString "$parentText", we can use the handy shortcut "self.Text" instead of the full name "FPSCounterText" to reference the FontString object in Lua.
+The `<OnLoad>` script gets executed only once, when the Frame is created. It is used here to initialize some variables. The `<OnUpdate>` script is called every frame (use it carefully...). It provides the time elapsed since last update in the `arg1` variable. We use it to record the number of frames that are rendered, and update the FPS counter every half seconds.
 
-Once this is done, we have the full .xml file:
+The `self` variable in Lua is the equivalent of `this` in C++: it is a reference to the object running the script, here the `FPSCounter` Frame. Note that, since we called the FontString `$parentText`, we can use the handy shortcut `self.Text` instead of the full name `FPSCounterText` to reference the FontString object in Lua. This is good practice, and allows for more generic and modular code.
+
+Once this is done, we have the full XML file:
 
 ```xml
 <Ui>
@@ -418,16 +439,17 @@ Once this is done, we have the full .xml file:
 </Ui>
 ```
 
-... and a working GUI addon !
-One last thing to do before being able to see it in your program is to go to the "interface" folder, and create a file called "addons.txt". It will contain the list of addons that you want to load. In our case just write:
+... and a working GUI addon!
+
+One last thing to do before being able to see it in your program is to go to the `interface` folder, and create a file called `addons.txt`. This file must exist, and must contain the list of addons that you want to load. In our case just write:
 
 ```
 FPSCounter:1
 ```
 
-The "1" means "load". If you put a "0" or remove that line, your addon will not be loaded.
+The `1` means "load". If you put a `0` or remove that line, your addon will not be loaded.
 
-Doing the very same thing in C++ would give the following code :
+Doing the very same thing in C++ would give the following code:
 
 ```c++
 // Create the Frame
@@ -443,7 +465,7 @@ pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
 pFont->set_justify_h(gui::text::alignment::RIGHT);
 pFont->set_outlined(true);
 pFont->set_text_color(gui::color::GREEN);
-pFont->notify_loaded();
+pFont->notify_loaded(); // must be called on all objects when they are fully set up
 
 // Create the scripts in C++ (one can also provide a string containing some Lua code)
 float update_time = 0.5f, timer = 1.0f;
@@ -471,4 +493,4 @@ pFrame->notify_loaded();
 
 As you can see from the screenshot above, this system can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
 
-Included in the source package (in the "gui/test" directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot above. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
+Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot above. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
