@@ -3,8 +3,12 @@
 <!-- MarkdownTOC autolink="true" -->
 
 - [What is lxgui?](#what-is-lxgui)
-- [List of the available widgets](#list-of-the-available-widgets)
-- [List of configurable rendering options](#list-of-configurable-rendering-options)
+    - [In a nutshell](#in-a-nutshell)
+    - [Available GUI widgets](#available-gui-widgets)
+    - [Demonstration](#demonstration)
+    - [Mandatory screenshot](#mandatory-screenshot)
+    - [Front-end and back-ends](#front-end-and-back-ends)
+    - [Configurable rendering options](#configurable-rendering-options)
 - [Getting started](#getting-started)
     - [Build for Linux, OSX, Windows](#build-for-linux-osx-windows)
         - [Required dependencies \(for all back-ends\)](#required-dependencies-for-all-back-ends)
@@ -14,10 +18,15 @@
         - [Dependencies for OpenGL + SDL back-end](#dependencies-for-opengl--sdl-back-end)
     - [Build for WebAssembly / Emscripten](#build-for-webassembly--emscripten)
 - [How do I use it? A tutorial.](#how-do-i-use-it-a-tutorial)
+    - [Setting up the GUI in C++](#setting-up-the-gui-in-c)
+    - [Creating a GUI addon in XML and Lua](#creating-a-gui-addon-in-xml-and-lua)
+    - [Equivalent in pure C++](#equivalent-in-pure-c)
 
 <!-- /MarkdownTOC -->
 
 # What is lxgui?
+
+## In a nutshell
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
@@ -31,28 +40,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages with roman characters (and their accentuated variants) are supported.
 * **A familiar API...**. The XML and Lua APIs are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 
-**For a quick demonstration and introduction.** A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `gui/examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
-
-**Mandatory screenshot.** Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable Lua and XML files.
-
-![Sample screenshot](/gui/test/expected.png)
-
-This screenshot was generated on a Release (optimised) build of lxgui with the OpenGL+SFML back-end, on a system running Linux Mint 20.2, with a Ryzen 5 2600 CPU, 16GB of RAM, an Nvidia GTX 960 2GB GPU with proprietary drivers, and a standard resolution monitor. All optimisations were turned on except screen caching.
-
-**Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
-
-The first available rendering back-end uses raw OpenGL. It depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance.
-
-The second available rendering back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML.
-
-The third rendering back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading.
-
-For the input implementation, back-ends are provided using either SFML2 or SDL2. The SDL2 input back-end also depends on SDL2_image (for loading cursor files).
-
-The WebAssembly build supports all back-ends except SFML.
-
-
-# List of the available widgets
+## Available GUI widgets
 
 * **uiobject** (abstract): the very base of every GUI widget; can be placed on screen, and that's about it.
 * **layered_region** (abstract): can be rendered on the screen.
@@ -66,8 +54,45 @@ The WebAssembly build supports all back-ends except SFML.
 * **edit_box**: an editable text box (multi-line edit_boxes are not yet fully supported).
 * **scroll_frame**: a frame that has scrollable content.
 
+As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
 
-# List of configurable rendering options
+## Demonstration
+
+A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `gui/examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
+
+Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot below. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
+
+
+## Mandatory screenshot
+
+Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable Lua and XML files.
+
+![Sample screenshot](/gui/test/expected.png)
+
+This screenshot was generated on a Release (optimised) build of lxgui with the OpenGL+SFML back-end, on a system running Linux Mint 20.2, with a Ryzen 5 2600 CPU, 16GB of RAM, an Nvidia GTX 960 2GB GPU with proprietary drivers, and a standard resolution monitor. All optimisations were turned on except screen caching.
+
+
+## Front-end and back-ends
+
+In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule). XML parsing is done using a custom library included in this repository.
+
+Available rendering back-ends:
+
+ - OpenGL. This back-end depends on [Freetype](https://www.freetype.org/) for font loading and rendering, and [libpng](http://www.libpng.org/pub/png/libpng.html) for texture loading (hence, only PNG textures are supported, but other file types can be added with little effort), as well as [GLEW](http://glew.sourceforge.net/) for OpenGL support. It can be compiled either in "legacy" OpenGL (fixed pipeline) for maximum compatibility, or OpenGL 3 (programmable pipeline) for maximum performance. This back-end generally offers the best possible performance, but it also has the largest number of third-party dependencies, hence it can be harder to set up.
+
+ - SFML2. This back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML. It runs a little bit slower than the OpenGL back-end, as the extra layer from SFML adds a bit of overhead. At present, some limitations in the SFML API also prevents using VBOs.
+
+ - SDL2. This back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading. It is the slowest available back-end, but also the one that supports the largest number of platforms (including platforms lacking a GPU). VBOs are not supported, and neither is per-vertex color.
+
+Available input back-ends:
+
+ - SFML2. This back-ends depends on SFML-Window for event handling and SFML-Graphics for loading cursor files. It supports all features except for the automatic detection of hi-DPI displays.
+ - SDL2. This back-end uses SDL2 for event handling and SDL2_image for loading cursor files. It supports all features.
+
+If you have the choice, the currently recommended back-ends are OpenGL for rendering, and SDL for input. The WebAssembly build supports all back-ends except SFML.
+
+
+## Configurable rendering options
 
 - Enable/disable vertex caches (VBOs). When supported by the rendering back-end, vertex caches always improve performance by reducing the transfer of data between the CPU and GPU. This is currently supported on all back-ends except SDL and the "legacy" OpenGL fixed-pipeline.
 - Enable/disable quad batching. When enabled, quads sharing the same texture and rendering modes (i.e., blend mode, view) are accumulated into a vertex array on the CPU, which is then sent to the GPU and drawn in a single operation. This reduces the number of draw calls, and synchronization points between the CPU and GPU, hence can significantly improve performances. This is particularly the case on platforms where draw calls are expensive, like WebAssembly.
@@ -236,6 +261,8 @@ emmake make install
 
 # How do I use it? A tutorial.
 
+## Setting up the GUI in C++
+
 Setting up the GUI in C++ is rather straightforward. The example code below is based on the SFML back-end, but can be adapted to other back-ends easily (see examples for help).
 
 ```c++
@@ -306,6 +333,9 @@ while (true)
 ```
 
 With these few lines of code, you can create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
+
+
+## Creating a GUI addon in XML and Lua
 
 First create a new addon, by going to the `interface` folder, and creating a new folder `FPSCounter`. In this folder, we create a "table of content" file which lists all the `*.xml` and `*.lua` files this addons uses, and some other informations (addon author, GUI version, saved variables, ...). It has to be called `FPSCounter.toc` (after the name of the addon directory):
 
@@ -452,7 +482,10 @@ FPSCounter:1
 
 The `1` means "load". If you put a `0` or remove that line, your addon will not be loaded.
 
-Doing the very same thing in C++ would give the following code:
+
+## Equivalent in pure C++
+
+Re-creating the above addon in pure C++ is perfectly possible. This can be done with the following code:
 
 ```c++
 // Create the Frame
@@ -493,7 +526,3 @@ pFrame->define_script("OnUpdate",
 // Tell the Frame is has been fully loaded.
 pFrame->notify_loaded();
 ```
-
-As you can see from the screenshot above, this system can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
-
-Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot above. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
