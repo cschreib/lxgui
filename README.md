@@ -21,6 +21,7 @@
 
 There are plenty of different GUI libraries out there. They all have something that makes them unique. This is also the case of lxgui. Its main advantages are:
 
+* **Fast**. The library implements a number of caching mechanisms to minimize the number of GPU draw calls and overall CPU usage. This enables real-time rendering even on more limited platforms, such as WebAssembly on mobile systems. See the [List of configurable rendering options](#list-of-configurable-rendering-options) for more information.
 * **Platform independent**. The library is coded in standard C++17. Platform dependent concepts, such as rendering or input, are handled by back-end plugins (for rendering: SFML, SDL, or pure OpenGL; for input: SFML or SDL). Builds on Linux, MacOS, Windows, and WebAssembly.
 * **High-DPI aware**. The interface can be scaled by an arbitrary factor when rendered on the screen. This can be used to improve accessibility for visually-impaired users.
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
@@ -28,8 +29,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **Design with XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of Lua+XML is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages with roman characters (and their accentuated variants) are supported.
-* **A familiar API...**. The XML and Lua API are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
-* **Caching**. The whole GUI can be cached into screen-sized render targets, so that interfaces with lots of widgets render extremely fast (provided it is not animated, and mostly event-driven).
+* **A familiar API...**. The XML and Lua APIs are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 
 **For a quick demonstration and introduction.** A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `gui/examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
 
@@ -37,7 +37,7 @@ There are plenty of different GUI libraries out there. They all have something t
 
 ![Sample screenshot](/gui/test/expected.png)
 
-This screenshot was generated on a Release (optimised) build of lxgui with the OpenGL+SFML back-end, on a system running Linux Mint 20.2, with a Ryzen 5 2600 CPU, 16GB of RAM, an Nvidia GTX 960 2GB GPU with proprietary drivers, and a standard resolution monitor.
+This screenshot was generated on a Release (optimised) build of lxgui with the OpenGL+SFML back-end, on a system running Linux Mint 20.2, with a Ryzen 5 2600 CPU, 16GB of RAM, an Nvidia GTX 960 2GB GPU with proprietary drivers, and a standard resolution monitor. All optimisations were turned on except screen caching.
 
 **Front-end and back-ends.** In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included automatically as a submodule), and [utfcpp](https://github.com/nemtrif/utfcpp) (also included as a submodule). XML parsing is done using a custom library included in this repository.
 
@@ -73,8 +73,9 @@ The WebAssembly build supports all back-ends except SFML.
 - Enable/disable quad batching. When enabled, quads sharing the same texture and rendering modes (i.e., blend mode, view) are accumulated into a vertex array on the CPU, which is then sent to the GPU and drawn in a single operation. This reduces the number of draw calls, and synchronization points between the CPU and GPU, hence can significantly improve performances. This is particularly the case on platforms where draw calls are expensive, like WebAssembly.
 - Enable/disable texture atlases. Texture atlases combine multiple textures into a single GPU texture, so that multiple objects can be drawn with fewer GPU state changes. This reduces the number of draw calls, and can improve performance, particularly when quad batching is enabled. However, this also disables automatic texture tiling, which requires creating more vertices when tiling is needed. This can decrease performance if neither quad batching nor vertex caches are enabled.
 - Texture atlas page size. This defaults to 4096 (or lower, if the back-end does not support textures of this size). This provides a decent amount of batching without using too much memory. This can be increased to improve draw call batching if the machine has enough free GPU memory.
+- Enable/disable render target caching. When render targets are supported by the rendering back-end and this option is turned on, each "strata" of the GUI (i.e., global layers) is rendered on a separate screen-size render target, which is only re-rendered if its content changes. This increases GPU memory usage, but can significantly improve performance for GUIs that are mostly static and/or event-driven. For GUIs that update on every frame (i.e., with animations or frequent data update), the performance can be negatively affected.
 
-All options are enabled by default (if supported), which should offer the best performance in most cases. But it can be that your particular use case does not benefit as much from the various caching and batching implementations; this can be easily checked by trying various combinations of these options, and selecting the combination that offers the best performances for your particular use case.
+Except for render target caching, all options are enabled by default (if supported), which should offer the best performance in most cases. It can be that your particular use case does not benefit as much from the default caching and batching implementations; this can be easily checked by trying various combinations of these options, and selecting the combination that offers the best performances for your particular use case and target hardware.
 
 
 # Getting started
