@@ -105,6 +105,14 @@ public:
     void clear_translations();
 
     /// Translates a string with a certain number of arguments from Lua (zero or many).
+    /** \param sMessage The string to format (e.g., "Player {0} has {1} HP.").
+    *   \param mVArgs A variadic list of formatting input arguments from a Sol Lua state.
+    *   \return The formatted string.
+    *   \details The string to format must follow the rules of libfmt format strings.
+    */
+    std::string format_string(std::string_view sMessage, sol::variadic_args mVArgs) const;
+
+    /// Translates a string with a certain number of arguments from Lua (zero or many).
     /** \param sKey   The key identifying the sentence / text to translate (e.g., "{player_health}").
     *                 Must start with '{' and end with '}'.
     *   \param mVArgs A variadic list of translation input arguments from a Sol Lua state.

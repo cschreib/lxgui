@@ -263,6 +263,19 @@ void localizer::register_on_lua(sol::state& mSol)
     {
         return localize(sKey, mVArgs);
     });
+
+    /** Format a string with arguments.
+    *   The arguments are passed as individual parameters after the string to translate.
+    *   There can be as many arguments are needed (including zero).
+    *   @function format_string
+    *   @tparam string message The string with formatting specifiers (e.g., "Player {0} has {1} HP.")
+    *   @param ... Data to display in the formatted string (e.g., the player's health value).
+    *   @treturn string The formatted string encoded as UTF-8.
+    */
+    mSol.set_function("format_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
+    {
+        return format_string(sKey, mVArgs);
+    });
 }
 
 }

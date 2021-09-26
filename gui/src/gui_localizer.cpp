@@ -91,12 +91,16 @@ localizer::localizer() : lLanguages_(get_default_languages())
         sol::lib::os, sol::lib::string, sol::lib::debug
     );
 
-    // Give the translation Lua state the localize_string function, so
+    // Give the translation Lua state the localize_string and format_string function, so
     // it can call it recursively as needed, but not the other functions
     // which could load more translation strings.
     mLua_.set_function("localize_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
     {
         return localize(sKey, mVArgs);
+    });
+    mLua_.set_function("format_string", [&](const std::string& sKey, sol::variadic_args mVArgs)
+    {
+        return format_string(sKey, mVArgs);
     });
 }
 
@@ -223,6 +227,28 @@ localizer::map_type::const_iterator localizer::find_key_(std::string_view sKey) 
     return lMap_.find(std::hash<std::string_view>{}(sSubstring));
 }
 
+std::string localizer::format_string(std::string_view sMessage, sol::variadic_args mVArgs) const
+{
+    fmt::dynamic_format_arg_store<fmt::format_context> mStore;
+    for (auto&& mArg : mVArgs)
+    {
+        lxgui::utils::variant mVariant;
+        if (!mArg.is<sol::lua_nil_t>())
+            mVariant = mArg;
+
+        std::visit([&](auto& mValue)
+        {
+            using inner_type = std::decay_t<decltype(mValue)>;
+            if constexpr (std::is_same_v<inner_type, lxgui::utils::empty>)
+                mStore.push_back(static_cast<const char*>(""));
+            else
+                mStore.push_back(mValue);
+        }, mVariant);
+    }
+
+    return fmt::vformat(mLocale_, sMessage, mStore);
+}
+
 std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs) const
 {
     if (!is_key_valid_(sKey)) return std::string{sKey};
@@ -230,33 +256,16 @@ std::string localizer::localize(std::string_view sKey, sol::variadic_args mVArgs
     auto mIter = find_key_(sKey);
     if (mIter == lMap_.end()) return std::string{sKey};
 
-    return std::visit([&](const auto& item)
+    return std::visit([&](const auto& mItem)
     {
-        using inner_type = std::decay_t<decltype(item)>;
+        using inner_type = std::decay_t<decltype(mItem)>;
         if constexpr (std::is_same_v<inner_type, std::string>)
         {
-            fmt::dynamic_format_arg_store<fmt::format_context> mStore;
-            for (auto&& arg : mVArgs)
-            {
-                lxgui::utils::variant v;
-                if (!arg.is<sol::lua_nil_t>())
-                    v = arg;
-
-                std::visit([&](auto& t)
-                {
-                    using inner_type = std::decay_t<decltype(t)>;
-                    if constexpr (std::is_same_v<inner_type, lxgui::utils::empty>)
-                        mStore.push_back(static_cast<const char*>(""));
-                    else
-                        mStore.push_back(t);
-                }, v);
-            }
-
-            return fmt::vformat(mLocale_, item, mStore);
+            return format_string(mItem, mVArgs);
         }
         else
         {
-            auto mResult = item(mVArgs);
+            auto mResult = mItem(mVArgs);
             if (!mResult.valid())
             {
                 sol::error mError = mResult;
