@@ -408,8 +408,22 @@ void localizer::add_allowed_code_points(const std::string& sUnicodeGroup)
 
 void localizer::auto_detect_allowed_code_points()
 {
-    // TODO: fill up that list
-    static const std::vector<std::string> lLatinSupplementLanguages = {};
+    static const std::vector<std::string> lLatinScript =
+    {
+        "ca", "co", "cs", "da", "de", "en", "es", "et", "fi", "fr", "ga", "hr", "hu",
+        "it", "lt", "lv", "mt", "nl", "oc", "pl", "pt", "ro", "sk", "sl", "sv", "tr"
+    };
+
+    static const std::vector<std::string> lCyrilicScript =
+    {
+        "ab", "az", "ba", "be", "bg", "cv", "hr", "kk", "kv", "ky", "mc", "mn", "os",
+        "ru", "sr", "tg", "tt", "uk", "uz"
+    };
+
+    static const std::vector<std::string> lDevanagariScript =
+    {
+        "hi", "mr", "ne", "sa"
+    };
 
     clear_allowed_code_points();
 
@@ -425,9 +439,60 @@ void localizer::auto_detect_allowed_code_points()
             return std::find(lList.begin(), lList.end(), sCode) != lList.end();
         };
 
-        if (is_any_of(lLatinSupplementLanguages))
+        // Language groups
+        if (is_any_of(lLatinScript))
+        {
             add_allowed_code_points("latin-1 supplement");
-        // TODO add more
+            add_allowed_code_points("latin extended-a");
+            add_allowed_code_points("latin extended-b");
+            add_allowed_code_points("latin extended-c");
+            add_allowed_code_points("latin extended-d");
+            // missing: latin extended-e
+            // missing: latin extended-f
+            // missing: latin extended-g
+            add_allowed_code_points("latin extended additional");
+        }
+
+        if (is_any_of(lCyrilicScript))
+        {
+            add_allowed_code_points("cyrillic");
+            add_allowed_code_points("cyrillic supplement");
+            add_allowed_code_points("cyrillic extended-a");
+            add_allowed_code_points("cyrillic extended-b");
+            // missing: cyrilic extended-c
+        }
+
+        if (is_any_of(lDevanagariScript))
+        {
+            add_allowed_code_points("devanagari");
+            add_allowed_code_points("devanagari extended");
+            add_allowed_code_points("vedic extensions");
+        }
+
+        // Individual languages
+        if (sCode == "el")
+        {
+            add_allowed_code_points("greek and coptic");
+            add_allowed_code_points("greek extended");
+        }
+        else if (sCode == "hy")
+        {
+            add_allowed_code_points("armenian");
+        }
+        else if (sCode == "he")
+        {
+            add_allowed_code_points("hebrew");
+            // missing: hebrew presentation forms
+        }
+        else if (sCode == "ar")
+        {
+            add_allowed_code_points("arabic");
+            add_allowed_code_points("arabic supplement");
+            add_allowed_code_points("arabic presentation forms-a");
+            add_allowed_code_points("arabic presentation forms-b");
+            // missing: arabic extended-a
+            // missing: arabic extended-b
+        }
     }
 }
 
