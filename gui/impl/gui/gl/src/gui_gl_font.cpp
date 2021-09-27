@@ -18,6 +18,10 @@
 static constexpr lxgui::uint uiMinChar = 32;
 static constexpr lxgui::uint uiMaxChar = 255;
 
+namespace lxgui {
+namespace gui {
+namespace gl
+{
 namespace
 {
     // Global state for the Freetype library (one per thread)
@@ -47,10 +51,6 @@ namespace
     }
 }
 
-namespace lxgui {
-namespace gui {
-namespace gl
-{
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     const std::vector<code_point_range>& lCodePoints) :
     uiSize_(uiSize), uiOutline_(uiOutline)
