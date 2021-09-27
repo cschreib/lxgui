@@ -68,6 +68,12 @@ namespace gui
         */
         void set_preferred_languages(const std::vector<std::string>& lLanguages);
 
+        /// Attempts to automatically detect the current language (used to translate messages and strings).
+        /** \note This is called in the constructor, only use it if you need to reset the languages
+        *         to the default after calling set_preferred_languages().
+        */
+        void auto_detect_preferred_languages();
+
         /// Returns the current locale (used to format numbers).
         /** \return The current locale.
         */
@@ -98,6 +104,12 @@ namespace gui
         *   \see get_allowed_code_points()
         */
         void add_allowed_code_points(const std::string& sUnicodeGroup);
+
+        /// Attempts to automatically detect the set of allowed code points based on preferred languages.
+        /** \note This is called in the constructor, only use it if you need to reset the allowed
+        *         code points to the default after changing the preferred languages.
+        */
+        void auto_detect_allowed_code_points();
 
         /// Returns the list of allowed code points (Unicode characters), for text rendering.
         /** \return The list of allowed code points.
