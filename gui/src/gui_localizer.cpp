@@ -4,6 +4,7 @@
 #include <lxgui/utils_variant.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_range.hpp>
 
 #include <fmt/args.h>
 #include <sol/state.hpp>
@@ -195,7 +196,7 @@ void localizer::add_allowed_code_points(const code_point_range& mRange)
     });
 }
 
-void localizer::add_allowed_code_points(const std::string& sUnicodeGroup)
+void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGroup)
 {
     // List from http://www.unicode.org/Public/5.2.0/ucdxml/ucd.all.flat.zip
     // Adjusted "basic latin" and "latin-1 supplement" to remove non-printable chars.
@@ -255,6 +256,7 @@ void localizer::add_allowed_code_points(const std::string& sUnicodeGroup)
         {"tai tham", {0x1a20, 0x1aaf}},
         {"balinese", {0x1b00, 0x1b7f}},
         {"sundanese", {0x1b80, 0x1bbf}},
+        {"batak", {0x1bc0, 0x1bff}}, // added manually! souce https://en.wikipedia.org/wiki/Batak_script
         {"lepcha", {0x1c00, 0x1c4f}},
         {"ol chiki", {0x1c50, 0x1c7f}},
         {"vedic extensions", {0x1cd0, 0x1cff}},
@@ -406,93 +408,192 @@ void localizer::add_allowed_code_points(const std::string& sUnicodeGroup)
     add_allowed_code_points(mIter->second);
 }
 
-void localizer::auto_detect_allowed_code_points()
+void localizer::add_allowed_code_points_for_language(const std::string& sLanguageCode)
 {
-    static const std::vector<std::string> lLatinScript =
+    // Lists from http://unicode.org/Public/cldr/39/cldr-common-39.0.zip
+    // Mapped manually to Unicode groups above with the help of
+    // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/scripts_and_languages.html
+    static const std::vector<std::pair<std::vector<std::string>,std::vector<std::string>>> lScripts =
     {
-        "ca", "co", "cs", "da", "de", "en", "es", "et", "fi", "fr", "ga", "hr", "hu",
-        "it", "lt", "lv", "mt", "nl", "oc", "pl", "pt", "ro", "sk", "sl", "sv", "tr"
+        {{"latin-1 supplement", "latin extended-a", "latin extended-b", "latin extended-c", "latin extended-d"},
+        {
+            "aa", "abr", "ace", "ach", "ada", "af", "agq", "ain", "ak", "akz", "ale", "aln", "amo",
+            "an", "ang", "aoz", "arn", "aro", "arp", "arw", "asa", "ast", "atj", "avk", "ay", "az",
+            "bal", "ban", "bar", "bas", "bbc", "bbj", "bci", "bem", "bew", "bez", "bfd", "bi", "bik",
+            "bin", "bjn", "bkm", "bku", "bla", "bm", "bmq", "bqv", "br", "brh", "bs", "bss", "bto",
+            "buc", "bug", "bum", "bvb", "byv", "bze", "bzx", "ca", "cad", "car", "cay", "cch", "ceb",
+            "cgg", "ch", "chk", "chn", "cho", "chp", "chy", "cic", "co", "cps", "cr", "crj", "crl",
+            "crs", "cs", "csb", "ctd", "cy", "da", "dak", "dav", "de", "del", "den", "dgr", "din",
+            "dje", "dnj", "dsb", "dtm", "dtp", "dua", "dum", "dyo", "dyu", "ebu", "ee", "efi", "egl",
+            "eka", "en", "enm", "eo", "es", "esu", "et", "ett", "eu", "ewo", "ext", "fan", "ff", "ffm",
+            "fi", "fil", "fit", "fj", "fo", "fon", "fr", "frc", "frm", "fro", "frp", "frr", "frs",
+            "fud", "fuq", "fur", "fuv", "fvr", "fy", "ga", "gaa", "gag", "gay", "gba", "gcr", "gd",
+            "gil", "gl", "gmh", "gn", "goh", "gor", "gos", "grb", "gsw", "gub", "guc", "gur", "guz",
+            "gv", "gwi", "ha", "hai", "haw", "hi", "hif", "hil", "hmn", "hnn", "ho", "hop", "hr",
+            "hsb", "ht", "hu", "hup", "hz", "ia", "iba", "ibb", "id", "ife", "ig", "ii", "ik", "ikt",
+            "ilo", "inh", "is", "it", "iu", "izh", "jam", "jgo", "jmc", "jut", "jv", "kab", "kac",
+            "kaj", "kam", "kao", "kcg", "kck", "kde", "kea", "kfo", "kg", "kge", "kgp", "kha", "khq",
+            "ki", "kiu", "kj", "kjg", "kkj", "kl", "kln", "kmb", "kos", "kpe", "kr", "kri", "krj",
+            "krl", "ksb", "ksf", "ksh", "ku", "kut", "kvr", "kw", "ky", "la", "lag", "laj", "lam",
+            "lb", "lbw", "lfn", "lg", "li", "lij", "liv", "ljp", "lkt", "lmo", "ln", "lol", "loz",
+            "lt", "ltg", "lu", "lua", "lui", "lun", "luo", "lut", "luy", "lv", "lzz", "mad", "maf",
+            "mak", "man", "mas", "maz", "mdh", "mdr", "mdt", "men", "mer", "mfe", "mg", "mgh", "mgo",
+            "mgy", "mh", "mi", "mic", "min", "mls", "moe", "moh", "mos", "mro", "ms", "mt", "mua",
+            "mus", "mwk", "mwl", "mwv", "mxc", "myx", "na", "nap", "naq", "nb", "nch", "nd", "ndc",
+            "nds", "ng", "ngl", "nhe", "nhw", "nia", "nij", "niu", "njo", "nl", "nmg", "nn", "nnh",
+            "no", "nov", "nr", "nsk", "nso", "nus", "nv", "nxq", "ny", "nym", "nyn", "nyo", "nzi",
+            "oc", "oj", "om", "osa", "osc", "pag", "pam", "pap", "pau", "pcd", "pcm", "pdc", "pdt",
+            "pfl", "pko", "pl", "pms", "pnt", "pon", "prg", "pro", "pt", "puu", "qu", "quc", "qug",
+            "rap", "rar", "rcf", "rej", "rgn", "ria", "rif", "rm", "rmf", "rmo", "rmu", "rn", "rng",
+            "ro", "rob", "rof", "rom", "rtm", "rug", "rup", "rw", "rwk", "sad", "saf", "saq", "sas",
+            "sat", "sbp", "sc", "scn", "sco", "scs", "sdc", "se", "see", "sef", "seh", "sei", "ses",
+            "sg", "sga", "sgs", "shi", "sid", "sk", "sl", "sli", "sly", "sm", "sma", "smj", "smn",
+            "sms", "sn", "snk", "so", "sq", "sr", "srb", "srn", "srr", "ss", "ssy", "st", "stq", "su",
+            "suk", "sus", "sv", "sw", "swb", "swg", "sxn", "syi", "szl", "tbw", "tem", "teo", "ter",
+            "tet", "tg", "tiv", "tk", "tkl", "tkr", "tli", "tly", "tmh", "tn", "to", "tog", "tpi",
+            "tr", "tru", "trv", "ts", "tsg", "tsi", "ttj", "ttt", "tum", "tvl", "twq", "ty", "tzm",
+            "udm", "ug", "uli", "umb", "uz", "vai", "ve", "vec", "vep", "vi", "vic", "vls", "vmf",
+            "vmw", "vo", "vot", "vro", "vun", "wa", "wae", "war", "was", "wbp", "wls", "wo", "xav",
+            "xh", "xog", "xum", "yao", "yap", "yav", "ybb", "yo", "yrl", "yua", "za", "zag", "zap",
+            "zea", "zmi", "zu", "zun", "zza"
+        }},
+        {{"cyrillic", "cyrillic supplement", "cyrillic extended-a", "cyrillic extended-b"},
+        {
+            "ab", "abq", "ady", "aii", "alt", "av", "az", "ba", "be", "bg", "bs", "bua", "ce", "chm",
+            "cjs", "ckt", "crh", "cu", "cv", "dar", "dng", "evn", "gag", "gld", "inh", "kaa", "kbd",
+            "kca", "kjh", "kk", "koi", "kpy", "krc", "ku", "kum", "kv", "ky", "lbe", "lez", "lfn",
+            "mdf", "mk", "mn", "mns", "mrj", "myv", "nog", "os", "pnt", "ro", "rom", "ru", "rue",
+            "sah", "se", "sel", "sr", "tab", "tg", "tk", "tkr", "tly", "tt", "ttt", "tyv", "ude",
+            "udm", "ug", "uk", "uz", "xal", "yrk"
+        }},
+        {{"devanagari", "devanagari extended", "vedic extensions"},
+        {
+            "anp", "awa", "bap", "bfy", "bgc", "bhb", "bhi", "bho", "bjj", "bra", "brx", "btv", "doi",
+            "dty", "gbm", "gom", "gon", "gvr", "hi", "hif", "hne", "hoc", "hoj", "jml", "kfr", "kfy",
+            "khn", "kok", "kru", "ks", "lif", "mag", "mai", "mgp", "mr", "mrd", "mtr", "mwr", "ne",
+            "new", "noe", "pi", "raj", "rjs", "sa", "sat", "sck", "sd", "srx", "swv", "taj", "tdg",
+            "tdh", "thl", "thq", "thr", "tkt", "unr", "unx", "wbr", "wtm", "xnr", "xsr"
+        }},
+        {{"arabic", "arabic supplement", "arabic presentation forms-a", "arabic presentation forms-b"},
+        {
+            "aeb", "ar", "arq", "ars", "ary", "arz", "az", "bal", "bej", "bft", "bgn", "bqi", "brh",
+            "cja", "cjm", "ckb", "cop", "dcc", "doi", "dyo", "fa", "fia", "gbz", "gjk", "gju", "glk",
+            "ha", "haz", "hnd", "hno", "id", "inh", "khw", "kk", "ks", "ku", "kvx", "kxp", "ky", "lah",
+            "lki", "lrc", "luz", "mfa", "ms", "mvy", "mzn", "pa", "prd", "ps", "rmt", "sd", "sdh",
+            "shi", "skr", "so", "sus", "swb", "tg", "tk", "tly", "tr", "trw", "ttt", "ug", "ur", "uz",
+            "wni", "wo", "zdj"
+        }},
+        {{"cjk radicals supplement", "cjk strokes", "cjk unified ideographs",
+            "cjk unified ideographs extension a", "cjk unified ideographs extension b",
+            "cjk unified ideographs extension c", "cjk compatibility",
+            "cjk compatibility ideographs", "cjk compatibility forms",
+            "cjk compatibility ideographs supplement"},
+        {
+            "gan", "hak", "hsn", "lzh", "nan", "wuu", "yue", "za", "zh"
+        }},
+        {{"greek and coptic", "greek extended"},
+        {
+            "bgx", "cop", "el", "grc", "pnt", "tsd"
+        }},
+        {{"bengali"},
+        {
+            "as", "bn", "bpy", "ccp", "grt", "kha", "lus", "mni", "rkt", "sat", "syl", "unr", "unx"
+        }},
+        {{"thai"},
+        {
+            "kdt", "kxm", "lcp", "lwl", "pi", "sou", "th", "tts"
+        }},
+        {{"ethiopic", "ethiopic supplement", "ethiopic extended"},
+        {
+            "am", "byn", "gez", "om", "ti", "tig", "wal"
+        }},
+        {{"hebrew"},
+        {
+            "he", "jpr", "jrb", "lad", "sam", "yi"
+        }},
+        {{"tibetan"},
+        {
+            "bft", "bo", "dz", "taj", "tdg", "tsj"
+        }},
+        {{"unified canadian aboriginal syllabics"},
+        {
+            "bft", "bo", "dz", "taj", "tdg", "tsj"
+        }},
+        {{"tifinagh"},
+        {
+            "rif", "shi", "tzm", "zen", "zgh"
+        }},
+        {{"telugu"}, {"gon", "lmn", "te", "wbq" }},
+        {{"syriac"}, {"aii", "ar", "syr", "tru"}},
+        {{"myanmar"}, {"kht", "mnw", "my", "shn"}},
+        {{"nko"}, {"bm", "man", "nqo"}},
+        {{"buginese"}, {"bug", "mak", "mdr"}},
+        {{"old italic"}, {"ett", "osc", "xum"}},
+        {{"lao"}, {"hnj", "kjg", "lo"}},
+        {{"georgian", "georgian supplement"}, {"ka", "lzz", "xmf"}},
+        {{"sinhala"}, {"pi", "sa", "si"}},
+        {{"tamil"}, {"bfq", "ta"}},
+        {{"katakana", "katakana phonetic extensions"}, {"ain", "ryu"}},
+        {{"cuneiform", "cuneiform numbers and punctuation"}, {"akk", "hit"}},
+        {{"cham"}, {"cja", "cjm"}},
+        {{"runic"}, {"de", "non"}},
+        {{"kayah"}, {"eky", "kyu"}},
+        {{"kannada"}, {"kn", "tcy"}},
+        {{"mongolian"}, {"mn", "mnc"}},
+        {{"phags-pa"}, {"mn", "zh"}},
+        {{"oriya"}, {"or", "sat"}},
+        {{"samaritan"}, {"sam", "smp"}},
+        {{"armenian"}, {"hy"}},
+        {{"javanese"}, {"jv"}},
+        {{"gujarati"}, {"gu"}},
+        {{"malayalam"}, {"ml"}},
+        {{"sundanese"}, {"su"}},
+        {{"tagalog"}, {"tg"}},
+        {{"avestan"}, {"ae"}},
+        {{"aramaic"}, {"arc"}},
+        {{"balinese"}, {"ban"}},
+        {{"bamum"}, {"bax"}},
+        {{"batak"}, {"bbc"}},
+        {{"buhid"}, {"bku"}},
+        {{"tai viet"}, {"blt"}},
+        // continue reading scripts.txt
     };
-
-    static const std::vector<std::string> lCyrilicScript =
-    {
-        "ab", "az", "ba", "be", "bg", "cv", "hr", "kk", "kv", "ky", "mc", "mn", "os",
-        "ru", "sr", "tg", "tt", "uk", "uz"
-    };
-
-    static const std::vector<std::string> lDevanagariScript =
-    {
-        "hi", "mr", "ne", "sa"
-    };
-
-    clear_allowed_code_points();
 
     // Add basic latin (= ASCII) for all languages (required to display URLs for example).
-    add_allowed_code_points("basic latin");
+    add_allowed_code_points_for_group("basic latin");
+
+    for (const auto& mScript : lScripts)
+    {
+        if (std::find(mScript.second.begin(), mScript.second.end(), sLanguageCode) == mScript.second.end())
+            continue;
+
+        for (const auto& mCodeRange : mScript.first)
+            add_allowed_code_points_for_group(mCodeRange);
+    }
+}
+
+void localizer::auto_detect_allowed_code_points()
+{
+    clear_allowed_code_points();
+
+    if (lLanguages_.empty())
+    {
+        // If no language specified, fall back to basic latin (=ASCII)
+        add_allowed_code_points_for_group("basic latin");
+        return;
+    }
 
     // Add language-specific groups
     for (const auto& sLanguage : lLanguages_)
     {
-        std::string_view sCode(sLanguage.c_str(), 2u);
-        auto is_any_of = [&](const auto& lList)
-        {
-            return std::find(lList.begin(), lList.end(), sCode) != lList.end();
-        };
+        // Extract the language code from the language string (first set of lower case letters)
+        auto mPos = std::find_if(sLanguage.begin(), sLanguage.end(),
+            [](char cChar) { return std::isupper(cChar); });
 
-        // Language groups
-        if (is_any_of(lLatinScript))
-        {
-            add_allowed_code_points("latin-1 supplement");
-            add_allowed_code_points("latin extended-a");
-            add_allowed_code_points("latin extended-b");
-            add_allowed_code_points("latin extended-c");
-            add_allowed_code_points("latin extended-d");
-            // missing: latin extended-e
-            // missing: latin extended-f
-            // missing: latin extended-g
-            add_allowed_code_points("latin extended additional");
-        }
+        if (mPos != sLanguage.end() && mPos != sLanguage.begin())
+            --mPos;
 
-        if (is_any_of(lCyrilicScript))
-        {
-            add_allowed_code_points("cyrillic");
-            add_allowed_code_points("cyrillic supplement");
-            add_allowed_code_points("cyrillic extended-a");
-            add_allowed_code_points("cyrillic extended-b");
-            // missing: cyrilic extended-c
-        }
-
-        if (is_any_of(lDevanagariScript))
-        {
-            add_allowed_code_points("devanagari");
-            add_allowed_code_points("devanagari extended");
-            add_allowed_code_points("vedic extensions");
-        }
-
-        // Individual languages
-        if (sCode == "el")
-        {
-            add_allowed_code_points("greek and coptic");
-            add_allowed_code_points("greek extended");
-        }
-        else if (sCode == "hy")
-        {
-            add_allowed_code_points("armenian");
-        }
-        else if (sCode == "he")
-        {
-            add_allowed_code_points("hebrew");
-            // missing: hebrew presentation forms
-        }
-        else if (sCode == "ar")
-        {
-            add_allowed_code_points("arabic");
-            add_allowed_code_points("arabic supplement");
-            add_allowed_code_points("arabic presentation forms-a");
-            add_allowed_code_points("arabic presentation forms-b");
-            // missing: arabic extended-a
-            // missing: arabic extended-b
-        }
+        add_allowed_code_points_for_language(std::string(sLanguage.begin(), mPos));
     }
 }
 

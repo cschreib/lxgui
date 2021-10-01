@@ -95,7 +95,7 @@ namespace gui
         */
         void add_allowed_code_points(const code_point_range& mRange);
 
-        /// Adds a new range to the set of allowed code points.
+        /// Adds a new range to the set of allowed code points from a Unicode group.
         /** \param sUnicodeGroup The name of the Unicode code group to allow
         *   \note The Unicode standard defines a set of code groups, which are contiguous
         *         ranges of Unicode code points that are typically associated to a language
@@ -103,7 +103,16 @@ namespace gui
         *         ranges of code point they correspond to, and is therefore more user-friendly.
         *   \see get_allowed_code_points()
         */
-        void add_allowed_code_points(const std::string& sUnicodeGroup);
+        void add_allowed_code_points_for_group(const std::string& sUnicodeGroup);
+
+        /// Adds a new range to the set of allowed code points for a given language.
+        /** \param sLanguageCode The language code (e.g., "en", "ru", etc.)
+        *   \note Language codes are based on the ISO-639-1 standard, or later standards for those
+        *         languages which were not listed in ISO-639-1. They are always in lower case, and
+        *         typically composed of just two-letter, but sometimes more.
+        *   \see get_allowed_code_points()
+        */
+        void add_allowed_code_points_for_language(const std::string& sLanguageCode);
 
         /// Attempts to automatically detect the set of allowed code points based on preferred languages.
         /** \note This is called in the constructor, only use it if you need to reset the allowed
