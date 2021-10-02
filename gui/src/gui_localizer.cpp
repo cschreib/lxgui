@@ -83,13 +83,17 @@ namespace
 
 localizer::localizer()
 {
-    try {
+    try
+    {
         // Try to set locale to system default.
         mLocale_ = std::locale("");
-    } catch (const std::exception& mException) {
+    }
+    catch (const std::exception& mException)
+    {
         // Revert to C locale.
         mLocale_ = std::locale::classic();
         gui::out << gui::error << "gui::locale : " << mException.what() << std::endl;
+        gui::out << gui::error << "gui::locale : reverting to default classic locale" << std::endl;
     }
 
     // Find default languages.
@@ -128,8 +132,9 @@ void localizer::set_preferred_languages(const std::vector<std::string>& lLanguag
 {
     for (const auto& sLanguage : lLanguages)
     {
-        if (sLanguage.size() != 4)
-            throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
+        // TODO implement more generic input checks
+        // if (sLanguage.size() != 4)
+        //     throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
     }
 
     lLanguages_ = lLanguages;
@@ -354,6 +359,8 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"specials", {0xfff0, 0xffff}},
         {"linear b syllabary", {0x10000, 0x1007f}},
         {"linear b ideograms", {0x10080, 0x100ff}},
+        {"caucasian albanian", {0x10530, 0x1056f}}, // added manually! souce https://en.wikipedia.org/wiki/Caucasian_Albanian_script
+        {"linear a", {0x10600, 0x1077f}}, // added manually! souce https://en.wikipedia.org/wiki/Linear_A
         {"aegean numbers", {0x10100, 0x1013f}},
         {"ancient greek numbers", {0x10140, 0x1018f}},
         {"ancient symbols", {0x10190, 0x101cf}},
@@ -362,6 +369,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"carian", {0x102a0, 0x102df}},
         {"old italic", {0x10300, 0x1032f}},
         {"gothic", {0x10330, 0x1034f}},
+        {"permic", {0x10350, 0x1037f}},
         {"ugaritic", {0x10380, 0x1039f}},
         {"old persian", {0x103a0, 0x103df}},
         {"deseret", {0x10400, 0x1044f}},
@@ -379,6 +387,12 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"old turkic", {0x10c00, 0x10c4f}},
         {"rumi numeral symbols", {0x10e60, 0x10e7f}},
         {"kaithi", {0x11080, 0x110cf}},
+        {"chakma", {0x11100, 0x1114f}}, // added manually! souce https://en.wikipedia.org/wiki/Chakma_script
+        {"mahajani", {0x11150, 0x1117f}}, // added manually! souce https://en.wikipedia.org/wiki/Mahajani
+        {"tirhuta", {0x11480, 0x114df}}, // added manually! souce https://en.wikipedia.org/wiki/Tirhuta_script
+        {"modi", {0x11600, 0x1165f}}, // added manually! souce https://en.wikipedia.org/wiki/Modi_script
+        {"takri", {0x11680, 0x116cf}}, // added manually! souce https://en.wikipedia.org/wiki/Takri_script
+        {"varang kshiti", {0x118a0, 0x118ff}}, // added manually! souce https://en.wikipedia.org/wiki/Warang_Citi
         {"cuneiform", {0x12000, 0x123ff}},
         {"cuneiform numbers and punctuation", {0x12400, 0x1247f}},
         {"egyptian hieroglyphs", {0x13000, 0x1342f}},
@@ -388,10 +402,15 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"tai xuan jing symbols", {0x1d300, 0x1d35f}},
         {"counting rod numerals", {0x1d360, 0x1d37f}},
         {"mathematical alphanumeric symbols", {0x1d400, 0x1d7ff}},
+        {"adlam", {0x1e800, 0x1e8df}},
+        {"mende", {0x1e900, 0x1e95f}}, // added manually! souce https://en.wikipedia.org/wiki/Mende_Kikakui_script
         {"mahjong tiles", {0x1f000, 0x1f02f}},
         {"domino tiles", {0x1f030, 0x1f09f}},
         {"enclosed alphanumeric supplement", {0x1f100, 0x1f1ff}},
         {"enclosed ideographic supplement", {0x1f200, 0x1f2ff}},
+        {"mro", {0x16a40, 0x16a6f}}, // added manually! souce https://en.wikipedia.org/wiki/Mro_(Unicode_block)
+        {"pahawh hmong", {0x16b00, 0x16bbf}}, // added manually! souce https://en.wikipedia.org/wiki/Pahawh_Hmong
+        {"pollard", {0x16f00, 0x16f9f}}, // added manually! souce https://en.wikipedia.org/wiki/Pollard_script
         {"cjk unified ideographs extension b", {0x20000, 0x2a6df}},
         {"cjk unified ideographs extension c", {0x2a700, 0x2b73f}},
         {"cjk compatibility ideographs supplement", {0x2f800, 0x2fa1f}},
@@ -491,7 +510,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {
             "gan", "hak", "hsn", "lzh", "nan", "wuu", "yue", "za", "zh"
         }},
-        {{"greek and coptic", "greek extended"},
+        {{"greek and coptic", "greek extended", "coptic"},
         {
             "bgx", "cop", "el", "grc", "pnt", "tsd"
         }},
@@ -548,7 +567,6 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {{"gujarati"}, {"gu"}},
         {{"malayalam"}, {"ml"}},
         {{"sundanese"}, {"su"}},
-        {{"tagalog"}, {"tg"}},
         {{"avestan"}, {"ae"}},
         {{"aramaic"}, {"arc"}},
         {{"balinese"}, {"ban"}},
@@ -556,6 +574,38 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {{"batak"}, {"bbc"}},
         {{"buhid"}, {"bku"}},
         {{"tai viet"}, {"blt"}},
+        {{"chakma"}, {"ccp"}},
+        {{"cherokee"}, {"chr"}},
+        {{"takri"}, {"doi"}},
+        {{"thaana"}, {"dv"}},
+        {{"egyptian hieroglyphs"}, {"egy"}},
+        {{"adlam"}, {"ff"}},
+        {{"tagalog"}, {"fil"}},
+        {{"gothic"}, {"got"}},
+        {{"cypriot"}, {"grc"}},
+        {{"linear b syllabary", "linear b ideograms"}, {"grc"}},
+        {{"mahajani"}, {"hi"}},
+        {{"pollard"}, {"hmd"}},
+        {{"pahawh hmong"}, {"hmn"}},
+        {{"hanunoo"}, {"hnn"}},
+        {{"varang kshiti"}, {"hoc"}},
+        {{"yi syllables", "yi radicals"}, {"ii"}},
+        {{"cjk unified ideograph", "hiragana", "katakana"}, {"ja"}},
+        {{"new tai lue"}, {"khb"}},
+        {{"khmer", "khmer symbols"}, {"km"}},
+        {{"hangul jamo", "hangul compatibility jamo", "hangul jamo extended-a",
+            "hangul jamo extended-b", "hangul syllables"}, {"ko"}},
+        {{"permic"}, {"kv"}},
+        {{"linear a"}, {"lab"}},
+        {{"lepcha"}, {"lep"}},
+        {{"caucasian albanian"}, {"lez"}},
+        {{"limbu"}, {"lif"}},
+        {{"lisu"}, {"lis"}},
+        {{"tirhuta"}, {"mai"}},
+        {{"mende"}, {"men"}},
+        {{"meetei mayek"}, {"mni"}},
+        {{"modi"}, {"mr"}},
+        {{"mro"}, {"mro"}},
         // continue reading scripts.txt
     };
 
