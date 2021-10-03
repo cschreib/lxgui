@@ -109,7 +109,7 @@ namespace gui
         /** \param sLanguageCode The language code (e.g., "en", "ru", etc.)
         *   \note Language codes are based on the ISO-639-1 standard, or later standards for those
         *         languages which were not listed in ISO-639-1. They are always in lower case, and
-        *         typically composed of just two-letter, but sometimes more.
+        *         typically composed of just two letters, but sometimes more.
         *   \see get_allowed_code_points()
         */
         void add_allowed_code_points_for_language(const std::string& sLanguageCode);

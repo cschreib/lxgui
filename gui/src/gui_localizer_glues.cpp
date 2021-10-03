@@ -196,6 +196,29 @@
 *           end,
 *       }
 *
+*   **Language selection.** By default, the preferred languages are automatically detected
+*   based on the environment and configuration of the operating system. The `LANGUAGE`
+*   environment variable is scanned first, and can be used to set an ordered list of
+*   preferred languages. This is commonly set on Linux and OSX systems, but rarely on
+*   Windows. For Windows, if `LANGUAGE` is not set, the language configured in the operating
+*   system is used. For other systems, the `LANG` environment variable is tried next. If
+*   no language could be detected, the library falls back to US English. This automatic
+*   detection can be overridden by calling @{set_preferred_languages}.
+*
+*   Once a language (or list of languages) is set, the GUI must be told which characters,
+*   represented here as Unicode "code points", can be displayed on screen. This can be detected
+*   automatically from the preferred languages by calling @{auto_detect_allowed_code_points}. This
+*   function only needs to be called if the preferred languages were overridden with
+*   @{set_preferred_languages}. If using the automatically-determined language from the environment
+*   and operating system (see above), this is already done internally.
+*
+*   If the automatic detection of the allowed code points is incomplete, or if additional code
+*   points need to be displayed for any reason (game-specific lore, etc.), it is possible to add
+*   more code points to the allowed list with @{add_allowed_code_points_for_language},
+*   @{add_allowed_code_points_for_group}, and @{add_allowed_code_points}. It is also possible to
+*   reset the list of allowed code points using @{clear_allowed_code_points}, in the event that
+*   the automatic detection was completely wrong.
+*
 *   @module Localization
 */
 
@@ -231,6 +254,64 @@ void localizer::register_on_lua(sol::state& mSol)
     mSol.set_function("set_preferred_languages", [&]()
     {
         return sol::as_table(get_preferred_languages());
+    });
+
+    /** Removes all allowed code points.
+    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+    *   @function clear_allowed_code_points
+    */
+    mSol.set_function("clear_allowed_code_points", [&]()
+    {
+        clear_allowed_code_points();
+    });
+
+    /** Adds a new range to the set of allowed code points.
+    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+    *   @tparam integer first The first code point in the range
+    *   @tparam integer last The last code point in the range
+    *   @function add_allowed_code_points
+    */
+    mSol.set_function("add_allowed_code_points", [&](char32_t uiFirst, char32_t uiLast)
+    {
+        add_allowed_code_points(code_point_range{uiFirst, uiLast});
+    });
+
+    /** Adds a new range to the set of allowed code points from a Unicode group.
+    *   The Unicode standard defines a set of code groups, which are contiguous
+    *   ranges of Unicode code points that are typically associated to a language
+    *   or a group of languages. This function knows about such groups and the
+    *   ranges of code point they correspond to, and is therefore more user-friendly.
+    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+    *   @tparam string group The name of the Unicode code group to allow
+    *   @function add_allowed_code_points_for_group
+    */
+    mSol.set_function("add_allowed_code_points_for_group", [&](const std::string& sGroupName)
+    {
+        add_allowed_code_points_for_group(sGroupName);
+    });
+
+    /** Adds a new range to the set of allowed code points for a given language.
+    *   Language codes are based on the ISO-639-1 standard, or later standards for those
+    *   languages which were not listed in ISO-639-1. They are always in lower case, and
+    *   typically composed of just two letters, but sometimes more.
+    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+    *   @tparam string language The language code (e.g., "en", "ru", etc.)
+    *   @function add_allowed_code_points_for_language
+    */
+    mSol.set_function("add_allowed_code_points_for_language", [&](const std::string& sLanguage)
+    {
+        add_allowed_code_points_for_language(sLanguage);
+    });
+
+    /** Attempts to automatically detect the set of allowed code points based on preferred languages.
+    *   Only use it if you need to reset the allowed code points to the default after changing
+    *   the preferred languages with @{set_preferred_languages}.
+    *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
+    *   @function auto_detect_allowed_code_points
+    */
+    mSol.set_function("auto_detect_allowed_code_points", [&]()
+    {
+        auto_detect_allowed_code_points();
     });
 
     /** Loads translations from a folder.
