@@ -28,7 +28,7 @@ namespace gui
         std::locale mLocale_;
         std::vector<std::string> lLanguages_;
         std::vector<code_point_range> lCodePoints_;
-        char32_t uiDefaultCodePoint_ = U'□';
+        char32_t uiDefaultCodePoint_ = U'\u25a1'; // '□'
         sol::state mLua_;
         map_type lMap_;
 
