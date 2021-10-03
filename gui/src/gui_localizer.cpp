@@ -224,6 +224,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"thaana", {0x0780, 0x07bf}},
         {"nko", {0x07c0, 0x07ff}},
         {"samaritan", {0x0800, 0x083f}},
+        {"mandaic", {0x0840, 0x085f}}, // added manually! souce https://en.wikipedia.org/wiki/Mandaic_script
         {"devanagari", {0x0900, 0x097f}},
         {"bengali", {0x0980, 0x09ff}},
         {"gurmukhi", {0x0a00, 0x0a7f}},
@@ -375,21 +376,32 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"deseret", {0x10400, 0x1044f}},
         {"shavian", {0x10450, 0x1047f}},
         {"osmanya", {0x10480, 0x104af}},
+        {"osage", {0x104b0, 0x104ff}}, // added manually! souce https://en.wikipedia.org/wiki/Osage_script
+        {"elbasan", {0x10500, 0x1052f}}, // added manually! souce https://en.wikipedia.org/wiki/Elbasan_script
         {"cypriot syllabary", {0x10800, 0x1083f}},
         {"imperial aramaic", {0x10840, 0x1085f}},
         {"phoenician", {0x10900, 0x1091f}},
         {"lydian", {0x10920, 0x1093f}},
+        {"meroitic", {0x10980, 0x109ff}},
         {"kharoshthi", {0x10a00, 0x10a5f}},
         {"old south arabian", {0x10a60, 0x10a7f}},
+        {"old north arabian", {0x10a80, 0x10a9f}}, // added manually! source https://en.wikipedia.org/wiki/Old_North_Arabian_(Unicode_block)
+        {"manichaean", {0x10ac0, 0x10aff}}, // added manually! source https://en.wikipedia.org/wiki/Manichaean_script
         {"avestan", {0x10b00, 0x10b3f}},
         {"inscriptional parthian", {0x10b40, 0x10b5f}},
         {"inscriptional pahlavi", {0x10b60, 0x10b7f}},
         {"old turkic", {0x10c00, 0x10c4f}},
         {"rumi numeral symbols", {0x10e60, 0x10e7f}},
         {"kaithi", {0x11080, 0x110cf}},
+        {"sora sompeng", {0x110d0, 0x110ff}}, // added manually! source https://en.wikipedia.org/wiki/Sorang_Sompeng_script
         {"chakma", {0x11100, 0x1114f}}, // added manually! souce https://en.wikipedia.org/wiki/Chakma_script
         {"mahajani", {0x11150, 0x1117f}}, // added manually! souce https://en.wikipedia.org/wiki/Mahajani
+        {"sharada", {0x11180, 0x111df}}, // added manually! souce https://en.wikipedia.org/wiki/Sharada_(Unicode_block)
+        {"khojki", {0x11200, 0x1124f}}, // added manually! souce https://en.wikipedia.org/wiki/Khojki_script
+        {"khudawadi", {0x112b0, 0x112ff}}, // added manually! souce https://en.wikipedia.org/wiki/Khudabadi_script
+        {"grantha", {0x11300, 0x1137f}}, // added manually! souce https://en.wikipedia.org/wiki/Grantha_script
         {"tirhuta", {0x11480, 0x114df}}, // added manually! souce https://en.wikipedia.org/wiki/Tirhuta_script
+        {"siddham", {0x11580, 0x115ff}}, // added manually! souce https://en.wikipedia.org/wiki/Siddha%E1%B9%83_script
         {"modi", {0x11600, 0x1165f}}, // added manually! souce https://en.wikipedia.org/wiki/Modi_script
         {"takri", {0x11680, 0x116cf}}, // added manually! souce https://en.wikipedia.org/wiki/Takri_script
         {"varang kshiti", {0x118a0, 0x118ff}}, // added manually! souce https://en.wikipedia.org/wiki/Warang_Citi
@@ -508,7 +520,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
             "cjk compatibility ideographs", "cjk compatibility forms",
             "cjk compatibility ideographs supplement"},
         {
-            "gan", "hak", "hsn", "lzh", "nan", "wuu", "yue", "za", "zh"
+            "gan", "hak", "hsn", "lzh", "nan", "vi", "wuu", "yue", "za", "zh"
         }},
         {{"greek and coptic", "greek extended", "coptic"},
         {
@@ -566,7 +578,6 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {{"javanese"}, {"jv"}},
         {{"gujarati"}, {"gu"}},
         {{"malayalam"}, {"ml"}},
-        {{"sundanese"}, {"su"}},
         {{"avestan"}, {"ae"}},
         {{"aramaic"}, {"arc"}},
         {{"balinese"}, {"ban"}},
@@ -606,7 +617,38 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {{"meetei mayek"}, {"mni"}},
         {{"modi"}, {"mr"}},
         {{"mro"}, {"mro"}},
-        // continue reading scripts.txt
+        {{"mandaic"}, {"myz"}},
+        {{"tai tham"}, {"nod"}},
+        {{"osage"}, {"osa"}},
+        {{"old turkic"}, {"otk"}},
+        {{"gurmukhi"}, {"pa"}},
+        {{"inscriptional pahlavi"}, {"pal"}},
+        {{"old persian"}, {"peo"}},
+        {{"phoenician"}, {"phn"}},
+        {{"rejang"}, {"rej"}},
+        {{"grantha", "sharada", "siddham"}, {"sa"}},
+        {{"ol chiki"}, {"sat"}},
+        {{"saurashtra"}, {"saz"}},
+        {{"khojki", "khudawadi"}, {"sd"}},
+        {{"ogham"}, {"sga"}},
+        {{"osmanya"}, {"so"}},
+        {{"elbasan"}, {"sq"}},
+        {{"sora sompeng"}, {"srb"}},
+        {{"sundanese"}, {"su"}},
+        {{"syloti nagri"}, {"syl"}},
+        {{"tagbanwa"}, {"tbw"}},
+        {{"tai le"}, {"tdd"}},
+        {{"ugaritic"}, {"uga"}},
+        {{"vai"}, {"vai"}},
+        {{"carian"}, {"xcr"}},
+        {{"lycian"}, {"xlc"}},
+        {{"lydian"}, {"xld"}},
+        {{"manichaean"}, {"xmn"}},
+        {{"meroitic"}, {"xmr"}},
+        {{"old north arabian"}, {"xna"}},
+        {{"inscriptional parthian"}, {"xpr"}},
+        {{"old south arabian"}, {"xsa"}},
+        {{"bopomofo", "bopomofo extended"}, {"zh"}}
     };
 
     // Add basic latin (= ASCII) for all languages (required to display URLs for example).
