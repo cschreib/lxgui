@@ -492,6 +492,10 @@ int main(int argc, char* argv[])
         for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
             std::cout << sLanguage << ", ";
         std::cout << std::endl;
+        uint uiCodePoints = 0u;
+        for (const auto& mRange : pManager->get_localizer().get_allowed_code_points())
+            uiCodePoints += mRange.uiLast - mRange.uiFirst + 1;
+        std::cout << " Required Unicode code points: " << uiCodePoints << std::endl;
         std::cout << " Renderer settings:" << std::endl;
         std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
         std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
