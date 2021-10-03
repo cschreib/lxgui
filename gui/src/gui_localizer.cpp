@@ -682,9 +682,6 @@ void localizer::auto_detect_allowed_code_points()
         auto mPos = std::find_if(sLanguage.begin(), sLanguage.end(),
             [](char cChar) { return std::isupper(cChar); });
 
-        if (mPos != sLanguage.end() && mPos != sLanguage.begin())
-            --mPos;
-
         add_allowed_code_points_for_language(std::string(sLanguage.begin(), mPos));
     }
 }
