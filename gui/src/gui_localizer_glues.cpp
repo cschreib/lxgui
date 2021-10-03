@@ -8,7 +8,7 @@
 *   The functions listed on this page are registered in the
 *   Lua state as globals, and as such are accessible from
 *   anywhere automatically. They provide all necessary functionalities
-*   for translating text for display in the GUI.
+*   for selecting languages and translating text for display in the GUI.
 *
 *   **Translating text.** When creating a button in the GUI, it is tempting to set its
 *   displayed text directly like `button:set_text("Cancel")`, hence hard-coding the text
@@ -138,18 +138,17 @@
 *   By default, the numbers printed this way may not be identical to the ones obtained
 *   from translation strings such as `"{} has lost {} HP."`. This is because Lua
 *   has its own number formatting rules. To ensure consistency with the rest of the
-*   translations, you should use the @{localize_string} function as much as possible:
-
-*       ["player_lost_hp_high"] = "{0} has lost {1:L} HP!!! Ouch.",
-*       ["player_lost_hp_zero"] = "{0} has lost no HP. This had no effect.",
-*       ["player_lost_hp_normal"] = "{0} has lost {1:L} HP.",
+*   translations, you should use the @{format_string} function:
+*
 *       ["player_lost_hp"] = function (player, hp_lost)
 *           if hp_lost > 10 then
-*               return localize_string("{player_lost_hp_high}", player, hp_lost)
+*               return format_string("{0} has lost {1:L} HP!!! Ouch.",
+                    player, hp_lost)
 *           elseif hp_lost == 0 then
-*               return localize_string("{player_lost_hp_zero}", player)
+*               return format_string("{0} has lost no HP. This had no effect.",
+                    player)
 *           else
-*               return localize_string("{player_lost_hp_normal}", player, hp_lost)
+*               return format_string("{0} has lost {1:L} HP.", player, hp_lost)
 *           end
 *       end,
 *
@@ -181,16 +180,14 @@
 *           ["object_apple"] = "pomme",
 *           ["object_horse"] = "cheval",
 *           ["object_cabbage"] = "choux",
-*           ["player_ate_objects_zero"] = "{0} n'a pas mangé de {1}.",
-*           ["player_ate_objects_some"] = "{0} a mangé {1} {2}.",
 *           ["player_ate_objects"] = function (player, quantity, object)
 *               local object_name = localize_string(object)
 *               if quantity == 0 then
-*                   return localize_string("{player_ate_objects_zero}",
+*                   return format_string("{0} n'a pas mangé de {1}.",
 *                       player, object_name)
 *               else
 *                   object_name = plural_modifier(object_name, quantity)
-*                   return localize_string("{player_ate_objects_some}",
+*                   return format_string("{0} a mangé {1} {2}.",
 *                       player, quantity, object_name)
 *               end
 *           end,
