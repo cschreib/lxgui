@@ -216,6 +216,9 @@
 *   reset the list of allowed code points using @{clear_allowed_code_points}, in the event that
 *   the automatic detection was completely wrong.
 *
+*   **Encoding.** The Lua API only supports UTF-8 encoding for strings and files. Please make
+*   sure to only use this encoding when writing scripts and translation files.
+*
 *   @module Localization
 */
 
