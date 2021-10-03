@@ -12,8 +12,9 @@ namespace gui {
 namespace sfml
 {
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
-    const std::vector<code_point_range>& lCodePoints) :
-    uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0)), uiOutline_(uiOutline)
+    const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
+    uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0)), uiOutline_(uiOutline),
+    uiDefaultCodePoint_(uiDefaultCodePoint)
 {
     if (!mFont_.loadFromFile(sFontFile))
     {

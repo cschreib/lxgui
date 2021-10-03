@@ -3,7 +3,6 @@
 #include "lxgui/gui_rendertarget.hpp"
 #include "lxgui/gui_sprite.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_localizer.hpp"
 #include "lxgui/utils_string.hpp"
 
 namespace lxgui {
@@ -218,7 +217,8 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
 namespace
 {
     std::string hash_font_parameters(const std::string& sFontFile, uint uiSize,
-        uint uiOutline, const std::vector<code_point_range>& lCodePoints)
+        uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+        char32_t uiDefaultCodePoint)
     {
         std::string sFontName = sFontFile + "|s" + utils::to_string(uiSize);
         if (uiOutline > 0u)
@@ -227,14 +227,18 @@ namespace
         for (const code_point_range& mRange : lCodePoints)
             sFontName += "|c" + utils::to_string(mRange.uiFirst) + "-" + utils::to_string(mRange.uiLast);
 
+        sFontName += "|d" + utils::to_string(uiDefaultCodePoint);
+
         return sFontName;
     }
 }
 
 std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize,
-    uint uiOutline, const std::vector<code_point_range>& lCodePoints) const
+    uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+    char32_t uiDefaultCodePoint) const
 {
-    const std::string sFontName = hash_font_parameters(sFontFile, uiSize, uiOutline, lCodePoints);
+    const std::string sFontName = hash_font_parameters(
+        sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 
     auto mIter = lFontList_.find(sFontName);
     if (mIter != lFontList_.end())
@@ -247,7 +251,8 @@ std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, u
 
     // TODO: forward lCodePoints to create_font_()
 
-    std::shared_ptr<gui::font> pFont = create_font_(sFontFile, uiSize, uiOutline, lCodePoints);
+    std::shared_ptr<gui::font> pFont = create_font_(
+        sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 
     lFontList_[sFontName] = pFont;
     return pFont;
@@ -350,20 +355,21 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
 
 std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCategory,
     const std::string& sFontFile, uint uiSize, uint uiOutline,
-    const std::vector<code_point_range>& lCodePoints) const
+    const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const
 {
     if (!is_texture_atlas_enabled())
-        return create_font(sFontFile, uiSize, uiOutline, lCodePoints);
+        return create_font(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 
     auto& mAtlas = get_atlas_(sAtlasCategory, material::filter::NONE);
 
-    const std::string sFontName = hash_font_parameters(sFontFile, uiSize, uiOutline, lCodePoints);
+    const std::string sFontName = hash_font_parameters(
+        sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 
     auto pFont = mAtlas.fetch_font(sFontName);
     if (pFont)
         return pFont;
 
-    pFont = create_font(sFontFile, uiSize, uiOutline, lCodePoints);
+    pFont = create_font(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
     if (!pFont)
         return nullptr;
 

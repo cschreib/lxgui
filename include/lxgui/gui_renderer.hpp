@@ -4,6 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_matrix4.hpp"
+#include "lxgui/gui_code_point_range.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 
 #include <vector>
@@ -21,7 +22,6 @@ namespace gui
     class color;
     struct quad;
     struct vertex;
-    struct code_point_range;
 
     /// Abstract type for implementation specific management
     class renderer
@@ -295,6 +295,7 @@ namespace gui
         *   \param uiSize      The requested size of the characters (in points)
         *   \param uiOutline   The thickness of the outline (in points)
         *   \param lCodePoints The list of Unicode characters to load
+        *   \param uiDefaultCodePoint The character to display as fallback
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
@@ -303,7 +304,8 @@ namespace gui
         *         must be rendered above the outlined font to fill the actual characters.
         */
         std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize,
-            uint uiOutline, const std::vector<code_point_range>& lCodePoints) const;
+            uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+            char32_t uiDefaultCodePoint) const;
 
         /// Creates a new font.
         /** \param sAtlasCategory The category of atlas in which to create the font texture
@@ -311,6 +313,7 @@ namespace gui
         *   \param uiSize         The requested size of the characters (in points)
         *   \param uiOutline      The thickness of the outline (in points)
         *   \param lCodePoints    The list of Unicode characters to load
+        *   \param uiDefaultCodePoint The character to display as fallback
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
@@ -318,7 +321,7 @@ namespace gui
         */
         std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
             const std::string& sFontFile, uint uiSize, uint uiOutline,
-            const std::vector<code_point_range>& lCodePoints) const;
+            const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const;
 
         /// Creates a new empty vertex cache.
         /** \param mType The type of data this cache will hold
@@ -411,12 +414,14 @@ namespace gui
         *   \param uiSize      The requested size of the characters (in points)
         *   \param uiOutline   The thickness of the outline (in points)
         *   \param lCodePoints The list of Unicode characters to load
+        *   \param uiDefaultCodePoint The character to display as fallback
         *   \note Even though the gui has been designed to use vector fonts files
         *         (such as .ttf or .otf font formats), nothing prevents the implementation
         *         from using any other font type, including bitmap fonts.
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
-            uint uiSize, uint uiOutline, const std::vector<code_point_range>& lCodePoints) const = 0;
+            uint uiSize, uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+            char32_t uiDefaultCodePoint) const = 0;
 
         atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
 

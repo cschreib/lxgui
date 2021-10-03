@@ -228,8 +228,10 @@ void font_string::create_text_object_()
     uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight_);
 
     renderer* pRenderer = pManager_->get_renderer();
+    const localizer& mLocalizer = pManager_->get_localizer();
 
-    const auto& lCodePoints = pManager_->get_localizer().get_allowed_code_points();
+    const auto& lCodePoints = mLocalizer.get_allowed_code_points();
+    const char32_t uiDefaultCodePoint = mLocalizer.get_fallback_code_point();
 
     std::shared_ptr<gui::font> pOutlineFont;
     if (bIsOutlined_)
@@ -237,12 +239,14 @@ void font_string::create_text_object_()
         pOutlineFont = pRenderer->create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
             std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))),
-            lCodePoints);
+            lCodePoints, uiDefaultCodePoint);
     }
 
-    pText_ = std::unique_ptr<text>(new text(pRenderer,
-        pRenderer->create_atlas_font("GUI", sFontName_, uiPixelHeight, 0u, lCodePoints),
-        pOutlineFont));
+    auto pFont = pRenderer->create_atlas_font(
+        "GUI", sFontName_, uiPixelHeight,
+        0u, lCodePoints, uiDefaultCodePoint);
+
+    pText_ = std::unique_ptr<text>(new text(pRenderer, pFont, pOutlineFont));
 
     pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);

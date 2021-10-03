@@ -446,7 +446,8 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
     // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/scripts_and_languages.html
     static const std::vector<std::pair<std::vector<std::string>,std::vector<std::string>>> lScripts =
     {
-        {{"latin-1 supplement", "latin extended-a", "latin extended-b", "latin extended-c", "latin extended-d"},
+        {{"latin-1 supplement", "latin extended-a", "latin extended-b", "latin extended-c",
+            "latin extended-d", "latin extended additional"},
         {
             "aa", "abr", "ace", "ach", "ada", "af", "agq", "ain", "ak", "akz", "ale", "aln", "amo",
             "an", "ang", "aoz", "arn", "aro", "arp", "arw", "asa", "ast", "atj", "avk", "ay", "az",
@@ -653,6 +654,8 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
 
     // Add basic latin (= ASCII) for all languages (required to display URLs for example).
     add_allowed_code_points_for_group("basic latin");
+    // Add "geometric shapes" to allow rendering the "missing character" glyph
+    add_allowed_code_points_for_group("geometric shapes");
 
     for (const auto& mScript : lScripts)
     {
@@ -672,6 +675,8 @@ void localizer::auto_detect_allowed_code_points()
     {
         // If no language specified, fall back to basic latin (=ASCII)
         add_allowed_code_points_for_group("basic latin");
+        // Add "geometric shapes" to allow rendering the "missing character" glyph
+        add_allowed_code_points_for_group("geometric shapes");
         return;
     }
 
@@ -689,6 +694,16 @@ void localizer::auto_detect_allowed_code_points()
 const std::vector<code_point_range>& localizer::get_allowed_code_points() const
 {
     return lCodePoints_;
+}
+
+void localizer::set_fallback_code_point(char32_t uiCodePoint)
+{
+    uiDefaultCodePoint_ = uiCodePoint;
+}
+
+char32_t localizer::get_fallback_code_point() const
+{
+    return uiDefaultCodePoint_;
 }
 
 void localizer::load_translations(const std::string& sFolderPath)

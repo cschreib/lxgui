@@ -2,6 +2,8 @@
 #define LXGUI_GUI_LOCALIZER_HPP
 
 #include <lxgui/lxgui.hpp>
+#include "lxgui/gui_code_point_range.hpp"
+
 #include <fmt/format.h>
 #include <sol/state.hpp>
 #include <sol/variadic_args.hpp>
@@ -16,13 +18,6 @@
 namespace lxgui {
 namespace gui
 {
-    /// Represents a contiguous range of unicode code points
-    struct code_point_range
-    {
-        char32_t uiFirst = 0u;
-        char32_t uiLast = 0u;
-    };
-
     /// Utility class to translate strings for display in GUI.
     class localizer
     {
@@ -33,6 +28,7 @@ namespace gui
         std::locale mLocale_;
         std::vector<std::string> lLanguages_;
         std::vector<code_point_range> lCodePoints_;
+        char32_t uiDefaultCodePoint_ = U'□';
         sol::state mLua_;
         map_type lMap_;
 
@@ -130,6 +126,16 @@ namespace gui
         */
         const std::vector<code_point_range>& get_allowed_code_points() const;
 
+        /// Sets the default character to display if a character is missing from a font.
+        /** \param uiCodePoint The Unicode UTF-32 code point of the character to display
+        */
+        void set_fallback_code_point(char32_t uiCodePoint);
+
+        /// Returns the default character to display if a character is missing from a font.
+        /** \return The default character to display if a character is missing from a font
+        */
+        char32_t get_fallback_code_point() const;
+
         /// Loads new translations from a folder, selecting the language automatically.
         /** \param sFolderPath The path to the folder to load translations from
         *   \note Based on the current language (see get_language()), this function will scan files in
@@ -161,6 +167,10 @@ namespace gui
         void load_translation_file(const std::string& sFilename);
 
         /// Removes all previously loaded translations.
+        /** \note After calling this function, it is highly recommended to always include at least
+        *         the Unicode groups "basic latin" (to render basic ASCII characters) and
+        *         "geometric shapes" (to render the "missing character" glyph).
+        */
         void clear_translations();
 
         /// Translates a string with a certain number of arguments from Lua (zero or many).

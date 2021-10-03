@@ -4,6 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_vector2.hpp"
+#include "lxgui/gui_code_point_range.hpp"
 #include "lxgui/gui_quad2.hpp"
 
 #include <array>

@@ -12,16 +12,8 @@
 
 namespace lxgui {
 namespace gui {
-    struct code_point_range;
-
 namespace gl
 {
-    struct character_info
-    {
-        char32_t              uiCodePoint;
-        quad2f                mUVs;
-    };
-
     /// A texture containing characters
     /** This is the OpenGL implementation of the gui::font.
     *   It uses the freetype library to read data from .ttf and
@@ -36,9 +28,10 @@ namespace gl
         *   \param uiSize      The requested size of the characters (in points)
         *   \param uiOutline   The thickness of the outline (in points)
         *   \param lCodePoints The list of Unicode characters to load
+        *   \param uiDefaultCodePoint The character to display as fallback
         */
         font(const std::string& sFontFile, uint uiSize, uint uiOutline,
-            const std::vector<code_point_range>& lCodePoints);
+            const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint);
 
         /// Destructor.
         ~font() override;
@@ -97,8 +90,24 @@ namespace gl
 
     private :
 
+        struct character_info
+        {
+            char32_t uiCodePoint;
+            quad2f   mUVs;
+        };
+
+        struct range_info
+        {
+            code_point_range            mRange;
+            std::vector<character_info> lData;
+        };
+
+        const character_info* get_character_(char32_t uiChar) const;
+        float get_character_width_(const character_info& mChar) const;
+        float get_character_height_(const character_info& mChar) const;
+
         std::shared_ptr<gl::material> pTexture_;
-        std::vector<character_info> lCharacterList_;
+        std::vector<range_info> lRangeList_;
 
         FT_Face mFace_ = nullptr;
 
@@ -106,6 +115,7 @@ namespace gl
         float fYOffset_ = 0.0f;
         bool bKerning_ = false;
         uint uiOutline_ = 0u;
+        char32_t uiDefaultCodePoint_ = 0u;
     };
 }
 }

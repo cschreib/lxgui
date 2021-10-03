@@ -482,10 +482,8 @@ float text::get_character_width(char32_t uiChar) const
 {
     if (bReady_)
     {
-        if (uiChar == U' ')
-            return pFont_->get_character_width(32)*fScalingFactor_;
-        else if (uiChar == U'\t')
-            return 4.0f*pFont_->get_character_width(32)*fScalingFactor_;
+        if (uiChar == U'\t')
+            return 4.0f*pFont_->get_character_width(U' ')*fScalingFactor_;
         else
             return pFont_->get_character_width(uiChar)*fScalingFactor_;
     }

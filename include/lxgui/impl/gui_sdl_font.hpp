@@ -12,8 +12,6 @@ struct SDL_Renderer;
 
 namespace lxgui {
 namespace gui {
-    struct code_point_range;
-
 namespace sdl
 {
     struct character_info
@@ -36,10 +34,11 @@ namespace sdl
         *   \param uiSize      The requested size of the characters (in points)
         *   \param uiOutline   The thickness of the outline (in points)
         *   \param lCodePoints The list of Unicode characters to load
+        *   \param uiDefaultCodePoint The character to display as fallback
         *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         */
         font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
-            const std::vector<code_point_range>& lCodePoints,
+            const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint,
             bool bPreMultipliedAlphaSupported);
 
         /// Get the size of the font in pixels.
@@ -99,6 +98,7 @@ namespace sdl
         float fYOffset_ = 0.0f;
         uint uiSize_ = 0u;
         uint uiOutline_ = 0u;
+        char32_t uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<sdl::material> pTexture_;
         std::vector<character_info>    lCharacterList_;

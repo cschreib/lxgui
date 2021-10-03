@@ -257,6 +257,9 @@ void localizer::register_on_lua(sol::state& mSol)
     });
 
     /** Removes all allowed code points.
+    *   After calling this function, it is highly recommended to always include at least
+    *   the Unicode groups "basic latin" (to render basic ASCII characters) and
+    *   "geometric shapes" (to render the "missing character" glyph).
     *   This change will not take effect until the GUI is re-loaded, see @{Manager.reload_ui}.
     *   @function clear_allowed_code_points
     */
@@ -312,6 +315,15 @@ void localizer::register_on_lua(sol::state& mSol)
     mSol.set_function("auto_detect_allowed_code_points", [&]()
     {
         auto_detect_allowed_code_points();
+    });
+
+    /** Sets the default character to display if a character is missing from a font.
+    *   @tparam integer character The Unicode UTF-32 code point of the character to display
+    *   @function set_fallback_code_point
+    */
+    mSol.set_function("set_fallback_code_point", [&](char32_t uiCodePoint)
+    {
+        set_fallback_code_point(uiCodePoint);
     });
 
     /** Loads translations from a folder.
