@@ -14,12 +14,6 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-    struct character_info
-    {
-        char32_t uiCodePoint;
-        quad2f   mUVs;
-    };
-
     /// A texture containing characters
     /** This is the SDL implementation of the gui::font.
         It uses SDL_ttf to render glyphs and get character data.
@@ -95,13 +89,29 @@ namespace sdl
 
     private :
 
-        float fYOffset_ = 0.0f;
-        uint uiSize_ = 0u;
-        uint uiOutline_ = 0u;
+        struct character_info
+        {
+            char32_t uiCodePoint;
+            quad2f   mUVs;
+        };
+
+        struct range_info
+        {
+            code_point_range            mRange;
+            std::vector<character_info> lData;
+        };
+
+        const character_info* get_character_(char32_t uiChar) const;
+        float get_character_width_(const character_info& mChar) const;
+        float get_character_height_(const character_info& mChar) const;
+
+        float    fYOffset_ = 0.0f;
+        uint     uiSize_ = 0u;
+        uint     uiOutline_ = 0u;
         char32_t uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<sdl::material> pTexture_;
-        std::vector<character_info>    lCharacterList_;
+        std::vector<range_info>        lRangeList_;
     };
 }
 }
