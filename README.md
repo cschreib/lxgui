@@ -37,8 +37,9 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
 * **Design with XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of Lua+XML is not required.
-* **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages with roman characters (and their accentuated variants) are supported.
+* **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
 * **A familiar API...**. The XML and Lua APIs are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
+
 
 ## Available GUI widgets
 
@@ -55,6 +56,7 @@ There are plenty of different GUI libraries out there. They all have something t
 * **scroll_frame**: a frame that has scrollable content.
 
 As you can see from the screenshot below, lxgui can be used to create very complex GUIs (the "File selector" frame is actually a working file explorer!). This is mainly due to a powerful inheritance system: you can create a "template" frame (making it "virtual"), that contains many object, many properties, and then instantiate several other frames that will use this "template" ("inherit" from it). This reduces the necessary code, and can help you make consistent GUIs: for example, you can create a "ButtonTemplate", and use it for all the buttons of your GUI.
+
 
 ## Demonstration
 
@@ -82,7 +84,7 @@ Available rendering back-ends:
 
  - SFML2. This back-end uses [SFML2](https://www.sfml-dev.org/) for everything, and thus only depends on SFML. It runs a little bit slower than the OpenGL back-end, as the extra layer from SFML adds a bit of overhead. At present, some limitations in the SFML API also prevents using VBOs.
 
- - SDL2. This back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading. It is the slowest available back-end, but also the one that supports the largest number of platforms (including platforms lacking a GPU). VBOs are not supported, and neither is per-vertex color.
+ - SDL2. This back-end uses [SDL2](https://www.libsdl.org/) for rendering, [SDL2_tff](https://www.libsdl.org/projects/SDL_ttf/) for font loading and rendering, and [SDL2_image](https://www.libsdl.org/projects/SDL_image/) for texture loading. It is the slowest available back-end, but also the one that supports the largest number of platforms (including platforms lacking a GPU). VBOs are not supported, and neither is per-vertex color. Text rendering is limited to Unicode code points which fit in a 16bit integer.
 
 Available input back-ends:
 
