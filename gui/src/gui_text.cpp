@@ -934,9 +934,6 @@ void text::update_() const
 
             DEBUG_LOG("     End");
 
-            if (iterManual != lManualLineList.end() - 1)
-                mLine.lContent.push_back(U'\n');
-
             lLines.push_back(mLine);
 
             // Add the maximum number of line to this text
