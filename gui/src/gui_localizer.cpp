@@ -225,6 +225,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"nko", {0x07c0, 0x07ff}},
         {"samaritan", {0x0800, 0x083f}},
         {"mandaic", {0x0840, 0x085f}}, // added manually! souce https://en.wikipedia.org/wiki/Mandaic_script
+        {"arabic extended-a", {0x08a0, 0x08ff}}, // added manually! souce https://en.wikipedia.org/wiki/Arabic_alphabet
         {"devanagari", {0x0900, 0x097f}},
         {"bengali", {0x0980, 0x09ff}},
         {"gurmukhi", {0x0a00, 0x0a7f}},
@@ -265,6 +266,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"batak", {0x1bc0, 0x1bff}}, // added manually! souce https://en.wikipedia.org/wiki/Batak_script
         {"lepcha", {0x1c00, 0x1c4f}},
         {"ol chiki", {0x1c50, 0x1c7f}},
+        {"cyrillic extended-c", {0x1c80, 0x1c8f}}, // added manually! souce https://en.wikipedia.org/wiki/Cyrillic_script
         {"vedic extensions", {0x1cd0, 0x1cff}},
         {"phonetic extensions", {0x1d00, 0x1d7f}},
         {"phonetic extensions supplement", {0x1d80, 0x1dbf}},
@@ -340,6 +342,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"cham", {0xaa00, 0xaa5f}},
         {"myanmar extended-a", {0xaa60, 0xaa7f}},
         {"tai viet", {0xaa80, 0xaadf}},
+        {"latin extended-e", {0xab30, 0xab6f}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
         {"meetei mayek", {0xabc0, 0xabff}},
         {"hangul syllables", {0xac00, 0xd7af}},
         {"hangul jamo extended-b", {0xd7b0, 0xd7ff}},
@@ -378,6 +381,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"osmanya", {0x10480, 0x104af}},
         {"osage", {0x104b0, 0x104ff}}, // added manually! souce https://en.wikipedia.org/wiki/Osage_script
         {"elbasan", {0x10500, 0x1052f}}, // added manually! souce https://en.wikipedia.org/wiki/Elbasan_script
+        {"latin extended-f", {0x10780, 0x107bf}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
         {"cypriot syllabary", {0x10800, 0x1083f}},
         {"imperial aramaic", {0x10840, 0x1085f}},
         {"phoenician", {0x10900, 0x1091f}},
@@ -416,6 +420,7 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"mathematical alphanumeric symbols", {0x1d400, 0x1d7ff}},
         {"adlam", {0x1e800, 0x1e8df}},
         {"mende", {0x1e900, 0x1e95f}}, // added manually! souce https://en.wikipedia.org/wiki/Mende_Kikakui_script
+        {"arabic mathematical alphabetic symbols", {0x1ee00, 0x1eeff}}, // added manually! souce https://en.wikipedia.org/wiki/Arabic_alphabet
         {"mahjong tiles", {0x1f000, 0x1f02f}},
         {"domino tiles", {0x1f030, 0x1f09f}},
         {"enclosed alphanumeric supplement", {0x1f100, 0x1f1ff}},
@@ -423,9 +428,14 @@ void localizer::add_allowed_code_points_for_group(const std::string& sUnicodeGro
         {"mro", {0x16a40, 0x16a6f}}, // added manually! souce https://en.wikipedia.org/wiki/Mro_(Unicode_block)
         {"pahawh hmong", {0x16b00, 0x16bbf}}, // added manually! souce https://en.wikipedia.org/wiki/Pahawh_Hmong
         {"pollard", {0x16f00, 0x16f9f}}, // added manually! souce https://en.wikipedia.org/wiki/Pollard_script
+        {"latin extended-g", {0x1df00, 0x1dfff}}, // added manually! souce https://en.wikipedia.org/wiki/Latin_script_in_Unicode
         {"cjk unified ideographs extension b", {0x20000, 0x2a6df}},
         {"cjk unified ideographs extension c", {0x2a700, 0x2b73f}},
+        {"cjk unified ideographs extension d", {0x2b740, 0x2b81f}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension e", {0x2b820, 0x2ceaf}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
+        {"cjk unified ideographs extension f", {0x2ceb0, 0x2ebef}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
         {"cjk compatibility ideographs supplement", {0x2f800, 0x2fa1f}},
+        {"cjk unified ideographs extension g", {0x30000, 0x3134f}}, // added manually! source https://en.wikipedia.org/wiki/Han_unification
         {"tags", {0xe0000, 0xe007f}},
         {"variation selectors supplement", {0xe0100, 0xe01ef}},
         {"supplementary private use area-a", {0xf0000, 0xfffff}},
@@ -446,8 +456,9 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
     // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/scripts_and_languages.html
     static const std::vector<std::pair<std::vector<std::string>,std::vector<std::string>>> lScripts =
     {
-        {{"latin-1 supplement", "latin extended-a", "latin extended-b", "latin extended-c",
-            "latin extended-d", "latin extended additional"},
+        {{"basic latin", "latin-1 supplement", "latin extended-a", "latin extended-b",
+            "latin extended-c", "latin extended-d", "latin extended-e", "latin extended-f",
+            "latin extended-g", "latin extended additional"},
         {
             "aa", "abr", "ace", "ach", "ada", "af", "agq", "ain", "ak", "akz", "ale", "aln", "amo",
             "an", "ang", "aoz", "arn", "aro", "arp", "arw", "asa", "ast", "atj", "avk", "ay", "az",
@@ -489,7 +500,8 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
             "xh", "xog", "xum", "yao", "yap", "yav", "ybb", "yo", "yrl", "yua", "za", "zag", "zap",
             "zea", "zmi", "zu", "zun", "zza"
         }},
-        {{"cyrillic", "cyrillic supplement", "cyrillic extended-a", "cyrillic extended-b"},
+        {{"cyrillic", "cyrillic supplement", "cyrillic extended-a", "cyrillic extended-b",
+            "cyrillic extended-c"},
         {
             "ab", "abq", "ady", "aii", "alt", "av", "az", "ba", "be", "bg", "bs", "bua", "ce", "chm",
             "cjs", "ckt", "crh", "cu", "cv", "dar", "dng", "evn", "gag", "gld", "inh", "kaa", "kbd",
@@ -506,7 +518,8 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
             "new", "noe", "pi", "raj", "rjs", "sa", "sat", "sck", "sd", "srx", "swv", "taj", "tdg",
             "tdh", "thl", "thq", "thr", "tkt", "unr", "unx", "wbr", "wtm", "xnr", "xsr"
         }},
-        {{"arabic", "arabic supplement", "arabic presentation forms-a", "arabic presentation forms-b"},
+        {{"arabic", "arabic supplement", "arabic extended-a", "arabic presentation forms-a",
+            "arabic presentation forms-b", "arabic mathematical alphabetic symbols"},
         {
             "aeb", "ar", "arq", "ars", "ary", "arz", "az", "bal", "bej", "bft", "bgn", "bqi", "brh",
             "cja", "cjm", "ckb", "cop", "dcc", "doi", "dyo", "fa", "fia", "gbz", "gjk", "gju", "glk",
@@ -515,13 +528,15 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
             "shi", "skr", "so", "sus", "swb", "tg", "tk", "tly", "tr", "trw", "ttt", "ug", "ur", "uz",
             "wni", "wo", "zdj"
         }},
-        {{"cjk radicals supplement", "cjk strokes", "cjk unified ideographs",
-            "cjk unified ideographs extension a", "cjk unified ideographs extension b",
-            "cjk unified ideographs extension c", "cjk compatibility",
-            "cjk compatibility ideographs", "cjk compatibility forms",
-            "cjk compatibility ideographs supplement"},
+        {{"cjk radicals supplement", "cjk strokes", "cjk symbols and punctuation",
+            "cjk unified ideographs", "cjk unified ideographs extension a",
+            "cjk unified ideographs extension b", "cjk unified ideographs extension c",
+            "cjk unified ideographs extension d", "cjk unified ideographs extension e",
+            "cjk unified ideographs extension f", "cjk unified ideographs extension g",
+            "cjk compatibility", "cjk compatibility ideographs", "cjk compatibility forms",
+            "cjk compatibility ideographs supplement", "kangxi radicals"},
         {
-            "gan", "hak", "hsn", "lzh", "nan", "vi", "wuu", "yue", "za", "zh"
+            "gan", "hak", "hsn", "lzh", "nan", "vi", "wuu", "yue", "za", "zh", "ko", "ja"
         }},
         {{"greek and coptic", "greek extended", "coptic"},
         {
@@ -602,7 +617,7 @@ void localizer::add_allowed_code_points_for_language(const std::string& sLanguag
         {{"hanunoo"}, {"hnn"}},
         {{"varang kshiti"}, {"hoc"}},
         {{"yi syllables", "yi radicals"}, {"ii"}},
-        {{"cjk unified ideograph", "hiragana", "katakana"}, {"ja"}},
+        {{"hiragana", "katakana"}, {"ja"}},
         {{"new tai lue"}, {"khb"}},
         {{"khmer", "khmer symbols"}, {"km"}},
         {{"hangul jamo", "hangul compatibility jamo", "hangul jamo extended-a",
