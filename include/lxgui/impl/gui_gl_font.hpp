@@ -106,16 +106,15 @@ namespace gl
         float get_character_width_(const character_info& mChar) const;
         float get_character_height_(const character_info& mChar) const;
 
-        std::shared_ptr<gl::material> pTexture_;
-        std::vector<range_info> lRangeList_;
-
-        FT_Face mFace_ = nullptr;
-
-        uint uiSize_ = 0u;
-        float fYOffset_ = 0.0f;
-        bool bKerning_ = false;
-        uint uiOutline_ = 0u;
+        FT_Face  mFace_ = nullptr;
+        uint     uiSize_ = 0u;
+        float    fYOffset_ = 0.0f;
+        bool     bKerning_ = false;
+        uint     uiOutline_ = 0u;
         char32_t uiDefaultCodePoint_ = 0u;
+
+        std::shared_ptr<gl::material> pTexture_;
+        std::vector<range_info>       lRangeList_;
     };
 }
 }

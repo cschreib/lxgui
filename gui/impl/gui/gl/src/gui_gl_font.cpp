@@ -46,18 +46,6 @@ namespace
                 FT_Done_FreeType(mSharedFT);
         }
     }
-
-    template<typename Func>
-    void for_each_code_point(const std::vector<code_point_range>& lCodePoints, Func&& mFunction)
-    {
-        for (const code_point_range& mRange : lCodePoints)
-        {
-            for (char32_t uiChar = mRange.uiFirst; uiChar <= mRange.uiLast; ++uiChar)
-            {
-                mFunction(uiChar);
-            }
-        }
-    }
 }
 
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
