@@ -86,6 +86,8 @@ namespace sfml
 
     private :
 
+        char32_t get_character_(char32_t uiChar) const;
+
         sf::Font mFont_;
         uint     uiSize_ = 0u;
         uint     uiSizeSFML_ = 0u;
@@ -93,6 +95,7 @@ namespace sfml
         char32_t uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<sfml::material> pTexture_;
+        std::vector<code_point_range> lCodePoints_;
     };
 }
 }

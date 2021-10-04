@@ -4,9 +4,6 @@
 #include <lxgui/gui_out.hpp>
 #include <lxgui/utils_string.hpp>
 
-static constexpr lxgui::uint uiMinChar = 32;
-static constexpr lxgui::uint uiMaxChar = 255;
-
 namespace lxgui {
 namespace gui {
 namespace sfml
@@ -14,7 +11,7 @@ namespace sfml
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
     uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0)), uiOutline_(uiOutline),
-    uiDefaultCodePoint_(uiDefaultCodePoint)
+    uiDefaultCodePoint_(uiDefaultCodePoint), lCodePoints_(lCodePoints)
 {
     if (!mFont_.loadFromFile(sFontFile))
     {
@@ -23,9 +20,12 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
     // Need to request in advance the glyphs that we will use
     // in order for SFLM to draw them on its internal texture
-    for (uint cp = uiMinChar; cp <= uiMaxChar; ++cp)
+    for (const code_point_range& mRange : lCodePoints_)
     {
-        mFont_.getGlyph(cp, uiSizeSFML_, false, uiOutline);
+        for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint)
+        {
+            mFont_.getGlyph(uiCodePoint, uiSizeSFML_, false, uiOutline);
+        }
     }
 
     sf::Image mData = mFont_.getTexture(uiSizeSFML_).copyToImage();
@@ -38,9 +38,27 @@ uint font::get_size() const
     return uiSize_;
 }
 
+char32_t font::get_character_(char32_t uiChar) const
+{
+    for (const auto& mRange : lCodePoints_)
+    {
+        if (uiChar < mRange.uiFirst || uiChar > mRange.uiLast)
+            continue;
+
+        return uiChar;
+    }
+
+    if (uiChar != uiDefaultCodePoint_)
+        return get_character_(uiDefaultCodePoint_);
+    else
+        return 0;
+}
+
 quad2f font::get_character_uvs(char32_t uiChar) const
 {
-    if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
+    uiChar = get_character_(uiChar);
+    if (uiChar == 0)
+        return quad2f{};
 
     const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).textureRect;
     const quad2f& mTexRect = pTexture_->get_rect();
@@ -58,7 +76,9 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 
 quad2f font::get_character_bounds(char32_t uiChar) const
 {
-    if (uiChar < uiMinChar || uiChar > uiMaxChar) return quad2f{};
+    uiChar = get_character_(uiChar);
+    if (uiChar == 0)
+        return quad2f{};
 
     const float fYOffset = uiSize_;
     const float fOffset = static_cast<float>(uiOutline_);
@@ -75,22 +95,28 @@ quad2f font::get_character_bounds(char32_t uiChar) const
 
 float font::get_character_width(char32_t uiChar) const
 {
-    if (uiChar == 9) return 4*mFont_.getGlyph(uiMinChar, uiSizeSFML_, false, uiOutline_).advance;
-    if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
+    uiChar = get_character_(uiChar);
+    if (uiChar == 0)
+        return 0.0f;
 
     return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).advance;
 }
 
 float font::get_character_height(char32_t uiChar) const
 {
-    if (uiChar < uiMinChar || uiChar > uiMaxChar) return 0.0f;
+    uiChar = get_character_(uiChar);
+    if (uiChar == 0)
+        return 0.0f;
 
     return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).bounds.height;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
 {
-    if (uiChar1 < uiMinChar || uiChar1 > uiMaxChar || uiChar2 < uiMinChar || uiChar2 > uiMaxChar) return 0.0f;
+    uiChar1 = get_character_(uiChar1);
+    uiChar2 = get_character_(uiChar2);
+    if (uiChar1 == 0 || uiChar2 == 0)
+        return 0.0f;
 
     return mFont_.getKerning(uiChar1, uiChar2, uiSizeSFML_);
 }
