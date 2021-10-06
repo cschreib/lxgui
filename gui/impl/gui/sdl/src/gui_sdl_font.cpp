@@ -14,7 +14,7 @@ namespace sdl
 font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint,
     bool bPreMultipliedAlphaSupported) :
-    uiSize_(uiSize), uiOutline_(uiOutline), uiDefaultCodePoint_(uiDefaultCodePoint)
+    uiSize_(uiSize), uiDefaultCodePoint_(uiDefaultCodePoint)
 {
     if (!TTF_WasInit() && TTF_Init() != 0)
     {
@@ -107,7 +107,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
 
     const SDL_Color mColor = {255, 255, 255, 255};
 
-    fYOffset_ = TTF_FontDescent(pFont);
+    const float fYOffset = TTF_FontDescent(pFont);
 
     for (const code_point_range& mRange : lCodePoints)
     {
@@ -174,15 +174,21 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
 
             SDL_FreeSurface(pGlyphSurface);
 
-            iAdvance = std::max(iAdvance, (int)uiGlyphWidth);
-
             mCI.mUVs.left   = x/fTextureWidth;
             mCI.mUVs.top    = y/fTextureHeight;
-            mCI.mUVs.right  = (x + iAdvance)/fTextureWidth;
+            mCI.mUVs.right  = (x + uiGlyphWidth)/fTextureWidth;
             mCI.mUVs.bottom = (y + uiGlyphHeight)/fTextureHeight;
 
+            // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
+            mCI.mRect.left = -static_cast<float>(uiOutline);
+            mCI.mRect.right = mCI.mRect.left + uiGlyphWidth;
+            mCI.mRect.top = fYOffset - static_cast<float>(uiOutline);
+            mCI.mRect.bottom = mCI.mRect.top + uiGlyphHeight;
+
+            mCI.fAdvance = iAdvance;
+
             // Advance a column
-            x += iAdvance + uiSpacing;
+            x += uiGlyphWidth + uiSpacing;
         }
 
         lRangeList_.push_back(std::move(mInfo));
@@ -238,28 +244,13 @@ quad2f font::get_character_uvs(char32_t uiChar) const
     return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
-float font::get_character_width_(const character_info& mChar) const
-{
-    return mChar.mUVs.width()*pTexture_->get_rect().width() - 2*uiOutline_;
-}
-
-float font::get_character_height_(const character_info& mChar) const
-{
-    return mChar.mUVs.height()*pTexture_->get_rect().height() - 2*uiOutline_;
-}
-
 quad2f font::get_character_bounds(char32_t uiChar) const
 {
     const character_info* pChar = get_character_(uiChar);
     if (!pChar)
         return quad2f{};
 
-    const float fCharWidth = get_character_width_(*pChar);
-    const float fCharHeight = get_character_height_(*pChar);
-    const float fOffset = static_cast<float>(uiOutline_);
-
-    return quad2f(-fOffset, fOffset + fCharWidth,
-        -fOffset + fYOffset_, fOffset + fYOffset_ + fCharHeight);
+    return pChar->mRect;
 }
 
 float font::get_character_width(char32_t uiChar) const
@@ -268,7 +259,7 @@ float font::get_character_width(char32_t uiChar) const
     if (!pChar)
         return 0.0f;
 
-    return get_character_width_(*pChar);
+    return pChar->fAdvance;
 }
 
 float font::get_character_height(char32_t uiChar) const
@@ -277,7 +268,7 @@ float font::get_character_height(char32_t uiChar) const
     if (!pChar)
         return 0.0f;
 
-    return get_character_height_(*pChar);
+    return pChar->mRect.height();
 }
 
 float font::get_character_kerning(char32_t, char32_t) const

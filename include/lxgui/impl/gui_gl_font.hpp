@@ -108,7 +108,6 @@ namespace gl
 
         FT_Face  mFace_ = nullptr;
         uint     uiSize_ = 0u;
-        float    fYOffset_ = 0.0f;
         bool     bKerning_ = false;
         char32_t uiDefaultCodePoint_ = 0u;
 

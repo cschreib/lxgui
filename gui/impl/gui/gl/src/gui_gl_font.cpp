@@ -11,19 +11,6 @@
 #include FT_OUTLINE_H
 #include FT_STROKER_H
 
-// Convert fixed point to integer pixels
-template<std::size_t Point, typename T>
-T ft_floor(T iValue)
-{
-    return (iValue & -(1 << Point)) / (1 << Point);
-}
-
-template<std::size_t Point, typename T>
-T ft_ceil(T iValue)
-{
-    return ft_floor<Point>(iValue + (1 << Point) - 1);
-}
-
 // Convert fixed point to floating point
 template<std::size_t Point, typename T>
 float ft_float(T iValue)
@@ -37,6 +24,25 @@ FT_Fixed ft_fixed(T iValue)
 {
     return static_cast<FT_Fixed>(std::round(
         static_cast<float>(iValue) * static_cast<float>(1 << Point)));
+}
+
+// Convert fixed point to integer pixels
+template<std::size_t Point, typename T>
+T ft_floor(T iValue)
+{
+    return (iValue & -(1 << Point)) / (1 << Point);
+}
+
+template<std::size_t Point, typename T>
+T ft_ceil(T iValue)
+{
+    return ft_floor<Point>(iValue + (1 << Point) - 1);
+}
+
+template<std::size_t Point, typename T>
+T ft_round(T iValue)
+{
+    return std::round(ft_float<Point>(iValue));
 }
 
 namespace lxgui {
@@ -202,14 +208,17 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         if (FT_HAS_KERNING(mFace_))
             bKerning_ = true;
 
+        float fYOffset = 0.0f;
         if (FT_IS_SCALABLE(mFace_))
         {
             FT_Fixed mScale = mFace_->size->metrics.y_scale;
-            fYOffset_ = ft_ceil<6>(FT_MulFix(mFace_->descender, mScale));
+            fYOffset = ft_ceil<6>(FT_MulFix(mFace_->ascender, mScale)) +
+                ft_ceil<6>(FT_MulFix(mFace_->descender, mScale));
         }
         else
         {
-            fYOffset_ = ft_ceil<6>(mFace_->size->metrics.descender);
+            fYOffset = ft_ceil<6>(mFace_->size->metrics.ascender) +
+                ft_ceil<6>(mFace_->size->metrics.descender);
         }
 
         for (const code_point_range& mRange : lCodePoints)
@@ -277,10 +286,10 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
                 mCI.mRect.left = mBitmapGlyph->left;
                 mCI.mRect.right = mCI.mRect.left + mBitmap.width;
-                mCI.mRect.top = uiSize + fYOffset_ - mBitmapGlyph->top;
+                mCI.mRect.top = fYOffset - mBitmapGlyph->top;
                 mCI.mRect.bottom = mCI.mRect.top + mBitmap.rows;
 
-                mCI.fAdvance = ft_float<16>(mBitmapGlyph->root.advance.x);
+                mCI.fAdvance = ft_round<16>(mBitmapGlyph->root.advance.x);
 
                 // Advance a column
                 x += mBitmap.width + uiSpacing;
@@ -382,7 +391,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
         uint uiPrev = FT_Get_Char_Index(mFace_, uiChar1);
         uint uiNext = FT_Get_Char_Index(mFace_, uiChar2);
         if (FT_Get_Kerning(mFace_, uiPrev, uiNext, FT_KERNING_UNFITTED, &mKerning) != 0)
-            return ft_float<6>(mKerning.x);
+            return ft_round<6>(mKerning.x);
         else
             return 0.0f;
     }
