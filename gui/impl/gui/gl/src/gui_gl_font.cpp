@@ -11,9 +11,33 @@
 #include FT_OUTLINE_H
 #include FT_STROKER_H
 
-// Convert fixed point to float point (from SDL_ttf)
-#define FT_FLOOR(X) (((X) & -64) / 64)
-#define FT_CEIL(X)  FT_FLOOR((X) + 63)
+// Convert fixed point to integer pixels
+template<std::size_t Point, typename T>
+T ft_floor(T iValue)
+{
+    return (iValue & -(1 << Point)) / (1 << Point);
+}
+
+template<std::size_t Point, typename T>
+T ft_ceil(T iValue)
+{
+    return ft_floor<Point>(iValue + (1 << Point) - 1);
+}
+
+// Convert fixed point to floating point
+template<std::size_t Point, typename T>
+float ft_float(T iValue)
+{
+    return static_cast<float>(iValue) / static_cast<float>(1 << Point);
+}
+
+// Convert integer or floating point to fixed point
+template<std::size_t Point, typename T>
+FT_Fixed ft_fixed(T iValue)
+{
+    return static_cast<FT_Fixed>(std::round(
+        static_cast<float>(iValue) * static_cast<float>(1 << Point)));
+}
 
 namespace lxgui {
 namespace gui {
@@ -50,7 +74,7 @@ namespace
 
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
-    uiSize_(uiSize), uiOutline_(uiOutline), uiDefaultCodePoint_(uiDefaultCodePoint)
+    uiSize_(uiSize), uiDefaultCodePoint_(uiDefaultCodePoint)
 {
     // NOTE : Code inspired from Ogre::Font, from the OGRE3D graphics engine
     // http://www.ogre3d.org
@@ -73,9 +97,9 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     try
     {
         // Add some space between letters to prevent artifacts
-        uint uiSpacing = 1;
+        const uint uiSpacing = 1;
 
-        if (FT_New_Face(mFT, sFontFile.c_str(), 0, &mFace_))
+        if (FT_New_Face(mFT, sFontFile.c_str(), 0, &mFace_) != 0)
         {
             throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
                 "\" : cannot load face."
@@ -84,7 +108,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
         if (uiOutline > 0)
         {
-            if (FT_Stroker_New(mFT, &mStroker))
+            if (FT_Stroker_New(mFT, &mStroker) != 0)
             {
                 throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
                     "\" : cannot create stroker."
@@ -92,59 +116,66 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
             }
         }
 
-        if (FT_Set_Char_Size(mFace_, uiSize*64, uiSize*64, 96, 96))
+        if (FT_Select_Charmap(mFace_, FT_ENCODING_UNICODE) != 0)
+        {
+            throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
+                "\" : cannot select Unicode character map."
+            );
+        }
+
+        if (FT_Set_Pixel_Sizes(mFace_, 0, uiSize) != 0)
         {
             throw gui::exception("gui::gl::font", "Error loading font : \""+sFontFile+
                 "\" : cannot set font size."
             );
         }
 
-        int iMaxHeight = 0, iMaxWidth = 0, iMaxBearingY = 0;
-
         FT_Int32 iLoadFlags = FT_LOAD_TARGET_NORMAL | FT_LOAD_NO_HINTING;
         if (uiOutline != 0)
             iLoadFlags |= FT_LOAD_NO_BITMAP;
 
         // Calculate maximum width, height and bearing
+        uint uiMaxHeight = 0, uiMaxWidth = 0;
         uint uiNumChar = 0;
         for (const code_point_range& mRange : lCodePoints)
         {
             for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint)
             {
-                if (FT_Load_Char(mFace_, uiCodePoint, iLoadFlags))
+                if (FT_Load_Char(mFace_, uiCodePoint, iLoadFlags) != 0)
                     continue;
 
-                int iCharHeight = 2*(mFace_->glyph->bitmap.rows << 6)
-                    - mFace_->glyph->metrics.horiBearingY;
+                if (FT_Get_Glyph(mFace_->glyph, &mGlyph) != 0)
+                    continue;
 
-                if (iCharHeight > iMaxHeight)
-                    iMaxHeight = iCharHeight;
+                if (mGlyph->format == FT_GLYPH_FORMAT_OUTLINE && uiOutline > 0)
+                {
+                    FT_Stroker_Set(mStroker, ft_fixed<6>(uiOutline),
+                        FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+                    FT_Glyph_Stroke(&mGlyph, mStroker, true);
+                }
 
-                if (mFace_->glyph->metrics.horiBearingY > iMaxBearingY)
-                    iMaxBearingY = mFace_->glyph->metrics.horiBearingY;
+                FT_Glyph_To_Bitmap(&mGlyph, FT_RENDER_MODE_NORMAL, nullptr, true);
+                const FT_Bitmap& mBitmap = reinterpret_cast<FT_BitmapGlyph>(mGlyph)->bitmap;
 
-                int iCharWidth = std::max(
-                    int(mFace_->glyph->bitmap.width) + int(mFace_->glyph->metrics.horiBearingX >> 6),
-                    int(mFace_->glyph->advance.x >> 6)
-                );
+                if (mBitmap.rows > uiMaxHeight)
+                    uiMaxHeight = mBitmap.rows;
 
-                if (iCharWidth > iMaxWidth)
-                    iMaxWidth = iCharWidth;
+                if (mBitmap.width > uiMaxWidth)
+                    uiMaxWidth = mBitmap.width;
 
                 ++uiNumChar;
             }
         }
 
-        iMaxBearingY = iMaxBearingY >> 6;
-        iMaxHeight = (iMaxHeight >> 6) + 2*uiOutline;
-        iMaxWidth = iMaxWidth + 2*uiOutline;
+        uiMaxHeight = uiMaxHeight + 2*uiOutline;
+        uiMaxWidth = uiMaxWidth + 2*uiOutline;
 
         // Calculate the size of the texture
-        size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*uiNumChar;
+        uint uiTexSize = (uiMaxWidth + uiSpacing)*(uiMaxHeight + uiSpacing)*uiNumChar;
         uint uiTexSide = static_cast<uint>(std::sqrt(static_cast<float>(uiTexSize)));
 
         // Add a bit of overhead since we won't be able to tile this area perfectly
-        uiTexSide += std::max(iMaxWidth, iMaxHeight);
+        uiTexSide += std::max(uiMaxWidth, uiMaxHeight);
         uiTexSize = uiTexSide*uiTexSide;
 
         // Round up to nearest power of two
@@ -156,8 +187,8 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         }
 
         // Set up area as square
-        size_t uiFinalWidth = uiTexSide;
-        size_t uiFinalHeight = uiTexSide;
+        uint uiFinalWidth = uiTexSide;
+        uint uiFinalHeight = uiTexSide;
 
         // Reduce height if we don't actually need a square
         if (uiFinalWidth*uiFinalHeight/2 >= uiTexSize)
@@ -166,7 +197,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         std::vector<ub32color> lData(uiFinalWidth*uiFinalHeight);
         std::fill(lData.begin(), lData.end(), ub32color(0, 0, 0, 0));
 
-        size_t x = 0, y = 0;
+        uint x = 0, y = 0;
 
         if (FT_HAS_KERNING(mFace_))
             bKerning_ = true;
@@ -174,11 +205,11 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         if (FT_IS_SCALABLE(mFace_))
         {
             FT_Fixed mScale = mFace_->size->metrics.y_scale;
-            fYOffset_ = FT_CEIL(FT_MulFix(mFace_->descender, mScale));
+            fYOffset_ = ft_ceil<6>(FT_MulFix(mFace_->descender, mScale));
         }
         else
         {
-            fYOffset_ = FT_CEIL(mFace_->size->metrics.descender);
+            fYOffset_ = ft_ceil<6>(mFace_->size->metrics.descender);
         }
 
         for (const code_point_range& mRange : lCodePoints)
@@ -192,14 +223,14 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
                 character_info& mCI = mInfo.lData[uiCodePoint - mRange.uiFirst];
                 mCI.uiCodePoint = uiCodePoint;
 
-                if (FT_Load_Char(mFace_, uiCodePoint, iLoadFlags))
+                if (FT_Load_Char(mFace_, uiCodePoint, iLoadFlags) != 0)
                 {
                     gui::out << gui::warning << "gui::gl::font : Cannot load character " << uiCodePoint
                         << " in font \"" << sFontFile << "\"." << std::endl;
                     continue;
                 }
 
-                if (FT_Get_Glyph(mFace_->glyph, &mGlyph))
+                if (FT_Get_Glyph(mFace_->glyph, &mGlyph) != 0)
                 {
                     gui::out << gui::warning << "gui::gl::font : Cannot get glyph for character " << uiCodePoint
                         << " in font \"" << sFontFile << "\"." << std::endl;
@@ -208,50 +239,54 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
                 if (mGlyph->format == FT_GLYPH_FORMAT_OUTLINE && uiOutline > 0)
                 {
-                    FT_Stroker_Set(mStroker, static_cast<FT_Fixed>(uiOutline * static_cast<float>(1 << 6)),
+                    FT_Stroker_Set(mStroker, ft_fixed<6>(uiOutline),
                         FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
                     FT_Glyph_Stroke(&mGlyph, mStroker, true);
                 }
 
+                // Warning: after this line, do not use mGlyph! Use mBitmapGlyph.root
                 FT_Glyph_To_Bitmap(&mGlyph, FT_RENDER_MODE_NORMAL, nullptr, true);
-                FT_Bitmap& mBitmap = reinterpret_cast<FT_BitmapGlyph>(mGlyph)->bitmap;
+                FT_BitmapGlyph mBitmapGlyph = reinterpret_cast<FT_BitmapGlyph>(mGlyph);
 
-                size_t uiXBearing = std::max(0, int(mFace_->glyph->metrics.horiBearingX >> 6));
-
-                FT_Int iAdvance = std::max(
-                    int(uiXBearing + mBitmap.width), int(mFace_->glyph->advance.x >> 6)
-                );
+                const FT_Bitmap& mBitmap = mBitmapGlyph->bitmap;
 
                 // If at end of row, jump to next line
-                if (x + iAdvance > uiFinalWidth - 1)
+                if (x + mBitmap.width > uiFinalWidth - 1)
                 {
-                    y += iMaxHeight + uiSpacing;
+                    y += uiMaxHeight + uiSpacing;
                     x = 0;
                 }
 
-                ub32color::chanel* sBuffer = mBitmap.buffer;
+                // Some characters do not have a bitmap, like white spaces.
+                // This is legal, and we should just have blank geometry for them.
+                const ub32color::chanel* sBuffer = mBitmap.buffer;
                 if (sBuffer)
                 {
-                    int iYBearing = iMaxBearingY - (mFace_->glyph->metrics.horiBearingY >> 6);
-
-                    for (int j = 0; j < int(mBitmap.rows);  ++j)
+                    for (uint j = 0; j < mBitmap.rows; ++j)
                     {
-                        uint uiRowOffset = (y + j + iYBearing)*uiFinalWidth;
-                        for (int i = 0; i < int(mBitmap.width); ++i, ++sBuffer)
-                            lData[x + i + uiXBearing + uiRowOffset] = ub32color(255, 255, 255, *sBuffer);
+                        uint uiRowOffset = (y + j)*uiFinalWidth + x;
+                        for (uint i = 0; i < mBitmap.width; ++i, ++sBuffer)
+                            lData[i + uiRowOffset] = ub32color(255, 255, 255, *sBuffer);
                     }
                 }
 
-                FT_Done_Glyph(mGlyph);
-                mGlyph = nullptr;
-
                 mCI.mUVs.left   = x/float(uiFinalWidth);
                 mCI.mUVs.top    = y/float(uiFinalHeight);
-                mCI.mUVs.right  = (x + iAdvance)/float(uiFinalWidth);
-                mCI.mUVs.bottom = (y + iMaxHeight)/float(uiFinalHeight);
+                mCI.mUVs.right  = (x + mBitmap.width)/float(uiFinalWidth);
+                mCI.mUVs.bottom = (y + mBitmap.rows)/float(uiFinalHeight);
+
+                mCI.mRect.left = mBitmapGlyph->left;
+                mCI.mRect.right = mCI.mRect.left + mBitmap.width;
+                mCI.mRect.top = uiSize + fYOffset_ - mBitmapGlyph->top;
+                mCI.mRect.bottom = mCI.mRect.top + mBitmap.rows;
+
+                mCI.fAdvance = ft_float<16>(mBitmapGlyph->root.advance.x);
 
                 // Advance a column
-                x += (iAdvance + uiSpacing);
+                x += mBitmap.width + uiSpacing;
+
+                FT_Done_Glyph(mGlyph);
+                mGlyph = nullptr;
             }
 
             lRangeList_.push_back(std::move(mInfo));
@@ -312,28 +347,13 @@ quad2f font::get_character_uvs(char32_t uiChar) const
     return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
-float font::get_character_width_(const character_info& mChar) const
-{
-    return mChar.mUVs.width()*pTexture_->get_rect().width() - 2*uiOutline_;
-}
-
-float font::get_character_height_(const character_info& mChar) const
-{
-    return mChar.mUVs.height()*pTexture_->get_rect().height() - 2*uiOutline_;
-}
-
 quad2f font::get_character_bounds(char32_t uiChar) const
 {
     const character_info* pChar = get_character_(uiChar);
     if (!pChar)
         return quad2f{};
 
-    const float fCharWidth = get_character_width_(*pChar);
-    const float fCharHeight = get_character_height_(*pChar);
-    const float fOffset = static_cast<float>(uiOutline_);
-
-    return quad2f(-fOffset, fOffset + fCharWidth,
-        -fOffset + fYOffset_, fOffset + fYOffset_ + fCharHeight);
+    return pChar->mRect;
 }
 
 float font::get_character_width(char32_t uiChar) const
@@ -342,7 +362,7 @@ float font::get_character_width(char32_t uiChar) const
     if (!pChar)
         return 0.0f;
 
-    return get_character_width_(*pChar);
+    return pChar->fAdvance;
 }
 
 float font::get_character_height(char32_t uiChar) const
@@ -351,7 +371,7 @@ float font::get_character_height(char32_t uiChar) const
     if (!pChar)
         return 0.0f;
 
-    return get_character_height_(*pChar);
+    return pChar->mRect.height();
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
@@ -361,8 +381,8 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
         FT_Vector mKerning;
         uint uiPrev = FT_Get_Char_Index(mFace_, uiChar1);
         uint uiNext = FT_Get_Char_Index(mFace_, uiChar2);
-        if (!FT_Get_Kerning(mFace_, uiPrev, uiNext, FT_KERNING_UNFITTED, &mKerning))
-            return mKerning.x >> 6;
+        if (FT_Get_Kerning(mFace_, uiPrev, uiNext, FT_KERNING_UNFITTED, &mKerning) != 0)
+            return ft_float<6>(mKerning.x);
         else
             return 0.0f;
     }

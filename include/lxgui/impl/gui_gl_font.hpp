@@ -94,6 +94,8 @@ namespace gl
         {
             char32_t uiCodePoint;
             quad2f   mUVs;
+            quad2f   mRect;
+            float    fAdvance = 0.0f;
         };
 
         struct range_info
@@ -103,14 +105,11 @@ namespace gl
         };
 
         const character_info* get_character_(char32_t uiChar) const;
-        float get_character_width_(const character_info& mChar) const;
-        float get_character_height_(const character_info& mChar) const;
 
         FT_Face  mFace_ = nullptr;
         uint     uiSize_ = 0u;
         float    fYOffset_ = 0.0f;
         bool     bKerning_ = false;
-        uint     uiOutline_ = 0u;
         char32_t uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<gl::material> pTexture_;
