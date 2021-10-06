@@ -567,7 +567,7 @@ int main(int argc, char* argv[])
         // Create the FontString
         gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
         pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
-        pFont->set_font("interface/fonts/main.ttf", 12);
+        pFont->set_font("interface/fonts/main.ttf", 15);
         pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
         pFont->set_justify_h(gui::text::alignment::RIGHT);
         pFont->set_outlined(true);

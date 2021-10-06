@@ -22,8 +22,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
             std::string(TTF_GetError()));
     }
 
-    uint uiSDLSize = floor(uiSize_ * 96.0/72.0);
-    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSDLSize);
+    TTF_Font* pFont = TTF_OpenFont(sFontFile.c_str(), uiSize_);
     if (!pFont)
     {
         throw gui::exception("gui::sdl::font", "Could not load font file '"+

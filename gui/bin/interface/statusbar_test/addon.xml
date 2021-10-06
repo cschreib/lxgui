@@ -37,7 +37,7 @@
         </Scripts>
         <Layers>
             <Layer level="HIGHLIGHT">
-                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="9" outline="NORMAL" text="Zoom x1.0" setAllPoints="true"/>
+                <FontString name="$parentText" font="interface/fonts/main.ttf" fontHeight="11" outline="NORMAL" text="Zoom x1.0" setAllPoints="true"/>
             </Layer>
         </Layers>
     </StatusBar>

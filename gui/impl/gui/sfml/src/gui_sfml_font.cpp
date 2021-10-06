@@ -10,8 +10,8 @@ namespace sfml
 {
 font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
-    uiSize_(uiSize), uiSizeSFML_(floor(uiSize_ * 96.0/72.0)), uiOutline_(uiOutline),
-    uiDefaultCodePoint_(uiDefaultCodePoint), lCodePoints_(lCodePoints)
+    uiSize_(uiSize), uiOutline_(uiOutline), uiDefaultCodePoint_(uiDefaultCodePoint),
+    lCodePoints_(lCodePoints)
 {
     if (!mFont_.loadFromFile(sFontFile))
     {
@@ -24,11 +24,11 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     {
         for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint)
         {
-            mFont_.getGlyph(uiCodePoint, uiSizeSFML_, false, uiOutline);
+            mFont_.getGlyph(uiCodePoint, uiSize_, false, uiOutline);
         }
     }
 
-    sf::Image mData = mFont_.getTexture(uiSizeSFML_).copyToImage();
+    sf::Image mData = mFont_.getTexture(uiSize_).copyToImage();
     sfml::material::premultiply_alpha(mData);
     pTexture_ = std::make_shared<sfml::material>(mData);
 }
@@ -60,7 +60,7 @@ quad2f font::get_character_uvs(char32_t uiChar) const
     if (uiChar == 0)
         return quad2f{};
 
-    const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).textureRect;
+    const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).textureRect;
     const quad2f& mTexRect = pTexture_->get_rect();
 
     quad2f mRect;
@@ -83,7 +83,7 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     const float fYOffset = uiSize_;
     const float fOffset = static_cast<float>(uiOutline_);
 
-    const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).bounds;
+    const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 
     quad2f mRect;
     mRect.left   = -fOffset;
@@ -99,7 +99,7 @@ float font::get_character_width(char32_t uiChar) const
     if (uiChar == 0)
         return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).advance;
+    return mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).advance;
 }
 
 float font::get_character_height(char32_t uiChar) const
@@ -108,7 +108,7 @@ float font::get_character_height(char32_t uiChar) const
     if (uiChar == 0)
         return 0.0f;
 
-    return mFont_.getGlyph(uiChar, uiSizeSFML_, false, uiOutline_).bounds.height;
+    return mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds.height;
 }
 
 float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
@@ -118,7 +118,7 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
     if (uiChar1 == 0 || uiChar2 == 0)
         return 0.0f;
 
-    return mFont_.getKerning(uiChar1, uiChar2, uiSizeSFML_);
+    return mFont_.getKerning(uiChar1, uiChar2, uiSize_);
 }
 
 std::weak_ptr<gui::material> font::get_texture() const

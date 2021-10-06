@@ -90,7 +90,6 @@ namespace sfml
 
         sf::Font mFont_;
         uint     uiSize_ = 0u;
-        uint     uiSizeSFML_ = 0u;
         uint     uiOutline_ = 0u;
         char32_t uiDefaultCodePoint_ = 0u;
 

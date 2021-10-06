@@ -66,7 +66,7 @@
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="9" justifyH="CENTER" text="">
+                        <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="CENTER" text="">
                             <Size>
                                 <AbsDimension x="140" y="32"/>
                             </Size>
@@ -89,7 +89,7 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
-                        <NormalText font="interface/fonts/main.ttf" fontHeight="9" setAllPoints="false">
+                        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false">
                             <Anchors>
                                 <Anchor point="CENTER"/>
                             </Anchors>
@@ -259,10 +259,10 @@
             <AbsDimension x="1" y="1"/>
         </PushedTextOffset>
         <HighlightTexture file="|button_highlight.png"/>
-        <NormalText font="interface/fonts/main.ttf" fontHeight="9">
+        <NormalText font="interface/fonts/main.ttf" fontHeight="11">
             <Color r="1" g="1" b="1"/>
         </NormalText>
-        <DisabledText font="interface/fonts/main.ttf" fontHeight="9">
+        <DisabledText font="interface/fonts/main.ttf" fontHeight="11">
             <Color r="0.5" g="0.5" b="0.5"/>
         </DisabledText>
         <Scripts>
@@ -282,7 +282,7 @@
         </Anchors>
         <Layers>
             <Layer>
-                <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="9" justifyH="LEFT">
+                <FontString name="$parentTitleString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="LEFT">
                     <Size>
                         <AbsDimension x="40"/>
                     </Size>
@@ -294,7 +294,7 @@
                         </Anchor>
                     </Anchors>
                 </FontString>
-                <FontString name="$parentValueString" font="interface/fonts/main.ttf" fontHeight="9" justifyH="RIGHT" text="0">
+                <FontString name="$parentValueString" font="interface/fonts/main.ttf" fontHeight="11" justifyH="RIGHT" text="0">
                     <Size>
                         <AbsDimension x="24"/>
                     </Size>

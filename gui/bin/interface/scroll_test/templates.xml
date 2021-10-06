@@ -10,7 +10,7 @@
                 </Offset>
             </Anchor>
         </Anchors>
-        <NormalText font="interface/fonts/main.ttf" fontHeight="9" setAllPoints="false" justifyH="LEFT">
+        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false" justifyH="LEFT">
             <Anchors>
                 <Anchor point="LEFT" relativeTo="$parentIconFrame" relativePoint="RIGHT">
                     <Offset>
@@ -50,7 +50,7 @@
         <Anchors>
             <Anchor point="RIGHT"/>
         </Anchors>
-        <NormalText font="interface/fonts/main.ttf" fontHeight="9" setAllPoints="false" justifyH="LEFT">
+        <NormalText font="interface/fonts/main.ttf" fontHeight="11" setAllPoints="false" justifyH="LEFT">
             <Anchors>
                 <Anchor point="LEFT" relativeTo="$parentIconFrame" relativePoint="RIGHT">
                     <Offset>
@@ -118,7 +118,7 @@
                 <AbsInset left="1" right="1" top="1" bottom="1"/>
             </BackgroundInsets>
         </Backdrop>
-        <FontString font="interface/fonts/main.ttf" fontHeight="9" justifyH="LEFT" justifyV="MIDDLE"/>
+        <FontString font="interface/fonts/main.ttf" fontHeight="11" justifyH="LEFT" justifyV="MIDDLE"/>
         <TextInsets left="4" right="4" top="2" bottom="2"/>
         <Scripts>
             <OnEscapePressed>
