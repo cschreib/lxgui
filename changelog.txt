@@ -15,8 +15,9 @@ Major changes:
  - gui: added vertex_cache to speed up rendering (only available with OpenGL renderer)
  - gui: added texture atlases to speed up rendering
  - gui: added quad batching to speed up rendering
- - gui: added localizer class for handling translations and localized string formatting
+ - gui: added localizer class for handling languages, translations, and string formatting
  - gui: font_string can now render icons/smileys mixed with the rendered text
+ - gui: fonts are no longer limited to the first 255 unicode characters
  - gui: the order in which widgets are created from XML is now tightly specified. For any frame:
     - the frame itself is created (without any of its regions or children)
     - the special regions are created (e.g., slider thumb texture, button texture, etc.)
@@ -88,6 +89,7 @@ Other changes:
  - gui: improved peformance of "update borders" notifications
  - gui: improved peformance of generating new object IDs
  - gui: improved peformance of font outline rendering
+ - gui: improved quality and consistency of font rendering in OpenGL back-end
  - gui: fixed rare crash in edit_box
  - gui: fixed crash when calling Lua delete_frame() twice on same frame
  - gui: fixed Lua get_width()/get_height() returning incorrect values
