@@ -80,16 +80,28 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     if (uiChar == 0)
         return quad2f{};
 
+#if defined(SFML_HAS_OUTLINE_GLYPH_FIX)
+    // Requires https://github.com/SFML/SFML/pull/1827
     const float fYOffset = uiSize_;
-    const float fOffset = static_cast<float>(uiOutline_);
-
     const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 
     quad2f mRect;
-    mRect.left   = -fOffset;
-    mRect.right  = -fOffset + mSFRect.width;
-    mRect.top    = -fOffset + mSFRect.top + fYOffset;
-    mRect.bottom = -fOffset + mSFRect.top + mSFRect.height + fYOffset;
+    mRect.left   = mSFRect.left;
+    mRect.right  = mSFRect.left + mSFRect.width;
+    mRect.top    = mSFRect.top + fYOffset;
+    mRect.bottom = mSFRect.top + fYOffset + mSFRect.height;
+#else
+    const float fYOffset = uiSize_;
+    const float fOffset = static_cast<float>(uiOutline_);
+    const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
+
+    quad2f mRect;
+    mRect.left   = mSFRect.left - fOffset;
+    mRect.right  = mSFRect.left - fOffset + mSFRect.width;
+    mRect.top    = mSFRect.top - fOffset + fYOffset;
+    mRect.bottom = mSFRect.top - fOffset + fYOffset + mSFRect.height;
+#endif
+
     return mRect;
 }
 
