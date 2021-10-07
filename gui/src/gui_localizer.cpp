@@ -40,12 +40,12 @@ namespace
         // Windows has std::getenv, but MSVC offers a safer alternative that it insists on using
         char* sBuffer = nullptr;
         std::size_t uiSize = 0;
-        if (_dupenv_s(&sBuffer, &uiSize, sName.c_str()) == 0 && sBuffer != nullptr)
-        {
-            std::string sResult = sBuffer;
-            free(sBuffer);
-            return sResult;
-        }
+        if (_dupenv_s(&sBuffer, &uiSize, sName.c_str()) != 0 || sBuffer == nullptr)
+            return "";
+
+        std::string sResult = sBuffer;
+        free(sBuffer);
+        return sResult;
     #else
         const char* sResult = std::getenv(sName.c_str());
         return sResult != nullptr ? sResult : "";
@@ -147,12 +147,12 @@ void localizer::set_locale(std::locale mLocale)
 
 void localizer::set_preferred_languages(const std::vector<std::string>& lLanguages)
 {
-    for (const auto& sLanguage : lLanguages)
-    {
-        // TODO implement more generic input checks
-        // if (sLanguage.size() != 4)
-        //     throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
-    }
+    // TODO implement more generic input checks
+    // for (const auto& sLanguage : lLanguages)
+    // {
+    //     if (sLanguage.size() != 4)
+    //         throw gui::exception("gui::localizer", "language code must have exactly 4 characters");
+    // }
 
     lLanguages_ = lLanguages;
     clear_translations();
