@@ -11,6 +11,7 @@ extern "C" {
 
 #include "lxgui/luapp_lua_fwd.hpp"
 
+#include <fmt/format.h>
 #include <string>
 
 namespace lxgui {
@@ -236,11 +237,9 @@ private:
   }
 
   static int tostring_T (lua_State *L) {
-    char buff[32];
     userdataType *ud = static_cast<userdataType*>(lua_touserdata(L, 1));
     T *obj = ud->pT;
-    sprintf(buff, "%p", static_cast<void*>(obj));
-    lua_pushfstring(L, "%s (%s)", T::className, buff);
+    lua_pushfstring(L, "%s (%s)", T::className, fmt::format("{}", static_cast<void*>(obj)).c_str());
     return 1;
   }
 

@@ -34,6 +34,24 @@ namespace
         return sStr;
     }
 
+    std::string get_environment_variable(const std::string& sName)
+    {
+    #if defined(LXGUI_PLATFORM_WINDOWS)
+        // Windows has std::getenv, but MSVC offers a safer alternative that it insists on using
+        char* sBuffer = nullptr;
+        std::size_t uiSize = 0;
+        if (_dupenv_s(&sBuffer, &uiSize, sName.c_str()) == 0 && sBuffer != nullptr)
+        {
+            std::string sResult = sBuffer;
+            free(sBuffer);
+            return sResult;
+        }
+    #else
+        const char* sResult = std::getenv(sName.c_str());
+        return sResult != nullptr ? sResult : "";
+    #endif
+    }
+
     std::vector<std::string> get_default_languages()
     {
         // First try parsing the LANGUAGE environment variable.
@@ -42,10 +60,10 @@ namespace
         // primary language, they may still get another match which would be
         // better for them than the default enUS (e.g., a French person could
         // prefer to fall back on a Spanish translation rather than English).
-        const char* csLanguage = std::getenv("LANGUAGE");
-        if (csLanguage && std::strlen(csLanguage) > 0)
+        const std::string sLanguageVar = get_environment_variable("LANGUAGE");
+        if (!sLanguageVar.empty())
         {
-            std::vector<std::string> lLanguages = utils::cut(std::string{csLanguage}, ":");
+            std::vector<std::string> lLanguages = utils::cut(sLanguageVar, ":");
             std::vector<std::string> lOutput;
             for (auto& sLanguage : lLanguages)
             {
@@ -64,10 +82,9 @@ namespace
     #endif
 
         // If LANGUAGE is not specified or empty, try LANG.
-        const char* csLang = std::getenv("LANG");
-        if (csLang && std::strlen(csLang) > 0)
+        std::string sLang = get_environment_variable("LANG");
+        if (!sLang.empty())
         {
-            std::string sLang{csLang};
             auto uiPos1 = sLang.find_first_of(".@");
             if (uiPos1)
                 sLang = sLang.substr(0, uiPos1);

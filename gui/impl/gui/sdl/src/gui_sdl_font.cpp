@@ -103,7 +103,6 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
 
     size_t x = 0, y = 0;
     uint uiLineMaxHeight = iMaxHeight;
-    character_info mCI;
 
     const SDL_Color mColor = {255, 255, 255, 255};
 
