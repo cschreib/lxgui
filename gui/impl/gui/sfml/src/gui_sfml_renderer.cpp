@@ -221,19 +221,21 @@ std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, 
 
 bool renderer::is_vertex_cache_supported() const
 {
-    return false;
-
-#if 0
+#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+    // Requires https://github.com/SFML/SFML/pull/1807
     return sf::VertexBuffer::isAvailable();
+#else
+    return false;
 #endif
 }
 
 std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
 {
-    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
-
-#if 0
+#if defined(SFML_HAS_NORMALISED_COORDINATES_VBO)
+    // Requires https://github.com/SFML/SFML/pull/1807
     return std::make_shared<sfml::vertex_cache>(mType);
+#else
+    throw gui::exception("gui::sfml::renderer", "SFML does not support vertex caches.");
 #endif
 }
 
