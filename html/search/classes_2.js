@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['character_5finfo_1658',['character_info',['../structlxgui_1_1gui_1_1gl_1_1character__info.html',1,'lxgui::gui::gl::character_info'],['../structlxgui_1_1gui_1_1sdl_1_1character__info.html',1,'lxgui::gui::sdl::character_info']]],
-  ['check_5fbutton_1659',['check_button',['../classlxgui_1_1gui_1_1check__button.html',1,'lxgui::gui']]],
-  ['color_1660',['color',['../classlxgui_1_1gui_1_1color.html',1,'lxgui::gui']]]
+  ['check_5fbutton_1664',['check_button',['../classlxgui_1_1gui_1_1check__button.html',1,'lxgui::gui']]],
+  ['code_5fpoint_5frange_1665',['code_point_range',['../structlxgui_1_1gui_1_1code__point__range.html',1,'lxgui::gui']]],
+  ['color_1666',['color',['../classlxgui_1_1gui_1_1color.html',1,'lxgui::gui']]]
 ];

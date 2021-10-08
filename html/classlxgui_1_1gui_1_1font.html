@@ -126,7 +126,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A texture containing characters. </p>
 <p>This class is purely virtual. It needs to be implemented and created by the corresponding <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__font_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__font_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__font_8hpp_source.html">gui_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a84cbb12a499689e54d67cbb4b982f381"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a84cbb12a499689e54d67cbb4b982f381">&#9670;&nbsp;</a></span>font()</h2>
@@ -180,6 +180,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Destructor. </p>
 
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#af8f7c315548437ce0f75268c685fc136">lxgui::gui::gl::font</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -216,7 +218,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The rect coordinates of this character (in pixels, relative to the baseline) </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#ab291750f88f911eb27bb1338ea82291d">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a0a5adeec8ca6e59b2b494f073e812e39">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a0671374c19524e32d1c53cb88f925d17">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a0a5adeec8ca6e59b2b494f073e812e39">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#ab291750f88f911eb27bb1338ea82291d">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a0671374c19524e32d1c53cb88f925d17">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -253,7 +255,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The height of the character in pixels. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ded33f452061f75c2a40c26cc406812">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#ae4425d0b782fa732ec33784035c8c934">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a2ae4eda8edd9def2e39beb25129fd2f0">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#ae4425d0b782fa732ec33784035c8c934">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ded33f452061f75c2a40c26cc406812">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a2ae4eda8edd9def2e39beb25129fd2f0">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -302,7 +304,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The kerning amount between the two characters </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Kerning is a font rendering adjustment that makes some letters closer, for example in 'VA', there is room for the two to be closer than with 'VW'. This has no effect for fixed width fonts (like Courrier, etc). </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4cc6f6d4a29f8d573979bcedc40d984f">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#ab91fca80957ab0e5609607f2a400cfe4">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a9d2ea8014571f4e63ab651ac433e7274">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#ab91fca80957ab0e5609607f2a400cfe4">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4cc6f6d4a29f8d573979bcedc40d984f">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a9d2ea8014571f4e63ab651ac433e7274">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -340,7 +342,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The uv coordinates of this character on the texture </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The uv coordinates are normalised, i.e. they range from 0 to 1. They are arranged as {u1, v1, u2, v2}. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a087b3a47cc8628e87652220806d2059d">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#aeb313b12ed0104988f381906527c4462">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a7a0ec77334d48ff0d37f3bfba2ded547">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#aeb313b12ed0104988f381906527c4462">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a087b3a47cc8628e87652220806d2059d">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a7a0ec77334d48ff0d37f3bfba2ded547">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -377,7 +379,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The width of the character in pixels. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a6755ef59df6737a4c513aa76c6f7f9f1">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#af336e1cb9dacb78da9498595db35282d">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a290bef3c95f2b7545d79d37ee6714086">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#af336e1cb9dacb78da9498595db35282d">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a6755ef59df6737a4c513aa76c6f7f9f1">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a290bef3c95f2b7545d79d37ee6714086">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -407,7 +409,7 @@ Public Member Functions</h2></td></tr>
 <p>Get the size of the font in pixels. </p>
 <dl class="section return"><dt>Returns</dt><dd>The size of the font in pixels </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a0ef52a562702b68740092b94d7ee349a">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a0ef52a562702b68740092b94d7ee349a">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -437,7 +439,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the underlying material to use for rendering. </p>
 <dl class="section return"><dt>Returns</dt><dd>The underlying material to use for rendering </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ca377cc252dcf520c70a3d4bff621af">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#aeb0c603687c4881143e27665873515b8">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#aeb0c603687c4881143e27665873515b8">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a4ca377cc252dcf520c70a3d4bff621af">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a82b3eba401e2dfc6f66e9e05a3d7ce0b">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -473,7 +475,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a636bb84576cd856708bb57fd867c7e7a">lxgui::gui::sdl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a82a57bfbaa6dd99731f434c04b2efcd1">lxgui::gui::gl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">lxgui::gui::sfml::font</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1font.html#a82a57bfbaa6dd99731f434c04b2efcd1">lxgui::gui::gl::font</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a636bb84576cd856708bb57fd867c7e7a">lxgui::gui::sdl::font</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3747bb1ab237be6518a81237db210897">lxgui::gui::sfml::font</a>.</p>
 
 </div>
 </div>
@@ -483,7 +485,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: lxgui::gui::sdl::character_info Struct Reference</title>
+<title>gui: lxgui::gui::code_point_range Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,70 +61,74 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacelxgui.html">lxgui</a></li><li class="navelem"><a class="el" href="namespacelxgui_1_1gui.html">gui</a></li><li class="navelem"><a class="el" href="namespacelxgui_1_1gui_1_1sdl.html">sdl</a></li><li class="navelem"><a class="el" href="structlxgui_1_1gui_1_1sdl_1_1character__info.html">character_info</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacelxgui.html">lxgui</a></li><li class="navelem"><a class="el" href="namespacelxgui_1_1gui.html">gui</a></li><li class="navelem"><a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structlxgui_1_1gui_1_1sdl_1_1character__info-members.html">List of all members</a>  </div>
+<a href="structlxgui_1_1gui_1_1code__point__range-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">lxgui::gui::sdl::character_info Struct Reference</div>  </div>
+<div class="title">lxgui::gui::code_point_range Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>&gt;</code></p>
+<p>Represents a contiguous range of unicode code points.  
+ <a href="structlxgui_1_1gui_1_1code__point__range.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="gui__code__point__range_8hpp_source.html">gui_code_point_range.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aab3aa3da79a922c4dcf233a50e9a1684"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1sdl_1_1character__info.html#aab3aa3da79a922c4dcf233a50e9a1684">uiCodePoint</a></td></tr>
-<tr class="separator:aab3aa3da79a922c4dcf233a50e9a1684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab901d2d07a6d9f89d16f9bc123aabd95"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1sdl_1_1character__info.html#ab901d2d07a6d9f89d16f9bc123aabd95">mUVs</a></td></tr>
-<tr class="separator:ab901d2d07a6d9f89d16f9bc123aabd95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c522221c92589758f4d1003ce08067a"><td class="memItemLeft" align="right" valign="top">char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1code__point__range.html#a2c522221c92589758f4d1003ce08067a">uiFirst</a> = 0u</td></tr>
+<tr class="separator:a2c522221c92589758f4d1003ce08067a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce7e340c30234b3963b683275569a2d"><td class="memItemLeft" align="right" valign="top">char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1code__point__range.html#a8ce7e340c30234b3963b683275569a2d">uiLast</a> = 0u</td></tr>
+<tr class="separator:a8ce7e340c30234b3963b683275569a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="gui__sdl__font_8hpp_source.html#l00017">17</a> of file <a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>.</p>
+<div class="textblock"><p>Represents a contiguous range of unicode code points. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__code__point__range_8hpp_source.html#l00010">10</a> of file <a class="el" href="gui__code__point__range_8hpp_source.html">gui_code_point_range.hpp</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab901d2d07a6d9f89d16f9bc123aabd95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab901d2d07a6d9f89d16f9bc123aabd95">&#9670;&nbsp;</a></span>mUVs</h2>
+<a id="a2c522221c92589758f4d1003ce08067a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c522221c92589758f4d1003ce08067a">&#9670;&nbsp;</a></span>uiFirst</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> lxgui::gui::sdl::character_info::mUVs</td>
+          <td class="memname">char32_t lxgui::gui::code_point_range::uiFirst = 0u</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__font_8hpp_source.html#l00020">20</a> of file <a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__code__point__range_8hpp_source.html#l00012">12</a> of file <a class="el" href="gui__code__point__range_8hpp_source.html">gui_code_point_range.hpp</a>.</p>
 
 </div>
 </div>
-<a id="aab3aa3da79a922c4dcf233a50e9a1684"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab3aa3da79a922c4dcf233a50e9a1684">&#9670;&nbsp;</a></span>uiCodePoint</h2>
+<a id="a8ce7e340c30234b3963b683275569a2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce7e340c30234b3963b683275569a2d">&#9670;&nbsp;</a></span>uiLast</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> lxgui::gui::sdl::character_info::uiCodePoint</td>
+          <td class="memname">char32_t lxgui::gui::code_point_range::uiLast = 0u</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__font_8hpp_source.html#l00019">19</a> of file <a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__code__point__range_8hpp_source.html#l00013">13</a> of file <a class="el" href="gui__code__point__range_8hpp_source.html">gui_code_point_range.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/runner/work/lxgui/lxgui/include/lxgui/impl/<a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a></li>
+<li>/home/runner/work/lxgui/lxgui/include/lxgui/<a class="el" href="gui__code__point__range_8hpp_source.html">gui_code_point_range.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -66,6 +66,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classlxgui_1_1gui_1_1sdl_1_1font-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -89,9 +90,9 @@ Inheritance diagram for lxgui::gui::sdl::font:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aca37aecb0de2beb4b05f9dae1d32c60f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#aca37aecb0de2beb4b05f9dae1d32c60f">font</a> (SDL_Renderer *pRenderer, const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiOutline, bool bPreMultipliedAlphaSupported)</td></tr>
-<tr class="memdesc:aca37aecb0de2beb4b05f9dae1d32c60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sdl_1_1font.html#aca37aecb0de2beb4b05f9dae1d32c60f">More...</a><br /></td></tr>
-<tr class="separator:aca37aecb0de2beb4b05f9dae1d32c60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a788e688d359129f534851a5899eeda98"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a788e688d359129f534851a5899eeda98">font</a> (SDL_Renderer *pRenderer, const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiOutline, const std::vector&lt; <a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a> &gt; &amp;lCodePoints, char32_t uiDefaultCodePoint, bool bPreMultipliedAlphaSupported)</td></tr>
+<tr class="memdesc:a788e688d359129f534851a5899eeda98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a788e688d359129f534851a5899eeda98">More...</a><br /></td></tr>
+<tr class="separator:a788e688d359129f534851a5899eeda98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b57c4bb1e9bdfed7a08355730f7b177"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">get_size</a> () const override</td></tr>
 <tr class="memdesc:a2b57c4bb1e9bdfed7a08355730f7b177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the font in pixels.  <a href="classlxgui_1_1gui_1_1sdl_1_1font.html#a2b57c4bb1e9bdfed7a08355730f7b177">More...</a><br /></td></tr>
 <tr class="separator:a2b57c4bb1e9bdfed7a08355730f7b177"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,10 +122,10 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>A texture containing characters. </p>
 <p>This is the SDL implementation of the <a class="el" href="classlxgui_1_1gui_1_1font.html" title="A texture containing characters.">gui::font</a>. It uses SDL_ttf to render glyphs and get character data. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__sdl__font_8hpp_source.html#l00027">27</a> of file <a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__sdl__font_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__sdl__font_8hpp_source.html">gui_sdl_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aca37aecb0de2beb4b05f9dae1d32c60f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca37aecb0de2beb4b05f9dae1d32c60f">&#9670;&nbsp;</a></span>font()</h2>
+<a id="a788e688d359129f534851a5899eeda98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a788e688d359129f534851a5899eeda98">&#9670;&nbsp;</a></span>font()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -156,6 +157,18 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lCodePoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramname"><em>uiDefaultCodePoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>bPreMultipliedAlphaSupported</em>&#160;</td>
         </tr>
@@ -174,6 +187,8 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">sFontFile</td><td>The name of the font file to read </td></tr>
     <tr><td class="paramname">uiSize</td><td>The requested size of the characters (in points) </td></tr>
     <tr><td class="paramname">uiOutline</td><td>The thickness of the outline (in points) </td></tr>
+    <tr><td class="paramname">lCodePoints</td><td>The list of Unicode characters to load </td></tr>
+    <tr><td class="paramname">uiDefaultCodePoint</td><td>The character to display as fallback </td></tr>
     <tr><td class="paramname">bPreMultipliedAlphaSupported</td><td>Set to 'true' if the renderer supports pre-multipled alpha </td></tr>
   </table>
   </dd>
@@ -482,7 +497,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:21 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

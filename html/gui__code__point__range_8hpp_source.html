@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/gui_out.hpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/gui_code_point_range.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,32 +66,31 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">gui_out.hpp</div>  </div>
+<div class="title">gui_code_point_range.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__out_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_GUI_OUT_HPP</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_OUT_HPP</span></div>
+<a href="gui__code__point__range_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef LXGUI_GUI_CODE_POINT_RANGE_HPP</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define LXGUI_GUI_CODE_POINT_RANGE_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;lxgui/lxgui.hpp&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">extern</span> std::ostream      <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">out</a>;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> std::string <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">warning</a>;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">extern</span> <span class="keyword">const</span> std::string <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">error</a>;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="structlxgui_1_1gui_1_1code__point__range.html">   10</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="structlxgui_1_1gui_1_1code__point__range.html#a2c522221c92589758f4d1003ce08067a">   12</a></span>&#160;        char32_t <a class="code" href="structlxgui_1_1gui_1_1code__point__range.html#a2c522221c92589758f4d1003ce08067a">uiFirst</a> = 0u;</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="structlxgui_1_1gui_1_1code__point__range.html#a8ce7e340c30234b3963b683275569a2d">   13</a></span>&#160;        char32_t <a class="code" href="structlxgui_1_1gui_1_1code__point__range.html#a8ce7e340c30234b3963b683275569a2d">uiLast</a> = 0u;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    };</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_abf2ac19edd1a7ce40ebf7a29b96ecf48"><div class="ttname"><a href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">lxgui::gui::error</a></div><div class="ttdeci">const std::string error</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00008">gui_out.cpp:8</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1code__point__range_html_a8ce7e340c30234b3963b683275569a2d"><div class="ttname"><a href="structlxgui_1_1gui_1_1code__point__range.html#a8ce7e340c30234b3963b683275569a2d">lxgui::gui::code_point_range::uiLast</a></div><div class="ttdeci">char32_t uiLast</div><div class="ttdef"><b>Definition:</b> <a href="gui__code__point__range_8hpp_source.html#l00013">gui_code_point_range.hpp:13</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1code__point__range_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1code__point__range.html">lxgui::gui::code_point_range</a></div><div class="ttdoc">Represents a contiguous range of unicode code points.</div><div class="ttdef"><b>Definition:</b> <a href="gui__code__point__range_8hpp_source.html#l00010">gui_code_point_range.hpp:10</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1code__point__range_html_a2c522221c92589758f4d1003ce08067a"><div class="ttname"><a href="structlxgui_1_1gui_1_1code__point__range.html#a2c522221c92589758f4d1003ce08067a">lxgui::gui::code_point_range::uiFirst</a></div><div class="ttdeci">char32_t uiFirst</div><div class="ttdef"><b>Definition:</b> <a href="gui__code__point__range_8hpp_source.html#l00012">gui_code_point_range.hpp:12</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">

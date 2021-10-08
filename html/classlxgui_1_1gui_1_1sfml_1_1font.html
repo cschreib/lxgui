@@ -89,9 +89,9 @@ Inheritance diagram for lxgui::gui::sfml::font:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adbce5491a752fb8dfe61bf197e48306a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#adbce5491a752fb8dfe61bf197e48306a">font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiOutline)</td></tr>
-<tr class="memdesc:adbce5491a752fb8dfe61bf197e48306a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#adbce5491a752fb8dfe61bf197e48306a">More...</a><br /></td></tr>
-<tr class="separator:adbce5491a752fb8dfe61bf197e48306a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e050774da34e4d85f300cfe28b80d86"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3e050774da34e4d85f300cfe28b80d86">font</a> (const std::string &amp;sFontFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiSize, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiOutline, const std::vector&lt; <a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a> &gt; &amp;lCodePoints, char32_t uiDefaultCodePoint)</td></tr>
+<tr class="memdesc:a3e050774da34e4d85f300cfe28b80d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#a3e050774da34e4d85f300cfe28b80d86">More...</a><br /></td></tr>
+<tr class="separator:a3e050774da34e4d85f300cfe28b80d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9709020d9306717699298eed2afdeab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">get_size</a> () const override</td></tr>
 <tr class="memdesc:ae9709020d9306717699298eed2afdeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of the font in pixels.  <a href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">More...</a><br /></td></tr>
 <tr class="separator:ae9709020d9306717699298eed2afdeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,8 +123,8 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="gui__sfml__font_8hpp_source.html#l00021">21</a> of file <a class="el" href="gui__sfml__font_8hpp_source.html">gui_sfml_font.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adbce5491a752fb8dfe61bf197e48306a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbce5491a752fb8dfe61bf197e48306a">&#9670;&nbsp;</a></span>font()</h2>
+<a id="a3e050774da34e4d85f300cfe28b80d86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e050774da34e4d85f300cfe28b80d86">&#9670;&nbsp;</a></span>font()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,7 +145,19 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiOutline</em>&#160;</td>
+          <td class="paramname"><em>uiOutline</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lCodePoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramname"><em>uiDefaultCodePoint</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -161,6 +173,8 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">sFontFile</td><td>The name of the font file to read </td></tr>
     <tr><td class="paramname">uiSize</td><td>The requested size of the characters (in points) </td></tr>
     <tr><td class="paramname">uiOutline</td><td>The thickness of the outline (in points) </td></tr>
+    <tr><td class="paramname">lCodePoints</td><td>The list of Unicode characters to load </td></tr>
+    <tr><td class="paramname">uiDefaultCodePoint</td><td>The character to display as fallback </td></tr>
   </table>
   </dd>
 </dl>
@@ -468,7 +482,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:21 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

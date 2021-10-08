@@ -114,6 +114,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1check__button.html">check_button</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classlxgui_1_1gui_1_1button.html#ae73ba0744d4baedca389df65ba08be45" title="Constructor.">button</a> with two additional states: checked and unchecked.  <a href="classlxgui_1_1gui_1_1check__button.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1code__point__range.html">code_point_range</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a contiguous range of unicode code points.  <a href="structlxgui_1_1gui_1_1code__point__range.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1color.html">color</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple color class (float RGBA)  <a href="classlxgui_1_1gui_1_1color.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,12 +335,6 @@ Functions</h2></td></tr>
 <tr class="separator:af7883b791709545509a95db5de251f57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1417131ce04efe31b8e95d581499167b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">print_frames</a> (const std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1strata.html">strata</a>, 8 &gt; &amp;lStrataList)</td></tr>
 <tr class="separator:a1417131ce04efe31b8e95d581499167b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad498f8f96ba0092d0defb354141aea2d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad498f8f96ba0092d0defb354141aea2d">to_upper</a> (std::string sStr)</td></tr>
-<tr class="separator:ad498f8f96ba0092d0defb354141aea2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9de6052853a1342a1c07efff66f5d1c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ae9de6052853a1342a1c07efff66f5d1c">to_lower</a> (std::string sStr)</td></tr>
-<tr class="separator:ae9de6052853a1342a1c07efff66f5d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abef6d5fcf4399dac6efcab47cfde0c97"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#abef6d5fcf4399dac6efcab47cfde0c97">get_default_languages</a> ()</td></tr>
-<tr class="separator:abef6d5fcf4399dac6efcab47cfde0c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15505125f36d23fcf5b3229787c69fb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a15505125f36d23fcf5b3229787c69fb4">l_set_key_binding</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
 <tr class="separator:a15505125f36d23fcf5b3229787c69fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab57f5484aaf8d777a0bf264b0fded9db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ab57f5484aaf8d777a0bf264b0fded9db">l_create_frame</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *pLua)</td></tr>
@@ -879,25 +876,6 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00813">813</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="abef6d5fcf4399dac6efcab47cfde0c97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abef6d5fcf4399dac6efcab47cfde0c97">&#9670;&nbsp;</a></span>get_default_languages()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::string&gt; lxgui::gui::get_default_languages </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00034">34</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
 
 </div>
 </div>
@@ -2110,46 +2088,6 @@ template&lt;typename O , typename T &gt; </div>
 
 </div>
 </div>
-<a id="ae9de6052853a1342a1c07efff66f5d1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9de6052853a1342a1c07efff66f5d1c">&#9670;&nbsp;</a></span>to_lower()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string lxgui::gui::to_lower </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>sStr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00026">26</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ad498f8f96ba0092d0defb354141aea2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad498f8f96ba0092d0defb354141aea2d">&#9670;&nbsp;</a></span>to_upper()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string lxgui::gui::to_upper </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>sStr</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__localizer_8cpp_source.html#l00018">18</a> of file <a class="el" href="gui__localizer_8cpp_source.html">gui_localizer.cpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a id="abf2ac19edd1a7ce40ebf7a29b96ecf48"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf2ac19edd1a7ce40ebf7a29b96ecf48">&#9670;&nbsp;</a></span>error</h2>
@@ -2200,7 +2138,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

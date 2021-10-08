@@ -103,6 +103,9 @@ $(function() {
 <li>get_alignment()
 : <a class="el" href="classlxgui_1_1gui_1_1text.html#a8598605d995a9d94de835e142b4aaaf7">lxgui::gui::text</a>
 </li>
+<li>get_allowed_code_points()
+: <a class="el" href="classlxgui_1_1gui_1_1localizer.html#aa4cc998669bff944b511185f68189407">lxgui::gui::localizer</a>
+</li>
 <li>get_alpha()
 : <a class="el" href="classlxgui_1_1gui_1_1text.html#a0cb7c5809eea95eb5d7098e81569d225">lxgui::gui::text</a>
 , <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ad35e6bb258dfc94fe8a36aaa97190b37">lxgui::gui::uiobject</a>
@@ -335,7 +338,10 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1periodic__timer.html#ae7b7b27e7c87a8af5695f363cef7eaa8">lxgui::gui::periodic_timer</a>
 </li>
 <li>get_event_manager()
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#aafe12a421a461fb1f2a0c968291f0258">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#af52e2fc439f8cd3295705772a654b1ae">lxgui::gui::manager</a>
+</li>
+<li>get_fallback_code_point()
+: <a class="el" href="classlxgui_1_1gui_1_1localizer.html#a7d594a03186e1c9eb1c24736b54b6ec1">lxgui::gui::localizer</a>
 </li>
 <li>get_field()
 : <a class="el" href="classlxgui_1_1lua_1_1state.html#aa061c537f10916b3f7a0d2e84ec130a7">lxgui::lua::state</a>
@@ -826,7 +832,7 @@ $(function() {
 , <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1font.html#ae9709020d9306717699298eed2afdeab">lxgui::gui::sfml::font</a>
 </li>
 <li>get_source()
-: <a class="el" href="classlxgui_1_1input_1_1manager.html#aa1363104f27f0eb8fb7d48aed3f51640">lxgui::input::manager</a>
+: <a class="el" href="classlxgui_1_1input_1_1manager.html#a6f73f3e2ed504834d3b6a524163af742">lxgui::input::manager</a>
 </li>
 <li>get_spacing()
 : <a class="el" href="classlxgui_1_1gui_1_1font__string.html#ae7aea8a83e36ea8292162b0f10f525e5">lxgui::gui::font_string</a>
@@ -847,7 +853,7 @@ $(function() {
 </li>
 <li>get_string_width()
 : <a class="el" href="classlxgui_1_1gui_1_1font__string.html#ac216d9438510a06baa2ebbe95421624b">lxgui::gui::font_string</a>
-, <a class="el" href="classlxgui_1_1gui_1_1text.html#ab985ab6866e4030e7b49ab948d4d5023">lxgui::gui::text</a>
+, <a class="el" href="classlxgui_1_1gui_1_1text.html#ae2f0f1862ee927fe13023136884ab123">lxgui::gui::text</a>
 </li>
 <li>get_target_height()
 : <a class="el" href="classlxgui_1_1gui_1_1frame__renderer.html#aed20aebcfa87531e2fc964c4a8010e82">lxgui::gui::frame_renderer</a>
@@ -943,10 +949,10 @@ $(function() {
 : <a class="el" href="classlxgui_1_1lua_1_1state.html#ae67cf017f9ca065717a915f382a81022">lxgui::lua::state</a>
 </li>
 <li>get_uiobject()
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#ad12a022b0b73aea71c2054b8adf3f30d">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a23f5eddaf4a85bf961fb87626b3f119e">lxgui::gui::manager</a>
 </li>
 <li>get_uiobject_by_name()
-: <a class="el" href="classlxgui_1_1gui_1_1manager.html#a0760b875a72b2b7e932e16914721ebdc">lxgui::gui::manager</a>
+: <a class="el" href="classlxgui_1_1gui_1_1manager.html#afc29811973ea63c55b32a10bdb4d29a9">lxgui::gui::manager</a>
 </li>
 <li>get_unit()
 : <a class="el" href="structlxgui_1_1gui_1_1vector2.html#a5898e8b4edb8aba2fcb5a6bba7c2d493">lxgui::gui::vector2&lt; T &gt;</a>
@@ -1009,13 +1015,13 @@ $(function() {
 : <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#abfaf1d7f046923aa3f514e3861d90392">lxgui::gui::sdl::material</a>
 </li>
 <li>gradient()
-: <a class="el" href="classlxgui_1_1gui_1_1gradient.html#ad09bbe2704e2038c3d5f7c9ca8cd19d1">lxgui::gui::gradient</a>
+: <a class="el" href="classlxgui_1_1gui_1_1gradient.html#a8b471bc1d1b536f9424ab3c05fc61d65">lxgui::gui::gradient</a>
 </li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Sep 26 2021 10:26:10 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Oct 8 2021 07:18:21 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

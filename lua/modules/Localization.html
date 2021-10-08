@@ -63,12 +63,10 @@
 
 <h1>Module <code>Localization</code></h1>
 <p>Global functions for localization / translation of text.</p>
-<p>
-
 <p>   The functions listed on this page are registered in the
    Lua state as globals, and as such are accessible from
    anywhere automatically. They provide all necessary functionalities
-   for translating text for display in the GUI.</p>
+   for selecting languages and translating text for display in the GUI.</p>
 
 <p>   <strong>Translating text.</strong> When creating a button in the GUI, it is tempting to set its
    displayed text directly like <code>button:set_text(&quot;Cancel&quot;)</code>, hence hard-coding the text
@@ -225,19 +223,19 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 <p>   By default, the numbers printed this way may not be identical to the ones obtained
    from translation strings such as <code>&quot;{} has lost {} HP.&quot;</code>. This is because Lua
    has its own number formatting rules. To ensure consistency with the rest of the
-   translations, you should use the <a href="../modules/Localization.html#localize_string">localize_string</a> function as much as possible:</p>
+   translations, you should use the <a href="../modules/Localization.html#format_string">format_string</a> function:</p>
+
 
 <pre>
-[<span class="string">"player_lost_hp_high"</span>] = <span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
-[<span class="string">"player_lost_hp_zero"</span>] = <span class="string">"{0} has lost no HP. This had no effect."</span>,
-[<span class="string">"player_lost_hp_normal"</span>] = <span class="string">"{0} has lost {1:L} HP."</span>,
 [<span class="string">"player_lost_hp"</span>] = <span class="keyword">function</span> (player, hp_lost)
     <span class="keyword">if</span> hp_lost &gt; <span class="number">10</span> <span class="keyword">then</span>
-        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_high}"</span>, player, hp_lost)
+        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP!!! Ouch."</span>,
+             player, hp_lost)
     <span class="keyword">elseif</span> hp_lost == <span class="number">0</span> <span class="keyword">then</span>
-        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_zero}"</span>, player)
+        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost no HP. This had no effect."</span>,
+             player)
     <span class="keyword">else</span>
-        <span class="keyword">return</span> localize_string(<span class="string">"{player_lost_hp_normal}"</span>, player, hp_lost)
+        <span class="keyword">return</span> format_string(<span class="string">"{0} has lost {1:L} HP."</span>, player, hp_lost)
     <span class="keyword">end</span>
 <span class="keyword">end</span>,
 </pre>
@@ -272,23 +270,45 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
     [<span class="string">"object_apple"</span>] = <span class="string">"pomme"</span>,
     [<span class="string">"object_horse"</span>] = <span class="string">"cheval"</span>,
     [<span class="string">"object_cabbage"</span>] = <span class="string">"choux"</span>,
-    [<span class="string">"player_ate_objects_zero"</span>] = <span class="string">"{0} n'a pas mangé de {1}."</span>,
-    [<span class="string">"player_ate_objects_some"</span>] = <span class="string">"{0} a mangé {1} {2}."</span>,
     [<span class="string">"player_ate_objects"</span>] = <span class="keyword">function</span> (player, quantity, object)
         <span class="keyword">local</span> object_name = localize_string(object)
         <span class="keyword">if</span> quantity == <span class="number">0</span> <span class="keyword">then</span>
-            <span class="keyword">return</span> localize_string(<span class="string">"{player_ate_objects_zero}"</span>,
+            <span class="keyword">return</span> format_string(<span class="string">"{0} n'a pas mangé de {1}."</span>,
                 player, object_name)
         <span class="keyword">else</span>
             object_name = plural_modifier(object_name, quantity)
-            <span class="keyword">return</span> localize_string(<span class="string">"{player_ate_objects_some}"</span>,
+            <span class="keyword">return</span> format_string(<span class="string">"{0} a mangé {1} {2}."</span>,
                 player, quantity, object_name)
         <span class="keyword">end</span>
     <span class="keyword">end</span>,
 }
 </pre>
 
-</p>
+<p>   <strong>Language selection.</strong> By default, the preferred languages are automatically detected
+   based on the environment and configuration of the operating system. The <code>LANGUAGE</code>
+   environment variable is scanned first, and can be used to set an ordered list of
+   preferred languages. This is commonly set on Linux and OSX systems, but rarely on
+   Windows. For Windows, if <code>LANGUAGE</code> is not set, the language configured in the operating
+   system is used. For other systems, the <code>LANG</code> environment variable is tried next. If
+   no language could be detected, the library falls back to US English. This automatic
+   detection can be overridden by calling <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>.</p>
+
+<p>   Once a language (or list of languages) is set, the GUI must be told which characters,
+   represented here as Unicode "code points", can be displayed on screen. This can be detected
+   automatically from the preferred languages by calling <a href="../modules/Localization.html#auto_detect_allowed_code_points">auto_detect_allowed_code_points</a>. This
+   function only needs to be called if the preferred languages were overridden with
+   <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>. If using the automatically-determined language from the environment
+   and operating system (see above), this is already done internally.</p>
+
+<p>   If the automatic detection of the allowed code points is incomplete, or if additional code
+   points need to be displayed for any reason (game-specific lore, etc.), it is possible to add
+   more code points to the allowed list with <a href="../modules/Localization.html#add_allowed_code_points_for_language">add_allowed_code_points_for_language</a>,
+   <a href="../modules/Localization.html#add_allowed_code_points_for_group">add_allowed_code_points_for_group</a>, and <a href="../modules/Localization.html#add_allowed_code_points">add_allowed_code_points</a>. It is also possible to
+   reset the list of allowed code points using <a href="../modules/Localization.html#clear_allowed_code_points">clear_allowed_code_points</a>, in the event that
+   the automatic detection was completely wrong.</p>
+
+<p>   <strong>Encoding.</strong> The Lua API only supports UTF-8 encoding for strings and files. Please make
+   sure to only use this encoding when writing scripts and translation files.</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
@@ -300,6 +320,30 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 	<tr>
 	<td class="name" nowrap><a href="#set_preferred_languages">set_preferred_languages(languages)</a></td>
 	<td class="summary">Sets the preferred languages to display the GUI.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#clear_allowed_code_points">clear_allowed_code_points()</a></td>
+	<td class="summary">Removes all allowed code points.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#add_allowed_code_points">add_allowed_code_points(first, last)</a></td>
+	<td class="summary">Adds a new range to the set of allowed code points.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#add_allowed_code_points_for_group">add_allowed_code_points_for_group(group)</a></td>
+	<td class="summary">Adds a new range to the set of allowed code points from a Unicode group.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#add_allowed_code_points_for_language">add_allowed_code_points_for_language(language)</a></td>
+	<td class="summary">Adds a new range to the set of allowed code points for a given language.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#auto_detect_allowed_code_points">auto_detect_allowed_code_points()</a></td>
+	<td class="summary">Attempts to automatically detect the set of allowed code points based on preferred languages.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set_fallback_code_point">set_fallback_code_point(character)</a></td>
+	<td class="summary">Sets the default character to display if a character is missing from a font.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#load_translations">load_translations(folder)</a></td>
@@ -369,6 +413,139 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
         <li><span class="parameter">languages</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
          A table listing the languages to use to display the GUI
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "clear_allowed_code_points"></a>
+    <strong>clear_allowed_code_points()</strong>
+    </dt>
+    <dd>
+    Removes all allowed code points.
+   After calling this function, it is highly recommended to always include at least
+   the Unicode groups "basic latin" (to render basic ASCII characters) and
+   "geometric shapes" (to render the "missing character" glyph).
+   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "add_allowed_code_points"></a>
+    <strong>add_allowed_code_points(first, last)</strong>
+    </dt>
+    <dd>
+    Adds a new range to the set of allowed code points.
+   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">first</span>
+            <span class="types"><span class="type">integer</span></span>
+         The first code point in the range
+        </li>
+        <li><span class="parameter">last</span>
+            <span class="types"><span class="type">integer</span></span>
+         The last code point in the range
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "add_allowed_code_points_for_group"></a>
+    <strong>add_allowed_code_points_for_group(group)</strong>
+    </dt>
+    <dd>
+    Adds a new range to the set of allowed code points from a Unicode group.
+   The Unicode standard defines a set of code groups, which are contiguous
+   ranges of Unicode code points that are typically associated to a language
+   or a group of languages. This function knows about such groups and the
+   ranges of code point they correspond to, and is therefore more user-friendly.
+   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">group</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name of the Unicode code group to allow
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "add_allowed_code_points_for_language"></a>
+    <strong>add_allowed_code_points_for_language(language)</strong>
+    </dt>
+    <dd>
+    Adds a new range to the set of allowed code points for a given language.
+   Language codes are based on the ISO-639-1 standard, or later standards for those
+   languages which were not listed in ISO-639-1. They are always in lower case, and
+   typically composed of just two letters, but sometimes more.
+   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">language</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The language code (e.g., "en", "ru", etc.)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "auto_detect_allowed_code_points"></a>
+    <strong>auto_detect_allowed_code_points()</strong>
+    </dt>
+    <dd>
+    Attempts to automatically detect the set of allowed code points based on preferred languages.
+   Only use it if you need to reset the allowed code points to the default after changing
+   the preferred languages with <a href="../modules/Localization.html#set_preferred_languages">set_preferred_languages</a>.
+   This change will not take effect until the GUI is re-loaded, see <a href="../modules/Manager.html#reload_ui">Manager.reload_ui</a>.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "set_fallback_code_point"></a>
+    <strong>set_fallback_code_point(character)</strong>
+    </dt>
+    <dd>
+    Sets the default character to display if a character is missing from a font.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">character</span>
+            <span class="types"><span class="type">integer</span></span>
+         The Unicode UTF-32 code point of the character to display
         </li>
     </ul>
 
@@ -490,7 +667,7 @@ message:set_text(localize_string(<span class="string">"{player_lost_hp}"</span>,
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-09-26 10:26:10 </i>
+<i style="float:right;">Last updated 2021-10-08 07:18:21 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
