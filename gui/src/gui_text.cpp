@@ -6,6 +6,7 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_exception.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_range.hpp>
@@ -1207,9 +1208,19 @@ quad text::create_letter_quad(char32_t uiChar) const
     return mOutput;
 }
 
+uint text::get_num_letters() const
+{
+    update_();
+    return lQuadList_.size();
+}
+
 const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
 {
     update_();
+
+    if (uiIndex >= lQuadList_.size())
+        throw gui::exception("text", "Trying to access letter at invalid index.");
+
     return lQuadList_[uiIndex];
 }
 

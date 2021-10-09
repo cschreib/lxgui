@@ -522,6 +522,9 @@ void font_string::update_borders_() const
         else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
             fBoxHeight = fBottom - fTop;
 
+        if (!std::isinf(fBoxHeight))
+            fBoxHeight = std::max(fBoxHeight, fHeight_);
+
         fBoxWidth = round_to_pixel(fBoxWidth, rounding_method::NEAREST_NOT_ZERO);
         fBoxHeight = round_to_pixel(fBoxHeight, rounding_method::NEAREST_NOT_ZERO);
 
