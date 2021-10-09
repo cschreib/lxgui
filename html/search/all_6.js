@@ -179,7 +179,7 @@ var searchData=
   ['get_5fnormal_5ftext_494',['get_normal_text',['../classlxgui_1_1gui_1_1button.html#a31f99719db19c965e3d5a63dbff21868',1,'lxgui::gui::button']]],
   ['get_5fnormal_5ftexture_495',['get_normal_texture',['../classlxgui_1_1gui_1_1button.html#a6db0b2f2f5c00e74b015cb9db8961553',1,'lxgui::gui::button']]],
   ['get_5fnum_5fchildren_496',['get_num_children',['../classlxgui_1_1gui_1_1frame.html#a9df65556176dbb53d865b2ea74bf5f80',1,'lxgui::gui::frame']]],
-  ['get_5fnum_5fletters_497',['get_num_letters',['../classlxgui_1_1gui_1_1edit__box.html#a14c64253c8a9541fe66a88f14a75f522',1,'lxgui::gui::edit_box']]],
+  ['get_5fnum_5fletters_497',['get_num_letters',['../classlxgui_1_1gui_1_1edit__box.html#a14c64253c8a9541fe66a88f14a75f522',1,'lxgui::gui::edit_box::get_num_letters()'],['../classlxgui_1_1gui_1_1text.html#a614bc3664d1cc163bf3c8cbbb1a11ff8',1,'lxgui::gui::text::get_num_letters()']]],
   ['get_5fnum_5flines_498',['get_num_lines',['../classlxgui_1_1gui_1_1text.html#abdc929ef9888c48775f7456d71ab9ebe',1,'lxgui::gui::text']]],
   ['get_5fnum_5fpages_499',['get_num_pages',['../classlxgui_1_1gui_1_1atlas.html#ae79c2329900a8f5d90dd8368297f389f',1,'lxgui::gui::atlas']]],
   ['get_5fnum_5fparam_500',['get_num_param',['../classlxgui_1_1gui_1_1event.html#aee8ae41574ac873fedca9663de08afce',1,'lxgui::gui::event']]],
