@@ -41,7 +41,7 @@ atlas_page::~atlas_page()
 }
 
 std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const quad2f& mLocation)
+    const bounds2f& mLocation)
 {
     const sdl::material& mSDLMat = static_cast<const sdl::material&>(mMat);
 

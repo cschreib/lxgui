@@ -73,7 +73,7 @@ void render_target::clear(const color& mColor)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-quad2f render_target::get_rect() const
+bounds2f render_target::get_rect() const
 {
     return pTexture_->get_rect();
 }

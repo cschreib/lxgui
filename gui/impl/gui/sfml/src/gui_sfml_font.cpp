@@ -54,16 +54,16 @@ char32_t font::get_character_(char32_t uiChar) const
         return 0;
 }
 
-quad2f font::get_character_uvs(char32_t uiChar) const
+bounds2f font::get_character_uvs(char32_t uiChar) const
 {
     uiChar = get_character_(uiChar);
     if (uiChar == 0)
-        return quad2f{};
+        return bounds2f{};
 
     const sf::IntRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).textureRect;
-    const quad2f& mTexRect = pTexture_->get_rect();
+    const bounds2f& mTexRect = pTexture_->get_rect();
 
-    quad2f mRect;
+    bounds2f mRect;
     mRect.left   = mSFRect.left / mTexRect.width();
     mRect.right  = (mSFRect.left + mSFRect.width) / mTexRect.width();
     mRect.top    = mSFRect.top / mTexRect.height();
@@ -71,21 +71,21 @@ quad2f font::get_character_uvs(char32_t uiChar) const
 
     vector2f mTopLeft = pTexture_->get_canvas_uv(mRect.top_left(), true);
     vector2f mBottomRight = pTexture_->get_canvas_uv(mRect.bottom_right(), true);
-    return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
+    return bounds2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
-quad2f font::get_character_bounds(char32_t uiChar) const
+bounds2f font::get_character_bounds(char32_t uiChar) const
 {
     uiChar = get_character_(uiChar);
     if (uiChar == 0)
-        return quad2f{};
+        return bounds2f{};
 
 #if defined(SFML_HAS_OUTLINE_GLYPH_FIX)
     // Requires https://github.com/SFML/SFML/pull/1827
     const float fYOffset = uiSize_; // TODO: this should use the font ascender + descender
     const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 
-    quad2f mRect;
+    bounds2f mRect;
     mRect.left   = mSFRect.left;
     mRect.right  = mSFRect.left + mSFRect.width;
     mRect.top    = mSFRect.top + fYOffset;
@@ -95,7 +95,7 @@ quad2f font::get_character_bounds(char32_t uiChar) const
     const float fOffset = static_cast<float>(uiOutline_);
     const sf::FloatRect& mSFRect = mFont_.getGlyph(uiChar, uiSize_, false, uiOutline_).bounds;
 
-    quad2f mRect;
+    bounds2f mRect;
     mRect.left   = mSFRect.left - fOffset;
     mRect.right  = mSFRect.left - fOffset + mSFRect.width;
     mRect.top    = mSFRect.top - fOffset + fYOffset;

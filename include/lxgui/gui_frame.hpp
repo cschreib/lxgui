@@ -493,12 +493,12 @@ namespace gui
         /// Returns this frame's absolute hit rect insets.
         /** \return This frame's absolute hit rect insets
         */
-        const quad2f& get_abs_hit_rect_insets() const;
+        const bounds2f& get_abs_hit_rect_insets() const;
 
         /// Returns this frame's relative hit rect insets.
         /** \return This frame's relative hit rect insets
         */
-        const quad2f& get_rel_hit_rect_insets() const;
+        const bounds2f& get_rel_hit_rect_insets() const;
 
         /// Returns this frame's max dimensions.
         /** \return This frame's max dimensions
@@ -676,7 +676,7 @@ namespace gui
         /** \param lInsets Offsets
         *   \note This is the zone on which you can click.
         */
-        void set_abs_hit_rect_insets(const quad2f& lInsets);
+        void set_abs_hit_rect_insets(const bounds2f& lInsets);
 
         /// Sets this frame's relative hit rect insets.
         /** \param fLeft   Offset from the left border
@@ -691,7 +691,7 @@ namespace gui
         /** \param lInsets Offsets
         *   \note This is the zone on which you can click.
         */
-        void set_rel_hit_rect_insets(const quad2f& lInsets);
+        void set_rel_hit_rect_insets(const bounds2f& lInsets);
 
         /// Sets this frame's level.
         /** \param iLevel The new level
@@ -993,8 +993,8 @@ namespace gui
 
         bool bBuildLayerList_ = false;
 
-        quad2f lAbsHitRectInsetList_ = quad2f::ZERO;
-        quad2f lRelHitRectInsetList_ = quad2f::ZERO;
+        bounds2f lAbsHitRectInsetList_ = bounds2f::ZERO;
+        bounds2f lRelHitRectInsetList_ = bounds2f::ZERO;
 
         float fMinWidth_ = 0.0f;
         float fMaxWidth_ = std::numeric_limits<float>::infinity();

@@ -76,7 +76,7 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
     uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = bRenderTarget;
 
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
@@ -143,10 +143,10 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = false;
 
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
+material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const bounds2f& mRect,
     filter mFilter) : gui::material(true), pRenderer_(pRenderer), mRect_(mRect),
     mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
 {
@@ -212,7 +212,7 @@ void material::premultiply_alpha(SDL_Surface* pSurface)
     }
 }
 
-quad2f material::get_rect() const
+bounds2f material::get_rect() const
 {
     return mRect_;
 }
@@ -257,7 +257,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
     uiWidth_  = uiWidth;
     uiHeight_ = uiHeight;
-    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_    = bounds2f(0, uiWidth_, 0, uiHeight_);
 
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {

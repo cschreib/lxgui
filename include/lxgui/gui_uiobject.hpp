@@ -5,7 +5,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_vector2.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_exception.hpp"
@@ -479,7 +479,7 @@ namespace gui
         /// Returns this widget's borders.
         /** \return This widget's borders
         */
-        const quad2f& get_borders() const;
+        const bounds2f& get_borders() const;
 
         /// Removes all anchors.
         /** \note This widget and its children won't be visible until you
@@ -765,8 +765,8 @@ namespace gui
 
         std::array<std::optional<anchor>,9> lAnchorList_;
         std::vector<const uiobject*>        lPreviousAnchorParentList_;
-        quad2<bool>                         lDefinedBorderList_;
-        mutable quad2f                      lBorderList_;
+        bounds2<bool>                       lDefinedBorderList_;
+        mutable bounds2f                    lBorderList_;
 
         float fAlpha_ = 1.0f;
         bool  bIsShown_ = true;

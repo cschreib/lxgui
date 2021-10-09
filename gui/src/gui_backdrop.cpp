@@ -119,7 +119,7 @@ float backdrop::get_tile_size() const
     return fTileSize_;
 }
 
-void backdrop::set_background_insets(const quad2f& lInsets)
+void backdrop::set_background_insets(const bounds2f& lInsets)
 {
     if (lBackgroundInsets_ == lInsets) return;
 
@@ -129,15 +129,15 @@ void backdrop::set_background_insets(const quad2f& lInsets)
 
 void backdrop::set_background_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    set_background_insets(quad2f(fLeft, fRight, fTop, fBottom));
+    set_background_insets(bounds2f(fLeft, fRight, fTop, fBottom));
 }
 
-const quad2f& backdrop::get_background_insets() const
+const bounds2f& backdrop::get_background_insets() const
 {
     return lBackgroundInsets_;
 }
 
-void backdrop::set_edge_insets(const quad2f& lInsets)
+void backdrop::set_edge_insets(const bounds2f& lInsets)
 {
     if (lEdgeInsets_ == lInsets) return;
 
@@ -147,10 +147,10 @@ void backdrop::set_edge_insets(const quad2f& lInsets)
 
 void backdrop::set_edge_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    set_edge_insets(quad2f(fLeft, fRight, fTop, fBottom));
+    set_edge_insets(bounds2f(fLeft, fRight, fTop, fBottom));
 }
 
-const quad2f& backdrop::get_edge_insets() const
+const bounds2f& backdrop::get_edge_insets() const
 {
     return lEdgeInsets_;
 }
@@ -320,8 +320,8 @@ void backdrop::update_cache_() const
 }
 
 void repeat_wrap(const frame* pParent, std::vector<std::array<vertex,4>>& lOutput,
-    const quad2f& mSourceUVs, float fTileSize, bool bRotated, const color mColor,
-    const quad2f& mDestination)
+    const bounds2f& mSourceUVs, float fTileSize, bool bRotated, const color mColor,
+    const bounds2f& mDestination)
 {
     const auto mDTopLeft = mDestination.top_left();
     const auto mSTopLeft = mSourceUVs.top_left();
@@ -399,7 +399,7 @@ void backdrop::update_background_(color mColor) const
     {
         const vector2f mCanvasTL = pBackgroundTexture_->get_canvas_uv(vector2f(0.0f, 0.0f), true);
         const vector2f mCanvasBR = pBackgroundTexture_->get_canvas_uv(vector2f(1.0f, 1.0f), true);
-        const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+        const bounds2f mCanvasUVs = bounds2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
 
         float fRoundedTileSize = pParent_->round_to_pixel(fTileSize_, rounding_method::NEAREST_NOT_ZERO);
         if (pBackgroundTexture_->is_in_atlas() && bBackgroundTilling_ && fRoundedTileSize > 1.0f)
@@ -466,13 +466,13 @@ void backdrop::update_edge_(color mColor) const
     auto* pRenderer = pParent_->get_manager()->get_renderer();
     const float fRoundedEdgeSize = pParent_->round_to_pixel(fEdgeSize_, rounding_method::NEAREST_NOT_ZERO);
 
-    auto repeat_wrap_edge = [&](const quad2f& mSourceUVs, bool bRotated, const quad2f& mDestination)
+    auto repeat_wrap_edge = [&](const bounds2f& mSourceUVs, bool bRotated, const bounds2f& mDestination)
     {
         if (pEdgeTexture_)
         {
             const vector2f mCanvasTL = pEdgeTexture_->get_canvas_uv(mSourceUVs.top_left(), true);
             const vector2f mCanvasBR = pEdgeTexture_->get_canvas_uv(mSourceUVs.bottom_right(), true);
-            const quad2f mCanvasUVs = quad2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
+            const bounds2f mCanvasUVs = bounds2f(mCanvasTL.x, mCanvasBR.x, mCanvasTL.y, mCanvasBR.y);
 
             if (pEdgeTexture_->is_in_atlas() && fRoundedEdgeSize > 1.0f)
             {
@@ -536,49 +536,49 @@ void backdrop::update_edge_(color mColor) const
     };
 
     // Left edge
-    repeat_wrap_edge(quad2f(0.0f, fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(0.0f, fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.left, mBorders.left + fRoundedEdgeSize,
         mBorders.top + fRoundedEdgeSize, mBorders.bottom - fRoundedEdgeSize
     ));
 
     // Right edge
-    repeat_wrap_edge(quad2f(fUVStep, 2.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(fUVStep, 2.0f*fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.right - fRoundedEdgeSize, mBorders.right,
         mBorders.top + fRoundedEdgeSize, mBorders.bottom - fRoundedEdgeSize
     ));
 
     // Top edge
-    repeat_wrap_edge(quad2f(2.0f*fUVStep, 3.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
+    repeat_wrap_edge(bounds2f(2.0f*fUVStep, 3.0f*fUVStep, 0.0f, 1.0f), true, bounds2f(
         mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize,
         mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Bottom edge
-    repeat_wrap_edge(quad2f(3.0f*fUVStep, 4.0f*fUVStep, 0.0f, 1.0f), true, quad2f(
+    repeat_wrap_edge(bounds2f(3.0f*fUVStep, 4.0f*fUVStep, 0.0f, 1.0f), true, bounds2f(
         mBorders.left + fRoundedEdgeSize, mBorders.right - fRoundedEdgeSize,
         mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));
 
     // Top-left corner
-    repeat_wrap_edge(quad2f(4.0f*fUVStep, 5.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(4.0f*fUVStep, 5.0f*fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.left, mBorders.left + fRoundedEdgeSize,
         mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Top-right corner
-    repeat_wrap_edge(quad2f(5.0f*fUVStep, 6.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(5.0f*fUVStep, 6.0f*fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.right - fRoundedEdgeSize, mBorders.right,
         mBorders.top, mBorders.top + fRoundedEdgeSize
     ));
 
     // Bottom-left corner
-    repeat_wrap_edge(quad2f(6.0f*fUVStep, 7.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(6.0f*fUVStep, 7.0f*fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.left, mBorders.left + fRoundedEdgeSize,
         mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));
 
     // Bottom-right corner
-    repeat_wrap_edge(quad2f(7.0f*fUVStep, 8.0f*fUVStep, 0.0f, 1.0f), false, quad2f(
+    repeat_wrap_edge(bounds2f(7.0f*fUVStep, 8.0f*fUVStep, 0.0f, 1.0f), false, bounds2f(
         mBorders.right - fRoundedEdgeSize, mBorders.right,
         mBorders.bottom - fRoundedEdgeSize, mBorders.bottom
     ));

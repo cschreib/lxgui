@@ -686,10 +686,10 @@ void edit_box::set_arrows_ignored(bool bArrowsIgnored)
 
 void edit_box::set_text_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    set_text_insets(quad2f(fLeft, fRight, fTop, fBottom));
+    set_text_insets(bounds2f(fLeft, fRight, fTop, fBottom));
 }
 
-void edit_box::set_text_insets(const quad2f& lInsets)
+void edit_box::set_text_insets(const bounds2f& lInsets)
 {
     lTextInsets_ = lInsets;
 
@@ -709,7 +709,7 @@ void edit_box::set_text_insets(const quad2f& lInsets)
     }
 }
 
-const quad2f& edit_box::get_text_insets() const
+const bounds2f& edit_box::get_text_insets() const
 {
     return lTextInsets_;
 }

@@ -1167,7 +1167,7 @@ void text::update_() const
 
 std::array<vertex,4> text::create_letter_quad_(gui::font& mFont, char32_t uiChar) const
 {
-    quad2f mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;
+    bounds2f mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;
     mQuad.left = round_to_pixel_(mQuad.left);
     mQuad.top = round_to_pixel_(mQuad.top);
     mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);
@@ -1179,7 +1179,7 @@ std::array<vertex,4> text::create_letter_quad_(gui::font& mFont, char32_t uiChar
     lVertexList[2].pos = mQuad.bottom_right();
     lVertexList[3].pos = mQuad.bottom_left();
 
-    quad2f mUVs = mFont.get_character_uvs(uiChar);
+    bounds2f mUVs = mFont.get_character_uvs(uiChar);
     lVertexList[0].uvs = mUVs.top_left();
     lVertexList[1].uvs = mUVs.top_right();
     lVertexList[2].uvs = mUVs.bottom_right();

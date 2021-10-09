@@ -5,7 +5,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_code_point_range.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 
 #include <array>
 #include <memory>
@@ -40,13 +40,13 @@ namespace gui
         *   \note The uv coordinates are normalised, i.e. they range from
         *         0 to 1. They are arranged as {u1, v1, u2, v2}.
         */
-        virtual quad2f get_character_uvs(char32_t uiChar) const = 0;
+        virtual bounds2f get_character_uvs(char32_t uiChar) const = 0;
 
         /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
         /** \param uiChar The unicode character
         *   \return The rect coordinates of this character (in pixels, relative to the baseline)
         */
-        virtual quad2f get_character_bounds(char32_t uiChar) const = 0;
+        virtual bounds2f get_character_bounds(char32_t uiChar) const = 0;
 
         /// Returns the width of a character in pixels.
         /** \param uiChar The unicode character

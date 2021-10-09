@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_vector2.hpp"
 
 namespace lxgui {
@@ -47,7 +47,7 @@ namespace gui
         /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
         /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        virtual quad2f get_rect() const = 0;
+        virtual bounds2f get_rect() const = 0;
 
         /// Returns the physical width in pixels of the canvas containing this texture (if any).
         /** \return The physical width in pixels of the canvas containing this (if any)

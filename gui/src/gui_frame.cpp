@@ -142,7 +142,7 @@ std::string frame::serialize(const std::string& sTab) const
     }
     if (pBackdrop_)
     {
-        const quad2f& lInsets = pBackdrop_->get_background_insets();
+        const bounds2f& lInsets = pBackdrop_->get_background_insets();
 
         sStr << sTab << "  # Backdrop    :\n";
         sStr << sTab << "  |-###\n";
@@ -888,12 +888,12 @@ const std::string& frame::get_frame_type() const
     return lType_.back();
 }
 
-const quad2f& frame::get_abs_hit_rect_insets() const
+const bounds2f& frame::get_abs_hit_rect_insets() const
 {
     return lAbsHitRectInsetList_;
 }
 
-const quad2f& frame::get_rel_hit_rect_insets() const
+const bounds2f& frame::get_rel_hit_rect_insets() const
 {
     return lRelHitRectInsetList_;
 }
@@ -1483,20 +1483,20 @@ void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop)
 
 void frame::set_abs_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lAbsHitRectInsetList_ = quad2f(fLeft, fRight, fTop, fBottom);
+    lAbsHitRectInsetList_ = bounds2f(fLeft, fRight, fTop, fBottom);
 }
 
-void frame::set_abs_hit_rect_insets(const quad2f& lInsets)
+void frame::set_abs_hit_rect_insets(const bounds2f& lInsets)
 {
     lAbsHitRectInsetList_ = lInsets;
 }
 
 void frame::set_rel_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom)
 {
-    lRelHitRectInsetList_ = quad2f(fLeft, fRight, fTop, fBottom);
+    lRelHitRectInsetList_ = bounds2f(fLeft, fRight, fTop, fBottom);
 }
 
-void frame::set_rel_hit_rect_insets(const quad2f& lInsets)
+void frame::set_rel_hit_rect_insets(const bounds2f& lInsets)
 {
     lRelHitRectInsetList_ = lInsets;
 }

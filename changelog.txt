@@ -65,6 +65,7 @@ Other changes:
  - gui: renamed frame_renderer::fire_redraw into notify_strata_needs_redraw
  - gui: renamed uiobject::fire_udpate_borders to uiobject::notify_borders_need_update
  - gui: renamed color::chanel to color::channel
+ - gui: renamed quad2 to bounds2
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: sprite is now a value type

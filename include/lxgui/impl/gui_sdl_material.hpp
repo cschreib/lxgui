@@ -54,7 +54,7 @@ namespace sdl
         *   \param mRect     The position of this texture inside the atlas
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const quad2f& mRect,
+        material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const bounds2f& mRect,
             filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
@@ -68,7 +68,7 @@ namespace sdl
         /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
         /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        quad2f get_rect() const override;
+        bounds2f get_rect() const override;
 
         /// Returns the physical width in pixels of the canvas containing this texture (if any).
         /** \return The physical width in pixels of the canvas containing this texture (if any)
@@ -169,12 +169,12 @@ namespace sdl
 
         SDL_Renderer* pRenderer_ = nullptr;
 
-        uint   uiWidth_ = 0u, uiHeight_ = 0u;
-        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        quad2f mRect_;
-        wrap   mWrap_ = wrap::REPEAT;
-        filter mFilter_ = filter::NONE;
-        bool   bRenderTarget_ = false;
+        uint     uiWidth_ = 0u, uiHeight_ = 0u;
+        uint     uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        bounds2f mRect_;
+        wrap     mWrap_ = wrap::REPEAT;
+        filter   mFilter_ = filter::NONE;
+        bool     bRenderTarget_ = false;
 
         SDL_Texture* pTexture_ = nullptr;
         bool         bIsOwner_ = false;

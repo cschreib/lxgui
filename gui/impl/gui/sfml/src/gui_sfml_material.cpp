@@ -44,7 +44,7 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
         mTexture_.setRepeated(mWrap == wrap::REPEAT);
     }
 
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::material(false)
@@ -62,7 +62,7 @@ material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::ma
     mFilter_ = mFilter;
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
 }
 
 material::material(const std::string& sFileName, wrap mWrap, filter mFilter) : gui::material(false)
@@ -84,10 +84,10 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter) : g
     mFilter_ = mFilter;
     uiRealWidth_ = uiWidth;
     uiRealHeight_ = uiHeight;
-    mRect_ = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
 }
 
-material::material(const sf::Texture& mTexture, const quad2f& mLocation, filter mFilter) :
+material::material(const sf::Texture& mTexture, const bounds2f& mLocation, filter mFilter) :
     gui::material(true)
 {
     mRect_ = mLocation;
@@ -164,7 +164,7 @@ void material::premultiply_alpha(sf::Image& mData)
     }
 }
 
-quad2f material::get_rect() const
+bounds2f material::get_rect() const
 {
     return mRect_;
 }
@@ -205,7 +205,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
     uiWidth_  = uiWidth;
     uiHeight_ = uiHeight;
-    mRect_    = quad2f(0, uiWidth_, 0, uiHeight_);
+    mRect_    = bounds2f(0, uiWidth_, 0, uiHeight_);
 
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {

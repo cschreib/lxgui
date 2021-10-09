@@ -74,7 +74,7 @@ namespace sfml
         */
         std::shared_ptr<gui::material> create_material(
             std::shared_ptr<gui::render_target> pRenderTarget,
-            const quad2f& mLocation) const override;
+            const bounds2f& mLocation) const override;
 
         /// Creates a new render target.
         /** \param uiWidth  The width of the render target

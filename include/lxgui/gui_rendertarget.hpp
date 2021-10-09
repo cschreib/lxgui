@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 #include "lxgui/gui_color.hpp"
 
 namespace lxgui {
@@ -37,7 +37,7 @@ namespace gui
         /// Returns this render target's pixel rect.
         /** \return This render target's pixel rect
         */
-        virtual quad2f get_rect() const = 0;
+        virtual bounds2f get_rect() const = 0;
 
         /// Sets this render target's dimensions.
         /** \param uiWidth This render target's width

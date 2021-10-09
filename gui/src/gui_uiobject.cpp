@@ -497,7 +497,7 @@ float uiobject::get_bottom() const
     return lBorderList_.bottom;
 }
 
-const quad2f& uiobject::get_borders() const
+const bounds2f& uiobject::get_borders() const
 {
     update_borders_();
     return lBorderList_;
@@ -517,7 +517,7 @@ void uiobject::clear_all_points()
 
     if (bHadAnchors)
     {
-        lDefinedBorderList_ = quad2<bool>(false, false, false, false);
+        lDefinedBorderList_ = bounds2<bool>(false, false, false, false);
 
         if (!bVirtual_)
         {
@@ -540,7 +540,7 @@ void uiobject::set_all_points(const std::string& sObjName)
         lAnchorList_[static_cast<int>(anchor_point::BOTTOMRIGHT)].emplace(
             this, anchor_point::BOTTOMRIGHT, sObjName, anchor_point::BOTTOMRIGHT);
 
-        lDefinedBorderList_ = quad2<bool>(true, true, true, true);
+        lDefinedBorderList_ = bounds2<bool>(true, true, true, true);
 
         if (!bVirtual_)
         {
@@ -985,16 +985,16 @@ void uiobject::update_borders_() const
             if (fBottom < fTop)
                 fBottom = fTop+1;
 
-            lBorderList_ = quad2f(fLeft, fRight, fTop, fBottom);
+            lBorderList_ = bounds2f(fLeft, fRight, fTop, fBottom);
         }
         else
-            lBorderList_ = quad2f::ZERO;
+            lBorderList_ = bounds2f::ZERO;
 
         bUpdateBorders_ = false;
     }
     else
     {
-        lBorderList_ = quad2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
+        lBorderList_ = bounds2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
         bReady_ = false;
     }
 

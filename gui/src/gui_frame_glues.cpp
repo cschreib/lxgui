@@ -424,7 +424,7 @@ int lua_frame::_get_backdrop(lua_State* pLua)
         mState.set_field("insets");
         mState.get_field("insets");
 
-        const quad2f& lInsets = pBackdrop->get_background_insets();
+        const bounds2f& lInsets = pBackdrop->get_background_insets();
         mState.set_field_double("left",   lInsets.left);
         mState.set_field_double("right",  lInsets.right);
         mState.set_field_double("top",    lInsets.top);
@@ -603,7 +603,7 @@ int lua_frame::_get_hit_rect_insets(lua_State* pLua)
 
     lua::function mFunc("Frame:get_hit_rect_inset", pLua, 4);
 
-    const quad2f& lInsets = get_object()->get_abs_hit_rect_insets();
+    const bounds2f& lInsets = get_object()->get_abs_hit_rect_insets();
 
     mFunc.push(lInsets.left);
     mFunc.push(lInsets.right);
@@ -1002,7 +1002,7 @@ int lua_frame::_set_backdrop(lua_State* pLua)
 
             if (mState.get_type() == lua::type::TABLE)
             {
-                pBackdrop->set_background_insets(quad2f(
+                pBackdrop->set_background_insets(bounds2f(
                     mState.get_field_double("left",   false, 0),
                     mState.get_field_double("right",  false, 0),
                     mState.get_field_double("top",    false, 0),

@@ -272,7 +272,7 @@ std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHe
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> pRenderTarget, const quad2f& mLocation) const
+    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) const
 {
     auto pTex = std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())

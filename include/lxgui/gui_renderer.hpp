@@ -262,7 +262,7 @@ namespace gui
         *   \return The new material
         */
         virtual std::shared_ptr<material> create_material(
-            std::shared_ptr<render_target> pRenderTarget, const quad2f& mLocation) const = 0;
+            std::shared_ptr<render_target> pRenderTarget, const bounds2f& mLocation) const = 0;
 
         /// Creates a new material from an entire render target.
         /** \param pRenderTarget The render target from which to read the pixels

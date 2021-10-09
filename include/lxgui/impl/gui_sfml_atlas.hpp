@@ -32,7 +32,7 @@ namespace sfml
         *   \return A new material pointing to inside this page
         */
         std::shared_ptr<gui::material> add_material_(const gui::material& mMat,
-            const quad2f& mLocation) override;
+            const bounds2f& mLocation) override;
 
         /// Return the width of this page (in pixels).
         /** \return The width of this page (in pixels)

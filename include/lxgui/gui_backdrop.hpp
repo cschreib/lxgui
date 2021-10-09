@@ -6,7 +6,7 @@
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_sprite.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 
 #include <string>
 
@@ -76,7 +76,7 @@ namespace gui
         /// Sets insets for the background texture.
         /** \param lInsets The insets array
         */
-        void set_background_insets(const quad2f& lInsets);
+        void set_background_insets(const bounds2f& lInsets);
 
         /// Sets insets for the background texture.
         /** \param fLeft   The left inset
@@ -89,12 +89,12 @@ namespace gui
         /// Returns this backdrop's background insets.
         /** \return This backdrop's background insets
         */
-        const quad2f& get_background_insets() const;
+        const bounds2f& get_background_insets() const;
 
         /// Sets insets for the edge texture.
         /** \param lInsets The insets array
         */
-        void set_edge_insets(const quad2f& lInsets);
+        void set_edge_insets(const bounds2f& lInsets);
 
         /// Sets insets for the edge texture.
         /** \param fLeft   The left inset
@@ -107,7 +107,7 @@ namespace gui
         /// Returns this backdrop's edge insets.
         /** \return This backdrop's edge insets
         */
-        const quad2f& get_edge_insets() const;
+        const bounds2f& get_edge_insets() const;
 
         /// Sets the edge/corner texture.
         /** \param sEdgeFile The edge/corner texture
@@ -178,12 +178,12 @@ namespace gui
         bool                      bBackgroundTilling_ = false;
         float                     fTileSize_ = 0.0f;
         float                     fOriginalTileSize_ = 0.0f;
-        quad2f                    lBackgroundInsets_;
+        bounds2f                  lBackgroundInsets_;
 
         std::string               sEdgeFile_;
         color                     mEdgeColor_ = color::EMPTY;
         std::shared_ptr<material> pEdgeTexture_;
-        quad2f                    lEdgeInsets_;
+        bounds2f                  lEdgeInsets_;
         float                     fEdgeSize_ = 0.0f;
         float                     fOriginalEdgeSize_ = 0.0f;
 

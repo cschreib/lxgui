@@ -4,7 +4,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
 #include <lxgui/gui_color.hpp>
-#include <lxgui/gui_quad2.hpp>
+#include <lxgui/gui_bounds2.hpp>
 
 #include <vector>
 #include <memory>
@@ -38,7 +38,7 @@ namespace gl
         *   \param mRect           The position of this texture inside the atlas
         *   \param mFilter         Use texture filtering or not (see set_filter())
         */
-        material(uint uiTextureHandle, uint uiWidth, uint uiHeight, const quad2f mRect,
+        material(uint uiTextureHandle, uint uiWidth, uint uiHeight, const bounds2f mRect,
             filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
@@ -52,7 +52,7 @@ namespace gl
         /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
         /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        quad2f get_rect() const override;
+        bounds2f get_rect() const override;
 
         /// Returns the physical width in pixels of the canvas containing this texture (if any).
         /** \return The physical width in pixels of the canvas containing this texture (if any)
@@ -138,12 +138,12 @@ namespace gl
 
     private:
 
-        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        wrap   mWrap_ = wrap::REPEAT;
-        filter mFilter_ = filter::NONE;
-        uint   uiTextureHandle_ = 0u;
-        quad2f mRect_;
-        bool   bIsOwner_ = false;
+        uint     uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        wrap     mWrap_ = wrap::REPEAT;
+        filter   mFilter_ = filter::NONE;
+        uint     uiTextureHandle_ = 0u;
+        bounds2f mRect_;
+        bool     bIsOwner_ = false;
 
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;

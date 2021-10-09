@@ -102,11 +102,11 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    mRect_ = quad2f(0, uiWidth, 0, uiHeight);
+    mRect_ = bounds2f(0, uiWidth, 0, uiHeight);
 }
 
 material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
-    const quad2f mRect, filter mFilter) :
+    const bounds2f mRect, filter mFilter) :
     gui::material(true), mFilter_(mFilter), uiTextureHandle_(uiTextureHandle),
     mRect_(mRect), bIsOwner_(false)
 {
@@ -197,7 +197,7 @@ void material::premultiply_alpha(std::vector<ub32color>& lData)
     }
 }
 
-quad2f material::get_rect() const
+bounds2f material::get_rect() const
 {
     return mRect_;
 }
@@ -235,7 +235,7 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
     if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)
         return false;
 
-    mRect_    = quad2f(0, uiWidth, 0, uiHeight);
+    mRect_    = bounds2f(0, uiWidth, 0, uiHeight);
 
     if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
     {

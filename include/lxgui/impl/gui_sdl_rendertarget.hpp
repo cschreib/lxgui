@@ -43,7 +43,7 @@ namespace sdl
         /// Returns this render target's pixel rect.
         /** \return This render target's pixel rect
         */
-        quad2f get_rect() const override;
+        bounds2f get_rect() const override;
 
         /// Sets this render target's dimensions.
         /** \param uiWidth This render target's width

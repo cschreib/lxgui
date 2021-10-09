@@ -4,7 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 
 #include <vector>
 #include <memory>
@@ -71,7 +71,7 @@ namespace gui
         *   \return A new material pointing to inside this page
         */
         virtual std::shared_ptr<material> add_material_(const material& mMat,
-            const quad2f& mLocation) = 0;
+            const bounds2f& mLocation) = 0;
 
         /// Return the width of this page (in pixels).
         /** \return The width of this page (in pixels)
@@ -92,7 +92,7 @@ namespace gui
         *   \param fHeight The height of the texture to insert
         *   \return The new position for this texture, or std::nullopt if it does not fit
         */
-        std::optional<quad2f> find_location_(float fWidth, float fHeight) const;
+        std::optional<bounds2f> find_location_(float fWidth, float fHeight) const;
 
         mutable std::unordered_map<std::string, std::weak_ptr<gui::material>> lTextureList_;
         mutable std::unordered_map<std::string, std::weak_ptr<gui::font>>     lFontList_;

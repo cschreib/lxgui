@@ -10,7 +10,7 @@ material::material(bool bIsAtlas) : bIsAtlas_(bIsAtlas)
 
 vector2f material::get_canvas_uv(const vector2f& mTextureUV, bool bFromNormalized) const
 {
-    const quad2f mQuad = get_rect();
+    const bounds2f mQuad = get_rect();
 
     vector2f mPixelUV = mTextureUV;
     if (bFromNormalized)
@@ -30,7 +30,7 @@ vector2f material::get_canvas_uv(const vector2f& mTextureUV, bool bFromNormalize
 
 vector2f material::get_local_uv(const vector2f& mCanvasUV, bool bAsNormalized) const
 {
-    const quad2f mQuad = get_rect();
+    const bounds2f mQuad = get_rect();
 
     vector2f mPixelUV = mCanvasUV;
     mPixelUV.x *= get_canvas_width();

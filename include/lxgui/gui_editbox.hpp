@@ -7,7 +7,7 @@
 #include "lxgui/input_keys.hpp"
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_color.hpp"
-#include "lxgui/gui_quad2.hpp"
+#include "lxgui/gui_bounds2.hpp"
 
 namespace lxgui {
 namespace gui
@@ -357,12 +357,12 @@ namespace gui
         *   \note Positive insets will reduce the text area, while
         *         negative ones will enlarge it
         */
-        void set_text_insets(const quad2f& lInsets);
+        void set_text_insets(const bounds2f& lInsets);
 
         /// Returns the text insets.
         /** \return The text insets
         */
-        const quad2f& get_text_insets() const;
+        const bounds2f& get_text_insets() const;
 
         /// Returns the font_string used to render the content.
         /** \return The font_string used to render the content
@@ -454,7 +454,7 @@ namespace gui
         uint                        uiCurrentHistoryLine_ = uint(-1);
 
         font_string* pFontString_ = nullptr;
-        quad2f       lTextInsets_ = quad2f::ZERO;
+        bounds2f     lTextInsets_ = bounds2f::ZERO;
 
         input::key     mLastKeyPressed_;
         double         dKeyRepeatSpeed_ = 0.03;

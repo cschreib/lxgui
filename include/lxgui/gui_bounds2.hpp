@@ -1,5 +1,5 @@
-#ifndef LXGUI_GUI_QUAD2_HPP
-#define LXGUI_GUI_QUAD2_HPP
+#ifndef LXGUI_GUI_BOUNDS2_HPP
+#define LXGUI_GUI_BOUNDS2_HPP
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_vector2.hpp"
@@ -8,11 +8,11 @@ namespace lxgui {
 namespace gui
 {
     template<typename T>
-    struct quad2
+    struct bounds2
     {
-        constexpr quad2() = default;
+        constexpr bounds2() = default;
 
-        constexpr quad2(T mLeft, T mRight, T mTop, T mBottom) noexcept :
+        constexpr bounds2(T mLeft, T mRight, T mTop, T mBottom) noexcept :
             left(mLeft), right(mRight), top(mTop), bottom(mBottom) {}
 
         void set(T mLeft, T mRight, T mTop, T mBottom) noexcept
@@ -60,7 +60,7 @@ namespace gui
             return mPoint.x >= left && mPoint.x < right && mPoint.y >= top && mPoint.y < bottom;
         }
 
-        bool overlaps(const quad2<T>& mQuad) const
+        bool overlaps(const bounds2<T>& mQuad) const
         {
             auto range_overlaps = [](T mMin1, T mMax1, T mMin2, T mMax2)
             {
@@ -71,27 +71,27 @@ namespace gui
                    range_overlaps(top, bottom, mQuad.top, mQuad.bottom);
         }
 
-        bool operator == (const quad2<T>& mQuad) const
+        bool operator == (const bounds2<T>& mQuad) const
         {
             return left == mQuad.left && right == mQuad.right &&
                    top == mQuad.top && bottom == mQuad.bottom;
         }
 
-        bool operator != (const quad2<T>& mQuad) const
+        bool operator != (const bounds2<T>& mQuad) const
         {
             return left != mQuad.left || right != mQuad.right ||
                    top != mQuad.top || bottom != mQuad.bottom;
         }
 
-        static const quad2 ZERO;
+        static const bounds2 ZERO;
 
         T left = 0, right = 0, top = 0, bottom = 0;
     };
 
     template<typename T>
-    quad2<T> operator + (const vector2<T>& mOffset, const quad2<T>& mQuad) noexcept
+    bounds2<T> operator + (const vector2<T>& mOffset, const bounds2<T>& mQuad) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left += mOffset.x;
         mTmp.right += mOffset.x;
         mTmp.top += mOffset.y;
@@ -100,9 +100,9 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator + (const quad2<T>& mQuad, const vector2<T>& mOffset) noexcept
+    bounds2<T> operator + (const bounds2<T>& mQuad, const vector2<T>& mOffset) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left += mOffset.x;
         mTmp.right += mOffset.x;
         mTmp.top += mOffset.y;
@@ -111,9 +111,9 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator - (const quad2<T>& mQuad, const vector2<T>& mOffset) noexcept
+    bounds2<T> operator - (const bounds2<T>& mQuad, const vector2<T>& mOffset) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left -= mOffset.x;
         mTmp.right -= mOffset.x;
         mTmp.top -= mOffset.y;
@@ -122,9 +122,9 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator * (const quad2<T>& mQuad, T fScale) noexcept
+    bounds2<T> operator * (const bounds2<T>& mQuad, T fScale) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left *= fScale;
         mTmp.right *= fScale;
         mTmp.top *= fScale;
@@ -133,9 +133,9 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator * (T fScale, const quad2<T>& mQuad) noexcept
+    bounds2<T> operator * (T fScale, const bounds2<T>& mQuad) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left *= fScale;
         mTmp.right *= fScale;
         mTmp.top *= fScale;
@@ -144,9 +144,9 @@ namespace gui
     }
 
     template<typename T>
-    quad2<T> operator / (const quad2<T>& mQuad, T fScale) noexcept
+    bounds2<T> operator / (const bounds2<T>& mQuad, T fScale) noexcept
     {
-        quad2<T> mTmp = mQuad;
+        bounds2<T> mTmp = mQuad;
         mTmp.left /= fScale;
         mTmp.right /= fScale;
         mTmp.top /= fScale;
@@ -155,13 +155,13 @@ namespace gui
     }
 
     template<typename T>
-    const quad2<T> quad2<T>::ZERO(0, 0, 0, 0);
+    const bounds2<T> bounds2<T>::ZERO(0, 0, 0, 0);
 
-    using quad2f = quad2<float>;
-    using quad2i = quad2<int>;
+    using bounds2f = bounds2<float>;
+    using bounds2i = bounds2<int>;
 
     template<typename O, typename T>
-    O& operator << (O& mStream, const quad2<T>& mQuad)
+    O& operator << (O& mStream, const bounds2<T>& mQuad)
     {
         return mStream << "(" << mQuad.top_left() << "), (" << mQuad.bottom_right() << ")";
     }

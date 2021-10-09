@@ -210,7 +210,7 @@ int lua_edit_box::_get_text_insets(lua_State* pLua)
 
     lua::function mFunc("EditBox:get_text_insets", pLua, 4);
 
-    const quad2f& lInsets = get_object()->get_text_insets();
+    const bounds2f& lInsets = get_object()->get_text_insets();
 
     mFunc.push(lInsets.left);
     mFunc.push(lInsets.right);

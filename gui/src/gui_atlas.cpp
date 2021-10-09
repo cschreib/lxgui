@@ -102,24 +102,24 @@ bool atlas_page::empty() const
     return true;
 }
 
-std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) const
+std::optional<bounds2f> atlas_page::find_location_(float fWidth, float fHeight) const
 {
     constexpr float fPadding = 1.0f; // pixels
 
-    quad2f mStartQuad(0, fWidth, 0, fHeight);
+    bounds2f mStartQuad(0, fWidth, 0, fHeight);
     if (empty())
         return mStartQuad;
 
     const float fAtlasWidth = get_width();
     const float fAtlasHeight = get_height();
 
-    std::vector<quad2f> lOccupiedSpace;
+    std::vector<bounds2f> lOccupiedSpace;
     lOccupiedSpace.reserve(lTextureList_.size());
 
     float fMaxWidth = 0.0f;
     float fMaxHeight = 0.0f;
 
-    auto apply_padding = [&](quad2f mRect)
+    auto apply_padding = [&](bounds2f mRect)
     {
         mRect.right += fPadding;
         mRect.bottom += fPadding;
@@ -147,13 +147,13 @@ std::optional<quad2f> atlas_page::find_location_(float fWidth, float fHeight) co
     }
 
     float fBestArea = std::numeric_limits<float>::infinity();
-    quad2f mBestQuad;
+    bounds2f mBestQuad;
 
     for (const auto& mRectSource : lOccupiedSpace)
     {
         auto mTestPosition = [&](const vector2f& mPos)
         {
-            const quad2f mTestQuad = mStartQuad + mPos;
+            const bounds2f mTestQuad = mStartQuad + mPos;
             if (mTestQuad.right > fAtlasWidth || mTestQuad.bottom > fAtlasHeight)
                 return;
 

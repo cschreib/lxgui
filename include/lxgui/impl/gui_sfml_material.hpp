@@ -3,7 +3,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/gui_material.hpp>
-#include <lxgui/gui_quad2.hpp>
+#include <lxgui/gui_bounds2.hpp>
 #include <lxgui/gui_color.hpp>
 
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -57,7 +57,7 @@ namespace sfml
         *   \param mLocation The location of the texture inside the atlas texture (in pixels)
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        explicit material(const sf::Texture& mTexture, const quad2f& mLocation,
+        explicit material(const sf::Texture& mTexture, const bounds2f& mLocation,
             filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
@@ -68,7 +68,7 @@ namespace sfml
         /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
         /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */
-        quad2f get_rect() const override;
+        bounds2f get_rect() const override;
 
         /// Returns the physical width in pixels of the canvas containing this texture (if any).
         /** \return The physical width in pixels of the canvas containing this texture (if any)
@@ -143,11 +143,11 @@ namespace sfml
 
     private:
 
-        uint   uiWidth_ = 0u, uiHeight_ = 0u;
-        uint   uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        quad2f mRect_;
-        wrap   mWrap_ = wrap::REPEAT;
-        filter mFilter_ = filter::NONE;
+        uint     uiWidth_ = 0u, uiHeight_ = 0u;
+        uint     uiRealWidth_ = 0u, uiRealHeight_ = 0u;
+        bounds2f mRect_;
+        wrap     mWrap_ = wrap::REPEAT;
+        filter   mFilter_ = filter::NONE;
 
         bool               bRenderTarget_ = false;
         sf::RenderTexture  mRenderTexture_;

@@ -549,7 +549,7 @@ void font_string::update_borders_() const
             lBorderList_.bottom = fBottom;
         }
         else
-            lBorderList_ = quad2f::ZERO;
+            lBorderList_ = bounds2f::ZERO;
 
         bUpdateBorders_ = false;
     }
@@ -563,7 +563,7 @@ void font_string::update_borders_() const
         if (fBoxHeight == 0.0)
             fBoxHeight = pText_->get_height();
 
-        lBorderList_ = quad2f(0.0, 0.0, fBoxWidth, fBoxHeight);
+        lBorderList_ = bounds2f(0.0, 0.0, fBoxWidth, fBoxHeight);
         bReady_ = false;
     }
 

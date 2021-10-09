@@ -43,13 +43,13 @@ namespace sfml
         *   \note The uv coordinates are normalised, i.e. they range from
         *         0 to 1. They are arranged as {u1, v1, u2, v2}.
         */
-        quad2f get_character_uvs(char32_t uiChar) const override;
+        bounds2f get_character_uvs(char32_t uiChar) const override;
 
         /// Returns the rect coordinates of a character as it should be drawn relative to the baseline.
         /** \param uiChar The unicode character
         *   \return The rect coordinates of this character (in pixels, relative to the baseline)
         */
-        quad2f get_character_bounds(char32_t uiChar) const override;
+        bounds2f get_character_bounds(char32_t uiChar) const override;
 
         /// Returns the width of a character in pixels.
         /** \param uiChar The unicode character

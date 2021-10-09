@@ -345,22 +345,22 @@ const font::character_info* font::get_character_(char32_t uiChar) const
         return nullptr;
 }
 
-quad2f font::get_character_uvs(char32_t uiChar) const
+bounds2f font::get_character_uvs(char32_t uiChar) const
 {
     const character_info* pChar = get_character_(uiChar);
     if (!pChar)
-        return quad2f{};
+        return bounds2f{};
 
     vector2f mTopLeft = pTexture_->get_canvas_uv(pChar->mUVs.top_left(), true);
     vector2f mBottomRight = pTexture_->get_canvas_uv(pChar->mUVs.bottom_right(), true);
-    return quad2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
+    return bounds2f(mTopLeft.x, mBottomRight.x, mTopLeft.y, mBottomRight.y);
 }
 
-quad2f font::get_character_bounds(char32_t uiChar) const
+bounds2f font::get_character_bounds(char32_t uiChar) const
 {
     const character_info* pChar = get_character_(uiChar);
     if (!pChar)
-        return quad2f{};
+        return bounds2f{};
 
     return pChar->mRect;
 }

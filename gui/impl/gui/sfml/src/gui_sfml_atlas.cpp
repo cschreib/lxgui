@@ -23,7 +23,7 @@ atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter)
 }
 
 std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mMat,
-    const quad2f& mLocation)
+    const bounds2f& mLocation)
 {
     const sfml::material& mSFMat = static_cast<const sfml::material&>(mMat);
 

@@ -41,7 +41,7 @@ void render_target::clear(const color& mColor)
     SDL_RenderClear(pTexture_->get_renderer());
 }
 
-quad2f render_target::get_rect() const
+bounds2f render_target::get_rect() const
 {
     return pTexture_->get_rect();
 }
