@@ -51,7 +51,6 @@ add_library(lxgui
     ${SRCROOT}/gui_slider.cpp
     ${SRCROOT}/gui_slider_glues.cpp
     ${SRCROOT}/gui_slider_parser.cpp
-    ${SRCROOT}/gui_sprite.cpp
     ${SRCROOT}/gui_statusbar.cpp
     ${SRCROOT}/gui_statusbar_glues.cpp
     ${SRCROOT}/gui_statusbar_parser.cpp
