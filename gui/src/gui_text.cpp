@@ -2,7 +2,7 @@
 #include "lxgui/gui_font.hpp"
 #include "lxgui/gui_matrix4.hpp"
 #include "lxgui/gui_material.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_vertexcache.hpp"
 #include "lxgui/gui_out.hpp"

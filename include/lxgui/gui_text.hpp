@@ -4,7 +4,7 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_font.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>

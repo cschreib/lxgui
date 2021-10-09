@@ -3,7 +3,7 @@
 #include "lxgui/impl/gui_sdl_material.hpp"
 #include "lxgui/impl/gui_sdl_rendertarget.hpp"
 #include "lxgui/impl/gui_sdl_font.hpp"
-#include <lxgui/gui_sprite.hpp>
+#include <lxgui/gui_quad.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>

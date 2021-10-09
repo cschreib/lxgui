@@ -17,6 +17,7 @@
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_material.hpp"
+#include "lxgui/gui_quad.hpp"
 
 #include <array>
 #include <vector>
@@ -28,21 +29,6 @@ namespace gui
 {
     class renderer;
     class render_target;
-    class material;
-
-    enum class blend_mode
-    {
-        NORMAL,
-        ADD,
-        MUL
-    };
-
-    struct quad
-    {
-        std::array<vertex, 4>     v;
-        std::shared_ptr<material> mat;
-        blend_mode                blend = blend_mode::NORMAL;
-    };
 
     /// Use to draw a texture on the screen
     /** This class is meant to simplify rendering of

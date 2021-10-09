@@ -5,7 +5,7 @@
 #include "lxgui/impl/gui_gl_font.hpp"
 #include "lxgui/impl/gui_gl_vertexcache.hpp"
 
-#include <lxgui/gui_sprite.hpp>
+#include <lxgui/gui_quad.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>

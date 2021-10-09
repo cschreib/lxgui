@@ -1,6 +1,6 @@
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_material.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"

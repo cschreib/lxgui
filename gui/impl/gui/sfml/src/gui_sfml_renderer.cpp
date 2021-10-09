@@ -4,7 +4,7 @@
 #include "lxgui/impl/gui_sfml_rendertarget.hpp"
 #include "lxgui/impl/gui_sfml_font.hpp"
 #include "lxgui/impl/gui_sfml_vertexcache.hpp"
-#include <lxgui/gui_sprite.hpp>
+#include <lxgui/gui_quad.hpp>
 #include <lxgui/gui_matrix4.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/gui_exception.hpp>
