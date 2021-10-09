@@ -206,7 +206,7 @@ $(function() {
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;EditBox:get_text_insets&quot;</span>, pLua, 4);</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&amp; lInsets = get_object()-&gt;get_text_insets();</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&amp; lInsets = get_object()-&gt;get_text_insets();</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    mFunc.push(lInsets.left);</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    mFunc.push(lInsets.right);</div>
@@ -465,7 +465,6 @@ $(function() {
 <div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;}</div>
 <div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a015791420a86dd9f8bdcaf76466c93b9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">lxgui::gui::quad2f</a></div><div class="ttdeci">quad2&lt; float &gt; quad2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__quad2_8hpp_source.html#l00160">gui_quad2.hpp:160</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1lua_1_1state_html_ac137db19980f4ad1f15ecf64062646f5"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">lxgui::lua::state::reg</a></div><div class="ttdeci">void reg(const std::string &amp;sFunctionName, c_function mFunction)</div><div class="ttdoc">Binds a C++ function to a Lua function.</div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1edit__box_html_a8488ecd18f87e36497a96a6c23dc012a"><div class="ttname"><a href="classlxgui_1_1gui_1_1edit__box.html#a8488ecd18f87e36497a96a6c23dc012a">lxgui::gui::edit_box::register_glue</a></div><div class="ttdeci">static void register_glue(lua::state &amp;mLua)</div><div class="ttdoc">Registers this widget to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__editbox__glues_8cpp_source.html#l00066">gui_editbox_glues.cpp:66</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lxgui::lua::type::STRING</a></div><div class="ttdeci">@ STRING</div></div>
@@ -482,10 +481,11 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <div class="ttc" id="aluapp__function_8hpp_html"><div class="ttname"><a href="luapp__function_8hpp.html">luapp_function.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a1308bcf31e775be7a976de3806a85ba3"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">lxgui::gui::bounds2f</a></div><div class="ttdeci">bounds2&lt; float &gt; bounds2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00160">gui_bounds2.hpp:160</a></div></div>
 <div class="ttc" id="agui__fontstring_8hpp_html"><div class="ttname"><a href="gui__fontstring_8hpp.html">gui_fontstring.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 8 2021 07:18:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 9 2021 16:40:58 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

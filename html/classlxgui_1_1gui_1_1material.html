@@ -110,9 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7356cdaf760898e56e339bfaa2df7c6"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">~material</a> ()=default</td></tr>
 <tr class="memdesc:aa7356cdaf760898e56e339bfaa2df7c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classlxgui_1_1gui_1_1material.html#aa7356cdaf760898e56e339bfaa2df7c6">More...</a><br /></td></tr>
 <tr class="separator:aa7356cdaf760898e56e339bfaa2df7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af52766a8c1a30a0c2f3abda1b619f3bd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#af52766a8c1a30a0c2f3abda1b619f3bd">get_rect</a> () const =0</td></tr>
-<tr class="memdesc:af52766a8c1a30a0c2f3abda1b619f3bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pixel rect in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#af52766a8c1a30a0c2f3abda1b619f3bd">More...</a><br /></td></tr>
-<tr class="separator:af52766a8c1a30a0c2f3abda1b619f3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bc89170a07479b34496548163d51a11"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">get_rect</a> () const =0</td></tr>
+<tr class="memdesc:a7bc89170a07479b34496548163d51a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pixel rect in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">More...</a><br /></td></tr>
+<tr class="separator:a7bc89170a07479b34496548163d51a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab1d55a8d34f58ed57122a94edcffe9"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">get_canvas_width</a> () const =0</td></tr>
 <tr class="memdesc:abab1d55a8d34f58ed57122a94edcffe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the physical width in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">More...</a><br /></td></tr>
 <tr class="separator:abab1d55a8d34f58ed57122a94edcffe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -392,8 +392,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af52766a8c1a30a0c2f3abda1b619f3bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af52766a8c1a30a0c2f3abda1b619f3bd">&#9670;&nbsp;</a></span>get_rect()</h2>
+<a id="a7bc89170a07479b34496548163d51a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bc89170a07479b34496548163d51a11">&#9670;&nbsp;</a></span>get_rect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -402,7 +402,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> lxgui::gui::material::get_rect </td>
+          <td class="memname">virtual <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> lxgui::gui::material::get_rect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -418,7 +418,7 @@ Protected Attributes</h2></td></tr>
 <p>Returns the pixel rect in pixels of the canvas containing this texture (if any). </p>
 <dl class="section return"><dt>Returns</dt><dd>The pixel rect in pixels of the canvas containing this texture (if any) </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a53c18289c54d9a359cf24b51887766db">lxgui::gui::sdl::material</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a83104fb2024b9915fbe3dc5d8ede7667">lxgui::gui::sfml::material</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a6e86afc6fd33b3ade81badca0d64268d">lxgui::gui::gl::material</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#ab580089552dd523a5b8d4c1bfda748d1">lxgui::gui::sdl::material</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a4ac195cc4ddf5688bcb64513951d351d">lxgui::gui::sfml::material</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a7560191c3262efd73cbbc1940cc9c235">lxgui::gui::gl::material</a>.</p>
 
 </div>
 </div>
@@ -507,7 +507,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 9 2021 16:40:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

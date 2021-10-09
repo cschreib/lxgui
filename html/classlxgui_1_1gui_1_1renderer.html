@@ -178,9 +178,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3d1265aefed7545b55be76ac843a508"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#ab3d1265aefed7545b55be76ac843a508">create_atlas_material</a> (const std::string &amp;sAtlasCategory, const std::string &amp;sFileName, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const</td></tr>
 <tr class="memdesc:ab3d1265aefed7545b55be76ac843a508"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a texture file.  <a href="classlxgui_1_1gui_1_1renderer.html#ab3d1265aefed7545b55be76ac843a508">More...</a><br /></td></tr>
 <tr class="separator:ab3d1265aefed7545b55be76ac843a508"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a197caac5385c16319f831c3b68934483"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a197caac5385c16319f831c3b68934483">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget, const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;mLocation) const =0</td></tr>
-<tr class="memdesc:a197caac5385c16319f831c3b68934483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a portion of a render target.  <a href="classlxgui_1_1gui_1_1renderer.html#a197caac5385c16319f831c3b68934483">More...</a><br /></td></tr>
-<tr class="separator:a197caac5385c16319f831c3b68934483"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bd6098d9438e6f79755e74bb5c33015"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a5bd6098d9438e6f79755e74bb5c33015">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget, const <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> &amp;mLocation) const =0</td></tr>
+<tr class="memdesc:a5bd6098d9438e6f79755e74bb5c33015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a portion of a render target.  <a href="classlxgui_1_1gui_1_1renderer.html#a5bd6098d9438e6f79755e74bb5c33015">More...</a><br /></td></tr>
+<tr class="separator:a5bd6098d9438e6f79755e74bb5c33015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">render_target</a> &gt; pRenderTarget) const</td></tr>
 <tr class="memdesc:adb352d74d13a5bcfc4c6b505dda5843a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from an entire render target.  <a href="classlxgui_1_1gui_1_1renderer.html#adb352d74d13a5bcfc4c6b505dda5843a">More...</a><br /></td></tr>
 <tr class="separator:adb352d74d13a5bcfc4c6b505dda5843a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -747,8 +747,8 @@ If an outline thickness other than zero is requested, only the outline itself wi
 
 </div>
 </div>
-<a id="a197caac5385c16319f831c3b68934483"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a197caac5385c16319f831c3b68934483">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/4]</span></h2>
+<a id="a5bd6098d9438e6f79755e74bb5c33015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bd6098d9438e6f79755e74bb5c33015">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -765,7 +765,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> &amp;&#160;</td>
           <td class="paramname"><em>mLocation</em>&#160;</td>
         </tr>
         <tr>
@@ -791,7 +791,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad33964aaac7ce21335483f09ebaaf053">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#aa019dcd953eda63a3c49bb32fac10b4c">lxgui::gui::sdl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a88314bf711d31b247e0f32d810b6a493">lxgui::gui::sfml::renderer</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ac40d9ac313434b124047eb4ac0a83e26">lxgui::gui::gl::renderer</a>, <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1renderer.html#a9799fb75a7897c9b8fe4245fe931af4d">lxgui::gui::sdl::renderer</a>, and <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1renderer.html#a8cce53850a1f6d3eff25e2785de22ac1">lxgui::gui::sfml::renderer</a>.</p>
 
 </div>
 </div>
@@ -1960,7 +1960,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 9 2021 16:40:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

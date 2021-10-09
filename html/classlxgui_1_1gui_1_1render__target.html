@@ -106,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a8054ee2069343b08ff69c01309478d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#a7a8054ee2069343b08ff69c01309478d">clear</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor)=0</td></tr>
 <tr class="memdesc:a7a8054ee2069343b08ff69c01309478d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the content of this <a class="el" href="classlxgui_1_1gui_1_1render__target.html" title="A place to render things (the screen, a texture, ...)">render_target</a>.  <a href="classlxgui_1_1gui_1_1render__target.html#a7a8054ee2069343b08ff69c01309478d">More...</a><br /></td></tr>
 <tr class="separator:a7a8054ee2069343b08ff69c01309478d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abeda86811321c154902ce2aa2f045452"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#abeda86811321c154902ce2aa2f045452">get_rect</a> () const =0</td></tr>
-<tr class="memdesc:abeda86811321c154902ce2aa2f045452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's pixel rect.  <a href="classlxgui_1_1gui_1_1render__target.html#abeda86811321c154902ce2aa2f045452">More...</a><br /></td></tr>
-<tr class="separator:abeda86811321c154902ce2aa2f045452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1f3d15bdaf06d6afeb5765a3c3ecd46"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#aa1f3d15bdaf06d6afeb5765a3c3ecd46">get_rect</a> () const =0</td></tr>
+<tr class="memdesc:aa1f3d15bdaf06d6afeb5765a3c3ecd46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns this render target's pixel rect.  <a href="classlxgui_1_1gui_1_1render__target.html#aa1f3d15bdaf06d6afeb5765a3c3ecd46">More...</a><br /></td></tr>
+<tr class="separator:aa1f3d15bdaf06d6afeb5765a3c3ecd46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9b769fb1571af10abbe31ad48d29125"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1render__target.html#ae9b769fb1571af10abbe31ad48d29125">set_dimensions</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight)=0</td></tr>
 <tr class="memdesc:ae9b769fb1571af10abbe31ad48d29125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets this render target's dimensions.  <a href="classlxgui_1_1gui_1_1render__target.html#ae9b769fb1571af10abbe31ad48d29125">More...</a><br /></td></tr>
 <tr class="separator:ae9b769fb1571af10abbe31ad48d29125"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,8 +338,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abeda86811321c154902ce2aa2f045452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abeda86811321c154902ce2aa2f045452">&#9670;&nbsp;</a></span>get_rect()</h2>
+<a id="aa1f3d15bdaf06d6afeb5765a3c3ecd46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1f3d15bdaf06d6afeb5765a3c3ecd46">&#9670;&nbsp;</a></span>get_rect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +348,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespacelxgui_1_1gui.html#a015791420a86dd9f8bdcaf76466c93b9">quad2f</a> lxgui::gui::render_target::get_rect </td>
+          <td class="memname">virtual <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> lxgui::gui::render_target::get_rect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -364,7 +364,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns this render target's pixel rect. </p>
 <dl class="section return"><dt>Returns</dt><dd>This render target's pixel rect </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a0c167a199424ac9e1a373e04831b4f31">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a5321f37ad7e37f51fea3906b4cb0a3fa">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#a2bf6d10ce2ab0d06420d3f4236e6023f">lxgui::gui::sdl::render_target</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1render__target.html#a11bcb88bd1358a3b4791793762742cf9">lxgui::gui::sfml::render_target</a>, <a class="el" href="classlxgui_1_1gui_1_1gl_1_1render__target.html#a762d7b0e51da17205d042a0778595440">lxgui::gui::gl::render_target</a>, and <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1render__target.html#acf99d92ba95a304b7e1c81361c502fa3">lxgui::gui::sdl::render_target</a>.</p>
 
 </div>
 </div>
@@ -422,7 +422,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Oct 8 2021 07:18:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Oct 9 2021 16:40:59 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
