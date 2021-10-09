@@ -403,6 +403,16 @@ float uiobject::get_apparent_height() const
     return lBorderList_.height();
 }
 
+bool uiobject::is_apparent_width_defined() const
+{
+    return fAbsWidth_ > 0.0f || (lDefinedBorderList_.left && lDefinedBorderList_.right);
+}
+
+bool uiobject::is_apparent_height_defined() const
+{
+    return fAbsHeight_ > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
+}
+
 void uiobject::set_parent(frame* pParent)
 {
     if (pParent == this)

@@ -426,6 +426,26 @@ namespace gui
         */
         float get_apparent_height() const;
 
+        /// Checks if this widget's apparent width is defined.
+        /** \return 'true' if defined, 'false' otherwise
+        *   \note The apparent width is defined if either the widget's absolute
+        *         or relative width is explicitly specified (from set_abs_width()
+        *         or set_rel_width()), or if its left and right borders are anchored.
+        *         A widget with an undefined apparent width will not be rendered on
+        *         the screen until its width is defined.
+        */
+        bool is_apparent_width_defined() const;
+
+        /// Checks if this widget's apparent height is defined.
+        /** \return 'true' if defined, 'false' otherwise
+        *   \note The apparent height is defined if either the widget's absolute
+        *         or relative height is explicitly specified (from set_abs_height()
+        *         or set_rel_height()), or if its top and bottom borders are anchored.
+        *         A widget with an undefined apparent height will not be rendered on
+        *         the screen until its height is defined.
+        */
+        bool is_apparent_height_defined() const;
+
         /// Returns the type of this widget.
         /** \return The type of this widget
         */
