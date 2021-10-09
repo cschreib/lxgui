@@ -210,7 +210,7 @@ void status_bar::set_bar_color(const color& mBarColor)
     }
 
     mBarColor_ = mBarColor;
-    pBarTexture_->set_color(mBarColor_);
+    pBarTexture_->set_solid_color(mBarColor_);
 }
 
 void status_bar::set_orientation(orientation mOrient)
@@ -314,26 +314,23 @@ void status_bar::update(float fDelta)
             pBarTexture_->set_rel_height(fCoef);
         }
 
-        if (!pBarTexture_->get_texture().empty())
+        std::array<float,4> uvs = lInitialTextCoords_;
+        if (mOrientation_ == orientation::HORIZONTAL)
         {
-            std::array<float,4> uvs = lInitialTextCoords_;
-            if (mOrientation_ == orientation::HORIZONTAL)
-            {
-                if (bReversed_)
-                    uvs[0] = (uvs[0] - uvs[2])*fCoef + uvs[2];
-                else
-                    uvs[2] = (uvs[2] - uvs[0])*fCoef + uvs[0];
-            }
+            if (bReversed_)
+                uvs[0] = (uvs[0] - uvs[2])*fCoef + uvs[2];
             else
-            {
-                if (bReversed_)
-                    uvs[3] = (uvs[3] - uvs[1])*fCoef + uvs[1];
-                else
-                    uvs[1] = (uvs[1] - uvs[3])*fCoef + uvs[3];
-            }
-
-            pBarTexture_->set_tex_rect(uvs);
+                uvs[2] = (uvs[2] - uvs[0])*fCoef + uvs[0];
         }
+        else
+        {
+            if (bReversed_)
+                uvs[3] = (uvs[3] - uvs[1])*fCoef + uvs[1];
+            else
+                uvs[1] = (uvs[1] - uvs[3])*fCoef + uvs[3];
+        }
+
+        pBarTexture_->set_tex_rect(uvs);
 
         bUpdateBarTexture_ = false;
     }

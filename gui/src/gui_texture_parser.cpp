@@ -16,7 +16,7 @@ void texture::parse_block(xml::block* pBlock)
 
     xml::block* pColorBlock = pBlock->get_block("Color");
     if (pColorBlock)
-        set_color(parse_color_block_(pColorBlock));
+        set_solid_color(parse_color_block_(pColorBlock));
 
     parse_gradient_block_(pBlock);
 }

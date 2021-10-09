@@ -117,7 +117,8 @@ int lua_texture::_get_texture(lua_State* pLua)
 
     lua::function mFunc("Texture:get_texture", pLua, 1);
 
-    mFunc.push(get_object()->get_texture());
+    if (get_object()->has_texture_file())
+        mFunc.push(get_object()->get_texture_file());
 
     return mFunc.on_return();
 }
@@ -459,7 +460,7 @@ int lua_texture::_set_texture(lua_State* pLua)
             if (!sTexture.empty() && sTexture[0] == '#')
             {
                 // #RRGGBBAA color
-                get_object()->set_color(color(sTexture));
+                get_object()->set_solid_color(color(sTexture));
             }
             else
             {
@@ -490,7 +491,7 @@ int lua_texture::_set_texture(lua_State* pLua)
                     mFunc.get(2)->get_number()
                 );
             }
-            get_object()->set_color(mColor);
+            get_object()->set_solid_color(mColor);
         }
     }
 

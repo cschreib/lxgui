@@ -431,7 +431,7 @@ void edit_box::set_highlight_color(const color& mColor)
         if (!pHighlight_)
             return;
 
-        pHighlight_->set_color(mHighlightColor_);
+        pHighlight_->set_solid_color(mHighlightColor_);
     }
 }
 
@@ -852,7 +852,7 @@ void edit_box::create_highlight_()
         anchor_point::BOTTOM, sName_, anchor_point::BOTTOM, 0, -lTextInsets_.bottom
     );
 
-    pHighlight->set_color(mHighlightColor_);
+    pHighlight->set_solid_color(mHighlightColor_);
     pHighlight->notify_loaded();
     pHighlight_ = pHighlight.get();
     add_region(std::move(pHighlight));

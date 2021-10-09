@@ -3,10 +3,9 @@
 namespace lxgui {
 namespace gui
 {
-const gradient gradient::NONE = gradient();
 
 gradient::gradient(orientation mOrientation, const color& mMinColor, const color& mMaxColor) :
-    bIsEmpty_(false), mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor)
+    mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor)
 {
 }
 
@@ -25,9 +24,5 @@ gradient::orientation gradient::get_orientation() const
     return mOrientation_;
 }
 
-bool gradient::is_empty() const
-{
-    return bIsEmpty_;
-}
 }
 }

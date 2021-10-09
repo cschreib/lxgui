@@ -24,29 +24,34 @@ std::string texture::serialize(const std::string& sTab) const
     std::ostringstream sStr;
     sStr << layered_region::serialize(sTab);
 
-    if (!sTextureFile_.empty())
+    std::visit([&](const auto& mData)
     {
-        sStr << sTab << "  # File        : " << sTextureFile_ << "\n";
-    }
-    else if (!mGradient_.is_empty())
-    {
-        sStr << sTab << "  # Gradient    :\n";
-        sStr << sTab << "  #-###\n";
-        sStr << sTab << "  |   # min color   : " << mGradient_.get_min_color() << "\n";
-        sStr << sTab << "  |   # max color   : " << mGradient_.get_max_color() << "\n";
-        sStr << sTab << "  |   # orientation : ";
-        switch (mGradient_.get_orientation())
+        using content_type = std::decay_t<decltype(mData)>;
+
+        if constexpr (std::is_same_v<content_type, std::string>)
         {
-            case gradient::orientation::HORIZONTAL : sStr << "HORIZONTAL\n"; break;
-            case gradient::orientation::VERTICAL :   sStr << "VERTICAL\n"; break;
-            default : sStr << "<error>\n"; break;
+            sStr << sTab << "  # File        : " << mData << "\n";
         }
-        sStr << sTab << "  #-###\n";
-    }
-    else
-    {
-        sStr << sTab << "  # Color       : " << mColor_ << "\n";
-    }
+        else if constexpr (std::is_same_v<content_type, gradient>)
+        {
+            sStr << sTab << "  # Gradient    :\n";
+            sStr << sTab << "  #-###\n";
+            sStr << sTab << "  |   # min color   : " << mData.get_min_color() << "\n";
+            sStr << sTab << "  |   # max color   : " << mData.get_max_color() << "\n";
+            sStr << sTab << "  |   # orientation : ";
+            switch (mData.get_orientation())
+            {
+                case gradient::orientation::HORIZONTAL : sStr << "HORIZONTAL\n"; break;
+                case gradient::orientation::VERTICAL :   sStr << "VERTICAL\n"; break;
+                default : sStr << "<error>\n"; break;
+            }
+            sStr << sTab << "  #-###\n";
+        }
+        else if constexpr (std::is_same_v<content_type, color>)
+        {
+            sStr << sTab << "  # Color       : " << mData << "\n";
+        }
+    }, mContent_);
 
     sStr << sTab << "  # Tex. coord. :\n";
     sStr << sTab << "  #-###\n";
@@ -116,17 +121,12 @@ void texture::copy_from(uiobject* pObj)
     if (!pTexture)
         return;
 
-    std::string sTexture = pTexture->get_texture();
-    if (sTexture.empty())
-    {
-        const gradient& mGradient = pTexture->get_gradient();
-        if (!mGradient.is_empty())
-            this->set_gradient(mGradient);
-        else
-            this->set_color(pTexture->get_color());
-    }
-    else
-        this->set_texture(sTexture);
+    if (pTexture->has_texture_file())
+        this->set_texture(pTexture->get_texture_file());
+    else if (pTexture->has_gradient())
+        this->set_gradient(pTexture->get_gradient());
+    else if (pTexture->has_solid_color())
+        this->set_solid_color(pTexture->get_solid_color());
 
     this->set_blend_mode(pTexture->get_blend_mode());
     this->set_tex_coord(pTexture->get_tex_coord());
@@ -144,14 +144,24 @@ material::filter texture::get_filter_mode() const
     return mFilter_;
 }
 
-const color& texture::get_color() const
+bool texture::has_solid_color() const
 {
-    return mColor_;
+    return std::holds_alternative<color>(mContent_);
+}
+
+const color& texture::get_solid_color() const
+{
+    return std::get<color>(mContent_);
+}
+
+bool texture::has_gradient() const
+{
+    return std::holds_alternative<gradient>(mContent_);
 }
 
 const gradient& texture::get_gradient() const
 {
-    return mGradient_;
+    return std::get<gradient>(mContent_);
 }
 
 std::array<float,8> texture::get_tex_coord() const
@@ -184,9 +194,14 @@ bool texture::get_tex_coord_modifies_rect() const
     return bTexCoordModifiesRect_;
 }
 
-const std::string& texture::get_texture() const
+bool texture::has_texture_file() const
 {
-    return sTextureFile_;
+    return std::holds_alternative<std::string>(mContent_);
+}
+
+const std::string& texture::get_texture_file() const
+{
+    return std::get<std::string>(mContent_);
 }
 
 color texture::get_vertex_color(uint uiIndex) const
@@ -253,12 +268,12 @@ void texture::set_filter_mode(material::filter mFilter)
 
     mFilter_ = mFilter;
 
-    if (!sTextureFile_.empty())
+    if (std::holds_alternative<std::string>(mContent_))
     {
         // Force re-load of the material
-        std::string sFileName = sTextureFile_;
-        sTextureFile_ = "";
-        set_texture(sTextureFile_);
+        std::string sFileName = std::get<std::string>(mContent_);
+        mContent_ = std::string{};
+        set_texture(sFileName);
     }
 }
 
@@ -296,25 +311,23 @@ void texture::set_desaturated(bool bIsDesaturated)
 
 void texture::set_gradient(const gradient& mGradient)
 {
-    mColor_ = color::EMPTY;
-    sTextureFile_ = "";
-    mGradient_ = mGradient;
+    mContent_ = mGradient;
 
     mQuad_.mat = nullptr;
 
-    if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
+    if (mGradient.get_orientation() == gradient::orientation::HORIZONTAL)
     {
-        mQuad_.v[0].col = mGradient_.get_min_color();
-        mQuad_.v[1].col = mGradient_.get_max_color();
-        mQuad_.v[2].col = mGradient_.get_max_color();
-        mQuad_.v[3].col = mGradient_.get_min_color();
+        mQuad_.v[0].col = mGradient.get_min_color();
+        mQuad_.v[1].col = mGradient.get_max_color();
+        mQuad_.v[2].col = mGradient.get_max_color();
+        mQuad_.v[3].col = mGradient.get_min_color();
     }
     else
     {
-        mQuad_.v[0].col = mGradient_.get_min_color();
-        mQuad_.v[1].col = mGradient_.get_min_color();
-        mQuad_.v[2].col = mGradient_.get_max_color();
-        mQuad_.v[3].col = mGradient_.get_max_color();
+        mQuad_.v[0].col = mGradient.get_min_color();
+        mQuad_.v[1].col = mGradient.get_min_color();
+        mQuad_.v[2].col = mGradient.get_max_color();
+        mQuad_.v[3].col = mGradient.get_max_color();
     }
 
     notify_renderer_need_redraw();
@@ -388,18 +401,16 @@ void texture::update_dimensions_from_tex_coord_()
 
 void texture::set_texture(const std::string& sFile)
 {
-    mGradient_ = gradient();
-    mColor_ = color::EMPTY;
-    sTextureFile_ = sFile;
+    mContent_ = sFile;
 
-    if (sTextureFile_.empty())
+    if (sFile.empty())
         return;
 
     auto* pRenderer = pManager_->get_renderer();
 
     std::shared_ptr<gui::material> pMat;
-    if (utils::file_exists(sTextureFile_))
-        pMat = pRenderer->create_atlas_material("GUI", sTextureFile_, mFilter_);
+    if (utils::file_exists(sFile))
+        pMat = pRenderer->create_atlas_material("GUI", sFile, mFilter_);
 
     mQuad_.mat = pMat;
 
@@ -428,9 +439,7 @@ void texture::set_texture(const std::string& sFile)
 
 void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
 {
-    mGradient_ = gradient();
-    mColor_ = color::EMPTY;
-    sTextureFile_ = "";
+    mContent_ = std::string{};
 
     auto* pRenderer = pManager_->get_renderer();
 
@@ -463,12 +472,9 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
     notify_renderer_need_redraw();
 }
 
-void texture::set_color(const color& mColor)
+void texture::set_solid_color(const color& mColor)
 {
-    mGradient_ = gradient();
-    sTextureFile_ = "";
-
-    mColor_ = mColor;
+    mContent_ = mColor;
 
     mQuad_.mat = nullptr;
     mQuad_.v[0].col = mColor;
@@ -481,8 +487,7 @@ void texture::set_color(const color& mColor)
 
 void texture::set_quad(const quad& mQuad)
 {
-    mGradient_ = gradient();
-    sTextureFile_ = "";
+    mContent_ = std::string{};
 
     mQuad_ = mQuad;
     vector2f mExtent = mQuad_.v[2].pos - mQuad_.v[0].pos;
@@ -495,7 +500,10 @@ void texture::set_vertex_color(const color& mColor, uint uiIndex)
 {
     if (uiIndex == std::numeric_limits<uint>::max())
     {
-        set_color(mColor);
+        for (uint i = 0; i < 4; ++i)
+            mQuad_.v[i].col = mColor;
+
+        notify_renderer_need_redraw();
         return;
     }
 

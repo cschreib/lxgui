@@ -8,6 +8,7 @@
 #include "lxgui/gui_quad.hpp"
 
 #include <limits>
+#include <variant>
 
 namespace lxgui {
 namespace gui
@@ -56,10 +57,20 @@ namespace gui
         */
         material::filter get_filter_mode() const;
 
+        /// Checks if this texture is defined as solid color.
+        /** \return 'true' if the texutre is defined as solid color, 'false' otherwise
+        */
+        bool has_solid_color() const;
+
         /// Returns this texture's color.
         /** \return This texture's color (color::EMPTY if none)
         */
-        const color& get_color() const;
+        const color& get_solid_color() const;
+
+        /// Checks if this texture is defined as a gradient.
+        /** \return 'true' if the texture is defined a gradient, 'false' otherwise
+        */
+        bool has_gradient() const;
 
         /// Returns this texture's gradient.
         /** \return This texture's gradient (Gradient::NONE if none)
@@ -82,10 +93,15 @@ namespace gui
         */
         bool get_tex_coord_modifies_rect() const;
 
+        /// Checks if this texture is defined as a texture file.
+        /** \return 'true' if the texture is defined a texture file, 'false' otherwise
+        */
+        bool has_texture_file() const;
+
         /// Returns this textures's texture file.
         /** \return This textures's texture file (empty string if none).
         */
-        const std::string& get_texture() const;
+        const std::string& get_texture_file() const;
 
         /// Returns this textures's vertex color.
         /** \param uiIndex The vertex index (0 to 3 included)
@@ -183,7 +199,7 @@ namespace gui
         *   \note This function is not compatible with set_texture() : only the latest
         *         you have called will apply.
         */
-        void set_color(const color& mColor);
+        void set_solid_color(const color& mColor);
 
         /// Directly sets this texture's underlying quad (vertices and material).
         /** \param mQuad The new quad to use
@@ -223,14 +239,15 @@ namespace gui
         void update_dimensions_from_tex_coord_();
         void update_borders_() const override;
 
-        std::string      sTextureFile_;
+        using content = std::variant<color, std::string, gradient>;
+        content mContent_ = color::WHITE;
+
         blend_mode       mBlendMode_ = blend_mode::BLEND;
         material::filter mFilter_ = material::filter::NONE;
         bool             bIsDesaturated_ = false;
-        gradient         mGradient_;
-        color            mColor_ = color::WHITE;
-        bool             bTexCoordModifiesRect_ = false;\
-        mutable quad     mQuad_;
+        bool             bTexCoordModifiesRect_ = false;
+
+        mutable quad mQuad_;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

@@ -50,16 +50,8 @@ namespace gui
         */
         orientation get_orientation() const;
 
-        /// Checks if this gradient is an empty one.
-        /** \return 'true' if this gradient is an empty one
-        */
-        bool is_empty() const;
-
-        static const gradient NONE;
-
     private :
 
-        bool        bIsEmpty_ = true;
         orientation mOrientation_ = orientation::HORIZONTAL;
         color       mMinColor_, mMaxColor_;
 
