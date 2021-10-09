@@ -408,7 +408,7 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
         else
         {
             // Or 8
-            std::array<float,4> mCoords;
+            std::array<float,8> mCoords;
             for (uint i = 0; i < 8; ++i)
                 mCoords[i] = mFunc.get(i)->get_number();
 
