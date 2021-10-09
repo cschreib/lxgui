@@ -403,7 +403,7 @@ int lua_texture::_set_tex_coord(lua_State* pLua)
             for (uint i = 0; i < 4; ++i)
                 mRect[i] = mFunc.get(i)->get_number();
 
-            get_object()->set_tex_coord(mRect);
+            get_object()->set_tex_rect(mRect);
         }
         else
         {

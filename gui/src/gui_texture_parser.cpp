@@ -27,8 +27,6 @@ void texture::parse_attributes_(xml::block* pBlock)
 
     set_filter_mode(pBlock->get_attribute("filter"));
     set_texture(pManager_->parse_file_name(pBlock->get_attribute("file")));
-    if (!pBlock->get_block("Size") && bHasSprite_)
-        set_abs_dimensions(mSprite_.get_width(), mSprite_.get_height());
 }
 
 void texture::parse_tex_coords_block_(xml::block* pBlock)
@@ -41,7 +39,7 @@ void texture::parse_tex_coords_block_(xml::block* pBlock)
         mRect[1] = utils::string_to_float(pTexCoordsBlock->get_attribute("top"));
         mRect[2] = utils::string_to_float(pTexCoordsBlock->get_attribute("right"));
         mRect[3] = utils::string_to_float(pTexCoordsBlock->get_attribute("bottom"));
-        set_tex_coord(mRect);
+        set_tex_rect(mRect);
     }
 }
 

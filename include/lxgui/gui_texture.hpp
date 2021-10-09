@@ -5,7 +5,7 @@
 #include <lxgui/utils.hpp>
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_gradient.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 
 #include <limits>
 
@@ -74,7 +74,7 @@ namespace gui
         *         The returned array is composed like this :
         *         (x1, y1, x2, y2, x3, y3, x4, y4).
         */
-        const std::array<float,8>& get_tex_coord() const;
+        std::array<float,8> get_tex_coord() const;
 
         /// Checks if this texture's dimensions are affected by texture coordinates.
         /** \return 'true' if this texture's dimensions are affected by texture
@@ -143,7 +143,7 @@ namespace gui
         *         top, right, bottom). Other corners are calculated using these coordinates.
         *   \note This function only allows horizontal/rectangle texture coordinates.
         */
-        void set_tex_coord(const std::array<float,4>& lCoordinates);
+        void set_tex_rect(const std::array<float,4>& lTextureRect);
 
         /// Sets this texture's texture coordinates.
         /** \param lCoordinates This texture's texture coordinates
@@ -154,7 +154,7 @@ namespace gui
         *         (x1, y1, x2, y2, x3, y3, x4, y4).
         *   \note This function allows rotated/deformed texture coordinates.
         */
-        void set_tex_coord(const std::array<float,8>& lCoordinates);
+        void set_tex_coord(const std::array<float,8>& lTextureCoords);
 
         /// Sets whether this texture's dimensions are affected by texture coordinates.
         /** \param bTexCoordModifiesRect 'true' to make dimensions change with tex coords
@@ -185,15 +185,12 @@ namespace gui
         */
         void set_color(const color& mColor);
 
-        /// Directly sets this texture's underlying sprite.
-        /** \param mSprite The new sprite to use
+        /// Directly sets this texture's underlying quad (vertices and material).
+        /** \param mQuad The new quad to use
         *   \note The texture's dimensions will be adjusted to fit those
-        *         of the provided sprite, and same goes for texture
-        *         coordinates.
-        *   \note Be sure to know what you're doing when you call this
-        *         function.
+        *         of the provided quad, and same goes for texture coordinates.
         */
-        void set_sprite(sprite mSprite);
+        void set_quad(const quad& mQuad);
 
         /// Sets this texture's vertex color.
         /** \param mColor This textures's new vertex color
@@ -223,18 +220,17 @@ namespace gui
         void parse_tex_coords_block_(xml::block* pBlock);
         void parse_gradient_block_(xml::block* pBlock);
 
-        bool        bHasSprite_ = false;
-        sprite      mSprite_;
-        std::string sTextureFile_;
+        void update_dimensions_from_tex_coord_();
+        void update_borders_() const override;
 
-        blend_mode       mBlendMode_ = blend_mode::NONE;
+        std::string      sTextureFile_;
+        blend_mode       mBlendMode_ = blend_mode::BLEND;
         material::filter mFilter_ = material::filter::NONE;
         bool             bIsDesaturated_ = false;
         gradient         mGradient_;
         color            mColor_ = color::WHITE;
-
-        std::array<float,8> lTexCoord_ = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
-        bool                bTexCoordModifiesRect_ = false;
+        bool             bTexCoordModifiesRect_ = false;\
+        mutable quad     mQuad_;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

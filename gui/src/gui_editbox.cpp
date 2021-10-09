@@ -2,7 +2,7 @@
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_alive_checker.hpp"
@@ -881,10 +881,6 @@ void edit_box::create_carret_()
 
         pCarret->create_glue();
 
-        sprite mSprite(pManager_->get_renderer(), pFontString_->get_text_object()->create_letter_quad(U'|'));
-        mSprite.set_color(pFontString_->get_text_color());
-
-        pCarret->set_sprite(std::move(mSprite));
         pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
 
         pCarret->notify_loaded();
@@ -892,10 +888,11 @@ void edit_box::create_carret_()
         add_region(std::move(pCarret));
     }
 
-    sprite mSprite(pManager_->get_renderer(), pFontString_->get_text_object()->create_letter_quad(U'|'));
-    mSprite.set_color(pFontString_->get_text_color());
+    quad mQuad = pFontString_->get_text_object()->create_letter_quad(U'|');
+    for (uint i = 0; i < 4; ++i)
+        mQuad.v[i].col = pFontString_->get_text_color();
 
-    pCarret_->set_sprite(std::move(mSprite));
+    pCarret_->set_quad(mQuad);
 
     update_carret_position_();
 }

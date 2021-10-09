@@ -332,7 +332,7 @@ void status_bar::update(float fDelta)
                     uvs[1] = (uvs[1] - uvs[3])*fCoef + uvs[3];
             }
 
-            pBarTexture_->set_tex_coord(uvs);
+            pBarTexture_->set_tex_rect(uvs);
         }
 
         bUpdateBarTexture_ = false;

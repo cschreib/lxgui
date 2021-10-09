@@ -50,10 +50,10 @@ std::string texture::serialize(const std::string& sTab) const
 
     sStr << sTab << "  # Tex. coord. :\n";
     sStr << sTab << "  #-###\n";
-    sStr << sTab << "  |   # top-left     : (" << lTexCoord_[0] << ", " << lTexCoord_[1] << ")\n";
-    sStr << sTab << "  |   # top-right    : (" << lTexCoord_[2] << ", " << lTexCoord_[3] << ")\n";
-    sStr << sTab << "  |   # bottom-right : (" << lTexCoord_[4] << ", " << lTexCoord_[5] << ")\n";
-    sStr << sTab << "  |   # bottom-left  : (" << lTexCoord_[6] << ", " << lTexCoord_[7] << ")\n";
+    sStr << sTab << "  |   # top-left     : (" << mQuad_.v[0].uvs << ")\n";
+    sStr << sTab << "  |   # top-right    : (" << mQuad_.v[1].uvs << ")\n";
+    sStr << sTab << "  |   # bottom-right : (" << mQuad_.v[2].uvs << ")\n";
+    sStr << sTab << "  |   # bottom-left  : (" << mQuad_.v[3].uvs << ")\n";
     sStr << sTab << "  #-###\n";
     sStr << sTab << "  # TexCModRect : " << bTexCoordModifiesRect_ << "\n";
 
@@ -83,28 +83,22 @@ std::string texture::serialize(const std::string& sTab) const
 
 void texture::render()
 {
-    if (bHasSprite_ && is_visible())
+    if (is_visible())
     {
+        auto* pRenderer = pManager_->get_renderer();
         float fAlpha = get_effective_alpha();
+
         if (fAlpha != 1.0f)
         {
-            sprite mTempSprite = mSprite_;
-            color mColor(1.0, 1.0, 1.0, fAlpha);
+            quad mBlendedQuad = mQuad_;
+            for (uint i = 0; i < 4; ++i)
+                mBlendedQuad.v[i].col.a *= fAlpha;
 
-            for (uint uiIndex = 0; uiIndex < 4; ++uiIndex)
-                mTempSprite.set_color(mSprite_.get_color(uiIndex)*mColor, uiIndex);
-
-            mTempSprite.render_2v(
-                round_to_pixel(lBorderList_.left),  round_to_pixel(lBorderList_.top),
-                round_to_pixel(lBorderList_.right), round_to_pixel(lBorderList_.bottom)
-            );
+            pRenderer->render_quad(mBlendedQuad);
         }
         else
         {
-            mSprite_.render_2v(
-                round_to_pixel(lBorderList_.left),  round_to_pixel(lBorderList_.top),
-                round_to_pixel(lBorderList_.right), round_to_pixel(lBorderList_.bottom)
-            );
+            pRenderer->render_quad(mQuad_);
         }
     }
 }
@@ -160,9 +154,29 @@ const gradient& texture::get_gradient() const
     return mGradient_;
 }
 
-const std::array<float,8>& texture::get_tex_coord() const
+std::array<float,8> texture::get_tex_coord() const
 {
-    return lTexCoord_;
+    std::array<float,8> mCoords;
+
+    if (mQuad_.mat)
+    {
+        for (uint i = 0; i < 4; ++i)
+        {
+            const vector2f lUV = mQuad_.mat->get_local_uv(mQuad_.v[i].uvs, true);
+            mCoords[2*i+0] = lUV.x;
+            mCoords[2*i+1] = lUV.y;
+        }
+    }
+    else
+    {
+        for (uint i = 0; i < 4; ++i)
+        {
+            mCoords[2*i+0] = mQuad_.v[i].uvs.x;
+            mCoords[2*i+1] = mQuad_.v[i].uvs.y;
+        }
+    }
+
+    return mCoords;
 }
 
 bool texture::get_tex_coord_modifies_rect() const
@@ -177,15 +191,14 @@ const std::string& texture::get_texture() const
 
 color texture::get_vertex_color(uint uiIndex) const
 {
-    if (bHasSprite_)
-        return mSprite_.get_color(uiIndex);
-    else
+    if (uiIndex >= 4)
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Trying to call get_vertex_color on an uninitialized texture : "+sName_+"." << std::endl;
-
-        return color::EMPTY;
+            << "Vertex index out of bound (" << uiIndex << ")." << std::endl;
+        return color::WHITE;
     }
+
+    return mQuad_.v[uiIndex].col;
 }
 
 bool texture::is_desaturated() const
@@ -195,19 +208,24 @@ bool texture::is_desaturated() const
 
 void texture::set_blend_mode(blend_mode mBlendMode)
 {
-    if (mBlendMode_ != mBlendMode)
+    if (mBlendMode != blend_mode::BLEND)
     {
-        mBlendMode_ = mBlendMode;
-        notify_renderer_need_redraw();
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "texture::set_blend_mode other than \"BLEND\" is not yet implemented." << std::endl;
+        return;
     }
+
+    if (mBlendMode_ == mBlendMode)
+        return;
+
+    mBlendMode_ = mBlendMode;
+
+    notify_renderer_need_redraw();
 }
 
 void texture::set_blend_mode(const std::string& sBlendMode)
 {
-    blend_mode mOldBlendMode = mBlendMode_;
-
-    gui::out << gui::warning << "gui::" << lType_.back() << " : "
-        << "texture::set_blend_mode is not yet implemented." << std::endl;
+    blend_mode mNewBlendMode = blend_mode::BLEND;
 
     if (sBlendMode == "BLEND")
         mBlendMode_ = blend_mode::BLEND;
@@ -223,68 +241,57 @@ void texture::set_blend_mode(const std::string& sBlendMode)
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Unknown blending : \"" << sBlendMode << "\". Using \"BLEND\"." << std::endl;
-
-        mBlendMode_ = blend_mode::BLEND;
     }
 
-    if (mOldBlendMode != mBlendMode_)
-        notify_renderer_need_redraw();
+    set_blend_mode(mNewBlendMode);
 }
 
 void texture::set_filter_mode(material::filter mFilter)
 {
-    if (mFilter_ != mFilter)
+    if (mFilter_ == mFilter)
+        return;
+
+    mFilter_ = mFilter;
+
+    if (!sTextureFile_.empty())
     {
-        mFilter_ = mFilter;
-
-        if (!sTextureFile_.empty() && bHasSprite_)
-        {
-            auto* pRenderer = pManager_->get_renderer();
-            mSprite_ = sprite(pRenderer, pRenderer->create_atlas_material("GUI", sTextureFile_, mFilter_));
-            mSprite_.set_texture_coords(lTexCoord_, true);
-        }
-
-        notify_renderer_need_redraw();
+        // Force re-load of the material
+        std::string sFileName = sTextureFile_;
+        sTextureFile_ = "";
+        set_texture(sTextureFile_);
     }
 }
 
 void texture::set_filter_mode(const std::string& sFilter)
 {
-    material::filter mOldFilter = mFilter_;
+    material::filter mNewFilter = material::filter::NONE;
 
     if (sFilter == "NONE")
-        mFilter_ = material::filter::NONE;
+        mNewFilter = material::filter::NONE;
     else if (sFilter == "LINEAR")
-        mFilter_ = material::filter::LINEAR;
+        mNewFilter = material::filter::LINEAR;
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Unknown filtering : \"" << sFilter << "\". Using \"NONE\"." << std::endl;
-
-        mFilter_ = material::filter::NONE;
     }
 
-    if (mOldFilter != mFilter_)
-        notify_renderer_need_redraw();
+    set_filter_mode(mNewFilter);
 }
 
 void texture::set_desaturated(bool bIsDesaturated)
 {
-    if (!bHasSprite_)
+    if (bIsDesaturated_ == bIsDesaturated)
+        return;
+
+    bIsDesaturated_ = bIsDesaturated;
+    if (bIsDesaturated)
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Trying to desaturate an uninitialized texture : " << sName_ << "." << std::endl;
-
-        return;
+            << "Texture de-saturation is not yet implemented." << std::endl;
     }
 
-    if (bIsDesaturated_ != bIsDesaturated)
-    {
-        bIsDesaturated_ = bIsDesaturated;
-        mSprite_.set_desaturated(bIsDesaturated_);
-
-        notify_renderer_need_redraw();
-    }
+    notify_renderer_need_redraw();
 }
 
 void texture::set_gradient(const gradient& mGradient)
@@ -292,58 +299,71 @@ void texture::set_gradient(const gradient& mGradient)
     mColor_ = color::EMPTY;
     sTextureFile_ = "";
     mGradient_ = mGradient;
-    auto* pRenderer = pManager_->get_renderer();
-    mSprite_ = sprite(pRenderer, nullptr, 256, 256);
-    mSprite_.set_texture_rect({0.0f, 0.0f, 0.0f, 0.0f}, true);
-    lTexCoord_ = mSprite_.get_texture_coords(true);
+
+    mQuad_.mat = nullptr;
 
     if (mGradient_.get_orientation() == gradient::orientation::HORIZONTAL)
     {
-        mSprite_.set_color(mGradient_.get_min_color(), 0);
-        mSprite_.set_color(mGradient_.get_min_color(), 3);
-        mSprite_.set_color(mGradient_.get_max_color(), 1);
-        mSprite_.set_color(mGradient_.get_max_color(), 2);
+        mQuad_.v[0].col = mGradient_.get_min_color();
+        mQuad_.v[1].col = mGradient_.get_max_color();
+        mQuad_.v[2].col = mGradient_.get_max_color();
+        mQuad_.v[3].col = mGradient_.get_min_color();
     }
     else
     {
-        mSprite_.set_color(mGradient_.get_min_color(), 0);
-        mSprite_.set_color(mGradient_.get_min_color(), 1);
-        mSprite_.set_color(mGradient_.get_max_color(), 2);
-        mSprite_.set_color(mGradient_.get_max_color(), 3);
+        mQuad_.v[0].col = mGradient_.get_min_color();
+        mQuad_.v[1].col = mGradient_.get_min_color();
+        mQuad_.v[2].col = mGradient_.get_max_color();
+        mQuad_.v[3].col = mGradient_.get_max_color();
     }
 
-    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord(const std::array<float,4>& lCoordinates)
+void texture::set_tex_rect(const std::array<float,4>& lTextureRect)
 {
-    if (bHasSprite_)
+    if (mQuad_.mat)
     {
-        mSprite_.set_texture_rect(lCoordinates, true);
-        lTexCoord_ = mSprite_.get_texture_coords(true);
-        notify_renderer_need_redraw();
+        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[0], lTextureRect[1]), true);
+        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[2], lTextureRect[1]), true);
+        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[2], lTextureRect[3]), true);
+        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureRect[0], lTextureRect[3]), true);
+
+        if (bTexCoordModifiesRect_)
+            update_dimensions_from_tex_coord_();
     }
     else
     {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Trying to call set_tex_coord on an uninitialized texture : " << sName_ << "." << std::endl;
+        mQuad_.v[0].uvs = vector2f(lTextureRect[0], lTextureRect[1]);
+        mQuad_.v[1].uvs = vector2f(lTextureRect[2], lTextureRect[1]);
+        mQuad_.v[2].uvs = vector2f(lTextureRect[2], lTextureRect[3]);
+        mQuad_.v[3].uvs = vector2f(lTextureRect[0], lTextureRect[3]);
     }
+
+    notify_renderer_need_redraw();
 }
 
-void texture::set_tex_coord(const std::array<float,8>& lCoordinates)
+void texture::set_tex_coord(const std::array<float,8>& lTextureCoords)
 {
-    if (bHasSprite_)
+    if (mQuad_.mat)
     {
-        mSprite_.set_texture_coords(lCoordinates, true);
-        lTexCoord_ = lCoordinates;
-        notify_renderer_need_redraw();
+        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[0], lTextureCoords[1]), true);
+        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[2], lTextureCoords[3]), true);
+        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[4], lTextureCoords[5]), true);
+        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(lTextureCoords[6], lTextureCoords[7]), true);
+
+        if (bTexCoordModifiesRect_)
+            update_dimensions_from_tex_coord_();
     }
     else
     {
-        gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Trying to call set_tex_coord on an uninitialized texture : " << sName_ << "." << std::endl;
+        mQuad_.v[0].uvs = vector2f(lTextureCoords[0], lTextureCoords[1]);
+        mQuad_.v[1].uvs = vector2f(lTextureCoords[2], lTextureCoords[3]);
+        mQuad_.v[2].uvs = vector2f(lTextureCoords[4], lTextureCoords[5]);
+        mQuad_.v[3].uvs = vector2f(lTextureCoords[6], lTextureCoords[7]);
     }
+
+    notify_renderer_need_redraw();
 }
 
 void texture::set_tex_coord_modifies_rect(bool bTexCoordModifiesRect)
@@ -351,8 +371,19 @@ void texture::set_tex_coord_modifies_rect(bool bTexCoordModifiesRect)
     if (bTexCoordModifiesRect_ != bTexCoordModifiesRect)
     {
         bTexCoordModifiesRect_ = bTexCoordModifiesRect;
-        notify_renderer_need_redraw();
+
+        if (bTexCoordModifiesRect_ && mQuad_.mat)
+            update_dimensions_from_tex_coord_();
     }
+}
+
+void texture::update_dimensions_from_tex_coord_()
+{
+    vector2f mExtent = mQuad_.v[2].uvs - mQuad_.v[0].uvs;
+
+    set_abs_dimensions(
+        mExtent.x*mQuad_.mat->get_canvas_width(),
+        mExtent.y*mQuad_.mat->get_canvas_height());
 }
 
 void texture::set_texture(const std::string& sFile)
@@ -360,7 +391,6 @@ void texture::set_texture(const std::string& sFile)
     mGradient_ = gradient();
     mColor_ = color::EMPTY;
     sTextureFile_ = sFile;
-    bHasSprite_ = false;
 
     if (sTextureFile_.empty())
         return;
@@ -371,21 +401,28 @@ void texture::set_texture(const std::string& sFile)
     if (utils::file_exists(sTextureFile_))
         pMat = pRenderer->create_atlas_material("GUI", sTextureFile_, mFilter_);
 
+    mQuad_.mat = pMat;
+
     if (pMat)
     {
-        mSprite_ = sprite(pRenderer, pMat);
-        mSprite_.set_texture_coords(lTexCoord_, true);
+        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
+        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
+        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
+        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
+
+        if (!is_apparent_width_defined())
+            set_abs_width(mQuad_.mat->get_rect().width());
+
+        if (!is_apparent_height_defined())
+            set_abs_height(mQuad_.mat->get_rect().height());
     }
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
             << "Cannot load file \"" << sFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
-
-        mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     }
 
-    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -401,20 +438,28 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
     if (pRenderTarget)
         pMat = pRenderer->create_material(pRenderTarget);
 
+    mQuad_.mat = pMat;
+
     if (pMat)
     {
-        mSprite_ = sprite(pRenderer, pMat);
+        mQuad_.v[0].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
+        mQuad_.v[1].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
+        mQuad_.v[2].uvs = mQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
+        mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
+
+        if (!is_apparent_width_defined())
+            set_abs_width(mQuad_.mat->get_rect().width());
+
+        if (!is_apparent_height_defined())
+            set_abs_height(mQuad_.mat->get_rect().height());
     }
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
             << "Cannot create a texture from render target.\n"
             "Using white texture instead." << std::endl;
-
-        mSprite_ = sprite(pRenderer, nullptr, 256, 256);
     }
 
-    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
@@ -424,44 +469,61 @@ void texture::set_color(const color& mColor)
     sTextureFile_ = "";
 
     mColor_ = mColor;
-    auto* pRenderer = pManager_->get_renderer();
-    mSprite_ = sprite(pRenderer, nullptr, 256, 256);
-    mSprite_.set_color(mColor);
-    mSprite_.set_texture_rect({0.0f, 0.0f, 0.0f, 0.0f}, true);
-    lTexCoord_ = mSprite_.get_texture_coords(true);
 
-    bHasSprite_ = true;
+    mQuad_.mat = nullptr;
+    mQuad_.v[0].col = mColor;
+    mQuad_.v[1].col = mColor;
+    mQuad_.v[2].col = mColor;
+    mQuad_.v[3].col = mColor;
+
     notify_renderer_need_redraw();
 }
 
-void texture::set_sprite(sprite mSprite)
+void texture::set_quad(const quad& mQuad)
 {
     mGradient_ = gradient();
     sTextureFile_ = "";
 
-    mSprite_ = std::move(mSprite);
+    mQuad_ = mQuad;
+    vector2f mExtent = mQuad_.v[2].pos - mQuad_.v[0].pos;
+    set_abs_dimensions(mExtent.x, mExtent.y);
 
-    set_abs_dimensions(mSprite_.get_width(), mSprite_.get_height());
-
-    lTexCoord_ = mSprite_.get_texture_coords(true);
-
-    bHasSprite_ = true;
     notify_renderer_need_redraw();
 }
 
 void texture::set_vertex_color(const color& mColor, uint uiIndex)
 {
-    if (bHasSprite_)
+    if (uiIndex == std::numeric_limits<uint>::max())
     {
-        mSprite_.set_color(mColor, uiIndex);
-        notify_renderer_need_redraw();
+        set_color(mColor);
+        return;
     }
-    else
+
+    if (uiIndex >= 4)
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Trying to set vertex color of an uninitialized texture : "
-            << sName_ << "." << std::endl;
+            << "Vertex index out of bound (" << uiIndex << ")." << std::endl;
+        return;
+    }
+
+    mQuad_.v[uiIndex].col = mColor;
+
+    notify_renderer_need_redraw();
+}
+
+void texture::update_borders_() const
+{
+    bool bBordersUpdated = bUpdateBorders_;
+    layered_region::update_borders_();
+
+    if (bBordersUpdated)
+    {
+        mQuad_.v[0].pos = lBorderList_.top_left();
+        mQuad_.v[1].pos = lBorderList_.top_right();
+        mQuad_.v[2].pos = lBorderList_.bottom_right();
+        mQuad_.v[3].pos = lBorderList_.bottom_left();
     }
 }
+
 }
 }
