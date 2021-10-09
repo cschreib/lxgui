@@ -67,6 +67,7 @@ Other changes:
  - gui: renamed color::chanel to color::channel
  - gui: renamed quad2 to bounds2
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
+ - gui: removed the sprite class
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: sprite is now a value type
  - gui: the GUI will now properly handle render window being resized
