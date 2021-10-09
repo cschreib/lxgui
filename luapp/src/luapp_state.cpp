@@ -572,7 +572,11 @@ bool state::get_bool(int iIndex)
 
 std::string state::get_string(int iIndex)
 {
-    return lua_tostring(pLua_, iIndex);
+    const char* sReturn = lua_tostring(pLua_, iIndex);
+    if (sReturn == nullptr)
+        return std::string{};
+
+    return sReturn;
 }
 
 utils::variant state::get_value(int iIndex)
