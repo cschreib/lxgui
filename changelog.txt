@@ -57,6 +57,7 @@ Other changes:
  - gui: added color::from_hsv and color::to_hsv
  - gui: added support for custom frame/layered_region factory functions
  - gui: added EditBox:set_font Lua function
+ - gui: added FontString:set_line_spacing and get_line_spacing Lua functions
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class

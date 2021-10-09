@@ -40,6 +40,9 @@ void font_string::parse_attributes_(xml::block* pBlock)
     if (pBlock->is_provided("spacing") || !bInherits_)
         set_spacing(utils::string_to_float(pBlock->get_attribute("spacing")));
 
+    if (pBlock->is_provided("lineSpacing") || !bInherits_)
+        set_line_spacing(utils::string_to_float(pBlock->get_attribute("lineSpacing")));
+
     if (pBlock->is_provided("outline") || !bInherits_)
     {
         const std::string& sOutline = pBlock->get_attribute("outline");
