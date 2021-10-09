@@ -350,6 +350,8 @@ int main(int argc, char* argv[])
         bPrintToLog = false;
 #endif
 
+        std::fstream mLogCout("cout.txt", std::ios::out);
+        std::fstream mGUI("gui.txt", std::ios::out);
         if (!bPrintToLog)
         {
             // Redirect output from the gui library to the standard output
@@ -358,11 +360,11 @@ int main(int argc, char* argv[])
         else
         {
             // Redirect output from the standard output to a file
-            std::fstream mLogCout("cout.txt", std::ios::out);
+            mLogCout.open("cout.txt", std::ios::out);
             std::cout.rdbuf(mLogCout.rdbuf());
 
             // Redirect output from the gui library to a log file
-            std::fstream mGUI("gui.txt", std::ios::out);
+            mGUI.open("gui.txt", std::ios::out);
             gui::out.rdbuf(mGUI.rdbuf());
         }
 
