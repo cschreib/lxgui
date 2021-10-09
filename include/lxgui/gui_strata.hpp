@@ -3,7 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_rendertarget.hpp"
-#include "lxgui/gui_sprite.hpp"
+#include "lxgui/gui_quad.hpp"
 
 #include <lxgui/utils.hpp>
 
@@ -44,7 +44,7 @@ namespace gui
         std::map<int, level>           lLevelList;
         mutable bool                   bRedraw = true;
         std::shared_ptr<render_target> pRenderTarget;
-        sprite                         mSprite;
+        quad                           mQuad;
         mutable uint                   uiRedrawCount = 0u;
     };
 }

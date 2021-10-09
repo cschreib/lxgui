@@ -904,7 +904,7 @@ void manager::render_ui() const
 
     if (bEnableCaching_)
     {
-        mSprite_.render(0, 0);
+        pRenderer_->render_quad(mScreenQuad_);
     }
     else
     {
@@ -935,10 +935,19 @@ void manager::create_caching_render_target_()
         return;
     }
 
-    mSprite_ = sprite(pRenderer_.get(), pRenderer_->create_material(pRenderTarget_));
+    float fScaledWidth = uiScreenWidth_/get_interface_scaling_factor();
+    float fScaledHeight = uiScreenHeight_/get_interface_scaling_factor();
 
-    float fScale = 1.0f/get_interface_scaling_factor();
-    mSprite_.set_dimensions(mSprite_.get_width()*fScale, mSprite_.get_height()*fScale);
+    mScreenQuad_.mat = pRenderer_->create_material(pRenderTarget_);
+    mScreenQuad_.v[0].pos = vector2f(0,            0);
+    mScreenQuad_.v[1].pos = vector2f(fScaledWidth, 0);
+    mScreenQuad_.v[2].pos = vector2f(fScaledWidth, fScaledHeight);
+    mScreenQuad_.v[3].pos = vector2f(0,            fScaledHeight);
+
+    mScreenQuad_.v[0].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
+    mScreenQuad_.v[1].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
+    mScreenQuad_.v[2].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
+    mScreenQuad_.v[3].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
 void manager::create_strata_cache_render_target_(strata& mStrata)
@@ -948,10 +957,19 @@ void manager::create_strata_cache_render_target_(strata& mStrata)
     else
         mStrata.pRenderTarget = pRenderer_->create_render_target(uiScreenWidth_, uiScreenHeight_);
 
-    mStrata.mSprite = sprite(pRenderer_.get(), pRenderer_->create_material(mStrata.pRenderTarget));
+    float fScaledWidth = uiScreenWidth_/get_interface_scaling_factor();
+    float fScaledHeight = uiScreenHeight_/get_interface_scaling_factor();
 
-    float fScale = 1.0f/fScalingFactor_;
-    mStrata.mSprite.set_dimensions(mStrata.mSprite.get_width()*fScale, mStrata.mSprite.get_height()*fScale);
+    mStrata.mQuad.mat = pRenderer_->create_material(mStrata.pRenderTarget);
+    mStrata.mQuad.v[0].pos = vector2f(0,            0);
+    mStrata.mQuad.v[1].pos = vector2f(fScaledWidth, 0);
+    mStrata.mQuad.v[2].pos = vector2f(fScaledWidth, fScaledHeight);
+    mStrata.mQuad.v[3].pos = vector2f(0,            fScaledHeight);
+
+    mStrata.mQuad.v[0].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 0), true);
+    mStrata.mQuad.v[1].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(1, 0), true);
+    mStrata.mQuad.v[2].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(1, 1), true);
+    mStrata.mQuad.v[3].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
 bool manager::is_loading_ui() const
@@ -1026,7 +1044,7 @@ void manager::update(float fDelta)
 
                 for (auto& mStrata : lStrataList_)
                 {
-                    mStrata.mSprite.render(0, 0);
+                    pRenderer_->render_quad(mStrata.mQuad);
                 }
 
                 end();

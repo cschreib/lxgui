@@ -7,6 +7,7 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_framerenderer.hpp"
+#include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_exception.hpp>
@@ -43,7 +44,6 @@ namespace gui
     class focus_frame;
     class renderer;
     class localizer;
-    struct quad;
     struct vertex;
 
     /// Manages the user interface
@@ -806,7 +806,7 @@ namespace gui
         bool bEnableCaching_= true;
 
         std::shared_ptr<render_target> pRenderTarget_;
-        sprite                         mSprite_;
+        quad                           mScreenQuad_;
 
         string_map<std::function<std::unique_ptr<frame>(manager*)>>          lCustomFrameList_;
         string_map<std::function<std::unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
