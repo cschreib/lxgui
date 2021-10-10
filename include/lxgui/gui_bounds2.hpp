@@ -15,6 +15,10 @@ namespace gui
         constexpr bounds2(T mLeft, T mRight, T mTop, T mBottom) noexcept :
             left(mLeft), right(mRight), top(mTop), bottom(mBottom) {}
 
+        constexpr bounds2(const vector2<T>& mCenter, const vector2<T>& mSize) noexcept :
+            left(mCenter.x - mSize.x/2), right(left + mSize.x),
+            top(mCenter.y - mSize.y/2), bottom(top + mSize.y) {}
+
         void set(T mLeft, T mRight, T mTop, T mBottom) noexcept
         {
             left = mLeft; right = mRight; top = mTop; bottom = mBottom;
