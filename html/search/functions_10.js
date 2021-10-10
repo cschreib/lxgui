@@ -80,7 +80,7 @@ var searchData=
   ['set_5fkeyboard_5ffocus_2674',['set_keyboard_focus',['../classlxgui_1_1input_1_1manager.html#a22e660510e494b6637cbeb52ee0cf10f',1,'lxgui::input::manager']]],
   ['set_5flevel_2675',['set_level',['../classlxgui_1_1gui_1_1frame.html#a0ee6c9193ddcd47a4ee06968c84c2c01',1,'lxgui::gui::frame']]],
   ['set_5fline_5fnbr_2676',['set_line_nbr',['../classlxgui_1_1xml_1_1block.html#aa571cd31601ee5e3ddaab49a6a7f148e',1,'lxgui::xml::block']]],
-  ['set_5fline_5fspacing_2677',['set_line_spacing',['../classlxgui_1_1gui_1_1text.html#a4bf5aef3cbd71d40a20db6f5507c0adf',1,'lxgui::gui::text']]],
+  ['set_5fline_5fspacing_2677',['set_line_spacing',['../classlxgui_1_1gui_1_1font__string.html#a0f3627a340ec9a50bd0194ef345b9d49',1,'lxgui::gui::font_string::set_line_spacing()'],['../classlxgui_1_1gui_1_1text.html#a4bf5aef3cbd71d40a20db6f5507c0adf',1,'lxgui::gui::text::set_line_spacing()']]],
   ['set_5flocale_2678',['set_locale',['../classlxgui_1_1gui_1_1localizer.html#a0d5be002702f3fa90878aa0612c0e385',1,'lxgui::gui::localizer']]],
   ['set_5flong_5fpress_5fdelay_2679',['set_long_press_delay',['../classlxgui_1_1input_1_1manager.html#acf8a349fd8997128f14afa0087dc12f9',1,'lxgui::input::manager']]],
   ['set_5flua_5ferror_5ffunction_2680',['set_lua_error_function',['../classlxgui_1_1lua_1_1state.html#aabb08459b6cdd22c1776f5db46150c7b',1,'lxgui::lua::state']]],

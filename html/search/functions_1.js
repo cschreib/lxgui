@@ -9,7 +9,7 @@ var searchData=
   ['blocks_1928',['blocks',['../classlxgui_1_1xml_1_1block.html#a4db183f257dc308dfb48ff64c78c0b0e',1,'lxgui::xml::block']]],
   ['bottom_5fleft_1929',['bottom_left',['../structlxgui_1_1gui_1_1bounds2.html#a1bf29d908c87661102d7c7cda4ae6068',1,'lxgui::gui::bounds2']]],
   ['bottom_5fright_1930',['bottom_right',['../structlxgui_1_1gui_1_1bounds2.html#a8bb427d1774b5a8c9d64fa408ef906c2',1,'lxgui::gui::bounds2']]],
-  ['bounds2_1931',['bounds2',['../structlxgui_1_1gui_1_1bounds2.html#adda8a5a3f365936b3095148d69c71774',1,'lxgui::gui::bounds2::bounds2()=default'],['../structlxgui_1_1gui_1_1bounds2.html#accfacee5e626d9c5ea92d72081c26e2f',1,'lxgui::gui::bounds2::bounds2(T mLeft, T mRight, T mTop, T mBottom) noexcept']]],
+  ['bounds2_1931',['bounds2',['../structlxgui_1_1gui_1_1bounds2.html#adda8a5a3f365936b3095148d69c71774',1,'lxgui::gui::bounds2::bounds2()=default'],['../structlxgui_1_1gui_1_1bounds2.html#accfacee5e626d9c5ea92d72081c26e2f',1,'lxgui::gui::bounds2::bounds2(T mLeft, T mRight, T mTop, T mBottom) noexcept'],['../structlxgui_1_1gui_1_1bounds2.html#ad7967e88a2ea91de170a593959d72b58',1,'lxgui::gui::bounds2::bounds2(const vector2&lt; T &gt; &amp;mCenter, const vector2&lt; T &gt; &amp;mSize) noexcept']]],
   ['build_5fidentity_1932',['build_identity',['../namespacelxgui_1_1gui.html#a43b0bef484deb0a69264fb56c7c1a42a',1,'lxgui::gui']]],
   ['button_1933',['button',['../classlxgui_1_1gui_1_1button.html#ae73ba0744d4baedca389df65ba08be45',1,'lxgui::gui::button']]]
 ];

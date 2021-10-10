@@ -143,6 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7aea8a83e36ea8292162b0f10f525e5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#ae7aea8a83e36ea8292162b0f10f525e5">get_spacing</a> () const</td></tr>
 <tr class="memdesc:ae7aea8a83e36ea8292162b0f10f525e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the space between each letter.  <a href="classlxgui_1_1gui_1_1font__string.html#ae7aea8a83e36ea8292162b0f10f525e5">More...</a><br /></td></tr>
 <tr class="separator:ae7aea8a83e36ea8292162b0f10f525e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc74ff8561d9f42c0a7f50f85b7b6edc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#abc74ff8561d9f42c0a7f50f85b7b6edc">get_line_spacing</a> () const</td></tr>
+<tr class="memdesc:abc74ff8561d9f42c0a7f50f85b7b6edc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the space between each line as a fraction of the font height.  <a href="classlxgui_1_1gui_1_1font__string.html#abc74ff8561d9f42c0a7f50f85b7b6edc">More...</a><br /></td></tr>
+<tr class="separator:abc74ff8561d9f42c0a7f50f85b7b6edc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bc37cb353ac13f4c29bf2a476b98cc7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a0bc37cb353ac13f4c29bf2a476b98cc7">get_text_color</a> () const</td></tr>
 <tr class="memdesc:a0bc37cb353ac13f4c29bf2a476b98cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the text color.  <a href="classlxgui_1_1gui_1_1font__string.html#a0bc37cb353ac13f4c29bf2a476b98cc7">More...</a><br /></td></tr>
 <tr class="separator:a0bc37cb353ac13f4c29bf2a476b98cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +176,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c7160782946a9819244b36243f21146"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a2c7160782946a9819244b36243f21146">set_spacing</a> (float fSpacing)</td></tr>
 <tr class="memdesc:a2c7160782946a9819244b36243f21146"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the space between each letter.  <a href="classlxgui_1_1gui_1_1font__string.html#a2c7160782946a9819244b36243f21146">More...</a><br /></td></tr>
 <tr class="separator:a2c7160782946a9819244b36243f21146"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3627a340ec9a50bd0194ef345b9d49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a0f3627a340ec9a50bd0194ef345b9d49">set_line_spacing</a> (float fLineSpacing)</td></tr>
+<tr class="memdesc:a0f3627a340ec9a50bd0194ef345b9d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the space between each line as a fraction of the font height.  <a href="classlxgui_1_1gui_1_1font__string.html#a0f3627a340ec9a50bd0194ef345b9d49">More...</a><br /></td></tr>
+<tr class="separator:a0f3627a340ec9a50bd0194ef345b9d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a41e078ee5c82b83d02461b8d900b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a73a41e078ee5c82b83d02461b8d900b3">set_text_color</a> (const <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mTextColor)</td></tr>
 <tr class="memdesc:a73a41e078ee5c82b83d02461b8d900b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the text color.  <a href="classlxgui_1_1gui_1_1font__string.html#a73a41e078ee5c82b83d02461b8d900b3">More...</a><br /></td></tr>
 <tr class="separator:a73a41e078ee5c82b83d02461b8d900b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -628,7 +634,7 @@ Protected Attributes</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>'true' if larget text is truncated </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See set_non_space_wrap for more infos. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00383">383</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00403">403</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -650,7 +656,7 @@ Protected Attributes</h2></td></tr>
 <p>Checks if word wrap is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if word wrap is enabled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00450">450</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00470">470</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -871,7 +877,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Enabled by default. See <a class="el" href="classlxgui_1_1gui_1_1text.html#a90a531f8ea6188b2800d01a41c83acb4" title="Enables color formatting.">text::enable_formatting()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00455">455</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00475">475</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1258,7 +1264,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the heigh of the font. </p>
 <dl class="section return"><dt>Returns</dt><dd>The heigh of the font </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00149">149</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00150">150</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1280,7 +1286,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the name of the font file. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name of the font file </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00144">144</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00145">145</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1332,7 +1338,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the horizontal alignment behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal alignment behavior </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00171">171</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00172">172</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1354,7 +1360,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the vertical alignment behavior. </p>
 <dl class="section return"><dt>Returns</dt><dd>The vertical alignment behavior </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00176">176</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00177">177</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1385,6 +1391,28 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The horizontal position of this widget's left border </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l00486">486</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abc74ff8561d9f42c0a7f50f85b7b6edc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc74ff8561d9f42c0a7f50f85b7b6edc">&#9670;&nbsp;</a></span>get_line_spacing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lxgui::gui::font_string::get_line_spacing </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the space between each line as a fraction of the font height. </p>
+<dl class="section return"><dt>Returns</dt><dd>The space between each line as a fraction of the font height (default is 1). </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00212">212</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1669,7 +1697,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s offsets </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Contains (X, Y) offsets. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00191">191</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00192">192</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1877,7 +1905,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow color. </p>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow color </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00181">181</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00182">182</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1900,7 +1928,7 @@ template&lt;typename T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow offsets </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Contains (X, Y) offsets. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00186">186</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00187">187</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1922,7 +1950,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow X offset. </p>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow X offset </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00196">196</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00197">197</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1944,7 +1972,7 @@ template&lt;typename T &gt; </div>
 <p>Returns this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow Y offset. </p>
 <dl class="section return"><dt>Returns</dt><dd>This <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a>'s shadow Y offset </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00201">201</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00202">202</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1966,7 +1994,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the space between each letter. </p>
 <dl class="section return"><dt>Returns</dt><dd>The space between each letter </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00206">206</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00207">207</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -1988,7 +2016,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the height of the string if no format or wrapping is applied. </p>
 <dl class="section return"><dt>Returns</dt><dd>The height of the string if no format or wrapping is applied </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00388">388</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00408">408</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +2038,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the width of the string if no format or wrapping is applied. </p>
 <dl class="section return"><dt>Returns</dt><dd>The width of the string if no format or wrapping is applied </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00396">396</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00416">416</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2039,7 +2067,7 @@ template&lt;typename T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The width of a string if no format or wrapping is applied </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00404">404</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00424">424</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2061,7 +2089,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the rendered text (with format tags). </p>
 <dl class="section return"><dt>Returns</dt><dd>The rendered text (with format tags) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00412">412</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00432">432</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2083,7 +2111,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the text color. </p>
 <dl class="section return"><dt>Returns</dt><dd>The text color </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00211">211</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00217">217</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2105,7 +2133,7 @@ template&lt;typename T &gt; </div>
 <p>Returns the text used to render this fontString. </p>
 <dl class="section return"><dt>Returns</dt><dd>The text used to render this fontString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00481">481</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00501">501</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2241,7 +2269,7 @@ template&lt;typename T &gt; </div>
 <p>Checks if this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> draws a shadow under its text. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> draws a shadow under its text </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00427">427</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00447">447</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2357,7 +2385,7 @@ template&lt;typename T &gt; </div>
 <p>Checks if color formatting is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if color formatting is enabled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00462">462</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00482">482</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2527,7 +2555,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Check if this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> is outlined. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> is outlined </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00166">166</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00167">167</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -2949,7 +2977,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#afa903a563fc43fbb3885343d791f4183">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00216">216</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00222">222</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -3978,7 +4006,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00261">261</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00267">267</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4043,7 +4071,7 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00275">275</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00281">281</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4071,7 +4099,36 @@ template&lt;typename ObjectType &gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00290">290</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00296">296</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a0f3627a340ec9a50bd0194ef345b9d49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f3627a340ec9a50bd0194ef345b9d49">&#9670;&nbsp;</a></span>set_line_spacing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::font_string::set_line_spacing </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fLineSpacing</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the space between each line as a fraction of the font height. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fLineSpacing</td><td>The space between each line, as a relative factor of the font height </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>A line spacing of 1 is the default and results in fairly dense text. To increase the space between lines, set the line spacing to a larger value, for example 1.5 results in 50% more space. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00379">379</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4217,7 +4274,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This applies to large chunks of text with no spaces. When truncated, "..." is appended at the line's end. Else, the "word" is cut and continues on the next line. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00417">417</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00437">437</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4246,7 +4303,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Contains (X, Y) offsets. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00348">348</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00354">354</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4285,7 +4342,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00337">337</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00343">343</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4314,7 +4371,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The thickness of this outline is constant and does not depend on the font's size. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00154">154</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00155">155</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4663,7 +4720,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00432">432</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00452">452</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4691,7 +4748,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00305">305</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00311">311</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4720,7 +4777,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Contains (X, Y) offsets. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00326">326</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00332">332</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4759,7 +4816,7 @@ This function is only called on objects created in Lua. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00315">315</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00321">321</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4828,7 +4885,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00359">359</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00365">365</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4887,7 +4944,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="classlxgui_1_1gui_1_1text.html#a21b2ec487e01e863b91018dc6b911c1a" title="Sets the text to render (unicode character set).">text::set_text</a> for more infos about formatting. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00467">467</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00487">487</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4915,7 +4972,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00373">373</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00393">393</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -4985,7 +5042,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Enabled by default. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00442">442</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00462">462</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
 </div>
 </div>
@@ -5323,7 +5380,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__fontstring_8hpp_source.html#l00278">278</a> of file <a class="el" href="gui__fontstring_8hpp_source.html">gui_fontstring.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__fontstring_8hpp_source.html#l00291">291</a> of file <a class="el" href="gui__fontstring_8hpp_source.html">gui_fontstring.hpp</a>.</p>
 
 </div>
 </div>
@@ -5768,7 +5825,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Oct 9 2021 19:09:57 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 10 2021 08:40:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
