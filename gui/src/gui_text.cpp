@@ -719,9 +719,9 @@ void text::notify_cache_dirty_() const
     bUpdateCache_ = true;
 }
 
-float text::round_to_pixel_(float fValue) const
+float text::round_to_pixel_(float fValue, utils::rounding_method mMethod) const
 {
-    return std::floor(fValue/fScalingFactor_)*fScalingFactor_;
+    return utils::round(fValue, fScalingFactor_, mMethod);
 }
 
 void text::update_() const
@@ -971,7 +971,7 @@ void text::update_() const
 
         fH_ = (1.0f + (lLineList.size() - 1)*fLineSpacing_)*get_line_height();
 
-        float fX  = 0.0f, fY = 0.0f;
+        float fY = 0.0f;
         float fX0 = 0.0f;
 
         if (fBoxW_ != 0.0f && !std::isinf(fBoxW_))
@@ -982,7 +982,7 @@ void text::update_() const
                     fX0 = 0.0f;
                     break;
                 case alignment::CENTER :
-                    fX0 = round_to_pixel_(fBoxW_*0.5f);
+                    fX0 = fBoxW_*0.5f;
                     break;
                 case alignment::RIGHT :
                     fX0 = fBoxW_;
@@ -1000,7 +1000,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = round_to_pixel_((fBoxH_ - fH_)*0.5f);
+                    fY = (fBoxH_ - fH_)*0.5f;
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = (fBoxH_ - fH_);
@@ -1015,7 +1015,7 @@ void text::update_() const
                     fY = 0.0f;
                     break;
                 case vertical_alignment::MIDDLE :
-                    fY = -round_to_pixel_(fH_*0.5f);
+                    fY = -fH_*0.5f;
                     break;
                 case vertical_alignment::BOTTOM :
                     fY = -fH_;
@@ -1023,22 +1023,28 @@ void text::update_() const
             }
         }
 
+        fX0 = round_to_pixel_(fX0);
+        fY = round_to_pixel_(fY);
+
         std::vector<color> lColorStack;
 
         for (const auto& mLine : lLineList)
         {
+            float fX = 0.0f;
             switch (mAlign_)
             {
                 case alignment::LEFT :
-                    fX = fX0;
+                    fX = 0.0f;
                     break;
                 case alignment::CENTER :
-                    fX = fX0 - round_to_pixel_(mLine.fWidth*0.5f);
+                    fX = -mLine.fWidth*0.5f;
                     break;
                 case alignment::RIGHT :
-                    fX = fX0 - mLine.fWidth;
+                    fX = -mLine.fWidth;
                     break;
             }
+
+            fX = round_to_pixel_(fX) + fX0;
 
             for (auto iterChar : utils::range::iterator(mLine.lContent))
             {
@@ -1168,10 +1174,6 @@ void text::update_() const
 std::array<vertex,4> text::create_letter_quad_(gui::font& mFont, char32_t uiChar) const
 {
     bounds2f mQuad = mFont.get_character_bounds(uiChar)*fScalingFactor_;
-    mQuad.left = round_to_pixel_(mQuad.left);
-    mQuad.top = round_to_pixel_(mQuad.top);
-    mQuad.right = mQuad.left + round_to_pixel_(mQuad.right - mQuad.left);
-    mQuad.bottom = mQuad.top + round_to_pixel_(mQuad.bottom - mQuad.top);
 
     std::array<vertex,4> lVertexList;
     lVertexList[0].pos = mQuad.top_left();

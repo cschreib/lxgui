@@ -8,6 +8,7 @@
 
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_maths.hpp>
 
 #include <vector>
 #include <array>
@@ -326,7 +327,8 @@ namespace gui
 
         void update_() const;
         void notify_cache_dirty_() const;
-        float round_to_pixel_(float fValue) const;
+        float round_to_pixel_(float fValue,
+            utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
         std::array<vertex,4> create_letter_quad_(gui::font& mFont, char32_t uiChar) const;
         std::array<vertex,4> create_letter_quad_(char32_t uiChar) const;
         std::array<vertex,4> create_outline_letter_quad_(char32_t uiChar) const;
