@@ -170,6 +170,9 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
                     uiMaxWidth = mBitmap.width;
 
                 ++uiNumChar;
+
+                FT_Done_Glyph(mGlyph);
+                mGlyph = nullptr;
             }
         }
 
