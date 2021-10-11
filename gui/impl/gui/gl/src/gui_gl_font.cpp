@@ -157,7 +157,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
                 {
                     FT_Stroker_Set(mStroker, ft_fixed<6>(uiOutline),
                         FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
-                    FT_Glyph_Stroke(&mGlyph, mStroker, true);
+                    FT_Glyph_StrokeBorder(&mGlyph, mStroker, false, true);
                 }
 
                 FT_Glyph_To_Bitmap(&mGlyph, FT_RENDER_MODE_NORMAL, nullptr, true);
