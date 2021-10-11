@@ -13,6 +13,8 @@
 #include <lxgui/xml.hpp>
 #include <lxgui/luapp_lua_fwd.hpp>
 
+#include <lxgui/utils_maths.hpp>
+
 #include <array>
 #include <optional>
 
@@ -66,19 +68,6 @@ namespace gui
         HIGHLIGHT = 4,
         SPECIALHIGH = 5,
         ENUM_SIZE
-    };
-
-    /// Rounding method for points to pixels conversions.
-    enum class rounding_method
-    {
-        /// Equivalent to round()
-        NEAREST,
-        /// Equivalent to round() but only returns 0 if input is exactly 0
-        NEAREST_NOT_ZERO,
-        /// Equivalent to ceil()
-        UP,
-        /// Equivalent to floor()
-        DOWN
     };
 
     class frame;
@@ -597,14 +586,16 @@ namespace gui
         *   \param mMethod   The rounding method
         *   \return The position of the nearest physical pixel
         */
-        float round_to_pixel(float fValue, rounding_method mMethod = rounding_method::NEAREST) const;
+        float round_to_pixel(float fValue,
+            utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
 
         /// Round an absolute position on screen to the nearest physical pixel.
         /** \param mPosition The input absolute position (can be fractional)
         *   \param mMethod   The rounding method
         *   \return The position of the nearest physical pixel
         */
-        vector2f round_to_pixel(const vector2f& mPosition, rounding_method mMethod = rounding_method::NEAREST) const;
+        vector2f round_to_pixel(const vector2f& mPosition,
+            utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
 
         /// Notifies this widget that another one is anchored to it.
         /** \param pObj      The anchored widget

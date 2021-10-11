@@ -4,6 +4,7 @@ set(SRCROOT ${TARGET_DIR}/src)
 add_library(lxgui-utils
     ${SRCROOT}/utils_exception.cpp
     ${SRCROOT}/utils_filesystem.cpp
+    ${SRCROOT}/utils_maths.cpp
     ${SRCROOT}/utils_string.cpp
 )
 
