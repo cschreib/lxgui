@@ -296,13 +296,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a0c2cba6197570349be19187871420c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">ID of a layer for rendering inside a frame.  <a href="namespacelxgui_1_1gui.html#a0c2cba6197570349be19187871420c85">More...</a><br /></td></tr>
 <tr class="separator:a0c2cba6197570349be19187871420c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02e740f725104f54f350976574ed2b12"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12">rounding_method</a> { <a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12aad135772d7cf93dd0ccf9d2474b34e6a">rounding_method::NEAREST</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12adf3396fde20f1e3d796f285f33539216">rounding_method::NEAREST_NOT_ZERO</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12afbaedde498cdead4f2780217646e9ba1">rounding_method::UP</a>, 
-<a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12ac4e0e4e3118472beeb2ae75827450f1f">rounding_method::DOWN</a>
- }</td></tr>
-<tr class="memdesc:a02e740f725104f54f350976574ed2b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounding method for points to pixels conversions.  <a href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12">More...</a><br /></td></tr>
-<tr class="separator:a02e740f725104f54f350976574ed2b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -704,43 +697,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a0c2cba6197570349be19187871420c85a692e418e95c88ce8290803d52e49feca"></a>ENUM_SIZE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00060">60</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a02e740f725104f54f350976574ed2b12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a02e740f725104f54f350976574ed2b12">&#9670;&nbsp;</a></span>rounding_method</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12">lxgui::gui::rounding_method</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Rounding method for points to pixels conversions. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a02e740f725104f54f350976574ed2b12aad135772d7cf93dd0ccf9d2474b34e6a"></a>NEAREST&#160;</td><td class="fielddoc"><p>Equivalent to round() </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a02e740f725104f54f350976574ed2b12adf3396fde20f1e3d796f285f33539216"></a>NEAREST_NOT_ZERO&#160;</td><td class="fielddoc"><p>Equivalent to round() but only returns 0 if input is exactly 0. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a02e740f725104f54f350976574ed2b12afbaedde498cdead4f2780217646e9ba1"></a>UP&#160;</td><td class="fielddoc"><p>Equivalent to ceil() </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a02e740f725104f54f350976574ed2b12ac4e0e4e3118472beeb2ae75827450f1f"></a>DOWN&#160;</td><td class="fielddoc"><p>Equivalent to floor() </p>
-</td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00072">72</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00062">62</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -812,7 +769,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00812">812</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00803">803</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -844,7 +801,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>The down casted pointer. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>See <a class="el" href="namespacelxgui_1_1gui.html#a5c223d416d9cc685e4f64d911e7b9cf2" title="Obtain a pointer to a derived class.">down_cast(const uiobject*)</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00845">845</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00836">836</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -876,7 +833,7 @@ template&lt;typename ObjectType &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>A pointer to a derived class </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Like dynamic_cast(), this will return nullptr if this widget is not of the requested type. However, it will throw if the cast failed because the derived class destructor has already been called. This indicates a programming error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00833">833</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00824">824</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
 
 </div>
 </div>
@@ -2139,7 +2096,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 10 2021 08:40:03 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 17 2021 15:31:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

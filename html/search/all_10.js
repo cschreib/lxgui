@@ -64,6 +64,7 @@ var searchData=
   ['root_5fframe_5flist_1302',['root_frame_list',['../classlxgui_1_1gui_1_1manager.html#a353b7992b1f070a05b45e8034c908219',1,'lxgui::gui::manager']]],
   ['root_5fframe_5flist_5fview_1303',['root_frame_list_view',['../classlxgui_1_1gui_1_1manager.html#a96ba024db64d25f88e518a81ddbfae79',1,'lxgui::gui::manager']]],
   ['rotation_1304',['rotation',['../structlxgui_1_1gui_1_1matrix4f.html#a9dd7d6ae17ef78337c59aa91b8b3b165',1,'lxgui::gui::matrix4f']]],
-  ['round_5fto_5fpixel_1305',['round_to_pixel',['../classlxgui_1_1gui_1_1uiobject.html#a3ee14b407af1048cac7d96e57d557199',1,'lxgui::gui::uiobject::round_to_pixel(float fValue, rounding_method mMethod=rounding_method::NEAREST) const'],['../classlxgui_1_1gui_1_1uiobject.html#ac9e60b902f3d900f3397934bc9529e77',1,'lxgui::gui::uiobject::round_to_pixel(const vector2f &amp;mPosition, rounding_method mMethod=rounding_method::NEAREST) const']]],
-  ['rounding_5fmethod_1306',['rounding_method',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12',1,'lxgui::gui']]]
+  ['round_1305',['round',['../namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53',1,'lxgui::utils']]],
+  ['round_5fto_5fpixel_1306',['round_to_pixel',['../classlxgui_1_1gui_1_1uiobject.html#a1ef20f90d95315673cc4de5c4e082067',1,'lxgui::gui::uiobject::round_to_pixel(float fValue, utils::rounding_method mMethod=utils::rounding_method::NEAREST) const'],['../classlxgui_1_1gui_1_1uiobject.html#a8d1e31c783ab290bb9ea0ec0c77ceb3f',1,'lxgui::gui::uiobject::round_to_pixel(const vector2f &amp;mPosition, utils::rounding_method mMethod=utils::rounding_method::NEAREST) const']]],
+  ['rounding_5fmethod_1307',['rounding_method',['../namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce',1,'lxgui::utils']]]
 ];

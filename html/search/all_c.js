@@ -1,8 +1,8 @@
 var searchData=
 [
   ['name_1099',['name',['../structlxgui_1_1lua_1_1lunar__binding.html#a058c3b721421412f414f473848aa46dc',1,'lxgui::lua::lunar_binding']]],
-  ['nearest_1100',['NEAREST',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12aad135772d7cf93dd0ccf9d2474b34e6a',1,'lxgui::gui']]],
-  ['nearest_5fnot_5fzero_1101',['NEAREST_NOT_ZERO',['../namespacelxgui_1_1gui.html#a02e740f725104f54f350976574ed2b12adf3396fde20f1e3d796f285f33539216',1,'lxgui::gui']]],
+  ['nearest_1100',['NEAREST',['../namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a',1,'lxgui::utils']]],
+  ['nearest_5fnot_5fzero_1101',['NEAREST_NOT_ZERO',['../namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceadf3396fde20f1e3d796f285f33539216',1,'lxgui::utils']]],
   ['new_5fparam_5fset_1102',['new_param_set',['../classlxgui_1_1lua_1_1function.html#a97ca75bd23ae70ca068b03434bc31fbb',1,'lxgui::lua::function']]],
   ['new_5ftable_1103',['new_table',['../classlxgui_1_1lua_1_1state.html#a16397ad13b7cd95fd315c063a8e762f6',1,'lxgui::lua::state']]],
   ['next_1104',['next',['../classlxgui_1_1lua_1_1state.html#a52e31b637e18b2e73c14c69e1b8274a1',1,'lxgui::lua::state::next()'],['../classlxgui_1_1xml_1_1block.html#a985df3092f96fc36ad3110c28851c5fd',1,'lxgui::xml::block::next()']]],

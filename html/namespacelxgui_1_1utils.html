@@ -69,6 +69,7 @@ $(function() {
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">lxgui::utils Namespace Reference</div>  </div>
@@ -102,6 +103,16 @@ Typedefs</h2></td></tr>
 <tr class="memdesc:a395c9f514846f84ca8a235f1d76e7b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type-erased value for passing arguments to events.  <a href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">More...</a><br /></td></tr>
 <tr class="separator:a395c9f514846f84ca8a235f1d76e7b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> { <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a">rounding_method::NEAREST</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceadf3396fde20f1e3d796f285f33539216">rounding_method::NEAREST_NOT_ZERO</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceafbaedde498cdead4f2780217646e9ba1">rounding_method::UP</a>, 
+<a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceac4e0e4e3118472beeb2ae75827450f1f">rounding_method::DOWN</a>
+ }</td></tr>
+<tr class="memdesc:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounding method for points to pixels conversions.  <a href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">More...</a><br /></td></tr>
+<tr class="separator:a992dde23fb5b0aed3315c6a13cf5f5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a05939b9f42c273e2b7fd5d81848d9b95"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a05939b9f42c273e2b7fd5d81848d9b95">file_exists</a> (const std::string &amp;sFile)</td></tr>
@@ -114,6 +125,9 @@ Functions</h2></td></tr>
 <tr class="separator:ab8c6a43eab66fbcc950718764e0a83f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a77cd117aa0e72eb8cb3e6069e93f1079">get_file_list</a> (const std::string &amp;sRelPath, bool bWithPath, const std::string &amp;sExtensions)</td></tr>
 <tr class="separator:a77cd117aa0e72eb8cb3e6069e93f1079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c505cea5306e6723e05a645da29e53"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">round</a> (float fValue, float fUnit, <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> mMethod)</td></tr>
+<tr class="memdesc:aa4c505cea5306e6723e05a645da29e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Round a floating point value to a specific unit and using a specific rounding method.  <a href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">More...</a><br /></td></tr>
+<tr class="separator:aa4c505cea5306e6723e05a645da29e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34d7b0c6f96dd8c7324c22c415458127"><td class="memTemplParams" colspan="2">template&lt;typename C , typename T &gt; </td></tr>
 <tr class="memitem:a34d7b0c6f96dd8c7324c22c415458127"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a34d7b0c6f96dd8c7324c22c415458127">find</a> (C &amp;v, const T &amp;s)</td></tr>
 <tr class="separator:a34d7b0c6f96dd8c7324c22c415458127"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +178,43 @@ Functions</h2></td></tr>
 The <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant.">utils::empty</a> type is used to indicate an un-specified value. This is also the state of a default constructed <a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09" title="Type-erased value for passing arguments to events.">utils::variant</a>. When transferred to Lua, <a class="el" href="structlxgui_1_1utils_1_1empty.html" title="Empty type, used in the implementation of utils::variant.">utils::empty</a> is translated as nil. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="utils__variant_8hpp_source.html#l00040">40</a> of file <a class="el" href="utils__variant_8hpp_source.html">utils_variant.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a992dde23fb5b0aed3315c6a13cf5f5ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a992dde23fb5b0aed3315c6a13cf5f5ce">&#9670;&nbsp;</a></span>rounding_method</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">lxgui::utils::rounding_method</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Rounding method for points to pixels conversions. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a"></a>NEAREST&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceadf3396fde20f1e3d796f285f33539216"></a>NEAREST_NOT_ZERO&#160;</td><td class="fielddoc"><p>Equivalent to <a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53" title="Round a floating point value to a specific unit and using a specific rounding method.">round()</a> but only returns 0 if input is exactly 0. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceafbaedde498cdead4f2780217646e9ba1"></a>UP&#160;</td><td class="fielddoc"><p>Equivalent to ceil() </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a992dde23fb5b0aed3315c6a13cf5f5ceac4e0e4e3118472beeb2ae75827450f1f"></a>DOWN&#160;</td><td class="fielddoc"><p>Equivalent to floor() </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="utils__maths_8hpp_source.html#l00011">11</a> of file <a class="el" href="utils__maths_8hpp_source.html">utils_maths.hpp</a>.</p>
 
 </div>
 </div>
@@ -412,10 +463,55 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aa4c505cea5306e6723e05a645da29e53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c505cea5306e6723e05a645da29e53">&#9670;&nbsp;</a></span>round()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float lxgui::utils::round </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>fUnit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a>&#160;</td>
+          <td class="paramname"><em>mMethod</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Round a floating point value to a specific unit and using a specific rounding method. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fValue</td><td>The value to round </td></tr>
+    <tr><td class="paramname">fUnit</td><td>The rounding unit (e.g., if set to 2, the output must be a multiple of 2) </td></tr>
+    <tr><td class="paramname">mMethod</td><td>The rounding method </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The rounded value </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 10 2021 08:40:04 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Oct 17 2021 15:31:16 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
