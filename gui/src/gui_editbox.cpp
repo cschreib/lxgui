@@ -387,18 +387,22 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
                 else
                     uiLeft = uiLeft - uiDisplayPos_;
 
-                float fLeftPos = pText->get_letter_quad(uiLeft)[0].pos.x + lTextInsets_.left;
+                float fLeftPos = lTextInsets_.left;
+                if (uiLeft < pText->get_num_letters())
+                    fLeftPos += pText->get_letter_quad(uiLeft)[0].pos.x;
 
                 uiRight = uiRight - uiDisplayPos_;
-                float fRightPos;
+                float fRightPos = lTextInsets_.left;
                 if (uiRight < sDisplayedText_.size())
                 {
-                    fRightPos = pText->get_letter_quad(uiRight)[0].pos.x + lTextInsets_.left;
+                    if (uiRight < pText->get_num_letters())
+                        fRightPos += pText->get_letter_quad(uiRight)[0].pos.x;
                 }
                 else
                 {
                     uiRight = sDisplayedText_.size() - 1;
-                    fRightPos = pText->get_letter_quad(uiRight)[2].pos.x + lTextInsets_.left;
+                    if (uiRight < pText->get_num_letters())
+                        fRightPos += pText->get_letter_quad(uiRight)[2].pos.x;
                 }
 
                 pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, fLeftPos,  0);
@@ -1060,9 +1064,16 @@ void edit_box::update_carret_position_()
 
         float fXOffset = lTextInsets_.left;
         if (uiIndex < sDisplayedText_.size())
-            fXOffset += pText->get_letter_quad(uiIndex)[0].pos.x;
+        {
+            if (uiIndex < pText->get_num_letters())
+                fXOffset += pText->get_letter_quad(uiIndex)[0].pos.x;
+        }
         else
-            fXOffset += pText->get_letter_quad(sDisplayedText_.size() - 1)[2].pos.x;
+        {
+            uiIndex = sDisplayedText_.size() - 1;
+            if (uiIndex < pText->get_num_letters())
+                fXOffset += pText->get_letter_quad(uiIndex)[2].pos.x;
+        }
 
         pCarret_->set_abs_point(
             anchor_point::CENTER, sName_, anchor_point::LEFT, fXOffset, fYOffset
@@ -1177,7 +1188,8 @@ uint edit_box::get_letter_id_at_(float fX, float fY)
             else if (fX > lBorderList_.right - lTextInsets_.right)
                 return sDisplayedText_.size() + uiDisplayPos_;
 
-            for (uint uiIndex = 0u; uiIndex < sDisplayedText_.size(); ++uiIndex)
+            uint uiNumLetters = std::min<uint>(pText->get_num_letters(), sDisplayedText_.size());
+            for (uint uiIndex = 0u; uiIndex < uiNumLetters; ++uiIndex)
             {
                 const auto& mQuad = pText->get_letter_quad(uiIndex);
                 if (fLocalX < 0.5*(mQuad[0].pos.x + mQuad[2].pos.x))

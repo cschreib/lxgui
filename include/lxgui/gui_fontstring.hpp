@@ -116,6 +116,11 @@ namespace gui
         */
         float get_spacing() const;
 
+        /// Returns the space between each line as a fraction of the font height.
+        /** \return The space between each line as a fraction of the font height (default is 1).
+        */
+        float get_line_spacing() const;
+
         /// Returns the text color.
         /** \return The text color
         */
@@ -170,6 +175,14 @@ namespace gui
         /** \param fSpacing The space between each letter
         */
         void set_spacing(float fSpacing);
+
+        /// Sets the space between each line as a fraction of the font height.
+        /** \param fLineSpacing The space between each line, as a relative factor of the font height
+        *   \note A line spacing of 1 is the default and results in fairly dense text. To increase
+        *         the space between lines, set the line spacing to a larger value, for example 1.5
+        *         results in 50% more space.
+        */
+        void set_line_spacing(float fLineSpacing);
 
         /// Sets the text color.
         /** \param mTextColor The text color
@@ -293,6 +306,7 @@ namespace gui
         float          fHeight_ = 0.0f;
 
         float                    fSpacing_ = 0.0f;
+        float                    fLineSpacing_ = 1.0f;
         text::alignment          mJustifyH_ = text::alignment::CENTER;
         text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
         float                    fXOffset_ = 0.0f;
@@ -327,6 +341,7 @@ namespace gui
         int _get_shadow_color(lua_State*);
         int _get_shadow_offset(lua_State*);
         int _get_spacing(lua_State*);
+        int _get_line_spacing(lua_State*);
         int _get_text_color(lua_State*);
         int _set_font(lua_State*);
         int _set_justify_h(lua_State*);
@@ -334,6 +349,7 @@ namespace gui
         int _set_shadow_color(lua_State*);
         int _set_shadow_offset(lua_State*);
         int _set_spacing(lua_State*);
+        int _set_line_spacing(lua_State*);
         int _set_text_color(lua_State*);
         int _can_non_space_wrap(lua_State*);
         int _can_word_wrap(lua_State*);

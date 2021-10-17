@@ -301,9 +301,15 @@ namespace gui
                       float fRot,
                       float fHScale = 1.0f, float fVScale = 1.0f) const;
 
+        /// Returns the number of letters currently displayed.
+        /** \return The number of letters currently displayed
+        *   \note This function may update the quad cache as needed.
+        */
+        uint get_num_letters() const;
+
         /// Returns the quad for the letter at the provided index (position, texture coords, color).
         /** \param uiIndex The index of the letter (0: first letter);
-        *                  must be less than get_text().size()
+        *                  must be less than get_num_letters().
         *   \return The quad of the specified letter
         *   \note The vertex positions in the quad do not account for the rendering position
         *         provided to render(). The first letter always has its top-left corner as

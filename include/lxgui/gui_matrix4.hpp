@@ -50,7 +50,7 @@ namespace gui
         static matrix4f transpose(const matrix4f& m);
         static matrix4f invert(const matrix4f& m);
 
-        element_type data[16];
+        element_type data[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 
         static const matrix4f IDENTITY;
     };

@@ -129,6 +129,7 @@ void font_string::copy_from(uiobject* pObj)
     this->set_justify_h(pFontString->get_justify_h());
     this->set_justify_v(pFontString->get_justify_v());
     this->set_spacing(pFontString->get_spacing());
+    this->set_line_spacing(pFontString->get_line_spacing());
     this->set_text(pFontString->get_text());
     this->set_outlined(pFontString->is_outlined());
     if (pFontString->has_shadow())
@@ -206,6 +207,11 @@ float font_string::get_shadow_y_offset() const
 float font_string::get_spacing() const
 {
     return fSpacing_;
+}
+
+float font_string::get_line_spacing() const
+{
+    return fLineSpacing_;
 }
 
 const color& font_string::get_text_color() const
@@ -367,6 +373,20 @@ void font_string::set_spacing(float fSpacing)
             if (!bVirtual_)
                 notify_renderer_need_redraw();
         }
+    }
+}
+
+void font_string::set_line_spacing(float fLineSpacing)
+{
+    if (fLineSpacing_ == fLineSpacing)
+        return;
+
+    fLineSpacing_ = fLineSpacing;
+    if (pText_)
+    {
+        pText_->set_line_spacing(fLineSpacing_);
+        if (!bVirtual_)
+            notify_renderer_need_redraw();
     }
 }
 

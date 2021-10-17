@@ -20,7 +20,7 @@
 
 </Region>
 
-<d[Region]:FontString n:fontHeight="0" text="" n:spacing="0.0" outline="NONE" b:monochrome="false" b:nonspacewrap="false" justifyV="MIDDLE" justifyH="CENTER" n:maxLines="0" font="" n:bytes="255">
+<d[Region]:FontString n:fontHeight="0" text="" n:spacing="0.0" n:lineSpacing="1.0" outline="NONE" b:monochrome="false" b:nonspacewrap="false" justifyV="MIDDLE" justifyH="CENTER" n:maxLines="0" font="" n:bytes="255">
 
     <n[.,1]:Color n:a="1.0" n:r="0.0" n:g="0.0" n:b="0.0"/>
 

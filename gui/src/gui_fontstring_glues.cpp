@@ -188,6 +188,20 @@ int lua_font_string::_get_spacing(lua_State* pLua)
     return mFunc.on_return();
 }
 
+/** @function get_line_spacing
+*/
+int lua_font_string::_get_line_spacing(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("FontString:get_line_spacing", pLua, 1);
+
+    mFunc.push(get_object()->get_line_spacing());
+
+    return mFunc.on_return();
+}
+
 /** @function get_text_color
 */
 int lua_font_string::_get_text_color(lua_State* pLua)
@@ -383,6 +397,24 @@ int lua_font_string::_set_spacing(lua_State* pLua)
     if (mFunc.check())
     {
         get_object()->set_spacing(mFunc.get(0)->get_number());
+    }
+
+    return mFunc.on_return();
+}
+
+/** @function set_line_spacing
+*/
+int lua_font_string::_set_line_spacing(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("FontString:set_line_spacing", pLua);
+    mFunc.add(0, "line spacing", lua::type::NUMBER);
+
+    if (mFunc.check())
+    {
+        get_object()->set_line_spacing(mFunc.get(0)->get_number());
     }
 
     return mFunc.on_return();
