@@ -179,7 +179,7 @@ else()
     find_package(fmt REQUIRED)
 endif()
 
-set(SOL_SAFE_NUMERICS TRUE)
+set(SOL_ALL_SAFETIES_ON TRUE)
 set(SOL_PRINT_ERRORS FALSE)
 if(LXGUI_BUILD_SOL2)
     add_subdirectory(extern/sol2)
