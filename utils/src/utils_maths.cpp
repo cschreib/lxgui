@@ -1,6 +1,7 @@
 #include "lxgui/utils_maths.hpp"
 
 #include <cmath>
+#include <algorithm>
 
 namespace lxgui {
 namespace utils
