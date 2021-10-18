@@ -1378,23 +1378,22 @@ int lua_frame::_set_script(lua_State* pLua)
         {
             lua::state& mState = mFunc.get_state();
             lua::argument* pArg = mFunc.get(1);
+            std::string sScriptLuaName = get_object()->get_name() + ":" + sAdjustedScriptName;
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
-                mState.push_value(pArg->get_index());
-                mState.set_global(get_object()->get_name() + ":" + sAdjustedScriptName);
-                get_object()->notify_script_defined(sScriptName, true);
+                get_object()->define_script(sScriptName,
+                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
             }
             else
             {
-                mState.push_nil();
-                mState.set_global(get_object()->get_name() + ":" + sAdjustedScriptName);
-                get_object()->notify_script_defined(sScriptName, false);
+                get_object()->remove_script(sScriptName);
             }
         }
         else
         {
             gui::out << gui::error << get_object()->get_frame_type() << " : "
-                << "\"" << get_object()->get_name() << "\" cannot use script \"" << sScriptName << "\"." << std::endl;
+                << "\"" << get_object()->get_name() << "\" cannot use script \""
+                << sScriptName << "\"." << std::endl;
         }
     }
 

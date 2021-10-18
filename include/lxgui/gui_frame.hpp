@@ -10,11 +10,15 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_view.hpp>
 
+#include <sol/protected_function.hpp>
+
 #include <set>
 #include <list>
 #include <functional>
 #include <limits>
 #include <unordered_map>
+#include <variant>
+#include <vector>
 
 namespace lxgui {
 namespace gui
@@ -589,31 +593,38 @@ namespace gui
         static std::string get_adjusted_script_name(const std::string& sScriptName);
 
         /// Registers a handler script to this frame.
-        /** \param sScriptName The name of the script
-        *   \param sContent    The content ot the script
-        *   \param sFile       The file in which this script has been found
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
+        *   \param sContent    The content ot the script, as Lua code
+        *   \param sFile       The file in which this script has been defined
         *   \param uiLineNbr   The line number at which this script is located in the file
-        *   \note The last two informations are required for error messages.
+        *   \note The last two informations are required only for displaying error messages.
+        *         This function is meant to be used by the XML parser. If you want to manually
+        *         define your own script handlers, prefer the other overloads.
         */
         void define_script(const std::string& sScriptName, const std::string& sContent,
             const std::string& sFile, uint uiLineNbr);
 
-        using script_handler = std::function<void(frame&, event*)>;
+        /// Registers a handler script to this frame.
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
+        *   \param mHandler    The handler of the script, as a Lua function
+        */
+        void define_script(const std::string& sScriptName, const sol::protected_function& mHandler);
+
+        using script_handler_function = std::function<void(frame&, event*)>;
 
         /// Registers a handler script to this frame.
-        /** \param sScriptName The name of the script
-        *   \param mHandler    The handler ot the script
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
+        *   \param mHandler    The handler of the script, as a C++ function
         */
-        void define_script(const std::string& sScriptName, const script_handler& mHandler);
+        void define_script(const std::string& sScriptName, const script_handler_function& mHandler);
 
-        /// Tells this frame that a script has been defined.
-        /** \param sScriptName The name of the script
-        *   \param bDefined    'true' if the script is defined
+        /// Removes a script from this frame.
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
         */
-        void notify_script_defined(const std::string& sScriptName, bool bDefined);
+        void remove_script(const std::string& sScriptName);
 
         /// Calls a script.
-        /** \param sScriptName The name of the script
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param pEvent      Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
@@ -947,11 +958,15 @@ namespace gui
         void update_borders_() const override;
         void update_mouse_in_frame_();
 
-        struct script_info
+        struct script_handler_lua
         {
+            std::string sScript;
             std::string sFile;
             uint        uiLineNbr;
         };
+
+        using script_handler = std::variant<
+            script_handler_function, script_handler_lua, sol::protected_function>;
 
         child_list  lChildList_;
         region_list lRegionList_;
@@ -960,14 +975,11 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, std::string>    lDefinedScriptList_;
-        std::unordered_map<std::string, script_info>    lXMLScriptInfoList_;
-        std::unordered_map<std::string, script_handler> lDefinedHandlerList_;
+        std::unordered_map<std::string, script_handler> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
-
 
         addon* pAddOn_ = nullptr;
 
