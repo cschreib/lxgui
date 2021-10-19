@@ -36,6 +36,13 @@ namespace gui
         static layer_type get_layer_type(const std::string& sLayer);
     };
 
+    /// Holds file/line information for a script.
+    struct script_info
+    {
+        std::string sFileName;
+        uint uiLineNbr = 0;
+    };
+
     /// A #uiobject that can contain other objects and react to events.
     /** This class, which is at the core of the UI design, can contain
     *   other frames as "children", and layered regions sorted by layers
@@ -595,28 +602,37 @@ namespace gui
         /// Registers a handler script to this frame.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param sContent    The content ot the script, as Lua code
-        *   \param sFile       The file in which this script has been defined
-        *   \param uiLineNbr   The line number at which this script is located in the file
-        *   \note The last two informations are required only for displaying error messages.
+        *   \param mInfo       The location where this script has been defined
+        *   \note The script_info parameter is used only for displaying error messages.
         *         This function is meant to be used by the XML parser. If you want to manually
         *         define your own script handlers, prefer the other overloads.
         */
         void define_script(const std::string& sScriptName, const std::string& sContent,
-            const std::string& sFile, uint uiLineNbr);
+            const script_info& mInfo = script_info{});
 
         /// Registers a handler script to this frame.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a Lua function
+        *   \param mInfo       The location where this script has been defined
+        *   \note This defines a Lua function to be called for the event specified in sScriptName.
+        *         This provides more flexibility, but also has a larger overhead. If performance
+        *         is a concern, prefer the other overload taking a C++ function instead.
         */
-        void define_script(const std::string& sScriptName, const sol::protected_function& mHandler);
+        void define_script(const std::string& sScriptName, const sol::protected_function& mHandler,
+            const script_info& mInfo = script_info{});
 
         using script_handler_function = std::function<void(frame&, event*)>;
 
         /// Registers a handler script to this frame.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
         *   \param mHandler    The handler of the script, as a C++ function
+        *   \param mInfo       The location where this script has been defined
+        *   \note This defines a C++ function to be called for the event specified in sScriptName.
+        *         This provides the best performance, but lacks direct access to the Lua
+        *         environment.
         */
-        void define_script(const std::string& sScriptName, const script_handler_function& mHandler);
+        void define_script(const std::string& sScriptName, const script_handler_function& mHandler,
+            const script_info& mInfo = script_info{});
 
         /// Removes a script from this frame.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
@@ -958,16 +974,6 @@ namespace gui
         void update_borders_() const override;
         void update_mouse_in_frame_();
 
-        struct script_handler_lua
-        {
-            std::string sScript;
-            std::string sFile;
-            uint        uiLineNbr;
-        };
-
-        using script_handler = std::variant<
-            script_handler_function, script_handler_lua, sol::protected_function>;
-
         child_list  lChildList_;
         region_list lRegionList_;
 
@@ -975,7 +981,7 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, script_handler> lScriptHandlerList_;
+        std::unordered_map<std::string, script_handler_function> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegEventList_;

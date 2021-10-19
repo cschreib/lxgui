@@ -322,7 +322,7 @@ void frame::parse_scripts_block_(xml::block* pBlock)
         {
             define_script(
                 pScriptBlock->get_name(), pScriptBlock->get_value(),
-                pScriptBlock->get_file(), pScriptBlock->get_line_nbr()
+                script_info{pScriptBlock->get_file(), pScriptBlock->get_line_nbr()}
             );
         }
     }
