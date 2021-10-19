@@ -17,7 +17,6 @@
 #include <functional>
 #include <limits>
 #include <unordered_map>
-#include <variant>
 #include <vector>
 
 namespace lxgui {
