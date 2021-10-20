@@ -105,6 +105,7 @@ namespace gui
         method(frame, show),
 
         // frame
+        method(frame, add_script),
         method(frame, create_font_string),
         method(frame, create_texture),
         method(frame, create_title_region),
@@ -208,6 +209,7 @@ namespace gui
         method(check_button, show),
 
         // frame (inherited)
+        method(check_button, add_script),
         method(check_button, create_font_string),
         method(check_button, create_texture),
         method(check_button, create_title_region),
@@ -354,6 +356,7 @@ namespace gui
         method(status_bar, show),
 
         // frame (inherited)
+        method(status_bar, add_script),
         method(status_bar, create_font_string),
         method(status_bar, create_texture),
         method(status_bar, create_title_region),
@@ -471,6 +474,7 @@ namespace gui
         method(focus_frame, show),
 
         // frame (inherited)
+        method(focus_frame, add_script),
         method(focus_frame, create_font_string),
         method(focus_frame, create_texture),
         method(focus_frame, create_title_region),
@@ -580,6 +584,7 @@ namespace gui
         method(edit_box, show),
 
         // frame (inherited)
+        method(edit_box, add_script),
         method(edit_box, create_font_string),
         method(edit_box, create_texture),
         method(edit_box, create_title_region),
@@ -717,6 +722,7 @@ namespace gui
         method(scroll_frame, show),
 
         // frame (inherited)
+        method(scroll_frame, add_script),
         method(scroll_frame, create_font_string),
         method(scroll_frame, create_texture),
         method(scroll_frame, create_title_region),
@@ -830,6 +836,7 @@ namespace gui
         method(button, show),
 
         // frame (inherited)
+        method(button, add_script),
         method(button, create_font_string),
         method(button, create_texture),
         method(button, create_title_region),
@@ -968,6 +975,7 @@ namespace gui
         method(slider, show),
 
         // frame (inherited)
+        method(slider, add_script),
         method(slider, create_font_string),
         method(slider, create_texture),
         method(slider, create_title_region),

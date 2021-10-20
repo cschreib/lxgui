@@ -189,6 +189,39 @@ lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
 {
 }
 
+/** @function add_script
+*/
+int lua_frame::_add_script(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("Frame:add_script", pLua);
+    mFunc.add(0, "script name", lua::type::STRING);
+    mFunc.add(1, "function", lua::type::FUNCTION);
+    if (mFunc.check())
+    {
+        std::string sScriptName = mFunc.get(0)->get_string();
+        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
+        if (get_object()->can_use_script(sScriptName))
+        {
+            lua::state& mState = mFunc.get_state();
+            lua::argument* pArg = mFunc.get(1);
+            std::string sScriptLuaName = get_object()->get_name() + ":" + sAdjustedScriptName;
+            get_object()->add_script(sScriptName,
+                sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
+        }
+        else
+        {
+            gui::out << gui::error << get_object()->get_frame_type() << " : "
+                << "\"" << get_object()->get_name() << "\" cannot use script \""
+                << sScriptName << "\"." << std::endl;
+        }
+    }
+
+    return mFunc.on_return();
+}
+
 /** @function create_font_string
 */
 int lua_frame::_create_font_string(lua_State* pLua)
@@ -1382,7 +1415,8 @@ int lua_frame::_set_script(lua_State* pLua)
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
                 get_object()->define_script(sScriptName,
-                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
+                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())),
+                    false);
             }
             else
             {

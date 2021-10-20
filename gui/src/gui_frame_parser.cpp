@@ -320,8 +320,9 @@ void frame::parse_scripts_block_(xml::block* pBlock)
     {
         for (auto* pScriptBlock : pScriptsBlock->blocks())
         {
+            bool bOverride = utils::string_to_bool(pScriptBlock->get_attribute("override"));
             define_script(
-                pScriptBlock->get_name(), pScriptBlock->get_value(),
+                pScriptBlock->get_name(), pScriptBlock->get_value(), !bOverride,
                 script_info{pScriptBlock->get_file(), pScriptBlock->get_line_nbr()}
             );
         }

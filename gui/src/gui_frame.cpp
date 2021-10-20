@@ -228,7 +228,8 @@ void frame::copy_from(uiobject* pObj)
 
     for (const auto& mItem : pFrame->lScriptHandlerList_)
     {
-        this->lScriptHandlerList_[mItem.first] = mItem.second;
+        for (const auto& mHandler : mItem.second)
+            this->add_script(mItem.first, mHandler);
     }
 
     this->set_frame_strata(pFrame->get_frame_strata());
@@ -1041,7 +1042,7 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
 }
 
 void frame::define_script(const std::string& sScriptName, const std::string& sContent,
-    const script_info& mInfo)
+    bool bAppend, const script_info& mInfo)
 {
     // Create the Lua function from the provided string
     sol::state& mLua = get_lua_();
@@ -1068,11 +1069,11 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     mLua["__xml_script"] = sol::lua_nil;
 
     // Forward it as any other Lua function
-    define_script(sScriptName, mHandler, mInfo);
+    define_script(sScriptName, mHandler, bAppend, mInfo);
 }
 
 void frame::define_script(const std::string& sScriptName, const sol::protected_function& mHandler,
-    const script_info& mInfo)
+    bool bAppend, const script_info& mInfo)
 {
     bool bAddEventName = sScriptName == "OnEvent";
 
@@ -1126,13 +1127,17 @@ void frame::define_script(const std::string& sScriptName, const sol::protected_f
         }
     };
 
-    define_script(sScriptName, mWrappedHandler, mInfo);
+    define_script(sScriptName, mWrappedHandler, bAppend, mInfo);
 }
 
 void frame::define_script(const std::string& sScriptName, const script_handler_function& mHandler,
-    const script_info& mInfo)
+    bool bAppend, const script_info& mInfo)
 {
-    lScriptHandlerList_[sScriptName] = mHandler;
+    auto& lHandlerList = lScriptHandlerList_[sScriptName];
+    if (!bAppend)
+        lHandlerList.clear();
+
+    lHandlerList.push_back(mHandler);
 
     if (!is_virtual())
     {
@@ -1164,8 +1169,9 @@ void frame::define_script(const std::string& sScriptName, const script_handler_f
 void frame::remove_script(const std::string& sScriptName)
 {
     auto iterH = lScriptHandlerList_.find(sScriptName);
-    if (iterH != lScriptHandlerList_.end())
-        lScriptHandlerList_.erase(iterH);
+    if (iterH == lScriptHandlerList_.end()) return;
+
+    lScriptHandlerList_.erase(iterH);
 }
 
 void frame::on_event(const event& mEvent)
@@ -1320,8 +1326,9 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
 
     try
     {
-        // Call the handler
-        iterH->second(*this, pEvent);
+        // Call the handlers
+        for (const auto& mHandler : iterH->second)
+            mHandler(*this, pEvent);
     }
     catch (const std::exception& mException)
     {
