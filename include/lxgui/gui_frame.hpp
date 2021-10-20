@@ -614,8 +614,9 @@ namespace gui
         *   \param mHandler    The handler of the script, as a Lua function
         *   \param mInfo       The location where this script has been defined
         *   \note This defines a Lua function to be called for the event specified in sScriptName.
-        *         This provides more flexibility, but also has a larger overhead. If performance
-        *         is a concern, prefer the other overload taking a C++ function instead.
+        *         This provides more flexibility compared to using C++ function, but also has a
+        *         larger overhead. If performance is a concern, prefer the other overload taking a
+        *         C++ function instead.
         */
         void define_script(const std::string& sScriptName, const sol::protected_function& mHandler,
             const script_info& mInfo = script_info{});
@@ -628,7 +629,8 @@ namespace gui
         *   \param mInfo       The location where this script has been defined
         *   \note This defines a C++ function to be called for the event specified in sScriptName.
         *         This provides the best performance, but lacks direct access to the Lua
-        *         environment.
+        *         environment. If this is required, prefer the other overload taking a Lua function
+        *         instead.
         */
         void define_script(const std::string& sScriptName, const script_handler_function& mHandler,
             const script_info& mInfo = script_info{});

@@ -1046,7 +1046,7 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     // Create the Lua function from the provided string
     sol::state& mLua = get_lua_();
 
-    std::string sStr = "function __lxgui_tmp_script(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " +
+    std::string sStr = "function __xml_script(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " +
         sContent + " end";
 
     auto mResult = mLua.do_string(sStr, mInfo.sFileName);
@@ -1064,8 +1064,8 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         return;
     }
 
-    sol::protected_function mHandler = mLua["__lxgui_tmp_script"];
-    mLua["__lxgui_tmp_script"] = sol::lua_nil;
+    sol::protected_function mHandler = mLua["__xml_script"];
+    mLua["__xml_script"] = sol::lua_nil;
 
     // Forward it as any other Lua function
     define_script(sScriptName, mHandler, mInfo);
@@ -1105,7 +1105,7 @@ void frame::define_script(const std::string& sScriptName, const sol::protected_f
         // Get a reference to self
         sol::table mSelfLua = mLua[mSelf.get_lua_name()];
         if (mSelfLua == sol::lua_nil)
-            throw gui::exception("Frame", "Lua glue object is nil");
+            throw gui::exception("Lua glue object is nil");
 
         // Copy info, in case frame is deleted
         const script_info mInfoCopy = mInfo;
@@ -1122,7 +1122,7 @@ void frame::define_script(const std::string& sScriptName, const sol::protected_f
             std::string sError = hijack_sol_error_message(mError.what(),
                 mInfoCopy.sFileName, mInfoCopy.uiLineNbr);
 
-            throw gui::exception("Frame", sError);
+            throw gui::exception(sError);
         }
     };
 
@@ -1132,33 +1132,7 @@ void frame::define_script(const std::string& sScriptName, const sol::protected_f
 void frame::define_script(const std::string& sScriptName, const script_handler_function& mHandler,
     const script_info& mInfo)
 {
-    remove_script(sScriptName);
-
-    lScriptHandlerList_[sScriptName] = [mHandler](frame& mSelf, event* pEvent)
-    {
-        // Make a copy of the manager pointer: in case the frame is deleted, we will need this
-        auto* pManager = mSelf.get_manager();
-        auto* pOldAddOn = pManager->get_current_addon();
-        pManager->set_current_addon(mSelf.get_addon());
-
-        try
-        {
-            mHandler(mSelf, pEvent);
-        }
-        catch (const std::exception& mException)
-        {
-            // TODO: add file/line info
-            std::string sError = mException.what();
-
-            gui::out << gui::error << sError << std::endl;
-
-            event mEvent("LUA_ERROR");
-            mEvent.add(sError);
-            pManager->get_event_manager()->fire_event(mEvent);
-        }
-
-        pManager->set_current_addon(pOldAddOn);
-    };
+    lScriptHandlerList_[sScriptName] = mHandler;
 
     if (!is_virtual())
     {
@@ -1339,7 +1313,29 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
     if (iterH == lScriptHandlerList_.end())
         return;
 
-    iterH->second(*this, pEvent);
+    // Make a copy of the manager pointer: in case the frame is deleted, we will need this
+    auto* pManager = get_manager();
+    auto* pOldAddOn = pManager->get_current_addon();
+    pManager->set_current_addon(get_addon());
+
+    try
+    {
+        // Call the handler
+        iterH->second(*this, pEvent);
+    }
+    catch (const std::exception& mException)
+    {
+        // TODO: add file/line info
+        std::string sError = mException.what();
+
+        gui::out << gui::error << sError << std::endl;
+
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        pManager->get_event_manager()->fire_event(mEvent);
+    }
+
+    pManager->set_current_addon(pOldAddOn);
 }
 
 void frame::register_all_events()
