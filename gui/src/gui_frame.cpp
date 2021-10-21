@@ -1051,9 +1051,9 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
 
     constexpr uint uiMaxArgs = 9;
     for (uint i = 0; i < uiMaxArgs; ++i)
-        sStr += ", arg" + utils::to_string(i);
+        sStr += ", arg" + utils::to_string(i + 1);
 
-    sStr += sContent + " end";
+    sStr += ") " + sContent + " end";
 
     auto mResult = mLua.do_string(sStr, mInfo.sFileName);
 
@@ -1132,7 +1132,7 @@ void frame::define_script(const std::string& sScriptName, sol::protected_functio
         }
     };
 
-    define_script(sScriptName, mWrappedHandler, bAppend, mInfo);
+    define_script(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
 }
 
 void frame::define_script(const std::string& sScriptName, script_handler_function mHandler,
