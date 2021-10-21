@@ -1047,8 +1047,13 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     // Create the Lua function from the provided string
     sol::state& mLua = get_lua_();
 
-    std::string sStr = "function __xml_script(self, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " +
-        sContent + " end";
+    std::string sStr = "return function(self";
+
+    constexpr uint uiMaxArgs = 9;
+    for (uint i = 0; i < uiMaxArgs; ++i)
+        sStr += ", arg" + utils::to_string(i);
+
+    sStr += sContent + " end";
 
     auto mResult = mLua.do_string(sStr, mInfo.sFileName);
 
@@ -1065,19 +1070,19 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
         return;
     }
 
-    sol::protected_function mHandler = mLua["__xml_script"];
-    mLua["__xml_script"] = sol::lua_nil;
+    sol::protected_function mHandler = mResult;
 
     // Forward it as any other Lua function
-    define_script(sScriptName, mHandler, bAppend, mInfo);
+    define_script(sScriptName, std::move(mHandler), bAppend, mInfo);
 }
 
-void frame::define_script(const std::string& sScriptName, const sol::protected_function& mHandler,
+void frame::define_script(const std::string& sScriptName, sol::protected_function mHandler,
     bool bAppend, const script_info& mInfo)
 {
     bool bAddEventName = sScriptName == "OnEvent";
 
-    auto mWrappedHandler = [bAddEventName, mHandler, mInfo](frame& mSelf, event* pEvent)
+    auto mWrappedHandler =
+        [bAddEventName, mHandler = std::move(mHandler), mInfo](frame& mSelf, event* pEvent)
     {
         sol::state& mLua = mSelf.get_manager()->get_lua();
         lua_State* pLua = mLua.lua_state();
@@ -1130,14 +1135,14 @@ void frame::define_script(const std::string& sScriptName, const sol::protected_f
     define_script(sScriptName, mWrappedHandler, bAppend, mInfo);
 }
 
-void frame::define_script(const std::string& sScriptName, const script_handler_function& mHandler,
+void frame::define_script(const std::string& sScriptName, script_handler_function mHandler,
     bool bAppend, const script_info& mInfo)
 {
     auto& lHandlerList = lScriptHandlerList_[sScriptName];
     if (!bAppend)
         lHandlerList.clear();
 
-    lHandlerList.push_back(mHandler);
+    lHandlerList.push_back(std::move(mHandler));
 
     if (!is_virtual())
     {

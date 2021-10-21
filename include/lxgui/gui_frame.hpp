@@ -626,7 +626,7 @@ namespace gui
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void define_script(const std::string& sScriptName, const sol::protected_function& mHandler,
+        void define_script(const std::string& sScriptName, sol::protected_function mHandler,
             bool bAppend, const script_info& mInfo = script_info{});
 
         /// Registers a handler script to this frame.
@@ -640,7 +640,7 @@ namespace gui
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void define_script(const std::string& sScriptName, const script_handler_function& mHandler,
+        void define_script(const std::string& sScriptName, script_handler_function mHandler,
             bool bAppend, const script_info& mInfo = script_info{});
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
@@ -666,10 +666,10 @@ namespace gui
         *         larger overhead. If performance is a concern, prefer the other overload taking a
         *         C++ function instead.
         */
-        void add_script(const std::string& sScriptName, const sol::protected_function& mHandler,
+        void add_script(const std::string& sScriptName, sol::protected_function mHandler,
             const script_info& mInfo = script_info{})
         {
-            define_script(sScriptName, mHandler, true, mInfo);
+            define_script(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Adds an additional handler script to this frame (executed after existing scripts).
@@ -681,10 +681,10 @@ namespace gui
         *         environment. If this is required, prefer the other overload taking a Lua function
         *         instead.
         */
-        void add_script(const std::string& sScriptName, const script_handler_function& mHandler,
+        void add_script(const std::string& sScriptName, script_handler_function mHandler,
             const script_info& mInfo = script_info{})
         {
-            define_script(sScriptName, mHandler, true, mInfo);
+            define_script(sScriptName, std::move(mHandler), true, mInfo);
         }
 
         /// Removes a script from this frame.

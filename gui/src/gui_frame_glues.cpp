@@ -203,12 +203,10 @@ int lua_frame::_add_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
-        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->can_use_script(sScriptName))
         {
             lua::state& mState = mFunc.get_state();
             lua::argument* pArg = mFunc.get(1);
-            std::string sScriptLuaName = get_object()->get_name() + ":" + sAdjustedScriptName;
             get_object()->add_script(sScriptName,
                 sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
         }
@@ -749,10 +747,8 @@ int lua_frame::_get_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
-        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->has_script(sScriptName))
         {
-            lua_getglobal(pLua, (get_object()->get_name() + ":" + sAdjustedScriptName).c_str());
             mFunc.notify_pushed();
         }
     }
@@ -1407,12 +1403,10 @@ int lua_frame::_set_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
-        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->can_use_script(sScriptName))
         {
             lua::state& mState = mFunc.get_state();
             lua::argument* pArg = mFunc.get(1);
-            std::string sScriptLuaName = get_object()->get_name() + ":" + sAdjustedScriptName;
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
                 get_object()->define_script(sScriptName,
