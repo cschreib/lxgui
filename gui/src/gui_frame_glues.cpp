@@ -55,8 +55,9 @@
 *   `"UNDER_ATTACK"` event).
 *
 *   To use the first type of events (hard-coded events), all you have to
-*   do in general is register a callback function using @{Frame:set_script}.
-*   However, some hard-coded events require explicit enabling. In particular:
+*   do in general is register a callback function using @{Frame:add_script}
+*   or @{Frame:set_script}. However, some hard-coded events require explicit
+*   enabling. In particular:
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
 *   @{Frame:enable_keyboard}.
@@ -72,10 +73,10 @@
 *   example, the application can fire a `"UNIT_ATTACKED"` event when a unit
 *   is under attack, and pass the ID of the attacked unit as a first argument,
 *   and the ID of the attacker as a second argument. If a callback
-*   function is registered using @{Frame:set_script}, these arguments can be
-*   handled and named like regular function parameters. In XML callback
-*   handlers, they can be accessed with the hard-coded generic names `arg1`,
-*   `arg2`, etc.
+*   function is registered using @{Frame:add_script} or @{Frame:set_script},
+*   these arguments can be handled and named like regular function parameters.
+*   In XML callback handlers, they can be accessed with the hard-coded generic
+*   names `arg1`, `arg2`, etc.
 *
 *   Hard-coded events available to all @{Frame}s:
 *
