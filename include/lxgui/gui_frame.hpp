@@ -1036,7 +1036,13 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        std::unordered_map<std::string, std::vector<script_handler_function>> lScriptHandlerList_;
+        struct script_handler_slot
+        {
+            script_handler_function mCallback;
+            bool bDisconnected = false;
+        };
+
+        std::unordered_map<std::string, std::shared_ptr<std::list<script_handler_slot>>> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegEventList_;

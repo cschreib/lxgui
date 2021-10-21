@@ -37,6 +37,13 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
 
 frame::~frame()
 {
+    // Disable callbacks
+    for (auto& lHandlerList : lScriptHandlerList_)
+    {
+        for (auto& mHandler : *lHandlerList.second)
+            mHandler.bDisconnected = true;
+    }
+
     // Children must be destroyed first
     lChildList_.clear();
     lRegionList_.clear();
@@ -228,8 +235,11 @@ void frame::copy_from(uiobject* pObj)
 
     for (const auto& mItem : pFrame->lScriptHandlerList_)
     {
-        for (const auto& mHandler : mItem.second)
-            this->add_script(mItem.first, mHandler);
+        for (const auto& mHandler : *mItem.second)
+        {
+            if (!mHandler.bDisconnected)
+                this->add_script(mItem.first, mHandler.mCallback);
+        }
     }
 
     this->set_frame_strata(pFrame->get_frame_strata());
@@ -593,7 +603,17 @@ void frame::notify_layers_need_update()
 
 bool frame::has_script(const std::string& sScriptName) const
 {
-    return lScriptHandlerList_.find(sScriptName) != lScriptHandlerList_.end();
+    const auto mIter = lScriptHandlerList_.find(sScriptName);
+    if (mIter == lScriptHandlerList_.end())
+        return false;
+
+    for (const auto& mHandler : *mIter->second)
+    {
+        if (!mHandler.bDisconnected)
+            return true;
+    }
+
+    return false;
 }
 
 layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
@@ -1140,9 +1160,17 @@ void frame::define_script(const std::string& sScriptName, script_handler_functio
 {
     auto& lHandlerList = lScriptHandlerList_[sScriptName];
     if (!bAppend)
-        lHandlerList.clear();
+    {
+        // Just disable for now, it may not be safe to modify the handler list
+        // if this script is being defined during a handler execution.
+        for (auto& mHandler : *lHandlerList)
+            mHandler.bDisconnected = true;
+    }
 
-    lHandlerList.push_back(std::move(mHandler));
+    if (lHandlerList == nullptr)
+        lHandlerList = std::make_shared<std::list<script_handler_slot>>();
+
+    lHandlerList->push_back({std::move(mHandler), false});
 
     if (!is_virtual())
     {
@@ -1176,7 +1204,10 @@ void frame::remove_script(const std::string& sScriptName)
     auto iterH = lScriptHandlerList_.find(sScriptName);
     if (iterH == lScriptHandlerList_.end()) return;
 
-    lScriptHandlerList_.erase(iterH);
+    // Just disable for now, it may not be safe to modify the handler list
+    // if this function is being called during a handler execution.
+    for (auto& mHandler : *iterH->second)
+        mHandler.bDisconnected = true;
 }
 
 void frame::on_event(const event& mEvent)
@@ -1331,9 +1362,18 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
 
     try
     {
+        // Make a shared-ownership copy of the handler list, so that the list
+        // survives even if this frame is destroyed midway during a handler.
+        const auto lHandlerList = iterH->second;
+
+        alive_checker mChecker(this);
+
         // Call the handlers
-        for (const auto& mHandler : iterH->second)
-            mHandler(*this, pEvent);
+        for (const auto& mHandler : *lHandlerList)
+        {
+            if (!mHandler.bDisconnected)
+                mHandler.mCallback(*this, pEvent);
+        }
     }
     catch (const std::exception& mException)
     {
@@ -1971,6 +2011,19 @@ void frame::update(float fDelta)
         });
 
         lChildList_.erase(mIterRemove, lChildList_.end());
+    }
+
+    // Remove disabled handlers
+    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end(); ++mIterList)
+    {
+        auto& lHandlerList = *mIterList->second;
+        auto mIterRemove = std::remove_if(lHandlerList.begin(), lHandlerList.end(),
+            [](const auto& mHandler) { return mHandler.bDisconnected; });
+
+        if (mIterRemove == lHandlerList.begin())
+            mIterList = lScriptHandlerList_.erase(mIterList);
+        else
+            lHandlerList.erase(mIterRemove, lHandlerList.end());
     }
 
     float fNewWidth = get_apparent_width();
