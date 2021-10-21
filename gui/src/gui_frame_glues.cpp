@@ -55,8 +55,9 @@
 *   `"UNDER_ATTACK"` event).
 *
 *   To use the first type of events (hard-coded events), all you have to
-*   do in general is register a callback function using @{Frame:set_script}.
-*   However, some hard-coded events require explicit enabling. In particular:
+*   do in general is register a callback function using @{Frame:add_script}
+*   or @{Frame:set_script}. However, some hard-coded events require explicit
+*   enabling. In particular:
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
 *   @{Frame:enable_keyboard}.
@@ -72,10 +73,10 @@
 *   example, the application can fire a `"UNIT_ATTACKED"` event when a unit
 *   is under attack, and pass the ID of the attacked unit as a first argument,
 *   and the ID of the attacker as a second argument. If a callback
-*   function is registered using @{Frame:set_script}, these arguments can be
-*   handled and named like regular function parameters. In XML callback
-*   handlers, they can be accessed with the hard-coded generic names `arg1`,
-*   `arg2`, etc.
+*   function is registered using @{Frame:add_script} or @{Frame:set_script},
+*   these arguments can be handled and named like regular function parameters.
+*   In XML callback handlers, they can be accessed with the hard-coded generic
+*   names `arg1`, `arg2`, etc.
 *
 *   Hard-coded events available to all @{Frame}s:
 *
@@ -175,6 +176,11 @@
 *   the inheriting frame will copy all the registered callbacks, all the
 *   child frames, and all the layered regions of the virtual frame.
 *
+*   This inheritance mechanism can be chained: a virtual frame itself can
+*   inherit from another virtual frame. It is also possible to inherit from
+*   multiple virtual frames at once, which will copy their respective content
+*   in the order they are specified.
+*
 *   Inherits all methods from: @{UIObject}.
 *
 *   Child classes: @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox},
@@ -187,6 +193,37 @@ namespace gui
 {
 lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
 {
+}
+
+/** @function add_script
+*/
+int lua_frame::_add_script(lua_State* pLua)
+{
+    if (!check_object_())
+        return 0;
+
+    lua::function mFunc("Frame:add_script", pLua);
+    mFunc.add(0, "script name", lua::type::STRING);
+    mFunc.add(1, "function", lua::type::FUNCTION);
+    if (mFunc.check())
+    {
+        std::string sScriptName = mFunc.get(0)->get_string();
+        if (get_object()->can_use_script(sScriptName))
+        {
+            lua::state& mState = mFunc.get_state();
+            lua::argument* pArg = mFunc.get(1);
+            get_object()->add_script(sScriptName,
+                sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
+        }
+        else
+        {
+            gui::out << gui::error << get_object()->get_frame_type() << " : "
+                << "\"" << get_object()->get_name() << "\" cannot use script \""
+                << sScriptName << "\"." << std::endl;
+        }
+    }
+
+    return mFunc.on_return();
 }
 
 /** @function create_font_string
@@ -715,10 +752,8 @@ int lua_frame::_get_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
-        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->has_script(sScriptName))
         {
-            lua_getglobal(pLua, (get_object()->get_name() + ":" + sAdjustedScriptName).c_str());
             mFunc.notify_pushed();
         }
     }
@@ -1373,28 +1408,25 @@ int lua_frame::_set_script(lua_State* pLua)
     if (mFunc.check())
     {
         std::string sScriptName = mFunc.get(0)->get_string();
-        std::string sAdjustedScriptName = frame::get_adjusted_script_name(sScriptName);
         if (get_object()->can_use_script(sScriptName))
         {
             lua::state& mState = mFunc.get_state();
             lua::argument* pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
-                mState.push_value(pArg->get_index());
-                mState.set_global(get_object()->get_name() + ":" + sAdjustedScriptName);
-                get_object()->notify_script_defined(sScriptName, true);
+                get_object()->set_script(sScriptName,
+                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
             }
             else
             {
-                mState.push_nil();
-                mState.set_global(get_object()->get_name() + ":" + sAdjustedScriptName);
-                get_object()->notify_script_defined(sScriptName, false);
+                get_object()->remove_script(sScriptName);
             }
         }
         else
         {
             gui::out << gui::error << get_object()->get_frame_type() << " : "
-                << "\"" << get_object()->get_name() << "\" cannot use script \"" << sScriptName << "\"." << std::endl;
+                << "\"" << get_object()->get_name() << "\" cannot use script \""
+                << sScriptName << "\"." << std::endl;
         }
     }
 

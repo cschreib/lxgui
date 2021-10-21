@@ -121,7 +121,7 @@ void examples_setup_gui(gui::manager& mManager)
     // Or in C++
     float update_time = 0.5f, timer = 1.0f;
     int frames = 0;
-    pFrame->define_script("OnUpdate",
+    pFrame->add_script("OnUpdate",
         [=](gui::frame& self, gui::event* event) mutable {
             float delta = event->get<float>(0);
             timer += delta;

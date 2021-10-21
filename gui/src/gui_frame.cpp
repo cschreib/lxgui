@@ -17,6 +17,7 @@
 
 #include <sol/state.hpp>
 #include <sol/as_args.hpp>
+#include <sol/variadic_args.hpp>
 
 #include <sstream>
 #include <functional>
@@ -24,7 +25,6 @@
 namespace lxgui {
 namespace gui
 {
-int l_xml_error(lua_State*);
 
 layer::layer() : bDisabled(false)
 {
@@ -37,6 +37,13 @@ frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()),
 
 frame::~frame()
 {
+    // Disable callbacks
+    for (auto& lHandlerList : lScriptHandlerList_)
+    {
+        for (auto& mHandler : *lHandlerList.second)
+            mHandler.bDisconnected = true;
+    }
+
     // Children must be destroyed first
     lChildList_.clear();
     lRegionList_.clear();
@@ -226,21 +233,13 @@ void frame::copy_from(uiobject* pObj)
     if (!pFrame)
         return;
 
-    for (const auto& mScript : pFrame->lDefinedScriptList_)
+    for (const auto& mItem : pFrame->lScriptHandlerList_)
     {
-        if (mScript.second.empty()) continue;
-
-        const script_info& mInfo = pFrame->lXMLScriptInfoList_[mScript.first];
-        this->define_script(
-            mScript.first, mScript.second,
-            mInfo.sFile, mInfo.uiLineNbr
-        );
-    }
-
-    for (const auto& mHandler : pFrame->lDefinedHandlerList_)
-    {
-        if (mHandler.second)
-            this->define_script(mHandler.first, mHandler.second);
+        for (const auto& mHandler : *mItem.second)
+        {
+            if (!mHandler.bDisconnected)
+                this->add_script(mItem.first, mHandler.mCallback);
+        }
     }
 
     this->set_frame_strata(pFrame->get_frame_strata());
@@ -604,8 +603,17 @@ void frame::notify_layers_need_update()
 
 bool frame::has_script(const std::string& sScriptName) const
 {
-    return lDefinedScriptList_.find(sScriptName) != lDefinedScriptList_.end() ||
-           lDefinedHandlerList_.find(sScriptName) != lDefinedHandlerList_.end();
+    const auto mIter = lScriptHandlerList_.find(sScriptName);
+    if (mIter == lScriptHandlerList_.end())
+        return false;
+
+    for (const auto& mHandler : *mIter->second)
+    {
+        if (!mHandler.bDisconnected)
+            return true;
+    }
+
+    return false;
 }
 
 layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
@@ -633,11 +641,13 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
 
     if (!bVirtual_)
     {
+        // Add shortcut to region as entry in Lua table
         std::string sRawName = pAddedRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            pManager_->get_lua().script(get_lua_name()+"."+sRawName+"="+pAddedRegion->get_lua_name());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = mLua[pAddedRegion->get_lua_name()];
         }
     }
 
@@ -792,11 +802,13 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
             pNewTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
         }
 
+        // Add shortcut to child as entry in Lua table
         std::string sRawName = pAddedChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            pManager_->get_lua().script(get_lua_name()+"."+sRawName+" = "+pAddedChild->get_lua_name());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = mLua[pAddedChild->get_lua_name()];
         }
     }
 
@@ -1053,67 +1065,160 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
     return sNewError;
 }
 
-void frame::define_script(const std::string& sScriptName, const std::string& sContent, const std::string& sFile, uint uiLineNbr)
+void frame::define_script_(const std::string& sScriptName, const std::string& sContent,
+    bool bAppend, const script_info& mInfo)
 {
-    auto iterH = lDefinedHandlerList_.find(sScriptName);
-    if (iterH != lDefinedHandlerList_.end())
-        lDefinedHandlerList_.erase(iterH);
+    // Create the Lua function from the provided string
+    sol::state& mLua = get_lua_();
+
+    std::string sStr = "return function(self";
+
+    constexpr uint uiMaxArgs = 9;
+    for (uint i = 0; i < uiMaxArgs; ++i)
+        sStr += ", arg" + utils::to_string(i + 1);
+
+    sStr += ") " + sContent + " end";
+
+    auto mResult = mLua.do_string(sStr, mInfo.sFileName);
+
+    if (!mResult.valid())
+    {
+        sol::error mError = mResult;
+        std::string sError = hijack_sol_error_message(mError.what(), mInfo.sFileName, mInfo.uiLineNbr);
+
+        gui::out << gui::error << sError << std::endl;
+
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        pManager_->get_event_manager()->fire_event(mEvent);
+        return;
+    }
+
+    sol::protected_function mHandler = mResult;
+
+    // Forward it as any other Lua function
+    define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
+}
+
+void frame::define_script_(const std::string& sScriptName, sol::protected_function mHandler,
+    bool bAppend, const script_info& mInfo)
+{
+    bool bAddEventName = sScriptName == "OnEvent";
+
+    auto mWrappedHandler =
+        [bAddEventName, mHandler = std::move(mHandler), mInfo](frame& mSelf, event* pEvent)
+    {
+        sol::state& mLua = mSelf.get_manager()->get_lua();
+        lua_State* pLua = mLua.lua_state();
+
+        std::vector<sol::object> lArgs;
+
+        if (pEvent)
+        {
+            if (bAddEventName)
+            {
+                // Set event name
+                lArgs.emplace_back(pLua, sol::in_place, pEvent->get_name());
+            }
+
+            // Set arguments
+            for (uint i = 0; i < pEvent->get_num_param(); ++i)
+            {
+                const utils::variant& mArg = pEvent->get(i);
+                if (std::holds_alternative<utils::empty>(mArg))
+                    lArgs.emplace_back(sol::lua_nil);
+                else
+                    lArgs.emplace_back(pLua, sol::in_place, mArg);
+            }
+        }
+
+        // Get a reference to self
+        sol::table mSelfLua = mLua[mSelf.get_lua_name()];
+        if (mSelfLua == sol::lua_nil)
+            throw gui::exception("Lua glue object is nil");
+
+        // Call the function
+        auto mResult = mHandler(mSelfLua, sol::as_args(lArgs));
+        // WARNING: after this point, the frame (mSelf) may be deleted.
+        // Do not use any member variable or member function directly.
+
+        // Handle errors
+        if (!mResult.valid())
+        {
+            sol::error mError = mResult;
+            std::string sError = hijack_sol_error_message(mError.what(),
+                mInfo.sFileName, mInfo.uiLineNbr);
+
+            throw gui::exception(sError);
+        }
+    };
+
+    define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
+}
+
+void frame::define_script_(const std::string& sScriptName, script_handler_function mHandler,
+    bool bAppend, const script_info& mInfo)
+{
+    auto& lHandlerList = lScriptHandlerList_[sScriptName];
+    if (!bAppend)
+    {
+        // Just disable existing scripts, it may not be safe to modify the handler list
+        // if this script is being defined during a handler execution.
+        // They will be deleted later, when we know it is safe.
+        for (auto& mHandler : *lHandlerList)
+            mHandler.bDisconnected = true;
+    }
+
+    if (lHandlerList == nullptr)
+        lHandlerList = std::make_shared<std::list<script_handler_slot>>();
+
+    lHandlerList->push_back({std::move(mHandler), false});
 
     if (!is_virtual())
     {
-        // Actually register the function
+        bool bNeedsEventName = sScriptName == "OnEvent";
+
+        // Register the function so it can be called directly from Lua
         std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
-        std::string sStr;
-        sStr += "function " + sLuaName_ + ":" + sAdjustedName +
-            "(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) " + sContent + " end";
-
-        try
+        get_lua_()[get_lua_name()][sAdjustedName].set_function(
+            [=](sol::object /*mSelfLua*/, sol::variadic_args mVArgs)
         {
-            pManager_->get_lua().script(sStr, sol::script_default_on_error, sFile);
-        }
-        catch (const sol::error& mError)
-        {
-            std::string sError = hijack_sol_error_message(mError.what(), sFile, uiLineNbr);
+            event mEvent;
+            bool bIsFirst = true;
+            for (auto&& mArg : mVArgs)
+            {
+                if (bNeedsEventName && bIsFirst)
+                {
+                    mEvent.set_name(mArg.as<std::string>());
+                }
+                else
+                {
+                    lxgui::utils::variant mVariant;
+                    if (!mArg.is<sol::lua_nil_t>())
+                        mVariant = mArg;
 
-            gui::out << gui::error << sError << std::endl;
+                    mEvent.add(std::move(mVariant));
+                }
 
-            event mEvent("LUA_ERROR");
-            mEvent.add(sError);
-            pManager_->get_event_manager()->fire_event(mEvent);
-            return;
-        }
+                bIsFirst = false;
+            }
+
+            on_script(sScriptName, &mEvent);
+        });
     }
-
-    lDefinedScriptList_[sScriptName] = sContent;
-    lXMLScriptInfoList_[sScriptName].sFile = sFile;
-    lXMLScriptInfoList_[sScriptName].uiLineNbr = uiLineNbr;
 }
 
-void frame::define_script(const std::string& sScriptName, const script_handler& mHandler)
+void frame::remove_script(const std::string& sScriptName)
 {
-    auto iter = lDefinedScriptList_.find(sScriptName);
-    if (iter != lDefinedScriptList_.end())
-        lDefinedScriptList_.erase(iter);
+    auto iterH = lScriptHandlerList_.find(sScriptName);
+    if (iterH == lScriptHandlerList_.end()) return;
 
-    lDefinedHandlerList_[sScriptName] = mHandler;
-}
-
-void frame::notify_script_defined(const std::string& sScriptName, bool bDefined)
-{
-    auto iter = lXMLScriptInfoList_.find(sScriptName);
-    if (iter != lXMLScriptInfoList_.end())
-        lXMLScriptInfoList_.erase(iter);
-
-    if (bDefined)
-    {
-        auto iter2 = lDefinedHandlerList_.find(sScriptName);
-        if (iter2 != lDefinedHandlerList_.end())
-            lDefinedHandlerList_.erase(iter2);
-
-        lDefinedScriptList_[sScriptName] = "";
-    } else
-        lDefinedScriptList_.erase(sScriptName);
+    // Just disable existing scripts, it may not be safe to modify the handler list
+    // if this script is being defined during a handler execution.
+    // They will be deleted later, when we know it is safe.
+    for (auto& mHandler : *iterH->second)
+        mHandler.bDisconnected = true;
 }
 
 void frame::on_event(const event& mEvent)
@@ -1255,126 +1360,36 @@ void frame::on_event(const event& mEvent)
     }
 }
 
-int l_xml_error(lua_State* pLua)
-{
-    if (!lua_isstring(pLua, -1))
-    return 0;
-
-    lua_Debug d;
-
-    lua_getstack(pLua, 1, &d);
-    lua_getinfo(pLua, "Sl", &d);
-
-    if (d.short_src[0] == '[')
-    {
-        lua_getglobal(pLua, "_xml_file_name");
-        std::string sFile = lua_tostring(pLua, -1);
-        lua_pop(pLua, 1);
-        lua_getglobal(pLua, "_xml_line_nbr");
-        uint uiLineNbr = lua_tonumber(pLua, -1);
-        lua_pop(pLua, 1);
-
-        std::string sError = sFile + ":" + utils::to_string(uiLineNbr + d.currentline - 1) + ": "
-            + std::string(lua_tostring(pLua, -1));
-
-        lua_pushstring(pLua, sError.c_str());
-    }
-    else
-    {
-        std::string sError = std::string(d.short_src) + ":" + utils::to_string(int(d.currentline)) + ": "
-            + std::string(lua_tostring(pLua, -1));
-
-        lua_pushstring(pLua, sError.c_str());
-    }
-
-    return 1;
-}
-
 void frame::on_script(const std::string& sScriptName, event* pEvent)
 {
-    auto iterH = lDefinedHandlerList_.find(sScriptName);
-    if (iterH != lDefinedHandlerList_.end())
-    {
-        if (iterH->second)
-            iterH->second(*this, pEvent);
-    }
-
-    auto iter = lDefinedScriptList_.find(sScriptName);
-    if (iter == lDefinedScriptList_.end())
+    auto iterH = lScriptHandlerList_.find(sScriptName);
+    if (iterH == lScriptHandlerList_.end())
         return;
 
-    sol::state& mLua = pManager_->get_lua();
-    lua_State* pLua = mLua.lua_state();
-
-    std::vector<sol::object> lArgs;
-
-    if (pEvent)
-    {
-        if (sScriptName == "OnEvent")
-        {
-            // Set event name
-            lArgs.emplace_back(pLua, sol::in_place, pEvent->get_name());
-        }
-
-        // Set arguments
-        for (uint i = 0; i < pEvent->get_num_param(); ++i)
-        {
-            const utils::variant& mArg = pEvent->get(i);
-            if (std::holds_alternative<utils::empty>(mArg))
-                lArgs.emplace_back(sol::lua_nil);
-            else
-                lArgs.emplace_back(pLua, sol::in_place, mArg);
-        }
-    }
-
-    std::string sAdjustedName = get_adjusted_script_name(sScriptName);
-
-    auto* pManager = pManager_; // make a copy in case the frame is deleted, we will need this
+    // Make a copy of the manager pointer: in case the frame is deleted, we will need this
+    auto* pManager = get_manager();
     auto* pOldAddOn = pManager->get_current_addon();
-    pManager->set_current_addon(pAddOn_);
+    pManager->set_current_addon(get_addon());
 
-    sol::table mSelf = mLua[sLuaName_];
-    if (mSelf == sol::lua_nil)
+    try
     {
-        std::string sError = "Lua glue object is nil";
-        gui::out << gui::error << sError << std::endl;
+        // Make a shared-ownership copy of the handler list, so that the list
+        // survives even if this frame is destroyed midway during a handler.
+        const auto lHandlerList = iterH->second;
 
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        pManager->get_event_manager()->fire_event(mEvent);
-        pManager->set_current_addon(pOldAddOn);
-        return;
+        alive_checker mChecker(this);
+
+        // Call the handlers
+        for (const auto& mHandler : *lHandlerList)
+        {
+            if (!mHandler.bDisconnected)
+                mHandler.mCallback(*this, pEvent);
+        }
     }
-
-    sol::protected_function mCallback = mSelf[sAdjustedName];
-    if (mCallback == sol::lua_nil)
+    catch (const std::exception& mException)
     {
-        std::string sError = "Lua callback "+sAdjustedName+" is nil";
-        gui::out << gui::error << sError << std::endl;
-
-        event mEvent("LUA_ERROR");
-        mEvent.add(sError);
-        pManager->get_event_manager()->fire_event(mEvent);
-        pManager->set_current_addon(pOldAddOn);
-
-        return;
-    }
-
-    // Copy info, in case frame is deleted
-    script_info mScriptInfo;
-    auto iterInfo = lXMLScriptInfoList_.find(sScriptName);
-    if (iterInfo != lXMLScriptInfoList_.end())
-        mScriptInfo = iterInfo->second;
-
-    auto mResult = mCallback(mSelf, sol::as_args(lArgs));
-    // WARNING: after this point, the frame (this) may be deleted.
-    // Do not use any member variable or member function directly.
-
-    if (!mResult.valid())
-    {
-        sol::error mError = mResult;
-
-        std::string sError = hijack_sol_error_message(mError.what(), mScriptInfo.sFile, mScriptInfo.uiLineNbr);
+        // TODO: add file/line info
+        std::string sError = mException.what();
 
         gui::out << gui::error << sError << std::endl;
 
@@ -2007,6 +2022,19 @@ void frame::update(float fDelta)
         });
 
         lChildList_.erase(mIterRemove, lChildList_.end());
+    }
+
+    // Remove disabled handlers
+    for (auto mIterList = lScriptHandlerList_.begin(); mIterList != lScriptHandlerList_.end(); ++mIterList)
+    {
+        auto& lHandlerList = *mIterList->second;
+        auto mIterRemove = std::remove_if(lHandlerList.begin(), lHandlerList.end(),
+            [](const auto& mHandler) { return mHandler.bDisconnected; });
+
+        if (mIterRemove == lHandlerList.begin())
+            mIterList = lScriptHandlerList_.erase(mIterList);
+        else
+            lHandlerList.erase(mIterRemove, lHandlerList.end());
     }
 
     float fNewWidth = get_apparent_width();

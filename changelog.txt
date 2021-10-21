@@ -24,6 +24,7 @@ Major changes:
     - the regions are created, in order of declaration in the XML file
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
+ - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
 
 Other changes:
  - general: various fixes and improvements to the build system
@@ -115,7 +116,7 @@ Other changes:
  - gui: fixed scroll_frame not propagating all size updates to its scroll child
  - gui: fixed is_visible() for layered_regions always returning false
  - gui: fixed hovered frame not updated when hide/show is called
- - gui: fixed OnEnter/OnLeave not always triggered hide/show is called
+ - gui: fixed OnEnter/OnLeave not always triggered when hide/show is called
  - gui: fixed set_alpha() not doing anything
  - gui: fixed focus_frame::set_auto_focus() not doing anything
  - xml: now parsing standard XML comments

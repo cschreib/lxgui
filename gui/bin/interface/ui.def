@@ -2,6 +2,8 @@
 <!-- PRE-DEFINITIONS -->
 <!--------------------->
 
+<d:ScriptHandler override="false"/>
+
 <d:Region name inherits="" b:virtual="false" b:setAllPoints="false" b:hidden="false">
 
     <n[.,1]:Size>
@@ -100,22 +102,22 @@
     </Frames>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
     </Scripts>
 
 </Frame>
@@ -137,26 +139,26 @@
     </PushedTextOffset>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnClick/>
-        <n[.,1]:OnDoubleClick/>
-        <n[.,1]:OnDisable/>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnable/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnClick/>
+        <n[.,1]:c[ScriptHandler]:OnDoubleClick/>
+        <n[.,1]:c[ScriptHandler]:OnDisable/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEnable/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
     </Scripts>
 
 </Button>
@@ -168,37 +170,6 @@
 
 </CheckButton>
 
-<d[Frame]:ColorSelect>
-
-    <n[.,1]:c[Texture]:ColorWheelTexture/>
-    <n[.,1]:c[Texture]:ColorWheelThumbTexture/>
-    <n[.,1]:c[Texture]:ColorValueTexture/>
-    <n[.,1]:c[Texture]:ColorValueThumbTexture/>
-
-    <n[.,1]:Scripts>
-        <n[.,1]:OnColorSelect/>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
-    </Scripts>
-
-</ColorSelect>
-
-<d[Frame]:Cooldown/>
-
 <d[Frame]:EditBox b:enableMouse="true" b:enableKeyboard="true" n:letters="0" n:blinkSpeed="0.5" b:numeric="false" b:password="false" b:multiLine="false" n:historyLines="0" b:autoFocus="false" b:ignoreArrows="false" b:positive="false" b:integer="false">
 
     <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
@@ -208,48 +179,37 @@
     <n[.,1]:TextInsets n:left="0" n:right="0" n:top="0" n:bottom="0"/>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnChar/>
-        <n[.,1]:OnCursorChanged/>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEditFocusGained/>
-        <n[.,1]:OnEditFocusLost/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEnterPressed/>
-        <n[.,1]:OnEscapePressed/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnSpacePressed/>
-        <n[.,1]:OnTabPressed/>
-        <n[.,1]:OnUpPressed/>
-        <n[.,1]:OnDownPressed/>
-        <n[.,1]:OnTextChanged/>
-        <n[.,1]:OnTextSet/>
-        <n[.,1]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnChar/>
+        <n[.,1]:c[ScriptHandler]:OnCursorChanged/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEditFocusGained/>
+        <n[.,1]:c[ScriptHandler]:OnEditFocusLost/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEnterPressed/>
+        <n[.,1]:c[ScriptHandler]:OnEscapePressed/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnSpacePressed/>
+        <n[.,1]:c[ScriptHandler]:OnTabPressed/>
+        <n[.,1]:c[ScriptHandler]:OnUpPressed/>
+        <n[.,1]:c[ScriptHandler]:OnDownPressed/>
+        <n[.,1]:c[ScriptHandler]:OnTextChanged/>
+        <n[.,1]:c[ScriptHandler]:OnTextSet/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
     </Scripts>
 
 </EditBox>
-
-<d[Frame]:MessageFrame n:fadeDuration="3.0" insertMode>
-
-    <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
-
-    <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
-        <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
-    </TextInsets>
-
-</MessageFrame>
 
 <d[Frame]:ScrollFrame>
 
@@ -258,82 +218,51 @@
     </ScrollChild>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnHorizontalScroll/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnScrollRangeChanged/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
-        <n[.,1]:OnVerticalScroll/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnHorizontalScroll/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnScrollRangeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnVerticalScroll/>
     </Scripts>
 
 </ScrollFrame>
-
-<d[Frame]:ScrollingMessageFrame b:fade="true" n:fadeDuration="3.0" n:displayDuration="10.0" n:maxLines="8">
-
-    <n[.,1]:c[FontString]:FontString name="$parentFontString"/>
-
-    <n[.,1]:TextInsets>
-        <n[*]:AbsInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
-        <n[*]:RelInset n:left="0.0" n:right="0.0" n:top="0.0" n:bottom="0.0"/>
-    </TextInsets>
-
-    <n[.,1]:Scripts>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMessageScrollChanged/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
-    </Scripts>
-
-</ScrollingMessageFrame>
 
 <d[Frame]:Slider b:enableMouse="true" n:minValue="0" n:maxValue="1" n:defaultValue="1" n:valueStep="0.1" orientation="VERTICAL" drawLayer="OVERLAY">
 
     <n[.,1]:c[Texture]:ThumbTexture name="$parentThumbTexture"/>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
-        <n[.,1]:OnValueChanged/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnValueChanged/>
     </Scripts>
 
 </Slider>
@@ -345,23 +274,23 @@
     <n[*]:./>
 
     <n[.,1]:Scripts>
-        <n[.,1]:OnDragStart/>
-        <n[.,1]:OnDragStop/>
-        <n[.,1]:OnEnter/>
-        <n[.,1]:OnEvent/>
-        <n[.,1]:OnHide/>
-        <n[.,1]:OnKeyDown/>
-        <n[.,1]:OnKeyUp/>
-        <n[.,1]:OnLeave/>
-        <n[.,1]:OnLoad/>
-        <n[.,1]:OnMouseDown/>
-        <n[.,1]:OnMouseUp/>
-        <n[.,1]:OnMouseWheel/>
-        <n[.,1]:OnReceiveDrag/>
-        <n[.,1]:OnShow/>
-        <n[.,1]:OnSizeChanged/>
-        <n[.,1]:OnUpdate/>
-        <n[.,1]:OnValueChanged/>
+        <n[.,1]:c[ScriptHandler]:OnDragStart/>
+        <n[.,1]:c[ScriptHandler]:OnDragStop/>
+        <n[.,1]:c[ScriptHandler]:OnEnter/>
+        <n[.,1]:c[ScriptHandler]:OnEvent/>
+        <n[.,1]:c[ScriptHandler]:OnHide/>
+        <n[.,1]:c[ScriptHandler]:OnKeyDown/>
+        <n[.,1]:c[ScriptHandler]:OnKeyUp/>
+        <n[.,1]:c[ScriptHandler]:OnLeave/>
+        <n[.,1]:c[ScriptHandler]:OnLoad/>
+        <n[.,1]:c[ScriptHandler]:OnMouseDown/>
+        <n[.,1]:c[ScriptHandler]:OnMouseUp/>
+        <n[.,1]:c[ScriptHandler]:OnMouseWheel/>
+        <n[.,1]:c[ScriptHandler]:OnReceiveDrag/>
+        <n[.,1]:c[ScriptHandler]:OnShow/>
+        <n[.,1]:c[ScriptHandler]:OnSizeChanged/>
+        <n[.,1]:c[ScriptHandler]:OnUpdate/>
+        <n[.,1]:c[ScriptHandler]:OnValueChanged/>
     </Scripts>
 
 </StatusBar>
