@@ -1133,9 +1133,6 @@ void frame::define_script(const std::string& sScriptName, sol::protected_functio
         if (mSelfLua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
-        // Copy info, in case frame is deleted
-        const script_info mInfoCopy = mInfo;
-
         // Call the function
         auto mResult = mHandler(mSelfLua, sol::as_args(lArgs));
         // WARNING: after this point, the frame (mSelf) may be deleted.
@@ -1146,7 +1143,7 @@ void frame::define_script(const std::string& sScriptName, sol::protected_functio
         {
             sol::error mError = mResult;
             std::string sError = hijack_sol_error_message(mError.what(),
-                mInfoCopy.sFileName, mInfoCopy.uiLineNbr);
+                mInfo.sFileName, mInfo.uiLineNbr);
 
             throw gui::exception(sError);
         }
