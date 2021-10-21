@@ -641,11 +641,13 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
 
     if (!bVirtual_)
     {
+        // Add shortcut to region as entry in Lua table
         std::string sRawName = pAddedRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            get_lua_().script(get_lua_name()+"."+sRawName+"="+pAddedRegion->get_lua_name());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = mLua[pAddedRegion->get_lua_name()];
         }
     }
 
@@ -800,11 +802,13 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
             pNewTopLevelRenderer->notify_rendered_frame(pAddedChild, true);
         }
 
+        // Add shortcut to child as entry in Lua table
         std::string sRawName = pAddedChild->get_raw_name();
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            get_lua_().script(get_lua_name()+"."+sRawName+" = "+pAddedChild->get_lua_name());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = mLua[pAddedChild->get_lua_name()];
         }
     }
 
@@ -1158,8 +1162,9 @@ void frame::define_script(const std::string& sScriptName, script_handler_functio
     auto& lHandlerList = lScriptHandlerList_[sScriptName];
     if (!bAppend)
     {
-        // Just disable for now, it may not be safe to modify the handler list
+        // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
+        // They will be deleted later, when we know it is safe.
         for (auto& mHandler : *lHandlerList)
             mHandler.bDisconnected = true;
     }
@@ -1209,8 +1214,9 @@ void frame::remove_script(const std::string& sScriptName)
     auto iterH = lScriptHandlerList_.find(sScriptName);
     if (iterH == lScriptHandlerList_.end()) return;
 
-    // Just disable for now, it may not be safe to modify the handler list
-    // if this function is being called during a handler execution.
+    // Just disable existing scripts, it may not be safe to modify the handler list
+    // if this script is being defined during a handler execution.
+    // They will be deleted later, when we know it is safe.
     for (auto& mHandler : *iterH->second)
         mHandler.bDisconnected = true;
 }
