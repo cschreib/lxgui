@@ -190,6 +190,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html">renderer</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract type for implementation specific management.  <a href="classlxgui_1_1gui_1_1renderer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds file/line information for a script.  <a href="structlxgui_1_1gui_1_1script__info.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a class="el" href="classlxgui_1_1gui_1_1frame.html#a572b07b681c82ae970aaa342b68288b0" title="Constructor.">frame</a> with scrollable content.  <a href="classlxgui_1_1gui_1_1scroll__frame.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,6 +230,9 @@ Typedefs</h2></td></tr>
 <tr class="separator:a1308bcf31e775be7a976de3806a85ba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79d1a3523c2847a3df35ee76714df655"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a79d1a3523c2847a3df35ee76714df655">bounds2i</a> = <a class="el" href="structlxgui_1_1gui_1_1bounds2.html">bounds2</a>&lt; int &gt;</td></tr>
 <tr class="separator:a79d1a3523c2847a3df35ee76714df655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd89347b2bf2120db0bb64a7cf4512ca"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a> = std::function&lt; void(<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &amp;, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a> *)&gt;</td></tr>
+<tr class="memdesc:acd89347b2bf2120db0bb64a7cf4512ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">C++ function type for UI script handlers.  <a href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">More...</a><br /></td></tr>
+<tr class="separator:acd89347b2bf2120db0bb64a7cf4512ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a051e1b11f711a4135cd59bebfbaa3c6b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> = <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; float &gt;</td></tr>
 <tr class="separator:a051e1b11f711a4135cd59bebfbaa3c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90245e4e80271e14930d27810218ba74"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a90245e4e80271e14930d27810218ba74">vector2d</a> = <a class="el" href="structlxgui_1_1gui_1_1vector2.html">vector2</a>&lt; double &gt;</td></tr>
@@ -317,8 +323,6 @@ Functions</h2></td></tr>
 <tr class="separator:af293397cfb2d6a73f0c31e49b31af7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3eb0797f9a6420072ce91cb11948d10"><td class="memItemLeft" align="right" valign="top">std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ac3eb0797f9a6420072ce91cb11948d10">operator&gt;&gt;</a> (std::istream &amp;mStream, <a class="el" href="classlxgui_1_1gui_1_1color.html">color</a> &amp;mColor)</td></tr>
 <tr class="separator:ac3eb0797f9a6420072ce91cb11948d10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad57f0ca9397db0fadf600a138b82d1ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#ad57f0ca9397db0fadf600a138b82d1ab">l_xml_error</a> (<a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *)</td></tr>
-<tr class="separator:ad57f0ca9397db0fadf600a138b82d1ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54d23357c5e1da31598468a72388e048"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">hijack_sol_error_line</a> (std::string sOriginalMessage, const std::string &amp;sFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiLineNbr)</td></tr>
 <tr class="separator:a54d23357c5e1da31598468a72388e048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6852e747fabf40d48ce04b0bd9f47128"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">hijack_sol_error_message</a> (std::string sOriginalMessage, const std::string &amp;sFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiLineNbr)</td></tr>
@@ -440,6 +444,24 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__bounds2_8hpp_source.html#l00165">165</a> of file <a class="el" href="gui__bounds2_8hpp_source.html">gui_bounds2.hpp</a>.</p>
+
+</div>
+</div>
+<a id="acd89347b2bf2120db0bb64a7cf4512ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd89347b2bf2120db0bb64a7cf4512ca">&#9670;&nbsp;</a></span>script_handler_function</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">lxgui::gui::script_handler_function</a> = typedef std::function&lt;void(<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>&amp;, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a>*)&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>C++ function type for UI script handlers. </p>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00047">47</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -933,7 +955,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01005">1005</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01017">1017</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -969,7 +991,7 @@ template&lt;typename ObjectType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01042">1042</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01054">1054</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1101,26 +1123,6 @@ template&lt;typename ObjectType &gt; </div>
 <p>@function set_key_binding </p>
 
 <p class="definition">Definition at line <a class="el" href="gui__manager__glues_8cpp_source.html#l00106">106</a> of file <a class="el" href="gui__manager__glues_8cpp_source.html">gui_manager_glues.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ad57f0ca9397db0fadf600a138b82d1ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad57f0ca9397db0fadf600a138b82d1ab">&#9670;&nbsp;</a></span>l_xml_error()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int lxgui::gui::l_xml_error </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> *&#160;</td>
-          <td class="paramname"><em>pLua</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01258">1258</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2096,7 +2098,7 @@ template&lt;typename O , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 17 2021 15:33:45 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 21 2021 18:47:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

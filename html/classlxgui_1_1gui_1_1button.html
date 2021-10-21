@@ -114,8 +114,6 @@ Public Types</h2></td></tr>
 <tr class="separator:aa6270a663b6701fe952a1efac5731fa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43e0b162e288f70795aa592937e03429"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a43e0b162e288f70795aa592937e03429">region_list_view</a> = <a class="el" href="classlxgui_1_1utils_1_1view_1_1adaptor.html">utils::view::adaptor</a>&lt; <a class="el" href="classlxgui_1_1gui_1_1frame.html#aa6270a663b6701fe952a1efac5731fa3">region_list</a>, <a class="el" href="structlxgui_1_1utils_1_1view_1_1unique__ptr__dereferencer.html">utils::view::unique_ptr_dereferencer</a>, <a class="el" href="structlxgui_1_1utils_1_1view_1_1non__null__filter.html">utils::view::non_null_filter</a> &gt;</td></tr>
 <tr class="separator:a43e0b162e288f70795aa592937e03429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaea54453573bf0f6b480b3d66401c595"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">script_handler</a> = std::function&lt; void(<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a> &amp;, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a> *)&gt;</td></tr>
-<tr class="separator:aaea54453573bf0f6b480b3d66401c595"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -386,15 +384,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3205344c298cdae69fd4ec51602c92be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a3205344c298cdae69fd4ec51602c92be">is_user_placed</a> () const</td></tr>
 <tr class="memdesc:a3205344c298cdae69fd4ec51602c92be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this frame has been moved by the user.  <a href="classlxgui_1_1gui_1_1frame.html#a3205344c298cdae69fd4ec51602c92be">More...</a><br /></td></tr>
 <tr class="separator:a3205344c298cdae69fd4ec51602c92be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39e5eac65d1d8b419213e80f0548768c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a39e5eac65d1d8b419213e80f0548768c">define_script</a> (const std::string &amp;sScriptName, const std::string &amp;sContent, const std::string &amp;sFile, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiLineNbr)</td></tr>
-<tr class="memdesc:a39e5eac65d1d8b419213e80f0548768c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a handler script to this frame.  <a href="classlxgui_1_1gui_1_1frame.html#a39e5eac65d1d8b419213e80f0548768c">More...</a><br /></td></tr>
-<tr class="separator:a39e5eac65d1d8b419213e80f0548768c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a761712da29d7ac1d21bb41b7b7592b90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a761712da29d7ac1d21bb41b7b7592b90">define_script</a> (const std::string &amp;sScriptName, const <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">script_handler</a> &amp;mHandler)</td></tr>
-<tr class="memdesc:a761712da29d7ac1d21bb41b7b7592b90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a handler script to this frame.  <a href="classlxgui_1_1gui_1_1frame.html#a761712da29d7ac1d21bb41b7b7592b90">More...</a><br /></td></tr>
-<tr class="separator:a761712da29d7ac1d21bb41b7b7592b90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac56c0b232c231aceaf87f8839fc2dd8c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac56c0b232c231aceaf87f8839fc2dd8c">notify_script_defined</a> (const std::string &amp;sScriptName, bool bDefined)</td></tr>
-<tr class="memdesc:ac56c0b232c231aceaf87f8839fc2dd8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this frame that a script has been defined.  <a href="classlxgui_1_1gui_1_1frame.html#ac56c0b232c231aceaf87f8839fc2dd8c">More...</a><br /></td></tr>
-<tr class="separator:ac56c0b232c231aceaf87f8839fc2dd8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac77603d086b646c0ade10d05678c0a8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ac77603d086b646c0ade10d05678c0a8d">add_script</a> (const std::string &amp;sScriptName, const std::string &amp;sContent, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:ac77603d086b646c0ade10d05678c0a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an additional handler script to this frame (executed after existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#ac77603d086b646c0ade10d05678c0a8d">More...</a><br /></td></tr>
+<tr class="separator:ac77603d086b646c0ade10d05678c0a8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f7ab703ff1b6aee55f986e27468a13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a64f7ab703ff1b6aee55f986e27468a13">add_script</a> (const std::string &amp;sScriptName, sol::protected_function mHandler, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:a64f7ab703ff1b6aee55f986e27468a13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an additional handler script to this frame (executed after existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#a64f7ab703ff1b6aee55f986e27468a13">More...</a><br /></td></tr>
+<tr class="separator:a64f7ab703ff1b6aee55f986e27468a13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa696b002a01e2309ac72589bbbebcd6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aa696b002a01e2309ac72589bbbebcd6f">add_script</a> (const std::string &amp;sScriptName, <a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a> mHandler, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:aa696b002a01e2309ac72589bbbebcd6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an additional handler script to this frame (executed after existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#aa696b002a01e2309ac72589bbbebcd6f">More...</a><br /></td></tr>
+<tr class="separator:aa696b002a01e2309ac72589bbbebcd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4843cdcf6e88b1c929ee16fc9f7e9f0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a4843cdcf6e88b1c929ee16fc9f7e9f0c">set_script</a> (const std::string &amp;sScriptName, const std::string &amp;sContent, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:a4843cdcf6e88b1c929ee16fc9f7e9f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new handler script for this frame (replacing existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#a4843cdcf6e88b1c929ee16fc9f7e9f0c">More...</a><br /></td></tr>
+<tr class="separator:a4843cdcf6e88b1c929ee16fc9f7e9f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aad3abdb42935b99c1959806d93e04c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a2aad3abdb42935b99c1959806d93e04c">set_script</a> (const std::string &amp;sScriptName, sol::protected_function mHandler, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:a2aad3abdb42935b99c1959806d93e04c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new handler script for this frame (replacing existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#a2aad3abdb42935b99c1959806d93e04c">More...</a><br /></td></tr>
+<tr class="separator:a2aad3abdb42935b99c1959806d93e04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b480dbf083ad010743db4f0ecd48b95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a1b480dbf083ad010743db4f0ecd48b95">set_script</a> (const std::string &amp;sScriptName, <a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a> mHandler, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo=<a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{})</td></tr>
+<tr class="memdesc:a1b480dbf083ad010743db4f0ecd48b95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a new handler script for this frame (replacing existing scripts).  <a href="classlxgui_1_1gui_1_1frame.html#a1b480dbf083ad010743db4f0ecd48b95">More...</a><br /></td></tr>
+<tr class="separator:a1b480dbf083ad010743db4f0ecd48b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ecb1e082c399e36b38d51168fa78b04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a7ecb1e082c399e36b38d51168fa78b04">remove_script</a> (const std::string &amp;sScriptName)</td></tr>
+<tr class="memdesc:a7ecb1e082c399e36b38d51168fa78b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a script from this frame.  <a href="classlxgui_1_1gui_1_1frame.html#a7ecb1e082c399e36b38d51168fa78b04">More...</a><br /></td></tr>
+<tr class="separator:a7ecb1e082c399e36b38d51168fa78b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a87bb1afd57c9509db7859ac4bb3f67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a1a87bb1afd57c9509db7859ac4bb3f67">register_all_events</a> ()</td></tr>
 <tr class="memdesc:a1a87bb1afd57c9509db7859ac4bb3f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells this frame to react to every event in the game.  <a href="classlxgui_1_1gui_1_1frame.html#a1a87bb1afd57c9509db7859ac4bb3f67">More...</a><br /></td></tr>
 <tr class="separator:a1a87bb1afd57c9509db7859ac4bb3f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -809,6 +819,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a6f63e66f4df6972e1a9667d135661630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32571465039fd359ae40f9e6a69a5cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#af32571465039fd359ae40f9e6a69a5cb">update_mouse_in_frame_</a> ()</td></tr>
 <tr class="separator:af32571465039fd359ae40f9e6a69a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecb947525f3b5b589ea15222e106109d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#aecb947525f3b5b589ea15222e106109d">define_script_</a> (const std::string &amp;sScriptName, const std::string &amp;sContent, bool bAppend, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo)</td></tr>
+<tr class="separator:aecb947525f3b5b589ea15222e106109d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20e8f0f2f3a088818886b246b6c6d7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ad20e8f0f2f3a088818886b246b6c6d7d">define_script_</a> (const std::string &amp;sScriptName, sol::protected_function mHandler, bool bAppend, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo)</td></tr>
+<tr class="separator:ad20e8f0f2f3a088818886b246b6c6d7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf30c5f180f4d40bb48743036216bcef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#abf30c5f180f4d40bb48743036216bcef">define_script_</a> (const std::string &amp;sScriptName, <a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a> mHandler, bool bAppend, const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;mInfo)</td></tr>
+<tr class="separator:abf30c5f180f4d40bb48743036216bcef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f2b80df38bb508370684591a440d539"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a9f2b80df38bb508370684591a440d539">set_event_manager</a> (<a class="el" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a> *pManager)</td></tr>
 <tr class="separator:a9f2b80df38bb508370684591a440d539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a40236c7e7a768f28c17beb21b1910f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a7a40236c7e7a768f28c17beb21b1910f">parse_size_block_</a> (<a class="el" href="classlxgui_1_1xml_1_1block.html">xml::block</a> *pBlock)</td></tr>
@@ -865,12 +881,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a25db7e94f873f5fbd600d34305aa3f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a300016a24a89e400084661465ed85ac0"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structlxgui_1_1gui_1_1layer.html">layer</a>, <a class="el" href="classlxgui_1_1gui_1_1frame.html#a6ba25a6fa9005bb6341864b3bb67f115">num_layers</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a300016a24a89e400084661465ed85ac0">lLayerList_</a></td></tr>
 <tr class="separator:a300016a24a89e400084661465ed85ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bd02e0594ad496d3623b227b2f3e731"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a9bd02e0594ad496d3623b227b2f3e731">lDefinedScriptList_</a></td></tr>
-<tr class="separator:a9bd02e0594ad496d3623b227b2f3e731"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09eeae80c911f9f7cd87170453ab158e"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1script__info.html">script_info</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a09eeae80c911f9f7cd87170453ab158e">lXMLScriptInfoList_</a></td></tr>
-<tr class="separator:a09eeae80c911f9f7cd87170453ab158e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6c35e2f60602d93e332eca47c03a3e7"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">script_handler</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#ad6c35e2f60602d93e332eca47c03a3e7">lDefinedHandlerList_</a></td></tr>
-<tr class="separator:ad6c35e2f60602d93e332eca47c03a3e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd6a13b1fbc2f2bb76c42232b647b70"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::shared_ptr&lt; std::list&lt; <a class="el" href="structlxgui_1_1gui_1_1frame_1_1script__handler__slot.html">script_handler_slot</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#abbd6a13b1fbc2f2bb76c42232b647b70">lScriptHandlerList_</a></td></tr>
+<tr class="separator:abbd6a13b1fbc2f2bb76c42232b647b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59f35c565e0f28f4fa5a2849bd1186e1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a59f35c565e0f28f4fa5a2849bd1186e1">lQueuedEventList_</a></td></tr>
 <tr class="separator:a59f35c565e0f28f4fa5a2849bd1186e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161f532c5173becea0dab30a91281306"><td class="memItemLeft" align="right" valign="top">std::set&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1frame.html#a161f532c5173becea0dab30a91281306">lRegEventList_</a></td></tr>
@@ -1045,7 +1057,7 @@ Static Protected Attributes</h2></td></tr>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00206">206</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00220">220</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1069,7 +1081,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00209">209</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00223">223</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1115,7 @@ Static Protected Attributes</h2></td></tr>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00219">219</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00233">233</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1127,31 +1139,7 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00222">222</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
-
-</div>
-</div>
-<a id="aaea54453573bf0f6b480b3d66401c595"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaea54453573bf0f6b480b3d66401c595">&#9670;&nbsp;</a></span>script_handler</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">lxgui::gui::frame::script_handler</a> =  std::function&lt;void(<a class="el" href="classlxgui_1_1gui_1_1frame.html">frame</a>&amp;, <a class="el" href="classlxgui_1_1gui_1_1event.html">event</a>*)&gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00601">601</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00236">236</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1249,7 +1237,7 @@ Static Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00754">754</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00764">764</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1287,7 +1275,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00389">389</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00403">403</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1315,7 +1303,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01637">1637</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01652">1652</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1351,7 +1339,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00611">611</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00619">619</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1389,7 +1377,172 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00307">307</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00321">321</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ac77603d086b646c0ade10d05678c0a8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac77603d086b646c0ade10d05678c0a8d">&#9670;&nbsp;</a></span>add_script() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::add_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sContent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an additional handler script to this frame (executed after existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">sContent</td><td>The content ot the script, as Lua code </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The <a class="el" href="structlxgui_1_1gui_1_1script__info.html" title="Holds file/line information for a script.">script_info</a> parameter is used only for displaying error messages. This function is meant to be used by the XML parser. If you want to manually define your own script handlers, prefer the other overloads. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00613">613</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aa696b002a01e2309ac72589bbbebcd6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa696b002a01e2309ac72589bbbebcd6f">&#9670;&nbsp;</a></span>add_script() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::add_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a>&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an additional handler script to this frame (executed after existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">mHandler</td><td>The handler of the script, as a C++ function </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This defines a C++ function to be called for the event specified in sScriptName. This provides the best performance, but lacks direct access to the Lua environment. If this is required, prefer the other overload taking a Lua function instead. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00643">643</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a64f7ab703ff1b6aee55f986e27468a13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64f7ab703ff1b6aee55f986e27468a13">&#9670;&nbsp;</a></span>add_script() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::add_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::protected_function&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an additional handler script to this frame (executed after existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">mHandler</td><td>The handler of the script, as a Lua function </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This defines a Lua function to be called for the event specified in sScriptName. This provides more flexibility compared to using C++ function, but also has a larger overhead. If performance is a concern, prefer the other overload taking a C++ function instead. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00628">628</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1610,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Checks if this frame's position is valid. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00420">420</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00419">419</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1585,7 +1738,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 This function takes care of the basic initializing : you can directly use the created frame. However, you still need to call <a class="el" href="classlxgui_1_1gui_1_1frame.html#aba96b4404ecd847ce9df743aa68aa046" title="Notifies this widget that it has been fully loaded.">notify_loaded()</a> when you are done with any extra initialization you require on this frame. If you do not, the frame's OnLoad callback will not fire. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00708">708</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00718">718</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -1638,7 +1791,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dd>
 This function takes care of the basic initializing : you can directly use the created frame. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00375">375</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00389">389</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -1951,7 +2104,7 @@ template&lt;typename T &gt; </div>
 <dd>
 This function takes care of the basic initializing : you can directly use the created region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00674">674</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00684">684</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2011,7 +2164,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dd>
 This function takes care of the basic initializing : you can directly use the created region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00345">345</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00359">359</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -2041,12 +2194,12 @@ This function takes care of the basic initializing : you can directly use the cr
 <p>Creates a new title region for this frame. </p>
 <dl class="section note"><dt>Note</dt><dd>You can get it by calling <a class="el" href="classlxgui_1_1gui_1_1frame.html#a743b1325b3ff7f52986cbb6785f7f868" title="Returns this frame&#39;s title region.">get_title_region()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00334">334</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00333">333</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a761712da29d7ac1d21bb41b7b7592b90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a761712da29d7ac1d21bb41b7b7592b90">&#9670;&nbsp;</a></span>define_script() <span class="overload">[1/2]</span></h2>
+<a id="aecb947525f3b5b589ea15222e106109d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecb947525f3b5b589ea15222e106109d">&#9670;&nbsp;</a></span>define_script_() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2055,54 +2208,7 @@ This function takes care of the basic initializing : you can directly use the cr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void lxgui::gui::frame::define_script </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sScriptName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">script_handler</a> &amp;&#160;</td>
-          <td class="paramname"><em>mHandler</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Registers a handler script to this frame. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sScriptName</td><td>The name of the script </td></tr>
-    <tr><td class="paramname">mHandler</td><td>The handler ot the script </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01093">1093</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
-
-</div>
-</div>
-<a id="a39e5eac65d1d8b419213e80f0548768c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39e5eac65d1d8b419213e80f0548768c">&#9670;&nbsp;</a></span>define_script() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame::define_script </td>
+          <td class="memname">void lxgui::gui::frame::define_script_ </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>sScriptName</em>, </td>
@@ -2116,14 +2222,14 @@ This function takes care of the basic initializing : you can directly use the cr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sFile</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bAppend</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiLineNbr</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2133,24 +2239,112 @@ This function takes care of the basic initializing : you can directly use the cr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Registers a handler script to this frame. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sScriptName</td><td>The name of the script </td></tr>
-    <tr><td class="paramname">sContent</td><td>The content ot the script </td></tr>
-    <tr><td class="paramname">sFile</td><td>The file in which this script has been found </td></tr>
-    <tr><td class="paramname">uiLineNbr</td><td>The line number at which this script is located in the file </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>The last two informations are required for error messages. </dd></dl>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01068">1068</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01056">1056</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+</div>
+</div>
+<a id="abf30c5f180f4d40bb48743036216bcef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf30c5f180f4d40bb48743036216bcef">&#9670;&nbsp;</a></span>define_script_() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::define_script_ </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a>&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bAppend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01159">1159</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+
+</div>
+</div>
+<a id="ad20e8f0f2f3a088818886b246b6c6d7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20e8f0f2f3a088818886b246b6c6d7d">&#9670;&nbsp;</a></span>define_script_() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::define_script_ </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::protected_function&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>bAppend</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01103">1103</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2285,7 +2479,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00507">507</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00506">506</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2352,7 +2546,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00517">517</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00516">516</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2390,7 +2584,7 @@ This function takes care of the basic initializing : you can directly use the cr
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a81774f19152943c2d6e86b258bbb3328">lxgui::gui::edit_box</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00527">527</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00526">526</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2437,7 +2631,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00546">546</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00545">545</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2473,7 +2667,7 @@ This function takes care of the basic initializing : you can directly use the cr
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00574">574</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00573">573</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2534,7 +2728,7 @@ This function takes care of the basic initializing : you can directly use the cr
 <p>Returns this frame's absolute hit rect insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's absolute hit rect insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00891">891</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00903">903</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2596,7 +2790,7 @@ This function takes care of the basic initializing : you can directly use the cr
 <dl class="section return"><dt>Returns</dt><dd>This frame's addon </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Returns "nullptr" if the frame has been created by Lua code and wasn't assigned a parent. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01861">1861</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01876">1876</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2633,7 +2827,7 @@ This function takes care of the basic initializing : you can directly use the cr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the snake_case name of the script </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00989">989</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01001">1001</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2813,7 +3007,7 @@ This function takes care of the basic initializing : you can directly use the cr
 <p>Returns this frame's backdrop. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's backdrop </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00876">876</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00888">888</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -2993,7 +3187,7 @@ This function takes care of the basic initializing : you can directly use the cr
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00364">364</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00363">363</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3033,7 +3227,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's children </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no child is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00424">424</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -3063,7 +3257,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the child list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The child list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00845">845</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00857">857</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3159,7 +3353,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Calculates effective alpha. </p>
 <dl class="section return"><dt>Returns</dt><dd>Effective alpha (alpha*parent-&gt;alpha) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00850">850</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00862">862</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3189,7 +3383,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Calculates effective scale. </p>
 <dl class="section return"><dt>Returns</dt><dd>Effective scale (scale*parent-&gt;scale) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00858">858</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00870">870</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3219,7 +3413,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's strata. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's strata </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00871">871</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00883">883</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3249,7 +3443,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's type. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's type (Frame, Slider, ...) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00886">886</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00898">898</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3383,7 +3577,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's level. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00866">866</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00878">878</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3555,7 +3749,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's max dimensions. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's max dimensions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00901">901</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00913">913</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3585,7 +3779,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns this frame's min dimensions. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's min dimensions </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00906">906</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00918">918</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3689,7 +3883,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the number of children of this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of children of this frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00911">911</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00923">923</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -3749,7 +3943,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <p>Returns the number of region of this frame. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of region of this frame </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00916">916</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00928">928</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4047,7 +4241,7 @@ template&lt;typename frame_type , typename enable  = typename std::enable_if&lt;
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's region </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no region is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00384">384</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00383">383</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4087,7 +4281,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dl class="section return"><dt>Returns</dt><dd>One of this frame's region </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>The provided name can either be the full name or the relative name (i.e. without the "$parent" in front). This function first looks for matches on the full name, then if no region is found, on the relative name. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00453">453</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00467">467</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -4117,7 +4311,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Returns the region list. </p>
 <dl class="section return"><dt>Returns</dt><dd>The region list </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00379">379</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00378">378</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4147,7 +4341,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Returns this frame's relative hit rect insets. </p>
 <dl class="section return"><dt>Returns</dt><dd>This frame's relative hit rect insets </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00896">896</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00908">908</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4178,7 +4372,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dl class="section return"><dt>Returns</dt><dd>The renderer of this object, nullptr if none </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>For more informations, see <a class="el" href="classlxgui_1_1gui_1_1frame.html#a87f74526adfeea3ccfcb88ab3e31cce8" title="Flags this object as rendered by another object.">set_renderer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01703">1703</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01718">1718</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4239,7 +4433,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <dl class="section return"><dt>Returns</dt><dd>This frame's scale </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>If you want it's true scale on the screen, use <a class="el" href="classlxgui_1_1gui_1_1frame.html#ac2479edb579f17595e2daf696397360c" title="Calculates effective scale.">get_effective_scale()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00921">921</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00933">933</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4290,7 +4484,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Returns this frame's title region. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00926">926</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00938">938</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4384,7 +4578,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#ab0243542aa9877e4381f584214b1b419">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01708">1708</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01723">1723</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4421,7 +4615,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this script is defined </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00605">605</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00604">604</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4453,7 +4647,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a98e6af6fd9584177f5bdf8823a1432d9">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01802">1802</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01817">1817</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4575,7 +4769,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame is clamped to screen. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame is clamed to screen </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00931">931</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00943">943</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4647,7 +4841,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#ab73ed9a9bc6d8bc9ecabef2c8ee5575a">lxgui::gui::slider</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a2a2127cf2851c820d46d1e6234e95753">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00936">936</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00948">948</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4725,7 +4919,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive keyboard input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive keyboard input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00949">949</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00961">961</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4755,7 +4949,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive mouse input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive mouse input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00954">954</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00966">966</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4785,7 +4979,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can receive mouse wheel input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can receive mouse wheel input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00964">964</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00976">976</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4815,7 +5009,7 @@ template&lt;typename region_type , typename enable  = typename std::enable_if&lt
 <p>Checks if this frame can be moved. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can be moved </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00969">969</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00981">981</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -4945,7 +5139,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame can be resized. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame can be resized </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00974">974</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00986">986</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5036,7 +5230,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame is at top level. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame is at top level </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00979">979</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00991">991</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5066,7 +5260,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame has been moved by the user. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame has been moved by the user </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00984">984</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00996">996</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5159,7 +5353,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Checks if this frame allows world input. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if this frame allows world input </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00959">959</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00971">971</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5385,7 +5579,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a1890da040ad7ed3769d896314a057836">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01751">1751</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01766">1766</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5415,7 +5609,7 @@ template&lt;typename ObjectType &gt; </div>
 <p>Tells this frame to rebuild its layer list. </p>
 <dl class="section note"><dt>Note</dt><dd>Automatically called by <a class="el" href="classlxgui_1_1gui_1_1frame.html#a58cc214303b29cfea9b49f148a8d0aac" title="Adds a layered_region to this frame&#39;s children.">add_region()</a>, <a class="el" href="classlxgui_1_1gui_1_1frame.html#a3b4d88093d2b57bd36ed3f80098a3125" title="Removes a layered_region from this frame&#39;s children.">remove_region()</a>, and <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#a8cdfc0ebb64140c7239c2f85f39e5849" title="Sets this layered_region&#39;s draw layer.">layered_region::set_draw_layer()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00600">600</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00599">599</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5447,7 +5641,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a26baab6a36895d38a51d69e5e2eafdbd">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00587">587</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00586">586</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5504,7 +5698,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#abf710550cea8e4d3f752c27abe8bf1c0">lxgui::gui::slider</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a0213b5311f9a896dd64cbe8490cd2cfe">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01869">1869</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01884">1884</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5536,7 +5730,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a20489d6888de8bb52ca8c879b94087d1">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01779">1779</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01794">1794</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5568,53 +5762,6 @@ template&lt;typename ObjectType &gt; </div>
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1edit__box.html#a124fb4433aaad85f96a8d77fa28a737b">lxgui::gui::edit_box</a>, <a class="el" href="classlxgui_1_1gui_1_1font__string.html#a8d5594772c1807c045a007d443729fc0">lxgui::gui::font_string</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a5cf2b514a4541f2764c08f8dbdcfe86e">lxgui::gui::scroll_frame</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8cpp_source.html#l01051">1051</a> of file <a class="el" href="gui__uiobject_8cpp_source.html">gui_uiobject.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ac56c0b232c231aceaf87f8839fc2dd8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac56c0b232c231aceaf87f8839fc2dd8c">&#9670;&nbsp;</a></span>notify_script_defined()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::frame::notify_script_defined </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>sScriptName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>bDefined</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tells this frame that a script has been defined. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sScriptName</td><td>The name of the script </td></tr>
-    <tr><td class="paramname">bDefined</td><td>'true' if the script is defined </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01102">1102</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5652,7 +5799,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01768">1768</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01783">1783</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -5691,7 +5838,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#abee3acb291cb5c470a28f06501e71b02">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01728">1728</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01743">1743</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6189,7 +6336,7 @@ template&lt;typename ObjectType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01677">1677</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01692">1692</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6323,7 +6470,7 @@ template&lt;typename ObjectType &gt; </div>
 <dd>
 Only works for top level frames. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01615">1615</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01630">1630</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6414,7 +6561,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Tells this frame to react to every event in the game. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01389">1389</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01404">1404</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6452,7 +6599,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">lxgui::gui::event_receiver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01395">1395</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01410">1410</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6488,7 +6635,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01406">1406</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01421">1421</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6582,7 +6729,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a395ae6dd405107c1cc31fb07a11da1de">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01584">1584</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01599">1599</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6619,7 +6766,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the child, ignore it to destroy the child. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00806">806</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00818">818</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6685,7 +6832,44 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A unique_ptr to the region, ignore it to destroy the region. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00647">647</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00657">657</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a7ecb1e082c399e36b38d51168fa78b04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ecb1e082c399e36b38d51168fa78b04">&#9670;&nbsp;</a></span>remove_script()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::remove_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Removes a script from this frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This removes all handler scripts registered to this event, including the ones inherited from templates. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01212">1212</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6716,7 +6900,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Implements <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5b2653e4cf1e11947a4b18f5007499b2">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00055">55</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00062">62</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6902,7 +7086,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a64facd950e17e8a833215d1a2d4c5c7d">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00402">402</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00401">401</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6940,7 +7124,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a54e579037d3048f0d1d0609f77bb25d4">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00415">415</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00414">414</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -6977,7 +7161,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01489">1489</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01504">1504</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7039,7 +7223,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01484">1484</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01499">1499</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7206,7 +7390,7 @@ Only works for top level frames. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#aded61ed4549c6e5fc447517f5fd5b5fc">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00410">410</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l00409">409</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7242,7 +7426,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01849">1849</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01864">1864</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7390,7 +7574,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01478">1478</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01493">1493</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7427,7 +7611,7 @@ Only works for top level frames. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>If 'true', the frame can't go out of the screen. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01413">1413</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01428">1428</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7547,7 +7731,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01437">1437</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01452">1452</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7583,7 +7767,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01418">1418</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01433">1433</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7712,7 +7896,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01504">1504</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01519">1519</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7748,7 +7932,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01539">1539</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01554">1554</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7784,7 +7968,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01521">1521</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01536">1536</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7831,7 +8015,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01515">1515</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01530">1530</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7867,7 +8051,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01550">1550</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01565">1565</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7903,7 +8087,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01561">1561</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01576">1576</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7939,7 +8123,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01533">1533</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01548">1548</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -7986,7 +8170,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01527">1527</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01542">1542</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8022,7 +8206,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01570">1570</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01585">1585</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8058,7 +8242,7 @@ Only works for top level frames. </dd></dl>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01579">1579</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01594">1594</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8480,7 +8664,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01499">1499</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01514">1514</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8542,7 +8726,7 @@ This function is only called on objects created in Lua. </dd></dl>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>This is the zone on which you can click. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01494">1494</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01509">1509</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8748,7 +8932,7 @@ The renderer also takes care of providing inputs. </dd>
 <dd>
 If the renderer is set to nullptr, the frame will inherit the renderer of its parent. If the frame has no parent, this will default to the <a class="el" href="classlxgui_1_1gui_1_1manager.html" title="Manages the user interface.">gui::manager</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01689">1689</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01704">1704</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8784,7 +8968,7 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01592">1592</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01607">1607</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8820,7 +9004,172 @@ If the renderer is set to nullptr, the frame will inherit the renderer of its pa
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01597">1597</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01612">1612</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a4843cdcf6e88b1c929ee16fc9f7e9f0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4843cdcf6e88b1c929ee16fc9f7e9f0c">&#9670;&nbsp;</a></span>set_script() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::set_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sContent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets a new handler script for this frame (replacing existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">sContent</td><td>The content ot the script, as Lua code </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>The <a class="el" href="structlxgui_1_1gui_1_1script__info.html" title="Holds file/line information for a script.">script_info</a> parameter is used only for displaying error messages. This function is meant to be used by the XML parser. If you want to manually define your own script handlers, prefer the other overloads. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00657">657</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a1b480dbf083ad010743db4f0ecd48b95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b480dbf083ad010743db4f0ecd48b95">&#9670;&nbsp;</a></span>set_script() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::set_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacelxgui_1_1gui.html#acd89347b2bf2120db0bb64a7cf4512ca">script_handler_function</a>&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets a new handler script for this frame (replacing existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">mHandler</td><td>The handler of the script, as a C++ function </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This defines a C++ function to be called for the event specified in sScriptName. This provides the best performance, but lacks direct access to the Lua environment. If this is required, prefer the other overload taking a Lua function instead. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00687">687</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a2aad3abdb42935b99c1959806d93e04c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aad3abdb42935b99c1959806d93e04c">&#9670;&nbsp;</a></span>set_script() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void lxgui::gui::frame::set_script </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>sScriptName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::protected_function&#160;</td>
+          <td class="paramname"><em>mHandler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a> &amp;&#160;</td>
+          <td class="paramname"><em>mInfo</em> = <code><a class="el" href="structlxgui_1_1gui_1_1script__info.html">script_info</a>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets a new handler script for this frame (replacing existing scripts). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sScriptName</td><td>The name of the script (e.g., "OnEvent") </td></tr>
+    <tr><td class="paramname">mHandler</td><td>The handler of the script, as a Lua function </td></tr>
+    <tr><td class="paramname">mInfo</td><td>The location where this script has been defined </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This defines a Lua function to be called for the event specified in sScriptName. This provides more flexibility compared to using C++ function, but also has a larger overhead. If performance is a concern, prefer the other overload taking a C++ function instead. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00672">672</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -8861,7 +9210,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5bbb05d97ff563300cee35de56af7896">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01817">1817</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01832">1832</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8963,7 +9312,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01604">1604</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01619">1619</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -8999,7 +9348,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01649">1649</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01664">1664</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9061,7 +9410,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c70259c29d6a03ebb9e6d">lxgui::gui::uiobject</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01787">1787</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01802">1802</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9090,7 +9439,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Starts moving this frame with the mouse. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01654">1654</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01669">1669</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9126,7 +9475,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01666">1666</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01681">1681</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9155,7 +9504,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>ends moving this frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01660">1660</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01675">1675</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9184,7 +9533,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>ends resizing this frame. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01672">1672</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01687">1687</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9264,7 +9613,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Tells the frame not to react to all events. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01828">1828</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01843">1843</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9302,7 +9651,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">lxgui::gui::event_receiver</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01834">1834</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01849">1849</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9343,7 +9692,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1slider.html#a89c7bf5a6baea2b293ef0416e87fdb19">lxgui::gui::slider</a>, <a class="el" href="classlxgui_1_1gui_1_1status__bar.html#ae6643cd4c97b14fca653c3c41d954a87">lxgui::gui::status_bar</a>, and <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#ac19f5eabb4adfd17e727e47f4e0761bf">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01923">1923</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01938">1938</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9401,7 +9750,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 
 <p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1scroll__frame.html#a6bf572d1af1cf1ad9446f94ae46c8d2e">lxgui::gui::scroll_frame</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01903">1903</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01918">1918</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9428,7 +9777,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01917">1917</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8cpp_source.html#l01932">1932</a> of file <a class="el" href="gui__frame_8cpp_source.html">gui_frame.cpp</a>.</p>
 
 </div>
 </div>
@@ -9453,7 +9802,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00987">987</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01079">1079</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9477,7 +9826,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00994">994</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01086">1086</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9501,7 +9850,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00983">983</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01075">1075</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9573,7 +9922,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00990">990</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01082">1082</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9597,7 +9946,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00985">985</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01077">1077</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9621,7 +9970,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00986">986</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01078">1078</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9645,7 +9994,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00988">988</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01080">1080</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9669,7 +10018,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00989">989</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01081">1081</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9693,7 +10042,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00991">991</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01083">1083</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9741,7 +10090,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00977">977</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01069">1069</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9765,7 +10114,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00992">992</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01084">1084</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9861,7 +10210,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01015">1015</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01107">1107</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9885,7 +10234,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01009">1009</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01101">1101</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -9909,7 +10258,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01010">1010</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01102">1102</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10149,7 +10498,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01002">1002</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01094">1094</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10173,7 +10522,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01000">1000</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01092">1092</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10197,7 +10546,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01001">1001</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01093">1093</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10221,7 +10570,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00999">999</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01091">1091</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10245,7 +10594,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01011">1011</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01103">1103</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10269,7 +10618,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01011">1011</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01103">1103</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10293,7 +10642,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01005">1005</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01097">1097</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10317,7 +10666,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01004">1004</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01096">1096</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10341,7 +10690,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01007">1007</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01099">1099</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10365,7 +10714,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00974">974</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01066">1066</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10389,7 +10738,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00996">996</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01088">1088</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10485,7 +10834,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00956">956</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01045">1045</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10510,54 +10859,6 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00779">779</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="ad6c35e2f60602d93e332eca47c03a3e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6c35e2f60602d93e332eca47c03a3e7">&#9670;&nbsp;</a></span>lDefinedHandlerList_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;std::string, <a class="el" href="classlxgui_1_1gui_1_1frame.html#aaea54453573bf0f6b480b3d66401c595">script_handler</a>&gt; lxgui::gui::frame::lDefinedHandlerList_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00965">965</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a9bd02e0594ad496d3623b227b2f3e731"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bd02e0594ad496d3623b227b2f3e731">&#9670;&nbsp;</a></span>lDefinedScriptList_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;std::string, std::string&gt; lxgui::gui::frame::lDefinedScriptList_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00963">963</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10605,7 +10906,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00961">961</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01050">1050</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10653,7 +10954,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00967">967</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01060">1060</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10677,7 +10978,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00969">969</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01062">1062</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10701,7 +11002,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00968">968</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01061">1061</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10725,7 +11026,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00957">957</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01046">1046</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10749,7 +11050,31 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00997">997</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01089">1089</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+
+</div>
+</div>
+<a id="abbd6a13b1fbc2f2bb76c42232b647b70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd6a13b1fbc2f2bb76c42232b647b70">&#9670;&nbsp;</a></span>lScriptHandlerList_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;std::string, std::shared_ptr&lt;std::list&lt;<a class="el" href="structlxgui_1_1gui_1_1frame_1_1script__handler__slot.html">script_handler_slot</a>&gt; &gt; &gt; lxgui::gui::frame::lScriptHandlerList_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01058">1058</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10774,30 +11099,6 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="gui__uiobject_8hpp_source.html#l00775">775</a> of file <a class="el" href="gui__uiobject_8hpp_source.html">gui_uiobject.hpp</a>.</p>
-
-</div>
-</div>
-<a id="a09eeae80c911f9f7cd87170453ab158e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09eeae80c911f9f7cd87170453ab158e">&#9670;&nbsp;</a></span>lXMLScriptInfoList_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;std::string, <a class="el" href="structlxgui_1_1gui_1_1frame_1_1script__info.html">script_info</a>&gt; lxgui::gui::frame::lXMLScriptInfoList_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00964">964</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10869,7 +11170,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00976">976</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01068">1068</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10893,7 +11194,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00959">959</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01048">1048</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10917,7 +11218,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00972">972</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01064">1064</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -10941,7 +11242,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00981">981</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01073">1073</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -11229,7 +11530,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00979">979</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01071">1071</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -11253,7 +11554,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01013">1013</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01105">1105</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -11277,7 +11578,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l00978">978</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__frame_8hpp_source.html#l01070">1070</a> of file <a class="el" href="gui__frame_8hpp_source.html">gui_frame.hpp</a>.</p>
 
 </div>
 </div>
@@ -11410,7 +11711,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1frame.html#ae6454dee0ede362
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Oct 17 2021 15:33:45 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 21 2021 18:47:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
