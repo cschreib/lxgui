@@ -1174,15 +1174,23 @@ void frame::define_script(const std::string& sScriptName, script_handler_functio
 
     if (!is_virtual())
     {
+        bool bNeedsEventName = sScriptName == "OnEvent";
+
         // Register the function so it can be called directly from Lua
         std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+
         get_lua_()[get_lua_name()][sAdjustedName].set_function(
             [=](sol::object /*mSelfLua*/, sol::variadic_args mVArgs)
         {
-            if (mVArgs.size() > 0)
+            event mEvent;
+            bool bIsFirst = true;
+            for (auto&& mArg : mVArgs)
             {
-                event mEvent;
-                for (auto&& mArg : mVArgs)
+                if (bNeedsEventName && bIsFirst)
+                {
+                    mEvent.set_name(mArg.as<std::string>());
+                }
+                else
                 {
                     lxgui::utils::variant mVariant;
                     if (!mArg.is<sol::lua_nil_t>())
@@ -1191,10 +1199,10 @@ void frame::define_script(const std::string& sScriptName, script_handler_functio
                     mEvent.add(std::move(mVariant));
                 }
 
-                on_script(sScriptName, &mEvent);
+                bIsFirst = false;
             }
-            else
-                on_script(sScriptName, nullptr);
+
+            on_script(sScriptName, &mEvent);
         });
     }
 }
