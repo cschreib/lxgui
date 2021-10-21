@@ -176,6 +176,11 @@
 *   the inheriting frame will copy all the registered callbacks, all the
 *   child frames, and all the layered regions of the virtual frame.
 *
+*   This inheritance mechanism can be chained: a virtual frame itself can
+*   inherit from another virtual frame. It is also possible to inherit from
+*   multiple virtual frames at once, which will copy their respective content
+*   in the order they are specified.
+*
 *   Inherits all methods from: @{UIObject}.
 *
 *   Child classes: @{Button}, @{CheckButton}, @{FocusFrame}, @{EditBox},
