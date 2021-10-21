@@ -1065,7 +1065,7 @@ std::string hijack_sol_error_message(std::string sOriginalMessage, const std::st
     return sNewError;
 }
 
-void frame::define_script(const std::string& sScriptName, const std::string& sContent,
+void frame::define_script_(const std::string& sScriptName, const std::string& sContent,
     bool bAppend, const script_info& mInfo)
 {
     // Create the Lua function from the provided string
@@ -1097,10 +1097,10 @@ void frame::define_script(const std::string& sScriptName, const std::string& sCo
     sol::protected_function mHandler = mResult;
 
     // Forward it as any other Lua function
-    define_script(sScriptName, std::move(mHandler), bAppend, mInfo);
+    define_script_(sScriptName, std::move(mHandler), bAppend, mInfo);
 }
 
-void frame::define_script(const std::string& sScriptName, sol::protected_function mHandler,
+void frame::define_script_(const std::string& sScriptName, sol::protected_function mHandler,
     bool bAppend, const script_info& mInfo)
 {
     bool bAddEventName = sScriptName == "OnEvent";
@@ -1153,10 +1153,10 @@ void frame::define_script(const std::string& sScriptName, sol::protected_functio
         }
     };
 
-    define_script(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
+    define_script_(sScriptName, std::move(mWrappedHandler), bAppend, mInfo);
 }
 
-void frame::define_script(const std::string& sScriptName, script_handler_function mHandler,
+void frame::define_script_(const std::string& sScriptName, script_handler_function mHandler,
     bool bAppend, const script_info& mInfo)
 {
     auto& lHandlerList = lScriptHandlerList_[sScriptName];

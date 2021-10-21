@@ -1414,9 +1414,8 @@ int lua_frame::_set_script(lua_State* pLua)
             lua::argument* pArg = mFunc.get(1);
             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
             {
-                get_object()->define_script(sScriptName,
-                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())),
-                    false);
+                get_object()->set_script(sScriptName,
+                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
             }
             else
             {
