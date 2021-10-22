@@ -98,13 +98,13 @@ void examples_setup_gui(gui::manager& mManager)
 
     // Create the scripts for this frame
     // In Lua
-    /*pFrame->define_script("OnLoad",
+    /*pFrame->add_script("OnLoad",
         "self.update_time = 0.5;"
         "self.timer = 1.0;"
         "self.frames = 0;",
         "main.cpp", 146 // You can provide the location of the Lua source, for error handling
     );
-    pFrame->define_script("OnUpdate",
+    pFrame->add_script("OnUpdate",
         "self.timer = self.timer + arg1;"
         "self.frames = self.frames + 1;"
 

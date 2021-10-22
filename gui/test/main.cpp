@@ -578,13 +578,13 @@ int main(int argc, char* argv[])
 
         // Create the scripts
         // In Lua
-        /*pFrame->define_script("OnLoad",
+        /*pFrame->add_script("OnLoad",
             "self.update_time = 0.5;"
             "self.timer = 1.0;"
             "self.frames = 0;",
             "main.cpp", 146 // You can provide the location of the Lua source, for error handling
         );
-        pFrame->define_script("OnUpdate",
+        pFrame->add_script("OnUpdate",
             "self.timer = self.timer + arg1;"
             "self.frames = self.frames + 1;"
 
