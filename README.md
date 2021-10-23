@@ -6,7 +6,7 @@
     - [In a nutshell](#in-a-nutshell)
     - [Available GUI widgets](#available-gui-widgets)
     - [Demonstration](#demonstration)
-    - [Mandatory screenshot](#mandatory-screenshot)
+    - [Gallery](#gallery)
     - [Front-end and back-ends](#front-end-and-back-ends)
     - [Configurable rendering options](#configurable-rendering-options)
 - [Getting started](#getting-started)
@@ -65,7 +65,9 @@ A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/
 Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot below. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
 
 
-## Mandatory screenshot
+## Gallery
+
+Please head to the [screenshots page](screenshots/screenshots.md) for examples of lxgui being used in real-world projects.
 
 Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable Lua and XML files.
 
