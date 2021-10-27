@@ -1,7 +1,7 @@
-<?xml version=”1.0” encoding=”utf-8”?>
-<RuleSet Name=”Example” Description=”Enable Warnings” ToolsVersion=”10.0”>
-  <!—- Default rules available in Visual Studio -->
-  <Include Path=”NativeRecommendedRules.ruleset” Action=”Default” />
-  <Rules AnalyzerId=”Microsoft.Analyzers.NativeCodeAnalysis” RuleNamespace=”Microsoft.Rules.Native”>
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Example" Description="Enable Warnings" ToolsVersion="10.0">
+  <!-- Default rules available in Visual Studio -->
+  <Include Path="NativeRecommendedRules.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.NativeCodeAnalysis" RuleNamespace="Microsoft.Rules.Native">
   </Rules>
 </RuleSet>
