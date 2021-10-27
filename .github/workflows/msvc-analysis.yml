@@ -59,3 +59,10 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: ${{ steps.run-analysis.outputs.sarif }}
+
+      # Upload SARIF file as an Artifact to download and view
+      - name: Upload SARIF as an Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: sarif-file
+          path: ${{ steps.run-analysis.outputs.sarif }}
