@@ -127,7 +127,7 @@ jobs:
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package
-      if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
+      if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/main'
       shell: bash
       working-directory: ${{github.workspace}}/gui/bin
       run: |
@@ -135,7 +135,7 @@ jobs:
          cp lxgui-test*${{matrix.platform.suffix}}* demo/
 
     - name: Publish
-      if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/master'
+      if: matrix.platform.compiler == 'em++' && github.ref == 'refs/heads/main'
       uses: JamesIves/github-pages-deploy-action@4.1.0
       with:
         branch: gh-pages
