@@ -34,7 +34,7 @@ jobs:
       - name: Get Windows dependencies
         shell: bash
         working-directory: ${{github.workspace}}/dependencies
-        run: unzip windows-dependencies-${{compiler}}-${{arch}}.zip
+        run: unzip windows-dependencies-${{env.compiler}}-${{env.arch}}.zip
       
       - name: Configure CMake
         run: cmake -B ${{ env.build }}
