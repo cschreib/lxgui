@@ -52,7 +52,7 @@ jobs:
         with:
           cmakeBuildDirectory: ${{ env.build }}
           # Ruleset file that will determine what checks will be run
-          ruleset: NativeRecommendRules.ruleset
+          ruleset: ${{github.workspace}}/.github/workflows/NativeRecommendedRules.ruleset
 
       # Upload SARIF file to GitHub Code Scanning Alerts
       - name: Upload SARIF to GitHub
