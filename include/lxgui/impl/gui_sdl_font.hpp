@@ -91,7 +91,7 @@ namespace sdl
 
         struct character_info
         {
-            char32_t uiCodePoint;
+            char32_t uiCodePoint = 0;
             bounds2f mUVs;
             bounds2f mRect;
             float    fAdvance = 0.0f;

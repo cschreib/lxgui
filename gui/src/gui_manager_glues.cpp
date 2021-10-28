@@ -41,10 +41,10 @@ public :
 
 protected :
 
-    lua_State* pLua_;
-    int        iRef_;
+    lua_State* pLua_ = nullptr;
+    int        iRef_ = 0;
 
-    manager* pMgr_;
+    manager* pMgr_ = nullptr;
 };
 
 /** \endcond

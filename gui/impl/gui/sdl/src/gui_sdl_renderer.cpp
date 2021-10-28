@@ -133,10 +133,10 @@ ub32color to_ub32color(const color& mColor)
 
 struct sdl_render_data
 {
-    SDL_Rect mDestQuad;
-    SDL_Rect mDestDisplayQuad;
-    SDL_Rect mSrcQuad;
-    SDL_Point mCenter;
+    SDL_Rect mDestQuad = {};
+    SDL_Rect mDestDisplayQuad = {};
+    SDL_Rect mSrcQuad = {};
+    SDL_Point mCenter = {};
     int iAngle = 0;
     SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 };

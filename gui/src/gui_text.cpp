@@ -609,58 +609,63 @@ void text::render(float fX, float fY) const
 
     if (pOutlineFont_)
     {
-        const material* pMat = pOutlineFont_->get_texture().lock().get();
-        if (bUseVertexCache && pOutlineVertexCache_)
+        if (const auto pMat = pOutlineFont_->get_texture().lock())
         {
-            pRenderer_->render_cache(pMat, *pOutlineVertexCache_, matrix4f::translation(mOffset));
+            if (bUseVertexCache && pOutlineVertexCache_)
+            {
+                pRenderer_->render_cache(
+                    pMat.get(), *pOutlineVertexCache_, matrix4f::translation(mOffset));
+            }
+            else
+            {
+                std::vector<std::array<vertex,4>> lQuadsCopy = lOutlineQuadList_;
+                for (auto& mQuad : lQuadsCopy)
+                for (uint i = 0; i < 4; ++i)
+                {
+                    mQuad[i].pos += mOffset;
+                    mQuad[i].col.a *= fAlpha_;
+                }
+
+                pRenderer_->render_quads(pMat.get(), lQuadsCopy);
+            }
+        }
+    }
+
+    if (const auto pMat = pFont_->get_texture().lock())
+    {
+        if (bUseVertexCache && pVertexCache_)
+        {
+            pRenderer_->render_cache(pMat.get(), *pVertexCache_, matrix4f::translation(mOffset));
         }
         else
         {
-            std::vector<std::array<vertex,4>> lQuadsCopy = lOutlineQuadList_;
+            std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
             for (auto& mQuad : lQuadsCopy)
             for (uint i = 0; i < 4; ++i)
             {
                 mQuad[i].pos += mOffset;
+
+                if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+                {
+                    mQuad[i].col = mColor_;
+                }
+
                 mQuad[i].col.a *= fAlpha_;
             }
 
-            pRenderer_->render_quads(pMat, lQuadsCopy);
+            pRenderer_->render_quads(pMat.get(), lQuadsCopy);
         }
-    }
 
-    const material* pMat = pFont_->get_texture().lock().get();
-    if (bUseVertexCache && pVertexCache_)
-    {
-        pRenderer_->render_cache(pMat, *pVertexCache_, matrix4f::translation(mOffset));
-    }
-    else
-    {
-        std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
-        for (auto& mQuad : lQuadsCopy)
-        for (uint i = 0; i < 4; ++i)
+        for (auto mQuad : lIconsList_)
         {
-            mQuad[i].pos += mOffset;
-
-            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
+            for (uint i = 0; i < 4; ++i)
             {
-                mQuad[i].col = mColor_;
+                mQuad.v[i].pos += mOffset;
+                mQuad.v[i].col.a *= fAlpha_;
             }
 
-            mQuad[i].col.a *= fAlpha_;
+            pRenderer_->render_quad(mQuad);
         }
-
-        pRenderer_->render_quads(pMat, lQuadsCopy);
-    }
-
-    for (auto mQuad : lIconsList_)
-    {
-        for (uint i = 0; i < 4; ++i)
-        {
-            mQuad.v[i].pos += mOffset;
-            mQuad.v[i].col.a *= fAlpha_;
-        }
-
-        pRenderer_->render_quad(mQuad);
     }
 }
 
@@ -711,8 +716,8 @@ void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScal
         }
     }
 
-    const material* pMat = pFont_->get_texture().lock().get();
-    pRenderer_->render_quads(pMat, lQuadsCopy);
+    if (const auto pMat = pFont_->get_texture().lock())
+        pRenderer_->render_quads(pMat.get(), lQuadsCopy);
 }
 
 void text::notify_cache_dirty_() const

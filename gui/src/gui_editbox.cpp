@@ -1192,7 +1192,7 @@ uint edit_box::get_letter_id_at_(float fX, float fY)
             for (uint uiIndex = 0u; uiIndex < uiNumLetters; ++uiIndex)
             {
                 const auto& mQuad = pText->get_letter_quad(uiIndex);
-                if (fLocalX < 0.5*(mQuad[0].pos.x + mQuad[2].pos.x))
+                if (fLocalX < 0.5f*(mQuad[0].pos.x + mQuad[2].pos.x))
                     return uiIndex + uiDisplayPos_;
             }
 

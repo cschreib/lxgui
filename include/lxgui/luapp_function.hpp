@@ -170,9 +170,9 @@ struct argument_list
 
     argument_list() = default;
     argument_list(const argument_list&) = delete;
-    argument_list(argument_list&&) = default;
+    argument_list(argument_list&&) noexcept = default;
     argument_list& operator=(const argument_list&) = delete;
-    argument_list& operator=(argument_list&&) = default;
+    argument_list& operator=(argument_list&&) noexcept = default;
 };
 
 /// A helper to write Lua glues
