@@ -59,11 +59,12 @@ void font_string::render()
     if (bHasShadow_)
     {
         pText_->set_color(mShadowColor_, true);
-        pText_->render(fX + fShadowXOffset_, fY + fShadowYOffset_);
+        pText_->render(matrix4f::translation(
+            round_to_pixel(vector2f(fX + fShadowXOffset_, fY + fShadowYOffset_))));
     }
 
     pText_->set_color(mTextColor_);
-    pText_->render(fX, fY);
+    pText_->render(matrix4f::translation(round_to_pixel(vector2f(fX, fY))));
 }
 
 std::string font_string::serialize(const std::string& sTab) const

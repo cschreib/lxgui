@@ -592,7 +592,7 @@ void text::enable_formatting(bool bFormatting)
     }
 }
 
-void text::render(float fX, float fY) const
+void text::render(const matrix4f& mTransform) const
 {
     if (!bReady_ || sUnicodeText_.empty())
         return;
@@ -605,16 +605,13 @@ void text::render(float fX, float fY) const
 
     update_();
 
-    vector2f mOffset(round_to_pixel_(fX), round_to_pixel_(fY));
-
     if (pOutlineFont_)
     {
         if (const auto pMat = pOutlineFont_->get_texture().lock())
         {
             if (bUseVertexCache && pOutlineVertexCache_)
             {
-                pRenderer_->render_cache(
-                    pMat.get(), *pOutlineVertexCache_, matrix4f::translation(mOffset));
+                pRenderer_->render_cache(pMat.get(), *pOutlineVertexCache_, mTransform);
             }
             else
             {
@@ -622,7 +619,7 @@ void text::render(float fX, float fY) const
                 for (auto& mQuad : lQuadsCopy)
                 for (uint i = 0; i < 4; ++i)
                 {
-                    mQuad[i].pos += mOffset;
+                    mQuad[i].pos = mQuad[i].pos * mTransform;
                     mQuad[i].col.a *= fAlpha_;
                 }
 
@@ -635,7 +632,7 @@ void text::render(float fX, float fY) const
     {
         if (bUseVertexCache && pVertexCache_)
         {
-            pRenderer_->render_cache(pMat.get(), *pVertexCache_, matrix4f::translation(mOffset));
+            pRenderer_->render_cache(pMat.get(), *pVertexCache_, mTransform);
         }
         else
         {
@@ -643,7 +640,7 @@ void text::render(float fX, float fY) const
             for (auto& mQuad : lQuadsCopy)
             for (uint i = 0; i < 4; ++i)
             {
-                mQuad[i].pos += mOffset;
+                mQuad[i].pos = mQuad[i].pos * mTransform;
 
                 if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
                 {
@@ -660,64 +657,13 @@ void text::render(float fX, float fY) const
         {
             for (uint i = 0; i < 4; ++i)
             {
-                mQuad.v[i].pos += mOffset;
+                mQuad.v[i].pos = mQuad.v[i].pos * mTransform;
                 mQuad.v[i].col.a *= fAlpha_;
             }
 
             pRenderer_->render_quad(mQuad);
         }
     }
-}
-
-void text::render_ex(float fX, float fY, float fRot, float fHScale, float fVScale) const
-{
-    if (!bReady_)
-        return;
-
-    update_();
-
-    std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
-
-    if (fRot != 0.0f)
-    {
-        float cost = cos(fRot);
-        float sint = sin(fRot);
-
-        for (auto& mQuad : lQuadsCopy)
-        for (uint i = 0; i < 4; ++i)
-        {
-            float fX0 = mQuad[i].pos.x*fHScale;
-            float fY0 = mQuad[i].pos.y*fVScale;
-            mQuad[i].pos = vector2f(fX + fX0*cost - fY0*sint, fY + fX0*sint + fY0*cost);
-
-            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
-            {
-                mQuad[i].col = mColor_;
-            }
-
-            mQuad[i].col.a *= fAlpha_;
-        }
-    }
-    else
-    {
-        for (auto& mQuad : lQuadsCopy)
-        for (uint i = 0; i < 4; ++i)
-        {
-            float fX0 = mQuad[i].pos.x*fHScale;
-            float fY0 = mQuad[i].pos.y*fVScale;
-            mQuad[i].pos = vector2f(fX + fX0, fY + fY0);
-
-            if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
-            {
-                mQuad[i].col = mColor_;
-            }
-
-            mQuad[i].col.a *= fAlpha_;
-        }
-    }
-
-    if (const auto pMat = pFont_->get_texture().lock())
-        pRenderer_->render_quads(pMat.get(), lQuadsCopy);
 }
 
 void text::notify_cache_dirty_() const
