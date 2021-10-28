@@ -205,12 +205,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90a531f8ea6188b2800d01a41c83acb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a90a531f8ea6188b2800d01a41c83acb4">enable_formatting</a> (bool bFormatting)</td></tr>
 <tr class="memdesc:a90a531f8ea6188b2800d01a41c83acb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables color formatting.  <a href="classlxgui_1_1gui_1_1text.html#a90a531f8ea6188b2800d01a41c83acb4">More...</a><br /></td></tr>
 <tr class="separator:a90a531f8ea6188b2800d01a41c83acb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6486377673575ae3d4e7f9823831537"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#ad6486377673575ae3d4e7f9823831537">render</a> (float fX, float fY) const</td></tr>
-<tr class="memdesc:ad6486377673575ae3d4e7f9823831537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this text at the given position.  <a href="classlxgui_1_1gui_1_1text.html#ad6486377673575ae3d4e7f9823831537">More...</a><br /></td></tr>
-<tr class="separator:ad6486377673575ae3d4e7f9823831537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebbb5213b13fdad1f7b6a52998fe8d17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#aebbb5213b13fdad1f7b6a52998fe8d17">render_ex</a> (float fX, float fY, float fRot, float fHScale=1.0f, float fVScale=1.0f) const</td></tr>
-<tr class="memdesc:aebbb5213b13fdad1f7b6a52998fe8d17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deforms this text and render it on the current render target.  <a href="classlxgui_1_1gui_1_1text.html#aebbb5213b13fdad1f7b6a52998fe8d17">More...</a><br /></td></tr>
-<tr class="separator:aebbb5213b13fdad1f7b6a52998fe8d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f51af9092e147a65ab641d20f0ca84"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a65f51af9092e147a65ab641d20f0ca84">render</a> (const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;mTransform=<a class="el" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a>) const</td></tr>
+<tr class="memdesc:a65f51af9092e147a65ab641d20f0ca84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this text at the given position.  <a href="classlxgui_1_1gui_1_1text.html#a65f51af9092e147a65ab641d20f0ca84">More...</a><br /></td></tr>
+<tr class="separator:a65f51af9092e147a65ab641d20f0ca84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a614bc3664d1cc163bf3c8cbbb1a11ff8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1text.html#a614bc3664d1cc163bf3c8cbbb1a11ff8">get_num_letters</a> () const</td></tr>
 <tr class="memdesc:a614bc3664d1cc163bf3c8cbbb1a11ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of letters currently displayed.  <a href="classlxgui_1_1gui_1_1text.html#a614bc3664d1cc163bf3c8cbbb1a11ff8">More...</a><br /></td></tr>
 <tr class="separator:a614bc3664d1cc163bf3c8cbbb1a11ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,7 +224,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Used to draw some text on the screen. </p>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00028">28</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00029">29</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a822189712a4b311440400167d67de7a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a822189712a4b311440400167d67de7a5">&#9670;&nbsp;</a></span>alignment</h2>
@@ -254,7 +251,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a822189712a4b311440400167d67de7a5a21507b40c80068eda19865706fdc2403"></a>RIGHT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00032">32</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00033">33</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -283,7 +280,7 @@ Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a1fa19a54decf7547194c7350a828737fa1fabf63de5c96c78e2a40805bcdeb73b"></a>BOTTOM&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00039">39</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8hpp_source.html#l00040">40</a> of file <a class="el" href="gui__text_8hpp_source.html">gui_text.hpp</a>.</p>
 
 </div>
 </div>
@@ -368,7 +365,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Uses this text's font texture. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01209">1209</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01155">1155</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -676,9 +673,9 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The quad of the specified letter </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>The vertex positions in the quad do not account for the rendering position provided to <a class="el" href="classlxgui_1_1gui_1_1text.html#ad6486377673575ae3d4e7f9823831537" title="Renders this text at the given position.">render()</a>. The first letter always has its top-left corner as the position (0,0) (if left-aligned). This function may update the quad cache as needed. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>The vertex positions in the quad do not account for the rendering position provided to <a class="el" href="classlxgui_1_1gui_1_1text.html#a65f51af9092e147a65ab641d20f0ca84" title="Renders this text at the given position.">render()</a>. The first letter always has its top-left corner as the position (0,0) (if left-aligned). This function may update the quad cache as needed. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01224">1224</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01170">1170</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -745,7 +742,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The number of letters currently displayed </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This function may update the quad cache as needed. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01218">1218</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01164">1164</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -811,7 +808,7 @@ Public Member Functions</h2></td></tr>
 <p>Returns the renderer used to render this text. </p>
 <dl class="section return"><dt>Returns</dt><dd>The renderer used to render this text </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01234">1234</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l01180">1180</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -1053,8 +1050,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad6486377673575ae3d4e7f9823831537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6486377673575ae3d4e7f9823831537">&#9670;&nbsp;</a></span>render()</h2>
+<a id="a65f51af9092e147a65ab641d20f0ca84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65f51af9092e147a65ab641d20f0ca84">&#9670;&nbsp;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1062,19 +1059,9 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void lxgui::gui::text::render </td>
           <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fX</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fY</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a> &amp;&#160;</td>
+          <td class="paramname"><em>mTransform</em> = <code><a class="el" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a></code></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1087,70 +1074,9 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Must be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Begins rendering on a particular render target.">renderer::begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Ends rendering.">renderer::end()</a>. The parameters fX and fY refer to the position of the top-left corner of the text (if alignment is LEFT), the center-top of the text (if alignment is CENTER), or the the top-right corner of the text (if alignment is RIGHT). </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Must be called between <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3cb7c1c3bcf0e415f3d76e8f73755aad" title="Begins rendering on a particular render target.">renderer::begin()</a> and <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a00fba47b9588660555824a5a47e28a79" title="Ends rendering.">renderer::end()</a>. If the transform is left to the default (IDENTITY), the text will be rendered at the top-left corner of the screen, with the anchor position (coordinate [0,0]) set by the vertical and horizontal alignment (see <a class="el" href="classlxgui_1_1gui_1_1text.html#a8598605d995a9d94de835e142b4aaaf7" title="Returns the text aligment.">get_alignment()</a> and <a class="el" href="classlxgui_1_1gui_1_1text.html#adcdf35107c0f1d03c31280f668945048" title="Returns the text aligment.">get_vertical_alignment()</a>). </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00595">595</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
-
-</div>
-</div>
-<a id="aebbb5213b13fdad1f7b6a52998fe8d17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebbb5213b13fdad1f7b6a52998fe8d17">&#9670;&nbsp;</a></span>render_ex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void lxgui::gui::text::render_ex </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fX</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fY</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fRot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fHScale</em> = <code>1.0f</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>fVScale</em> = <code>1.0f</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Deforms this text and render it on the current render target. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">fX</td><td>The horizontal position </td></tr>
-    <tr><td class="paramname">fY</td><td>The vertical position </td></tr>
-    <tr><td class="paramname">fRot</td><td>The rotation to apply (angle in radian) </td></tr>
-    <tr><td class="paramname">fHScale</td><td>The horizontal scale to apply </td></tr>
-    <tr><td class="paramname">fVScale</td><td>The vertical scale to apply </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Must be called between begin() and end(). The parameters fX and fY refer to the position of the top-left corner of the text (if alignment is LEFT), the center-top of the text (if alignment is CENTER), or the the top-right corner of the text (if alignment is RIGHT). </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="gui__text_8cpp_source.html#l00672">672</a> of file <a class="el" href="gui__text_8cpp_source.html">gui_text.cpp</a>.</p>
 
 </div>
 </div>
@@ -1535,7 +1461,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 28 2021 07:58:56 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Oct 28 2021 08:46:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
