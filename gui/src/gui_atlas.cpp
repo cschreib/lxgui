@@ -66,17 +66,21 @@ bool atlas_page::add_font(const std::string& sFontName,
 {
     try
     {
-        const auto& mMat = *pFont->get_texture().lock();
-        const auto mRect = mMat.get_rect();
-        const auto mLocation = find_location_(mRect.width(), mRect.height());
-        if (!mLocation.has_value())
+        if (const auto pMat = pFont->get_texture().lock())
+        {
+            const auto mRect = pMat->get_rect();
+            const auto mLocation = find_location_(mRect.width(), mRect.height());
+            if (!mLocation.has_value())
+                return false;
+
+            std::shared_ptr<gui::material> pTex = add_material_(*pMat, mLocation.value());
+            pFont->update_texture(pTex);
+
+            lFontList_[sFontName] = pFont;
+            return true;
+        }
+        else
             return false;
-
-        std::shared_ptr<gui::material> pTex = add_material_(mMat, mLocation.value());
-        pFont->update_texture(pTex);
-
-        lFontList_[sFontName] = pFont;
-        return true;
     }
     catch (const std::exception& e)
     {
