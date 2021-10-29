@@ -56,6 +56,7 @@ jobs:
         id: run-analysis
         with:
           cmakeBuildDirectory: ${{ env.build }}
+          buildConfiguration: Release
           # Ruleset file that will determine what checks will be run
           ruleset: ${{github.workspace}}/.github/workflows/custom.ruleset
 
