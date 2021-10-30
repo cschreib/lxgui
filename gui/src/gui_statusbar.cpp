@@ -71,7 +71,7 @@ void status_bar::copy_from(uiobject* pObj)
     texture* pBar = pStatusBar->get_bar_texture();
     if (pBar)
     {
-        std::unique_ptr<texture> pBarTexture = this->create_bar_texture_();
+        auto pBarTexture = this->create_bar_texture_();
 
         if (this->is_virtual())
             pBarTexture->set_virtual();
@@ -191,7 +191,7 @@ void status_bar::set_bar_color(const color& mBarColor)
 {
     if (!pBarTexture_)
     {
-        std::unique_ptr<texture> pBarTexture = create_bar_texture_();
+        auto pBarTexture = create_bar_texture_();
         pBarTexture->set_name("$parentBarTexture");
         if (!pManager_->add_uiobject(pBarTexture.get()))
         {
@@ -281,9 +281,9 @@ bool status_bar::is_reversed() const
     return bReversed_;
 }
 
-std::unique_ptr<texture> status_bar::create_bar_texture_()
+utils::observable_unique_ptr<texture> status_bar::create_bar_texture_()
 {
-    std::unique_ptr<texture> pBarTexture(new texture(pManager_));
+    auto pBarTexture = utils::make_observable_unique<texture>(pManager_);
     pBarTexture->set_special();
     pBarTexture->set_parent(this);
     pBarTexture->set_draw_layer(mBarLayer_);

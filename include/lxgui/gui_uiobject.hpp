@@ -14,6 +14,7 @@
 #include <lxgui/luapp_lua_fwd.hpp>
 
 #include <lxgui/utils_maths.hpp>
+#include <lxgui/utils_observer.hpp>
 
 #include <array>
 #include <optional>
@@ -193,15 +194,16 @@ namespace gui
         template<typename ObjectType>
         struct id_comparator
         {
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, const std::unique_ptr<ObjectType>& pObject2) const
+            bool operator() (const utils::observable_unique_ptr<ObjectType>& pObject1,
+                const utils::observable_unique_ptr<ObjectType>& pObject2) const
             {
                 return pObject1->get_id() < pObject2->get_id();
             }
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, uint uiID) const
+            bool operator() (const utils::observable_unique_ptr<ObjectType>& pObject1, uint uiID) const
             {
                 return pObject1->get_id() < uiID;
             }
-            bool operator() (uint uiID, const std::unique_ptr<ObjectType>& pObject2) const
+            bool operator() (uint uiID, const utils::observable_unique_ptr<ObjectType>& pObject2) const
             {
                 return uiID < pObject2->get_id();
             }
@@ -289,7 +291,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        virtual std::unique_ptr<uiobject> release_from_parent();
+        virtual utils::observable_unique_ptr<uiobject> release_from_parent();
 
         /// Forcefully removes this widget from the GUI.
         /** \warning After calling this function, any pointer to the object is invalidated!
@@ -833,11 +835,10 @@ namespace gui
     *   \note See down_cast(const uiobject*) for more information.
     */
     template<typename ObjectType>
-    std::unique_ptr<ObjectType> down_cast(std::unique_ptr<uiobject> pObject)
+    utils::observable_unique_ptr<ObjectType> down_cast(utils::observable_unique_ptr<uiobject> pObject)
     {
-        ObjectType* pCasted = down_cast<ObjectType>(pObject.get());
-        pObject.release();
-        return std::unique_ptr<ObjectType>(pCasted);
+        return utils::observable_unique_ptr<ObjectType>(std::move(pObject),
+            down_cast<ObjectType>(pObject.get()));
     }
 
     /** \cond NOT_REMOVE_FROM_DOC

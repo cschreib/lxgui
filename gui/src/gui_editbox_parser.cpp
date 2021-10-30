@@ -57,7 +57,7 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
     xml::block* pFontStringBlock = pBlock->get_block("FontString");
     if (pFontStringBlock)
     {
-        std::unique_ptr<font_string> pFontString = create_font_string_();
+        auto pFontString = create_font_string_();
         pFontString->parse_block(pFontStringBlock);
 
         xml::block* pErrorBlock = pFontStringBlock->get_block("Anchors");

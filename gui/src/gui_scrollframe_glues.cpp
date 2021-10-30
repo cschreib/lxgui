@@ -201,12 +201,13 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
             }
         }
 
-        std::unique_ptr<frame> pScrollChild;
+        utils::observable_unique_ptr<frame> pScrollChild;
         if (pChild)
         {
             pScrollChild = down_cast<frame>(pChild->release_from_parent());
             pScrollChild->set_parent(get_object());
         }
+
         get_object()->set_scroll_child(std::move(pScrollChild));
     }
 

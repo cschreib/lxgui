@@ -262,7 +262,7 @@ void frame::parse_layers_block_(xml::block* pBlock)
             std::string sLevel = pLayerBlock->get_attribute("level");
             for (auto* pRegionBlock : pLayerBlock->blocks())
             {
-                std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
+                auto pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
                 if (!pRegion)
                     continue;
 

@@ -29,7 +29,7 @@ void check_button::copy_from(uiobject* pObj)
 
     if (pButton->get_checked_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_checked_texture_();
+        auto pTexture = this->create_checked_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_checked_texture()->get_name());
@@ -53,7 +53,7 @@ void check_button::copy_from(uiobject* pObj)
     }
     if (pButton->get_disabled_checked_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_disabled_checked_texture_();
+        auto pTexture = this->create_disabled_checked_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_disabled_checked_texture()->get_name());
@@ -178,9 +178,9 @@ void check_button::create_glue()
     create_glue_<lua_check_button>();
 }
 
-std::unique_ptr<texture> check_button::create_checked_texture_()
+utils::observable_unique_ptr<texture> check_button::create_checked_texture_()
 {
-    std::unique_ptr<texture> pCheckedTexture(new texture(pManager_));
+    auto pCheckedTexture = utils::make_observable_unique<texture>(pManager_);
     pCheckedTexture->set_special();
     pCheckedTexture->set_parent(this);
     pCheckedTexture->set_draw_layer(layer_type::ARTWORK);
@@ -188,9 +188,9 @@ std::unique_ptr<texture> check_button::create_checked_texture_()
     return pCheckedTexture;
 }
 
-std::unique_ptr<texture> check_button::create_disabled_checked_texture_()
+utils::observable_unique_ptr<texture> check_button::create_disabled_checked_texture_()
 {
-    std::unique_ptr<texture> pDisabledCheckedTexture(new texture(pManager_));
+    auto pDisabledCheckedTexture = utils::make_observable_unique<texture>(pManager_);
     pDisabledCheckedTexture->set_special();
     pDisabledCheckedTexture->set_parent(this);
     pDisabledCheckedTexture->set_draw_layer(layer_type::ARTWORK);

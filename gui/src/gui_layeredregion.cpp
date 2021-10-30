@@ -41,7 +41,7 @@ void layered_region::create_glue()
     create_glue_<lua_layered_region>();
 }
 
-std::unique_ptr<uiobject> layered_region::release_from_parent()
+utils::observable_unique_ptr<uiobject> layered_region::release_from_parent()
 {
     if (pParent_)
         return pParent_->remove_region(this);

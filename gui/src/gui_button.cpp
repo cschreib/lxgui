@@ -111,7 +111,7 @@ void button::copy_from(uiobject* pObj)
 
     if (pButton->get_normal_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_normal_texture_();
+        auto pTexture = this->create_normal_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_normal_texture()->get_name());
@@ -135,7 +135,7 @@ void button::copy_from(uiobject* pObj)
     }
     if (pButton->get_pushed_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_pushed_texture_();
+        auto pTexture = this->create_pushed_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_pushed_texture()->get_name());
@@ -159,7 +159,7 @@ void button::copy_from(uiobject* pObj)
     }
     if (pButton->get_highlight_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_highlight_texture_();
+        auto pTexture = this->create_highlight_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_highlight_texture()->get_name());
@@ -183,7 +183,7 @@ void button::copy_from(uiobject* pObj)
     }
     if (pButton->get_disabled_texture())
     {
-        std::unique_ptr<texture> pTexture = this->create_disabled_texture_();
+        auto pTexture = this->create_disabled_texture_();
         if (this->is_virtual())
             pTexture->set_virtual();
         pTexture->set_name(pButton->get_disabled_texture()->get_name());
@@ -208,7 +208,7 @@ void button::copy_from(uiobject* pObj)
 
     if (pButton->get_normal_text())
     {
-        std::unique_ptr<font_string> pText = this->create_normal_text_();
+        auto pText = this->create_normal_text_();
         if (this->is_virtual())
             pText->set_virtual();
         pText->set_name(pButton->get_normal_text()->get_name());
@@ -232,7 +232,7 @@ void button::copy_from(uiobject* pObj)
     }
     if (pButton->get_highlight_text())
     {
-        std::unique_ptr<font_string> pText = this->create_highlight_text_();
+        auto pText = this->create_highlight_text_();
         if (this->is_virtual())
             pText->set_virtual();
         pText->set_name(pButton->get_highlight_text()->get_name());
@@ -256,7 +256,7 @@ void button::copy_from(uiobject* pObj)
     }
     if (pButton->get_disabled_text())
     {
-        std::unique_ptr<font_string> pText = this->create_disabled_text_();
+        auto pText = this->create_disabled_text_();
         if (this->is_virtual())
             pText->set_virtual();
         pText->set_name(pButton->get_disabled_text()->get_name());
@@ -304,9 +304,9 @@ const utils::ustring& button::get_text() const
     return sText_;
 }
 
-std::unique_ptr<texture> button::create_normal_texture_()
+utils::observable_unique_ptr<texture> button::create_normal_texture_()
 {
-    std::unique_ptr<texture> pNormalTexture(new texture(pManager_));
+    auto pNormalTexture = utils::make_observable_unique<texture>(pManager_);
     pNormalTexture->set_special();
     pNormalTexture->set_parent(this);
     pNormalTexture->set_draw_layer(layer_type::BORDER);
@@ -314,9 +314,9 @@ std::unique_ptr<texture> button::create_normal_texture_()
     return pNormalTexture;
 }
 
-std::unique_ptr<texture> button::create_pushed_texture_()
+utils::observable_unique_ptr<texture> button::create_pushed_texture_()
 {
-    std::unique_ptr<texture> pPushedTexture(new texture(pManager_));
+    auto pPushedTexture = utils::make_observable_unique<texture>(pManager_);
     pPushedTexture->set_special();
     pPushedTexture->set_parent(this);
     pPushedTexture->set_draw_layer(layer_type::BORDER);
@@ -324,9 +324,9 @@ std::unique_ptr<texture> button::create_pushed_texture_()
     return pPushedTexture;
 }
 
-std::unique_ptr<texture> button::create_disabled_texture_()
+utils::observable_unique_ptr<texture> button::create_disabled_texture_()
 {
-    std::unique_ptr<texture> pDisabledTexture(new texture(pManager_));
+    auto pDisabledTexture = utils::make_observable_unique<texture>(pManager_);
     pDisabledTexture->set_special();
     pDisabledTexture->set_parent(this);
     pDisabledTexture->set_draw_layer(layer_type::BORDER);
@@ -334,9 +334,9 @@ std::unique_ptr<texture> button::create_disabled_texture_()
     return pDisabledTexture;
 }
 
-std::unique_ptr<texture> button::create_highlight_texture_()
+utils::observable_unique_ptr<texture> button::create_highlight_texture_()
 {
-    std::unique_ptr<texture> pHighlightTexture(new texture(pManager_));
+    auto pHighlightTexture = utils::make_observable_unique<texture>(pManager_);
     pHighlightTexture->set_special();
     pHighlightTexture->set_parent(this);
     pHighlightTexture->set_draw_layer(layer_type::HIGHLIGHT);
@@ -344,9 +344,9 @@ std::unique_ptr<texture> button::create_highlight_texture_()
     return pHighlightTexture;
 }
 
-std::unique_ptr<font_string> button::create_normal_text_()
+utils::observable_unique_ptr<font_string> button::create_normal_text_()
 {
-    std::unique_ptr<font_string> pNormalText(new font_string(pManager_));
+    auto pNormalText = utils::make_observable_unique<font_string>(pManager_);
     pNormalText->set_special();
     pNormalText->set_parent(this);
     pNormalText->set_draw_layer(layer_type::ARTWORK);
@@ -354,9 +354,9 @@ std::unique_ptr<font_string> button::create_normal_text_()
     return pNormalText;
 }
 
-std::unique_ptr<font_string> button::create_highlight_text_()
+utils::observable_unique_ptr<font_string> button::create_highlight_text_()
 {
-    std::unique_ptr<font_string> pHighlightText(new font_string(pManager_));
+    auto pHighlightText = utils::make_observable_unique<font_string>(pManager_);
     pHighlightText->set_special();
     pHighlightText->set_parent(this);
     pHighlightText->set_draw_layer(layer_type::ARTWORK);
@@ -364,9 +364,9 @@ std::unique_ptr<font_string> button::create_highlight_text_()
     return pHighlightText;
 }
 
-std::unique_ptr<font_string> button::create_disabled_text_()
+utils::observable_unique_ptr<font_string> button::create_disabled_text_()
 {
-    std::unique_ptr<font_string> pDisabledText(new font_string(pManager_));
+    auto pDisabledText = utils::make_observable_unique<font_string>(pManager_);
     pDisabledText->set_special();
     pDisabledText->set_parent(this);
     pDisabledText->set_draw_layer(layer_type::BORDER);

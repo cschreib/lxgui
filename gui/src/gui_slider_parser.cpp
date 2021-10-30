@@ -46,7 +46,7 @@ void slider::parse_all_blocks_before_children_(xml::block* pBlock)
     xml::block* pThumbBlock = pBlock->get_block("ThumbTexture");
     if (pThumbBlock)
     {
-        std::unique_ptr<texture> pTexture = create_thumb_texture_();
+        auto pTexture = create_thumb_texture_();
 
         pTexture->parse_block(pThumbBlock);
         pTexture->clear_all_points();

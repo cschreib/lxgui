@@ -71,7 +71,7 @@ void edit_box::copy_from(uiobject* pObj)
     font_string* pFS = pEditBox->get_font_string();
     if (pFS)
     {
-        std::unique_ptr<font_string> pText = this->create_font_string_();
+        auto pText = this->create_font_string_();
 
         if (this->is_virtual())
             pText->set_virtual();
@@ -791,7 +791,7 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
 {
     if (!pFontString_)
     {
-        std::unique_ptr<font_string> pText = create_font_string_();
+        auto pText = create_font_string_();
 
         pText->set_name("$parentFontString");
         if (!pManager_->add_uiobject(pText.get()))
@@ -818,9 +818,9 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
     create_carret_();
 }
 
-std::unique_ptr<font_string> edit_box::create_font_string_()
+utils::observable_unique_ptr<font_string> edit_box::create_font_string_()
 {
-    std::unique_ptr<font_string> pFont(new font_string(pManager_));
+    auto pFont = utils::make_observable_unique<font_string>(pManager_);
     pFont->set_special();
     pFont->set_parent(this);
     pFont->set_draw_layer(layer_type::ARTWORK);
@@ -833,7 +833,7 @@ void edit_box::create_highlight_()
     if (is_virtual())
         return;
 
-    std::unique_ptr<texture> pHighlight(new texture(pManager_));
+    auto pHighlight = utils::make_observable_unique<texture>(pManager_);
     pHighlight->set_special();
     pHighlight->set_parent(this);
     pHighlight->set_draw_layer(layer_type::HIGHLIGHT);
@@ -869,7 +869,7 @@ void edit_box::create_carret_()
 
     if (!pCarret_)
     {
-        std::unique_ptr<texture> pCarret(new texture(pManager_));
+        auto pCarret = utils::make_observable_unique<texture>(pManager_);
         pCarret->set_special();
         pCarret->set_parent(this);
         pCarret->set_draw_layer(layer_type::HIGHLIGHT);

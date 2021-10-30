@@ -205,8 +205,8 @@ namespace gui
 
         void constrain_thumb_();
 
-        std::unique_ptr<texture> create_thumb_texture_();
-        void                     notify_thumb_texture_needs_update_() const;
+        utils::observable_unique_ptr<texture> create_thumb_texture_();
+        void notify_thumb_texture_needs_update_() const;
 
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;

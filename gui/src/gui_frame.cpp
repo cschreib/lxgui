@@ -277,7 +277,7 @@ void frame::copy_from(uiobject* pObj)
     {
         if (pArt->is_special()) continue;
 
-        std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+        auto pNewArt = pManager_->create_layered_region(pArt->get_object_type());
         if (!pNewArt) continue;
 
         if (this->is_virtual())
@@ -616,7 +616,7 @@ bool frame::has_script(const std::string& sScriptName) const
     return false;
 }
 
-layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
+layered_region* frame::add_region(utils::observable_unique_ptr<layered_region> pRegion)
 {
     if (!pRegion)
         return nullptr;
@@ -654,7 +654,7 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     return pAddedRegion;
 }
 
-std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
+utils::observable_unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
 {
     if (!pRegion)
         return nullptr;
@@ -672,7 +672,7 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    std::unique_ptr<layered_region> pRemovedRegion = std::move(*mIter);
+    auto pRemovedRegion = std::move(*mIter);
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
@@ -684,7 +684,7 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
 layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName,
     const std::string& sName, const std::vector<uiobject*>& lInheritance)
 {
-    std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(sClassName);
+    auto pRegion = pManager_->create_layered_region(sClassName);
     if (!pRegion)
         return nullptr;
 
@@ -721,7 +721,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     if (!pManager_->check_uiobject_name(sName))
         return nullptr;
 
-    std::unique_ptr<frame> pNewFrame = pManager_->create_frame(sClassName);
+    auto pNewFrame = pManager_->create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
@@ -761,7 +761,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     return add_child(std::move(pNewFrame));
 }
 
-frame* frame::add_child(std::unique_ptr<frame> pChild)
+frame* frame::add_child(utils::observable_unique_ptr<frame> pChild)
 {
     if (!pChild)
         return nullptr;
@@ -815,7 +815,7 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     return pAddedChild;
 }
 
-std::unique_ptr<frame> frame::remove_child(frame* pChild)
+utils::observable_unique_ptr<frame> frame::remove_child(frame* pChild)
 {
     if (!pChild)
         return nullptr;
@@ -833,7 +833,7 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    std::unique_ptr<frame> pRemovedChild = std::move(*mIter);
+    auto pRemovedChild = std::move(*mIter);
 
     frame_renderer* pTopLevelRenderer = get_top_level_renderer();
     bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
@@ -1596,7 +1596,7 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-std::unique_ptr<uiobject> frame::release_from_parent()
+utils::observable_unique_ptr<uiobject> frame::release_from_parent()
 {
     if (pParent_)
         return pParent_->remove_child(this);

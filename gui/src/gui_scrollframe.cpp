@@ -73,7 +73,7 @@ void scroll_frame::copy_from(uiobject* pObj)
     }
 }
 
-void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
+void scroll_frame::set_scroll_child(utils::observable_unique_ptr<frame> pFrame)
 {
     if (pScrollChild_)
     {
@@ -87,7 +87,7 @@ void scroll_frame::set_scroll_child(std::unique_ptr<frame> pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // Create the scroll texture
-        std::unique_ptr<texture> pScrollTexture(new texture(pManager_));
+        auto pScrollTexture = utils::make_observable_unique<texture>(pManager_);
         pScrollTexture->set_special();
         pScrollTexture->set_draw_layer("ARTWORK");
         pScrollTexture->set_name_and_parent("$parentScrollTexture", this);
