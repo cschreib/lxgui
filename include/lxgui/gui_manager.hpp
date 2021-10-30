@@ -75,7 +75,7 @@ namespace gui
         */
         using root_frame_list = std::list<std::unique_ptr<frame>>;
         using root_frame_list_view = utils::view::adaptor<root_frame_list,
-            utils::view::unique_ptr_dereferencer,
+            utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
         /// Constructor.

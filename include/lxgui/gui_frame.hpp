@@ -219,7 +219,7 @@ namespace gui
         */
         using child_list = std::list<std::unique_ptr<frame>>;
         using child_list_view = utils::view::adaptor<child_list,
-            utils::view::unique_ptr_dereferencer,
+            utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
         /// Type of the region list.
@@ -232,7 +232,7 @@ namespace gui
         */
         using region_list = std::list<std::unique_ptr<layered_region>>;
         using region_list_view = utils::view::adaptor<region_list,
-            utils::view::unique_ptr_dereferencer,
+            utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
         /// Constructor.

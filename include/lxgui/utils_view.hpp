@@ -17,9 +17,9 @@ namespace view
         static data_type dereference(const BaseIterator& mIter) { return *mIter; }
     };
 
-    /// Convert unique_ptr to standard pointer
+    /// Convert unique_ptr or shared_ptr to standard pointer
     template<typename BaseIterator>
-    struct unique_ptr_dereferencer
+    struct smart_ptr_dereferencer
     {
         using data_type = decltype(std::declval<BaseIterator>()->get());
         static data_type dereference(const BaseIterator& mIter) { return mIter->get(); }
