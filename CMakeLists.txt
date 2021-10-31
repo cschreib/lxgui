@@ -171,6 +171,7 @@ endif()
 
 # add the subdirectories for dependencies
 add_subdirectory(extern/utfcpp)
+add_subdirectory(extern/observable_unique_ptr)
 
 if(LXGUI_BUILD_FMT)
     set(FMT_INSTALL TRUE)

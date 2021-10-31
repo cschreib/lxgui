@@ -458,7 +458,7 @@ frame* uiobject::get_parent()
     return pParent_;
 }
 
-utils::observable_unique_ptr<uiobject> uiobject::release_from_parent()
+oup::observable_unique_ptr<uiobject> uiobject::release_from_parent()
 {
     return nullptr;
 }

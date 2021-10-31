@@ -74,7 +74,7 @@ namespace gui
         /** \param pFrame The scroll child
         *   \note Creates the render target.
         */
-        void set_scroll_child(utils::observable_unique_ptr<frame> pFrame);
+        void set_scroll_child(oup::observable_unique_ptr<frame> pFrame);
 
         /// Returns this scroll_frame's scroll child.
         /** \return This scroll_frame's scroll child

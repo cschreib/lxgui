@@ -405,9 +405,9 @@ bool slider::are_clicks_outside_thumb_allowed()
     return bAllowClicksOutsideThumb_;
 }
 
-utils::observable_unique_ptr<texture> slider::create_thumb_texture_()
+oup::observable_unique_ptr<texture> slider::create_thumb_texture_()
 {
-    auto pTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pTexture = oup::make_observable_unique<texture>(pManager_);
     pTexture->set_special();
     pTexture->set_parent(this);
     pTexture->set_draw_layer(mThumbLayer_);

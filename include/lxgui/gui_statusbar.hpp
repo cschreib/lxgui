@@ -171,7 +171,7 @@ namespace gui
 
     protected :
 
-        utils::observable_unique_ptr<texture> create_bar_texture_();
+        oup::observable_unique_ptr<texture> create_bar_texture_();
         void notify_bar_texture_needs_update_();
 
         void parse_attributes_(xml::block* pBlock) override;

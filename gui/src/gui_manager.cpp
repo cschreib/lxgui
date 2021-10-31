@@ -180,12 +180,12 @@ bool manager::check_uiobject_name(const std::string& sName) const
     return true;
 }
 
-utils::observable_unique_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
+oup::observable_unique_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return utils::make_observable_unique<frame>(this);
+        return oup::make_observable_unique<frame>(this);
     else if (sClassName == "FocusFrame")
-        return utils::make_observable_unique<focus_frame>(this);
+        return oup::make_observable_unique<focus_frame>(this);
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
@@ -201,12 +201,12 @@ utils::observable_unique_ptr<uiobject> manager::create_uiobject(const std::strin
     }
 }
 
-utils::observable_unique_ptr<frame> manager::create_frame(const std::string& sClassName)
+oup::observable_unique_ptr<frame> manager::create_frame(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return utils::make_observable_unique<frame>(this);
+        return oup::make_observable_unique<frame>(this);
     else if (sClassName == "FocusFrame")
-        return utils::make_observable_unique<focus_frame>(this);
+        return oup::make_observable_unique<focus_frame>(this);
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
@@ -262,7 +262,7 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
     return add_root_frame(std::move(pNewFrame));
 }
 
-utils::observable_unique_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
+oup::observable_unique_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
 {
     auto iterRegion = lCustomRegionList_.find(sClassName);
     if (iterRegion != lCustomRegionList_.end())
@@ -340,7 +340,7 @@ bool manager::add_uiobject(uiobject* pObj)
     }
 }
 
-frame* manager::add_root_frame(utils::observable_unique_ptr<frame> pFrame)
+frame* manager::add_root_frame(oup::observable_unique_ptr<frame> pFrame)
 {
     frame* pAddedFrame = pFrame.get();
     lRootFrameList_.push_back(std::move(pFrame));
@@ -392,7 +392,7 @@ void manager::remove_frame(frame* pObj)
         clear_focussed_frame_();
 }
 
-utils::observable_unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
+oup::observable_unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
 {
     auto mIter = utils::find_if(lRootFrameList_, [&](auto& pObj) {
         return pObj && pObj->get_id() == pFrame->get_id();

@@ -158,6 +158,7 @@ find_package_handle_standard_args(lxgui
 
 find_package(Lua REQUIRED)
 find_package(fmt REQUIRED)
+find_package(oup REQUIRED)
 find_package(sol2 REQUIRED)
 
 set(LXGUI_GUI_GL_FOUND FALSE)
@@ -190,6 +191,7 @@ if(LXGUI_FOUND)
         target_link_libraries(lxgui::lxgui INTERFACE Lua::Lua)
         target_link_libraries(lxgui::lxgui INTERFACE sol2::sol2)
         target_link_libraries(lxgui::lxgui INTERFACE fmt::fmt)
+        target_link_libraries(lxgui::lxgui INTERFACE oup::oup)
     endif()
 
     if(LXGUI_GUI_GL_LIBRARY)

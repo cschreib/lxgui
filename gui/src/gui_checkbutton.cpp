@@ -178,9 +178,9 @@ void check_button::create_glue()
     create_glue_<lua_check_button>();
 }
 
-utils::observable_unique_ptr<texture> check_button::create_checked_texture_()
+oup::observable_unique_ptr<texture> check_button::create_checked_texture_()
 {
-    auto pCheckedTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pCheckedTexture = oup::make_observable_unique<texture>(pManager_);
     pCheckedTexture->set_special();
     pCheckedTexture->set_parent(this);
     pCheckedTexture->set_draw_layer(layer_type::ARTWORK);
@@ -188,9 +188,9 @@ utils::observable_unique_ptr<texture> check_button::create_checked_texture_()
     return pCheckedTexture;
 }
 
-utils::observable_unique_ptr<texture> check_button::create_disabled_checked_texture_()
+oup::observable_unique_ptr<texture> check_button::create_disabled_checked_texture_()
 {
-    auto pDisabledCheckedTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pDisabledCheckedTexture = oup::make_observable_unique<texture>(pManager_);
     pDisabledCheckedTexture->set_special();
     pDisabledCheckedTexture->set_parent(this);
     pDisabledCheckedTexture->set_draw_layer(layer_type::ARTWORK);

@@ -78,6 +78,7 @@ target_link_libraries(lxgui PUBLIC lxgui::luapp)
 target_link_libraries(lxgui PUBLIC lxgui::utils)
 target_link_libraries(lxgui PUBLIC lxgui::xml)
 target_link_libraries(lxgui PUBLIC fmt::fmt)
+target_link_libraries(lxgui PUBLIC oup::oup)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")

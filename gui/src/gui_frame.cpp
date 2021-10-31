@@ -616,7 +616,7 @@ bool frame::has_script(const std::string& sScriptName) const
     return false;
 }
 
-layered_region* frame::add_region(utils::observable_unique_ptr<layered_region> pRegion)
+layered_region* frame::add_region(oup::observable_unique_ptr<layered_region> pRegion)
 {
     if (!pRegion)
         return nullptr;
@@ -654,7 +654,7 @@ layered_region* frame::add_region(utils::observable_unique_ptr<layered_region> p
     return pAddedRegion;
 }
 
-utils::observable_unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
+oup::observable_unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
 {
     if (!pRegion)
         return nullptr;
@@ -761,7 +761,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     return add_child(std::move(pNewFrame));
 }
 
-frame* frame::add_child(utils::observable_unique_ptr<frame> pChild)
+frame* frame::add_child(oup::observable_unique_ptr<frame> pChild)
 {
     if (!pChild)
         return nullptr;
@@ -815,7 +815,7 @@ frame* frame::add_child(utils::observable_unique_ptr<frame> pChild)
     return pAddedChild;
 }
 
-utils::observable_unique_ptr<frame> frame::remove_child(frame* pChild)
+oup::observable_unique_ptr<frame> frame::remove_child(frame* pChild)
 {
     if (!pChild)
         return nullptr;
@@ -1596,7 +1596,7 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-utils::observable_unique_ptr<uiobject> frame::release_from_parent()
+oup::observable_unique_ptr<uiobject> frame::release_from_parent()
 {
     if (pParent_)
         return pParent_->remove_child(this);

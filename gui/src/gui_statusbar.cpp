@@ -281,9 +281,9 @@ bool status_bar::is_reversed() const
     return bReversed_;
 }
 
-utils::observable_unique_ptr<texture> status_bar::create_bar_texture_()
+oup::observable_unique_ptr<texture> status_bar::create_bar_texture_()
 {
-    auto pBarTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pBarTexture = oup::make_observable_unique<texture>(pManager_);
     pBarTexture->set_special();
     pBarTexture->set_parent(this);
     pBarTexture->set_draw_layer(mBarLayer_);
