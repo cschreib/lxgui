@@ -87,8 +87,8 @@ namespace gui
 
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        oup::observable_unique_ptr<texture> create_checked_texture_();
-        oup::observable_unique_ptr<texture> create_disabled_checked_texture_();
+        utils::observable_unique_ptr<texture> create_checked_texture_();
+        utils::observable_unique_ptr<texture> create_disabled_checked_texture_();
 
         bool bChecked_ = false;
 

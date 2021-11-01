@@ -205,7 +205,7 @@ namespace gui
 
         void constrain_thumb_();
 
-        oup::observable_unique_ptr<texture> create_thumb_texture_();
+        utils::observable_unique_ptr<texture> create_thumb_texture_();
         void notify_thumb_texture_needs_update_() const;
 
         void parse_attributes_(xml::block* pBlock) override;

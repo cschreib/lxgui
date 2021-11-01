@@ -36,7 +36,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        oup::observable_unique_ptr<uiobject> release_from_parent() override;
+        utils::observable_unique_ptr<uiobject> release_from_parent() override;
 
         /// shows this widget.
         /** \note Its parent must be shown for it to appear on
