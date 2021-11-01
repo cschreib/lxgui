@@ -7,9 +7,7 @@ set(OUP_INCLUDE_DIRS ${OUP_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(oup
-                                  REQUIRED_VARS OUP_INCLUDE_DIRS
-                                  VERSION_VAR OUP_VERSION_STRING)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(oup REQUIRED_VARS OUP_INCLUDE_DIRS)
 
 mark_as_advanced(OUP_INCLUDE_DIR)
 
