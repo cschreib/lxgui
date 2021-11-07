@@ -7,9 +7,9 @@
 namespace lxgui {
 namespace utils
 {
-using oup::observable_unique_ptr;
-using oup::weak_ptr;
-using oup::make_observable_unique;
+    using oup::observable_sealed_ptr;
+    using oup::observer_ptr;
+    using oup::make_observable_sealed;
 }
 }
 

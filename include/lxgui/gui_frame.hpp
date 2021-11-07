@@ -217,7 +217,7 @@ namespace gui
         *          - most common use is iteration, not addition or removal
         *          - ordering of elements is irrelevant
         */
-        using child_list = std::list<utils::observable_unique_ptr<frame>>;
+        using child_list = std::list<utils::observable_sealed_ptr<frame>>;
         using child_list_view = utils::view::adaptor<child_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
@@ -230,7 +230,7 @@ namespace gui
         *          - most common use is iteration, not addition or removal
         *          - ordering of elements is irrelevant
         */
-        using region_list = std::list<utils::observable_unique_ptr<layered_region>>;
+        using region_list = std::list<utils::observable_sealed_ptr<layered_region>>;
         using region_list_view = utils::view::adaptor<region_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
@@ -312,23 +312,23 @@ namespace gui
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
-        layered_region* add_region(utils::observable_unique_ptr<layered_region> pRegion);
+        layered_region* add_region(utils::observable_sealed_ptr<layered_region> pRegion);
 
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
         template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* add_region(utils::observable_unique_ptr<region_type> pRegion)
+        region_type* add_region(utils::observable_sealed_ptr<region_type> pRegion)
         {
             return static_cast<region_type*>(add_region(
-                utils::observable_unique_ptr<layered_region>(std::move(pRegion), pRegion.get())));
+                utils::observable_sealed_ptr<layered_region>(std::move(pRegion), pRegion.get())));
         }
 
         /// Removes a layered_region from this frame's children.
         /** \param pRegion The layered_region to remove
         *   \return A unique_ptr to the region, ignore it to destroy the region.
         */
-        utils::observable_unique_ptr<layered_region> remove_region(layered_region* pRegion);
+        utils::observable_sealed_ptr<layered_region> remove_region(layered_region* pRegion);
 
         /// Creates a new region as child of this frame.
         /** \param mLayer       The layer on which to create the region
@@ -395,23 +395,23 @@ namespace gui
         /// Adds a frame to this frame's children.
         /** \param pChild The frame to add
         */
-        frame* add_child(utils::observable_unique_ptr<frame> pChild);
+        frame* add_child(utils::observable_sealed_ptr<frame> pChild);
 
         /// Adds a frame to this frame's children.
         /** \param pChild The frame to add
         */
         template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* add_child(utils::observable_unique_ptr<frame_type> pChild)
+        frame_type* add_child(utils::observable_sealed_ptr<frame_type> pChild)
         {
             return static_cast<frame_type*>(add_child(
-                utils::observable_unique_ptr<frame>(std::move(pChild), pChild.get())));
+                utils::observable_sealed_ptr<frame>(std::move(pChild), pChild.get())));
         }
 
         /// Removes a frame from this frame's children.
         /** \param pChild The frame to remove
             \return A unique_ptr to the child, ignore it to destroy the child.
         */
-        utils::observable_unique_ptr<frame> remove_child(frame* pChild);
+        utils::observable_sealed_ptr<frame> remove_child(frame* pChild);
 
         /// Returns the child list.
         /** \return The child list
@@ -836,7 +836,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        utils::observable_unique_ptr<uiobject> release_from_parent() override;
+        utils::observable_sealed_ptr<uiobject> release_from_parent() override;
 
         /// Sets if this frame can be resized by the user.
         /** \param bIsResizable 'true' to allow the user to resize this frame

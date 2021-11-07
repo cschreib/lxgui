@@ -42,7 +42,6 @@ namespace gui
         method(uiobject, set_alpha),
 
         method(uiobject, clear_all_points),
-        method(uiobject, get_base),
         method(uiobject, get_bottom),
         method(uiobject, get_center),
         method(uiobject, get_height),
@@ -82,7 +81,6 @@ namespace gui
         method(frame, set_alpha),
 
         method(frame, clear_all_points),
-        method(frame, get_base),
         method(frame, get_bottom),
         method(frame, get_center),
         method(frame, get_height),
@@ -186,7 +184,6 @@ namespace gui
         method(check_button, set_alpha),
 
         method(check_button, clear_all_points),
-        method(check_button, get_base),
         method(check_button, get_bottom),
         method(check_button, get_center),
         method(check_button, get_height),
@@ -333,7 +330,6 @@ namespace gui
         method(status_bar, set_alpha),
 
         method(status_bar, clear_all_points),
-        method(status_bar, get_base),
         method(status_bar, get_bottom),
         method(status_bar, get_center),
         method(status_bar, get_height),
@@ -451,7 +447,6 @@ namespace gui
         method(focus_frame, set_alpha),
 
         method(focus_frame, clear_all_points),
-        method(focus_frame, get_base),
         method(focus_frame, get_bottom),
         method(focus_frame, get_center),
         method(focus_frame, get_height),
@@ -561,7 +556,6 @@ namespace gui
         method(edit_box, set_alpha),
 
         method(edit_box, clear_all_points),
-        method(edit_box, get_base),
         method(edit_box, get_bottom),
         method(edit_box, get_center),
         method(edit_box, get_height),
@@ -699,7 +693,6 @@ namespace gui
         method(scroll_frame, set_alpha),
 
         method(scroll_frame, clear_all_points),
-        method(scroll_frame, get_base),
         method(scroll_frame, get_bottom),
         method(scroll_frame, get_center),
         method(scroll_frame, get_height),
@@ -813,7 +806,6 @@ namespace gui
         method(button, set_alpha),
 
         method(button, clear_all_points),
-        method(button, get_base),
         method(button, get_bottom),
         method(button, get_center),
         method(button, get_height),
@@ -952,7 +944,6 @@ namespace gui
         method(slider, set_alpha),
 
         method(slider, clear_all_points),
-        method(slider, get_base),
         method(slider, get_bottom),
         method(slider, get_center),
         method(slider, get_height),
@@ -1082,7 +1073,6 @@ namespace gui
         method(texture, set_alpha),
 
         method(texture, clear_all_points),
-        method(texture, get_base),
         method(texture, get_bottom),
         method(texture, get_center),
         method(texture, get_height),
@@ -1142,7 +1132,6 @@ namespace gui
         method(font_string, set_alpha),
 
         method(font_string, clear_all_points),
-        method(font_string, get_base),
         method(font_string, get_bottom),
         method(font_string, get_center),
         method(font_string, get_height),

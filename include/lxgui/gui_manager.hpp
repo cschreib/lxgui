@@ -12,7 +12,7 @@
 
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_view.hpp>
-#include <oup/observable_unique_ptr.hpp>
+#include <lxgui/utils_observer.hpp>
 
 #include <string>
 #include <vector>
@@ -53,15 +53,15 @@ namespace gui
     private :
 
         template <class T>
-        static utils::observable_unique_ptr<frame> create_new_frame(manager* pMgr)
+        static utils::observable_sealed_ptr<frame> create_new_frame(manager* pMgr)
         {
-            return utils::make_observable_unique<T>(pMgr);
+            return utils::make_observable_sealed<T>(pMgr);
         }
 
         template <class T>
-        static utils::observable_unique_ptr<layered_region> create_new_layered_region(manager* pMgr)
+        static utils::observable_sealed_ptr<layered_region> create_new_layered_region(manager* pMgr)
         {
-            return utils::make_observable_unique<T>(pMgr);
+            return utils::make_observable_sealed<T>(pMgr);
         }
 
     public :
@@ -74,7 +74,7 @@ namespace gui
         *          - most common use is iteration, not addition or removal
         *          - ordering of elements is irrelevant
         */
-        using root_frame_list = std::list<utils::observable_unique_ptr<frame>>;
+        using root_frame_list = std::list<utils::observable_sealed_ptr<frame>>;
         using root_frame_list_view = utils::view::adaptor<root_frame_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
@@ -152,7 +152,7 @@ namespace gui
         *         to get a fully-functional frame object, or frame::create_region() for
         *         region objects.
         */
-        utils::observable_unique_ptr<uiobject> create_uiobject(const std::string& sClassName);
+        utils::observable_sealed_ptr<uiobject> create_uiobject(const std::string& sClassName);
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
@@ -161,7 +161,7 @@ namespace gui
         *         minimum initialization. Use create_root_frame() or frame::create_child()
         *         to get a fully-functional frame object.
         */
-        utils::observable_unique_ptr<frame> create_frame(const std::string& sClassName);
+        utils::observable_sealed_ptr<frame> create_frame(const std::string& sClassName);
 
         /// Creates a new frame, ready for use, and owned by this manager.
         /** \param sClassName   The sub class of the frame (Button, ...)
@@ -236,7 +236,7 @@ namespace gui
         *         minimum initialization. Use frame::create_region() to get a fully-functional
         *         region object.
         */
-        utils::observable_unique_ptr<layered_region> create_layered_region(const std::string& sClassName);
+        utils::observable_sealed_ptr<layered_region> create_layered_region(const std::string& sClassName);
 
         /// Adds an uiobject to be handled by this manager.
         /** \param pObj The object to add
@@ -248,7 +248,7 @@ namespace gui
         /** \param pFrame The frame to add to the root frame list
         *   \return Raw pointer to the frame
         */
-        frame* add_root_frame(utils::observable_unique_ptr<frame> pFrame);
+        frame* add_root_frame(utils::observable_sealed_ptr<frame> pFrame);
 
          /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
@@ -266,7 +266,7 @@ namespace gui
         /** \param pFrame The frame to be released
         *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
         */
-        utils::observable_unique_ptr<frame> remove_root_frame(frame* pFrame);
+        utils::observable_sealed_ptr<frame> remove_root_frame(frame* pFrame);
 
         /// Returns the root frame list.
         /** \return The root frame list
@@ -615,7 +615,7 @@ namespace gui
         /// Registers a new frame type.
         /** \param mFactoryFunction A function that creates new frames of this type. Must take a
         *                           lxgui::gui::manager* as first and only argument, and return
-        *                           a utils::observable_unique_ptr<frame>.
+        *                           a utils::observable_sealed_ptr<frame>.
         *   \note Set the first template argument as the C++ type of this frame.
         */
         template<typename frame_type, typename function_type,
@@ -640,7 +640,7 @@ namespace gui
         /// Registers a new layered_region type.
         /** \param mFactoryFunction A function that creates new layered regions of this type. Must
         *                           take a lxgui::gui::manager* as first and only argument, and
-        *                           return a utils::observable_unique_ptr<layered_region>.
+        *                           return a utils::observable_sealed_ptr<layered_region>.
         *   \note Set the first template argument as the C++ type of this layered_region.
         */
         template<typename region_type, typename function_type,
@@ -809,8 +809,8 @@ namespace gui
         std::shared_ptr<render_target> pRenderTarget_;
         quad                           mScreenQuad_;
 
-        string_map<std::function<utils::observable_unique_ptr<frame>(manager*)>>          lCustomFrameList_;
-        string_map<std::function<utils::observable_unique_ptr<layered_region>(manager*)>> lCustomRegionList_;
+        string_map<std::function<utils::observable_sealed_ptr<frame>(manager*)>>          lCustomFrameList_;
+        string_map<std::function<utils::observable_sealed_ptr<layered_region>(manager*)>> lCustomRegionList_;
 
         std::unique_ptr<localizer>     pLocalizer_;
         std::unique_ptr<event_manager> pEventManager_;

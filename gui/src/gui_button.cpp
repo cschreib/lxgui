@@ -304,9 +304,9 @@ const utils::ustring& button::get_text() const
     return sText_;
 }
 
-utils::observable_unique_ptr<texture> button::create_normal_texture_()
+utils::observable_sealed_ptr<texture> button::create_normal_texture_()
 {
-    auto pNormalTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pNormalTexture = utils::make_observable_sealed<texture>(pManager_);
     pNormalTexture->set_special();
     pNormalTexture->set_parent(this);
     pNormalTexture->set_draw_layer(layer_type::BORDER);
@@ -314,9 +314,9 @@ utils::observable_unique_ptr<texture> button::create_normal_texture_()
     return pNormalTexture;
 }
 
-utils::observable_unique_ptr<texture> button::create_pushed_texture_()
+utils::observable_sealed_ptr<texture> button::create_pushed_texture_()
 {
-    auto pPushedTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pPushedTexture = utils::make_observable_sealed<texture>(pManager_);
     pPushedTexture->set_special();
     pPushedTexture->set_parent(this);
     pPushedTexture->set_draw_layer(layer_type::BORDER);
@@ -324,9 +324,9 @@ utils::observable_unique_ptr<texture> button::create_pushed_texture_()
     return pPushedTexture;
 }
 
-utils::observable_unique_ptr<texture> button::create_disabled_texture_()
+utils::observable_sealed_ptr<texture> button::create_disabled_texture_()
 {
-    auto pDisabledTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pDisabledTexture = utils::make_observable_sealed<texture>(pManager_);
     pDisabledTexture->set_special();
     pDisabledTexture->set_parent(this);
     pDisabledTexture->set_draw_layer(layer_type::BORDER);
@@ -334,9 +334,9 @@ utils::observable_unique_ptr<texture> button::create_disabled_texture_()
     return pDisabledTexture;
 }
 
-utils::observable_unique_ptr<texture> button::create_highlight_texture_()
+utils::observable_sealed_ptr<texture> button::create_highlight_texture_()
 {
-    auto pHighlightTexture = utils::make_observable_unique<texture>(pManager_);
+    auto pHighlightTexture = utils::make_observable_sealed<texture>(pManager_);
     pHighlightTexture->set_special();
     pHighlightTexture->set_parent(this);
     pHighlightTexture->set_draw_layer(layer_type::HIGHLIGHT);
@@ -344,9 +344,9 @@ utils::observable_unique_ptr<texture> button::create_highlight_texture_()
     return pHighlightTexture;
 }
 
-utils::observable_unique_ptr<font_string> button::create_normal_text_()
+utils::observable_sealed_ptr<font_string> button::create_normal_text_()
 {
-    auto pNormalText = utils::make_observable_unique<font_string>(pManager_);
+    auto pNormalText = utils::make_observable_sealed<font_string>(pManager_);
     pNormalText->set_special();
     pNormalText->set_parent(this);
     pNormalText->set_draw_layer(layer_type::ARTWORK);
@@ -354,9 +354,9 @@ utils::observable_unique_ptr<font_string> button::create_normal_text_()
     return pNormalText;
 }
 
-utils::observable_unique_ptr<font_string> button::create_highlight_text_()
+utils::observable_sealed_ptr<font_string> button::create_highlight_text_()
 {
-    auto pHighlightText = utils::make_observable_unique<font_string>(pManager_);
+    auto pHighlightText = utils::make_observable_sealed<font_string>(pManager_);
     pHighlightText->set_special();
     pHighlightText->set_parent(this);
     pHighlightText->set_draw_layer(layer_type::ARTWORK);
@@ -364,9 +364,9 @@ utils::observable_unique_ptr<font_string> button::create_highlight_text_()
     return pHighlightText;
 }
 
-utils::observable_unique_ptr<font_string> button::create_disabled_text_()
+utils::observable_sealed_ptr<font_string> button::create_disabled_text_()
 {
-    auto pDisabledText = utils::make_observable_unique<font_string>(pManager_);
+    auto pDisabledText = utils::make_observable_sealed<font_string>(pManager_);
     pDisabledText->set_special();
     pDisabledText->set_parent(this);
     pDisabledText->set_draw_layer(layer_type::BORDER);
