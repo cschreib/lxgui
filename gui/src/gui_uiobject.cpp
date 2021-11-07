@@ -140,7 +140,6 @@ void uiobject::copy_from(uiobject* pObj)
     if (pObj)
     {
         bInherits_ = true;
-        pInheritance_ = pObj;
 
         // Inherit properties
         this->set_alpha(pObj->get_alpha());
@@ -470,11 +469,6 @@ void uiobject::destroy()
 
     // Ignoring the return value destroys the object.
     release_from_parent();
-}
-
-uiobject* uiobject::get_base()
-{
-    return pInheritance_;
 }
 
 vector2f uiobject::get_center() const

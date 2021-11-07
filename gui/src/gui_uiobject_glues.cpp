@@ -370,26 +370,6 @@ int lua_uiobject::_get_parent(lua_State* pLua)
     return mFunc.on_return();
 }
 
-/** @function get_base
-*/
-int lua_uiobject::_get_base(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("UIObject:get_base", pLua, 1);
-
-    if (pObject_->get_base())
-    {
-        pObject_->get_base()->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-    else
-        mFunc.push_nil();
-
-    return mFunc.on_return();
-}
-
 /** @function get_point
 */
 int lua_uiobject::_get_point(lua_State* pLua)

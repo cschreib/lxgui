@@ -300,11 +300,6 @@ namespace gui
         */
         void destroy();
 
-        /// Returns the widget this one inherits from.
-        /** \return The widget this one inherits from
-        */
-        uiobject* get_base();
-
         /// Changes this widget's alpha (opacity).
         /** \param fAlpha The new alpha value
         *   \note Default is 1.0f.
@@ -763,7 +758,6 @@ namespace gui
         std::string sLuaName_;
         uint        uiID_ = uint(-1);
         frame*      pParent_ = nullptr;
-        uiobject*   pInheritance_ = nullptr;
         bool        bSpecial_ = false;
         bool        bNewlyCreated_ = false;
         bool        bInherits_ = false;
@@ -866,7 +860,6 @@ namespace gui
         int _set_alpha(lua_State*);
         // region
         int _clear_all_points(lua_State*);
-        int _get_base(lua_State*);
         int _get_bottom(lua_State*);
         int _get_center(lua_State*);
         int _get_height(lua_State*);
