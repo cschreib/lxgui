@@ -29,6 +29,10 @@ jobs:
       with:
         submodules: 'recursive'
 
+    - name: Setup Clang
+      if: matrix.platform.compiler == 'clang++' && matrix.platform.os == 'ubuntu-latest'
+      run: sudo apt install clang libc++-dev libc++abi-dev
+
     - name: Setup Linux compiler
       if: runner.os == 'Linux' && matrix.platform.compiler != 'em++'
       run: export CXX=${{matrix.platform.compiler}}
