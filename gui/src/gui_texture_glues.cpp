@@ -466,7 +466,7 @@ int lua_texture::_set_texture(lua_State* pLua)
             {
                 // texture name
                 get_object()->set_texture(
-                    get_object()->get_manager()->parse_file_name(sTexture)
+                    get_object()->get_manager().parse_file_name(sTexture)
                 );
             }
         }

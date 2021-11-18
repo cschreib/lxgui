@@ -74,7 +74,7 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
                 << "edit_box : font_string's Size is ignored." << std::endl;
         }
 
-        set_font_string(pFontString.get());
+        set_font_string(pFontString);
         add_region(std::move(pFontString));
     }
 }

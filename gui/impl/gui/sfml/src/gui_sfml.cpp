@@ -9,12 +9,12 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow)
+utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow)
 {
-    return std::unique_ptr<gui::manager>(new gui::manager(
+    return utils::make_owned<gui::manager>(
         std::unique_ptr<input::source>(new input::sfml::source(mWindow)),
         std::unique_ptr<gui::renderer>(new gui::sfml::renderer(mWindow))
-    ));
+    );
 }
 }
 }

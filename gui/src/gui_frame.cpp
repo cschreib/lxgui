@@ -30,7 +30,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()), region(pManager)
+frame::frame(manager& mManager) : event_receiver(mManager.get_event_manager()), region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -51,12 +51,12 @@ frame::~frame()
     if (!bVirtual_)
     {
         // Tell the renderer to no longer render this widget
-        get_top_level_renderer()->notify_rendered_frame(this, false);
+        get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
         pRenderer_ = nullptr;
     }
 
     // Unregister this frame from the GUI manager
-    pManager_->remove_frame(this);
+    get_manager().remove_frame(observer_from(this));
 }
 
 void frame::render()
@@ -71,7 +71,7 @@ void frame::render()
         {
             if (mLayer.bDisabled) continue;
 
-            for (auto* pRegion : mLayer.lRegionList)
+            for (const auto& pRegion : mLayer.lRegionList)
             {
                 if (pRegion->is_shown() && !pRegion->is_newly_created())
                     pRegion->render();
@@ -90,8 +90,8 @@ std::string frame::serialize(const std::string& sTab) const
     std::ostringstream sStr;
 
     sStr << region::serialize(sTab);
-    if (pRenderer_ && pRenderer_ != pManager_)
-    sStr << sTab << "  # Man. render : " << dynamic_cast<frame*>(pRenderer_)->get_name() << "\n";
+    if (auto pFrameRenderer = utils::dynamic_pointer_cast<frame>(pRenderer_))
+    sStr << sTab << "  # Man. render : " << pFrameRenderer->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
     switch (mStrata_)
     {
@@ -225,11 +225,11 @@ bool frame::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void frame::copy_from(uiobject* pObj)
+void frame::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(pObj);
+    uiobject::copy_from(mObj);
 
-    frame* pFrame = down_cast<frame>(pObj);
+    const frame* pFrame = down_cast<frame>(&mObj);
     if (!pFrame)
         return;
 
@@ -244,13 +244,14 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_frame_strata(pFrame->get_frame_strata());
 
-    frame* pHighParent = this;
+    utils::observer_ptr<const frame> pHighParent = observer_from(this);
+
     for (int i = 0; i < pFrame->get_level(); ++i)
     {
-        if (pHighParent->get_parent())
-            pHighParent = pHighParent->get_parent();
-        else
+        if (!pHighParent->get_parent())
             break;
+
+        pHighParent = pHighParent->get_parent();
     }
 
     this->set_level(pHighParent->get_level() + pFrame->get_level());
@@ -273,42 +274,24 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_scale(pFrame->get_scale());
 
-    for (auto* pArt : pFrame->get_regions())
+    for (const auto& pArt : lRegionList_)
     {
-        if (pArt->is_special()) continue;
+        if (!pArt || pArt->is_special()) continue;
 
-        auto pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+        utils::observer_ptr<layered_region> pNewArt = create_region(
+            pArt->get_draw_layer(), pArt->get_object_type(), pArt->get_raw_name(),
+            {pArt});
+
         if (!pNewArt) continue;
 
-        if (this->is_virtual())
-            pNewArt->set_virtual();
-
-        pNewArt->set_name_and_parent(pArt->get_raw_name(), this);
-        if (!pManager_->add_uiobject(pNewArt.get()))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
-                << "\", but its name was already taken : \"" << pNewArt->get_name()
-                << "\". Skipped." << std::endl;
-
-            continue;
-        }
-
-        if (!pNewArt->is_virtual())
-            pNewArt->create_glue();
-
-        pNewArt->set_draw_layer(pArt->get_draw_layer());
-
-        auto* pAddedArt = this->add_region(std::move(pNewArt));
-        pAddedArt->copy_from(pArt);
-        pAddedArt->notify_loaded();
+        pNewArt->notify_loaded();
     }
 
     bBuildLayerList_ = true;
 
     if (pFrame->pBackdrop_)
     {
-        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
         pBackdrop_->copy_from(*pFrame->pBackdrop_);
     }
 
@@ -316,14 +299,16 @@ void frame::copy_from(uiobject* pObj)
     {
         this->create_title_region();
         if (pTitleRegion_)
-            pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
+            pTitleRegion_->copy_from(*pFrame->pTitleRegion_);
     }
 
-    for (auto* pChild : pFrame->get_children())
+    for (const auto& pChild : lChildList_)
     {
-        if (pChild->is_special()) continue;
+        if (!pChild || pChild->is_special()) continue;
 
-        frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        utils::observer_ptr<frame> pNewChild = create_child(
+            pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+
         if (!pNewChild) continue;
 
         pNewChild->notify_loaded();
@@ -338,13 +323,13 @@ void frame::create_title_region()
         return;
     }
 
-    pTitleRegion_ = std::unique_ptr<region>(new region(pManager_));
+    pTitleRegion_ = utils::make_owned<region>(get_manager());
     if (this->is_virtual())
         pTitleRegion_->set_virtual();
     pTitleRegion_->set_special();
-    pTitleRegion_->set_name_and_parent(sName_+"TitleRegion", this);
+    pTitleRegion_->set_name_and_parent(sName_+"TitleRegion", observer_from(this));
 
-    if (!pManager_->add_uiobject(pTitleRegion_.get()))
+    if (!get_manager().add_uiobject(pTitleRegion_))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
@@ -360,10 +345,13 @@ void frame::create_title_region()
     pTitleRegion_->notify_loaded();
 }
 
-frame* frame::get_child(const std::string& sName)
+utils::observer_ptr<const frame> frame::get_child(const std::string& sName) const
 {
-    for (auto* pChild : get_children())
+    for (const auto& pChild : lChildList_)
     {
+        if (!pChild)
+            continue;
+
         if (pChild->get_name() == sName)
             return pChild;
 
@@ -380,16 +368,16 @@ frame::region_list_view frame::get_regions() const
     return region_list_view(lRegionList_);
 }
 
-layered_region* frame::get_region(const std::string& sName)
+utils::observer_ptr<const layered_region> frame::get_region(const std::string& sName) const
 {
-    for (auto* pRegion : get_regions())
+    for (const auto& pRegion : lRegionList_)
     {
+        if (!pRegion)
+            continue;
+
         if (pRegion->get_name() == sName)
             return pRegion;
-    }
 
-    for (auto* pRegion : get_regions())
-    {
         const std::string& sRawName = pRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
             return pRegion;
@@ -589,7 +577,7 @@ void frame::notify_loaded()
 
     if (!bVirtual_)
     {
-        alive_checker mChecker(this);
+        alive_checker mChecker(*this);
         on_script("OnLoad");
         if (!mChecker.is_alive())
             return;
@@ -616,24 +604,13 @@ bool frame::has_script(const std::string& sScriptName) const
     return false;
 }
 
-layered_region* frame::add_region(utils::observable_sealed_ptr<layered_region> pRegion)
+utils::observer_ptr<layered_region> frame::add_region(
+    utils::owner_ptr<layered_region> pRegion)
 {
     if (!pRegion)
         return nullptr;
 
-    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
-        return pObj->get_id() == pRegion->get_id();
-    });
-
-    if (mIter != lRegionList_.end())
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Trying to add \"" << pRegion->get_name() << "\" to \"" << sName_ << "\"'s children, "
-            "but it was already one of this frame's children." << std::endl;
-        return nullptr;
-    }
-
-    layered_region* pAddedRegion = pRegion.get();
+    utils::observer_ptr<layered_region> pAddedRegion = pRegion;
     lRegionList_.push_back(std::move(pRegion));
 
     notify_layers_need_update();
@@ -654,7 +631,8 @@ layered_region* frame::add_region(utils::observable_sealed_ptr<layered_region> p
     return pAddedRegion;
 }
 
-utils::observable_sealed_ptr<layered_region> frame::remove_region(layered_region* pRegion)
+utils::owner_ptr<layered_region> frame::remove_region(
+    const utils::observer_ptr<layered_region>& pRegion)
 {
     if (!pRegion)
         return nullptr;
@@ -681,23 +659,27 @@ utils::observable_sealed_ptr<layered_region> frame::remove_region(layered_region
     return pRemovedRegion;
 }
 
-layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName,
-    const std::string& sName, const std::vector<uiobject*>& lInheritance)
+utils::observer_ptr<layered_region> frame::create_region(
+    layer_type mLayer, const std::string& sClassName, const std::string& sName,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    auto pRegion = pManager_->create_layered_region(sClassName);
+    auto pRegion = get_manager().create_layered_region(sClassName);
     if (!pRegion)
         return nullptr;
 
-    pRegion->set_draw_layer(mLayer);
-    pRegion->set_name_and_parent(sName, this);
+    if (this->is_virtual())
+        pRegion->set_virtual();
 
-    if (!pManager_->add_uiobject(pRegion.get()))
+    pRegion->set_draw_layer(mLayer);
+    pRegion->set_name_and_parent(sName, observer_from(this));
+
+    if (!get_manager().add_uiobject(pRegion))
         return nullptr;
 
     if (!pRegion->is_virtual())
         pRegion->create_glue();
 
-    for (auto* pObj : lInheritance)
+    for (const auto& pObj : lInheritance)
     {
         if (!pRegion->is_object_type(pObj->get_object_type()))
         {
@@ -709,39 +691,40 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
         }
 
         // Inherit from the other region
-        pRegion->copy_from(pObj);
+        pRegion->copy_from(*pObj);
     }
 
     return add_region(std::move(pRegion));
 }
 
-frame* frame::create_child(const std::string& sClassName, const std::string& sName,
-    const std::vector<uiobject*>& lInheritance)
+utils::observer_ptr<frame> frame::create_child(
+    const std::string& sClassName, const std::string& sName,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!pManager_->check_uiobject_name(sName))
+    if (!get_manager().check_uiobject_name(sName))
         return nullptr;
 
-    auto pNewFrame = pManager_->create_frame(sClassName);
+    auto pNewFrame = get_manager().create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name_and_parent(sName, this);
+    pNewFrame->set_name_and_parent(sName, observer_from(this));
 
     if (this->is_virtual())
         pNewFrame->set_virtual();
 
     if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
+        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
 
     pNewFrame->set_level(get_level() + 1);
 
-    if (!pManager_->add_uiobject(pNewFrame.get()))
+    if (!get_manager().add_uiobject(pNewFrame))
         return nullptr;
 
     if (!pNewFrame->is_virtual())
         pNewFrame->create_glue();
 
-    for (auto* pObj : lInheritance)
+    for (const auto& pObj : lInheritance)
     {
         if (!pNewFrame->is_object_type(pObj->get_object_type()))
         {
@@ -753,7 +736,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
         }
 
         // Inherit from the other frame
-        pNewFrame->copy_from(pObj);
+        pNewFrame->copy_from(*pObj);
     }
 
     pNewFrame->set_newly_created();
@@ -761,41 +744,29 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     return add_child(std::move(pNewFrame));
 }
 
-frame* frame::add_child(utils::observable_sealed_ptr<frame> pChild)
+utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
 {
     if (!pChild)
         return nullptr;
 
-    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
-        return pObj && pObj->get_id() == pChild->get_id();
-    });
-
-    if (mIter != lChildList_.end())
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-            << "\"'s children, but it was already one of this frame's children." << std::endl;
-        return nullptr;
-    }
-
     if (bIsTopLevel_)
-        pChild->notify_top_level_parent_(true, this);
+        pChild->notify_top_level_parent_(true, observer_from(this));
 
     if (pTopLevelParent_)
         pChild->notify_top_level_parent_(true, pTopLevelParent_);
 
     if (is_visible() && pChild->is_shown())
-        pChild->notify_visible(!pManager_->is_loading_ui());
+        pChild->notify_visible(!get_manager().is_loading_ui());
     else
-        pChild->notify_invisible(!pManager_->is_loading_ui());
+        pChild->notify_invisible(!get_manager().is_loading_ui());
 
-    frame* pAddedChild = pChild.get();
+    utils::observer_ptr<frame> pAddedChild = pChild;
     lChildList_.push_back(std::move(pChild));
 
     if (!bVirtual_)
     {
-        frame_renderer* pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
-        frame_renderer* pNewTopLevelRenderer = get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> pNewTopLevelRenderer = get_top_level_renderer();
         if (pOldTopLevelRenderer != pNewTopLevelRenderer)
         {
             pOldTopLevelRenderer->notify_rendered_frame(pAddedChild, false);
@@ -815,7 +786,7 @@ frame* frame::add_child(utils::observable_sealed_ptr<frame> pChild)
     return pAddedChild;
 }
 
-utils::observable_sealed_ptr<frame> frame::remove_child(frame* pChild)
+utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pChild)
 {
     if (!pChild)
         return nullptr;
@@ -835,8 +806,8 @@ utils::observable_sealed_ptr<frame> frame::remove_child(frame* pChild)
     // NB: the iterator is not removed yet; it will be removed later in update().
     auto pRemovedChild = std::move(*mIter);
 
-    frame_renderer* pTopLevelRenderer = get_top_level_renderer();
-    bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
+    utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
+    bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
     if (bNotifyRenderer)
     {
         pTopLevelRenderer->notify_rendered_frame(pChild, false);
@@ -847,7 +818,7 @@ utils::observable_sealed_ptr<frame> frame::remove_child(frame* pChild)
 
     if (bNotifyRenderer)
     {
-        pManager_->notify_rendered_frame(pChild, true);
+        get_manager().notify_rendered_frame(pChild, true);
         pChild->propagate_renderer_(true);
     }
 
@@ -933,11 +904,6 @@ uint frame::get_num_regions() const
 float frame::get_scale() const
 {
     return fScale_;
-}
-
-region* frame::get_title_region() const
-{
-    return pTitleRegion_.get();
 }
 
 bool frame::is_clamped_to_screen() const
@@ -1090,7 +1056,7 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        pManager_->get_event_manager()->fire_event(mEvent);
+        get_manager().get_event_manager().fire_event(mEvent);
         return;
     }
 
@@ -1108,7 +1074,7 @@ void frame::define_script_(const std::string& sScriptName, sol::protected_functi
     auto mWrappedHandler =
         [bAddEventName, mHandler = std::move(mHandler), mInfo](frame& mSelf, event* pEvent)
     {
-        sol::state& mLua = mSelf.get_manager()->get_lua();
+        sol::state& mLua = mSelf.get_manager().get_lua();
         lua_State* pLua = mLua.lua_state();
 
         std::vector<sol::object> lArgs;
@@ -1223,7 +1189,7 @@ void frame::remove_script(const std::string& sScriptName)
 
 void frame::on_event(const event& mEvent)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     if (has_script("OnEvent") &&
         (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
@@ -1241,7 +1207,7 @@ void frame::on_event(const event& mEvent)
             return;
     }
 
-    if (!pManager_->is_input_enabled())
+    if (!get_manager().is_input_enabled())
         return;
 
     if (bIsMouseEnabled_ && bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
@@ -1367,9 +1333,9 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
         return;
 
     // Make a copy of the manager pointer: in case the frame is deleted, we will need this
-    auto* pManager = get_manager();
-    auto* pOldAddOn = pManager->get_current_addon();
-    pManager->set_current_addon(get_addon());
+    auto& mManager = get_manager();
+    auto* pOldAddOn = mManager.get_current_addon();
+    mManager.set_current_addon(get_addon());
 
     try
     {
@@ -1377,7 +1343,7 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
         // survives even if this frame is destroyed midway during a handler.
         const auto lHandlerList = iterH->second;
 
-        alive_checker mChecker(this);
+        alive_checker mChecker(*this);
 
         // Call the handlers
         for (const auto& mHandler : *lHandlerList)
@@ -1395,10 +1361,10 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        pManager->get_event_manager()->fire_event(mEvent);
+        mManager.get_event_manager().fire_event(mEvent);
     }
 
-    pManager->set_current_addon(pOldAddOn);
+    mManager.set_current_addon(pOldAddOn);
 }
 
 void frame::register_all_events()
@@ -1446,7 +1412,10 @@ void frame::set_frame_strata(frame_strata mStrata)
     std::swap(mStrata_, mStrata);
 
     if (mStrata_ != mStrata && !bVirtual_)
-        get_top_level_renderer()->notify_frame_strata_changed(this, mStrata, mStrata_);
+    {
+        get_top_level_renderer()->notify_frame_strata_changed(
+            observer_from(this), mStrata, mStrata_);
+    }
 }
 
 void frame::set_frame_strata(const std::string& sStrata)
@@ -1523,7 +1492,10 @@ void frame::set_level(int iLevel)
         std::swap(iLevel, iLevel_);
 
         if (!bVirtual_)
-            get_top_level_renderer()->notify_frame_level_changed(this, iLevel, iLevel_);
+        {
+            get_top_level_renderer()->notify_frame_level_changed(
+                observer_from(this), iLevel, iLevel_);
+        }
     }
 }
 
@@ -1596,12 +1568,13 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-utils::observable_sealed_ptr<uiobject> frame::release_from_parent()
+utils::owner_ptr<uiobject> frame::release_from_parent()
 {
+    utils::observer_ptr<frame> pSelf = observer_from(this);
     if (pParent_)
-        return pParent_->remove_child(this);
+        return pParent_->remove_child(pSelf);
     else
-        return pManager_->remove_root_frame(this);
+        return get_manager().remove_root_frame(pSelf);
 }
 
 void frame::set_resizable(bool bIsResizable)
@@ -1624,7 +1597,9 @@ void frame::set_top_level(bool bIsTopLevel)
     bIsTopLevel_ = bIsTopLevel;
 
     for (auto* pChild : get_children())
-        pChild->notify_top_level_parent_(bIsTopLevel_, this);
+    {
+        pChild->notify_top_level_parent_(bIsTopLevel_, observer_from(this));
+    }
 }
 
 void frame::raise()
@@ -1633,12 +1608,15 @@ void frame::raise()
         return;
 
     int iOldLevel = iLevel_;
-    iLevel_ = pManager_->get_highest_level(mStrata_) + 1;
+    iLevel_ = get_manager().get_highest_level(mStrata_) + 1;
 
     if (iLevel_ > iOldLevel)
     {
         if (!is_virtual())
-            get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
+        {
+            get_top_level_renderer()->notify_frame_level_changed(
+                observer_from(this), iOldLevel, iLevel_);
+        }
 
         int iAmount = iLevel_ - iOldLevel;
 
@@ -1655,7 +1633,10 @@ void frame::add_level_(int iAmount)
     iLevel_ += iAmount;
 
     if (!is_virtual())
-        get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
+    {
+        get_top_level_renderer()->notify_frame_level_changed(
+            observer_from(this), iOldLevel, iLevel_);
+    }
 
     for (auto* pChild : get_children())
         pChild->add_level_(iAmount);
@@ -1669,31 +1650,34 @@ void frame::set_user_placed(bool bIsUserPlaced)
 void frame::start_moving()
 {
     if (bIsMovable_)
-        pManager_->start_moving(this);
+        get_manager().start_moving(observer_from(this));
 }
 
 void frame::stop_moving()
 {
     if (bIsMovable_)
-        pManager_->stop_moving(this);
+        get_manager().stop_moving(*this);
 }
 
 void frame::start_sizing(const anchor_point& mPoint)
 {
     if (bIsResizable_)
-        pManager_->start_sizing(this, mPoint);
+        get_manager().start_sizing(observer_from(this), mPoint);
 }
 
 void frame::stop_sizing()
 {
-    pManager_->stop_sizing(this);
+    get_manager().stop_sizing(*this);
 }
 
 void frame::propagate_renderer_(bool bRendered)
 {
-    auto* pTopLevelRenderer = get_top_level_renderer();
-    for (auto* pChild : get_children())
+    auto pTopLevelRenderer = get_top_level_renderer();
+    for (const auto& pChild : lChildList_)
     {
+        if (!pChild)
+            continue;
+
         if (!pChild->get_renderer())
             pTopLevelRenderer->notify_rendered_frame(pChild, bRendered);
 
@@ -1701,43 +1685,30 @@ void frame::propagate_renderer_(bool bRendered)
     }
 }
 
-void frame::set_renderer(frame_renderer* pRenderer)
+void frame::set_renderer(utils::observer_ptr<frame_renderer> pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
 
-    get_top_level_renderer()->notify_rendered_frame(this, false);
+    get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
+
     propagate_renderer_(false);
 
-    pRenderer_ = pRenderer;
+    pRenderer_ = std::move(pRenderer);
 
-    get_top_level_renderer()->notify_rendered_frame(this, true);
+    get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
+
     propagate_renderer_(true);
 }
 
-const frame_renderer* frame::get_renderer() const
-{
-    return pRenderer_;
-}
-
-frame_renderer* frame::get_top_level_renderer()
+utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
 {
     if (pRenderer_)
         return pRenderer_;
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return pManager_;
-}
-
-const frame_renderer* frame::get_top_level_renderer() const
-{
-    if (pRenderer_)
-        return pRenderer_;
-    else if (pParent_)
-        return pParent_->get_top_level_renderer();
-    else
-        return pManager_;
+        return get_manager().observer_from_this();
 }
 
 void frame::notify_visible(bool bTriggerEvents)
@@ -1780,7 +1751,7 @@ void frame::notify_invisible(bool bTriggerEvents)
     }
 }
 
-void frame::notify_top_level_parent_(bool bTopLevel, frame* pParent)
+void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<frame>& pParent)
 {
     if (bTopLevel)
         pTopLevelParent_ = pParent;
@@ -1809,7 +1780,7 @@ void frame::show()
 
     if (!bWasVisible_)
     {
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         update_mouse_in_frame_();
     }
 }
@@ -1824,7 +1795,7 @@ void frame::hide()
 
     if (bWasVisible_)
     {
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         update_mouse_in_frame_();
     }
 }
@@ -1861,7 +1832,7 @@ void frame::unregister_event(const std::string& sEvent)
         event_receiver::unregister_event(sEvent);
 }
 
-void frame::set_addon(addon* pAddOn)
+void frame::set_addon(const addon* pAddOn)
 {
     if (!pAddOn_)
     {
@@ -1873,7 +1844,7 @@ void frame::set_addon(addon* pAddOn)
         gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
 }
 
-addon* frame::get_addon() const
+const addon* frame::get_addon() const
 {
     if (!pAddOn_ && pParent_)
         return pParent_->get_addon();
@@ -1883,7 +1854,7 @@ addon* frame::get_addon() const
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, float fX, float fY)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     if (bMouseInframe)
     {
@@ -1923,7 +1894,7 @@ void frame::update_borders_() const
     if (bPositionUpdated)
     {
         check_position();
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         if (pBackdrop_)
             pBackdrop_->notify_borders_updated();
     }
@@ -1932,7 +1903,7 @@ void frame::update_borders_() const
 void frame::update_mouse_in_frame_()
 {
     update_borders_();
-    pManager_->get_hovered_frame();
+    get_manager().get_hovered_frame();
 }
 
 void frame::update(float fDelta)
@@ -1940,7 +1911,7 @@ void frame::update(float fDelta)
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     DEBUG_LOG("  ~");
     uiobject::update(fDelta);
@@ -1964,15 +1935,15 @@ void frame::update(float fDelta)
             mLayer.lRegionList.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
-        for (auto* pRegion : get_regions())
+        for (const auto& pRegion : lRegionList_)
         {
-            if (pRegion->get_object_type() != "font_string")
+            if (pRegion && pRegion->get_object_type() != "font_string")
                 lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
-        for (auto* pRegion : get_regions())
+        for (const auto& pRegion : lRegionList_)
         {
-            if (pRegion->get_object_type() == "font_string")
+            if (pRegion && pRegion->get_object_type() == "font_string")
                 lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 

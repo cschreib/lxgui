@@ -22,7 +22,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit layered_region(manager* pManager);
+        explicit layered_region(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -36,7 +36,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        utils::observable_sealed_ptr<uiobject> release_from_parent() override;
+        utils::owner_ptr<uiobject> release_from_parent() override;
 
         /// shows this widget.
         /** \note Its parent must be shown for it to appear on
@@ -58,7 +58,7 @@ namespace gui
         /// Returns this layered_region's draw layer.
         /** \return this layered_region's draw layer
         */
-        layer_type get_draw_layer();
+        layer_type get_draw_layer() const;
 
         /// Sets this layered_region's draw layer.
         /** \param mLayer The new layer

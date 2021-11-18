@@ -50,6 +50,18 @@ namespace input
         /// Destructor.
         virtual ~source() = default;
 
+        /// Non-copiable
+        source(const source&) = delete;
+
+        /// Non-movable
+        source(source&&) = delete;
+
+        /// Non-copiable
+        source& operator=(const source&) = delete;
+
+        /// Non-movable
+        source& operator=(source&&) = delete;
+
         /// Updates this input source.
         void update();
 

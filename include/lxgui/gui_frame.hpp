@@ -30,8 +30,8 @@ namespace gui
     {
         layer();
 
-        bool                         bDisabled;
-        std::vector<layered_region*> lRegionList;
+        bool bDisabled;
+        std::vector<utils::observer_ptr<layered_region>> lRegionList;
 
         static layer_type get_layer_type(const std::string& sLayer);
     };
@@ -217,7 +217,7 @@ namespace gui
         *          - most common use is iteration, not addition or removal
         *          - ordering of elements is irrelevant
         */
-        using child_list = std::list<utils::observable_sealed_ptr<frame>>;
+        using child_list = std::list<utils::owner_ptr<frame>>;
         using child_list_view = utils::view::adaptor<child_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
@@ -230,13 +230,13 @@ namespace gui
         *          - most common use is iteration, not addition or removal
         *          - ordering of elements is irrelevant
         */
-        using region_list = std::list<utils::observable_sealed_ptr<layered_region>>;
+        using region_list = std::list<utils::owner_ptr<layered_region>>;
         using region_list_view = utils::view::adaptor<region_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
         /// Constructor.
-        explicit frame(manager* pManager);
+        explicit frame(manager& mManager);
 
         /// Destructor.
         ~frame() override;
@@ -270,7 +270,7 @@ namespace gui
         /// Copies an uiobject's parameters into this frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Creates a new title region for this frame.
         /** \note You can get it by calling get_title_region().
@@ -312,23 +312,25 @@ namespace gui
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
-        layered_region* add_region(utils::observable_sealed_ptr<layered_region> pRegion);
+        utils::observer_ptr<layered_region> add_region(
+            utils::owner_ptr<layered_region> pRegion);
 
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
-        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* add_region(utils::observable_sealed_ptr<region_type> pRegion)
+        template<typename region_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        utils::observer_ptr<region_type> add_region(utils::owner_ptr<region_type> pRegion)
         {
-            return static_cast<region_type*>(add_region(
-                utils::observable_sealed_ptr<layered_region>(std::move(pRegion), pRegion.get())));
+            return utils::static_pointer_cast<region_type>(add_region(std::move(pRegion)));
         }
 
         /// Removes a layered_region from this frame's children.
         /** \param pRegion The layered_region to remove
         *   \return A unique_ptr to the region, ignore it to destroy the region.
         */
-        utils::observable_sealed_ptr<layered_region> remove_region(layered_region* pRegion);
+        utils::owner_ptr<layered_region> remove_region(
+            const utils::observer_ptr<layered_region>& pRegion);
 
         /// Creates a new region as child of this frame.
         /** \param mLayer       The layer on which to create the region
@@ -341,9 +343,9 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        layered_region* create_region(
-            layer_type mLayer, const std::string& sClassName,
-            const std::string& sName, const std::vector<uiobject*>& lInheritance = {}
+        utils::observer_ptr<layered_region> create_region(
+            layer_type mLayer, const std::string& sClassName, const std::string& sName,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {}
         );
 
         /// Creates a new region as child of this frame.
@@ -356,10 +358,13 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* create_region(layer_type mLayer, const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
+        template<typename region_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
-            return static_cast<region_type*>(create_region(mLayer, region_type::CLASS_NAME, sName, lInheritance));
+            return utils::static_pointer_cast<region_type>(create_region(
+                mLayer, region_type::CLASS_NAME, sName, lInheritance));
         }
 
         /// Creates a new frame as child of this frame.
@@ -375,7 +380,9 @@ namespace gui
         *         initialization you require on this frame. If you do not,
         *         the frame's OnLoad callback will not fire.
         */
-        frame* create_child(const std::string& sClassName, const std::string& sName, const std::vector<uiobject*>& lInheritance = {});
+        utils::observer_ptr<frame> create_child(
+            const std::string& sClassName, const std::string& sName,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
 
         /// Creates a new frame as child of this frame.
         /** \param sName        The name of the frame
@@ -386,32 +393,35 @@ namespace gui
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created frame.
         */
-        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* create_child(const std::string& sName, const std::vector<uiobject*>& lInheritance = {})
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<frame_type> create_child(const std::string& sName,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
-            return static_cast<frame_type*>(create_child(frame_type::CLASS_NAME, sName, lInheritance));
+            return utils::static_pointer_cast<frame_type>(create_child(
+                frame_type::CLASS_NAME, sName, lInheritance));
         }
 
         /// Adds a frame to this frame's children.
         /** \param pChild The frame to add
         */
-        frame* add_child(utils::observable_sealed_ptr<frame> pChild);
+        utils::observer_ptr<frame> add_child(utils::owner_ptr<frame> pChild);
 
         /// Adds a frame to this frame's children.
         /** \param pChild The frame to add
         */
-        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* add_child(utils::observable_sealed_ptr<frame_type> pChild)
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<frame_type> add_child(utils::owner_ptr<frame_type> pChild)
         {
-            return static_cast<frame_type*>(add_child(
-                utils::observable_sealed_ptr<frame>(std::move(pChild), pChild.get())));
+            return utils::static_pointer_cast<frame_type>(add_child(std::move(pChild)));
         }
 
         /// Removes a frame from this frame's children.
         /** \param pChild The frame to remove
             \return A unique_ptr to the child, ignore it to destroy the child.
         */
-        utils::observable_sealed_ptr<frame> remove_child(frame* pChild);
+        utils::owner_ptr<frame> remove_child(const utils::observer_ptr<frame>& pChild);
 
         /// Returns the child list.
         /** \return The child list
@@ -426,7 +436,7 @@ namespace gui
         *         for matches on the full name, then if no child is found, on the
         *         relative name.
         */
-        frame* get_child(const std::string& sName);
+        utils::observer_ptr<const frame> get_child(const std::string& sName) const;
 
         /// Returns one of this frame's children.
         /** \param sName The name of the child
@@ -436,8 +446,38 @@ namespace gui
         *         for matches on the full name, then if no child is found, on the
         *         relative name.
         */
-        template<typename frame_type, typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        frame_type* get_child(const std::string& sName)
+        utils::observer_ptr<frame> get_child(const std::string& sName)
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame*>(this)->get_child(sName));
+        }
+
+        /// Returns one of this frame's children.
+        /** \param sName The name of the child
+        *   \return One of this frame's children
+        *   \note The provided name can either be the full name or the relative name
+        *         (i.e. without the "$parent" in front). This function first looks
+        *         for matches on the full name, then if no child is found, on the
+        *         relative name.
+        */
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<const frame_type> get_child(const std::string& sName) const
+        {
+            return down_cast<frame_type>(get_child(sName));
+        }
+
+        /// Returns one of this frame's children.
+        /** \param sName The name of the child
+        *   \return One of this frame's children
+        *   \note The provided name can either be the full name or the relative name
+        *         (i.e. without the "$parent" in front). This function first looks
+        *         for matches on the full name, then if no child is found, on the
+        *         relative name.
+        */
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<frame_type> get_child(const std::string& sName)
         {
             return down_cast<frame_type>(get_child(sName));
         }
@@ -447,15 +487,6 @@ namespace gui
         */
         region_list_view get_regions() const;
 
-        /// Returns one of this frame's region.
-        /** \param sName The name of the region
-        *   \return One of this frame's region
-        *   \note The provided name can either be the full name or the relative name
-        *         (i.e. without the "$parent" in front). This function first looks
-        *         for matches on the full name, then if no region is found, on the
-        *         relative name.
-        */
-        layered_region* get_region(const std::string& sName);
 
         /// Returns one of this frame's region.
         /** \param sName The name of the region
@@ -465,8 +496,33 @@ namespace gui
         *         for matches on the full name, then if no region is found, on the
         *         relative name.
         */
-        template<typename region_type, typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        region_type* get_region(const std::string& sName)
+        utils::observer_ptr<const layered_region> get_region(const std::string& sName) const;
+
+        /// Returns one of this frame's region.
+        /** \param sName The name of the region
+        *   \return One of this frame's region
+        *   \note The provided name can either be the full name or the relative name
+        *         (i.e. without the "$parent" in front). This function first looks
+        *         for matches on the full name, then if no region is found, on the
+        *         relative name.
+        */
+        utils::observer_ptr<layered_region> get_region(const std::string& sName)
+        {
+            return utils::const_pointer_cast<layered_region>(
+                const_cast<const frame*>(this)->get_region(sName));
+        }
+
+        /// Returns one of this frame's region.
+        /** \param sName The name of the region
+        *   \return One of this frame's region
+        *   \note The provided name can either be the full name or the relative name
+        *         (i.e. without the "$parent" in front). This function first looks
+        *         for matches on the full name, then if no region is found, on the
+        *         relative name.
+        */
+        template<typename region_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        utils::observer_ptr<region_type> get_region(const std::string& sName)
         {
             return down_cast<region_type>(get_region(sName));
         }
@@ -544,7 +600,10 @@ namespace gui
         float get_scale() const;
 
         /// Returns this frame's title region.
-        region* get_title_region() const;
+        utils::observer_ptr<const region> get_title_region() const { return pTitleRegion_; }
+
+        /// Returns this frame's title region.
+        utils::observer_ptr<region> get_title_region() { return pTitleRegion_; }
 
         /// Checks if this frame is clamped to screen.
         /** \return 'true' if this frame is clamed to screen
@@ -836,7 +895,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        utils::observable_sealed_ptr<uiobject> release_from_parent() override;
+        utils::owner_ptr<uiobject> release_from_parent() override;
 
         /// Sets if this frame can be resized by the user.
         /** \param bIsResizable 'true' to allow the user to resize this frame
@@ -906,25 +965,35 @@ namespace gui
         *   \note If the renderer is set to nullptr, the frame will inherit the renderer of its
         *         parent. If the frame has no parent, this will default to the gui::manager.
         */
-        void set_renderer(frame_renderer* pRenderer);
+        void set_renderer(utils::observer_ptr<frame_renderer> pRenderer);
 
         /// Returns the renderer of this object, nullptr if none.
         /** \return The renderer of this object, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const frame_renderer* get_renderer() const;
+        utils::observer_ptr<const frame_renderer> get_renderer() const { return pRenderer_; }
+
+        /// Returns the renderer of this object, nullptr if none.
+        /** \return The renderer of this object, nullptr if none
+        *   \note For more informations, see set_renderer().
+        */
+        const utils::observer_ptr<frame_renderer>& get_renderer() { return pRenderer_; }
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        frame_renderer* get_top_level_renderer() final;
+        utils::observer_ptr<const frame_renderer> get_top_level_renderer() const final;
 
         /// Returns the renderer of this object or its parents, nullptr if none.
         /** \return The renderer of this object or its parents, nullptr if none
         *   \note For more informations, see set_renderer().
         */
-        const frame_renderer* get_top_level_renderer() const final;
+        utils::observer_ptr<frame_renderer> get_top_level_renderer()
+        {
+            return utils::const_pointer_cast<frame_renderer>(
+                const_cast<const frame*>(this)->get_top_level_renderer());
+        }
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
@@ -991,14 +1060,14 @@ namespace gui
         /// Sets the addon this frame belongs to.
         /** \param pAddOn The addon this frame belongs to
         */
-        void set_addon(addon* pAddOn);
+        void set_addon(const addon* pAddOn);
 
         /// Returns this frame's addon.
         /** \return This frame's addon
         *   \note Returns "nullptr" if the frame has been created
         *         by Lua code and wasn't assigned a parent.
         */
-        addon* get_addon() const;
+        const addon* get_addon() const;
 
         /// Creates the associated Lua glue.
         void create_glue() override;
@@ -1026,7 +1095,8 @@ namespace gui
         virtual void parse_frames_block_(xml::block* pBlock);
         virtual void parse_scripts_block_(xml::block* pBlock);
 
-        virtual void notify_top_level_parent_(bool bTopLevel, frame* pParent);
+        virtual void notify_top_level_parent_(bool bTopLevel,
+            const utils::observer_ptr<frame>& pParent);
 
         void add_level_(int iAmount);
 
@@ -1063,14 +1133,15 @@ namespace gui
         std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
 
-        addon* pAddOn_ = nullptr;
+        const addon* pAddOn_ = nullptr;
 
         int iLevel_ = 0;
 
-        frame_strata    mStrata_ = frame_strata::MEDIUM;
-        bool            bIsTopLevel_ = false;
-        frame*          pTopLevelParent_ = nullptr;
-        frame_renderer* pRenderer_ = nullptr;
+        frame_strata               mStrata_ = frame_strata::MEDIUM;
+        bool                       bIsTopLevel_ = false;
+        utils::observer_ptr<frame> pTopLevelParent_ = nullptr;
+
+        utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
 
         std::unique_ptr<backdrop> pBackdrop_;
 
@@ -1104,7 +1175,7 @@ namespace gui
         bool bMouseInTitleRegion_ = false;
         float fMousePosX_ = 0.0f, fMousePosY_ = 0.0f;
 
-        std::unique_ptr<region> pTitleRegion_ = nullptr;
+        utils::owner_ptr<region> pTitleRegion_ = nullptr;
 
         bool bMouseDraggedInFrame_ = false;
     };

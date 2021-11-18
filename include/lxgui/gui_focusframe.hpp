@@ -16,12 +16,12 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit focus_frame(manager* pManager);
+        explicit focus_frame(manager& mManager);
 
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Enables automatic focus for this focus_frame.
         /** \param bEnable 'true' to enable auto focus

@@ -23,6 +23,18 @@ namespace gui
         /// Destructor.
         virtual ~render_target() = default;
 
+        /// Non-copiable
+        render_target(const render_target&) = delete;
+
+        /// Non-movable
+        render_target(render_target&&) = delete;
+
+        /// Non-copiable
+        render_target& operator=(const render_target&) = delete;
+
+        /// Non-movable
+        render_target& operator=(render_target&&) = delete;
+
         /// Begins rendering on this target.
         virtual void begin() = 0;
 

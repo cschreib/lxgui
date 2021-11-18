@@ -23,7 +23,19 @@ namespace gui
         /// Constructor.
         /** \param pParent The frame it is linked to
         */
-        explicit backdrop(frame* pParent);
+        explicit backdrop(frame& pParent);
+
+        /// Non-copiable
+        backdrop(const backdrop&) = delete;
+
+        /// Non-movable
+        backdrop(backdrop&&) = delete;
+
+        /// Non-copiable
+        backdrop& operator=(const backdrop&) = delete;
+
+        /// Non-movable
+        backdrop& operator=(backdrop&&) = delete;
 
         /// Copies a backdrop's parameters into this one (inheritance).
         /** \param mbackdrop The backdrop to copy
@@ -170,7 +182,7 @@ namespace gui
         void update_background_(color mColor) const;
         void update_edge_(color mColor) const;
 
-        frame* pParent_ = nullptr;
+        frame& mParent_;
 
         std::string               sBackgroundFile_;
         color                     mBackgroundColor_ = color::EMPTY;

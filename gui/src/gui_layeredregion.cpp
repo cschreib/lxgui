@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-layered_region::layered_region(manager* pManager) : region(pManager)
+layered_region::layered_region(manager& mManager) : region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -41,12 +41,12 @@ void layered_region::create_glue()
     create_glue_<lua_layered_region>();
 }
 
-utils::observable_sealed_ptr<uiobject> layered_region::release_from_parent()
+utils::owner_ptr<uiobject> layered_region::release_from_parent()
 {
-    if (pParent_)
-        return pParent_->remove_region(this);
-    else
+    if (!pParent_)
         return nullptr;
+
+    return pParent_->remove_region(utils::static_pointer_cast<layered_region>(observer_from_this()));
 }
 
 void layered_region::show()
@@ -72,7 +72,7 @@ bool layered_region::is_visible() const
     return pParent_->is_visible() && bIsShown_;
 }
 
-layer_type layered_region::get_draw_layer()
+layer_type layered_region::get_draw_layer() const
 {
     return mLayer_;
 }

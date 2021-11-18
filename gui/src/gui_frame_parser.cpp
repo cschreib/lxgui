@@ -134,12 +134,12 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
     xml::block* pBackdropBlock = pBlock->get_block("Backdrop");
     if (pBackdropBlock)
     {
-        std::unique_ptr<backdrop> pBackdrop(new backdrop(this));
+        std::unique_ptr<backdrop> pBackdrop(new backdrop(*this));
 
-        pBackdrop->set_background(pManager_->parse_file_name(
+        pBackdrop->set_background(get_manager().parse_file_name(
             pBackdropBlock->get_attribute("bgFile")
         ));
-        pBackdrop->set_edge(pManager_->parse_file_name(
+        pBackdrop->set_edge(get_manager().parse_file_name(
             pBackdropBlock->get_attribute("edgeFile")
         ));
 
@@ -262,13 +262,13 @@ void frame::parse_layers_block_(xml::block* pBlock)
             std::string sLevel = pLayerBlock->get_attribute("level");
             for (auto* pRegionBlock : pLayerBlock->blocks())
             {
-                auto pRegion = pManager_->create_layered_region(pRegionBlock->get_name());
+                auto pRegion = get_manager().create_layered_region(pRegionBlock->get_name());
                 if (!pRegion)
                     continue;
 
                 try
                 {
-                    pRegion->set_parent(this);
+                    pRegion->set_parent(observer_from(this));
                     pRegion->set_draw_layer(sLevel);
                     pRegion->parse_block(pRegionBlock);
                     add_region(std::move(pRegion));
@@ -295,13 +295,15 @@ void frame::parse_frames_block_(xml::block* pBlock)
         {
             try
             {
-                auto mAttr = pManager_->parse_core_attributes(pElemBlock, this);
+                auto mAttr = get_manager().parse_core_attributes(pElemBlock, observer_from(this));
 
-                frame* pFrame = create_child(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+                utils::observer_ptr<frame> pFrame = create_child(
+                    mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+
                 if (!pFrame)
                     continue;
 
-                pFrame->set_addon(pManager_->get_current_addon());
+                pFrame->set_addon(get_manager().get_current_addon());
                 pFrame->parse_block(pElemBlock);
                 pFrame->notify_loaded();
             }

@@ -254,7 +254,7 @@ int lua_frame::_create_font_string(lua_State* pLua)
 
         region* pRegion = get_object()->create_region(
             mLayer, "FontString", sName,
-            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
+            get_object()->get_manager().get_virtual_uiobject_list(sInheritance)
         );
 
         if (pRegion)
@@ -297,7 +297,7 @@ int lua_frame::_create_texture(lua_State* pLua)
 
         region* pRegion = get_object()->create_region(
             mLayer, "Texture", sName,
-            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
+            get_object()->get_manager().get_virtual_uiobject_list(sInheritance)
         );
 
         if (pRegion)

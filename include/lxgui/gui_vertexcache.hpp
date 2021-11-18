@@ -47,6 +47,18 @@ namespace gui
         /// Destructor.
         virtual ~vertex_cache() = default;
 
+        /// Non-copiable
+        vertex_cache(const vertex_cache&) = delete;
+
+        /// Non-movable
+        vertex_cache(vertex_cache&&) = delete;
+
+        /// Non-copiable
+        vertex_cache& operator=(const vertex_cache&) = delete;
+
+        /// Non-movable
+        vertex_cache& operator=(vertex_cache&&) = delete;
+
         /// Update the data stored in the cache to form new triangles.
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache

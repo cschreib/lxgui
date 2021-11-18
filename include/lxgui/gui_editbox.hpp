@@ -142,12 +142,12 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit edit_box(manager* pManager);
+        explicit edit_box(manager& mManager);
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
@@ -367,12 +367,17 @@ namespace gui
         /// Returns the font_string used to render the content.
         /** \return The font_string used to render the content
         */
-        font_string* get_font_string();
+        const utils::observer_ptr<font_string>& get_font_string() { return pFontString_; }
+
+        /// Returns the font_string used to render the content.
+        /** \return The font_string used to render the content
+        */
+        utils::observer_ptr<const font_string> get_font_string() const { return pFontString_; }
 
         /// Sets the font_string to use to render the content.
         /** \param pFont The font_string to use to render the content
         */
-        void set_font_string(font_string* pFont);
+        void set_font_string(utils::observer_ptr<font_string> pFont);
 
         /// Sets the font (file and size) to render the content.
         /** \param sFontName The file path to the .ttf file
@@ -404,7 +409,7 @@ namespace gui
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
 
-        utils::observable_sealed_ptr<font_string> create_font_string_();
+        utils::owner_ptr<font_string> create_font_string_();
         void create_highlight_();
         void create_carret_();
 
@@ -439,13 +444,13 @@ namespace gui
 
         std::string sComboKey_;
 
-        texture* pHighlight_ = nullptr;
-        color    mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
-        uint     uiSelectionStartPos_ = 0u;
-        uint     uiSelectionEndPos_ = 0u;
-        bool     bSelectedText_ = false;
+        utils::observer_ptr<texture> pHighlight_ = nullptr;
+        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
+        uint  uiSelectionStartPos_ = 0u;
+        uint  uiSelectionEndPos_ = 0u;
+        bool  bSelectedText_ = false;
 
-        texture*       pCarret_ = nullptr;
+        utils::observer_ptr<texture> pCarret_ = nullptr;
         double         dBlinkSpeed_ = 0.5;
         periodic_timer mCarretTimer_;
 
@@ -453,8 +458,8 @@ namespace gui
         uint                        uiMaxHistoryLines_ = uint(-1);
         uint                        uiCurrentHistoryLine_ = uint(-1);
 
-        font_string* pFontString_ = nullptr;
-        bounds2f     lTextInsets_ = bounds2f::ZERO;
+        utils::observer_ptr<font_string> pFontString_ = nullptr;
+        bounds2f lTextInsets_ = bounds2f::ZERO;
 
         input::key     mLastKeyPressed_;
         double         dKeyRepeatSpeed_ = 0.03;

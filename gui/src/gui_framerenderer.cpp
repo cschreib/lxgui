@@ -33,8 +33,8 @@ void print_frames(const std::array<strata,8>& lStrataList)
         {
             if (mLevel.second.lFrameList.empty()) continue;
             gui::out << "  level[" << mLevel.first << "]" << std::endl;
-            for (const auto* pFrame : mLevel.second.lFrameList)
-                gui::out << "    " << pFrame << " " << pFrame->get_name() << std::endl;
+            for (const auto& pFrame : mLevel.second.lFrameList)
+                gui::out << "    " << pFrame.get() << " " << pFrame->get_name() << std::endl;
         }
     }
 }
@@ -49,7 +49,7 @@ void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata) const
     notify_strata_needs_redraw_(lStrataList_[(uint)mStrata]);
 }
 
-void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
+void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered)
 {
     if (!pFrame)
         return;
@@ -70,8 +70,8 @@ void frame_renderer::notify_rendered_frame(frame* pFrame, bool bRendered)
     notify_strata_needs_redraw_(mStrata);
 }
 
-void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
-                                           frame_strata mNewStrata)
+void frame_renderer::notify_frame_strata_changed(const utils::observer_ptr<frame>& pFrame,
+    frame_strata mOldStrata, frame_strata mNewStrata)
 {
     if (mOldStrata == frame_strata::PARENT || mNewStrata == frame_strata::PARENT)
     {
@@ -87,7 +87,8 @@ void frame_renderer::notify_frame_strata_changed(frame* pFrame, frame_strata mOl
     notify_strata_needs_redraw_(mNew);
 }
 
-void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel)
+void frame_renderer::notify_frame_level_changed(const utils::observer_ptr<frame>& pFrame,
+    int iOldLevel, int iNewLevel)
 {
     if (pFrame->get_frame_strata() == frame_strata::PARENT)
     {
@@ -118,7 +119,7 @@ void frame_renderer::notify_frame_level_changed(frame* pFrame, int iOldLevel, in
     notify_strata_needs_redraw_(mStrata);
 }
 
-void frame_renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
+void frame_renderer::add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame)
 {
     int iNewLevel = pFrame->get_level();
     auto mIterNew = mStrata.lLevelList.find(iNewLevel);
@@ -131,7 +132,7 @@ void frame_renderer::add_to_strata_list_(strata& mStrata, frame* pFrame)
     add_to_level_list_(mIterNew->second, pFrame);
 }
 
-void frame_renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
+void frame_renderer::remove_from_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame)
 {
     auto mIter = mStrata.lLevelList.find(pFrame->get_level());
     if (mIter == mStrata.lLevelList.end())
@@ -145,14 +146,14 @@ void frame_renderer::remove_from_strata_list_(strata& mStrata, frame* pFrame)
         mStrata.lLevelList.erase(mIter);
 }
 
-void frame_renderer::add_to_level_list_(level& mLevel, frame* pFrame)
+void frame_renderer::add_to_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame)
 {
     mLevel.lFrameList.push_back(pFrame);
     notify_strata_needs_redraw_(*mLevel.pStrata);
     bStrataListUpdated_ = true;
 }
 
-void frame_renderer::remove_from_level_list_(level& mLevel, frame* pFrame)
+void frame_renderer::remove_from_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame)
 {
     auto mIter = std::find(mLevel.lFrameList.begin(), mLevel.lFrameList.end(), pFrame);
     if (mIter == mLevel.lFrameList.end())
@@ -169,7 +170,7 @@ void frame_renderer::render_strata_(const strata& mStrata) const
 {
     for (const auto& mLevel : utils::range::value(mStrata.lLevelList))
     {
-        for (auto* pFrame : mLevel.lFrameList)
+        for (const auto& pFrame : mLevel.lFrameList)
         {
             if (!pFrame->is_newly_created())
                 pFrame->render();
@@ -202,14 +203,14 @@ void frame_renderer::reset_strata_list_changed_flag_()
     bStrataListUpdated_ = false;
 }
 
-frame* frame_renderer::find_hovered_frame_(float fX, float fY)
+utils::observer_ptr<frame> frame_renderer::find_hovered_frame_(float fX, float fY)
 {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
     for (const auto& mStrata : utils::range::reverse(lStrataList_))
     {
         for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
         {
-            for (auto* pFrame : utils::range::reverse(mLevel.lFrameList))
+            for (const auto& pFrame : utils::range::reverse(mLevel.lFrameList))
             {
                 if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(fX, fY))
                     return pFrame;

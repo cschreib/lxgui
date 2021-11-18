@@ -2,8 +2,10 @@
 #define LXGUI_INPUT_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/utils.hpp"
-#include "lxgui/utils_string.hpp"
+#include <lxgui/utils.hpp>
+#include <lxgui/utils_string.hpp>
+#include <lxgui/utils_observer.hpp>
+
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/input_keys.hpp"
@@ -35,10 +37,17 @@ namespace input
         */
         explicit manager(std::unique_ptr<source> pSource);
 
-        manager(const manager& mMgr) = delete;
-        manager(manager&& mMgr) = delete;
-        manager& operator = (const manager& mMgr) = delete;
-        manager& operator = (manager&& mMgr) = delete;
+        /// Non-copiable
+        manager(const manager&) = delete;
+
+        /// Non-movable
+        manager(manager&&) = delete;
+
+        /// Non-copiable
+        manager& operator=(const manager&) = delete;
+
+        /// Non-movable
+        manager& operator=(manager&&) = delete;
 
         /// Updates input (keyboard and mouse).
         void update(float fDelta);
@@ -262,7 +271,8 @@ namespace input
         *         to the new receiver. See set_keyboard_focus() and
         *         set_mouse_focus() for partial forwarding.
         */
-        void set_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
+        void set_focus(bool bFocus,
+            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
 
         /// Sets whether keyboard input should be focussed.
         /** \param bFocus    'true' to stop keyboard inputs and focus on one receiver
@@ -270,7 +280,8 @@ namespace input
         *   \note This function will forward all keyboard events to the new receiver.
         *         See set_focus() for more information.
         */
-        void set_keyboard_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
+        void set_keyboard_focus(bool bFocus,
+            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
 
         /// Sets whether mouse input should be focussed.
         /** \param bFocus    'true' to stop mouse inputs and focus on one receiver
@@ -278,7 +289,8 @@ namespace input
         *   \note This function will forward all mouse events to the new receiver.
         *         See set_focus() for more information.
         */
-        void set_mouse_focus(bool bFocus, gui::event_receiver* pReceiver = nullptr);
+        void set_mouse_focus(bool bFocus,
+            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
 
         /// Checks whether all input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
@@ -390,8 +402,8 @@ namespace input
         bool bRemoveMouseFocus_ = false;
         bool bKeyboardFocus_ = false;
         bool bMouseFocus_ = false;
-        gui::event_receiver* pKeyboardFocusReceiver_ = nullptr;
-        gui::event_receiver* pMouseFocusReceiver_ = nullptr;
+        utils::observer_ptr<gui::event_receiver> pKeyboardFocusReceiver_ = nullptr;
+        utils::observer_ptr<gui::event_receiver> pMouseFocusReceiver_ = nullptr;
 
         std::vector<gui::event_manager*> lEventManagerList_;
 

@@ -31,7 +31,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit texture(manager* pManager);
+        explicit texture(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -45,7 +45,7 @@ namespace gui
         /// Copies an uiobject's parameters into this texture (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns this texture's blending mode.
         /** \return This texture's blending mode

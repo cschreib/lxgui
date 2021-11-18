@@ -18,7 +18,7 @@ void button::parse_attributes_(xml::block* pBlock)
     if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
     {
         set_text(utils::utf8_to_unicode(
-            pManager_->get_localizer().localize(pBlock->get_attribute("text"))));
+            get_manager().get_localizer().localize(pBlock->get_attribute("text"))));
     }
 }
 
@@ -35,7 +35,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_normal_texture(pTexture.get());
+        set_normal_texture(pTexture);
         add_region(std::move(pTexture));
     }
 
@@ -47,7 +47,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_pushed_texture(pTexture.get());
+        set_pushed_texture(pTexture);
         add_region(std::move(pTexture));
     }
 
@@ -59,7 +59,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_disabled_texture(pTexture.get());
+        set_disabled_texture(pTexture);
         add_region(std::move(pTexture));
     }
 
@@ -71,7 +71,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_highlight_texture(pTexture.get());
+        set_highlight_texture(pTexture);
         add_region(std::move(pTexture));
     }
 
@@ -84,7 +84,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_normal_text(pFontString.get());
+        set_normal_text(pFontString);
         add_region(std::move(pFontString));
     }
 
@@ -96,7 +96,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_highlight_text(pFontString.get());
+        set_highlight_text(pFontString);
         add_region(std::move(pFontString));
     }
 
@@ -108,7 +108,7 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_disabled_text(pFontString.get());
+        set_disabled_text(pFontString);
         add_region(std::move(pFontString));
     }
 

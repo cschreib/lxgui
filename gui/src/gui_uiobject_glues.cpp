@@ -507,7 +507,7 @@ int lua_uiobject::_set_all_points(lua_State* pLua)
         {
             uiobject* pFrame = nullptr;
             if (pArg->get_type() == lua::type::STRING)
-                pFrame = pObject_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                pFrame = pObject_->get_manager().get_uiobject_by_name(pArg->get_string());
             else
             {
                 lua_uiobject* pObj = pArg->get<lua_uiobject>();
@@ -557,7 +557,7 @@ int lua_uiobject::_set_parent(lua_State* pLua)
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                uiobject* pNewParent = pObject_->get_manager()->get_uiobject_by_name(pArg->get_string());
+                uiobject* pNewParent = pObject_->get_manager().get_uiobject_by_name(pArg->get_string());
                 if (!pNewParent)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : \""+pArg->get_string()
@@ -633,7 +633,7 @@ int lua_uiobject::_set_point(lua_State* pLua)
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
                 {
-                    pParent = pObject_->get_manager()->get_uiobject_by_name(sParent);
+                    pParent = pObject_->get_manager().get_uiobject_by_name(sParent);
                     if (!pParent)
                     {
                         gui::out << gui::error << mFunc.get_name() << "("
@@ -712,7 +712,7 @@ int lua_uiobject::_set_rel_point(lua_State* pLua)
             {
                 std::string sParent = pArg->get_string();
                 if (!utils::has_no_content(sParent))
-                    pParent = pObject_->get_manager()->get_uiobject_by_name(sParent);
+                    pParent = pObject_->get_manager().get_uiobject_by_name(sParent);
             }
             else
             {

@@ -19,7 +19,7 @@ void check_button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_checked_texture(pTexture.get());
+        set_checked_texture(pTexture);
         add_region(std::move(pTexture));
     }
 
@@ -31,7 +31,7 @@ void check_button::parse_all_blocks_before_children_(xml::block* pBlock)
         if (pSpecialBlock->is_provided("layer"))
             pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
 
-        set_disabled_checked_texture(pTexture.get());
+        set_disabled_checked_texture(pTexture);
         add_region(std::move(pTexture));
     }
 }

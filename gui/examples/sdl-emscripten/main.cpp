@@ -179,7 +179,7 @@ int main(int argc, char* argv[])
         std::cout << "Creating gui manager..." << std::endl;
 
         // Use full SDL implementation
-        std::unique_ptr<gui::manager> pManager =
+        utils::owner_ptr<gui::manager> pManager =
             gui::sdl::create_manager(pWindow.get(), pRenderer.get());
 
         pManager->enable_caching(false);

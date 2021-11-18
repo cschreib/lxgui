@@ -3,12 +3,12 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_observer.hpp>
 
 namespace lxgui
 {
 namespace gui
 {
-    class manager;
     class uiobject;
 
     /// Utility class for safe checking of widget validity
@@ -25,7 +25,19 @@ namespace gui
     public :
 
         /// Contructor.
-        explicit alive_checker(uiobject* pObject);
+        explicit alive_checker(uiobject& mObject);
+
+        /// Non-copiable
+        alive_checker(const alive_checker&) = delete;
+
+        /// Non-movable
+        alive_checker(alive_checker&&) = delete;
+
+        /// Non-copiable
+        alive_checker& operator=(const alive_checker&) = delete;
+
+        /// Non-movable
+        alive_checker& operator=(alive_checker&&) = delete;
 
         /// Check if the wrapper widget is still alive
         /** \return 'true' if the widget is alive, 'false' otherwise
@@ -34,9 +46,7 @@ namespace gui
 
     private :
 
-        uint uiID_ = 0;
-        uiobject* pObject_ = nullptr;
-        manager* pManager_ = nullptr;
+        utils::observer_ptr<uiobject> pObject_;
     };
 }
 }

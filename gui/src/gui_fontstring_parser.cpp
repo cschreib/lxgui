@@ -24,14 +24,14 @@ void font_string::parse_attributes_(xml::block* pBlock)
     layered_region::parse_attributes_(pBlock);
 
     set_font(
-        pManager_->parse_file_name(pBlock->get_attribute("font")),
+        get_manager().parse_file_name(pBlock->get_attribute("font")),
         utils::string_to_float(pBlock->get_attribute("fontHeight"))
     );
 
     if (pBlock->is_provided("text") || !bInherits_)
     {
         set_text(utils::utf8_to_unicode(
-            pManager_->get_localizer().localize(pBlock->get_attribute("text"))));
+            get_manager().get_localizer().localize(pBlock->get_attribute("text"))));
     }
 
     if (pBlock->is_provided("nonspacewrap") || !bInherits_)

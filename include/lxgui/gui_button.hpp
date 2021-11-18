@@ -52,7 +52,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit button(manager* pManager);
+        explicit button(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -89,7 +89,7 @@ namespace gui
         /// Copies an uiobject's parameters into this Button (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets this button's text.
         /** \param sText The new text
@@ -104,77 +104,117 @@ namespace gui
         /// Returns this button's normal texture.
         /** \return This button's normal texture
         */
-        texture* get_normal_texture();
+        const utils::observer_ptr<texture>& get_normal_texture() { return pNormalTexture_; }
+
+        /// Returns this button's normal texture.
+        /** \return This button's normal texture
+        */
+        utils::observer_ptr<const texture> get_normal_texture() const { return pNormalTexture_; }
 
         /// Returns this button's pushed texture.
         /** \return This button's pushed texture
         */
-        texture* get_pushed_texture();
+        const utils::observer_ptr<texture>& get_pushed_texture() { return pPushedTexture_; }
+
+        /// Returns this button's pushed texture.
+        /** \return This button's pushed texture
+        */
+        utils::observer_ptr<const texture> get_pushed_texture() const { return pPushedTexture_; }
 
         /// Returns this button's disabled texture.
         /** \return This button's disabled texture
         */
-        texture* get_disabled_texture();
+        const utils::observer_ptr<texture>& get_disabled_texture() { return pDisabledTexture_; }
+
+        /// Returns this button's disabled texture.
+        /** \return This button's disabled texture
+        */
+        utils::observer_ptr<const texture> get_disabled_texture() const { return pDisabledTexture_; }
 
         /// Returns this button's highlight texture.
         /** \return This button's highlight texture
         */
-        texture* get_highlight_texture();
+        const utils::observer_ptr<texture>& get_highlight_texture() { return pHighlightTexture_; }
+
+        /// Returns this button's highlight texture.
+        /** \return This button's highlight texture
+        */
+        utils::observer_ptr<const texture> get_highlight_texture() const { return pHighlightTexture_; }
 
         /// Returns this button's normal text.
         /** \return This button's normal text
         */
-        font_string* get_normal_text();
+        const utils::observer_ptr<font_string>& get_normal_text() { return pNormalText_; }
+
+        /// Returns this button's normal text.
+        /** \return This button's normal text
+        */
+        utils::observer_ptr<const font_string> get_normal_text() const { return pNormalText_; }
 
         /// Returns this button's highlight text.
         /** \return This button's highlight text
         */
-        font_string* get_highlight_text();
+        const utils::observer_ptr<font_string>& get_highlight_text() { return pHighlightText_; }
+
+        /// Returns this button's highlight text.
+        /** \return This button's highlight text
+        */
+        utils::observer_ptr<const font_string> get_highlight_text() const { return pHighlightText_; }
 
         /// Returns this button's disabled text.
         /** \return This button's disabled text
         */
-        font_string* get_disabled_text();
+        const utils::observer_ptr<font_string>& get_disabled_text() { return pDisabledText_; }
+
+        /// Returns this button's disabled text.
+        /** \return This button's disabled text
+        */
+        utils::observer_ptr<const font_string> get_disabled_text() const { return pDisabledText_; }
 
         /// Returns the currently displayed text object.
         /** \return The currently displayed text object
         */
-        font_string* get_current_font_string();
+        const utils::observer_ptr<font_string>& get_current_font_string() { return pCurrentFontString_; }
+
+        /// Returns the currently displayed text object.
+        /** \return The currently displayed text object
+        */
+        utils::observer_ptr<const font_string> get_current_font_string() const { return pCurrentFontString_; }
 
         /// Sets this button's normal texture.
         /** \param pTexture The new texture
         */
-        void set_normal_texture(texture* pTexture);
+        void set_normal_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's pushed texture.
         /** \param pTexture The new texture
         */
-        void set_pushed_texture(texture* pTexture);
+        void set_pushed_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's disabled texture.
         /** \param pTexture The new texture
         */
-        void set_disabled_texture(texture* pTexture);
+        void set_disabled_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's highlight texture.
         /** \param pTexture The new texture
         */
-        void set_highlight_texture(texture* pTexture);
+        void set_highlight_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's normal text.
         /** \param pFont The new text object
         */
-        void set_normal_text(font_string* pFont);
+        void set_normal_text(utils::observer_ptr<font_string> pFont);
 
         /// Sets this button's highlight text.
         /** \param pFont The new text object
         */
-        void set_highlight_text(font_string* pFont);
+        void set_highlight_text(utils::observer_ptr<font_string> pFont);
 
         /// Sets this button's disabled text.
         /** \param pFont The new text object
         */
-        void set_disabled_text(font_string* pFont);
+        void set_disabled_text(utils::observer_ptr<font_string> pFont);
 
         /// Disables this Button.
         /** \note A disabled button doesn't receive any input.
@@ -249,13 +289,13 @@ namespace gui
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        utils::observable_sealed_ptr<texture>     create_normal_texture_();
-        utils::observable_sealed_ptr<texture>     create_pushed_texture_();
-        utils::observable_sealed_ptr<texture>     create_disabled_texture_();
-        utils::observable_sealed_ptr<texture>     create_highlight_texture_();
-        utils::observable_sealed_ptr<font_string> create_normal_text_();
-        utils::observable_sealed_ptr<font_string> create_highlight_text_();
-        utils::observable_sealed_ptr<font_string> create_disabled_text_();
+        utils::owner_ptr<texture>     create_normal_texture_();
+        utils::owner_ptr<texture>     create_pushed_texture_();
+        utils::owner_ptr<texture>     create_disabled_texture_();
+        utils::owner_ptr<texture>     create_highlight_texture_();
+        utils::owner_ptr<font_string> create_normal_text_();
+        utils::owner_ptr<font_string> create_highlight_text_();
+        utils::owner_ptr<font_string> create_disabled_text_();
 
         state     mState_ = state::UP;
         bool      bHighlighted_ = false;
@@ -263,15 +303,15 @@ namespace gui
 
         utils::ustring sText_;
 
-        texture* pNormalTexture_ = nullptr;
-        texture* pPushedTexture_ = nullptr;
-        texture* pDisabledTexture_ = nullptr;
-        texture* pHighlightTexture_ = nullptr;
+        utils::observer_ptr<texture> pNormalTexture_ = nullptr;
+        utils::observer_ptr<texture> pPushedTexture_ = nullptr;
+        utils::observer_ptr<texture> pDisabledTexture_ = nullptr;
+        utils::observer_ptr<texture> pHighlightTexture_ = nullptr;
 
-        font_string* pNormalText_ = nullptr;
-        font_string* pHighlightText_ = nullptr;
-        font_string* pDisabledText_ = nullptr;
-        font_string* pCurrentFontString_ = nullptr;
+        utils::observer_ptr<font_string> pNormalText_ = nullptr;
+        utils::observer_ptr<font_string> pHighlightText_ = nullptr;
+        utils::observer_ptr<font_string> pDisabledText_ = nullptr;
+        utils::observer_ptr<font_string> pCurrentFontString_ = nullptr;
 
         vector2f mPushedTextOffset_ = vector2f::ZERO;
     };

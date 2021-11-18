@@ -100,7 +100,7 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
                 }
 
                 anchor mAnchor(
-                    this,
+                    *this,
                     anchor::get_anchor_point(sPoint),
                     sParent,
                     anchor::get_anchor_point(sRelativePoint)

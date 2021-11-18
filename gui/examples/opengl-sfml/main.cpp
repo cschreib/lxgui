@@ -47,22 +47,19 @@ int main(int argc, char* argv[])
         std::cout << "Creating gui manager..." << std::endl;
 
         // Define the input manager
-        std::unique_ptr<input::source> pInputSource =
-            std::unique_ptr<input::source>(new input::sfml::source(mWindow));
+        std::unique_ptr<input::source> pInputSource = std::make_unique<input::sfml::source>(mWindow);
 
         // Define the GUI renderer
-        std::unique_ptr<gui::renderer> pRenderer =
-            std::unique_ptr<gui::renderer>(new gui::gl::renderer(
-                pInputSource->get_window_width(),
-                pInputSource->get_window_height()));
+        std::unique_ptr<gui::renderer> pRenderer = std::make_unique<gui::gl::renderer>(
+            pInputSource->get_window_width(), pInputSource->get_window_height());
 
         // Create the GUI manager
-        std::unique_ptr<gui::manager> pManager = std::unique_ptr<gui::manager>(new gui::manager(
+        utils::owner_ptr<gui::manager> pManager = utils::make_owned<gui::manager>(
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
             std::move(pRenderer)
-        ));
+        );
 
         pManager->enable_caching(false);
 

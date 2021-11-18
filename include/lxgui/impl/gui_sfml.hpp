@@ -17,7 +17,7 @@ namespace sfml
     /** \param mWindow The SFML render window
     *   \return The new gui::manager instance
     */
-    std::unique_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow);
+    utils::owner_ptr<gui::manager> create_manager(sf::RenderWindow& mWindow);
 }
 }
 }

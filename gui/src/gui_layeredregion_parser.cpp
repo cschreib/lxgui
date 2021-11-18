@@ -27,7 +27,7 @@ void layered_region::parse_attributes_(xml::block* pBlock)
         );
     }
 
-    if (!pManager_->check_uiobject_name(sName))
+    if (!get_manager().check_uiobject_name(sName))
     {
         throw exception(pBlock->get_location(),
             "Cannot create an uiobject with an incorrect name. Skipped."
@@ -40,7 +40,7 @@ void layered_region::parse_attributes_(xml::block* pBlock)
 
     set_name(sName);
 
-    if (pManager_->get_uiobject_by_name(sName_))
+    if (get_manager().get_uiobject_by_name(sName_))
     {
         throw exception(pBlock->get_location(),
             std::string(bVirtual ? "A virtual" : "An")+" object with the name "+
@@ -48,7 +48,7 @@ void layered_region::parse_attributes_(xml::block* pBlock)
         );
     }
 
-    pManager_->add_uiobject(this);
+    get_manager().add_uiobject(observer_from_this());
 
     if (!bVirtual_)
         create_glue();
@@ -59,13 +59,13 @@ void layered_region::parse_attributes_(xml::block* pBlock)
         for (auto sParent : utils::cut(sInheritance, ","))
         {
             utils::trim(sParent, ' ');
-            uiobject* pObj = pManager_->get_uiobject_by_name(sParent, true);
+            utils::observer_ptr<uiobject> pObj = get_manager().get_uiobject_by_name(sParent, true);
             if (pObj)
             {
                 if (is_object_type(pObj->get_object_type()))
                 {
                     // Inherit from the other region
-                    copy_from(pObj);
+                    copy_from(*pObj);
                 }
                 else
                 {

@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_observer.hpp>
 #include "lxgui/gui_strata.hpp"
 
 namespace lxgui {
@@ -17,8 +18,23 @@ namespace gui
     {
     public :
 
+        /// Default constructor
+        frame_renderer() = default;
+
         /// Destructor
         virtual ~frame_renderer() = default;
+
+        /// Non-copiable
+        frame_renderer(const frame_renderer&) = delete;
+
+        /// Non-movable
+        frame_renderer(frame_renderer&&) = delete;
+
+        /// Non-copiable
+        frame_renderer& operator=(const frame_renderer&) = delete;
+
+        /// Non-movable
+        frame_renderer& operator=(frame_renderer&&) = delete;
 
         /// Tells this renderer that one of its widget requires redraw.
         virtual void notify_strata_needs_redraw(frame_strata mStrata) const;
@@ -27,22 +43,23 @@ namespace gui
         /** \param pFrame    The frame to render
         *   \param bRendered 'true' if this renderer needs to render that new object
         */
-        virtual void notify_rendered_frame(frame* pFrame, bool bRendered);
+        virtual void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered);
 
         /// Tells this renderer that a frame has changed strata.
         /** \param pFrame The frame which has changed
         *   \param mOldStrata The old frame strata
         *   \param mNewStrata The new frame strata
         */
-        virtual void notify_frame_strata_changed(frame* pFrame, frame_strata mOldStrata,
-            frame_strata mNewStrata);
+        virtual void notify_frame_strata_changed(const utils::observer_ptr<frame>& pFrame,
+            frame_strata mOldStrata, frame_strata mNewStrata);
 
         /// Tells this renderer that a frame has changed level.
         /** \param pFrame The frame which has changed
         *   \param iOldLevel The old frame level
         *   \param iNewLevel The new frame level
         */
-        virtual void notify_frame_level_changed(frame* pFrame, int iOldLevel, int iNewLevel);
+        virtual void notify_frame_level_changed(const utils::observer_ptr<frame>& pFrame,
+            int iOldLevel, int iNewLevel);
 
         /// Returns the display width of this renderer's main render target (e.g., screen).
         /** \return The render target width
@@ -56,10 +73,10 @@ namespace gui
 
     protected :
 
-        void add_to_strata_list_(strata& mStrata, frame* pFrame);
-        void remove_from_strata_list_(strata& mStrata, frame* pFrame);
-        void add_to_level_list_(level& mLevel, frame* pFrame);
-        void remove_from_level_list_(level& mLevel, frame* pFrame);
+        void add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
+        void remove_from_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
+        void add_to_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame);
+        void remove_from_level_list_(level& mLevel, const utils::observer_ptr<frame>& pFrame);
         void clear_strata_list_();
         bool has_strata_list_changed_() const;
         void reset_strata_list_changed_flag_();
@@ -67,7 +84,7 @@ namespace gui
 
         void render_strata_(const strata& mStrata) const;
 
-        frame* find_hovered_frame_(float fX, float fY);
+        utils::observer_ptr<frame> find_hovered_frame_(float fX, float fY);
 
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;

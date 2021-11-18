@@ -37,7 +37,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit slider(manager* pManager);
+        explicit slider(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -63,17 +63,22 @@ namespace gui
         /// Copies an uiobject's parameters into this slider (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets the texture to use for the thumb.
         /** \param pTexture The new texture
         */
-        void set_thumb_texture(texture* pTexture);
+        void set_thumb_texture(utils::observer_ptr<texture> pTexture);
 
         /// Returns the texture used for the thumb.
         /** \return The texture used for the thumb
         */
-        texture* get_thumb_texture() const;
+        const utils::observer_ptr<texture>& get_thumb_texture() { return pThumbTexture_; }
+
+        /// Returns the texture used for the thumb.
+        /** \return The texture used for the thumb
+        */
+        utils::observer_ptr<const texture> get_thumb_texture() const { return pThumbTexture_; }
 
         /// Sets the orientation of this slider.
         /** \param mOrientation The orientation of this slider
@@ -156,7 +161,7 @@ namespace gui
         /** \return 'true' if it is the case
         *   \note See set_allow_clicks_outside_thumb().
         */
-        bool are_clicks_outside_thumb_allowed();
+        bool are_clicks_outside_thumb_allowed() const;
 
         /// Checks if the provided coordinates are in the frame.
         /** \param fX The horizontal coordinate
@@ -205,7 +210,7 @@ namespace gui
 
         void constrain_thumb_();
 
-        utils::observable_sealed_ptr<texture> create_thumb_texture_();
+        utils::owner_ptr<texture> create_thumb_texture_();
         void notify_thumb_texture_needs_update_() const;
 
         void parse_attributes_(xml::block* pBlock) override;
@@ -223,7 +228,7 @@ namespace gui
         bool bAllowClicksOutsideThumb_ = true;
 
         layer_type mThumbLayer_ = layer_type::OVERLAY;
-        texture*   pThumbTexture_ = nullptr;
+        utils::observer_ptr<texture> pThumbTexture_ = nullptr;
         bool       bThumbMoved_ = false;
         bool       bMouseInThumb_ = false;
     };

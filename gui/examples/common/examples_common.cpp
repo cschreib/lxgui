@@ -82,12 +82,14 @@ void examples_setup_gui(gui::manager& mManager)
     // Create a frame
     // A "root" frame has no parent and is directly owned by the gui::manager.
     // A "child" frame is owned by another frame.
-    gui::frame* pFrame = mManager.create_root_frame<gui::frame>("FPSCounter");
+    utils::observer_ptr<gui::frame> pFrame;
+    pFrame = mManager.create_root_frame<gui::frame>("FPSCounter");
     pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
     pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
     // Create a font_string in the frame
-    gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
+    utils::observer_ptr<gui::font_string> pFont;
+    pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
     pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
     pFont->set_font("interface/fonts/main.ttf", 15);
     pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
@@ -119,20 +121,25 @@ void examples_setup_gui(gui::manager& mManager)
     );*/
 
     // Or in C++
-    float update_time = 0.5f, timer = 1.0f;
-    int frames = 0;
+    float fUpdateTime = 0.5f, fTimer = 1.0f;
+    uint uiFrames = 0;
     pFrame->add_script("OnUpdate",
-        [=](gui::frame& self, gui::event* event) mutable {
-            float delta = event->get<float>(0);
-            timer += delta;
-            ++frames;
+        [=](gui::frame& pSelf, gui::event* pEvent) mutable
+        {
+            float fDelta = pEvent->get<float>(0);
+            fTimer += fDelta;
+            ++uiFrames;
 
-            if (timer > update_time) {
-                gui::font_string* text = self.get_region<gui::font_string>("Text");
-                text->set_text(U"(created in C++)\nFPS : "+utils::to_ustring(floor(frames/timer)));
+            if (fTimer > fUpdateTime)
+            {
+                if (auto pText = pSelf.get_region<gui::font_string>("Text"))
+                {
+                    pText->set_text(U"(created in C++)\nFPS : " +
+                        utils::to_ustring(floor(uiFrames/fTimer)));
+                }
 
-                timer = 0.0f;
-                frames = 0;
+                fTimer = 0.0f;
+                uiFrames = 0;
             }
         }
     );

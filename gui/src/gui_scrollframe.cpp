@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager* pManager) : frame(pManager)
+scroll_frame::scroll_frame(manager& mManager) : frame(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -41,7 +41,7 @@ bool scroll_frame::can_use_script(const std::string& sScriptName) const
 
 void scroll_frame::on_script(const std::string& sScriptName, event* pEvent)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
     frame::on_script(sScriptName, pEvent);
     if (!mChecker.is_alive())
         return;
@@ -50,22 +50,21 @@ void scroll_frame::on_script(const std::string& sScriptName, event* pEvent)
         bRebuildScrollRenderTarget_ = true;
 }
 
-void scroll_frame::copy_from(uiobject* pObj)
+void scroll_frame::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(pObj);
+    frame::copy_from(mObj);
 
-    scroll_frame* pScrollFrame = down_cast<scroll_frame>(pObj);
+    const scroll_frame* pScrollFrame = down_cast<scroll_frame>(&mObj);
     if (!pScrollFrame)
         return;
 
     this->set_horizontal_scroll(pScrollFrame->get_horizontal_scroll());
     this->set_vertical_scroll(pScrollFrame->get_vertical_scroll());
 
-    auto* pOtherChild = pScrollFrame->get_scroll_child();
-    if (pOtherChild)
+    if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
     {
-        frame* pScrollChild = create_child(pOtherChild->get_object_type(),
-                pOtherChild->get_raw_name(), {pOtherChild});
+        utils::observer_ptr<frame> pScrollChild = create_child(pOtherChild->get_object_type(),
+                pOtherChild->get_raw_name(), {pScrollFrame->get_scroll_child()});
         pScrollChild->notify_loaded();
 
         if (pScrollChild)
@@ -73,12 +72,12 @@ void scroll_frame::copy_from(uiobject* pObj)
     }
 }
 
-void scroll_frame::set_scroll_child(utils::observable_sealed_ptr<frame> pFrame)
+void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
 {
     if (pScrollChild_)
     {
         pScrollChild_->set_renderer(nullptr);
-        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(
             lBorderList_.top_left() - vector2f(fHorizontalScroll_, fVerticalScroll_)
         );
 
@@ -87,12 +86,12 @@ void scroll_frame::set_scroll_child(utils::observable_sealed_ptr<frame> pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // Create the scroll texture
-        auto pScrollTexture = utils::make_observable_sealed<texture>(pManager_);
+        auto pScrollTexture = utils::make_owned<texture>(get_manager());
         pScrollTexture->set_special();
         pScrollTexture->set_draw_layer("ARTWORK");
-        pScrollTexture->set_name_and_parent("$parentScrollTexture", this);
+        pScrollTexture->set_name_and_parent("$parentScrollTexture", observer_from(this));
 
-        if (!pManager_->add_uiobject(pScrollTexture.get()))
+        if (!get_manager().add_uiobject(pScrollTexture))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to create scroll texture for \""+sName_+"\", "
@@ -101,29 +100,29 @@ void scroll_frame::set_scroll_child(utils::observable_sealed_ptr<frame> pFrame)
         }
 
         pScrollTexture->create_glue();
-        pScrollTexture->set_all_points(this);
+        pScrollTexture->set_all_points(observer_from(this));
 
         if (pScrollRenderTarget_)
             pScrollTexture->set_texture(pScrollRenderTarget_);
 
         pScrollTexture->notify_loaded();
-        pScrollTexture_ = pScrollTexture.get();
+        pScrollTexture_ = pScrollTexture;
         add_region(std::move(pScrollTexture));
 
         bRebuildScrollRenderTarget_ = true;
     }
 
-    pScrollChild_ = pFrame.get();
+    pScrollChild_ = pFrame;
 
     if (pScrollChild_)
     {
-        pScrollChild_->set_parent(this);
+        pScrollChild_->set_parent(observer_from(this));
 
         add_child(std::move(pFrame));
 
         pScrollChild_->set_special();
         if (!is_virtual())
-            pScrollChild_->set_renderer(this);
+            pScrollChild_->set_renderer(observer_from(this));
         pScrollChild_->clear_all_points();
         pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -fHorizontalScroll_, -fVerticalScroll_);
 
@@ -134,11 +133,6 @@ void scroll_frame::set_scroll_child(utils::observable_sealed_ptr<frame> pFrame)
     bRedrawScrollRenderTarget_ = true;
 }
 
-frame* scroll_frame::get_scroll_child()
-{
-    return pScrollChild_;
-}
-
 void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
 {
     if (fHorizontalScroll_ != fHorizontalScroll)
@@ -146,7 +140,7 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
         fHorizontalScroll_ = fHorizontalScroll;
         lQueuedEventList_.push_back("OnHorizontalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
     }
 }
@@ -168,7 +162,7 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
         fVerticalScroll_ = fVerticalScroll;
         lQueuedEventList_.push_back("OnVerticalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT)->set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
     }
 }
@@ -194,7 +188,7 @@ void scroll_frame::update(float fDelta)
         fOldChildHeight = pScrollChild_->get_apparent_height();
     }
 
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
     frame::update(fDelta);
     if (!mChecker.is_alive())
         return;
@@ -242,7 +236,7 @@ void scroll_frame::update_scroll_range_()
 
     if (!is_virtual())
     {
-        alive_checker mChecker(this);
+        alive_checker mChecker(*this);
         on_script("OnScrollRangeChanged");
         if (!mChecker.is_alive())
             return;
@@ -257,7 +251,7 @@ void scroll_frame::update_scroll_child_input_()
     update_mouse_in_frame_();
     if (bMouseInScrollTexture_)
     {
-        frame* pHoveredFrame = find_hovered_frame_(fX, fY);
+        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(fX, fY);
 
         if (pHoveredFrame != pHoveredScrollChild_)
         {
@@ -289,7 +283,7 @@ void scroll_frame::rebuild_scroll_render_target_()
     if (get_apparent_width() <= 0 || get_apparent_height() <= 0)
         return;
 
-    float fFactor = pManager_->get_interface_scaling_factor();
+    float fFactor = get_manager().get_interface_scaling_factor();
     float fScaledWidth = std::round(get_apparent_width()*fFactor);
     float fScaledHeight = std::round(get_apparent_height()*fFactor);
 
@@ -301,8 +295,8 @@ void scroll_frame::rebuild_scroll_render_target_()
     }
     else
     {
-        auto* pRenderer = pManager_->get_renderer();
-        pScrollRenderTarget_ = pRenderer->create_render_target(fScaledWidth, fScaledHeight);
+        auto& mRenderer = get_manager().get_renderer();
+        pScrollRenderTarget_ = mRenderer.create_render_target(fScaledWidth, fScaledHeight);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -311,7 +305,7 @@ void scroll_frame::rebuild_scroll_render_target_()
 
 void scroll_frame::render_scroll_strata_list_()
 {
-    pManager_->begin(pScrollRenderTarget_);
+    get_manager().begin(pScrollRenderTarget_);
     pScrollRenderTarget_->clear(color::EMPTY);
 
     for (const auto& mStrata : lStrataList_)
@@ -319,7 +313,7 @@ void scroll_frame::render_scroll_strata_list_()
         render_strata_(mStrata);
     }
 
-    pManager_->end();
+    get_manager().end();
 }
 
 bool scroll_frame::is_in_frame(float fX, float fY) const
@@ -349,7 +343,7 @@ void scroll_frame::create_glue()
     create_glue_<lua_scroll_frame>();
 }
 
-void scroll_frame::notify_rendered_frame(frame* pFrame, bool bRendered)
+void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered)
 {
     if (!pFrame)
         return;

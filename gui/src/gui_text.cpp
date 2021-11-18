@@ -111,7 +111,7 @@ namespace parser
                         if (!lWords.empty())
                         {
                             texture mTexture;
-                            mTexture.pMaterial = mText.get_renderer()->create_material(lWords[0]);
+                            mTexture.pMaterial = mText.get_renderer().create_material(lWords[0]);
                             if (lWords.size() == 2)
                             {
                                 mTexture.fWidth = mTexture.fHeight = utils::string_to_float(lWords[1]);
@@ -317,9 +317,9 @@ namespace parser
     }
 }
 
-text::text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont,
+text::text(const renderer& mRenderer, std::shared_ptr<gui::font> pFont,
     std::shared_ptr<gui::font> pOutlineFont) :
-    pRenderer_(pRenderer), pFont_(std::move(pFont)), pOutlineFont_(pOutlineFont)
+    mRenderer_(mRenderer), pFont_(std::move(pFont)), pOutlineFont_(pOutlineFont)
 {
     if (!pFont_)
         return;
@@ -368,7 +368,7 @@ void text::set_color(const color& mColor, bool bForceColor)
     {
         mColor_ = mColor;
         bForceColor_ = bForceColor;
-        if (pRenderer_->is_vertex_cache_enabled())
+        if (mRenderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
 }
@@ -383,7 +383,7 @@ void text::set_alpha(float fAlpha)
     if (fAlpha == fAlpha_) return;
 
     fAlpha_ = fAlpha;
-    if (pRenderer_->is_vertex_cache_enabled())
+    if (mRenderer_.is_vertex_cache_enabled())
         notify_cache_dirty_();
 }
 
@@ -587,7 +587,7 @@ void text::enable_formatting(bool bFormatting)
     if (bFormatting != bFormattingEnabled_)
     {
         bFormattingEnabled_ = bFormatting;
-        if (pRenderer_->is_vertex_cache_enabled())
+        if (mRenderer_.is_vertex_cache_enabled())
             notify_cache_dirty_();
     }
 }
@@ -597,8 +597,8 @@ void text::render(const matrix4f& mTransform) const
     if (!bReady_ || sUnicodeText_.empty())
         return;
 
-    bool bUseVertexCache = pRenderer_->is_vertex_cache_enabled() &&
-                           !pRenderer_->is_quad_batching_enabled();
+    bool bUseVertexCache = mRenderer_.is_vertex_cache_enabled() &&
+                           !mRenderer_.is_quad_batching_enabled();
 
     if ((bUseVertexCache && !pVertexCache_) || (bUseVertexCache && lQuadList_.empty()))
         bUpdateCache_ = true;
@@ -611,7 +611,7 @@ void text::render(const matrix4f& mTransform) const
         {
             if (bUseVertexCache && pOutlineVertexCache_)
             {
-                pRenderer_->render_cache(pMat.get(), *pOutlineVertexCache_, mTransform);
+                mRenderer_.render_cache(pMat.get(), *pOutlineVertexCache_, mTransform);
             }
             else
             {
@@ -623,7 +623,7 @@ void text::render(const matrix4f& mTransform) const
                     mQuad[i].col.a *= fAlpha_;
                 }
 
-                pRenderer_->render_quads(pMat.get(), lQuadsCopy);
+                mRenderer_.render_quads(pMat.get(), lQuadsCopy);
             }
         }
     }
@@ -632,7 +632,7 @@ void text::render(const matrix4f& mTransform) const
     {
         if (bUseVertexCache && pVertexCache_)
         {
-            pRenderer_->render_cache(pMat.get(), *pVertexCache_, mTransform);
+            mRenderer_.render_cache(pMat.get(), *pVertexCache_, mTransform);
         }
         else
         {
@@ -650,7 +650,7 @@ void text::render(const matrix4f& mTransform) const
                 mQuad[i].col.a *= fAlpha_;
             }
 
-            pRenderer_->render_quads(pMat.get(), lQuadsCopy);
+            mRenderer_.render_quads(pMat.get(), lQuadsCopy);
         }
 
         for (auto mQuad : lIconsList_)
@@ -661,7 +661,7 @@ void text::render(const matrix4f& mTransform) const
                 mQuad.v[i].col.a *= fAlpha_;
             }
 
-            pRenderer_->render_quad(mQuad);
+            mRenderer_.render_quad(mQuad);
         }
     }
 }
@@ -1095,15 +1095,15 @@ void text::update_() const
         fH_ = 0.0f;
     }
 
-    if (pRenderer_->is_vertex_cache_enabled() && !pRenderer_->is_quad_batching_enabled())
+    if (mRenderer_.is_vertex_cache_enabled() && !mRenderer_.is_quad_batching_enabled())
     {
         if (!pOutlineVertexCache_)
-            pOutlineVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
+            pOutlineVertexCache_ = mRenderer_.create_vertex_cache(vertex_cache::type::QUADS);
 
         pOutlineVertexCache_->update(lOutlineQuadList_[0].data(), lOutlineQuadList_.size()*4);
 
         if (!pVertexCache_)
-            pVertexCache_ = pRenderer_->create_vertex_cache(vertex_cache::type::QUADS);
+            pVertexCache_ = mRenderer_.create_vertex_cache(vertex_cache::type::QUADS);
 
         std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
         for (auto& mQuad : lQuadsCopy)
@@ -1175,11 +1175,6 @@ const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
         throw gui::exception("text", "Trying to access letter at invalid index.");
 
     return lQuadList_[uiIndex];
-}
-
-const renderer* text::get_renderer() const
-{
-    return pRenderer_;
 }
 
 }

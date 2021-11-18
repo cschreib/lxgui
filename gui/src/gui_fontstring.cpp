@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui
 {
 
-font_string::font_string(manager* pManager) : layered_region(pManager)
+font_string::font_string(manager& mManager) : layered_region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -114,11 +114,11 @@ void font_string::create_glue()
     create_glue_<lua_font_string>();
 }
 
-void font_string::copy_from(uiobject* pObj)
+void font_string::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(pObj);
+    uiobject::copy_from(mObj);
 
-    font_string* pFontString = down_cast<font_string>(pObj);
+    const font_string* pFontString = down_cast<font_string>(&mObj);
     if (!pFontString)
         return;
 
@@ -232,10 +232,10 @@ void font_string::create_text_object_()
 {
     if (sFontName_.empty()) return;
 
-    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight_);
+    uint uiPixelHeight = std::round(get_manager().get_interface_scaling_factor()*fHeight_);
 
-    renderer* pRenderer = pManager_->get_renderer();
-    const localizer& mLocalizer = pManager_->get_localizer();
+    const auto& mRenderer = get_manager().get_renderer();
+    const auto& mLocalizer = get_manager().get_localizer();
 
     const auto& lCodePoints = mLocalizer.get_allowed_code_points();
     const char32_t uiDefaultCodePoint = mLocalizer.get_fallback_code_point();
@@ -243,19 +243,19 @@ void font_string::create_text_object_()
     std::shared_ptr<gui::font> pOutlineFont;
     if (bIsOutlined_)
     {
-        pOutlineFont = pRenderer->create_atlas_font(
+        pOutlineFont = mRenderer.create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
             std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))),
             lCodePoints, uiDefaultCodePoint);
     }
 
-    auto pFont = pRenderer->create_atlas_font(
+    auto pFont = mRenderer.create_atlas_font(
         "GUI", sFontName_, uiPixelHeight,
         0u, lCodePoints, uiDefaultCodePoint);
 
-    pText_ = std::unique_ptr<text>(new text(pRenderer, pFont, pOutlineFont));
+    pText_ = std::unique_ptr<text>(new text(mRenderer, pFont, pOutlineFont));
 
-    pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
+    pText_->set_scaling_factor(1.0f/get_manager().get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);

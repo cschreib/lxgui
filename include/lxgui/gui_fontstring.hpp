@@ -36,7 +36,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit font_string(manager* pManager);
+        explicit font_string(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -50,7 +50,7 @@ namespace gui
         /// Copies an uiobject's parameters into this font_string (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns the name of the font file.
         /** \return The name of the font file

@@ -18,7 +18,7 @@ using namespace lxgui::input;
 namespace lxgui {
 namespace gui
 {
-edit_box::edit_box(manager* pManager) : focus_frame(pManager),
+edit_box::edit_box(manager& mManager) : focus_frame(mManager),
     mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
     mLastKeyPressed_(key::K_UNASSIGNED),
     mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
@@ -50,11 +50,11 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void edit_box::copy_from(uiobject* pObj)
+void edit_box::copy_from(const uiobject& mObj)
 {
-    focus_frame::copy_from(pObj);
+    focus_frame::copy_from(mObj);
 
-    edit_box* pEditBox = down_cast<edit_box>(pObj);
+    const edit_box* pEditBox = down_cast<edit_box>(&mObj);
     if (!pEditBox)
         return;
 
@@ -68,8 +68,7 @@ void edit_box::copy_from(uiobject* pObj)
     this->set_max_history_lines(pEditBox->get_max_history_lines());
     this->set_text_insets(pEditBox->get_text_insets());
 
-    font_string* pFS = pEditBox->get_font_string();
-    if (pFS)
+    if (const font_string* pFS = pEditBox->get_font_string().get())
     {
         auto pText = this->create_font_string_();
 
@@ -77,7 +76,7 @@ void edit_box::copy_from(uiobject* pObj)
             pText->set_virtual();
 
         pText->set_name(pFS->get_name());
-        if (!pManager_->add_uiobject(pText.get()))
+        if (!get_manager().add_uiobject(pText))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\", "
@@ -88,13 +87,13 @@ void edit_box::copy_from(uiobject* pObj)
             if (!is_virtual())
                 pText->create_glue();
 
-            pText->copy_from(pFS);
+            pText->copy_from(*pFS);
 
             if (!is_virtual())
                 pText->enable_formatting(false);
 
             pText->notify_loaded();
-            this->set_font_string(pText.get());
+            this->set_font_string(pText);
             this->add_region(std::move(pText));
         }
     }
@@ -102,7 +101,7 @@ void edit_box::copy_from(uiobject* pObj)
 
 void edit_box::update(float fDelta)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
     frame::update(fDelta);
     if (!mChecker.is_alive())
         return;
@@ -149,7 +148,7 @@ void edit_box::update(float fDelta)
     }
 
     if (bFocus_ && mLastKeyPressed_ != key::K_UNASSIGNED &&
-        pManager_->get_input_manager()->key_is_down_long(mLastKeyPressed_, true))
+        get_manager().get_input_manager().key_is_down_long(mLastKeyPressed_, true))
     {
         if (mKeyRepeatTimer_.is_paused())
             mKeyRepeatTimer_.start();
@@ -175,13 +174,13 @@ void edit_box::update(float fDelta)
 
 void edit_box::on_event(const event& mEvent)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     frame::on_event(mEvent);
     if (!mChecker.is_alive())
         return;
 
-    if (!pManager_->is_input_enabled())
+    if (!get_manager().is_input_enabled())
         return;
 
     if (mEvent.get_name() == "TEXT_ENTERED" && bFocus_)
@@ -301,7 +300,7 @@ void edit_box::on_script(const std::string& sScriptName, event* pEvent)
         register_for_drag({"LeftButton"});
     }
 
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
     frame::on_script(sScriptName, pEvent);
     if (!mChecker.is_alive())
         return;
@@ -334,7 +333,7 @@ void edit_box::set_text(const utils::ustring& sText)
         update_font_string_();
         update_carret_position_();
 
-        alive_checker mChecker(this);
+        alive_checker mChecker(*this);
 
         on_script("OnTextSet");
         if (!mChecker.is_alive())
@@ -758,19 +757,14 @@ void edit_box::notify_scaling_factor_updated()
     }
 }
 
-font_string* edit_box::get_font_string()
-{
-    return pFontString_;
-}
-
-void edit_box::set_font_string(font_string* pFont)
+void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
 {
     pFontString_ = pFont;
     if (!pFontString_)
         return;
 
     pFontString_->set_special();
-    pFontString_->set_parent(this);
+    pFontString_->set_parent(observer_from(this));
     pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
 
     pFontString_->set_abs_dimensions(0, 0);
@@ -794,7 +788,7 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
         auto pText = create_font_string_();
 
         pText->set_name("$parentFontString");
-        if (!pManager_->add_uiobject(pText.get()))
+        if (!get_manager().add_uiobject(pText))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to add \"$parentFontString\" to \""+sName_+"\", "
@@ -809,7 +803,7 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
         }
 
         pText->notify_loaded();
-        set_font_string(pText.get());
+        set_font_string(pText);
         add_region(std::move(pText));
     }
 
@@ -818,11 +812,11 @@ void edit_box::set_font(const std::string& sFontName, float fHeight)
     create_carret_();
 }
 
-utils::observable_sealed_ptr<font_string> edit_box::create_font_string_()
+utils::owner_ptr<font_string> edit_box::create_font_string_()
 {
-    auto pFont = utils::make_observable_sealed<font_string>(pManager_);
+    auto pFont = utils::make_owned<font_string>(get_manager());
     pFont->set_special();
-    pFont->set_parent(this);
+    pFont->set_parent(observer_from(this));
     pFont->set_draw_layer(layer_type::ARTWORK);
 
     return pFont;
@@ -833,13 +827,13 @@ void edit_box::create_highlight_()
     if (is_virtual())
         return;
 
-    auto pHighlight = utils::make_observable_sealed<texture>(pManager_);
+    auto pHighlight = utils::make_owned<texture>(get_manager());
     pHighlight->set_special();
-    pHighlight->set_parent(this);
+    pHighlight->set_parent(observer_from(this));
     pHighlight->set_draw_layer(layer_type::HIGHLIGHT);
     pHighlight->set_name("$parentHighlight");
 
-    if (!pManager_->add_uiobject(pHighlight.get()))
+    if (!get_manager().add_uiobject(pHighlight))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             "Trying to create highlight texture for \""+sName_+"\", "
@@ -858,7 +852,7 @@ void edit_box::create_highlight_()
 
     pHighlight->set_solid_color(mHighlightColor_);
     pHighlight->notify_loaded();
-    pHighlight_ = pHighlight.get();
+    pHighlight_ = pHighlight;
     add_region(std::move(pHighlight));
 }
 
@@ -869,13 +863,13 @@ void edit_box::create_carret_()
 
     if (!pCarret_)
     {
-        auto pCarret = utils::make_observable_sealed<texture>(pManager_);
+        auto pCarret = utils::make_owned<texture>(get_manager());
         pCarret->set_special();
-        pCarret->set_parent(this);
+        pCarret->set_parent(observer_from(this));
         pCarret->set_draw_layer(layer_type::HIGHLIGHT);
         pCarret->set_name("$parentCarret");
 
-        if (!pManager_->add_uiobject(pCarret.get()))
+        if (!get_manager().add_uiobject(pCarret))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to create carret texture for \""+sName_+"\", "
@@ -888,7 +882,7 @@ void edit_box::create_carret_()
         pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
 
         pCarret->notify_loaded();
-        pCarret_ = pCarret.get();
+        pCarret_ = pCarret;
         add_region(std::move(pCarret));
     }
 
@@ -1297,7 +1291,7 @@ bool edit_box::move_carret_vertically_(bool bDown)
 
 void edit_box::process_key_(key mKey)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     if (mKey == key::K_RETURN || mKey == key::K_NUMPADENTER)
     {
@@ -1322,7 +1316,7 @@ void edit_box::process_key_(key mKey)
         uint uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
-        if (pManager_->get_input_manager()->shift_is_pressed())
+        if (get_manager().get_input_manager().shift_is_pressed())
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1339,7 +1333,7 @@ void edit_box::process_key_(key mKey)
         uint uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(0u);
 
-        if (pManager_->get_input_manager()->shift_is_pressed())
+        if (get_manager().get_input_manager().shift_is_pressed())
         {
             if (bSelectedText_)
                 highlight_text(uiSelectionStartPos_, iterCarretPos_ - sUnicodeText_.begin());
@@ -1370,7 +1364,7 @@ void edit_box::process_key_(key mKey)
 
             if (mKey == key::K_LEFT || mKey == key::K_RIGHT)
             {
-                if (bSelectedText_ && !pManager_->get_input_manager()->shift_is_pressed())
+                if (bSelectedText_ && !get_manager().get_input_manager().shift_is_pressed())
                 {
                     uint uiOffset = 0;
                     if (mKey == key::K_LEFT)
@@ -1390,7 +1384,7 @@ void edit_box::process_key_(key mKey)
                     move_carret_vertically_(mKey == key::K_DOWN);
             }
 
-            if (pManager_->get_input_manager()->shift_is_pressed())
+            if (get_manager().get_input_manager().shift_is_pressed())
             {
                 if (bSelectedText_)
                 {
@@ -1444,19 +1438,19 @@ void edit_box::process_key_(key mKey)
             }
         }
     }
-    else if (mKey == key::K_C && pManager_->get_input_manager()->ctrl_is_pressed())
+    else if (mKey == key::K_C && get_manager().get_input_manager().ctrl_is_pressed())
     {
         if (uiSelectionEndPos_ != uiSelectionStartPos_)
         {
             uint uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
             uint uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
             utils::ustring sSelected = sUnicodeText_.substr(uiMinPos, uiMaxPos - uiMinPos);
-            pManager_->get_input_manager()->set_clipboard_content(sSelected);
+            get_manager().get_input_manager().set_clipboard_content(sSelected);
         }
     }
-    else if (mKey == key::K_V && pManager_->get_input_manager()->ctrl_is_pressed())
+    else if (mKey == key::K_V && get_manager().get_input_manager().ctrl_is_pressed())
     {
-        for (char32_t cChar : pManager_->get_input_manager()->get_clipboard_content())
+        for (char32_t cChar : get_manager().get_input_manager().get_clipboard_content())
         {
             if (!add_char_(cChar))
                 break;

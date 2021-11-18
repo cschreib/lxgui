@@ -18,6 +18,18 @@ namespace gui
         /// Default constructor.
         event() = default;
 
+        /// Copiable
+        event(const event&) = default;
+
+        /// Movable
+        event(event&&) = default;
+
+        /// Copiable
+        event& operator=(const event&) = default;
+
+        /// Movable
+        event& operator=(event&&) = default;
+
         /// Constructor.
         /** \param sName         The name of this event
         *   \param bOncePerFrame 'true' if you allow several events of

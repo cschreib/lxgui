@@ -31,6 +31,18 @@ namespace gui
         /// Constructor.
         renderer() = default;
 
+        /// Non-copiable
+        renderer(const renderer&) = delete;
+
+        /// Non-movable
+        renderer(renderer&&) = delete;
+
+        /// Non-copiable
+        renderer& operator=(const renderer&) = delete;
+
+        /// Non-movable
+        renderer& operator=(renderer&&) = delete;
+
         /// Destructor.
         virtual ~renderer() = default;
 

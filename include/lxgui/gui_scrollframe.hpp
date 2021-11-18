@@ -37,7 +37,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit scroll_frame(manager* pManager);
+        explicit scroll_frame(manager& mManager);
 
         /// Destructor.
         ~scroll_frame() override;
@@ -53,7 +53,7 @@ namespace gui
         /// Copies an uiobject's parameters into this scroll_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns 'true' if this scroll_frame can use a script.
         /** \param sScriptName The name of the script
@@ -74,12 +74,17 @@ namespace gui
         /** \param pFrame The scroll child
         *   \note Creates the render target.
         */
-        void set_scroll_child(utils::observable_sealed_ptr<frame> pFrame);
+        void set_scroll_child(utils::owner_ptr<frame> pFrame);
 
         /// Returns this scroll_frame's scroll child.
         /** \return This scroll_frame's scroll child
         */
-        frame* get_scroll_child();
+        const utils::observer_ptr<frame>& get_scroll_child() { return pScrollChild_; }
+
+        /// Returns this scroll_frame's scroll child.
+        /** \return This scroll_frame's scroll child
+        */
+        utils::observer_ptr<const frame> get_scroll_child() const { return pScrollChild_; }
 
         /// Sets the horizontal offset of the scroll child.
         /** \param fHorizontalScroll The horizontal offset
@@ -137,7 +142,7 @@ namespace gui
         /** \param pFrame    The frame to render
         *   \param bRendered 'true' if this renderer needs to render that new object
         */
-        void notify_rendered_frame(frame* pFrame, bool bRendered) override;
+        void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered) override;
 
         /// Returns the width of of this renderer's main render target (e.g., screen).
         /** \return The render target width
@@ -176,17 +181,17 @@ namespace gui
         float fVerticalScroll_ = 0;
         float fVerticalScrollRange_ = 0;
 
-        frame* pScrollChild_ = nullptr;
+        utils::observer_ptr<frame> pScrollChild_ = nullptr;
 
         mutable bool bRebuildScrollRenderTarget_ = false;
         mutable bool bRedrawScrollRenderTarget_ = false;
         mutable bool bUpdateScrollRange_ = false;
         std::shared_ptr<render_target> pScrollRenderTarget_;
 
-        texture* pScrollTexture_ = nullptr;
+        utils::observer_ptr<texture> pScrollTexture_ = nullptr;
 
         bool   bMouseInScrollTexture_ = false;
-        frame* pHoveredScrollChild_ = nullptr;
+        utils::observer_ptr<frame> pHoveredScrollChild_ = nullptr;
     };
 
     /** \cond NOT_REMOVE_FROM_DOC

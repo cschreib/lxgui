@@ -157,7 +157,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
         {
             if (pArg->get_type() == lua::type::STRING)
             {
-                uiobject* pObj = get_object()->get_manager()->get_uiobject_by_name(pArg->get_string());
+                uiobject* pObj = get_object()->get_manager().get_uiobject_by_name(pArg->get_string());
                 if (!pObj)
                 {
                     gui::out << gui::error << mFunc.get_name() << " : "
@@ -201,7 +201,7 @@ int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
             }
         }
 
-        utils::observable_sealed_ptr<frame> pScrollChild;
+        utils::owner_ptr<frame> pScrollChild;
         if (pChild)
         {
             pScrollChild = down_cast<frame>(pChild->release_from_parent());

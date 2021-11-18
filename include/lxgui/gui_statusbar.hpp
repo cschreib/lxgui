@@ -39,7 +39,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit status_bar(manager* pManager);
+        explicit status_bar(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -56,7 +56,7 @@ namespace gui
         /// Copies an uiobject's parameters into this status_bar (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets this status_bar's minimum value.
         /** \param fMin The minimum value
@@ -92,7 +92,7 @@ namespace gui
         /// Sets this status_bar's bar texture.
         /** \param pBarTexture The bar texture
         */
-        void set_bar_texture(texture* pBarTexture);
+        void set_bar_texture(utils::observer_ptr<texture> pBarTexture);
 
         /// Sets this status_bar's bar color.
         /** \param mBarColor The bar color
@@ -136,7 +136,12 @@ namespace gui
         /// Returns this status_bar's bar texture.
         /** \return This status_bar's bar texture
         */
-        texture* get_bar_texture() const;
+        const utils::observer_ptr<texture>& get_bar_texture() { return pBarTexture_; }
+
+        /// Returns this status_bar's bar texture.
+        /** \return This status_bar's bar texture
+        */
+        utils::observer_ptr<const texture> get_bar_texture() const { return pBarTexture_; }
 
         /// Returns this status_bar's bar color.
         /** \return This status_bar's bar color
@@ -171,7 +176,7 @@ namespace gui
 
     protected :
 
-        utils::observable_sealed_ptr<texture> create_bar_texture_();
+        utils::owner_ptr<texture> create_bar_texture_();
         void notify_bar_texture_needs_update_();
 
         void parse_attributes_(xml::block* pBlock) override;
@@ -188,7 +193,7 @@ namespace gui
 
         color      mBarColor_ = color::WHITE;
         layer_type mBarLayer_ = layer_type::ARTWORK;
-        texture*   pBarTexture_ = nullptr;
+        utils::observer_ptr<texture> pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
 

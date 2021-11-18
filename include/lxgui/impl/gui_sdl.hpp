@@ -17,7 +17,7 @@ namespace sdl
 *   \param bInitialiseSDLImage Set to 'false' if SDL Image has already been initialised elsewhere
 *   \return The new gui::manager instance
 */
-std::unique_ptr<gui::manager> create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer,
+utils::owner_ptr<gui::manager> create_manager(SDL_Window* pWindow, SDL_Renderer* pRenderer,
     bool bInitialiseSDLImage = true);
 }
 }

@@ -51,11 +51,11 @@ void slider::parse_all_blocks_before_children_(xml::block* pBlock)
         pTexture->parse_block(pThumbBlock);
         pTexture->clear_all_points();
         pTexture->set_point(anchor(
-            pTexture.get(), anchor_point::CENTER, "$parent",
+            *pTexture, anchor_point::CENTER, "$parent",
             get_orientation() == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
 
-        pThumbTexture_ = pTexture.get();
+        pThumbTexture_ = pTexture;
         add_region(std::move(pTexture));
     }
 }

@@ -55,7 +55,7 @@ int lua_check_button::_get_checked_texture(lua_State* pLua)
 
     lua::function mFunc("CheckButton:get_checked_texture", pLua, 1);
 
-    texture* pTexture = get_object()->get_checked_texture();
+    utils::observer_ptr<texture> pTexture = get_object()->get_checked_texture();
     if (pTexture)
     {
         pTexture->push_on_lua(mFunc.get_state());
@@ -78,7 +78,7 @@ int lua_check_button::_get_disabled_checked_texture(lua_State* pLua)
 
     lua::function mFunc("CheckButton:get_disabled_checked_texture", pLua, 1);
 
-    texture* pTexture = get_object()->get_disabled_checked_texture();
+    utils::observer_ptr<texture> pTexture = get_object()->get_disabled_checked_texture();
     if (pTexture)
     {
         pTexture->push_on_lua(mFunc.get_state());

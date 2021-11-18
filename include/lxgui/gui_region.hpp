@@ -19,7 +19,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit region(manager* pManager);
+        explicit region(manager& mManager);
 
         /// Renders this widget on the current render target.
         /** \note Does nothing.

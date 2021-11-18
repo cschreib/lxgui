@@ -51,7 +51,7 @@ void status_bar::parse_all_blocks_before_children_(xml::block* pBlock)
         {
             auto pBarTexture = create_bar_texture_();
             pBarTexture->parse_block(pBarBlock);
-            set_bar_texture(pBarTexture.get());
+            set_bar_texture(pBarTexture);
             add_region(std::move(pBarTexture));
         }
         else

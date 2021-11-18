@@ -108,7 +108,7 @@ void main_loop(void* pTypeErasedData)
 
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
 
-    input::manager* pInputMgr = mContext.pManager->get_input_manager();
+    input::manager& mInputMgr = mContext.pManager->get_input_manager();
 
 #if defined(SDL_GUI) || defined(GLSDL_GUI)
     // Get events from SDL
@@ -138,7 +138,7 @@ void main_loop(void* pTypeErasedData)
             // capture some of them (for example: the user is typing in an edit_box).
             // Therefore, before we can react to these events, we must check that
             // the input isn't being "focussed":
-            if (!pInputMgr->is_keyboard_focused())
+            if (!mInputMgr.is_keyboard_focused())
             {
                 switch (mEvent.key.keysym.sym)
                 {
@@ -165,12 +165,12 @@ void main_loop(void* pTypeErasedData)
                         mContext.pManager->reload_ui();
                         break;
                     case SDLK_b:
-                        mContext.pManager->get_renderer()->set_quad_batching_enabled(
-                            !mContext.pManager->get_renderer()->is_quad_batching_enabled());
+                        mContext.pManager->get_renderer().set_quad_batching_enabled(
+                            !mContext.pManager->get_renderer().is_quad_batching_enabled());
                         break;
                     case SDLK_a:
-                        mContext.pManager->get_renderer()->set_texture_atlas_enabled(
-                            !mContext.pManager->get_renderer()->is_texture_atlas_enabled());
+                        mContext.pManager->get_renderer().set_texture_atlas_enabled(
+                            !mContext.pManager->get_renderer().is_texture_atlas_enabled());
                         break;
                     default:
                         break;
@@ -179,7 +179,7 @@ void main_loop(void* pTypeErasedData)
         }
 
         // Feed events to the GUI
-        static_cast<input::sdl::source*>(pInputMgr->get_source())->on_sdl_event(mEvent);
+        static_cast<input::sdl::source*>(mInputMgr.get_source())->on_sdl_event(mEvent);
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     // Get events from SFML
@@ -206,7 +206,7 @@ void main_loop(void* pTypeErasedData)
             // capture some of them (for example: the user is typing in an edit_box).
             // Therefore, before we can react to these events, we must check that
             // the input isn't being "focussed":
-            if (!pInputMgr->is_keyboard_focused())
+            if (!mInputMgr.is_keyboard_focused())
             {
                 switch (mEvent.key.code)
                 {
@@ -233,12 +233,12 @@ void main_loop(void* pTypeErasedData)
                         mContext.pManager->reload_ui();
                         break;
                     case sf::Keyboard::Key::B:
-                        mContext.pManager->get_renderer()->set_quad_batching_enabled(
-                            !mContext.pManager->get_renderer()->is_quad_batching_enabled());
+                        mContext.pManager->get_renderer().set_quad_batching_enabled(
+                            !mContext.pManager->get_renderer().is_quad_batching_enabled());
                         break;
                     case sf::Keyboard::Key::A:
-                        mContext.pManager->get_renderer()->set_texture_atlas_enabled(
-                            !mContext.pManager->get_renderer()->is_texture_atlas_enabled());
+                        mContext.pManager->get_renderer().set_texture_atlas_enabled(
+                            !mContext.pManager->get_renderer().is_texture_atlas_enabled());
                         break;
                     default:
                         break;
@@ -246,12 +246,12 @@ void main_loop(void* pTypeErasedData)
             }
         }
 
-        static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
+        static_cast<input::sfml::source*>(mInputMgr.get_source())->on_sfml_event(mEvent);
     }
 #endif
 
     // Check if WORLD input is allowed
-    if (pInputMgr->can_receive_input("WORLD"))
+    if (mInputMgr.can_receive_input("WORLD"))
     {
         // Process mouse and click events in the game...
     }
@@ -447,7 +447,7 @@ int main(int argc, char* argv[])
 
         // Initialize the gui
         std::cout << "Creating gui manager..." << std::endl;
-        std::unique_ptr<gui::manager> pManager;
+        utils::owner_ptr<gui::manager> pManager;
 
     #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
         // Define the input manager
@@ -455,29 +455,27 @@ int main(int argc, char* argv[])
 
     #if defined(GLSFML_GUI)
         // Use SFML
-        pInputSource = std::unique_ptr<input::source>(new input::sfml::source(mWindow));
+        pInputSource = std::make_unique<input::sfml::source>(mWindow);
     #elif defined(GLSDL_GUI)
         // Use SDL
         {
             bool bInitializeSDLImage = true;
             SDL_Renderer* pRenderer = nullptr; // set to nullptr when not using an SDL_Renderer
-            pInputSource = std::unique_ptr<input::source>(new input::sdl::source(
-                pWindow.get(), pRenderer, bInitializeSDLImage));
+            pInputSource = std::make_unique<input::sfl::source>(
+                pWindow.get(), pRenderer, bInitializeSDLImage);
         }
     #endif
 
         // Define the GUI renderer
-        std::unique_ptr<gui::renderer> pRenderer =
-            std::unique_ptr<gui::renderer>(new gui::gl::renderer(
-                pInputSource->get_window_width(),
-                pInputSource->get_window_height()));
+        std::unique_ptr<gui::renderer> pRenderer = std::make_unique<gui::gl::renderer>(
+            pInputSource->get_window_width(), pInputSource->get_window_height());
 
-        pManager = std::unique_ptr<gui::manager>(new gui::manager(
+        pManager = utils::make_owned<gui::manager>(
             // Provide the input source
             std::move(pInputSource),
             // Provide the GUI renderer implementation
             std::move(pRenderer)
-        ));
+        );
     #elif defined(SDL_GUI)
         // Use full SDL implementation
         pManager = gui::sdl::create_manager(pWindow.get(), pRenderer.get());
@@ -487,8 +485,8 @@ int main(int argc, char* argv[])
     #endif
 
         // Automatically select best settings
-        gui::renderer* pGUIRenderer = pManager->get_renderer();
-        pGUIRenderer->auto_detect_settings();
+        gui::renderer& mGUIRenderer = pManager->get_renderer();
+        mGUIRenderer.auto_detect_settings();
 
         std::cout << " Preferred languages: ";
         for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
@@ -499,15 +497,15 @@ int main(int argc, char* argv[])
             uiCodePoints += mRange.uiLast - mRange.uiFirst + 1;
         std::cout << " Required Unicode code points: " << uiCodePoints << std::endl;
         std::cout << " Renderer settings:" << std::endl;
-        std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
-        std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
-        std::cout << "  Vertex cache supported: " << pGUIRenderer->is_vertex_cache_supported() << std::endl;
-        std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
-        std::cout << "  Texture atlas supported: " << pGUIRenderer->is_texture_atlas_supported() << std::endl;
-        std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
-        std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
-        std::cout << "  Texture per-vertex color supported: " << pGUIRenderer->is_texture_vertex_color_supported() << std::endl;
-        std::cout << "  Quad batching enabled: " << pGUIRenderer->is_quad_batching_enabled() << std::endl;
+        std::cout << "  Renderer: " << mGUIRenderer.get_name() << std::endl;
+        std::cout << "  Max texture size: " << mGUIRenderer.get_texture_max_size() << std::endl;
+        std::cout << "  Vertex cache supported: " << mGUIRenderer.is_vertex_cache_supported() << std::endl;
+        std::cout << "  Vertex cache enabled: " << mGUIRenderer.is_vertex_cache_enabled() << std::endl;
+        std::cout << "  Texture atlas supported: " << mGUIRenderer.is_texture_atlas_supported() << std::endl;
+        std::cout << "  Texture atlas enabled: " << mGUIRenderer.is_texture_atlas_enabled() << std::endl;
+        std::cout << "  Texture atlas page size: " << mGUIRenderer.get_texture_atlas_page_size() << std::endl;
+        std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
+        std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
         pManager->enable_caching(false);
 
@@ -562,12 +560,14 @@ int main(int argc, char* argv[])
         // Create the Frame
         // A "root" frame has no parent and is directly owned by the gui::manager.
         // A "child" frame is owned by another frame.
-        gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
+        utils::observer_ptr<gui::frame> pFrame;
+        pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
         pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
         pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
 
         // Create the FontString
-        gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
+        utils::observer_ptr<gui::font_string> pFont;
+        pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
         pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
         pFont->set_font("interface/fonts/main.ttf", 15);
         pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
@@ -601,20 +601,24 @@ int main(int argc, char* argv[])
 
         // Or in C++:
 
-        float timer = 1.0f;
+        float fTimer = 1.0f;
         pFrame->add_script("OnUpdate",
-            [&](gui::frame& self, gui::event* event) mutable {
-                float delta = event->get<float>(0);
-                timer += delta;
+            [=](gui::frame& pSelf, gui::event* pEvent) mutable
+            {
+                float fDelta = pEvent->get<float>(0);
+                fTimer += fDelta;
 
-                if (timer > 0.5f) {
+                if (fTimer > 0.5f)
+                {
                     float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
 
-                    gui::font_string* text = self.get_region<gui::font_string>("Text");
-                    text->set_text(U"(created in C++)\nFrame time (us) : "+
-                        utils::to_ustring(std::round(fFrameTime)));
+                    if (auto pText = pSelf.get_region<gui::font_string>("Text"))
+                    {
+                        pText->set_text(U"(created in C++)\nFrame time (us) : "+
+                            utils::to_ustring(std::round(fFrameTime)));
+                    }
 
-                    timer = 0.0f;
+                    fTimer = 0.0f;
                     mContext.uiFrameCount = 0;
                     mContext.fAccumulatedTime = 0;
                 }
