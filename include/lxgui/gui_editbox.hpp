@@ -397,8 +397,8 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "EditBox";
 
@@ -465,52 +465,6 @@ namespace gui
         double         dKeyRepeatSpeed_ = 0.03;
         periodic_timer mKeyRepeatTimer_;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_edit_box : public lua_focus_frame
-    {
-    public :
-
-        explicit lua_edit_box(lua_State* pLua);
-        edit_box* get_object() { return static_cast<edit_box*>(pObject_); }
-
-        // Glues
-        int _add_history_line(lua_State*);
-        int _clear_history(lua_State*);
-        int _get_blink_speed(lua_State*);
-        int _get_cursor_position(lua_State*);
-        int _get_history_lines(lua_State*);
-        int _get_max_letters(lua_State*);
-        int _get_num_letters(lua_State*);
-        int _get_number(lua_State*);
-        int _get_text(lua_State*);
-        int _get_text_insets(lua_State*);
-        int _highlight_text(lua_State*);
-        int _insert(lua_State*);
-        int _is_multi_line(lua_State*);
-        int _is_numeric(lua_State*);
-        int _is_password(lua_State*);
-        int _set_blink_speed(lua_State*);
-        int _set_cursor_position(lua_State*);
-        int _set_font(lua_State*);
-        int _set_max_history_lines(lua_State*);
-        int _set_max_letters(lua_State*);
-        int _set_multi_line(lua_State*);
-        int _set_number(lua_State*);
-        int _set_numeric(lua_State*);
-        int _set_password(lua_State*);
-        int _set_text(lua_State*);
-        int _set_text_insets(lua_State*);
-
-        static const char  className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_edit_box> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

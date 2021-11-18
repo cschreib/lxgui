@@ -43,7 +43,7 @@
 namespace lxgui {
 namespace gui
 {
-void button::register_glue(lua::state& mLua)
+void button::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_button>();
 }

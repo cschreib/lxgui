@@ -63,7 +63,7 @@
 namespace lxgui {
 namespace gui
 {
-void edit_box::register_glue(lua::state& mLua)
+void edit_box::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_edit_box>();
 }

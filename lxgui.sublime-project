@@ -33,6 +33,118 @@
 					"shell_cmd": "make -j12 rebuild_cache",
 				},
 				{
+					"name": "Continuous",
+					"shell_cmd": "make -j12 Continuous",
+				},
+				{
+					"name": "ContinuousBuild",
+					"shell_cmd": "make -j12 ContinuousBuild",
+				},
+				{
+					"name": "ContinuousConfigure",
+					"shell_cmd": "make -j12 ContinuousConfigure",
+				},
+				{
+					"name": "ContinuousCoverage",
+					"shell_cmd": "make -j12 ContinuousCoverage",
+				},
+				{
+					"name": "ContinuousMemCheck",
+					"shell_cmd": "make -j12 ContinuousMemCheck",
+				},
+				{
+					"name": "ContinuousStart",
+					"shell_cmd": "make -j12 ContinuousStart",
+				},
+				{
+					"name": "ContinuousSubmit",
+					"shell_cmd": "make -j12 ContinuousSubmit",
+				},
+				{
+					"name": "ContinuousTest",
+					"shell_cmd": "make -j12 ContinuousTest",
+				},
+				{
+					"name": "ContinuousUpdate",
+					"shell_cmd": "make -j12 ContinuousUpdate",
+				},
+				{
+					"name": "Experimental",
+					"shell_cmd": "make -j12 Experimental",
+				},
+				{
+					"name": "ExperimentalBuild",
+					"shell_cmd": "make -j12 ExperimentalBuild",
+				},
+				{
+					"name": "ExperimentalConfigure",
+					"shell_cmd": "make -j12 ExperimentalConfigure",
+				},
+				{
+					"name": "ExperimentalCoverage",
+					"shell_cmd": "make -j12 ExperimentalCoverage",
+				},
+				{
+					"name": "ExperimentalMemCheck",
+					"shell_cmd": "make -j12 ExperimentalMemCheck",
+				},
+				{
+					"name": "ExperimentalStart",
+					"shell_cmd": "make -j12 ExperimentalStart",
+				},
+				{
+					"name": "ExperimentalSubmit",
+					"shell_cmd": "make -j12 ExperimentalSubmit",
+				},
+				{
+					"name": "ExperimentalTest",
+					"shell_cmd": "make -j12 ExperimentalTest",
+				},
+				{
+					"name": "ExperimentalUpdate",
+					"shell_cmd": "make -j12 ExperimentalUpdate",
+				},
+				{
+					"name": "Nightly",
+					"shell_cmd": "make -j12 Nightly",
+				},
+				{
+					"name": "NightlyBuild",
+					"shell_cmd": "make -j12 NightlyBuild",
+				},
+				{
+					"name": "NightlyConfigure",
+					"shell_cmd": "make -j12 NightlyConfigure",
+				},
+				{
+					"name": "NightlyCoverage",
+					"shell_cmd": "make -j12 NightlyCoverage",
+				},
+				{
+					"name": "NightlyMemCheck",
+					"shell_cmd": "make -j12 NightlyMemCheck",
+				},
+				{
+					"name": "NightlyMemoryCheck",
+					"shell_cmd": "make -j12 NightlyMemoryCheck",
+				},
+				{
+					"name": "NightlyStart",
+					"shell_cmd": "make -j12 NightlyStart",
+				},
+				{
+					"name": "NightlySubmit",
+					"shell_cmd": "make -j12 NightlySubmit",
+				},
+				{
+					"name": "NightlyTest",
+					"shell_cmd": "make -j12 NightlyTest",
+				},
+				{
+					"name": "NightlyUpdate",
+					"shell_cmd": "make -j12 NightlyUpdate",
+				},
+				{
 					"name": "fmt",
 					"shell_cmd": "make -j12 fmt",
 				},
@@ -53,10 +165,6 @@
 					"shell_cmd": "make -j12 lxgui-input-sfml",
 				},
 				{
-					"name": "lxgui-luapp",
-					"shell_cmd": "make -j12 lxgui-luapp",
-				},
-				{
 					"name": "lxgui-sdl",
 					"shell_cmd": "make -j12 lxgui-sdl",
 				},
@@ -74,7 +182,7 @@
 				},
 				{
 					"name": "lxgui-xml",
-					"shell_cmd": "make -j12 lxgui-xml"
+					"shell_cmd": "make -j12 lxgui-xml",
 				},
 			],
 			"working_dir": "$folder/build",

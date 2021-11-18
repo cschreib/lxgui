@@ -502,7 +502,7 @@ void slider::notify_borders_need_update() const
 
 void slider::create_glue()
 {
-    create_glue_<lua_slider>();
+    create_glue_<slider>();
 }
 
 void slider::notify_thumb_texture_needs_update_() const

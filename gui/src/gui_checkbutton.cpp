@@ -166,7 +166,7 @@ void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> pTe
 
 void check_button::create_glue()
 {
-    create_glue_<lua_check_button>();
+    create_glue_<check_button>();
 }
 
 utils::owner_ptr<texture> check_button::create_checked_texture_()

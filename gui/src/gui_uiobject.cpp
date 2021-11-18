@@ -75,16 +75,12 @@ uiobject::~uiobject()
 
             pObj->update_anchors_();
         }
+
+        remove_glue();
     }
 
     // Unregister this object from the GUI manager
     get_manager().remove_uiobject(observer_from_this());
-
-    if (lGlue_)
-    {
-        lGlue_->notify_deleted();
-        remove_glue();
-    }
 }
 
 std::string uiobject::serialize(const std::string& sTab) const
@@ -1060,25 +1056,9 @@ sol::state& uiobject::get_lua_()
     return get_manager().get_lua();
 }
 
-lua::state& uiobject::get_luapp_()
-{
-    return get_manager().get_luapp();
-}
-
-void uiobject::push_on_lua(sol::state& mLua) const
-{
-    sol::stack::push(mLua.lua_state(), mLua[sLuaName_]);
-}
-
-void uiobject::push_on_lua(lua::state& mLua) const
-{
-    mLua.push_global(sLuaName_);
-}
-
 void uiobject::remove_glue()
 {
-    get_manager().get_lua()[sLuaName_] = sol::lua_nil;
-    lGlue_ = nullptr;
+    get_lua_().globals()[sLuaName_] = sol::lua_nil;
 }
 
 void uiobject::set_special()

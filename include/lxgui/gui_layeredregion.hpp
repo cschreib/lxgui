@@ -80,6 +80,9 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
+
         static constexpr const char* CLASS_NAME = "LayeredRegion";
 
     protected :
@@ -88,27 +91,6 @@ namespace gui
 
         layer_type mLayer_ = layer_type::ARTWORK;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_layered_region : public lua_uiobject
-    {
-    public :
-
-        explicit lua_layered_region(lua_State* pLua);
-        layered_region* get_object() { return static_cast<layered_region*>(pObject_); }
-
-        int _get_draw_layer(lua_State*);
-        int _set_draw_layer(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_layered_region> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

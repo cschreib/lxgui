@@ -38,7 +38,7 @@ std::string layered_region::serialize(const std::string& sTab) const
 
 void layered_region::create_glue()
 {
-    create_glue_<lua_layered_region>();
+    create_glue_<layered_region>();
 }
 
 utils::owner_ptr<uiobject> layered_region::release_from_parent()

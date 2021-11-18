@@ -1080,6 +1080,9 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) final;
 
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
+
         static constexpr const char* CLASS_NAME = "Frame";
 
     protected :
@@ -1179,91 +1182,6 @@ namespace gui
 
         bool bMouseDraggedInFrame_ = false;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_frame : public lua_uiobject
-    {
-    public :
-
-        explicit lua_frame(lua_State* pLua);
-        frame* get_object() { return static_cast<frame*>(pObject_); }
-
-        int _add_script(lua_State*);
-        int _create_font_string(lua_State*);
-        int _create_texture(lua_State*);
-        int _create_title_region(lua_State*);
-        int _disable_draw_layer(lua_State*);
-        int _enable_draw_layer(lua_State*);
-        int _enable_keyboard(lua_State*);
-        int _enable_mouse(lua_State*);
-        int _enable_mouse_wheel(lua_State*);
-        int _get_backdrop(lua_State*);
-        int _get_backdrop_border_color(lua_State*);
-        int _get_backdrop_color(lua_State*);
-        int _get_children(lua_State*);
-        int _get_effective_alpha(lua_State*);
-        int _get_effective_scale(lua_State*);
-        int _get_frame_level(lua_State*);
-        int _get_frame_strata(lua_State*);
-        int _get_frame_type(lua_State*);
-        int _get_hit_rect_insets(lua_State*);
-        int _get_id(lua_State*);
-        int _get_max_resize(lua_State*);
-        int _get_min_resize(lua_State*);
-        int _set_max_width(lua_State*);
-        int _set_max_height(lua_State*);
-        int _set_min_width(lua_State*);
-        int _set_min_height(lua_State*);
-        int _get_num_children(lua_State*);
-        int _get_num_regions(lua_State*);
-        int _get_scale(lua_State*);
-        int _get_script(lua_State*);
-        int _get_title_region(lua_State*);
-        int _has_script(lua_State*);
-        int _is_clamped_to_screen(lua_State*);
-        int _is_frame_type(lua_State*);
-        int _is_keyboard_enabled(lua_State*);
-        int _is_mouse_enabled(lua_State*);
-        int _is_mouse_wheel_enabled(lua_State*);
-        int _is_movable(lua_State*);
-        int _is_resizable(lua_State*);
-        int _is_top_level(lua_State*);
-        int _is_user_placed(lua_State*);
-        int _on(lua_State*);
-        int _raise(lua_State*);
-        int _register_all_events(lua_State*);
-        int _register_event(lua_State*);
-        int _register_for_drag(lua_State*);
-        int _set_backdrop(lua_State*);
-        int _set_backdrop_border_color(lua_State*);
-        int _set_backdrop_color(lua_State*);
-        int _set_clamped_to_screen(lua_State*);
-        int _set_frame_level(lua_State*);
-        int _set_frame_strata(lua_State*);
-        int _set_hit_rect_insets(lua_State*);
-        int _set_max_resize(lua_State*);
-        int _set_min_resize(lua_State*);
-        int _set_movable(lua_State*);
-        int _set_resizable(lua_State*);
-        int _set_scale(lua_State*);
-        int _set_script(lua_State*);
-        int _set_top_level(lua_State*);
-        int _set_user_placed(lua_State*);
-        int _start_moving(lua_State*);
-        int _start_sizing(lua_State*);
-        int _stop_moving_or_sizing(lua_State*);
-        int _unregister_all_events(lua_State*);
-        int _unregister_event(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_frame> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

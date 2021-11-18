@@ -82,7 +82,7 @@ void frame::render()
 
 void frame::create_glue()
 {
-    create_glue_<lua_frame>();
+    create_glue_<frame>();
 }
 
 std::string frame::serialize(const std::string& sTab) const

@@ -626,7 +626,7 @@ namespace gui
         void register_frame_type()
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_glue(*pLua_);
+            frame_type::register_on_lua(*pLua_);
         }
 
         /// Registers a new frame type.
@@ -640,7 +640,7 @@ namespace gui
         void register_frame_type(function_type&& mFactoryFunction)
         {
             lCustomFrameList_[frame_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
-            frame_type::register_glue(*pLua_);
+            frame_type::register_on_lua(*pLua_);
         }
 
         /// Registers a new layered_region type.
@@ -651,7 +651,7 @@ namespace gui
         void register_region_type()
         {
             lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_glue(*pLua_);
+            region_type::register_on_lua(*pLua_);
         }
 
         /// Registers a new layered_region type.
@@ -665,7 +665,7 @@ namespace gui
         void register_region_type(function_type&& mFactoryFunction)
         {
             lCustomRegionList_[region_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
-            region_type::register_glue(*pLua_);
+            region_type::register_on_lua(*pLua_);
         }
 
         /// Returns the renderer implementation.
@@ -728,10 +728,11 @@ namespace gui
         xml_core_attributes parse_core_attributes(xml::block* pBlock,
             utils::observer_ptr<frame> pXMLParent);
 
-        /// Returns the gui manager associated to the provided lua::state.
-        /** \param mState The lua::state
+        /// Returns the gui manager associated to the provided Lua state.
+        /** \param mLua The Lua state
+        *   \return The GUI manager owning this Lua state
         */
-        static manager* get_manager(lua::state& mState);
+        static manager& get_manager(sol::state& mLua);
 
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
@@ -751,13 +752,12 @@ namespace gui
 
     private :
 
-        void register_lua_manager_();
-
         void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
         void load_addon_files_(addon* pAddOn);
         void load_addon_directory_(const std::string& sDirectory);
 
         void save_variables_(const addon* pAddOn);
+        std::string serialize_global_(const std::string& sVariable) const;
 
         uint get_new_object_id_();
 
@@ -783,8 +783,7 @@ namespace gui
 
         bool bClearFontsOnClose_ = true;
 
-        std::unique_ptr<lua::state>        pLua_;
-        std::unique_ptr<sol::state>        pSol_;
+        std::unique_ptr<sol::state>        pLua_;
         std::function<void(gui::manager&)> pLuaRegs_;
 
         bool bClosed_ = true;

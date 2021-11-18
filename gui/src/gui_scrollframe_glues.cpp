@@ -36,7 +36,7 @@
 namespace lxgui {
 namespace gui
 {
-void scroll_frame::register_glue(lua::state& mLua)
+void scroll_frame::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_scroll_frame>();
 }

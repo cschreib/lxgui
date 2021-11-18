@@ -285,8 +285,8 @@ namespace gui
         */
         const text* get_text_object() const;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "FontString";
 
@@ -324,51 +324,6 @@ namespace gui
         float fShadowXOffset_ = 0.0f;
         float fShadowYOffset_ = 0.0f;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_font_string : public lua_layered_region
-    {
-    public :
-
-        explicit lua_font_string(lua_State* pLua);
-        font_string* get_object() { return static_cast<font_string*>(pObject_); }
-
-        int _get_font(lua_State*);
-        int _get_justify_h(lua_State*);
-        int _get_justify_v(lua_State*);
-        int _get_shadow_color(lua_State*);
-        int _get_shadow_offset(lua_State*);
-        int _get_spacing(lua_State*);
-        int _get_line_spacing(lua_State*);
-        int _get_text_color(lua_State*);
-        int _set_font(lua_State*);
-        int _set_justify_h(lua_State*);
-        int _set_justify_v(lua_State*);
-        int _set_shadow_color(lua_State*);
-        int _set_shadow_offset(lua_State*);
-        int _set_spacing(lua_State*);
-        int _set_line_spacing(lua_State*);
-        int _set_text_color(lua_State*);
-        int _can_non_space_wrap(lua_State*);
-        int _can_word_wrap(lua_State*);
-        int _enable_formatting(lua_State*);
-        int _get_string_height(lua_State*);
-        int _get_string_width(lua_State*);
-        int _get_text(lua_State*);
-        int _is_formatting_enabled(lua_State*);
-        int _set_non_space_wrap(lua_State*);
-        int _set_text(lua_State*);
-        int _set_word_wrap(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_font_string> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

@@ -279,8 +279,8 @@ namespace gui
         */
         const vector2f& get_pushed_text_offset() const;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Button";
 
@@ -315,60 +315,6 @@ namespace gui
 
         vector2f mPushedTextOffset_ = vector2f::ZERO;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_button : public lua_frame
-    {
-    public :
-
-        explicit lua_button(lua_State* pLua);
-        button* get_object() { return static_cast<button*>(pObject_); }
-
-        // Glues
-        int _click(lua_State*);
-        int _disable(lua_State*);
-        int _enable(lua_State*);
-        int _get_button_state(lua_State*);
-        int _get_disabled_font_object(lua_State*);
-        int _get_disabled_text_color(lua_State*);
-        int _get_disabled_texture(lua_State*);
-        int _get_highlight_font_object(lua_State*);
-        int _get_highlight_text_color(lua_State*);
-        int _get_highlight_texture(lua_State*);
-        int _get_normal_font_object(lua_State*);
-        int _get_normal_texture(lua_State*);
-        int _get_pushed_text_offset(lua_State*);
-        int _get_pushed_texture(lua_State*);
-        int _get_text(lua_State*);
-        int _get_text_height(lua_State*);
-        int _get_text_width(lua_State*);
-        int _is_enabled(lua_State*);
-        int _lock_highlight(lua_State*);
-        int _set_button_state(lua_State*);
-        int _set_disabled_font_object(lua_State*);
-        int _set_disabled_text_color(lua_State*);
-        int _set_disabled_texture(lua_State*);
-        int _set_highlight_font_object(lua_State*);
-        int _set_highlight_text_color(lua_State*);
-        int _set_highlight_texture(lua_State*);
-        int _set_normal_font_object(lua_State*);
-        int _set_normal_text_color(lua_State*);
-        int _set_normal_texture(lua_State*);
-        int _set_pushed_text_offset(lua_State*);
-        int _set_pushed_texture(lua_State*);
-        int _set_text(lua_State*);
-
-        int _unlock_highlight(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_button> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

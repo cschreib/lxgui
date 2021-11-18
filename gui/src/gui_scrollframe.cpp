@@ -340,7 +340,7 @@ void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata) const
 
 void scroll_frame::create_glue()
 {
-    create_glue_<lua_scroll_frame>();
+    create_glue_<scroll_frame>();
 }
 
 void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered)

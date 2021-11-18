@@ -191,7 +191,6 @@ endif()
 # add the subdirectories for core library components
 add_subdirectory(utils)
 add_subdirectory(xml)
-add_subdirectory(luapp)
 add_subdirectory(gui)
 
 # add the subdirectories for back-ends

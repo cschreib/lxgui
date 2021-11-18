@@ -23,8 +23,6 @@
 #include <lxgui/utils_std.hpp>
 #include <lxgui/utils_range.hpp>
 
-#include <sol/state.hpp>
-
 #include <fstream>
 #include <sstream>
 
@@ -42,12 +40,6 @@
 namespace lxgui {
 namespace gui
 {
-int l_set_key_binding(lua_State* pLua);
-int l_create_frame(lua_State* pLua);
-int l_delete_frame(lua_State* pLua);
-int l_set_interface_scaling_factor(lua_State* pLua);
-int l_log(lua_State* pLua);
-int l_reload_ui(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
@@ -470,20 +462,10 @@ utils::observer_ptr<const uiobject> manager::get_uiobject_by_name(
 
 sol::state& manager::get_lua()
 {
-    return *pSol_;
-}
-
-const sol::state& manager::get_lua() const
-{
-    return *pSol_;
-}
-
-lua::state& manager::get_luapp()
-{
     return *pLua_;
 }
 
-const lua::state& manager::get_luapp() const
+const sol::state& manager::get_lua() const
 {
     return *pLua_;
 }
@@ -706,7 +688,7 @@ void manager::save_variables_(const addon* pAddOn)
         std::ofstream mFile("saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua");
         for (const auto& sVariable : pAddOn->lSavedVariableList)
         {
-            std::string sSerialized = pLua_->serialize_global(sVariable);
+            std::string sSerialized = serialize_global_(sVariable);
             if (!sSerialized.empty())
                 mFile << sSerialized << "\n";
         }
@@ -716,37 +698,6 @@ void manager::save_variables_(const addon* pAddOn)
 void gui_out(const std::string& sMessage)
 {
     gui::out << sMessage << std::endl;
-}
-
-void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
-{
-    if (pLua_) return;
-
-    pSol_ = std::unique_ptr<sol::state>(new sol::state());
-    pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
-        sol::lib::os, sol::lib::string, sol::lib::debug);
-
-    pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
-    pLua_->set_print_error_function(gui_out);
-
-    register_lua_manager_();
-    pLua_->reg<lua_uiobject>();
-    pLua_->reg<lua_frame>();
-    pLua_->reg<lua_focus_frame>();
-    pLua_->reg<lua_layered_region>();
-
-    pLua_->reg("set_key_binding",              l_set_key_binding);
-    pLua_->reg("create_frame",                 l_create_frame);
-    pLua_->reg("delete_frame",                 l_delete_frame);
-    pLua_->reg("set_interface_scaling_factor", l_set_interface_scaling_factor);
-    pLua_->reg("log",                          l_log);
-    pLua_->reg("reload_ui",                    l_reload_ui);
-
-    pLocalizer_->register_on_lua(*pSol_);
-
-    pLuaRegs_ = pLuaRegs;
-    if (pLuaRegs_)
-        pLuaRegs_(*this);
 }
 
 void manager::read_files()
@@ -795,7 +746,7 @@ void manager::close_ui()
         lAddOnList_.clear();
 
         pLua_ = nullptr;
-        pSol_ = nullptr;
+        pLua_ = nullptr;
 
         pHoveredFrame_ = nullptr;
         bUpdateHoveredFrame_ = false;

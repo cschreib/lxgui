@@ -160,8 +160,8 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "ScrollFrame";
 
@@ -190,37 +190,9 @@ namespace gui
 
         utils::observer_ptr<texture> pScrollTexture_ = nullptr;
 
-        bool   bMouseInScrollTexture_ = false;
+        bool bMouseInScrollTexture_ = false;
         utils::observer_ptr<frame> pHoveredScrollChild_ = nullptr;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_scroll_frame : public lua_frame
-    {
-    public :
-
-        explicit lua_scroll_frame(lua_State* pLua);
-        scroll_frame* get_object() { return static_cast<scroll_frame*>(pObject_); }
-
-        // Glues
-        int _get_horizontal_scroll(lua_State*);
-        int _get_horizontal_scroll_range(lua_State*);
-        int _get_scroll_child(lua_State*);
-        int _get_vertical_scroll(lua_State*);
-        int _get_vertical_scroll_range(lua_State*);
-        int _set_horizontal_scroll(lua_State*);
-        int _set_scroll_child(lua_State*);
-        int _set_vertical_scroll(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_scroll_frame> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

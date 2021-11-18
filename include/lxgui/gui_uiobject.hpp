@@ -11,7 +11,6 @@
 #include "lxgui/gui_exception.hpp"
 
 #include <lxgui/xml.hpp>
-#include <lxgui/luapp_lua_fwd.hpp>
 
 #include <lxgui/utils_maths.hpp>
 #include <lxgui/utils_observer.hpp>
@@ -25,39 +24,10 @@ namespace sol
 }
 
 namespace lxgui {
-namespace lua
-{
-    class state;
-}
-
 namespace gui
 {
     struct addon;
     class manager;
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    // Generic Lua glue
-    class lua_glue
-    {
-    public :
-
-        explicit lua_glue(lua_State* luaVM);
-        virtual ~lua_glue();
-
-        virtual void notify_deleted() = 0;
-
-        int get_data_table(lua_State *L);
-
-    protected :
-
-        lua_State* pLua_;
-        int        iRef_;
-    };
-
-    /** \endcond
-    */
 
     /// ID of a layer for rendering inside a frame.
     enum class layer_type
@@ -723,20 +693,13 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Pushes this uiobject on the provided lua state.
-        /** \param mLua The lua state on which to push the glue
-        */
-        void push_on_lua(sol::state& mLua) const;
-
-        /// Pushes this uiobject on the provided lua State.
-        /** \param mLua The lua state on which to push the glue
-        */
-        void push_on_lua(lua::state& mLua) const;
-
         /// Parses data from an xml::block.
         /** \param pBlock The uiobject's xml::block
         */
         virtual void parse_block(xml::block* pBlock) = 0;
+
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         template<typename ObjectType>
         friend const ObjectType* down_cast(const uiobject* pSelf);
@@ -762,7 +725,6 @@ namespace gui
         virtual void update_anchors_();
 
         sol::state&  get_lua_();
-        lua::state&  get_luapp_();
 
         template<typename T>
         void create_glue_();
@@ -782,8 +744,6 @@ namespace gui
         bool         bVirtual_ = false;
         bool         bLoaded_ = false;
         mutable bool bReady_ = true;
-
-        lua_glue* lGlue_ = nullptr;
 
         std::vector<std::string> lType_;
 
@@ -887,67 +847,6 @@ namespace gui
     {
         return utils::static_pointer_cast<ObjectType>(pSelf->uiobject::observer_from_this());
     }
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    // uiobject Lua glue
-    class lua_uiobject : public lua_glue
-    {
-    public :
-
-        explicit lua_uiobject(lua_State* luaVM);
-        ~lua_uiobject() override;
-
-        void notify_deleted() override;
-
-        uiobject* get_object();
-        const std::string& get_name() const;
-        void clear_object();
-
-        // uiobject
-        int _get_alpha(lua_State*);
-        int _get_name(lua_State*);
-        int _get_object_type(lua_State*);
-        int _is_object_type(lua_State*);
-        int _set_alpha(lua_State*);
-        // region
-        int _clear_all_points(lua_State*);
-        int _get_bottom(lua_State*);
-        int _get_center(lua_State*);
-        int _get_height(lua_State*);
-        int _get_left(lua_State*);
-        int _get_num_point(lua_State*);
-        int _get_parent(lua_State*);
-        int _get_point(lua_State*);
-        int _get_right(lua_State*);
-        int _get_top(lua_State*);
-        int _get_width(lua_State*);
-        int _hide(lua_State*);
-        int _is_shown(lua_State*);
-        int _is_visible(lua_State*);
-        int _set_all_points(lua_State*);
-        int _set_height(lua_State*);
-        int _set_parent(lua_State*);
-        int _set_point(lua_State*);
-        int _set_rel_point(lua_State*);
-        int _set_width(lua_State*);
-        int _show(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_uiobject> methods[];
-
-    protected :
-
-        bool check_object_();
-
-        std::string sName_;
-        uiobject*   pObject_;
-    };
-
-    /** \endcond
-    */
 }
 }
 

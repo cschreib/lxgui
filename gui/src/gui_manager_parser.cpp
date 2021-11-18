@@ -10,6 +10,8 @@
 #include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
 
+#include <sol/state.hpp>
+
 namespace lxgui {
 namespace gui
 {
@@ -70,9 +72,9 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 {
                     pLua_->do_file(sScriptFile);
                 }
-                catch (const lua::exception& e)
+                catch (const sol::error& e)
                 {
-                    std::string sError = e.get_description();
+                    std::string sError = e.what();
 
                     gui::out << gui::error << sError << std::endl;
 

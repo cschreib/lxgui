@@ -31,7 +31,7 @@
 namespace lxgui {
 namespace gui
 {
-void status_bar::register_glue(lua::state& mLua)
+void status_bar::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_status_bar>();
 }

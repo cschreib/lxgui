@@ -69,7 +69,7 @@
 namespace lxgui {
 namespace gui
 {
-void font_string::register_glue(lua::state& mLua)
+void font_string::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_font_string>();
 }

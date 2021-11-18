@@ -100,8 +100,8 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "CheckButton";
 
@@ -118,32 +118,6 @@ namespace gui
         utils::observer_ptr<texture> pDisabledCheckedTexture_ = nullptr;
 
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_check_button : public lua_button
-    {
-    public :
-
-        explicit lua_check_button(lua_State* pLua);
-        check_button* get_object() { return static_cast<check_button*>(pObject_); }
-
-        // Glues
-        int _is_checked(lua_State*);
-        int _get_checked_texture(lua_State*);
-        int _get_disabled_checked_texture(lua_State*);
-        int _set_checked(lua_State*);
-        int _set_checked_texture(lua_State*);
-        int _set_disabled_checked_texture(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_check_button> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

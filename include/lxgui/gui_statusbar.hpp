@@ -169,8 +169,8 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "StatusBar";
 
@@ -196,38 +196,6 @@ namespace gui
         utils::observer_ptr<texture> pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_status_bar : public lua_frame
-    {
-    public :
-
-        explicit lua_status_bar(lua_State* pLua);
-        status_bar* get_object() { return static_cast<status_bar*>(pObject_); }
-
-        // Glues
-        int _get_min_max_values(lua_State*);
-        int _get_orientation(lua_State*);
-        int _is_reversed(lua_State*);
-        int _get_status_bar_color(lua_State*);
-        int _get_status_bar_texture(lua_State*);
-        int _get_value(lua_State*);
-        int _set_min_max_values(lua_State*);
-        int _set_orientation(lua_State*);
-        int _set_reversed(lua_State*);
-        int _set_status_bar_color(lua_State*);
-        int _set_status_bar_texture(lua_State*);
-        int _set_value(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_status_bar> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

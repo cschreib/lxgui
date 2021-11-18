@@ -29,7 +29,7 @@
 namespace lxgui {
 namespace gui
 {
-void slider::register_glue(lua::state& mLua)
+void slider::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_slider>();
 }

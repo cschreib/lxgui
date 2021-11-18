@@ -64,6 +64,9 @@ namespace gui
         */
         void notify_invisible(bool bTriggerEvents = true) override;
 
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
+
         static constexpr const char* CLASS_NAME = "FocusFrame";
 
     protected :
@@ -73,30 +76,6 @@ namespace gui
         bool bFocus_ = false;
         bool bAutoFocus_ = false;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_focus_frame : public lua_frame
-    {
-    public :
-
-        explicit lua_focus_frame(lua_State* pLua);
-        focus_frame* get_object() { return static_cast<focus_frame*>(pObject_); }
-
-        // Glues
-        int _clear_focus(lua_State*);
-        int _is_auto_focus(lua_State*);
-        int _set_auto_focus(lua_State*);
-        int _set_focus(lua_State*);
-
-        static const char  className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_focus_frame> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

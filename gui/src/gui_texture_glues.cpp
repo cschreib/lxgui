@@ -19,7 +19,7 @@
 namespace lxgui {
 namespace gui
 {
-void texture::register_glue(lua::state& mLua)
+void texture::register_on_lua(sol::state& mLua)
 {
     mLua.reg<lua_texture>();
 }
