@@ -845,7 +845,10 @@ namespace gui
     template<typename ObjectType>
     utils::observer_ptr<ObjectType> observer_from(ObjectType* pSelf)
     {
-        return utils::static_pointer_cast<ObjectType>(pSelf->uiobject::observer_from_this());
+        if (pSelf)
+            return utils::static_pointer_cast<ObjectType>(pSelf->uiobject::observer_from_this());
+        else
+            return nullptr;
     }
 }
 }
