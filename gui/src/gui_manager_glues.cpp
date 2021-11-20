@@ -151,9 +151,9 @@ std::string serialize(const std::string& sTab, const sol::object& mValue)
     {
         return utils::to_string(mValue.as<double>());
     }
-    else if (mValue.is<std::ptrdiff_t>())
+    else if (mValue.is<int>())
     {
-        return utils::to_string(mValue.as<std::ptrdiff_t>());
+        return utils::to_string(mValue.as<int>());
     }
     else if (mValue.is<std::string>())
     {

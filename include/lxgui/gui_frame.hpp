@@ -322,7 +322,8 @@ namespace gui
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
         utils::observer_ptr<region_type> add_region(utils::owner_ptr<region_type> pRegion)
         {
-            return utils::static_pointer_cast<region_type>(add_region(std::move(pRegion)));
+            return utils::static_pointer_cast<region_type>(add_region(
+                utils::static_pointer_cast<layered_region>(std::move(pRegion))));
         }
 
         /// Removes a layered_region from this frame's children.
@@ -414,7 +415,8 @@ namespace gui
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
         utils::observer_ptr<frame_type> add_child(utils::owner_ptr<frame_type> pChild)
         {
-            return utils::static_pointer_cast<frame_type>(add_child(std::move(pChild)));
+            return utils::static_pointer_cast<frame_type>(add_child(
+                utils::static_pointer_cast<frame>(std::move(pChild))));
         }
 
         /// Removes a frame from this frame's children.

@@ -1131,8 +1131,8 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
         // They will be deleted later, when we know it is safe.
-        for (auto& mHandler : *lHandlerList)
-            mHandler.bDisconnected = true;
+        for (auto& mPrevHandler : *lHandlerList)
+            mPrevHandler.bDisconnected = true;
     }
 
     if (lHandlerList == nullptr)
