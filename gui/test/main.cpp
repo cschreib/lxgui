@@ -461,7 +461,7 @@ int main(int argc, char* argv[])
         {
             bool bInitializeSDLImage = true;
             SDL_Renderer* pRenderer = nullptr; // set to nullptr when not using an SDL_Renderer
-            pInputSource = std::make_unique<input::sfl::source>(
+            pInputSource = std::make_unique<input::sdl::source>(
                 pWindow.get(), pRenderer, bInitializeSDLImage);
         }
     #endif
