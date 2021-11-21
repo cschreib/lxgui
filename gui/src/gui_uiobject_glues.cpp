@@ -175,65 +175,65 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
 
 void uiobject::register_on_lua(sol::state& mLua)
 {
-    mLua.new_usertype<uiobject>("UIObject");
+    auto mClass = mLua.new_usertype<uiobject>("UIObject");
 
     /** @function get_alpha
     */
-    mLua["UIObject"]["get_alpha"] = &uiobject::get_alpha;
+    mClass.set_function("get_alpha", &uiobject::get_alpha);
 
     /** @function get_name
     */
-    mLua["UIObject"]["get_name"] = &uiobject::get_name;
+    mClass.set_function("get_name", &uiobject::get_name);
 
     /** @function get_object_type
     */
-    mLua["UIObject"]["get_object_type"] = &uiobject::get_object_type;
+    mClass.set_function("get_object_type", &uiobject::get_object_type);
 
     /** @function is_object_type
     */
-    mLua["UIObject"]["is_object_type"] = // select the right overload for Lua
-        static_cast<bool (uiobject::*)(const std::string&) const>(&uiobject::is_object_type);
+    mClass.set_function("is_object_type", // select the right overload for Lua
+        static_cast<bool (uiobject::*)(const std::string&) const>(&uiobject::is_object_type));
 
     /** @function set_alpha
     */
-    mLua["UIObject"]["set_alpha"] = &uiobject::set_alpha;
+    mClass.set_function("set_alpha", &uiobject::set_alpha);
 
     /** @function clear_all_points
     */
-    mLua["UIObject"]["clear_all_points"] = &uiobject::clear_all_points;
+    mClass.set_function("clear_all_points", &uiobject::clear_all_points);
 
     /** @function get_bottom
     */
-    mLua["UIObject"]["get_bottom"] = &uiobject::get_bottom;
+    mClass.set_function("get_bottom", &uiobject::get_bottom);
 
     /** @function get_center
     */
-    mLua["UIObject"]["get_center"] = [](uiobject& mSelf)
+    mClass.set_function("get_center", [](uiobject& mSelf)
     {
         vector2f mP = mSelf.get_center();
         return std::make_pair(mP.x, mP.y);
-    };
+    });
 
     /** @function get_height
     */
-    mLua["UIObject"]["get_height"] = &uiobject::get_apparent_height;
+    mClass.set_function("get_height", &uiobject::get_apparent_height);
 
     /** @function get_left
     */
-    mLua["UIObject"]["get_left"] = &uiobject::get_left;
+    mClass.set_function("get_left", &uiobject::get_left);
 
     /** @function get_num_point
     */
-    mLua["UIObject"]["get_num_point"] = &uiobject::get_num_point;
+    mClass.set_function("get_num_point", &uiobject::get_num_point);
 
     /** @function get_parent
     */
-    mLua["UIObject"]["get_parent"] = // select the right overload for Lua
-        static_cast<const utils::observer_ptr<frame>& (uiobject::*)()>(&uiobject::get_parent);
+    mClass.set_function("get_parent", // select the right overload for Lua
+        static_cast<const utils::observer_ptr<frame>& (uiobject::*)()>(&uiobject::get_parent));
 
     /** @function get_point
     */
-    mLua["UIObject"]["get_point"] = [](uiobject& mSelf, sol::optional<uint> mPoint)
+    mClass.set_function("get_point", [](uiobject& mSelf, sol::optional<uint> mPoint)
     {
         anchor_point mPointValue = anchor_point::TOPLEFT;
         if (mPoint.has_value())
@@ -252,35 +252,35 @@ void uiobject::register_on_lua(sol::state& mLua)
             anchor::get_string_point(mAnchor.get_parent_point()),
             mAnchor.get_abs_offset_x(),
             mAnchor.get_abs_offset_y());
-    };
+    });
 
     /** @function get_right
     */
-    mLua["UIObject"]["get_right"] = &uiobject::get_right;
+    mClass.set_function("get_right", &uiobject::get_right);
 
     /** @function get_top
     */
-    mLua["UIObject"]["get_top"] = &uiobject::get_top;
+    mClass.set_function("get_top", &uiobject::get_top);
 
     /** @function get_width
     */
-    mLua["UIObject"]["get_width"] = &uiobject::get_apparent_width;
+    mClass.set_function("get_width", &uiobject::get_apparent_width);
 
     /** @function hide
     */
-    mLua["UIObject"]["hide"] = &uiobject::hide;
+    mClass.set_function("hide", &uiobject::hide);
 
     /** @function is_shown
     */
-    mLua["UIObject"]["is_shown"] = &uiobject::is_shown;
+    mClass.set_function("is_shown", &uiobject::is_shown);
 
     /** @function is_visible
     */
-    mLua["UIObject"]["is_visible"] = &uiobject::is_visible;
+    mClass.set_function("is_visible", &uiobject::is_visible);
 
     /** @function set_all_points
     */
-    mLua["UIObject"]["set_all_points"] = sol::overload(
+    mClass.set_function("set_all_points", sol::overload(
     [](uiobject& mSelf)
     {
         mSelf.set_all_points(utils::observer_ptr<uiobject>(nullptr));
@@ -292,15 +292,15 @@ void uiobject::register_on_lua(sol::state& mLua)
     [](uiobject& mSelf, const utils::observer_ptr<uiobject>& pTarget)
     {
         mSelf.set_all_points(pTarget);
-    });
+    }));
 
     /** @function set_height
     */
-    mLua["UIObject"]["set_height"] = &uiobject::set_abs_height;
+    mClass.set_function("set_height", &uiobject::set_abs_height);
 
     /** @function set_parent
     */
-    mLua["UIObject"]["set_parent"] = [](uiobject& mSelf, std::variant<std::string,frame*> mParent)
+    mClass.set_function("set_parent", [](uiobject& mSelf, std::variant<std::string,frame*> mParent)
     {
         utils::observer_ptr<frame> pParent = get_object<frame>(mSelf.get_manager(), mParent);
 
@@ -323,11 +323,11 @@ void uiobject::register_on_lua(sol::state& mLua)
             else
                 throw sol::error("set_parent(nil) can only be called on frames");
         }
-    };
+    });
 
     /** @function set_point
     */
-    mLua["UIObject"]["set_point"] = [](uiobject& mSelf, const std::string& sPoint,
+    mClass.set_function("set_point", [](uiobject& mSelf, const std::string& sPoint,
         sol::optional<std::variant<std::string,uiobject*>> mParent,
         sol::optional<std::string> sRelativePoint,
         sol::optional<float> fXOffset, sol::optional<float> fYOffset)
@@ -360,11 +360,11 @@ void uiobject::register_on_lua(sol::state& mLua)
         float fAbsY = fXOffset.value_or(0.0f);
 
         mSelf.set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
-    };
+    });
 
     /** @function set_rel_point
     */
-    mLua["UIObject"]["set_rel_point"] = [](uiobject& mSelf, const std::string& sPoint,
+    mClass.set_function("set_rel_point", [](uiobject& mSelf, const std::string& sPoint,
         sol::optional<std::variant<std::string,uiobject*>> mParent,
         sol::optional<std::string> sRelativePoint,
         sol::optional<float> fXOffset, sol::optional<float> fYOffset)
@@ -397,15 +397,15 @@ void uiobject::register_on_lua(sol::state& mLua)
         float fAbsY = fXOffset.value_or(0.0f);
 
         mSelf.set_rel_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
-    };
+    });
 
     /** @function set_width
     */
-    mLua["UIObject"]["set_width"] = &uiobject::set_abs_width;
+    mClass.set_function("set_width", &uiobject::set_abs_width);
 
     /** @function show
     */
-    mLua["UIObject"]["show"] = &uiobject::show;
+    mClass.set_function("show", &uiobject::show);
 }
 
 }
