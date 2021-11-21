@@ -34,8 +34,7 @@ add_library(lxgui
     ${SRCROOT}/gui_layeredregion_glues.cpp
     ${SRCROOT}/gui_layeredregion_parser.cpp
     ${SRCROOT}/gui_localizer.cpp
-    # ${SRCROOT}/gui_localizer_glues.cpp
-    # ${SRCROOT}/gui_lunar.cpp
+    ${SRCROOT}/gui_localizer_glues.cpp
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
     ${SRCROOT}/gui_manager_parser.cpp
