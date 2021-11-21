@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   BUILD_TYPE: Release
-  EM_VERSION: 2.0.16
+  EM_VERSION: 2.0.34
   EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:
