@@ -78,7 +78,7 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-In developing this library, I have tried to make use of as few external libraries as possible, so compiling it is rather easy. Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule). XML parsing is done using a custom library included in this repository.
+Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule). XML parsing is done using a custom library included in this repository.
 
 Available rendering back-ends:
 
@@ -274,11 +274,11 @@ Setting up the GUI in C++ is rather straightforward. The example code below is b
 sf::RenderWindow mWindow;
 
 // Initialize the GUI using the SFML back-end
-std::unique_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
+utils::owner_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
 input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
-    pManager->get_input_manager()->get_source()
+    pManager->get_input_manager().get_source()
 );
 
 // Load GUI addons:
@@ -290,7 +290,8 @@ input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
 //  - First set the directory in which the GUI addons are located
 pManager->add_addon_directory("interface");
 //  - Then create the Lua state
-pManager->create_lua([&pManager](){
+pManager->create_lua([&pManager]()
+{
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
     //  - register the needed widgets
@@ -493,12 +494,14 @@ Re-creating the above addon in pure C++ is perfectly possible. This can be done 
 
 ```c++
 // Create the Frame
-gui::frame* pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
+utils::observer_ptr<gui::frame> pFrame;
+pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
 pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
 pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "", gui::anchor_point::BOTTOMRIGHT);
 
 // Create the FontString
-gui::font_string* pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
+utils::observer_ptr<gui::font_string> pFont;
+pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
 pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, -5, -5);
 pFont->set_font("interface/fonts/main.ttf", 12);
 pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
@@ -510,22 +513,21 @@ pFont->notify_loaded(); // must be called on all objects when they are fully set
 // Create the scripts in C++ (one can also provide a string containing some Lua code)
 float update_time = 0.5f, timer = 1.0f;
 int frames = 0;
-pFrame->define_script("OnUpdate",
-    [=](gui::frame& self, gui::event* event) mutable {
-        float delta = event->get<float>(0);
-        timer += delta;
-        ++frames;
+pFrame->define_script("OnUpdate", [=](gui::frame& self, gui::event* event) mutable
+{
+    float delta = event->get<float>(0);
+    timer += delta;
+    ++frames;
 
-        if (timer > update_time)
-        {
-            gui::font_string* text = self.get_region<gui::font_string>("Text");
-            text->set_text("FPS : "+utils::to_string(floor(frames/timer)));
+    if (timer > update_time)
+    {
+        gui::font_string* text = self.get_region<gui::font_string>("Text");
+        text->set_text("FPS : "+utils::to_string(floor(frames/timer)));
 
-            timer = 0.0f;
-            frames = 0;
-        }
+        timer = 0.0f;
+        frames = 0;
     }
-);
+});
 
 // Tell the Frame is has been fully loaded.
 pFrame->notify_loaded();

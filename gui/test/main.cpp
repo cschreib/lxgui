@@ -10,8 +10,6 @@
 #include <lxgui/gui_localizer.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
 
@@ -335,13 +333,13 @@ int main(int argc, char* argv[])
         // Read some configuration data
         if (utils::file_exists("config.lua"))
         {
-            lua::state mLua;
+            sol::state mLua;
             mLua.do_file("config.lua");
-            uiWindowWidth  = mLua.get_global_int("window_width",    false, 800);
-            uiWindowHeight = mLua.get_global_int("window_height",   false, 600);
-            bFullScreen    = mLua.get_global_bool("fullscreen",     false, false);
-            fScaleFactor   = mLua.get_global_double("scale_factor", false, 1.0);
-            bPrintToLog    = mLua.get_global_bool("print_to_log",   false, false);
+            uiWindowWidth  = mLua["window_width"].get_or(800);
+            uiWindowHeight = mLua["window_height"].get_or(600);
+            bFullScreen    = mLua["fullscreen"].get_or(false);
+            fScaleFactor   = mLua["scale_factor"].get_or(1.0);
+            bPrintToLog    = mLua["print_to_log"].get_or(false);
         }
 
 #if defined(LXGUI_COMPILER_EMSCRIPTEN)
@@ -516,7 +514,8 @@ int main(int argc, char* argv[])
         pManager->add_addon_directory("interface");
         //  - create the lua::state
         std::cout << " Creating lua..." << std::endl;
-        pManager->create_lua([](gui::manager& mManager) {
+        pManager->create_lua([](gui::manager& mManager)
+        {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
@@ -529,12 +528,14 @@ int main(int argc, char* argv[])
             mManager.register_frame_type<gui::scroll_frame>();
             mManager.register_frame_type<gui::status_bar>();
             //  - register additional lua functions
-            sol::state& mSol = mManager.get_lua();
-            mSol.set_function("get_folder_list", [](const std::string& sDir) {
-                return utils::get_directory_list(sDir);
+            sol::state& mLua = mManager.get_lua();
+            mLua.set_function("get_folder_list", [](const std::string& sDir)
+            {
+                return sol::as_table(utils::get_directory_list(sDir));
             });
-            mSol.set_function("get_file_list", [](const std::string& sDir) {
-                return utils::get_file_list(sDir);
+            mLua.set_function("get_file_list", [](const std::string& sDir)
+            {
+                return sol::as_table(utils::get_file_list(sDir));
             });
         });
 
@@ -602,28 +603,26 @@ int main(int argc, char* argv[])
         // Or in C++:
 
         float fTimer = 1.0f;
-        pFrame->add_script("OnUpdate",
-            [=](gui::frame& pSelf, gui::event* pEvent) mutable
+        pFrame->add_script("OnUpdate", [=](gui::frame& pSelf, gui::event* pEvent) mutable
+        {
+            float fDelta = pEvent->get<float>(0);
+            fTimer += fDelta;
+
+            if (fTimer > 0.5f)
             {
-                float fDelta = pEvent->get<float>(0);
-                fTimer += fDelta;
+                float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
 
-                if (fTimer > 0.5f)
+                if (auto pText = pSelf.get_region<gui::font_string>("Text"))
                 {
-                    float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
-
-                    if (auto pText = pSelf.get_region<gui::font_string>("Text"))
-                    {
-                        pText->set_text(U"(created in C++)\nFrame time (us) : "+
-                            utils::to_ustring(std::round(fFrameTime)));
-                    }
-
-                    fTimer = 0.0f;
-                    mContext.uiFrameCount = 0;
-                    mContext.fAccumulatedTime = 0;
+                    pText->set_text(U"(created in C++)\nFrame time (us) : "+
+                        utils::to_ustring(std::round(fFrameTime)));
                 }
+
+                fTimer = 0.0f;
+                mContext.uiFrameCount = 0;
+                mContext.fAccumulatedTime = 0;
             }
-        );
+        });
 
         // Tell the Frame is has been fully loaded, and call "OnLoad"
         pFrame->notify_loaded();

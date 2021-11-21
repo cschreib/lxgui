@@ -44,7 +44,8 @@ void examples_setup_gui(gui::manager& mManager)
     // The first thing to do is create the lua::state, and register any glue function
     // into the Lua state to call into your C++ application.
     std::cout << " Creating lua..." << std::endl;
-    mManager.create_lua([](gui::manager& mManager) {
+    mManager.create_lua([](gui::manager& mManager)
+    {
         // We use a lambda function because this code might be called
         // again later on, for example when one reloads the GUI (the
         // lua state is destroyed and created again).
@@ -59,12 +60,14 @@ void examples_setup_gui(gui::manager& mManager)
         mManager.register_frame_type<gui::status_bar>();
 
         //  - register additional lua functions (add your own functions here)
-        sol::state& mSol = mManager.get_lua();
-        mSol.set_function("get_folder_list", [](const std::string& sDir) {
-            return utils::get_directory_list(sDir);
+        sol::state& mLua = mManager.get_lua();
+        mLua.set_function("get_folder_list", [](const std::string& sDir)
+        {
+            return sol::as_table(utils::get_directory_list(sDir));
         });
-        mSol.set_function("get_file_list", [](const std::string& sDir) {
-            return utils::get_file_list(sDir);
+        mLua.set_function("get_file_list", [](const std::string& sDir)
+        {
+            return sol::as_table(utils::get_file_list(sDir));
         });
     });
 
@@ -123,26 +126,24 @@ void examples_setup_gui(gui::manager& mManager)
     // Or in C++
     float fUpdateTime = 0.5f, fTimer = 1.0f;
     uint uiFrames = 0;
-    pFrame->add_script("OnUpdate",
-        [=](gui::frame& pSelf, gui::event* pEvent) mutable
+    pFrame->add_script("OnUpdate", [=](gui::frame& pSelf, gui::event* pEvent) mutable
+    {
+        float fDelta = pEvent->get<float>(0);
+        fTimer += fDelta;
+        ++uiFrames;
+
+        if (fTimer > fUpdateTime)
         {
-            float fDelta = pEvent->get<float>(0);
-            fTimer += fDelta;
-            ++uiFrames;
-
-            if (fTimer > fUpdateTime)
+            if (auto pText = pSelf.get_region<gui::font_string>("Text"))
             {
-                if (auto pText = pSelf.get_region<gui::font_string>("Text"))
-                {
-                    pText->set_text(U"(created in C++)\nFPS : " +
-                        utils::to_ustring(floor(uiFrames/fTimer)));
-                }
-
-                fTimer = 0.0f;
-                uiFrames = 0;
+                pText->set_text(U"(created in C++)\nFPS : " +
+                    utils::to_ustring(floor(uiFrames/fTimer)));
             }
+
+            fTimer = 0.0f;
+            uiFrames = 0;
         }
-    );
+    });
 
     // Tell the Frame is has been fully loaded, and call "OnLoad"
     pFrame->notify_loaded();
