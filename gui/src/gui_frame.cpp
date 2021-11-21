@@ -176,9 +176,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Regions     : " << lRegionList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (auto* pRegion : get_regions())
+        for (auto& mRegion : get_regions())
         {
-            sStr << pRegion->serialize(sTab+"  | ");
+            sStr << mRegion.serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -191,9 +191,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (const auto* pChild : get_children())
+        for (const auto& mChild : get_children())
         {
-            sStr << pChild->serialize(sTab+"  | ");
+            sStr << mChild.serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -892,10 +892,22 @@ vector2f frame::get_min_resize() const
 
 uint frame::get_num_children() const
 {
+    return std::count_if(lChildList_.begin(), lChildList_.end(),
+        [](const auto& pChild) { return pChild != nullptr; });
+}
+
+uint frame::get_rough_num_children() const
+{
     return lChildList_.size();
 }
 
 uint frame::get_num_regions() const
+{
+    return std::count_if(lRegionList_.begin(), lRegionList_.end(),
+        [](const auto& pRegion) { return pRegion != nullptr; });
+}
+
+uint frame::get_rough_num_regions() const
 {
     return lRegionList_.size();
 }
@@ -1595,9 +1607,9 @@ void frame::set_top_level(bool bIsTopLevel)
 
     bIsTopLevel_ = bIsTopLevel;
 
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        pChild->notify_top_level_parent_(bIsTopLevel_, observer_from(this));
+        mChild.notify_top_level_parent_(bIsTopLevel_, observer_from(this));
     }
 }
 
@@ -1619,8 +1631,8 @@ void frame::raise()
 
         int iAmount = iLevel_ - iOldLevel;
 
-        for (auto* pChild : get_children())
-            pChild->add_level_(iAmount);
+        for (auto& mChild : get_children())
+            mChild.add_level_(iAmount);
     }
     else
         iLevel_ = iOldLevel;
@@ -1637,8 +1649,8 @@ void frame::add_level_(int iAmount)
             observer_from(this), iOldLevel, iLevel_);
     }
 
-    for (auto* pChild : get_children())
-        pChild->add_level_(iAmount);
+    for (auto& mChild : get_children())
+        mChild.add_level_(iAmount);
 }
 
 void frame::set_user_placed(bool bIsUserPlaced)
@@ -1714,16 +1726,16 @@ void frame::notify_visible(bool bTriggerEvents)
 {
     uiobject::notify_visible(bTriggerEvents);
 
-    for (auto* pRegion : get_regions())
+    for (auto& mRegion : get_regions())
     {
-        if (pRegion->is_shown())
-            pRegion->notify_visible(bTriggerEvents);
+        if (mRegion.is_shown())
+            mRegion.notify_visible(bTriggerEvents);
     }
 
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        if (pChild->is_shown())
-            pChild->notify_visible(bTriggerEvents);
+        if (mChild.is_shown())
+            mChild.notify_visible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1737,10 +1749,10 @@ void frame::notify_invisible(bool bTriggerEvents)
 {
     uiobject::notify_invisible(bTriggerEvents);
 
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        if (pChild->is_shown())
-            pChild->notify_invisible(bTriggerEvents);
+        if (mChild.is_shown())
+            mChild.notify_invisible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1757,8 +1769,8 @@ void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<f
     else
         pTopLevelParent_ = nullptr;
 
-    for (auto* pChild : get_children())
-        pChild->notify_top_level_parent_(bTopLevel, pParent);
+    for (auto& mChild : get_children())
+        mChild.notify_top_level_parent_(bTopLevel, pParent);
 }
 
 void frame::notify_renderer_need_redraw() const
@@ -1836,8 +1848,8 @@ void frame::set_addon(const addon* pAddOn)
     if (!pAddOn_)
     {
         pAddOn_ = pAddOn;
-        for (auto* pChild : get_children())
-            pChild->set_addon(pAddOn);
+        for (auto& mChild : get_children())
+            mChild.set_addon(pAddOn);
     }
     else
         gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
@@ -1964,8 +1976,8 @@ void frame::update(float fDelta)
 
     // Update regions
     DEBUG_LOG("   Update regions");
-    for (auto* pRegion : get_regions())
-        pRegion->update(fDelta);
+    for (auto& mRegion : get_regions())
+        mRegion.update(fDelta);
 
     // Remove deleted regions
     {
@@ -1978,9 +1990,9 @@ void frame::update(float fDelta)
 
     // Update children
     DEBUG_LOG("   Update children");
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        pChild->update(fDelta);
+        mChild.update(fDelta);
         if (!mChecker.is_alive())
             return;
     }

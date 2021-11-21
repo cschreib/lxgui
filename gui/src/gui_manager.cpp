@@ -910,10 +910,10 @@ void manager::update(float fDelta)
 
     DEBUG_LOG(" Update widgets...");
     // ... then update logics on main widgets from parent to children.
-    for (auto* pObject : get_root_frames())
+    for (auto& mFrame : get_root_frames())
     {
-        if (!pObject->is_virtual())
-            pObject->update(fDelta);
+        if (!mFrame.is_virtual())
+            mFrame.update(fDelta);
     }
 
     // Removed destroyed frames
@@ -1439,12 +1439,12 @@ void manager::on_event(const event& mEvent)
         set_interface_scaling_factor(fBaseScalingFactor_);
 
         // Notify all frames anchored to the window edges
-        for (auto* pObject : get_root_frames())
+        for (auto& mFrame : get_root_frames())
         {
-            if (!pObject->is_virtual())
+            if (!mFrame.is_virtual())
             {
-                pObject->notify_borders_need_update();
-                pObject->notify_renderer_need_redraw();
+                mFrame.notify_borders_need_update();
+                mFrame.notify_renderer_need_redraw();
             }
         }
 

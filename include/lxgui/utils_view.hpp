@@ -21,8 +21,8 @@ namespace view
     template<typename BaseIterator>
     struct smart_ptr_dereferencer
     {
-        using data_type = decltype(std::declval<BaseIterator>()->get());
-        static data_type dereference(const BaseIterator& mIter) { return mIter->get(); }
+        using data_type = decltype(*std::declval<BaseIterator>()->get());
+        static data_type dereference(const BaseIterator& mIter) { return *mIter->get(); }
     };
 
     /// De-reference an iterator twice
