@@ -43,7 +43,7 @@ jobs:
 
     - name: Setup Emscripten
       if: matrix.platform.compiler == 'em++'
-      uses: kofigumbs/setup-emsdk@2c8f2169bcadfd238a4f62e22e372d568ba69d9f
+      uses: mymindstorm/setup-emsdk@29ba4851d6da084ffdc1e0fc390efadbd75df9d1
       with:
         version: ${{env.EM_VERSION}}
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
