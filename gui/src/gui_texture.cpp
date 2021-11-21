@@ -110,7 +110,7 @@ void texture::render()
 
 void texture::create_glue()
 {
-    create_glue_<texture>();
+    create_glue_(this);
 }
 
 void texture::copy_from(const uiobject& mObj)

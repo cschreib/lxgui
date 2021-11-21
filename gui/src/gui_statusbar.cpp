@@ -287,7 +287,7 @@ utils::owner_ptr<texture> status_bar::create_bar_texture_()
 
 void status_bar::create_glue()
 {
-    create_glue_<status_bar>();
+    create_glue_(this);
 }
 
 void status_bar::update(float fDelta)

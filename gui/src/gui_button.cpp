@@ -24,7 +24,7 @@ std::string button::serialize(const std::string& sTab) const
 
 void button::create_glue()
 {
-    create_glue_<button>();
+    create_glue_(this);
 }
 
 bool button::can_use_script(const std::string& sScriptName) const

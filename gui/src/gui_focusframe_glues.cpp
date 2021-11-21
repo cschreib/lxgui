@@ -1,7 +1,7 @@
 #include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} that can receive and loose focus.
 *   A typical usage example is the @{EditBox}.
@@ -15,65 +15,34 @@
 namespace lxgui {
 namespace gui
 {
-lua_focus_frame::lua_focus_frame(lua_State* pLua) : lua_frame(pLua)
+
+void focus_frame::register_on_lua(sol::state& mLua)
 {
+    auto mClass = mLua.new_usertype<focus_frame>("focus_frame",
+        sol::base_classes, sol::bases<uiobject, frame>());
+
+    /** @function clear_focus
+    */
+    mClass.set_function("clear_focus", [](focus_frame& mSelf)
+    {
+        mSelf.set_focus(false);
+    });
+
+    /** @function is_auto_focus
+    */
+    mClass.set_function("is_auto_focus", member_function<&focus_frame::is_auto_focus_enabled>());
+
+    /** @function set_auto_focus
+    */
+    mClass.set_function("set_auto_focus", member_function<&focus_frame::enable_auto_focus>());
+
+    /** @function set_focus
+    */
+    mClass.set_function("set_focus", [](focus_frame& mSelf)
+    {
+        mSelf.set_focus(true);
+    });
 }
 
-/** @function clear_focus
-*/
-int lua_focus_frame::_clear_focus(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FocusFrame:clear_focus", pLua);
-
-    get_object()->set_focus(false);
-
-    return mFunc.on_return();
-}
-
-/** @function is_auto_focus
-*/
-int lua_focus_frame::_is_auto_focus(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FocusFrame:is_auto_focus", pLua);
-
-    mFunc.push(get_object()->is_auto_focus_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function set_auto_focus
-*/
-int lua_focus_frame::_set_auto_focus(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FocusFrame:set_auto_focus", pLua);
-    mFunc.add(0, "enabled", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->enable_auto_focus(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_focus
-*/
-int lua_focus_frame::_set_focus(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FocusFrame:set_focus", pLua);
-
-    get_object()->set_focus(true);
-
-    return mFunc.on_return();
-}
 }
 }

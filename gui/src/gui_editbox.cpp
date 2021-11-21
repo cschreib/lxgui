@@ -318,7 +318,7 @@ void edit_box::on_script(const std::string& sScriptName, event* pEvent)
 
 void edit_box::create_glue()
 {
-    create_glue_<edit_box>();
+    create_glue_(this);
 }
 
 void edit_box::set_text(const utils::ustring& sText)

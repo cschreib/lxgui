@@ -15,7 +15,7 @@ void region::render()
 
 void region::create_glue()
 {
-    create_glue_<region>();
+    create_glue_(this);
 }
 
 bool region::is_in_region(float fX, float fY) const

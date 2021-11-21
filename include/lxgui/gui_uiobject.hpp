@@ -727,7 +727,7 @@ namespace gui
         sol::state&  get_lua_();
 
         template<typename T>
-        void create_glue_();
+        void create_glue_(T* pSelf);
 
         manager& mManager_;
 

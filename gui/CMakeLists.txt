@@ -20,7 +20,7 @@ add_library(lxgui
     ${SRCROOT}/gui_eventmanager.cpp
     ${SRCROOT}/gui_eventreceiver.cpp
     ${SRCROOT}/gui_focusframe.cpp
-    # ${SRCROOT}/gui_focusframe_glues.cpp
+    ${SRCROOT}/gui_focusframe_glues.cpp
     ${SRCROOT}/gui_focusframe_parser.cpp
     ${SRCROOT}/gui_fontstring.cpp
     # ${SRCROOT}/gui_fontstring_glues.cpp
@@ -31,7 +31,7 @@ add_library(lxgui
     ${SRCROOT}/gui_framerenderer.cpp
     ${SRCROOT}/gui_gradient.cpp
     ${SRCROOT}/gui_layeredregion.cpp
-    # ${SRCROOT}/gui_layeredregion_glues.cpp
+    ${SRCROOT}/gui_layeredregion_glues.cpp
     ${SRCROOT}/gui_layeredregion_parser.cpp
     ${SRCROOT}/gui_localizer.cpp
     # ${SRCROOT}/gui_localizer_glues.cpp

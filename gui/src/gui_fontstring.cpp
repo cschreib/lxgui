@@ -111,7 +111,7 @@ std::string font_string::serialize(const std::string& sTab) const
 
 void font_string::create_glue()
 {
-    create_glue_<font_string>();
+    create_glue_(this);
 }
 
 void font_string::copy_from(const uiobject& mObj)

@@ -27,7 +27,7 @@ void focus_frame::copy_from(const uiobject& mObj)
 
 void focus_frame::create_glue()
 {
-    create_glue_<focus_frame>();
+    create_glue_(this);
 }
 
 void focus_frame::enable_auto_focus(bool bEnable)

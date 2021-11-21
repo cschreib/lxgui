@@ -3,6 +3,8 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils_observer.hpp>
 #include <lxgui/gui_uiobject.hpp>
+#include <lxgui/gui_frame.hpp>
+#include <lxgui/gui_manager.hpp>
 #include <sol/state.hpp>
 
 namespace sol
@@ -39,11 +41,106 @@ void sol_lua_check_access(sol::types<T>, lua_State* pLua, int iIndex, sol::stack
 namespace lxgui {
 namespace gui
 {
-    template<typename T>
-    void uiobject::create_glue_()
+
+inline utils::observer_ptr<uiobject> get_object(manager& mManager,
+    const std::variant<std::string,uiobject*>& mParent)
+{
+    return std::visit([&](const auto& mValue)
     {
-        get_lua_().globals()[sLuaName_] = observer_from(this);
+        using data_type = std::decay_t<decltype(mValue)>;
+        if constexpr (std::is_same_v<data_type, std::string>)
+        {
+            auto pParent = mManager.get_uiobject_by_name(mValue);
+            if (!pParent)
+                throw sol::error("\""+mValue+"\" does not exist");
+
+            return pParent;
+        }
+        else
+        {
+            return observer_from(mValue);
+        }
+    },
+    mParent);
+}
+
+template<typename T>
+utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::string,T*>& mParent)
+{
+    return std::visit([&](const auto& mValue)
+    {
+        using data_type = std::decay_t<decltype(mValue)>;
+        if constexpr (std::is_same_v<data_type, std::string>)
+        {
+            auto pParentObject = mManager.get_uiobject_by_name(mValue);
+            if (!pParentObject)
+                throw sol::error("\""+mValue+"\" does not exist");
+
+            auto pParent = down_cast<T>(pParentObject);
+            if (!pParent)
+                throw sol::error("\""+mValue+"\" is not a "+std::string(T::CLASS_NAME));
+
+            return pParent;
+        }
+        else
+        {
+            return observer_from(mValue);
+        }
+    },
+    mParent);
+}
+
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
+// Workaround for compiler crash in Emscripten; explicitly convert member
+// function pointers to free functions. sol2 is able to do this automatically,
+// but Emscripten/clang is not happy about it.
+template<typename T, T F>
+struct member_function_holder;
+
+template<typename R, typename T, typename ... Args, R (T::*Function)(Args...)>
+struct member_function_holder<R (T::*)(Args...), Function>
+{
+    static constexpr auto make_free_function()
+    {
+        return [](T& mSelf, Args ... args)
+        {
+            return (mSelf.*Function)(args...);
+        };
     }
+};
+
+template<typename R, typename T, typename ... Args, R (T::*Function)(Args...) const>
+struct member_function_holder<R (T::*)(Args...) const, Function>
+{
+    static constexpr auto make_free_function()
+    {
+        return [](const T& mSelf, Args ... args)
+        {
+            return (mSelf.*Function)(args...);
+        };
+    }
+};
+
+template<auto T>
+constexpr auto member_function()
+{
+    return member_function_holder<decltype(T), T>::make_free_function();
+}
+#else
+// Simply use the member function pointer directly for all other compilers.
+template<auto T>
+constexpr auto member_function()
+{
+    return T;
+}
+#endif
+
+template<typename T>
+void uiobject::create_glue_(T* pSelf)
+{
+    get_lua_().globals()[sLuaName_] = observer_from(pSelf);
+}
+
 }
 }
 
