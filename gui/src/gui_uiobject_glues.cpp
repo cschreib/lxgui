@@ -173,38 +173,83 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
     mParent);
 }
 
+#if defined(LXGUI_COMPILER_EMSCRIPTEN)
+// Workaround for compiler crash in Emscripten; explicitly convert member
+// function pointers to free functions. sol2 is able to do this automatically,
+// but Emscripten/clang is not happy about it.
+template<typename T, T F>
+struct member_function_holder;
+
+template<typename R, typename T, typename ... Args, R (T::*Function)(Args...)>
+struct member_function_holder<R (T::*)(Args...), Function>
+{
+    static constexpr auto make_free_function()
+    {
+        return [](T& mSelf, Args ... args)
+        {
+            return (mSelf.*Function)(args...);
+        };
+    }
+};
+
+template<typename R, typename T, typename ... Args, R (T::*Function)(Args...) const>
+struct member_function_holder<R (T::*)(Args...) const, Function>
+{
+    static constexpr auto make_free_function()
+    {
+        return [](const T& mSelf, Args ... args)
+        {
+            return (mSelf.*Function)(args...);
+        };
+    }
+};
+
+template<auto T>
+constexpr auto member_function()
+{
+    return member_function_holder<decltype(T), T>::make_free_function();
+}
+#else
+// Simply use the member function pointer directly for all other compilers.
+template<auto T>
+constexpr auto member_function()
+{
+    return T;
+}
+#endif
+
 void uiobject::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<uiobject>("UIObject");
 
     /** @function get_alpha
     */
-    mClass.set_function("get_alpha", &uiobject::get_alpha);
+    mClass.set_function("get_alpha", member_function<&uiobject::get_alpha>());
 
     /** @function get_name
     */
-    mClass.set_function("get_name", &uiobject::get_name);
+    mClass.set_function("get_name", member_function<&uiobject::get_name>());
 
     /** @function get_object_type
     */
-    mClass.set_function("get_object_type", &uiobject::get_object_type);
+    mClass.set_function("get_object_type", member_function<&uiobject::get_object_type>());
 
     /** @function is_object_type
     */
-    mClass.set_function("is_object_type", // select the right overload for Lua
-        static_cast<bool (uiobject::*)(const std::string&) const>(&uiobject::is_object_type));
+    mClass.set_function("is_object_type", member_function< // select the right overload for Lua
+        static_cast<bool (uiobject::*)(const std::string&) const>(&uiobject::is_object_type)>());
 
     /** @function set_alpha
     */
-    mClass.set_function("set_alpha", &uiobject::set_alpha);
+    mClass.set_function("set_alpha", member_function<&uiobject::set_alpha>());
 
     /** @function clear_all_points
     */
-    mClass.set_function("clear_all_points", &uiobject::clear_all_points);
+    mClass.set_function("clear_all_points", member_function<&uiobject::clear_all_points>());
 
     /** @function get_bottom
     */
-    mClass.set_function("get_bottom", &uiobject::get_bottom);
+    mClass.set_function("get_bottom", member_function<&uiobject::get_bottom>());
 
     /** @function get_center
     */
@@ -216,20 +261,20 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_height
     */
-    mClass.set_function("get_height", &uiobject::get_apparent_height);
+    mClass.set_function("get_height", member_function<&uiobject::get_apparent_height>());
 
     /** @function get_left
     */
-    mClass.set_function("get_left", &uiobject::get_left);
+    mClass.set_function("get_left", member_function<&uiobject::get_left>());
 
     /** @function get_num_point
     */
-    mClass.set_function("get_num_point", &uiobject::get_num_point);
+    mClass.set_function("get_num_point", member_function<&uiobject::get_num_point>());
 
     /** @function get_parent
     */
-    mClass.set_function("get_parent", // select the right overload for Lua
-        static_cast<const utils::observer_ptr<frame>& (uiobject::*)()>(&uiobject::get_parent));
+    mClass.set_function("get_parent", member_function< // select the right overload for Lua
+        static_cast<const utils::observer_ptr<frame>& (uiobject::*)()>(&uiobject::get_parent)>());
 
     /** @function get_point
     */
@@ -256,27 +301,27 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_right
     */
-    mClass.set_function("get_right", &uiobject::get_right);
+    mClass.set_function("get_right", member_function<&uiobject::get_right>());
 
     /** @function get_top
     */
-    mClass.set_function("get_top", &uiobject::get_top);
+    mClass.set_function("get_top", member_function<&uiobject::get_top>());
 
     /** @function get_width
     */
-    mClass.set_function("get_width", &uiobject::get_apparent_width);
+    mClass.set_function("get_width", member_function<&uiobject::get_apparent_width>());
 
     /** @function hide
     */
-    mClass.set_function("hide", &uiobject::hide);
+    mClass.set_function("hide", member_function<&uiobject::hide>());
 
     /** @function is_shown
     */
-    mClass.set_function("is_shown", &uiobject::is_shown);
+    mClass.set_function("is_shown", member_function<&uiobject::is_shown>());
 
     /** @function is_visible
     */
-    mClass.set_function("is_visible", &uiobject::is_visible);
+    mClass.set_function("is_visible", member_function<&uiobject::is_visible>());
 
     /** @function set_all_points
     */
@@ -296,7 +341,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_height
     */
-    mClass.set_function("set_height", &uiobject::set_abs_height);
+    mClass.set_function("set_height", member_function<&uiobject::set_abs_height>());
 
     /** @function set_parent
     */
@@ -401,11 +446,11 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_width
     */
-    mClass.set_function("set_width", &uiobject::set_abs_width);
+    mClass.set_function("set_width", member_function<&uiobject::set_abs_width>());
 
     /** @function show
     */
-    mClass.set_function("show", &uiobject::show);
+    mClass.set_function("show", member_function<&uiobject::show>());
 }
 
 }
