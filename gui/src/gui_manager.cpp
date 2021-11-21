@@ -16,8 +16,6 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/input.hpp"
 
-#include <lxgui/luapp_exception.hpp>
-#include <lxgui/luapp_state.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_std.hpp>
@@ -565,9 +563,9 @@ void manager::load_addon_files_(addon* pAddOn)
             {
                 pLua_->do_file(sFile);
             }
-            catch (const lua::exception& e)
+            catch (const sol::error& e)
             {
-                std::string sError = e.get_description();
+                std::string sError = e.what();
 
                 gui::out << gui::error << sError << std::endl;
 
@@ -587,9 +585,9 @@ void manager::load_addon_files_(addon* pAddOn)
         {
             pLua_->do_file(sSavedVariablesFile);
         }
-        catch (const lua::exception& e)
+        catch (const sol::error& e)
         {
-            std::string sError = e.get_description();
+            std::string sError = e.what();
 
             gui::out << gui::error << sError << std::endl;
 
@@ -1424,10 +1422,10 @@ void manager::on_event(const event& mEvent)
             {
                 pLua_->do_string(sScript);
             }
-            catch (const lua::exception& e)
+            catch (const sol::error& e)
             {
                 gui::out << gui::error << "Bound action : " << sKeyName
-                    << " : " << e.get_description() << std::endl;
+                    << " : " << e.what() << std::endl;
             }
         }
     }

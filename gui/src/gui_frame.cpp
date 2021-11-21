@@ -10,7 +10,6 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
 #include <lxgui/utils_range.hpp>
