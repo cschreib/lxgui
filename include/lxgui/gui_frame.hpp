@@ -46,6 +46,13 @@ namespace gui
     /// C++ function type for UI script handlers.
     using script_handler_function = std::function<void(frame&, event*)>;
 
+    /// Disconnectable slot for script handlers (used internally).
+    struct script_handler_slot
+    {
+        script_handler_function mCallback;
+        bool bDisconnected = false;
+    };
+
     /// A #uiobject that can contain other objects and react to events.
     /** This class, which is at the core of the UI design, can contain
     *   other frames as "children", and layered regions sorted by layers
@@ -209,7 +216,7 @@ namespace gui
     {
     public :
 
-        /// Type of the frame child list.
+        /// Type of the frame child list (internal).
         /** \note Constraints on the choice container type:
         *          - must not invalidate iterators on back insertion
         *          - must allow forward iteration
@@ -222,7 +229,7 @@ namespace gui
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
-        /// Type of the region list.
+        /// Type of the region list (internal).
         /** \note Constraints on the choice container type:
         *          - must not invalidate iterators on back insertion
         *          - must allow forward iteration
@@ -234,6 +241,32 @@ namespace gui
         using region_list_view = utils::view::adaptor<region_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
+
+        template<typename BaseIterator>
+        struct script_handler_dereferencer
+        {
+            using data_type = const script_handler_function&;
+            static data_type dereference(const BaseIterator& mIter) { return mIter->mCallback; }
+        };
+
+        template<typename BaseIterator>
+        struct non_disconnected_filter
+        {
+            static bool is_included(const BaseIterator& mIter) { return !mIter->bDisconnected; }
+        };
+
+        /// Type of the script handler list (internal).
+        /** \note Constraints on the choice container type:
+        *          - must not invalidate iterators on back insertion
+        *          - must allow forward iteration
+        *          - iterators cannot be invalidated on removal
+        *          - most common use is iteration, not addition or removal
+        *          - ordering of elements is relevant
+        */
+        using script_handler_list = std::list<script_handler_slot>;
+        using script_list_view = utils::view::adaptor<script_handler_list,
+            script_handler_dereferencer,
+            non_disconnected_filter>;
 
         /// Constructor.
         explicit frame(manager& mManager);
@@ -773,6 +806,11 @@ namespace gui
             define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
 
+        /// Return a view into this frame's handler scripts, registered for the given event.
+        /** \param sScriptName The name of the script (e.g., "OnEvent")
+        *   \return An iterable view into the frame's handlers.
+        */
+        script_list_view get_script(const std::string& sScriptName) const;
 
         /// Removes a script from this frame.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
@@ -1146,13 +1184,7 @@ namespace gui
 
         std::array<layer,num_layers> lLayerList_;
 
-        struct script_handler_slot
-        {
-            script_handler_function mCallback;
-            bool bDisconnected = false;
-        };
-
-        std::unordered_map<std::string, std::shared_ptr<std::list<script_handler_slot>>> lScriptHandlerList_;
+        std::unordered_map<std::string, std::shared_ptr<script_handler_list>> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegEventList_;

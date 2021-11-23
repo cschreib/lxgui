@@ -1185,6 +1185,15 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
     }
 }
 
+frame::script_list_view frame::get_script(const std::string& sScriptName) const
+{
+    auto iterH = lScriptHandlerList_.find(sScriptName);
+    if (iterH == lScriptHandlerList_.end())
+        throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
+
+    return script_list_view(*iterH->second);
+}
+
 void frame::remove_script(const std::string& sScriptName)
 {
     auto iterH = lScriptHandlerList_.find(sScriptName);
