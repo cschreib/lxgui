@@ -5,9 +5,11 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sol/state.hpp>
+#include <sol/variadic_args.hpp>
 
 /** A @{UIObject} that can contain other objects and react to events.
 *   This class, which is at the core of the UI design, can contain
@@ -340,223 +342,127 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_effective_alpha
     */
-    // mClass.set_function("get_effective_alpha", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
+    mClass.set_function("get_effective_alpha", member_function<&frame::get_effective_alpha>());
 
-    //     lua::function mFunc("Frame:get_effective_alpha", pLua, 1);
+    /** @function get_effective_scale
+    */
+    mClass.set_function("get_effective_scale", member_function<&frame::get_effective_scale>());
 
-    //     mFunc.push(mSelf.get_effective_alpha());
+    /** @function get_frame_level
+    */
+    mClass.set_function("get_frame_level", member_function<&frame::get_level>());
 
-    //     return mFunc.on_return();
-    // }
+    /** @function get_frame_strata
+    */
+    mClass.set_function("get_frame_strata", [](const frame& mSelf)
+    {
+        frame_strata mStrata = mSelf.get_frame_strata();
+        std::string sStrata;
 
-    // /** @function get_effective_scale
-    // */
-    // mClass.set_function("get_effective_scale", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
+        if (mStrata == frame_strata::BACKGROUND)
+            sStrata = "BACKGROUND";
+        else if (mStrata == frame_strata::LOW)
+            sStrata = "LOW";
+        else if (mStrata == frame_strata::MEDIUM)
+            sStrata = "MEDIUM";
+        else if (mStrata == frame_strata::HIGH)
+            sStrata = "HIGH";
+        else if (mStrata == frame_strata::DIALOG)
+            sStrata = "DIALOG";
+        else if (mStrata == frame_strata::FULLSCREEN)
+            sStrata = "FULLSCREEN";
+        else if (mStrata == frame_strata::FULLSCREEN_DIALOG)
+            sStrata = "FULLSCREEN_DIALOG";
+        else if (mStrata == frame_strata::TOOLTIP)
+            sStrata = "TOOLTIP";
 
-    //     lua::function mFunc("Frame:get_effective_scale", pLua, 1);
+        return sStrata;
+    });
 
-    //     mFunc.push(mSelf.get_effective_scale());
+    /** @function get_frame_type
+    */
+    mClass.set_function("get_frame_type", member_function<&frame::get_frame_type>());
 
-    //     return mFunc.on_return();
-    // }
+    /** @function get_hit_rect_insets
+    */
+    mClass.set_function("get_hit_rect_insets", [](const frame& mSelf)
+    {
+        const bounds2f& lInsets = mSelf.get_abs_hit_rect_insets();
+        return std::make_tuple(lInsets.left, lInsets.right, lInsets.top, lInsets.bottom);
+    });
 
-    // /** @function get_frame_level
-    // */
-    // mClass.set_function("get_frame_level", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
+    /** @function get_id
+    */
+    mClass.set_function("get_id", member_function<&frame::get_id>());
 
-    //     lua::function mFunc("Frame:get_frame_level", pLua, 1);
+    /** @function get_max_resize
+    */
+    mClass.set_function("get_max_resize", [](const frame& mSelf)
+    {
+        const vector2f& lMax = mSelf.get_max_resize();
+        return std::make_tuple(lMax.x, lMax.y);
+    });
 
-    //     mFunc.push(mSelf.get_level());
+    /** @function get_min_resize
+    */
+    mClass.set_function("get_min_resize", [](const frame& mSelf)
+    {
+        const vector2f& lMin = mSelf.get_min_resize();
+        return std::make_tuple(lMin.x, lMin.y);
+    });
 
-    //     return mFunc.on_return();
-    // }
+    /** @function get_num_children
+    */
+    mClass.set_function("get_num_children", member_function<&frame::get_num_children>());
 
-    // /** @function get_frame_strata
-    // */
-    // mClass.set_function("get_frame_strata", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
+    /** @function get_num_regions
+    */
+    mClass.set_function("get_num_regions", member_function<&frame::get_num_regions>());
 
-    //     lua::function mFunc("Frame:get_frame_strata", pLua, 1);
+    /** @function get_scale
+    */
+    mClass.set_function("get_scale", member_function<&frame::get_scale>());
 
-    //     frame_strata mStrata = mSelf.get_frame_strata();
-    //     std::string sStrata;
+    /** @function get_script
+    */
+    mClass.set_function("get_script", [](const frame& mSelf, const std::string& sScriptName)
+    {
+        bool bNeedsEventName = sScriptName == "OnEvent";
 
-    //     if (mStrata == frame_strata::BACKGROUND)
-    //         sStrata = "BACKGROUND";
-    //     else if (mStrata == frame_strata::LOW)
-    //         sStrata = "LOW";
-    //     else if (mStrata == frame_strata::MEDIUM)
-    //         sStrata = "MEDIUM";
-    //     else if (mStrata == frame_strata::HIGH)
-    //         sStrata = "HIGH";
-    //     else if (mStrata == frame_strata::DIALOG)
-    //         sStrata = "DIALOG";
-    //     else if (mStrata == frame_strata::FULLSCREEN)
-    //         sStrata = "FULLSCREEN";
-    //     else if (mStrata == frame_strata::FULLSCREEN_DIALOG)
-    //         sStrata = "FULLSCREEN_DIALOG";
-    //     else if (mStrata == frame_strata::TOOLTIP)
-    //         sStrata = "TOOLTIP";
+        std::vector<sol::object> mScripts;
+        for (auto mScript : mSelf.get_script(sScriptName))
+        {
+            auto mFunc = [=, mScript = std::move(mScript)](frame& mSelf, sol::variadic_args mVArgs)
+            {
+                event mEvent;
+                bool bIsFirst = true;
+                for (auto&& mArg : mVArgs)
+                {
+                    if (bNeedsEventName && bIsFirst)
+                    {
+                        mEvent.set_name(mArg.as<std::string>());
+                    }
+                    else
+                    {
+                        lxgui::utils::variant mVariant;
+                        if (!mArg.is<sol::lua_nil_t>())
+                            mVariant = mArg;
 
-    //     mFunc.push(sStrata);
+                        mEvent.add(std::move(mVariant));
+                    }
 
-    //     return mFunc.on_return();
-    // }
+                    bIsFirst = false;
+                }
 
-    // /** @function get_frame_type
-    // */
-    // mClass.set_function("get_frame_type", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
+                mScript(mSelf, &mEvent);
+            };
 
-    //     lua::function mFunc("Frame:get_frame_type", pLua, 1);
+            mScripts.emplace_back(mSelf.get_manager().get_lua().lua_state(),
+                sol::in_place, std::move(mFunc));
+        }
 
-    //     mFunc.push(mSelf.get_frame_type());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_hit_rect_insets
-    // */
-    // mClass.set_function("get_hit_rect_insets", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_hit_rect_inset", pLua, 4);
-
-    //     const bounds2f& lInsets = mSelf.get_abs_hit_rect_insets();
-
-    //     mFunc.push(lInsets.left);
-    //     mFunc.push(lInsets.right);
-    //     mFunc.push(lInsets.top);
-    //     mFunc.push(lInsets.bottom);
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_id
-    // */
-    // mClass.set_function("get_id", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_id", pLua, 1);
-
-    //     mFunc.push(mSelf.get_id());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_max_resize
-    // */
-    // mClass.set_function("get_max_resize", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_max_resize", pLua, 2);
-
-    //     vector2f lMax = mSelf.get_max_resize();
-
-    //     mFunc.push(lMax.x);
-    //     mFunc.push(lMax.y);
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_min_resize
-    // */
-    // mClass.set_function("get_min_resize", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_min_resize", pLua, 2);
-
-    //     vector2f lMin = mSelf.get_min_resize();
-
-    //     mFunc.push(lMin.x);
-    //     mFunc.push(lMin.y);
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_num_children
-    // */
-    // mClass.set_function("get_num_children", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_num_children", pLua, 1);
-
-    //     mFunc.push(mSelf.get_num_children());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_num_regions
-    // */
-    // mClass.set_function("get_num_regions", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_num_regions", pLua, 1);
-
-    //     mFunc.push(mSelf.get_num_regions());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_scale
-    // */
-    // mClass.set_function("get_scale", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_scale", pLua, 1);
-
-    //     mFunc.push(mSelf.get_scale());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function get_script
-    // */
-    // mClass.set_function("get_script", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_script", pLua, 1);
-    //     mFunc.add(0, "script name", lua::type::STRING);
-    //     if (mFunc.check())
-    //     {
-    //         std::string sScriptName = mFunc.get(0)->get_string();
-    //         if (mSelf.has_script(sScriptName))
-    //         {
-    //             mFunc.notify_pushed();
-    //         }
-    //     }
-
-    //     return mFunc.on_return();
-    // }
+        return sol::as_table(mScripts);
+    });
 
     // /** @function get_title_region
     // */
