@@ -16,7 +16,11 @@
 #include <lxgui/utils_observer.hpp>
 
 #include <array>
+#include <unordered_map>
+#include <vector>
 #include <optional>
+
+#include <sol/object.hpp>
 
 namespace sol
 {
@@ -729,6 +733,9 @@ namespace gui
         template<typename T>
         void create_glue_(T* pSelf);
 
+        void set_lua_member_(std::string sKey, sol::stack_object mValue);
+        sol::object get_lua_member_(const std::string& sKey) const;
+
         manager& mManager_;
 
         std::string sName_;
@@ -762,6 +769,8 @@ namespace gui
         mutable bool bUpdateBorders_ = true;
 
         mutable std::vector<utils::observer_ptr<uiobject>> lAnchoredObjectList_;
+
+        std::unordered_map<std::string, sol::object> lLuaMembers_;
     };
 
     /// Obtain a pointer to a derived class.

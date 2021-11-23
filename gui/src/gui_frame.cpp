@@ -1158,8 +1158,7 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
         // Register the function so it can be called directly from Lua
         std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
-        get_lua_()[get_lua_name()][sAdjustedName].set_function(
-            [=](sol::object /*mSelfLua*/, sol::variadic_args mVArgs)
+        get_lua_()[get_lua_name()][sAdjustedName] = [=](frame& mSelf, sol::variadic_args mVArgs)
         {
             event mEvent;
             bool bIsFirst = true;
@@ -1181,8 +1180,8 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
                 bIsFirst = false;
             }
 
-            on_script(sScriptName, &mEvent);
-        });
+            mSelf.on_script(sScriptName, &mEvent);
+        };
     }
 }
 
@@ -1196,6 +1195,12 @@ void frame::remove_script(const std::string& sScriptName)
     // They will be deleted later, when we know it is safe.
     for (auto& mHandler : *iterH->second)
         mHandler.bDisconnected = true;
+
+    if (!is_virtual())
+    {
+        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+        get_lua_()[get_lua_name()][sAdjustedName] = sol::lua_nil;
+    }
 }
 
 void frame::on_event(const event& mEvent)
@@ -1353,8 +1358,6 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
         // Make a shared-ownership copy of the handler list, so that the list
         // survives even if this frame is destroyed midway during a handler.
         const auto lHandlerList = iterH->second;
-
-        alive_checker mChecker(*this);
 
         // Call the handlers
         for (const auto& mHandler : *lHandlerList)

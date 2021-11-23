@@ -19,7 +19,11 @@ namespace gui
 void focus_frame::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<focus_frame>("focus_frame",
-        sol::base_classes, sol::bases<uiobject, frame>());
+        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::meta_function::index,
+        &focus_frame::set_lua_member_,
+        sol::meta_function::new_index,
+        &focus_frame::get_lua_member_);
 
     /** @function clear_focus
     */

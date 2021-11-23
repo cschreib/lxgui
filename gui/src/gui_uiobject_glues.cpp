@@ -126,9 +126,35 @@ namespace lxgui {
 namespace gui
 {
 
+void uiobject::set_lua_member_(std::string sKey, sol::stack_object mValue)
+{
+    auto mIter = lLuaMembers_.find(sKey);
+    if (mIter == lLuaMembers_.cend())
+    {
+        lLuaMembers_.insert(mIter, {std::move(sKey), std::move(mValue)});
+    }
+    else
+    {
+        mIter->second = sol::object(std::move(mValue));
+    }
+}
+
+sol::object uiobject::get_lua_member_(const std::string& sKey) const
+{
+    auto mIter = lLuaMembers_.find(sKey);
+    if (mIter == lLuaMembers_.cend())
+        return sol::lua_nil;
+
+    return mIter->second;
+}
+
 void uiobject::register_on_lua(sol::state& mLua)
 {
-    auto mClass = mLua.new_usertype<uiobject>("UIObject");
+    auto mClass = mLua.new_usertype<uiobject>("UIObject",
+        sol::meta_function::index,
+        &uiobject::set_lua_member_,
+        sol::meta_function::new_index,
+        &uiobject::get_lua_member_);
 
     /** @function get_alpha
     */

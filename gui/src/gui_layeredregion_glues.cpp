@@ -26,7 +26,11 @@ namespace gui
 void layered_region::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<layered_region>("LayeredRegion",
-        sol::base_classes, sol::bases<uiobject>());
+        sol::base_classes, sol::bases<uiobject>(),
+        sol::meta_function::index,
+        &layered_region::set_lua_member_,
+        sol::meta_function::new_index,
+        &layered_region::get_lua_member_);
 
     /** @function set_draw_layer
     */
