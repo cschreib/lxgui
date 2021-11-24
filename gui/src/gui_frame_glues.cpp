@@ -425,335 +425,130 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_script
     */
-    mClass.set_function("get_script", [](const frame& mSelf, const std::string& sScriptName)
+    mClass.set_function("get_script", [](const frame& mSelf, const std::string& sScriptName) -> sol::object
     {
-        bool bNeedsEventName = sScriptName == "OnEvent";
+        if (!mSelf.has_script(sScriptName))
+            return sol::lua_nil;
 
-        std::vector<sol::object> mScripts;
-        for (auto mScript : mSelf.get_script(sScriptName))
-        {
-            auto mFunc = [=, mScript = std::move(mScript)](frame& mSelf, sol::variadic_args mVArgs)
-            {
-                event mEvent;
-                bool bIsFirst = true;
-                for (auto&& mArg : mVArgs)
-                {
-                    if (bNeedsEventName && bIsFirst)
-                    {
-                        mEvent.set_name(mArg.as<std::string>());
-                    }
-                    else
-                    {
-                        lxgui::utils::variant mVariant;
-                        if (!mArg.is<sol::lua_nil_t>())
-                            mVariant = mArg;
-
-                        mEvent.add(std::move(mVariant));
-                    }
-
-                    bIsFirst = false;
-                }
-
-                mScript(mSelf, &mEvent);
-            };
-
-            mScripts.emplace_back(mSelf.get_manager().get_lua().lua_state(),
-                sol::in_place, std::move(mFunc));
-        }
-
-        return sol::as_table(mScripts);
+        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+        return mSelf.get_manager().get_lua()[mSelf.get_lua_name()][sAdjustedName];
     });
 
-    // /** @function get_title_region
-    // */
-    // mClass.set_function("get_title_region", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:get_title_region", pLua, 1);
-
-    //     if (mSelf.get_title_region())
-    //     {
-    //         mSelf.get_title_region()->push_on_lua(mFunc.get_state());
-    //         mFunc.notify_pushed();
-    //     }
-    //     else
-    //         mFunc.push_nil();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function has_script
-    // */
-    // mClass.set_function("has_script", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:has_script", pLua, 1);
-    //     mFunc.add(0, "script name", lua::type::STRING);
-    //     if (mFunc.check())
-    //         mFunc.push(mSelf.can_use_script(mFunc.get(0)->get_string()));
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_clamped_to_screen
-    // */
-    // mClass.set_function("is_clamped_to_screen", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_clamped_to_screen", pLua, 1);
-
-    //     mFunc.push(mSelf.is_clamped_to_screen());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_frame_type
-    // */
-    // mClass.set_function("is_frame_type", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_frame_type", pLua, 1);
-    //     mFunc.add(0, "Frame type", lua::type::STRING);
-    //     if (mFunc.check())
-    //     {
-    //         if (mSelf.get_frame_type() == mFunc.get(0)->get_string())
-    //             mFunc.push(bool(true));
-    //         else
-    //             mFunc.push(bool(false));
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_keyboard_enabled
-    // */
-    // mClass.set_function("is_keyboard_enabled", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_keyboard_enabled", pLua, 1);
-
-    //     mFunc.push(mSelf.is_keyboard_enabled());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_mouse_enabled
-    // */
-    // mClass.set_function("is_mouse_enabled", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_mouse_enabled", pLua, 1);
-
-    //     mFunc.push(mSelf.is_mouse_enabled());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_mouse_wheel_enabled
-    // */
-    // mClass.set_function("is_mouse_wheel_enabled", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_mouse_wheel_enabled", pLua, 1);
-
-    //     mFunc.push(mSelf.is_mouse_wheel_enabled());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_movable
-    // */
-    // mClass.set_function("is_movable", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_movable", pLua, 1);
-
-    //     mFunc.push(mSelf.is_movable());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_resizable
-    // */
-    // mClass.set_function("is_resizable", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_resizable", pLua, 1);
-
-    //     mFunc.push(mSelf.is_resizable());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_top_level
-    // */
-    // mClass.set_function("is_top_level", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_top_level", pLua, 1);
-
-    //     mFunc.push(mSelf.is_top_level());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function is_user_placed
-    // */
-    // mClass.set_function("is_user_placed", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:is_user_placed", pLua, 1);
-
-    //     mFunc.push(mSelf.is_user_placed());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function raise
-    // */
-    // mClass.set_function("raise", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:raise", pLua);
-
-    //     mSelf.raise();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function register_all_events
-    // */
-    // mClass.set_function("register_all_events", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:register_all_events", pLua);
-
-    //     mSelf.register_all_events();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function register_event
-    // */
-    // mClass.set_function("register_event", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:register_event", pLua);
-    //     mFunc.add(0, "event name", lua::type::STRING);
-    //     if (mFunc.check())
-    //         mSelf.register_event(mFunc.get(0)->get_string());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function register_for_drag
-    // */
-    // mClass.set_function("register_for_drag", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:register_for_drag", pLua);
-    //     mFunc.add(0, "button 1", lua::type::STRING, true);
-    //     mFunc.add(1, "button 2", lua::type::STRING, true);
-    //     mFunc.add(2, "button 3", lua::type::STRING, true);
-    //     if (mFunc.check())
-    //     {
-    //         std::vector<std::string> lButtonList;
-    //         for (uint i = 0; i < 3; ++i)
-    //         {
-    //             if (mFunc.is_provided(i))
-    //                 lButtonList.push_back(mFunc.get(i)->get_string());
-    //             else
-    //                 break;
-    //         }
-    //         mSelf.register_for_drag(lButtonList);
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_backdrop
-    // */
-    // mClass.set_function("set_backdrop", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_backdrop", pLua);
-    //     mFunc.add(0, "backdrop table", lua::type::TABLE);
-    //     mFunc.add(0, "nil", lua::type::NIL);
-    //     if (mFunc.check())
-    //     {
-    //         if (mFunc.get(0)->get_type() == lua::type::NIL)
-    //         {
-    //             mSelf.set_backdrop(nullptr);
-    //         }
-    //         else
-    //         {
-    //             std::unique_ptr<backdrop> pBackdrop(new backdrop(get_object()));
-
-    //             lua::state& mState = mFunc.get_state();
-    //             manager* pManager = manager::get_manager(mState);
-
-    //             pBackdrop->set_background(pManager->parse_file_name(mState.get_field_string("bgFile", false, "")));
-    //             pBackdrop->set_edge(pManager->parse_file_name(mState.get_field_string("edgeFile", false, "")));
-    //             pBackdrop->set_background_tilling(mState.get_field_bool("tile", false, false));
-
-    //             float fTileSize = static_cast<float>(mState.get_field_double("tileSize", false, 0.0));
-    //             if (fTileSize != 0)
-    //                 pBackdrop->set_tile_size(fTileSize);
-
-    //             float fEdgeSize = static_cast<float>(mState.get_field_double("edgeSize", false, 0.0));
-    //             if (fEdgeSize != 0)
-    //                 pBackdrop->set_edge_size(fEdgeSize);
-
-    //             mState.get_field("insets");
-
-    //             if (mState.get_type() == lua::type::TABLE)
-    //             {
-    //                 pBackdrop->set_background_insets(bounds2f(
-    //                     mState.get_field_double("left",   false, 0),
-    //                     mState.get_field_double("right",  false, 0),
-    //                     mState.get_field_double("top",    false, 0),
-    //                     mState.get_field_double("bottom", false, 0)
-    //                 ));
-    //             }
-
-    //             mSelf.set_backdrop(std::move(pBackdrop));
-    //         }
-    //     }
-
-    //     return mFunc.on_return();
-    // }
+    /** @function get_title_region
+    */
+    mClass.set_function("get_title_region", member_function< // select the right overload for Lua
+        static_cast<utils::observer_ptr<region> (frame::*)()>(&frame::get_title_region)>());
+
+    /** @function has_script
+    */
+    mClass.set_function("has_script", member_function<&frame::has_script>());
+
+    /** @function is_clamped_to_screen
+    */
+    mClass.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
+
+    /** @function is_frame_type
+    */
+    mClass.set_function("is_frame_type", [](const frame& mSelf, const std::string& sType)
+    {
+        return mSelf.get_frame_type() == sType;
+    });
+
+    /** @function is_keyboard_enabled
+    */
+    mClass.set_function("is_keyboard_enabled", member_function<&frame::is_keyboard_enabled>());
+
+    /** @function is_mouse_enabled
+    */
+    mClass.set_function("is_mouse_enabled", member_function<&frame::is_mouse_enabled>());
+
+    /** @function is_mouse_wheel_enabled
+    */
+    mClass.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
+
+    /** @function is_movable
+    */
+    mClass.set_function("is_movable", member_function<&frame::is_movable>());
+
+    /** @function is_resizable
+    */
+    mClass.set_function("is_resizable", member_function<&frame::is_resizable>());
+
+    /** @function is_top_level
+    */
+    mClass.set_function("is_top_level", member_function<&frame::is_top_level>());
+
+    /** @function is_user_placed
+    */
+    mClass.set_function("is_user_placed", member_function<&frame::is_user_placed>());
+
+    /** @function raise
+    */
+    mClass.set_function("raise", member_function<&frame::raise>());
+
+    /** @function register_all_events
+    */
+    mClass.set_function("register_all_events", member_function<&frame::register_all_events>());
+
+    /** @function register_event
+    */
+    mClass.set_function("register_event", member_function<&frame::register_event>());
+
+    /** @function register_for_drag
+    */
+    mClass.set_function("register_for_drag", [](frame& mSelf, sol::optional<std::string> sButton1,
+        sol::optional<std::string> sButton2, sol::optional<std::string> sButton3)
+    {
+        std::vector<std::string> lButtonList;
+        if (sButton1.has_value())
+            lButtonList.push_back(sButton1.value());
+        if (sButton2.has_value())
+            lButtonList.push_back(sButton2.value());
+        if (sButton3.has_value())
+            lButtonList.push_back(sButton3.value());
+
+        mSelf.register_for_drag(lButtonList);
+    });
+
+    /** @function set_backdrop
+    */
+    mClass.set_function("set_backdrop", [](frame& mSelf, sol::optional<sol::table> mTableOpt)
+    {
+        if (!mTableOpt.has_value())
+        {
+            mSelf.set_backdrop(nullptr);
+            return;
+        }
+
+        std::unique_ptr<backdrop> pBackdrop(new backdrop(mSelf));
+
+        sol::table& mTable = mTableOpt.value();
+        manager& mManager = mSelf.get_manager();
+
+        pBackdrop->set_background(mManager.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
+        pBackdrop->set_edge(mManager.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
+        pBackdrop->set_background_tilling(mTable["tile"].get_or(false));
+
+        float fTileSize = mTable["tileSize"].get_or<float>(0.0);
+        if (fTileSize != 0)
+            pBackdrop->set_tile_size(fTileSize);
+
+        float fEdgeSize = mTable["edgeSize"].get_or<float>(0.0);
+        if (fEdgeSize != 0)
+            pBackdrop->set_edge_size(fEdgeSize);
+
+        if (mTable["insets"])
+        {
+            pBackdrop->set_background_insets(bounds2f(
+                mTable["insets"]["left"].get_or<float>(0),
+                mTable["insets"]["right"].get_or<float>(0),
+                mTable["insets"]["top"].get_or<float>(0),
+                mTable["insets"]["bottom"].get_or<float>(0)
+            ));
+        }
+
+        mSelf.set_backdrop(std::move(pBackdrop));
+    });
 
     // /** @function set_backdrop_border_color
     // */
