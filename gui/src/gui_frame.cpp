@@ -1673,7 +1673,10 @@ void frame::set_user_placed(bool bIsUserPlaced)
 void frame::start_moving()
 {
     if (bIsMovable_)
+    {
+        set_user_placed(true);
         get_manager().start_moving(observer_from(this));
+    }
 }
 
 void frame::stop_moving()
@@ -1685,7 +1688,10 @@ void frame::stop_moving()
 void frame::start_sizing(const anchor_point& mPoint)
 {
     if (bIsResizable_)
+    {
+        set_user_placed(true);
         get_manager().start_sizing(observer_from(this), mPoint);
+    }
 }
 
 void frame::stop_sizing()
