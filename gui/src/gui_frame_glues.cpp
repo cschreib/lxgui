@@ -550,489 +550,139 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.set_backdrop(std::move(pBackdrop));
     });
 
-    // /** @function set_backdrop_border_color
-    // */
-    // mClass.set_function("set_backdrop_border_color", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_backdrop_border_color", pLua);
-    //     mFunc.add(0, "red", lua::type::NUMBER);
-    //     mFunc.add(1, "green", lua::type::NUMBER);
-    //     mFunc.add(2, "blue", lua::type::NUMBER);
-    //     mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    //     mFunc.new_param_set();
-    //     mFunc.add(0, "color", lua::type::STRING);
-
-    //     if (mFunc.check())
-    //     {
-    //         backdrop* pBackdrop = mSelf.get_backdrop();
-    //         if (!pBackdrop)
-    //         {
-    //             mSelf.set_backdrop(std::unique_ptr<backdrop>(new backdrop(get_object())));
-    //             pBackdrop = mSelf.get_backdrop();
-    //         }
-
-    //         color mColor;
-    //         if (mFunc.get_param_set_rank() == 0)
-    //         {
-    //             if (mFunc.is_provided(3))
-    //             {
-    //                 mColor = color(
-    //                     mFunc.get(0)->get_number(),
-    //                     mFunc.get(1)->get_number(),
-    //                     mFunc.get(2)->get_number(),
-    //                     mFunc.get(3)->get_number()
-    //                 );
-    //             }
-    //             else
-    //             {
-    //                 mColor = color(
-    //                     mFunc.get(0)->get_number(),
-    //                     mFunc.get(1)->get_number(),
-    //                     mFunc.get(2)->get_number()
-    //                 );
-    //             }
-    //         }
-    //         else
-    //             mColor = color(mFunc.get(0)->get_string());
-
-    //         pBackdrop->set_edge_color(mColor);
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_backdrop_color
-    // */
-    // mClass.set_function("set_backdrop_color", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_backdrop_color", pLua);
-    //     mFunc.add(0, "red", lua::type::NUMBER);
-    //     mFunc.add(1, "green", lua::type::NUMBER);
-    //     mFunc.add(2, "blue", lua::type::NUMBER);
-    //     mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    //     mFunc.new_param_set();
-    //     mFunc.add(0, "color", lua::type::STRING);
-
-    //     if (mFunc.check())
-    //     {
-    //         backdrop* pBackdrop = mSelf.get_backdrop();
-    //         if (!pBackdrop)
-    //         {
-    //             mSelf.set_backdrop(std::unique_ptr<backdrop>(new backdrop(get_object())));
-    //             pBackdrop = mSelf.get_backdrop();
-    //         }
-
-    //         color mColor;
-    //         if (mFunc.get_param_set_rank() == 0)
-    //         {
-    //             if (mFunc.is_provided(3))
-    //             {
-    //                 mColor = color(
-    //                     mFunc.get(0)->get_number(),
-    //                     mFunc.get(1)->get_number(),
-    //                     mFunc.get(2)->get_number(),
-    //                     mFunc.get(3)->get_number()
-    //                 );
-    //             }
-    //             else
-    //             {
-    //                 mColor = color(
-    //                     mFunc.get(0)->get_number(),
-    //                     mFunc.get(1)->get_number(),
-    //                     mFunc.get(2)->get_number()
-    //                 );
-    //             }
-    //         }
-    //         else
-    //             mColor = color(mFunc.get(0)->get_string());
-
-    //         pBackdrop->set_background_color(mColor);
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-
-    // /** @function set_clamped_to_screen
-    // */
-    // mClass.set_function("set_clamped_to_screen", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_clamped_to_screen", pLua);
-    //     mFunc.add(0, "is clamped to screen", lua::type::BOOLEAN);
-    //     if (mFunc.check())
-    //         mSelf.set_clamped_to_screen(mFunc.get(0)->get_bool());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_frame_level
-    // */
-    // mClass.set_function("set_frame_level", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_frame_level", pLua);
-    //     mFunc.add(0, "level", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //         mSelf.set_level(mFunc.get(0)->get_int());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_frame_strata
-    // */
-    // mClass.set_function("set_frame_strata", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_frame_strata", pLua);
-    //     mFunc.add(0, "strata", lua::type::STRING);
-    //     if (mFunc.check())
-    //         mSelf.set_frame_strata(mFunc.get(0)->get_string());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_hit_rect_insets
-    // */
-    // mClass.set_function("set_hit_rect_insets", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_hit_rect_insets", pLua);
-    //     mFunc.add(0, "left", lua::type::NUMBER);
-    //     mFunc.add(1, "right", lua::type::NUMBER);
-    //     mFunc.add(2, "top", lua::type::NUMBER);
-    //     mFunc.add(3, "bottom", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_abs_hit_rect_insets(
-    //             mFunc.get(0)->get_number(),
-    //             mFunc.get(1)->get_number(),
-    //             mFunc.get(2)->get_number(),
-    //             mFunc.get(3)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_max_resize
-    // */
-    // mClass.set_function("set_max_resize", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_max_resize", pLua);
-    //     mFunc.add(0, "width", lua::type::NUMBER);
-    //     mFunc.add(1, "height", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_max_resize(
-    //             mFunc.get(0)->get_number(),
-    //             mFunc.get(1)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_min_resize
-    // */
-    // mClass.set_function("set_min_resize", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_min_resize", pLua);
-    //     mFunc.add(0, "width", lua::type::NUMBER);
-    //     mFunc.add(1, "height", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_min_resize(
-    //             mFunc.get(0)->get_number(),
-    //             mFunc.get(1)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_max_width
-    // */
-    // mClass.set_function("set_max_width", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_max_width", pLua);
-    //     mFunc.add(0, "width", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_max_width(
-    //             mFunc.get(0)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_max_height
-    // */
-    // mClass.set_function("set_max_height", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_max_height", pLua);
-    //     mFunc.add(0, "height", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_max_height(
-    //             mFunc.get(0)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_min_width
-    // */
-    // mClass.set_function("set_min_width", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_min_width", pLua);
-    //     mFunc.add(0, "width", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_min_width(
-    //             mFunc.get(0)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_min_height
-    // */
-    // mClass.set_function("set_min_height", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_min_height", pLua);
-    //     mFunc.add(0, "height", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //     {
-    //         mSelf.set_min_height(
-    //             mFunc.get(0)->get_number()
-    //         );
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_movable
-    // */
-    // mClass.set_function("set_movable", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_movable", pLua);
-    //     mFunc.add(0, "is movable", lua::type::BOOLEAN);
-    //     if (mFunc.check())
-    //         mSelf.set_movable(mFunc.get(0)->get_bool());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_resizable
-    // */
-    // mClass.set_function("set_resizable", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_resizable", pLua);
-    //     mFunc.add(0, "is resizable", lua::type::BOOLEAN);
-    //     if (mFunc.check())
-    //         mSelf.set_resizable(mFunc.get(0)->get_bool());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_scale
-    // */
-    // mClass.set_function("set_scale", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_scale", pLua);
-    //     mFunc.add(0, "scale", lua::type::NUMBER);
-    //     if (mFunc.check())
-    //         mSelf.set_scale(mFunc.get(0)->get_number());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_script
-    // */
-    // mClass.set_function("set_script", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_script", pLua);
-    //     mFunc.add(0, "script name", lua::type::STRING);
-    //     mFunc.add(1, "function", lua::type::FUNCTION, true);
-    //     mFunc.add(1, "nil", lua::type::NIL, true);
-    //     if (mFunc.check())
-    //     {
-    //         std::string sScriptName = mFunc.get(0)->get_string();
-    //         if (mSelf.can_use_script(sScriptName))
-    //         {
-    //             lua::state& mState = mFunc.get_state();
-    //             lua::argument* pArg = mFunc.get(1);
-    //             if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
-    //             {
-    //                 mSelf.set_script(sScriptName,
-    //                     sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
-    //             }
-    //             else
-    //             {
-    //                 mSelf.remove_script(sScriptName);
-    //             }
-    //         }
-    //         else
-    //         {
-    //             gui::out << gui::error << mSelf.get_frame_type() << " : "
-    //                 << "\"" << mSelf.get_name() << "\" cannot use script \""
-    //                 << sScriptName << "\"." << std::endl;
-    //         }
-    //     }
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_top_level
-    // */
-    // mClass.set_function("set_top_level", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_top_level", pLua);
-    //     mFunc.add(0, "is top level", lua::type::BOOLEAN);
-    //     if (mFunc.check())
-    //         mSelf.set_top_level(mFunc.get(0)->get_bool());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function set_user_placed
-    // */
-    // mClass.set_function("set_user_placed", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:set_user_placed", pLua);
-    //     mFunc.add(0, "is user placed", lua::type::BOOLEAN);
-    //     if (mFunc.check())
-    //         mSelf.set_user_placed(mFunc.get(0)->get_bool());
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function start_moving
-    // */
-    // mClass.set_function("start_moving", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:start_moving", pLua);
-
-    //     mSelf.start_moving();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function start_sizing
-    // */
-    // mClass.set_function("start_sizing", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:start_sizing", pLua);
-    //     mFunc.add(0, "point", lua::type::STRING);
-    //     if (mFunc.check())
-    //         mSelf.start_sizing(anchor::get_anchor_point(mFunc.get(0)->get_string()));
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function stop_moving_or_sizing
-    // */
-    // mClass.set_function("stop_moving_or_sizing", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:stop_moving_or_sizing", pLua);
-
-    //     mSelf.stop_moving();
-    //     mSelf.stop_sizing();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function unregister_all_events
-    // */
-    // mClass.set_function("unregister_all_events", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:unregister_all_events", pLua);
-
-    //     mSelf.unregister_all_events();
-
-    //     return mFunc.on_return();
-    // }
-
-    // /** @function unregister_event
-    // */
-    // mClass.set_function("unregister_event", [](frame& mSelf)
-    // {
-    //     if (!check_object_())
-    //         return 0;
-
-    //     lua::function mFunc("Frame:unregister_event", pLua);
-    //     mFunc.add(0, "event name", lua::type::STRING);
-    //     if (mFunc.check())
-    //         mSelf.unregister_event(mFunc.get(0)->get_string());
-
-    //     return mFunc.on_return();
-    // }
+    /** @function set_backdrop_border_color
+    */
+    mClass.set_function("set_backdrop_border_color", sol::overload(
+    [](frame& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.get_or_create_backdrop().set_edge_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](frame& mSelf, const std::string& sColor)
+    {
+        mSelf.get_or_create_backdrop().set_edge_color(color(sColor));
+    }));
+
+    /** @function set_backdrop_color
+    */
+    mClass.set_function("set_backdrop_color", sol::overload(
+    [](frame& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.get_or_create_backdrop().set_background_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](frame& mSelf, const std::string& sColor)
+    {
+        mSelf.get_or_create_backdrop().set_background_color(color(sColor));
+    }));
+
+    /** @function set_clamped_to_screen
+    */
+    mClass.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
+
+    /** @function set_frame_level
+    */
+    mClass.set_function("set_frame_level", member_function<&frame::set_level>());
+
+    /** @function set_frame_strata
+    */
+    mClass.set_function("set_frame_strata", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(const std::string&)>(&frame::set_frame_strata)>());
+
+    /** @function set_hit_rect_insets
+    */
+    mClass.set_function("set_hit_rect_insets", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float, float, float)>(&frame::set_abs_hit_rect_insets)>());
+
+    /** @function set_max_resize
+    */
+    mClass.set_function("set_max_resize", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float)>(&frame::set_max_resize)>());
+
+    /** @function set_min_resize
+    */
+    mClass.set_function("set_min_resize", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float)>(&frame::set_min_resize)>());
+
+    /** @function set_max_width
+    */
+    mClass.set_function("set_max_width", member_function<&frame::set_max_width>());
+
+    /** @function set_max_height
+    */
+    mClass.set_function("set_max_height", member_function<&frame::set_max_height>());
+
+    /** @function set_min_width
+    */
+    mClass.set_function("set_min_width", member_function<&frame::set_min_width>());
+
+    /** @function set_min_height
+    */
+    mClass.set_function("set_min_height", member_function<&frame::set_min_height>());
+
+    /** @function set_movable
+    */
+    mClass.set_function("set_movable", member_function<&frame::set_movable>());
+
+    /** @function set_resizable
+    */
+    mClass.set_function("set_resizable", member_function<&frame::set_resizable>());
+
+    /** @function set_scale
+    */
+    mClass.set_function("set_scale", member_function<&frame::set_scale>());
+
+    /** @function set_script
+    */
+    mClass.set_function("set_script", [](frame& mSelf, const std::string& sScriptName,
+        sol::optional<sol::protected_function> mScript)
+    {
+        if (!mSelf.can_use_script(sScriptName))
+        {
+            gui::out << gui::error << mSelf.get_frame_type() << " : "
+                << "\"" << mSelf.get_name() << "\" cannot use script \""
+                << sScriptName << "\"." << std::endl;
+            return;
+        }
+
+        if (mScript.has_value())
+            mSelf.set_script(sScriptName, mScript.value());
+        else
+            mSelf.remove_script(sScriptName);
+    });
+
+    /** @function set_top_level
+    */
+    mClass.set_function("set_top_level", member_function<&frame::set_top_level>());
+
+    /** @function set_user_placed
+    */
+    mClass.set_function("set_user_placed", member_function<&frame::set_user_placed>());
+
+    /** @function start_moving
+    */
+    mClass.set_function("start_moving", member_function<&frame::start_moving>());
+
+    /** @function start_sizing
+    */
+    mClass.set_function("start_sizing", [](frame& mSelf, const std::string& sPoint)
+    {
+        mSelf.start_sizing(anchor::get_anchor_point(sPoint));
+    });
+
+    /** @function stop_moving_or_sizing
+    */
+    mClass.set_function("stop_moving_or_sizing", [](frame& mSelf)
+    {
+        mSelf.stop_moving();
+        mSelf.stop_sizing();
+    });
+
+    /** @function unregister_all_events
+    */
+    mClass.set_function("unregister_all_events", member_function<&frame::unregister_all_events>());
+
+    /** @function unregister_event
+    */
+    mClass.set_function("unregister_event", member_function<&frame::unregister_event>());
 }
 
 }
