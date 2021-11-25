@@ -865,6 +865,14 @@ backdrop* frame::get_backdrop()
     return pBackdrop_.get();
 }
 
+backdrop& frame::get_or_create_backdrop()
+{
+    if (!pBackdrop_)
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+
+    return *pBackdrop_;
+}
+
 const std::string& frame::get_frame_type() const
 {
     return lType_.back();

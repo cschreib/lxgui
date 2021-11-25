@@ -592,6 +592,11 @@ namespace gui
         */
         backdrop* get_backdrop();
 
+        /// Returns this frame's backdrop, creating it if needed
+        /** \return This frame's backdrop
+        */
+        backdrop& get_or_create_backdrop();
+
         /// Returns this frame's type.
         /** \return This frame's type (Frame, Slider, ...)
         */
