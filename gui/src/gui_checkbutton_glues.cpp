@@ -50,7 +50,7 @@ void check_button::register_on_lua(sol::state& mLua)
 
     /** Check or uncheck the button.
     *   @function set_checked
-    *   @tparam boolean checked Value convertible to a boolean; 'true' to check, 'false' to uncheck
+    *   @tparam boolean checked 'true' to check, 'false' to uncheck (if nil or missing, equivalent to 'true')
     */
     /** Checks the button.
     *   @function set_checked
