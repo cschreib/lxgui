@@ -14,7 +14,7 @@ add_library(lxgui
     ${SRCROOT}/gui_checkbutton_parser.cpp
     ${SRCROOT}/gui_color.cpp
     ${SRCROOT}/gui_editbox.cpp
-    # ${SRCROOT}/gui_editbox_glues.cpp
+    ${SRCROOT}/gui_editbox_glues.cpp
     ${SRCROOT}/gui_editbox_parser.cpp
     ${SRCROOT}/gui_event.cpp
     ${SRCROOT}/gui_eventmanager.cpp

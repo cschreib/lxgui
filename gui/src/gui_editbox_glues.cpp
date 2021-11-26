@@ -66,438 +66,181 @@ namespace gui
 {
 void edit_box::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_edit_box>();
-}
+    auto mClass = mLua.new_usertype<edit_box>("EditBox",
+        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::meta_function::index,
+        &edit_box::set_lua_member_,
+        sol::meta_function::new_index,
+        &edit_box::get_lua_member_);
 
-lua_edit_box::lua_edit_box(lua_State* pLua) : lua_focus_frame(pLua)
-{
-}
-
-/** @function add_history_line
-*/
-int lua_edit_box::_add_history_line(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:add_history_line", pLua);
-    mFunc.add(0, "line", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->add_history_line(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
-
-    return mFunc.on_return();
-}
-
-/** @function clear_history
-*/
-int lua_edit_box::_clear_history(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:clear_history", pLua);
-
-    get_object()->clear_history();
-
-    return mFunc.on_return();
-}
-
-/** @function get_blink_speed
-*/
-int lua_edit_box::_get_blink_speed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_blink_speed", pLua, 1);
-
-    mFunc.push(get_object()->get_blink_speed());
-
-    return mFunc.on_return();
-}
-
-/** @function get_cursor_position
-*/
-int lua_edit_box::_get_cursor_position(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_cursor_position", pLua, 1);
-
-    mFunc.push(get_object()->get_cursor_position());
-
-    return mFunc.on_return();
-}
-
-/** @function get_history_lines
-*/
-int lua_edit_box::_get_history_lines(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    const auto& lHistoryLine = get_object()->get_history_lines();
-    lua::function mFunc("EditBox:get_history_lines", pLua, lHistoryLine.size());
-
-    for (const auto& sLine : lHistoryLine)
-        mFunc.push(utils::unicode_to_utf8(sLine));
-
-    return mFunc.on_return();
-}
-
-/** @function get_max_letters
-*/
-int lua_edit_box::_get_max_letters(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_max_letters", pLua, 1);
-
-    mFunc.push(get_object()->get_max_letters());
-
-    return mFunc.on_return();
-}
-
-/** @function get_num_letters
-*/
-int lua_edit_box::_get_num_letters(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_num_letters", pLua, 1);
-
-    mFunc.push(get_object()->get_num_letters());
-
-    return mFunc.on_return();
-}
-
-/** @function get_number
-*/
-int lua_edit_box::_get_number(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_number", pLua, 1);
-
-    mFunc.push(utils::string_to_double(get_object()->get_text()));
-
-    return mFunc.on_return();
-}
-
-/** @function get_text
-*/
-int lua_edit_box::_get_text(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_text", pLua, 1);
-
-    mFunc.push(utils::unicode_to_utf8(get_object()->get_text()));
-
-    return mFunc.on_return();
-}
-
-/** @function get_text_insets
-*/
-int lua_edit_box::_get_text_insets(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:get_text_insets", pLua, 4);
-
-    const bounds2f& lInsets = get_object()->get_text_insets();
-
-    mFunc.push(lInsets.left);
-    mFunc.push(lInsets.right);
-    mFunc.push(lInsets.top);
-    mFunc.push(lInsets.bottom);
-
-    return mFunc.on_return();
-}
-
-/** @function highlight_text
-*/
-int lua_edit_box::_highlight_text(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:highlight_text", pLua);
-    mFunc.add(0, "start", lua::type::NUMBER, true);
-    mFunc.add(1, "end", lua::type::NUMBER, true);
-    if (mFunc.check())
+    /** @function add_history_line
+    */
+    mClass.set_function("add_history_line", [](edit_box& mSelf, const std::string& sLine)
     {
-        uint uiStart = 0;
-        uint uiEnd = uint(-1);
+        mSelf.add_history_line(utils::utf8_to_unicode(sLine));
+    });
 
-        if (mFunc.is_provided(0))
-            uiStart = uint(mFunc.get(0)->get_number());
-        if (mFunc.is_provided(1))
-            uiEnd = uint(mFunc.get(1)->get_number());
+    /** @function clear_history
+    */
+    mClass.set_function("clear_history", member_function<&edit_box::clear_history>());
 
-        get_object()->highlight_text(uiStart, uiEnd);
-    }
+    /** @function get_blink_speed
+    */
+    mClass.set_function("get_blink_speed", member_function<&edit_box::get_blink_speed>());
 
-    return mFunc.on_return();
-}
+    /** @function get_cursor_position
+    */
+    mClass.set_function("get_cursor_position", member_function<&edit_box::get_cursor_position>());
 
-/** @function insert
-*/
-int lua_edit_box::_insert(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:insert", pLua);
-    mFunc.add(0, "text", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->insert_after_cursor(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
-
-    return mFunc.on_return();
-}
-
-/** @function is_multi_line
-*/
-int lua_edit_box::_is_multi_line(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:is_multi_line", pLua);
-
-    mFunc.push(get_object()->is_multi_line());
-
-    return mFunc.on_return();
-}
-
-/** @function is_numeric
-*/
-int lua_edit_box::_is_numeric(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:is_numeric", pLua);
-
-    mFunc.push(get_object()->is_numeric_only());
-
-    return mFunc.on_return();
-}
-
-/** @function is_password
-*/
-int lua_edit_box::_is_password(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:is_password", pLua);
-
-    mFunc.push(get_object()->is_password_mode_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function set_blink_speed
-*/
-int lua_edit_box::_set_blink_speed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_blink_speed", pLua);
-    mFunc.add(0, "blink speed", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_blink_speed(double(mFunc.get(0)->get_number()));
-
-    return mFunc.on_return();
-}
-
-/** @function set_cursor_position
-*/
-int lua_edit_box::_set_cursor_position(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_cursor_position", pLua);
-    mFunc.add(0, "cursor position", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_cursor_position(mFunc.get(0)->get_number());
-
-    return mFunc.on_return();
-}
-
-/** @function set_font
-*/
-int lua_edit_box::_set_font(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_font", pLua);
-    mFunc.add(0, "file", lua::type::STRING);
-    mFunc.add(1, "height", lua::type::NUMBER);
-    mFunc.add(3, "flags", lua::type::STRING, true);
-
-    if (mFunc.check())
+    /** @function get_history_lines
+    */
+    mClass.set_function("get_history_lines", [](const edit_box& mSelf)
     {
-        get_object()->set_font(mFunc.get(0)->get_string(), mFunc.get(1)->get_number());
-        if (mFunc.is_provided(2))
+        return sol::as_table(mSelf.get_history_lines());
+    });
+
+    /** @function get_max_letters
+    */
+    mClass.set_function("get_max_letters", member_function<&edit_box::get_max_letters>());
+
+    /** @function get_num_letters
+    */
+    mClass.set_function("get_num_letters", member_function<&edit_box::get_num_letters>());
+
+    /** @function get_number
+    */
+    mClass.set_function("get_number", [](const edit_box& mSelf)
+    {
+        return utils::string_to_double(mSelf.get_text());
+    });
+
+    /** @function get_text
+    */
+    mClass.set_function("get_text", [](const edit_box& mSelf)
+    {
+        return utils::unicode_to_utf8(mSelf.get_text());
+    });
+
+    /** @function get_text_insets
+    */
+    mClass.set_function("get_text_insets", [](const edit_box& mSelf)
+    {
+        const bounds2f& lInsets = mSelf.get_text_insets();
+        return std::make_tuple(lInsets.left, lInsets.right, lInsets.top, lInsets.bottom);
+    });
+
+    /** @function highlight_text
+    */
+    mClass.set_function("highlight_text", [](edit_box& mSelf,
+        sol::optional<uint> uiStart, sol::optional<uint> uiEnd)
+    {
+        mSelf.highlight_text(
+            uiStart.value_or(0u),
+            uiEnd.value_or(std::numeric_limits<uint>::max()));
+    });
+
+    /** @function insert
+    */
+    mClass.set_function("insert", [](edit_box& mSelf, const std::string& sText)
+    {
+        mSelf.insert_after_cursor(utils::utf8_to_unicode(sText));
+    });
+
+    /** @function is_multi_line
+    */
+    mClass.set_function("is_multi_line", member_function<&edit_box::is_multi_line>());
+
+    /** @function is_numeric
+    */
+    mClass.set_function("is_numeric", member_function<&edit_box::is_numeric_only>());
+
+    /** @function is_password
+    */
+    mClass.set_function("is_password", member_function<&edit_box::is_password_mode_enabled>());
+
+    /** @function set_blink_speed
+    */
+    mClass.set_function("set_blink_speed", member_function<&edit_box::set_blink_speed>());
+
+    /** @function set_cursor_position
+    */
+    mClass.set_function("set_cursor_position", member_function<&edit_box::set_cursor_position>());
+
+    /** @function set_font
+    */
+    mClass.set_function("set_font", [](edit_box& mSelf, const std::string& sFile,
+        float fHeight, sol::optional<std::string> sFlags)
+    {
+        mSelf.set_font(sFile, fHeight);
+
+        auto pFontString = mSelf.get_font_string().get();
+        if (!pFontString)
+            return;
+
+        if (sFlags.has_value())
         {
-            std::string sFlags = mFunc.get(2)->get_string();
-            if (sFlags.find("OUTLINE") != std::string::npos ||
-                sFlags.find("THICKOUTLINE") != std::string::npos)
-                get_object()->get_font_string()->set_outlined(true);
-            else if (sFlags.empty())
-                get_object()->get_font_string()->set_outlined(false);
+            if (sFlags.value().find("OUTLINE") != std::string::npos ||
+                sFlags.value().find("THICKOUTLINE") != std::string::npos)
+                pFontString->set_outlined(true);
+            else if (sFlags.value().empty())
+                pFontString->set_outlined(false);
             else
             {
-                gui::out << gui::warning << mFunc.get_name() << " : "
-                    << "Unknown flag list : \"" << sFlags <<"\"." << std::endl;
+                gui::out << gui::warning << "EditBox:set_font : "
+                    << "Unknown flags : \"" << sFlags.value() <<"\"." << std::endl;
             }
         }
         else
-            get_object()->get_font_string()->set_outlined(false);
-    }
+            pFontString->set_outlined(false);
+    });
 
-    return mFunc.on_return();
-}
+    /** @function set_max_history_lines
+    */
+    mClass.set_function("set_max_history_lines", member_function<&edit_box::set_max_history_lines>());
 
-/** @function set_max_history_lines
-*/
-int lua_edit_box::_set_max_history_lines(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function set_max_letters
+    */
+    mClass.set_function("set_max_letters", member_function<&edit_box::set_max_letters>());
 
-    lua::function mFunc("EditBox:set_max_history_lines", pLua);
-    mFunc.add(0, "max lines", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_max_history_lines(mFunc.get(0)->get_number());
+    /** @function set_multi_line
+    */
+    mClass.set_function("set_multi_line", member_function<&edit_box::set_multi_line>());
 
-    return mFunc.on_return();
-}
-
-/** @function set_max_letters
-*/
-int lua_edit_box::_set_max_letters(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_max_letters", pLua);
-    mFunc.add(0, "max letters", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_max_letters(mFunc.get(0)->get_number());
-
-    return mFunc.on_return();
-}
-
-/** @function set_multi_line
-*/
-int lua_edit_box::_set_multi_line(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_multi_line", pLua);
-    mFunc.add(0, "multiLine", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_multi_line(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_number
-*/
-int lua_edit_box::_set_number(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_number", pLua);
-    mFunc.add(0, "number", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_text(utils::to_ustring(mFunc.get(0)->get_number()));
-
-    return mFunc.on_return();
-}
-
-/** @function set_numeric
-*/
-int lua_edit_box::_set_numeric(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_numeric", pLua);
-    mFunc.add(0, "numeric", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_numeric_only(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_password
-*/
-int lua_edit_box::_set_password(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_password", pLua);
-    mFunc.add(0, "enable", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->enable_password_mode(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_text
-*/
-int lua_edit_box::_set_text(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_text", pLua);
-    mFunc.add(0, "text", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->set_text(utils::utf8_to_unicode(mFunc.get(0)->get_string()));
-
-    return mFunc.on_return();
-}
-
-/** @function set_text_insets
-*/
-int lua_edit_box::_set_text_insets(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("EditBox:set_text_insets", pLua);
-    mFunc.add(0, "left", lua::type::NUMBER);
-    mFunc.add(1, "right", lua::type::NUMBER);
-    mFunc.add(2, "top", lua::type::NUMBER);
-    mFunc.add(3, "bottom", lua::type::NUMBER);
-    if (mFunc.check())
+    /** @function set_number
+    */
+    mClass.set_function("set_number", sol::overload(
+    [](edit_box& mSelf, int iValue)
     {
-        get_object()->set_text_insets(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number(),
-            mFunc.get(2)->get_number(),
-            mFunc.get(3)->get_number()
-        );
-    }
+        mSelf.set_text(utils::to_ustring(iValue));
+    },
+    [](edit_box& mSelf, double dValue)
+    {
+        mSelf.set_text(utils::to_ustring(dValue));
+    }));
 
-    return mFunc.on_return();
+    /** @function set_numeric
+    */
+    mClass.set_function("set_numeric", member_function<&edit_box::set_numeric_only>());
+
+    /** @function set_password
+    */
+    mClass.set_function("set_password", member_function<&edit_box::enable_password_mode>());
+
+    /** @function set_text
+    */
+    mClass.set_function("set_text", [](edit_box& mSelf, const std::string& sText)
+    {
+        mSelf.set_text(utils::utf8_to_unicode(sText));
+    });
+
+    /** @function set_text_insets
+    */
+    mClass.set_function("set_text_insets", [](edit_box& mSelf,
+        float fLeft, float fRight, float fTop, float fBottom)
+    {
+        mSelf.set_text_insets(fLeft, fRight, fTop, fBottom);
+    });
 }
+
 }
 }
