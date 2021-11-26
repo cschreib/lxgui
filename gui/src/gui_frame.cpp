@@ -655,6 +655,18 @@ utils::owner_ptr<layered_region> frame::remove_region(
     notify_renderer_need_redraw();
     pRemovedRegion->set_parent(nullptr);
 
+    if (!bVirtual_)
+    {
+        // Remove shortcut to region
+        std::string sRawName = pRemovedRegion->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
+        {
+            sRawName.erase(0, std::string("$parent").size());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        }
+    }
+
     return pRemovedRegion;
 }
 
@@ -805,20 +817,36 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     // NB: the iterator is not removed yet; it will be removed later in update().
     auto pRemovedChild = std::move(*mIter);
 
-    utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
-    bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
-    if (bNotifyRenderer)
+    bool bNotifyRenderer = false;
+    if (!bVirtual_)
     {
-        pTopLevelRenderer->notify_rendered_frame(pChild, false);
-        pChild->propagate_renderer_(false);
+        utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
+        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
+        if (bNotifyRenderer)
+        {
+            pTopLevelRenderer->notify_rendered_frame(pChild, false);
+            pChild->propagate_renderer_(false);
+        }
     }
 
     pRemovedChild->set_parent(nullptr);
 
-    if (bNotifyRenderer)
+    if (!bVirtual_)
     {
-        get_manager().notify_rendered_frame(pChild, true);
-        pChild->propagate_renderer_(true);
+        if (bNotifyRenderer)
+        {
+            get_manager().notify_rendered_frame(pChild, true);
+            pChild->propagate_renderer_(true);
+        }
+
+        // Remove shortcut to child
+        std::string sRawName = pRemovedChild->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
+        {
+            sRawName.erase(0, std::string("$parent").size());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        }
     }
 
     return pRemovedChild;
