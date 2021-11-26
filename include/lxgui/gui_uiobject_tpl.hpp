@@ -104,7 +104,7 @@ struct member_function_holder<R (T::*)(Args...), Function>
     {
         return [](T& mSelf, Args ... args)
         {
-            return (mSelf.*Function)(args...);
+            return (mSelf.*Function)(std::move(args)...);
         };
     }
 };
@@ -116,7 +116,7 @@ struct member_function_holder<R (T::*)(Args...) const, Function>
     {
         return [](const T& mSelf, Args ... args)
         {
-            return (mSelf.*Function)(args...);
+            return (mSelf.*Function)(std::move(args)...);
         };
     }
 };
