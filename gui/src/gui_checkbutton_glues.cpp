@@ -19,6 +19,7 @@
 namespace lxgui {
 namespace gui
 {
+
 void check_button::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<check_button>("CheckButton",

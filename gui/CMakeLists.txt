@@ -7,7 +7,7 @@ add_library(lxgui
     ${SRCROOT}/gui_atlas.cpp
     ${SRCROOT}/gui_backdrop.cpp
     ${SRCROOT}/gui_button.cpp
-    # ${SRCROOT}/gui_button_glues.cpp
+    ${SRCROOT}/gui_button_glues.cpp
     ${SRCROOT}/gui_button_parser.cpp
     ${SRCROOT}/gui_checkbutton.cpp
     ${SRCROOT}/gui_checkbutton_glues.cpp
