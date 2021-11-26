@@ -85,6 +85,11 @@ namespace gui
         */
         void set_orientation(orientation mOrientation);
 
+        /// Sets the orientation of this slider.
+        /** \param sOrientation The orientation of this slider ("VERTICAL" or "HORIZONTAL")
+        */
+        void set_orientation(const std::string& sOrientation);
+
         /// Returns the orientation of this slider.
         /** \return The orientation of this slider
         */

@@ -160,7 +160,7 @@ void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Uknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
+            "Unknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
 
         mBarLayer_ = layer_type::ARTWORK;
     }
@@ -212,13 +212,29 @@ void status_bar::set_bar_color(const color& mBarColor)
     pBarTexture_->set_solid_color(mBarColor_);
 }
 
-void status_bar::set_orientation(orientation mOrient)
+void status_bar::set_orientation(orientation mOrientation)
 {
-    if (mOrient != mOrientation_)
+    if (mOrientation != mOrientation_)
     {
-        mOrientation_ = mOrient;
+        mOrientation_ = mOrientation;
         notify_bar_texture_needs_update_();
     }
+}
+
+void status_bar::set_orientation(const std::string& sOrientation)
+{
+    orientation mOrientation = orientation::HORIZONTAL;
+    if (sOrientation == "VERTICAL")
+        mOrientation = orientation::VERTICAL;
+    else if (sOrientation == "HORIZONTAL")
+        mOrientation = orientation::HORIZONTAL;
+    else
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            "Unknown orientation : \""+sOrientation+"\". Using \"HORIZONTAL\"." << std::endl;
+    }
+
+    set_orientation(mOrientation);
 }
 
 void status_bar::set_reversed(bool bReversed)

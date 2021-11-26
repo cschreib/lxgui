@@ -100,9 +100,14 @@ namespace gui
         void set_bar_color(const color& mBarColor);
 
         /// Sets this status_bar's orientation.
-        /** \param mOrient The orientation
+        /** \param mOrientation The orientation
         */
-        void set_orientation(orientation mOrient);
+        void set_orientation(orientation mOrientation);
+
+        /// Sets this status_bar's orientation.
+        /** \param mOrient The orientation ("VERTICAL" or "HORIZONTAL")
+        */
+        void set_orientation(const std::string& sOrientation);
 
         /// Reverses this status_bar.
         /** \param bReversed 'true' to reverse it

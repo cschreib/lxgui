@@ -48,10 +48,10 @@ add_library(lxgui
     ${SRCROOT}/gui_scrollframe_glues.cpp
     ${SRCROOT}/gui_scrollframe_parser.cpp
     ${SRCROOT}/gui_slider.cpp
-    # ${SRCROOT}/gui_slider_glues.cpp
+    ${SRCROOT}/gui_slider_glues.cpp
     ${SRCROOT}/gui_slider_parser.cpp
     ${SRCROOT}/gui_statusbar.cpp
-    # ${SRCROOT}/gui_statusbar_glues.cpp
+    ${SRCROOT}/gui_statusbar_glues.cpp
     ${SRCROOT}/gui_statusbar_parser.cpp
     ${SRCROOT}/gui_text.cpp
     ${SRCROOT}/gui_texture.cpp

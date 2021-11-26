@@ -32,258 +32,89 @@
 namespace lxgui {
 namespace gui
 {
+
 void status_bar::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_status_bar>();
-}
+    auto mClass = mLua.new_usertype<status_bar>("StatusBar",
+        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::meta_function::index,
+        &status_bar::set_lua_member_,
+        sol::meta_function::new_index,
+        &status_bar::get_lua_member_);
 
-lua_status_bar::lua_status_bar(lua_State* pLua) : lua_frame(pLua)
-{
-}
-
-/** @function get_min_max_values
-*/
-int lua_status_bar::_get_min_max_values(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:get_min_max_values", pLua, 2);
-
-    mFunc.push(get_object()->get_min_value());
-    mFunc.push(get_object()->get_max_value());
-
-    return mFunc.on_return();
-}
-
-/** @function get_orientation
-*/
-int lua_status_bar::_get_orientation(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:get_orientation", pLua, 1);
-
-    switch (get_object()->get_orientation())
+    /** @function get_min_max_values
+    */
+    mClass.set_function("get_min_max_values", [](const status_bar& mSelf)
     {
-        case status_bar::orientation::HORIZONTAL : mFunc.push(std::string("HORIZONTAL")); break;
-        case status_bar::orientation::VERTICAL   : mFunc.push(std::string("VERTICAL")); break;
-    }
+        return std::make_pair(mSelf.get_min_value(), mSelf.get_max_value());
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function get_status_bar_color
-*/
-int lua_status_bar::_get_status_bar_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:get_status_bar_color", pLua, 4);
-
-    const color& mColor = get_object()->get_bar_color();
-
-    mFunc.push(mColor.r);
-    mFunc.push(mColor.g);
-    mFunc.push(mColor.b);
-    mFunc.push(mColor.a);
-
-    return mFunc.on_return();
-}
-
-/** @function get_status_bar_texture
-*/
-int lua_status_bar::_get_status_bar_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:get_status_bar_texture", pLua, 1);
-
-    texture* pTexture = get_object()->get_bar_texture();
-    if (pTexture)
+    /** @function get_orientation
+    */
+    mClass.set_function("get_orientation", [](const status_bar& mSelf)
     {
-        pTexture->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function get_value
-*/
-int lua_status_bar::_get_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:get_value", pLua, 1);
-
-    mFunc.push(get_object()->get_value());
-
-    return mFunc.on_return();
-}
-
-/** @function is_reversed
-*/
-int lua_status_bar::_is_reversed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:is_reversed", pLua, 1);
-
-    mFunc.push(get_object()->is_reversed());
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_max_values
-*/
-int lua_status_bar::_set_min_max_values(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:set_min_max_values", pLua);
-    mFunc.add(0, "min", lua::type::NUMBER);
-    mFunc.add(1, "max", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_max_values(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_orientation
-*/
-int lua_status_bar::_set_orientation(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:set_orientation", pLua);
-    mFunc.add(0, "orientation", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        std::string sOrient = mFunc.get(0)->get_string();
-        if (sOrient == "HORIZONTAL")
-            get_object()->set_orientation(status_bar::orientation::HORIZONTAL);
-        else if (sOrient == "VERTICAL")
-            get_object()->set_orientation(status_bar::orientation::VERTICAL);
-        else
+        switch (mSelf.get_orientation())
         {
-            gui::out << gui::warning << mFunc.get_name()
-                << " : Unkonwn status bar orientation : \""+sOrient+"\"." << std::endl;
+            case status_bar::orientation::VERTICAL   : return "VERTICAL";
+            case status_bar::orientation::HORIZONTAL : return "HORIZONTAL";
+            default: return "";
         }
-    }
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_status_bar_color
-*/
-int lua_status_bar::_set_status_bar_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:set_status_bar_color", pLua);
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function get_status_bar_color
+    */
+    mClass.set_function("get_status_bar_color", [](const status_bar& mSelf)
     {
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-        }
-        else
-            mColor = color(mFunc.get(0)->get_string());
+        const color& mColor = mSelf.get_bar_color();
+        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+    });
 
-        get_object()->set_bar_color(mColor);
-    }
+    /** @function get_status_bar_texture
+    */
+    mClass.set_function("get_status_bar_texture", member_function< // select the right overload for Lua
+        static_cast<const utils::observer_ptr<texture>& (status_bar::*)()>(&status_bar::get_bar_texture)>());
 
-    return mFunc.on_return();
-}
+    /** @function get_value
+    */
+    mClass.set_function("get_value", member_function<&status_bar::get_value>());
 
-/** @function set_status_bar_texture
-*/
-int lua_status_bar::_set_status_bar_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function is_reversed
+    */
+    mClass.set_function("is_reversed", member_function<&status_bar::is_reversed>());
 
-    lua::function mFunc("StatusBar:set_status_bar_texture", pLua);
-    mFunc.add(0, "texture", lua::type::USERDATA);
-    if (mFunc.check())
+    /** @function set_min_max_values
+    */
+    mClass.set_function("set_min_max_values", member_function<&status_bar::set_min_max_values>());
+
+    /** @function set_orientation
+    */
+    mClass.set_function("set_orientation", member_function< // select the right overload for Lua
+        static_cast<void (status_bar::*)(const std::string&)>(&status_bar::set_orientation)>());
+
+    /** @function set_status_bar_color
+    */
+    mClass.set_function("set_status_bar_color", sol::overload(
+    [](status_bar& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
     {
-        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
-        if (pLuaTexture)
-        {
-            get_object()->set_bar_texture(pLuaTexture->get_object());
-        }
-    }
+        mSelf.set_bar_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](status_bar& mSelf, const std::string& sColor)
+    {
+        mSelf.set_bar_color(color(sColor));
+    }));
 
-    return mFunc.on_return();
+    /** @function set_status_bar_texture
+    */
+    mClass.set_function("set_status_bar_texture", member_function<&status_bar::set_bar_texture>());
+
+    /** @function set_value
+    */
+    mClass.set_function("set_value", member_function<&status_bar::set_value>());
+
+    /** @function set_reversed
+    */
+    mClass.set_function("set_reversed", member_function<&status_bar::set_reversed>());
 }
 
-/** @function set_value
-*/
-int lua_status_bar::_set_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:set_value", pLua);
-    mFunc.add(0, "value", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_value(mFunc.get(0)->get_number());
-
-    return mFunc.on_return();
-}
-
-/** @function set_reversed
-*/
-int lua_status_bar::_set_reversed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("StatusBar:set_reversed", pLua);
-    mFunc.add(0, "reversed", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_reversed(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
 }
 }

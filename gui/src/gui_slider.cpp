@@ -334,6 +334,22 @@ void slider::set_orientation(orientation mOrientation)
     }
 }
 
+void slider::set_orientation(const std::string& sOrientation)
+{
+    orientation mOrientation = orientation::HORIZONTAL;
+    if (sOrientation == "VERTICAL")
+        mOrientation = orientation::VERTICAL;
+    else if (sOrientation == "HORIZONTAL")
+        mOrientation = orientation::HORIZONTAL;
+    else
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            "Unknown orientation : \""+sOrientation+"\". Using \"HORIZONTAL\"." << std::endl;
+    }
+
+    set_orientation(mOrientation);
+}
+
 void slider::set_thumb_draw_layer(layer_type mThumbLayer)
 {
     mThumbLayer_ = mThumbLayer;
@@ -356,7 +372,7 @@ void slider::set_thumb_draw_layer(const std::string& sThumbLayer)
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Uknown layer type : \""+sThumbLayer+"\". Using \"OVERLAY\"." << std::endl;
+            "Unknown layer type : \""+sThumbLayer+"\". Using \"OVERLAY\"." << std::endl;
         mThumbLayer_ = layer_type::OVERLAY;
     }
 
