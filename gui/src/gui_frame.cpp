@@ -636,8 +636,10 @@ utils::owner_ptr<layered_region> frame::remove_region(
     if (!pRegion)
         return nullptr;
 
-    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
-        return pObj->get_id() == pRegion->get_id();
+    layered_region* pRawPointer = pRegion.get();
+    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj)
+    {
+        return pObj.get() == pRawPointer;
     });
 
     if (mIter == lRegionList_.end())
@@ -802,8 +804,10 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     if (!pChild)
         return nullptr;
 
-    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
-        return pObj && pObj->get_id() == pChild->get_id();
+    frame* pRawPointer = pChild.get();
+    auto mIter = utils::find_if(lChildList_, [&](auto& pObj)
+    {
+        return pObj.get() == pRawPointer;
     });
 
     if (mIter == lChildList_.end())
