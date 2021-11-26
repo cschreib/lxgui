@@ -278,13 +278,13 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_backdrop
     */
-    mClass.set_function("get_backdrop", [](frame& mSelf) -> sol::optional<sol::table>
+    mClass.set_function("get_backdrop", [](sol::this_state mLua, const frame& mSelf) -> sol::optional<sol::table>
     {
-        backdrop* pBackdrop = mSelf.get_backdrop();
+        const backdrop* pBackdrop = mSelf.get_backdrop();
         if (!pBackdrop)
             return sol::nullopt;
 
-        sol::table mReturn = mSelf.get_manager().get_lua().create_table();
+        sol::table mReturn = sol::state_view(mLua).create_table();
 
         mReturn["bgFile"] = pBackdrop->get_background_file();
         mReturn["edgeFile"] = pBackdrop->get_edge_file();
@@ -304,7 +304,7 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_backdrop_border_color
     */
-    mClass.set_function("get_backdrop_border_color", [](frame& mSelf)
+    mClass.set_function("get_backdrop_border_color", [](const frame& mSelf)
         -> sol::optional<std::tuple<float, float, float, float>>
     {
         if (!mSelf.get_backdrop())
@@ -316,7 +316,7 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_backdrop_color
     */
-    mClass.set_function("get_backdrop_color", [](frame& mSelf)
+    mClass.set_function("get_backdrop_color", [](const frame& mSelf)
         -> sol::optional<std::tuple<float, float, float, float>>
     {
         if (!mSelf.get_backdrop())
@@ -328,7 +328,7 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function get_children
     */
-    mClass.set_function("get_children", [](frame& mSelf)
+    mClass.set_function("get_children", [](const frame& mSelf)
     {
         std::vector<utils::observer_ptr<frame>> lChildren;
         lChildren.reserve(mSelf.get_rough_num_children());

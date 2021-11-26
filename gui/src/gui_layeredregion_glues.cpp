@@ -40,7 +40,7 @@ void layered_region::register_on_lua(sol::state& mLua)
 
     /** @function get_draw_layer
     */
-    mClass.set_function("get_draw_layer", [](layered_region& mSelf)
+    mClass.set_function("get_draw_layer", [](const layered_region& mSelf)
     {
         switch (mSelf.get_draw_layer())
         {

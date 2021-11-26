@@ -188,7 +188,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_center
     */
-    mClass.set_function("get_center", [](uiobject& mSelf)
+    mClass.set_function("get_center", [](const uiobject& mSelf)
     {
         vector2f mP = mSelf.get_center();
         return std::make_pair(mP.x, mP.y);
@@ -213,7 +213,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_point
     */
-    mClass.set_function("get_point", [](uiobject& mSelf, sol::optional<uint> mPoint)
+    mClass.set_function("get_point", [](const uiobject& mSelf, sol::optional<uint> mPoint)
     {
         anchor_point mPointValue = anchor_point::TOPLEFT;
         if (mPoint.has_value())
