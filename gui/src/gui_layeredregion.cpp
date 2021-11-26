@@ -103,7 +103,7 @@ void layered_region::set_draw_layer(const std::string& sLayer)
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Uknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
+            << "Unknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
         mLayer = layer_type::ARTWORK;
     }

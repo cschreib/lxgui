@@ -2075,7 +2075,7 @@ layer_type layer::get_layer_type(const std::string& sLayer)
         return layer_type::OVERLAY;
     else
     {
-        gui::out << gui::warning << "layer : Uknown layer type : \""
+        gui::out << gui::warning << "layer : Unknown layer type : \""
             << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
         return layer_type::ARTWORK;
