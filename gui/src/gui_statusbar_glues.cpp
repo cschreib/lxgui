@@ -1,9 +1,10 @@
 #include "lxgui/gui_statusbar.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} representing a variable-length bar.
 *   This frame has three main properties: a minimum value, a

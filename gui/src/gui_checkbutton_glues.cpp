@@ -2,9 +2,9 @@
 
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_texture.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Button} with two additional states: checked and unchecked.
 *   This widget works exactly like a classic @{Button}, but is has two

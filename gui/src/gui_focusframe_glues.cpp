@@ -1,4 +1,5 @@
 #include "lxgui/gui_focusframe.hpp"
+
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sol/state.hpp>

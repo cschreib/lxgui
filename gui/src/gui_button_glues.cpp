@@ -3,10 +3,10 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} with a button that can be clicked.
 *   This class can handle three different states: "normal", "pushed"

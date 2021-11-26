@@ -1,9 +1,10 @@
 #include "lxgui/gui_editbox.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} with an editable text box.
 *   This frame lets the user input arbitrary text into a box,

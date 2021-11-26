@@ -1,10 +1,11 @@
 #include "lxgui/gui_texture.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{LayeredRegion} that can draw images and colored rectangles.
 *   This object contains either a texture taken from a file,

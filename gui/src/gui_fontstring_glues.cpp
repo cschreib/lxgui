@@ -1,10 +1,12 @@
 #include "lxgui/gui_fontstring.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
 #include <lxgui/utils_string.hpp>
+
+#include <sol/state.hpp>
 
 /** A @{LayeredRegion} that can draw text on the screen.
 *   This class holds a string and a reference to a font, which
