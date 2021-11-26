@@ -55,7 +55,7 @@ add_library(lxgui
     ${SRCROOT}/gui_statusbar_parser.cpp
     ${SRCROOT}/gui_text.cpp
     ${SRCROOT}/gui_texture.cpp
-    # ${SRCROOT}/gui_texture_glues.cpp
+    ${SRCROOT}/gui_texture_glues.cpp
     ${SRCROOT}/gui_texture_parser.cpp
     ${SRCROOT}/gui_uiobject.cpp
     ${SRCROOT}/gui_uiobject_glues.cpp

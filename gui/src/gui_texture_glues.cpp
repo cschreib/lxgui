@@ -20,159 +20,100 @@
 namespace lxgui {
 namespace gui
 {
+
+sol::optional<gradient::orientation> get_gradient_orientation(const std::string& sOrientation)
+{
+    sol::optional<gradient::orientation> mOrientation;
+    if (sOrientation == "HORIZONTAL")
+        mOrientation = gradient::orientation::HORIZONTAL;
+    else if (sOrientation == "VERTICAL")
+        mOrientation = gradient::orientation::VERTICAL;
+    else
+    {
+        gui::out << gui::warning << "Texture:set_gradient : "
+            "Unknown gradient orientation : \""+sOrientation+"\"." << std::endl;
+    }
+
+    return mOrientation;
+}
+
 void texture::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_texture>();
-}
+    auto mClass = mLua.new_usertype<texture>("Texture",
+        sol::base_classes, sol::bases<uiobject, layered_region>(),
+        sol::meta_function::index,
+        &texture::set_lua_member_,
+        sol::meta_function::new_index,
+        &texture::get_lua_member_);
 
-lua_texture::lua_texture(lua_State* pLua) : lua_layered_region(pLua)
-{
-}
-
-/** @function get_blend_mode
-*/
-int lua_texture::_get_blend_mode(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_blend_mode", pLua, 1);
-
-    texture::blend_mode mBlend = get_object()->get_blend_mode();
-
-    std::string sBlend;
-    switch (mBlend)
+    /** @function get_blend_mode
+    */
+    mClass.set_function("get_blend_mode", [](const texture& mSelf)
     {
-        case texture::blend_mode::NONE  : sBlend = "NONE";  break;
-        case texture::blend_mode::BLEND : sBlend = "BLEND"; break;
-        case texture::blend_mode::KEY   : sBlend = "KEY";   break;
-        case texture::blend_mode::ADD   : sBlend = "ADD";   break;
-        case texture::blend_mode::MOD   : sBlend = "MOD";   break;
-    }
+        texture::blend_mode mBlend = mSelf.get_blend_mode();
+        switch (mBlend)
+        {
+            case texture::blend_mode::NONE  : return "NONE";
+            case texture::blend_mode::BLEND : return "BLEND";
+            case texture::blend_mode::KEY   : return "KEY";
+            case texture::blend_mode::ADD   : return "ADD";
+            case texture::blend_mode::MOD   : return "MOD";
+            default:                          return "UNKNOWN";
+        }
+    });
 
-    mFunc.push(sBlend);
-
-    return mFunc.on_return();
-}
-
-/** @function get_filter_mode
-*/
-int lua_texture::_get_filter_mode(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_filter_mode", pLua, 1);
-
-    material::filter mFilter = get_object()->get_filter_mode();
-
-    std::string sFilter;
-    switch (mFilter)
+    /** @function get_filter_mode
+    */
+    mClass.set_function("get_filter_mode", [](const texture& mSelf)
     {
-        case material::filter::NONE   : sFilter = "NONE";  break;
-        case material::filter::LINEAR : sFilter = "LINEAR"; break;
-    }
+        material::filter mFilter = mSelf.get_filter_mode();
+        switch (mFilter)
+        {
+            case material::filter::NONE   : return "NONE";
+            case material::filter::LINEAR : return "LINEAR";
+            default:                        return "UNKNOWN";
+        }
+    });
 
-    mFunc.push(sFilter);
-
-    return mFunc.on_return();
-}
-
-/** @function get_tex_coord
-*/
-int lua_texture::_get_tex_coord(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_tex_coord", pLua, 8);
-
-    const std::array<float,8>& lCoords = get_object()->get_tex_coord();
-
-    for (uint i = 0; i < 8; ++i)
-        mFunc.push(lCoords[i]);
-
-    return mFunc.on_return();
-}
-
-/** @function get_tex_coord_modifies_rect
-*/
-int lua_texture::_get_tex_coord_modifies_rect(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_tex_coord_modifies_rect", pLua, 1);
-
-    mFunc.push(get_object()->get_tex_coord_modifies_rect());
-
-    return mFunc.on_return();
-}
-
-/** @function get_texture
-*/
-int lua_texture::_get_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_texture", pLua, 1);
-
-    if (get_object()->has_texture_file())
-        mFunc.push(get_object()->get_texture_file());
-
-    return mFunc.on_return();
-}
-
-/** @function get_vertex_color
-*/
-int lua_texture::_get_vertex_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:get_vertex_color", pLua, 4);
-    mFunc.add(0, "index", lua::type::NUMBER);
-
-    if (mFunc.check())
+    /** @function get_tex_coord
+    */
+    mClass.set_function("get_tex_coord", [](const texture& mSelf)
     {
-        color mColor = get_object()->get_vertex_color(mFunc.get(0)->get_number());
+        const auto& lCoords = mSelf.get_tex_coord();
+        return std::make_tuple(
+            lCoords[0], lCoords[1], lCoords[2], lCoords[3],
+            lCoords[4], lCoords[5], lCoords[6], lCoords[7]);
+    });
 
-        mFunc.push(mColor.r);
-        mFunc.push(mColor.g);
-        mFunc.push(mColor.b);
-        mFunc.push(mColor.a);
-    }
+    /** @function get_tex_coord_modifies_rect
+    */
+    mClass.set_function("get_tex_coord_modifies_rect", member_function<&texture::get_tex_coord_modifies_rect>());
 
-    return mFunc.on_return();
-}
-
-/** @function is_desaturated
-*/
-int lua_texture::_is_desaturated(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:is_desaturated", pLua, 1);
-
-    mFunc.push(get_object()->is_desaturated());
-
-    return mFunc.on_return();
-}
-
-/** @function set_blend_mode
-*/
-int lua_texture::_set_blend_mode(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_blend_mode", pLua);
-    mFunc.add(0, "blend mode", lua::type::STRING);
-    if (mFunc.check())
+    /** @function get_texture
+    */
+    mClass.set_function("get_texture", [](const texture& mSelf)
     {
-        std::string sBlend = mFunc.get(0)->get_string();
+        sol::optional<std::string> mReturn;
+        if (mSelf.has_texture_file())
+            mReturn = mSelf.get_texture_file();
+    });
+
+    /** @function get_vertex_color
+    */
+    mClass.set_function("get_vertex_color", [](const texture& mSelf, uint uiIndex)
+    {
+        color mColor = mSelf.get_vertex_color(uiIndex);
+        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+    });
+
+    /** @function is_desaturated
+    */
+    mClass.set_function("is_desaturated", member_function<&texture::is_desaturated>());
+
+    /** @function set_blend_mode
+    */
+    mClass.set_function("set_blend_mode", [](texture& mSelf, const std::string& sBlend)
+    {
         texture::blend_mode mBlend;
         if (sBlend == "NONE")
             mBlend = texture::blend_mode::NONE;
@@ -186,29 +127,18 @@ int lua_texture::_set_blend_mode(lua_State* pLua)
             mBlend = texture::blend_mode::MOD;
         else
         {
-            gui::out << gui::warning << mFunc.get_name() << " : "
+            gui::out << gui::warning << "Texture:set_blend_mode : "
                 << "Unknown blending mode : \""+sBlend+"\"." << std::endl;
-            return mFunc.on_return();
+            return;
         }
 
-        get_object()->set_blend_mode(mBlend);
-    }
+        mSelf.set_blend_mode(mBlend);
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_filter_mode
-*/
-int lua_texture::_set_filter_mode(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_filter_mode", pLua);
-    mFunc.add(0, "filter mode", lua::type::STRING);
-    if (mFunc.check())
+    /** @function set_filter_mode
+    */
+    mClass.set_function("set_filter_mode", [](texture& mSelf, const std::string& sFilter)
     {
-        std::string sFilter = mFunc.get(0)->get_string();
         material::filter mFilter;
         if (sFilter == "NONE")
             mFilter = material::filter::NONE;
@@ -216,340 +146,126 @@ int lua_texture::_set_filter_mode(lua_State* pLua)
             mFilter = material::filter::LINEAR;
         else
         {
-            gui::out << gui::warning << mFunc.get_name() << " : "
+            gui::out << gui::warning << "Texture:set_filter_mode : "
                 << "Unknown filtering mode : \""+sFilter+"\"." << std::endl;
-            return mFunc.on_return();
+            return;
         }
 
-        get_object()->set_filter_mode(mFilter);
-    }
+        mSelf.set_filter_mode(mFilter);
+    });
 
-    return mFunc.on_return();
-}
+    /** @function set_desaturated
+    */
+    mClass.set_function("set_desaturated", member_function<&texture::set_desaturated>());
 
-/** @function set_desaturated
-*/
-int lua_texture::_set_desaturated(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_desaturated", pLua, 1);
-    mFunc.add(0, "is desaturated", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_desaturated(mFunc.get(0)->get_bool());
-
-    mFunc.push(true);
-
-    return mFunc.on_return();
-}
-
-/** @function set_gradient
-*/
-int lua_texture::_set_gradient(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_gradient", pLua);
-    mFunc.add(0, "orientation", lua::type::STRING);
-    mFunc.add(1, "min red", lua::type::NUMBER);
-    mFunc.add(2, "min green", lua::type::NUMBER);
-    mFunc.add(3, "min blue", lua::type::NUMBER);
-    mFunc.add(4, "max red", lua::type::NUMBER);
-    mFunc.add(5, "max green", lua::type::NUMBER);
-    mFunc.add(6, "max blue", lua::type::NUMBER);
-    mFunc.new_param_set();
-    mFunc.add(0, "min color", lua::type::STRING);
-    mFunc.add(1, "max color", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function set_gradient
+    */
+    mClass.set_function("set_gradient", sol::overload(
+    [](texture& mSelf, const std::string& sOrientation,
+        float fMinR, float fMinG, float fMinB,
+        float fMaxR, float fMaxG, float fMaxB)
     {
-        std::string sOrientation = mFunc.get(0)->get_string();
-        gradient::orientation mOrientation;
-        if (sOrientation == "HORIZONTAL")
-            mOrientation = gradient::orientation::HORIZONTAL;
-        else if (sOrientation == "VERTICAL")
-            mOrientation = gradient::orientation::VERTICAL;
-        else
-        {
-            gui::out << gui::warning << mFunc.get_name() << " : "
-                "Unknown gradient orientation : \""+sOrientation+"\"." << std::endl;
-            return mFunc.on_return();
-        }
+        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
+        if (!mOrientation.has_value())
+            return;
 
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            get_object()->set_gradient(gradient(
-                mOrientation,
-                color(
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                ),
-                color(
-                    mFunc.get(4)->get_number(),
-                    mFunc.get(5)->get_number(),
-                    mFunc.get(6)->get_number()
-                )
-            ));
-        }
-        else
-        {
-            get_object()->set_gradient(gradient(
-                mOrientation,
-                color(mFunc.get(0)->get_string()),
-                color(mFunc.get(1)->get_string())
-            ));
-        }
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_gradient_alpha
-*/
-int lua_texture::_set_gradient_alpha(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_gradient_alpha", pLua);
-    mFunc.add(0, "orientation", lua::type::STRING);
-    mFunc.add(1, "min red", lua::type::NUMBER);
-    mFunc.add(2, "min green", lua::type::NUMBER);
-    mFunc.add(3, "min blue", lua::type::NUMBER);
-    mFunc.add(4, "min alpha", lua::type::NUMBER);
-    mFunc.add(5, "max red", lua::type::NUMBER);
-    mFunc.add(6, "max green", lua::type::NUMBER);
-    mFunc.add(7, "max blue", lua::type::NUMBER);
-    mFunc.add(8, "max alpha", lua::type::NUMBER);
-    mFunc.new_param_set();
-    mFunc.add(0, "min color", lua::type::STRING);
-    mFunc.add(1, "max color", lua::type::STRING);
-
-    if (mFunc.check())
+        mSelf.set_gradient(gradient(mOrientation.value(),
+            color(fMinR, fMinG, fMinB), color(fMaxR, fMaxG, fMaxB)));
+    },
+    [](texture& mSelf, const std::string& sOrientation,
+        const std::string& sMinColor, const std::string& sMaxColor)
     {
-        std::string sOrientation = mFunc.get(0)->get_string();
-        gradient::orientation mOrientation;
-        if (sOrientation == "HORIZONTAL")
-            mOrientation = gradient::orientation::HORIZONTAL;
-        else if (sOrientation == "VERTICAL")
-            mOrientation = gradient::orientation::VERTICAL;
-        else
-        {
-            gui::out << gui::warning << mFunc.get_name() << " : "
-                "Unknown gradient orientation : \""+sOrientation+"\"." << std::endl;
-            return mFunc.on_return();
-        }
+        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
+        if (!mOrientation.has_value())
+            return;
 
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            get_object()->set_gradient(gradient(
-                mOrientation,
-                color(
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number(),
-                    mFunc.get(4)->get_number()
-                ),
-                color(
-                    mFunc.get(5)->get_number(),
-                    mFunc.get(6)->get_number(),
-                    mFunc.get(7)->get_number(),
-                    mFunc.get(8)->get_number()
-                )
-            ));
-        }
-        else
-        {
-            get_object()->set_gradient(gradient(
-                mOrientation,
-                color(mFunc.get(0)->get_string()),
-                color(mFunc.get(1)->get_string())
-            ));
-        }
-    }
+        mSelf.set_gradient(gradient(mOrientation.value(), color(sMinColor), color(sMaxColor)));
+    }));
 
-    return mFunc.on_return();
-}
-
-/** @function set_tex_coord
-*/
-int lua_texture::_set_tex_coord(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_tex_coord", pLua);
-    mFunc.add(0, "left", lua::type::NUMBER);
-    mFunc.add(1, "top", lua::type::NUMBER);
-    mFunc.add(2, "right", lua::type::NUMBER);
-    mFunc.add(3, "bottom", lua::type::NUMBER);
-    mFunc.new_param_set();
-    mFunc.add(0, "top-left X", lua::type::NUMBER);
-    mFunc.add(1, "top-left Y", lua::type::NUMBER);
-    mFunc.add(2, "top-right X", lua::type::NUMBER);
-    mFunc.add(3, "top-right Y", lua::type::NUMBER);
-    mFunc.add(4, "bottom-right X", lua::type::NUMBER);
-    mFunc.add(5, "bottom-right Y", lua::type::NUMBER);
-    mFunc.add(6, "bottom-left X", lua::type::NUMBER);
-    mFunc.add(7, "bottom-left Y", lua::type::NUMBER);
-
-    if (mFunc.check())
+    /** @function set_gradient_alpha
+    */
+    mClass.set_function("set_gradient_alpha", sol::overload(
+    [](texture& mSelf, const std::string& sOrientation,
+        float fMinR, float fMinG, float fMinB, float fMinA,
+        float fMaxR, float fMaxG, float fMaxB, float fMaxA)
     {
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            // Only 4 coordinates provided
-            std::array<float,4> mRect;
-            for (uint i = 0; i < 4; ++i)
-                mRect[i] = mFunc.get(i)->get_number();
+        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
+        if (!mOrientation.has_value())
+            return;
 
-            get_object()->set_tex_rect(mRect);
-        }
-        else
-        {
-            // Or 8
-            std::array<float,8> mCoords;
-            for (uint i = 0; i < 8; ++i)
-                mCoords[i] = mFunc.get(i)->get_number();
-
-            get_object()->set_tex_coord(mCoords);
-        }
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_tex_coord_modifies_rect
-*/
-int lua_texture::_set_tex_coord_modifies_rect(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_tex_coord_modifies_rect", pLua);
-    mFunc.add(0, "does set_tex_coord modifies size", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_tex_coord_modifies_rect(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_texture
-*/
-int lua_texture::_set_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_texture", pLua);
-    mFunc.add(0, "texture", lua::type::STRING);
-    mFunc.new_param_set();
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
+        mSelf.set_gradient(gradient(mOrientation.value(),
+            color(fMinR, fMinG, fMinB, fMinA), color(fMaxR, fMaxG, fMaxB, fMaxA)));
+    },
+    [](texture& mSelf, const std::string& sOrientation,
+        const std::string& sMinColor, const std::string& sMaxColor)
     {
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            std::string sTexture = mFunc.get(0)->get_string();
-            if (!sTexture.empty() && sTexture[0] == '#')
-            {
-                // #RRGGBBAA color
-                get_object()->set_solid_color(color(sTexture));
-            }
-            else
-            {
-                // texture name
-                get_object()->set_texture(
-                    get_object()->get_manager().parse_file_name(sTexture)
-                );
-            }
-        }
-        else
-        {
-            // texture color
-            color mColor;
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-            get_object()->set_solid_color(mColor);
-        }
-    }
+        sol::optional<gradient::orientation> mOrientation = get_gradient_orientation(sOrientation);
+        if (!mOrientation.has_value())
+            return;
 
-    return mFunc.on_return();
-}
+        mSelf.set_gradient(gradient(mOrientation.value(), color(sMinColor), color(sMaxColor)));
+    }));
 
-/** @function set_vertex_color
-*/
-int lua_texture::_set_vertex_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Texture:set_vertex_color", pLua);
-    mFunc.add(0, "index", lua::type::NUMBER);
-    mFunc.add(1, "red", lua::type::NUMBER);
-    mFunc.add(2, "green", lua::type::NUMBER);
-    mFunc.add(3, "blue", lua::type::NUMBER);
-    mFunc.add(4, "alpha", lua::type::NUMBER);
-    mFunc.new_param_set();
-    mFunc.add(0, "index", lua::type::NUMBER);
-    mFunc.add(1, "color", lua::type::STRING);
-    mFunc.new_param_set();
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function set_tex_coord
+    */
+    mClass.set_function("set_tex_coord", sol::overload(
+    [](texture& mSelf, float fLeft, float fTop, float fRight, float fBottom)
     {
-        uint uiIndex = (uint)-1;
-        uint uiOffset = 0;
-        if (mFunc.get_param_set_rank() <= 1)
-        {
-            uiIndex = static_cast<uint>(mFunc.get(0)->get_number());
-            uiOffset = 1;
-        }
+        mSelf.set_tex_rect({fLeft, fTop, fRight, fBottom});
+    },
+    [](texture& mSelf, float fTopLeftX, float fTopLeftY, float fTopRightX, float fTopRightY,
+        float fBottomRightX, float fBottomRightY, float fBottomLeftX, float fBottomLeftY)
+    {
+        mSelf.set_tex_coord({fTopLeftX, fTopLeftY, fTopRightX, fTopRightY,
+            fBottomRightX, fBottomRightY, fBottomLeftX, fBottomLeftY});
+    }));
 
-        color mColor;
-        if (mFunc.get_param_set_rank() % 2 == 0)
+    /** @function set_tex_coord_modifies_rect
+    */
+    mClass.set_function("set_tex_coord_modifies_rect", member_function<&texture::set_tex_coord_modifies_rect>());
+
+    /** @function set_texture
+    */
+    mClass.set_function("set_texture", sol::overload(
+    [](texture& mSelf, const std::string& sTexture)
+    {
+        if (!sTexture.empty() && sTexture[0] == '#')
         {
-            mColor = color(
-                mFunc.get(uiOffset+0)->get_number(),
-                mFunc.get(uiOffset+1)->get_number(),
-                mFunc.get(uiOffset+2)->get_number(),
-                mFunc.get(uiOffset+3)->get_number()
-            );
+            // This is actually a color hash
+            mSelf.set_solid_color(color(sTexture));
         }
         else
-            mColor = color(mFunc.get(uiOffset+0)->get_string());
+        {
+            // Normal texture file
+            mSelf.set_texture(mSelf.get_manager().parse_file_name(sTexture));
+        }
+    },
+    [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.set_solid_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    }));
 
-        get_object()->set_vertex_color(mColor, uiIndex);
-    }
-
-    return mFunc.on_return();
+    /** @function set_vertex_color
+    */
+    mClass.set_function("set_vertex_color", sol::overload(
+    [](texture& mSelf, const std::string& sColor)
+    {
+        mSelf.set_vertex_color(color(sColor), std::numeric_limits<uint>::max());
+    },
+    [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)),
+            std::numeric_limits<uint>::max());
+    },
+    [](texture& mSelf, uint uiIndex, const std::string& sColor)
+    {
+        mSelf.set_vertex_color(color(sColor), uiIndex);
+    },
+    [](texture& mSelf, uint uiIndex, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)), uiIndex);
+    }));
 }
+
 }
 }
