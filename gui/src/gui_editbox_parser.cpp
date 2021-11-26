@@ -84,12 +84,12 @@ void edit_box::parse_text_insets_block_(xml::block* pBlock)
     xml::block* pTextInsetsBlock = pBlock->get_block("TextInsets");
     if (pTextInsetsBlock)
     {
-        set_text_insets(
+        set_text_insets(bounds2f(
             utils::string_to_float(pTextInsetsBlock->get_attribute("left")),
             utils::string_to_float(pTextInsetsBlock->get_attribute("right")),
             utils::string_to_float(pTextInsetsBlock->get_attribute("top")),
             utils::string_to_float(pTextInsetsBlock->get_attribute("bottom"))
-        );
+        ));
     }
 }
 }

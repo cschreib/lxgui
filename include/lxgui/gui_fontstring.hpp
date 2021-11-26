@@ -89,27 +89,17 @@ namespace gui
         */
         const color& get_shadow_color() const;
 
-        /// Returns this font_string's shadow offsets.
-        /** \return This font_string's shadow offsets
-        *   \note Contains (X, Y) offsets.
+        /// Returns this font_string's shadow offset.
+        /** \return This font_string's shadow offset
+        *   \note Contains (X, Y) offset.
         */
-        vector2f get_shadow_offsets() const;
+        const vector2f& get_shadow_offset() const;
 
-        /// Returns this font_string's shadow X offset.
-        /** \return This font_string's shadow X offset
+        /// Returns this font_string's offset.
+        /** \return This font_string's offset
+        *   \note Contains (X, Y) offset.
         */
-        float get_shadow_x_offset() const;
-
-        /// Returns this font_string's shadow Y offset.
-        /** \return This font_string's shadow Y offset
-        */
-        float get_shadow_y_offset() const;
-
-        /// Returns this font_string's offsets.
-        /** \return This font_string's offsets
-        *   \note Contains (X, Y) offsets.
-        */
-        vector2f get_offsets() const;
+        const vector2f& get_offset() const;
 
         /// Returns the space between each letter.
         /** \return The space between each letter
@@ -147,29 +137,17 @@ namespace gui
         */
         void set_shadow_color(const color& mShadowColor);
 
-        /// Sets this font_string's shadow offsets.
-        /** \param fShadowXOffset The horizontal offset
-        *   \param fShadowYOffset The vertical offset
+        /// Sets this font_string's shadow offset.
+        /** \param mShadowOffset Offset
+        *   \note Contains (X, Y) offset.
         */
-        void set_shadow_offsets(float fShadowXOffset, float fShadowYOffset);
+        void set_shadow_offset(const vector2f& mShadowOffset);
 
-        /// Sets this font_string's shadow offsets.
-        /** \param mShadowOffsets Offsets
-        *   \note Contains (X, Y) offsets.
+        /// Sets this font_string's offset.
+        /** \param mOffset Offset
+        *   \note Contains (X, Y) offset.
         */
-        void set_shadow_offsets(const vector2f& mShadowOffsets);
-
-        /// Sets this font_string's offsets.
-        /** \param fXOffset The horizontal offset
-        *   \param fYOffset The vertical offset
-        */
-        void set_offsets(float fXOffset, float fYOffset);
-
-        /// Sets this font_string's offsets.
-        /** \param mOffsets Offsets
-        *   \note Contains (X, Y) offsets.
-        */
-        void set_offsets(const vector2f& mOffsets);
+        void set_offset(const vector2f& mOffset);
 
         /// Sets the space between each letter.
         /** \param fSpacing The space between each letter
@@ -309,8 +287,7 @@ namespace gui
         float                    fLineSpacing_ = 1.0f;
         text::alignment          mJustifyH_ = text::alignment::CENTER;
         text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
-        float                    fXOffset_ = 0.0f;
-        float                    fYOffset_ = 0.0f;
+        vector2f                 mOffset_ = vector2f::ZERO;
 
         bool  bIsOutlined_ = false;
         bool  bCanNonSpaceWrap_ = false;
@@ -319,10 +296,9 @@ namespace gui
         bool  bFormattingEnabled_ = true;
         color mTextColor_ = color::WHITE;
 
-        bool  bHasShadow_ = false;
-        color mShadowColor_ = color::BLACK;
-        float fShadowXOffset_ = 0.0f;
-        float fShadowYOffset_ = 0.0f;
+        bool     bHasShadow_ = false;
+        color    mShadowColor_ = color::BLACK;
+        vector2f mShadowOffset_ = vector2f::ZERO;
     };
 }
 }

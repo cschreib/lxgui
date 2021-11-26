@@ -23,7 +23,7 @@ add_library(lxgui
     ${SRCROOT}/gui_focusframe_glues.cpp
     ${SRCROOT}/gui_focusframe_parser.cpp
     ${SRCROOT}/gui_fontstring.cpp
-    # ${SRCROOT}/gui_fontstring_glues.cpp
+    ${SRCROOT}/gui_fontstring_glues.cpp
     ${SRCROOT}/gui_fontstring_parser.cpp
     ${SRCROOT}/gui_frame.cpp
     ${SRCROOT}/gui_frame_glues.cpp

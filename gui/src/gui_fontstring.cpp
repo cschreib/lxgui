@@ -51,8 +51,8 @@ void font_string::render()
     else
         fY = lBorderList_.top;
 
-    fX += fXOffset_;
-    fY += fYOffset_;
+    fX += mOffset_.x;
+    fY += mOffset_.y;
 
     pText_->set_alpha(get_effective_alpha());
 
@@ -60,7 +60,7 @@ void font_string::render()
     {
         pText_->set_color(mShadowColor_, true);
         pText_->render(matrix4f::translation(
-            round_to_pixel(vector2f(fX + fShadowXOffset_, fY + fShadowYOffset_))));
+            round_to_pixel(vector2f(fX, fY) + mShadowOffset_)));
     }
 
     pText_->set_color(mTextColor_);
@@ -102,7 +102,7 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # NonSpaceW.  : " << bCanNonSpaceWrap_ << "\n";
     if (bHasShadow_)
     {
-    sStr << sTab << "  # Shadow off. : (" << fShadowXOffset_ << ", " << fShadowYOffset_ << ")\n";
+    sStr << sTab << "  # Shadow off. : (" << mShadowOffset_.x << ", " << mShadowOffset_.y << ")\n";
     sStr << sTab << "  # Shadow col. : " <<  mShadowColor_ << "\n";
     }
 
@@ -137,7 +137,7 @@ void font_string::copy_from(const uiobject& mObj)
     {
         this->set_shadow(true);
         this->set_shadow_color(pFontString->get_shadow_color());
-        this->set_shadow_offsets(pFontString->get_shadow_offsets());
+        this->set_shadow_offset(pFontString->get_shadow_offset());
     }
     this->set_text_color(pFontString->get_text_color());
     this->set_non_space_wrap(pFontString->can_non_space_wrap());
@@ -185,24 +185,14 @@ const color& font_string::get_shadow_color() const
     return mShadowColor_;
 }
 
-vector2f font_string::get_shadow_offsets() const
+const vector2f& font_string::get_shadow_offset() const
 {
-    return vector2f(fShadowXOffset_, fShadowYOffset_);
+    return mShadowOffset_;
 }
 
-vector2f font_string::get_offsets() const
+const vector2f& font_string::get_offset() const
 {
-    return vector2f(fXOffset_, fYOffset_);
-}
-
-float font_string::get_shadow_x_offset() const
-{
-    return fShadowXOffset_;
-}
-
-float font_string::get_shadow_y_offset() const
-{
-    return fShadowYOffset_;
+    return mOffset_;
 }
 
 float font_string::get_spacing() const
@@ -319,45 +309,21 @@ void font_string::set_shadow_color(const color& mShadowColor)
     }
 }
 
-void font_string::set_shadow_offsets(float fShadowXOffset, float fShadowYOffset)
+void font_string::set_shadow_offset(const vector2f& mShadowOffset)
 {
-    if (fShadowXOffset_ != fShadowXOffset || fShadowYOffset_ != fShadowYOffset)
+    if (mShadowOffset_ != mShadowOffset)
     {
-        fShadowXOffset_ = fShadowXOffset;
-        fShadowYOffset_ = fShadowYOffset;
+        mShadowOffset_ = mShadowOffset;
         if (bHasShadow_ && !bVirtual_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_shadow_offsets(const vector2f& mShadowOffsets)
+void font_string::set_offset(const vector2f& mOffset)
 {
-    if (fShadowXOffset_ != mShadowOffsets.x || fShadowYOffset_ != mShadowOffsets.y)
+    if (mOffset_ != mOffset)
     {
-        fShadowXOffset_ = mShadowOffsets.x;
-        fShadowYOffset_ = mShadowOffsets.y;
-        if (bHasShadow_ && !bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_offsets(float fXOffset, float fYOffset)
-{
-    if (fXOffset_ != fXOffset || fYOffset_ != fYOffset)
-    {
-        fXOffset_ = fXOffset;
-        fYOffset_ = fYOffset;
-        if (!bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_offsets(const vector2f& mOffsets)
-{
-    if (fXOffset_ != mOffsets.x || fYOffset_ != mOffsets.y)
-    {
-        fXOffset_ = mOffsets.x;
-        fYOffset_ = mOffsets.y;
+        mOffset_ = mOffset;
         if (!bVirtual_)
             notify_renderer_need_redraw();
     }

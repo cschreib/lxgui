@@ -73,581 +73,243 @@ namespace gui
 {
 void font_string::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_font_string>();
-}
+    auto mClass = mLua.new_usertype<font_string>("FontString",
+        sol::base_classes, sol::bases<uiobject, layered_region>(),
+        sol::meta_function::index,
+        &font_string::set_lua_member_,
+        sol::meta_function::new_index,
+        &font_string::get_lua_member_);
 
-lua_font_string::lua_font_string(lua_State* pLua) : lua_layered_region(pLua)
-{
-}
+    /** @function get_font
+    */
+    mClass.set_function("get_font", member_function<&font_string::get_font_name>());
 
-/** @function get_font
-*/
-int lua_font_string::_get_font(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_font", pLua, 1);
-
-    mFunc.push(get_object()->get_font_name());
-
-    return mFunc.on_return();
-}
-
-/** @function get_justify_h
-*/
-int lua_font_string::_get_justify_h(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_justify_h", pLua, 1);
-
-    text::alignment mAlignment = get_object()->get_justify_h();
-    std::string sAligment;
-
-    switch (mAlignment)
+    /** @function get_justify_h
+    */
+    mClass.set_function("get_justify_h", [](const font_string& mSelf)
     {
-        case text::alignment::LEFT :   sAligment = "LEFT"; break;
-        case text::alignment::CENTER : sAligment = "CENTER"; break;
-        case text::alignment::RIGHT :  sAligment = "RIGHT"; break;
-    }
-
-    mFunc.push(sAligment);
-
-    return mFunc.on_return();
-}
-
-/** @function get_justify_v
-*/
-int lua_font_string::_get_justify_v(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_justify_v", pLua, 1);
-
-    text::vertical_alignment mAlignment = get_object()->get_justify_v();
-    std::string sAligment;
-
-    switch (mAlignment)
-    {
-        case text::vertical_alignment::TOP : sAligment = "TOP"; break;
-        case text::vertical_alignment::MIDDLE : sAligment = "MIDDLE"; break;
-        case text::vertical_alignment::BOTTOM : sAligment = "BOTTOM"; break;
-    }
-
-    mFunc.push(sAligment);
-
-    return mFunc.on_return();
-}
-
-/** @function get_shadow_color
-*/
-int lua_font_string::_get_shadow_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_shadow_color", pLua, 4);
-
-    const color& mShadowColor = get_object()->get_shadow_color();
-
-    mFunc.push(mShadowColor.r);
-    mFunc.push(mShadowColor.g);
-    mFunc.push(mShadowColor.b);
-    mFunc.push(mShadowColor.a);
-
-    return mFunc.on_return();
-}
-
-/** @function get_shadow_offset
-*/
-int lua_font_string::_get_shadow_offset(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_shadow_offset", pLua, 2);
-
-    mFunc.push(get_object()->get_shadow_x_offset());
-    mFunc.push(get_object()->get_shadow_y_offset());
-
-    return mFunc.on_return();
-}
-
-/** @function get_spacing
-*/
-int lua_font_string::_get_spacing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_spacing", pLua, 1);
-
-    mFunc.push(get_object()->get_spacing());
-
-    return mFunc.on_return();
-}
-
-/** @function get_line_spacing
-*/
-int lua_font_string::_get_line_spacing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_line_spacing", pLua, 1);
-
-    mFunc.push(get_object()->get_line_spacing());
-
-    return mFunc.on_return();
-}
-
-/** @function get_text_color
-*/
-int lua_font_string::_get_text_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_text_color", pLua, 4);
-
-    const color& mTextColor = get_object()->get_text_color();
-
-    mFunc.push(mTextColor.r);
-    mFunc.push(mTextColor.g);
-    mFunc.push(mTextColor.b);
-    mFunc.push(mTextColor.a);
-
-    return mFunc.on_return();
-}
-
-/** @function set_font
-*/
-int lua_font_string::_set_font(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_font", pLua);
-    mFunc.add(0, "file", lua::type::STRING);
-    mFunc.add(1, "height", lua::type::NUMBER);
-    mFunc.add(3, "flags", lua::type::STRING, true);
-
-    if (mFunc.check())
-    {
-        get_object()->set_font(mFunc.get(0)->get_string(), mFunc.get(1)->get_number());
-        if (mFunc.is_provided(2))
+        text::alignment mAlignment = mSelf.get_justify_h();
+        switch (mAlignment)
         {
-            std::string sFlags = mFunc.get(2)->get_string();
-            if (sFlags.find("OUTLINE") != std::string::npos ||
-                sFlags.find("THICKOUTLINE") != std::string::npos)
-                get_object()->set_outlined(true);
-            else if (sFlags.empty())
-                get_object()->set_outlined(false);
+            case text::alignment::LEFT :   return "LEFT";
+            case text::alignment::CENTER : return "CENTER";
+            case text::alignment::RIGHT :  return "RIGHT";
+            default:                       return "UNKNOWN";
+        }
+    });
+
+    /** @function get_justify_v
+    */
+    mClass.set_function("get_justify_v", [](const font_string& mSelf)
+    {
+        text::vertical_alignment mAlignment = mSelf.get_justify_v();
+        switch (mAlignment)
+        {
+            case text::vertical_alignment::TOP :    return "TOP";
+            case text::vertical_alignment::MIDDLE : return "MIDDLE";
+            case text::vertical_alignment::BOTTOM : return "BOTTOM";
+            default:                                return "UNKNOWN";
+        }
+    });
+
+    /** @function get_shadow_color
+    */
+    mClass.set_function("get_shadow_color", [](const font_string& mSelf)
+    {
+        const color& mShadowColor = mSelf.get_shadow_color();
+        return std::make_tuple(mShadowColor.r, mShadowColor.g, mShadowColor.b, mShadowColor.a);
+    });
+
+    /** @function get_shadow_offset
+    */
+    mClass.set_function("get_shadow_offset", [](const font_string& mSelf)
+    {
+        const vector2f& mShadowOffsets = mSelf.get_shadow_offset();
+        return std::make_pair(mShadowOffsets.x, mShadowOffsets.y);
+    });
+
+    /** @function get_spacing
+    */
+    mClass.set_function("get_spacing", member_function<&font_string::get_spacing>());
+
+    /** @function get_line_spacing
+    */
+    mClass.set_function("get_line_spacing", member_function<&font_string::get_line_spacing>());
+
+    /** @function get_text_color
+    */
+    mClass.set_function("get_text_color", [](const font_string& mSelf)
+    {
+        const color& mTextColor = mSelf.get_text_color();
+        return std::make_tuple(mTextColor.r, mTextColor.g, mTextColor.b, mTextColor.a);
+    });
+
+    /** @function set_font
+    */
+    mClass.set_function("set_font", [](font_string& mSelf, const std::string& sFile,
+        float fHeight, sol::optional<std::string> sFlags)
+    {
+        mSelf.set_font(sFile, fHeight);
+
+        if (sFlags.has_value())
+        {
+            if (sFlags.value().find("OUTLINE") != std::string::npos ||
+                sFlags.value().find("THICKOUTLINE") != std::string::npos)
+                mSelf.set_outlined(true);
+            else if (sFlags.value().empty())
+                mSelf.set_outlined(false);
             else
             {
-                gui::out << gui::warning << mFunc.get_name() << " : "
-                    << "Unknown flag list : \"" << sFlags <<"\"." << std::endl;
+                gui::out << gui::warning << "EditBox:set_font : "
+                    << "Unknown flags : \"" << sFlags.value() <<"\"." << std::endl;
             }
         }
         else
-            get_object()->set_outlined(false);
-    }
+            mSelf.set_outlined(false);
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_justify_h
-*/
-int lua_font_string::_set_justify_h(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_justify_h", pLua);
-    mFunc.add(0, "justify horizontal", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function set_justify_h
+    */
+    mClass.set_function("set_justify_h", [](font_string& mSelf, const std::string& sJustifyH)
     {
-        std::string sJustifyH = mFunc.get(0)->get_string();
         if (sJustifyH == "LEFT")
-            get_object()->set_justify_h(text::alignment::LEFT);
+            mSelf.set_justify_h(text::alignment::LEFT);
         else if (sJustifyH == "CENTER")
-            get_object()->set_justify_h(text::alignment::CENTER);
+            mSelf.set_justify_h(text::alignment::CENTER);
         else if (sJustifyH == "RIGHT")
-            get_object()->set_justify_h(text::alignment::RIGHT);
+            mSelf.set_justify_h(text::alignment::RIGHT);
         else
         {
-            gui::out << gui::warning << mFunc.get_name() << " : "
+            gui::out << gui::warning << "font_string:set_justify_h : "
                 << "Unknown justify behavior : \"" << sJustifyH << "\"." << std::endl;
         }
-    }
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_justify_v
-*/
-int lua_font_string::_set_justify_v(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_justify_v", pLua);
-    mFunc.add(0, "justify vertical", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function set_justify_v
+    */
+    mClass.set_function("set_justify_v", [](font_string& mSelf, const std::string& sJustifyV)
     {
-        std::string sJustifyV = mFunc.get(0)->get_string();
         if (sJustifyV == "TOP")
-            get_object()->set_justify_v(text::vertical_alignment::TOP);
+            mSelf.set_justify_v(text::vertical_alignment::TOP);
         else if (sJustifyV == "MIDDLE")
-            get_object()->set_justify_v(text::vertical_alignment::MIDDLE);
+            mSelf.set_justify_v(text::vertical_alignment::MIDDLE);
         else if (sJustifyV == "BOTTOM")
-            get_object()->set_justify_v(text::vertical_alignment::BOTTOM);
+            mSelf.set_justify_v(text::vertical_alignment::BOTTOM);
         else
         {
-            gui::out << gui::warning << mFunc.get_name() << " : "
+            gui::out << gui::warning << "font_string:set_justify_v : "
                 << "Unknown justify behavior : \"" << sJustifyV << "\"." << std::endl;
         }
-    }
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_shadow_color
-*/
-int lua_font_string::_set_shadow_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_shadow_color", pLua);
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
+    /** @function set_shadow_color
+    */
+    mClass.set_function("set_shadow_color", sol::overload(
+    [](font_string& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
     {
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-        }
+        mSelf.set_shadow_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](font_string& mSelf, const std::string& sColor)
+    {
+        mSelf.set_shadow_color(color(sColor));
+    }));
+
+    /** @function set_shadow_offset
+    */
+    mClass.set_function("set_shadow_offset", [](font_string& mSelf, float fXOffset, float fYOffset)
+    {
+        mSelf.set_shadow_offset(vector2f(fXOffset, fYOffset));
+    });
+
+    /** @function set_spacing
+    */
+    mClass.set_function("set_spacing", member_function<&font_string::set_spacing>());
+
+    /** @function set_line_spacing
+    */
+    mClass.set_function("set_line_spacing", member_function<&font_string::set_line_spacing>());
+
+    /** @function set_text_color
+    */
+    mClass.set_function("set_text_color", sol::overload(
+    [](font_string& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.set_text_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](font_string& mSelf, const std::string& sColor)
+    {
+        mSelf.set_text_color(color(sColor));
+    }));
+
+    /** @function can_non_space_wrap
+    */
+    mClass.set_function("can_non_space_wrap", member_function<&font_string::can_non_space_wrap>());
+
+    /** @function can_word_wrap
+    */
+    mClass.set_function("can_word_wrap", member_function<&font_string::can_word_wrap>());
+
+    /** @function enable_formatting
+    */
+    mClass.set_function("enable_formatting", member_function<&font_string::enable_formatting>());
+
+    /** @function get_string_height
+    */
+    mClass.set_function("get_string_height", member_function<&font_string::get_string_height>());
+
+    /** @function get_string_width
+    */
+    mClass.set_function("get_string_width", [](const font_string& mSelf, sol::optional<std::string> sText)
+    {
+        if (sText.has_value())
+            return mSelf.get_string_width(utils::utf8_to_unicode(sText.value()));
         else
-            mColor = color(mFunc.get(0)->get_string());
+            return mSelf.get_string_width();
+    });
 
-        get_object()->set_shadow_color(mColor);
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_shadow_offset
-*/
-int lua_font_string::_set_shadow_offset(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_shadow_offset", pLua);
-    mFunc.add(0, "x offset", lua::type::NUMBER);
-    mFunc.add(1, "y offset", lua::type::NUMBER);
-
-    if (mFunc.check())
+    /** @function get_text
+    */
+    mClass.set_function("get_text", [](const font_string& mSelf)
     {
-        get_object()->set_shadow_offsets(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number()
-        );
-    }
+        return utils::unicode_to_utf8(mSelf.get_text());
+    });
 
-    return mFunc.on_return();
-}
+    /** @function is_formatting_enabled
+    */
+    mClass.set_function("is_formatting_enabled", member_function<&font_string::is_formatting_enabled>());
 
-/** @function set_spacing
-*/
-int lua_font_string::_set_spacing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function set_non_space_wrap
+    */
+    mClass.set_function("set_non_space_wrap", member_function<&font_string::set_non_space_wrap>());
 
-    lua::function mFunc("FontString:set_spacing", pLua);
-    mFunc.add(0, "spacing", lua::type::NUMBER);
-
-    if (mFunc.check())
+    /** @function set_word_wrap
+    */
+    mClass.set_function("set_word_wrap", [](font_string& mSelf,
+        bool bWrap, sol::optional<bool> bEllipsis)
     {
-        get_object()->set_spacing(mFunc.get(0)->get_number());
-    }
+        mSelf.set_word_wrap(bWrap, bEllipsis.value_or(false));
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function set_line_spacing
-*/
-int lua_font_string::_set_line_spacing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_line_spacing", pLua);
-    mFunc.add(0, "line spacing", lua::type::NUMBER);
-
-    if (mFunc.check())
+    /** @function set_text
+    */
+    mClass.set_function("set_text", sol::overload(
+    [](font_string& mSelf, bool bValue)
     {
-        get_object()->set_line_spacing(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_text_color
-*/
-int lua_font_string::_set_text_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_text_color", pLua);
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
+        mSelf.set_text(utils::to_ustring(bValue));
+    },
+    [](font_string& mSelf, int iValue)
     {
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-        }
-        else
-            mColor = color(mFunc.get(0)->get_string());
-
-        get_object()->set_text_color(mColor);
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function can_non_space_wrap
-*/
-int lua_font_string::_can_non_space_wrap(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:can_non_space_wrap", pLua, 1);
-
-    mFunc.push(get_object()->can_non_space_wrap());
-
-    return mFunc.on_return();
-}
-
-/** @function can_word_wrap
-*/
-int lua_font_string::_can_word_wrap(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:can_word_wrap", pLua, 1);
-
-    mFunc.push(get_object()->can_word_wrap());
-
-    return mFunc.on_return();
-}
-
-/** @function enable_formatting
-*/
-int lua_font_string::_enable_formatting(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:enable_formatting", pLua);
-    mFunc.add(0, "formatting", lua::type::BOOLEAN);
-
-    if (mFunc.check())
+        mSelf.set_text(utils::to_ustring(iValue));
+    },
+    [](font_string& mSelf, double dValue)
     {
-        get_object()->enable_formatting(mFunc.get(0)->get_bool());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function get_string_height
-*/
-int lua_font_string::_get_string_height(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_string_height", pLua, 1);
-
-    mFunc.push(get_object()->get_string_height());
-
-    return mFunc.on_return();
-}
-
-/** @function get_string_width
-*/
-int lua_font_string::_get_string_width(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_string_width", pLua, 1);
-    mFunc.add(0, "string", lua::type::STRING, true);
-
-    if (mFunc.check())
+        mSelf.set_text(utils::to_ustring(dValue));
+    },
+    [](font_string& mSelf, const std::string& sText)
     {
-        if (mFunc.is_provided(0))
-        {
-            mFunc.push(get_object()->get_string_width(
-                utils::utf8_to_unicode(mFunc.get(0)->get_string())));
-        }
-        else
-            mFunc.push(get_object()->get_string_width());
-    }
-
-    return mFunc.on_return();
+        mSelf.set_text(utils::utf8_to_unicode(sText));
+    }));
 }
 
-/** @function get_text
-*/
-int lua_font_string::_get_text(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:get_text", pLua, 1);
-
-    mFunc.push(utils::unicode_to_utf8(get_object()->get_text()));
-
-    return mFunc.on_return();
-}
-
-/** @function is_formatting_enabled
-*/
-int lua_font_string::_is_formatting_enabled(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:is_formatting_enabled", pLua, 1);
-
-    mFunc.push(get_object()->is_formatting_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function set_non_space_wrap
-*/
-int lua_font_string::_set_non_space_wrap(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_non_space_wrap", pLua);
-    mFunc.add(0, "can non space wrap", lua::type::BOOLEAN);
-
-    if (mFunc.check())
-    {
-        get_object()->set_non_space_wrap(mFunc.get(0)->get_bool());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_word_wrap
-*/
-int lua_font_string::_set_word_wrap(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_word_wrap", pLua);
-    mFunc.add(0, "can word wrap", lua::type::BOOLEAN);
-    mFunc.add(1, "add ellipsis", lua::type::BOOLEAN, true);
-
-    if (mFunc.check())
-    {
-        bool bEllipsis = true;
-        if (mFunc.is_provided(1))
-            bEllipsis = mFunc.get(1)->get_bool();
-
-        get_object()->set_word_wrap(mFunc.get(0)->get_bool(), bEllipsis);
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_text
-*/
-int lua_font_string::_set_text(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("FontString:set_text", pLua);
-    mFunc.add(0, "text", lua::type::STRING);
-    mFunc.add(0, "number", lua::type::NUMBER);
-    mFunc.add(0, "bool", lua::type::BOOLEAN);
-
-    if (mFunc.check())
-    {
-        std::string sText;
-        if (mFunc.get(0)->get_type() == lua::type::STRING)
-            sText = mFunc.get(0)->get_string();
-        else if (mFunc.get(0)->get_type() == lua::type::NUMBER)
-            sText = utils::to_string(mFunc.get(0)->get_number());
-        else if (mFunc.get(0)->get_type() == lua::type::BOOLEAN)
-            sText = utils::to_string(mFunc.get(0)->get_bool());
-
-        get_object()->set_text(utils::utf8_to_unicode(sText));
-    }
-
-    return mFunc.on_return();
-}
 }
 }

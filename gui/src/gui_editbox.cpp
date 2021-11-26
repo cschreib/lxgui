@@ -687,11 +687,6 @@ void edit_box::set_arrows_ignored(bool bArrowsIgnored)
     bArrowsIgnored_ = bArrowsIgnored;
 }
 
-void edit_box::set_text_insets(float fLeft, float fRight, float fTop, float fBottom)
-{
-    set_text_insets(bounds2f(fLeft, fRight, fTop, fBottom));
-}
-
 void edit_box::set_text_insets(const bounds2f& lInsets)
 {
     lTextInsets_ = lInsets;

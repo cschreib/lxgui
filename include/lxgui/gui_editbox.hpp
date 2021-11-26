@@ -343,16 +343,6 @@ namespace gui
         void set_arrows_ignored(bool bArrowsIgnored);
 
         /// Sets the insets used to render the content text.
-        /** \param fLeft   The left inset
-        *   \param fRight  The right inset
-        *   \param fTop    The top inset
-        *   \param fBottom The bottom inset
-        *   \note Positive insets will reduce the text area, while
-        *         negative ones will enlarge it
-        */
-        void set_text_insets(float fLeft, float fRight, float fTop, float fBottom);
-
-        /// Sets the insets used to render the content text.
         /** \param lInsets (left, right, top, bottom)
         *   \note Positive insets will reduce the text area, while
         *         negative ones will enlarge it

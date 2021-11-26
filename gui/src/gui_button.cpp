@@ -526,9 +526,9 @@ void button::push()
         }
 
         if (pHighlightText_)
-            pHighlightText_->set_offsets(mPushedTextOffset_);
+            pHighlightText_->set_offset(mPushedTextOffset_);
         if (pNormalText_)
-            pNormalText_->set_offsets(mPushedTextOffset_);
+            pNormalText_->set_offset(mPushedTextOffset_);
 
         mState_ = state::DOWN;
     }
@@ -546,9 +546,9 @@ void button::release()
         }
 
         if (pHighlightText_)
-            pHighlightText_->set_offsets(0, 0);
+            pHighlightText_->set_offset(vector2f(0, 0));
         if (pNormalText_)
-            pNormalText_->set_offsets(0, 0);
+            pNormalText_->set_offset(vector2f(0, 0));
 
         mState_ = state::UP;
     }

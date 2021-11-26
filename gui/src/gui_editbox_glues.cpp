@@ -238,7 +238,7 @@ void edit_box::register_on_lua(sol::state& mLua)
     mClass.set_function("set_text_insets", [](edit_box& mSelf,
         float fLeft, float fRight, float fTop, float fBottom)
     {
-        mSelf.set_text_insets(fLeft, fRight, fTop, fBottom);
+        mSelf.set_text_insets(bounds2f(fLeft, fRight, fTop, fBottom));
     });
 }
 
