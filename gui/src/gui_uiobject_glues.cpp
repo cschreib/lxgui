@@ -342,7 +342,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
         // x, y
         float fAbsX = fXOffset.value_or(0.0f);
-        float fAbsY = fXOffset.value_or(0.0f);
+        float fAbsY = fYOffset.value_or(0.0f);
 
         mSelf.set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
     });
