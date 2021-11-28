@@ -1158,7 +1158,7 @@ void frame::define_script_(const std::string& sScriptName, sol::protected_functi
         }
 
         // Get a reference to self
-        sol::table mSelfLua = mLua[mSelf.get_lua_name()];
+        sol::object mSelfLua = mLua[mSelf.get_lua_name()];
         if (mSelfLua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
@@ -1206,30 +1206,32 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
         // Register the function so it can be called directly from Lua
         std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
-        get_lua_()[get_lua_name()][sAdjustedName] = [=](frame& mSelf, sol::variadic_args mVArgs)
-        {
-            event mEvent;
-            bool bIsFirst = true;
-            for (auto&& mArg : mVArgs)
+        get_lua_()[get_lua_name()][sAdjustedName].set_function(
+            [=](frame& mSelf, sol::variadic_args mVArgs)
             {
-                if (bNeedsEventName && bIsFirst)
+                event mEvent;
+                bool bIsFirst = true;
+                for (auto&& mArg : mVArgs)
                 {
-                    mEvent.set_name(mArg.as<std::string>());
-                }
-                else
-                {
-                    lxgui::utils::variant mVariant;
-                    if (!mArg.is<sol::lua_nil_t>())
-                        mVariant = mArg;
+                    if (bNeedsEventName && bIsFirst)
+                    {
+                        mEvent.set_name(mArg.as<std::string>());
+                    }
+                    else
+                    {
+                        lxgui::utils::variant mVariant;
+                        if (!mArg.is<sol::lua_nil_t>())
+                            mVariant = mArg;
 
-                    mEvent.add(std::move(mVariant));
+                        mEvent.add(std::move(mVariant));
+                    }
+
+                    bIsFirst = false;
                 }
 
-                bIsFirst = false;
+                mSelf.on_script(sScriptName, &mEvent);
             }
-
-            mSelf.on_script(sScriptName, &mEvent);
-        };
+        );
     }
 }
 
