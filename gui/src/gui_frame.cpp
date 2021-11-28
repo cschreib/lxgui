@@ -322,25 +322,32 @@ void frame::create_title_region()
         return;
     }
 
-    pTitleRegion_ = utils::make_owned<region>(get_manager());
-    if (this->is_virtual())
-        pTitleRegion_->set_virtual();
-    pTitleRegion_->set_special();
-    pTitleRegion_->set_name_and_parent(sName_+"TitleRegion", observer_from(this));
+    auto pTitleRegion = utils::make_owned<region>(get_manager());
 
-    if (!get_manager().add_uiobject(pTitleRegion_))
+    if (this->is_virtual())
+        pTitleRegion->set_virtual();
+
+    pTitleRegion->set_special();
+    pTitleRegion->set_name_and_parent("$parentTitleRegion", observer_from(this));
+
+    if (!get_manager().add_uiobject(pTitleRegion))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-            "already took its name : \"" << pTitleRegion_->get_name() << "\"." << std::endl;
-
-        pTitleRegion_ = nullptr;
+            "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
         return;
     }
 
-    if (!pTitleRegion_->is_virtual())
-        pTitleRegion_->create_glue();
+    if (!pTitleRegion->is_virtual())
+    {
+        pTitleRegion->create_glue();
 
+        // Add shortcut to region as entry in Lua table
+        auto& mLua = get_lua_();
+        mLua[get_lua_name()]["TitleRegion"] = mLua[pTitleRegion->get_lua_name()];
+    }
+
+    pTitleRegion_ = std::move(pTitleRegion);
     pTitleRegion_->notify_loaded();
 }
 
