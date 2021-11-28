@@ -273,7 +273,7 @@ void frame::copy_from(const uiobject& mObj)
 
     this->set_scale(pFrame->get_scale());
 
-    for (const auto& pArt : lRegionList_)
+    for (const auto& pArt : pFrame->lRegionList_)
     {
         if (!pArt || pArt->is_special()) continue;
 
@@ -301,7 +301,7 @@ void frame::copy_from(const uiobject& mObj)
             pTitleRegion_->copy_from(*pFrame->pTitleRegion_);
     }
 
-    for (const auto& pChild : lChildList_)
+    for (const auto& pChild : pFrame->lChildList_)
     {
         if (!pChild || pChild->is_special()) continue;
 
