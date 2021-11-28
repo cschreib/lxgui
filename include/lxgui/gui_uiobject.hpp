@@ -33,18 +33,6 @@ namespace gui
     struct addon;
     class manager;
 
-    /// ID of a layer for rendering inside a frame.
-    enum class layer_type
-    {
-        BACKGROUND = 0,
-        BORDER = 1,
-        ARTWORK = 2,
-        OVERLAY = 3,
-        HIGHLIGHT = 4,
-        SPECIALHIGH = 5,
-        ENUM_SIZE
-    };
-
     class frame;
     class frame_renderer;
 

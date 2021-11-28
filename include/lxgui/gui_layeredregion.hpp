@@ -8,6 +8,18 @@
 namespace lxgui {
 namespace gui
 {
+    /// ID of a layer for rendering inside a frame.
+    enum class layer_type
+    {
+        BACKGROUND = 0,
+        BORDER = 1,
+        ARTWORK = 2,
+        OVERLAY = 3,
+        HIGHLIGHT = 4,
+        SPECIALHIGH = 5,
+        ENUM_SIZE
+    };
+
     /// A #uiobject that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
     *   texts, 3D models, ...) and must be contained inside a layer,
