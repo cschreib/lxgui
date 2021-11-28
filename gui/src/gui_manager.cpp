@@ -41,16 +41,12 @@ namespace gui
 
 manager::manager(std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
+    event_manager(),
     event_receiver(static_cast<event_manager&>(*this)),
     pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
-    // pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
-    // event_receiver::set_event_manager(pEventManager_.get());
     pInputManager_->register_event_manager(this);
-    register_event("KEY_PRESSED");
-    register_event("MOUSE_MOVED");
-    register_event("WINDOW_RESIZED");
 
     uiScreenWidth_ = pInputManager_->get_window_width();
     uiScreenHeight_ = pInputManager_->get_window_height();
@@ -777,6 +773,10 @@ void manager::close_ui()
         pCurrentAddOn_ = nullptr;
 
         pLocalizer_->clear_translations();
+
+        unregister_event("KEY_PRESSED");
+        unregister_event("MOUSE_MOVED");
+        unregister_event("WINDOW_RESIZED");
     }
 }
 
