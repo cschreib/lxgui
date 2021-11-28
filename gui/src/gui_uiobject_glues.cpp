@@ -208,8 +208,13 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_parent
     */
-    mClass.set_function("get_parent", member_function< // select the right overload for Lua
-        static_cast<const utils::observer_ptr<frame>& (uiobject::*)()>(&uiobject::get_parent)>());
+    mClass.set_function("get_parent", [](uiobject& mSelf)
+    {
+        sol::object mParent;
+        if (auto* pParent = mSelf.get_parent().get())
+            mParent = mSelf.get_manager().get_lua()[pParent->get_lua_name()];
+        return mParent;
+    });
 
     /** @function get_point
     */
