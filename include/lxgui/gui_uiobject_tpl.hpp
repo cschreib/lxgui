@@ -25,11 +25,14 @@ namespace sol
 }
 
 template<typename T>
-void sol_lua_check_access(sol::types<T>, lua_State* pLua, int iIndex, sol::stack::record& mTracking)
+void sol_lua_check_access(sol::types<T>, lua_State* pLua, int iIndex, sol::stack::record& /*mTracking*/)
 {
+    // NB: not sure why, but using mTracking here leads to issues later on, so
+    // ignore it for now.
+
     sol::optional<lxgui::utils::observer_ptr<T>&> mOptional =
         sol::stack::check_get<lxgui::utils::observer_ptr<T>&>(
-            pLua, iIndex, sol::no_panic, mTracking);
+            pLua, iIndex, sol::no_panic/*, mTracking*/);
 
     if (!mOptional.has_value())
         return;
