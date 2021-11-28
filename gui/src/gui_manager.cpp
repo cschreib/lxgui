@@ -173,7 +173,8 @@ utils::owner_ptr<uiobject> manager::create_uiobject(const std::string& sClassNam
         if (iterRegion != lCustomRegionList_.end())
             return iterRegion->second(*this);
 
-        gui::out << gui::warning << "gui::manager : Unknown uiobject class : \"" << sClassName << "\"." << std::endl;
+        gui::out << gui::warning << "gui::manager : Unknown uiobject class : \""
+            << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
@@ -190,7 +191,8 @@ utils::owner_ptr<frame> manager::create_frame(const std::string& sClassName)
         if (iterFrame != lCustomFrameList_.end())
             return iterFrame->second(*this);
 
-        gui::out << gui::warning << "gui::manager : Unknown Frame class : \"" << sClassName << "\"." << std::endl;
+        gui::out << gui::warning << "gui::manager : Unknown Frame class : \""
+            << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
@@ -246,7 +248,8 @@ utils::owner_ptr<layered_region> manager::create_layered_region(const std::strin
     if (iterRegion != lCustomRegionList_.end())
         return iterRegion->second(*this);
 
-    gui::out << gui::warning << "gui::manager : Unknown layered_region class : \"" << sClassName << "\"." << std::endl;
+    gui::out << gui::warning << "gui::manager : Unknown layered_region class : \""
+        << sClassName << "\"." << std::endl;
     return nullptr;
 }
 
