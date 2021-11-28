@@ -629,7 +629,7 @@ utils::observer_ptr<layered_region> frame::add_region(
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua = get_lua_();
+            auto& mLua = get_lua_();
             mLua[get_lua_name()][sRawName] = mLua[pAddedRegion->get_lua_name()];
         }
     }
@@ -798,7 +798,7 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua = get_lua_();
+            auto& mLua = get_lua_();
             mLua[get_lua_name()][sRawName] = mLua[pAddedChild->get_lua_name()];
         }
     }
