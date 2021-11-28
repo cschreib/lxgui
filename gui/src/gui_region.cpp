@@ -15,7 +15,8 @@ void region::render()
 
 void region::create_glue()
 {
-    create_glue_(this);
+    // The "region" type is not exposed to Lua, just use uiobject.
+    create_glue_(static_cast<uiobject*>(this));
 }
 
 bool region::is_in_region(float fX, float fY) const
