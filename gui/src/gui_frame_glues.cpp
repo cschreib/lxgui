@@ -330,12 +330,13 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("get_children", [](const frame& mSelf)
     {
-        std::vector<utils::observer_ptr<frame>> lChildren;
+        std::vector<sol::object> lChildren;
         lChildren.reserve(mSelf.get_rough_num_children());
 
+        auto& mLua = mSelf.get_manager().get_lua();
         for (auto& mChild : mSelf.get_children())
         {
-            lChildren.push_back(observer_from(&mChild));
+            lChildren.push_back(mLua[mChild.get_lua_name()]);
         }
 
         return sol::as_table(std::move(lChildren));
