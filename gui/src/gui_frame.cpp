@@ -690,11 +690,12 @@ utils::observer_ptr<layered_region> frame::create_region(
     if (this->is_virtual())
         pRegion->set_virtual();
 
-    pRegion->set_draw_layer(mLayer);
     pRegion->set_name_and_parent(sName, observer_from(this));
 
     if (!get_manager().add_uiobject(pRegion))
         return nullptr;
+
+    pRegion->set_draw_layer(mLayer);
 
     if (!pRegion->is_virtual())
         pRegion->create_glue();
