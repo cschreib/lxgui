@@ -1,6 +1,7 @@
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
+#include "lxgui/gui_exception.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_std.hpp>
@@ -16,7 +17,7 @@ void event_manager::register_event_for(utils::observer_ptr<event_receiver> pRece
     const std::string& sEventName)
 {
     if (!pReceiver)
-        return;
+        throw gui::exception("event_manager", "event receiver pointer is null");
 
     DEBUG_LOG("register "+sEventName+" to "+utils::to_string(pReceiver));
     auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj)
