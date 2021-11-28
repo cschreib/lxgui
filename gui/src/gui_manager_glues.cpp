@@ -64,7 +64,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             pNewFrame = create_root_frame(sType, sName, lInheritance);
 
-        return pNewFrame;
+        return get_lua()[pNewFrame->get_lua_name()];
     });
 
     /** @function delete_frame
