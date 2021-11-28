@@ -538,7 +538,7 @@ void frame::register_on_lua(sol::state& mLua)
         if (fEdgeSize != 0)
             pBackdrop->set_edge_size(fEdgeSize);
 
-        if (mTable["insets"])
+        if (mTable["insets"] != sol::lua_nil)
         {
             pBackdrop->set_background_insets(bounds2f(
                 mTable["insets"]["left"].get_or<float>(0),
