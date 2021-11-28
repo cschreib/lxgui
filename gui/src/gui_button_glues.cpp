@@ -49,9 +49,9 @@ void button::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<button>("Button",
         sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
-        &button::set_lua_member_,
+        &button::get_lua_member_,
         sol::meta_function::new_index,
-        &button::get_lua_member_);
+        &button::set_lua_member_);
 
     /** @function click
     */

@@ -69,9 +69,9 @@ void edit_box::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<edit_box>("EditBox",
         sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
-        &edit_box::set_lua_member_,
+        &edit_box::get_lua_member_,
         sol::meta_function::new_index,
-        &edit_box::get_lua_member_);
+        &edit_box::set_lua_member_);
 
     /** @function add_history_line
     */

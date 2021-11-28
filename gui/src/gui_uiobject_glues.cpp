@@ -153,9 +153,9 @@ void uiobject::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<uiobject>("UIObject",
         sol::meta_function::index,
-        &uiobject::set_lua_member_,
+        &uiobject::get_lua_member_,
         sol::meta_function::new_index,
-        &uiobject::get_lua_member_);
+        &uiobject::set_lua_member_);
 
     /** @function get_alpha
     */

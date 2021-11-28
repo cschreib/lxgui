@@ -200,9 +200,9 @@ void frame::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<frame>("Frame",
         sol::base_classes, sol::bases<uiobject>(),
         sol::meta_function::index,
-        &frame::set_lua_member_,
+        &frame::get_lua_member_,
         sol::meta_function::new_index,
-        &frame::get_lua_member_);
+        &frame::set_lua_member_);
 
     /** @function add_script
     */

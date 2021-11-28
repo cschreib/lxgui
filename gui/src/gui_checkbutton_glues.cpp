@@ -25,9 +25,9 @@ void check_button::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<check_button>("CheckButton",
         sol::base_classes, sol::bases<uiobject, frame, button>(),
         sol::meta_function::index,
-        &check_button::set_lua_member_,
+        &check_button::get_lua_member_,
         sol::meta_function::new_index,
-        &check_button::get_lua_member_);
+        &check_button::set_lua_member_);
 
     /** Checks if this CheckButton is checked.
     *   @function is_checked

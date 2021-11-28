@@ -76,9 +76,9 @@ void font_string::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<font_string>("FontString",
         sol::base_classes, sol::bases<uiobject, layered_region>(),
         sol::meta_function::index,
-        &font_string::set_lua_member_,
+        &font_string::get_lua_member_,
         sol::meta_function::new_index,
-        &font_string::get_lua_member_);
+        &font_string::set_lua_member_);
 
     /** @function get_font
     */
