@@ -14,7 +14,7 @@ jobs:
       matrix:
         platform:
         - { name: Ubuntu GCC,   os: ubuntu-latest,  compiler: g++,     arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_CXX_COMPILER=g++"}
-        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS=-stdlib=libc++"}
+        - { name: Ubuntu Clang, os: ubuntu-latest,  compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_CXX_COMPILER=clang++"}
         - { name: Windows 32,   os: windows-latest, compiler: vs2019,  arch: "32", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=`pwd`/../dependencies -A Win32"}
         - { name: Windows 64,   os: windows-latest, compiler: vs2019,  arch: "64", cmakepp: "",        suffix: "",            flags: "-DCMAKE_PREFIX_PATH=`pwd`/../dependencies -A x64"}
         - { name: MacOS,        os: macos-latest,   compiler: clang++, arch: "64", cmakepp: "",        suffix: "",            flags: ""}
@@ -31,7 +31,7 @@ jobs:
 
     - name: Setup Clang
       if: matrix.platform.compiler == 'clang++' && matrix.platform.os == 'ubuntu-latest'
-      run: sudo apt install clang libc++-dev libc++abi-dev
+      run: sudo apt install clang
 
     - name: Setup Emscripten cache
       if: matrix.platform.compiler == 'em++'
