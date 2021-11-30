@@ -96,7 +96,6 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        echo ${LXGUI_ROOT}
         ${{matrix.platform.cmakepp}} cmake ../gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
