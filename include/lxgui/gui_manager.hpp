@@ -728,12 +728,6 @@ namespace gui
         xml_core_attributes parse_core_attributes(xml::block* pBlock,
             utils::observer_ptr<frame> pXMLParent);
 
-        /// Returns the gui manager associated to the provided Lua state.
-        /** \param mLua The Lua state
-        *   \return The GUI manager owning this Lua state
-        */
-        static manager& get_manager(sol::state& mLua);
-
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */

@@ -40,8 +40,6 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 
     auto& mLua = *pLua_;
 
-    mLua.globals()["_MGR"] = this;
-
     uiobject::register_on_lua(mLua);
     frame::register_on_lua(mLua);
     focus_frame::register_on_lua(mLua);
@@ -142,12 +140,6 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 
     if (pLuaRegs_)
         pLuaRegs_(*this);
-}
-
-manager& manager::get_manager(sol::state& mLua)
-{
-    manager* pSelf = mLua.globals()["_MGR"];
-    return *pSelf;
 }
 
 std::string serialize(const std::string& sTab, const sol::object& mValue)
