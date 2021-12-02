@@ -54,7 +54,7 @@ inline utils::observer_ptr<uiobject> get_object(manager& mManager,
         using data_type = std::decay_t<decltype(mValue)>;
         if constexpr (std::is_same_v<data_type, std::string>)
         {
-            if (!utils::has_no_content(mValue))
+            if (utils::has_no_content(mValue))
                 return nullptr;
 
             auto pParent = mManager.get_uiobject_by_name(mValue);
@@ -79,7 +79,7 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
         using data_type = std::decay_t<decltype(mValue)>;
         if constexpr (std::is_same_v<data_type, std::string>)
         {
-            if (!utils::has_no_content(mValue))
+            if (utils::has_no_content(mValue))
                 return nullptr;
 
             auto pParentObject = mManager.get_uiobject_by_name(mValue);
