@@ -43,7 +43,7 @@ jobs:
 
     - name: Setup Emscripten
       if: matrix.platform.compiler == 'em++'
-      uses: mymindstorm/setup-emsdk@29ba4851d6da084ffdc1e0fc390efadbd75df9d1
+      uses: mymindstorm/setup-emsdk@v11
       with:
         version: ${{env.EM_VERSION}}
         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
