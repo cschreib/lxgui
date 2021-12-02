@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
         // Start the main loop
         bool bRunning = true;
         bool bFocus = true;
-        double fDelta = 0.0;
+        float fDelta = 0.0f;
         timing_clock::time_point mPrevTime = timing_clock::now();
         input::manager& mInputMgr = pManager->get_input_manager();
 

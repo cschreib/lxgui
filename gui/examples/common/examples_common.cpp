@@ -19,9 +19,9 @@
 
 using namespace lxgui;
 
-double get_time_delta(const timing_clock::time_point& mT1, const timing_clock::time_point& mT2)
+float get_time_delta(const timing_clock::time_point& mT1, const timing_clock::time_point& mT2)
 {
-    return std::chrono::duration_cast<std::chrono::microseconds>(mT2 - mT1).count() / 1e6;
+    return std::chrono::duration_cast<std::chrono::microseconds>(mT2 - mT1).count() / 1e6f;
 }
 
 void examples_setup_gui(gui::manager& mManager)
