@@ -743,7 +743,6 @@ void manager::close_ui()
         lAddOnList_.clear();
 
         pLua_ = nullptr;
-        pLua_ = nullptr;
 
         pHoveredFrame_ = nullptr;
         bUpdateHoveredFrame_ = false;
