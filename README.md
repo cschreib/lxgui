@@ -78,7 +78,7 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule). XML parsing is done using a custom library included in this repository.
+Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule). XML parsing is done using a custom library included in this repository.
 
 Available rendering back-ends:
 
