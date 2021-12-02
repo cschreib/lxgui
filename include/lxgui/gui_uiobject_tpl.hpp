@@ -55,7 +55,7 @@ inline utils::observer_ptr<uiobject> get_object(manager& mManager,
         {
             auto pParent = mManager.get_uiobject_by_name(mValue);
             if (!pParent)
-                throw sol::error("\""+mValue+"\" does not exist");
+                throw sol::error("no widget with name \""+mValue+"\"");
 
             return pParent;
         }
@@ -77,11 +77,11 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
         {
             auto pParentObject = mManager.get_uiobject_by_name(mValue);
             if (!pParentObject)
-                throw sol::error("\""+mValue+"\" does not exist");
+                throw sol::error("no widget with name \""+mValue+"\"");
 
             auto pParent = down_cast<T>(pParentObject);
             if (!pParent)
-                throw sol::error("\""+mValue+"\" is not a "+std::string(T::CLASS_NAME));
+                throw sol::error("widget \""+mValue+"\" is not a "+std::string(T::CLASS_NAME));
 
             return pParent;
         }
