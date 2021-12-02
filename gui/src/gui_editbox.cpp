@@ -754,7 +754,7 @@ void edit_box::notify_scaling_factor_updated()
 
 void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
 {
-    pFontString_ = pFont;
+    pFontString_ = std::move(pFont);
     if (!pFontString_)
         return;
 

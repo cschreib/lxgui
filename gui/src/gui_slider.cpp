@@ -303,16 +303,15 @@ void slider::set_value_step(float fValueStep)
 
 void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture)
 {
-    pThumbTexture_ = pTexture;
+    pThumbTexture_ = std::move(pTexture);
+    if (!pThumbTexture_)
+        return;
 
-    if (pThumbTexture_)
-    {
-        pThumbTexture_->clear_all_points();
-        pThumbTexture_->set_point(anchor(
-            *pThumbTexture_, anchor_point::CENTER, sName_,
-            mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
-        ));
-    }
+    pThumbTexture_->clear_all_points();
+    pThumbTexture_->set_point(anchor(
+        *pThumbTexture_, anchor_point::CENTER, sName_,
+        mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
+    ));
 
     notify_thumb_texture_needs_update_();
 }

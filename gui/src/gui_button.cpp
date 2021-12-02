@@ -380,22 +380,22 @@ utils::owner_ptr<font_string> button::create_disabled_text_()
 
 void button::set_normal_texture(utils::observer_ptr<texture> pTexture)
 {
-    pNormalTexture_ = pTexture;
+    pNormalTexture_ = std::move(pTexture);
 }
 
 void button::set_pushed_texture(utils::observer_ptr<texture> pTexture)
 {
-    pPushedTexture_ = pTexture;
+    pPushedTexture_ = std::move(pTexture);
 }
 
 void button::set_disabled_texture(utils::observer_ptr<texture> pTexture)
 {
-    pDisabledTexture_ = pTexture;
+    pDisabledTexture_ = std::move(pTexture);
 }
 
 void button::set_highlight_texture(utils::observer_ptr<texture> pTexture)
 {
-    pHighlightTexture_ = pTexture;
+    pHighlightTexture_ = std::move(pTexture);
 }
 
 void button::set_normal_text(utils::observer_ptr<font_string> pFont)
@@ -403,7 +403,10 @@ void button::set_normal_text(utils::observer_ptr<font_string> pFont)
     if (pNormalText_ == pCurrentFontString_)
         pCurrentFontString_ = pFont;
 
-    pNormalText_ = pFont;
+    pNormalText_ = std::move(pFont);
+    if (!pNormalText_)
+        return;
+
     pNormalText_->set_text(sText_);
 }
 
@@ -412,8 +415,11 @@ void button::set_highlight_text(utils::observer_ptr<font_string> pFont)
     if (pHighlightText_ == pCurrentFontString_)
         pCurrentFontString_ = pFont;
 
-    pHighlightText_ = pFont;
-    pNormalText_->set_text(sText_);
+    pHighlightText_ = std::move(pFont);
+    if (!pHighlightText_)
+        return;
+
+    pHighlightText_->set_text(sText_);
 }
 
 void button::set_disabled_text(utils::observer_ptr<font_string> pFont)
@@ -421,8 +427,11 @@ void button::set_disabled_text(utils::observer_ptr<font_string> pFont)
     if (pDisabledText_ == pCurrentFontString_)
         pCurrentFontString_ = pFont;
 
-    pDisabledText_ = pFont;
-    pNormalText_->set_text(sText_);
+    pDisabledText_ = std::move(pFont);
+    if (!pDisabledText_)
+        return;
+
+    pDisabledText_->set_text(sText_);
 }
 
 void button::disable()

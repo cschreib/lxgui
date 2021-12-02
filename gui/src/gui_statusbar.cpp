@@ -171,7 +171,7 @@ void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
 
 void status_bar::set_bar_texture(utils::observer_ptr<texture> pBarTexture)
 {
-    pBarTexture_ = pBarTexture;
+    pBarTexture_ = std::move(pBarTexture);
     if (!pBarTexture_)
         return;
 
