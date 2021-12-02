@@ -290,18 +290,18 @@ input::sfml::source& mSFMLInput = static_cast<input::sfml::source&>(
 //  - First set the directory in which the GUI addons are located
 pManager->add_addon_directory("interface");
 //  - Then create the Lua state
-pManager->create_lua([&pManager]()
+pManager->create_lua([](gui::manager& mManager)
 {
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
     //  - register the needed widgets
-    pManager->register_region_type<gui::texture>();
-    pManager->register_region_type<gui::font_string>();
-    pManager->register_frame_type<gui::button>();
-    pManager->register_frame_type<gui::slider>();
-    pManager->register_frame_type<gui::edit_box>();
-    pManager->register_frame_type<gui::scroll_frame>();
-    pManager->register_frame_type<gui::status_bar>();
+    mManager.register_region_type<gui::texture>();
+    mManager.register_region_type<gui::font_string>();
+    mManager.register_frame_type<gui::button>();
+    mManager.register_frame_type<gui::slider>();
+    mManager.register_frame_type<gui::edit_box>();
+    mManager.register_frame_type<gui::scroll_frame>();
+    mManager.register_frame_type<gui::status_bar>();
     //  - register your own additional Lua "glue" functions, if needed
     // ...
 });
