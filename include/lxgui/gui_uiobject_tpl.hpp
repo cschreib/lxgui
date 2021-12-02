@@ -5,6 +5,7 @@
 #include <lxgui/gui_uiobject.hpp>
 #include <lxgui/gui_frame.hpp>
 #include <lxgui/gui_manager.hpp>
+#include <lxgui/utils_string.hpp>
 #include <sol/state.hpp>
 
 namespace sol
@@ -48,11 +49,14 @@ namespace gui
 inline utils::observer_ptr<uiobject> get_object(manager& mManager,
     const std::variant<std::string,uiobject*>& mParent)
 {
-    return std::visit([&](const auto& mValue)
+    return std::visit([&](const auto& mValue) -> utils::observer_ptr<uiobject>
     {
         using data_type = std::decay_t<decltype(mValue)>;
         if constexpr (std::is_same_v<data_type, std::string>)
         {
+            if (!utils::has_no_content(mValue))
+                return nullptr;
+
             auto pParent = mManager.get_uiobject_by_name(mValue);
             if (!pParent)
                 throw sol::error("no widget with name \""+mValue+"\"");
@@ -70,11 +74,14 @@ inline utils::observer_ptr<uiobject> get_object(manager& mManager,
 template<typename T>
 utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::string,T*>& mParent)
 {
-    return std::visit([&](const auto& mValue)
+    return std::visit([&](const auto& mValue) -> utils::observer_ptr<T>
     {
         using data_type = std::decay_t<decltype(mValue)>;
         if constexpr (std::is_same_v<data_type, std::string>)
         {
+            if (!utils::has_no_content(mValue))
+                return nullptr;
+
             auto pParentObject = mManager.get_uiobject_by_name(mValue);
             if (!pParentObject)
                 throw sol::error("no widget with name \""+mValue+"\"");
