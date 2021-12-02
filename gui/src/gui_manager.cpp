@@ -54,6 +54,9 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::unique_ptr<localizer>(new localizer());
+
+    // NB: cannot call register_event() here, as observable_from_this()
+    // is not yet fully initialised! This is done in create_lua() instead.
 }
 
 manager::~manager()
