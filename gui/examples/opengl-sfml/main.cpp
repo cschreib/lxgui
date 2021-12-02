@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
         bool bFocus = true;
         double fDelta = 0.0;
         timing_clock::time_point mPrevTime = timing_clock::now();
-        input::manager* pInputMgr = pManager->get_input_manager();
+        input::manager& mInputMgr = pManager->get_input_manager();
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
                     // capture some of them (for example: the user is typing in an edit_box).
                     // Therefore, before we can react to these events, we must check that
                     // the input isn't being "focussed" into the GUI:
-                    if (!pInputMgr->is_keyboard_focused())
+                    if (!mInputMgr.is_keyboard_focused())
                     {
                         switch (mEvent.key.code)
                         {
@@ -108,11 +108,11 @@ int main(int argc, char* argv[])
                 }
 
                 // Feed events to the GUI
-                static_cast<input::sfml::source*>(pInputMgr->get_source())->on_sfml_event(mEvent);
+                static_cast<input::sfml::source*>(mInputMgr.get_source())->on_sfml_event(mEvent);
             }
 
             // Check if WORLD input is allowed
-            if (pInputMgr->can_receive_input("WORLD"))
+            if (mInputMgr.can_receive_input("WORLD"))
             {
                 // Process mouse and click events in the game...
             }

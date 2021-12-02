@@ -27,19 +27,19 @@ double get_time_delta(const timing_clock::time_point& mT1, const timing_clock::t
 void examples_setup_gui(gui::manager& mManager)
 {
     // Automatically select best settings
-    gui::renderer* pGUIRenderer = mManager.get_renderer();
-    pGUIRenderer->auto_detect_settings();
+    gui::renderer& mGUIRenderer = mManager.get_renderer();
+    mGUIRenderer.auto_detect_settings();
 
     std::cout << " Renderer settings:" << std::endl;
-    std::cout << "  Renderer: " << pGUIRenderer->get_name() << std::endl;
-    std::cout << "  Max texture size: " << pGUIRenderer->get_texture_max_size() << std::endl;
-    std::cout << "  Vertex cache supported: " << pGUIRenderer->is_vertex_cache_supported() << std::endl;
-    std::cout << "  Vertex cache enabled: " << pGUIRenderer->is_vertex_cache_enabled() << std::endl;
-    std::cout << "  Texture atlas supported: " << pGUIRenderer->is_texture_atlas_supported() << std::endl;
-    std::cout << "  Texture atlas enabled: " << pGUIRenderer->is_texture_atlas_enabled() << std::endl;
-    std::cout << "  Texture atlas page size: " << pGUIRenderer->get_texture_atlas_page_size() << std::endl;
-    std::cout << "  Texture per-vertex color supported: " << pGUIRenderer->is_texture_vertex_color_supported() << std::endl;
-    std::cout << "  Quad batching enabled: " << pGUIRenderer->is_quad_batching_enabled() << std::endl;
+    std::cout << "  Renderer: " << mGUIRenderer.get_name() << std::endl;
+    std::cout << "  Max texture size: " << mGUIRenderer.get_texture_max_size() << std::endl;
+    std::cout << "  Vertex cache supported: " << mGUIRenderer.is_vertex_cache_supported() << std::endl;
+    std::cout << "  Vertex cache enabled: " << mGUIRenderer.is_vertex_cache_enabled() << std::endl;
+    std::cout << "  Texture atlas supported: " << mGUIRenderer.is_texture_atlas_supported() << std::endl;
+    std::cout << "  Texture atlas enabled: " << mGUIRenderer.is_texture_atlas_enabled() << std::endl;
+    std::cout << "  Texture atlas page size: " << mGUIRenderer.get_texture_atlas_page_size() << std::endl;
+    std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
+    std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
     // The first thing to do is create the lua::state, and register any glue function
     // into the Lua state to call into your C++ application.
