@@ -43,9 +43,9 @@ void scroll_frame::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<scroll_frame>("ScrollFrame",
         sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
-        &scroll_frame::get_lua_member_,
+        member_function<&scroll_frame::get_lua_member_>(),
         sol::meta_function::new_index,
-        &scroll_frame::set_lua_member_);
+        member_function<&scroll_frame::set_lua_member_>());
 
     /** @function get_horizontal_scroll
     */

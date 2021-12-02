@@ -38,9 +38,9 @@ void status_bar::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<status_bar>("StatusBar",
         sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
-        &status_bar::get_lua_member_,
+        member_function<&status_bar::get_lua_member_>(),
         sol::meta_function::new_index,
-        &status_bar::set_lua_member_);
+        member_function<&status_bar::set_lua_member_>());
 
     /** @function get_min_max_values
     */

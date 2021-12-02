@@ -36,9 +36,9 @@ void slider::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<slider>("Slider",
         sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
-        &slider::get_lua_member_,
+        member_function<&slider::get_lua_member_>(),
         sol::meta_function::new_index,
-        &slider::set_lua_member_);
+        member_function<&slider::set_lua_member_>());
 
     /** @function allow_clicks_outside_thumb
     */

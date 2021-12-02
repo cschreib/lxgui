@@ -42,9 +42,9 @@ void texture::register_on_lua(sol::state& mLua)
     auto mClass = mLua.new_usertype<texture>("Texture",
         sol::base_classes, sol::bases<uiobject, layered_region>(),
         sol::meta_function::index,
-        &texture::get_lua_member_,
+        member_function<&texture::get_lua_member_>(),
         sol::meta_function::new_index,
-        &texture::set_lua_member_);
+        member_function<&texture::set_lua_member_>());
 
     /** @function get_blend_mode
     */
