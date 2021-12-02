@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
                     }
                 }
 
-                static_cast<input::sfml::source*>(mInputMgr.get_source())->on_sfml_event(mEvent);
+                static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
             }
 
             // Check if WORLD input is allowed

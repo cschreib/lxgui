@@ -656,14 +656,14 @@ std::string manager::get_mouse_button_string(mouse_button mID) const
     }
 }
 
-const source* manager::get_source() const
+const source& manager::get_source() const
 {
-    return pSource_.get();
+    return *pSource_;
 }
 
-source* manager::get_source()
+source& manager::get_source()
 {
-    return pSource_.get();
+    return *pSource_;
 }
 
 void manager::register_event_manager(gui::event_manager* pManager)

@@ -387,12 +387,12 @@ namespace input
         /// Returns the input source.
         /** \return The input source
         */
-        const source* get_source() const;
+        const source& get_source() const;
 
         /// Returns the input source.
         /** \return The input source
         */
-        source* get_source();
+        source& get_source();
 
     private :
 

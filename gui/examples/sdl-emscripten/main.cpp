@@ -73,7 +73,7 @@ try
         }
 
         // Feed events to the GUI
-        static_cast<input::sdl::source*>(mInputMgr.get_source())->on_sdl_event(mEvent);
+        static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
     }
 
     // Check if WORLD input is allowed

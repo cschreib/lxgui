@@ -177,7 +177,7 @@ void main_loop(void* pTypeErasedData)
         }
 
         // Feed events to the GUI
-        static_cast<input::sdl::source*>(mInputMgr.get_source())->on_sdl_event(mEvent);
+        static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     // Get events from SFML
@@ -244,7 +244,7 @@ void main_loop(void* pTypeErasedData)
             }
         }
 
-        static_cast<input::sfml::source*>(mInputMgr.get_source())->on_sfml_event(mEvent);
+        static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
     }
 #endif
 

@@ -277,7 +277,7 @@ sf::RenderWindow mWindow;
 utils::owner_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
-input::sfml::source* pSFMLInput = static_cast<input::sfml::source*>(
+input::sfml::source& mSFMLInput = static_cast<input::sfml::source&>(
     pManager->get_input_manager().get_source()
 );
 
@@ -320,7 +320,7 @@ while (true)
         // ...
 
         // Send these to the input manager
-        pSFMLInput->on_sfml_event(mEvent);
+        mSFMLInput.on_sfml_event(mEvent);
     }
 
     // Compute time spent since last GUI update

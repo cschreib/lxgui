@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
                 }
 
                 // Feed events to the GUI
-                static_cast<input::sfml::source*>(mInputMgr.get_source())->on_sfml_event(mEvent);
+                static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
             }
 
             // Check if WORLD input is allowed
