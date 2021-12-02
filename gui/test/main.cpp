@@ -603,26 +603,28 @@ int main(int argc, char* argv[])
         // Or in C++:
 
         float fTimer = 1.0f;
-        pFrame->add_script("OnUpdate", [=,&mContext](gui::frame& pSelf, gui::event* pEvent) mutable
-        {
-            float fDelta = pEvent->get<float>(0);
-            fTimer += fDelta;
-
-            if (fTimer > 0.5f)
+        pFrame->add_script("OnUpdate",
+            [=,&mContext](gui::frame& mSelf, const gui::event_data& mData) mutable
             {
-                float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
+                float fDelta = mData.get<float>(0);
+                fTimer += fDelta;
 
-                if (auto pText = pSelf.get_region<gui::font_string>("Text"))
+                if (fTimer > 0.5f)
                 {
-                    pText->set_text(U"(created in C++)\nFrame time (us) : "+
-                        utils::to_ustring(std::round(fFrameTime)));
-                }
+                    float fFrameTime = 1e6*mContext.fAccumulatedTime/mContext.uiFrameCount;
 
-                fTimer = 0.0f;
-                mContext.uiFrameCount = 0;
-                mContext.fAccumulatedTime = 0;
+                    if (auto pText = mSelf.get_region<gui::font_string>("Text"))
+                    {
+                        pText->set_text(U"(created in C++)\nFrame time (us) : "+
+                            utils::to_ustring(std::round(fFrameTime)));
+                    }
+
+                    fTimer = 0.0f;
+                    mContext.uiFrameCount = 0;
+                    mContext.fAccumulatedTime = 0;
+                }
             }
-        });
+        );
 
         // Tell the Frame is has been fully loaded, and call "OnLoad"
         pFrame->notify_loaded();

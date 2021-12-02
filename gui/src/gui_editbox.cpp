@@ -192,9 +192,9 @@ void edit_box::on_event(const event& mEvent)
             if (!mChecker.is_alive())
                 return;
 
-            event mKeyEvent;
+            event_data mKeyEvent;
             mKeyEvent.add(utils::unicode_to_utf8(utils::ustring(1, c)));
-            on_script("OnChar", &mKeyEvent);
+            on_script("OnChar", mKeyEvent);
             if (!mChecker.is_alive())
                 return;
         }
@@ -289,7 +289,7 @@ void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
     frame::enable_keyboard(bIsKeyboardEnabled);
 }
 
-void edit_box::on_script(const std::string& sScriptName, event* pEvent)
+void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
 {
     if (bFocus_ && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
         return;
@@ -301,7 +301,7 @@ void edit_box::on_script(const std::string& sScriptName, event* pEvent)
     }
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, pEvent);
+    frame::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -1298,9 +1298,9 @@ void edit_box::process_key_(key mKey)
                 if (!mChecker.is_alive())
                     return;
 
-                event mKeyEvent;
+                event_data mKeyEvent;
                 mKeyEvent.add(std::string("\n"));
-                on_script("OnChar", &mKeyEvent);
+                on_script("OnChar", mKeyEvent);
                 if (!mChecker.is_alive())
                     return;
             }

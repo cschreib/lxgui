@@ -513,9 +513,9 @@ pFont->notify_loaded(); // must be called on all objects when they are fully set
 // Create the scripts in C++ (one can also provide a string containing some Lua code)
 float update_time = 0.5f, timer = 1.0f;
 int frames = 0;
-pFrame->define_script("OnUpdate", [=](gui::frame& self, gui::event* event) mutable
+pFrame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) mutable
 {
-    float delta = event->get<float>(0);
+    float delta = args.get<float>(0);
     timer += delta;
     ++frames;
 

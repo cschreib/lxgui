@@ -63,12 +63,12 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child

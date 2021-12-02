@@ -57,13 +57,13 @@ bool slider::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void slider::on_script(const std::string& sScriptName, event* pEvent)
+void slider::on_script(const std::string& sScriptName, const event_data& mData)
 {
     if (sScriptName == "OnLoad")
         enable_mouse(true);
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, pEvent);
+    frame::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 }

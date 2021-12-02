@@ -5,6 +5,7 @@
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
 
 #include <lxgui/utils.hpp>
@@ -44,7 +45,7 @@ namespace gui
     };
 
     /// C++ function type for UI script handlers.
-    using script_handler_function = std::function<void(frame&, event*)>;
+    using script_handler_function = std::function<void(frame&, const event_data&)>;
 
     /// Disconnectable slot for script handlers (used internally).
     struct script_handler_slot
@@ -826,12 +827,12 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script (e.g., "OnEvent")
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        virtual void on_script(const std::string& sScriptName, event* pEvent = nullptr);
+        virtual void on_script(const std::string& sScriptName, const event_data& mData = event_data{});
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured

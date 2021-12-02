@@ -126,15 +126,15 @@ void examples_setup_gui(gui::manager& mManager)
     // Or in C++
     float fUpdateTime = 0.5f, fTimer = 1.0f;
     uint uiFrames = 0;
-    pFrame->add_script("OnUpdate", [=](gui::frame& pSelf, gui::event* pEvent) mutable
+    pFrame->add_script("OnUpdate", [=](gui::frame& mSelf, const gui::event_data& mData) mutable
     {
-        float fDelta = pEvent->get<float>(0);
+        float fDelta = mData.get<float>(0);
         fTimer += fDelta;
         ++uiFrames;
 
         if (fTimer > fUpdateTime)
         {
-            if (auto pText = pSelf.get_region<gui::font_string>("Text"))
+            if (auto pText = mSelf.get_region<gui::font_string>("Text"))
             {
                 pText->set_text(U"(created in C++)\nFPS : " +
                     utils::to_ustring(floor(uiFrames/fTimer)));
