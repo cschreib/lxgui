@@ -603,7 +603,7 @@ int main(int argc, char* argv[])
         // Or in C++:
 
         float fTimer = 1.0f;
-        pFrame->add_script("OnUpdate", [=](gui::frame& pSelf, gui::event* pEvent) mutable
+        pFrame->add_script("OnUpdate", [=,&mContext](gui::frame& pSelf, gui::event* pEvent) mutable
         {
             float fDelta = pEvent->get<float>(0);
             fTimer += fDelta;
