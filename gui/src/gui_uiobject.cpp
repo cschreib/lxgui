@@ -24,7 +24,7 @@ uiobject::~uiobject()
 {
     if (!bVirtual_)
     {
-        // Tell this widget's anchor parents that it is no longer anchogred to them
+        // Tell this widget's anchor parents that it is no longer anchored to them
         for (auto& mAnchor : lAnchorList_)
         {
             if (mAnchor && mAnchor->get_parent())
