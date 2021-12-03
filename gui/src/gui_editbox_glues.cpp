@@ -67,7 +67,7 @@ namespace gui
 void edit_box::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<edit_box>("EditBox",
-        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::base_classes, sol::bases<uiobject, frame, focus_frame>(),
         sol::meta_function::index,
         member_function<&edit_box::get_lua_member_>(),
         sol::meta_function::new_index,
