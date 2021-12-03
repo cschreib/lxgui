@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['hls_1607',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]],
-  ['hsv_1608',['hsv',['../structlxgui_1_1gui_1_1color_1_1hsv.html',1,'lxgui::gui::color']]]
+  ['hls_1604',['hls',['../structlxgui_1_1gui_1_1color_1_1hls.html',1,'lxgui::gui::color']]],
+  ['hsv_1605',['hsv',['../structlxgui_1_1gui_1_1color_1_1hsv.html',1,'lxgui::gui::color']]]
 ];

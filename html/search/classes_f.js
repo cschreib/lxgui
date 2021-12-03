@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['range_5fblock_1627',['range_block',['../structlxgui_1_1xml_1_1block_1_1range__block.html',1,'lxgui::xml::block']]],
-  ['region_1628',['region',['../classlxgui_1_1gui_1_1region.html',1,'lxgui::gui']]],
-  ['render_5ftarget_1629',['render_target',['../classlxgui_1_1gui_1_1gl_1_1render__target.html',1,'lxgui::gui::gl::render_target'],['../classlxgui_1_1gui_1_1render__target.html',1,'lxgui::gui::render_target'],['../classlxgui_1_1gui_1_1sfml_1_1render__target.html',1,'lxgui::gui::sfml::render_target'],['../classlxgui_1_1gui_1_1sdl_1_1render__target.html',1,'lxgui::gui::sdl::render_target']]],
-  ['renderer_1630',['renderer',['../classlxgui_1_1gui_1_1gl_1_1renderer.html',1,'lxgui::gui::gl::renderer'],['../classlxgui_1_1gui_1_1renderer.html',1,'lxgui::gui::renderer'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html',1,'lxgui::gui::sfml::renderer'],['../classlxgui_1_1gui_1_1sdl_1_1renderer.html',1,'lxgui::gui::sdl::renderer']]]
+  ['range_5fblock_1623',['range_block',['../structlxgui_1_1xml_1_1block_1_1range__block.html',1,'lxgui::xml::block']]],
+  ['region_1624',['region',['../classlxgui_1_1gui_1_1region.html',1,'lxgui::gui']]],
+  ['render_5ftarget_1625',['render_target',['../classlxgui_1_1gui_1_1gl_1_1render__target.html',1,'lxgui::gui::gl::render_target'],['../classlxgui_1_1gui_1_1sfml_1_1render__target.html',1,'lxgui::gui::sfml::render_target'],['../classlxgui_1_1gui_1_1sdl_1_1render__target.html',1,'lxgui::gui::sdl::render_target'],['../classlxgui_1_1gui_1_1render__target.html',1,'lxgui::gui::render_target']]],
+  ['renderer_1626',['renderer',['../classlxgui_1_1gui_1_1sdl_1_1renderer.html',1,'lxgui::gui::sdl::renderer'],['../classlxgui_1_1gui_1_1renderer.html',1,'lxgui::gui::renderer'],['../classlxgui_1_1gui_1_1gl_1_1renderer.html',1,'lxgui::gui::gl::renderer'],['../classlxgui_1_1gui_1_1sfml_1_1renderer.html',1,'lxgui::gui::sfml::renderer']]]
 ];

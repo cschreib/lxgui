@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_5fnumber_2822',['KEY_NUMBER',['../namespacelxgui_1_1input.html#af5c08df843ba04dc04e0933a5e112798',1,'lxgui::input']]]
+  ['key_5fnumber_2816',['KEY_NUMBER',['../namespacelxgui_1_1input.html#af5c08df843ba04dc04e0933a5e112798',1,'lxgui::input']]]
 ];
