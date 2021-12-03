@@ -1,10 +1,11 @@
 #include "lxgui/gui_scrollframe.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} with scrollable content.
 *   This frame has a special child frame, the "scroll child". The scroll
@@ -36,198 +37,62 @@
 namespace lxgui {
 namespace gui
 {
-void scroll_frame::register_glue(lua::state& mLua)
+
+void scroll_frame::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_scroll_frame>();
-}
+    auto mClass = mLua.new_usertype<scroll_frame>("ScrollFrame",
+        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::meta_function::index,
+        member_function<&scroll_frame::get_lua_member_>(),
+        sol::meta_function::new_index,
+        member_function<&scroll_frame::set_lua_member_>());
 
-lua_scroll_frame::lua_scroll_frame(lua_State* pLua) : lua_frame(pLua)
-{
-}
+    /** @function get_horizontal_scroll
+    */
+    mClass.set_function("get_horizontal_scroll", member_function<&scroll_frame::get_horizontal_scroll>());
 
-/** @function get_horizontal_scroll
-*/
-int lua_scroll_frame::_get_horizontal_scroll(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function get_horizontal_scroll_range
+    */
+    mClass.set_function("get_horizontal_scroll_range", member_function<&scroll_frame::get_horizontal_scroll_range>());
 
-    lua::function mFunc("ScrollFrame:get_horizontal_scroll", pLua, 1);
+    /** @function get_scroll_child
+    */
+    mClass.set_function("get_scroll_child", member_function< // select the right overload for Lua
+        static_cast<const utils::observer_ptr<frame>& (scroll_frame::*)()>(&scroll_frame::get_scroll_child)>());
 
-    mFunc.push(get_object()->get_horizontal_scroll());
+    /** @function get_vertical_scroll
+    */
+    mClass.set_function("get_vertical_scroll", member_function<&scroll_frame::get_vertical_scroll>());
 
-    return mFunc.on_return();
-}
+    /** @function get_vertical_scroll_range
+    */
+    mClass.set_function("get_vertical_scroll_range", member_function<&scroll_frame::get_vertical_scroll_range>());
 
-/** @function get_horizontal_scroll_range
-*/
-int lua_scroll_frame::_get_horizontal_scroll_range(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function set_horizontal_scroll
+    */
+    mClass.set_function("set_horizontal_scroll", member_function<&scroll_frame::set_horizontal_scroll>());
 
-    lua::function mFunc("ScrollFrame:get_horizontal_scroll_range", pLua, 1);
-
-    mFunc.push(get_object()->get_horizontal_scroll_range());
-
-    return mFunc.on_return();
-}
-
-/** @function get_scroll_child
-*/
-int lua_scroll_frame::_get_scroll_child(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:get_scroll_child", pLua, 1);
-
-    if (get_object()->get_scroll_child())
+    /** @function set_scroll_child
+    */
+    mClass.set_function("set_scroll_child", [](scroll_frame& mSelf,
+        std::variant<std::string, frame*> mChild)
     {
-        get_object()->get_scroll_child()->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-    else
-        mFunc.push_nil();
+        utils::observer_ptr<frame> pChild = get_object<frame>(mSelf.get_manager(), mChild);
 
-    return mFunc.on_return();
-}
-
-/** @function get_vertical_scroll
-*/
-int lua_scroll_frame::_get_vertical_scroll(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:get_vertical_scroll", pLua, 1);
-
-    mFunc.push(get_object()->get_vertical_scroll());
-
-    return mFunc.on_return();
-}
-
-/** @function get_vertical_scroll_range
-*/
-int lua_scroll_frame::_get_vertical_scroll_range(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:get_vertical_scroll_range", pLua, 1);
-
-    mFunc.push(get_object()->get_vertical_scroll_range());
-
-    return mFunc.on_return();
-}
-
-/** @function set_horizontal_scroll
-*/
-int lua_scroll_frame::_set_horizontal_scroll(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:set_horizontal_scroll", pLua);
-    mFunc.add(0, "horizontal scroll", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_horizontal_scroll(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_scroll_child
-*/
-int lua_scroll_frame::_set_scroll_child(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:set_scroll_child", pLua);
-    mFunc.add(0, "child name", lua::type::STRING, true);
-    mFunc.add(0, "child", lua::type::USERDATA, true);
-    if (mFunc.check())
-    {
-        lua::argument* pArg = mFunc.get(0);
-        frame* pChild = nullptr;
-
-        if (pArg->is_provided())
-        {
-            if (pArg->get_type() == lua::type::STRING)
-            {
-                uiobject* pObj = get_object()->get_manager()->get_uiobject_by_name(pArg->get_string());
-                if (!pObj)
-                {
-                    gui::out << gui::error << mFunc.get_name() << " : "
-                        "\""+pArg->get_string()+"\" does not exist." << std::endl;
-
-                    return mFunc.on_return();
-                }
-
-                pChild = down_cast<frame>(pObj);
-                if (!pChild)
-                {
-                    gui::out << gui::error << mFunc.get_name() << " : "
-                        "\""+pObj->get_name()+"\" is not a frame." << std::endl;
-
-                    return mFunc.on_return();
-                }
-            }
-            else
-            {
-                lua_frame* pFrame = pArg->get<lua_frame>();
-                if (pFrame)
-                {
-                    pChild = pFrame->get_object();
-                }
-                else
-                {
-                    lua_uiobject* pObj = pArg->get<lua_uiobject>();
-                    if (pObj)
-                    {
-                        gui::out << gui::error << mFunc.get_name() << " : "
-                            "\""+pObj->get_name()+"\" is not a frame." << std::endl;
-                    }
-                    else
-                    {
-                        gui::out << gui::error << mFunc.get_name() << " : "
-                            "first argument is not a frame." << std::endl;
-                    }
-
-                    return mFunc.on_return();
-                }
-            }
-        }
-
-        std::unique_ptr<frame> pScrollChild;
+        utils::owner_ptr<frame> pScrollChild;
         if (pChild)
         {
             pScrollChild = down_cast<frame>(pChild->release_from_parent());
-            pScrollChild->set_parent(get_object());
+            pScrollChild->set_parent(observer_from(&mSelf));
         }
-        get_object()->set_scroll_child(std::move(pScrollChild));
-    }
 
-    return mFunc.on_return();
+        mSelf.set_scroll_child(std::move(pScrollChild));
+    });
+
+    /** @function set_vertical_scroll
+    */
+    mClass.set_function("set_vertical_scroll", member_function<&scroll_frame::set_vertical_scroll>());
 }
 
-/** @function set_vertical_scroll
-*/
-int lua_scroll_frame::_set_vertical_scroll(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("ScrollFrame:set_vertical_scroll", pLua);
-    mFunc.add(0, "vertical scroll", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_vertical_scroll(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
 }
 }

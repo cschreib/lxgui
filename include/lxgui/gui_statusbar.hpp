@@ -39,7 +39,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit status_bar(manager* pManager);
+        explicit status_bar(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -56,7 +56,7 @@ namespace gui
         /// Copies an uiobject's parameters into this status_bar (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets this status_bar's minimum value.
         /** \param fMin The minimum value
@@ -92,7 +92,7 @@ namespace gui
         /// Sets this status_bar's bar texture.
         /** \param pBarTexture The bar texture
         */
-        void set_bar_texture(texture* pBarTexture);
+        void set_bar_texture(utils::observer_ptr<texture> pBarTexture);
 
         /// Sets this status_bar's bar color.
         /** \param mBarColor The bar color
@@ -100,9 +100,14 @@ namespace gui
         void set_bar_color(const color& mBarColor);
 
         /// Sets this status_bar's orientation.
-        /** \param mOrient The orientation
+        /** \param mOrientation The orientation
         */
-        void set_orientation(orientation mOrient);
+        void set_orientation(orientation mOrientation);
+
+        /// Sets this status_bar's orientation.
+        /** \param mOrient The orientation ("VERTICAL" or "HORIZONTAL")
+        */
+        void set_orientation(const std::string& sOrientation);
 
         /// Reverses this status_bar.
         /** \param bReversed 'true' to reverse it
@@ -136,7 +141,12 @@ namespace gui
         /// Returns this status_bar's bar texture.
         /** \return This status_bar's bar texture
         */
-        texture* get_bar_texture() const;
+        const utils::observer_ptr<texture>& get_bar_texture() { return pBarTexture_; }
+
+        /// Returns this status_bar's bar texture.
+        /** \return This status_bar's bar texture
+        */
+        utils::observer_ptr<const texture> get_bar_texture() const { return pBarTexture_; }
 
         /// Returns this status_bar's bar color.
         /** \return This status_bar's bar color
@@ -164,15 +174,15 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "StatusBar";
 
     protected :
 
-        std::unique_ptr<texture> create_bar_texture_();
-        void                     notify_bar_texture_needs_update_();
+        utils::owner_ptr<texture> create_bar_texture_();
+        void notify_bar_texture_needs_update_();
 
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
@@ -188,41 +198,9 @@ namespace gui
 
         color      mBarColor_ = color::WHITE;
         layer_type mBarLayer_ = layer_type::ARTWORK;
-        texture*   pBarTexture_ = nullptr;
+        utils::observer_ptr<texture> pBarTexture_ = nullptr;
         std::array<float,4> lInitialTextCoords_ = {0.0f, 0.0f, 1.0f, 1.0f};
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_status_bar : public lua_frame
-    {
-    public :
-
-        explicit lua_status_bar(lua_State* pLua);
-        status_bar* get_object() { return static_cast<status_bar*>(pObject_); }
-
-        // Glues
-        int _get_min_max_values(lua_State*);
-        int _get_orientation(lua_State*);
-        int _is_reversed(lua_State*);
-        int _get_status_bar_color(lua_State*);
-        int _get_status_bar_texture(lua_State*);
-        int _get_value(lua_State*);
-        int _set_min_max_values(lua_State*);
-        int _set_orientation(lua_State*);
-        int _set_reversed(lua_State*);
-        int _set_status_bar_color(lua_State*);
-        int _set_status_bar_texture(lua_State*);
-        int _set_value(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_status_bar> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

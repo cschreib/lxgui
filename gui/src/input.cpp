@@ -530,13 +530,13 @@ double manager::get_doubleclick_time() const
     return pSource_->get_doubleclick_time();
 }
 
-void manager::set_focus(bool bFocus, gui::event_receiver* pReceiver)
+void manager::set_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
 {
     set_keyboard_focus(bFocus, pReceiver);
     set_mouse_focus(bFocus, pReceiver);
 }
 
-void manager::set_keyboard_focus(bool bFocus, gui::event_receiver* pReceiver)
+void manager::set_keyboard_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
 {
     if (bKeyboardFocus_ && !bFocus)
         bRemoveKeyboardFocus_ = true;
@@ -544,11 +544,11 @@ void manager::set_keyboard_focus(bool bFocus, gui::event_receiver* pReceiver)
     {
         bRemoveKeyboardFocus_ = false;
         bKeyboardFocus_ = bFocus;
-        pKeyboardFocusReceiver_ = pReceiver;
+        pKeyboardFocusReceiver_ = std::move(pReceiver);
     }
 }
 
-void manager::set_mouse_focus(bool bFocus, gui::event_receiver* pReceiver)
+void manager::set_mouse_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
 {
     if (bMouseFocus_ && !bFocus)
         bRemoveMouseFocus_ = true;
@@ -556,7 +556,7 @@ void manager::set_mouse_focus(bool bFocus, gui::event_receiver* pReceiver)
     {
         bRemoveMouseFocus_ = false;
         bMouseFocus_ = bFocus;
-        pMouseFocusReceiver_ = pReceiver;
+        pMouseFocusReceiver_ = std::move(pReceiver);
     }
 }
 
@@ -656,14 +656,14 @@ std::string manager::get_mouse_button_string(mouse_button mID) const
     }
 }
 
-const source* manager::get_source() const
+const source& manager::get_source() const
 {
-    return pSource_.get();
+    return *pSource_;
 }
 
-source* manager::get_source()
+source& manager::get_source()
 {
-    return pSource_.get();
+    return *pSource_;
 }
 
 void manager::register_event_manager(gui::event_manager* pManager)

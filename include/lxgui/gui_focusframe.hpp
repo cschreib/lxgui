@@ -16,12 +16,12 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit focus_frame(manager* pManager);
+        explicit focus_frame(manager& mManager);
 
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Enables automatic focus for this focus_frame.
         /** \param bEnable 'true' to enable auto focus
@@ -64,6 +64,9 @@ namespace gui
         */
         void notify_invisible(bool bTriggerEvents = true) override;
 
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
+
         static constexpr const char* CLASS_NAME = "FocusFrame";
 
     protected :
@@ -73,30 +76,6 @@ namespace gui
         bool bFocus_ = false;
         bool bAutoFocus_ = false;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_focus_frame : public lua_frame
-    {
-    public :
-
-        explicit lua_focus_frame(lua_State* pLua);
-        focus_frame* get_object() { return static_cast<focus_frame*>(pObject_); }
-
-        // Glues
-        int _clear_focus(lua_State*);
-        int _is_auto_focus(lua_State*);
-        int _set_auto_focus(lua_State*);
-        int _set_focus(lua_State*);
-
-        static const char  className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_focus_frame> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

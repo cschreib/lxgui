@@ -142,12 +142,12 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit edit_box(manager* pManager);
+        explicit edit_box(manager& mManager);
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update
@@ -167,12 +167,12 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Returns 'true' if this edit_box can use a script.
         /** \param sScriptName The name of the script
@@ -343,16 +343,6 @@ namespace gui
         void set_arrows_ignored(bool bArrowsIgnored);
 
         /// Sets the insets used to render the content text.
-        /** \param fLeft   The left inset
-        *   \param fRight  The right inset
-        *   \param fTop    The top inset
-        *   \param fBottom The bottom inset
-        *   \note Positive insets will reduce the text area, while
-        *         negative ones will enlarge it
-        */
-        void set_text_insets(float fLeft, float fRight, float fTop, float fBottom);
-
-        /// Sets the insets used to render the content text.
         /** \param lInsets (left, right, top, bottom)
         *   \note Positive insets will reduce the text area, while
         *         negative ones will enlarge it
@@ -367,12 +357,17 @@ namespace gui
         /// Returns the font_string used to render the content.
         /** \return The font_string used to render the content
         */
-        font_string* get_font_string();
+        const utils::observer_ptr<font_string>& get_font_string() { return pFontString_; }
+
+        /// Returns the font_string used to render the content.
+        /** \return The font_string used to render the content
+        */
+        utils::observer_ptr<const font_string> get_font_string() const { return pFontString_; }
 
         /// Sets the font_string to use to render the content.
         /** \param pFont The font_string to use to render the content
         */
-        void set_font_string(font_string* pFont);
+        void set_font_string(utils::observer_ptr<font_string> pFont);
 
         /// Sets the font (file and size) to render the content.
         /** \param sFontName The file path to the .ttf file
@@ -392,8 +387,8 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "EditBox";
 
@@ -404,9 +399,9 @@ namespace gui
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
 
-        std::unique_ptr<font_string> create_font_string_();
-        void                         create_highlight_();
-        void                         create_carret_();
+        utils::owner_ptr<font_string> create_font_string_();
+        void create_highlight_();
+        void create_carret_();
 
         void check_text_();
         void update_displayed_text_();
@@ -439,13 +434,13 @@ namespace gui
 
         std::string sComboKey_;
 
-        texture* pHighlight_ = nullptr;
-        color    mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
-        uint     uiSelectionStartPos_ = 0u;
-        uint     uiSelectionEndPos_ = 0u;
-        bool     bSelectedText_ = false;
+        utils::observer_ptr<texture> pHighlight_ = nullptr;
+        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
+        uint  uiSelectionStartPos_ = 0u;
+        uint  uiSelectionEndPos_ = 0u;
+        bool  bSelectedText_ = false;
 
-        texture*       pCarret_ = nullptr;
+        utils::observer_ptr<texture> pCarret_ = nullptr;
         double         dBlinkSpeed_ = 0.5;
         periodic_timer mCarretTimer_;
 
@@ -453,59 +448,13 @@ namespace gui
         uint                        uiMaxHistoryLines_ = uint(-1);
         uint                        uiCurrentHistoryLine_ = uint(-1);
 
-        font_string* pFontString_ = nullptr;
-        bounds2f     lTextInsets_ = bounds2f::ZERO;
+        utils::observer_ptr<font_string> pFontString_ = nullptr;
+        bounds2f lTextInsets_ = bounds2f::ZERO;
 
         input::key     mLastKeyPressed_;
         double         dKeyRepeatSpeed_ = 0.03;
         periodic_timer mKeyRepeatTimer_;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_edit_box : public lua_focus_frame
-    {
-    public :
-
-        explicit lua_edit_box(lua_State* pLua);
-        edit_box* get_object() { return static_cast<edit_box*>(pObject_); }
-
-        // Glues
-        int _add_history_line(lua_State*);
-        int _clear_history(lua_State*);
-        int _get_blink_speed(lua_State*);
-        int _get_cursor_position(lua_State*);
-        int _get_history_lines(lua_State*);
-        int _get_max_letters(lua_State*);
-        int _get_num_letters(lua_State*);
-        int _get_number(lua_State*);
-        int _get_text(lua_State*);
-        int _get_text_insets(lua_State*);
-        int _highlight_text(lua_State*);
-        int _insert(lua_State*);
-        int _is_multi_line(lua_State*);
-        int _is_numeric(lua_State*);
-        int _is_password(lua_State*);
-        int _set_blink_speed(lua_State*);
-        int _set_cursor_position(lua_State*);
-        int _set_font(lua_State*);
-        int _set_max_history_lines(lua_State*);
-        int _set_max_letters(lua_State*);
-        int _set_multi_line(lua_State*);
-        int _set_number(lua_State*);
-        int _set_numeric(lua_State*);
-        int _set_password(lua_State*);
-        int _set_text(lua_State*);
-        int _set_text_insets(lua_State*);
-
-        static const char  className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_edit_box> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

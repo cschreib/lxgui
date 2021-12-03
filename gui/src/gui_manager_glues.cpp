@@ -1,11 +1,13 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_uiobject.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
+#include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/input.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** Global functions for interacting with the GUI.
 *   The functions listed on this page are registered in the
@@ -20,320 +22,174 @@
 namespace lxgui {
 namespace gui
 {
-/** \cond NOT_REMOVE_FROM_DOC
-*/
 
-class lua_manager
+void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 {
-public :
+    if (pLua_) return;
 
-    explicit lua_manager(lua_State* luaVM);
-    virtual ~lua_manager();
+    // TODO: find a better place to put this
+    register_event("KEY_PRESSED");
+    register_event("MOUSE_MOVED");
+    register_event("WINDOW_RESIZED");
 
-    void set_manager(manager* pMgr);
-    manager* get_manager();
+    pLua_ = std::unique_ptr<sol::state>(new sol::state());
+    pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
+        sol::lib::os, sol::lib::string, sol::lib::debug);
 
-    int get_data_table(lua_State *L);
+    pLuaRegs_ = pLuaRegs;
 
-    static const char className[];
-    static const char* classList[];
-    static lua::lunar_binding<lua_manager> methods[];
+    auto& mLua = *pLua_;
 
-protected :
+    uiobject::register_on_lua(mLua);
+    frame::register_on_lua(mLua);
+    focus_frame::register_on_lua(mLua);
+    layered_region::register_on_lua(mLua);
 
-    lua_State* pLua_ = nullptr;
-    int        iRef_ = 0;
-
-    manager* pMgr_ = nullptr;
-};
-
-/** \endcond
-*/
-
-void manager::register_lua_manager_()
-{
-    pLua_->reg<lua_manager>();
-    lua_manager* pLuaMgr = pLua_->push_new<lua_manager>();
-    pLuaMgr->set_manager(this);
-    pLua_->set_global("_MGR");
-}
-
-manager* manager::get_manager(lua::state& mState)
-{
-    mState.get_global("_MGR");
-    manager* pMgr = mState.get<lua_manager>()->get_manager();
-    mState.pop();
-    return pMgr;
-}
-
-lua_manager::lua_manager(lua_State* pLua)
-{
-    lua_newtable(pLua);
-    iRef_ = luaL_ref(pLua, LUA_REGISTRYINDEX);
-    pLua_ = pLua;
-}
-
-lua_manager::~lua_manager()
-{
-    luaL_unref(pLua_, LUA_REGISTRYINDEX, iRef_);
-}
-
-void lua_manager::set_manager(manager* pMgr)
-{
-    pMgr_ = pMgr;
-}
-
-manager* lua_manager::get_manager()
-{
-    return pMgr_;
-}
-
-int lua_manager::get_data_table(lua_State* pLua)
-{
-    lua_rawgeti(pLua, LUA_REGISTRYINDEX, iRef_);
-    return 1;
-}
-
-const char lua_manager::className[] = "manager";
-const char* lua_manager::classList[] = {"manager", 0};
-lua::lunar_binding<lua_manager> lua_manager::methods[] = {
-    {"dt", &lua_manager::get_data_table},
-    {0,0}
-};
-
-/** @function set_key_binding
-*/
-int l_set_key_binding(lua_State* pLua)
-{
-    lua::function mFunc("set_key_binding", pLua);
-    mFunc.add(0, "key", lua::type::NUMBER);
-    mFunc.add(1, "code", lua::type::STRING);
-    mFunc.add(1, "nil", lua::type::NIL);
-    mFunc.new_param_set();
-    mFunc.add(0, "key", lua::type::NUMBER);
-    mFunc.add(1, "modifier", lua::type::NUMBER);
-    mFunc.add(2, "code", lua::type::STRING);
-    mFunc.add(2, "nil", lua::type::NIL);
-    mFunc.new_param_set();
-    mFunc.add(0, "key", lua::type::NUMBER);
-    mFunc.add(1, "modifier1", lua::type::NUMBER);
-    mFunc.add(2, "modifier2", lua::type::NUMBER);
-    mFunc.add(3, "code", lua::type::STRING);
-    mFunc.add(3, "nil", lua::type::NIL);
-
-    if (mFunc.check())
+    /** @function log
+    */
+    mLua.set_function("log", [](const std::string& sMessage)
     {
-        lua::state& mState = mFunc.get_state();
-        mState.get_global("_MGR");
-        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
-        mState.pop();
+        gui::out << sMessage << std::endl;
+    });
 
-        input::key uiKey = static_cast<input::key>(mFunc.get(0)->get_int());
-
-        if (mFunc.get_param_set_rank() == 0)
-        {
-            if (mFunc.is_provided(1) && mFunc.get(1)->get_type() == lua::type::STRING)
-                pGUIMgr->set_key_binding(uiKey, mFunc.get(1)->get_string());
-            else
-                pGUIMgr->remove_key_binding(uiKey);
-        }
-        else if (mFunc.get_param_set_rank() == 1)
-        {
-            input::key uiModifier = static_cast<input::key>(mFunc.get(1)->get_int());
-
-            if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::STRING)
-                pGUIMgr->set_key_binding(uiKey, uiModifier, mFunc.get(2)->get_string());
-            else
-                pGUIMgr->remove_key_binding(uiKey, uiModifier);
-        }
-        else
-        {
-            input::key uiModifier1 = static_cast<input::key>(mFunc.get(1)->get_int());
-            input::key uiModifier2 = static_cast<input::key>(mFunc.get(2)->get_int());
-
-            if (mFunc.is_provided(3) && mFunc.get(3)->get_type() == lua::type::STRING)
-                pGUIMgr->set_key_binding(uiKey, uiModifier1, uiModifier2, mFunc.get(3)->get_string());
-            else
-                pGUIMgr->remove_key_binding(uiKey, uiModifier1, uiModifier2);
-        }
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function create_frame
-*/
-int l_create_frame(lua_State* pLua)
-{
-    lua::function mFunc("create_frame", pLua, 1);
-    mFunc.add(0, "type", lua::type::STRING);
-    mFunc.add(1, "name", lua::type::STRING);
-    mFunc.add(2, "parent", lua::type::USERDATA, true);
-    mFunc.add(2, "parent", lua::type::NIL, true);
-    mFunc.add(3, "inherits", lua::type::STRING, true);
-
-    if (mFunc.check())
+    /** @function create_frame
+    */
+    mLua.set_function("create_frame", [&](const std::string& sType, const std::string& sName,
+        sol::optional<frame&> pParent, sol::optional<std::string> sInheritance) -> sol::object
     {
-        lua::state& mState = mFunc.get_state();
-        std::string sType = mFunc.get(0)->get_string();
-        std::string sName = mFunc.get(1)->get_string();
+        std::vector<utils::observer_ptr<const uiobject>> lInheritance;
+        if (sInheritance.has_value())
+            lInheritance = get_virtual_uiobject_list(sInheritance.value());
 
-        mState.get_global("_MGR");
-        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
-        mState.pop();
-
-        frame* pParent = nullptr;
-        if (mFunc.is_provided(2) && mFunc.get(2)->get_type() == lua::type::USERDATA)
-        {
-            lua_frame* pFrameObj = mFunc.get(2)->get<lua_frame>();
-            if (pFrameObj)
-            {
-                pParent = pFrameObj->get_object();
-            }
-            else
-            {
-                lua_uiobject* pObj = mFunc.get(2)->get<lua_uiobject>();
-                if (pObj)
-                {
-                    gui::out << gui::error << mFunc.get_name()
-                        << " : The second argument of " << mFunc.get_name() << " must be a frame "
-                        << "(got a " << pObj->get_object()->get_object_type() << ")." << std::endl;
-                }
-                else
-                {
-                    gui::out << gui::error << mFunc.get_name()
-                        << " : The second argument of " << mFunc.get_name() << " must be a frame."
-                        << std::endl;
-
-                }
-
-                return mFunc.on_return();
-            }
-        }
-
-        std::string sInheritance;
-        if (mFunc.get(3)->is_provided())
-            sInheritance = mFunc.get(3)->get_string();
-
-        auto lInheritance = pGUIMgr->get_virtual_uiobject_list(sInheritance);
-
-        frame* pNewFrame = nullptr;
-        if (pParent)
-            pNewFrame = pParent->create_child(sType, sName, lInheritance);
+        utils::observer_ptr<frame> pNewFrame;
+        if (pParent.has_value())
+            pNewFrame = pParent.value().create_child(sType, sName, lInheritance);
         else
-            pNewFrame = pGUIMgr->create_root_frame(sType, sName, lInheritance);
+            pNewFrame = create_root_frame(sType, sName, lInheritance);
 
         if (pNewFrame)
         {
-            pNewFrame->set_addon(pGUIMgr->get_current_addon());
+            pNewFrame->set_addon(get_current_addon());
             pNewFrame->notify_loaded();
-            pNewFrame->push_on_lua(mState);
-            mFunc.notify_pushed();
+            return get_lua()[pNewFrame->get_lua_name()];
         }
         else
-            mFunc.push_nil();
-    }
+            return sol::lua_nil;
+    });
 
-    return mFunc.on_return();
+    /** @function delete_frame
+    */
+    mLua.set_function("delete_frame", [&](frame& mFrame)
+    {
+        mFrame.destroy();
+    });
+
+    /** @function set_key_binding
+    */
+    mLua.set_function("set_key_binding", sol::overload(
+    [&](uint uiKey, sol::optional<std::string> sCode)
+    {
+        auto mKey = static_cast<input::key>(uiKey);
+        if (sCode.has_value())
+            set_key_binding(mKey, sCode.value());
+        else
+            remove_key_binding(mKey);
+    },
+    [&](uint uiKey, uint uiModifier, sol::optional<std::string> sCode)
+    {
+        auto mKey = static_cast<input::key>(uiKey);
+        auto mModifier = static_cast<input::key>(uiModifier);
+        if (sCode.has_value())
+            set_key_binding(mKey, mModifier, sCode.value());
+        else
+            remove_key_binding(mKey, mModifier);
+    },
+    [&](uint uiKey, uint uiModifier1, uint uiModifier2, sol::optional<std::string> sCode)
+    {
+        auto mKey = static_cast<input::key>(uiKey);
+        auto mModifier1 = static_cast<input::key>(uiModifier1);
+        auto mModifier2 = static_cast<input::key>(uiModifier2);
+        if (sCode.has_value())
+            set_key_binding(mKey, mModifier1, mModifier2, sCode.value());
+        else
+            remove_key_binding(mKey, mModifier1, mModifier2);
+    }));
+
+    /** Closes the whole GUI and re-loads addons from files.
+    * For safety reasons, the re-loading operation will not be triggered instantaneously.
+    * The GUI will be reloaded at the end of the current update tick, when it is safe to do so.
+    * @function reload_ui
+    */
+    mLua.set_function("reload_ui", [&]()
+    {
+        reload_ui();
+    });
+
+    /** Sets the global interface scaling factor.
+    *   @function set_interface_scaling_factor
+    *   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and textures, etc.)
+    */
+    mLua.set_function("set_interface_scaling_factor", [&](float fScaling)
+    {
+        set_interface_scaling_factor(fScaling);
+    });
+
+    /** Return the global interface scaling factor.
+    *   @function get_interface_scaling_factor
+    *   @treturn number The scaling factor (1: no scaling, 2: twice larger fonts and textures, etc.)
+    */
+    mLua.set_function("get_interface_scaling_factor", [&]()
+    {
+        return get_interface_scaling_factor();
+    });
+
+    pLocalizer_->register_on_lua(*pLua_);
+
+    if (pLuaRegs_)
+        pLuaRegs_(*this);
 }
 
-/** @function delete_frame
-*/
-int l_delete_frame(lua_State* pLua)
+std::string serialize(const std::string& sTab, const sol::object& mValue)
 {
-    lua::function mFunc("delete_frame", pLua);
-    mFunc.add(0, "frame", lua::type::USERDATA);
-
-    if (mFunc.check())
+    if (mValue.is<double>())
     {
-        lua_frame* pFrameObj = mFunc.get(0)->get<lua_frame>();
-        if (!pFrameObj)
+        return utils::to_string(mValue.as<double>());
+    }
+    else if (mValue.is<int>())
+    {
+        return utils::to_string(mValue.as<int>());
+    }
+    else if (mValue.is<std::string>())
+    {
+        return "\"" + utils::to_string(mValue.as<std::string>()) + "\"";
+    }
+    else if (mValue.is<sol::table>())
+    {
+        std::string sResult;
+        sResult += "{";
+
+        std::string sContent;
+        sol::table mTable = mValue.as<sol::table>();
+        for (auto mKeyValue : mTable)
         {
-            lua_uiobject* pObj = mFunc.get(0)->get<lua_uiobject>();
-            if (pObj)
-            {
-                gui::out << gui::error << mFunc.get_name()
-                    << " : The first argument of " << mFunc.get_name() << " must be a frame "
-                    << "(got a " << pObj->get_object()->get_object_type() << ")." << std::endl;
-            }
-            else
-            {
-                gui::out << gui::error << mFunc.get_name()
-                    << " : The first argument of " << mFunc.get_name() << " must be a frame."
-                    << std::endl;
-
-            }
-
-            return mFunc.on_return();
+            sContent += sTab + "    [" + serialize("", mKeyValue.first) + "] = "
+                + serialize(sTab + "    ", mKeyValue.second) + ",\n";
         }
 
-        frame* pFrame = pFrameObj->get_object();
-        if (!pFrame)
-        {
-            gui::out << gui::error << mFunc.get_name()
-                << " : Frame '" << pFrameObj->get_name() << "' is already deleted." << std::endl;
+        if (!sContent.empty())
+            sResult += "\n" + sContent + sTab;
 
-            return mFunc.on_return();
-        }
-
-        pFrame->destroy();
+        sResult += "}";
+        return sResult;
     }
 
-    return mFunc.on_return();
+    return "nil";
 }
 
-/** Sets the global interface scaling factor.
-*   @function set_interface_scaling_factor
-*   @tparam number factor The scaling factor (1: no scaling, 2: twice larger fonts and textures, etc.)
-*/
-int l_set_interface_scaling_factor(lua_State* pLua)
+std::string manager::serialize_global_(const std::string& sVariable) const
 {
-    lua::function mFunc("set_interface_scaling_factor", pLua);
-    mFunc.add(0, "scale factor", lua::type::NUMBER);
-
-    if (mFunc.check())
-    {
-        lua::state& mState = mFunc.get_state();
-        mState.get_global("_MGR");
-        manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
-        mState.pop();
-
-        pGUIMgr->set_interface_scaling_factor(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function log
-*/
-int l_log(lua_State* pLua)
-{
-    lua::function mFunc("log", pLua);
-    mFunc.add(0, "message", lua::type::STRING);
-
-    if (mFunc.check())
-        gui::out << mFunc.get(0)->get_string() << std::endl;
-
-    return mFunc.on_return();
-}
-
-/** Closes the whole GUI and re-loads addons from files.
-* For safety reasons, the re-loading operation will not be triggered instantaneously.
-* The GUI will be reloaded at the end of the current update tick, when it is safe to do so.
-* @function reload_ui
-*/
-int l_reload_ui(lua_State* pLua)
-{
-    lua::function mFunc("reload_ui", pLua);
-
-    lua::state& mState = mFunc.get_state();
-    mState.get_global("_MGR");
-    manager* pGUIMgr = mState.get<lua_manager>()->get_manager();
-    mState.pop();
-
-    pGUIMgr->reload_ui();
-
-    return mFunc.on_return();
+    sol::object mValue = pLua_->globals()[sVariable];
+    return serialize("", mValue);
 }
 
 }

@@ -22,17 +22,17 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
         xml::block* pChildBlock = pScrollChildBlock->first();
         try
         {
-            auto mAttr = pManager_->parse_core_attributes(pChildBlock, this);
+            auto mAttr = get_manager().parse_core_attributes(pChildBlock, observer_from(this));
 
-            frame* pScrollChild = create_child(mAttr.sFrameType, mAttr.sName,
-                    mAttr.lInheritance);
+            utils::observer_ptr<frame> pScrollChild = create_child(
+                mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
 
             if (!pScrollChild)
                 return;
 
             this->set_scroll_child(remove_child(pScrollChild));
 
-            pScrollChild->set_addon(pManager_->get_current_addon());
+            pScrollChild->set_addon(get_manager().get_current_addon());
             pScrollChild->parse_block(pChildBlock);
             pScrollChild->notify_loaded();
 

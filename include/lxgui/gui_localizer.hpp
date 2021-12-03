@@ -41,6 +41,18 @@ namespace gui
         /// Default constructor.
         localizer();
 
+        /// Non-copiable
+        localizer(const localizer&) = delete;
+
+        /// Non-movable
+        localizer(localizer&&) = delete;
+
+        /// Non-copiable
+        localizer& operator=(const localizer&) = delete;
+
+        /// Non-movable
+        localizer& operator=(localizer&&) = delete;
+
         /// Changes the current locale (used to format numbers).
         /** \param mLocale The new locale
         *   \note This function should only be called before the UI is loaded. If you need to change

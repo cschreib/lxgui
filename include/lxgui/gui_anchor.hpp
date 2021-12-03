@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_observer.hpp>
 #include "lxgui/gui_vector2.hpp"
 
 #include <string>
@@ -43,11 +44,20 @@ namespace gui
     {
     public :
 
-        /// Default constructor.
-        anchor() = default;
-
         /// Constructor.
-        anchor(uiobject* pObj, anchor_point mPoint, const std::string& pParent, anchor_point mParentPoint);
+        anchor(uiobject& pObj, anchor_point mPoint, const std::string& pParent, anchor_point mParentPoint);
+
+        /// Copiable
+        anchor(const anchor&) = default;
+
+        /// Movable
+        anchor(anchor&&) = default;
+
+        /// Non-assignable
+        anchor& operator=(const anchor&) = delete;
+
+        /// Non-assignable
+        anchor& operator=(anchor&&) = delete;
 
         /// Returns this anchor absolute X (in pixel).
         /** \return This anchor absolute X.
@@ -62,12 +72,12 @@ namespace gui
         /// Returns this anchor's base widget.
         /** \return This anchor's base widget
         */
-        const uiobject* get_object() const;
+        const uiobject& get_object() const;
 
         /// Returns this anchor's parent widget.
         /** \return This anchor's parent widget
         */
-        const uiobject* get_parent() const;
+        const utils::observer_ptr<const uiobject>& get_parent() const;
 
         /// Returns this anchor's parent's raw name (unmodified).
         /** \return This anchor's parent's raw name (unmodified)
@@ -118,11 +128,6 @@ namespace gui
         /** \return This anchor's relative offset
         */
         vector2f get_rel_offset() const;
-
-        /// Sets this anchor's base widget.
-        /** \param pObj The new base widget
-        */
-        void set_object(uiobject* pObj);
 
         /// Sets this anchor's parent's raw name.
         /** \param sName The parent's raw name
@@ -182,7 +187,7 @@ namespace gui
 
     private :
 
-        const uiobject* pObj_ = nullptr;
+        const uiobject& mObj_;
 
         anchor_point    mParentPoint_ = anchor_point::TOPLEFT;
         anchor_point    mPoint_       = anchor_point::TOPLEFT;
@@ -193,7 +198,7 @@ namespace gui
 
         mutable float fParentWidth_ = 0.0f, fParentHeight_ = 0.0f;
 
-        mutable const uiobject* pParent_ = nullptr;
+        mutable utils::observer_ptr<const uiobject> pParent_ = nullptr;
         mutable std::string     sParent_;
         mutable bool            bParentUpdated_ = false;
     };

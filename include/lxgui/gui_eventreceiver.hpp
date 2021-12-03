@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include <lxgui/utils.hpp>
+#include <lxgui/utils_observer.hpp>
 
 #include <string>
 
@@ -15,18 +16,30 @@ namespace gui
     /// Abstract interface for event handling
     /** All classes which should react to some events
     *   should inherit from this class.<br>
-    *   They will automatically react to Events thanks
+    *   They will automatically react to events thanks
     *   to the event_manager.
     */
-    class event_receiver
+    class event_receiver : public utils::enable_observer_from_this<event_receiver>
     {
     public :
 
         /// Constructor.
-        explicit event_receiver(event_manager* pManager = nullptr);
+        explicit event_receiver(event_manager& mManager);
 
         /// Destructor.
-        virtual ~event_receiver();
+        virtual ~event_receiver() = default;
+
+        /// Non-copiable
+        event_receiver(const event_receiver&) = delete;
+
+        /// Non-movable
+        event_receiver(event_receiver&&) = delete;
+
+        /// Non-copiable
+        event_receiver& operator=(const event_receiver&) = delete;
+
+        /// Non-movable
+        event_receiver& operator=(event_receiver&&) = delete;
 
         /// Called whenever an Event occurs.
         /** \param mEvent The Event which has occured
@@ -47,13 +60,9 @@ namespace gui
         */
         virtual void unregister_event(const std::string& sEventName);
 
-    protected :
-
-        void set_event_manager(event_manager* pManager);
-
     private :
 
-        event_manager* pEventManager_ = nullptr;
+        event_manager& mEventManager_;
     };
 }
 }

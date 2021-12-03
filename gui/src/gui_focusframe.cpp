@@ -2,23 +2,21 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_state.hpp>
-
 using namespace lxgui::input;
 
 namespace lxgui {
 namespace gui
 {
-focus_frame::focus_frame(manager* pManager) : frame(pManager)
+focus_frame::focus_frame(manager& mManager) : frame(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
 
-void focus_frame::copy_from(uiobject* pObj)
+void focus_frame::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(pObj);
+    frame::copy_from(mObj);
 
-    focus_frame* pFocusFrame = down_cast<focus_frame>(pObj);
+    const focus_frame* pFocusFrame = down_cast<focus_frame>(&mObj);
     if (!pFocusFrame)
         return;
 
@@ -27,7 +25,7 @@ void focus_frame::copy_from(uiobject* pObj)
 
 void focus_frame::create_glue()
 {
-    create_glue_<lua_focus_frame>();
+    create_glue_(this);
 }
 
 void focus_frame::enable_auto_focus(bool bEnable)
@@ -43,9 +41,9 @@ bool focus_frame::is_auto_focus_enabled() const
 void focus_frame::set_focus(bool bFocus)
 {
     if (bFocus)
-        pManager_->request_focus(this);
+        get_manager().request_focus(observer_from(this));
     else if (bFocus_)
-        pManager_->request_focus(nullptr);
+        get_manager().request_focus(nullptr);
 }
 
 void focus_frame::notify_focus(bool bFocus)

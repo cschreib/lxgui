@@ -37,7 +37,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit slider(manager* pManager);
+        explicit slider(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -53,32 +53,42 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Copies an uiobject's parameters into this slider (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets the texture to use for the thumb.
         /** \param pTexture The new texture
         */
-        void set_thumb_texture(texture* pTexture);
+        void set_thumb_texture(utils::observer_ptr<texture> pTexture);
 
         /// Returns the texture used for the thumb.
         /** \return The texture used for the thumb
         */
-        texture* get_thumb_texture() const;
+        const utils::observer_ptr<texture>& get_thumb_texture() { return pThumbTexture_; }
+
+        /// Returns the texture used for the thumb.
+        /** \return The texture used for the thumb
+        */
+        utils::observer_ptr<const texture> get_thumb_texture() const { return pThumbTexture_; }
 
         /// Sets the orientation of this slider.
         /** \param mOrientation The orientation of this slider
         */
         void set_orientation(orientation mOrientation);
+
+        /// Sets the orientation of this slider.
+        /** \param sOrientation The orientation of this slider ("VERTICAL" or "HORIZONTAL")
+        */
+        void set_orientation(const std::string& sOrientation);
 
         /// Returns the orientation of this slider.
         /** \return The orientation of this slider
@@ -156,7 +166,7 @@ namespace gui
         /** \return 'true' if it is the case
         *   \note See set_allow_clicks_outside_thumb().
         */
-        bool are_clicks_outside_thumb_allowed();
+        bool are_clicks_outside_thumb_allowed() const;
 
         /// Checks if the provided coordinates are in the frame.
         /** \param fX The horizontal coordinate
@@ -196,8 +206,8 @@ namespace gui
         */
         void update(float fDelta) override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Slider";
 
@@ -205,8 +215,8 @@ namespace gui
 
         void constrain_thumb_();
 
-        std::unique_ptr<texture> create_thumb_texture_();
-        void                     notify_thumb_texture_needs_update_() const;
+        utils::owner_ptr<texture> create_thumb_texture_();
+        void notify_thumb_texture_needs_update_() const;
 
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
@@ -223,45 +233,10 @@ namespace gui
         bool bAllowClicksOutsideThumb_ = true;
 
         layer_type mThumbLayer_ = layer_type::OVERLAY;
-        texture*   pThumbTexture_ = nullptr;
+        utils::observer_ptr<texture> pThumbTexture_ = nullptr;
         bool       bThumbMoved_ = false;
         bool       bMouseInThumb_ = false;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_slider : public lua_frame
-    {
-    public :
-
-        explicit lua_slider(lua_State* pLua);
-        slider* get_object() { return static_cast<slider*>(pObject_); }
-
-        // Glues
-        int _allow_clicks_outside_thumb(lua_State*);
-        int _get_max_value(lua_State*);
-        int _get_min_value(lua_State*);
-        int _get_min_max_values(lua_State*);
-        int _get_orientation(lua_State*);
-        int _get_thumb_texture(lua_State*);
-        int _get_value(lua_State*);
-        int _get_value_step(lua_State*);
-        int _set_max_value(lua_State*);
-        int _set_min_value(lua_State*);
-        int _set_min_max_values(lua_State*);
-        int _set_orientation(lua_State*);
-        int _set_thumb_texture(lua_State*);
-        int _set_value(lua_State*);
-        int _set_value_step(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_slider> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

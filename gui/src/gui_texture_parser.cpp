@@ -26,7 +26,7 @@ void texture::parse_attributes_(xml::block* pBlock)
     layered_region::parse_attributes_(pBlock);
 
     set_filter_mode(pBlock->get_attribute("filter"));
-    set_texture(pManager_->parse_file_name(pBlock->get_attribute("file")));
+    set_texture(get_manager().parse_file_name(pBlock->get_attribute("file")));
 }
 
 void texture::parse_tex_coords_block_(xml::block* pBlock)

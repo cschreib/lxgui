@@ -36,7 +36,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit font_string(manager* pManager);
+        explicit font_string(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -50,7 +50,7 @@ namespace gui
         /// Copies an uiobject's parameters into this font_string (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns the name of the font file.
         /** \return The name of the font file
@@ -89,27 +89,17 @@ namespace gui
         */
         const color& get_shadow_color() const;
 
-        /// Returns this font_string's shadow offsets.
-        /** \return This font_string's shadow offsets
-        *   \note Contains (X, Y) offsets.
+        /// Returns this font_string's shadow offset.
+        /** \return This font_string's shadow offset
+        *   \note Contains (X, Y) offset.
         */
-        vector2f get_shadow_offsets() const;
+        const vector2f& get_shadow_offset() const;
 
-        /// Returns this font_string's shadow X offset.
-        /** \return This font_string's shadow X offset
+        /// Returns this font_string's offset.
+        /** \return This font_string's offset
+        *   \note Contains (X, Y) offset.
         */
-        float get_shadow_x_offset() const;
-
-        /// Returns this font_string's shadow Y offset.
-        /** \return This font_string's shadow Y offset
-        */
-        float get_shadow_y_offset() const;
-
-        /// Returns this font_string's offsets.
-        /** \return This font_string's offsets
-        *   \note Contains (X, Y) offsets.
-        */
-        vector2f get_offsets() const;
+        const vector2f& get_offset() const;
 
         /// Returns the space between each letter.
         /** \return The space between each letter
@@ -147,29 +137,17 @@ namespace gui
         */
         void set_shadow_color(const color& mShadowColor);
 
-        /// Sets this font_string's shadow offsets.
-        /** \param fShadowXOffset The horizontal offset
-        *   \param fShadowYOffset The vertical offset
+        /// Sets this font_string's shadow offset.
+        /** \param mShadowOffset Offset
+        *   \note Contains (X, Y) offset.
         */
-        void set_shadow_offsets(float fShadowXOffset, float fShadowYOffset);
+        void set_shadow_offset(const vector2f& mShadowOffset);
 
-        /// Sets this font_string's shadow offsets.
-        /** \param mShadowOffsets Offsets
-        *   \note Contains (X, Y) offsets.
+        /// Sets this font_string's offset.
+        /** \param mOffset Offset
+        *   \note Contains (X, Y) offset.
         */
-        void set_shadow_offsets(const vector2f& mShadowOffsets);
-
-        /// Sets this font_string's offsets.
-        /** \param fXOffset The horizontal offset
-        *   \param fYOffset The vertical offset
-        */
-        void set_offsets(float fXOffset, float fYOffset);
-
-        /// Sets this font_string's offsets.
-        /** \param mOffsets Offsets
-        *   \note Contains (X, Y) offsets.
-        */
-        void set_offsets(const vector2f& mOffsets);
+        void set_offset(const vector2f& mOffset);
 
         /// Sets the space between each letter.
         /** \param fSpacing The space between each letter
@@ -285,8 +263,8 @@ namespace gui
         */
         const text* get_text_object() const;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "FontString";
 
@@ -309,8 +287,7 @@ namespace gui
         float                    fLineSpacing_ = 1.0f;
         text::alignment          mJustifyH_ = text::alignment::CENTER;
         text::vertical_alignment mJustifyV_ = text::vertical_alignment::MIDDLE;
-        float                    fXOffset_ = 0.0f;
-        float                    fYOffset_ = 0.0f;
+        vector2f                 mOffset_ = vector2f::ZERO;
 
         bool  bIsOutlined_ = false;
         bool  bCanNonSpaceWrap_ = false;
@@ -319,56 +296,10 @@ namespace gui
         bool  bFormattingEnabled_ = true;
         color mTextColor_ = color::WHITE;
 
-        bool  bHasShadow_ = false;
-        color mShadowColor_ = color::BLACK;
-        float fShadowXOffset_ = 0.0f;
-        float fShadowYOffset_ = 0.0f;
+        bool     bHasShadow_ = false;
+        color    mShadowColor_ = color::BLACK;
+        vector2f mShadowOffset_ = vector2f::ZERO;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_font_string : public lua_layered_region
-    {
-    public :
-
-        explicit lua_font_string(lua_State* pLua);
-        font_string* get_object() { return static_cast<font_string*>(pObject_); }
-
-        int _get_font(lua_State*);
-        int _get_justify_h(lua_State*);
-        int _get_justify_v(lua_State*);
-        int _get_shadow_color(lua_State*);
-        int _get_shadow_offset(lua_State*);
-        int _get_spacing(lua_State*);
-        int _get_line_spacing(lua_State*);
-        int _get_text_color(lua_State*);
-        int _set_font(lua_State*);
-        int _set_justify_h(lua_State*);
-        int _set_justify_v(lua_State*);
-        int _set_shadow_color(lua_State*);
-        int _set_shadow_offset(lua_State*);
-        int _set_spacing(lua_State*);
-        int _set_line_spacing(lua_State*);
-        int _set_text_color(lua_State*);
-        int _can_non_space_wrap(lua_State*);
-        int _can_word_wrap(lua_State*);
-        int _enable_formatting(lua_State*);
-        int _get_string_height(lua_State*);
-        int _get_string_width(lua_State*);
-        int _get_text(lua_State*);
-        int _is_formatting_enabled(lua_State*);
-        int _set_non_space_wrap(lua_State*);
-        int _set_text(lua_State*);
-        int _set_word_wrap(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_font_string> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

@@ -16,14 +16,10 @@
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/input.hpp"
 
-#include <lxgui/luapp_exception.hpp>
-#include <lxgui/luapp_state.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_std.hpp>
 #include <lxgui/utils_range.hpp>
-
-#include <sol/state.hpp>
 
 #include <fstream>
 #include <sstream>
@@ -42,25 +38,15 @@
 namespace lxgui {
 namespace gui
 {
-int l_set_key_binding(lua_State* pLua);
-int l_create_frame(lua_State* pLua);
-int l_delete_frame(lua_State* pLua);
-int l_set_interface_scaling_factor(lua_State* pLua);
-int l_log(lua_State* pLua);
-int l_reload_ui(lua_State* pLua);
 
 manager::manager(std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
-    event_receiver(nullptr),
+    event_manager(),
+    event_receiver(static_cast<event_manager&>(*this)),
     pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
-    pEventManager_ = std::unique_ptr<event_manager>(new event_manager());
-    event_receiver::set_event_manager(pEventManager_.get());
-    pInputManager_->register_event_manager(pEventManager_.get());
-    register_event("KEY_PRESSED");
-    register_event("MOUSE_MOVED");
-    register_event("WINDOW_RESIZED");
+    pInputManager_->register_event_manager(this);
 
     uiScreenWidth_ = pInputManager_->get_window_width();
     uiScreenHeight_ = pInputManager_->get_window_height();
@@ -68,24 +54,14 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::unique_ptr<localizer>(new localizer());
+
+    // NB: cannot call register_event() here, as observable_from_this()
+    // is not yet fully initialised! This is done in create_lua() instead.
 }
 
 manager::~manager()
 {
     close_ui();
-
-    // Notify event receiver that event manager is about to be destroyed
-    event_receiver::set_event_manager(nullptr);
-}
-
-renderer* manager::get_renderer()
-{
-    return pRenderer_.get();
-}
-
-const renderer* manager::get_renderer() const
-{
-    return pRenderer_.get();
 }
 
 float manager::get_target_width() const
@@ -109,7 +85,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
 
-    for (auto* pObject : utils::range::value(lObjectList_))
+    for (const auto& pObject : utils::range::value(lObjectList_))
         pObject->notify_scaling_factor_updated();
 
     if (pRenderTarget_)
@@ -180,51 +156,54 @@ bool manager::check_uiobject_name(const std::string& sName) const
     return true;
 }
 
-std::unique_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
+utils::owner_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return std::unique_ptr<uiobject>(new frame(this));
+        return utils::make_owned<frame>(*this);
     else if (sClassName == "FocusFrame")
-        return std::unique_ptr<uiobject>(new focus_frame(this));
+        return utils::make_owned<focus_frame>(*this);
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
         if (iterFrame != lCustomFrameList_.end())
-            return iterFrame->second(this);
+            return iterFrame->second(*this);
 
         auto iterRegion = lCustomRegionList_.find(sClassName);
         if (iterRegion != lCustomRegionList_.end())
-            return iterRegion->second(this);
+            return iterRegion->second(*this);
 
-        gui::out << gui::warning << "gui::manager : Unknown uiobject class : \"" << sClassName << "\"." << std::endl;
+        gui::out << gui::warning << "gui::manager : Unknown uiobject class : \""
+            << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
 
-std::unique_ptr<frame> manager::create_frame(const std::string& sClassName)
+utils::owner_ptr<frame> manager::create_frame(const std::string& sClassName)
 {
     if (sClassName == "Frame")
-        return std::unique_ptr<frame>(new frame(this));
+        return utils::make_owned<frame>(*this);
     else if (sClassName == "FocusFrame")
-        return std::unique_ptr<frame>(new focus_frame(this));
+        return utils::make_owned<focus_frame>(*this);
     else
     {
         auto iterFrame = lCustomFrameList_.find(sClassName);
         if (iterFrame != lCustomFrameList_.end())
-            return std::unique_ptr<frame>(iterFrame->second(this));
+            return iterFrame->second(*this);
 
-        gui::out << gui::warning << "gui::manager : Unknown Frame class : \"" << sClassName << "\"." << std::endl;
+        gui::out << gui::warning << "gui::manager : Unknown Frame class : \""
+            << sClassName << "\"." << std::endl;
         return nullptr;
     }
 }
 
-frame* manager::create_root_frame_(const std::string& sClassName, const std::string& sName,
-                                   bool bVirtual, const std::vector<uiobject*>& lInheritance)
+utils::observer_ptr<frame> manager::create_root_frame_(
+    const std::string& sClassName, const std::string& sName,
+    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     if (!check_uiobject_name(sName))
         return nullptr;
 
-    std::unique_ptr<frame> pNewFrame = create_frame(sClassName);
+    auto pNewFrame = create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
@@ -234,15 +213,15 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
         pNewFrame->set_virtual();
 
     if (!pNewFrame->is_virtual())
-        notify_rendered_frame(pNewFrame.get(), true);
+        notify_rendered_frame(pNewFrame, true);
 
-    if (!add_uiobject(pNewFrame.get()))
+    if (!add_uiobject(pNewFrame))
         return nullptr;
 
     if (!pNewFrame->is_virtual())
         pNewFrame->create_glue();
 
-    for (auto* pObj : lInheritance)
+    for (const auto& pObj : lInheritance)
     {
         if (!pNewFrame->is_object_type(pObj->get_object_type()))
         {
@@ -254,7 +233,7 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
         }
 
         // Inherit from the other frame
-        pNewFrame->copy_from(pObj);
+        pNewFrame->copy_from(*pObj);
     }
 
     pNewFrame->set_newly_created();
@@ -262,13 +241,14 @@ frame* manager::create_root_frame_(const std::string& sClassName, const std::str
     return add_root_frame(std::move(pNewFrame));
 }
 
-std::unique_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
+utils::owner_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
 {
     auto iterRegion = lCustomRegionList_.find(sClassName);
     if (iterRegion != lCustomRegionList_.end())
-        return iterRegion->second(this);
+        return iterRegion->second(*this);
 
-    gui::out << gui::warning << "gui::manager : Unknown layered_region class : \"" << sClassName << "\"." << std::endl;
+    gui::out << gui::warning << "gui::manager : Unknown layered_region class : \""
+        << sClassName << "\"." << std::endl;
     return nullptr;
 }
 
@@ -288,7 +268,7 @@ uint manager::get_new_object_id_()
     }
 }
 
-bool manager::add_uiobject(uiobject* pObj)
+bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
 {
     if (!pObj)
     {
@@ -296,7 +276,7 @@ bool manager::add_uiobject(uiobject* pObj)
         return false;
     }
 
-    std::unordered_map<std::string, uiobject*>* lNamedList;
+    std::unordered_map<std::string, utils::observer_ptr<uiobject>>* lNamedList = nullptr;
     if (pObj->is_virtual())
     {
         if (pObj->get_parent())
@@ -324,7 +304,7 @@ bool manager::add_uiobject(uiobject* pObj)
 
         if (!pObj->is_virtual())
         {
-            frame* pFrame = down_cast<frame>(pObj);
+            utils::observer_ptr<frame> pFrame = down_cast<frame>(pObj);
             if (pFrame)
                 lFrameList_[i] = pFrame;
         }
@@ -340,15 +320,15 @@ bool manager::add_uiobject(uiobject* pObj)
     }
 }
 
-frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
+utils::observer_ptr<frame> manager::add_root_frame(utils::owner_ptr<frame> pFrame)
 {
-    frame* pAddedFrame = pFrame.get();
+    utils::observer_ptr<frame> pAddedFrame = pFrame;
     lRootFrameList_.push_back(std::move(pFrame));
 
     if (!pAddedFrame->is_virtual())
     {
-        frame_renderer* pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
-        if (pOldTopLevelRenderer != this)
+        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
+        if (pOldTopLevelRenderer.get() != this)
         {
             pOldTopLevelRenderer->notify_rendered_frame(pAddedFrame, false);
             notify_rendered_frame(pAddedFrame, true);
@@ -358,7 +338,7 @@ frame* manager::add_root_frame(std::unique_ptr<frame> pFrame)
     return pAddedFrame;
 }
 
-void manager::remove_uiobject(uiobject* pObj)
+void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
 {
     if (!pObj) return;
 
@@ -372,13 +352,13 @@ void manager::remove_uiobject(uiobject* pObj)
         lNamedVirtualObjectList_.erase(pObj->get_name());
 
     if (pMovedObject_ == pObj)
-        stop_moving(pObj);
+        stop_moving(*pObj);
 
     if (pSizedObject_ == pObj)
-        stop_sizing(pObj);
+        stop_sizing(*pObj);
 }
 
-void manager::remove_frame(frame* pObj)
+void manager::remove_frame(const utils::observer_ptr<frame>& pObj)
 {
     if (!pObj) return;
 
@@ -392,7 +372,8 @@ void manager::remove_frame(frame* pObj)
         clear_focussed_frame_();
 }
 
-std::unique_ptr<frame> manager::remove_root_frame(frame* pFrame)
+utils::owner_ptr<frame> manager::remove_root_frame(
+    const utils::observer_ptr<frame>& pFrame)
 {
     auto mIter = utils::find_if(lRootFrameList_, [&](auto& pObj) {
         return pObj && pObj->get_id() == pFrame->get_id();
@@ -410,7 +391,7 @@ manager::root_frame_list_view manager::get_root_frames() const
     return root_frame_list_view(lRootFrameList_);
 }
 
-const uiobject* manager::get_uiobject(uint uiID) const
+utils::observer_ptr<const uiobject> manager::get_uiobject(uint uiID) const
 {
     auto mIter = lObjectList_.find(uiID);
     if (mIter != lObjectList_.end())
@@ -419,7 +400,7 @@ const uiobject* manager::get_uiobject(uint uiID) const
         return nullptr;
 }
 
-uiobject* manager::get_uiobject(uint uiID)
+utils::observer_ptr<uiobject> manager::get_uiobject(uint uiID)
 {
     auto mIter = lObjectList_.find(uiID);
     if (mIter != lObjectList_.end())
@@ -428,15 +409,15 @@ uiobject* manager::get_uiobject(uint uiID)
         return nullptr;
 }
 
-std::vector<uiobject*> manager::get_virtual_uiobject_list(const std::string& sNames)
+std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(const std::string& sNames) const
 {
-    std::vector<uiobject*> lInheritance;
+    std::vector<utils::observer_ptr<const uiobject>> lInheritance;
     if (!utils::has_no_content(sNames))
     {
         for (auto sParent : utils::cut(sNames, ","))
         {
             utils::trim(sParent, ' ');
-            uiobject* pObj = get_uiobject_by_name(sParent, true);
+            utils::observer_ptr<const uiobject> pObj = get_uiobject_by_name(sParent, true);
             if (!pObj)
             {
                 bool bNonVirtual = false;
@@ -451,34 +432,15 @@ std::vector<uiobject*> manager::get_virtual_uiobject_list(const std::string& sNa
                 continue;
             }
 
-            lInheritance.push_back(pObj);
+            lInheritance.push_back(std::move(pObj));
         }
     }
 
     return lInheritance;
 }
 
-const uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual) const
-{
-    if (bVirtual)
-    {
-        auto iter = lNamedVirtualObjectList_.find(sName);
-        if (iter != lNamedVirtualObjectList_.end())
-            return iter->second;
-        else
-            return nullptr;
-    }
-    else
-    {
-        auto iter = lNamedObjectList_.find(sName);
-        if (iter != lNamedObjectList_.end())
-            return iter->second;
-        else
-            return nullptr;
-    }
-}
-
-uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
+utils::observer_ptr<const uiobject> manager::get_uiobject_by_name(
+    const std::string& sName, bool bVirtual) const
 {
     if (bVirtual)
     {
@@ -500,20 +462,10 @@ uiobject* manager::get_uiobject_by_name(const std::string& sName, bool bVirtual)
 
 sol::state& manager::get_lua()
 {
-    return *pSol_;
-}
-
-const sol::state& manager::get_lua() const
-{
-    return *pSol_;
-}
-
-lua::state& manager::get_luapp()
-{
     return *pLua_;
 }
 
-const lua::state& manager::get_luapp() const
+const sol::state& manager::get_lua() const
 {
     return *pLua_;
 }
@@ -613,15 +565,15 @@ void manager::load_addon_files_(addon* pAddOn)
             {
                 pLua_->do_file(sFile);
             }
-            catch (const lua::exception& e)
+            catch (const sol::error& e)
             {
-                std::string sError = e.get_description();
+                std::string sError = e.what();
 
                 gui::out << gui::error << sError << std::endl;
 
                 event mEvent("LUA_ERROR");
                 mEvent.add(sError);
-                pEventManager_->fire_event(mEvent);
+                fire_event(mEvent);
             }
         }
         else if (sFile.find(".xml") != sFile.npos)
@@ -635,21 +587,21 @@ void manager::load_addon_files_(addon* pAddOn)
         {
             pLua_->do_file(sSavedVariablesFile);
         }
-        catch (const lua::exception& e)
+        catch (const sol::error& e)
         {
-            std::string sError = e.get_description();
+            std::string sError = e.what();
 
             gui::out << gui::error << sError << std::endl;
 
             event mEvent("LUA_ERROR");
             mEvent.add(sError);
-            pEventManager_->fire_event(mEvent);
+            fire_event(mEvent);
         }
     }
 
     event mEvent("ADDON_LOADED");
     mEvent.add(pAddOn->sName);
-    pEventManager_->fire_event(mEvent);
+    fire_event(mEvent);
 }
 
 void manager::load_addon_directory_(const std::string& sDirectory)
@@ -736,7 +688,7 @@ void manager::save_variables_(const addon* pAddOn)
         std::ofstream mFile("saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua");
         for (const auto& sVariable : pAddOn->lSavedVariableList)
         {
-            std::string sSerialized = pLua_->serialize_global(sVariable);
+            std::string sSerialized = serialize_global_(sVariable);
             if (!sSerialized.empty())
                 mFile << sSerialized << "\n";
         }
@@ -746,37 +698,6 @@ void manager::save_variables_(const addon* pAddOn)
 void gui_out(const std::string& sMessage)
 {
     gui::out << sMessage << std::endl;
-}
-
-void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
-{
-    if (pLua_) return;
-
-    pSol_ = std::unique_ptr<sol::state>(new sol::state());
-    pSol_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
-        sol::lib::os, sol::lib::string, sol::lib::debug);
-
-    pLua_ = std::unique_ptr<lua::state>(new lua::state(pSol_->lua_state()));
-    pLua_->set_print_error_function(gui_out);
-
-    register_lua_manager_();
-    pLua_->reg<lua_uiobject>();
-    pLua_->reg<lua_frame>();
-    pLua_->reg<lua_focus_frame>();
-    pLua_->reg<lua_layered_region>();
-
-    pLua_->reg("set_key_binding",              l_set_key_binding);
-    pLua_->reg("create_frame",                 l_create_frame);
-    pLua_->reg("delete_frame",                 l_delete_frame);
-    pLua_->reg("set_interface_scaling_factor", l_set_interface_scaling_factor);
-    pLua_->reg("log",                          l_log);
-    pLua_->reg("reload_ui",                    l_reload_ui);
-
-    pLocalizer_->register_on_lua(*pSol_);
-
-    pLuaRegs_ = pLuaRegs;
-    if (pLuaRegs_)
-        pLuaRegs_(*this);
 }
 
 void manager::read_files()
@@ -825,7 +746,6 @@ void manager::close_ui()
         lAddOnList_.clear();
 
         pLua_ = nullptr;
-        pSol_ = nullptr;
 
         pHoveredFrame_ = nullptr;
         bUpdateHoveredFrame_ = false;
@@ -855,6 +775,10 @@ void manager::close_ui()
         pCurrentAddOn_ = nullptr;
 
         pLocalizer_->clear_translations();
+
+        unregister_event("KEY_PRESSED");
+        unregister_event("MOUSE_MOVED");
+        unregister_event("WINDOW_RESIZED");
     }
 }
 
@@ -991,10 +915,10 @@ void manager::update(float fDelta)
 
     DEBUG_LOG(" Update widgets...");
     // ... then update logics on main widgets from parent to children.
-    for (auto* pObject : get_root_frames())
+    for (auto& mFrame : get_root_frames())
     {
-        if (!pObject->is_virtual())
-            pObject->update(fDelta);
+        if (!mFrame.is_virtual())
+            mFrame.update(fDelta);
     }
 
     // Removed destroyed frames
@@ -1075,12 +999,12 @@ void manager::update(float fDelta)
     if (bFirstIteration_)
     {
         DEBUG_LOG(" Entering world...");
-        pEventManager_->fire_event(event("ENTERING_WORLD"));
+        fire_event(event("ENTERING_WORLD"));
         bFirstIteration_ = false;
     }
 
     ++uiFrameNumber_;
-    pEventManager_->frame_ended();
+    frame_ended();
     bUpdating_ = false;
 
     if (bReloadUI_)
@@ -1093,7 +1017,7 @@ void manager::clear_hovered_frame_()
     pInputManager_->allow_input("WORLD");
 }
 
-void manager::set_hovered_frame_(frame* pFrame, float fX, float fY)
+void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, float fX, float fY)
 {
     if (pHoveredFrame_ && pFrame != pHoveredFrame_)
         pHoveredFrame_->notify_mouse_in_frame(false, fX, fY);
@@ -1111,7 +1035,8 @@ void manager::set_hovered_frame_(frame* pFrame, float fX, float fY)
         clear_hovered_frame_();
 }
 
-void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstraint, std::function<void()> pApplyConstraintFunc)
+void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
+    constraint mConstraint, std::function<void()> pApplyConstraintFunc)
 {
     pSizedObject_ = nullptr;
     pMovedObject_ = pObj;
@@ -1134,7 +1059,7 @@ void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstrai
 
             pMovedObject_->clear_all_points();
             pMovedObject_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, lBorders.top_left());
-            pMovedAnchor_ = pMovedObject_->modify_point(anchor_point::TOPLEFT);
+            pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
             fMovementStartPositionX_ = lBorders.left;
             fMovementStartPositionY_ = lBorders.top;
@@ -1142,21 +1067,21 @@ void manager::start_moving(uiobject* pObj, anchor* pAnchor, constraint mConstrai
     }
 }
 
-void manager::stop_moving(uiobject* pObj)
+void manager::stop_moving(const uiobject& mObj)
 {
-    if (pMovedObject_ == pObj)
+    if (pMovedObject_.get() == &mObj)
     {
         pMovedObject_ = nullptr;
         pMovedAnchor_ = nullptr;
     }
 }
 
-bool manager::is_moving(uiobject* pObj) const
+bool manager::is_moving(const uiobject& mObj) const
 {
-    return (pMovedObject_ == pObj);
+    return pMovedObject_.get() == &mObj;
 }
 
-void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
+void manager::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint)
 {
     pMovedObject_    = nullptr;
     pSizedObject_    = pObj;
@@ -1231,15 +1156,15 @@ void manager::start_sizing(uiobject* pObj, anchor_point mPoint)
     }
 }
 
-void manager::stop_sizing(uiobject* pObj)
+void manager::stop_sizing(const uiobject& mObj)
 {
-    if (pSizedObject_ == pObj)
+    if (pSizedObject_.get() == &mObj)
         pSizedObject_ = nullptr;
 }
 
-bool manager::is_sizing(uiobject* pObj) const
+bool manager::is_sizing(const uiobject& mObj) const
 {
-    return (pSizedObject_ == pObj);
+    return pSizedObject_.get() == &mObj;
 }
 
 float manager::get_movement_x() const
@@ -1324,19 +1249,19 @@ void manager::update_hovered_frame_()
     float fX = pInputManager_->get_mouse_x();
     float fY = pInputManager_->get_mouse_y();
 
-    frame* pHoveredFrame = find_hovered_frame_(fX, fY);
-    set_hovered_frame_(pHoveredFrame, fX, fY);
+    utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(fX, fY);
+    set_hovered_frame_(std::move(pHoveredFrame), fX, fY);
 
     bUpdateHoveredFrame_ = false;
 }
 
-frame* manager::get_hovered_frame()
+const utils::observer_ptr<frame>& manager::get_hovered_frame()
 {
     update_hovered_frame_();
     return pHoveredFrame_;
 }
 
-void manager::notify_hovered_frame_dirty()
+void manager::notify_hovered_frame_dirty() const
 {
     bUpdateHoveredFrame_ = true;
 }
@@ -1347,7 +1272,7 @@ void manager::clear_focussed_frame_()
     pInputManager_->set_keyboard_focus(false);
 }
 
-void manager::request_focus(focus_frame* pFocusFrame)
+void manager::request_focus(utils::observer_ptr<focus_frame> pFocusFrame)
 {
     if (pFocusFrame == pFocusedFrame_)
         return;
@@ -1357,7 +1282,7 @@ void manager::request_focus(focus_frame* pFocusFrame)
 
     if (pFocusFrame)
     {
-        pFocusedFrame_ = pFocusFrame;
+        pFocusedFrame_ = std::move(pFocusFrame);
         pFocusedFrame_->notify_focus(true);
         pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
@@ -1412,12 +1337,12 @@ int manager::get_highest_level(frame_strata mFrameStrata) const
     return 0;
 }
 
-addon* manager::get_current_addon()
+const addon* manager::get_current_addon()
 {
     return pCurrentAddOn_;
 }
 
-void manager::set_current_addon(addon* pAddOn)
+void manager::set_current_addon(const addon* pAddOn)
 {
     pCurrentAddOn_ = pAddOn;
 }
@@ -1502,10 +1427,10 @@ void manager::on_event(const event& mEvent)
             {
                 pLua_->do_string(sScript);
             }
-            catch (const lua::exception& e)
+            catch (const sol::error& e)
             {
                 gui::out << gui::error << "Bound action : " << sKeyName
-                    << " : " << e.get_description() << std::endl;
+                    << " : " << e.what() << std::endl;
             }
         }
     }
@@ -1519,12 +1444,12 @@ void manager::on_event(const event& mEvent)
         set_interface_scaling_factor(fBaseScalingFactor_);
 
         // Notify all frames anchored to the window edges
-        for (auto* pObject : get_root_frames())
+        for (auto& mFrame : get_root_frames())
         {
-            if (!pObject->is_virtual())
+            if (!mFrame.is_virtual())
             {
-                pObject->notify_borders_need_update();
-                pObject->notify_renderer_need_redraw();
+                mFrame.notify_borders_need_update();
+                mFrame.notify_renderer_need_redraw();
             }
         }
 
@@ -1656,51 +1581,21 @@ std::string manager::print_ui() const
     if (!lObjectList_.empty())
     {
         s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
-        for (const auto* pObject : utils::range::value(lObjectList_))
+        for (const auto& pObject : utils::range::value(lObjectList_))
         {
-            if (!pObject->is_virtual() && !pObject->get_parent())
+            if (pObject && !pObject->is_virtual() && !pObject->get_parent())
                 s << pObject->serialize("") << "\n########################\n" << std::endl;
         }
 
         s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
-        for (const auto* pObject : utils::range::value(lObjectList_))
+        for (const auto& pObject : utils::range::value(lObjectList_))
         {
-            if (pObject->is_virtual() && !pObject->get_parent())
+            if (pObject && pObject->is_virtual() && !pObject->get_parent())
                 s << pObject->serialize("") << "\n########################\n" << std::endl;
         }
     }
 
     return s.str();
-}
-
-const event_manager* manager::get_event_manager() const
-{
-    return pEventManager_.get();
-}
-
-event_manager* manager::get_event_manager()
-{
-    return pEventManager_.get();
-}
-
-const input::manager* manager::get_input_manager() const
-{
-    return pInputManager_.get();
-}
-
-input::manager* manager::get_input_manager()
-{
-    return pInputManager_.get();
-}
-
-localizer& manager::get_localizer()
-{
-    return *pLocalizer_;
-}
-
-const localizer& manager::get_localizer() const
-{
-    return *pLocalizer_;
 }
 
 }

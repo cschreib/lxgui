@@ -8,6 +8,18 @@
 namespace lxgui {
 namespace gui
 {
+    /// ID of a layer for rendering inside a frame.
+    enum class layer_type
+    {
+        BACKGROUND = 0,
+        BORDER = 1,
+        ARTWORK = 2,
+        OVERLAY = 3,
+        HIGHLIGHT = 4,
+        SPECIALHIGH = 5,
+        ENUM_SIZE
+    };
+
     /// A #uiobject that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
     *   texts, 3D models, ...) and must be contained inside a layer,
@@ -22,7 +34,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit layered_region(manager* pManager);
+        explicit layered_region(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -36,7 +48,7 @@ namespace gui
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        std::unique_ptr<uiobject> release_from_parent() override;
+        utils::owner_ptr<uiobject> release_from_parent() override;
 
         /// shows this widget.
         /** \note Its parent must be shown for it to appear on
@@ -58,7 +70,7 @@ namespace gui
         /// Returns this layered_region's draw layer.
         /** \return this layered_region's draw layer
         */
-        layer_type get_draw_layer();
+        layer_type get_draw_layer() const;
 
         /// Sets this layered_region's draw layer.
         /** \param mLayer The new layer
@@ -80,6 +92,9 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
+
         static constexpr const char* CLASS_NAME = "LayeredRegion";
 
     protected :
@@ -88,27 +103,6 @@ namespace gui
 
         layer_type mLayer_ = layer_type::ARTWORK;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_layered_region : public lua_uiobject
-    {
-    public :
-
-        explicit lua_layered_region(lua_State* pLua);
-        layered_region* get_object() { return static_cast<layered_region*>(pObject_); }
-
-        int _get_draw_layer(lua_State*);
-        int _set_draw_layer(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_layered_region> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

@@ -60,13 +60,6 @@ find_library(LXGUI_UTILS_LIBRARY
     PATHS /usr /usr/local
 )
 
-find_library(LXGUI_LUAPP_LIBRARY
-    NAMES lxgui-luapp lxgui-luapp.lib
-    PATH_SUFFIXES lib
-    HINTS ${LXGUI_ROOT} $ENV{LXGUI_ROOT}
-    PATHS /usr /usr/local
-)
-
 find_library(LXGUI_XML_LIBRARY
     NAMES lxgui-xml lxgui-xml.lib
     PATH_SUFFIXES lib
@@ -74,7 +67,7 @@ find_library(LXGUI_XML_LIBRARY
     PATHS /usr /usr/local
 )
 
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_LUAPP_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
 
 find_path(LXGUI_IMPL_INCLUDE_DIR
     NAMES lxgui/impl/gui_gl_renderer.hpp DOC "Path to lxgui implementation include directory."
@@ -118,7 +111,7 @@ find_library(LXGUI_INPUT_SDL_LIBRARY
     PATHS /usr /usr/local
 )
 
-mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY LXGUI_LUAPP_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY)
+mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY)
 mark_as_advanced(LXGUI_IMPL_INCLUDE_DIR LXGUI_GUI_GL_LIBRARY LXGUI_GUI_SFML_LIBRARY LXGUI_INPUT_SFML_LIBRARY LXGUI_GUI_SDL_LIBRARY LXGUI_INPUT_SDL_LIBRARY)
 
 if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
@@ -153,11 +146,12 @@ endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(lxgui
-                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_LUAPP_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY LXGUI_INCLUDE_DIR
+                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY LXGUI_INCLUDE_DIR
                                   VERSION_VAR LXGUI_VERSION_STRING)
 
 find_package(Lua REQUIRED)
 find_package(fmt REQUIRED)
+find_package(oup REQUIRED)
 find_package(sol2 REQUIRED)
 
 set(LXGUI_GUI_GL_FOUND FALSE)
@@ -167,7 +161,7 @@ set(LXGUI_GUI_SDL_FOUND FALSE)
 set(LXGUI_INPUT_SDL_FOUND FALSE)
 
 set(LXGUI_INCLUDE_DIRS ${LXGUI_INCLUDE_DIR})
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_LUAPP_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(LXGUI_EMSCRIPTEN TRUE)
@@ -190,6 +184,7 @@ if(LXGUI_FOUND)
         target_link_libraries(lxgui::lxgui INTERFACE Lua::Lua)
         target_link_libraries(lxgui::lxgui INTERFACE sol2::sol2)
         target_link_libraries(lxgui::lxgui INTERFACE fmt::fmt)
+        target_link_libraries(lxgui::lxgui INTERFACE oup::oup)
     endif()
 
     if(LXGUI_GUI_GL_LIBRARY)

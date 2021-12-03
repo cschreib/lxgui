@@ -7,3 +7,6 @@
 [submodule "fmt"]
 	path = extern/fmt
 	url = https://github.com/fmtlib/fmt.git
+[submodule "extern/observable_unique_ptr"]
+	path = extern/observable_unique_ptr
+	url = https://github.com/cschreib/observable_unique_ptr.git

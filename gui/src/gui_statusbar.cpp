@@ -18,7 +18,7 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
     return u;
 }
 
-status_bar::status_bar(manager* pManager) : frame(pManager)
+status_bar::status_bar(manager& mManager) : frame(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -53,11 +53,11 @@ bool status_bar::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void status_bar::copy_from(uiobject* pObj)
+void status_bar::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(pObj);
+    frame::copy_from(mObj);
 
-    status_bar* pStatusBar = down_cast<status_bar>(pObj);
+    const status_bar* pStatusBar = down_cast<status_bar>(&mObj);
     if (!pStatusBar)
         return;
 
@@ -68,16 +68,15 @@ void status_bar::copy_from(uiobject* pObj)
     this->set_orientation(pStatusBar->get_orientation());
     this->set_reversed(pStatusBar->is_reversed());
 
-    texture* pBar = pStatusBar->get_bar_texture();
-    if (pBar)
+    if (const texture* pBar = pStatusBar->get_bar_texture().get())
     {
-        std::unique_ptr<texture> pBarTexture = this->create_bar_texture_();
+        auto pBarTexture = this->create_bar_texture_();
 
         if (this->is_virtual())
             pBarTexture->set_virtual();
 
         pBarTexture->set_name(pBar->get_name());
-        if (!pManager_->add_uiobject(pBarTexture.get()))
+        if (!get_manager().add_uiobject(pBarTexture))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to add \""+pBar->get_name()+"\" to \""+sName_+"\", "
@@ -88,9 +87,9 @@ void status_bar::copy_from(uiobject* pObj)
             if (!is_virtual())
                 pBarTexture->create_glue();
 
-            pBarTexture->copy_from(pBar);
+            pBarTexture->copy_from(*pBar);
             pBarTexture->notify_loaded();
-            this->set_bar_texture(pBarTexture.get());
+            this->set_bar_texture(pBarTexture);
             this->add_region(std::move(pBarTexture));
         }
     }
@@ -161,7 +160,7 @@ void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Uknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
+            "Unknown layer type : \""+sBarLayer+"\". Using \"ARTWORK\"." << std::endl;
 
         mBarLayer_ = layer_type::ARTWORK;
     }
@@ -170,18 +169,18 @@ void status_bar::set_bar_draw_layer(const std::string& sBarLayer)
         pBarTexture_->set_draw_layer(mBarLayer_);
 }
 
-void status_bar::set_bar_texture(texture* pBarTexture)
+void status_bar::set_bar_texture(utils::observer_ptr<texture> pBarTexture)
 {
-    pBarTexture_ = pBarTexture;
+    pBarTexture_ = std::move(pBarTexture);
     if (!pBarTexture_)
         return;
 
     pBarTexture_->clear_all_points();
 
     if (bReversed_)
-        pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
+        pBarTexture_->set_point(anchor(*pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
     else
-        pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
+        pBarTexture_->set_point(anchor(*pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
     lInitialTextCoords_ = select_uvs(pBarTexture_->get_tex_coord());
     notify_bar_texture_needs_update_();
@@ -191,9 +190,9 @@ void status_bar::set_bar_color(const color& mBarColor)
 {
     if (!pBarTexture_)
     {
-        std::unique_ptr<texture> pBarTexture = create_bar_texture_();
+        auto pBarTexture = create_bar_texture_();
         pBarTexture->set_name("$parentBarTexture");
-        if (!pManager_->add_uiobject(pBarTexture.get()))
+        if (!get_manager().add_uiobject(pBarTexture))
         {
             gui::out << gui::warning << "gui::" << lType_.back() << " : "
                 "Trying to create bar texture for \""+sName_+"\",\n"
@@ -205,7 +204,7 @@ void status_bar::set_bar_color(const color& mBarColor)
             pBarTexture->create_glue();
 
         pBarTexture->notify_loaded();
-        set_bar_texture(pBarTexture.get());
+        set_bar_texture(pBarTexture);
         add_region(std::move(pBarTexture));
     }
 
@@ -213,13 +212,29 @@ void status_bar::set_bar_color(const color& mBarColor)
     pBarTexture_->set_solid_color(mBarColor_);
 }
 
-void status_bar::set_orientation(orientation mOrient)
+void status_bar::set_orientation(orientation mOrientation)
 {
-    if (mOrient != mOrientation_)
+    if (mOrientation != mOrientation_)
     {
-        mOrientation_ = mOrient;
+        mOrientation_ = mOrientation;
         notify_bar_texture_needs_update_();
     }
+}
+
+void status_bar::set_orientation(const std::string& sOrientation)
+{
+    orientation mOrientation = orientation::HORIZONTAL;
+    if (sOrientation == "VERTICAL")
+        mOrientation = orientation::VERTICAL;
+    else if (sOrientation == "HORIZONTAL")
+        mOrientation = orientation::HORIZONTAL;
+    else
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            "Unknown orientation : \""+sOrientation+"\". Using \"HORIZONTAL\"." << std::endl;
+    }
+
+    set_orientation(mOrientation);
 }
 
 void status_bar::set_reversed(bool bReversed)
@@ -232,9 +247,9 @@ void status_bar::set_reversed(bool bReversed)
     if (pBarTexture_)
     {
         if (bReversed_)
-            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
+            pBarTexture_->set_point(anchor(*pBarTexture_, anchor_point::TOPRIGHT, "$parent", anchor_point::TOPRIGHT));
         else
-            pBarTexture_->set_point(anchor(pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
+            pBarTexture_->set_point(anchor(*pBarTexture_, anchor_point::BOTTOMLEFT, "$parent", anchor_point::BOTTOMLEFT));
 
         if (!bVirtual_)
             pBarTexture_->notify_borders_need_update();
@@ -261,11 +276,6 @@ layer_type status_bar::get_bar_draw_layer() const
     return mBarLayer_;
 }
 
-texture* status_bar::get_bar_texture() const
-{
-    return pBarTexture_;
-}
-
 const color& status_bar::get_bar_color() const
 {
     return mBarColor_;
@@ -281,11 +291,11 @@ bool status_bar::is_reversed() const
     return bReversed_;
 }
 
-std::unique_ptr<texture> status_bar::create_bar_texture_()
+utils::owner_ptr<texture> status_bar::create_bar_texture_()
 {
-    std::unique_ptr<texture> pBarTexture(new texture(pManager_));
+    auto pBarTexture = utils::make_owned<texture>(get_manager());
     pBarTexture->set_special();
-    pBarTexture->set_parent(this);
+    pBarTexture->set_parent(observer_from(this));
     pBarTexture->set_draw_layer(mBarLayer_);
 
     return pBarTexture;
@@ -293,7 +303,7 @@ std::unique_ptr<texture> status_bar::create_bar_texture_()
 
 void status_bar::create_glue()
 {
-    create_glue_<lua_status_bar>();
+    create_glue_(this);
 }
 
 void status_bar::update(float fDelta)
@@ -335,7 +345,7 @@ void status_bar::update(float fDelta)
         bUpdateBarTexture_ = false;
     }
 
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
     frame::update(fDelta);
     if (!mChecker.is_alive())
         return;

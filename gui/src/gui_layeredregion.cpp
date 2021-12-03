@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-layered_region::layered_region(manager* pManager) : region(pManager)
+layered_region::layered_region(manager& mManager) : region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -38,15 +38,15 @@ std::string layered_region::serialize(const std::string& sTab) const
 
 void layered_region::create_glue()
 {
-    create_glue_<lua_layered_region>();
+    create_glue_(this);
 }
 
-std::unique_ptr<uiobject> layered_region::release_from_parent()
+utils::owner_ptr<uiobject> layered_region::release_from_parent()
 {
-    if (pParent_)
-        return pParent_->remove_region(this);
-    else
+    if (!pParent_)
         return nullptr;
+
+    return pParent_->remove_region(utils::static_pointer_cast<layered_region>(observer_from_this()));
 }
 
 void layered_region::show()
@@ -72,7 +72,7 @@ bool layered_region::is_visible() const
     return pParent_->is_visible() && bIsShown_;
 }
 
-layer_type layered_region::get_draw_layer()
+layer_type layered_region::get_draw_layer() const
 {
     return mLayer_;
 }
@@ -103,7 +103,7 @@ void layered_region::set_draw_layer(const std::string& sLayer)
     else
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Uknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
+            << "Unknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
         mLayer = layer_type::ARTWORK;
     }

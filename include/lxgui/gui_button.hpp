@@ -52,7 +52,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit button(manager* pManager);
+        explicit button(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -71,12 +71,12 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Calls the on_event script.
         /** \param mEvent The Event that occured
@@ -89,7 +89,7 @@ namespace gui
         /// Copies an uiobject's parameters into this Button (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Sets this button's text.
         /** \param sText The new text
@@ -104,77 +104,117 @@ namespace gui
         /// Returns this button's normal texture.
         /** \return This button's normal texture
         */
-        texture* get_normal_texture();
+        const utils::observer_ptr<texture>& get_normal_texture() { return pNormalTexture_; }
+
+        /// Returns this button's normal texture.
+        /** \return This button's normal texture
+        */
+        utils::observer_ptr<const texture> get_normal_texture() const { return pNormalTexture_; }
 
         /// Returns this button's pushed texture.
         /** \return This button's pushed texture
         */
-        texture* get_pushed_texture();
+        const utils::observer_ptr<texture>& get_pushed_texture() { return pPushedTexture_; }
+
+        /// Returns this button's pushed texture.
+        /** \return This button's pushed texture
+        */
+        utils::observer_ptr<const texture> get_pushed_texture() const { return pPushedTexture_; }
 
         /// Returns this button's disabled texture.
         /** \return This button's disabled texture
         */
-        texture* get_disabled_texture();
+        const utils::observer_ptr<texture>& get_disabled_texture() { return pDisabledTexture_; }
+
+        /// Returns this button's disabled texture.
+        /** \return This button's disabled texture
+        */
+        utils::observer_ptr<const texture> get_disabled_texture() const { return pDisabledTexture_; }
 
         /// Returns this button's highlight texture.
         /** \return This button's highlight texture
         */
-        texture* get_highlight_texture();
+        const utils::observer_ptr<texture>& get_highlight_texture() { return pHighlightTexture_; }
+
+        /// Returns this button's highlight texture.
+        /** \return This button's highlight texture
+        */
+        utils::observer_ptr<const texture> get_highlight_texture() const { return pHighlightTexture_; }
 
         /// Returns this button's normal text.
         /** \return This button's normal text
         */
-        font_string* get_normal_text();
+        const utils::observer_ptr<font_string>& get_normal_text() { return pNormalText_; }
+
+        /// Returns this button's normal text.
+        /** \return This button's normal text
+        */
+        utils::observer_ptr<const font_string> get_normal_text() const { return pNormalText_; }
 
         /// Returns this button's highlight text.
         /** \return This button's highlight text
         */
-        font_string* get_highlight_text();
+        const utils::observer_ptr<font_string>& get_highlight_text() { return pHighlightText_; }
+
+        /// Returns this button's highlight text.
+        /** \return This button's highlight text
+        */
+        utils::observer_ptr<const font_string> get_highlight_text() const { return pHighlightText_; }
 
         /// Returns this button's disabled text.
         /** \return This button's disabled text
         */
-        font_string* get_disabled_text();
+        const utils::observer_ptr<font_string>& get_disabled_text() { return pDisabledText_; }
+
+        /// Returns this button's disabled text.
+        /** \return This button's disabled text
+        */
+        utils::observer_ptr<const font_string> get_disabled_text() const { return pDisabledText_; }
 
         /// Returns the currently displayed text object.
         /** \return The currently displayed text object
         */
-        font_string* get_current_font_string();
+        const utils::observer_ptr<font_string>& get_current_font_string() { return pCurrentFontString_; }
+
+        /// Returns the currently displayed text object.
+        /** \return The currently displayed text object
+        */
+        utils::observer_ptr<const font_string> get_current_font_string() const { return pCurrentFontString_; }
 
         /// Sets this button's normal texture.
         /** \param pTexture The new texture
         */
-        void set_normal_texture(texture* pTexture);
+        void set_normal_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's pushed texture.
         /** \param pTexture The new texture
         */
-        void set_pushed_texture(texture* pTexture);
+        void set_pushed_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's disabled texture.
         /** \param pTexture The new texture
         */
-        void set_disabled_texture(texture* pTexture);
+        void set_disabled_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's highlight texture.
         /** \param pTexture The new texture
         */
-        void set_highlight_texture(texture* pTexture);
+        void set_highlight_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's normal text.
         /** \param pFont The new text object
         */
-        void set_normal_text(font_string* pFont);
+        void set_normal_text(utils::observer_ptr<font_string> pFont);
 
         /// Sets this button's highlight text.
         /** \param pFont The new text object
         */
-        void set_highlight_text(font_string* pFont);
+        void set_highlight_text(utils::observer_ptr<font_string> pFont);
 
         /// Sets this button's disabled text.
         /** \param pFont The new text object
         */
-        void set_disabled_text(font_string* pFont);
+        void set_disabled_text(utils::observer_ptr<font_string> pFont);
 
         /// Disables this Button.
         /** \note A disabled button doesn't receive any input.
@@ -239,8 +279,8 @@ namespace gui
         */
         const vector2f& get_pushed_text_offset() const;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Button";
 
@@ -249,13 +289,13 @@ namespace gui
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        std::unique_ptr<texture>     create_normal_texture_();
-        std::unique_ptr<texture>     create_pushed_texture_();
-        std::unique_ptr<texture>     create_disabled_texture_();
-        std::unique_ptr<texture>     create_highlight_texture_();
-        std::unique_ptr<font_string> create_normal_text_();
-        std::unique_ptr<font_string> create_highlight_text_();
-        std::unique_ptr<font_string> create_disabled_text_();
+        utils::owner_ptr<texture>     create_normal_texture_();
+        utils::owner_ptr<texture>     create_pushed_texture_();
+        utils::owner_ptr<texture>     create_disabled_texture_();
+        utils::owner_ptr<texture>     create_highlight_texture_();
+        utils::owner_ptr<font_string> create_normal_text_();
+        utils::owner_ptr<font_string> create_highlight_text_();
+        utils::owner_ptr<font_string> create_disabled_text_();
 
         state     mState_ = state::UP;
         bool      bHighlighted_ = false;
@@ -263,72 +303,18 @@ namespace gui
 
         utils::ustring sText_;
 
-        texture* pNormalTexture_ = nullptr;
-        texture* pPushedTexture_ = nullptr;
-        texture* pDisabledTexture_ = nullptr;
-        texture* pHighlightTexture_ = nullptr;
+        utils::observer_ptr<texture> pNormalTexture_ = nullptr;
+        utils::observer_ptr<texture> pPushedTexture_ = nullptr;
+        utils::observer_ptr<texture> pDisabledTexture_ = nullptr;
+        utils::observer_ptr<texture> pHighlightTexture_ = nullptr;
 
-        font_string* pNormalText_ = nullptr;
-        font_string* pHighlightText_ = nullptr;
-        font_string* pDisabledText_ = nullptr;
-        font_string* pCurrentFontString_ = nullptr;
+        utils::observer_ptr<font_string> pNormalText_ = nullptr;
+        utils::observer_ptr<font_string> pHighlightText_ = nullptr;
+        utils::observer_ptr<font_string> pDisabledText_ = nullptr;
+        utils::observer_ptr<font_string> pCurrentFontString_ = nullptr;
 
         vector2f mPushedTextOffset_ = vector2f::ZERO;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_button : public lua_frame
-    {
-    public :
-
-        explicit lua_button(lua_State* pLua);
-        button* get_object() { return static_cast<button*>(pObject_); }
-
-        // Glues
-        int _click(lua_State*);
-        int _disable(lua_State*);
-        int _enable(lua_State*);
-        int _get_button_state(lua_State*);
-        int _get_disabled_font_object(lua_State*);
-        int _get_disabled_text_color(lua_State*);
-        int _get_disabled_texture(lua_State*);
-        int _get_highlight_font_object(lua_State*);
-        int _get_highlight_text_color(lua_State*);
-        int _get_highlight_texture(lua_State*);
-        int _get_normal_font_object(lua_State*);
-        int _get_normal_texture(lua_State*);
-        int _get_pushed_text_offset(lua_State*);
-        int _get_pushed_texture(lua_State*);
-        int _get_text(lua_State*);
-        int _get_text_height(lua_State*);
-        int _get_text_width(lua_State*);
-        int _is_enabled(lua_State*);
-        int _lock_highlight(lua_State*);
-        int _set_button_state(lua_State*);
-        int _set_disabled_font_object(lua_State*);
-        int _set_disabled_text_color(lua_State*);
-        int _set_disabled_texture(lua_State*);
-        int _set_highlight_font_object(lua_State*);
-        int _set_highlight_text_color(lua_State*);
-        int _set_highlight_texture(lua_State*);
-        int _set_normal_font_object(lua_State*);
-        int _set_normal_text_color(lua_State*);
-        int _set_normal_texture(lua_State*);
-        int _set_pushed_text_offset(lua_State*);
-        int _set_pushed_texture(lua_State*);
-        int _set_text(lua_State*);
-
-        int _unlock_highlight(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_button> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

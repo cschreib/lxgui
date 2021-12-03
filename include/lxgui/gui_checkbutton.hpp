@@ -17,7 +17,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit check_button(manager* pManager);
+        explicit check_button(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -28,7 +28,7 @@ namespace gui
         /// Copies an uiobject's parameters into this CheckButton (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Checks this button.
         virtual void check();
@@ -58,28 +58,50 @@ namespace gui
         /// Returns this button's checked texture.
         /** \return This button's checked texture
         */
-        texture* get_checked_texture();
+        const utils::observer_ptr<texture>& get_checked_texture()
+        {
+            return pCheckedTexture_;
+        }
+
+        /// Returns this button's checked texture.
+        /** \return This button's checked texture
+        */
+        utils::observer_ptr<const texture> get_checked_texture() const
+        {
+            return pCheckedTexture_;
+        }
 
         /// Returns this button's disabled checked texture.
         /** \return This button's disabled checked texture
         */
-        texture* get_disabled_checked_texture();
+        const utils::observer_ptr<texture>& get_disabled_checked_texture()
+        {
+            return pDisabledCheckedTexture_;
+        }
+
+        /// Returns this button's disabled checked texture.
+        /** \return This button's disabled checked texture
+        */
+        utils::observer_ptr<const texture> get_disabled_checked_texture() const
+        {
+            return pDisabledCheckedTexture_;
+        }
 
         /// Sets this button's checked texture.
         /** \param pTexture The new texture
         */
-        void set_checked_texture(texture* pTexture);
+        void set_checked_texture(utils::observer_ptr<texture> pTexture);
 
         /// Sets this button's disabled checked texture.
         /** \param pTexture The new texture
         */
-        void set_disabled_checked_texture(texture* pTexture);
+        void set_disabled_checked_texture(utils::observer_ptr<texture> pTexture);
 
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "CheckButton";
 
@@ -87,41 +109,15 @@ namespace gui
 
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        std::unique_ptr<texture> create_checked_texture_();
-        std::unique_ptr<texture> create_disabled_checked_texture_();
+        utils::owner_ptr<texture> create_checked_texture_();
+        utils::owner_ptr<texture> create_disabled_checked_texture_();
 
         bool bChecked_ = false;
 
-        texture* pCheckedTexture_ = nullptr;
-        texture* pDisabledCheckedTexture_ = nullptr;
+        utils::observer_ptr<texture> pCheckedTexture_ = nullptr;
+        utils::observer_ptr<texture> pDisabledCheckedTexture_ = nullptr;
 
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_check_button : public lua_button
-    {
-    public :
-
-        explicit lua_check_button(lua_State* pLua);
-        check_button* get_object() { return static_cast<check_button*>(pObject_); }
-
-        // Glues
-        int _is_checked(lua_State*);
-        int _get_checked_texture(lua_State*);
-        int _get_disabled_checked_texture(lua_State*);
-        int _set_checked(lua_State*);
-        int _set_checked_texture(lua_State*);
-        int _set_disabled_checked_texture(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_check_button> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

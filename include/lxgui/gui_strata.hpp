@@ -34,8 +34,8 @@ namespace gui
     /// Contains gui::frame
     struct level
     {
-        std::vector<frame*> lFrameList;
-        strata*             pStrata = nullptr;
+        std::vector<utils::observer_ptr<frame>> lFrameList;
+        strata* pStrata = nullptr;
     };
 
     /// Contains gui::level

@@ -31,7 +31,7 @@ namespace gui
         };
 
         /// Constructor.
-        explicit texture(manager* pManager);
+        explicit texture(manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines
@@ -45,7 +45,7 @@ namespace gui
         /// Copies an uiobject's parameters into this texture (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns this texture's blending mode.
         /** \return This texture's blending mode
@@ -225,8 +225,8 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "Texture";
 
@@ -249,42 +249,6 @@ namespace gui
 
         mutable quad mQuad_;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_texture : public lua_layered_region
-    {
-    public :
-
-        explicit lua_texture(lua_State* pLua);
-        texture* get_object() { return static_cast<texture*>(pObject_); }
-
-        // texture
-        int _set_vertex_color(lua_State*);
-        int _get_blend_mode(lua_State*);
-        int _get_filter_mode(lua_State*);
-        int _get_tex_coord(lua_State*);
-        int _get_tex_coord_modifies_rect(lua_State*);
-        int _get_texture(lua_State*);
-        int _get_vertex_color(lua_State*);
-        int _is_desaturated(lua_State*);
-        int _set_blend_mode(lua_State*);
-        int _set_filter_mode(lua_State*);
-        int _set_desaturated(lua_State*);
-        int _set_gradient(lua_State*);
-        int _set_gradient_alpha(lua_State*);
-        int _set_tex_coord(lua_State*);
-        int _set_tex_coord_modifies_rect(lua_State*);
-        int _set_texture(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_texture> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

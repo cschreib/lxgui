@@ -4,7 +4,7 @@
 namespace lxgui {
 namespace gui
 {
-region::region(manager* pManager) : uiobject(pManager)
+region::region(manager& mManager) : uiobject(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -15,7 +15,8 @@ void region::render()
 
 void region::create_glue()
 {
-    create_glue_<lua_uiobject>();
+    // The "region" type is not exposed to Lua, just use uiobject.
+    create_glue_(static_cast<uiobject*>(this));
 }
 
 bool region::is_in_region(float fX, float fY) const

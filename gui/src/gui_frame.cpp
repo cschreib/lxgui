@@ -10,7 +10,6 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
 #include <lxgui/utils_range.hpp>
@@ -30,7 +29,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager* pManager) : event_receiver(pManager->get_event_manager()), region(pManager)
+frame::frame(manager& mManager) : event_receiver(mManager.get_event_manager()), region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -51,12 +50,12 @@ frame::~frame()
     if (!bVirtual_)
     {
         // Tell the renderer to no longer render this widget
-        get_top_level_renderer()->notify_rendered_frame(this, false);
+        get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
         pRenderer_ = nullptr;
     }
 
     // Unregister this frame from the GUI manager
-    pManager_->remove_frame(this);
+    get_manager().remove_frame(observer_from(this));
 }
 
 void frame::render()
@@ -71,7 +70,7 @@ void frame::render()
         {
             if (mLayer.bDisabled) continue;
 
-            for (auto* pRegion : mLayer.lRegionList)
+            for (const auto& pRegion : mLayer.lRegionList)
             {
                 if (pRegion->is_shown() && !pRegion->is_newly_created())
                     pRegion->render();
@@ -82,7 +81,7 @@ void frame::render()
 
 void frame::create_glue()
 {
-    create_glue_<lua_frame>();
+    create_glue_(this);
 }
 
 std::string frame::serialize(const std::string& sTab) const
@@ -90,8 +89,8 @@ std::string frame::serialize(const std::string& sTab) const
     std::ostringstream sStr;
 
     sStr << region::serialize(sTab);
-    if (pRenderer_ && pRenderer_ != pManager_)
-    sStr << sTab << "  # Man. render : " << dynamic_cast<frame*>(pRenderer_)->get_name() << "\n";
+    if (auto pFrameRenderer = utils::dynamic_pointer_cast<frame>(pRenderer_))
+    sStr << sTab << "  # Man. render : " << pFrameRenderer->get_name() << "\n";
     sStr << sTab << "  # Strata      : ";
     switch (mStrata_)
     {
@@ -177,9 +176,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Regions     : " << lRegionList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (auto* pRegion : get_regions())
+        for (auto& mRegion : get_regions())
         {
-            sStr << pRegion->serialize(sTab+"  | ");
+            sStr << mRegion.serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -192,9 +191,9 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  # Children    : " << lChildList_.size() << "\n";
         sStr << sTab << "  |-###\n";
 
-        for (const auto* pChild : get_children())
+        for (const auto& mChild : get_children())
         {
-            sStr << pChild->serialize(sTab+"  | ");
+            sStr << mChild.serialize(sTab+"  | ");
             sStr << sTab << "  |-###\n";
         }
     }
@@ -225,11 +224,11 @@ bool frame::can_use_script(const std::string& sScriptName) const
         return false;
 }
 
-void frame::copy_from(uiobject* pObj)
+void frame::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(pObj);
+    uiobject::copy_from(mObj);
 
-    frame* pFrame = down_cast<frame>(pObj);
+    const frame* pFrame = down_cast<frame>(&mObj);
     if (!pFrame)
         return;
 
@@ -244,13 +243,14 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_frame_strata(pFrame->get_frame_strata());
 
-    frame* pHighParent = this;
+    utils::observer_ptr<const frame> pHighParent = observer_from(this);
+
     for (int i = 0; i < pFrame->get_level(); ++i)
     {
-        if (pHighParent->get_parent())
-            pHighParent = pHighParent->get_parent();
-        else
+        if (!pHighParent->get_parent())
             break;
+
+        pHighParent = pHighParent->get_parent();
     }
 
     this->set_level(pHighParent->get_level() + pFrame->get_level());
@@ -273,42 +273,24 @@ void frame::copy_from(uiobject* pObj)
 
     this->set_scale(pFrame->get_scale());
 
-    for (auto* pArt : pFrame->get_regions())
+    for (const auto& pArt : pFrame->lRegionList_)
     {
-        if (pArt->is_special()) continue;
+        if (!pArt || pArt->is_special()) continue;
 
-        std::unique_ptr<layered_region> pNewArt = pManager_->create_layered_region(pArt->get_object_type());
+        utils::observer_ptr<layered_region> pNewArt = create_region(
+            pArt->get_draw_layer(), pArt->get_object_type(), pArt->get_raw_name(),
+            {pArt});
+
         if (!pNewArt) continue;
 
-        if (this->is_virtual())
-            pNewArt->set_virtual();
-
-        pNewArt->set_name_and_parent(pArt->get_raw_name(), this);
-        if (!pManager_->add_uiobject(pNewArt.get()))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Trying to add \"" << pArt->get_name() << "\" to \"" << sName_
-                << "\", but its name was already taken : \"" << pNewArt->get_name()
-                << "\". Skipped." << std::endl;
-
-            continue;
-        }
-
-        if (!pNewArt->is_virtual())
-            pNewArt->create_glue();
-
-        pNewArt->set_draw_layer(pArt->get_draw_layer());
-
-        auto* pAddedArt = this->add_region(std::move(pNewArt));
-        pAddedArt->copy_from(pArt);
-        pAddedArt->notify_loaded();
+        pNewArt->notify_loaded();
     }
 
     bBuildLayerList_ = true;
 
     if (pFrame->pBackdrop_)
     {
-        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(this));
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
         pBackdrop_->copy_from(*pFrame->pBackdrop_);
     }
 
@@ -316,14 +298,16 @@ void frame::copy_from(uiobject* pObj)
     {
         this->create_title_region();
         if (pTitleRegion_)
-            pTitleRegion_->copy_from(pFrame->pTitleRegion_.get());
+            pTitleRegion_->copy_from(*pFrame->pTitleRegion_);
     }
 
-    for (auto* pChild : pFrame->get_children())
+    for (const auto& pChild : pFrame->lChildList_)
     {
-        if (pChild->is_special()) continue;
+        if (!pChild || pChild->is_special()) continue;
 
-        frame* pNewChild = create_child(pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        utils::observer_ptr<frame> pNewChild = create_child(
+            pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+
         if (!pNewChild) continue;
 
         pNewChild->notify_loaded();
@@ -338,32 +322,42 @@ void frame::create_title_region()
         return;
     }
 
-    pTitleRegion_ = std::unique_ptr<region>(new region(pManager_));
-    if (this->is_virtual())
-        pTitleRegion_->set_virtual();
-    pTitleRegion_->set_special();
-    pTitleRegion_->set_name_and_parent(sName_+"TitleRegion", this);
+    auto pTitleRegion = utils::make_owned<region>(get_manager());
 
-    if (!pManager_->add_uiobject(pTitleRegion_.get()))
+    if (this->is_virtual())
+        pTitleRegion->set_virtual();
+
+    pTitleRegion->set_special();
+    pTitleRegion->set_name_and_parent("$parentTitleRegion", observer_from(this));
+
+    if (!get_manager().add_uiobject(pTitleRegion))
     {
         gui::out << gui::warning << "gui::" << lType_.back() << " : "
             << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-            "already took its name : \"" << pTitleRegion_->get_name() << "\"." << std::endl;
-
-        pTitleRegion_ = nullptr;
+            "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
         return;
     }
 
-    if (!pTitleRegion_->is_virtual())
-        pTitleRegion_->create_glue();
+    if (!pTitleRegion->is_virtual())
+    {
+        pTitleRegion->create_glue();
 
+        // Add shortcut to region as entry in Lua table
+        auto& mLua = get_lua_();
+        mLua[get_lua_name()]["TitleRegion"] = mLua[pTitleRegion->get_lua_name()];
+    }
+
+    pTitleRegion_ = std::move(pTitleRegion);
     pTitleRegion_->notify_loaded();
 }
 
-frame* frame::get_child(const std::string& sName)
+utils::observer_ptr<const frame> frame::get_child(const std::string& sName) const
 {
-    for (auto* pChild : get_children())
+    for (const auto& pChild : lChildList_)
     {
+        if (!pChild)
+            continue;
+
         if (pChild->get_name() == sName)
             return pChild;
 
@@ -380,16 +374,16 @@ frame::region_list_view frame::get_regions() const
     return region_list_view(lRegionList_);
 }
 
-layered_region* frame::get_region(const std::string& sName)
+utils::observer_ptr<const layered_region> frame::get_region(const std::string& sName) const
 {
-    for (auto* pRegion : get_regions())
+    for (const auto& pRegion : lRegionList_)
     {
+        if (!pRegion)
+            continue;
+
         if (pRegion->get_name() == sName)
             return pRegion;
-    }
 
-    for (auto* pRegion : get_regions())
-    {
         const std::string& sRawName = pRegion->get_raw_name();
         if (utils::starts_with(sRawName, "$parent") && sRawName.substr(7) == sName)
             return pRegion;
@@ -589,7 +583,7 @@ void frame::notify_loaded()
 
     if (!bVirtual_)
     {
-        alive_checker mChecker(this);
+        alive_checker mChecker(*this);
         on_script("OnLoad");
         if (!mChecker.is_alive())
             return;
@@ -616,24 +610,13 @@ bool frame::has_script(const std::string& sScriptName) const
     return false;
 }
 
-layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
+utils::observer_ptr<layered_region> frame::add_region(
+    utils::owner_ptr<layered_region> pRegion)
 {
     if (!pRegion)
         return nullptr;
 
-    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
-        return pObj->get_id() == pRegion->get_id();
-    });
-
-    if (mIter != lRegionList_.end())
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Trying to add \"" << pRegion->get_name() << "\" to \"" << sName_ << "\"'s children, "
-            "but it was already one of this frame's children." << std::endl;
-        return nullptr;
-    }
-
-    layered_region* pAddedRegion = pRegion.get();
+    utils::observer_ptr<layered_region> pAddedRegion = pRegion;
     lRegionList_.push_back(std::move(pRegion));
 
     notify_layers_need_update();
@@ -646,7 +629,7 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua = get_lua_();
+            auto& mLua = get_lua_();
             mLua[get_lua_name()][sRawName] = mLua[pAddedRegion->get_lua_name()];
         }
     }
@@ -654,13 +637,16 @@ layered_region* frame::add_region(std::unique_ptr<layered_region> pRegion)
     return pAddedRegion;
 }
 
-std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
+utils::owner_ptr<layered_region> frame::remove_region(
+    const utils::observer_ptr<layered_region>& pRegion)
 {
     if (!pRegion)
         return nullptr;
 
-    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj) {
-        return pObj->get_id() == pRegion->get_id();
+    layered_region* pRawPointer = pRegion.get();
+    auto mIter = utils::find_if(lRegionList_, [&](auto& pObj)
+    {
+        return pObj.get() == pRawPointer;
     });
 
     if (mIter == lRegionList_.end())
@@ -672,32 +658,49 @@ std::unique_ptr<layered_region> frame::remove_region(layered_region* pRegion)
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    std::unique_ptr<layered_region> pRemovedRegion = std::move(*mIter);
+    auto pRemovedRegion = std::move(*mIter);
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
     pRemovedRegion->set_parent(nullptr);
 
+    if (!bVirtual_)
+    {
+        // Remove shortcut to region
+        std::string sRawName = pRemovedRegion->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
+        {
+            sRawName.erase(0, std::string("$parent").size());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        }
+    }
+
     return pRemovedRegion;
 }
 
-layered_region* frame::create_region(layer_type mLayer, const std::string& sClassName,
-    const std::string& sName, const std::vector<uiobject*>& lInheritance)
+utils::observer_ptr<layered_region> frame::create_region(
+    layer_type mLayer, const std::string& sClassName, const std::string& sName,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    std::unique_ptr<layered_region> pRegion = pManager_->create_layered_region(sClassName);
+    auto pRegion = get_manager().create_layered_region(sClassName);
     if (!pRegion)
         return nullptr;
 
-    pRegion->set_draw_layer(mLayer);
-    pRegion->set_name_and_parent(sName, this);
+    if (this->is_virtual())
+        pRegion->set_virtual();
 
-    if (!pManager_->add_uiobject(pRegion.get()))
+    pRegion->set_name_and_parent(sName, observer_from(this));
+
+    if (!get_manager().add_uiobject(pRegion))
         return nullptr;
+
+    pRegion->set_draw_layer(mLayer);
 
     if (!pRegion->is_virtual())
         pRegion->create_glue();
 
-    for (auto* pObj : lInheritance)
+    for (const auto& pObj : lInheritance)
     {
         if (!pRegion->is_object_type(pObj->get_object_type()))
         {
@@ -709,39 +712,40 @@ layered_region* frame::create_region(layer_type mLayer, const std::string& sClas
         }
 
         // Inherit from the other region
-        pRegion->copy_from(pObj);
+        pRegion->copy_from(*pObj);
     }
 
     return add_region(std::move(pRegion));
 }
 
-frame* frame::create_child(const std::string& sClassName, const std::string& sName,
-    const std::vector<uiobject*>& lInheritance)
+utils::observer_ptr<frame> frame::create_child(
+    const std::string& sClassName, const std::string& sName,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!pManager_->check_uiobject_name(sName))
+    if (!get_manager().check_uiobject_name(sName))
         return nullptr;
 
-    std::unique_ptr<frame> pNewFrame = pManager_->create_frame(sClassName);
+    auto pNewFrame = get_manager().create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name_and_parent(sName, this);
+    pNewFrame->set_name_and_parent(sName, observer_from(this));
 
     if (this->is_virtual())
         pNewFrame->set_virtual();
 
     if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame.get(), true);
+        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
 
     pNewFrame->set_level(get_level() + 1);
 
-    if (!pManager_->add_uiobject(pNewFrame.get()))
+    if (!get_manager().add_uiobject(pNewFrame))
         return nullptr;
 
     if (!pNewFrame->is_virtual())
         pNewFrame->create_glue();
 
-    for (auto* pObj : lInheritance)
+    for (const auto& pObj : lInheritance)
     {
         if (!pNewFrame->is_object_type(pObj->get_object_type()))
         {
@@ -753,7 +757,7 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
         }
 
         // Inherit from the other frame
-        pNewFrame->copy_from(pObj);
+        pNewFrame->copy_from(*pObj);
     }
 
     pNewFrame->set_newly_created();
@@ -761,41 +765,29 @@ frame* frame::create_child(const std::string& sClassName, const std::string& sNa
     return add_child(std::move(pNewFrame));
 }
 
-frame* frame::add_child(std::unique_ptr<frame> pChild)
+utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
 {
     if (!pChild)
         return nullptr;
 
-    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
-        return pObj && pObj->get_id() == pChild->get_id();
-    });
-
-    if (mIter != lChildList_.end())
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Trying to add \"" << pChild->get_name() << "\" to \"" << sName_
-            << "\"'s children, but it was already one of this frame's children." << std::endl;
-        return nullptr;
-    }
-
     if (bIsTopLevel_)
-        pChild->notify_top_level_parent_(true, this);
+        pChild->notify_top_level_parent_(true, observer_from(this));
 
     if (pTopLevelParent_)
         pChild->notify_top_level_parent_(true, pTopLevelParent_);
 
     if (is_visible() && pChild->is_shown())
-        pChild->notify_visible(!pManager_->is_loading_ui());
+        pChild->notify_visible(!get_manager().is_loading_ui());
     else
-        pChild->notify_invisible(!pManager_->is_loading_ui());
+        pChild->notify_invisible(!get_manager().is_loading_ui());
 
-    frame* pAddedChild = pChild.get();
+    utils::observer_ptr<frame> pAddedChild = pChild;
     lChildList_.push_back(std::move(pChild));
 
     if (!bVirtual_)
     {
-        frame_renderer* pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
-        frame_renderer* pNewTopLevelRenderer = get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer = pAddedChild->get_top_level_renderer();
+        utils::observer_ptr<frame_renderer> pNewTopLevelRenderer = get_top_level_renderer();
         if (pOldTopLevelRenderer != pNewTopLevelRenderer)
         {
             pOldTopLevelRenderer->notify_rendered_frame(pAddedChild, false);
@@ -807,7 +799,7 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
         if (utils::starts_with(sRawName, "$parent"))
         {
             sRawName.erase(0, std::string("$parent").size());
-            sol::state& mLua = get_lua_();
+            auto& mLua = get_lua_();
             mLua[get_lua_name()][sRawName] = mLua[pAddedChild->get_lua_name()];
         }
     }
@@ -815,13 +807,15 @@ frame* frame::add_child(std::unique_ptr<frame> pChild)
     return pAddedChild;
 }
 
-std::unique_ptr<frame> frame::remove_child(frame* pChild)
+utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pChild)
 {
     if (!pChild)
         return nullptr;
 
-    auto mIter = utils::find_if(lChildList_, [&](auto& pObj) {
-        return pObj && pObj->get_id() == pChild->get_id();
+    frame* pRawPointer = pChild.get();
+    auto mIter = utils::find_if(lChildList_, [&](auto& pObj)
+    {
+        return pObj.get() == pRawPointer;
     });
 
     if (mIter == lChildList_.end())
@@ -833,22 +827,38 @@ std::unique_ptr<frame> frame::remove_child(frame* pChild)
     }
 
     // NB: the iterator is not removed yet; it will be removed later in update().
-    std::unique_ptr<frame> pRemovedChild = std::move(*mIter);
+    auto pRemovedChild = std::move(*mIter);
 
-    frame_renderer* pTopLevelRenderer = get_top_level_renderer();
-    bool bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer != pManager_;
-    if (bNotifyRenderer)
+    bool bNotifyRenderer = false;
+    if (!bVirtual_)
     {
-        pTopLevelRenderer->notify_rendered_frame(pChild, false);
-        pChild->propagate_renderer_(false);
+        utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
+        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
+        if (bNotifyRenderer)
+        {
+            pTopLevelRenderer->notify_rendered_frame(pChild, false);
+            pChild->propagate_renderer_(false);
+        }
     }
 
     pRemovedChild->set_parent(nullptr);
 
-    if (bNotifyRenderer)
+    if (!bVirtual_)
     {
-        pManager_->notify_rendered_frame(pChild, true);
-        pChild->propagate_renderer_(true);
+        if (bNotifyRenderer)
+        {
+            get_manager().notify_rendered_frame(pChild, true);
+            pChild->propagate_renderer_(true);
+        }
+
+        // Remove shortcut to child
+        std::string sRawName = pRemovedChild->get_raw_name();
+        if (utils::starts_with(sRawName, "$parent"))
+        {
+            sRawName.erase(0, std::string("$parent").size());
+            sol::state& mLua = get_lua_();
+            mLua[get_lua_name()][sRawName] = sol::lua_nil;
+        }
     }
 
     return pRemovedChild;
@@ -895,6 +905,14 @@ backdrop* frame::get_backdrop()
     return pBackdrop_.get();
 }
 
+backdrop& frame::get_or_create_backdrop()
+{
+    if (!pBackdrop_)
+        pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
+
+    return *pBackdrop_;
+}
+
 const std::string& frame::get_frame_type() const
 {
     return lType_.back();
@@ -922,10 +940,22 @@ vector2f frame::get_min_resize() const
 
 uint frame::get_num_children() const
 {
+    return std::count_if(lChildList_.begin(), lChildList_.end(),
+        [](const auto& pChild) { return pChild != nullptr; });
+}
+
+uint frame::get_rough_num_children() const
+{
     return lChildList_.size();
 }
 
 uint frame::get_num_regions() const
+{
+    return std::count_if(lRegionList_.begin(), lRegionList_.end(),
+        [](const auto& pRegion) { return pRegion != nullptr; });
+}
+
+uint frame::get_rough_num_regions() const
 {
     return lRegionList_.size();
 }
@@ -933,11 +963,6 @@ uint frame::get_num_regions() const
 float frame::get_scale() const
 {
     return fScale_;
-}
-
-region* frame::get_title_region() const
-{
-    return pTitleRegion_.get();
 }
 
 bool frame::is_clamped_to_screen() const
@@ -1090,7 +1115,7 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        pManager_->get_event_manager()->fire_event(mEvent);
+        get_manager().get_event_manager().fire_event(mEvent);
         return;
     }
 
@@ -1103,37 +1128,26 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 void frame::define_script_(const std::string& sScriptName, sol::protected_function mHandler,
     bool bAppend, const script_info& mInfo)
 {
-    bool bAddEventName = sScriptName == "OnEvent";
-
     auto mWrappedHandler =
-        [bAddEventName, mHandler = std::move(mHandler), mInfo](frame& mSelf, event* pEvent)
+        [mHandler = std::move(mHandler), mInfo](frame& mSelf, const event_data& mArgs)
     {
-        sol::state& mLua = mSelf.get_manager()->get_lua();
+        sol::state& mLua = mSelf.get_manager().get_lua();
         lua_State* pLua = mLua.lua_state();
 
         std::vector<sol::object> lArgs;
 
-        if (pEvent)
+        // Set arguments
+        for (uint i = 0; i < mArgs.get_num_param(); ++i)
         {
-            if (bAddEventName)
-            {
-                // Set event name
-                lArgs.emplace_back(pLua, sol::in_place, pEvent->get_name());
-            }
-
-            // Set arguments
-            for (uint i = 0; i < pEvent->get_num_param(); ++i)
-            {
-                const utils::variant& mArg = pEvent->get(i);
-                if (std::holds_alternative<utils::empty>(mArg))
-                    lArgs.emplace_back(sol::lua_nil);
-                else
-                    lArgs.emplace_back(pLua, sol::in_place, mArg);
-            }
+            const utils::variant& mArg = mArgs.get(i);
+            if (std::holds_alternative<utils::empty>(mArg))
+                lArgs.emplace_back(sol::lua_nil);
+            else
+                lArgs.emplace_back(pLua, sol::in_place, mArg);
         }
 
         // Get a reference to self
-        sol::table mSelfLua = mLua[mSelf.get_lua_name()];
+        sol::object mSelfLua = mLua[mSelf.get_lua_name()];
         if (mSelfLua == sol::lua_nil)
             throw gui::exception("Lua glue object is nil");
 
@@ -1165,8 +1179,8 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
         // Just disable existing scripts, it may not be safe to modify the handler list
         // if this script is being defined during a handler execution.
         // They will be deleted later, when we know it is safe.
-        for (auto& mHandler : *lHandlerList)
-            mHandler.bDisconnected = true;
+        for (auto& mPrevHandler : *lHandlerList)
+            mPrevHandler.bDisconnected = true;
     }
 
     if (lHandlerList == nullptr)
@@ -1176,37 +1190,35 @@ void frame::define_script_(const std::string& sScriptName, script_handler_functi
 
     if (!is_virtual())
     {
-        bool bNeedsEventName = sScriptName == "OnEvent";
-
         // Register the function so it can be called directly from Lua
         std::string sAdjustedName = get_adjusted_script_name(sScriptName);
 
         get_lua_()[get_lua_name()][sAdjustedName].set_function(
-            [=](sol::object /*mSelfLua*/, sol::variadic_args mVArgs)
-        {
-            event mEvent;
-            bool bIsFirst = true;
-            for (auto&& mArg : mVArgs)
+            [=](frame& mSelf, sol::variadic_args mVArgs)
             {
-                if (bNeedsEventName && bIsFirst)
-                {
-                    mEvent.set_name(mArg.as<std::string>());
-                }
-                else
+                event_data mData;
+                for (auto&& mArg : mVArgs)
                 {
                     lxgui::utils::variant mVariant;
                     if (!mArg.is<sol::lua_nil_t>())
                         mVariant = mArg;
 
-                    mEvent.add(std::move(mVariant));
+                    mData.add(std::move(mVariant));
                 }
 
-                bIsFirst = false;
+                mSelf.on_script(sScriptName, mData);
             }
-
-            on_script(sScriptName, &mEvent);
-        });
+        );
     }
+}
+
+frame::script_list_view frame::get_script(const std::string& sScriptName) const
+{
+    auto iterH = lScriptHandlerList_.find(sScriptName);
+    if (iterH == lScriptHandlerList_.end())
+        throw gui::exception(lType_.back(), "no script registered for " + sScriptName);
+
+    return script_list_view(*iterH->second);
 }
 
 void frame::remove_script(const std::string& sScriptName)
@@ -1219,11 +1231,17 @@ void frame::remove_script(const std::string& sScriptName)
     // They will be deleted later, when we know it is safe.
     for (auto& mHandler : *iterH->second)
         mHandler.bDisconnected = true;
+
+    if (!is_virtual())
+    {
+        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+        get_lua_()[get_lua_name()][sAdjustedName] = sol::lua_nil;
+    }
 }
 
 void frame::on_event(const event& mEvent)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     if (has_script("OnEvent") &&
         (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
@@ -1235,13 +1253,17 @@ void frame::on_event(const event& mEvent)
                 return;
         }
 
-        event mTemp = mEvent;
-        on_script("OnEvent", &mTemp);
+        event_data mData;
+        mData.add(mEvent.get_name());
+        for (std::size_t i = 0; i < mEvent.get_num_param(); ++i)
+            mData.add(mEvent.get(i));
+
+        on_script("OnEvent", mData);
         if (!mChecker.is_alive())
             return;
     }
 
-    if (!pManager_->is_input_enabled())
+    if (!get_manager().is_input_enabled())
         return;
 
     if (bIsMouseEnabled_ && bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
@@ -1298,12 +1320,9 @@ void frame::on_event(const event& mEvent)
                 if (pTopLevelParent_)
                     pTopLevelParent_->raise();
 
-                std::string sMouseButton = mEvent.get<std::string>(3);
-
-                event mEvent2;
-                mEvent2.add(sMouseButton);
-
-                on_script("OnMouseDown", &mEvent2);
+                event_data mData;
+                mData.add(mEvent.get(3));
+                on_script("OnMouseDown", mData);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1312,12 +1331,9 @@ void frame::on_event(const event& mEvent)
         {
             if (bMouseInFrame_)
             {
-                std::string sMouseButton = mEvent.get<std::string>(3);
-
-                event mEvent2;
-                mEvent2.add(sMouseButton);
-
-                on_script("OnMouseUp", &mEvent2);
+                event_data mData;
+                mData.add(mEvent.get(3));
+                on_script("OnMouseUp", mData);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1326,9 +1342,9 @@ void frame::on_event(const event& mEvent)
         {
             if (bMouseInFrame_)
             {
-                event mEvent2;
-                mEvent2.add(mEvent.get(0));
-                on_script("OnMouseWheel", &mEvent2);
+                event_data mData;
+                mData.add(mEvent.get(0));
+                on_script("OnMouseWheel", mData);
                 if (!mChecker.is_alive())
                     return;
             }
@@ -1339,37 +1355,37 @@ void frame::on_event(const event& mEvent)
     {
         if (mEvent.get_name() == "KEY_PRESSED")
         {
-            event mKeyEvent;
-            mKeyEvent.add((uint)mEvent.get<input::key>(0));
-            mKeyEvent.add(mEvent.get(1));
+            event_data mData;
+            mData.add((uint)mEvent.get<input::key>(0));
+            mData.add(mEvent.get(1));
 
-            on_script("OnKeyDown", &mKeyEvent);
+            on_script("OnKeyDown", mData);
             if (!mChecker.is_alive())
                 return;
         }
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
-            event mKeyEvent;
-            mKeyEvent.add((uint)mEvent.get<input::key>(0));
-            mKeyEvent.add(mEvent.get(1));
+            event_data mData;
+            mData.add((uint)mEvent.get<input::key>(0));
+            mData.add(mEvent.get(1));
 
-            on_script("OnKeyUp", &mKeyEvent);
+            on_script("OnKeyUp", mData);
             if (!mChecker.is_alive())
                 return;
         }
     }
 }
 
-void frame::on_script(const std::string& sScriptName, event* pEvent)
+void frame::on_script(const std::string& sScriptName, const event_data& mData)
 {
     auto iterH = lScriptHandlerList_.find(sScriptName);
     if (iterH == lScriptHandlerList_.end())
         return;
 
     // Make a copy of the manager pointer: in case the frame is deleted, we will need this
-    auto* pManager = get_manager();
-    auto* pOldAddOn = pManager->get_current_addon();
-    pManager->set_current_addon(get_addon());
+    auto& mManager = get_manager();
+    auto* pOldAddOn = mManager.get_current_addon();
+    mManager.set_current_addon(get_addon());
 
     try
     {
@@ -1377,13 +1393,11 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
         // survives even if this frame is destroyed midway during a handler.
         const auto lHandlerList = iterH->second;
 
-        alive_checker mChecker(this);
-
         // Call the handlers
         for (const auto& mHandler : *lHandlerList)
         {
             if (!mHandler.bDisconnected)
-                mHandler.mCallback(*this, pEvent);
+                mHandler.mCallback(*this, mData);
         }
     }
     catch (const std::exception& mException)
@@ -1395,10 +1409,10 @@ void frame::on_script(const std::string& sScriptName, event* pEvent)
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        pManager->get_event_manager()->fire_event(mEvent);
+        mManager.get_event_manager().fire_event(mEvent);
     }
 
-    pManager->set_current_addon(pOldAddOn);
+    mManager.set_current_addon(pOldAddOn);
 }
 
 void frame::register_all_events()
@@ -1446,7 +1460,10 @@ void frame::set_frame_strata(frame_strata mStrata)
     std::swap(mStrata_, mStrata);
 
     if (mStrata_ != mStrata && !bVirtual_)
-        get_top_level_renderer()->notify_frame_strata_changed(this, mStrata, mStrata_);
+    {
+        get_top_level_renderer()->notify_frame_strata_changed(
+            observer_from(this), mStrata, mStrata_);
+    }
 }
 
 void frame::set_frame_strata(const std::string& sStrata)
@@ -1523,7 +1540,10 @@ void frame::set_level(int iLevel)
         std::swap(iLevel, iLevel_);
 
         if (!bVirtual_)
-            get_top_level_renderer()->notify_frame_level_changed(this, iLevel, iLevel_);
+        {
+            get_top_level_renderer()->notify_frame_level_changed(
+                observer_from(this), iLevel, iLevel_);
+        }
     }
 }
 
@@ -1596,12 +1616,13 @@ void frame::set_movable(bool bIsMovable)
     bIsMovable_ = bIsMovable;
 }
 
-std::unique_ptr<uiobject> frame::release_from_parent()
+utils::owner_ptr<uiobject> frame::release_from_parent()
 {
+    utils::observer_ptr<frame> pSelf = observer_from(this);
     if (pParent_)
-        return pParent_->remove_child(this);
+        return pParent_->remove_child(pSelf);
     else
-        return pManager_->remove_root_frame(this);
+        return get_manager().remove_root_frame(pSelf);
 }
 
 void frame::set_resizable(bool bIsResizable)
@@ -1623,8 +1644,10 @@ void frame::set_top_level(bool bIsTopLevel)
 
     bIsTopLevel_ = bIsTopLevel;
 
-    for (auto* pChild : get_children())
-        pChild->notify_top_level_parent_(bIsTopLevel_, this);
+    for (auto& mChild : get_children())
+    {
+        mChild.notify_top_level_parent_(bIsTopLevel_, observer_from(this));
+    }
 }
 
 void frame::raise()
@@ -1633,17 +1656,20 @@ void frame::raise()
         return;
 
     int iOldLevel = iLevel_;
-    iLevel_ = pManager_->get_highest_level(mStrata_) + 1;
+    iLevel_ = get_manager().get_highest_level(mStrata_) + 1;
 
     if (iLevel_ > iOldLevel)
     {
         if (!is_virtual())
-            get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
+        {
+            get_top_level_renderer()->notify_frame_level_changed(
+                observer_from(this), iOldLevel, iLevel_);
+        }
 
         int iAmount = iLevel_ - iOldLevel;
 
-        for (auto* pChild : get_children())
-            pChild->add_level_(iAmount);
+        for (auto& mChild : get_children())
+            mChild.add_level_(iAmount);
     }
     else
         iLevel_ = iOldLevel;
@@ -1655,10 +1681,13 @@ void frame::add_level_(int iAmount)
     iLevel_ += iAmount;
 
     if (!is_virtual())
-        get_top_level_renderer()->notify_frame_level_changed(this, iOldLevel, iLevel_);
+    {
+        get_top_level_renderer()->notify_frame_level_changed(
+            observer_from(this), iOldLevel, iLevel_);
+    }
 
-    for (auto* pChild : get_children())
-        pChild->add_level_(iAmount);
+    for (auto& mChild : get_children())
+        mChild.add_level_(iAmount);
 }
 
 void frame::set_user_placed(bool bIsUserPlaced)
@@ -1669,31 +1698,40 @@ void frame::set_user_placed(bool bIsUserPlaced)
 void frame::start_moving()
 {
     if (bIsMovable_)
-        pManager_->start_moving(this);
+    {
+        set_user_placed(true);
+        get_manager().start_moving(observer_from(this));
+    }
 }
 
 void frame::stop_moving()
 {
     if (bIsMovable_)
-        pManager_->stop_moving(this);
+        get_manager().stop_moving(*this);
 }
 
 void frame::start_sizing(const anchor_point& mPoint)
 {
     if (bIsResizable_)
-        pManager_->start_sizing(this, mPoint);
+    {
+        set_user_placed(true);
+        get_manager().start_sizing(observer_from(this), mPoint);
+    }
 }
 
 void frame::stop_sizing()
 {
-    pManager_->stop_sizing(this);
+    get_manager().stop_sizing(*this);
 }
 
 void frame::propagate_renderer_(bool bRendered)
 {
-    auto* pTopLevelRenderer = get_top_level_renderer();
-    for (auto* pChild : get_children())
+    auto pTopLevelRenderer = get_top_level_renderer();
+    for (const auto& pChild : lChildList_)
     {
+        if (!pChild)
+            continue;
+
         if (!pChild->get_renderer())
             pTopLevelRenderer->notify_rendered_frame(pChild, bRendered);
 
@@ -1701,59 +1739,46 @@ void frame::propagate_renderer_(bool bRendered)
     }
 }
 
-void frame::set_renderer(frame_renderer* pRenderer)
+void frame::set_renderer(utils::observer_ptr<frame_renderer> pRenderer)
 {
     if (pRenderer == pRenderer_)
         return;
 
-    get_top_level_renderer()->notify_rendered_frame(this, false);
+    get_top_level_renderer()->notify_rendered_frame(observer_from(this), false);
+
     propagate_renderer_(false);
 
-    pRenderer_ = pRenderer;
+    pRenderer_ = std::move(pRenderer);
 
-    get_top_level_renderer()->notify_rendered_frame(this, true);
+    get_top_level_renderer()->notify_rendered_frame(observer_from(this), true);
+
     propagate_renderer_(true);
 }
 
-const frame_renderer* frame::get_renderer() const
-{
-    return pRenderer_;
-}
-
-frame_renderer* frame::get_top_level_renderer()
+utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
 {
     if (pRenderer_)
         return pRenderer_;
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return pManager_;
-}
-
-const frame_renderer* frame::get_top_level_renderer() const
-{
-    if (pRenderer_)
-        return pRenderer_;
-    else if (pParent_)
-        return pParent_->get_top_level_renderer();
-    else
-        return pManager_;
+        return get_manager().observer_from_this();
 }
 
 void frame::notify_visible(bool bTriggerEvents)
 {
     uiobject::notify_visible(bTriggerEvents);
 
-    for (auto* pRegion : get_regions())
+    for (auto& mRegion : get_regions())
     {
-        if (pRegion->is_shown())
-            pRegion->notify_visible(bTriggerEvents);
+        if (mRegion.is_shown())
+            mRegion.notify_visible(bTriggerEvents);
     }
 
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        if (pChild->is_shown())
-            pChild->notify_visible(bTriggerEvents);
+        if (mChild.is_shown())
+            mChild.notify_visible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1767,10 +1792,10 @@ void frame::notify_invisible(bool bTriggerEvents)
 {
     uiobject::notify_invisible(bTriggerEvents);
 
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        if (pChild->is_shown())
-            pChild->notify_invisible(bTriggerEvents);
+        if (mChild.is_shown())
+            mChild.notify_invisible(bTriggerEvents);
     }
 
     if (bTriggerEvents)
@@ -1780,15 +1805,15 @@ void frame::notify_invisible(bool bTriggerEvents)
     }
 }
 
-void frame::notify_top_level_parent_(bool bTopLevel, frame* pParent)
+void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<frame>& pParent)
 {
     if (bTopLevel)
         pTopLevelParent_ = pParent;
     else
         pTopLevelParent_ = nullptr;
 
-    for (auto* pChild : get_children())
-        pChild->notify_top_level_parent_(bTopLevel, pParent);
+    for (auto& mChild : get_children())
+        mChild.notify_top_level_parent_(bTopLevel, pParent);
 }
 
 void frame::notify_renderer_need_redraw() const
@@ -1809,7 +1834,7 @@ void frame::show()
 
     if (!bWasVisible_)
     {
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         update_mouse_in_frame_();
     }
 }
@@ -1824,7 +1849,7 @@ void frame::hide()
 
     if (bWasVisible_)
     {
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         update_mouse_in_frame_();
     }
 }
@@ -1861,19 +1886,19 @@ void frame::unregister_event(const std::string& sEvent)
         event_receiver::unregister_event(sEvent);
 }
 
-void frame::set_addon(addon* pAddOn)
+void frame::set_addon(const addon* pAddOn)
 {
     if (!pAddOn_)
     {
         pAddOn_ = pAddOn;
-        for (auto* pChild : get_children())
-            pChild->set_addon(pAddOn);
+        for (auto& mChild : get_children())
+            mChild.set_addon(pAddOn);
     }
     else
         gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
 }
 
-addon* frame::get_addon() const
+const addon* frame::get_addon() const
 {
     if (!pAddOn_ && pParent_)
         return pParent_->get_addon();
@@ -1883,7 +1908,7 @@ addon* frame::get_addon() const
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, float fX, float fY)
 {
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     if (bMouseInframe)
     {
@@ -1923,7 +1948,7 @@ void frame::update_borders_() const
     if (bPositionUpdated)
     {
         check_position();
-        pManager_->notify_hovered_frame_dirty();
+        get_manager().notify_hovered_frame_dirty();
         if (pBackdrop_)
             pBackdrop_->notify_borders_updated();
     }
@@ -1932,7 +1957,7 @@ void frame::update_borders_() const
 void frame::update_mouse_in_frame_()
 {
     update_borders_();
-    pManager_->get_hovered_frame();
+    get_manager().get_hovered_frame();
 }
 
 void frame::update(float fDelta)
@@ -1940,7 +1965,7 @@ void frame::update(float fDelta)
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
-    alive_checker mChecker(this);
+    alive_checker mChecker(*this);
 
     DEBUG_LOG("  ~");
     uiobject::update(fDelta);
@@ -1964,15 +1989,15 @@ void frame::update(float fDelta)
             mLayer.lRegionList.clear();
 
         // Fill layers with regions (with font_string rendered last within the same layer)
-        for (auto* pRegion : get_regions())
+        for (const auto& pRegion : lRegionList_)
         {
-            if (pRegion->get_object_type() != "font_string")
+            if (pRegion && pRegion->get_object_type() != "font_string")
                 lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
-        for (auto* pRegion : get_regions())
+        for (const auto& pRegion : lRegionList_)
         {
-            if (pRegion->get_object_type() == "font_string")
+            if (pRegion && pRegion->get_object_type() == "font_string")
                 lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
@@ -1982,9 +2007,9 @@ void frame::update(float fDelta)
     if (is_visible())
     {
         DEBUG_LOG("   On update");
-        event mEvent;
-        mEvent.add(fDelta);
-        on_script("OnUpdate", &mEvent);
+        event_data mData;
+        mData.add(fDelta);
+        on_script("OnUpdate", mData);
         if (!mChecker.is_alive())
             return;
     }
@@ -1994,8 +2019,8 @@ void frame::update(float fDelta)
 
     // Update regions
     DEBUG_LOG("   Update regions");
-    for (auto* pRegion : get_regions())
-        pRegion->update(fDelta);
+    for (auto& mRegion : get_regions())
+        mRegion.update(fDelta);
 
     // Remove deleted regions
     {
@@ -2008,9 +2033,9 @@ void frame::update(float fDelta)
 
     // Update children
     DEBUG_LOG("   Update children");
-    for (auto* pChild : get_children())
+    for (auto& mChild : get_children())
     {
-        pChild->update(fDelta);
+        mChild.update(fDelta);
         if (!mChecker.is_alive())
             return;
     }
@@ -2067,7 +2092,7 @@ layer_type layer::get_layer_type(const std::string& sLayer)
         return layer_type::OVERLAY;
     else
     {
-        gui::out << gui::warning << "layer : Uknown layer type : \""
+        gui::out << gui::warning << "layer : Unknown layer type : \""
             << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
         return layer_type::ARTWORK;

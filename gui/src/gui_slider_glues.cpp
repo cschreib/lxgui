@@ -1,8 +1,9 @@
 #include "lxgui/gui_slider.hpp"
+
+#include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_texture.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
 
 /** A @{Frame} with a movable texture.
 *   This frame contains a special texture, the "slider thumb".
@@ -29,265 +30,92 @@
 namespace lxgui {
 namespace gui
 {
-void slider::register_glue(lua::state& mLua)
+
+void slider::register_on_lua(sol::state& mLua)
 {
-    mLua.reg<lua_slider>();
-}
+    auto mClass = mLua.new_usertype<slider>("Slider",
+        sol::base_classes, sol::bases<uiobject, frame>(),
+        sol::meta_function::index,
+        member_function<&slider::get_lua_member_>(),
+        sol::meta_function::new_index,
+        member_function<&slider::set_lua_member_>());
 
-lua_slider::lua_slider(lua_State* pLua) : lua_frame(pLua)
-{
-}
+    /** @function allow_clicks_outside_thumb
+    */
+    mClass.set_function("allow_clicks_outside_thumb", member_function<&slider::set_allow_clicks_outside_thumb>());
 
-/** @function allow_clicks_outside_thumb
-*/
-int lua_slider::_allow_clicks_outside_thumb(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function get_max_value
+    */
+    mClass.set_function("get_max_value", member_function<&slider::get_max_value>());
 
-    lua::function mFunc("Slider:allow_clicks_outside_thumb", pLua);
-    mFunc.add(0, "allow", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_allow_clicks_outside_thumb(mFunc.get(0)->get_bool());
+    /** @function get_min_value
+    */
+    mClass.set_function("get_min_value", member_function<&slider::get_min_value>());
 
-    return mFunc.on_return();
-}
-
-/** @function get_max_value
-*/
-int lua_slider::_get_max_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_max_value", pLua, 1);
-
-    mFunc.push(get_object()->get_max_value());
-
-    return mFunc.on_return();
-}
-
-/** @function get_min_value
-*/
-int lua_slider::_get_min_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_min_value", pLua, 1);
-
-    mFunc.push(get_object()->get_min_value());
-
-    return mFunc.on_return();
-}
-
-/** @function get_min_max_values
-*/
-int lua_slider::_get_min_max_values(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_min_max_values", pLua, 2);
-
-    mFunc.push(get_object()->get_min_value());
-    mFunc.push(get_object()->get_max_value());
-
-    return mFunc.on_return();
-}
-
-/** @function get_orientation
-*/
-int lua_slider::_get_orientation(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_orientation", pLua, 1);
-
-    switch (get_object()->get_orientation())
+    /** @function get_min_max_values
+    */
+    mClass.set_function("get_min_max_values", [](const slider& mSelf)
     {
-        case slider::orientation::VERTICAL   : mFunc.push(std::string("VERTICAL"));   break;
-        case slider::orientation::HORIZONTAL : mFunc.push(std::string("HORIZONTAL")); break;
-    }
+        return std::make_pair(mSelf.get_min_value(), mSelf.get_max_value());
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function get_thumb_texture
-*/
-int lua_slider::_get_thumb_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_thumb_texture", pLua, 1);
-
-    texture* pTexture = get_object()->get_thumb_texture();
-    if (pTexture)
+    /** @function get_orientation
+    */
+    mClass.set_function("get_orientation", [](const slider& mSelf)
     {
-        pTexture->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function get_value
-*/
-int lua_slider::_get_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_value", pLua, 1);
-
-    mFunc.push(get_object()->get_value());
-
-    return mFunc.on_return();
-}
-
-/** @function get_value_step
-*/
-int lua_slider::_get_value_step(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:get_value_step", pLua, 1);
-
-    mFunc.push(get_object()->get_value_step());
-
-    return mFunc.on_return();
-}
-
-/** @function set_max_value
-*/
-int lua_slider::_set_max_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:set_max_value", pLua);
-    mFunc.add(0, "max", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_max_value(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_value
-*/
-int lua_slider::_set_min_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:set_min_value", pLua);
-    mFunc.add(0, "min", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_value(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_max_values
-*/
-int lua_slider::_set_min_max_values(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:set_min_max_values", pLua);
-    mFunc.add(0, "min", lua::type::NUMBER);
-    mFunc.add(1, "max", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_max_values(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_orientation
-*/
-int lua_slider::_set_orientation(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:set_orientation", pLua);
-    mFunc.add(0, "value", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_value(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_thumb_texture
-*/
-int lua_slider::_set_thumb_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Slider:set_thumb_texture", pLua);
-    mFunc.add(0, "texture", lua::type::USERDATA);
-    if (mFunc.check())
-    {
-        lua_texture* pLuaTexture = mFunc.get_state().get<lua_texture>();
-        if (pLuaTexture)
+        switch (mSelf.get_orientation())
         {
-            get_object()->set_thumb_texture(pLuaTexture->get_object());
+            case slider::orientation::VERTICAL   : return "VERTICAL";
+            case slider::orientation::HORIZONTAL : return "HORIZONTAL";
+            default: return "";
         }
-    }
+    });
 
-    return mFunc.on_return();
-}
+    /** @function get_thumb_texture
+    */
+    mClass.set_function("get_thumb_texture", member_function< // select the right overload for Lua
+        static_cast<const utils::observer_ptr<texture>& (slider::*)()>(&slider::get_thumb_texture)>());
 
-/** @function set_value_step
-*/
-int lua_slider::_set_value_step(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function get_value
+    */
+    mClass.set_function("get_value", member_function<&slider::get_value>());
 
-    lua::function mFunc("Slider:set_value_step", pLua);
-    mFunc.add(0, "value step", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_value_step(mFunc.get(0)->get_number());
+    /** @function get_value_step
+    */
+    mClass.set_function("get_value_step", member_function<&slider::get_value_step>());
 
-    return mFunc.on_return();
-}
+    /** @function set_max_value
+    */
+    mClass.set_function("set_max_value", member_function<&slider::set_max_value>());
 
-/** @function set_value
-*/
-int lua_slider::_set_value(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function set_min_value
+    */
+    mClass.set_function("set_min_value", member_function<&slider::set_min_value>());
 
-    lua::function mFunc("Slider:set_value", pLua);
-    mFunc.add(0, "value", lua::type::NUMBER);
-    mFunc.add(1, "silent", lua::type::BOOLEAN, true);
-    if (mFunc.check())
+    /** @function set_min_max_values
+    */
+    mClass.set_function("set_min_max_values", member_function<&slider::set_min_max_values>());
+
+    /** @function set_orientation
+    */
+    mClass.set_function("set_orientation", member_function< // select the right overload for Lua
+        static_cast<void (slider::*)(const std::string&)>(&slider::set_orientation)>());
+
+    /** @function set_thumb_texture
+    */
+    mClass.set_function("set_thumb_texture", member_function<&slider::set_thumb_texture>());
+
+    /** @function set_value_step
+    */
+    mClass.set_function("set_value_step", member_function<&slider::set_value_step>());
+
+    /** @function set_value
+    */
+    mClass.set_function("set_value", [](slider& mSelf, float fValue, sol::optional<bool> bSilent)
     {
-        if (mFunc.is_provided(1))
-            get_object()->set_value(mFunc.get(0)->get_number(), mFunc.get(1)->get_bool());
-        else
-            get_object()->set_value(mFunc.get(0)->get_number());
-    }
-
-    return mFunc.on_return();
+        mSelf.set_value(fValue, bSilent.value_or(false));
+    });
 }
+
 }
 }

@@ -6,14 +6,15 @@
 #include "lxgui/gui_eventmanager.hpp"
 
 #include <lxgui/xml_document.hpp>
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_exception.hpp>
 #include <lxgui/utils_string.hpp>
+
+#include <sol/state.hpp>
 
 namespace lxgui {
 namespace gui
 {
-manager::xml_core_attributes manager::parse_core_attributes(xml::block* pBlock, frame* pXMLParent)
+manager::xml_core_attributes manager::parse_core_attributes(xml::block* pBlock,
+    utils::observer_ptr<frame> pXMLParent)
 {
     manager::xml_core_attributes mAttr;
     mAttr.sFrameType = pBlock->get_name();
@@ -69,15 +70,15 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 {
                     pLua_->do_file(sScriptFile);
                 }
-                catch (const lua::exception& e)
+                catch (const sol::error& e)
                 {
-                    std::string sError = e.get_description();
+                    std::string sError = e.what();
 
                     gui::out << gui::error << sError << std::endl;
 
                     event mEvent("LUA_ERROR");
                     mEvent.add(sError);
-                    pEventManager_->fire_event(mEvent);
+                    fire_event(mEvent);
                 }
             }
             else if (pElemBlock->get_name() == "Include")
@@ -90,7 +91,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 {
                     auto mAttr = parse_core_attributes(pElemBlock, nullptr);
 
-                    frame* pFrame = nullptr;
+                    utils::observer_ptr<frame> pFrame;
                     if (mAttr.pParent)
                     {
                         pFrame = mAttr.pParent->create_child(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);

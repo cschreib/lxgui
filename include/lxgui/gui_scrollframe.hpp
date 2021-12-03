@@ -37,7 +37,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit scroll_frame(manager* pManager);
+        explicit scroll_frame(manager& mManager);
 
         /// Destructor.
         ~scroll_frame() override;
@@ -53,7 +53,7 @@ namespace gui
         /// Copies an uiobject's parameters into this scroll_frame (inheritance).
         /** \param pObj The uiobject to copy
         */
-        void copy_from(uiobject* pObj) override;
+        void copy_from(const uiobject& mObj) override;
 
         /// Returns 'true' if this scroll_frame can use a script.
         /** \param sScriptName The name of the script
@@ -63,23 +63,28 @@ namespace gui
 
         /// Calls a script.
         /** \param sScriptName The name of the script
-        *   \param pEvent      Stores scripts arguments
+        *   \param mData       Stores scripts arguments
         *   \note Triggered callbacks could destroy the frame. If you need
         *         to use the frame again after calling this function, use
         *         the helper class alive_checker.
         */
-        void on_script(const std::string& sScriptName, event* pEvent = nullptr) override;
+        void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Sets this scroll_frame's scroll child.
         /** \param pFrame The scroll child
         *   \note Creates the render target.
         */
-        void set_scroll_child(std::unique_ptr<frame> pFrame);
+        void set_scroll_child(utils::owner_ptr<frame> pFrame);
 
         /// Returns this scroll_frame's scroll child.
         /** \return This scroll_frame's scroll child
         */
-        frame* get_scroll_child();
+        const utils::observer_ptr<frame>& get_scroll_child() { return pScrollChild_; }
+
+        /// Returns this scroll_frame's scroll child.
+        /** \return This scroll_frame's scroll child
+        */
+        utils::observer_ptr<const frame> get_scroll_child() const { return pScrollChild_; }
 
         /// Sets the horizontal offset of the scroll child.
         /** \param fHorizontalScroll The horizontal offset
@@ -137,7 +142,7 @@ namespace gui
         /** \param pFrame    The frame to render
         *   \param bRendered 'true' if this renderer needs to render that new object
         */
-        void notify_rendered_frame(frame* pFrame, bool bRendered) override;
+        void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered) override;
 
         /// Returns the width of of this renderer's main render target (e.g., screen).
         /** \return The render target width
@@ -155,8 +160,8 @@ namespace gui
         /// Returns this widget's Lua glue.
         void create_glue() override;
 
-        /// Registers this widget to the provided lua::state
-        static void register_glue(lua::state& mLua);
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         static constexpr const char* CLASS_NAME = "ScrollFrame";
 
@@ -176,46 +181,18 @@ namespace gui
         float fVerticalScroll_ = 0;
         float fVerticalScrollRange_ = 0;
 
-        frame* pScrollChild_ = nullptr;
+        utils::observer_ptr<frame> pScrollChild_ = nullptr;
 
         mutable bool bRebuildScrollRenderTarget_ = false;
         mutable bool bRedrawScrollRenderTarget_ = false;
         mutable bool bUpdateScrollRange_ = false;
         std::shared_ptr<render_target> pScrollRenderTarget_;
 
-        texture* pScrollTexture_ = nullptr;
+        utils::observer_ptr<texture> pScrollTexture_ = nullptr;
 
-        bool   bMouseInScrollTexture_ = false;
-        frame* pHoveredScrollChild_ = nullptr;
+        bool bMouseInScrollTexture_ = false;
+        utils::observer_ptr<frame> pHoveredScrollChild_ = nullptr;
     };
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    class lua_scroll_frame : public lua_frame
-    {
-    public :
-
-        explicit lua_scroll_frame(lua_State* pLua);
-        scroll_frame* get_object() { return static_cast<scroll_frame*>(pObject_); }
-
-        // Glues
-        int _get_horizontal_scroll(lua_State*);
-        int _get_horizontal_scroll_range(lua_State*);
-        int _get_scroll_child(lua_State*);
-        int _get_vertical_scroll(lua_State*);
-        int _get_vertical_scroll_range(lua_State*);
-        int _set_horizontal_scroll(lua_State*);
-        int _set_scroll_child(lua_State*);
-        int _set_vertical_scroll(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_scroll_frame> methods[];
-    };
-
-    /** \endcond
-    */
 }
 }
 

@@ -1,13 +1,16 @@
 #include "lxgui/gui_frame.hpp"
+
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_region.hpp"
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_uiobject_tpl.hpp"
 
-#include <lxgui/luapp_state.hpp>
-#include <lxgui/luapp_function.hpp>
+#include <sol/state.hpp>
+#include <sol/variadic_args.hpp>
 
 /** A @{UIObject} that can contain other objects and react to events.
 *   This class, which is at the core of the UI design, can contain
@@ -191,1349 +194,498 @@
 namespace lxgui {
 namespace gui
 {
-lua_frame::lua_frame(lua_State* pLua) : lua_uiobject(pLua)
-{
-}
 
-/** @function add_script
-*/
-int lua_frame::_add_script(lua_State* pLua)
+void frame::register_on_lua(sol::state& mLua)
 {
-    if (!check_object_())
-        return 0;
+    auto mClass = mLua.new_usertype<frame>("Frame",
+        sol::base_classes, sol::bases<uiobject>(),
+        sol::meta_function::index,
+        member_function<&frame::get_lua_member_>(),
+        sol::meta_function::new_index,
+        member_function<&frame::set_lua_member_>());
 
-    lua::function mFunc("Frame:add_script", pLua);
-    mFunc.add(0, "script name", lua::type::STRING);
-    mFunc.add(1, "function", lua::type::FUNCTION);
-    if (mFunc.check())
+    /** @function add_script
+    */
+    mClass.set_function("add_script", [](frame& mSelf, const std::string& sName,
+        sol::protected_function mFunc)
     {
-        std::string sScriptName = mFunc.get(0)->get_string();
-        if (get_object()->can_use_script(sScriptName))
-        {
-            lua::state& mState = mFunc.get_state();
-            lua::argument* pArg = mFunc.get(1);
-            get_object()->add_script(sScriptName,
-                sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
-        }
-        else
-        {
-            gui::out << gui::error << get_object()->get_frame_type() << " : "
-                << "\"" << get_object()->get_name() << "\" cannot use script \""
-                << sScriptName << "\"." << std::endl;
-        }
-    }
+        mSelf.add_script(sName, std::move(mFunc));
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function create_font_string
-*/
-int lua_frame::_create_font_string(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:create_font_string", pLua, 1);
-    mFunc.add(0, "name", lua::type::STRING);
-    mFunc.add(1, "layer", lua::type::STRING, true);
-    mFunc.add(2, "inherits", lua::type::STRING, true);
-
-    if (mFunc.check())
+    /** @function create_font_string
+    */
+    mClass.set_function("create_font_string", [](frame& mSelf, const std::string& sName,
+        sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        std::string sName = mFunc.get(0)->get_string();
+        layer_type mLayer = layer_type::ARTWORK;
+        if (sLayer.has_value())
+            mLayer = layer::get_layer_type(sLayer.value());
 
-        layer_type mLayer;
-        if (mFunc.is_provided(1) && mFunc.get(1)->get_type() == lua::type::STRING)
-            mLayer = layer::get_layer_type(mFunc.get(1)->get_string());
-        else
-            mLayer = layer_type::ARTWORK;
-
-        std::string sInheritance;
-        if (mFunc.is_provided(2))
-            sInheritance = mFunc.get(2)->get_string();
-
-        region* pRegion = get_object()->create_region(
-            mLayer, "FontString", sName,
-            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
+        return mSelf.create_region<font_string>(
+            mLayer, sName,
+            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
         );
+    });
 
-        if (pRegion)
-        {
-            pRegion->push_on_lua(mFunc.get_state());
-            mFunc.notify_pushed();
-        }
-        else
-            mFunc.push_nil();
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function create_texture
-*/
-int lua_frame::_create_texture(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:create_texture", pLua, 1);
-    mFunc.add(0, "name", lua::type::STRING);
-    mFunc.add(1, "layer", lua::type::STRING, true);
-    mFunc.add(2, "inherits", lua::type::STRING, true);
-
-    if (mFunc.check())
+    /** @function create_texture
+    */
+    mClass.set_function("create_texture", [](frame& mSelf, const std::string& sName,
+        sol::optional<std::string> sLayer, sol::optional<std::string> sInheritance)
     {
-        std::string sName = mFunc.get(0)->get_string();
+        layer_type mLayer = layer_type::ARTWORK;
+        if (sLayer.has_value())
+            mLayer = layer::get_layer_type(sLayer.value());
 
-        layer_type mLayer;
-        if (mFunc.is_provided(1) && mFunc.get(1)->get_type() == lua::type::STRING)
-            mLayer = layer::get_layer_type(mFunc.get(1)->get_string());
-        else
-            mLayer = layer_type::ARTWORK;
-
-        std::string sInheritance;
-        if (mFunc.is_provided(2))
-            sInheritance = mFunc.get(2)->get_string();
-
-        region* pRegion = get_object()->create_region(
-            mLayer, "Texture", sName,
-            get_object()->get_manager()->get_virtual_uiobject_list(sInheritance)
+        return mSelf.create_region<texture>(
+            mLayer, sName,
+            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
         );
+    });
 
-        if (pRegion)
+    /** @function create_title_region
+    */
+    mClass.set_function("create_title_region", member_function<&frame::create_title_region>());
+
+    /** @function disable_draw_layer
+    */
+    mClass.set_function("disable_draw_layer", [](frame& mSelf, const std::string& sLayer)
+    {
+        mSelf.disable_draw_layer(layer::get_layer_type(sLayer));
+    });
+
+    /** @function enable_draw_layer
+    */
+    mClass.set_function("enable_draw_layer", [](frame& mSelf, const std::string& sLayer)
+    {
+        mSelf.enable_draw_layer(layer::get_layer_type(sLayer));
+    });
+
+    /** @function enable_keyboard
+    */
+    mClass.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
+
+    /** @function enable_mouse
+    */
+    mClass.set_function("enable_mouse", [](frame& mSelf, bool bEnable,
+        sol::optional<bool> bWorldAllowed)
+    {
+        mSelf.enable_mouse(bEnable, bWorldAllowed.value_or(false));
+    });
+
+    /** @function enable_mouse_wheel
+    */
+    mClass.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
+
+    /** @function get_backdrop
+    */
+    mClass.set_function("get_backdrop", [](sol::this_state mLua, const frame& mSelf) -> sol::optional<sol::table>
+    {
+        const backdrop* pBackdrop = mSelf.get_backdrop();
+        if (!pBackdrop)
+            return sol::nullopt;
+
+        sol::table mReturn = sol::state_view(mLua).create_table();
+
+        mReturn["bgFile"] = pBackdrop->get_background_file();
+        mReturn["edgeFile"] = pBackdrop->get_edge_file();
+        mReturn["tile"] = pBackdrop->is_background_tilling();
+
+        mReturn["tileSize"] = pBackdrop->get_tile_size();
+        mReturn["edgeSize"] = pBackdrop->get_edge_size();
+
+        const auto& lInsets = pBackdrop->get_background_insets();
+        mReturn["insets"]["left"] = lInsets.left;
+        mReturn["insets"]["right"] = lInsets.right;
+        mReturn["insets"]["top"] = lInsets.top;
+        mReturn["insets"]["bottom"] = lInsets.bottom;
+
+        return std::move(mReturn);
+    });
+
+    /** @function get_backdrop_border_color
+    */
+    mClass.set_function("get_backdrop_border_color", [](const frame& mSelf)
+        -> sol::optional<std::tuple<float, float, float, float>>
+    {
+        if (!mSelf.get_backdrop())
+            return sol::nullopt;
+
+        const color& mColor = mSelf.get_backdrop()->get_edge_color();
+        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+    });
+
+    /** @function get_backdrop_color
+    */
+    mClass.set_function("get_backdrop_color", [](const frame& mSelf)
+        -> sol::optional<std::tuple<float, float, float, float>>
+    {
+        if (!mSelf.get_backdrop())
+            return sol::nullopt;
+
+        const color& mColor = mSelf.get_backdrop()->get_background_color();
+        return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
+    });
+
+    /** @function get_children
+    */
+    mClass.set_function("get_children", [](const frame& mSelf)
+    {
+        std::vector<sol::object> lChildren;
+        lChildren.reserve(mSelf.get_rough_num_children());
+
+        auto& mLua = mSelf.get_manager().get_lua();
+        for (auto& mChild : mSelf.get_children())
         {
-            pRegion->push_on_lua(mFunc.get_state());
-            mFunc.notify_pushed();
+            lChildren.push_back(mLua[mChild.get_lua_name()]);
         }
-        else
-            mFunc.push_nil();
-    }
 
-    return mFunc.on_return();
-}
+        return sol::as_table(std::move(lChildren));
+    });
 
-/** @function create_title_region
-*/
-int lua_frame::_create_title_region(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function get_effective_alpha
+    */
+    mClass.set_function("get_effective_alpha", member_function<&frame::get_effective_alpha>());
 
-    lua::function mFunc("Frame:create_title_region", pLua);
+    /** @function get_effective_scale
+    */
+    mClass.set_function("get_effective_scale", member_function<&frame::get_effective_scale>());
 
-    get_object()->create_title_region();
+    /** @function get_frame_level
+    */
+    mClass.set_function("get_frame_level", member_function<&frame::get_level>());
 
-    return mFunc.on_return();
-}
-
-/** @function disable_draw_layer
-*/
-int lua_frame::_disable_draw_layer(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:disable_draw_layer", pLua);
-    mFunc.add(0, "layer", lua::type::STRING);
-    if (mFunc.check())
+    /** @function get_frame_strata
+    */
+    mClass.set_function("get_frame_strata", [](const frame& mSelf)
     {
-        std::string sLayer = mFunc.get(0)->get_string();
-        if (sLayer == "BACKGROUND")
-            get_object()->disable_draw_layer(layer_type::BACKGROUND);
-        else if (sLayer == "BORDER")
-            get_object()->disable_draw_layer(layer_type::BORDER);
-        else if (sLayer == "ARTWORK")
-            get_object()->disable_draw_layer(layer_type::ARTWORK);
-        else if (sLayer == "OVERLAY")
-            get_object()->disable_draw_layer(layer_type::OVERLAY);
-        else if (sLayer == "HIGHLIGHT")
-            get_object()->disable_draw_layer(layer_type::HIGHLIGHT);
-        else
-            gui::out << gui::warning << mFunc.get_name() << " : Unknown layer : \"" << sLayer << "\"." << std::endl;
-    }
+        frame_strata mStrata = mSelf.get_frame_strata();
+        std::string sStrata;
 
-    return mFunc.on_return();
-}
+        if (mStrata == frame_strata::BACKGROUND)
+            sStrata = "BACKGROUND";
+        else if (mStrata == frame_strata::LOW)
+            sStrata = "LOW";
+        else if (mStrata == frame_strata::MEDIUM)
+            sStrata = "MEDIUM";
+        else if (mStrata == frame_strata::HIGH)
+            sStrata = "HIGH";
+        else if (mStrata == frame_strata::DIALOG)
+            sStrata = "DIALOG";
+        else if (mStrata == frame_strata::FULLSCREEN)
+            sStrata = "FULLSCREEN";
+        else if (mStrata == frame_strata::FULLSCREEN_DIALOG)
+            sStrata = "FULLSCREEN_DIALOG";
+        else if (mStrata == frame_strata::TOOLTIP)
+            sStrata = "TOOLTIP";
 
-/** @function enable_draw_layer
-*/
-int lua_frame::_enable_draw_layer(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+        return sStrata;
+    });
 
-    lua::function mFunc("Frame:enable_draw_layer", pLua);
-    mFunc.add(0, "layer", lua::type::STRING);
-    if (mFunc.check())
+    /** @function get_frame_type
+    */
+    mClass.set_function("get_frame_type", member_function<&frame::get_frame_type>());
+
+    /** @function get_hit_rect_insets
+    */
+    mClass.set_function("get_hit_rect_insets", [](const frame& mSelf)
     {
-        std::string sLayer = mFunc.get(0)->get_string();
-        if (sLayer == "BACKGROUND")
-            get_object()->enable_draw_layer(layer_type::BACKGROUND);
-        else if (sLayer == "BORDER")
-            get_object()->enable_draw_layer(layer_type::BORDER);
-        else if (sLayer == "ARTWORK")
-            get_object()->enable_draw_layer(layer_type::ARTWORK);
-        else if (sLayer == "OVERLAY")
-            get_object()->enable_draw_layer(layer_type::OVERLAY);
-        else if (sLayer == "HIGHLIGHT")
-            get_object()->enable_draw_layer(layer_type::HIGHLIGHT);
-        else
-            gui::out << gui::warning << mFunc.get_name() << " : Unknown layer : \"" << sLayer << "\"." << std::endl;
-    }
+        const bounds2f& lInsets = mSelf.get_abs_hit_rect_insets();
+        return std::make_tuple(lInsets.left, lInsets.right, lInsets.top, lInsets.bottom);
+    });
 
-    return mFunc.on_return();
-}
+    /** @function get_id
+    */
+    mClass.set_function("get_id", member_function<&frame::get_id>());
 
-/** @function enable_keyboard
-*/
-int lua_frame::_enable_keyboard(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:enable_keyboard", pLua);
-    mFunc.add(0, "is keyboard enable", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->enable_keyboard(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function enable_mouse
-*/
-int lua_frame::_enable_mouse(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:enable_mouse", pLua);
-    mFunc.add(0, "is mouse enabled", lua::type::BOOLEAN);
-    mFunc.add(1, "is world input allowed", lua::type::BOOLEAN, true);
-    if (mFunc.check())
+    /** @function get_max_resize
+    */
+    mClass.set_function("get_max_resize", [](const frame& mSelf)
     {
-        if (mFunc.is_provided(1))
-            get_object()->enable_mouse(mFunc.get(0)->get_bool(), mFunc.get(1)->get_bool());
-        else
-            get_object()->enable_mouse(mFunc.get(0)->get_bool());
-    }
+        const vector2f& lMax = mSelf.get_max_resize();
+        return std::make_tuple(lMax.x, lMax.y);
+    });
 
-    return mFunc.on_return();
-}
-
-/** @function enable_mouse_wheel
-*/
-int lua_frame::_enable_mouse_wheel(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:enable_mouse_wheel", pLua);
-    mFunc.add(0, "is mouse wheel enabled", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->enable_mouse_wheel(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function get_backdrop
-*/
-int lua_frame::_get_backdrop(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_backdrop", pLua, 1);
-
-    backdrop* pBackdrop = get_object()->get_backdrop();
-    if (pBackdrop)
+    /** @function get_min_resize
+    */
+    mClass.set_function("get_min_resize", [](const frame& mSelf)
     {
-        lua::state& mState = mFunc.get_state();
+        const vector2f& lMin = mSelf.get_min_resize();
+        return std::make_tuple(lMin.x, lMin.y);
+    });
 
-        mState.new_table();
-        mState.set_field_string("bgFile", pBackdrop->get_background_file());
-        mState.set_field_string("edgeFile", pBackdrop->get_edge_file());
-        mState.set_field_bool("tile", pBackdrop->is_background_tilling());
+    /** @function get_num_children
+    */
+    mClass.set_function("get_num_children", member_function<&frame::get_num_children>());
 
-        mState.set_field_double("tileSize", pBackdrop->get_tile_size());
-        mState.set_field_double("edgeSize", pBackdrop->get_edge_size());
+    /** @function get_num_regions
+    */
+    mClass.set_function("get_num_regions", member_function<&frame::get_num_regions>());
 
-        mState.new_table();
-        mState.set_field("insets");
-        mState.get_field("insets");
+    /** @function get_scale
+    */
+    mClass.set_function("get_scale", member_function<&frame::get_scale>());
 
-        const bounds2f& lInsets = pBackdrop->get_background_insets();
-        mState.set_field_double("left",   lInsets.left);
-        mState.set_field_double("right",  lInsets.right);
-        mState.set_field_double("top",    lInsets.top);
-        mState.set_field_double("bottom", lInsets.bottom);
-
-        mState.pop();
-
-        mFunc.notify_pushed();
-    }
-    else
-        mFunc.push_nil();
-
-    return mFunc.on_return();
-}
-
-/** @function get_backdrop_border_color
-*/
-int lua_frame::_get_backdrop_border_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_backdrop_border_color", pLua, 4);
-
-    if (get_object()->get_backdrop())
+    /** @function get_script
+    */
+    mClass.set_function("get_script", [](const frame& mSelf, const std::string& sScriptName) -> sol::object
     {
-        const color& mColor = get_object()->get_backdrop()->get_edge_color();
-        mFunc.push(mColor.r);
-        mFunc.push(mColor.g);
-        mFunc.push(mColor.b);
-        mFunc.push(mColor.a);
-    }
-    else
-        mFunc.push_nil(4);
+        if (!mSelf.has_script(sScriptName))
+            return sol::lua_nil;
 
-    return mFunc.on_return();
-}
+        std::string sAdjustedName = get_adjusted_script_name(sScriptName);
+        return mSelf.get_manager().get_lua()[mSelf.get_lua_name()][sAdjustedName];
+    });
 
-/** @function get_backdrop_color
-*/
-int lua_frame::_get_backdrop_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
+    /** @function get_title_region
+    */
+    mClass.set_function("get_title_region", member_function< // select the right overload for Lua
+        static_cast<utils::observer_ptr<region> (frame::*)()>(&frame::get_title_region)>());
 
-    lua::function mFunc("Frame:get_backdrop_color", pLua, 4);
+    /** @function has_script
+    */
+    mClass.set_function("has_script", member_function<&frame::has_script>());
 
-    if (get_object()->get_backdrop())
+    /** @function is_clamped_to_screen
+    */
+    mClass.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
+
+    /** @function is_frame_type
+    */
+    mClass.set_function("is_frame_type", [](const frame& mSelf, const std::string& sType)
     {
-        const color& mColor = get_object()->get_backdrop()->get_background_color();
-        mFunc.push(mColor.r);
-        mFunc.push(mColor.g);
-        mFunc.push(mColor.b);
-        mFunc.push(mColor.a);
-    }
-    else
-        mFunc.push_nil(4);
-
-    return mFunc.on_return();
-}
-
-/** @function get_children
-*/
-int lua_frame::_get_children(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_children", pLua, get_object()->get_num_children());
-
-    for (auto* pChild : get_object()->get_children())
-    {
-        pChild->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function get_effective_alpha
-*/
-int lua_frame::_get_effective_alpha(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_effective_alpha", pLua, 1);
-
-    mFunc.push(get_object()->get_effective_alpha());
-
-    return mFunc.on_return();
-}
-
-/** @function get_effective_scale
-*/
-int lua_frame::_get_effective_scale(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_effective_scale", pLua, 1);
-
-    mFunc.push(get_object()->get_effective_scale());
-
-    return mFunc.on_return();
-}
-
-/** @function get_frame_level
-*/
-int lua_frame::_get_frame_level(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_frame_level", pLua, 1);
-
-    mFunc.push(get_object()->get_level());
-
-    return mFunc.on_return();
-}
-
-/** @function get_frame_strata
-*/
-int lua_frame::_get_frame_strata(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_frame_strata", pLua, 1);
-
-    frame_strata mStrata = get_object()->get_frame_strata();
-    std::string sStrata;
-
-    if (mStrata == frame_strata::BACKGROUND)
-        sStrata = "BACKGROUND";
-    else if (mStrata == frame_strata::LOW)
-        sStrata = "LOW";
-    else if (mStrata == frame_strata::MEDIUM)
-        sStrata = "MEDIUM";
-    else if (mStrata == frame_strata::HIGH)
-        sStrata = "HIGH";
-    else if (mStrata == frame_strata::DIALOG)
-        sStrata = "DIALOG";
-    else if (mStrata == frame_strata::FULLSCREEN)
-        sStrata = "FULLSCREEN";
-    else if (mStrata == frame_strata::FULLSCREEN_DIALOG)
-        sStrata = "FULLSCREEN_DIALOG";
-    else if (mStrata == frame_strata::TOOLTIP)
-        sStrata = "TOOLTIP";
-
-    mFunc.push(sStrata);
-
-    return mFunc.on_return();
-}
-
-/** @function get_frame_type
-*/
-int lua_frame::_get_frame_type(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_frame_type", pLua, 1);
-
-    mFunc.push(get_object()->get_frame_type());
-
-    return mFunc.on_return();
-}
-
-/** @function get_hit_rect_insets
-*/
-int lua_frame::_get_hit_rect_insets(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_hit_rect_inset", pLua, 4);
-
-    const bounds2f& lInsets = get_object()->get_abs_hit_rect_insets();
-
-    mFunc.push(lInsets.left);
-    mFunc.push(lInsets.right);
-    mFunc.push(lInsets.top);
-    mFunc.push(lInsets.bottom);
-
-    return mFunc.on_return();
-}
-
-/** @function get_id
-*/
-int lua_frame::_get_id(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_id", pLua, 1);
-
-    mFunc.push(get_object()->get_id());
-
-    return mFunc.on_return();
-}
-
-/** @function get_max_resize
-*/
-int lua_frame::_get_max_resize(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_max_resize", pLua, 2);
-
-    vector2f lMax = get_object()->get_max_resize();
-
-    mFunc.push(lMax.x);
-    mFunc.push(lMax.y);
-
-    return mFunc.on_return();
-}
-
-/** @function get_min_resize
-*/
-int lua_frame::_get_min_resize(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_min_resize", pLua, 2);
-
-    vector2f lMin = get_object()->get_min_resize();
-
-    mFunc.push(lMin.x);
-    mFunc.push(lMin.y);
-
-    return mFunc.on_return();
-}
-
-/** @function get_num_children
-*/
-int lua_frame::_get_num_children(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_num_children", pLua, 1);
-
-    mFunc.push(get_object()->get_num_children());
-
-    return mFunc.on_return();
-}
-
-/** @function get_num_regions
-*/
-int lua_frame::_get_num_regions(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_num_regions", pLua, 1);
-
-    mFunc.push(get_object()->get_num_regions());
-
-    return mFunc.on_return();
-}
-
-/** @function get_scale
-*/
-int lua_frame::_get_scale(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_scale", pLua, 1);
-
-    mFunc.push(get_object()->get_scale());
-
-    return mFunc.on_return();
-}
-
-/** @function get_script
-*/
-int lua_frame::_get_script(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_script", pLua, 1);
-    mFunc.add(0, "script name", lua::type::STRING);
-    if (mFunc.check())
-    {
-        std::string sScriptName = mFunc.get(0)->get_string();
-        if (get_object()->has_script(sScriptName))
-        {
-            mFunc.notify_pushed();
-        }
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function get_title_region
-*/
-int lua_frame::_get_title_region(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:get_title_region", pLua, 1);
-
-    if (get_object()->get_title_region())
-    {
-        get_object()->get_title_region()->push_on_lua(mFunc.get_state());
-        mFunc.notify_pushed();
-    }
-    else
-        mFunc.push_nil();
-
-    return mFunc.on_return();
-}
-
-/** @function has_script
-*/
-int lua_frame::_has_script(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:has_script", pLua, 1);
-    mFunc.add(0, "script name", lua::type::STRING);
-    if (mFunc.check())
-        mFunc.push(get_object()->can_use_script(mFunc.get(0)->get_string()));
-
-    return mFunc.on_return();
-}
-
-/** @function is_clamped_to_screen
-*/
-int lua_frame::_is_clamped_to_screen(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_clamped_to_screen", pLua, 1);
-
-    mFunc.push(get_object()->is_clamped_to_screen());
-
-    return mFunc.on_return();
-}
-
-/** @function is_frame_type
-*/
-int lua_frame::_is_frame_type(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_frame_type", pLua, 1);
-    mFunc.add(0, "Frame type", lua::type::STRING);
-    if (mFunc.check())
-    {
-        if (get_object()->get_frame_type() == mFunc.get(0)->get_string())
-            mFunc.push(bool(true));
-        else
-            mFunc.push(bool(false));
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function is_keyboard_enabled
-*/
-int lua_frame::_is_keyboard_enabled(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_keyboard_enabled", pLua, 1);
-
-    mFunc.push(get_object()->is_keyboard_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function is_mouse_enabled
-*/
-int lua_frame::_is_mouse_enabled(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_mouse_enabled", pLua, 1);
-
-    mFunc.push(get_object()->is_mouse_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function is_mouse_wheel_enabled
-*/
-int lua_frame::_is_mouse_wheel_enabled(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_mouse_wheel_enabled", pLua, 1);
-
-    mFunc.push(get_object()->is_mouse_wheel_enabled());
-
-    return mFunc.on_return();
-}
-
-/** @function is_movable
-*/
-int lua_frame::_is_movable(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_movable", pLua, 1);
-
-    mFunc.push(get_object()->is_movable());
-
-    return mFunc.on_return();
-}
-
-/** @function is_resizable
-*/
-int lua_frame::_is_resizable(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_resizable", pLua, 1);
-
-    mFunc.push(get_object()->is_resizable());
-
-    return mFunc.on_return();
-}
-
-/** @function is_top_level
-*/
-int lua_frame::_is_top_level(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_top_level", pLua, 1);
-
-    mFunc.push(get_object()->is_top_level());
-
-    return mFunc.on_return();
-}
-
-/** @function is_user_placed
-*/
-int lua_frame::_is_user_placed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:is_user_placed", pLua, 1);
-
-    mFunc.push(get_object()->is_user_placed());
-
-    return mFunc.on_return();
-}
-
-/** @function raise
-*/
-int lua_frame::_raise(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:raise", pLua);
-
-    get_object()->raise();
-
-    return mFunc.on_return();
-}
-
-/** @function register_all_events
-*/
-int lua_frame::_register_all_events(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:register_all_events", pLua);
-
-    get_object()->register_all_events();
-
-    return mFunc.on_return();
-}
-
-/** @function register_event
-*/
-int lua_frame::_register_event(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:register_event", pLua);
-    mFunc.add(0, "event name", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->register_event(mFunc.get(0)->get_string());
-
-    return mFunc.on_return();
-}
-
-/** @function register_for_drag
-*/
-int lua_frame::_register_for_drag(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:register_for_drag", pLua);
-    mFunc.add(0, "button 1", lua::type::STRING, true);
-    mFunc.add(1, "button 2", lua::type::STRING, true);
-    mFunc.add(2, "button 3", lua::type::STRING, true);
-    if (mFunc.check())
+        return mSelf.get_frame_type() == sType;
+    });
+
+    /** @function is_keyboard_enabled
+    */
+    mClass.set_function("is_keyboard_enabled", member_function<&frame::is_keyboard_enabled>());
+
+    /** @function is_mouse_enabled
+    */
+    mClass.set_function("is_mouse_enabled", member_function<&frame::is_mouse_enabled>());
+
+    /** @function is_mouse_wheel_enabled
+    */
+    mClass.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
+
+    /** @function is_movable
+    */
+    mClass.set_function("is_movable", member_function<&frame::is_movable>());
+
+    /** @function is_resizable
+    */
+    mClass.set_function("is_resizable", member_function<&frame::is_resizable>());
+
+    /** @function is_top_level
+    */
+    mClass.set_function("is_top_level", member_function<&frame::is_top_level>());
+
+    /** @function is_user_placed
+    */
+    mClass.set_function("is_user_placed", member_function<&frame::is_user_placed>());
+
+    /** @function raise
+    */
+    mClass.set_function("raise", member_function<&frame::raise>());
+
+    /** @function register_all_events
+    */
+    mClass.set_function("register_all_events", member_function<&frame::register_all_events>());
+
+    /** @function register_event
+    */
+    mClass.set_function("register_event", member_function<&frame::register_event>());
+
+    /** @function register_for_drag
+    */
+    mClass.set_function("register_for_drag", [](frame& mSelf, sol::optional<std::string> sButton1,
+        sol::optional<std::string> sButton2, sol::optional<std::string> sButton3)
     {
         std::vector<std::string> lButtonList;
-        for (uint i = 0; i < 3; ++i)
-        {
-            if (mFunc.is_provided(i))
-                lButtonList.push_back(mFunc.get(i)->get_string());
-            else
-                break;
-        }
-        get_object()->register_for_drag(lButtonList);
-    }
+        if (sButton1.has_value())
+            lButtonList.push_back(sButton1.value());
+        if (sButton2.has_value())
+            lButtonList.push_back(sButton2.value());
+        if (sButton3.has_value())
+            lButtonList.push_back(sButton3.value());
 
-    return mFunc.on_return();
-}
+        mSelf.register_for_drag(lButtonList);
+    });
 
-/** @function set_backdrop
-*/
-int lua_frame::_set_backdrop(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_backdrop", pLua);
-    mFunc.add(0, "backdrop table", lua::type::TABLE);
-    mFunc.add(0, "nil", lua::type::NIL);
-    if (mFunc.check())
+    /** @function set_backdrop
+    */
+    mClass.set_function("set_backdrop", [](frame& mSelf, sol::optional<sol::table> mTableOpt)
     {
-        if (mFunc.get(0)->get_type() == lua::type::NIL)
+        if (!mTableOpt.has_value())
         {
-            get_object()->set_backdrop(nullptr);
-        }
-        else
-        {
-            std::unique_ptr<backdrop> pBackdrop(new backdrop(get_object()));
-
-            lua::state& mState = mFunc.get_state();
-            manager* pManager = manager::get_manager(mState);
-
-            pBackdrop->set_background(pManager->parse_file_name(mState.get_field_string("bgFile", false, "")));
-            pBackdrop->set_edge(pManager->parse_file_name(mState.get_field_string("edgeFile", false, "")));
-            pBackdrop->set_background_tilling(mState.get_field_bool("tile", false, false));
-
-            float fTileSize = static_cast<float>(mState.get_field_double("tileSize", false, 0.0));
-            if (fTileSize != 0)
-                pBackdrop->set_tile_size(fTileSize);
-
-            float fEdgeSize = static_cast<float>(mState.get_field_double("edgeSize", false, 0.0));
-            if (fEdgeSize != 0)
-                pBackdrop->set_edge_size(fEdgeSize);
-
-            mState.get_field("insets");
-
-            if (mState.get_type() == lua::type::TABLE)
-            {
-                pBackdrop->set_background_insets(bounds2f(
-                    mState.get_field_double("left",   false, 0),
-                    mState.get_field_double("right",  false, 0),
-                    mState.get_field_double("top",    false, 0),
-                    mState.get_field_double("bottom", false, 0)
-                ));
-            }
-
-            get_object()->set_backdrop(std::move(pBackdrop));
-        }
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_backdrop_border_color
-*/
-int lua_frame::_set_backdrop_border_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_backdrop_border_color", pLua);
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        backdrop* pBackdrop = get_object()->get_backdrop();
-        if (!pBackdrop)
-        {
-            get_object()->set_backdrop(std::unique_ptr<backdrop>(new backdrop(get_object())));
-            pBackdrop = get_object()->get_backdrop();
+            mSelf.set_backdrop(nullptr);
+            return;
         }
 
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
+        std::unique_ptr<backdrop> pBackdrop(new backdrop(mSelf));
+
+        sol::table& mTable = mTableOpt.value();
+        manager& mManager = mSelf.get_manager();
+
+        pBackdrop->set_background(mManager.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
+        pBackdrop->set_edge(mManager.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
+        pBackdrop->set_background_tilling(mTable["tile"].get_or(false));
+
+        float fTileSize = mTable["tileSize"].get_or<float>(0.0);
+        if (fTileSize != 0)
+            pBackdrop->set_tile_size(fTileSize);
+
+        float fEdgeSize = mTable["edgeSize"].get_or<float>(0.0);
+        if (fEdgeSize != 0)
+            pBackdrop->set_edge_size(fEdgeSize);
+
+        if (mTable["insets"] != sol::lua_nil)
         {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-        }
-        else
-            mColor = color(mFunc.get(0)->get_string());
-
-        pBackdrop->set_edge_color(mColor);
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_backdrop_color
-*/
-int lua_frame::_set_backdrop_color(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_backdrop_color", pLua);
-    mFunc.add(0, "red", lua::type::NUMBER);
-    mFunc.add(1, "green", lua::type::NUMBER);
-    mFunc.add(2, "blue", lua::type::NUMBER);
-    mFunc.add(3, "alpha", lua::type::NUMBER, true);
-    mFunc.new_param_set();
-    mFunc.add(0, "color", lua::type::STRING);
-
-    if (mFunc.check())
-    {
-        backdrop* pBackdrop = get_object()->get_backdrop();
-        if (!pBackdrop)
-        {
-            get_object()->set_backdrop(std::unique_ptr<backdrop>(new backdrop(get_object())));
-            pBackdrop = get_object()->get_backdrop();
+            pBackdrop->set_background_insets(bounds2f(
+                mTable["insets"]["left"].get_or<float>(0),
+                mTable["insets"]["right"].get_or<float>(0),
+                mTable["insets"]["top"].get_or<float>(0),
+                mTable["insets"]["bottom"].get_or<float>(0)
+            ));
         }
 
-        color mColor;
-        if (mFunc.get_param_set_rank() == 0)
+        mSelf.set_backdrop(std::move(pBackdrop));
+    });
+
+    /** @function set_backdrop_border_color
+    */
+    mClass.set_function("set_backdrop_border_color", sol::overload(
+    [](frame& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.get_or_create_backdrop().set_edge_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](frame& mSelf, const std::string& sColor)
+    {
+        mSelf.get_or_create_backdrop().set_edge_color(color(sColor));
+    }));
+
+    /** @function set_backdrop_color
+    */
+    mClass.set_function("set_backdrop_color", sol::overload(
+    [](frame& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
+    {
+        mSelf.get_or_create_backdrop().set_background_color(color(fR, fG, fB, fA.value_or(1.0f)));
+    },
+    [](frame& mSelf, const std::string& sColor)
+    {
+        mSelf.get_or_create_backdrop().set_background_color(color(sColor));
+    }));
+
+    /** @function set_clamped_to_screen
+    */
+    mClass.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
+
+    /** @function set_frame_level
+    */
+    mClass.set_function("set_frame_level", member_function<&frame::set_level>());
+
+    /** @function set_frame_strata
+    */
+    mClass.set_function("set_frame_strata", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(const std::string&)>(&frame::set_frame_strata)>());
+
+    /** @function set_hit_rect_insets
+    */
+    mClass.set_function("set_hit_rect_insets", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float, float, float)>(&frame::set_abs_hit_rect_insets)>());
+
+    /** @function set_max_resize
+    */
+    mClass.set_function("set_max_resize", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float)>(&frame::set_max_resize)>());
+
+    /** @function set_min_resize
+    */
+    mClass.set_function("set_min_resize", member_function< // select the right overload for Lua
+        static_cast<void (frame::*)(float, float)>(&frame::set_min_resize)>());
+
+    /** @function set_max_width
+    */
+    mClass.set_function("set_max_width", member_function<&frame::set_max_width>());
+
+    /** @function set_max_height
+    */
+    mClass.set_function("set_max_height", member_function<&frame::set_max_height>());
+
+    /** @function set_min_width
+    */
+    mClass.set_function("set_min_width", member_function<&frame::set_min_width>());
+
+    /** @function set_min_height
+    */
+    mClass.set_function("set_min_height", member_function<&frame::set_min_height>());
+
+    /** @function set_movable
+    */
+    mClass.set_function("set_movable", member_function<&frame::set_movable>());
+
+    /** @function set_resizable
+    */
+    mClass.set_function("set_resizable", member_function<&frame::set_resizable>());
+
+    /** @function set_scale
+    */
+    mClass.set_function("set_scale", member_function<&frame::set_scale>());
+
+    /** @function set_script
+    */
+    mClass.set_function("set_script", [](frame& mSelf, const std::string& sScriptName,
+        sol::optional<sol::protected_function> mScript)
+    {
+        if (!mSelf.can_use_script(sScriptName))
         {
-            if (mFunc.is_provided(3))
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number(),
-                    mFunc.get(3)->get_number()
-                );
-            }
-            else
-            {
-                mColor = color(
-                    mFunc.get(0)->get_number(),
-                    mFunc.get(1)->get_number(),
-                    mFunc.get(2)->get_number()
-                );
-            }
-        }
-        else
-            mColor = color(mFunc.get(0)->get_string());
-
-        pBackdrop->set_background_color(mColor);
-    }
-
-    return mFunc.on_return();
-}
-
-
-/** @function set_clamped_to_screen
-*/
-int lua_frame::_set_clamped_to_screen(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_clamped_to_screen", pLua);
-    mFunc.add(0, "is clamped to screen", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_clamped_to_screen(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_frame_level
-*/
-int lua_frame::_set_frame_level(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_frame_level", pLua);
-    mFunc.add(0, "level", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_level(mFunc.get(0)->get_int());
-
-    return mFunc.on_return();
-}
-
-/** @function set_frame_strata
-*/
-int lua_frame::_set_frame_strata(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_frame_strata", pLua);
-    mFunc.add(0, "strata", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->set_frame_strata(mFunc.get(0)->get_string());
-
-    return mFunc.on_return();
-}
-
-/** @function set_hit_rect_insets
-*/
-int lua_frame::_set_hit_rect_insets(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_hit_rect_insets", pLua);
-    mFunc.add(0, "left", lua::type::NUMBER);
-    mFunc.add(1, "right", lua::type::NUMBER);
-    mFunc.add(2, "top", lua::type::NUMBER);
-    mFunc.add(3, "bottom", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_abs_hit_rect_insets(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number(),
-            mFunc.get(2)->get_number(),
-            mFunc.get(3)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_max_resize
-*/
-int lua_frame::_set_max_resize(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_max_resize", pLua);
-    mFunc.add(0, "width", lua::type::NUMBER);
-    mFunc.add(1, "height", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_max_resize(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_resize
-*/
-int lua_frame::_set_min_resize(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_min_resize", pLua);
-    mFunc.add(0, "width", lua::type::NUMBER);
-    mFunc.add(1, "height", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_resize(
-            mFunc.get(0)->get_number(),
-            mFunc.get(1)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_max_width
-*/
-int lua_frame::_set_max_width(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_max_width", pLua);
-    mFunc.add(0, "width", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_max_width(
-            mFunc.get(0)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_max_height
-*/
-int lua_frame::_set_max_height(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_max_height", pLua);
-    mFunc.add(0, "height", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_max_height(
-            mFunc.get(0)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_width
-*/
-int lua_frame::_set_min_width(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_min_width", pLua);
-    mFunc.add(0, "width", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_width(
-            mFunc.get(0)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_min_height
-*/
-int lua_frame::_set_min_height(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_min_height", pLua);
-    mFunc.add(0, "height", lua::type::NUMBER);
-    if (mFunc.check())
-    {
-        get_object()->set_min_height(
-            mFunc.get(0)->get_number()
-        );
-    }
-
-    return mFunc.on_return();
-}
-
-/** @function set_movable
-*/
-int lua_frame::_set_movable(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_movable", pLua);
-    mFunc.add(0, "is movable", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_movable(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_resizable
-*/
-int lua_frame::_set_resizable(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_resizable", pLua);
-    mFunc.add(0, "is resizable", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_resizable(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_scale
-*/
-int lua_frame::_set_scale(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_scale", pLua);
-    mFunc.add(0, "scale", lua::type::NUMBER);
-    if (mFunc.check())
-        get_object()->set_scale(mFunc.get(0)->get_number());
-
-    return mFunc.on_return();
-}
-
-/** @function set_script
-*/
-int lua_frame::_set_script(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_script", pLua);
-    mFunc.add(0, "script name", lua::type::STRING);
-    mFunc.add(1, "function", lua::type::FUNCTION, true);
-    mFunc.add(1, "nil", lua::type::NIL, true);
-    if (mFunc.check())
-    {
-        std::string sScriptName = mFunc.get(0)->get_string();
-        if (get_object()->can_use_script(sScriptName))
-        {
-            lua::state& mState = mFunc.get_state();
-            lua::argument* pArg = mFunc.get(1);
-            if (pArg->is_provided() && pArg->get_type() == lua::type::FUNCTION)
-            {
-                get_object()->set_script(sScriptName,
-                    sol::protected_function(sol::reference(mState.get_state(), pArg->get_index())));
-            }
-            else
-            {
-                get_object()->remove_script(sScriptName);
-            }
-        }
-        else
-        {
-            gui::out << gui::error << get_object()->get_frame_type() << " : "
-                << "\"" << get_object()->get_name() << "\" cannot use script \""
+            gui::out << gui::error << mSelf.get_frame_type() << " : "
+                << "\"" << mSelf.get_name() << "\" cannot use script \""
                 << sScriptName << "\"." << std::endl;
+            return;
         }
-    }
 
-    return mFunc.on_return();
+        if (mScript.has_value())
+            mSelf.set_script(sScriptName, mScript.value());
+        else
+            mSelf.remove_script(sScriptName);
+    });
+
+    /** @function set_top_level
+    */
+    mClass.set_function("set_top_level", member_function<&frame::set_top_level>());
+
+    /** @function set_user_placed
+    */
+    mClass.set_function("set_user_placed", member_function<&frame::set_user_placed>());
+
+    /** @function start_moving
+    */
+    mClass.set_function("start_moving", member_function<&frame::start_moving>());
+
+    /** @function start_sizing
+    */
+    mClass.set_function("start_sizing", [](frame& mSelf, const std::string& sPoint)
+    {
+        mSelf.start_sizing(anchor::get_anchor_point(sPoint));
+    });
+
+    /** @function stop_moving_or_sizing
+    */
+    mClass.set_function("stop_moving_or_sizing", [](frame& mSelf)
+    {
+        mSelf.stop_moving();
+        mSelf.stop_sizing();
+    });
+
+    /** @function unregister_all_events
+    */
+    mClass.set_function("unregister_all_events", member_function<&frame::unregister_all_events>());
+
+    /** @function unregister_event
+    */
+    mClass.set_function("unregister_event", member_function<&frame::unregister_event>());
 }
 
-/** @function set_top_level
-*/
-int lua_frame::_set_top_level(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_top_level", pLua);
-    mFunc.add(0, "is top level", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_top_level(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function set_user_placed
-*/
-int lua_frame::_set_user_placed(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:set_user_placed", pLua);
-    mFunc.add(0, "is user placed", lua::type::BOOLEAN);
-    if (mFunc.check())
-        get_object()->set_user_placed(mFunc.get(0)->get_bool());
-
-    return mFunc.on_return();
-}
-
-/** @function start_moving
-*/
-int lua_frame::_start_moving(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:start_moving", pLua);
-
-    get_object()->start_moving();
-
-    return mFunc.on_return();
-}
-
-/** @function start_sizing
-*/
-int lua_frame::_start_sizing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:start_sizing", pLua);
-    mFunc.add(0, "point", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->start_sizing(anchor::get_anchor_point(mFunc.get(0)->get_string()));
-
-    return mFunc.on_return();
-}
-
-/** @function stop_moving_or_sizing
-*/
-int lua_frame::_stop_moving_or_sizing(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:stop_moving_or_sizing", pLua);
-
-    get_object()->stop_moving();
-    get_object()->stop_sizing();
-
-    return mFunc.on_return();
-}
-
-/** @function unregister_all_events
-*/
-int lua_frame::_unregister_all_events(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:unregister_all_events", pLua);
-
-    get_object()->unregister_all_events();
-
-    return mFunc.on_return();
-}
-
-/** @function unregister_event
-*/
-int lua_frame::_unregister_event(lua_State* pLua)
-{
-    if (!check_object_())
-        return 0;
-
-    lua::function mFunc("Frame:unregister_event", pLua);
-    mFunc.add(0, "event name", lua::type::STRING);
-    if (mFunc.check())
-        get_object()->unregister_event(mFunc.get(0)->get_string());
-
-    return mFunc.on_return();
-}
 }
 }

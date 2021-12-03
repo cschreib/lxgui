@@ -44,6 +44,18 @@ namespace gui
         /// Destructor.
         virtual ~material() = default;
 
+        /// Non-copiable
+        material(const material&) = delete;
+
+        /// Non-movable
+        material(material&&) = delete;
+
+        /// Non-copiable
+        material& operator=(const material&) = delete;
+
+        /// Non-movable
+        material& operator=(material&&) = delete;
+
         /// Returns the pixel rect in pixels of the canvas containing this texture (if any).
         /** \return The pixel rect in pixels of the canvas containing this texture (if any)
         */

@@ -32,6 +32,18 @@ namespace gui
         /// Destructor.
         virtual ~atlas_page() = default;
 
+        /// Non-copiable
+        atlas_page(const atlas_page&) = delete;
+
+        /// Non-movable
+        atlas_page(atlas_page&&) = delete;
+
+        /// Non-copiable
+        atlas_page& operator=(const atlas_page&) = delete;
+
+        /// Non-movable
+        atlas_page& operator=(atlas_page&&) = delete;
+
         /// Find a material in this page (nullptr if not found).
         /** \param sFileName The name of the file
         *   \return The material (nullptr if not found)
@@ -111,6 +123,18 @@ namespace gui
 
         /// Destructor.
         virtual ~atlas() = default;
+
+        /// Non-copiable
+        atlas(const atlas&) = delete;
+
+        /// Non-movable
+        atlas(atlas&&) = delete;
+
+        /// Non-copiable
+        atlas& operator=(const atlas&) = delete;
+
+        /// Non-movable
+        atlas& operator=(atlas&&) = delete;
 
         /// Find a material in this atlas (nullptr if not found).
         /** \param sFileName The name of the file

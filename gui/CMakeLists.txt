@@ -35,7 +35,6 @@ add_library(lxgui
     ${SRCROOT}/gui_layeredregion_parser.cpp
     ${SRCROOT}/gui_localizer.cpp
     ${SRCROOT}/gui_localizer_glues.cpp
-    ${SRCROOT}/gui_lunar.cpp
     ${SRCROOT}/gui_manager.cpp
     ${SRCROOT}/gui_manager_glues.cpp
     ${SRCROOT}/gui_manager_parser.cpp
@@ -74,10 +73,12 @@ lxgui_set_warning_level(lxgui)
 target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
 # needed dependencies
-target_link_libraries(lxgui PUBLIC lxgui::luapp)
+target_link_libraries(lxgui PUBLIC Lua::Lua)
+target_link_libraries(lxgui PUBLIC sol2::sol2)
 target_link_libraries(lxgui PUBLIC lxgui::utils)
 target_link_libraries(lxgui PUBLIC lxgui::xml)
 target_link_libraries(lxgui PUBLIC fmt::fmt)
+target_link_libraries(lxgui PUBLIC oup::oup)
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")

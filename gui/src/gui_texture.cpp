@@ -14,7 +14,7 @@
 namespace lxgui {
 namespace gui
 {
-texture::texture(manager* pManager) : layered_region(pManager)
+texture::texture(manager& mManager) : layered_region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -90,7 +90,7 @@ void texture::render()
 {
     if (is_visible())
     {
-        auto* pRenderer = pManager_->get_renderer();
+        auto& mRenderer = get_manager().get_renderer();
         float fAlpha = get_effective_alpha();
 
         if (fAlpha != 1.0f)
@@ -99,25 +99,25 @@ void texture::render()
             for (uint i = 0; i < 4; ++i)
                 mBlendedQuad.v[i].col.a *= fAlpha;
 
-            pRenderer->render_quad(mBlendedQuad);
+            mRenderer.render_quad(mBlendedQuad);
         }
         else
         {
-            pRenderer->render_quad(mQuad_);
+            mRenderer.render_quad(mQuad_);
         }
     }
 }
 
 void texture::create_glue()
 {
-    create_glue_<lua_texture>();
+    create_glue_(this);
 }
 
-void texture::copy_from(uiobject* pObj)
+void texture::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(pObj);
+    uiobject::copy_from(mObj);
 
-    texture* pTexture = down_cast<texture>(pObj);
+    const texture* pTexture = down_cast<texture>(&mObj);
     if (!pTexture)
         return;
 
@@ -406,11 +406,11 @@ void texture::set_texture(const std::string& sFile)
     if (sFile.empty())
         return;
 
-    auto* pRenderer = pManager_->get_renderer();
+    auto& mRenderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> pMat;
     if (utils::file_exists(sFile))
-        pMat = pRenderer->create_atlas_material("GUI", sFile, mFilter_);
+        pMat = mRenderer.create_atlas_material("GUI", sFile, mFilter_);
 
     mQuad_.mat = pMat;
 
@@ -441,11 +441,11 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
 {
     mContent_ = std::string{};
 
-    auto* pRenderer = pManager_->get_renderer();
+    auto& mRenderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> pMat;
     if (pRenderTarget)
-        pMat = pRenderer->create_material(pRenderTarget);
+        pMat = mRenderer.create_material(pRenderTarget);
 
     mQuad_.mat = pMat;
 

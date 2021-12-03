@@ -13,7 +13,7 @@ namespace lxgui {
 namespace gui
 {
 
-font_string::font_string(manager* pManager) : layered_region(pManager)
+font_string::font_string(manager& mManager) : layered_region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -51,8 +51,8 @@ void font_string::render()
     else
         fY = lBorderList_.top;
 
-    fX += fXOffset_;
-    fY += fYOffset_;
+    fX += mOffset_.x;
+    fY += mOffset_.y;
 
     pText_->set_alpha(get_effective_alpha());
 
@@ -60,7 +60,7 @@ void font_string::render()
     {
         pText_->set_color(mShadowColor_, true);
         pText_->render(matrix4f::translation(
-            round_to_pixel(vector2f(fX + fShadowXOffset_, fY + fShadowYOffset_))));
+            round_to_pixel(vector2f(fX, fY) + mShadowOffset_)));
     }
 
     pText_->set_color(mTextColor_);
@@ -102,7 +102,7 @@ std::string font_string::serialize(const std::string& sTab) const
     sStr << sTab << "  # NonSpaceW.  : " << bCanNonSpaceWrap_ << "\n";
     if (bHasShadow_)
     {
-    sStr << sTab << "  # Shadow off. : (" << fShadowXOffset_ << ", " << fShadowYOffset_ << ")\n";
+    sStr << sTab << "  # Shadow off. : (" << mShadowOffset_.x << ", " << mShadowOffset_.y << ")\n";
     sStr << sTab << "  # Shadow col. : " <<  mShadowColor_ << "\n";
     }
 
@@ -111,14 +111,14 @@ std::string font_string::serialize(const std::string& sTab) const
 
 void font_string::create_glue()
 {
-    create_glue_<lua_font_string>();
+    create_glue_(this);
 }
 
-void font_string::copy_from(uiobject* pObj)
+void font_string::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(pObj);
+    uiobject::copy_from(mObj);
 
-    font_string* pFontString = down_cast<font_string>(pObj);
+    const font_string* pFontString = down_cast<font_string>(&mObj);
     if (!pFontString)
         return;
 
@@ -137,7 +137,7 @@ void font_string::copy_from(uiobject* pObj)
     {
         this->set_shadow(true);
         this->set_shadow_color(pFontString->get_shadow_color());
-        this->set_shadow_offsets(pFontString->get_shadow_offsets());
+        this->set_shadow_offset(pFontString->get_shadow_offset());
     }
     this->set_text_color(pFontString->get_text_color());
     this->set_non_space_wrap(pFontString->can_non_space_wrap());
@@ -185,24 +185,14 @@ const color& font_string::get_shadow_color() const
     return mShadowColor_;
 }
 
-vector2f font_string::get_shadow_offsets() const
+const vector2f& font_string::get_shadow_offset() const
 {
-    return vector2f(fShadowXOffset_, fShadowYOffset_);
+    return mShadowOffset_;
 }
 
-vector2f font_string::get_offsets() const
+const vector2f& font_string::get_offset() const
 {
-    return vector2f(fXOffset_, fYOffset_);
-}
-
-float font_string::get_shadow_x_offset() const
-{
-    return fShadowXOffset_;
-}
-
-float font_string::get_shadow_y_offset() const
-{
-    return fShadowYOffset_;
+    return mOffset_;
 }
 
 float font_string::get_spacing() const
@@ -232,10 +222,10 @@ void font_string::create_text_object_()
 {
     if (sFontName_.empty()) return;
 
-    uint uiPixelHeight = std::round(pManager_->get_interface_scaling_factor()*fHeight_);
+    uint uiPixelHeight = std::round(get_manager().get_interface_scaling_factor()*fHeight_);
 
-    renderer* pRenderer = pManager_->get_renderer();
-    const localizer& mLocalizer = pManager_->get_localizer();
+    const auto& mRenderer = get_manager().get_renderer();
+    const auto& mLocalizer = get_manager().get_localizer();
 
     const auto& lCodePoints = mLocalizer.get_allowed_code_points();
     const char32_t uiDefaultCodePoint = mLocalizer.get_fallback_code_point();
@@ -243,19 +233,19 @@ void font_string::create_text_object_()
     std::shared_ptr<gui::font> pOutlineFont;
     if (bIsOutlined_)
     {
-        pOutlineFont = pRenderer->create_atlas_font(
+        pOutlineFont = mRenderer.create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
             std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))),
             lCodePoints, uiDefaultCodePoint);
     }
 
-    auto pFont = pRenderer->create_atlas_font(
+    auto pFont = mRenderer.create_atlas_font(
         "GUI", sFontName_, uiPixelHeight,
         0u, lCodePoints, uiDefaultCodePoint);
 
-    pText_ = std::unique_ptr<text>(new text(pRenderer, pFont, pOutlineFont));
+    pText_ = std::unique_ptr<text>(new text(mRenderer, pFont, pOutlineFont));
 
-    pText_->set_scaling_factor(1.0f/pManager_->get_interface_scaling_factor());
+    pText_->set_scaling_factor(1.0f/get_manager().get_interface_scaling_factor());
     pText_->set_remove_starting_spaces(true);
     pText_->set_text(sText_);
     pText_->set_alignment(mJustifyH_);
@@ -319,45 +309,21 @@ void font_string::set_shadow_color(const color& mShadowColor)
     }
 }
 
-void font_string::set_shadow_offsets(float fShadowXOffset, float fShadowYOffset)
+void font_string::set_shadow_offset(const vector2f& mShadowOffset)
 {
-    if (fShadowXOffset_ != fShadowXOffset || fShadowYOffset_ != fShadowYOffset)
+    if (mShadowOffset_ != mShadowOffset)
     {
-        fShadowXOffset_ = fShadowXOffset;
-        fShadowYOffset_ = fShadowYOffset;
+        mShadowOffset_ = mShadowOffset;
         if (bHasShadow_ && !bVirtual_)
             notify_renderer_need_redraw();
     }
 }
 
-void font_string::set_shadow_offsets(const vector2f& mShadowOffsets)
+void font_string::set_offset(const vector2f& mOffset)
 {
-    if (fShadowXOffset_ != mShadowOffsets.x || fShadowYOffset_ != mShadowOffsets.y)
+    if (mOffset_ != mOffset)
     {
-        fShadowXOffset_ = mShadowOffsets.x;
-        fShadowYOffset_ = mShadowOffsets.y;
-        if (bHasShadow_ && !bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_offsets(float fXOffset, float fYOffset)
-{
-    if (fXOffset_ != fXOffset || fYOffset_ != fYOffset)
-    {
-        fXOffset_ = fXOffset;
-        fYOffset_ = fYOffset;
-        if (!bVirtual_)
-            notify_renderer_need_redraw();
-    }
-}
-
-void font_string::set_offsets(const vector2f& mOffsets)
-{
-    if (fXOffset_ != mOffsets.x || fYOffset_ != mOffsets.y)
-    {
-        fXOffset_ = mOffsets.x;
-        fYOffset_ = mOffsets.y;
+        mOffset_ = mOffset;
         if (!bVirtual_)
             notify_renderer_need_redraw();
     }

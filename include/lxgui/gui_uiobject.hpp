@@ -11,12 +11,16 @@
 #include "lxgui/gui_exception.hpp"
 
 #include <lxgui/xml.hpp>
-#include <lxgui/luapp_lua_fwd.hpp>
 
 #include <lxgui/utils_maths.hpp>
+#include <lxgui/utils_observer.hpp>
 
 #include <array>
+#include <unordered_map>
+#include <vector>
 #include <optional>
+
+#include <sol/object.hpp>
 
 namespace sol
 {
@@ -24,51 +28,10 @@ namespace sol
 }
 
 namespace lxgui {
-namespace lua
-{
-    class state;
-}
-
 namespace gui
 {
     struct addon;
     class manager;
-
-    /** \cond NOT_REMOVE_FROM_DOC
-    */
-
-    // Generic Lua glue
-    class lua_glue
-    {
-    public :
-
-        explicit lua_glue(lua_State* luaVM);
-        virtual ~lua_glue();
-
-        virtual void notify_deleted() = 0;
-
-        int get_data_table(lua_State *L);
-
-    protected :
-
-        lua_State* pLua_;
-        int        iRef_;
-    };
-
-    /** \endcond
-    */
-
-    /// ID of a layer for rendering inside a frame.
-    enum class layer_type
-    {
-        BACKGROUND = 0,
-        BORDER = 1,
-        ARTWORK = 2,
-        OVERLAY = 3,
-        HIGHLIGHT = 4,
-        SPECIALHIGH = 5,
-        ENUM_SIZE
-    };
 
     class frame;
     class frame_renderer;
@@ -184,7 +147,7 @@ namespace gui
     *   constraint on `A`'s midpoint will be ignored: `A` will be enlarged to a height
     *   of 40 pixels, i.e., the distance between `B`'s top and bottom edges.
     */
-    class uiobject
+    class uiobject : public utils::enable_observer_from_this<uiobject>
     {
     friend manager;
     public :
@@ -193,25 +156,38 @@ namespace gui
         template<typename ObjectType>
         struct id_comparator
         {
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, const std::unique_ptr<ObjectType>& pObject2) const
+            bool operator() (const utils::owner_ptr<ObjectType>& pObject1,
+                const utils::owner_ptr<ObjectType>& pObject2) const
             {
                 return pObject1->get_id() < pObject2->get_id();
             }
-            bool operator() (const std::unique_ptr<ObjectType>& pObject1, uint uiID) const
+            bool operator() (const utils::owner_ptr<ObjectType>& pObject1, uint uiID) const
             {
                 return pObject1->get_id() < uiID;
             }
-            bool operator() (uint uiID, const std::unique_ptr<ObjectType>& pObject2) const
+            bool operator() (uint uiID, const utils::owner_ptr<ObjectType>& pObject2) const
             {
                 return uiID < pObject2->get_id();
             }
         };
 
         /// Contructor.
-        explicit uiobject(manager* pManager);
+        explicit uiobject(manager& mManager);
 
         /// Destructor.
         virtual ~uiobject();
+
+        /// Non-copiable
+        uiobject(const uiobject&) = delete;
+
+        /// Non-movable
+        uiobject(uiobject&&) = delete;
+
+        /// Non-copiable
+        uiobject& operator=(const uiobject&) = delete;
+
+        /// Non-movable
+        uiobject& operator=(uiobject&&) = delete;
 
         /// Renders this widget on the current render target.
         virtual void render() = 0;
@@ -230,7 +206,7 @@ namespace gui
         /// Copies an uiobject's parameters into this uiobject (inheritance).
         /** \param pObj The uiobject to copy
         */
-        virtual void copy_from(uiobject* pObj);
+        virtual void copy_from(const uiobject& mObj);
 
         /// Tells this widget that its borders need updating.
         virtual void notify_borders_need_update() const;
@@ -266,17 +242,17 @@ namespace gui
         /** \param pParent The new parent
         *   \note Default is nullptr.
         */
-        void set_parent(frame* pParent);
+        void set_parent(utils::observer_ptr<frame> pParent);
 
         /// Returns this widget's parent.
         /** \return This widget's parent
         */
-        const frame* get_parent() const;
+        utils::observer_ptr<const frame> get_parent() const { return pParent_; }
 
         /// Returns this widget's parent.
         /** \return This widget's parent
         */
-        frame* get_parent();
+        const utils::observer_ptr<frame>& get_parent() { return pParent_; }
 
         /// Sets this widget's name and parent at once.
         /** \param sName This widget's name
@@ -284,12 +260,12 @@ namespace gui
         *   \note The name can only be set once. If you need to just change the
         *         parent, call set_parent().
         */
-        void set_name_and_parent(const std::string& sName, frame* pParent);
+        void set_name_and_parent(const std::string& sName, utils::observer_ptr<frame> pParent);
 
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
         */
-        virtual std::unique_ptr<uiobject> release_from_parent();
+        virtual utils::owner_ptr<uiobject> release_from_parent();
 
         /// Forcefully removes this widget from the GUI.
         /** \warning After calling this function, any pointer to the object is invalidated!
@@ -297,11 +273,6 @@ namespace gui
         *            before its parent (if any) would itself be destroyed.
         */
         void destroy();
-
-        /// Returns the widget this one inherits from.
-        /** \return The widget this one inherits from
-        */
-        uiobject* get_base();
 
         /// Changes this widget's alpha (opacity).
         /** \param fAlpha The new alpha value
@@ -500,7 +471,7 @@ namespace gui
         /** \param pObj A pointer to the object you want to wrap
         *   \note Removes all anchors and defines two new ones.
         */
-        void set_all_points(uiobject* pObj);
+        void set_all_points(const utils::observer_ptr<uiobject>& pObj);
 
         /// Adjusts this widgets anchors to fit the provided widget.
         /** \param sObjName The name of the object to fit to
@@ -554,10 +525,10 @@ namespace gui
         void set_point(const anchor& mAnchor);
 
         /// Checks if this widget depends on another.
-        /** \param pObj The widget to test
+        /** \param mObj The widget to test
         *   \note Usefull to detect circular refences.
         */
-        bool depends_on(const uiobject* pObj) const;
+        bool depends_on(const uiobject& mObj) const;
 
         /// Returns the number of defined anchors.
         /** \return The number of defined anchors
@@ -568,13 +539,13 @@ namespace gui
         /** \param mPoint The anchor point
         *   \return A pointer to the anchor, nullptr if none
         */
-        anchor* modify_point(anchor_point mPoint);
+        anchor& modify_point(anchor_point mPoint);
 
         /// Returns one of this widget's anchor.
         /** \param mPoint The anchor point
         *   \return A pointer to the anchor, nullptr if none
         */
-        const anchor* get_point(anchor_point mPoint) const;
+        const anchor& get_point(anchor_point mPoint) const;
 
         /// Returns all of this widgets's anchors.
         /** \return All of this widgets's anchors
@@ -601,7 +572,7 @@ namespace gui
         /** \param pObj      The anchored widget
         *   \param bAnchored 'true' if it is anchored, 'false' if it's no longer the case
         */
-        void notify_anchored_object(uiobject* pObj, bool bAnchored) const;
+        void notify_anchored_object(utils::observer_ptr<uiobject> pObj, bool bAnchored) const;
 
         /// Checks if this uiobject is virtual.
         /** \return 'true' if this uiobject is virtual
@@ -659,13 +630,17 @@ namespace gui
         /** \return The renderer of this object or its parents
         *   \note For more informations, see frame::set_renderer().
         */
-        virtual frame_renderer* get_top_level_renderer();
+        virtual utils::observer_ptr<const frame_renderer> get_top_level_renderer() const;
 
-        /// Returns the renderer of this object or its parents.
-        /** \return The renderer of this object or its parents
-        *   \note For more informations, see frame::set_renderer().
+        /// Returns the renderer of this object or its parents, nullptr if none.
+        /** \return The renderer of this object or its parents, nullptr if none
+        *   \note For more informations, see set_renderer().
         */
-        virtual const frame_renderer* get_top_level_renderer() const;
+        utils::observer_ptr<frame_renderer> get_top_level_renderer()
+        {
+            return utils::const_pointer_cast<frame_renderer>(
+                const_cast<const uiobject*>(this)->get_top_level_renderer());
+        }
 
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape-changing function.
@@ -675,7 +650,7 @@ namespace gui
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one
         */
-        const std::vector<uiobject*>& get_anchored_objects() const;
+        const std::vector<utils::observer_ptr<uiobject>>& get_anchored_objects() const;
 
         /// Notifies this widget that it has been fully loaded.
         virtual void notify_loaded();
@@ -695,12 +670,12 @@ namespace gui
         /// Returns this widget's manager.
         /** \return This widget's manager
         */
-        manager* get_manager();
+        manager& get_manager() { return mManager_; }
 
         /// Returns this widget's manager.
         /** \return This widget's manager
         */
-        const manager* get_manager() const;
+        const manager& get_manager() const { return mManager_; }
 
         /// Creates the associated Lua glue.
         /** \note This method is pure virtual : it must be overriden.
@@ -710,20 +685,13 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Pushes this uiobject on the provided lua state.
-        /** \param mLua The lua state on which to push the glue
-        */
-        void push_on_lua(sol::state& mLua) const;
-
-        /// Pushes this uiobject on the provided lua State.
-        /** \param mLua The lua state on which to push the glue
-        */
-        void push_on_lua(lua::state& mLua) const;
-
         /// Parses data from an xml::block.
         /** \param pBlock The uiobject's xml::block
         */
         virtual void parse_block(xml::block* pBlock) = 0;
+
+        /// Registers this widget class to the provided Lua state
+        static void register_on_lua(sol::state& mLua);
 
         template<typename ObjectType>
         friend const ObjectType* down_cast(const uiobject* pSelf);
@@ -749,33 +717,33 @@ namespace gui
         virtual void update_anchors_();
 
         sol::state&  get_lua_();
-        lua::state&  get_luapp_();
 
         template<typename T>
-        void create_glue_();
+        void create_glue_(T* pSelf);
 
-        manager* pManager_ = nullptr;
+        void set_lua_member_(std::string sKey, sol::stack_object mValue);
+        sol::object get_lua_member_(const std::string& sKey) const;
+
+        manager& mManager_;
 
         std::string sName_;
         std::string sRawName_;
         std::string sLuaName_;
         uint        uiID_ = uint(-1);
-        frame*      pParent_ = nullptr;
-        uiobject*   pInheritance_ = nullptr;
-        bool        bSpecial_ = false;
-        bool        bNewlyCreated_ = false;
-        bool        bInherits_ = false;
 
+        utils::observer_ptr<frame> pParent_ = nullptr;
+
+        bool         bSpecial_ = false;
+        bool         bNewlyCreated_ = false;
+        bool         bInherits_ = false;
         bool         bVirtual_ = false;
         bool         bLoaded_ = false;
         mutable bool bReady_ = true;
 
-        lua_glue* lGlue_ = nullptr;
-
         std::vector<std::string> lType_;
 
         std::array<std::optional<anchor>,9> lAnchorList_;
-        std::vector<const uiobject*>        lPreviousAnchorParentList_;
+        std::vector<utils::observer_ptr<const uiobject>> lPreviousAnchorParentList_;
         bounds2<bool>                       lDefinedBorderList_;
         mutable bounds2f                    lBorderList_;
 
@@ -788,7 +756,9 @@ namespace gui
 
         mutable bool bUpdateBorders_ = true;
 
-        mutable std::vector<uiobject*> lAnchoredObjectList_;
+        mutable std::vector<utils::observer_ptr<uiobject>> lAnchoredObjectList_;
+
+        std::unordered_map<std::string, sol::object> lLuaMembers_;
     };
 
     /// Obtain a pointer to a derived class.
@@ -833,74 +803,50 @@ namespace gui
     *   \note See down_cast(const uiobject*) for more information.
     */
     template<typename ObjectType>
-    std::unique_ptr<ObjectType> down_cast(std::unique_ptr<uiobject> pObject)
+    utils::owner_ptr<ObjectType> down_cast(utils::owner_ptr<uiobject>&& pObject)
     {
-        ObjectType* pCasted = down_cast<ObjectType>(pObject.get());
-        pObject.release();
-        return std::unique_ptr<ObjectType>(pCasted);
+        return utils::owner_ptr<ObjectType>(std::move(pObject),
+            down_cast<ObjectType>(pObject.get()));
     }
 
-    /** \cond NOT_REMOVE_FROM_DOC
+    /// Perform a down cast on an observer pointer.
+    /** \param pObject The observer pointer to down cast
+    *   \return The down casted pointer.
+    *   \note See down_cast(const uiobject*) for more information.
     */
-
-    // uiobject Lua glue
-    class lua_uiobject : public lua_glue
+    template<typename ObjectType>
+    utils::observer_ptr<ObjectType> down_cast(const utils::observer_ptr<uiobject>& pObject)
     {
-    public :
+        return utils::observer_ptr<ObjectType>(pObject, down_cast<ObjectType>(pObject.get()));
+    }
 
-        explicit lua_uiobject(lua_State* luaVM);
-        ~lua_uiobject() override;
-
-        void notify_deleted() override;
-
-        uiobject* get_object();
-        const std::string& get_name() const;
-        void clear_object();
-
-        // uiobject
-        int _get_alpha(lua_State*);
-        int _get_name(lua_State*);
-        int _get_object_type(lua_State*);
-        int _is_object_type(lua_State*);
-        int _set_alpha(lua_State*);
-        // region
-        int _clear_all_points(lua_State*);
-        int _get_base(lua_State*);
-        int _get_bottom(lua_State*);
-        int _get_center(lua_State*);
-        int _get_height(lua_State*);
-        int _get_left(lua_State*);
-        int _get_num_point(lua_State*);
-        int _get_parent(lua_State*);
-        int _get_point(lua_State*);
-        int _get_right(lua_State*);
-        int _get_top(lua_State*);
-        int _get_width(lua_State*);
-        int _hide(lua_State*);
-        int _is_shown(lua_State*);
-        int _is_visible(lua_State*);
-        int _set_all_points(lua_State*);
-        int _set_height(lua_State*);
-        int _set_parent(lua_State*);
-        int _set_point(lua_State*);
-        int _set_rel_point(lua_State*);
-        int _set_width(lua_State*);
-        int _show(lua_State*);
-
-        static const char className[];
-        static const char* classList[];
-        static lua::lunar_binding<lua_uiobject> methods[];
-
-    protected :
-
-        bool check_object_();
-
-        std::string sName_;
-        uiobject*   pObject_;
-    };
-
-    /** \endcond
+    /// Perform a down cast on an observer pointer.
+    /** \param pObject The observer pointer to down cast
+    *   \return The down casted pointer.
+    *   \note See down_cast(const uiobject*) for more information.
     */
+    template<typename ObjectType>
+    utils::observer_ptr<ObjectType> down_cast(utils::observer_ptr<uiobject>&& pObject)
+    {
+        return utils::observer_ptr<ObjectType>(std::move(pObject),
+            down_cast<ObjectType>(pObject.get()));
+    }
+
+    /// Obtain an observer pointer from a raw pointer (typically 'this')
+    /** \param pSelf The raw pointer to get an observer from
+    *   \return The observer pointer.
+    *   \note This returns the same things as pSelf->observer_from_this(),
+    *         but returning a pointer to the most-derived type known form the
+    *         input pointer.
+    */
+    template<typename ObjectType>
+    utils::observer_ptr<ObjectType> observer_from(ObjectType* pSelf)
+    {
+        if (pSelf)
+            return utils::static_pointer_cast<ObjectType>(pSelf->uiobject::observer_from_this());
+        else
+            return nullptr;
+    }
 }
 }
 

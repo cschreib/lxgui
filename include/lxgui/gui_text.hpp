@@ -45,12 +45,24 @@ namespace gui
         };
 
         /// Constructor.
-        /** \param pRenderer The renderer instance to use
+        /** \param mRenderer    The renderer instance to use
         *   \param pFont        The font to use for rendering
         *   \param pOutlineFont The font to use for outlines
         */
-        explicit text(const renderer* pRenderer, std::shared_ptr<gui::font> pFont,
+        explicit text(const renderer& mRenderer, std::shared_ptr<gui::font> pFont,
             std::shared_ptr<gui::font> pOutlineFont);
+
+        /// Non-copiable
+        text(const text&) = delete;
+
+        /// Non-movable
+        text(text&&) = delete;
+
+        /// Non-copiable
+        text& operator=(const text&) = delete;
+
+        /// Non-movable
+        text& operator=(text&&) = delete;
 
         /// Returns the height of one line (constant).
         /** \return The height of one line (constant)
@@ -313,7 +325,7 @@ namespace gui
         /// Returns the renderer used to render this text.
         /** \return The renderer used to render this text
         */
-        const renderer* get_renderer() const;
+        const renderer& get_renderer() const { return mRenderer_; }
 
     private :
 
@@ -325,7 +337,7 @@ namespace gui
         std::array<vertex,4> create_letter_quad_(char32_t uiChar) const;
         std::array<vertex,4> create_outline_letter_quad_(char32_t uiChar) const;
 
-        const renderer* pRenderer_ = nullptr;
+        const renderer& mRenderer_;
 
         bool  bReady_ = false;
         float fScalingFactor_ = 1.0f;
