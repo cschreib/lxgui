@@ -74,67 +74,45 @@ $(function() {
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#aab11939ffff6ebf6a8026bc9f4ad158b">    6</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1event.html#a1d88cfa896a79133fedc1132dc34a917">event::event</a>(<span class="keyword">const</span> std::string&amp; sName, <span class="keywordtype">bool</span> bOncePerFrame) :</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    sName_(sName), bOncePerFrame_(bOncePerFrame)</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;}</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">   11</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">event::set_name</a>(<span class="keyword">const</span> std::string&amp; sName)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    sName_ = sName;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">   16</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">event::set_once_per_frame</a>(<span class="keywordtype">bool</span> bOncePerFrame)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    bOncePerFrame_ = bOncePerFrame;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#aaee7d72c3d378692306f4b9dfc30de92">   21</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#aaee7d72c3d378692306f4b9dfc30de92">event::add</a>(<span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">utils::variant</a>&amp; mValue)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    lArgList_.push_back(mValue);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a0c65b92733ba4bb68b044bb3bb41bf5f">   26</a></span>&#160;<span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">utils::variant</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1event.html#a0c65b92733ba4bb68b044bb3bb41bf5f">event::get</a>(std::size_t uiIndex)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">return</span> lArgList_[uiIndex];</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#acfa8079b67a35baac1238fc38b4657ee">   31</a></span>&#160;<a class="code" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">utils::variant</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1event.html#a0c65b92733ba4bb68b044bb3bb41bf5f">event::get</a>(std::size_t uiIndex)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">return</span> lArgList_[uiIndex];</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#aee8ae41574ac873fedca9663de08afce">   36</a></span>&#160;std::size_t <a class="code" href="classlxgui_1_1gui_1_1event.html#aee8ae41574ac873fedca9663de08afce">event::get_num_param</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">return</span> lArgList_.size();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">   41</a></span>&#160;<span class="keyword">const</span> std::string&amp; <a class="code" href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">event::get_name</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">return</span> sName_;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">   46</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">event::is_once_per_frame</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">return</span> bOncePerFrame_;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;}</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#aab11939ffff6ebf6a8026bc9f4ad158b">    7</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1event.html#a1d88cfa896a79133fedc1132dc34a917">event::event</a>(<span class="keyword">const</span> std::string&amp; sName, <span class="keywordtype">bool</span> bOncePerFrame) :</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    sName_(sName), bOncePerFrame_(bOncePerFrame)</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">   12</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">event::set_name</a>(<span class="keyword">const</span> std::string&amp; sName)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    sName_ = sName;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">   17</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">event::set_once_per_frame</a>(<span class="keywordtype">bool</span> bOncePerFrame)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    bOncePerFrame_ = bOncePerFrame;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">   22</a></span>&#160;<span class="keyword">const</span> std::string&amp; <a class="code" href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">event::get_name</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> sName_;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">   27</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">event::is_once_per_frame</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordflow">return</span> bOncePerFrame_;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a13af96963cfdba7a3ff912db154dbca0"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">lxgui::gui::event::set_once_per_frame</a></div><div class="ttdeci">void set_once_per_frame(bool bOncePerFrame)</div><div class="ttdoc">Sets whether this event can only be fired once per frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00016">gui_event.cpp:16</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1utils_html_a395c9f514846f84ca8a235f1d76e7b09"><div class="ttname"><a href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">lxgui::utils::variant</a></div><div class="ttdeci">std::variant&lt; empty, bool, std::int64_t, std::int32_t, std::int16_t, std::int8_t, std::uint64_t, std::uint32_t, std::uint16_t, std::uint8_t, double, float, std::string &gt; variant</div><div class="ttdoc">Type-erased value for passing arguments to events.</div><div class="ttdef"><b>Definition:</b> <a href="utils__variant_8hpp_source.html#l00040">utils_variant.hpp:40</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a8cd38ec86fd89bf789f892c9f2c93791"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">lxgui::gui::event::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns the name of this event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00041">gui_event.cpp:41</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_aaee7d72c3d378692306f4b9dfc30de92"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#aaee7d72c3d378692306f4b9dfc30de92">lxgui::gui::event::add</a></div><div class="ttdeci">void add(const utils::variant &amp;mValue)</div><div class="ttdoc">Adds a parameter to this event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00021">gui_event.cpp:21</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a13af96963cfdba7a3ff912db154dbca0"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a13af96963cfdba7a3ff912db154dbca0">lxgui::gui::event::set_once_per_frame</a></div><div class="ttdeci">void set_once_per_frame(bool bOncePerFrame)</div><div class="ttdoc">Sets whether this event can only be fired once per frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00017">gui_event.cpp:17</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a8cd38ec86fd89bf789f892c9f2c93791"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a8cd38ec86fd89bf789f892c9f2c93791">lxgui::gui::event::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns the name of this event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00022">gui_event.cpp:22</a></div></div>
 <div class="ttc" id="agui__event_8hpp_html"><div class="ttname"><a href="gui__event_8hpp.html">gui_event.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a7c189e68140bb845679eaa98e09c6110"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">lxgui::gui::event::is_once_per_frame</a></div><div class="ttdeci">bool is_once_per_frame() const</div><div class="ttdoc">Checks if this event should only be fired once per frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00046">gui_event.cpp:46</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a7c189e68140bb845679eaa98e09c6110"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a7c189e68140bb845679eaa98e09c6110">lxgui::gui::event::is_once_per_frame</a></div><div class="ttdeci">bool is_once_per_frame() const</div><div class="ttdoc">Checks if this event should only be fired once per frame.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00027">gui_event.cpp:27</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a1d88cfa896a79133fedc1132dc34a917"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a1d88cfa896a79133fedc1132dc34a917">lxgui::gui::event::event</a></div><div class="ttdeci">event()=default</div><div class="ttdoc">Default constructor.</div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a2fbed293cd567db51cbfdeb59b2527e8"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">lxgui::gui::event::set_name</a></div><div class="ttdeci">void set_name(const std::string &amp;sName)</div><div class="ttdoc">Sets this event's name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00011">gui_event.cpp:11</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a0c65b92733ba4bb68b044bb3bb41bf5f"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a0c65b92733ba4bb68b044bb3bb41bf5f">lxgui::gui::event::get</a></div><div class="ttdeci">const utils::variant &amp; get(std::size_t uiIndex) const</div><div class="ttdoc">Returns a parameter of this event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00026">gui_event.cpp:26</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_aee8ae41574ac873fedca9663de08afce"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#aee8ae41574ac873fedca9663de08afce">lxgui::gui::event::get_num_param</a></div><div class="ttdeci">std::size_t get_num_param() const</div><div class="ttdoc">Returns the number of parameters.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00036">gui_event.cpp:36</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1event_html_a2fbed293cd567db51cbfdeb59b2527e8"><div class="ttname"><a href="classlxgui_1_1gui_1_1event.html#a2fbed293cd567db51cbfdeb59b2527e8">lxgui::gui::event::set_name</a></div><div class="ttdeci">void set_name(const std::string &amp;sName)</div><div class="ttdoc">Sets this event's name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__event_8cpp_source.html#l00012">gui_event.cpp:12</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

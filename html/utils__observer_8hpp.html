@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/luapp_lua_fwd.hpp File Reference</title>
+<title>gui: /home/runner/work/lxgui/lxgui/include/lxgui/utils_observer.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,55 +66,41 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">luapp_lua_fwd.hpp File Reference</div>  </div>
+<div class="title">utils_observer.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><a href="luapp__lua__fwd_8hpp_source.html">Go to the source code of this file.</a></p>
+<div class="textblock"><code>#include &lt;lxgui/lxgui.hpp&gt;</code><br />
+<code>#include &lt;oup/observable_unique_ptr.hpp&gt;</code><br />
+</div>
+<p><a href="utils__observer_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlxgui_1_1lua_1_1lunar__binding.html">lxgui::lua::lunar_binding&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binds a C++ member function to a Lua function.  <a href="structlxgui_1_1lua_1_1lunar__binding.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacelxgui"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui.html">lxgui</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacelxgui_1_1lua"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1lua.html">lxgui::lua</a></td></tr>
+<tr class="memitem:namespacelxgui_1_1utils"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html">lxgui::utils</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a28186297f2e9f2de0652504633de8fb3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></td></tr>
-<tr class="separator:a28186297f2e9f2de0652504633de8fb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">lxgui::utils::owner_ptr</a> = oup::observable_sealed_ptr&lt; T &gt;</td></tr>
+<tr class="separator:a9b701a0588e6924943ea55e0620732b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... Args&gt; </td></tr>
+<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplItemLeft" align="right" valign="top">owner_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a060cc74b0acd85df1db801d14442b2d8">lxgui::utils::make_owned</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a060cc74b0acd85df1db801d14442b2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a28186297f2e9f2de0652504633de8fb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28186297f2e9f2de0652504633de8fb3">&#9670;&nbsp;</a></span>lua_State</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a> <a class="el" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="luapp__lua__fwd_8hpp_source.html#l00006">6</a> of file <a class="el" href="luapp__lua__fwd_8hpp_source.html">luapp_lua_fwd.hpp</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

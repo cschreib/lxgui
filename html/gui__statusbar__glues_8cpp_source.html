@@ -70,269 +70,104 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="gui__statusbar__glues_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__statusbar_8hpp.html">lxgui/gui_statusbar.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__texture_8hpp.html">lxgui/gui_texture.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__state_8hpp.html">lxgui/luapp_state.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__function_8hpp.html">lxgui/luapp_function.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1status__bar.html#a3349c6c81384d3d6951cff5687614f0e">   34</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a3349c6c81384d3d6951cff5687614f0e">status_bar::register_glue</a>(<a class="code" href="classlxgui_1_1lua_1_1state.html">lua::state</a>&amp; mLua)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    mLua.<a class="code" href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">reg</a>&lt;lua_status_bar&gt;();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;lua_status_bar::lua_status_bar(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua) : lua_frame(pLua)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_get_min_max_values(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="classlxgui_1_1lua_1_1function.html">lua::function</a> mFunc(<span class="stringliteral">&quot;StatusBar:get_min_max_values&quot;</span>, pLua, 2);</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__uiobject__tpl_8hpp.html">lxgui/gui_uiobject_tpl.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__texture_8hpp.html">lxgui/gui_texture.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;sol/state.hpp&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;{</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1status__bar.html#a03f89fa17de41ef231d592e45a99ede9">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a03f89fa17de41ef231d592e45a99ede9">status_bar::register_on_lua</a>(sol::state&amp; mLua)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">auto</span> mClass = mLua.new_usertype&lt;<a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&gt;(<span class="stringliteral">&quot;StatusBar&quot;</span>,</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        sol::base_classes, sol::bases&lt;uiobject, frame&gt;(),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        sol::meta_function::index,</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        member_function&lt;&amp;status_bar::get_lua_member_&gt;(),</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        sol::meta_function::new_index,</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        member_function&lt;&amp;status_bar::set_lua_member_&gt;());</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_min_max_values&quot;</span>, [](<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&amp; mSelf)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">return</span> std::make_pair(mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a2780776aac469172711187d12216b5e7">get_min_value</a>(), mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a15688cc654bd849184dd000b535e709b">get_max_value</a>());</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    });</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    mFunc.push(get_object()-&gt;get_min_value());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    mFunc.push(get_object()-&gt;get_max_value());</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_get_orientation(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:get_orientation&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">switch</span> (get_object()-&gt;get_orientation())</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e">status_bar::orientation::HORIZONTAL</a> : mFunc.push(std::string(<span class="stringliteral">&quot;HORIZONTAL&quot;</span>)); <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc">status_bar::orientation::VERTICAL</a>   : mFunc.push(std::string(<span class="stringliteral">&quot;VERTICAL&quot;</span>)); <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_get_status_bar_color(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:get_status_bar_color&quot;</span>, pLua, 4);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_orientation&quot;</span>, [](<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&amp; mSelf)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">switch</span> (mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a23d2be13e42f06e3ebabcf8cdd59da56">get_orientation</a>())</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc">status_bar::orientation::VERTICAL</a>   : <span class="keywordflow">return</span> <span class="stringliteral">&quot;VERTICAL&quot;</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">case</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e">status_bar::orientation::HORIZONTAL</a> : <span class="keywordflow">return</span> <span class="stringliteral">&quot;HORIZONTAL&quot;</span>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">default</span>: <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    });</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_status_bar_color&quot;</span>, [](<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&amp; mSelf)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mColor = mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a6de57789eba7d30424e9c90b0a3c3723">get_bar_color</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keywordflow">return</span> std::make_tuple(mColor.<a class="code" href="classlxgui_1_1gui_1_1color.html#abe6aac465376c8ca5a177c10d62e5049">r</a>, mColor.<a class="code" href="classlxgui_1_1gui_1_1color.html#a52ad185fb30c71b881b12f7099e647c8">g</a>, mColor.<a class="code" href="classlxgui_1_1gui_1_1color.html#a8346db2fda5f218a3aac2616d532699c">b</a>, mColor.<a class="code" href="classlxgui_1_1gui_1_1color.html#a3492b4c32e4c85abb07be9d77d522f01">a</a>);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    });</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_status_bar_texture&quot;</span>, <a class="code" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">member_function</a>&lt; <span class="comment">// select the right overload for Lua</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>utils::observer_ptr&lt;texture&gt;&amp; (<a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>::*)()<span class="keyword">&gt;</span>(&amp;<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#ae311dec99da9bd2ae6465f2c15adf05c">status_bar::get_bar_texture</a>)&gt;());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_value&quot;</span>, member_function&lt;&amp;status_bar::get_value&gt;());</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;is_reversed&quot;</span>, member_function&lt;&amp;status_bar::is_reversed&gt;());</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">const</span> color&amp; mColor = get_object()-&gt;get_bar_color();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    mFunc.push(mColor.r);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    mFunc.push(mColor.g);</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    mFunc.push(mColor.b);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    mFunc.push(mColor.a);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_get_status_bar_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;{</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:get_status_bar_texture&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    texture* pTexture = get_object()-&gt;get_bar_texture();</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span> (pTexture)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        pTexture-&gt;push_on_lua(mFunc.get_state());</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        mFunc.notify_pushed();</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    }</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_min_max_values&quot;</span>, member_function&lt;&amp;status_bar::set_min_max_values&gt;());</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_orientation&quot;</span>, <a class="code" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">member_function</a>&lt; <span class="comment">// select the right overload for Lua</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span> (<a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>::*)(<span class="keyword">const </span>std::string&amp;)<span class="keyword">&gt;</span>(&amp;<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#aa8dff0cec2a8e66b7b997f67368768d6">status_bar::set_orientation</a>)&gt;());</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_status_bar_color&quot;</span>, sol::overload(</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    [](<a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&amp; mSelf, <span class="keywordtype">float</span> fR, <span class="keywordtype">float</span> fG, <span class="keywordtype">float</span> fB, sol::optional&lt;float&gt; fA)</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a36323ab08364fe18cad93091519e6816">set_bar_color</a>(<a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>(fR, fG, fB, fA.value_or(1.0f)));</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    },</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    [](<a class="code" href="classlxgui_1_1gui_1_1status__bar.html">status_bar</a>&amp; mSelf, <span class="keyword">const</span> std::string&amp; sColor)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        mSelf.<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a36323ab08364fe18cad93091519e6816">set_bar_color</a>(<a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>(sColor));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }));</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_status_bar_texture&quot;</span>, member_function&lt;&amp;status_bar::set_bar_texture&gt;());</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_value&quot;</span>, member_function&lt;&amp;status_bar::set_value&gt;());</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_get_value(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:get_value&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    mFunc.push(get_object()-&gt;get_value());</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_is_reversed(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;{</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:is_reversed&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    mFunc.push(get_object()-&gt;is_reversed());</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;}</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_min_max_values(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;{</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_min_max_values&quot;</span>, pLua);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;min&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;max&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        get_object()-&gt;set_min_max_values(</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            mFunc.get(0)-&gt;get_number(),</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            mFunc.get(1)-&gt;get_number()</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        );</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;}</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_orientation(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;{</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_orientation&quot;</span>, pLua);</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;orientation&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        std::string sOrient = mFunc.get(0)-&gt;get_string();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        <span class="keywordflow">if</span> (sOrient == <span class="stringliteral">&quot;HORIZONTAL&quot;</span>)</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            get_object()-&gt;set_orientation(<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e">status_bar::orientation::HORIZONTAL</a>);</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sOrient == <span class="stringliteral">&quot;VERTICAL&quot;</span>)</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            get_object()-&gt;set_orientation(<a class="code" href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc">status_bar::orientation::VERTICAL</a>);</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        {</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mFunc.get_name()</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                &lt;&lt; <span class="stringliteral">&quot; : Unkonwn status bar orientation : \&quot;&quot;</span>+sOrient+<span class="stringliteral">&quot;\&quot;.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    }</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;}</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_status_bar_color(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;{</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_status_bar_color&quot;</span>, pLua);</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;red&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    mFunc.add(1, <span class="stringliteral">&quot;green&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    mFunc.add(2, <span class="stringliteral">&quot;blue&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    mFunc.add(3, <span class="stringliteral">&quot;alpha&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    mFunc.new_param_set();</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;color&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        color mColor;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">if</span> (mFunc.get_param_set_rank() == 0)</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        {</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">if</span> (mFunc.is_provided(3))</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;            {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;                mColor = color(</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;                    mFunc.get(0)-&gt;get_number(),</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                    mFunc.get(1)-&gt;get_number(),</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;                    mFunc.get(2)-&gt;get_number(),</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;                    mFunc.get(3)-&gt;get_number()</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                );</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            }</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            {</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                mColor = color(</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                    mFunc.get(0)-&gt;get_number(),</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;                    mFunc.get(1)-&gt;get_number(),</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                    mFunc.get(2)-&gt;get_number()</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;                );</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        }</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            mColor = color(mFunc.get(0)-&gt;get_string());</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        get_object()-&gt;set_bar_color(mColor);</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    }</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_status_bar_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;{</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_status_bar_texture&quot;</span>, pLua);</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;texture&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>);</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    {</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        lua_texture* pLuaTexture = mFunc.get_state().get&lt;lua_texture&gt;();</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">if</span> (pLuaTexture)</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;            get_object()-&gt;set_bar_texture(pLuaTexture-&gt;get_object());</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        }</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    }</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;}</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160; </div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_value(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;{</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_value&quot;</span>, pLua);</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;value&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;        get_object()-&gt;set_value(mFunc.get(0)-&gt;get_number());</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;}</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;<span class="keywordtype">int</span> lua_status_bar::_set_reversed(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;{</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;StatusBar:set_reversed&quot;</span>, pLua);</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;reversed&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1bac48d5da12d702e73d6966069f2687376">lua::type::BOOLEAN</a>);</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        get_object()-&gt;set_reversed(mFunc.get(0)-&gt;get_bool());</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160; </div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;}</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_reversed&quot;</span>, member_function&lt;&amp;status_bar::set_reversed&gt;());</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html_ac137db19980f4ad1f15ecf64062646f5"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">lxgui::lua::state::reg</a></div><div class="ttdeci">void reg(const std::string &amp;sFunctionName, c_function mFunction)</div><div class="ttdoc">Binds a C++ function to a Lua function.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lxgui::lua::type::USERDATA</a></div><div class="ttdeci">@ USERDATA</div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lxgui::lua::type::STRING</a></div><div class="ttdeci">@ STRING</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a3349c6c81384d3d6951cff5687614f0e"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a3349c6c81384d3d6951cff5687614f0e">lxgui::gui::status_bar::register_glue</a></div><div class="ttdeci">static void register_glue(lua::state &amp;mLua)</div><div class="ttdoc">Registers this widget to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar__glues_8cpp_source.html#l00034">gui_statusbar_glues.cpp:34</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lxgui::lua::type::NUMBER</a></div><div class="ttdeci">@ NUMBER</div></div>
-<div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1bac48d5da12d702e73d6966069f2687376"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1bac48d5da12d702e73d6966069f2687376">lxgui::lua::type::BOOLEAN</a></div><div class="ttdeci">@ BOOLEAN</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_abe6aac465376c8ca5a177c10d62e5049"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#abe6aac465376c8ca5a177c10d62e5049">lxgui::gui::color::r</a></div><div class="ttdeci">channel r</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a15688cc654bd849184dd000b535e709b"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a15688cc654bd849184dd000b535e709b">lxgui::gui::status_bar::get_max_value</a></div><div class="ttdeci">float get_max_value() const</div><div class="ttdoc">Returns this status_bar's maximum value.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00264">gui_statusbar.cpp:264</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a937892392cbbf3ed2fdca2c63244b7d4"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">lxgui::gui::member_function</a></div><div class="ttdeci">constexpr auto member_function()</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__tpl_8hpp_source.html#l00142">gui_uiobject_tpl.hpp:142</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html">lxgui::gui::status_bar</a></div><div class="ttdoc">A frame representing a variable-length bar.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8hpp_source.html#l00031">gui_statusbar.hpp:31</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a3492b4c32e4c85abb07be9d77d522f01"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a3492b4c32e4c85abb07be9d77d522f01">lxgui::gui::color::a</a></div><div class="ttdeci">channel a</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
+<div class="ttc" id="agui__uiobject__tpl_8hpp_html"><div class="ttname"><a href="gui__uiobject__tpl_8hpp.html">gui_uiobject_tpl.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_ae311dec99da9bd2ae6465f2c15adf05c"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#ae311dec99da9bd2ae6465f2c15adf05c">lxgui::gui::status_bar::get_bar_texture</a></div><div class="ttdeci">const utils::observer_ptr&lt; texture &gt; &amp; get_bar_texture()</div><div class="ttdoc">Returns this status_bar's bar texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8hpp_source.html#l00144">gui_statusbar.hpp:144</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a8346db2fda5f218a3aac2616d532699c"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a8346db2fda5f218a3aac2616d532699c">lxgui::gui::color::b</a></div><div class="ttdeci">channel b</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a36323ab08364fe18cad93091519e6816"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a36323ab08364fe18cad93091519e6816">lxgui::gui::status_bar::set_bar_color</a></div><div class="ttdeci">void set_bar_color(const color &amp;mBarColor)</div><div class="ttdoc">Sets this status_bar's bar color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00189">gui_statusbar.cpp:189</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a03f89fa17de41ef231d592e45a99ede9"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a03f89fa17de41ef231d592e45a99ede9">lxgui::gui::status_bar::register_on_lua</a></div><div class="ttdeci">static void register_on_lua(sol::state &amp;mLua)</div><div class="ttdoc">Registers this widget class to the provided Lua state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar__glues_8cpp_source.html#l00036">gui_statusbar_glues.cpp:36</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a3e1b74251c07310c5f1b968145bf00dc">lxgui::gui::status_bar::orientation::VERTICAL</a></div><div class="ttdeci">@ VERTICAL</div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1function_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1function.html">lxgui::lua::function</a></div><div class="ttdoc">A helper to write Lua glues.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__function_8hpp_source.html#l00187">luapp_function.hpp:187</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html">lxgui::lua::state</a></div><div class="ttdoc">Lua wrapper.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__state_8hpp_source.html#l00041">luapp_state.hpp:41</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a6de57789eba7d30424e9c90b0a3c3723"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a6de57789eba7d30424e9c90b0a3c3723">lxgui::gui::status_bar::get_bar_color</a></div><div class="ttdeci">const color &amp; get_bar_color() const</div><div class="ttdoc">Returns this status_bar's bar color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00279">gui_statusbar.cpp:279</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a2780776aac469172711187d12216b5e7"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a2780776aac469172711187d12216b5e7">lxgui::gui::status_bar::get_min_value</a></div><div class="ttdeci">float get_min_value() const</div><div class="ttdoc">Returns this status_bar's minimum value.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00259">gui_statusbar.cpp:259</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a23d2be13e42f06e3ebabcf8cdd59da56"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a23d2be13e42f06e3ebabcf8cdd59da56">lxgui::gui::status_bar::get_orientation</a></div><div class="ttdeci">orientation get_orientation() const</div><div class="ttdoc">Returns this status_bar's orientation.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00284">gui_statusbar.cpp:284</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html_a52ad185fb30c71b881b12f7099e647c8"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html#a52ad185fb30c71b881b12f7099e647c8">lxgui::gui::color::g</a></div><div class="ttdeci">channel g</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00045">gui_color.hpp:45</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aluapp__lua__fwd_8hpp_html_a28186297f2e9f2de0652504633de8fb3"><div class="ttname"><a href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></div><div class="ttdeci">struct lua_State lua_State</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00006">luapp_lua_fwd.hpp:6</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
-<div class="ttc" id="aluapp__function_8hpp_html"><div class="ttname"><a href="luapp__function_8hpp.html">luapp_function.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_aa8dff0cec2a8e66b7b997f67368768d6"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#aa8dff0cec2a8e66b7b997f67368768d6">lxgui::gui::status_bar::set_orientation</a></div><div class="ttdeci">void set_orientation(orientation mOrientation)</div><div class="ttdoc">Sets this status_bar's orientation.</div><div class="ttdef"><b>Definition:</b> <a href="gui__statusbar_8cpp_source.html#l00215">gui_statusbar.cpp:215</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1status__bar_html_a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e"><div class="ttname"><a href="classlxgui_1_1gui_1_1status__bar.html#a8e2a179cd1e1b6ef1bb18a810bd22d45a86e5d0d8407ce71f7e2004ef3949894e">lxgui::gui::status_bar::orientation::HORIZONTAL</a></div><div class="ttdeci">@ HORIZONTAL</div></div>
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <div class="ttc" id="agui__statusbar_8hpp_html"><div class="ttname"><a href="gui__statusbar_8hpp.html">gui_statusbar.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

@@ -73,149 +73,62 @@ $(function() {
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__frame_8hpp.html">lxgui/gui_frame.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__texture_8hpp.html">lxgui/gui_texture.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__state_8hpp.html">lxgui/luapp_state.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__function_8hpp.html">lxgui/luapp_function.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__uiobject__tpl_8hpp.html">lxgui/gui_uiobject_tpl.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;sol/state.hpp&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1check__button.html#a91dffe947226fee1951f6a255af522d1">   22</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1check__button.html#a91dffe947226fee1951f6a255af522d1">check_button::register_glue</a>(<a class="code" href="classlxgui_1_1lua_1_1state.html">lua::state</a>&amp; mLua)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    mLua.<a class="code" href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">reg</a>&lt;lua_check_button&gt;();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;lua_check_button::lua_check_button(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua) : lua_button(pLua)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">int</span> lua_check_button::_is_checked(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="classlxgui_1_1lua_1_1function.html">lua::function</a> mFunc(<span class="stringliteral">&quot;CheckButton:is_checked&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    mFunc.push(get_object()-&gt;is_checked());</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">int</span> lua_check_button::_get_checked_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;CheckButton:get_checked_texture&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    texture* pTexture = get_object()-&gt;get_checked_texture();</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">if</span> (pTexture)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1check__button.html#acbda848bcadeb985c54892518d1ec79c">   23</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1check__button.html#acbda848bcadeb985c54892518d1ec79c">check_button::register_on_lua</a>(sol::state&amp; mLua)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">auto</span> mClass = mLua.new_usertype&lt;<a class="code" href="classlxgui_1_1gui_1_1check__button.html">check_button</a>&gt;(<span class="stringliteral">&quot;CheckButton&quot;</span>,</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        sol::base_classes, sol::bases&lt;uiobject, frame, button&gt;(),</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        sol::meta_function::index,</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        member_function&lt;&amp;check_button::get_lua_member_&gt;(),</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        sol::meta_function::new_index,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        member_function&lt;&amp;check_button::set_lua_member_&gt;());</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;is_checked&quot;</span>, member_function&lt;&amp;check_button::is_checked&gt;());</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_checked_texture&quot;</span>, <a class="code" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">member_function</a>&lt; <span class="comment">// select the right overload for Lua</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>utils::observer_ptr&lt;texture&gt;&amp; (<a class="code" href="classlxgui_1_1gui_1_1check__button.html">check_button</a>::*)()<span class="keyword">&gt;</span>(&amp;<a class="code" href="classlxgui_1_1gui_1_1check__button.html#a77dd8a2f9253a49b3a7c2fb17a0c29d3">check_button::get_checked_texture</a>)&gt;());</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_disabled_checked_texture&quot;</span>, <a class="code" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">member_function</a>&lt; <span class="comment">// select the right overload for Lua</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>utils::observer_ptr&lt;texture&gt;&amp; (<a class="code" href="classlxgui_1_1gui_1_1check__button.html">check_button</a>::*)()<span class="keyword">&gt;</span>(&amp;<a class="code" href="classlxgui_1_1gui_1_1check__button.html#a18739d83129d3301bf693804519968b3">check_button::get_disabled_checked_texture</a>)&gt;());</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_checked&quot;</span>, [](<a class="code" href="classlxgui_1_1gui_1_1check__button.html">check_button</a>&amp; mSelf, sol::optional&lt;bool&gt; bChecked)</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        pTexture-&gt;push_on_lua(mFunc.get_state());</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        mFunc.notify_pushed();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        mFunc.push_nil();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">if</span> (bChecked.value_or(<span class="keyword">true</span>))</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            mSelf.<a class="code" href="classlxgui_1_1gui_1_1check__button.html#a8ba399ea0d5bb99439d790faea573521">check</a>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            mSelf.<a class="code" href="classlxgui_1_1gui_1_1check__button.html#a5e120a0d1e8bd2c84343c5047e7016a4">uncheck</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    });</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;}</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keywordtype">int</span> lua_check_button::_get_disabled_checked_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;CheckButton:get_disabled_checked_texture&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    texture* pTexture = get_object()-&gt;get_disabled_checked_texture();</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">if</span> (pTexture)</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        pTexture-&gt;push_on_lua(mFunc.get_state());</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        mFunc.notify_pushed();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        mFunc.push_nil();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keywordtype">int</span> lua_check_button::_set_checked(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;{</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="comment">// This function is a bit trickier, as it doesn&#39;t require any particular</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="comment">// type for its argument. Whatever it is, Lua can convert it to a boolean</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">// value, and we use this value to check/uncheck the button.</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keywordflow">if</span> (lua_gettop(pLua) &gt; 0)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        <span class="keywordflow">if</span> (lua_toboolean(pLua, 1) == 0)</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            get_object()-&gt;uncheck();</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            get_object()-&gt;check();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        get_object()-&gt;check();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordtype">int</span> lua_check_button::_set_checked_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;CheckButton:set_checked_texture&quot;</span>, pLua);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;texture&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        lua_texture* pLuaTexture = mFunc.get_state().get&lt;lua_texture&gt;();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">if</span> (pLuaTexture)</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        {</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;            get_object()-&gt;set_checked_texture(pLuaTexture-&gt;get_object());</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        }</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    }</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keywordtype">int</span> lua_check_button::_set_disabled_checked_texture(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;{</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;CheckButton:set_disabled_checked_texture&quot;</span>, pLua);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;texture&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        lua_texture* pLuaTexture = mFunc.get_state().get&lt;lua_texture&gt;();</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">if</span> (pLuaTexture)</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            get_object()-&gt;set_disabled_checked_texture(pLuaTexture-&gt;get_object());</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        }</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;}</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_checked_texture&quot;</span>, member_function&lt;&amp;check_button::set_checked_texture&gt;());</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_disabled_checked_texture&quot;</span>, member_function&lt;&amp;check_button::set_disabled_checked_texture&gt;());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;}</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html_ac137db19980f4ad1f15ecf64062646f5"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">lxgui::lua::state::reg</a></div><div class="ttdeci">void reg(const std::string &amp;sFunctionName, c_function mFunction)</div><div class="ttdoc">Binds a C++ function to a Lua function.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lxgui::lua::type::USERDATA</a></div><div class="ttdeci">@ USERDATA</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a8ba399ea0d5bb99439d790faea573521"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a8ba399ea0d5bb99439d790faea573521">lxgui::gui::check_button::check</a></div><div class="ttdeci">virtual void check()</div><div class="ttdoc">Checks this button.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8cpp_source.html#l00080">gui_checkbutton.cpp:80</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a937892392cbbf3ed2fdca2c63244b7d4"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">lxgui::gui::member_function</a></div><div class="ttdeci">constexpr auto member_function()</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__tpl_8hpp_source.html#l00142">gui_uiobject_tpl.hpp:142</a></div></div>
 <div class="ttc" id="agui__checkbutton_8hpp_html"><div class="ttname"><a href="gui__checkbutton_8hpp.html">gui_checkbutton.hpp</a></div></div>
-<div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_acbda848bcadeb985c54892518d1ec79c"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#acbda848bcadeb985c54892518d1ec79c">lxgui::gui::check_button::register_on_lua</a></div><div class="ttdeci">static void register_on_lua(sol::state &amp;mLua)</div><div class="ttdoc">Registers this widget class to the provided Lua state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton__glues_8cpp_source.html#l00023">gui_checkbutton_glues.cpp:23</a></div></div>
+<div class="ttc" id="agui__uiobject__tpl_8hpp_html"><div class="ttname"><a href="gui__uiobject__tpl_8hpp.html">gui_uiobject_tpl.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a5e120a0d1e8bd2c84343c5047e7016a4"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a5e120a0d1e8bd2c84343c5047e7016a4">lxgui::gui::check_button::uncheck</a></div><div class="ttdeci">virtual void uncheck()</div><div class="ttdoc">UnChecks this button.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8cpp_source.html#l00101">gui_checkbutton.cpp:101</a></div></div>
 <div class="ttc" id="agui__frame_8hpp_html"><div class="ttname"><a href="gui__frame_8hpp.html">gui_frame.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a91dffe947226fee1951f6a255af522d1"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a91dffe947226fee1951f6a255af522d1">lxgui::gui::check_button::register_glue</a></div><div class="ttdeci">static void register_glue(lua::state &amp;mLua)</div><div class="ttdoc">Registers this widget to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton__glues_8cpp_source.html#l00022">gui_checkbutton_glues.cpp:22</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1function_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1function.html">lxgui::lua::function</a></div><div class="ttdoc">A helper to write Lua glues.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__function_8hpp_source.html#l00187">luapp_function.hpp:187</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html">lxgui::lua::state</a></div><div class="ttdoc">Lua wrapper.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__state_8hpp_source.html#l00041">luapp_state.hpp:41</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aluapp__lua__fwd_8hpp_html_a28186297f2e9f2de0652504633de8fb3"><div class="ttname"><a href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></div><div class="ttdeci">struct lua_State lua_State</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00006">luapp_lua_fwd.hpp:6</a></div></div>
-<div class="ttc" id="aluapp__function_8hpp_html"><div class="ttname"><a href="luapp__function_8hpp.html">luapp_function.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html">lxgui::gui::check_button</a></div><div class="ttdoc">A button with two additional states: checked and unchecked.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8hpp_source.html#l00015">gui_checkbutton.hpp:15</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a77dd8a2f9253a49b3a7c2fb17a0c29d3"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a77dd8a2f9253a49b3a7c2fb17a0c29d3">lxgui::gui::check_button::get_checked_texture</a></div><div class="ttdeci">const utils::observer_ptr&lt; texture &gt; &amp; get_checked_texture()</div><div class="ttdoc">Returns this button's checked texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8hpp_source.html#l00061">gui_checkbutton.hpp:61</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1check__button_html_a18739d83129d3301bf693804519968b3"><div class="ttname"><a href="classlxgui_1_1gui_1_1check__button.html#a18739d83129d3301bf693804519968b3">lxgui::gui::check_button::get_disabled_checked_texture</a></div><div class="ttdeci">const utils::observer_ptr&lt; texture &gt; &amp; get_disabled_checked_texture()</div><div class="ttdoc">Returns this button's disabled checked texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__checkbutton_8hpp_source.html#l00077">gui_checkbutton.hpp:77</a></div></div>
 <div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

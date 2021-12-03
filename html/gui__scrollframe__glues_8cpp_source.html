@@ -70,217 +70,78 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="gui__scrollframe__glues_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__scrollframe_8hpp.html">lxgui/gui_scrollframe.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__frame_8hpp.html">lxgui/gui_frame.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__manager_8hpp.html">lxgui/gui_manager.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__state_8hpp.html">lxgui/luapp_state.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="luapp__function_8hpp.html">lxgui/luapp_function.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#a7bfd59693b6754d37712230153e81ac4">   39</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a7bfd59693b6754d37712230153e81ac4">scroll_frame::register_glue</a>(<a class="code" href="classlxgui_1_1lua_1_1state.html">lua::state</a>&amp; mLua)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    mLua.<a class="code" href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">reg</a>&lt;lua_scroll_frame&gt;();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;lua_scroll_frame::lua_scroll_frame(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua) : lua_frame(pLua)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_get_horizontal_scroll(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="classlxgui_1_1lua_1_1function.html">lua::function</a> mFunc(<span class="stringliteral">&quot;ScrollFrame:get_horizontal_scroll&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    mFunc.push(get_object()-&gt;get_horizontal_scroll());</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;}</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_get_horizontal_scroll_range(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:get_horizontal_scroll_range&quot;</span>, pLua, 1);</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__uiobject__tpl_8hpp.html">lxgui/gui_uiobject_tpl.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__frame_8hpp.html">lxgui/gui_frame.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__manager_8hpp.html">lxgui/gui_manager.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;sol/state.hpp&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1scroll__frame.html#aa96f4ff09253b26a92d01abb9c76de8a">   41</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#aa96f4ff09253b26a92d01abb9c76de8a">scroll_frame::register_on_lua</a>(sol::state&amp; mLua)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">auto</span> mClass = mLua.new_usertype&lt;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a>&gt;(<span class="stringliteral">&quot;ScrollFrame&quot;</span>,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        sol::base_classes, sol::bases&lt;uiobject, frame&gt;(),</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        sol::meta_function::index,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        member_function&lt;&amp;scroll_frame::get_lua_member_&gt;(),</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        sol::meta_function::new_index,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        member_function&lt;&amp;scroll_frame::set_lua_member_&gt;());</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_horizontal_scroll&quot;</span>, member_function&lt;&amp;scroll_frame::get_horizontal_scroll&gt;());</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_horizontal_scroll_range&quot;</span>, member_function&lt;&amp;scroll_frame::get_horizontal_scroll_range&gt;());</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_scroll_child&quot;</span>, <a class="code" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">member_function</a>&lt; <span class="comment">// select the right overload for Lua</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">static_cast&lt;</span><span class="keyword">const </span>utils::observer_ptr&lt;frame&gt;&amp; (<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a>::*)()<span class="keyword">&gt;</span>(&amp;<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a1cba7002380021fe1b92a7a24c9a2312">scroll_frame::get_scroll_child</a>)&gt;());</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_vertical_scroll&quot;</span>, member_function&lt;&amp;scroll_frame::get_vertical_scroll&gt;());</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;get_vertical_scroll_range&quot;</span>, member_function&lt;&amp;scroll_frame::get_vertical_scroll_range&gt;());</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    mFunc.push(get_object()-&gt;get_horizontal_scroll_range());</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_get_scroll_child(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;{</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:get_scroll_child&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (get_object()-&gt;get_scroll_child())</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        get_object()-&gt;get_scroll_child()-&gt;push_on_lua(mFunc.get_state());</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        mFunc.notify_pushed();</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        mFunc.push_nil();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;}</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_get_vertical_scroll(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:get_vertical_scroll&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    mFunc.push(get_object()-&gt;get_vertical_scroll());</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_get_vertical_scroll_range(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:get_vertical_scroll_range&quot;</span>, pLua, 1);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    mFunc.push(get_object()-&gt;get_vertical_scroll_range());</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_set_horizontal_scroll(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:set_horizontal_scroll&quot;</span>, pLua);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;horizontal scroll&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        get_object()-&gt;set_horizontal_scroll(mFunc.get(0)-&gt;get_number());</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    }</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;}</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_set_scroll_child(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:set_scroll_child&quot;</span>, pLua);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;child name&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;child&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lua::type::USERDATA</a>, <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        lua::argument* pArg = mFunc.get(0);</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        frame* pChild = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">if</span> (pArg-&gt;is_provided())</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            <span class="keywordflow">if</span> (pArg-&gt;get_type() == <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lua::type::STRING</a>)</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                uiobject* pObj = get_object()-&gt;get_manager()-&gt;get_uiobject_by_name(pArg-&gt;get_string());</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                <span class="keywordflow">if</span> (!pObj)</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                    <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                        <span class="stringliteral">&quot;\&quot;&quot;</span>+pArg-&gt;get_string()+<span class="stringliteral">&quot;\&quot; does not exist.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                }</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                pChild = down_cast&lt;frame&gt;(pObj);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;                <span class="keywordflow">if</span> (!pChild)</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;                {</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                        <span class="stringliteral">&quot;\&quot;&quot;</span>+pObj-&gt;get_name()+<span class="stringliteral">&quot;\&quot; is not a frame.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;                }</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;            }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;            {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;                lua_frame* pFrame = pArg-&gt;get&lt;lua_frame&gt;();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;                <span class="keywordflow">if</span> (pFrame)</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;                {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                    pChild = pFrame-&gt;get_object();</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                }</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;                <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                {</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                    lua_uiobject* pObj = pArg-&gt;get&lt;lua_uiobject&gt;();</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                    <span class="keywordflow">if</span> (pObj)</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                    {</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;                            <span class="stringliteral">&quot;\&quot;&quot;</span>+pObj-&gt;get_name()+<span class="stringliteral">&quot;\&quot; is not a frame.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                    }</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                    {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;                        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; mFunc.get_name() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;                            <span class="stringliteral">&quot;first argument is not a frame.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;                    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                }</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        std::unique_ptr&lt;frame&gt; pScrollChild;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <span class="keywordflow">if</span> (pChild)</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            pScrollChild = down_cast&lt;frame&gt;(pChild-&gt;release_from_parent());</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            pScrollChild-&gt;<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a042ef3e869652456eeafd4fda27547dd">set_parent</a>(get_object());</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        }</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        get_object()-&gt;set_scroll_child(std::move(pScrollChild));</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;}</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="keywordtype">int</span> lua_scroll_frame::_set_vertical_scroll(<a class="code" href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a>* pLua)</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;{</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    <span class="keywordflow">if</span> (!check_object_())</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    lua::function mFunc(<span class="stringliteral">&quot;ScrollFrame:set_vertical_scroll&quot;</span>, pLua);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    mFunc.add(0, <span class="stringliteral">&quot;vertical scroll&quot;</span>, <a class="code" href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lua::type::NUMBER</a>);</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">if</span> (mFunc.check())</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    {</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        get_object()-&gt;set_vertical_scroll(mFunc.get(0)-&gt;get_number());</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    }</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordflow">return</span> mFunc.on_return();</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;}</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;}</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_horizontal_scroll&quot;</span>, member_function&lt;&amp;scroll_frame::set_horizontal_scroll&gt;());</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_scroll_child&quot;</span>, [](<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html">scroll_frame</a>&amp; mSelf,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        std::variant&lt;std::string, frame*&gt; mChild)</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        utils::observer_ptr&lt;frame&gt; pChild = get_object&lt;frame&gt;(mSelf.<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>(), mChild);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <a class="code" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">utils::owner_ptr&lt;frame&gt;</a> pScrollChild;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (pChild)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            pScrollChild = down_cast&lt;frame&gt;(pChild-&gt;release_from_parent());</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            pScrollChild-&gt;set_parent(<a class="code" href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">observer_from</a>(&amp;mSelf));</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        mSelf.<a class="code" href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">set_scroll_child</a>(std::move(pScrollChild));</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    });</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    mClass.set_function(<span class="stringliteral">&quot;set_vertical_scroll&quot;</span>, member_function&lt;&amp;scroll_frame::set_vertical_scroll&gt;());</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;}</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_abf2ac19edd1a7ce40ebf7a29b96ecf48"><div class="ttname"><a href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">lxgui::gui::error</a></div><div class="ttdeci">const std::string error</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00008">gui_out.cpp:8</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html_ac137db19980f4ad1f15ecf64062646f5"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html#ac137db19980f4ad1f15ecf64062646f5">lxgui::lua::state::reg</a></div><div class="ttdeci">void reg(const std::string &amp;sFunctionName, c_function mFunction)</div><div class="ttdoc">Binds a C++ function to a Lua function.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a7bfd59693b6754d37712230153e81ac4"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a7bfd59693b6754d37712230153e81ac4">lxgui::gui::scroll_frame::register_glue</a></div><div class="ttdeci">static void register_glue(lua::state &amp;mLua)</div><div class="ttdoc">Registers this widget to the provided lua::state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe__glues_8cpp_source.html#l00039">gui_scrollframe_glues.cpp:39</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba1dcbca7437c5545655a66891f5f546d5">lxgui::lua::type::USERDATA</a></div><div class="ttdeci">@ USERDATA</div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba63b588d5559f64f89a416e656880b949">lxgui::lua::type::STRING</a></div><div class="ttdeci">@ STRING</div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a8887a7182a01f80948935c233019c319"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a8887a7182a01f80948935c233019c319">lxgui::gui::scroll_frame::set_scroll_child</a></div><div class="ttdeci">void set_scroll_child(utils::owner_ptr&lt; frame &gt; pFrame)</div><div class="ttdoc">Sets this scroll_frame's scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8cpp_source.html#l00075">gui_scrollframe.cpp:75</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html">lxgui::gui::scroll_frame</a></div><div class="ttdoc">A frame with scrollable content.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00035">gui_scrollframe.hpp:35</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_aa96f4ff09253b26a92d01abb9c76de8a"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#aa96f4ff09253b26a92d01abb9c76de8a">lxgui::gui::scroll_frame::register_on_lua</a></div><div class="ttdeci">static void register_on_lua(sol::state &amp;mLua)</div><div class="ttdoc">Registers this widget class to the provided Lua state.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe__glues_8cpp_source.html#l00041">gui_scrollframe_glues.cpp:41</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a937892392cbbf3ed2fdca2c63244b7d4"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">lxgui::gui::member_function</a></div><div class="ttdeci">constexpr auto member_function()</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__tpl_8hpp_source.html#l00142">gui_uiobject_tpl.hpp:142</a></div></div>
 <div class="ttc" id="agui__scrollframe_8hpp_html"><div class="ttname"><a href="gui__scrollframe_8hpp.html">gui_scrollframe.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1lua_html_a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396"><div class="ttname"><a href="namespacelxgui_1_1lua.html#a02179fdfd81a10773b6c7eb9ef3a1a1ba34f55eca38e0605a84f169ff61a2a396">lxgui::lua::type::NUMBER</a></div><div class="ttdeci">@ NUMBER</div></div>
-<div class="ttc" id="aluapp__state_8hpp_html"><div class="ttname"><a href="luapp__state_8hpp.html">luapp_state.hpp</a></div></div>
+<div class="ttc" id="agui__uiobject__tpl_8hpp_html"><div class="ttname"><a href="gui__uiobject__tpl_8hpp.html">gui_uiobject_tpl.hpp</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae5880ee33c39fd4d2e6c5cdd5576854c"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">lxgui::gui::uiobject::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns this widget's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00673">gui_uiobject.hpp:673</a></div></div>
 <div class="ttc" id="agui__frame_8hpp_html"><div class="ttname"><a href="gui__frame_8hpp.html">gui_frame.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1function_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1function.html">lxgui::lua::function</a></div><div class="ttdoc">A helper to write Lua glues.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__function_8hpp_source.html#l00187">luapp_function.hpp:187</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1lua_1_1state_html"><div class="ttname"><a href="classlxgui_1_1lua_1_1state.html">lxgui::lua::state</a></div><div class="ttdoc">Lua wrapper.</div><div class="ttdef"><b>Definition:</b> <a href="luapp__state_8hpp_source.html#l00041">luapp_state.hpp:41</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1utils_html_a9b701a0588e6924943ea55e0620732b8"><div class="ttname"><a href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">lxgui::utils::owner_ptr</a></div><div class="ttdeci">oup::observable_sealed_ptr&lt; T &gt; owner_ptr</div><div class="ttdef"><b>Definition:</b> <a href="utils__observer_8hpp_source.html#l00011">utils_observer.hpp:11</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1scroll__frame_html_a1cba7002380021fe1b92a7a24c9a2312"><div class="ttname"><a href="classlxgui_1_1gui_1_1scroll__frame.html#a1cba7002380021fe1b92a7a24c9a2312">lxgui::gui::scroll_frame::get_scroll_child</a></div><div class="ttdeci">const utils::observer_ptr&lt; frame &gt; &amp; get_scroll_child()</div><div class="ttdoc">Returns this scroll_frame's scroll child.</div><div class="ttdef"><b>Definition:</b> <a href="gui__scrollframe_8hpp_source.html#l00082">gui_scrollframe.hpp:82</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a5f3f2246208ef88a618ced2b3a34f41f"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a5f3f2246208ef88a618ced2b3a34f41f">lxgui::gui::observer_from</a></div><div class="ttdeci">utils::observer_ptr&lt; ObjectType &gt; observer_from(ObjectType *pSelf)</div><div class="ttdoc">Obtain an observer pointer from a raw pointer (typically 'this')</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00843">gui_uiobject.hpp:843</a></div></div>
 <div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00005">gui_alive_checker.cpp:5</a></div></div>
-<div class="ttc" id="aluapp__lua__fwd_8hpp_html_a28186297f2e9f2de0652504633de8fb3"><div class="ttname"><a href="luapp__lua__fwd_8hpp.html#a28186297f2e9f2de0652504633de8fb3">lua_State</a></div><div class="ttdeci">struct lua_State lua_State</div><div class="ttdef"><b>Definition:</b> <a href="luapp__lua__fwd_8hpp_source.html#l00006">luapp_lua_fwd.hpp:6</a></div></div>
-<div class="ttc" id="aluapp__function_8hpp_html"><div class="ttname"><a href="luapp__function_8hpp.html">luapp_function.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a042ef3e869652456eeafd4fda27547dd"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a042ef3e869652456eeafd4fda27547dd">lxgui::gui::uiobject::set_parent</a></div><div class="ttdeci">void set_parent(frame *pParent)</div><div class="ttdoc">Changes this widget's parent.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00416">gui_uiobject.cpp:416</a></div></div>
+<div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <div class="ttc" id="agui__manager_8hpp_html"><div class="ttname"><a href="gui__manager_8hpp.html">gui_manager.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:18 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

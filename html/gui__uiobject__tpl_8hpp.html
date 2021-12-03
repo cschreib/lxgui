@@ -66,27 +66,100 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">gui_uiobject_tpl.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;lxgui/lxgui.hpp&gt;</code><br />
-<code>#include &lt;<a class="el" href="luapp__state_8hpp_source.html">lxgui/luapp_state.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="utils__observer_8hpp_source.html">lxgui/utils_observer.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="gui__uiobject_8hpp_source.html">lxgui/gui_uiobject.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="gui__frame_8hpp_source.html">lxgui/gui_frame.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="gui__manager_8hpp_source.html">lxgui/gui_manager.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="utils__string_8hpp_source.html">lxgui/utils_string.hpp</a>&gt;</code><br />
+<code>#include &lt;sol/state.hpp&gt;</code><br />
 </div>
 <p><a href="gui__uiobject__tpl_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsol_1_1unique__usertype__traits_3_01lxgui_1_1utils_1_1observer__ptr_3_01T_01_4_01_4.html">sol::unique_usertype_traits&lt; lxgui::utils::observer_ptr&lt; T &gt; &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
+<tr class="memitem:namespacesol"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesol.html">sol</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui.html">lxgui</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacelxgui_1_1gui"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html">lxgui::gui</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a9805571c9ce3bfb12c67a3eebe0b4dc4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9805571c9ce3bfb12c67a3eebe0b4dc4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="gui__uiobject__tpl_8hpp.html#a9805571c9ce3bfb12c67a3eebe0b4dc4">sol_lua_check_access</a> (sol::types&lt; T &gt;, lua_State *pLua, int iIndex, sol::stack::record &amp;)</td></tr>
+<tr class="separator:a9805571c9ce3bfb12c67a3eebe0b4dc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2c59a5f5bc19a198a6cc32f028606c"><td class="memItemLeft" align="right" valign="top">utils::observer_ptr&lt; uiobject &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a1e2c59a5f5bc19a198a6cc32f028606c">lxgui::gui::get_object</a> (manager &amp;mManager, const std::variant&lt; std::string, uiobject * &gt; &amp;mParent)</td></tr>
+<tr class="separator:a1e2c59a5f5bc19a198a6cc32f028606c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedcda248b2300ac89a3d371f6362ab04"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aedcda248b2300ac89a3d371f6362ab04"><td class="memTemplItemLeft" align="right" valign="top">utils::observer_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#aedcda248b2300ac89a3d371f6362ab04">lxgui::gui::get_object</a> (manager &amp;mManager, const std::variant&lt; std::string, T * &gt; &amp;mParent)</td></tr>
+<tr class="separator:aedcda248b2300ac89a3d371f6362ab04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937892392cbbf3ed2fdca2c63244b7d4"><td class="memTemplParams" colspan="2">template&lt;auto T&gt; </td></tr>
+<tr class="memitem:a937892392cbbf3ed2fdca2c63244b7d4"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1gui.html#a937892392cbbf3ed2fdca2c63244b7d4">lxgui::gui::member_function</a> ()</td></tr>
+<tr class="separator:a937892392cbbf3ed2fdca2c63244b7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a9805571c9ce3bfb12c67a3eebe0b4dc4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9805571c9ce3bfb12c67a3eebe0b4dc4">&#9670;&nbsp;</a></span>sol_lua_check_access()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void sol_lua_check_access </td>
+          <td>(</td>
+          <td class="paramtype">sol::types&lt; T &gt;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">lua_State *&#160;</td>
+          <td class="paramname"><em>pLua</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>iIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sol::stack::record &amp;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="gui__uiobject__tpl_8hpp_source.html#l00029">29</a> of file <a class="el" href="gui__uiobject__tpl_8hpp_source.html">gui_uiobject_tpl.hpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:17 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

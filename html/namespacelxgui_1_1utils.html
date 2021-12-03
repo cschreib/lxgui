@@ -99,6 +99,9 @@ Classes</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:a078f3233bf1a849602a707d85acbaa6c"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a078f3233bf1a849602a707d85acbaa6c">string_vector</a></td></tr>
 <tr class="separator:a078f3233bf1a849602a707d85acbaa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9b701a0588e6924943ea55e0620732b8"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a> = oup::observable_sealed_ptr&lt; T &gt;</td></tr>
+<tr class="separator:a9b701a0588e6924943ea55e0620732b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a395c9f514846f84ca8a235f1d76e7b09"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">variant</a> = std::variant&lt; <a class="el" href="structlxgui_1_1utils_1_1empty.html">empty</a>, bool, std::int64_t, std::int32_t, std::int16_t, std::int8_t, std::uint64_t, std::uint32_t, std::uint16_t, std::uint8_t, double, float, std::string &gt;</td></tr>
 <tr class="memdesc:a395c9f514846f84ca8a235f1d76e7b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type-erased value for passing arguments to events.  <a href="namespacelxgui_1_1utils.html#a395c9f514846f84ca8a235f1d76e7b09">More...</a><br /></td></tr>
 <tr class="separator:a395c9f514846f84ca8a235f1d76e7b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,6 +131,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aa4c505cea5306e6723e05a645da29e53"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">round</a> (float fValue, float fUnit, <a class="el" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">rounding_method</a> mMethod)</td></tr>
 <tr class="memdesc:aa4c505cea5306e6723e05a645da29e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Round a floating point value to a specific unit and using a specific rounding method.  <a href="namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53">More...</a><br /></td></tr>
 <tr class="separator:aa4c505cea5306e6723e05a645da29e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... Args&gt; </td></tr>
+<tr class="memitem:a060cc74b0acd85df1db801d14442b2d8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a060cc74b0acd85df1db801d14442b2d8">make_owned</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a060cc74b0acd85df1db801d14442b2d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34d7b0c6f96dd8c7324c22c415458127"><td class="memTemplParams" colspan="2">template&lt;typename C , typename T &gt; </td></tr>
 <tr class="memitem:a34d7b0c6f96dd8c7324c22c415458127"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelxgui_1_1utils.html#a34d7b0c6f96dd8c7324c22c415458127">find</a> (C &amp;v, const T &amp;s)</td></tr>
 <tr class="separator:a34d7b0c6f96dd8c7324c22c415458127"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,6 +150,24 @@ Functions</h2></td></tr>
 <tr class="separator:aa76a50ac52c97ec765126f59a5f426bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="a9b701a0588e6924943ea55e0620732b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b701a0588e6924943ea55e0620732b8">&#9670;&nbsp;</a></span>owner_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">lxgui::utils::owner_ptr</a> = typedef oup::observable_sealed_ptr&lt;T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utils__observer_8hpp_source.html#l00011">11</a> of file <a class="el" href="utils__observer_8hpp_source.html">utils_observer.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a078f3233bf1a849602a707d85acbaa6c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a078f3233bf1a849602a707d85acbaa6c">&#9670;&nbsp;</a></span>string_vector</h2>
 
@@ -463,6 +487,28 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a060cc74b0acd85df1db801d14442b2d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a060cc74b0acd85df1db801d14442b2d8">&#9670;&nbsp;</a></span>make_owned()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename ... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelxgui_1_1utils.html#a9b701a0588e6924943ea55e0620732b8">owner_ptr</a>&lt;T&gt; lxgui::utils::make_owned </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utils__observer_8hpp_source.html#l00022">22</a> of file <a class="el" href="utils__observer_8hpp_source.html">utils_observer.hpp</a>.</p>
+
+</div>
+</div>
 <a id="aa4c505cea5306e6723e05a645da29e53"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa4c505cea5306e6723e05a645da29e53">&#9670;&nbsp;</a></span>round()</h2>
 
@@ -511,7 +557,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Nov 13 2021 13:35:20 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 3 2021 09:00:19 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
