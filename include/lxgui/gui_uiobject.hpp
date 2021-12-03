@@ -152,25 +152,6 @@ namespace gui
     friend manager;
     public :
 
-        /// Comparator for sorting objects by ID
-        template<typename ObjectType>
-        struct id_comparator
-        {
-            bool operator() (const utils::owner_ptr<ObjectType>& pObject1,
-                const utils::owner_ptr<ObjectType>& pObject2) const
-            {
-                return pObject1->get_id() < pObject2->get_id();
-            }
-            bool operator() (const utils::owner_ptr<ObjectType>& pObject1, uint uiID) const
-            {
-                return pObject1->get_id() < uiID;
-            }
-            bool operator() (uint uiID, const utils::owner_ptr<ObjectType>& pObject2) const
-            {
-                return uiID < pObject2->get_id();
-            }
-        };
-
         /// Contructor.
         explicit uiobject(manager& mManager);
 
@@ -586,17 +567,6 @@ namespace gui
         /** \note See is_virtual().
         */
         void set_virtual();
-
-        /// Returns this widget's unique ID.
-        /** \return This widget's unique ID
-        */
-        uint get_id() const;
-
-        /// Sets this widget's unique ID.
-        /** \param uiID The ID
-        *   \note Can only be called once.
-        */
-        void set_id(uint uiID);
 
         /// Flags this object as "special".
         /** \note Special objects are not automatically copied

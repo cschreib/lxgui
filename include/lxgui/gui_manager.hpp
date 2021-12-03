@@ -282,18 +282,6 @@ namespace gui
         */
         root_frame_list_view get_root_frames() const;
 
-        /// Returns the uiobject associated with the given ID.
-        /** \param uiID The unique ID representing the widget
-        *   \return The uiobject associated with the given ID, or nullptr if not found
-        */
-        utils::observer_ptr<const uiobject> get_uiobject(uint uiID) const;
-
-        /// Returns the uiobject associated with the given ID.
-        /** \param uiID The unique ID representing the widget
-        *   \return The uiobject associated with the given ID, or nullptr if not found
-        */
-        utils::observer_ptr<uiobject> get_uiobject(uint uiID);
-
         /// Return a list of virtual uiobjects matching the provided comma-separated list.
         /** \param sNames Comma-separated list of object names
         *   \return A vector of objects matching the list. Objects not found will be excluded.
@@ -753,8 +741,6 @@ namespace gui
         void save_variables_(const addon* pAddOn);
         std::string serialize_global_(const std::string& sVariable) const;
 
-        uint get_new_object_id_();
-
         void clear_focussed_frame_();
         void clear_hovered_frame_();
         void update_hovered_frame_();
@@ -799,9 +785,7 @@ namespace gui
         string_map<utils::observer_ptr<uiobject>> lNamedObjectList_;
         string_map<utils::observer_ptr<uiobject>> lNamedVirtualObjectList_;
 
-        std::unordered_map<uint, utils::observer_ptr<uiobject>> lObjectList_;
-        std::unordered_map<uint, utils::observer_ptr<frame>>    lFrameList_;
-        root_frame_list                     lRootFrameList_;
+        root_frame_list lRootFrameList_;
 
         std::vector<std::string>      lGUIDirectoryList_;
         const addon*                  pCurrentAddOn_ = nullptr;
@@ -831,8 +815,6 @@ namespace gui
         bool bResizeFromBottom_ = false;
 
         uint uiFrameNumber_ = 0u;
-        uint uiNextObjectID_ = 0u;
-        std::vector<uint> lFreeObjectIDs_;
 
         bool bEnableCaching_= true;
 

@@ -85,7 +85,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
 
-    for (const auto& pObject : utils::range::value(lObjectList_))
+    for (const auto& pObject : lRootFrameList_)
         pObject->notify_scaling_factor_updated();
 
     if (pRenderTarget_)
@@ -252,22 +252,6 @@ utils::owner_ptr<layered_region> manager::create_layered_region(const std::strin
     return nullptr;
 }
 
-uint manager::get_new_object_id_()
-{
-    if (lFreeObjectIDs_.empty())
-    {
-        uint uiID = uiNextObjectID_;
-        ++uiNextObjectID_;
-        return uiID;
-    }
-    else
-    {
-        uint uiID = lFreeObjectIDs_.back();
-        lFreeObjectIDs_.pop_back();
-        return uiID;
-    }
-}
-
 bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
 {
     if (!pObj)
@@ -281,43 +265,28 @@ bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
     {
         if (pObj->get_parent())
         {
-            const uint i = get_new_object_id_();
-            lObjectList_[i] = pObj;
-            pObj->set_id(i);
-
+            // Virtual children are not recorded in the named list, as they
+            // cannot be inherited from directly, and won't appear in the UI.
             return true;
         }
-        else
-            lNamedList = &lNamedVirtualObjectList_;
+
+        lNamedList = &lNamedVirtualObjectList_;
     }
     else
         lNamedList = &lNamedObjectList_;
 
     auto iterNamedObj = lNamedList->find(pObj->get_name());
-    if (iterNamedObj == lNamedList->end())
-    {
-        const uint i = get_new_object_id_();
-        lObjectList_[i] = pObj;
-        pObj->set_id(i);
-
-        (*lNamedList)[pObj->get_name()] = pObj;
-
-        if (!pObj->is_virtual())
-        {
-            utils::observer_ptr<frame> pFrame = down_cast<frame>(pObj);
-            if (pFrame)
-                lFrameList_[i] = pFrame;
-        }
-
-        return true;
-    }
-    else
+    if (iterNamedObj != lNamedList->end())
     {
         gui::out << gui::warning << "gui::manager : "
             << "A" << std::string(pObj->is_virtual() ? " virtual" : "") << " widget with the name \""
             << pObj->get_name() << "\" already exists." << std::endl;
         return false;
     }
+
+    (*lNamedList)[pObj->get_name()] = pObj;
+
+    return true;
 }
 
 utils::observer_ptr<frame> manager::add_root_frame(utils::owner_ptr<frame> pFrame)
@@ -340,43 +309,43 @@ utils::observer_ptr<frame> manager::add_root_frame(utils::owner_ptr<frame> pFram
 
 void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
 {
-    if (!pObj) return;
+    uiobject* pObjRaw = pObj.get();
+    if (!pObjRaw) return;
 
-    lFreeObjectIDs_.push_back(pObj->get_id());
-
-    lObjectList_.erase(pObj->get_id());
-
-    if (!pObj->is_virtual())
-        lNamedObjectList_.erase(pObj->get_name());
+    if (!pObjRaw->is_virtual())
+        lNamedObjectList_.erase(pObjRaw->get_name());
     else
-        lNamedVirtualObjectList_.erase(pObj->get_name());
+        lNamedVirtualObjectList_.erase(pObjRaw->get_name());
 
-    if (pMovedObject_ == pObj)
-        stop_moving(*pObj);
+    if (pMovedObject_.get() == pObjRaw)
+        stop_moving(*pObjRaw);
 
-    if (pSizedObject_ == pObj)
-        stop_sizing(*pObj);
+    if (pSizedObject_.get() == pObjRaw)
+        stop_sizing(*pObjRaw);
 }
 
 void manager::remove_frame(const utils::observer_ptr<frame>& pObj)
 {
-    if (!pObj) return;
+    frame* pObjRaw = pObj.get();
+    if (!pObjRaw) return;
 
-    if (!pObj->is_virtual())
-        lFrameList_.erase(pObj->get_id());
-
-    if (pHoveredFrame_ == pObj)
+    if (pHoveredFrame_.get() == pObjRaw)
         clear_hovered_frame_();
 
-    if (pFocusedFrame_ == pObj)
+    if (pFocusedFrame_.get() == pObjRaw)
         clear_focussed_frame_();
 }
 
 utils::owner_ptr<frame> manager::remove_root_frame(
     const utils::observer_ptr<frame>& pFrame)
 {
-    auto mIter = utils::find_if(lRootFrameList_, [&](auto& pObj) {
-        return pObj && pObj->get_id() == pFrame->get_id();
+    frame* pFrameRaw = pFrame.get();
+    if (!pFrameRaw)
+        return nullptr;
+
+    auto mIter = utils::find_if(lRootFrameList_, [&](const auto& pObj)
+    {
+        return pObj.get() == pFrameRaw;
     });
 
     if (mIter == lRootFrameList_.end())
@@ -389,24 +358,6 @@ utils::owner_ptr<frame> manager::remove_root_frame(
 manager::root_frame_list_view manager::get_root_frames() const
 {
     return root_frame_list_view(lRootFrameList_);
-}
-
-utils::observer_ptr<const uiobject> manager::get_uiobject(uint uiID) const
-{
-    auto mIter = lObjectList_.find(uiID);
-    if (mIter != lObjectList_.end())
-        return mIter->second;
-    else
-        return nullptr;
-}
-
-utils::observer_ptr<uiobject> manager::get_uiobject(uint uiID)
-{
-    auto mIter = lObjectList_.find(uiID);
-    if (mIter != lObjectList_.end())
-        return mIter->second;
-    else
-        return nullptr;
 }
 
 std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(const std::string& sNames) const
@@ -733,13 +684,8 @@ void manager::close_ui()
 
         lRootFrameList_.clear();
 
-        uiNextObjectID_ = 0u;
-        lFreeObjectIDs_.clear();
-        lObjectList_.clear();
         lNamedObjectList_.clear();
         lNamedVirtualObjectList_.clear();
-
-        lFrameList_.clear();
 
         clear_strata_list_();
 
@@ -906,6 +852,17 @@ bool manager::is_loaded() const
     return !bClosed_;
 }
 
+template<typename T>
+void remove_null(T& lList)
+{
+    auto mIterRemove = std::remove_if(lList.begin(), lList.end(), [](auto& pObj)
+    {
+        return pObj == nullptr;
+    });
+
+    lList.erase(mIterRemove, lList.end());
+}
+
 void manager::update(float fDelta)
 {
     bUpdating_ = true;
@@ -922,13 +879,7 @@ void manager::update(float fDelta)
     }
 
     // Removed destroyed frames
-    {
-        auto mIterRemove = std::remove_if(lRootFrameList_.begin(), lRootFrameList_.end(), [](auto& pObj) {
-            return pObj == nullptr;
-        });
-
-        lRootFrameList_.erase(mIterRemove, lRootFrameList_.end());
-    }
+    remove_null(lRootFrameList_);
 
     if (bEnableCaching_)
     {
@@ -1578,21 +1529,18 @@ std::string manager::print_ui() const
             s << "|-###\n#" << std::endl;
         }
     }
-    if (!lObjectList_.empty())
-    {
-        s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
-        for (const auto& pObject : utils::range::value(lObjectList_))
-        {
-            if (pObject && !pObject->is_virtual() && !pObject->get_parent())
-                s << pObject->serialize("") << "\n########################\n" << std::endl;
-        }
 
-        s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
-        for (const auto& pObject : utils::range::value(lObjectList_))
-        {
-            if (pObject && pObject->is_virtual() && !pObject->get_parent())
-                s << pObject->serialize("") << "\n########################\n" << std::endl;
-        }
+    s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
+    for (const auto& mFrame : get_root_frames())
+    {
+        s << mFrame.serialize("") << "\n########################\n" << std::endl;
+    }
+
+    s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
+    for (const auto& pObject : utils::range::value(lNamedVirtualObjectList_))
+    {
+        if (pObject)
+            s << pObject->serialize("") << "\n########################\n" << std::endl;
     }
 
     return s.str();

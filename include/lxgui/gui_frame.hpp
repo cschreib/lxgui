@@ -1115,6 +1115,9 @@ namespace gui
         */
         void notify_layers_need_update();
 
+        /// Tells this widget that the global interface scaling factor has changed.
+        void notify_scaling_factor_updated() override;
+
         /// Tells the frame not to react to all events.
         void unregister_all_events();
 

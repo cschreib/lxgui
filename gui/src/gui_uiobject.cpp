@@ -89,7 +89,6 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  # Name        : " << sName_ << " ("+std::string(bReady_ ? "ready" : "not ready")+std::string(bSpecial_ ? ", special)\n" : ")\n");
     sStr << sTab << "  # Raw name    : " << sRawName_ << "\n";
     sStr << sTab << "  # Lua name    : " << sLuaName_ << "\n";
-    sStr << sTab << "  # ID          : " << uiID_ << "\n";
     sStr << sTab << "  # Type        : " << lType_.back() << "\n";
     if (pParent_)
     sStr << sTab << "  # Parent      : " << pParent_->get_name() << "\n";
@@ -777,19 +776,6 @@ bool uiobject::is_virtual() const
 void uiobject::set_virtual()
 {
     bVirtual_ = true;
-}
-
-uint uiobject::get_id() const
-{
-    return uiID_;
-}
-
-void uiobject::set_id(uint uiID)
-{
-    if (uiID_ == uint(-1))
-        uiID_ = uiID;
-    else
-        gui::out << gui::warning << "gui::" << lType_.back() << " : set_id() cannot be called more than once." << std::endl;
 }
 
 void uiobject::notify_anchored_object(utils::observer_ptr<uiobject> pObj, bool bAnchored) const

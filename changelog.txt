@@ -82,6 +82,7 @@ Other changes:
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
  - gui: removed uiobject::push_on_lua()
+ - gui: removed uiobject::get_id() and set_id()
  - gui: removed anchor::set_object() (now a reference, cannot change)
  - gui: removed font_string::get_shadow_x_offset()
  - gui: removed font_string::get_shadow_y_offset()

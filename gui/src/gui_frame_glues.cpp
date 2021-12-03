@@ -393,10 +393,6 @@ void frame::register_on_lua(sol::state& mLua)
         return std::make_tuple(lInsets.left, lInsets.right, lInsets.top, lInsets.bottom);
     });
 
-    /** @function get_id
-    */
-    mClass.set_function("get_id", member_function<&frame::get_id>());
-
     /** @function get_max_resize
     */
     mClass.set_function("get_max_resize", [](const frame& mSelf)

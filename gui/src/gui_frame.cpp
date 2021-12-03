@@ -1824,6 +1824,15 @@ void frame::notify_renderer_need_redraw() const
     get_top_level_renderer()->notify_strata_needs_redraw(mStrata_);
 }
 
+void frame::notify_scaling_factor_updated()
+{
+    if (pTitleRegion_)
+        pTitleRegion_->notify_scaling_factor_updated();
+
+    for (auto& mChild : get_children())
+        mChild.notify_scaling_factor_updated();
+}
+
 void frame::show()
 {
     if (bIsShown_)
