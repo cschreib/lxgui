@@ -55,7 +55,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     /** @function create_frame
     */
     mLua.set_function("create_frame", [&](const std::string& sType, const std::string& sName,
-        sol::optional<frame&> pParent, sol::optional<std::string> sInheritance)
+        sol::optional<frame&> pParent, sol::optional<std::string> sInheritance) -> sol::object
     {
         std::vector<utils::observer_ptr<const uiobject>> lInheritance;
         if (sInheritance.has_value())
@@ -67,7 +67,14 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             pNewFrame = create_root_frame(sType, sName, lInheritance);
 
-        return get_lua()[pNewFrame->get_lua_name()];
+        if (pNewFrame)
+        {
+            pNewFrame->set_addon(get_current_addon());
+            pNewFrame->notify_loaded();
+            return get_lua()[pNewFrame->get_lua_name()];
+        }
+        else
+            return sol::lua_nil;
     });
 
     /** @function delete_frame
