@@ -85,8 +85,8 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
 
-    for (const auto& pObject : lRootFrameList_)
-        pObject->notify_scaling_factor_updated();
+    for (auto& mFrame : get_root_frames())
+        mFrame.notify_scaling_factor_updated();
 
     if (pRenderTarget_)
         create_caching_render_target_();

@@ -743,7 +743,7 @@ void edit_box::notify_focus(bool bFocus)
 
 void edit_box::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    frame::notify_scaling_factor_updated();
 
     if (pFontString_)
     {

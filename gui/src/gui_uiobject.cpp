@@ -1016,8 +1016,7 @@ void uiobject::notify_borders_need_update() const
 
 void uiobject::notify_scaling_factor_updated()
 {
-    if (!bVirtual_)
-        notify_borders_need_update();
+    notify_borders_need_update();
 }
 
 void uiobject::update(float fDelta)

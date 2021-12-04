@@ -273,7 +273,7 @@ void scroll_frame::update_scroll_child_input_()
 
 void scroll_frame::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    frame::notify_scaling_factor_updated();
 
     rebuild_scroll_render_target_();
 }
