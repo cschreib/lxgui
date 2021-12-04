@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1edit__box.html#ae170d2d6caabc6a565e8a624d5cdbf70">   67</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1edit__box.html#ae170d2d6caabc6a565e8a624d5cdbf70">edit_box::register_on_lua</a>(sol::state&amp; mLua)</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;{</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">auto</span> mClass = mLua.new_usertype&lt;<a class="code" href="classlxgui_1_1gui_1_1edit__box.html">edit_box</a>&gt;(<span class="stringliteral">&quot;EditBox&quot;</span>,</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        sol::base_classes, sol::bases&lt;uiobject, frame&gt;(),</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        sol::base_classes, sol::bases&lt;uiobject, frame, focus_frame&gt;(),</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        sol::meta_function::index,</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        member_function&lt;&amp;edit_box::get_lua_member_&gt;(),</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        sol::meta_function::new_index,</div>
@@ -236,7 +236,7 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html_a8840eca7c5fce9973a04e20d01564fe6"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html#a8840eca7c5fce9973a04e20d01564fe6">lxgui::gui::bounds2::top</a></div><div class="ttdeci">T top</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00092">gui_bounds2.hpp:92</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 3 2021 17:16:27 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Dec 4 2021 16:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

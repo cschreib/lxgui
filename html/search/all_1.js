@@ -6,7 +6,7 @@ var searchData=
   ['ballowclicksoutsidethumb_5f_46',['bAllowClicksOutsideThumb_',['../classlxgui_1_1gui_1_1slider.html#a99af4ef0d74d2686e5e7c39a59e2dee1',1,'lxgui::gui::slider']]],
   ['ballowworldinput_5f_47',['bAllowWorldInput_',['../classlxgui_1_1gui_1_1frame.html#a3db4a39f080ee0f795365251576bda23',1,'lxgui::gui::frame']]],
   ['barrowsignored_5f_48',['bArrowsIgnored_',['../classlxgui_1_1gui_1_1edit__box.html#a110b613a42c40d5201f56477974cf5ef',1,'lxgui::gui::edit_box']]],
-  ['base_5fiterator_49',['base_iterator',['../classlxgui_1_1utils_1_1view_1_1adaptor.html#a93616e3a8d276952e588fb79eb2218c5',1,'lxgui::utils::view::adaptor']]],
+  ['base_5fiterator_49',['base_iterator',['../classlxgui_1_1utils_1_1view_1_1adaptor.html#a78868fb414a11db60966d43b34c9f97b',1,'lxgui::utils::view::adaptor']]],
   ['bautofocus_5f_50',['bAutoFocus_',['../classlxgui_1_1gui_1_1focus__frame.html#a54c9347f3ec666da38fdc6f2883eec1d',1,'lxgui::gui::focus_frame']]],
   ['bbuildlayerlist_5f_51',['bBuildLayerList_',['../classlxgui_1_1gui_1_1frame.html#ada57ecb35032f58b4925ba0f2f0a03b1',1,'lxgui::gui::frame']]],
   ['bchecked_5f_52',['bChecked_',['../classlxgui_1_1gui_1_1check__button.html#a0513306a4c736dc60f012ffee4fade16',1,'lxgui::gui::check_button']]],
