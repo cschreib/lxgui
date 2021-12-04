@@ -229,6 +229,9 @@ namespace gui
         using child_list_view = utils::view::adaptor<child_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
+        using const_child_list_view = utils::view::adaptor<const child_list,
+            utils::view::smart_ptr_dereferencer,
+            utils::view::non_null_filter>;
 
         /// Type of the region list (internal).
         /** \note Constraints on the choice container type:
@@ -240,6 +243,9 @@ namespace gui
         */
         using region_list = std::list<utils::owner_ptr<layered_region>>;
         using region_list_view = utils::view::adaptor<region_list,
+            utils::view::smart_ptr_dereferencer,
+            utils::view::non_null_filter>;
+        using const_region_list_view = utils::view::adaptor<const region_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
 
@@ -462,7 +468,12 @@ namespace gui
         /// Returns the child list.
         /** \return The child list
         */
-        child_list_view get_children() const;
+        child_list_view get_children();
+
+        /// Returns the child list.
+        /** \return The child list
+        */
+        const_child_list_view get_children() const;
 
         /// Returns one of this frame's children.
         /** \param sName The name of the child
@@ -521,8 +532,12 @@ namespace gui
         /// Returns the region list.
         /** \return The region list
         */
-        region_list_view get_regions() const;
+        region_list_view get_regions();
 
+        /// Returns the region list.
+        /** \return The region list
+        */
+        const_region_list_view get_regions() const;
 
         /// Returns one of this frame's region.
         /** \param sName The name of the region

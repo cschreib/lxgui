@@ -79,6 +79,9 @@ namespace gui
         using root_frame_list_view = utils::view::adaptor<root_frame_list,
             utils::view::smart_ptr_dereferencer,
             utils::view::non_null_filter>;
+        using const_root_frame_list_view = utils::view::adaptor<const root_frame_list,
+            utils::view::smart_ptr_dereferencer,
+            utils::view::non_null_filter>;
 
         /// Constructor.
         /** \param pInputSource The input source to use
@@ -280,7 +283,12 @@ namespace gui
         /// Returns the root frame list.
         /** \return The root frame list
         */
-        root_frame_list_view get_root_frames() const;
+        root_frame_list_view get_root_frames();
+
+        /// Returns the root frame list.
+        /** \return The root frame list
+        */
+        const_root_frame_list_view get_root_frames() const;
 
         /// Return a list of virtual uiobjects matching the provided comma-separated list.
         /** \param sNames Comma-separated list of object names

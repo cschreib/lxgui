@@ -369,9 +369,14 @@ utils::observer_ptr<const frame> frame::get_child(const std::string& sName) cons
     return nullptr;
 }
 
-frame::region_list_view frame::get_regions() const
+frame::region_list_view frame::get_regions()
 {
     return region_list_view(lRegionList_);
+}
+
+frame::const_region_list_view frame::get_regions() const
+{
+    return const_region_list_view(lRegionList_);
 }
 
 utils::observer_ptr<const layered_region> frame::get_region(const std::string& sName) const
@@ -864,9 +869,14 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     return pRemovedChild;
 }
 
-frame::child_list_view frame::get_children() const
+frame::child_list_view frame::get_children()
 {
     return child_list_view(lChildList_);
+}
+
+frame::const_child_list_view frame::get_children() const
+{
+    return const_child_list_view(lChildList_);
 }
 
 float frame::get_effective_alpha() const

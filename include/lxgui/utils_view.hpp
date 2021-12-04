@@ -53,12 +53,14 @@ namespace view
     {
     public:
 
-        using base_iterator = typename ContainerType::const_iterator;
+        using base_iterator = std::conditional_t<std::is_const_v<ContainerType>,
+            typename ContainerType::const_iterator,
+            typename ContainerType::iterator>;
         using dereferencer = Dereferencer<base_iterator>;
         using filter = Filter<base_iterator>;
         using data_type = typename dereferencer::data_type;
 
-        explicit adaptor(const ContainerType& mCollection) : mCollection_(mCollection) {}
+        explicit adaptor(ContainerType& mCollection) : mCollection_(mCollection) {}
 
         adaptor(const adaptor& mOther) : mCollection_(mOther.mCollection_) {}
         adaptor(adaptor&& mOther) : mCollection_(mOther.mCollection_) {}
@@ -68,7 +70,7 @@ namespace view
         class iterator
         {
         public:
-            explicit iterator(const ContainerType& mCollection, base_iterator mIter) :
+            explicit iterator(ContainerType& mCollection, base_iterator mIter) :
                 mCollection_(mCollection), mIter_(mIter) {}
 
             iterator& operator++()
@@ -96,7 +98,7 @@ namespace view
 
         private:
 
-            const ContainerType& mCollection_;
+            ContainerType& mCollection_;
             base_iterator mIter_;
         };
 
@@ -118,7 +120,7 @@ namespace view
 
     private:
 
-        const ContainerType& mCollection_;
+        ContainerType& mCollection_;
     };
 }
 }

@@ -355,9 +355,14 @@ utils::owner_ptr<frame> manager::remove_root_frame(
     return std::move(*mIter);
 }
 
-manager::root_frame_list_view manager::get_root_frames() const
+manager::root_frame_list_view manager::get_root_frames()
 {
     return root_frame_list_view(lRootFrameList_);
+}
+
+manager::const_root_frame_list_view manager::get_root_frames() const
+{
+    return const_root_frame_list_view(lRootFrameList_);
 }
 
 std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(const std::string& sNames) const
