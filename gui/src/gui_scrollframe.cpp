@@ -275,7 +275,7 @@ void scroll_frame::notify_scaling_factor_updated()
 {
     frame::notify_scaling_factor_updated();
 
-    rebuild_scroll_render_target_();
+    bRebuildScrollRenderTarget_ = true;
 }
 
 void scroll_frame::rebuild_scroll_render_target_()
