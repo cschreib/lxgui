@@ -78,9 +78,10 @@ namespace gui
             return vector2(x + v.x, y + v.y);
         }
 
-        void operator += (const vector2& v) noexcept
+        vector2& operator += (const vector2& v) noexcept
         {
             x += v.x; y += v.y;
+            return *this;
         }
 
         vector2 operator - () const noexcept
@@ -93,9 +94,10 @@ namespace gui
             return vector2(x - v.x, y - v.y);
         }
 
-        void operator -= (const vector2& v) noexcept
+        vector2& operator -= (const vector2& v) noexcept
         {
             x -= v.x; y -= v.y;
+            return *this;
         }
 
         bool operator == (const vector2& v) const noexcept
@@ -113,9 +115,21 @@ namespace gui
             return vector2(x*mValue, y*mValue);
         }
 
-        void operator *= (T mValue) noexcept
+        vector2 operator * (const vector2& mValue) const noexcept
+        {
+            return vector2(x*mValue.x, y*mValue.y);
+        }
+
+        vector2& operator *= (T mValue) noexcept
         {
             x *= mValue;  y *= mValue;
+            return *this;
+        }
+
+        vector2& operator *= (const vector2& mValue) noexcept
+        {
+            x *= mValue.x;  y *= mValue.y;
+            return *this;
         }
 
         vector2 operator / (T mValue) const noexcept
@@ -123,12 +137,24 @@ namespace gui
             return vector2(x/mValue, y/mValue);
         }
 
-        void operator /= (T mValue) noexcept
+        vector2 operator / (const vector2& mValue) const noexcept
         {
-            x /= mValue;  y /= mValue;
+            return vector2(x/mValue.x, y/mValue.y);
         }
 
-        T operator * (const vector2& v) const noexcept
+        vector2& operator /= (T mValue) noexcept
+        {
+            x /= mValue;  y /= mValue;
+            return *this;
+        }
+
+        vector2& operator /= (const vector2& mValue) noexcept
+        {
+            x /= mValue.x;  y /= mValue.y;
+            return *this;
+        }
+
+        T dot(const vector2& v) const noexcept
         {
             return x*v.x + y*v.y;
         }
