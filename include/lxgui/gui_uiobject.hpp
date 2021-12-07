@@ -343,8 +343,8 @@ namespace gui
         */
         float get_abs_width() const;
 
-        /// Returns this widget's appearend width (in pixels).
-        /** \return This widget's appearend width (in pixels)
+        /// Returns this widget's appearent width (in pixels).
+        /** \return This widget's appearent width (in pixels)
         *   \note If you need to get the size of a widget on the screen,
         *         use this function instead of get_abs_width(), because
         *         some widgets can have an infinite or undefined width.
@@ -359,13 +359,31 @@ namespace gui
         */
         float get_abs_height() const;
 
-        /// Returns this widget's appearend height (in pixels).
-        /** \return This widget's appearend height (in pixels)
+        /// Returns this widget's appearent height (in pixels).
+        /** \return This widget's appearent height (in pixels)
         *   \note If you need to get the size of a widget on the screen,
         *         use this function instead of get_abs_height(), because
         *         some widgets can have an infinite or undefined height.
         */
         float get_apparent_height() const;
+
+        /// Returns this widget's width and height (in pixels).
+        /** \return This widget's width and height (in pixels)
+        *   \note If you need to get the size of a widget on the screen,
+        *         use get_apparent_size(), because some widgets can have
+        *         an infinite or undefined size, and instead get their
+        *         extents from anchors.
+        */
+        vector2f get_size() const;
+
+        /// Returns this widget's appearent width and height (in pixels).
+        /** \return This widget's appearent width and height (in pixels)
+        *   \note If you need to get the size of a widget on the screen,
+        *         use this function instead of get_size(), because
+        *         some widgets can have an infinite or undefined size,
+        *         and instead get their extents from anchors.
+        */
+        vector2f get_apparent_size() const;
 
         /// Checks if this widget's apparent width is defined.
         /** \return 'true' if defined, 'false' otherwise

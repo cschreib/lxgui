@@ -369,6 +369,17 @@ float uiobject::get_apparent_height() const
     return lBorderList_.height();
 }
 
+vector2f uiobject::get_size() const
+{
+    return vector2f(fAbsWidth_, fAbsHeight_);
+}
+
+vector2f uiobject::get_apparent_size() const
+{
+    update_borders_();
+    return vector2f(lBorderList_.width(), lBorderList_.height());
+}
+
 bool uiobject::is_apparent_width_defined() const
 {
     return fAbsWidth_ > 0.0f || (lDefinedBorderList_.left && lDefinedBorderList_.right);
