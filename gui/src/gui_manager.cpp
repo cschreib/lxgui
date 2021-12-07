@@ -1006,15 +1006,16 @@ void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
         if (pAnchor)
         {
             pMovedAnchor_ = pAnchor;
-            fMovementStartPositionX_ = pMovedAnchor_->get_abs_offset_x();
-            fMovementStartPositionY_ = pMovedAnchor_->get_abs_offset_y();
+            fMovementStartPositionX_ = pMovedAnchor_->mOffset.x;
+            fMovementStartPositionY_ = pMovedAnchor_->mOffset.y;
         }
         else
         {
             const bounds2f lBorders = pMovedObject_->get_borders();
 
             pMovedObject_->clear_all_points();
-            pMovedObject_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, lBorders.top_left());
+            pMovedObject_->set_point(anchor_data(anchor_point::TOPLEFT, "", lBorders.top_left()));
+
             pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
             fMovementStartPositionX_ = lBorders.left;
@@ -1089,7 +1090,7 @@ void manager::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoi
         }
 
         pSizedObject_->clear_all_points();
-        pSizedObject_->set_abs_point(mOppositePoint, "", anchor_point::TOPLEFT, mOffset);
+        pSizedObject_->set_point(anchor_data(mOppositePoint, "", anchor_point::TOPLEFT, mOffset));
 
         fResizeStartW_ = pSizedObject_->get_apparent_width();
         fResizeStartH_ = pSizedObject_->get_apparent_height();
@@ -1437,19 +1438,19 @@ void manager::on_event(const event& mEvent)
             switch (mConstraint_)
             {
                 case constraint::NONE :
-                    pMovedAnchor_->set_abs_offset(
+                    pMovedAnchor_->mOffset = vector2f(
                         fMovementStartPositionX_ + fMouseMovementX_,
                         fMovementStartPositionY_ + fMouseMovementY_
                     );
                     break;
                 case constraint::X :
-                    pMovedAnchor_->set_abs_offset(
+                    pMovedAnchor_->mOffset = vector2f(
                         fMovementStartPositionX_ + fMouseMovementX_,
                         fMovementStartPositionY_
                     );
                     break;
                 case constraint::Y :
-                    pMovedAnchor_->set_abs_offset(
+                    pMovedAnchor_->mOffset = vector2f(
                         fMovementStartPositionX_,
                         fMovementStartPositionY_ + fMouseMovementY_
                     );

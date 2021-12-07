@@ -77,7 +77,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     if (pScrollChild_)
     {
         pScrollChild_->set_renderer(nullptr);
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = vector2f(
             lBorderList_.top_left() - vector2f(fHorizontalScroll_, fVerticalScroll_)
         );
 
@@ -123,8 +123,11 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
         pScrollChild_->set_special();
         if (!is_virtual())
             pScrollChild_->set_renderer(observer_from(this));
+
         pScrollChild_->clear_all_points();
-        pScrollChild_->set_abs_point(anchor_point::TOPLEFT, "", anchor_point::TOPLEFT, -fHorizontalScroll_, -fVerticalScroll_);
+
+        pScrollChild_->set_point(anchor_data(
+            anchor_point::TOPLEFT, "", vector2f(-fHorizontalScroll_, -fVerticalScroll_)));
 
         update_scroll_range_();
         bUpdateScrollRange_ = false;
@@ -140,7 +143,8 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
         fHorizontalScroll_ = fHorizontalScroll;
         lQueuedEventList_.push_back("OnHorizontalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
+            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
     }
 }
@@ -162,7 +166,8 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
         fVerticalScroll_ = fVerticalScroll;
         lQueuedEventList_.push_back("OnVerticalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).set_abs_offset(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
+            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
         bRedrawScrollRenderTarget_ = true;
     }
 }

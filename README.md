@@ -271,14 +271,14 @@ Setting up the GUI in C++ is rather straightforward. The example code below is b
 
 ```c++
 // Create an SFML render window
-sf::RenderWindow mWindow;
+sf::RenderWindow window;
 
 // Initialize the GUI using the SFML back-end
-utils::owner_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
+utils::owner_ptr<gui::manager> manager = gui::sfml::create_manager(window);
 
 // Grab a pointer to the SFML input manager so we can feed events to it later
-input::sfml::source& mSFMLInput = static_cast<input::sfml::source&>(
-    pManager->get_input_manager().get_source()
+input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
+    manager->get_input_manager().get_source()
 );
 
 // Load GUI addons:
@@ -288,50 +288,50 @@ input::sfml::source& mSFMLInput = static_cast<input::sfml::source&>(
 // See below for an example addon.
 
 //  - First set the directory in which the GUI addons are located
-pManager->add_addon_directory("interface");
+manager->add_addon_directory("interface");
 //  - Then create the Lua state
-pManager->create_lua([](gui::manager& mManager)
+manager->create_lua([](gui::manager& mgr)
 {
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
     //  - register the needed widgets
-    mManager.register_region_type<gui::texture>();
-    mManager.register_region_type<gui::font_string>();
-    mManager.register_frame_type<gui::button>();
-    mManager.register_frame_type<gui::slider>();
-    mManager.register_frame_type<gui::edit_box>();
-    mManager.register_frame_type<gui::scroll_frame>();
-    mManager.register_frame_type<gui::status_bar>();
+    mgr.register_region_type<gui::texture>();
+    mgr.register_region_type<gui::font_string>();
+    mgr.register_frame_type<gui::button>();
+    mgr.register_frame_type<gui::slider>();
+    mgr.register_frame_type<gui::edit_box>();
+    mgr.register_frame_type<gui::scroll_frame>();
+    mgr.register_frame_type<gui::status_bar>();
     //  - register your own additional Lua "glue" functions, if needed
     // ...
 });
 
 //  - and eventually load all addons
-pManager->read_files();
+manager->read_files();
 
 // Start the main loop
-sf::Clock mClock;
+sf::Clock clock;
 while (true)
 {
     // Retrieve the window events
-    sf::Event mEvent;
-    while (mWindow.pollEvent(mEvent))
+    sf::Event event;
+    while (window.pollEvent(event))
     {
         // ...
 
         // Send these to the input manager
-        mSFMLInput.on_sfml_event(mEvent);
+        sfml_source.on_sfml_event(event);
     }
 
     // Compute time spent since last GUI update
-    float fDelta = mClock.getElapsedTime().asSeconds();
-    mClock.restart();
+    float delta = clock.getElapsedTime().asSeconds();
+    clock.restart();
 
     // Update the GUI
-    pManager->update(fDeltaTime);
+    manager->update(delta);
 
     // Render the GUI
-    pManager->render_ui();
+    manager->render_ui();
 }
 
 // Resources are cleared up automatically on destruction
@@ -366,8 +366,8 @@ Then, within this tag, we need to create a frame (which is more or less a GUI co
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
         </Anchors>
     </Frame>
 ```
@@ -377,8 +377,8 @@ This creates a Frame named `FPSCounter` that fills the whole screen: the `<Ancho
 ```xml
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
@@ -437,8 +437,8 @@ Once this is done, we have the full XML file:
 <Ui>
     <Frame name="FPSCounter">
         <Anchors>
-            <Anchor point="TOPLEFT" relativePoint="TOPLEFT"/>
-            <Anchor point="BOTTOMRIGHT" relativePoint="TOPLEFT"/>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
         </Anchors>
         <Layers><Layer>
             <FontString name="$parentText" font="interface/fonts/main.ttf" text="" fontHeight="12" justifyH="RIGHT" justifyV="BOTTOM" outline="NORMAL">
@@ -494,26 +494,26 @@ Re-creating the above addon in pure C++ is perfectly possible. This can be done 
 
 ```c++
 // Create the Frame
-utils::observer_ptr<gui::frame> pFrame;
-pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
-pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
-pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "", gui::anchor_point::BOTTOMRIGHT);
+utils::observer_ptr<gui::frame> frame;
+frame = manager->create_root_frame<gui::frame>("FPSCounter");
+frame->set_point(gui::anchor_point::TOPLEFT);
+frame->set_point(gui::anchor_point::BOTTOMRIGHT);
 
 // Create the FontString
-utils::observer_ptr<gui::font_string> pFont;
-pFont = pFrame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
-pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, -5, -5);
-pFont->set_font("interface/fonts/main.ttf", 12);
-pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
-pFont->set_justify_h(gui::text::alignment::RIGHT);
-pFont->set_outlined(true);
-pFont->set_text_color(gui::color::GREEN);
-pFont->notify_loaded(); // must be called on all objects when they are fully set up
+utils::observer_ptr<gui::font_string> text;
+text = frame->create_region<gui::font_string>(gui::LAYER_ARTWORK, "$parentText");
+text->set_point(gui::anchor_point::BOTTOMRIGHT, gui::vector2f{-5, -5});
+text->set_font("interface/fonts/main.ttf", 12);
+text->set_justify_v(gui::text::vertical_alignment::BOTTOM);
+text->set_justify_h(gui::text::alignment::RIGHT);
+text->set_outlined(true);
+text->set_text_color(gui::color::GREEN);
+text->notify_loaded(); // must be called on all objects when they are fully set up
 
 // Create the scripts in C++ (one can also provide a string containing some Lua code)
 float update_time = 0.5f, timer = 1.0f;
 int frames = 0;
-pFrame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) mutable
+frame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) mutable
 {
     float delta = args.get<float>(0);
     timer += delta;
@@ -521,8 +521,9 @@ pFrame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) 
 
     if (timer > update_time)
     {
-        gui::font_string* text = self.get_region<gui::font_string>("Text");
-        text->set_text("FPS : "+utils::to_string(floor(frames/timer)));
+        utils::observer_ptr<gui::font_string> text;
+        text = self.get_region<gui::font_string>("Text");
+        text->set_text("FPS : "+utils::to_string(std::floor(frames/timer)));
 
         timer = 0.0f;
         frames = 0;
@@ -530,5 +531,5 @@ pFrame->define_script("OnUpdate", [=](gui::frame& self, const event_data& args) 
 });
 
 // Tell the Frame is has been fully loaded.
-pFrame->notify_loaded();
+frame->notify_loaded();
 ```

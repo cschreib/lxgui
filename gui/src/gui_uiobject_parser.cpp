@@ -99,8 +99,7 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
                         sParent = "";
                 }
 
-                anchor mAnchor(
-                    *this,
+                anchor_data mAnchor(
                     anchor::get_anchor_point(sPoint),
                     sParent,
                     anchor::get_anchor_point(sRelativePoint)
@@ -112,14 +111,16 @@ void uiobject::parse_anchor_block_(xml::block* pBlock)
                     xml::block* pDimBlock = pOffsetBlock->get_radio_block();
                     if (pDimBlock->get_name() == "AbsDimension")
                     {
-                        mAnchor.set_abs_offset(
+                        mAnchor.mType = anchor_type::ABS;
+                        mAnchor.mOffset = vector2f(
                             utils::string_to_float(pDimBlock->get_attribute("x")),
                             utils::string_to_float(pDimBlock->get_attribute("y"))
                         );
                     }
                     else if (pDimBlock->get_name() == "RelDimension")
                     {
-                        mAnchor.set_rel_offset(
+                        mAnchor.mType = anchor_type::REL;
+                        mAnchor.mOffset = vector2f(
                             utils::string_to_float(pDimBlock->get_attribute("x")),
                             utils::string_to_float(pDimBlock->get_attribute("y"))
                         );

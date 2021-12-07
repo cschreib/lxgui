@@ -462,48 +462,48 @@ namespace gui
         */
         void set_all_points(const std::string& sObjName);
 
-        /// create_s/modifies an anchor.
-        /** \param mPoint         The anchor point for this object
-        *   \param sParentName    The anchor's parent
-        *   \param mRelativePoint The anchor point for the parent
-        *   \param fX             The horizontal offset
-        *   \param fY             The vertical offset
-        */
-        void set_abs_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, float fX = 0, float fY = 0);
+        // /// create_s/modifies an anchor.
+        // /** \param mPoint         The anchor point for this object
+        // *   \param sParentName    The anchor's parent
+        // *   \param mRelativePoint The anchor point for the parent
+        // *   \param fX             The horizontal offset
+        // *   \param fY             The vertical offset
+        // */
+        // void set_abs_point(anchor_point mPoint, const std::string& sParentName,
+        //     anchor_point mRelativePoint, float fX = 0, float fY = 0);
 
-        /// create_s/modifies an anchor.
-        /** \param mPoint         The anchor point for this object
-        *   \param sParentName    The anchor's parent
-        *   \param mRelativePoint The anchor point for the parent
-        *   \param mOffset        The offset
-        */
-        void set_abs_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, const vector2f& mOffset);
+        // /// create_s/modifies an anchor.
+        // /** \param mPoint         The anchor point for this object
+        // *   \param sParentName    The anchor's parent
+        // *   \param mRelativePoint The anchor point for the parent
+        // *   \param mOffset        The offset
+        // */
+        // void set_abs_point(anchor_point mPoint, const std::string& sParentName,
+        //     anchor_point mRelativePoint, const vector2f& mOffset);
 
-        /// create_s/modifies an anchor.
-        /** \param mPoint         The anchor point for this object
-        *   \param sParentName    The anchor's parent
-        *   \param mRelativePoint The anchor point for the parent
-        *   \param fX             The horizontal offset
-        *   \param fY             The vertical offset
-        */
-        void set_rel_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, float fX = 0, float fY = 0);
+        // /// create_s/modifies an anchor.
+        // /** \param mPoint         The anchor point for this object
+        // *   \param sParentName    The anchor's parent
+        // *   \param mRelativePoint The anchor point for the parent
+        // *   \param fX             The horizontal offset
+        // *   \param fY             The vertical offset
+        // */
+        // void set_rel_point(anchor_point mPoint, const std::string& sParentName,
+        //     anchor_point mRelativePoint, float fX = 0, float fY = 0);
 
-        /// create_s/modifies an anchor.
-        /** \param mPoint         The anchor point for this object
-        *   \param sParentName    The anchor's parent
-        *   \param mRelativePoint The anchor point for the parent
-        *   \param mOffset        The offset
-        */
-        void set_rel_point(anchor_point mPoint, const std::string& sParentName,
-            anchor_point mRelativePoint, const vector2f& mOffset);
+        // /// create_s/modifies an anchor.
+        // /** \param mPoint         The anchor point for this object
+        // *   \param sParentName    The anchor's parent
+        // *   \param mRelativePoint The anchor point for the parent
+        // *   \param mOffset        The offset
+        // */
+        // void set_rel_point(anchor_point mPoint, const std::string& sParentName,
+        //     anchor_point mRelativePoint, const vector2f& mOffset);
 
         /// Adds/replaces an anchor.
         /** \param mAnchor The anchor to add
         */
-        void set_point(const anchor& mAnchor);
+        void set_point(const anchor_data& mAnchor);
 
         /// Checks if this widget depends on another.
         /** \param mObj The widget to test

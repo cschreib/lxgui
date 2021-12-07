@@ -102,6 +102,8 @@ Other changes:
  - gui: removed clear_links() in favor of using destructors
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
+ - gui: split anchor into anchor (logic) + anchor_data (data)
+ - gui: removed uiobject::set_abs_point and uiobject::set_rel_point, use set_point() instead
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box

@@ -10,80 +10,84 @@
 namespace lxgui {
 namespace gui
 {
-anchor::anchor(uiobject& mObj, anchor_point mPoint, const std::string& sParent, anchor_point mParentPoint) :
-    mObj_(mObj), mParentPoint_(mParentPoint), mPoint_(mPoint), sParent_(sParent)
+
+anchor::anchor(const uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
 {
+    if (!mObject.is_virtual())
+    {
+        if (sParent == "$default")
+            sParent = mObject.get_parent() ? "$parent" : "";
+
+        update_parent_(mObject);
+    }
 }
 
-void anchor::update_parent() const
+void anchor::update_parent_(const uiobject& mObject)
 {
-    if (bParentUpdated_) return;
-
     pParent_ = nullptr;
-    bParentUpdated_ = true;
 
-    if (sParent_.empty()) return;
+    if (sParent.empty()) return;
 
-    utils::observer_ptr<const frame> pObjParent = mObj_.get_parent();
+    utils::observer_ptr<const frame> pObjParent = mObject.get_parent();
 
+    std::string sParentFullName = sParent;
     if (pObjParent)
     {
-        utils::replace(sParent_, "$parent", pObjParent->get_lua_name());
+        utils::replace(sParentFullName, "$parent", pObjParent->get_lua_name());
     }
-    else if (sParent_.find("$parent") != sParent_.npos)
+    else if (sParentFullName.find("$parent") != sParentFullName.npos)
     {
-        gui::out << gui::error << "gui::" << mObj_.get_object_type() << " : "
-            << "uiobject \"" << mObj_.get_name() << "\" tries to anchor to \""
-            << sParent_ << "\", but '$parent' does not exist." << std::endl;
+        gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
+            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
+            << sParentFullName << "\", but '$parent' does not exist." << std::endl;
         return;
     }
 
-    utils::observer_ptr<const uiobject> pNewParent = mObj_.get_manager().get_uiobject_by_name(sParent_);
+    utils::observer_ptr<const uiobject> pNewParent =
+        mObject.get_manager().get_uiobject_by_name(sParentFullName);
+
     if (!pNewParent)
     {
-        gui::out << gui::error << "gui::" << mObj_.get_object_type() << " : "
-            << "uiobject \"" << mObj_.get_name() << "\" tries to anchor to \""
-            << sParent_ << "\" but this widget does not (yet?) exist." << std::endl;
+        gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
+            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
+            << sParentFullName << "\" but this widget does not (yet?) exist." << std::endl;
         return;
     }
 
-    if (mObj_.get_top_level_renderer() != pNewParent->get_top_level_renderer())
+    if (mObject.get_top_level_renderer() != pNewParent->get_top_level_renderer())
     {
-        gui::out << gui::error << "gui::" << mObj_.get_object_type() << " : "
-            << "uiobject \"" << mObj_.get_name() << "\" tries to anchor to \""
-            << sParent_ << "\" which is in another renderer." << std::endl;
+        gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
+            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
+            << sParentFullName << "\" which is in another renderer." << std::endl;
         return;
     }
 
     pParent_ = pNewParent;
 }
 
-float anchor::get_abs_x() const
+float anchor::get_abs_x(const uiobject& mObject) const
 {
-    update_parent();
-
-    float fParentX;
+    float fParentX = 0, fParentWidth = 0;
     if (const uiobject* pRawParent = pParent_.get())
     {
         fParentX = pRawParent->get_left();
-        fParentWidth_ = pRawParent->get_apparent_width();
+        fParentWidth = pRawParent->get_apparent_width();
     }
     else
     {
-        fParentX = 0;
-        fParentWidth_ = mObj_.get_top_level_renderer()->get_target_width();
+        fParentWidth = mObject.get_top_level_renderer()->get_target_width();
     }
 
     float fOffset;
-    if (mType_ == anchor_type::ABS)
-        fOffset = fAbsOffX_;
+    if (mType == anchor_type::ABS)
+        fOffset = mOffset.x;
     else
-        fOffset = fRelOffX_*fParentWidth_;
+        fOffset = mOffset.x*fParentWidth;
 
-    fOffset = mObj_.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
+    fOffset = mObject.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
 
     float fParentOffset = 0.0f;
-    switch (mParentPoint_)
+    switch (mParentPoint)
     {
         case anchor_point::TOPLEFT: [[fallthrough]];
         case anchor_point::LEFT: [[fallthrough]];
@@ -93,44 +97,41 @@ float anchor::get_abs_x() const
         case anchor_point::TOP: [[fallthrough]];
         case anchor_point::CENTER: [[fallthrough]];
         case anchor_point::BOTTOM:
-            fParentOffset = fParentWidth_/2.0f;
+            fParentOffset = fParentWidth/2.0f;
             break;
         case anchor_point::TOPRIGHT: [[fallthrough]];
         case anchor_point::RIGHT: [[fallthrough]];
         case anchor_point::BOTTOMRIGHT:
-            fParentOffset = fParentWidth_;
+            fParentOffset = fParentWidth;
             break;
     }
 
     return fOffset + fParentOffset + fParentX;
 }
 
-float anchor::get_abs_y() const
+float anchor::get_abs_y(const uiobject& mObject) const
 {
-    update_parent();
-
-    float fParentY;
+    float fParentY = 0, fParentHeight = 0;
     if (const uiobject* pRawParent = pParent_.get())
     {
         fParentY = pRawParent->get_top();
-        fParentHeight_ = pRawParent->get_apparent_height();
+        fParentHeight = pRawParent->get_apparent_height();
     }
     else
     {
-        fParentY = 0;
-        fParentHeight_ = mObj_.get_top_level_renderer()->get_target_height();
+        fParentHeight = mObject.get_top_level_renderer()->get_target_height();
     }
 
     float fOffset;
-    if (mType_ == anchor_type::ABS)
-        fOffset = fAbsOffY_;
+    if (mType == anchor_type::ABS)
+        fOffset = mOffset.y;
     else
-        fOffset = fRelOffY_*fParentHeight_;
+        fOffset = mOffset.y*fParentHeight;
 
-    fOffset = mObj_.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
+    fOffset = mObject.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
 
     float fParentOffset = 0.0f;
-    switch (mParentPoint_)
+    switch (mParentPoint)
     {
         case anchor_point::TOPLEFT: [[fallthrough]];
         case anchor_point::TOP: [[fallthrough]];
@@ -140,154 +141,49 @@ float anchor::get_abs_y() const
         case anchor_point::LEFT: [[fallthrough]];
         case anchor_point::CENTER: [[fallthrough]];
         case anchor_point::RIGHT:
-            fParentOffset = fParentHeight_/2.0f;
+            fParentOffset = fParentHeight/2.0f;
             break;
         case anchor_point::BOTTOMLEFT: [[fallthrough]];
         case anchor_point::BOTTOM: [[fallthrough]];
         case anchor_point::BOTTOMRIGHT:
-            fParentOffset = fParentHeight_;
+            fParentOffset = fParentHeight;
             break;
     }
 
     return fOffset + fParentOffset + fParentY;
 }
 
-const uiobject& anchor::get_object() const
-{
-    return mObj_;
-}
-
-const utils::observer_ptr<const uiobject>& anchor::get_parent() const
-{
-    update_parent();
-    return pParent_;
-}
-
-const std::string& anchor::get_parent_raw_name() const
-{
-    return sParent_;
-}
-
-anchor_point anchor::get_point() const
-{
-    return mPoint_;
-}
-
-anchor_point anchor::get_parent_point() const
-{
-    return mParentPoint_;
-}
-
-anchor_type anchor::get_type() const
-{
-    return mType_;
-}
-
-float anchor::get_abs_offset_x() const
-{
-    return fAbsOffX_;
-}
-
-float anchor::get_abs_offset_y() const
-{
-    return fAbsOffY_;
-}
-
-vector2f anchor::get_abs_offset() const
-{
-    return vector2f(fAbsOffX_, fAbsOffY_);
-}
-
-float anchor::get_rel_offset_x() const
-{
-    return fRelOffX_;
-}
-
-float anchor::get_rel_offset_y() const
-{
-    return fRelOffY_;
-}
-
-vector2f anchor::get_rel_offset() const
-{
-    return vector2f(fRelOffX_, fRelOffY_);
-}
-
-void anchor::set_parent_raw_name(const std::string& sName)
-{
-    sParent_ = sName;
-    bParentUpdated_ = false;
-}
-
-void anchor::set_point(anchor_point mPoint)
-{
-    mPoint_ = mPoint;
-}
-
-void anchor::set_parent_point(anchor_point mParentPoint)
-{
-    mParentPoint_ = mParentPoint;
-}
-
-void anchor::set_abs_offset(float fX, float fY)
-{
-    fAbsOffX_ = fX;
-    fAbsOffY_ = fY;
-    mType_ = anchor_type::ABS;
-}
-
-void anchor::set_abs_offset(const vector2f& mOffset)
-{
-    fAbsOffX_ = mOffset.x;
-    fAbsOffY_ = mOffset.y;
-    mType_ = anchor_type::ABS;
-}
-
-void anchor::set_rel_offset(float fX, float fY)
-{
-    fRelOffX_ = fX;
-    fRelOffY_ = fY;
-    mType_ = anchor_type::REL;
-}
-
-void anchor::set_rel_offset(const vector2f& mOffset)
-{
-    fRelOffX_ = mOffset.x;
-    fRelOffY_ = mOffset.y;
-    mType_ = anchor_type::REL;
-}
-
 std::string anchor::serialize(const std::string& sTab) const
 {
     std::stringstream sStr;
 
-    sStr << sTab << "  |   # Point      : " << get_string_point(mPoint_) << "\n";
+    sStr << sTab << "  |   # Point      : " << get_string_point(mPoint) << "\n";
     if (pParent_)
     sStr << sTab << "  |   # Parent     : " << pParent_->get_name();
     else
     sStr << sTab << "  |   # Parent     : none";
-    if (!sParent_.empty())
-    sStr << " (raw name : " << sParent_ << ")\n";
+    if (!sParent.empty())
+    sStr << " (raw name : " << sParent << ")\n";
     else
     sStr << "\n";
-    sStr << sTab << "  |   # Rel. point : " << get_string_point(mParentPoint_) << "\n";
-    if (mType_ == anchor_type::ABS)
+    sStr << sTab << "  |   # Rel. point : " << get_string_point(mParentPoint) << "\n";
+    if (mType == anchor_type::ABS)
     {
-    sStr << sTab << "  |   # Offset X   : " << fAbsOffX_ << "\n";
-    sStr << sTab << "  |   # Offset Y   : " << fAbsOffY_ << "\n";
+    sStr << sTab << "  |   # Offset X   : " << mOffset.x << "\n";
+    sStr << sTab << "  |   # Offset Y   : " << mOffset.y << "\n";
     }
     else
     {
-    sStr << sTab << "  |   # Offset X   : " << fRelOffX_ << " (" << fRelOffX_*fParentWidth_ << ")\n";
-    sStr << sTab << "  |   # Offset Y   : " << fRelOffY_ << " (" << fRelOffY_*fParentHeight_ << ")\n";
+    sStr << sTab << "  |   # Offset X   : " << mOffset.x << " (rel)\n";
+    sStr << sTab << "  |   # Offset Y   : " << mOffset.y << " (rel)\n";
     }
 
     return sStr.str();
 }
 
-std::string anchor::get_string_point(anchor_point mPoint)
+std::string anchor::get_string_point(anchor_point mP)
 {
-    switch (mPoint)
+    switch (mP)
     {
         case anchor_point::TOPLEFT :     return "TOPLEFT";
         case anchor_point::TOP :         return "TOP";
@@ -315,5 +211,6 @@ anchor_point anchor::get_anchor_point(const std::string& sPoint)
     else if (sPoint == "CENTER")      return anchor_point::CENTER;
     return anchor_point::TOPLEFT;
 }
+
 }
 }

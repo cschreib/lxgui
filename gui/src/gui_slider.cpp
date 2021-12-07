@@ -122,9 +122,9 @@ void slider::constrain_thumb_()
         if (bThumbMoved_)
         {
             if (mOrientation_ == orientation::HORIZONTAL)
-                fValue = pThumbTexture_->get_point(anchor_point::CENTER).get_abs_offset_x()/get_apparent_width();
+                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/get_apparent_width();
             else
-                fValue = pThumbTexture_->get_point(anchor_point::CENTER).get_abs_offset_y()/get_apparent_height();
+                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/get_apparent_height();
 
             fValue = fValue * (fMaxValue_ - fMinValue_) + fMinValue_;
             fValue = std::clamp(fValue, fMinValue_, fMaxValue_);
@@ -135,9 +135,9 @@ void slider::constrain_thumb_()
 
         anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
         if (mOrientation_ == orientation::HORIZONTAL)
-            mAnchor.set_abs_offset(get_apparent_width()*fCoef, 0);
+            mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
         else
-            mAnchor.set_abs_offset(0, get_apparent_height()*fCoef);
+            mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
     }
 }
 
@@ -187,9 +187,9 @@ void slider::on_event(const event& mEvent)
                     float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
                     if (mOrientation_ == orientation::HORIZONTAL)
-                        mAnchor.set_abs_offset(get_apparent_width()*fCoef, 0);
+                        mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
                     else
-                        mAnchor.set_abs_offset(0, get_apparent_height()*fCoef);
+                        mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
 
                     get_manager().start_moving(
                         pThumbTexture_, &mAnchor,
@@ -308,8 +308,8 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture)
         return;
 
     pThumbTexture_->clear_all_points();
-    pThumbTexture_->set_point(anchor(
-        *pThumbTexture_, anchor_point::CENTER, sName_,
+    pThumbTexture_->set_point(anchor_data(
+        anchor_point::CENTER, sName_,
         mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
     ));
 
@@ -323,8 +323,8 @@ void slider::set_orientation(orientation mOrientation)
         mOrientation_ = mOrientation;
         if (pThumbTexture_)
         {
-            pThumbTexture_->set_point(anchor(
-                *pThumbTexture_, anchor_point::CENTER, sName_,
+            pThumbTexture_->set_point(anchor_data(
+                anchor_point::CENTER, sName_,
                 mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
             ));
         }
@@ -480,9 +480,9 @@ void slider::update(float fDelta)
             if (bThumbMoved_)
             {
                 if (mOrientation_ == orientation::HORIZONTAL)
-                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).get_abs_offset_x()/get_apparent_width();
+                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/get_apparent_width();
                 else
-                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).get_abs_offset_y()/get_apparent_height();
+                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/get_apparent_height();
 
                 fValue_ *= (fMaxValue_ - fMinValue_);
                 fValue_ += fMinValue_;
@@ -497,9 +497,9 @@ void slider::update(float fDelta)
 
             anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
             if (mOrientation_ == orientation::HORIZONTAL)
-                mAnchor.set_abs_offset(get_apparent_width()*fCoef, 0);
+                mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
             else
-                mAnchor.set_abs_offset(0, get_apparent_height()*fCoef);
+                mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
 
             pThumbTexture_->notify_borders_need_update();
             pThumbTexture_->update(fDelta);

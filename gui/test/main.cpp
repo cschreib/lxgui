@@ -563,13 +563,14 @@ int main(int argc, char* argv[])
         // A "child" frame is owned by another frame.
         utils::observer_ptr<gui::frame> pFrame;
         pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
-        pFrame->set_abs_point(gui::anchor_point::TOPLEFT, "", gui::anchor_point::TOPLEFT);
-        pFrame->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT);
+        pFrame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
+        pFrame->set_point(gui::anchor_data(
+            gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT));
 
         // Create the FontString
         utils::observer_ptr<gui::font_string> pFont;
         pFont = pFrame->create_region<gui::font_string>(gui::layer_type::ARTWORK, "$parentText");
-        pFont->set_abs_point(gui::anchor_point::BOTTOMRIGHT, "$parent", gui::anchor_point::BOTTOMRIGHT, 0, -5);
+        pFont->set_point(gui::anchor_data(gui::anchor_point::BOTTOMRIGHT, gui::vector2f(0, -5)));
         pFont->set_font("interface/fonts/main.ttf", 15);
         pFont->set_justify_v(gui::text::vertical_alignment::BOTTOM);
         pFont->set_justify_h(gui::text::alignment::RIGHT);

@@ -404,8 +404,11 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
                         fRightPos += pText->get_letter_quad(uiRight)[2].pos.x;
                 }
 
-                pHighlight_->set_abs_point(anchor_point::LEFT,  sName_, anchor_point::LEFT, fLeftPos,  0);
-                pHighlight_->set_abs_point(anchor_point::RIGHT, sName_, anchor_point::LEFT, fRightPos, 0);
+                pHighlight_->set_point(anchor_data(
+                    anchor_point::LEFT,  sName_, vector2f(fLeftPos,  0)));
+                pHighlight_->set_point(anchor_data(
+                    anchor_point::RIGHT, sName_, anchor_point::LEFT, vector2f(fRightPos, 0)));
+
                 pHighlight_->show();
             }
             else
@@ -694,12 +697,8 @@ void edit_box::set_text_insets(const bounds2f& lInsets)
     if (pFontString_)
     {
         pFontString_->clear_all_points();
-        pFontString_->set_abs_point(
-            anchor_point::TOPLEFT, sName_, anchor_point::TOPLEFT, lTextInsets_.top_left()
-        );
-        pFontString_->set_abs_point(
-            anchor_point::BOTTOMRIGHT, sName_, anchor_point::BOTTOMRIGHT, lTextInsets_.bottom_right()
-        );
+        pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
+        pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
 
         update_displayed_text_();
         update_font_string_();
@@ -764,12 +763,9 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
 
     pFontString_->set_abs_dimensions(0, 0);
     pFontString_->clear_all_points();
-    pFontString_->set_abs_point(
-        anchor_point::TOPLEFT,     "$parent", anchor_point::TOPLEFT,      lTextInsets_.top_left()
-    );
-    pFontString_->set_abs_point(
-        anchor_point::BOTTOMRIGHT, "$parent", anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()
-    );
+
+    pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));
+    pFontString_->set_point(anchor_data(anchor_point::BOTTOMRIGHT, -lTextInsets_.bottom_right()));
 
     pFontString_->enable_formatting(false);
 
@@ -838,12 +834,8 @@ void edit_box::create_highlight_()
 
     pHighlight->create_glue();
 
-    pHighlight->set_abs_point(
-        anchor_point::TOP,    sName_, anchor_point::TOP,    0,  lTextInsets_.top
-    );
-    pHighlight->set_abs_point(
-        anchor_point::BOTTOM, sName_, anchor_point::BOTTOM, 0, -lTextInsets_.bottom
-    );
+    pHighlight->set_point(anchor_data(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top)));
+    pHighlight->set_point(anchor_data(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom)));
 
     pHighlight->set_solid_color(mHighlightColor_);
     pHighlight->notify_loaded();
@@ -874,7 +866,8 @@ void edit_box::create_carret_()
 
         pCarret->create_glue();
 
-        pCarret->set_abs_point(anchor_point::CENTER, sName_, anchor_point::LEFT, lTextInsets_.left - 1, 0);
+        pCarret->set_point(anchor_data(
+            anchor_point::CENTER, anchor_point::LEFT, vector2f(lTextInsets_.left - 1, 0)));
 
         pCarret->notify_loaded();
         pCarret_ = pCarret;
@@ -981,9 +974,7 @@ void edit_box::update_carret_position_()
             default : mPoint = anchor_point::LEFT; break;
         }
 
-        pCarret_->set_abs_point(
-            anchor_point::CENTER, sName_, mPoint, fOffset, 0
-        );
+        pCarret_->set_point(anchor_data(anchor_point::CENTER, mPoint, vector2f(fOffset, 0)));
     }
     else
     {
@@ -1064,9 +1055,8 @@ void edit_box::update_carret_position_()
                 fXOffset += pText->get_letter_quad(uiIndex)[2].pos.x;
         }
 
-        pCarret_->set_abs_point(
-            anchor_point::CENTER, sName_, anchor_point::LEFT, fXOffset, fYOffset
-        );
+        pCarret_->set_point(anchor_data(
+            anchor_point::CENTER, anchor_point::LEFT, vector2f(fXOffset, fYOffset)));
     }
 
     mCarretTimer_.zero();

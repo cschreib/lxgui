@@ -40,18 +40,67 @@ namespace gui
     };
 
     /// Stores a position for a UI widget
-    class anchor
+    struct anchor_data
+    {
+        anchor_data(anchor_point mInputPoint) :
+            mPoint(mInputPoint), sParent("$default"), mParentPoint(mInputPoint) {}
+
+        anchor_data(anchor_point mInputPoint, const std::string& sInputParent) :
+            mPoint(mInputPoint), sParent(sInputParent), mParentPoint(mInputPoint) {}
+
+        anchor_data(anchor_point mInputPoint, const std::string& sInputParent,
+            anchor_point mInputParentPoint) :
+            mPoint(mInputPoint), sParent(sInputParent), mParentPoint(mInputParentPoint) {}
+
+        anchor_data(anchor_point mInputPoint, const std::string& sInputParent,
+            anchor_point mInputParentPoint, const vector2f& mInputOffset,
+            anchor_type mInputType = anchor_type::ABS) :
+            mPoint(mInputPoint), sParent(sInputParent), mParentPoint(mInputParentPoint),
+            mOffset(mInputOffset), mType(mInputType) {}
+
+        anchor_data(anchor_point mInputPoint, const std::string& sInputParent,
+            const vector2f& mInputOffset,
+            anchor_type mInputType = anchor_type::ABS) :
+            mPoint(mInputPoint), sParent(sInputParent), mParentPoint(mInputPoint),
+            mOffset(mInputOffset), mType(mInputType) {}
+
+        anchor_data(anchor_point mInputPoint, const vector2f& mInputOffset,
+            anchor_type mInputType = anchor_type::ABS) :
+            mPoint(mInputPoint), sParent("$default"), mParentPoint(mInputPoint),
+            mOffset(mInputOffset), mType(mInputType) {}
+
+        anchor_data(anchor_point mInputPoint, anchor_point mInputParentPoint,
+            const vector2f& mInputOffset, anchor_type mInputType = anchor_type::ABS) :
+            mPoint(mInputPoint), sParent("$default"), mParentPoint(mInputParentPoint),
+            mOffset(mInputOffset), mType(mInputType) {}
+
+        anchor_data(anchor_point mInputPoint, anchor_point mInputParentPoint) :
+            mPoint(mInputPoint), sParent("$default"), mParentPoint(mInputParentPoint) {}
+
+        anchor_point mPoint = anchor_point::TOPLEFT;
+        std::string  sParent;
+        anchor_point mParentPoint = anchor_point::TOPLEFT;
+        vector2f     mOffset;
+        anchor_type  mType = anchor_type::ABS;
+    };
+
+    /// Stores a position for a UI widget
+    class anchor : private anchor_data
     {
     public :
+        using anchor_data::mPoint;
+        using anchor_data::mParentPoint;
+        using anchor_data::mOffset;
+        using anchor_data::mType;
 
         /// Constructor.
-        anchor(uiobject& pObj, anchor_point mPoint, const std::string& pParent, anchor_point mParentPoint);
+        anchor(const uiobject& mObject, const anchor_data& mAnchor);
 
-        /// Copiable
-        anchor(const anchor&) = default;
+        /// Non-copiable
+        anchor(const anchor&) = delete;
 
-        /// Movable
-        anchor(anchor&&) = default;
+        /// Non-movable
+        anchor(anchor&&) = delete;
 
         /// Non-assignable
         anchor& operator=(const anchor&) = delete;
@@ -60,111 +109,21 @@ namespace gui
         anchor& operator=(anchor&&) = delete;
 
         /// Returns this anchor absolute X (in pixel).
-        /** \return This anchor absolute X.
+        /** \param mObject The object owning this anchor
+        *   \return This anchor absolute X.
         */
-        float get_abs_x() const;
+        float get_abs_x(const uiobject& mObject) const;
 
         /// Returns this anchor absolute Y (in pixel).
-        /** \return This anchor absolute Y.
+        /** \param mObject The object owning this anchor
+        *   \return This anchor absolute Y.
         */
-        float get_abs_y() const;
-
-        /// Returns this anchor's base widget.
-        /** \return This anchor's base widget
-        */
-        const uiobject& get_object() const;
+        float get_abs_y(const uiobject& mObject) const;
 
         /// Returns this anchor's parent widget.
         /** \return This anchor's parent widget
         */
-        const utils::observer_ptr<const uiobject>& get_parent() const;
-
-        /// Returns this anchor's parent's raw name (unmodified).
-        /** \return This anchor's parent's raw name (unmodified)
-        */
-        const std::string& get_parent_raw_name() const;
-
-        /// Returns this anchor's point.
-        /** \return This anchor's point
-        */
-        anchor_point get_point() const;
-
-        /// Returns this anchor's parent point.
-        /** \return This anchor's parent point
-        */
-        anchor_point get_parent_point() const;
-
-        /// Returns the type of this anchor (abs or rel).
-        /** \return The type of this anchor (abs or rel)
-        */
-        anchor_type get_type() const;
-
-        /// Returns this anchor's absolute horizontal offset.
-        /** \return This anchor's absolute horizontal offset
-        */
-        float get_abs_offset_x() const;
-
-        /// Returns this anchor's absolute vertical offset.
-        /** \return This anchor's absolute vertical offset
-        */
-        float get_abs_offset_y() const;
-
-        /// Returns this anchor's absolute offset.
-        /** \return This anchor's absolute offset
-        */
-        vector2f get_abs_offset() const;
-
-        /// Returns this anchor's relative horizontal offset.
-        /** \return This anchor's relative horizontal offset
-        */
-        float get_rel_offset_x() const;
-
-        /// Returns this anchor's relative vertical offset.
-        /** \return This anchor's relative vertical offset
-        */
-        float get_rel_offset_y() const;
-
-        /// Returns this anchor's relative offset.
-        /** \return This anchor's relative offset
-        */
-        vector2f get_rel_offset() const;
-
-        /// Sets this anchor's parent's raw name.
-        /** \param sName The parent's raw name
-        */
-        void set_parent_raw_name(const std::string& sName);
-
-        /// Sets this anchor's point.
-        /** \param mPoint The new point
-        */
-        void set_point(anchor_point mPoint);
-
-        /// Sets this anchor's parent point.
-        /** \param mParentPoint The new parent point
-        */
-        void set_parent_point(anchor_point mParentPoint);
-
-        /// Sets this anchor's absolute offset.
-        /** \param fX The new horizontal offset
-        *   \param fY The new vertical offset
-        */
-        void set_abs_offset(float fX, float fY);
-
-        /// Sets this anchor's absolute offset.
-        /** \param mOffset The new offset
-        */
-        void set_abs_offset(const vector2f& mOffset);
-
-        /// Sets this anchor's relative offset.
-        /** \param fX The new horizontal offset
-        *   \param fY The new vertical offset
-        */
-        void set_rel_offset(float fX, float fY);
-
-        /// Sets this anchor's relative offset.
-        /** \param mOffset The new offset
-        */
-        void set_rel_offset(const vector2f& mOffset);
+        const utils::observer_ptr<const uiobject>& get_parent() const { return pParent_; }
 
         /// Prints all relevant information about this anchor in a string.
         /** \param sTab The offset to give to all lines
@@ -172,8 +131,10 @@ namespace gui
         */
         std::string serialize(const std::string& sTab) const;
 
-        /// Update the anchor parent object from the parent string.
-        void update_parent() const;
+        /// Returns the raw data used for this anchor.
+        /** \return The raw data used for this anchor
+        */
+        const anchor_data& get_data() const { return *this; }
 
         /// Returns the name of an anchor point.
         /** \param mPoint The anchor point
@@ -187,20 +148,12 @@ namespace gui
 
     private :
 
-        const uiobject& mObj_;
+        /// Update the anchor parent object from the parent string.
+        /** \param mObject The object owning this anchor
+        */
+        void update_parent_(const uiobject& mObject);
 
-        anchor_point    mParentPoint_ = anchor_point::TOPLEFT;
-        anchor_point    mPoint_       = anchor_point::TOPLEFT;
-        anchor_type     mType_        = anchor_type::ABS;
-
-        float fAbsOffX_ = 0.0f, fAbsOffY_ = 0.0f;
-        float fRelOffX_ = 0.0f, fRelOffY_ = 0.0f;
-
-        mutable float fParentWidth_ = 0.0f, fParentHeight_ = 0.0f;
-
-        mutable utils::observer_ptr<const uiobject> pParent_ = nullptr;
-        mutable std::string     sParent_;
-        mutable bool            bParentUpdated_ = false;
+        utils::observer_ptr<const uiobject> pParent_ = nullptr;
     };
 }
 }

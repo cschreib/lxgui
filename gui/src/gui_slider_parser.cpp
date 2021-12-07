@@ -50,8 +50,8 @@ void slider::parse_all_blocks_before_children_(xml::block* pBlock)
 
         pTexture->parse_block(pThumbBlock);
         pTexture->clear_all_points();
-        pTexture->set_point(anchor(
-            *pTexture, anchor_point::CENTER, "$parent",
+        pTexture->set_point(anchor_data(
+            anchor_point::CENTER, "$parent",
             get_orientation() == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
         ));
 

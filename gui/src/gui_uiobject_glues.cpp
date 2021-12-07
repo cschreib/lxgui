@@ -232,11 +232,11 @@ void uiobject::register_on_lua(sol::state& mLua)
         const anchor& mAnchor = mSelf.get_point(mPointValue);
 
         return std::make_tuple(
-            anchor::get_string_point(mAnchor.get_point()),
+            anchor::get_string_point(mAnchor.mPoint),
             mAnchor.get_parent(),
-            anchor::get_string_point(mAnchor.get_parent_point()),
-            mAnchor.get_abs_offset_x(),
-            mAnchor.get_abs_offset_y());
+            anchor::get_string_point(mAnchor.mParentPoint),
+            mAnchor.mOffset.x,
+            mAnchor.mOffset.y);
     });
 
     /** @function get_right
@@ -344,7 +344,8 @@ void uiobject::register_on_lua(sol::state& mLua)
         float fAbsX = fXOffset.value_or(0.0f);
         float fAbsY = fYOffset.value_or(0.0f);
 
-        mSelf.set_abs_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
+        mSelf.set_point(anchor_data(
+            mPoint, pParent ? pParent->get_name() : "", mParentPoint, vector2f(fAbsX, fAbsY)));
     });
 
     /** @function set_rel_point
@@ -378,10 +379,12 @@ void uiobject::register_on_lua(sol::state& mLua)
             mParentPoint = anchor::get_anchor_point(sRelativePoint.value());
 
         // x, y
-        float fAbsX = fXOffset.value_or(0.0f);
-        float fAbsY = fXOffset.value_or(0.0f);
+        float fRelX = fXOffset.value_or(0.0f);
+        float fRelY = fYOffset.value_or(0.0f);
 
-        mSelf.set_rel_point(mPoint, pParent ? pParent->get_name() : "", mParentPoint, fAbsX, fAbsY);
+        mSelf.set_point(anchor_data(
+            mPoint, pParent ? pParent->get_name() : "", mParentPoint,
+            vector2f(fRelX, fRelY), anchor_type::REL));
     });
 
     /** @function set_width
