@@ -761,7 +761,7 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
     pFontString_->set_parent(observer_from(this));
     pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
 
-    pFontString_->set_abs_dimensions(0, 0);
+    pFontString_->set_dimensions(vector2f(0, 0));
     pFontString_->clear_all_points();
 
     pFontString_->set_point(anchor_data(anchor_point::TOPLEFT, lTextInsets_.top_left()));

@@ -72,7 +72,7 @@ vector2f anchor::get_point(const uiobject& mObject) const
     if (const uiobject* pRawParent = pParent_.get())
     {
         mParentPos = pRawParent->get_borders().top_left();
-        mParentSize = pRawParent->get_apparent_size();
+        mParentSize = pRawParent->get_apparent_dimensions();
     }
     else
     {

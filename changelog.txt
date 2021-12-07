@@ -78,6 +78,8 @@ Other changes:
  - gui: renamed font_string::get_offsets to get_offset
  - gui: renamed font_string::set_shadow_offsets to set_shadow_offset
  - gui: renamed font_string::get_shadow_offsets to get_shadow_offset
+ - gui: renamed uiobject::set_abs_width/height/dimensions to set_width/height/dimensions
+ - gui: renamed uiobject::set_rel_width/height/dimensions to set_relative_width/height/dimensions
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
@@ -86,6 +88,10 @@ Other changes:
  - gui: removed anchor::set_object() (now a reference, cannot change)
  - gui: removed font_string::get_shadow_x_offset()
  - gui: removed font_string::get_shadow_y_offset()
+ - gui: removed uiobject::set_abs_point and uiobject::set_rel_point, use set_point() instead
+ - gui: removed anchor::get_abs_x/get_abs_y and added anchor::get_point
+ - gui: removed uiobject::get_abs_width/height and added uiobject::get_dimensions()
+ - gui: removed uiobject::get_apparent_width/height and added uiobject::get_apparent_dimensions()
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument
@@ -103,7 +109,6 @@ Other changes:
  - gui: added mechanism to handle most cases where a widget is destroyed in a callback
  - gui: relative sizing is now only applicable to XML <Size>
  - gui: split anchor into anchor (logic) + anchor_data (data)
- - gui: removed uiobject::set_abs_point and uiobject::set_rel_point, use set_point() instead
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box

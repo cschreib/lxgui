@@ -314,15 +314,9 @@ void status_bar::update(float fDelta)
         float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
         if (mOrientation_ == orientation::HORIZONTAL)
-        {
-            pBarTexture_->set_rel_width(fCoef);
-            pBarTexture_->set_rel_height(1.0f);
-        }
+            pBarTexture_->set_relative_dimensions(vector2f(fCoef, 1.0f));
         else
-        {
-            pBarTexture_->set_rel_width(1.0f);
-            pBarTexture_->set_rel_height(fCoef);
-        }
+            pBarTexture_->set_relative_dimensions(vector2f(1.0f, fCoef));
 
         std::array<float,4> uvs = lInitialTextCoords_;
         if (mOrientation_ == orientation::HORIZONTAL)

@@ -196,7 +196,10 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_height
     */
-    mClass.set_function("get_height", member_function<&uiobject::get_apparent_height>());
+    mClass.set_function("get_height", [](const uiobject& mSelf)
+    {
+        return mSelf.get_apparent_dimensions().y;
+    });
 
     /** @function get_left
     */
@@ -249,7 +252,10 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_width
     */
-    mClass.set_function("get_width", member_function<&uiobject::get_apparent_width>());
+    mClass.set_function("get_width", [](const uiobject& mSelf)
+    {
+        return mSelf.get_apparent_dimensions().x;
+    });
 
     /** @function hide
     */
@@ -281,7 +287,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_height
     */
-    mClass.set_function("set_height", member_function<&uiobject::set_abs_height>());
+    mClass.set_function("set_height", member_function<&uiobject::set_height>());
 
     /** @function set_parent
     */
@@ -389,7 +395,7 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_width
     */
-    mClass.set_function("set_width", member_function<&uiobject::set_abs_width>());
+    mClass.set_function("set_width", member_function<&uiobject::set_width>());
 
     /** @function show
     */

@@ -397,22 +397,22 @@ utils::observer_ptr<const layered_region> frame::get_region(const std::string& s
     return nullptr;
 }
 
-void frame::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
+void frame::set_dimensions(const vector2f& mDimensions)
 {
-    uiobject::set_abs_dimensions(
-        std::min(std::max(fAbsWidth,  fMinWidth_),  fMaxWidth_),
-        std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_)
-    );
+    uiobject::set_dimensions(vector2f(
+        std::min(std::max(mDimensions.x,  fMinWidth_),  fMaxWidth_),
+        std::min(std::max(mDimensions.y, fMinHeight_), fMaxHeight_)
+    ));
 }
 
-void frame::set_abs_width(float fAbsWidth)
+void frame::set_width(float fAbsWidth)
 {
-    uiobject::set_abs_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
+    uiobject::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
 }
 
-void frame::set_abs_height(float fAbsHeight)
+void frame::set_height(float fAbsHeight)
 {
-    uiobject::set_abs_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
+    uiobject::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
 }
 
 void frame::check_position() const
@@ -2086,17 +2086,15 @@ void frame::update(float fDelta)
             lHandlerList.erase(mIterRemove, lHandlerList.end());
     }
 
-    float fNewWidth = get_apparent_width();
-    float fNewHeight = get_apparent_height();
-    if (fOldWidth_ != fNewWidth || fOldHeight_ != fNewHeight)
+    vector2f mNewSize = get_apparent_dimensions();
+    if (mOldSize_ != mNewSize)
     {
         DEBUG_LOG("   On size changed");
         on_script("OnSizeChanged");
         if (!mChecker.is_alive())
             return;
 
-        fOldWidth_  = fNewWidth;
-        fOldHeight_ = fNewHeight;
+        mOldSize_ = mNewSize;
     }
 
     DEBUG_LOG("   .");

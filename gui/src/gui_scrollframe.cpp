@@ -184,22 +184,16 @@ float scroll_frame::get_vertical_scroll_range() const
 
 void scroll_frame::update(float fDelta)
 {
-    float fOldChildWidth = 0;
-    float fOldChildHeight = 0;
-
+    vector2f mOldChildSize;
     if (pScrollChild_)
-    {
-        fOldChildWidth = pScrollChild_->get_apparent_width();
-        fOldChildHeight = pScrollChild_->get_apparent_height();
-    }
+        mOldChildSize = pScrollChild_->get_apparent_dimensions();
 
     alive_checker mChecker(*this);
     frame::update(fDelta);
     if (!mChecker.is_alive())
         return;
 
-    if (pScrollChild_ && (fOldChildWidth != pScrollChild_->get_apparent_width() ||
-        fOldChildHeight != pScrollChild_->get_apparent_height()))
+    if (pScrollChild_ && mOldChildSize != pScrollChild_->get_apparent_dimensions())
     {
         bUpdateScrollRange_ = true;
         bRedrawScrollRenderTarget_ = true;
@@ -233,10 +227,13 @@ void scroll_frame::update(float fDelta)
 
 void scroll_frame::update_scroll_range_()
 {
-    fHorizontalScrollRange_ = pScrollChild_->get_apparent_width() - get_apparent_width();
-    if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
+    const vector2f mApparentSize = get_apparent_dimensions();
+    const vector2f mChildApparentSize = pScrollChild_->get_apparent_dimensions();
 
-    fVerticalScrollRange_ = pScrollChild_->get_apparent_height() - get_apparent_height();
+    fHorizontalScrollRange_ = mChildApparentSize.x - mApparentSize.x;
+    fVerticalScrollRange_ = mChildApparentSize.y - mApparentSize.y;
+
+    if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
     if (fVerticalScrollRange_ < 0) fVerticalScrollRange_ = 0;
 
     if (!is_virtual())
@@ -285,23 +282,25 @@ void scroll_frame::notify_scaling_factor_updated()
 
 void scroll_frame::rebuild_scroll_render_target_()
 {
-    if (get_apparent_width() <= 0 || get_apparent_height() <= 0)
+    const vector2f mApparentSize = get_apparent_dimensions();
+
+    if (mApparentSize.x <= 0 || mApparentSize.y <= 0)
         return;
 
     float fFactor = get_manager().get_interface_scaling_factor();
-    float fScaledWidth = std::round(get_apparent_width()*fFactor);
-    float fScaledHeight = std::round(get_apparent_height()*fFactor);
+    vector2f mScaledSize = vector2f(
+        std::round(mApparentSize.x*fFactor), std::round(mApparentSize.y*fFactor));
 
     if (pScrollRenderTarget_)
     {
-        pScrollRenderTarget_->set_dimensions(fScaledWidth, fScaledHeight);
+        pScrollRenderTarget_->set_dimensions(mScaledSize.x, mScaledSize.y);
         pScrollTexture_->set_tex_rect(std::array<float,4>{0.0f, 0.0f, 1.0f, 1.0f});
         bUpdateScrollRange_ = true;
     }
     else
     {
         auto& mRenderer = get_manager().get_renderer();
-        pScrollRenderTarget_ = mRenderer.create_render_target(fScaledWidth, fScaledHeight);
+        pScrollRenderTarget_ = mRenderer.create_render_target(mScaledSize.x, mScaledSize.y);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -369,12 +368,12 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFram
 
 float scroll_frame::get_target_width() const
 {
-    return get_apparent_width();
+    return get_apparent_dimensions().x;
 }
 
 float scroll_frame::get_target_height() const
 {
-    return get_apparent_height();
+    return get_apparent_dimensions().y;
 }
 
 void scroll_frame::update_borders_() const

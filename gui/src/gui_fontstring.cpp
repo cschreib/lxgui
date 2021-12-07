@@ -498,14 +498,14 @@ void font_string::update_borders_() const
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
 
         float fBoxWidth = std::numeric_limits<float>::infinity();
-        if (fAbsWidth_ != 0.0f)
-            fBoxWidth = fAbsWidth_;
+        if (get_dimensions().x != 0.0f)
+            fBoxWidth = get_dimensions().x;
         else if (lDefinedBorderList_.left && lDefinedBorderList_.right)
             fBoxWidth = fRight - fLeft;
 
         float fBoxHeight = std::numeric_limits<float>::infinity();
-        if (fAbsHeight_ != 0.0f)
-            fBoxHeight = fAbsHeight_;
+        if (get_dimensions().y != 0.0f)
+            fBoxHeight = get_dimensions().y;
         else if (lDefinedBorderList_.top && lDefinedBorderList_.bottom)
             fBoxHeight = fBottom - fTop;
 
@@ -542,11 +542,11 @@ void font_string::update_borders_() const
     }
     else
     {
-        float fBoxWidth = fAbsWidth_;
+        float fBoxWidth = get_dimensions().x;
         if (fBoxWidth == 0.0)
             fBoxWidth = pText_->get_width();
 
-        float fBoxHeight = fAbsHeight_;
+        float fBoxHeight = get_dimensions().y;
         if (fBoxHeight == 0.0)
             fBoxHeight = pText_->get_height();
 

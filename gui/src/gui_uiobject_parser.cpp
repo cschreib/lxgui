@@ -40,30 +40,30 @@ void uiobject::parse_size_block_(xml::block* pBlock)
             bool bHasX = pDimBlock->is_provided("x"), bHasY = pDimBlock->is_provided("y");
             if (bHasX && bHasY)
             {
-                set_abs_dimensions(
+                set_dimensions(vector2f(
                     utils::string_to_float(pDimBlock->get_attribute("x")),
                     utils::string_to_float(pDimBlock->get_attribute("y"))
-                );
+                ));
             }
             else if (bHasX)
-                set_abs_width(utils::string_to_float(pDimBlock->get_attribute("x")));
+                set_width(utils::string_to_float(pDimBlock->get_attribute("x")));
             else if (bHasY)
-                set_abs_height(utils::string_to_float(pDimBlock->get_attribute("y")));
+                set_height(utils::string_to_float(pDimBlock->get_attribute("y")));
         }
         else if (pDimBlock->get_name() == "RelDimension")
         {
             bool bHasX = pDimBlock->is_provided("x"), bHasY = pDimBlock->is_provided("y");
             if (bHasX && bHasY)
             {
-                set_rel_dimensions(
+                set_relative_dimensions(vector2f(
                     utils::string_to_float(pDimBlock->get_attribute("x")),
                     utils::string_to_float(pDimBlock->get_attribute("y"))
-                );
+                ));
             }
             else if (bHasX)
-                set_rel_width(utils::string_to_float(pDimBlock->get_attribute("x")));
+                set_relative_width(utils::string_to_float(pDimBlock->get_attribute("x")));
             else if (bHasY)
-                set_rel_height(utils::string_to_float(pDimBlock->get_attribute("y")));
+                set_relative_height(utils::string_to_float(pDimBlock->get_attribute("y")));
         }
     }
 }

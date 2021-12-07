@@ -304,104 +304,71 @@ namespace gui
         virtual bool is_visible() const;
 
         /// Changes this widget's absolute dimensions (in pixels).
-        /** \param fAbsWidth  The new width
-        *   \param fAbsHeight The new height
+        /** \param mDimensions The new dimensions
         */
-        virtual void set_abs_dimensions(float fAbsWidth, float fAbsHeight);
+        virtual void set_dimensions(const vector2f& mDimensions);
 
         /// Changes this widget's absolute width (in pixels).
         /** \param fAbsWidth The new width
         */
-        virtual void set_abs_width(float fAbsWidth);
+        virtual void set_width(float fAbsWidth);
 
         /// Changes this widget's absolute height (in pixels).
         /** \param fAbsHeight The new height
         */
-        virtual void set_abs_height(float fAbsHeight);
+        virtual void set_height(float fAbsHeight);
 
         /// Changes this widget's dimensions (relative to its parent).
-        /** \param fRelWidth  The new width
-        *   \param fRelHeight The new height
+        /** \param mDimensions The new dimensions (relative)
         */
-        void set_rel_dimensions(float fRelWidth, float fRelHeight);
+        void set_relative_dimensions(const vector2f& mDimensions);
 
         /// Changes this widget's width (relative to its parent).
         /** \param fRelWidth The new width
         */
-        void set_rel_width(float fRelWidth);
+        void set_relative_width(float fRelWidth);
 
         /// Changes this widget's height (relative to its parent).
         /** \param fRelHeight The new height
         */
-        void set_rel_height(float fRelHeight);
+        void set_relative_height(float fRelHeight);
 
-        /// Returns this widget's absolute width (in pixels).
-        /** \return This widget's absolute width (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use get_apparent_width() instead, because some
-        *         widgets can have an infinite or undefined width.
+        /// Returns this widget's explicitly-defined width and height (in pixels).
+        /** \return This widget's explicitly-defined width and height (in pixels)
+        *   \note If you need to get the actual size of a widget on the screen,
+        *         use get_apparent_dimensions(), as some widgets may not have
+        *         their dimensions explicitly defined, and instead get their
+        *         extents from anchors. If a dimension is not explicitly defined,
+        *         it will be returned as zero.
         */
-        float get_abs_width() const;
-
-        /// Returns this widget's appearent width (in pixels).
-        /** \return This widget's appearent width (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use this function instead of get_abs_width(), because
-        *         some widgets can have an infinite or undefined width.
-        */
-        float get_apparent_width() const;
-
-        /// Returns this widget's absolute height (in pixels).
-        /** \return This widget's absolute height (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use get_apparent_height() instead, because some
-        *         widgets can have an infinite or undefined height.
-        */
-        float get_abs_height() const;
-
-        /// Returns this widget's appearent height (in pixels).
-        /** \return This widget's appearent height (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use this function instead of get_abs_height(), because
-        *         some widgets can have an infinite or undefined height.
-        */
-        float get_apparent_height() const;
-
-        /// Returns this widget's width and height (in pixels).
-        /** \return This widget's width and height (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use get_apparent_size(), because some widgets can have
-        *         an infinite or undefined size, and instead get their
-        *         extents from anchors.
-        */
-        vector2f get_size() const;
+        const vector2f& get_dimensions() const;
 
         /// Returns this widget's appearent width and height (in pixels).
         /** \return This widget's appearent width and height (in pixels)
-        *   \note If you need to get the size of a widget on the screen,
-        *         use this function instead of get_size(), because
-        *         some widgets can have an infinite or undefined size,
-        *         and instead get their extents from anchors.
+        *   \note If you need to get the actual size of a widget on the screen,
+        *         use this function instead of get_dimensions(), as some widgets
+        *         may not have their dimensions explicitly defined, and instead
+        *         get their extents from anchors.
         */
-        vector2f get_apparent_size() const;
+        vector2f get_apparent_dimensions() const;
 
         /// Checks if this widget's apparent width is defined.
         /** \return 'true' if defined, 'false' otherwise
         *   \note The apparent width is defined if either the widget's absolute
-        *         or relative width is explicitly specified (from set_abs_width()
-        *         or set_rel_width()), or if its left and right borders are anchored.
-        *         A widget with an undefined apparent width will not be rendered on
-        *         the screen until its width is defined.
+        *         or relative width is explicitly specified (from set_width(),
+        *         set_relative_width(), set_dimensions(), or set_relative_dimensions()),
+        *         or if its left and right borders are anchored. A widget with an undefined
+        *         apparent width will not be rendered on the screen until its width is defined.
         */
         bool is_apparent_width_defined() const;
 
         /// Checks if this widget's apparent height is defined.
         /** \return 'true' if defined, 'false' otherwise
         *   \note The apparent height is defined if either the widget's absolute
-        *         or relative height is explicitly specified (from set_abs_height()
-        *         or set_rel_height()), or if its top and bottom borders are anchored.
-        *         A widget with an undefined apparent height will not be rendered on
-        *         the screen until its height is defined.
+        *         or relative height is explicitly specified (from set_height(),
+        *         set_relative_height(), set_dimensions(), or set_relative_dimensions()),
+        *         or if its left and right borders are anchored. A widget with an undefined
+        *         apparent height will not be rendered on the screen until its height is defined.
         */
         bool is_apparent_height_defined() const;
 
@@ -739,8 +706,7 @@ namespace gui
         bool  bIsShown_ = true;
         bool  bIsVisible_ = true;
 
-        mutable float fAbsWidth_ = 0.0f;
-        mutable float fAbsHeight_ = 0.0f;
+        mutable vector2f mDimensions_;
 
         mutable bool bUpdateBorders_ = true;
 

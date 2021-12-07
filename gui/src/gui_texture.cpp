@@ -394,9 +394,9 @@ void texture::update_dimensions_from_tex_coord_()
 {
     vector2f mExtent = mQuad_.v[2].uvs - mQuad_.v[0].uvs;
 
-    set_abs_dimensions(
+    set_dimensions(vector2f(
         mExtent.x*mQuad_.mat->get_canvas_width(),
-        mExtent.y*mQuad_.mat->get_canvas_height());
+        mExtent.y*mQuad_.mat->get_canvas_height()));
 }
 
 void texture::set_texture(const std::string& sFile)
@@ -422,10 +422,10 @@ void texture::set_texture(const std::string& sFile)
         mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
 
         if (!is_apparent_width_defined())
-            set_abs_width(mQuad_.mat->get_rect().width());
+            set_width(mQuad_.mat->get_rect().width());
 
         if (!is_apparent_height_defined())
-            set_abs_height(mQuad_.mat->get_rect().height());
+            set_height(mQuad_.mat->get_rect().height());
     }
     else
     {
@@ -457,10 +457,10 @@ void texture::set_texture(std::shared_ptr<render_target> pRenderTarget)
         mQuad_.v[3].uvs = mQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
 
         if (!is_apparent_width_defined())
-            set_abs_width(mQuad_.mat->get_rect().width());
+            set_width(mQuad_.mat->get_rect().width());
 
         if (!is_apparent_height_defined())
-            set_abs_height(mQuad_.mat->get_rect().height());
+            set_height(mQuad_.mat->get_rect().height());
     }
     else
     {
@@ -491,7 +491,7 @@ void texture::set_quad(const quad& mQuad)
 
     mQuad_ = mQuad;
     vector2f mExtent = mQuad_.v[2].pos - mQuad_.v[0].pos;
-    set_abs_dimensions(mExtent.x, mExtent.y);
+    set_dimensions(mExtent);
 
     notify_renderer_need_redraw();
 }

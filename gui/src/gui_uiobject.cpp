@@ -118,8 +118,8 @@ std::string uiobject::serialize(const std::string& sTab) const
     sStr << sTab << "  |-###\n";
     sStr << sTab << "  # Alpha       : " << fAlpha_ << "\n";
     sStr << sTab << "  # Shown       : " << bIsShown_ << "\n";
-    sStr << sTab << "  # Abs width   : " << fAbsWidth_ << "\n";
-    sStr << sTab << "  # Abs height  : " << fAbsHeight_ << "\n";
+    sStr << sTab << "  # Abs width   : " << mDimensions_.x << "\n";
+    sStr << sTab << "  # Abs height  : " << mDimensions_.y << "\n";
 
     return sStr.str();
 }
@@ -131,8 +131,7 @@ void uiobject::copy_from(const uiobject& mObj)
     // Inherit properties
     this->set_alpha(mObj.get_alpha());
     this->set_shown(mObj.is_shown());
-    this->set_abs_width(mObj.get_abs_width());
-    this->set_abs_height(mObj.get_abs_height());
+    this->set_dimensions(mObj.get_dimensions());
 
     for (const auto& mAnchor : mObj.get_point_list())
     {
@@ -273,108 +272,91 @@ bool uiobject::is_visible() const
     return bIsVisible_;
 }
 
-void uiobject::set_abs_dimensions(float fAbsWidth, float fAbsHeight)
+void uiobject::set_dimensions(const vector2f& mDimensions)
 {
-    if (fAbsWidth_ != fAbsWidth || fAbsHeight_ != fAbsHeight)
+    if (mDimensions_ == mDimensions)
+        return;
+
+    if (!bVirtual_)
+        get_manager().notify_object_moved();
+
+    mDimensions_ = mDimensions;
+
+    if (!bVirtual_)
     {
-        if (!bVirtual_)
-            get_manager().notify_object_moved();
-
-        fAbsWidth_ = fAbsWidth;
-        fAbsHeight_ = fAbsHeight;
-
-        if (!bVirtual_)
-        {
-            notify_borders_need_update();
-            notify_renderer_need_redraw();
-        }
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
     }
 }
 
-void uiobject::set_abs_width(float fAbsWidth)
+void uiobject::set_width(float fAbsWidth)
 {
-    if (fAbsWidth_ != fAbsWidth)
+    if (mDimensions_.x == fAbsWidth)
+        return;
+
+    if (!bVirtual_)
+        get_manager().notify_object_moved();
+
+    mDimensions_.x = fAbsWidth;
+
+    if (!bVirtual_)
     {
-        if (!bVirtual_)
-            get_manager().notify_object_moved();
-
-        fAbsWidth_ = fAbsWidth;
-
-        if (!bVirtual_)
-        {
-            notify_borders_need_update();
-            notify_renderer_need_redraw();
-        }
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
     }
 }
 
-void uiobject::set_abs_height(float fAbsHeight)
+void uiobject::set_height(float fAbsHeight)
 {
-    if (fAbsHeight_ != fAbsHeight)
+    if (mDimensions_.y == fAbsHeight)
+        return;
+
+    if (!bVirtual_)
+        get_manager().notify_object_moved();
+
+    mDimensions_.y = fAbsHeight;
+
+    if (!bVirtual_)
     {
-        if (!bVirtual_)
-            get_manager().notify_object_moved();
-
-        fAbsHeight_ = fAbsHeight;
-
-        if (!bVirtual_)
-        {
-            notify_borders_need_update();
-            notify_renderer_need_redraw();
-        }
+        notify_borders_need_update();
+        notify_renderer_need_redraw();
     }
 }
 
-void uiobject::set_rel_dimensions(float fRelWidth, float fRelHeight)
-{
-    set_rel_width(fRelWidth);
-    set_rel_height(fRelHeight);
-}
-
-void uiobject::set_rel_width(float fRelWidth)
+void uiobject::set_relative_dimensions(const vector2f& mDimensions)
 {
     if (pParent_)
-        set_abs_width(fRelWidth*pParent_->get_apparent_width());
+        set_dimensions(mDimensions*pParent_->get_apparent_dimensions());
     else
-        set_abs_width(fRelWidth*get_top_level_renderer()->get_target_width());
+    {
+        set_dimensions(mDimensions*vector2f(
+            get_top_level_renderer()->get_target_width(),
+            get_top_level_renderer()->get_target_height()));
+    }
 }
 
-void uiobject::set_rel_height(float fRelHeight)
+void uiobject::set_relative_width(float fRelWidth)
 {
     if (pParent_)
-        set_abs_height(fRelHeight*pParent_->get_apparent_height());
+        set_width(fRelWidth*pParent_->get_apparent_dimensions().x);
     else
-        set_abs_height(fRelHeight*get_top_level_renderer()->get_target_height());
+        set_width(fRelWidth*get_top_level_renderer()->get_target_width());
 }
 
-float uiobject::get_abs_width() const
+void uiobject::set_relative_height(float fRelHeight)
 {
-    return fAbsWidth_;
+    if (pParent_)
+        set_height(fRelHeight*pParent_->get_apparent_dimensions().y);
+    else
+        set_height(fRelHeight*get_top_level_renderer()->get_target_height());
 }
 
-float uiobject::get_apparent_width() const
+const vector2f& uiobject::get_dimensions() const
 {
-    update_borders_();
-    return lBorderList_.width();
+    return mDimensions_;
 }
 
-float uiobject::get_abs_height() const
-{
-    return fAbsHeight_;
-}
-
-float uiobject::get_apparent_height() const
-{
-    update_borders_();
-    return lBorderList_.height();
-}
-
-vector2f uiobject::get_size() const
-{
-    return vector2f(fAbsWidth_, fAbsHeight_);
-}
-
-vector2f uiobject::get_apparent_size() const
+vector2f uiobject::get_apparent_dimensions() const
 {
     update_borders_();
     return vector2f(lBorderList_.width(), lBorderList_.height());
@@ -382,12 +364,12 @@ vector2f uiobject::get_apparent_size() const
 
 bool uiobject::is_apparent_width_defined() const
 {
-    return fAbsWidth_ > 0.0f || (lDefinedBorderList_.left && lDefinedBorderList_.right);
+    return mDimensions_.x > 0.0f || (lDefinedBorderList_.left && lDefinedBorderList_.right);
 }
 
 bool uiobject::is_apparent_height_defined() const
 {
-    return fAbsHeight_ > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
+    return mDimensions_.y > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
 }
 
 void uiobject::set_parent(utils::observer_ptr<frame> pParent)
@@ -806,8 +788,8 @@ void uiobject::update_borders_() const
         float fLeft = 0.0f, fRight = 0.0f, fTop = 0.0f, fBottom = 0.0f;
         float fXCenter = 0.0f, fYCenter = 0.0f;
 
-        float fRoundedWidth = round_to_pixel(fAbsWidth_, utils::rounding_method::NEAREST_NOT_ZERO);
-        float fRoundedHeight = round_to_pixel(fAbsHeight_, utils::rounding_method::NEAREST_NOT_ZERO);
+        float fRoundedWidth = round_to_pixel(mDimensions_.x, utils::rounding_method::NEAREST_NOT_ZERO);
+        float fRoundedHeight = round_to_pixel(mDimensions_.y, utils::rounding_method::NEAREST_NOT_ZERO);
 
         DEBUG_LOG("  Read anchors");
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
@@ -838,7 +820,7 @@ void uiobject::update_borders_() const
     }
     else
     {
-        lBorderList_ = bounds2f(0.0, 0.0, fAbsWidth_, fAbsHeight_);
+        lBorderList_ = bounds2f(0.0, 0.0, mDimensions_.x, mDimensions_.y);
         bReady_ = false;
     }
 

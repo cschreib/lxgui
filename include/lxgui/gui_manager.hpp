@@ -815,8 +815,7 @@ namespace gui
         constraint mConstraint_ = constraint::NONE;
         std::function<void()> pApplyConstraintFunc_;
 
-        float fResizeStartW_ = 0.0f;
-        float fResizeStartH_ = 0.0f;
+        vector2f mResizeStart_;
         bool bResizeWidth_ = false;
         bool bResizeHeight_ = false;
         bool bResizeFromRight_ = false;

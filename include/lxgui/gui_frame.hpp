@@ -1082,20 +1082,19 @@ namespace gui
         void notify_renderer_need_redraw() const override;
 
         /// Changes this widget's absolute dimensions (in pixels).
-        /** \param fAbsWidth  The new width
-        *   \param fAbsHeight The new height
+        /** \param mDimensions The new dimensions
         */
-        void set_abs_dimensions(float fAbsWidth, float fAbsHeight) override;
+        void set_dimensions(const vector2f& mDimensions) override;
 
         /// Changes this widget's absolute width (in pixels).
         /** \param fAbsWidth The new width
         */
-        void set_abs_width(float fAbsWidth) override;
+        void set_width(float fAbsWidth) override;
 
         /// Changes this widget's absolute height (in pixels).
         /** \param fAbsHeight The new height
         */
-        void set_abs_height(float fAbsHeight) override;
+        void set_height(float fAbsHeight) override;
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
@@ -1247,8 +1246,7 @@ namespace gui
         float fMinHeight_ = 0.0f;
         float fMaxHeight_ = std::numeric_limits<float>::infinity();
 
-        float fOldWidth_ = 0.0f;
-        float fOldHeight_ = 0.0f;
+        vector2f mOldSize_;
 
         float fScale_ = 1.0f;
 

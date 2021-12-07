@@ -114,17 +114,19 @@ void slider::constrain_thumb_()
     if (fMaxValue_ == fMinValue_)
         return;
 
-    if ((mOrientation_ == orientation::HORIZONTAL && get_apparent_width()  > 0) ||
-        (mOrientation_ == orientation::VERTICAL   && get_apparent_height() > 0))
+    const vector2f mApparentSize = get_apparent_dimensions();
+
+    if ((mOrientation_ == orientation::HORIZONTAL && mApparentSize.x  > 0) ||
+        (mOrientation_ == orientation::VERTICAL   && mApparentSize.y > 0))
     {
         float fValue = 0.0f;
 
         if (bThumbMoved_)
         {
             if (mOrientation_ == orientation::HORIZONTAL)
-                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/get_apparent_width();
+                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/mApparentSize.x;
             else
-                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/get_apparent_height();
+                fValue = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/mApparentSize.y;
 
             fValue = fValue * (fMaxValue_ - fMinValue_) + fMinValue_;
             fValue = std::clamp(fValue, fMinValue_, fMaxValue_);
@@ -135,9 +137,9 @@ void slider::constrain_thumb_()
 
         anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
         if (mOrientation_ == orientation::HORIZONTAL)
-            mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
+            mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
         else
-            mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
+            mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
     }
 }
 
@@ -168,17 +170,19 @@ void slider::on_event(const event& mEvent)
             }
             else if (bMouseInFrame_ && bAllowClicksOutsideThumb_)
             {
+                const vector2f mApparentSize = get_apparent_dimensions();
+
                 float fValue;
                 if (mOrientation_ == orientation::HORIZONTAL)
                 {
                     float fOffset = fMousePosX_ - lBorderList_.left;
-                    fValue = fOffset/get_apparent_width();
+                    fValue = fOffset/mApparentSize.x;
                     set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
                 }
                 else
                 {
                     float fOffset = fMousePosY_ - lBorderList_.top;
-                    fValue = fOffset/get_apparent_height();
+                    fValue = fOffset/mApparentSize.y;
                     set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
                 }
 
@@ -187,9 +191,9 @@ void slider::on_event(const event& mEvent)
                     float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
 
                     if (mOrientation_ == orientation::HORIZONTAL)
-                        mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
+                        mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
                     else
-                        mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
+                        mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
 
                     get_manager().start_moving(
                         pThumbTexture_, &mAnchor,
@@ -464,8 +468,10 @@ void slider::update(float fDelta)
 
     if ((bUpdateThumbTexture_ || bThumbMoved_) && pThumbTexture_)
     {
-        if ((mOrientation_ == orientation::HORIZONTAL && get_apparent_width()  > 0) ||
-            (mOrientation_ == orientation::VERTICAL   && get_apparent_height() > 0))
+        const vector2f mApparentSize = get_apparent_dimensions();
+
+        if ((mOrientation_ == orientation::HORIZONTAL && mApparentSize.x > 0) ||
+            (mOrientation_ == orientation::VERTICAL   && mApparentSize.y > 0))
         {
             if (fMaxValue_ == fMinValue_)
             {
@@ -480,9 +486,9 @@ void slider::update(float fDelta)
             if (bThumbMoved_)
             {
                 if (mOrientation_ == orientation::HORIZONTAL)
-                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/get_apparent_width();
+                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.x/mApparentSize.x;
                 else
-                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/get_apparent_height();
+                    fValue_ = pThumbTexture_->get_point(anchor_point::CENTER).mOffset.y/mApparentSize.y;
 
                 fValue_ *= (fMaxValue_ - fMinValue_);
                 fValue_ += fMinValue_;
@@ -497,9 +503,9 @@ void slider::update(float fDelta)
 
             anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
             if (mOrientation_ == orientation::HORIZONTAL)
-                mAnchor.mOffset = vector2f(get_apparent_width()*fCoef, 0);
+                mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
             else
-                mAnchor.mOffset = vector2f(0, get_apparent_height()*fCoef);
+                mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
 
             pThumbTexture_->notify_borders_need_update();
             pThumbTexture_->update(fDelta);

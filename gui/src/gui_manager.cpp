@@ -710,8 +710,7 @@ void manager::close_ui()
         fMovementStartPositionX_ = 0;
         fMovementStartPositionY_ = 0;
         mConstraint_ = constraint::NONE;
-        fResizeStartW_ = 0;
-        fResizeStartH_ = 0;
+        mResizeStart_ = vector2f::ZERO;
         bResizeWidth_ = false;
         bResizeHeight_ = false;
         bResizeFromRight_ = false;
@@ -1092,8 +1091,7 @@ void manager::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoi
         pSizedObject_->clear_all_points();
         pSizedObject_->set_point(anchor_data(mOppositePoint, "", anchor_point::TOPLEFT, mOffset));
 
-        fResizeStartW_ = pSizedObject_->get_apparent_width();
-        fResizeStartH_ = pSizedObject_->get_apparent_height();
+        mResizeStart_ = pSizedObject_->get_apparent_dimensions();
 
         if (mPoint == anchor_point::LEFT || mPoint == anchor_point::RIGHT)
         {
@@ -1465,42 +1463,24 @@ void manager::on_event(const event& mEvent)
         }
         else if (pSizedObject_)
         {
+            float fWidth;
+            if (bResizeFromRight_)
+                fWidth = std::max(0.0f, mResizeStart_.x + fMouseMovementX_);
+            else
+                fWidth = std::max(0.0f, mResizeStart_.x - fMouseMovementX_);
+
+            float fHeight;
+            if (bResizeFromBottom_)
+                fHeight = std::max(0.0f, mResizeStart_.y + fMouseMovementY_);
+            else
+                fHeight = std::max(0.0f, mResizeStart_.y - fMouseMovementY_);
+
             if (bResizeWidth_ && bResizeHeight_)
-            {
-                float fWidth;
-                if (bResizeFromRight_)
-                    fWidth = std::max(0.0f, fResizeStartW_ + fMouseMovementX_);
-                else
-                    fWidth = std::max(0.0f, fResizeStartW_ - fMouseMovementX_);
-
-                float fHeight;
-                if (bResizeFromBottom_)
-                    fHeight = std::max(0.0f, fResizeStartH_ + fMouseMovementY_);
-                else
-                    fHeight = std::max(0.0f, fResizeStartH_ - fMouseMovementY_);
-
-                pSizedObject_->set_abs_dimensions(fWidth, fHeight);
-            }
+                pSizedObject_->set_dimensions(vector2f(fWidth, fHeight));
             else if (bResizeWidth_)
-            {
-                float fWidth;
-                if (bResizeFromRight_)
-                    fWidth = std::max(0.0f, fResizeStartW_ + fMouseMovementX_);
-                else
-                    fWidth = std::max(0.0f, fResizeStartW_ - fMouseMovementX_);
-
-                pSizedObject_->set_abs_width(fWidth);
-            }
+                pSizedObject_->set_width(fWidth);
             else if (bResizeHeight_)
-            {
-                float fHeight;
-                if (bResizeFromBottom_)
-                    fHeight = std::max(0.0f, fResizeStartH_ + fMouseMovementY_);
-                else
-                    fHeight = std::max(0.0f, fResizeStartH_ - fMouseMovementY_);
-
-                pSizedObject_->set_abs_height(fHeight);
-            }
+                pSizedObject_->set_height(fHeight);
         }
     }
 }
