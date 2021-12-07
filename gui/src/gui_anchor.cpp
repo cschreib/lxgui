@@ -65,92 +65,70 @@ void anchor::update_parent_(const uiobject& mObject)
     pParent_ = pNewParent;
 }
 
-float anchor::get_abs_x(const uiobject& mObject) const
+vector2f anchor::get_point(const uiobject& mObject) const
 {
-    float fParentX = 0, fParentWidth = 0;
+    vector2f mParentPos;
+    vector2f mParentSize;
     if (const uiobject* pRawParent = pParent_.get())
     {
-        fParentX = pRawParent->get_left();
-        fParentWidth = pRawParent->get_apparent_width();
+        mParentPos = pRawParent->get_borders().top_left();
+        mParentSize = pRawParent->get_apparent_size();
     }
     else
     {
-        fParentWidth = mObject.get_top_level_renderer()->get_target_width();
+        mParentSize = vector2f(mObject.get_top_level_renderer()->get_target_width(),
+                               mObject.get_top_level_renderer()->get_target_height());
     }
 
-    float fOffset;
+    vector2f mOffsetAbs;
     if (mType == anchor_type::ABS)
-        fOffset = mOffset.x;
+        mOffsetAbs = mOffset;
     else
-        fOffset = mOffset.x*fParentWidth;
+        mOffsetAbs = mOffset*mParentSize;
 
-    fOffset = mObject.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
+    mOffsetAbs = mObject.round_to_pixel(mOffsetAbs, utils::rounding_method::NEAREST_NOT_ZERO);
 
-    float fParentOffset = 0.0f;
+    vector2f mParentOffset;
     switch (mParentPoint)
     {
-        case anchor_point::TOPLEFT: [[fallthrough]];
-        case anchor_point::LEFT: [[fallthrough]];
+        case anchor_point::TOPLEFT:
+            mParentOffset.x = 0.0f;
+            mParentOffset.y = 0.0f;
+            break;
+        case anchor_point::LEFT:
+            mParentOffset.x = 0.0f;
+            mParentOffset.y = mParentSize.y/2.0f;
+            break;
         case anchor_point::BOTTOMLEFT:
-            fParentOffset = 0.0f;
+            mParentOffset.x = 0.0f;
+            mParentOffset.y = mParentSize.y;
             break;
-        case anchor_point::TOP: [[fallthrough]];
-        case anchor_point::CENTER: [[fallthrough]];
+        case anchor_point::TOP:
+            mParentOffset.x = mParentSize.x/2.0f;
+            mParentOffset.y = 0.0f;
+            break;
+        case anchor_point::CENTER:
+            mParentOffset = mParentSize/2.0f;
+            break;
         case anchor_point::BOTTOM:
-            fParentOffset = fParentWidth/2.0f;
+            mParentOffset.x = mParentSize.x/2.0f;
+            mParentOffset.y = mParentSize.y;
             break;
-        case anchor_point::TOPRIGHT: [[fallthrough]];
-        case anchor_point::RIGHT: [[fallthrough]];
-        case anchor_point::BOTTOMRIGHT:
-            fParentOffset = fParentWidth;
-            break;
-    }
-
-    return fOffset + fParentOffset + fParentX;
-}
-
-float anchor::get_abs_y(const uiobject& mObject) const
-{
-    float fParentY = 0, fParentHeight = 0;
-    if (const uiobject* pRawParent = pParent_.get())
-    {
-        fParentY = pRawParent->get_top();
-        fParentHeight = pRawParent->get_apparent_height();
-    }
-    else
-    {
-        fParentHeight = mObject.get_top_level_renderer()->get_target_height();
-    }
-
-    float fOffset;
-    if (mType == anchor_type::ABS)
-        fOffset = mOffset.y;
-    else
-        fOffset = mOffset.y*fParentHeight;
-
-    fOffset = mObject.round_to_pixel(fOffset, utils::rounding_method::NEAREST_NOT_ZERO);
-
-    float fParentOffset = 0.0f;
-    switch (mParentPoint)
-    {
-        case anchor_point::TOPLEFT: [[fallthrough]];
-        case anchor_point::TOP: [[fallthrough]];
         case anchor_point::TOPRIGHT:
-            fParentOffset = 0.0f;
+            mParentOffset.x = mParentSize.x;
+            mParentOffset.y = 0.0f;
             break;
-        case anchor_point::LEFT: [[fallthrough]];
-        case anchor_point::CENTER: [[fallthrough]];
         case anchor_point::RIGHT:
-            fParentOffset = fParentHeight/2.0f;
+            mParentOffset.x = mParentSize.x;
+            mParentOffset.y = mParentSize.y/2.0f;
             break;
-        case anchor_point::BOTTOMLEFT: [[fallthrough]];
-        case anchor_point::BOTTOM: [[fallthrough]];
         case anchor_point::BOTTOMRIGHT:
-            fParentOffset = fParentHeight;
+            mParentOffset.x = mParentSize.x;
+            mParentOffset.y = mParentSize.y;
             break;
     }
 
-    return fOffset + fParentOffset + fParentY;
+    return mOffsetAbs + mParentOffset + mParentPos;
 }
 
 std::string anchor::serialize(const std::string& sTab) const

@@ -744,43 +744,45 @@ void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
         if (pObj)
             pObj->update_borders_();
 
+        const vector2f mAnchorPoint = mAnchor.get_point(*this);
+
         switch (mAnchor.mPoint)
         {
             case anchor_point::TOPLEFT :
-                fTop = std::min<float>(fTop, mAnchor.get_abs_y(*this));
-                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x(*this));
+                fTop = std::min<float>(fTop, mAnchorPoint.y);
+                fLeft = std::min<float>(fLeft, mAnchorPoint.x);
                 break;
             case anchor_point::TOP :
-                fTop = std::min<float>(fTop, mAnchor.get_abs_y(*this));
-                fXCenter = mAnchor.get_abs_x(*this);
+                fTop = std::min<float>(fTop, mAnchorPoint.y);
+                fXCenter = mAnchorPoint.x;
                 break;
             case anchor_point::TOPRIGHT :
-                fTop = std::min<float>(fTop, mAnchor.get_abs_y(*this));
-                fRight = std::max<float>(fRight, mAnchor.get_abs_x(*this));
+                fTop = std::min<float>(fTop, mAnchorPoint.y);
+                fRight = std::max<float>(fRight, mAnchorPoint.x);
                 break;
             case anchor_point::RIGHT :
-                fRight = std::max<float>(fRight, mAnchor.get_abs_x(*this));
-                fYCenter = mAnchor.get_abs_y(*this);
+                fRight = std::max<float>(fRight, mAnchorPoint.x);
+                fYCenter = mAnchorPoint.y;
                 break;
             case anchor_point::BOTTOMRIGHT :
-                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y(*this));
-                fRight = std::max<float>(fRight, mAnchor.get_abs_x(*this));
+                fBottom = std::max<float>(fBottom, mAnchorPoint.y);
+                fRight = std::max<float>(fRight, mAnchorPoint.x);
                 break;
             case anchor_point::BOTTOM :
-                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y(*this));
-                fXCenter = mAnchor.get_abs_x(*this);
+                fBottom = std::max<float>(fBottom, mAnchorPoint.y);
+                fXCenter = mAnchorPoint.x;
                 break;
             case anchor_point::BOTTOMLEFT :
-                fBottom = std::max<float>(fBottom, mAnchor.get_abs_y(*this));
-                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x(*this));
+                fBottom = std::max<float>(fBottom, mAnchorPoint.y);
+                fLeft = std::min<float>(fLeft, mAnchorPoint.x);
                 break;
             case anchor_point::LEFT :
-                fLeft = std::min<float>(fLeft, mAnchor.get_abs_x(*this));
-                fYCenter = mAnchor.get_abs_y(*this);
+                fLeft = std::min<float>(fLeft, mAnchorPoint.x);
+                fYCenter = mAnchorPoint.y;
                 break;
             case anchor_point::CENTER :
-                fXCenter = mAnchor.get_abs_x(*this);
-                fYCenter = mAnchor.get_abs_y(*this);
+                fXCenter = mAnchorPoint.x;
+                fYCenter = mAnchorPoint.y;
                 break;
         }
     }

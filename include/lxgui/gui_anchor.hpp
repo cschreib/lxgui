@@ -108,17 +108,11 @@ namespace gui
         /// Non-assignable
         anchor& operator=(anchor&&) = delete;
 
-        /// Returns this anchor absolute X (in pixel).
+        /// Returns this anchor's absolute coordinates (in pixels).
         /** \param mObject The object owning this anchor
-        *   \return This anchor absolute X.
+        *   \return The absolute coordinates of this anchor.
         */
-        float get_abs_x(const uiobject& mObject) const;
-
-        /// Returns this anchor absolute Y (in pixel).
-        /** \param mObject The object owning this anchor
-        *   \return This anchor absolute Y.
-        */
-        float get_abs_y(const uiobject& mObject) const;
+        vector2f get_point(const uiobject& mObject) const;
 
         /// Returns this anchor's parent widget.
         /** \return This anchor's parent widget
