@@ -90,14 +90,6 @@ namespace gui
         */
         void set_background_insets(const bounds2f& lInsets);
 
-        /// Sets insets for the background texture.
-        /** \param fLeft   The left inset
-        *   \param fRight  The right inset
-        *   \param fTop    The top inset
-        *   \param fBottom The bottom inset
-        */
-        void set_background_insets(float fLeft, float fRight, float fTop, float fBottom);
-
         /// Returns this backdrop's background insets.
         /** \return This backdrop's background insets
         */
@@ -107,14 +99,6 @@ namespace gui
         /** \param lInsets The insets array
         */
         void set_edge_insets(const bounds2f& lInsets);
-
-        /// Sets insets for the edge texture.
-        /** \param fLeft   The left inset
-        *   \param fRight  The right inset
-        *   \param fTop    The top inset
-        *   \param fBottom The bottom inset
-        */
-        void set_edge_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Returns this backdrop's edge insets.
         /** \return This backdrop's edge insets

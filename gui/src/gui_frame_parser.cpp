@@ -151,12 +151,12 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             xml::block* pInsetBlock = pBGInsetsBlock->get_radio_block();
             if (pInsetBlock->get_name() == "AbsInset")
             {
-                pBackdrop->set_background_insets(
+                pBackdrop->set_background_insets(bounds2f(
                     utils::string_to_float(pInsetBlock->get_attribute("left")),
                     utils::string_to_float(pInsetBlock->get_attribute("right")),
                     utils::string_to_float(pInsetBlock->get_attribute("top")),
                     utils::string_to_float(pInsetBlock->get_attribute("bottom"))
-                );
+                ));
             }
             else
             {
@@ -171,12 +171,12 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
             xml::block* pInsetBlock = pEdgeInsetsBlock->get_radio_block();
             if (pInsetBlock->get_name() == "AbsInset")
             {
-                pBackdrop->set_edge_insets(
+                pBackdrop->set_edge_insets(bounds2f(
                     utils::string_to_float(pInsetBlock->get_attribute("left")),
                     utils::string_to_float(pInsetBlock->get_attribute("right")),
                     utils::string_to_float(pInsetBlock->get_attribute("top")),
                     utils::string_to_float(pInsetBlock->get_attribute("bottom"))
-                );
+                ));
             }
             else
             {

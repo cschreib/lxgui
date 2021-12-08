@@ -127,11 +127,6 @@ void backdrop::set_background_insets(const bounds2f& lInsets)
     bCacheDirty_ = true;
 }
 
-void backdrop::set_background_insets(float fLeft, float fRight, float fTop, float fBottom)
-{
-    set_background_insets(bounds2f(fLeft, fRight, fTop, fBottom));
-}
-
 const bounds2f& backdrop::get_background_insets() const
 {
     return lBackgroundInsets_;
@@ -143,11 +138,6 @@ void backdrop::set_edge_insets(const bounds2f& lInsets)
 
     lEdgeInsets_ = lInsets;
     bCacheDirty_ = true;
-}
-
-void backdrop::set_edge_insets(float fLeft, float fRight, float fTop, float fBottom)
-{
-    set_edge_insets(bounds2f(fLeft, fRight, fTop, fBottom));
 }
 
 const bounds2f& backdrop::get_edge_insets() const
