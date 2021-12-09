@@ -228,11 +228,9 @@ void frame::copy_from(const uiobject& mObj)
 {
     uiobject::copy_from(mObj);
 
-    const frame* pFrame = down_cast<frame>(&mObj);
-    if (!pFrame)
-        return;
+    const frame& mFrame = static_cast<const frame&>(mObj);
 
-    for (const auto& mItem : pFrame->lScriptHandlerList_)
+    for (const auto& mItem : mFrame.lScriptHandlerList_)
     {
         for (const auto& mHandler : *mItem.second)
         {
@@ -241,11 +239,11 @@ void frame::copy_from(const uiobject& mObj)
         }
     }
 
-    this->set_frame_strata(pFrame->get_frame_strata());
+    this->set_frame_strata(mFrame.get_frame_strata());
 
     utils::observer_ptr<const frame> pHighParent = observer_from(this);
 
-    for (int i = 0; i < pFrame->get_level(); ++i)
+    for (int i = 0; i < mFrame.get_level(); ++i)
     {
         if (!pHighParent->get_parent())
             break;
@@ -253,27 +251,27 @@ void frame::copy_from(const uiobject& mObj)
         pHighParent = pHighParent->get_parent();
     }
 
-    this->set_level(pHighParent->get_level() + pFrame->get_level());
+    this->set_level(pHighParent->get_level() + mFrame.get_level());
 
-    this->set_top_level(pFrame->is_top_level());
+    this->set_top_level(mFrame.is_top_level());
 
-    this->enable_keyboard(pFrame->is_keyboard_enabled());
-    this->enable_mouse(pFrame->is_mouse_enabled(), pFrame->is_world_input_allowed());
-    this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
+    this->enable_keyboard(mFrame.is_keyboard_enabled());
+    this->enable_mouse(mFrame.is_mouse_enabled(), mFrame.is_world_input_allowed());
+    this->enable_mouse_wheel(mFrame.is_mouse_wheel_enabled());
 
-    this->set_movable(pFrame->is_movable());
-    this->set_clamped_to_screen(pFrame->is_clamped_to_screen());
-    this->set_resizable(pFrame->is_resizable());
+    this->set_movable(mFrame.is_movable());
+    this->set_clamped_to_screen(mFrame.is_clamped_to_screen());
+    this->set_resizable(mFrame.is_resizable());
 
-    this->set_abs_hit_rect_insets(pFrame->get_abs_hit_rect_insets());
-    this->set_rel_hit_rect_insets(pFrame->get_rel_hit_rect_insets());
+    this->set_abs_hit_rect_insets(mFrame.get_abs_hit_rect_insets());
+    this->set_rel_hit_rect_insets(mFrame.get_rel_hit_rect_insets());
 
-    this->set_max_resize(pFrame->get_max_resize());
-    this->set_min_resize(pFrame->get_min_resize());
+    this->set_max_resize(mFrame.get_max_resize());
+    this->set_min_resize(mFrame.get_min_resize());
 
-    this->set_scale(pFrame->get_scale());
+    this->set_scale(mFrame.get_scale());
 
-    for (const auto& pArt : pFrame->lRegionList_)
+    for (const auto& pArt : mFrame.lRegionList_)
     {
         if (!pArt || pArt->is_special()) continue;
 
@@ -288,20 +286,20 @@ void frame::copy_from(const uiobject& mObj)
 
     bBuildLayerList_ = true;
 
-    if (pFrame->pBackdrop_)
+    if (mFrame.pBackdrop_)
     {
         pBackdrop_ = std::unique_ptr<backdrop>(new backdrop(*this));
-        pBackdrop_->copy_from(*pFrame->pBackdrop_);
+        pBackdrop_->copy_from(*mFrame.pBackdrop_);
     }
 
-    if (pFrame->pTitleRegion_)
+    if (mFrame.pTitleRegion_)
     {
         this->create_title_region();
         if (pTitleRegion_)
-            pTitleRegion_->copy_from(*pFrame->pTitleRegion_);
+            pTitleRegion_->copy_from(*mFrame.pTitleRegion_);
     }
 
-    for (const auto& pChild : pFrame->lChildList_)
+    for (const auto& pChild : mFrame.lChildList_)
     {
         if (!pChild || pChild->is_special()) continue;
 

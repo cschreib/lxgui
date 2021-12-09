@@ -57,18 +57,16 @@ void status_bar::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const status_bar* pStatusBar = down_cast<status_bar>(&mObj);
-    if (!pStatusBar)
-        return;
+    const status_bar& mStatusBar = static_cast<const status_bar&>(mObj);
 
-    this->set_min_value(pStatusBar->get_min_value());
-    this->set_max_value(pStatusBar->get_max_value());
-    this->set_value(pStatusBar->get_value());
-    this->set_bar_draw_layer(pStatusBar->get_bar_draw_layer());
-    this->set_orientation(pStatusBar->get_orientation());
-    this->set_reversed(pStatusBar->is_reversed());
+    this->set_min_value(mStatusBar.get_min_value());
+    this->set_max_value(mStatusBar.get_max_value());
+    this->set_value(mStatusBar.get_value());
+    this->set_bar_draw_layer(mStatusBar.get_bar_draw_layer());
+    this->set_orientation(mStatusBar.get_orientation());
+    this->set_reversed(mStatusBar.is_reversed());
 
-    if (const texture* pBar = pStatusBar->get_bar_texture().get())
+    if (const texture* pBar = mStatusBar.get_bar_texture().get())
     {
         auto pBarTexture = this->create_bar_texture_();
 

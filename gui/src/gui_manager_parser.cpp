@@ -40,13 +40,22 @@ manager::xml_core_attributes manager::parse_core_attributes(xml::block* pBlock,
     else
     {
         mAttr.bVirtual = utils::string_to_bool(pBlock->get_attribute("virtual"));
+
         std::string sParent = pBlock->get_attribute("parent");
-        mAttr.pParent = down_cast<frame>(get_uiobject_by_name(sParent));
+        auto pParent = get_uiobject_by_name(sParent);
         if (!sParent.empty() && !mAttr.pParent)
         {
             gui::out << gui::warning << pBlock->get_location() << " : "
                 << "Cannot find \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
                 "No parent given to that widget." << std::endl;
+        }
+
+        mAttr.pParent = down_cast<frame>(pParent);
+        if (pParent != nullptr && mAttr.pParent == nullptr)
+        {
+            gui::out << gui::warning << pBlock->get_location() << " : "
+                << "Cannot set  \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
+                "This is not a Frame." << std::endl;
         }
     }
 

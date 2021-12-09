@@ -300,16 +300,16 @@ void uiobject::register_on_lua(sol::state& mLua)
             mSelf.set_parent(pParent);
 
             if (mSelf.is_object_type<frame>())
-                pParent->add_child(down_cast<frame>(mSelf.release_from_parent()));
+                pParent->add_child(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             else
-                pParent->add_region(down_cast<layered_region>(mSelf.release_from_parent()));
+                pParent->add_region(utils::static_pointer_cast<layered_region>(mSelf.release_from_parent()));
         }
         else
         {
             if (mSelf.is_object_type<frame>())
             {
                 mSelf.set_parent(pParent);
-                mSelf.get_manager().add_root_frame(down_cast<frame>(mSelf.release_from_parent()));
+                mSelf.get_manager().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             }
             else
                 throw sol::error("set_parent(nil) can only be called on frames");

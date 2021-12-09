@@ -54,17 +54,15 @@ void scroll_frame::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const scroll_frame* pScrollFrame = down_cast<scroll_frame>(&mObj);
-    if (!pScrollFrame)
-        return;
+    const scroll_frame& mScrollFrame = static_cast<const scroll_frame&>(mObj);
 
-    this->set_horizontal_scroll(pScrollFrame->get_horizontal_scroll());
-    this->set_vertical_scroll(pScrollFrame->get_vertical_scroll());
+    this->set_horizontal_scroll(mScrollFrame.get_horizontal_scroll());
+    this->set_vertical_scroll(mScrollFrame.get_vertical_scroll());
 
-    if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
+    if (const frame* pOtherChild = mScrollFrame.get_scroll_child().get())
     {
         utils::observer_ptr<frame> pScrollChild = create_child(pOtherChild->get_object_type(),
-                pOtherChild->get_raw_name(), {pScrollFrame->get_scroll_child()});
+                pOtherChild->get_raw_name(), {mScrollFrame.get_scroll_child()});
         pScrollChild->notify_loaded();
 
         if (pScrollChild)

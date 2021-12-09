@@ -102,13 +102,11 @@ void button::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const button* pButton = down_cast<button>(&mObj);
-    if (!pButton)
-        return;
+    const button& mButton = static_cast<const button&>(mObj);
 
-    this->set_text(pButton->get_text());
+    this->set_text(mButton.get_text());
 
-    if (const texture* pOtherTexture = pButton->get_normal_texture().get())
+    if (const texture* pOtherTexture = mButton.get_normal_texture().get())
     {
         auto pTexture = this->create_normal_texture_();
         if (this->is_virtual())
@@ -133,7 +131,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
+    if (const texture* pOtherTexture = mButton.get_pushed_texture().get())
     {
         auto pTexture = this->create_pushed_texture_();
         if (this->is_virtual())
@@ -158,7 +156,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
+    if (const texture* pOtherTexture = mButton.get_highlight_texture().get())
     {
         auto pTexture = this->create_highlight_texture_();
         if (this->is_virtual())
@@ -183,7 +181,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
+    if (const texture* pOtherTexture = mButton.get_disabled_texture().get())
     {
         auto pTexture = this->create_disabled_texture_();
         if (this->is_virtual())
@@ -208,7 +206,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_normal_text().get())
+    if (const font_string* pOtherText = mButton.get_normal_text().get())
     {
         auto pText = this->create_normal_text_();
         if (this->is_virtual())
@@ -233,7 +231,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_highlight_text().get())
+    if (const font_string* pOtherText = mButton.get_highlight_text().get())
     {
         auto pText = this->create_highlight_text_();
         if (this->is_virtual())
@@ -258,7 +256,7 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = pButton->get_disabled_text().get())
+    if (const font_string* pOtherText = mButton.get_disabled_text().get())
     {
         auto pText = this->create_disabled_text_();
         if (this->is_virtual())
@@ -283,9 +281,9 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    this->set_pushed_text_offset(pButton->get_pushed_text_offset());
+    this->set_pushed_text_offset(mButton.get_pushed_text_offset());
 
-    if (!pButton->is_enabled())
+    if (!mButton.is_enabled())
         this->disable();
 }
 

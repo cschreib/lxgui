@@ -118,29 +118,27 @@ void font_string::copy_from(const uiobject& mObj)
 {
     uiobject::copy_from(mObj);
 
-    const font_string* pFontString = down_cast<font_string>(&mObj);
-    if (!pFontString)
-        return;
+    const font_string& mFontString = static_cast<const font_string&>(mObj);
 
-    std::string sFontName = pFontString->get_font_name();
-    float fHeight = pFontString->get_font_height();
+    std::string sFontName = mFontString.get_font_name();
+    float fHeight = mFontString.get_font_height();
     if (!sFontName.empty() && fHeight != 0)
         this->set_font(sFontName, fHeight);
 
-    this->set_justify_h(pFontString->get_justify_h());
-    this->set_justify_v(pFontString->get_justify_v());
-    this->set_spacing(pFontString->get_spacing());
-    this->set_line_spacing(pFontString->get_line_spacing());
-    this->set_text(pFontString->get_text());
-    this->set_outlined(pFontString->is_outlined());
-    if (pFontString->has_shadow())
+    this->set_justify_h(mFontString.get_justify_h());
+    this->set_justify_v(mFontString.get_justify_v());
+    this->set_spacing(mFontString.get_spacing());
+    this->set_line_spacing(mFontString.get_line_spacing());
+    this->set_text(mFontString.get_text());
+    this->set_outlined(mFontString.is_outlined());
+    if (mFontString.has_shadow())
     {
         this->set_shadow(true);
-        this->set_shadow_color(pFontString->get_shadow_color());
-        this->set_shadow_offset(pFontString->get_shadow_offset());
+        this->set_shadow_color(mFontString.get_shadow_color());
+        this->set_shadow_offset(mFontString.get_shadow_offset());
     }
-    this->set_text_color(pFontString->get_text_color());
-    this->set_non_space_wrap(pFontString->can_non_space_wrap());
+    this->set_text_color(mFontString.get_text_color());
+    this->set_non_space_wrap(mFontString.can_non_space_wrap());
 }
 
 const std::string& font_string::get_font_name() const

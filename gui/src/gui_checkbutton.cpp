@@ -22,11 +22,9 @@ void check_button::copy_from(const uiobject& mObj)
 {
     button::copy_from(mObj);
 
-    const check_button* pButton = down_cast<check_button>(&mObj);
-    if (!pButton)
-        return;
+    const check_button& mButton = static_cast<const check_button&>(mObj);
 
-    if (const texture* pCheckedTexture = pButton->get_checked_texture().get())
+    if (const texture* pCheckedTexture = mButton.get_checked_texture().get())
     {
         auto pTexture = this->create_checked_texture_();
         if (this->is_virtual())
@@ -51,7 +49,7 @@ void check_button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pDisabledTexture = pButton->get_disabled_checked_texture().get())
+    if (const texture* pDisabledTexture = mButton.get_disabled_checked_texture().get())
     {
         auto pTexture = this->create_disabled_checked_texture_();
         if (this->is_virtual())

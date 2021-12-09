@@ -82,7 +82,7 @@ void scroll_frame::register_on_lua(sol::state& mLua)
         utils::owner_ptr<frame> pScrollChild;
         if (pChild)
         {
-            pScrollChild = down_cast<frame>(pChild->release_from_parent());
+            pScrollChild = utils::static_pointer_cast<frame>(pChild->release_from_parent());
             pScrollChild->set_parent(observer_from(&mSelf));
         }
 
