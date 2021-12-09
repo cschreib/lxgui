@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4b08babd3cc3994ecba3115735d3538c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1texture.html#a4b08babd3cc3994ecba3115735d3538c">serialize</a> (const std::string &amp;sTab) const override</td></tr>
 <tr class="memdesc:a4b08babd3cc3994ecba3115735d3538c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints all relevant information about this widget in a string.  <a href="classlxgui_1_1gui_1_1texture.html#a4b08babd3cc3994ecba3115735d3538c">More...</a><br /></td></tr>
 <tr class="separator:a4b08babd3cc3994ecba3115735d3538c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ebd0291a67fae046920dbde7e77f546"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1texture.html#a9ebd0291a67fae046920dbde7e77f546">render</a> () override</td></tr>
-<tr class="memdesc:a9ebd0291a67fae046920dbde7e77f546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1texture.html#a9ebd0291a67fae046920dbde7e77f546">More...</a><br /></td></tr>
-<tr class="separator:a9ebd0291a67fae046920dbde7e77f546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1899600b0525f2f0271608e24d4ae8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1texture.html#af1899600b0525f2f0271608e24d4ae8b">render</a> () const override</td></tr>
+<tr class="memdesc:af1899600b0525f2f0271608e24d4ae8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1texture.html#af1899600b0525f2f0271608e24d4ae8b">More...</a><br /></td></tr>
+<tr class="separator:af1899600b0525f2f0271608e24d4ae8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6fd1b2891dd5d215e4792323ac2b0c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1texture.html#ae6fd1b2891dd5d215e4792323ac2b0c2">copy_from</a> (const <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &amp;mObj) override</td></tr>
 <tr class="memdesc:ae6fd1b2891dd5d215e4792323ac2b0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies an uiobject's parameters into this texture (inheritance).  <a href="classlxgui_1_1gui_1_1texture.html#ae6fd1b2891dd5d215e4792323ac2b0c2">More...</a><br /></td></tr>
 <tr class="separator:ae6fd1b2891dd5d215e4792323ac2b0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2867,8 +2867,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a9ebd0291a67fae046920dbde7e77f546"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ebd0291a67fae046920dbde7e77f546">&#9670;&nbsp;</a></span>render()</h2>
+<a id="af1899600b0525f2f0271608e24d4ae8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1899600b0525f2f0271608e24d4ae8b">&#9670;&nbsp;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2880,7 +2880,7 @@ template&lt;typename ObjectType &gt; </div>
           <td class="memname">void lxgui::gui::texture::render </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2892,7 +2892,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Renders this widget on the current render target. </p>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a018e40e851662359950cca96a02aa093">lxgui::gui::region</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">lxgui::gui::region</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__texture_8cpp_source.html#l00089">89</a> of file <a class="el" href="gui__texture_8cpp_source.html">gui_texture.cpp</a>.</p>
 
@@ -4917,7 +4917,7 @@ This function is not compatible with set_color() : only the latest you have call
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 9 2021 20:08:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 20:12:11 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

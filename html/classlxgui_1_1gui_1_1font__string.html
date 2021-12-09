@@ -101,9 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a11be050c3013b528b3dc9f44da17d1c9"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a11be050c3013b528b3dc9f44da17d1c9">serialize</a> (const std::string &amp;sTab) const override</td></tr>
 <tr class="memdesc:a11be050c3013b528b3dc9f44da17d1c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints all relevant information about this widget in a string.  <a href="classlxgui_1_1gui_1_1font__string.html#a11be050c3013b528b3dc9f44da17d1c9">More...</a><br /></td></tr>
 <tr class="separator:a11be050c3013b528b3dc9f44da17d1c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb6ef79867a81754dc7155ef625a235f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#aeb6ef79867a81754dc7155ef625a235f">render</a> () override</td></tr>
-<tr class="memdesc:aeb6ef79867a81754dc7155ef625a235f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1font__string.html#aeb6ef79867a81754dc7155ef625a235f">More...</a><br /></td></tr>
-<tr class="separator:aeb6ef79867a81754dc7155ef625a235f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83bca4c9f39df5605d99a3745231fdde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a83bca4c9f39df5605d99a3745231fdde">render</a> () const override</td></tr>
+<tr class="memdesc:a83bca4c9f39df5605d99a3745231fdde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1font__string.html#a83bca4c9f39df5605d99a3745231fdde">More...</a><br /></td></tr>
+<tr class="separator:a83bca4c9f39df5605d99a3745231fdde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c93c2df8c4a413fae6d69593703adf4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1font__string.html#a1c93c2df8c4a413fae6d69593703adf4">copy_from</a> (const <a class="el" href="classlxgui_1_1gui_1_1uiobject.html">uiobject</a> &amp;mObj) override</td></tr>
 <tr class="memdesc:a1c93c2df8c4a413fae6d69593703adf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies an uiobject's parameters into this <a class="el" href="classlxgui_1_1gui_1_1font__string.html" title="A layered_region that can draw text on the screen.">font_string</a> (inheritance).  <a href="classlxgui_1_1gui_1_1font__string.html#a1c93c2df8c4a413fae6d69593703adf4">More...</a><br /></td></tr>
 <tr class="separator:a1c93c2df8c4a413fae6d69593703adf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3076,8 +3076,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="aeb6ef79867a81754dc7155ef625a235f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb6ef79867a81754dc7155ef625a235f">&#9670;&nbsp;</a></span>render()</h2>
+<a id="a83bca4c9f39df5605d99a3745231fdde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83bca4c9f39df5605d99a3745231fdde">&#9670;&nbsp;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3089,7 +3089,7 @@ template&lt;typename ObjectType &gt; </div>
           <td class="memname">void lxgui::gui::font_string::render </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -3101,7 +3101,7 @@ template&lt;typename ObjectType &gt; </div>
 
 <p>Renders this widget on the current render target. </p>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5b2653e4cf1e11947a4b18f5007499b2">lxgui::gui::uiobject</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a36796a0485f76b3c02d7c8e0fe92e702">lxgui::gui::uiobject</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__fontstring_8cpp_source.html#l00021">21</a> of file <a class="el" href="gui__fontstring_8cpp_source.html">gui_fontstring.cpp</a>.</p>
 
@@ -5126,7 +5126,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1layered__region.html#ad0aa1
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 9 2021 20:08:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 20:12:10 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

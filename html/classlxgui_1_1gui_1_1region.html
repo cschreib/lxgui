@@ -107,9 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8634c0fafb93bc2a2aa35948e56c735a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a8634c0fafb93bc2a2aa35948e56c735a">region</a> (<a class="el" href="classlxgui_1_1gui_1_1manager.html">manager</a> &amp;mManager)</td></tr>
 <tr class="memdesc:a8634c0fafb93bc2a2aa35948e56c735a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1region.html#a8634c0fafb93bc2a2aa35948e56c735a">More...</a><br /></td></tr>
 <tr class="separator:a8634c0fafb93bc2a2aa35948e56c735a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a018e40e851662359950cca96a02aa093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a018e40e851662359950cca96a02aa093">render</a> () override</td></tr>
-<tr class="memdesc:a018e40e851662359950cca96a02aa093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1region.html#a018e40e851662359950cca96a02aa093">More...</a><br /></td></tr>
-<tr class="separator:a018e40e851662359950cca96a02aa093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9cbb92dbdde217bbe02d5df857e8f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">render</a> () const override</td></tr>
+<tr class="memdesc:a8d9cbb92dbdde217bbe02d5df857e8f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders this widget on the current render target.  <a href="classlxgui_1_1gui_1_1region.html#a8d9cbb92dbdde217bbe02d5df857e8f1">More...</a><br /></td></tr>
+<tr class="separator:a8d9cbb92dbdde217bbe02d5df857e8f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a156b618c9dde973292c91ec95dd0d775"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1region.html#a156b618c9dde973292c91ec95dd0d775">is_in_region</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a> &amp;mPosition) const</td></tr>
 <tr class="memdesc:a156b618c9dde973292c91ec95dd0d775"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the provided coordinates are inside this region.  <a href="classlxgui_1_1gui_1_1region.html#a156b618c9dde973292c91ec95dd0d775">More...</a><br /></td></tr>
 <tr class="separator:a156b618c9dde973292c91ec95dd0d775"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2474,8 +2474,8 @@ template&lt;typename ObjectType &gt; </div>
 
 </div>
 </div>
-<a id="a018e40e851662359950cca96a02aa093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a018e40e851662359950cca96a02aa093">&#9670;&nbsp;</a></span>render()</h2>
+<a id="a8d9cbb92dbdde217bbe02d5df857e8f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d9cbb92dbdde217bbe02d5df857e8f1">&#9670;&nbsp;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2487,7 +2487,7 @@ template&lt;typename ObjectType &gt; </div>
           <td class="memname">void lxgui::gui::region::render </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -2500,9 +2500,9 @@ template&lt;typename ObjectType &gt; </div>
 <p>Renders this widget on the current render target. </p>
 <dl class="section note"><dt>Note</dt><dd>Does nothing. </dd></dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a5b2653e4cf1e11947a4b18f5007499b2">lxgui::gui::uiobject</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a36796a0485f76b3c02d7c8e0fe92e702">lxgui::gui::uiobject</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1texture.html#a9ebd0291a67fae046920dbde7e77f546">lxgui::gui::texture</a>.</p>
+<p>Reimplemented in <a class="el" href="classlxgui_1_1gui_1_1texture.html#af1899600b0525f2f0271608e24d4ae8b">lxgui::gui::texture</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="gui__region_8cpp_source.html#l00012">12</a> of file <a class="el" href="gui__region_8cpp_source.html">gui_region.cpp</a>.</p>
 
@@ -4039,7 +4039,7 @@ Contrary to <a class="el" href="classlxgui_1_1gui_1_1uiobject.html#a8b6679d2544c
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 9 2021 20:08:30 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 20:12:10 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
