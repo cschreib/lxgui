@@ -289,8 +289,7 @@ namespace gui
         void enable_formatting(bool bFormatting);
 
         /// Renders this text at the given position.
-        /** \param fX The horizontal position
-        *   \param fY The vertical position
+        /** \param mTransform The transform to apply to the text
         *   \note Must be called between renderer::begin() and
         *         renderer::end(). If the transform is left to the default (IDENTITY),
         *         the text will be rendered at the top-left corner of the screen, with the

@@ -65,7 +65,7 @@ namespace gui
 
         /// Creates a new font from a texture file.
         /** \param sFontName The name of the file
-        *   \param mFont     The font to add to this page
+        *   \param pFont     The font to add to this page
         *   \return The new font (or nullptr if the font could not fit)
         */
         bool add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont);

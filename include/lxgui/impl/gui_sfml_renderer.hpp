@@ -96,7 +96,7 @@ namespace sfml
             gui::vertex_cache::type mType) const override;
 
         /// Notifies the renderer that the render window has been resized.
-        /** \param mDimensions The new window dimensions
+        /** \param mNewDimensions The new window dimensions
         */
         void notify_window_resized(const vector2ui& mNewDimensions) override;
 

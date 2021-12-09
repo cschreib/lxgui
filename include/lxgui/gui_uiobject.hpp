@@ -185,7 +185,7 @@ namespace gui
         virtual std::string serialize(const std::string& sTab) const;
 
         /// Copies an uiobject's parameters into this uiobject (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         virtual void copy_from(const uiobject& mObj);
 

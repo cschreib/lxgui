@@ -22,7 +22,8 @@ namespace sdl
     public :
 
         /// Constructor.
-        /** \param mDimensions The dimensions of the render_target
+        /** \param pRenderer   The SDL render to create the render_target for
+        *   \param mDimensions The dimensions of the render_target
         *   \param mFilter     The filtering to apply to the target texture when displayed
         */
         render_target(SDL_Renderer* pRenderer, const vector2ui& mDimensions,

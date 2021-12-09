@@ -59,7 +59,7 @@ namespace sfml
     public :
 
         /// Constructor for textures.
-        /** \parem mRenderer The renderer with witch to create this atlas
+        /** \param mRenderer The renderer with witch to create this atlas
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
         explicit atlas(const renderer& mRenderer, material::filter mFilter);

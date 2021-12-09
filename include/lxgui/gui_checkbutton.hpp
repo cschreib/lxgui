@@ -26,7 +26,7 @@ namespace gui
         std::string serialize(const std::string& sTab) const override;
 
         /// Copies an uiobject's parameters into this CheckButton (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

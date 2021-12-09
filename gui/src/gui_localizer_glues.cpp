@@ -224,8 +224,6 @@
 namespace lxgui {
 namespace gui
 {
-/** \cond NOT_REMOVE_FROM_DOC
-*/
 
 void localizer::register_on_lua(sol::state& mSol)
 {

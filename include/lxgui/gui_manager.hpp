@@ -479,13 +479,14 @@ namespace gui
         /** \param pObj        The object to move
         *   \param pAnchor     The reference anchor
         *   \param mConstraint The constraint axis if any
+        *   \param mApplyConstraintFunc Optional function to implement further constraints
         *   \note Movement is handled by the manager itself, you don't
         *         need to do anything.
         */
         void start_moving(
             utils::observer_ptr<uiobject> pObj, anchor* pAnchor = nullptr,
             constraint mConstraint = constraint::NONE,
-            std::function<void()> pApplyConstraintFunc = nullptr
+            std::function<void()> mApplyConstraintFunc = nullptr
         );
 
         /// Stops movement for the given object.
@@ -513,7 +514,7 @@ namespace gui
         void stop_sizing(const uiobject& mObj);
 
         /// Checks if the given object is allowed to be resized.
-        /** \param ,Obj The object to check
+        /** \param mObj The object to check
         *   \return 'true' if the given object is allowed to be resized
         */
         bool is_sizing(const uiobject& mObj) const;
@@ -546,7 +547,7 @@ namespace gui
         bool is_caching_enabled() const;
 
         /// Enables/disables input response for all widgets.
-        /** \parem bEnable 'true' to enable input
+        /** \param bEnable 'true' to enable input
         *   \note See toggle_input() and is_input_enabled().
         */
         void enable_input(bool bEnable);
@@ -799,7 +800,7 @@ namespace gui
         anchor*    pMovedAnchor_ = nullptr;
         vector2f   mMovementStartPosition_;
         constraint mConstraint_ = constraint::NONE;
-        std::function<void()> pApplyConstraintFunc_;
+        std::function<void()> mApplyConstraintFunc_;
 
         vector2f mResizeStart_;
         bool bResizeWidth_ = false;

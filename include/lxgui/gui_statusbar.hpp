@@ -54,7 +54,7 @@ namespace gui
         bool can_use_script(const std::string& sScriptName) const override;
 
         /// Copies an uiobject's parameters into this status_bar (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 
@@ -105,7 +105,7 @@ namespace gui
         void set_orientation(orientation mOrientation);
 
         /// Sets this status_bar's orientation.
-        /** \param mOrient The orientation ("VERTICAL" or "HORIZONTAL")
+        /** \param sOrientation The orientation ("VERTICAL" or "HORIZONTAL")
         */
         void set_orientation(const std::string& sOrientation);
 

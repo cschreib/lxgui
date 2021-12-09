@@ -145,7 +145,7 @@ namespace gui
         explicit edit_box(manager& mManager);
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

@@ -43,7 +43,7 @@ namespace gui
         void render() override;
 
         /// Copies an uiobject's parameters into this texture (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 
@@ -151,7 +151,7 @@ namespace gui
         void set_gradient(const gradient& mGradient);
 
         /// Sets this texture's texture coordinates.
-        /** \param lCoordinates This texture's texture coordinates
+        /** \param lTextureRect This texture's texture coordinates
         *   \note The texture coordinates are arranged as a rectangle, which is made
         *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
         *         4 (bottom left).<br>
@@ -162,7 +162,7 @@ namespace gui
         void set_tex_rect(const std::array<float,4>& lTextureRect);
 
         /// Sets this texture's texture coordinates.
-        /** \param lCoordinates This texture's texture coordinates
+        /** \param lTextureCoords This texture's texture coordinates
         *   \note The texture coordinates are arranged as a rectangle, which is made
         *         of four points : 1 (top left), 2 (top right), 3 (bottom right) and
         *         4 (bottom left).<br>

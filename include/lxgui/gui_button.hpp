@@ -87,7 +87,7 @@ namespace gui
         void on_event(const event& mEvent) override;
 
         /// Copies an uiobject's parameters into this Button (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

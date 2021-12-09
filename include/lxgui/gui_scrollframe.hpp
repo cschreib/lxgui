@@ -51,7 +51,7 @@ namespace gui
         void update(float fDelta) override;
 
         /// Copies an uiobject's parameters into this scroll_frame (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

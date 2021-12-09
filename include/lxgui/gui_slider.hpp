@@ -61,7 +61,7 @@ namespace gui
         void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
         /// Copies an uiobject's parameters into this slider (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

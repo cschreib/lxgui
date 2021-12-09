@@ -9,7 +9,7 @@ namespace lxgui {
 namespace gui
 {
     /// A #frame that can receive and loose focus
-    /** A typical usage example is the #edit_box class.
+    /** A typical usage example is the #lxgui::gui::edit_box class.
     */
     class focus_frame : public frame
     {
@@ -19,7 +19,7 @@ namespace gui
         explicit focus_frame(manager& mManager);
 
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

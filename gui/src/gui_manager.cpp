@@ -974,7 +974,7 @@ void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector
 }
 
 void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
-    constraint mConstraint, std::function<void()> pApplyConstraintFunc)
+    constraint mConstraint, std::function<void()> mApplyConstraintFunc)
 {
     pSizedObject_ = nullptr;
     pMovedObject_ = pObj;
@@ -983,7 +983,7 @@ void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
     if (pMovedObject_)
     {
         mConstraint_ = mConstraint;
-        pApplyConstraintFunc_ = pApplyConstraintFunc;
+        mApplyConstraintFunc_ = mApplyConstraintFunc;
         if (pAnchor)
         {
             pMovedAnchor_ = pAnchor;
@@ -1420,8 +1420,8 @@ void manager::on_event(const event& mEvent)
                 default : break;
             }
 
-            if (pApplyConstraintFunc_)
-                pApplyConstraintFunc_();
+            if (mApplyConstraintFunc_)
+                mApplyConstraintFunc_();
 
             pMovedObject_->notify_borders_need_update();
         }

@@ -26,6 +26,7 @@ namespace sdl
         /** \param pWindow The window from which to receive input
         *   \param pRenderer The SDL renderer, or null if using raw OpenGL
         *   \param bInitialiseSDLImage Set to 'true' if SDL Image has not been initialised yet
+        *   \param bMouseGrab Set to 'true' to turn on mouse grab (locked on screen center)
         */
         explicit source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage,
             bool bMouseGrab = false);

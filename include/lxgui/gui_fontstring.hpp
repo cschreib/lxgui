@@ -48,7 +48,7 @@ namespace gui
         void render() override;
 
         /// Copies an uiobject's parameters into this font_string (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 

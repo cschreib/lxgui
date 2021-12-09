@@ -25,6 +25,7 @@ namespace sfml
 
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
+        *   \param bMouseGrab Set to 'true' to turn on mouse grab (locked on screen center)
         */
         explicit source(sf::Window& pWindow, bool bMouseGrab = false);
 

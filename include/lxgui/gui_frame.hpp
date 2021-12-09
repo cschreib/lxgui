@@ -308,7 +308,7 @@ namespace gui
         void check_position() const;
 
         /// Copies an uiobject's parameters into this frame (inheritance).
-        /** \param pObj The uiobject to copy
+        /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
 
