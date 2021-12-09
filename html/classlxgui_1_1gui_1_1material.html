@@ -125,12 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7bc89170a07479b34496548163d51a11"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">get_rect</a> () const =0</td></tr>
 <tr class="memdesc:a7bc89170a07479b34496548163d51a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pixel rect in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">More...</a><br /></td></tr>
 <tr class="separator:a7bc89170a07479b34496548163d51a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abab1d55a8d34f58ed57122a94edcffe9"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">get_canvas_width</a> () const =0</td></tr>
-<tr class="memdesc:abab1d55a8d34f58ed57122a94edcffe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the physical width in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#abab1d55a8d34f58ed57122a94edcffe9">More...</a><br /></td></tr>
-<tr class="separator:abab1d55a8d34f58ed57122a94edcffe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e4436aba0e285b2bed3c3a0b90e6adb"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a3e4436aba0e285b2bed3c3a0b90e6adb">get_canvas_height</a> () const =0</td></tr>
-<tr class="memdesc:a3e4436aba0e285b2bed3c3a0b90e6adb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the physical height in pixels of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#a3e4436aba0e285b2bed3c3a0b90e6adb">More...</a><br /></td></tr>
-<tr class="separator:a3e4436aba0e285b2bed3c3a0b90e6adb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af201a5c716dde49247ad2d0fee5b8584"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#af201a5c716dde49247ad2d0fee5b8584">get_canvas_dimensions</a> () const =0</td></tr>
+<tr class="memdesc:af201a5c716dde49247ad2d0fee5b8584"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).  <a href="classlxgui_1_1gui_1_1material.html#af201a5c716dde49247ad2d0fee5b8584">More...</a><br /></td></tr>
+<tr class="separator:af201a5c716dde49247ad2d0fee5b8584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9266bfe8059700d4f869408495687f70"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1material.html#a9266bfe8059700d4f869408495687f70">uses_same_texture</a> (const <a class="el" href="classlxgui_1_1gui_1_1material.html">material</a> &amp;mOther) const =0</td></tr>
 <tr class="memdesc:a9266bfe8059700d4f869408495687f70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if another material is based on the same texture as the current material.  <a href="classlxgui_1_1gui_1_1material.html#a9266bfe8059700d4f869408495687f70">More...</a><br /></td></tr>
 <tr class="separator:a9266bfe8059700d4f869408495687f70"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -320,8 +317,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3e4436aba0e285b2bed3c3a0b90e6adb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e4436aba0e285b2bed3c3a0b90e6adb">&#9670;&nbsp;</a></span>get_canvas_height()</h2>
+<a id="af201a5c716dde49247ad2d0fee5b8584"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af201a5c716dde49247ad2d0fee5b8584">&#9670;&nbsp;</a></span>get_canvas_dimensions()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +327,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual float lxgui::gui::material::get_canvas_height </td>
+          <td class="memname">virtual <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> lxgui::gui::material::get_canvas_dimensions </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -343,11 +340,11 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the physical height in pixels of the canvas containing this texture (if any). </p>
-<dl class="section return"><dt>Returns</dt><dd>The physical height in pixels of the canvas containing this texture (if any) </dd></dl>
+<p>Returns the physical dimensions (in pixels) of the canvas containing this texture (if any). </p>
+<dl class="section return"><dt>Returns</dt><dd>The physical dimensions (in pixels) of the canvas containing this (if any) </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>When a texture is loaded, most of the time it will fill the entire "canvas", namely, the 2D pixel array containing the texture data. However, some old hardware don't support textures that have non power-of-two dimensions. If the user creates a material for such a texture, the <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a> will create a bigger canvas that has power-of-two dimensions, and store the texture in it. Likewise, if a texture is placed in a wider texture atlas, the canvas will contain more than one texture. </dd></dl>
 
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a4ea2ecf4ecfc6e5d30c3a1c18448ba35">lxgui::gui::sdl::material</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a48dc8b2e0ee0186f2e6478a48da2ea6d">lxgui::gui::sfml::material</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#aab8c98e372c54df65b795a8164ffd661">lxgui::gui::gl::material</a>.</p>
+<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#a5e81adf0d69c5ba0864add76809cb6df">lxgui::gui::sdl::material</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a5eb4bfc9aa5c0b24257835c3d103080b">lxgui::gui::sfml::material</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a98c0c58df68fc62c772ba093d7dd62b7">lxgui::gui::gl::material</a>.</p>
 
 </div>
 </div>
@@ -390,37 +387,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abab1d55a8d34f58ed57122a94edcffe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abab1d55a8d34f58ed57122a94edcffe9">&#9670;&nbsp;</a></span>get_canvas_width()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual float lxgui::gui::material::get_canvas_width </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the physical width in pixels of the canvas containing this texture (if any). </p>
-<dl class="section return"><dt>Returns</dt><dd>The physical width in pixels of the canvas containing this (if any) </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>When a texture is loaded, most of the time it will fill the entire "canvas", namely, the 2D pixel array containing the texture data. However, some old hardware don't support textures that have non power-of-two dimensions. If the user creates a material for such a texture, the <a class="el" href="classlxgui_1_1gui_1_1renderer.html" title="Abstract type for implementation specific management.">gui::renderer</a> will create a bigger canvas that has power-of-two dimensions, and store the texture in it. Likewise, if a texture is placed in a wider texture atlas, the canvas will contain more than one texture. </dd></dl>
-
-<p>Implemented in <a class="el" href="classlxgui_1_1gui_1_1sdl_1_1material.html#ab74931b053ad01958c8ee270f100563e">lxgui::gui::sdl::material</a>, <a class="el" href="classlxgui_1_1gui_1_1sfml_1_1material.html#a0588f0cb489266a9f48313c27aacb5af">lxgui::gui::sfml::material</a>, and <a class="el" href="classlxgui_1_1gui_1_1gl_1_1material.html#a685de4bdb7b364ffdea29fd8d0ae06b7">lxgui::gui::gl::material</a>.</p>
-
-</div>
-</div>
 <a id="ab925447032b1d365ce69ca55735b9e34"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab925447032b1d365ce69ca55735b9e34">&#9670;&nbsp;</a></span>get_local_uv()</h2>
 
@@ -456,7 +422,7 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00031">31</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00025">25</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
 </div>
 </div>
@@ -508,7 +474,7 @@ Protected Attributes</h2></td></tr>
 <p>Checks if the material is embedded in an atlas. </p>
 <dl class="section return"><dt>Returns</dt><dd>'true' if the material is inside an atlas, 'false' otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00051">51</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8cpp_source.html#l00039">39</a> of file <a class="el" href="gui__material_8cpp_source.html">gui_material.cpp</a>.</p>
 
 </div>
 </div>
@@ -620,7 +586,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00114">114</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__material_8hpp_source.html#l00102">102</a> of file <a class="el" href="gui__material_8hpp_source.html">gui_material.hpp</a>.</p>
 
 </div>
 </div>
@@ -631,7 +597,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 7 2021 09:38:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 19:44:14 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

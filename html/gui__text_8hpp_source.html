@@ -234,67 +234,67 @@ $(function() {
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#a90a531f8ea6188b2800d01a41c83acb4">enable_formatting</a>(<span class="keywordtype">bool</span> bFormatting);</div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#a65f51af9092e147a65ab641d20f0ca84">render</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; mTransform = <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160; </div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a614bc3664d1cc163bf3c8cbbb1a11ff8">get_num_letters</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        <span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">create_letter_quad</a>(char32_t uiChar) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160; </div>
-<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">  328</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">get_renderer</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mRenderer_; }</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    private :</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordtype">void</span> update_() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordtype">void</span> notify_cache_dirty_() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordtype">float</span> round_to_pixel_(<span class="keywordtype">float</span> fValue,</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;            <a class="code" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">utils::rounding_method</a> mMethod = <a class="code" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a">utils::rounding_method::NEAREST</a>) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        std::array&lt;vertex,4&gt; create_letter_quad_(<a class="code" href="classlxgui_1_1gui_1_1font.html">gui::font</a>&amp; mFont, char32_t uiChar) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        std::array&lt;vertex,4&gt; create_letter_quad_(char32_t uiChar) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        std::array&lt;vertex,4&gt; create_outline_letter_quad_(char32_t uiChar) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; mRenderer_;</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keywordtype">bool</span>  bReady_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordtype">float</span> fScalingFactor_ = 1.0f;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="keywordtype">float</span> fTracking_ = 0.0f;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordtype">float</span> fLineSpacing_ = 1.0f;</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keywordtype">bool</span>  bRemoveStartingSpaces_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="keywordtype">bool</span>  bWordWrap_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <span class="keywordtype">bool</span>  bAddEllipsis_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> mColor_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#a12be09afaca2d718d5be8c8db796feea">color::WHITE</a>;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keywordtype">bool</span>  bForceColor_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordtype">float</span> fAlpha_ = 1.0f;</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="keywordtype">bool</span>  bFormattingEnabled_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordtype">float</span> fBoxW_ = std::numeric_limits&lt;float&gt;::infinity();</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <span class="keywordtype">float</span> fBoxH_ = std::numeric_limits&lt;float&gt;::infinity();</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5">alignment</a>          mAlign_ = <a class="code" href="classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5a684d325a7303f52e64011467ff5c5758">alignment::LEFT</a>;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737f">vertical_alignment</a> mVertAlign_ = <a class="code" href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa43eedd8685eb86592022f8da962e3474">vertical_alignment::MIDDLE</a>;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        std::shared_ptr&lt;font&gt; pFont_;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        std::shared_ptr&lt;font&gt; pOutlineFont_;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;        utils::ustring        sUnicodeText_;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">bool</span>  bUpdateCache_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">float</span> fW_ = 0.0f;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">float</span> fH_ = 0.0f;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        <span class="keyword">mutable</span> <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>  uiNumLines_ = 0u;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadList_;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;vertex_cache&gt;     pVertexCache_;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt; lOutlineQuadList_;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;vertex_cache&gt;     pOutlineVertexCache_;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;quad&gt;                 lIconsList_;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    };</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1text.html#a65f51af9092e147a65ab641d20f0ca84">render</a>(<span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html">matrix4f</a>&amp; mTransform = <a class="code" href="structlxgui_1_1gui_1_1matrix4f.html#ad6e84ced996fa2cf77fb9aa9fb2b4f61">matrix4f::IDENTITY</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a614bc3664d1cc163bf3c8cbbb1a11ff8">get_num_letters</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;        <span class="keyword">const</span> std::array&lt;vertex,4&gt;&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a0ab59dc9d28b6abf80b70f3de3dbc45c">get_letter_quad</a>(<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiIndex) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160; </div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1quad.html">quad</a> <a class="code" href="classlxgui_1_1gui_1_1text.html#a9d77a8951b29d49f6660b20c8c18b63f">create_letter_quad</a>(char32_t uiChar) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">  327</a></span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">get_renderer</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mRenderer_; }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;    private :</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160; </div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        <span class="keywordtype">void</span> update_() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        <span class="keywordtype">void</span> notify_cache_dirty_() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordtype">float</span> round_to_pixel_(<span class="keywordtype">float</span> fValue,</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            <a class="code" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ce">utils::rounding_method</a> mMethod = <a class="code" href="namespacelxgui_1_1utils.html#a992dde23fb5b0aed3315c6a13cf5f5ceaad135772d7cf93dd0ccf9d2474b34e6a">utils::rounding_method::NEAREST</a>) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        std::array&lt;vertex,4&gt; create_letter_quad_(<a class="code" href="classlxgui_1_1gui_1_1font.html">gui::font</a>&amp; mFont, char32_t uiChar) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        std::array&lt;vertex,4&gt; create_letter_quad_(char32_t uiChar) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        std::array&lt;vertex,4&gt; create_outline_letter_quad_(char32_t uiChar) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160; </div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; mRenderer_;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;        <span class="keywordtype">bool</span>  bReady_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;        <span class="keywordtype">float</span> fScalingFactor_ = 1.0f;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;        <span class="keywordtype">float</span> fTracking_ = 0.0f;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;        <span class="keywordtype">float</span> fLineSpacing_ = 1.0f;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;        <span class="keywordtype">bool</span>  bRemoveStartingSpaces_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;        <span class="keywordtype">bool</span>  bWordWrap_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        <span class="keywordtype">bool</span>  bAddEllipsis_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> mColor_ = <a class="code" href="classlxgui_1_1gui_1_1color.html#a12be09afaca2d718d5be8c8db796feea">color::WHITE</a>;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <span class="keywordtype">bool</span>  bForceColor_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keywordtype">float</span> fAlpha_ = 1.0f;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordtype">bool</span>  bFormattingEnabled_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        <span class="keywordtype">float</span> fBoxW_ = std::numeric_limits&lt;float&gt;::infinity();</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        <span class="keywordtype">float</span> fBoxH_ = std::numeric_limits&lt;float&gt;::infinity();</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5">alignment</a>          mAlign_ = <a class="code" href="classlxgui_1_1gui_1_1text.html#a822189712a4b311440400167d67de7a5a684d325a7303f52e64011467ff5c5758">alignment::LEFT</a>;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737f">vertical_alignment</a> mVertAlign_ = <a class="code" href="classlxgui_1_1gui_1_1text.html#a1fa19a54decf7547194c7350a828737fa43eedd8685eb86592022f8da962e3474">vertical_alignment::MIDDLE</a>;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;        std::shared_ptr&lt;font&gt; pFont_;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;        std::shared_ptr&lt;font&gt; pOutlineFont_;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;        utils::ustring        sUnicodeText_;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160; </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">bool</span>  bUpdateCache_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">float</span> fW_ = 0.0f;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        <span class="keyword">mutable</span> <span class="keywordtype">float</span> fH_ = 0.0f;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keyword">mutable</span> <a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>  uiNumLines_ = 0u;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt; lQuadList_;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;vertex_cache&gt;     pVertexCache_;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;std::array&lt;vertex,4&gt;&gt; lOutlineQuadList_;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keyword">mutable</span> std::shared_ptr&lt;vertex_cache&gt;     pOutlineVertexCache_;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keyword">mutable</span> std::vector&lt;quad&gt;                 lIconsList_;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    };</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;}</div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;}</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;}</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_ad45b9c9a4bfaf242b709079ce220b352"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#ad45b9c9a4bfaf242b709079ce220b352">lxgui::gui::text::get_scaling_factor</a></div><div class="ttdeci">float get_scaling_factor() const</div><div class="ttdoc">Returns the scaling factor used when rendering glyphs.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00346">gui_text.cpp:346</a></div></div>
@@ -358,7 +358,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aac7465a68c4eabd234fee462e372ce8e"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aac7465a68c4eabd234fee462e372ce8e">lxgui::gui::text::get_color</a></div><div class="ttdeci">const color &amp; get_color() const</div><div class="ttdoc">Returns this text's default color.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00376">gui_text.cpp:376</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a538a32710b0b089edbbe7eee7b63ede5"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a538a32710b0b089edbbe7eee7b63ede5">lxgui::gui::text::set_vertical_alignment</a></div><div class="ttdeci">void set_vertical_alignment(const vertical_alignment &amp;mVertAlign)</div><div class="ttdoc">Sets text vertical alignment.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00509">gui_text.cpp:509</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_afd79f91a82ec530fce39912d7f027125"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#afd79f91a82ec530fce39912d7f027125">lxgui::gui::text::is_word_wrap_enabled</a></div><div class="ttdeci">bool is_word_wrap_enabled() const</div><div class="ttdoc">Checks if word wrap is enabled.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00580">gui_text.cpp:580</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a4414817015cc2219e5ee32afa126a96a"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">lxgui::gui::text::get_renderer</a></div><div class="ttdeci">const renderer &amp; get_renderer() const</div><div class="ttdoc">Returns the renderer used to render this text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8hpp_source.html#l00328">gui_text.hpp:328</a></div></div>
+<div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a4414817015cc2219e5ee32afa126a96a"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a4414817015cc2219e5ee32afa126a96a">lxgui::gui::text::get_renderer</a></div><div class="ttdeci">const renderer &amp; get_renderer() const</div><div class="ttdoc">Returns the renderer used to render this text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8hpp_source.html#l00327">gui_text.hpp:327</a></div></div>
 <div class="ttc" id="autils__string_8hpp_html"><div class="ttname"><a href="utils__string_8hpp.html">utils_string.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_af63f4aaadc1ad0482c727dac6cbb9c33"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#af63f4aaadc1ad0482c727dac6cbb9c33">lxgui::gui::text::set_box_height</a></div><div class="ttdeci">void set_box_height(float fBoxH)</div><div class="ttdoc">Sets the height of the text box.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00413">gui_text.cpp:413</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_aa7dbed66badd28564639f0a84ae6dc0b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#aa7dbed66badd28564639f0a84ae6dc0b">lxgui::gui::text::get_character_width</a></div><div class="ttdeci">float get_character_width(char32_t uiChar) const</div><div class="ttdoc">Returns the length of a single character.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00482">gui_text.cpp:482</a></div></div>
@@ -367,7 +367,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1gui_1_1text_html_a42015b3194ce8492336f4adce570d73b"><div class="ttname"><a href="classlxgui_1_1gui_1_1text.html#a42015b3194ce8492336f4adce570d73b">lxgui::gui::text::get_width</a></div><div class="ttdeci">float get_width() const</div><div class="ttdoc">Returns the width of the rendered text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00422">gui_text.cpp:422</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 7 2021 09:38:08 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 19:44:14 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

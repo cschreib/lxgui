@@ -92,9 +92,9 @@ Inheritance diagram for lxgui::gui::gl::renderer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d547f0b62b198b8dc1655e198503ff3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a0d547f0b62b198b8dc1655e198503ff3">renderer</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWindowHeight, bool bInitGLEW=true)</td></tr>
-<tr class="memdesc:a0d547f0b62b198b8dc1655e198503ff3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a0d547f0b62b198b8dc1655e198503ff3">More...</a><br /></td></tr>
-<tr class="separator:a0d547f0b62b198b8dc1655e198503ff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e41f821047618433ad5080667182b7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a3e41f821047618433ad5080667182b7a">renderer</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;mWindowDimensions, bool bInitGLEW=true)</td></tr>
+<tr class="memdesc:a3e41f821047618433ad5080667182b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a3e41f821047618433ad5080667182b7a">More...</a><br /></td></tr>
+<tr class="separator:a3e41f821047618433ad5080667182b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c0afe8b95daa16978cee34e480d7245"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a9c0afe8b95daa16978cee34e480d7245">get_name</a> () const override</td></tr>
 <tr class="memdesc:a9c0afe8b95daa16978cee34e480d7245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a human-readable name for this renderer.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a9c0afe8b95daa16978cee34e480d7245">More...</a><br /></td></tr>
 <tr class="separator:a9c0afe8b95daa16978cee34e480d7245"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,24 +110,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a108885d496074836e83e52a53967476f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a108885d496074836e83e52a53967476f">is_texture_vertex_color_supported</a> () const override</td></tr>
 <tr class="memdesc:a108885d496074836e83e52a53967476f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports setting colors for each vertex of a textured quad.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a108885d496074836e83e52a53967476f">More...</a><br /></td></tr>
 <tr class="separator:a108885d496074836e83e52a53967476f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada211370d8062ae3d9e9a8077d7a3a9b"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ada211370d8062ae3d9e9a8077d7a3a9b">create_material</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight, const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *pPixelData, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
-<tr class="memdesc:ada211370d8062ae3d9e9a8077d7a3a9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from arbitrary pixel data.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ada211370d8062ae3d9e9a8077d7a3a9b">More...</a><br /></td></tr>
-<tr class="separator:ada211370d8062ae3d9e9a8077d7a3a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72821daad90980dd1eb189bb3ce3fb17"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a72821daad90980dd1eb189bb3ce3fb17">create_material</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;mDimensions, const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *pPixelData, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
+<tr class="memdesc:a72821daad90980dd1eb189bb3ce3fb17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from arbitrary pixel data.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a72821daad90980dd1eb189bb3ce3fb17">More...</a><br /></td></tr>
+<tr class="separator:a72821daad90980dd1eb189bb3ce3fb17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac40d9ac313434b124047eb4ac0a83e26"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ac40d9ac313434b124047eb4ac0a83e26">create_material</a> (std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt; pRenderTarget, const <a class="el" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> &amp;mLocation) const override</td></tr>
 <tr class="memdesc:ac40d9ac313434b124047eb4ac0a83e26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new material from a portion of a render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ac40d9ac313434b124047eb4ac0a83e26">More...</a><br /></td></tr>
 <tr class="separator:ac40d9ac313434b124047eb4ac0a83e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afac17536725def2ddbf24ca63ff02ece"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afac17536725def2ddbf24ca63ff02ece">create_render_target</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiHeight, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
-<tr class="memdesc:afac17536725def2ddbf24ca63ff02ece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#afac17536725def2ddbf24ca63ff02ece">More...</a><br /></td></tr>
-<tr class="separator:afac17536725def2ddbf24ca63ff02ece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd88147cec1ba08a049a0fa6e28e6d01"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#acd88147cec1ba08a049a0fa6e28e6d01">create_render_target</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;mDimensions, <a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter=<a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a>) const override</td></tr>
+<tr class="memdesc:acd88147cec1ba08a049a0fa6e28e6d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new render target.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#acd88147cec1ba08a049a0fa6e28e6d01">More...</a><br /></td></tr>
+<tr class="separator:acd88147cec1ba08a049a0fa6e28e6d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6874405e69c001423c1d6dd8ba06478"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478">is_vertex_cache_supported</a> () const override</td></tr>
 <tr class="memdesc:ab6874405e69c001423c1d6dd8ba06478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer supports vertex caches.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ab6874405e69c001423c1d6dd8ba06478">More...</a><br /></td></tr>
 <tr class="separator:ab6874405e69c001423c1d6dd8ba06478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad914a78fa3f9541bb227100f137dfa29"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html">gui::vertex_cache</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad914a78fa3f9541bb227100f137dfa29">create_vertex_cache</a> (<a class="el" href="classlxgui_1_1gui_1_1vertex__cache.html#a0354490e97b4d68ec0c2e1d5f5b3f6de">gui::vertex_cache::type</a> mType) const override</td></tr>
 <tr class="memdesc:ad914a78fa3f9541bb227100f137dfa29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new empty vertex cache.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#ad914a78fa3f9541bb227100f137dfa29">More...</a><br /></td></tr>
 <tr class="separator:ad914a78fa3f9541bb227100f137dfa29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf0518eeaaf97bfce19547a48c4e764f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f">notify_window_resized</a> (<a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewWidth, <a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> uiNewHeight) override</td></tr>
-<tr class="memdesc:adf0518eeaaf97bfce19547a48c4e764f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer that the render window has been resized.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f">More...</a><br /></td></tr>
-<tr class="separator:adf0518eeaaf97bfce19547a48c4e764f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a677388d671b051d647886fd1c4809629"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a677388d671b051d647886fd1c4809629">notify_window_resized</a> (const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;mNewDimensions) override</td></tr>
+<tr class="memdesc:a677388d671b051d647886fd1c4809629"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notifies the renderer that the render window has been resized.  <a href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a677388d671b051d647886fd1c4809629">More...</a><br /></td></tr>
+<tr class="separator:a677388d671b051d647886fd1c4809629"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1425d8c572c71b7e320e5366098c9d81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">is_quad_batching_enabled</a> () const</td></tr>
 <tr class="memdesc:a1425d8c572c71b7e320e5366098c9d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the renderer has quad render batching enabled.  <a href="classlxgui_1_1gui_1_1renderer.html#a1425d8c572c71b7e320e5366098c9d81">More...</a><br /></td></tr>
 <tr class="separator:a1425d8c572c71b7e320e5366098c9d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,8 +247,8 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="gui__gl__renderer_8hpp_source.html#l00022">22</a> of file <a class="el" href="gui__gl__renderer_8hpp_source.html">gui_gl_renderer.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0d547f0b62b198b8dc1655e198503ff3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d547f0b62b198b8dc1655e198503ff3">&#9670;&nbsp;</a></span>renderer()</h2>
+<a id="a3e41f821047618433ad5080667182b7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e41f821047618433ad5080667182b7a">&#9670;&nbsp;</a></span>renderer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,14 +259,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">lxgui::gui::gl::renderer::renderer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWindowWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWindowHeight</em>, </td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;&#160;</td>
+          <td class="paramname"><em>mWindowDimensions</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -290,13 +284,12 @@ Protected Attributes</h2></td></tr>
 <p>Constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiWindowWidth</td><td>The initial width of the window (in pixels) </td></tr>
-    <tr><td class="paramname">uiWindowHeight</td><td>The initial height of the window (in pixels) </td></tr>
+    <tr><td class="paramname">mWindowDimensions</td><td>The initial window dimensions (in pixels) </td></tr>
     <tr><td class="paramname">bInitGLEW</td><td>Set to 'true' to initialise GLEW </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#adf0518eeaaf97bfce19547a48c4e764f" title="Notifies the renderer that the render window has been resized.">notify_window_resized()</a> if the size of the window changes later. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Use <a class="el" href="classlxgui_1_1gui_1_1gl_1_1renderer.html#a677388d671b051d647886fd1c4809629" title="Notifies the renderer that the render window has been resized.">notify_window_resized()</a> if the size of the window changes later. </dd></dl>
 
 </div>
 </div>
@@ -766,8 +759,63 @@ If an outline thickness other than zero is requested, only the outline itself wi
 
 </div>
 </div>
+<a id="a72821daad90980dd1eb189bb3ce3fb17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72821daad90980dd1eb189bb3ce3fb17">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::gl::renderer::create_material </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;&#160;</td>
+          <td class="paramname"><em>mDimensions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td>
+          <td class="paramname"><em>pPixelData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
+          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a new material from arbitrary pixel data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mDimensions</td><td>The dimensions of the material </td></tr>
+    <tr><td class="paramname">pPixelData</td><td>The color data for all the pixels in the material </td></tr>
+    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
+
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a8fac615f89941d677ce2d77de7eeefe1">lxgui::gui::renderer</a>.</p>
+
+</div>
+</div>
 <a id="ac40d9ac313434b124047eb4ac0a83e26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac40d9ac313434b124047eb4ac0a83e26">&#9670;&nbsp;</a></span>create_material() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac40d9ac313434b124047eb4ac0a83e26">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -815,7 +863,7 @@ If an outline thickness other than zero is requested, only the outline itself wi
 </div>
 </div>
 <a id="adb352d74d13a5bcfc4c6b505dda5843a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb352d74d13a5bcfc4c6b505dda5843a">&#9670;&nbsp;</a></span>create_material() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#adb352d74d13a5bcfc4c6b505dda5843a">&#9670;&nbsp;</a></span>create_material() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -848,68 +896,6 @@ If an outline thickness other than zero is requested, only the outline itself wi
 <dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="gui__renderer_8cpp_source.html#l00383">383</a> of file <a class="el" href="gui__renderer_8cpp_source.html">gui_renderer.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ada211370d8062ae3d9e9a8077d7a3a9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada211370d8062ae3d9e9a8077d7a3a9b">&#9670;&nbsp;</a></span>create_material() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1material.html">gui::material</a>&gt; lxgui::gui::gl::renderer::create_material </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiHeight</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> *&#160;</td>
-          <td class="paramname"><em>pPixelData</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a>&#160;</td>
-          <td class="paramname"><em>mFilter</em> = <code><a class="el" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6ab50339a10e1de285ac99d4c3990b8693">material::filter::NONE</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a new material from arbitrary pixel data. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">uiWidth</td><td>The width of the material </td></tr>
-    <tr><td class="paramname">uiHeight</td><td>The height of the material </td></tr>
-    <tr><td class="paramname">pPixelData</td><td>The color data for all the pixels in the material </td></tr>
-    <tr><td class="paramname">mFilter</td><td>The filtering to apply to the texture </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The new material </dd></dl>
-
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3287b78e2cb75d6ea3bdb5b3972ed6d8">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -962,8 +948,8 @@ If an outline thickness other than zero is requested, only the outline itself wi
 
 </div>
 </div>
-<a id="afac17536725def2ddbf24ca63ff02ece"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afac17536725def2ddbf24ca63ff02ece">&#9670;&nbsp;</a></span>create_render_target()</h2>
+<a id="acd88147cec1ba08a049a0fa6e28e6d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd88147cec1ba08a049a0fa6e28e6d01">&#9670;&nbsp;</a></span>create_render_target()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -974,14 +960,8 @@ If an outline thickness other than zero is requested, only the outline itself wi
         <tr>
           <td class="memname">std::shared_ptr&lt;<a class="el" href="classlxgui_1_1gui_1_1render__target.html">gui::render_target</a>&gt; lxgui::gui::gl::renderer::create_render_target </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiHeight</em>, </td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;&#160;</td>
+          <td class="paramname"><em>mDimensions</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1005,14 +985,13 @@ If an outline thickness other than zero is requested, only the outline itself wi
 <p>Creates a new render target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiWidth</td><td>The width of the render target </td></tr>
-    <tr><td class="paramname">uiHeight</td><td>The height of the render target </td></tr>
+    <tr><td class="paramname">mDimensions</td><td>The dimensions of the render target </td></tr>
     <tr><td class="paramname">mFilter</td><td>The filtering to apply to the target texture when displayed </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a872a1391a40b16053c79d2528475d841">lxgui::gui::renderer</a>.</p>
+<p>Implements <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a574b8b322951e748afd22b97f0f69a5c">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -1571,8 +1550,8 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 
 </div>
 </div>
-<a id="adf0518eeaaf97bfce19547a48c4e764f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf0518eeaaf97bfce19547a48c4e764f">&#9670;&nbsp;</a></span>notify_window_resized()</h2>
+<a id="a677388d671b051d647886fd1c4809629"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a677388d671b051d647886fd1c4809629">&#9670;&nbsp;</a></span>notify_window_resized()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1583,19 +1562,9 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
         <tr>
           <td class="memname">void lxgui::gui::gl::renderer::notify_window_resized </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiNewWidth</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a> &amp;&#160;</td>
+          <td class="paramname"><em>mNewDimensions</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a>&#160;</td>
-          <td class="paramname"><em>uiNewHeight</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1608,13 +1577,12 @@ This function is meant to be called between <a class="el" href="classlxgui_1_1gu
 <p>Notifies the renderer that the render window has been resized. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">uiNewWidth</td><td>The new window width </td></tr>
-    <tr><td class="paramname">uiNewHeight</td><td>The new window height </td></tr>
+    <tr><td class="paramname">mNewDimensions</td><td>The new window dimensions </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a10bcbcc8774d676727f903cb917ba702">lxgui::gui::renderer</a>.</p>
+<p>Reimplemented from <a class="el" href="classlxgui_1_1gui_1_1renderer.html#a3b4e9a10fa06c03e7e6775699e4b8f64">lxgui::gui::renderer</a>.</p>
 
 </div>
 </div>
@@ -2112,7 +2080,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00441">441</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00438">438</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2136,7 +2104,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00442">442</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00439">439</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2160,7 +2128,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00440">440</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="gui__renderer_8hpp_source.html#l00437">437</a> of file <a class="el" href="gui__renderer_8hpp_source.html">gui_renderer.hpp</a>.</p>
 
 </div>
 </div>
@@ -2170,7 +2138,7 @@ Increase this value to allow more materials to fit on a single atlas page, there
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 7 2021 09:38:09 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 19:44:15 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

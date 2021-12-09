@@ -94,56 +94,56 @@ $(function() {
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    public :</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">source</a>(SDL_Window* pWindow, SDL_Renderer* pRenderer, <span class="keywordtype">bool</span> bInitialiseSDLImage,</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordtype">bool</span> bMouseGrab = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">source</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp; <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a06821d37e8557e577de4cb61f8b065c2">operator = </a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a948b5e1a7552efce8a2506a16c64dfbf">toggle_mouse_grab</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        std::string <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#ab5a53e6ce6bd7b2b587c37524728a305">get_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">key</a> mKey) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        utils::ustring <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#ace0f7cad91bbe1bdabfe4249f705f431">get_clipboard_content</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6beea23fd9faf1749950b1528f6b3485">set_clipboard_content</a>(<span class="keyword">const</span> utils::ustring&amp; sContent) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a8cb6fa72486b3971de1911228bb4dd96">on_sdl_event</a>(<span class="keyword">const</span> SDL_Event&amp; mEvent);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a03747162ee42b017d1b7ba151178f0a4">set_mouse_cursor</a>(<span class="keyword">const</span> std::string&amp; sFileName, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2i</a>&amp; mHotSpot) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">reset_mouse_cursor</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#af062d50118690ebfaad7ee792d325281">get_interface_scaling_factor_hint</a>() <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    protected :</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a4d6620a62bc3caad916610de46117629">update_</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    private :</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2ui</a> get_window_pixel_size_() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordtype">void</span> update_pixel_per_unit_();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">input::key</a> from_sdl_(<span class="keywordtype">int</span> iSDLKey) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        SDL_Window* pWindow_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        SDL_Renderer* pRenderer_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordtype">bool</span> bFirst_ = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">bool</span> bMouseGrab_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">float</span> fPixelsPerUnit_ = 1.0f;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordtype">float</span> fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordtype">float</span> fWheelCache_ = 0.0f;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">using</span> clock = std::chrono::high_resolution_clock;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        std::array&lt;clock::time_point, MOUSE_BUTTON_NUMBER&gt; lLastClickClock_;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">using</span> wrapped_cursor = std::unique_ptr&lt;SDL_Cursor, void(*)(SDL_Cursor*)&gt;;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        std::unordered_map&lt;std::string,wrapped_cursor&gt; lCursorMap_;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    };</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">explicit</span> <a class="code" href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">source</a>(SDL_Window* pWindow, SDL_Renderer* pRenderer, <span class="keywordtype">bool</span> bInitialiseSDLImage,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordtype">bool</span> bMouseGrab = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">source</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp; <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a06821d37e8557e577de4cb61f8b065c2">operator = </a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html">source</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a948b5e1a7552efce8a2506a16c64dfbf">toggle_mouse_grab</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        std::string <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#ab5a53e6ce6bd7b2b587c37524728a305">get_key_name</a>(<a class="code" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">key</a> mKey) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        utils::ustring <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#ace0f7cad91bbe1bdabfe4249f705f431">get_clipboard_content</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6beea23fd9faf1749950b1528f6b3485">set_clipboard_content</a>(<span class="keyword">const</span> utils::ustring&amp; sContent) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a8cb6fa72486b3971de1911228bb4dd96">on_sdl_event</a>(<span class="keyword">const</span> SDL_Event&amp; mEvent);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a03747162ee42b017d1b7ba151178f0a4">set_mouse_cursor</a>(<span class="keyword">const</span> std::string&amp; sFileName, <span class="keyword">const</span> <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2i</a>&amp; mHotSpot) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">reset_mouse_cursor</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordtype">float</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#af062d50118690ebfaad7ee792d325281">get_interface_scaling_factor_hint</a>() <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    protected :</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1input_1_1sdl_1_1source.html#a4d6620a62bc3caad916610de46117629">update_</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    private :</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2ui</a> get_window_pixel_size_() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordtype">void</span> update_pixel_per_unit_();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <a class="code" href="namespacelxgui_1_1input.html#a04683760bde02caaf8b7848bbe472fad">input::key</a> from_sdl_(<span class="keywordtype">int</span> iSDLKey) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        SDL_Window* pWindow_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        SDL_Renderer* pRenderer_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordtype">bool</span> bFirst_ = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordtype">bool</span> bMouseGrab_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordtype">float</span> fPixelsPerUnit_ = 1.0f;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="structlxgui_1_1gui_1_1vector2.html">gui::vector2f</a> mOldMousePos_;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordtype">float</span> fWheelCache_ = 0.0f;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keyword">using</span> clock = std::chrono::high_resolution_clock;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        std::array&lt;clock::time_point, MOUSE_BUTTON_NUMBER&gt; lLastClickClock_;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">using</span> wrapped_cursor = std::unique_ptr&lt;SDL_Cursor, void(*)(SDL_Cursor*)&gt;;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        std::unordered_map&lt;std::string,wrapped_cursor&gt; lCursorMap_;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;}</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;}</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="autils_8hpp_html"><div class="ttname"><a href="utils_8hpp.html">utils.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1input_1_1source_html_a96b8efaead1af58200d6c5244d1725de"><div class="ttname"><a href="classlxgui_1_1input_1_1source.html#a96b8efaead1af58200d6c5244d1725de">lxgui::input::source::source</a></div><div class="ttdeci">source()=default</div><div class="ttdoc">Constructor.</div></div>
@@ -166,7 +166,7 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1input_1_1sdl_1_1source_html_a6925618ca525141a2099410535a79ce7"><div class="ttname"><a href="classlxgui_1_1input_1_1sdl_1_1source.html#a6925618ca525141a2099410535a79ce7">lxgui::input::sdl::source::reset_mouse_cursor</a></div><div class="ttdeci">void reset_mouse_cursor() override</div><div class="ttdoc">Sets the mouse cursor back to the default (arrow).</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Dec 7 2021 09:38:08 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 9 2021 19:44:14 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
