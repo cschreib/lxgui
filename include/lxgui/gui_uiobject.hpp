@@ -171,7 +171,7 @@ namespace gui
         uiobject& operator=(uiobject&&) = delete;
 
         /// Renders this widget on the current render target.
-        virtual void render() = 0;
+        virtual void render() const = 0;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update

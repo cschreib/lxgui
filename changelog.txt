@@ -156,6 +156,7 @@ Other changes:
  - gui: fixed Frame:on_* Lua handlers not set to nil if handler removed in C++
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
+ - gui: fixed missing 'const' for uiobject::render()
  - xml: now parsing standard XML comments
 
 v1.2.0:

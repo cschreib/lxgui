@@ -282,7 +282,7 @@ namespace gui
         ~frame() override;
 
         /// Renders this widget on the current render target.
-        void render() override;
+        void render() const override;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update

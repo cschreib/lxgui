@@ -24,7 +24,7 @@ namespace gui
         /// Renders this widget on the current render target.
         /** \note Does nothing.
         */
-        void render() override;
+        void render() const override;
 
         /// Checks if the provided coordinates are inside this region.
         /** \param mPosition The coordinates to test

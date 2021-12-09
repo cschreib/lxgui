@@ -86,7 +86,7 @@ std::string texture::serialize(const std::string& sTab) const
     return sStr.str();
 }
 
-void texture::render()
+void texture::render() const
 {
     if (is_visible())
     {

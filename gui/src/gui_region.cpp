@@ -9,7 +9,7 @@ region::region(manager& mManager) : uiobject(mManager)
     lType_.push_back(CLASS_NAME);
 }
 
-void region::render()
+void region::render() const
 {
 }
 

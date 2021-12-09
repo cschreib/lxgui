@@ -58,7 +58,7 @@ frame::~frame()
     get_manager().remove_frame(observer_from(this));
 }
 
-void frame::render()
+void frame::render() const
 {
     if (bIsVisible_ && bReady_)
     {

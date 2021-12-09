@@ -18,7 +18,7 @@ font_string::font_string(manager& mManager) : layered_region(mManager)
     lType_.push_back(CLASS_NAME);
 }
 
-void font_string::render()
+void font_string::render() const
 {
     update_borders_();
 

@@ -40,7 +40,7 @@ namespace gui
         std::string serialize(const std::string& sTab) const override;
 
         /// Renders this widget on the current render target.
-        void render() override;
+        void render() const override;
 
         /// Copies an uiobject's parameters into this texture (inheritance).
         /** \param mObj The uiobject to copy
