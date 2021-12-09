@@ -63,7 +63,7 @@ namespace sdl
         bool bMouseGrab_ = false;
         float fPixelsPerUnit_ = 1.0f;
 
-        float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
+        gui::vector2f mOldMousePos_;
         float fWheelCache_ = 0.0f;
 
         using clock = std::chrono::high_resolution_clock;

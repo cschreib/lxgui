@@ -28,13 +28,12 @@ namespace sdl
 
         /// Constructor for textures.
         /** \param pRenderer     The SDL render to create the material for
-        *   \param uiWidth       The requested texture width
-        *   \param uiHeight      The requested texture height
+        *   \param mDimensions   The requested texture dimensions
         *   \param bRenderTarget Create the material for a render target or only for display
         *   \param mWrap         How to adjust texture coordinates that are outside the [0,1] range
         *   \param mFilter       Use texture filtering or not (see set_filter())
         */
-        material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight, bool bRenderTarget = false,
+        material(SDL_Renderer* pRenderer, const vector2ui& mDimensions, bool bRenderTarget = false,
             wrap mWrap = wrap::REPEAT, filter mFilter = filter::NONE);
 
         /// Constructor for textures.
@@ -70,25 +69,17 @@ namespace sdl
         */
         bounds2f get_rect() const override;
 
-        /// Returns the physical width in pixels of the canvas containing this texture (if any).
-        /** \return The physical width in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
+        /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
+        /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
+        *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
+        *         namely, the 2D pixel array containing the texture data. However, some old
+        *         hardware don't support textures that have non power-of-two dimensions.
+        *         If the user creates a material for such a texture, the gui::renderer will
+        *         create a bigger canvas that has power-of-two dimensions, and store the
+        *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
+        *         the canvas will contain more than one texture.
         */
-        float get_canvas_width() const override;
-
-        /// Returns the physical height in pixels of the canvas containing this texture (if any).
-        /** \return The physical height in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
-        */
-        float get_canvas_height() const override;
+        vector2ui get_canvas_dimensions() const override;
 
         /// Checks if another material is based on the same texture as the current material.
         /** \return 'true' if both materials use the same texture, 'false' otherwise
@@ -96,12 +87,11 @@ namespace sdl
         bool uses_same_texture(const gui::material& mOther) const override;
 
         /// Resizes this texture.
-        /** \param uiWidth  The new texture width
-        *   \param uiHeight The new texture height
+        /** \param mDimensions The new texture dimensions
         *   \return 'true' if the function had to re-create a new texture object
         *   \note All the previous data that was stored in this texture will be lost.
         */
-        bool set_dimensions(uint uiWidth, uint uiHeight);
+        bool set_dimensions(const vector2ui& mDimensions);
 
         /// Premultiplies an image by its alpha component.
         /** \note Premultiplied alpha is a rendering technique that allows perfect
@@ -169,12 +159,12 @@ namespace sdl
 
         SDL_Renderer* pRenderer_ = nullptr;
 
-        uint     uiWidth_ = 0u, uiHeight_ = 0u;
-        uint     uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        bounds2f mRect_;
-        wrap     mWrap_ = wrap::REPEAT;
-        filter   mFilter_ = filter::NONE;
-        bool     bRenderTarget_ = false;
+        vector2ui mDimensions_;
+        vector2ui mCanvasDimensions_;
+        bounds2f  mRect_;
+        wrap      mWrap_ = wrap::REPEAT;
+        filter    mFilter_ = filter::NONE;
+        bool      bRenderTarget_ = false;
 
         SDL_Texture* pTexture_ = nullptr;
         bool         bIsOwner_ = false;

@@ -55,7 +55,7 @@ namespace sfml
         bool bMouseGrab_ = false;
         bool bFirst_ = true;
 
-        float fOldMouseX_ = 0.0f, fOldMouseY_ = 0.0f;
+        gui::vector2f mOldMousePos_;
         float fWheelCache_ = 0.0f;
 
         std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;

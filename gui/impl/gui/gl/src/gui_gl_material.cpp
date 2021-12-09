@@ -42,26 +42,18 @@ uint next_pot(uint uiSize)
     return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(uiSize))));
 }
 
-material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
+material::material(const vector2ui& mDimensions, wrap mWrap, filter mFilter) :
     gui::material(false), mWrap_(mWrap), mFilter_(mFilter), bIsOwner_(true)
 {
     if (ONLY_POWER_OF_TWO)
-    {
-        uiRealWidth_ = next_pot(uiWidth);
-        uiRealHeight_ = next_pot(uiHeight);
-    }
+        mCanvasDimensions_ = vector2ui(next_pot(mDimensions.x), next_pot(mDimensions.y));
     else
-    {
-        uiRealWidth_ = uiWidth;
-        uiRealHeight_ = uiHeight;
-    }
+        mCanvasDimensions_ = mDimensions;
 
-    if (uiRealWidth_ > MAXIMUM_SIZE || uiRealHeight_ > MAXIMUM_SIZE)
+    if (mCanvasDimensions_.x > MAXIMUM_SIZE || mCanvasDimensions_.y > MAXIMUM_SIZE)
     {
         throw gui::exception("gui::gl::material", "Texture dimensions not supported by graphics card : ("+
-            utils::to_string(uiRealWidth_)+" x "+
-            utils::to_string(uiRealHeight_)+")."
-        );
+            utils::to_string(mCanvasDimensions_.x)+" x "+utils::to_string(mCanvasDimensions_.y)+").");
     }
 
     GLint iPreviousID;
@@ -71,7 +63,7 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
 
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-        uiRealWidth_, uiRealHeight_, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+        mCanvasDimensions_.x, mCanvasDimensions_.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
     );
 
     switch (mWrap)
@@ -102,16 +94,14 @@ material::material(uint uiWidth, uint uiHeight, wrap mWrap, filter mFilter) :
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    mRect_ = bounds2f(0, uiWidth, 0, uiHeight);
+    mRect_ = bounds2f(0, mDimensions.x, 0, mDimensions.y);
 }
 
-material::material(uint uiTextureHandle, uint uiWidth, uint uiHeight,
+material::material(uint uiTextureHandle, const vector2ui& mCanvasDimensions,
     const bounds2f mRect, filter mFilter) :
-    gui::material(true), mFilter_(mFilter), uiTextureHandle_(uiTextureHandle),
-    mRect_(mRect), bIsOwner_(false)
+    gui::material(true), mCanvasDimensions_(mCanvasDimensions), mFilter_(mFilter),
+    uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
 {
-    uiRealWidth_ = uiWidth;
-    uiRealHeight_ = uiHeight;
 }
 
 material::~material()
@@ -202,14 +192,9 @@ bounds2f material::get_rect() const
     return mRect_;
 }
 
-float material::get_canvas_width() const
+vector2ui material::get_canvas_dimensions() const
 {
-    return uiRealWidth_;
-}
-
-float material::get_canvas_height() const
-{
-    return uiRealHeight_;
+    return mCanvasDimensions_;
 }
 
 bool material::uses_same_texture(const gui::material& mOther) const
@@ -217,37 +202,33 @@ bool material::uses_same_texture(const gui::material& mOther) const
     return uiTextureHandle_ == static_cast<const gl::material&>(mOther).uiTextureHandle_;
 }
 
-bool material::set_dimensions(uint uiWidth, uint uiHeight)
+bool material::set_dimensions(const vector2ui& mDimensions)
 {
     if (!bIsOwner_)
     {
         throw gui::exception("gui::gl::material", "A material in an atlas cannot be resized.");
     }
 
-    uint uiRealWidth = uiWidth;
-    uint uiRealHeight = uiHeight;
-    if (ONLY_POWER_OF_TWO)
+    bool bCanvasUpdated = false;
+
+    if (mDimensions.x > mCanvasDimensions_.x || mDimensions.y > mCanvasDimensions_.y)
     {
-        uiRealWidth  = next_pot(uiWidth);
-        uiRealHeight = next_pot(uiHeight);
-    }
+        vector2ui mCanvasDimensions = mDimensions;
+        if (ONLY_POWER_OF_TWO)
+        {
+            mCanvasDimensions.x = next_pot(mCanvasDimensions.x);
+            mCanvasDimensions.y = next_pot(mCanvasDimensions.y);
+        }
 
-    if (uiRealWidth > MAXIMUM_SIZE || uiRealHeight > MAXIMUM_SIZE)
-        return false;
-
-    mRect_    = bounds2f(0, uiWidth, 0, uiHeight);
-
-    if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
-    {
-        uiRealWidth_  = uiRealWidth;
-        uiRealHeight_ = uiRealHeight;
+        if (mCanvasDimensions.x > MAXIMUM_SIZE || mCanvasDimensions.y > MAXIMUM_SIZE)
+            return false;
 
         GLint iPreviousID;
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
         glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-            uiRealWidth_, uiRealHeight_, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+            mCanvasDimensions.x, mCanvasDimensions.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
         );
 
         switch (mWrap_)
@@ -276,12 +257,13 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
         }
 
         glBindTexture(GL_TEXTURE_2D, iPreviousID);
-        return true;
+
+        mCanvasDimensions_ = mCanvasDimensions;
+        bCanvasUpdated = true;
     }
-    else
-    {
-        return false;
-    }
+
+    mRect_ = bounds2f(0, mDimensions.x, 0, mDimensions.y);
+    return bCanvasUpdated;
 }
 
 void material::update_texture(const ub32color* pData)

@@ -437,31 +437,30 @@ void frame::check_position() const
 
     if (bIsClampedToScreen_)
     {
-        float fScreenW = get_top_level_renderer()->get_target_width();
-        float fScreenH = get_top_level_renderer()->get_target_height();
+        vector2f mScreenDimensions = get_top_level_renderer()->get_target_dimensions();
 
-        if (lBorderList_.right > fScreenW)
+        if (lBorderList_.right > mScreenDimensions.x)
         {
             float fWidth = lBorderList_.right - lBorderList_.left;
-            if (fWidth > fScreenW)
+            if (fWidth > mScreenDimensions.x)
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = fScreenW;
+                lBorderList_.right = mScreenDimensions.x;
             }
             else
             {
-                lBorderList_.right = fScreenW;
-                lBorderList_.left = fScreenW - fWidth;
+                lBorderList_.right = mScreenDimensions.x;
+                lBorderList_.left = mScreenDimensions.x - fWidth;
             }
         }
 
         if (lBorderList_.left < 0)
         {
             float fWidth = lBorderList_.right - lBorderList_.left;
-            if (lBorderList_.right - lBorderList_.left > fScreenW)
+            if (lBorderList_.right - lBorderList_.left > mScreenDimensions.x)
             {
                 lBorderList_.left = 0;
-                lBorderList_.right = fScreenW;
+                lBorderList_.right = mScreenDimensions.x;
             }
             else
             {
@@ -470,28 +469,28 @@ void frame::check_position() const
             }
         }
 
-        if (lBorderList_.bottom > fScreenH)
+        if (lBorderList_.bottom > mScreenDimensions.y)
         {
             float fHeight = lBorderList_.bottom - lBorderList_.top;
-            if (fHeight > fScreenH)
+            if (fHeight > mScreenDimensions.y)
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = fScreenH;
+                lBorderList_.bottom = mScreenDimensions.y;
             }
             else
             {
-                lBorderList_.bottom = fScreenH;
-                lBorderList_.top = fScreenH - fHeight;
+                lBorderList_.bottom = mScreenDimensions.y;
+                lBorderList_.top = mScreenDimensions.y - fHeight;
             }
         }
 
         if (lBorderList_.top < 0)
         {
             float fHeight = lBorderList_.bottom - lBorderList_.top;
-            if (fHeight > fScreenH)
+            if (fHeight > mScreenDimensions.y)
             {
                 lBorderList_.top = 0;
-                lBorderList_.bottom = fScreenH;
+                lBorderList_.bottom = mScreenDimensions.y;
             }
             else
             {
@@ -980,15 +979,15 @@ bool frame::is_clamped_to_screen() const
     return bIsClampedToScreen_;
 }
 
-bool frame::is_in_frame(float fX, float fY) const
+bool frame::is_in_frame(const vector2f& mPosition) const
 {
-    if (pTitleRegion_ && pTitleRegion_->is_in_region(fX, fY))
+    if (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition))
         return true;
 
-    bool bIsInXRange = lBorderList_.left  + lAbsHitRectInsetList_.left <= fX &&
-        fX <= lBorderList_.right - lAbsHitRectInsetList_.right - 1.0f;
-    bool bIsInYRange = lBorderList_.top   + lAbsHitRectInsetList_.top <= fY &&
-        fY <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1.0f;
+    bool bIsInXRange = lBorderList_.left  + lAbsHitRectInsetList_.left <= mPosition.x &&
+        mPosition.x <= lBorderList_.right - lAbsHitRectInsetList_.right - 1.0f;
+    bool bIsInYRange = lBorderList_.top   + lAbsHitRectInsetList_.top <= mPosition.y &&
+        mPosition.y <= lBorderList_.bottom - lAbsHitRectInsetList_.bottom - 1.0f;
 
     return bIsInXRange && bIsInYRange;
 }
@@ -1523,19 +1522,9 @@ void frame::set_backdrop(std::unique_ptr<backdrop> pBackdrop)
     notify_renderer_need_redraw();
 }
 
-void frame::set_abs_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom)
-{
-    lAbsHitRectInsetList_ = bounds2f(fLeft, fRight, fTop, fBottom);
-}
-
 void frame::set_abs_hit_rect_insets(const bounds2f& lInsets)
 {
     lAbsHitRectInsetList_ = lInsets;
-}
-
-void frame::set_rel_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom)
-{
-    lRelHitRectInsetList_ = bounds2f(fLeft, fRight, fTop, fBottom);
 }
 
 void frame::set_rel_hit_rect_insets(const bounds2f& lInsets)
@@ -1557,22 +1546,10 @@ void frame::set_level(int iLevel)
     }
 }
 
-void frame::set_max_resize(float fMaxWidth, float fMaxHeight)
-{
-    set_max_width(fMaxWidth);
-    set_max_height(fMaxHeight);
-}
-
 void frame::set_max_resize(const vector2f& mMax)
 {
     set_max_width(mMax.x);
     set_max_height(mMax.y);
-}
-
-void frame::set_min_resize(float fMinWidth, float fMinHeight)
-{
-    set_min_width(fMinWidth);
-    set_min_height(fMinHeight);
 }
 
 void frame::set_min_resize(const vector2f& mMin)
@@ -1930,7 +1907,7 @@ const addon* frame::get_addon() const
         return pAddOn_;
 }
 
-void frame::notify_mouse_in_frame(bool bMouseInframe, float fX, float fY)
+void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
 {
     alive_checker mChecker(*this);
 
@@ -1944,11 +1921,8 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, float fX, float fY)
         }
 
         bMouseInFrame_ = true;
-
-        fMousePosX_ = fX;
-        fMousePosY_ = fY;
-
-        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(fX, fY));
+        mMousePos_ = mPosition;
+        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition));
     }
     else
     {

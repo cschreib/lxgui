@@ -19,6 +19,10 @@ namespace gui
 
         constexpr vector2(T mX, T mY) noexcept : x(mX), y(mY) {}
 
+        template<typename U>
+        explicit constexpr vector2(const vector2<U>& mV) noexcept :
+            x(static_cast<T>(mV.x)), y(static_cast<T>(mV.y)) {}
+
         void set(T mX, T mY) noexcept
         {
             x = mX; y = mY;

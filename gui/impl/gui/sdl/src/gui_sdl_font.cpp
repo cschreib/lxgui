@@ -90,16 +90,14 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
 
     uiFinalWidth = uiTexSide;
 
-    pTexture_ = std::make_shared<sdl::material>(pRenderer, uiFinalWidth, uiFinalHeight);
+    pTexture_ = std::make_shared<sdl::material>(pRenderer, vector2ui(uiFinalWidth, uiFinalHeight));
 
-    uint uiTextureRealWidth = pTexture_->get_canvas_width();
-    uint uiTextureRealHeight = pTexture_->get_canvas_height();
-    float fTextureWidth = static_cast<float>(uiTextureRealWidth);
-    float fTextureHeight = static_cast<float>(uiTextureRealHeight);
+    vector2ui mCanvasDimensions = pTexture_->get_canvas_dimensions();
+    vector2f  mCanvasDimensionsFloat = vector2f(mCanvasDimensions);
 
     uint uiPitch = 0;
     ub32color* pTexturePixels = pTexture_->lock_pointer(&uiPitch);
-    std::fill(pTexturePixels, pTexturePixels + uiPitch * uiTextureRealHeight, ub32color(0,0,0,0));
+    std::fill(pTexturePixels, pTexturePixels + uiPitch * mCanvasDimensions.y, ub32color(0,0,0,0));
 
     size_t x = 0, y = 0;
     uint uiLineMaxHeight = iMaxHeight;
@@ -156,7 +154,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
             uiLineMaxHeight = std::max(uiLineMaxHeight, uiGlyphHeight);
 
             // If at end of row, jump to next line
-            if (x + uiGlyphWidth > (uint)uiTextureRealWidth - 1)
+            if (x + uiGlyphWidth > (uint)mCanvasDimensions.x - 1)
             {
                 y += uiLineMaxHeight + uiSpacing;
                 x = 0;
@@ -173,10 +171,10 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
 
             SDL_FreeSurface(pGlyphSurface);
 
-            mCI.mUVs.left   = x/fTextureWidth;
-            mCI.mUVs.top    = y/fTextureHeight;
-            mCI.mUVs.right  = (x + uiGlyphWidth)/fTextureWidth;
-            mCI.mUVs.bottom = (y + uiGlyphHeight)/fTextureHeight;
+            mCI.mUVs.left   = x/mCanvasDimensionsFloat.x;
+            mCI.mUVs.top    = y/mCanvasDimensionsFloat.y;
+            mCI.mUVs.right  = (x + uiGlyphWidth)/mCanvasDimensionsFloat.x;
+            mCI.mUVs.bottom = (y + uiGlyphHeight)/mCanvasDimensionsFloat.y;
 
             // NB: do not use iMinX etc here; SDL_ttf has already applied them to the rendered glyph
             mCI.mRect.left = -static_cast<float>(uiOutline);
@@ -198,7 +196,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
     // Pre-multiply alpha
     if (bPreMultipliedAlphaSupported)
     {
-        const uint uiArea = uiTextureRealWidth * uiTextureRealHeight;
+        const uint uiArea = mCanvasDimensions.x * mCanvasDimensions.y;
         for (uint i = 0; i < uiArea; ++i)
         {
             float a = pTexturePixels[i].a/255.0f;

@@ -393,10 +393,7 @@ void texture::set_tex_coord_modifies_rect(bool bTexCoordModifiesRect)
 void texture::update_dimensions_from_tex_coord_()
 {
     vector2f mExtent = mQuad_.v[2].uvs - mQuad_.v[0].uvs;
-
-    set_dimensions(vector2f(
-        mExtent.x*mQuad_.mat->get_canvas_width(),
-        mExtent.y*mQuad_.mat->get_canvas_height()));
+    set_dimensions(mExtent*vector2f(mQuad_.mat->get_canvas_dimensions()));
 }
 
 void texture::set_texture(const std::string& sFile)

@@ -61,14 +61,9 @@ void source::reset_window_resized()
     bWindowResized_ = false;
 }
 
-uint source::get_window_width() const
+const gui::vector2ui& source::get_window_dimensions() const
 {
-    return uiWindowWidth_;
-}
-
-uint source::get_window_height() const
-{
-    return uiWindowHeight_;
+    return mWindowDimensions_;
 }
 
 void source::set_doubleclick_time(double dDoubleClickTime)

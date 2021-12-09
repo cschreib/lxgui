@@ -59,13 +59,12 @@ namespace sdl
         bool is_texture_vertex_color_supported() const override;
 
         /// Creates a new material from arbitrary pixel data.
-        /** \param uiWidth    The width of the material
-        *   \param uiHeight   The height of the material
-        *   \param pPixelData The color data for all the pixels in the material
-        *   \param mFilter    The filtering to apply to the texture
+        /** \param mDimensions The dimensions of the material
+        *   \param pPixelData  The color data for all the pixels in the material
+        *   \param mFilter     The filtering to apply to the texture
         *   \return The new material
         */
-        std::shared_ptr<gui::material> create_material(uint uiWidth, uint uiHeight,
+        std::shared_ptr<gui::material> create_material(const vector2ui& mDimensions,
             const ub32color* pPixelData,
             material::filter mFilter = material::filter::NONE) const override;
 
@@ -79,12 +78,11 @@ namespace sdl
             const bounds2f& mLocation) const override;
 
         /// Creates a new render target.
-        /** \param uiWidth  The width of the render target
-        *   \param uiHeight The height of the render target
-        *   \param mFilter  The filtering to apply to the target texture when displayed
+        /** \param mDimensions The dimensions of the render target
+        *   \param mFilter     The filtering to apply to the target texture when displayed
         */
         std::shared_ptr<gui::render_target> create_render_target(
-            uint uiWidth, uint uiHeight,
+            const vector2ui& mDimensions,
             material::filter mFilter = material::filter::NONE) const override;
 
         /// Checks if the renderer supports vertex caches.
@@ -100,10 +98,9 @@ namespace sdl
             gui::vertex_cache::type mType) const override;
 
         /// Notifies the renderer that the render window has been resized.
-        /** \param uiNewWidth  The new window width
-        *   \param uiNewHeight The new window height
+        /** \param mDimensions The new window dimensions
         */
-        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
+        void notify_window_resized(const vector2ui& mNewDimensions) override;
 
         /// Returns the SDL renderer implementation.
         /** \return the SDL renderer implementation
@@ -218,8 +215,7 @@ namespace sdl
         bool bPreMultipliedAlphaSupported_ = false;
         uint uiTextureMaxSize_ = 0u;
 
-        uint uiWindowWidth_ = 0u;
-        uint uiWindowHeight_ = 0u;
+        vector2ui mWindowDimensions_;
         mutable matrix4f mViewMatrix_;
         mutable matrix4f mRawViewMatrix_;
         mutable matrix4f mTargetViewMatrix_;

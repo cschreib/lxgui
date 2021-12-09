@@ -117,8 +117,7 @@ namespace gui
         float get_vertical_scroll_range() const;
 
         /// Checks if the provided coordinates are in the scroll_frame.
-        /** \param fX The horizontal coordinate
-        *   \param fY The vertical coordinate
+        /** \param mPosition The coordinates to test
         *   \return 'true' if the provided coordinates are in the scroll_frame
         *   \note The scroll_frame version of this function also checks if the
         *         mouse is over the scroll texture (which means this function
@@ -126,14 +125,13 @@ namespace gui
         *   \note For scroll children to receive input, the scroll_frame must be
         *         keyboard/mouse/wheel enabled.
         */
-        bool is_in_frame(float fX, float fY) const override;
+        bool is_in_frame(const vector2f& mPosition) const override;
 
         /// Tells this scroll_frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this scroll_frame
-        *   \param fX            The horizontal mouse coordinate
-        *   \param fY            The vertical mouse coordinate
+        *   \param mMousePos     The mouse coordinates
         */
-        void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY) override;
+        void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos) override;
 
         /// Tells this renderer that one of its widget requires redraw.
         void notify_strata_needs_redraw(frame_strata mStrata) const override;
@@ -144,15 +142,10 @@ namespace gui
         */
         void notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered) override;
 
-        /// Returns the width of of this renderer's main render target (e.g., screen).
-        /** \return The render target width
+        /// Returns the width and height of of this renderer's main render target (e.g., screen).
+        /** \return The render target dimensions
         */
-        float get_target_width() const override;
-
-        /// Returns the height of this renderer's main render target (e.g., screen).
-        /** \return The render target height
-        */
-        float get_target_height() const override;
+        vector2f get_target_dimensions() const override;
 
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;

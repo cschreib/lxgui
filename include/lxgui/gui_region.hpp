@@ -27,11 +27,10 @@ namespace gui
         void render() override;
 
         /// Checks if the provided coordinates are inside this region.
-        /** \param fX The horizontal coordinate
-        *   \param fY The vertical coordinate
+        /** \param mPosition The coordinates to test
         *   \return 'true' if the provided coordinates are inside this region
         */
-        virtual bool is_in_region(float fX, float fY) const;
+        virtual bool is_in_region(const vector2f& mPosition) const;
 
         /// Creates the associated Lua glue.
         void create_glue() override;

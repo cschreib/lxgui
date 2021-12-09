@@ -114,7 +114,7 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
 
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
-    return std::make_shared<gl::material>(uiTextureHandle_, uiSize_, uiSize_, mLocation, mFilter_);
+    return std::make_shared<gl::material>(uiTextureHandle_, vector2ui(uiSize_, uiSize_), mLocation, mFilter_);
 }
 
 float atlas_page::get_width() const

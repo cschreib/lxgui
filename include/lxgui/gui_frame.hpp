@@ -352,8 +352,7 @@ namespace gui
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
         */
-        utils::observer_ptr<layered_region> add_region(
-            utils::owner_ptr<layered_region> pRegion);
+        utils::observer_ptr<layered_region> add_region(utils::owner_ptr<layered_region> pRegion);
 
         /// Adds a layered_region to this frame's children.
         /** \param pRegion The layered_region to add
@@ -687,11 +686,10 @@ namespace gui
         bool is_clamped_to_screen() const;
 
         /// Checks if the provided coordinates are in the frame.
-        /** \param fX The horizontal coordinate
-        *   \param fY The vertical coordinate
+        /** \param mPosition The coordinates to test
         *   \return 'true' if the provided coordinates are in the frame
         */
-        virtual bool is_in_frame(float fX, float fY) const;
+        virtual bool is_in_frame(const vector2f& mPosition) const;
 
         /// Checks if this frame can receive keyboard input.
         /** \return 'true' if this frame can receive keyboard input
@@ -892,28 +890,10 @@ namespace gui
         void set_backdrop(std::unique_ptr<backdrop> pBackdrop);
 
         /// Sets this frame's absolute hit rect insets.
-        /** \param fLeft   Offset from the left border
-        *   \param fRight  Offset from the right border
-        *   \param fTop    Offset from the top border
-        *   \param fBottom Offset from the bottom border
-        *   \note This is the zone on which you can click.
-        */
-        void set_abs_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom);
-
-        /// Sets this frame's absolute hit rect insets.
         /** \param lInsets Offsets
         *   \note This is the zone on which you can click.
         */
         void set_abs_hit_rect_insets(const bounds2f& lInsets);
-
-        /// Sets this frame's relative hit rect insets.
-        /** \param fLeft   Offset from the left border
-        *   \param fRight  Offset from the right border
-        *   \param fTop    Offset from the top border
-        *   \param fBottom Offset from the bottom border
-        *   \note This is the zone on which you can click.
-        */
-        void set_rel_hit_rect_insets(float fLeft, float fRight, float fTop, float fBottom);
 
         /// Sets this frame's relative hit rect insets.
         /** \param lInsets Offsets
@@ -927,21 +907,9 @@ namespace gui
         void set_level(int iLevel);
 
         /// Sets this frame's maximum size.
-        /** \param fMaxWidth  The maximum width this frame can have
-        *   \param fMaxHeight The maximum height this frame can have
-        */
-        void set_max_resize(float fMaxWidth, float fMaxHeight);
-
-        /// Sets this frame's maximum size.
         /** \param mMax The maximum dimensions of this frame
         */
         void set_max_resize(const vector2f& mMax);
-
-        /// Sets this frame's minimum size.
-        /** \param fMinWidth  The minimum width this frame can have
-        *   \param fMinHeight The minimum height this frame can have
-        */
-        void set_min_resize(float fMinWidth, float fMinHeight);
 
         /// Sets this frame's minimum size.
         /** \param mMin Minimum dimensions of this frame
@@ -1098,13 +1066,12 @@ namespace gui
 
         /// Tells this frame it is being overed by the mouse.
         /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param fX            The horizontal mouse coordinate
-        *   \param fY            The vertical mouse coordinate
+        *   \param mMousePos     The mouse coordinates in pixels
         *   \note Always use the mouse position set by this function and
-        *         not the one returned by the InputManager, because there
-        *         can be an offset to apply (for example with ScrollFrame).
+        *         not the one returned by the input_manager, because there
+        *         can be an offset applied (for example with scroll_frame).
         */
-        virtual void notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY);
+        virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
 
         /// Notifies this widget that it is now visible on screen.
         /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
@@ -1252,7 +1219,7 @@ namespace gui
 
         bool bMouseInFrame_ = false;
         bool bMouseInTitleRegion_ = false;
-        float fMousePosX_ = 0.0f, fMousePosY_ = 0.0f;
+        vector2f mMousePos_;
 
         utils::owner_ptr<region> pTitleRegion_ = nullptr;
 

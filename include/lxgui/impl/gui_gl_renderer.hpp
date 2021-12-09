@@ -24,12 +24,11 @@ namespace gl
     public :
 
         /// Constructor.
-        /** \param uiWindowWidth  The initial width of the window (in pixels)
-        *   \param uiWindowHeight The initial height of the window (in pixels)
-        *   \param bInitGLEW      Set to 'true' to initialise GLEW
+        /** \param mWindowDimensions The initial window dimensions (in pixels)
+        *   \param bInitGLEW         Set to 'true' to initialise GLEW
         *   \note Use notify_window_resized() if the size of the window changes later.
         */
-        explicit renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW = true);
+        explicit renderer(const vector2ui& mWindowDimensions, bool bInitGLEW = true);
 
         /// Returns a human-readable name for this renderer.
         /** \return A human-readable name for this renderer
@@ -62,13 +61,12 @@ namespace gl
         bool is_texture_vertex_color_supported() const override;
 
         /// Creates a new material from arbitrary pixel data.
-        /** \param uiWidth    The width of the material
-        *   \param uiHeight   The height of the material
-        *   \param pPixelData The color data for all the pixels in the material
-        *   \param mFilter    The filtering to apply to the texture
+        /** \param mDimensions The dimensions of the material
+        *   \param pPixelData  The color data for all the pixels in the material
+        *   \param mFilter     The filtering to apply to the texture
         *   \return The new material
         */
-        std::shared_ptr<gui::material> create_material(uint uiWidth, uint uiHeight,
+        std::shared_ptr<gui::material> create_material(const vector2ui& mDimensions,
             const ub32color* pPixelData,
             material::filter mFilter = material::filter::NONE) const override;
 
@@ -82,12 +80,11 @@ namespace gl
             const bounds2f& mLocation) const override;
 
         /// Creates a new render target.
-        /** \param uiWidth  The width of the render target
-        *   \param uiHeight The height of the render target
-        *   \param mFilter  The filtering to apply to the target texture when displayed
+        /** \param mDimensions The dimensions of the render target
+        *   \param mFilter     The filtering to apply to the target texture when displayed
         */
         std::shared_ptr<gui::render_target> create_render_target(
-            uint uiWidth, uint uiHeight,
+            const vector2ui& mDimensions,
             material::filter mFilter = material::filter::NONE) const override;
 
         /// Checks if the renderer supports vertex caches.
@@ -103,10 +100,9 @@ namespace gl
             gui::vertex_cache::type mType) const override;
 
         /// Notifies the renderer that the render window has been resized.
-        /** \param uiNewWidth  The new window width
-        *   \param uiNewHeight The new window height
+        /** \param mDimensions The new window dimensions
         */
-        void notify_window_resized(uint uiNewWidth, uint uiNewHeight) override;
+        void notify_window_resized(const vector2ui& mNewDimensions) override;
 
     #if !defined(LXGUI_OPENGL3)
         /// Checks if a given OpenGL extension is supported by the machine.
@@ -212,8 +208,7 @@ namespace gl
         std::shared_ptr<gui::material> create_material_png_(const std::string& sFileName,
             material::filter mFilter) const;
 
-        uint uiWindowWidth_ = 0u;
-        uint uiWindowHeight_ = 0u;
+        vector2ui mWindowDimensions_;
 
         mutable std::shared_ptr<gui::gl::render_target> pCurrentTarget_;
         mutable matrix4f mCurrentViewMatrix_ = matrix4f::IDENTITY;

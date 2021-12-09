@@ -98,15 +98,10 @@ namespace gui
         manager& operator = (const manager& mMgr) = delete;
         manager& operator = (manager&& mMgr) = delete;
 
-        /// Returns the width of of this renderer's main render target (e.g., screen).
-        /** \return The render target width
+        /// Returns the width and height of of this renderer's main render target (e.g., screen).
+        /** \return The render target dimensions
         */
-        float get_target_width() const override;
-
-        /// Returns the height of this renderer's main render target (e.g., screen).
-        /** \return The render target height
-        */
-        float get_target_height() const override;
+        vector2f get_target_dimensions() const override;
 
         /// Sets the global UI scaling factor.
         /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
@@ -523,19 +518,12 @@ namespace gui
         */
         bool is_sizing(const uiobject& mObj) const;
 
-        /// Returns the cumuled horizontal mouse movement.
-        /** \return The cumuled horizontal mouse movement
-        *   \note This value is reset to zero whenever start_moving() or
+        /// Returns the accumulated mouse movement.
+        /** \return The accumulated mouse movement
+        *   \note This vector is reset to zero whenever start_moving() or
         *         start_sizing() is called.
         */
-        float get_movement_x() const;
-
-        /// Returns the cumuled vertical mouse movement.
-        /** \return The cumuled vertical mouse movement
-        *   \note This value is reset to zero whenever start_moving() or
-        *         start_sizing() is called.
-        */
-        float get_movement_y() const;
+        const vector2f& get_movement() const;
 
         /// Tells this manager an object has moved.
         void notify_object_moved();
@@ -752,7 +740,8 @@ namespace gui
         void clear_focussed_frame_();
         void clear_hovered_frame_();
         void update_hovered_frame_();
-        void set_hovered_frame_(utils::observer_ptr<frame> pFrame, float fX = 0, float fY = 0);
+        void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
+            const vector2f& mMousePos = vector2f::ZERO);
 
         utils::observer_ptr<frame> create_root_frame_(const std::string& sClassName,
             const std::string& sName, bool bVirtual,
@@ -764,8 +753,7 @@ namespace gui
         void parse_xml_file_(const std::string& sFile, addon* pAddOn);
 
         std::string sUIVersion_ = "0001";
-        uint        uiScreenWidth_ = 0u;
-        uint        uiScreenHeight_=  0u;
+        vector2ui   mScreenDimensions_;
         float       fScalingFactor_ = 1.0f;
         float       fBaseScalingFactor_ = 1.0f;
 
@@ -806,12 +794,10 @@ namespace gui
 
         utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
         utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
-        float                         fMouseMovementX_ = 0.0f;
-        float                         fMouseMovementY_ = 0.0f;
+        vector2f                      mMouseMovement_;
 
         anchor*    pMovedAnchor_ = nullptr;
-        float      fMovementStartPositionX_ = 0.0f;
-        float      fMovementStartPositionY_ = 0.0f;
+        vector2f   mMovementStartPosition_;
         constraint mConstraint_ = constraint::NONE;
         std::function<void()> pApplyConstraintFunc_;
 

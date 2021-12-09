@@ -52,30 +52,19 @@ namespace gui
         virtual bounds2f get_rect() const = 0;
 
         /// Sets this render target's dimensions.
-        /** \param uiWidth This render target's width
-        *   \param uiHeight This render target's height
-        *   \return 'true' if the function had to re-create a
-        *           new render target
+        /** \param mDimensions The new dimensions (in pixels)
+        *   \return 'true' if the function had to re-create a new render target
         */
-        virtual bool set_dimensions(uint uiWidth, uint uiHeight) = 0;
+        virtual bool set_dimensions(const vector2ui& mDimensions) = 0;
 
-        /// Returns this render target's canvas width.
-        /** \return This render target's canvas width
+        /// Returns this render target's canvas dimension.
+        /** \return This render target's canvas dimension
         *   \note This is the physical size of the render target.
-        *         On some systems, abitrary dimensions are not supported :
+        *         On some systems, abitrary dimensions are not supported:
         *         they can be promoted to the nearest power of two from
         *         for example.
         */
-        virtual uint get_canvas_width() const = 0;
-
-        /// Returns this render target's canvas height.
-        /** \return This render target's canvas height
-        *   \note This is the physical size of the render target.
-        *         On some systems, abitrary dimensions are not supported :
-        *         they can be promoted to the nearest power of two from
-        *         for example.
-        */
-        virtual uint get_canvas_height() const = 0;
+        virtual vector2ui get_canvas_dimensions() const = 0;
     };
 }
 }

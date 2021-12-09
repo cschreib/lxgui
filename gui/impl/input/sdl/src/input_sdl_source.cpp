@@ -17,9 +17,10 @@ namespace sdl
 source::source(SDL_Window* pWindow, SDL_Renderer* pRenderer, bool bInitialiseSDLImage,
     bool bMouseGrab) : pWindow_(pWindow), pRenderer_(pRenderer), bMouseGrab_(bMouseGrab)
 {
-    gui::vector2ui mWindowSize = get_window_pixel_size_();
-    uiWindowWidth_ = mWindowSize.x;
-    uiWindowHeight_ = mWindowSize.y;
+    mWindowDimensions_ = get_window_pixel_size_();
+
+    if (bMouseGrab_)
+        mOldMousePos_ = gui::vector2f(mWindowDimensions_)/2.0f;
 
     mMouse_.bHasDelta = true;
 
@@ -40,10 +41,7 @@ void source::toggle_mouse_grab()
 {
     bMouseGrab_ = !bMouseGrab_;
     if (bMouseGrab_)
-    {
-        fOldMouseX_ = uiWindowWidth_/2;
-        fOldMouseY_ = uiWindowHeight_/2;
-    }
+        mOldMousePos_ = gui::vector2f(mWindowDimensions_)/2.0f;
 }
 
 utils::ustring source::get_clipboard_content()
@@ -238,46 +236,26 @@ void source::update_()
     int iMouseX, iMouseY;
     SDL_GetMouseState(&iMouseX, &iMouseY);
 
-    float fMouseX = iMouseX*fPixelsPerUnit_;
-    float fMouseY = iMouseY*fPixelsPerUnit_;
+    gui::vector2f mMousePos(iMouseX*fPixelsPerUnit_, iMouseY*fPixelsPerUnit_);
 
     if (bFirst_)
     {
-        mMouse_.fAbsX = fMouseX;
-        mMouse_.fAbsY = fMouseY;
-        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
-        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
-
-        mMouse_.fDX = mMouse_.fDY = mMouse_.fRelDX = mMouse_.fRelDY = 0.0f;
+        mMouse_.mPosition = mMousePos;
+        mMouse_.mDelta = gui::vector2f::ZERO;
         bFirst_ = false;
 
         if (!bMouseGrab_)
-        {
-            fOldMouseX_ = mMouse_.fAbsX;
-            fOldMouseY_ = mMouse_.fAbsY;
-        }
+            mOldMousePos_ = mMouse_.mPosition;
     }
     else
     {
-        mMouse_.fDX = fMouseX - fOldMouseX_;
-        mMouse_.fDY = fMouseY - fOldMouseY_;
-        mMouse_.fRelDX = mMouse_.fDX/uiWindowWidth_;
-        mMouse_.fRelDY = mMouse_.fDY/uiWindowHeight_;
-
-        mMouse_.fAbsX += mMouse_.fDX;
-        mMouse_.fAbsY += mMouse_.fDY;
-        mMouse_.fRelX = mMouse_.fAbsX/uiWindowWidth_;
-        mMouse_.fRelY = mMouse_.fAbsY/uiWindowHeight_;
+        mMouse_.mDelta = mMousePos - mOldMousePos_;
+        mMouse_.mPosition += mMouse_.mDelta;
 
         if (bMouseGrab_)
-        {
-            SDL_WarpMouseInWindow(pWindow_, fOldMouseX_, fOldMouseY_);
-        }
+            SDL_WarpMouseInWindow(pWindow_, mOldMousePos_.x, mOldMousePos_.y);
         else
-        {
-            fOldMouseX_ = mMouse_.fAbsX;
-            fOldMouseY_ = mMouse_.fAbsY;
-        }
+            mOldMousePos_ = mMouse_.mPosition;
     }
 
     mMouse_.fRelWheel = 0.0f;
@@ -335,23 +313,23 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             gui::event mMouseEvent("MOUSE_PRESSED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
 
-            float fMouseX, fMouseY;
+            gui::vector2f mMousePos;
             if (mEvent.type == SDL_MOUSEBUTTONDOWN)
             {
-                fMouseX = mEvent.button.x*fPixelsPerUnit_;
-                fMouseY = mEvent.button.y*fPixelsPerUnit_;
+                mMousePos = gui::vector2f(
+                    mEvent.button.x*fPixelsPerUnit_, mEvent.button.y*fPixelsPerUnit_);
             }
             else
             {
                 // Reset "previous" mouse position to avoid triggering incorrect
                 // drag events. With touch devices, the mouse position does not change
                 // until the finger is down on the screen.
-                fMouseX = fOldMouseX_ = mEvent.tfinger.x*uiWindowWidth_;
-                fMouseY = fOldMouseY_ = mEvent.tfinger.y*uiWindowHeight_;
+                mMousePos = mOldMousePos_ = gui::vector2f(
+                    mEvent.tfinger.x*mWindowDimensions_.x, mEvent.tfinger.y*mWindowDimensions_.y);
             }
 
-            mMouseEvent.add(fMouseX);
-            mMouseEvent.add(fMouseY);
+            mMouseEvent.add(mMousePos.x);
+            mMouseEvent.add(mMousePos.y);
 
             lEvents_.push_back(mMouseEvent);
 
@@ -426,12 +404,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
                 mEvent.window.windowID == SDL_GetWindowID(pWindow_))
             {
                 bWindowResized_ = true;
-
-                gui::vector2ui mPixelSize = get_window_pixel_size_();
-
-                uiWindowWidth_ = mPixelSize.x;
-                uiWindowHeight_ = mPixelSize.y;
-
+                mWindowDimensions_ = get_window_pixel_size_();
                 update_pixel_per_unit_();
             }
             break;

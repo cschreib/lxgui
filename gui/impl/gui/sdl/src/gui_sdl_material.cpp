@@ -25,7 +25,7 @@ int material::get_premultiplied_alpha_blend_mode()
     return (int)mBlend;
 }
 
-material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
+material::material(SDL_Renderer* pRenderer, const vector2ui& mDimensions,
     bool bRenderTarget, wrap mWrap, filter mFilter) :
     gui::material(false), pRenderer_(pRenderer), bIsOwner_(true)
 {
@@ -37,11 +37,11 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
 
     if (mInfo.max_texture_width != 0)
     {
-        if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+        if (mDimensions.x > (uint)mInfo.max_texture_width || mDimensions.y > (uint)mInfo.max_texture_height)
         {
             throw gui::exception("gui::sdl::material",
                 "Texture dimensions not supported by hardware: ("+
-                utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+").");
+                utils::to_string(mDimensions.x)+" x "+utils::to_string(mDimensions.y)+").");
         }
     }
 
@@ -54,29 +54,26 @@ material::material(SDL_Renderer* pRenderer, uint uiWidth, uint uiHeight,
     pTexture_ = SDL_CreateTexture(pRenderer,
         SDL_PIXELFORMAT_ABGR8888,
         bRenderTarget ? SDL_TEXTUREACCESS_TARGET : SDL_TEXTUREACCESS_STREAMING,
-        uiWidth, uiHeight);
+        mDimensions.x, mDimensions.y);
 
     if (pTexture_ == nullptr)
     {
         throw gui::exception("gui::sdl::material", "Could not create "+
             std::string(bRenderTarget ? "render target" : "texture")+" with dimensions "+
-            utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+            utils::to_string(mDimensions.x)+" x "+utils::to_string(mDimensions.y)+".");
     }
 
-    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    int iCanvasWidth = 0, iCanvasHeight = 0, iAccess = 0;
     Uint32 uiTextureFormat = 0;
-    SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess,
-        &iTextureRealWidth, &iTextureRealHeight);
+    SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess, &iCanvasWidth, &iCanvasHeight);
 
-    uiWidth_ = uiWidth;
-    uiHeight_ = uiHeight;
+    mDimensions_ = mDimensions;
+    mCanvasDimensions_ = vector2ui(iCanvasWidth, iCanvasHeight);
     mWrap_ = mWrap;
     mFilter_ = mFilter;
-    uiRealWidth_ = iTextureRealWidth;
-    uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = bRenderTarget;
 
-    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
 }
 
 material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
@@ -130,35 +127,31 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     std::copy(pSurfacePixelsStart, pSurfacePixelsEnd, pTexturePixels);
     unlock_pointer();
 
-    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    int iCanvasWidth = 0, iCanvasHeight = 0, iAccess = 0;
     Uint32 uiTextureFormat = 0;
     SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess,
-        &iTextureRealWidth, &iTextureRealHeight);
+        &iCanvasWidth, &iCanvasHeight);
 
-    uiWidth_ = uiWidth;
-    uiHeight_ = uiHeight;
+    mDimensions_ = vector2ui(uiWidth, uiHeight);
+    mCanvasDimensions_ = vector2ui(iCanvasWidth, iCanvasHeight);
     mWrap_ = mWrap;
     mFilter_ = mFilter;
-    uiRealWidth_ = iTextureRealWidth;
-    uiRealHeight_ = iTextureRealHeight;
     bRenderTarget_ = false;
 
-    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
 }
 
 material::material(SDL_Renderer* pRenderer, SDL_Texture* pTexture, const bounds2f& mRect,
     filter mFilter) : gui::material(true), pRenderer_(pRenderer), mRect_(mRect),
     mFilter_(mFilter), pTexture_(pTexture), bIsOwner_(false)
 {
-    int iTextureRealWidth = 0, iTextureRealHeight = 0, iAccess = 0;
+    int iCanvasWidth = 0, iCanvasHeight = 0, iAccess = 0;
     Uint32 uiTextureFormat = 0;
     SDL_QueryTexture(pTexture_, &uiTextureFormat, &iAccess,
-        &iTextureRealWidth, &iTextureRealHeight);
+        &iCanvasWidth, &iCanvasHeight);
 
-    uiWidth_ = mRect_.width();
-    uiHeight_ = mRect_.height();
-    uiRealWidth_ = iTextureRealWidth;
-    uiRealHeight_ = iTextureRealHeight;
+    mDimensions_ = vector2ui(mRect_.dimensions());
+    mCanvasDimensions_ = vector2ui(iCanvasWidth, iCanvasHeight);
 }
 
 material::~material() noexcept
@@ -217,14 +210,9 @@ bounds2f material::get_rect() const
     return mRect_;
 }
 
-float material::get_canvas_width() const
+vector2ui material::get_canvas_dimensions() const
 {
-    return uiRealWidth_;
-}
-
-float material::get_canvas_height() const
-{
-    return uiRealHeight_;
+    return mCanvasDimensions_;
 }
 
 bool material::uses_same_texture(const gui::material& mOther) const
@@ -232,7 +220,7 @@ bool material::uses_same_texture(const gui::material& mOther) const
     return pTexture_ == static_cast<const sdl::material&>(mOther).pTexture_;
 }
 
-bool material::set_dimensions(uint uiWidth, uint uiHeight)
+bool material::set_dimensions(const vector2ui& mDimensions)
 {
     if (!bIsOwner_)
     {
@@ -249,41 +237,45 @@ bool material::set_dimensions(uint uiWidth, uint uiHeight)
 
     if (mInfo.max_texture_width != 0)
     {
-        if (uiWidth > (uint)mInfo.max_texture_width || uiHeight > (uint)mInfo.max_texture_height)
+        if (mDimensions.x > (uint)mInfo.max_texture_width ||
+            mDimensions.y > (uint)mInfo.max_texture_height)
         {
             return false;
         }
     }
 
-    uiWidth_  = uiWidth;
-    uiHeight_ = uiHeight;
-    mRect_    = bounds2f(0, uiWidth_, 0, uiHeight_);
+    bool bCanvasUpdated = false;
 
-    if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
+    if (mDimensions.x > mCanvasDimensions_.x || mDimensions.y > mCanvasDimensions_.y)
     {
         // SDL is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
-        if (uiWidth > uiRealWidth_)
-            uiRealWidth_  = uiWidth + uiWidth/2;
-        if (uiHeight > uiRealHeight_)
-            uiRealHeight_ = uiHeight + uiHeight/2;
+        vector2ui mCanvasDimensions = mCanvasDimensions_;
+        if (mDimensions.x > mCanvasDimensions_.x)
+            mCanvasDimensions.x = mDimensions.x + mDimensions.x/2;
+        if (mDimensions.y > mCanvasDimensions_.y)
+            mCanvasDimensions.y = mDimensions.y + mDimensions.y/2;
 
-        SDL_DestroyTexture(pTexture_);
-        pTexture_ = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_ABGR8888,
-            SDL_TEXTUREACCESS_TARGET, uiRealWidth_, uiRealHeight_);
+        SDL_Texture* pTexture = SDL_CreateTexture(pRenderer_, SDL_PIXELFORMAT_ABGR8888,
+            SDL_TEXTUREACCESS_TARGET, mCanvasDimensions.x, mCanvasDimensions.y);
 
-        if (pTexture_ == nullptr)
+        if (pTexture == nullptr)
         {
             throw gui::exception("gui::sdl::material", "Could not create render target "
-                "with dimensions "+utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+                "with dimensions "+utils::to_string(mCanvasDimensions.x)+
+                " x "+utils::to_string(mCanvasDimensions.y)+".");
         }
 
-        return true;
+        SDL_DestroyTexture(pTexture_);
+        pTexture_ = pTexture;
+        mCanvasDimensions_ = mCanvasDimensions;
+        bCanvasUpdated = true;
     }
-    else
-    {
-        return false;
-    }
+
+    mDimensions_ = mDimensions;
+    mRect_       = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+
+    return bCanvasUpdated;
 }
 
 const ub32color* material::lock_pointer(uint* pPitch) const

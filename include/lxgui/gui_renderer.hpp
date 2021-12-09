@@ -284,22 +284,20 @@ namespace gui
             std::shared_ptr<render_target> pRenderTarget) const;
 
         /// Creates a new material from arbitrary pixel data.
-        /** \param uiWidth    The width of the material
-        *   \param uiHeight   The height of the material
-        *   \param pPixelData The color data for all the pixels in the material
-        *   \param mFilter    The filtering to apply to the texture
+        /** \param mDimensions The dimensions of the material
+        *   \param pPixelData  The color data for all the pixels in the material
+        *   \param mFilter     The filtering to apply to the texture
         *   \return The new material
         */
-        virtual std::shared_ptr<material> create_material(uint uiWidth, uint uiHeight,
+        virtual std::shared_ptr<material> create_material(const vector2ui& mDimensions,
             const ub32color* pPixelData, material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new render target.
-        /** \param uiWidth  The width of the render target
-        *   \param uiHeight The height of the render target
-        *   \param mFilter  The filtering to apply to the target texture when displayed
+        /** \param mDimensions The dimensions of the render target
+        *   \param mFilter     The filtering to apply to the target texture when displayed
         */
         virtual std::shared_ptr<render_target> create_render_target(
-            uint uiWidth, uint uiHeight,
+            const vector2ui& mDimensions,
             material::filter mFilter = material::filter::NONE) const = 0;
 
         /// Creates a new font.
@@ -343,10 +341,9 @@ namespace gui
             gui::vertex_cache::type mType) const = 0;
 
         /// Notifies the renderer that the render window has been resized.
-        /** \param uiNewWidth  The new window width
-        *   \param uiNewHeight The new window height
+        /** \param mDimensions The new window dimensions
         */
-        virtual void notify_window_resized(uint uiNewWidth, uint uiNewHeight);
+        virtual void notify_window_resized(const vector2ui& mDimensions);
 
     protected:
 

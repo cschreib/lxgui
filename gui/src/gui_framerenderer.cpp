@@ -203,7 +203,7 @@ void frame_renderer::reset_strata_list_changed_flag_()
     bStrataListUpdated_ = false;
 }
 
-utils::observer_ptr<frame> frame_renderer::find_hovered_frame_(float fX, float fY)
+utils::observer_ptr<frame> frame_renderer::find_hovered_frame_(const vector2f& mPosition)
 {
     // Iterate through the frames in reverse order from rendering (frame on top goes first)
     for (const auto& mStrata : utils::range::reverse(lStrataList_))
@@ -212,7 +212,7 @@ utils::observer_ptr<frame> frame_renderer::find_hovered_frame_(float fX, float f
         {
             for (const auto& pFrame : utils::range::reverse(mLevel.lFrameList))
             {
-                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(fX, fY))
+                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(mPosition))
                     return pFrame;
             }
         }

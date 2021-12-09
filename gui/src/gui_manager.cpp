@@ -48,8 +48,7 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
 {
     pInputManager_->register_event_manager(this);
 
-    uiScreenWidth_ = pInputManager_->get_window_width();
-    uiScreenHeight_ = pInputManager_->get_window_height();
+    mScreenDimensions_ = pInputManager_->get_window_dimensions();
 
     set_interface_scaling_factor(1.0f);
 
@@ -64,14 +63,9 @@ manager::~manager()
     close_ui();
 }
 
-float manager::get_target_width() const
+vector2f manager::get_target_dimensions() const
 {
-    return uiScreenWidth_/get_interface_scaling_factor();
-}
-
-float manager::get_target_height() const
-{
-    return uiScreenHeight_/get_interface_scaling_factor();
+    return vector2f(mScreenDimensions_)/get_interface_scaling_factor();
 }
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
@@ -705,10 +699,8 @@ void manager::close_ui()
         pSizedObject_ = nullptr;
         pMovedAnchor_ = nullptr;
         bObjectMoved_ = false;
-        fMouseMovementX_ = 0.0f;
-        fMouseMovementY_ = 0.0f;
-        fMovementStartPositionX_ = 0;
-        fMovementStartPositionY_ = 0;
+        mMouseMovement_ = vector2f::ZERO;
+        mMovementStartPosition_ = vector2f::ZERO;
         mConstraint_ = constraint::NONE;
         mResizeStart_ = vector2f::ZERO;
         bResizeWidth_ = false;
@@ -752,19 +744,13 @@ void manager::begin(std::shared_ptr<render_target> pTarget) const
 {
     pRenderer_->begin(pTarget);
 
-    float fWidth, fHeight;
+    vector2f mView;
     if (pTarget)
-    {
-        fWidth = pTarget->get_canvas_width()/fScalingFactor_;
-        fHeight = pTarget->get_canvas_height()/fScalingFactor_;
-    }
+        mView = vector2f(pTarget->get_canvas_dimensions())/fScalingFactor_;
     else
-    {
-        fWidth = uiScreenWidth_/fScalingFactor_;
-        fHeight = uiScreenHeight_/fScalingFactor_;
-    }
+        mView = vector2f(mScreenDimensions_)/fScalingFactor_;
 
-    pRenderer_->set_view(matrix4f::view(vector2f(fWidth, fHeight)));
+    pRenderer_->set_view(matrix4f::view(mView));
 }
 
 void manager::end() const
@@ -796,9 +782,9 @@ void manager::create_caching_render_target_()
     try
     {
         if (pRenderTarget_)
-            pRenderTarget_->set_dimensions(uiScreenWidth_, uiScreenHeight_);
+            pRenderTarget_->set_dimensions(mScreenDimensions_);
         else
-            pRenderTarget_ = pRenderer_->create_render_target(uiScreenWidth_, uiScreenHeight_);
+            pRenderTarget_ = pRenderer_->create_render_target(mScreenDimensions_);
     }
     catch (const utils::exception& e)
     {
@@ -809,14 +795,13 @@ void manager::create_caching_render_target_()
         return;
     }
 
-    float fScaledWidth = uiScreenWidth_/get_interface_scaling_factor();
-    float fScaledHeight = uiScreenHeight_/get_interface_scaling_factor();
+    vector2f mScaledDimensions = vector2f(mScreenDimensions_)/get_interface_scaling_factor();
 
     mScreenQuad_.mat = pRenderer_->create_material(pRenderTarget_);
-    mScreenQuad_.v[0].pos = vector2f(0,            0);
-    mScreenQuad_.v[1].pos = vector2f(fScaledWidth, 0);
-    mScreenQuad_.v[2].pos = vector2f(fScaledWidth, fScaledHeight);
-    mScreenQuad_.v[3].pos = vector2f(0,            fScaledHeight);
+    mScreenQuad_.v[0].pos = vector2f::ZERO;
+    mScreenQuad_.v[1].pos = vector2f(mScaledDimensions.x, 0);
+    mScreenQuad_.v[2].pos = mScaledDimensions;
+    mScreenQuad_.v[3].pos = vector2f(0, mScaledDimensions.y);
 
     mScreenQuad_.v[0].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
     mScreenQuad_.v[1].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
@@ -827,18 +812,17 @@ void manager::create_caching_render_target_()
 void manager::create_strata_cache_render_target_(strata& mStrata)
 {
     if (mStrata.pRenderTarget)
-        mStrata.pRenderTarget->set_dimensions(uiScreenWidth_, uiScreenHeight_);
+        mStrata.pRenderTarget->set_dimensions(mScreenDimensions_);
     else
-        mStrata.pRenderTarget = pRenderer_->create_render_target(uiScreenWidth_, uiScreenHeight_);
+        mStrata.pRenderTarget = pRenderer_->create_render_target(mScreenDimensions_);
 
-    float fScaledWidth = uiScreenWidth_/get_interface_scaling_factor();
-    float fScaledHeight = uiScreenHeight_/get_interface_scaling_factor();
+    vector2f mScaledDimensions = vector2f(mScreenDimensions_)/get_interface_scaling_factor();
 
     mStrata.mQuad.mat = pRenderer_->create_material(mStrata.pRenderTarget);
-    mStrata.mQuad.v[0].pos = vector2f(0,            0);
-    mStrata.mQuad.v[1].pos = vector2f(fScaledWidth, 0);
-    mStrata.mQuad.v[2].pos = vector2f(fScaledWidth, fScaledHeight);
-    mStrata.mQuad.v[3].pos = vector2f(0,            fScaledHeight);
+    mStrata.mQuad.v[0].pos = vector2f::ZERO;
+    mStrata.mQuad.v[1].pos = vector2f(mScaledDimensions.x, 0);
+    mStrata.mQuad.v[2].pos = mScaledDimensions;
+    mStrata.mQuad.v[3].pos = vector2f(0, mScaledDimensions.y);
 
     mStrata.mQuad.v[0].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 0), true);
     mStrata.mQuad.v[1].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(1, 0), true);
@@ -940,8 +924,7 @@ void manager::update(float fDelta)
     }
 
     if (has_strata_list_changed_() || bObjectMoved_ ||
-        (pInputManager_->get_mouse_dx() != 0.0f) ||
-        (pInputManager_->get_mouse_dy() != 0.0f))
+        pInputManager_->get_mouse_delta() != vector2f::ZERO)
     {
         bUpdateHoveredFrame_ = true;
     }
@@ -972,15 +955,15 @@ void manager::clear_hovered_frame_()
     pInputManager_->allow_input("WORLD");
 }
 
-void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, float fX, float fY)
+void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
 {
     if (pHoveredFrame_ && pFrame != pHoveredFrame_)
-        pHoveredFrame_->notify_mouse_in_frame(false, fX, fY);
+        pHoveredFrame_->notify_mouse_in_frame(false, mMousePos);
 
     if (pFrame)
     {
         pHoveredFrame_ = pFrame;
-        pHoveredFrame_->notify_mouse_in_frame(true, fX, fY);
+        pHoveredFrame_->notify_mouse_in_frame(true, mMousePos);
         if (pHoveredFrame_->is_world_input_allowed())
             pInputManager_->allow_input("WORLD");
         else
@@ -995,8 +978,7 @@ void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
 {
     pSizedObject_ = nullptr;
     pMovedObject_ = pObj;
-    fMouseMovementX_ = 0.0f;
-    fMouseMovementY_ = 0.0f;
+    mMouseMovement_ = vector2f::ZERO;
 
     if (pMovedObject_)
     {
@@ -1005,8 +987,7 @@ void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
         if (pAnchor)
         {
             pMovedAnchor_ = pAnchor;
-            fMovementStartPositionX_ = pMovedAnchor_->mOffset.x;
-            fMovementStartPositionY_ = pMovedAnchor_->mOffset.y;
+            mMovementStartPosition_ = pMovedAnchor_->mOffset;
         }
         else
         {
@@ -1017,8 +998,7 @@ void manager::start_moving(utils::observer_ptr<uiobject> pObj, anchor* pAnchor,
 
             pMovedAnchor_ = &pMovedObject_->modify_point(anchor_point::TOPLEFT);
 
-            fMovementStartPositionX_ = lBorders.left;
-            fMovementStartPositionY_ = lBorders.top;
+            mMovementStartPosition_ = lBorders.top_left();
         }
     }
 }
@@ -1039,10 +1019,9 @@ bool manager::is_moving(const uiobject& mObj) const
 
 void manager::start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint)
 {
-    pMovedObject_    = nullptr;
-    pSizedObject_    = pObj;
-    fMouseMovementX_ = 0.0f;
-    fMouseMovementY_ = 0.0f;
+    pMovedObject_   = nullptr;
+    pSizedObject_   = pObj;
+    mMouseMovement_ = vector2f::ZERO;
 
     if (pSizedObject_)
     {
@@ -1122,14 +1101,9 @@ bool manager::is_sizing(const uiobject& mObj) const
     return pSizedObject_.get() == &mObj;
 }
 
-float manager::get_movement_x() const
+const vector2f& manager::get_movement() const
 {
-    return fMouseMovementX_;
-}
-
-float manager::get_movement_y() const
-{
-    return fMouseMovementY_;
+    return mMouseMovement_;
 }
 
 void manager::notify_object_moved()
@@ -1201,11 +1175,10 @@ void manager::update_hovered_frame_()
         return;
 
     DEBUG_LOG(" Update hovered frame...");
-    float fX = pInputManager_->get_mouse_x();
-    float fY = pInputManager_->get_mouse_y();
+    const auto mMousePos = pInputManager_->get_mouse_position();
 
-    utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(fX, fY);
-    set_hovered_frame_(std::move(pHoveredFrame), fX, fY);
+    utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(mMousePos);
+    set_hovered_frame_(std::move(pHoveredFrame), mMousePos);
 
     bUpdateHoveredFrame_ = false;
 }
@@ -1392,8 +1365,7 @@ void manager::on_event(const event& mEvent)
     else if (mEvent.get_name() == "WINDOW_RESIZED")
     {
         // Update internal window size
-        uiScreenWidth_ = mEvent.get<uint>(0);
-        uiScreenHeight_ = mEvent.get<uint>(1);
+        mScreenDimensions_ = vector2ui(mEvent.get<uint>(0), mEvent.get<uint>(1));
 
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
@@ -1410,7 +1382,7 @@ void manager::on_event(const event& mEvent)
 
         notify_object_moved();
 
-        pRenderer_->notify_window_resized(uiScreenWidth_, uiScreenHeight_);
+        pRenderer_->notify_window_resized(mScreenDimensions_);
 
         // Resize caching render targets
         if (pRenderTarget_)
@@ -1427,8 +1399,7 @@ void manager::on_event(const event& mEvent)
         if (pMovedObject_ || pSizedObject_)
         {
             DEBUG_LOG(" Moved object...");
-            fMouseMovementX_ += mEvent.get<float>(0);
-            fMouseMovementY_ += mEvent.get<float>(1);
+            mMouseMovement_ += vector2f(mEvent.get<float>(0), mEvent.get<float>(1));
         }
 
         if (pMovedObject_)
@@ -1436,22 +1407,15 @@ void manager::on_event(const event& mEvent)
             switch (mConstraint_)
             {
                 case constraint::NONE :
-                    pMovedAnchor_->mOffset = vector2f(
-                        fMovementStartPositionX_ + fMouseMovementX_,
-                        fMovementStartPositionY_ + fMouseMovementY_
-                    );
+                    pMovedAnchor_->mOffset = mMovementStartPosition_ + mMouseMovement_;
                     break;
                 case constraint::X :
-                    pMovedAnchor_->mOffset = vector2f(
-                        fMovementStartPositionX_ + fMouseMovementX_,
-                        fMovementStartPositionY_
-                    );
+                    pMovedAnchor_->mOffset = mMovementStartPosition_ +
+                        vector2f(mMouseMovement_.x, 0.0f);
                     break;
                 case constraint::Y :
-                    pMovedAnchor_->mOffset = vector2f(
-                        fMovementStartPositionX_,
-                        fMovementStartPositionY_ + fMouseMovementY_
-                    );
+                    pMovedAnchor_->mOffset = mMovementStartPosition_ +
+                        vector2f(0.0f, mMouseMovement_.y);
                     break;
                 default : break;
             }
@@ -1465,15 +1429,15 @@ void manager::on_event(const event& mEvent)
         {
             float fWidth;
             if (bResizeFromRight_)
-                fWidth = std::max(0.0f, mResizeStart_.x + fMouseMovementX_);
+                fWidth = std::max(0.0f, mResizeStart_.x + mMouseMovement_.x);
             else
-                fWidth = std::max(0.0f, mResizeStart_.x - fMouseMovementX_);
+                fWidth = std::max(0.0f, mResizeStart_.x - mMouseMovement_.x);
 
             float fHeight;
             if (bResizeFromBottom_)
-                fHeight = std::max(0.0f, mResizeStart_.y + fMouseMovementY_);
+                fHeight = std::max(0.0f, mResizeStart_.y + mMouseMovement_.y);
             else
-                fHeight = std::max(0.0f, mResizeStart_.y - fMouseMovementY_);
+                fHeight = std::max(0.0f, mResizeStart_.y - mMouseMovement_.y);
 
             if (bResizeWidth_ && bResizeHeight_)
                 pSizedObject_->set_dimensions(vector2f(fWidth, fHeight));

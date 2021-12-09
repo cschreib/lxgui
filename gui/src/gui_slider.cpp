@@ -175,13 +175,13 @@ void slider::on_event(const event& mEvent)
                 float fValue;
                 if (mOrientation_ == orientation::HORIZONTAL)
                 {
-                    float fOffset = fMousePosX_ - lBorderList_.left;
+                    float fOffset = mMousePos_.x - lBorderList_.left;
                     fValue = fOffset/mApparentSize.x;
                     set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
                 }
                 else
                 {
-                    float fOffset = fMousePosY_ - lBorderList_.top;
+                    float fOffset = mMousePos_.y - lBorderList_.top;
                     fValue = fOffset/mApparentSize.y;
                     set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
                 }
@@ -433,30 +433,30 @@ utils::owner_ptr<texture> slider::create_thumb_texture_()
     return pTexture;
 }
 
-bool slider::is_in_frame(float fX, float fY) const
+bool slider::is_in_frame(const vector2f& mPosition) const
 {
     if (bAllowClicksOutsideThumb_)
     {
         if (pThumbTexture_)
-            return frame::is_in_frame(fX, fY) || pThumbTexture_->is_in_region(fX, fY);
+            return frame::is_in_frame(mPosition) || pThumbTexture_->is_in_region(mPosition);
         else
-            return frame::is_in_frame(fX, fY);
+            return frame::is_in_frame(mPosition);
     }
     else
     {
         if (pThumbTexture_)
-            return pThumbTexture_->is_in_region(fX, fY);
+            return pThumbTexture_->is_in_region(mPosition);
         else
             return false;
     }
 }
 
-void slider::notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY)
+void slider::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
 {
     if (bAllowClicksOutsideThumb_)
-        frame::notify_mouse_in_frame(bMouseInFrame, fX, fY);
+        frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);
 
-    bMouseInThumb_ = (bMouseInFrame && pThumbTexture_ && pThumbTexture_->is_in_region(fX, fY));
+    bMouseInThumb_ = (bMouseInFrame && pThumbTexture_ && pThumbTexture_->is_in_region(mMousePos));
 }
 
 void slider::update(float fDelta)

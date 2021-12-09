@@ -20,7 +20,7 @@ namespace gui {
 namespace sfml
 {
 renderer::renderer(sf::RenderWindow& mWindow) : mWindow_(mWindow),
-    uiWindowWidth_(mWindow.getSize().x), uiWindowHeight_(mWindow.getSize().y)
+    mWindowDimensions_(mWindow.getSize().x, mWindow.getSize().y)
 {
 }
 
@@ -42,7 +42,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     }
     else
     {
-        sf::FloatRect mVisibleArea(0, 0, uiWindowWidth_, uiWindowHeight_);
+        sf::FloatRect mVisibleArea(0, 0, mWindowDimensions_.x, mWindowDimensions_.y);
         mWindow_.setView(sf::View(mVisibleArea));
         pCurrentSFMLTarget_ = &mWindow_;
     }
@@ -93,8 +93,9 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 
     const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
 
-    const float fTexWidth = pMat ? pMat->get_canvas_width() : 1.0f;
-    const float fTexHeight = pMat ? pMat->get_canvas_height() : 1.0f;
+    vector2f mTexDims(1.0f, 1.0f);
+    if (pMat)
+        mTexDims = vector2f(pMat->get_canvas_dimensions());
 
     sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
     for (uint k = 0; k < lQuadList.size(); ++k)
@@ -109,8 +110,8 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 
             mSFVertex.position.x  = mVertex.pos.x;
             mSFVertex.position.y  = mVertex.pos.y;
-            mSFVertex.texCoords.x = mVertex.uvs.x*fTexWidth;
-            mSFVertex.texCoords.y = mVertex.uvs.y*fTexHeight;
+            mSFVertex.texCoords.x = mVertex.uvs.x*mTexDims.x;
+            mSFVertex.texCoords.y = mVertex.uvs.y*mTexDims.y;
             mSFVertex.color.r     = mVertex.col.r*a*255; // Premultipled alpha
             mSFVertex.color.g     = mVertex.col.g*a*255; // Premultipled alpha
             mSFVertex.color.b     = mVertex.col.b*a*255; // Premultipled alpha
@@ -180,11 +181,11 @@ bool renderer::is_texture_vertex_color_supported() const
     return true;
 }
 
-std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
+std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
     const ub32color* pPixelData, material::filter mFilter) const
 {
     std::shared_ptr<sfml::material> pTex = std::make_shared<sfml::material>(
-        uiWidth, uiHeight, false, material::wrap::REPEAT, mFilter);
+        mDimensions, false, material::wrap::REPEAT, mFilter);
 
     pTex->update_texture(pPixelData);
 
@@ -207,9 +208,9 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    uint uiWidth, uint uiHeight, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter) const
 {
-    return std::make_shared<sfml::render_target>(uiWidth, uiHeight, mFilter);
+    return std::make_shared<sfml::render_target>(mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
@@ -239,10 +240,9 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
 #endif
 }
 
-void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+void renderer::notify_window_resized(const vector2ui& mNewDimensions)
 {
-    uiWindowWidth_=  uiNewWidth;
-    uiWindowHeight_=  uiNewHeight;
+    mWindowDimensions_ =  mNewDimensions;
 }
 
 }

@@ -308,7 +308,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
         gl::material::premultiply_alpha(lData);
 
-        pTexture_ = std::make_shared<gl::material>(uiFinalWidth, uiFinalHeight);
+        pTexture_ = std::make_shared<gl::material>(vector2ui(uiFinalWidth, uiFinalHeight));
         pTexture_->update_texture(lData.data());
     }
     catch (...)

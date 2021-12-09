@@ -19,10 +19,10 @@ void region::create_glue()
     create_glue_(static_cast<uiobject*>(this));
 }
 
-bool region::is_in_region(float fX, float fY) const
+bool region::is_in_region(const vector2f& mPosition) const
 {
-    return ((lBorderList_.left <= fX && fX <= lBorderList_.right  - 1) &&
-            (lBorderList_.top  <= fY && fY <= lBorderList_.bottom - 1));
+    return ((lBorderList_.left <= mPosition.x && mPosition.x <= lBorderList_.right  - 1) &&
+            (lBorderList_.top  <= mPosition.y && mPosition.y <= lBorderList_.bottom - 1));
 }
 }
 }

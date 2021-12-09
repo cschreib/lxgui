@@ -172,57 +172,15 @@ namespace input
         */
         bool wheel_is_rolled(bool bForce = false) const;
 
-        /// Returns the horizontal position of the mouse.
-        /** \return The horizontal position of the mouse
+        /// Returns the position of the mouse in pixels.
+        /** \return The position of the mouse in pixels
         */
-        float get_mouse_x() const;
+        const gui::vector2f& get_mouse_position() const;
 
-        /// Returns the vertical position of the mouse.
-        /** \return The vertical position of the mouse
+        /// Returns the position variation of the mouse.
+        /** \return The position variation of the mouse
         */
-        float get_mouse_y() const;
-
-        /// Returns the horizontal position of the mouse in window units.
-        /** \return The horizontal position of the mouse in window units
-        *   \note This function returns the same thing as get_mouse_x(),
-        *         but divided by the window's width
-        */
-        float get_mouse_rel_x() const;
-
-        /// Returns the vertical position of the mouse in window units.
-        /** \return The vertical position of the mouse in window units
-        *   \note This function returns the same thing as get_mouse_y(),
-        *         but divided by the window's height
-        */
-        float get_mouse_rel_y() const;
-
-        /// Returns the horizontal position variation of the mouse.
-        /** \return The horizontal position variation of the mouse
-        *   \note This function returns the same thing as get_mouse_raw_dx(),
-        *         but this time, the game's sensibility factor is applied.
-        */
-        float get_mouse_dx() const;
-
-        /// Returns the vertical position variation of the mouse.
-        /** \return The vertical position variation of the mouse
-        *   \note This function returns the same thing as get_mouse_raw_dy(),
-        *         but this time, the game's sensibility factor is applied.
-        */
-        float get_mouse_dy() const;
-
-        /// Returns the horizontal position variation of the mouse in window units.
-        /** \return The horizontal position variation of the mouse in window units
-        *   \note This function returns the same thing as get_mouse_dx(),
-        *         but divided by the window's width
-        */
-        float get_mouse_rel_dx() const;
-
-        /// Returns the vertical position variation of the mouse in window units.
-        /** \return The vertical position variation of the mouse in window units
-        *   \note This function returns the same thing as get_mouse_dy(),
-        *         but divided by the window's height
-        */
-        float get_mouse_rel_dy() const;
+        const gui::vector2f& get_mouse_delta() const;
 
         /// Returns the rolling ammount of the mouse wheel.
         /** \return The rolling ammount of the mouse wheel
@@ -353,15 +311,10 @@ namespace input
         /// Sets the mouse cursor back to the default (arrow).
         void reset_mouse_cursor();
 
-        /// Get the window width (in pixels)
-        /** \return The window width
+        /// Get the window size (in pixels)
+        /** \return The window size
         */
-        uint get_window_width() const;
-
-        /// Get the window height (in pixels)
-        /** \return The window height
-        */
-        uint get_window_height() const;
+        const gui::vector2ui& get_window_dimensions() const;
 
         /// Sets the scaling factor applied to the interface.
         /** \param fScalingFactor The new scaling factor (default: 1)
@@ -425,15 +378,13 @@ namespace input
         std::unordered_map<std::string, bool> lClickGroupList_;
         std::unordered_map<std::string, bool> lForcedClickGroupList_;
 
-        float        fScalingFactor_ = 1.0f;
-        float        fMX_ = 0.0f, fMY_ = 0.0f;
-        float        fRelMX_ = 0.0f, fRelMY_ = 0.0f;
-        float        fDMX_ = 0.0f, fDMY_ = 0.0f;
-        float        fRelDMX_ = 0.0f, fRelDMY_ = 0.0f;
-        float        fMWheel_ = 0.0f;
-        bool         bWheelRolled_ = false;
-        bool         bMouseDragged_ = false;
-        mouse_button mMouseDragButton_ = mouse_button::LEFT;
+        float         fScalingFactor_ = 1.0f;
+        gui::vector2f mMousePos_;
+        gui::vector2f mMouseDelta_;
+        float         fMWheel_ = 0.0f;
+        bool          bWheelRolled_ = false;
+        bool          bMouseDragged_ = false;
+        mouse_button  mMouseDragButton_ = mouse_button::LEFT;
 
         double dTime_ = 0.0;
 

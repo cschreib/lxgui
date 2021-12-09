@@ -386,7 +386,7 @@ std::shared_ptr<material> renderer::create_material(
     return create_material(pRenderTarget, pRenderTarget->get_rect());
 }
 
-void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+void renderer::notify_window_resized(const vector2ui&)
 {
 }
 

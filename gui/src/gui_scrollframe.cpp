@@ -247,28 +247,27 @@ void scroll_frame::update_scroll_range_()
 
 void scroll_frame::update_scroll_child_input_()
 {
-    float fX = fMousePosX_ - lBorderList_.left;
-    float fY = fMousePosY_ - lBorderList_.top;
+    const vector2f mOffset = mMousePos_ - lBorderList_.top_left();
 
     update_mouse_in_frame_();
     if (bMouseInScrollTexture_)
     {
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(fX, fY);
+        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(mOffset);
 
         if (pHoveredFrame != pHoveredScrollChild_)
         {
             if (pHoveredScrollChild_)
-                pHoveredScrollChild_->notify_mouse_in_frame(false, fX, fY);
+                pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
 
             pHoveredScrollChild_ = pHoveredFrame;
         }
 
         if (pHoveredScrollChild_)
-            pHoveredScrollChild_->notify_mouse_in_frame(true, fX, fY);
+            pHoveredScrollChild_->notify_mouse_in_frame(true, mOffset);
     }
     else if (pHoveredScrollChild_)
     {
-        pHoveredScrollChild_->notify_mouse_in_frame(false, fX, fY);
+        pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
         pHoveredScrollChild_ = nullptr;
     }
 }
@@ -288,19 +287,19 @@ void scroll_frame::rebuild_scroll_render_target_()
         return;
 
     float fFactor = get_manager().get_interface_scaling_factor();
-    vector2f mScaledSize = vector2f(
+    vector2ui mScaledSize = vector2ui(
         std::round(mApparentSize.x*fFactor), std::round(mApparentSize.y*fFactor));
 
     if (pScrollRenderTarget_)
     {
-        pScrollRenderTarget_->set_dimensions(mScaledSize.x, mScaledSize.y);
+        pScrollRenderTarget_->set_dimensions(mScaledSize);
         pScrollTexture_->set_tex_rect(std::array<float,4>{0.0f, 0.0f, 1.0f, 1.0f});
         bUpdateScrollRange_ = true;
     }
     else
     {
         auto& mRenderer = get_manager().get_renderer();
-        pScrollRenderTarget_ = mRenderer.create_render_target(mScaledSize.x, mScaledSize.y);
+        pScrollRenderTarget_ = mRenderer.create_render_target(mScaledSize);
 
         if (pScrollRenderTarget_)
             pScrollTexture_->set_texture(pScrollRenderTarget_);
@@ -320,18 +319,18 @@ void scroll_frame::render_scroll_strata_list_()
     get_manager().end();
 }
 
-bool scroll_frame::is_in_frame(float fX, float fY) const
+bool scroll_frame::is_in_frame(const vector2f& mPosition) const
 {
     if (pScrollTexture_)
-        return frame::is_in_frame(fX, fY) || pScrollTexture_->is_in_region(fX, fY);
+        return frame::is_in_frame(mPosition) || pScrollTexture_->is_in_region(mPosition);
     else
-        return frame::is_in_frame(fX, fY);
+        return frame::is_in_frame(mPosition);
 }
 
-void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, float fX, float fY)
+void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
 {
-    frame::notify_mouse_in_frame(bMouseInFrame, fX, fY);
-    bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(fX, fY));
+    frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);
+    bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(mMousePos));
 }
 
 void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata) const
@@ -358,7 +357,7 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFram
     {
         if (pFrame == pHoveredScrollChild_)
         {
-            pHoveredScrollChild_->notify_mouse_in_frame(false, 0, 0);
+            pHoveredScrollChild_->notify_mouse_in_frame(false, vector2f::ZERO);
             pHoveredScrollChild_ = nullptr;
         }
     }
@@ -366,14 +365,9 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFram
     bRedrawScrollRenderTarget_ = true;
 }
 
-float scroll_frame::get_target_width() const
+vector2f scroll_frame::get_target_dimensions() const
 {
-    return get_apparent_dimensions().x;
-}
-
-float scroll_frame::get_target_height() const
-{
-    return get_apparent_dimensions().y;
+    return get_apparent_dimensions();
 }
 
 void scroll_frame::update_borders_() const

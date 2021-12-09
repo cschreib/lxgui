@@ -291,7 +291,7 @@ void atlas::add_page_() const
     // This can be used for optimizing quad batching, to render
     // quads with no texture.
     ub32color mPixel(255,255,255,255);
-    auto pTex = mRenderer_.create_material(1u, 1u, &mPixel);
+    auto pTex = mRenderer_.create_material(vector2ui(1u, 1u), &mPixel);
     mPage.pNoTextureMat = mPage.pPage->add_material("", *pTex);
 
     lPageList_.push_back(std::move(mPage));

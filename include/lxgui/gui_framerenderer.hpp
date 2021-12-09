@@ -61,15 +61,10 @@ namespace gui
         virtual void notify_frame_level_changed(const utils::observer_ptr<frame>& pFrame,
             int iOldLevel, int iNewLevel);
 
-        /// Returns the display width of this renderer's main render target (e.g., screen).
-        /** \return The render target width
+        /// Returns the width and height of of this renderer's main render target (e.g., screen).
+        /** \return The render target dimensions
         */
-        virtual float get_target_width() const = 0;
-
-        /// Returns the display height of this renderer's main render target (e.g., screen).
-        /** \return The render target height
-        */
-        virtual float get_target_height() const = 0;
+        virtual vector2f get_target_dimensions() const = 0;
 
     protected :
 
@@ -84,7 +79,7 @@ namespace gui
 
         void render_strata_(const strata& mStrata) const;
 
-        utils::observer_ptr<frame> find_hovered_frame_(float fX, float fY);
+        utils::observer_ptr<frame> find_hovered_frame_(const vector2f& mPosition);
 
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;

@@ -59,6 +59,11 @@ namespace gui
             return bottom - top;
         }
 
+        vector2<T> dimensions() const noexcept
+        {
+            return vector2<T>(width(), height());
+        }
+
         bool contains(const vector2<T>& mPoint) const
         {
             return mPoint.x >= left && mPoint.x < right && mPoint.y >= top && mPoint.y < bottom;

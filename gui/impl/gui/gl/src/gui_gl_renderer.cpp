@@ -39,8 +39,8 @@ namespace gl
 thread_local std::weak_ptr<renderer::shader_cache> renderer::pStaticShaderCache_;
 #endif
 
-renderer::renderer(uint uiWindowWidth, uint uiWindowHeight, bool bInitGLEW [[maybe_unused]]) :
-    uiWindowWidth_(uiWindowWidth), uiWindowHeight_(uiWindowHeight)
+renderer::renderer(const vector2ui& mWindowDimensions, bool bInitGLEW [[maybe_unused]]) :
+    mWindowDimensions_(mWindowDimensions)
 {
 #if !defined(LXGUI_COMPILER_EMSCRIPTEN)
     if (bInitGLEW)
@@ -90,9 +90,9 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     }
     else
     {
-        glViewport(0.0f, 0.0f, uiWindowWidth_, uiWindowHeight_);
+        glViewport(0.0f, 0.0f, mWindowDimensions_.x, mWindowDimensions_.y);
 
-        mCurrentViewMatrix = matrix4f::view(vector2f(uiWindowWidth_, uiWindowHeight_));
+        mCurrentViewMatrix = matrix4f::view(vector2f(mWindowDimensions_));
     }
 
     glDisable(GL_DEPTH_TEST);
@@ -260,11 +260,11 @@ uint renderer::get_texture_max_size() const
     return material::get_max_size();
 }
 
-std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
+std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
     const ub32color* pPixelData, material::filter mFilter) const
 {
     std::shared_ptr<gl::material> pTex = std::make_shared<gl::material>(
-        uiWidth, uiHeight, material::wrap::REPEAT, mFilter);
+        mDimensions, material::wrap::REPEAT, mFilter);
 
     pTex->update_texture(pPixelData);
 
@@ -282,14 +282,14 @@ std::shared_ptr<gui::material> renderer::create_material(
     else
     {
         return std::make_shared<gl::material>(pTex->get_handle_(),
-            pTex->get_canvas_width(), pTex->get_canvas_height(), mLocation, pTex->get_filter());
+            pTex->get_canvas_dimensions(), mLocation, pTex->get_filter());
     }
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    uint uiWidth, uint uiHeight, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter) const
 {
-    return std::make_shared<gl::render_target>(uiWidth, uiHeight, mFilter);
+    return std::make_shared<gl::render_target>(mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
@@ -327,10 +327,9 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
 #endif
 }
 
-void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+void renderer::notify_window_resized(const vector2ui& mNewDimensions)
 {
-    uiWindowWidth_ = uiNewWidth;
-    uiWindowHeight_ = uiNewHeight;
+    mWindowDimensions_ = mNewDimensions;
 }
 
 #if !defined(LXGUI_OPENGL3)

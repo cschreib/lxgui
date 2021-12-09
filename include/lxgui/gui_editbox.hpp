@@ -410,8 +410,8 @@ namespace gui
 
         bool add_char_(char32_t sChar);
         bool remove_char_();
-        uint get_letter_id_at_(float fX, float fY);
-        bool move_carret_at_(float fX, float fY);
+        uint get_letter_id_at_(const vector2f& mPosition);
+        bool move_carret_at_(const vector2f& mPosition);
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
 

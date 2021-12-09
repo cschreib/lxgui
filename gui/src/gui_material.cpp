@@ -14,16 +14,10 @@ vector2f material::get_canvas_uv(const vector2f& mTextureUV, bool bFromNormalize
 
     vector2f mPixelUV = mTextureUV;
     if (bFromNormalized)
-    {
-        mPixelUV.x *= mQuad.width();
-        mPixelUV.y *= mQuad.height();
-    }
+        mPixelUV *= mQuad.dimensions();
 
-    mPixelUV.x += mQuad.left;
-    mPixelUV.y += mQuad.top;
-
-    mPixelUV.x /= get_canvas_width();
-    mPixelUV.y /= get_canvas_height();
+    mPixelUV += mQuad.top_left();
+    mPixelUV /= vector2f(get_canvas_dimensions());
 
     return mPixelUV;
 }
@@ -33,17 +27,11 @@ vector2f material::get_local_uv(const vector2f& mCanvasUV, bool bAsNormalized) c
     const bounds2f mQuad = get_rect();
 
     vector2f mPixelUV = mCanvasUV;
-    mPixelUV.x *= get_canvas_width();
-    mPixelUV.y *= get_canvas_height();
-
-    mPixelUV.x -= mQuad.left;
-    mPixelUV.y -= mQuad.top;
+    mPixelUV *= vector2f(get_canvas_dimensions());
+    mPixelUV -= mQuad.top_left();
 
     if (bAsNormalized)
-    {
-        mPixelUV.x /= mQuad.width();
-        mPixelUV.y /= mQuad.height();
-    }
+        mPixelUV /= mQuad.dimensions();
 
     return mPixelUV;
 }

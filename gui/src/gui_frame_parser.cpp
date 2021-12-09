@@ -85,10 +85,10 @@ void frame::parse_resize_bounds_block_(xml::block* pBlock)
             xml::block* pDimBlock = pMinBlock->get_radio_block();
             if (pDimBlock->get_name() == "AbsDimension")
             {
-                set_min_resize(
+                set_min_resize(vector2f(
                     utils::string_to_float(pDimBlock->get_attribute("x")),
                     utils::string_to_float(pDimBlock->get_attribute("y"))
-                );
+                ));
             }
             else if (pDimBlock->get_name() == "RelDimension")
             {
@@ -103,10 +103,10 @@ void frame::parse_resize_bounds_block_(xml::block* pBlock)
             xml::block* pDimBlock = pMaxBlock->get_radio_block();
             if (pDimBlock->get_name() == "AbsDimension")
             {
-                set_max_resize(
+                set_max_resize(vector2f(
                     utils::string_to_float(pDimBlock->get_attribute("x")),
                     utils::string_to_float(pDimBlock->get_attribute("y"))
-                );
+                ));
             }
             else if (pDimBlock->get_name() == "RelDimension")
             {
@@ -233,21 +233,21 @@ void frame::parse_hit_rect_insets_block_(xml::block* pBlock)
         xml::block* pInsetBlock = pHitRectBlock->get_radio_block();
         if (pInsetBlock->get_name() == "AbsInset")
         {
-            set_abs_hit_rect_insets(
+            set_abs_hit_rect_insets(bounds2f(
                 utils::string_to_float(pInsetBlock->get_attribute("left")),
                 utils::string_to_float(pInsetBlock->get_attribute("right")),
                 utils::string_to_float(pInsetBlock->get_attribute("top")),
                 utils::string_to_float(pInsetBlock->get_attribute("bottom"))
-            );
+            ));
         }
         else if (pInsetBlock->get_name() == "RelInset")
         {
-            set_rel_hit_rect_insets(
+            set_rel_hit_rect_insets(bounds2f(
                 utils::string_to_float(pInsetBlock->get_attribute("left")),
                 utils::string_to_float(pInsetBlock->get_attribute("right")),
                 utils::string_to_float(pInsetBlock->get_attribute("top")),
                 utils::string_to_float(pInsetBlock->get_attribute("bottom"))
-            );
+            ));
         }
     }
 }

@@ -38,8 +38,8 @@ namespace input
         struct mouse_state
         {
             std::array<bool, MOUSE_BUTTON_NUMBER> lButtonState = {};
-            float fAbsX = 0.0f, fAbsY = 0.0f, fDX = 0.0f, fDY = 0.0f;
-            float fRelX = 0.0f, fRelY = 0.0f, fRelDX = 0.0f, fRelDY = 0.0f;
+            gui::vector2f mPosition;
+            gui::vector2f mDelta;
             float fRelWheel = 0.0f;
             bool  bHasDelta = false;
         };
@@ -114,15 +114,10 @@ namespace input
         /// Resets the "window resized" flag.
         void reset_window_resized();
 
-        /// Get the window width (in pixels)
-        /** \return The window width
+        /// Get the window size (in pixels)
+        /** \return The window size
         */
-        uint get_window_width() const;
-
-        /// Get the window height (in pixels)
-        /** \return The window height
-        */
-        uint get_window_height() const;
+        const gui::vector2ui& get_window_dimensions() const;
 
         /// Sets the double click maximum time.
         /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
@@ -179,8 +174,7 @@ namespace input
         bool bManuallyUpdated_ = false;
 
         bool bWindowResized_ = false;
-        uint uiWindowHeight_ = 0u;
-        uint uiWindowWidth_ = 0u;
+        gui::vector2ui mWindowDimensions_;
 
         double dDoubleClickTime_ = 0.25;
     };

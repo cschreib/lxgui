@@ -328,11 +328,7 @@ void uiobject::set_relative_dimensions(const vector2f& mDimensions)
     if (pParent_)
         set_dimensions(mDimensions*pParent_->get_apparent_dimensions());
     else
-    {
-        set_dimensions(mDimensions*vector2f(
-            get_top_level_renderer()->get_target_width(),
-            get_top_level_renderer()->get_target_height()));
-    }
+        set_dimensions(mDimensions*get_top_level_renderer()->get_target_dimensions());
 }
 
 void uiobject::set_relative_width(float fRelWidth)
@@ -340,7 +336,7 @@ void uiobject::set_relative_width(float fRelWidth)
     if (pParent_)
         set_width(fRelWidth*pParent_->get_apparent_dimensions().x);
     else
-        set_width(fRelWidth*get_top_level_renderer()->get_target_width());
+        set_width(fRelWidth*get_top_level_renderer()->get_target_dimensions().x);
 }
 
 void uiobject::set_relative_height(float fRelHeight)
@@ -348,7 +344,7 @@ void uiobject::set_relative_height(float fRelHeight)
     if (pParent_)
         set_height(fRelHeight*pParent_->get_apparent_dimensions().y);
     else
-        set_height(fRelHeight*get_top_level_renderer()->get_target_height());
+        set_height(fRelHeight*get_top_level_renderer()->get_target_dimensions().y);
 }
 
 const vector2f& uiobject::get_dimensions() const

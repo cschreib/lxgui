@@ -76,8 +76,7 @@ vector2f anchor::get_point(const uiobject& mObject) const
     }
     else
     {
-        mParentSize = vector2f(mObject.get_top_level_renderer()->get_target_width(),
-                               mObject.get_top_level_renderer()->get_target_height());
+        mParentSize = mObject.get_top_level_renderer()->get_target_dimensions();
     }
 
     vector2f mOffsetAbs;

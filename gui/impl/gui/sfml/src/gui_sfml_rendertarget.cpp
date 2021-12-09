@@ -7,10 +7,10 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
+render_target::render_target(const vector2ui& mDimensions, material::filter mFilter)
 {
     pTexture_ = std::make_shared<sfml::material>(
-        uiWidth, uiHeight, true, material::wrap::REPEAT, mFilter
+        mDimensions, true, material::wrap::REPEAT, mFilter
     );
 
     pRenderTexture_ = pTexture_->get_render_texture();
@@ -35,19 +35,14 @@ bounds2f render_target::get_rect() const
     return pTexture_->get_rect();
 }
 
-uint render_target::get_canvas_width() const
+vector2ui render_target::get_canvas_dimensions() const
 {
-    return pTexture_->get_canvas_width();
+    return pTexture_->get_canvas_dimensions();
 }
 
-uint render_target::get_canvas_height() const
+bool render_target::set_dimensions(const vector2ui& mDimensions)
 {
-    return pTexture_->get_canvas_height();
-}
-
-bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
-{
-    return pTexture_->set_dimensions(uiWidth, uiHeight);
+    return pTexture_->set_dimensions(mDimensions);
 }
 
 std::weak_ptr<sfml::material> render_target::get_material()

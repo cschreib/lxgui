@@ -21,8 +21,7 @@ renderer::renderer(SDL_Renderer* pRenderer, bool bInitialiseSDLImage) : pRendere
 {
     int iWindowWidth, iWindowHeight;
     SDL_GetRendererOutputSize(pRenderer_, &iWindowWidth, &iWindowHeight);
-    uiWindowWidth_ = iWindowWidth;
-    uiWindowHeight_ = iWindowHeight;
+    mWindowDimensions_ = vector2ui(iWindowWidth, iWindowHeight);
 
     render_target::check_availability(pRenderer);
 
@@ -78,7 +77,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     }
     else
     {
-        mTargetViewMatrix_ = matrix4f::view(vector2f(uiWindowWidth_, uiWindowHeight_));
+        mTargetViewMatrix_ = matrix4f::view(vector2f(mWindowDimensions_));
     }
 
     mViewMatrix_ = mTargetViewMatrix_;
@@ -324,13 +323,12 @@ void renderer::render_quad_(const sdl::material* pMat,
     if (pMat)
     {
         SDL_Texture* pTexture = pMat->get_texture();
-        const float fTexWidth = pMat->get_canvas_width();
-        const float fTexHeight = pMat->get_canvas_height();
-        const int iTexWidth = static_cast<int>(fTexWidth);
-        const int iTexHeight = static_cast<int>(fTexHeight);
+        const vector2ui mTexDims = pMat->get_canvas_dimensions();
+        const int iTexWidth = static_cast<int>(mTexDims.x);
+        const int iTexHeight = static_cast<int>(mTexDims.y);
 
         // Build the source and destination rect, figuring out rotation and flipping
-        const sdl_render_data mData = make_rects(lViewList, fTexWidth, fTexHeight);
+        const sdl_render_data mData = make_rects(lViewList, iTexWidth, iTexHeight);
 
         if (mData.mDestQuad.w == 0 || mData.mDestQuad.h == 0) return;
 
@@ -497,7 +495,7 @@ void renderer::render_quad_(const sdl::material* pMat,
                 premultiply_alpha(lViewList[3].col, bPreMultipliedAlphaSupported_)
             };
 
-            sdl::material mTempMat(pRenderer_, mDestQuad.w, mDestQuad.h, false);
+            sdl::material mTempMat(pRenderer_, vector2ui(mDestQuad.w, mDestQuad.h), false);
             ub32color* pPixelData = mTempMat.lock_pointer();
             for (int y = 0; y < mDestQuad.h; ++y)
             for (int x = 0; x < mDestQuad.w; ++x)
@@ -570,20 +568,20 @@ bool renderer::is_vertex_cache_supported() const
     return false;
 }
 
-std::shared_ptr<gui::material> renderer::create_material(uint uiWidth, uint uiHeight,
+std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
     const ub32color* pPixelData, material::filter mFilter) const
 {
     std::shared_ptr<sdl::material> pTex = std::make_shared<sdl::material>(
-        pRenderer_, uiWidth, uiHeight, false, material::wrap::REPEAT, mFilter);
+        pRenderer_, mDimensions, false, material::wrap::REPEAT, mFilter);
 
     uint uiPitch = 0u;
     ub32color* pTexData = pTex->lock_pointer(&uiPitch);
 
-    for (uint uiY = 0u; uiY < uiHeight; ++uiY)
+    for (uint uiY = 0u; uiY < mDimensions.y; ++uiY)
     {
-        const ub32color* pPixelDataRow = pPixelData + uiY*uiWidth;
+        const ub32color* pPixelDataRow = pPixelData + uiY*mDimensions.x;
         ub32color* pTexDataRow = pTexData + uiY*uiPitch;
-        std::copy(pPixelDataRow, pPixelDataRow + uiWidth, pTexDataRow);
+        std::copy(pPixelDataRow, pPixelDataRow + mDimensions.x, pTexDataRow);
     }
 
     pTex->unlock_pointer();
@@ -607,9 +605,9 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    uint uiWidth, uint uiHeight, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter) const
 {
-    return std::make_shared<sdl::render_target>(pRenderer_, uiWidth, uiHeight, mFilter);
+    return std::make_shared<sdl::render_target>(pRenderer_, mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
@@ -625,10 +623,9 @@ std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cac
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }
 
-void renderer::notify_window_resized(uint uiNewWidth, uint uiNewHeight)
+void renderer::notify_window_resized(const vector2ui& mNewDimensions)
 {
-    uiWindowWidth_ = uiNewWidth;
-    uiWindowHeight_ = uiNewHeight;
+    mWindowDimensions_ = mNewDimensions;
 }
 
 }

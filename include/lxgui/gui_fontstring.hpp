@@ -253,13 +253,13 @@ namespace gui
         */
         void parse_block(xml::block* pBlock) override;
 
-        /// Returns the text used to render this fontString.
-        /** \return The text used to render this fontString
+        /// Returns the text used to render this font_string.
+        /** \return The text used to render this font_string
         */
         text* get_text_object();
 
-        /// Returns the text used to render this fontString.
-        /** \return The text used to render this fontString
+        /// Returns the text used to render this font_string.
+        /** \return The text used to render this font_string
         */
         const text* get_text_object() const;
 

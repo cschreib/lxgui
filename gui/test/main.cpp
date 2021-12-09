@@ -466,7 +466,7 @@ int main(int argc, char* argv[])
 
         // Define the GUI renderer
         std::unique_ptr<gui::renderer> pRenderer = std::make_unique<gui::gl::renderer>(
-            pInputSource->get_window_width(), pInputSource->get_window_height());
+            pInputSource->get_window_dimensions());
 
         pManager = utils::make_owned<gui::manager>(
             // Provide the input source

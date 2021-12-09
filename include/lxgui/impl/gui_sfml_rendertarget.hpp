@@ -23,11 +23,10 @@ namespace sfml
     public :
 
         /// Constructor.
-        /** \param uiWidth  The width of the render_target
-        *   \param uiHeight The height of the render_target
-        *   \param mFilter  The filtering to apply to the target texture when displayed
+        /** \param mDimensions The dimensions of the render_target
+        *   \param mFilter     The filtering to apply to the target texture when displayed
         */
-        render_target(uint uiWidth, uint uiHeight,
+        render_target(const vector2ui& mDimensions,
             material::filter mFilter = material::filter::NONE);
 
         /// Begins rendering on this target.
@@ -47,30 +46,20 @@ namespace sfml
         bounds2f get_rect() const override;
 
         /// Sets this render target's dimensions.
-        /** \param uiWidth This render target's width
-        *   \param uiHeight This render target's height
+        /** \param mDimensions The new dimensions (in pixels)
         *   \return 'true' if the function had to re-create a
         *           new render target
         */
-        bool set_dimensions(uint uiWidth, uint uiHeight) override;
+        bool set_dimensions(const vector2ui& mDimensions) override;
 
-        /// Returns this render target's canvas width.
-        /** \return This render target's canvas width
+        /// Returns this render target's canvas dimension.
+        /** \return This render target's canvas dimension
         *   \note This is the physical size of the render target.
-        *         On some systems, abitrary dimensions are not supported :
+        *         On some systems, abitrary dimensions are not supported:
         *         they can be promoted to the nearest power of two from
         *         for example.
         */
-        uint get_canvas_width() const override;
-
-        /// Returns this render target's canvas height.
-        /** \return This render target's canvas height
-        *   \note This is the physical size of the render target.
-        *         On some systems, abitrary dimensions are not supported :
-        *         they can be promoted to the nearest power of two from
-        *         for example.
-        */
-        uint get_canvas_height() const override;
+        vector2ui get_canvas_dimensions() const override;
 
         /// Returns the associated texture for rendering.
         /** \return The underlying pixel buffer, that you can use to render its content

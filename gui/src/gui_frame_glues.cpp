@@ -587,18 +587,25 @@ void frame::register_on_lua(sol::state& mLua)
 
     /** @function set_hit_rect_insets
     */
-    mClass.set_function("set_hit_rect_insets", member_function< // select the right overload for Lua
-        static_cast<void (frame::*)(float, float, float, float)>(&frame::set_abs_hit_rect_insets)>());
+    mClass.set_function("set_hit_rect_insets", [](frame& mSelf,
+        float fLeft, float fRight, float fTop, float fBottom)
+    {
+        mSelf.set_abs_hit_rect_insets(bounds2f(fLeft, fRight, fTop, fBottom));
+    });
 
     /** @function set_max_resize
     */
-    mClass.set_function("set_max_resize", member_function< // select the right overload for Lua
-        static_cast<void (frame::*)(float, float)>(&frame::set_max_resize)>());
+    mClass.set_function("set_max_resize", [](frame& mSelf, float fWidth, float fHeight)
+    {
+        mSelf.set_max_resize(vector2f(fWidth, fHeight));
+    });
 
     /** @function set_min_resize
     */
-    mClass.set_function("set_min_resize", member_function< // select the right overload for Lua
-        static_cast<void (frame::*)(float, float)>(&frame::set_min_resize)>());
+    mClass.set_function("set_min_resize", [](frame& mSelf, float fWidth, float fHeight)
+    {
+        mSelf.set_min_resize(vector2f(fWidth, fHeight));
+    });
 
     /** @function set_max_width
     */

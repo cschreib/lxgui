@@ -61,8 +61,8 @@ namespace gui
         */
         virtual bounds2f get_rect() const = 0;
 
-        /// Returns the physical width in pixels of the canvas containing this texture (if any).
-        /** \return The physical width in pixels of the canvas containing this (if any)
+        /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
+        /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
         *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
         *         namely, the 2D pixel array containing the texture data. However, some old
         *         hardware don't support textures that have non power-of-two dimensions.
@@ -71,19 +71,7 @@ namespace gui
         *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
         *         the canvas will contain more than one texture.
         */
-        virtual float get_canvas_width() const = 0;
-
-        /// Returns the physical height in pixels of the canvas containing this texture (if any).
-        /** \return The physical height in pixels of the canvas containing this texture (if any)
-        *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
-        *         namely, the 2D pixel array containing the texture data. However, some old
-        *         hardware don't support textures that have non power-of-two dimensions.
-        *         If the user creates a material for such a texture, the gui::renderer will
-        *         create a bigger canvas that has power-of-two dimensions, and store the
-        *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
-        *         the canvas will contain more than one texture.
-        */
-        virtual float get_canvas_height() const = 0;
+        virtual vector2ui get_canvas_dimensions() const = 0;
 
         /// Checks if another material is based on the same texture as the current material.
         /** \return 'true' if both materials use the same texture, 'false' otherwise

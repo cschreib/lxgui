@@ -23,22 +23,20 @@ namespace gl
     public :
 
         /// Constructor for textures.
-        /** \param uiWidth  The requested texture width
-        *   \param uiHeight The requested texture height
-        *   \param mWrap    How to adjust texture coordinates that are outside the [0,1] range
-        *   \param mFilter  Use texture filtering or not (see set_filter())
+        /** \param mDimensions The requested texture dimensions
+        *   \param mWrap       How to adjust texture coordinates that are outside the [0,1] range
+        *   \param mFilter     Use texture filtering or not (see set_filter())
         */
-        material(uint uiWidth, uint uiHeight, wrap mWrap = wrap::REPEAT,
+        material(const vector2ui& mDimensions, wrap mWrap = wrap::REPEAT,
             filter mFilter = filter::NONE);
 
         /// Constructor for atlas textures.
-        /** \param uiTextureHandle The handle to the texture object of the atlas
-        *   \param uiWidth         The width of the texture atlas
-        *   \param uiHeight        The height of the texture atlas
-        *   \param mRect           The position of this texture inside the atlas
-        *   \param mFilter         Use texture filtering or not (see set_filter())
+        /** \param uiTextureHandle   The handle to the texture object of the atlas
+        *   \param mCanvasDimensions The dimensions of the texture atlas
+        *   \param mRect             The position of this texture inside the atlas
+        *   \param mFilter           Use texture filtering or not (see set_filter())
         */
-        material(uint uiTextureHandle, uint uiWidth, uint uiHeight, const bounds2f mRect,
+        material(uint uiTextureHandle, const vector2ui& mCanvasDimensions, const bounds2f mRect,
             filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
@@ -54,25 +52,17 @@ namespace gl
         */
         bounds2f get_rect() const override;
 
-        /// Returns the physical width in pixels of the canvas containing this texture (if any).
-        /** \return The physical width in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
+        /// Returns the physical dimensions (in pixels) of the canvas containing this texture (if any).
+        /** \return The physical dimensions (in pixels) of the canvas containing this (if any)
+        *   \note When a texture is loaded, most of the time it will fill the entire "canvas",
+        *         namely, the 2D pixel array containing the texture data. However, some old
+        *         hardware don't support textures that have non power-of-two dimensions.
+        *         If the user creates a material for such a texture, the gui::renderer will
+        *         create a bigger canvas that has power-of-two dimensions, and store the
+        *         texture in it. Likewise, if a texture is placed in a wider texture atlas,
+        *         the canvas will contain more than one texture.
         */
-        float get_canvas_width() const override;
-
-        /// Returns the physical height in pixels of the canvas containing this texture (if any).
-        /** \return The physical height in pixels of the canvas containing this texture (if any)
-        *   \note Some old hardware don't support textures that have non
-        *         power of two dimensions. If the user creates such a material
-        *         and its hardware doesn't support it, this class creates a
-        *         bigger texture that has power of two dimensions (the
-        *         "physical" dimensions).
-        */
-        float get_canvas_height() const override;
+        vector2ui get_canvas_dimensions() const override;
 
         /// Checks if another material is based on the same texture as the current material.
         /** \return 'true' if both materials use the same texture, 'false' otherwise
@@ -80,12 +70,11 @@ namespace gl
         bool uses_same_texture(const gui::material& mOther) const override;
 
         /// Resizes this texture.
-        /** \param uiWidth  The new texture width
-        *   \param uiHeight The new texture height
+        /** \param mDimensions The new texture dimensions
         *   \return 'true' if the function had to re-create a new texture object
         *   \note All the previous data that was stored in this texture will be lost.
         */
-        bool set_dimensions(uint uiWidth, uint uiHeight);
+        bool set_dimensions(const vector2ui& mDimensions);
 
         /// Premultiplies the texture by alpha component.
         /** \param lData The pixel data to pre-multiply
@@ -138,12 +127,12 @@ namespace gl
 
     private:
 
-        uint     uiRealWidth_ = 0u, uiRealHeight_ = 0u;
-        wrap     mWrap_ = wrap::REPEAT;
-        filter   mFilter_ = filter::NONE;
-        uint     uiTextureHandle_ = 0u;
-        bounds2f mRect_;
-        bool     bIsOwner_ = false;
+        vector2ui mCanvasDimensions_;
+        wrap      mWrap_ = wrap::REPEAT;
+        filter    mFilter_ = filter::NONE;
+        uint      uiTextureHandle_ = 0u;
+        bounds2f  mRect_;
+        bool      bIsOwner_ = false;
 
         static bool ONLY_POWER_OF_TWO;
         static uint MAXIMUM_SIZE;

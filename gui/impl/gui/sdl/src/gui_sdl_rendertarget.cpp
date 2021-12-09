@@ -11,10 +11,10 @@ namespace gui {
 namespace sdl
 {
 render_target::render_target(SDL_Renderer* pRenderer,
-    uint uiWidth, uint uiHeight, material::filter mFilter)
+    const vector2ui& mDimensions, material::filter mFilter)
 {
     pTexture_ = std::make_shared<sdl::material>(
-        pRenderer, uiWidth, uiHeight, true, material::wrap::REPEAT, mFilter
+        pRenderer, mDimensions, true, material::wrap::REPEAT, mFilter
     );
 }
 
@@ -25,7 +25,7 @@ void render_target::begin()
         throw gui::exception("gui::sdl::render_target", "Could not set current render target.");
     }
 
-    mViewMatrix_ = matrix4f::view(vector2f(get_canvas_width(), get_canvas_height()));
+    mViewMatrix_ = matrix4f::view(vector2f(get_canvas_dimensions()));
 }
 
 void render_target::end()
@@ -46,20 +46,15 @@ bounds2f render_target::get_rect() const
     return pTexture_->get_rect();
 }
 
-uint render_target::get_canvas_width() const
+vector2ui render_target::get_canvas_dimensions() const
 {
-    return pTexture_->get_canvas_width();
+    return pTexture_->get_canvas_dimensions();
 }
 
-uint render_target::get_canvas_height() const
+bool render_target::set_dimensions(const vector2ui& mDimensions)
 {
-    return pTexture_->get_canvas_height();
-}
-
-bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
-{
-    return pTexture_->set_dimensions(uiWidth, uiHeight);
-}
+    return pTexture_->set_dimensions(mDimensions);
+ }
 
 std::weak_ptr<sdl::material> render_target::get_material()
 {

@@ -95,7 +95,7 @@ std::shared_ptr<gui::material> renderer::create_material_png_(
         material::premultiply_alpha(lData);
 
         std::shared_ptr<material> pTex = std::make_shared<gui::gl::material>(
-            uiWidth, uiHeight, material::wrap::REPEAT, mFilter
+            vector2ui(uiWidth, uiHeight), material::wrap::REPEAT, mFilter
         );
 
         pTex->update_texture(lData.data());

@@ -8,16 +8,16 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, filter mFilter) :
-    gui::material(false), uiWidth_(uiWidth), uiHeight_(uiHeight),
-    uiRealWidth_(uiWidth), uiRealHeight_(uiHeight), mWrap_(mWrap), mFilter_(mFilter)
+material::material(const vector2ui& mDimensions, bool bRenderTarget, wrap mWrap, filter mFilter) :
+    gui::material(false), mDimensions_(mDimensions), mCanvasDimensions_(mDimensions),
+    mWrap_(mWrap), mFilter_(mFilter)
 {
-    if (uiRealWidth_ > sf::Texture::getMaximumSize() ||
-        uiRealHeight_ > sf::Texture::getMaximumSize())
+    if (mDimensions_.x > sf::Texture::getMaximumSize() ||
+        mDimensions_.y > sf::Texture::getMaximumSize())
     {
         throw gui::exception("gui::sfml::material", "Texture dimensions not supported by graphics card : ("+
-            utils::to_string(uiRealWidth_)+" x "+
-            utils::to_string(uiRealHeight_)+")."
+            utils::to_string(mDimensions_.x)+" x "+
+            utils::to_string(mDimensions_.y)+")."
         );
     }
 
@@ -25,26 +25,26 @@ material::material(uint uiWidth, uint uiHeight, bool bRenderTarget, wrap mWrap, 
 
     if (bRenderTarget_)
     {
-        if (!mRenderTexture_.create(uiRealWidth_, uiRealHeight_))
+        if (!mRenderTexture_.create(mDimensions_.x, mDimensions_.y))
         {
             throw gui::exception("gui::sfml::material", "Could not create render target with dimensions "+
-                utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+                utils::to_string(mDimensions_.x)+" x "+utils::to_string(mDimensions_.y)+".");
         }
         mRenderTexture_.setSmooth(mFilter == filter::LINEAR);
         mRenderTexture_.setRepeated(mWrap == wrap::REPEAT);
     }
     else
     {
-        if (!mTexture_.create(uiRealWidth_, uiRealHeight_))
+        if (!mTexture_.create(mDimensions_.x, mDimensions_.y))
         {
             throw gui::exception("gui::sfml::material", "Could not create texture with dimensions "+
-                utils::to_string(uiWidth)+" x "+utils::to_string(uiHeight)+".");
+                utils::to_string(mDimensions_.x)+" x "+utils::to_string(mDimensions_.y)+".");
         }
         mTexture_.setSmooth(mFilter == filter::LINEAR);
         mTexture_.setRepeated(mWrap == wrap::REPEAT);
     }
 
-    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
+    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
 }
 
 material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::material(false)
@@ -54,15 +54,12 @@ material::material(const sf::Image& mData, wrap mWrap, filter mFilter) : gui::ma
     mTexture_.setSmooth(mFilter == filter::LINEAR);
     mTexture_.setRepeated(mWrap == wrap::REPEAT);
 
-    const uint uiWidth  = mTexture_.getSize().x;
-    const uint uiHeight = mTexture_.getSize().y;
-    uiWidth_ = uiWidth;
-    uiHeight_ = uiHeight;
+    mDimensions_ = vector2ui(mTexture_.getSize().x, mTexture_.getSize().y);
+    mCanvasDimensions_ = mDimensions_;
     mWrap_ = mWrap;
     mFilter_ = mFilter;
-    uiRealWidth_ = uiWidth;
-    uiRealHeight_ = uiHeight;
-    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
+
+    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
 }
 
 material::material(const std::string& sFileName, wrap mWrap, filter mFilter) : gui::material(false)
@@ -71,20 +68,18 @@ material::material(const std::string& sFileName, wrap mWrap, filter mFilter) : g
     sf::Image mData;
     if (!mData.loadFromFile(sFileName))
         throw utils::exception("gui::sfml::material", "loading failed: '"+sFileName+"'.");
+
     premultiply_alpha(mData);
     mTexture_.loadFromImage(mData);
     mTexture_.setSmooth(mFilter == filter::LINEAR);
     mTexture_.setRepeated(mWrap == wrap::REPEAT);
 
-    const uint uiWidth  = mTexture_.getSize().x;
-    const uint uiHeight = mTexture_.getSize().y;
-    uiWidth_ = uiWidth;
-    uiHeight_ = uiHeight;
+    mDimensions_ = vector2ui(mTexture_.getSize().x, mTexture_.getSize().y);
+    mCanvasDimensions_ = mDimensions_;
     mWrap_ = mWrap;
     mFilter_ = mFilter;
-    uiRealWidth_ = uiWidth;
-    uiRealHeight_ = uiHeight;
-    mRect_ = bounds2f(0, uiWidth_, 0, uiHeight_);
+
+    mRect_ = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
 }
 
 material::material(const sf::Texture& mTexture, const bounds2f& mLocation, filter mFilter) :
@@ -135,14 +130,10 @@ material::filter material::get_filter() const
 void material::update_texture(const ub32color* pData)
 {
     if (bRenderTarget_)
-    {
         throw gui::exception("gui::sfml::material", "A render texture cannot be updated.");
-    }
 
     if (pAtlasTexture_)
-    {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be updated.");
-    }
 
     mTexture_.update(reinterpret_cast<const sf::Uint8*>(pData),
         mRect_.width(), mRect_.height(), mRect_.left, mRect_.top);
@@ -169,20 +160,12 @@ bounds2f material::get_rect() const
     return mRect_;
 }
 
-float material::get_canvas_width() const
+vector2ui material::get_canvas_dimensions() const
 {
     if (pAtlasTexture_)
-        return pAtlasTexture_->getSize().x;
+        return vector2ui(pAtlasTexture_->getSize().x, pAtlasTexture_->getSize().y);
     else
-        return uiRealWidth_;
-}
-
-float material::get_canvas_height() const
-{
-    if (pAtlasTexture_)
-        return pAtlasTexture_->getSize().y;
-    else
-        return uiRealHeight_;
+        return mCanvasDimensions_;
 }
 
 bool material::uses_same_texture(const gui::material& mOther) const
@@ -191,35 +174,35 @@ bool material::uses_same_texture(const gui::material& mOther) const
         pAtlasTexture_ == static_cast<const sfml::material&>(mOther).pAtlasTexture_;
 }
 
-bool material::set_dimensions(uint uiWidth, uint uiHeight)
+bool material::set_dimensions(const vector2ui& mDimensions)
 {
     if (pAtlasTexture_)
     {
         throw gui::exception("gui::sfml::material", "A material in an atlas cannot be resized.");
     }
 
-    if (!bRenderTarget_) return false;
-
-    if (uiWidth > sf::Texture::getMaximumSize() || uiHeight > sf::Texture::getMaximumSize())
+    if (!bRenderTarget_)
         return false;
 
-    uiWidth_  = uiWidth;
-    uiHeight_ = uiHeight;
-    mRect_    = bounds2f(0, uiWidth_, 0, uiHeight_);
+    if (mDimensions.x > sf::Texture::getMaximumSize() || mDimensions.y > sf::Texture::getMaximumSize())
+        return false;
 
-    if (uiWidth > uiRealWidth_ || uiHeight > uiRealHeight_)
+    mDimensions_ = mDimensions;
+    mRect_       = bounds2f(0, mDimensions_.x, 0, mDimensions_.y);
+
+    if (mDimensions_.x > mCanvasDimensions_.x || mDimensions_.y > mCanvasDimensions_.y)
     {
         // SFML is not efficient at resizing render texture, so use an exponential growth pattern
         // to avoid re-allocating a new render texture on every resize operation.
-        if (uiWidth > uiRealWidth_)
-            uiRealWidth_  = uiWidth + uiWidth/2;
-        if (uiHeight > uiRealHeight_)
-            uiRealHeight_ = uiHeight + uiHeight/2;
+        if (mDimensions_.x > mCanvasDimensions_.x)
+            mCanvasDimensions_.x  = mDimensions_.x + mDimensions_.x/2;
+        if (mDimensions_.y > mCanvasDimensions_.y)
+            mCanvasDimensions_.y = mDimensions_.y + mDimensions_.y/2;
 
-        if (!mRenderTexture_.create(uiRealWidth_, uiRealHeight_))
+        if (!mRenderTexture_.create(mCanvasDimensions_.x, mCanvasDimensions_.y))
         {
             throw gui::exception("gui::sfml::material", "Could not create render target with dimensions "+
-                utils::to_string(uiRealWidth_)+" x "+utils::to_string(uiRealHeight_)+".");
+                utils::to_string(mCanvasDimensions_.x)+" x "+utils::to_string(mCanvasDimensions_.y)+".");
         }
 
         mRenderTexture_.setSmooth(mFilter_ == filter::LINEAR);

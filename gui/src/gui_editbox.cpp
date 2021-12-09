@@ -108,7 +108,7 @@ void edit_box::update(float fDelta)
 
     if (bMouseDraggedInFrame_)
     {
-        uint uiPos = get_letter_id_at_(fMousePosX_, fMousePosY_);
+        uint uiPos = get_letter_id_at_(mMousePos_);
         if (uiPos != uiSelectionEndPos_)
         {
             if (uiPos != uint(-1))
@@ -210,7 +210,7 @@ void edit_box::on_event(const event& mEvent)
             set_focus(true);
             unlight_text();
 
-            move_carret_at_(fMousePosX_, fMousePosY_);
+            move_carret_at_(mMousePos_);
         }
         else
             set_focus(false);
@@ -313,7 +313,7 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
     }
 
     if (sScriptName == "OnDragStart")
-        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(fMousePosX_, fMousePosY_);
+        uiSelectionEndPos_ = uiSelectionStartPos_ = get_letter_id_at_(mMousePos_);
 }
 
 void edit_box::create_glue()
@@ -1148,7 +1148,7 @@ bool edit_box::remove_char_()
     return true;
 }
 
-uint edit_box::get_letter_id_at_(float fX, float fY)
+uint edit_box::get_letter_id_at_(const vector2f& mPosition)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
@@ -1157,14 +1157,14 @@ uint edit_box::get_letter_id_at_(float fX, float fY)
 
         text* pText = pFontString_->get_text_object();
 
-        float fLocalX = fX - lBorderList_.left - lTextInsets_.left;
-        // float fLocalY = fY - lBorderList_.top  - lTextInsets_.top;
+        float fLocalX = mPosition.x - lBorderList_.left - lTextInsets_.left;
+        // float fLocalY = mPosition.y - lBorderList_.top  - lTextInsets_.top;
 
         if (!bMultiLine_)
         {
-            if (fX < lBorderList_.left + lTextInsets_.left)
+            if (mPosition.x < lBorderList_.left + lTextInsets_.left)
                 return uiDisplayPos_;
-            else if (fX > lBorderList_.right - lTextInsets_.right)
+            else if (mPosition.x > lBorderList_.right - lTextInsets_.right)
                 return sDisplayedText_.size() + uiDisplayPos_;
 
             uint uiNumLetters = std::min<uint>(pText->get_num_letters(), sDisplayedText_.size());
@@ -1188,9 +1188,9 @@ uint edit_box::get_letter_id_at_(float fX, float fY)
     return uint(-1);
 }
 
-bool edit_box::move_carret_at_(float fX, float fY)
+bool edit_box::move_carret_at_(const vector2f& mPosition)
 {
-    uint uiPos = get_letter_id_at_(fX, fY);
+    uint uiPos = get_letter_id_at_(mPosition);
     if (uiPos != uint(-1))
     {
         iterCarretPos_ = sUnicodeText_.begin() + uiPos;

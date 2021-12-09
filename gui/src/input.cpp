@@ -430,62 +430,46 @@ void manager::update(float fTempDelta)
 
     // Update mouse position
     if (mMouseState.bHasDelta)
-    {
-        fDMX_    = mMouseState.fDX/fScalingFactor_;
-        fDMY_    = mMouseState.fDY/fScalingFactor_;
-        fRelDMX_ = mMouseState.fRelDX/fScalingFactor_;
-        fRelDMY_ = mMouseState.fRelDY/fScalingFactor_;
-    }
+        mMouseDelta_ = mMouseState.mDelta/fScalingFactor_;
     else
-    {
-        fDMX_    = (mMouseState.fAbsX - fMX_)/fScalingFactor_;
-        fDMY_    = (mMouseState.fAbsY - fMY_)/fScalingFactor_;
-        fRelDMX_ = (mMouseState.fRelX - fRelMX_)/fScalingFactor_;
-        fRelDMY_ = (mMouseState.fRelY - fRelMY_)/fScalingFactor_;
-    }
+        mMouseDelta_ = mMouseState.mPosition/fScalingFactor_ - mMousePos_;
 
-    fMX_    = mMouseState.fAbsX/fScalingFactor_;
-    fMY_    = mMouseState.fAbsY/fScalingFactor_;
-    fRelMX_ = mMouseState.fRelX/fScalingFactor_;
-    fRelMY_ = mMouseState.fRelY/fScalingFactor_;
-
+    mMousePos_ = mMouseState.mPosition/fScalingFactor_;
     fMWheel_ = mMouseState.fRelWheel;
     bWheelRolled_ = fMWheel_ != 0.0f;
 
     // Send movement event
-    if (fDMX_ != 0.0 || fDMY_ != 0.0)
+    if (mMouseDelta_ != gui::vector2f::ZERO)
     {
         if (!bMouseDragged_)
         {
-            uint iMouseButtonPressed = uint(-1);
+            uint uiMouseButtonPressed = uint(-1);
             for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
             {
                 if (mMouseState.lButtonState[i])
                 {
-                    iMouseButtonPressed = i;
+                    uiMouseButtonPressed = i;
                     break;
                 }
             }
 
-            if (iMouseButtonPressed != uint(-1))
+            if (uiMouseButtonPressed != uint(-1))
             {
                 bMouseDragged_ = true;
-                mMouseDragButton_ = static_cast<mouse_button>(iMouseButtonPressed);
+                mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
 
                 gui::event mMouseDragEvent("MOUSE_DRAG_START", true);
-                mMouseDragEvent.add(iMouseButtonPressed);
-                mMouseDragEvent.add(mMouseState.fAbsX);
-                mMouseDragEvent.add(mMouseState.fAbsY);
+                mMouseDragEvent.add((uint)mMouseDragButton_);
+                mMouseDragEvent.add(mMousePos_.x);
+                mMouseDragEvent.add(mMousePos_.y);
                 mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
                 fire_event_(mMouseDragEvent, true);
             }
         }
 
         gui::event mMouseMovedEvent("MOUSE_MOVED", true);
-        mMouseMovedEvent.add(fDMX_);
-        mMouseMovedEvent.add(fDMY_);
-        mMouseMovedEvent.add(fDMX_*mMouseState.fRelX/mMouseState.fAbsX);
-        mMouseMovedEvent.add(fDMY_*mMouseState.fRelY/mMouseState.fAbsY);
+        mMouseMovedEvent.add(mMouseDelta_.x);
+        mMouseMovedEvent.add(mMouseDelta_.y);
         fire_event_(mMouseMovedEvent, true);
     }
 
@@ -495,8 +479,8 @@ void manager::update(float fTempDelta)
 
         gui::event mMouseDragEvent("MOUSE_DRAG_STOP", true);
         mMouseDragEvent.add((uint)mMouseDragButton_);
-        mMouseDragEvent.add(mMouseState.fAbsX);
-        mMouseDragEvent.add(mMouseState.fAbsY);
+        mMouseDragEvent.add(mMousePos_.x);
+        mMouseDragEvent.add(mMousePos_.y);
         mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
         fire_event_(mMouseDragEvent, true);
     }
@@ -510,9 +494,10 @@ void manager::update(float fTempDelta)
 
     if (pSource_->has_window_resized())
     {
+        const auto mDimensions = pSource_->get_window_dimensions();
         gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
-        mWindowResizedEvent.add(pSource_->get_window_width());
-        mWindowResizedEvent.add(pSource_->get_window_height());
+        mWindowResizedEvent.add(mDimensions.x);
+        mWindowResizedEvent.add(mDimensions.y);
         fire_event_(mWindowResizedEvent, true);
         pSource_->reset_window_resized();
     }
@@ -590,44 +575,14 @@ bool manager::ctrl_is_pressed() const
     return bCtrlPressed_;
 }
 
-float manager::get_mouse_x() const
+const gui::vector2f& manager::get_mouse_position() const
 {
-    return fMX_;
+    return mMousePos_;
 }
 
-float manager::get_mouse_y() const
+const gui::vector2f& manager::get_mouse_delta() const
 {
-    return fMY_;
-}
-
-float manager::get_mouse_rel_x() const
-{
-    return fRelMX_;
-}
-
-float manager::get_mouse_rel_y() const
-{
-    return fRelMY_;
-}
-
-float manager::get_mouse_dx() const
-{
-    return fDMX_;
-}
-
-float manager::get_mouse_dy() const
-{
-    return fDMY_;
-}
-
-float manager::get_mouse_rel_dx() const
-{
-    return fRelDMX_;
-}
-
-float manager::get_mouse_rel_dy() const
-{
-    return fRelDMY_;
+    return mMouseDelta_;
 }
 
 float manager::get_mouse_wheel() const
@@ -699,14 +654,9 @@ void manager::reset_mouse_cursor()
     return pSource_->reset_mouse_cursor();
 }
 
-uint manager::get_window_width() const
+const gui::vector2ui& manager::get_window_dimensions() const
 {
-    return pSource_->get_window_width();
-}
-
-uint manager::get_window_height() const
-{
-    return pSource_->get_window_height();
+    return pSource_->get_window_dimensions();
 }
 
 void manager::set_interface_scaling_factor(float fScalingFactor)

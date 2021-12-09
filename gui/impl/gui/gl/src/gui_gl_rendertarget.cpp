@@ -27,9 +27,9 @@ namespace lxgui {
 namespace gui {
 namespace gl
 {
-render_target::render_target(uint uiWidth, uint uiHeight, material::filter mFilter)
+render_target::render_target(const vector2ui& mDimensions, material::filter mFilter)
 {
-    pTexture_ = std::make_shared<gl::material>(uiWidth, uiHeight, material::wrap::REPEAT, mFilter);
+    pTexture_ = std::make_shared<gl::material>(mDimensions, material::wrap::REPEAT, mFilter);
 
     glGenFramebuffers(1, &uiFBOHandle_);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
@@ -52,14 +52,12 @@ render_target::~render_target()
 
 void render_target::begin()
 {
-    float fWidth = pTexture_->get_canvas_width();
-    float fHeight = pTexture_->get_canvas_height();
-
-    mViewMatrix_ = matrix4f::view(vector2f(fWidth, fHeight));
+    vector2f mView = vector2f(pTexture_->get_canvas_dimensions());
+    mViewMatrix_ = matrix4f::view(mView);
 
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
 
-    glViewport(0.0f, 0.0f, fWidth, fHeight);
+    glViewport(0.0f, 0.0f, mView.x, mView.y);
 }
 
 void render_target::end()
@@ -78,19 +76,14 @@ bounds2f render_target::get_rect() const
     return pTexture_->get_rect();
 }
 
-uint render_target::get_canvas_width() const
+vector2ui render_target::get_canvas_dimensions() const
 {
-    return pTexture_->get_canvas_width();
+    return pTexture_->get_canvas_dimensions();
 }
 
-uint render_target::get_canvas_height() const
+bool render_target::set_dimensions(const vector2ui& mDimensions)
 {
-    return pTexture_->get_canvas_height();
-}
-
-bool render_target::set_dimensions(uint uiWidth, uint uiHeight)
-{
-    if (pTexture_->set_dimensions(uiWidth, uiHeight))
+    if (pTexture_->set_dimensions(mDimensions))
     {
         glBindFramebuffer(GL_FRAMEBUFFER, uiFBOHandle_);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pTexture_->get_handle_(), 0);
