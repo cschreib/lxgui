@@ -118,6 +118,7 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE -Wno-shadow)
         target_compile_options(${target} PRIVATE -Wno-undefined-reinterpret-cast)
         target_compile_options(${target} PRIVATE -Wno-undefined-func-template)
+        target_compile_options(${target} PRIVATE -fno-limit-debug-info)
 
         if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
             target_compile_options(${target} PRIVATE -Wno-poison-system-directories)
