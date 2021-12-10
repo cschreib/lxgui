@@ -63,10 +63,13 @@ void scroll_frame::copy_from(const uiobject& mObj)
     {
         utils::observer_ptr<frame> pScrollChild = create_child(pOtherChild->get_object_type(),
                 pOtherChild->get_raw_name(), {mScrollFrame.get_scroll_child()});
-        pScrollChild->notify_loaded();
 
         if (pScrollChild)
+        {
+            pScrollChild->set_special();
+            pScrollChild->notify_loaded();
             this->set_scroll_child(remove_child(pScrollChild));
+        }
     }
 }
 
@@ -84,20 +87,11 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     else if (!is_virtual() && !pScrollTexture_)
     {
         // Create the scroll texture
-        auto pScrollTexture = utils::make_owned<texture>(get_manager());
-        pScrollTexture->set_special();
-        pScrollTexture->set_draw_layer("ARTWORK");
-        pScrollTexture->set_name_and_parent("$parentScrollTexture", observer_from(this));
-
-        if (!get_manager().add_uiobject(pScrollTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to create scroll texture for \""+sName_+"\", "
-                "but its name was already taken : \""+pScrollTexture->get_name()+"\". Skipped." << std::endl;
+        auto pScrollTexture = create_region<texture>(layer_type::ARTWORK, "$parentScrollTexture");
+        if (!pScrollTexture)
             return;
-        }
 
-        pScrollTexture->create_glue();
+        pScrollTexture->set_special();
         pScrollTexture->set_all_points(observer_from(this));
 
         if (pScrollRenderTarget_)
@@ -105,7 +99,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
 
         pScrollTexture->notify_loaded();
         pScrollTexture_ = pScrollTexture;
-        add_region(std::move(pScrollTexture));
 
         bRebuildScrollRenderTarget_ = true;
     }
@@ -114,8 +107,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
 
     if (pScrollChild_)
     {
-        pScrollChild_->set_parent(observer_from(this));
-
         add_child(std::move(pFrame));
 
         pScrollChild_->set_special();

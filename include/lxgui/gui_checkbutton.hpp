@@ -109,9 +109,6 @@ namespace gui
 
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        utils::owner_ptr<texture> create_checked_texture_();
-        utils::owner_ptr<texture> create_disabled_checked_texture_();
-
         bool bChecked_ = false;
 
         utils::observer_ptr<texture> pCheckedTexture_ = nullptr;

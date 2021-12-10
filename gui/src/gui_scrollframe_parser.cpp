@@ -20,39 +20,24 @@ void scroll_frame::parse_scroll_child_block_(xml::block* pBlock)
     if (pScrollChildBlock)
     {
         xml::block* pChildBlock = pScrollChildBlock->first();
-        try
+        auto pScrollChild = parse_child_(pChildBlock, "");
+        if (!pScrollChild)
+            return;
+
+        xml::block* pAnchors = pChildBlock->get_block("anchors");
+        if (pAnchors)
         {
-            auto mAttr = get_manager().parse_core_attributes(pChildBlock, observer_from(this));
-
-            utils::observer_ptr<frame> pScrollChild = create_child(
-                mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
-
-            if (!pScrollChild)
-                return;
-
-            this->set_scroll_child(remove_child(pScrollChild));
-
-            pScrollChild->set_addon(get_manager().get_current_addon());
-            pScrollChild->parse_block(pChildBlock);
-            pScrollChild->notify_loaded();
-
-            xml::block* pAnchors = pChildBlock->get_block("anchors");
-            if (pAnchors)
-            {
-                gui::out << gui::warning << pAnchors->get_location() << " : "
-                    << "Scroll child's anchors are ignored." << std::endl;
-            }
-
-            if (!pChildBlock->get_block("Size"))
-            {
-                gui::out << gui::warning << pChildBlock->get_location() << " : "
-                    "Scroll child needs its size to be defined in a Size block." << std::endl;
-            }
+            gui::out << gui::warning << pAnchors->get_location() << " : "
+                << "Scroll child's anchors are ignored." << std::endl;
         }
-        catch (const exception& e)
+
+        if (!pChildBlock->get_block("Size"))
         {
-            gui::out << gui::error << e.get_description() << std::endl;
+            gui::out << gui::warning << pChildBlock->get_location() << " : "
+                "Scroll child needs its size to be defined in a Size block." << std::endl;
         }
+
+        this->set_scroll_child(remove_child(pScrollChild));
     }
 }
 }

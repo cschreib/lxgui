@@ -14,25 +14,25 @@ void check_button::parse_all_blocks_before_children_(xml::block* pBlock)
     pSpecialBlock = pBlock->get_block("CheckedTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_checked_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_checked_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_checked_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("DisabledCheckedTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_disabled_checked_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_disabled_checked_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_disabled_checked_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 }
 }

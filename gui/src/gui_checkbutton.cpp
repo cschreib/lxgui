@@ -26,51 +26,29 @@ void check_button::copy_from(const uiobject& mObj)
 
     if (const texture* pCheckedTexture = mButton.get_checked_texture().get())
     {
-        auto pTexture = this->create_checked_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pCheckedTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pCheckedTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pCheckedTexture->get_draw_layer());
-            pTexture->copy_from(*pCheckedTexture);
-            pTexture->notify_loaded();
+        auto pTexture = this->create_region<texture>(
+            pCheckedTexture->get_draw_layer(), pCheckedTexture->get_name(),
+            {mButton.get_checked_texture()});
 
+        if (pTexture)
+        {
+            pTexture->set_special();
+            pTexture->notify_loaded();
             this->set_checked_texture(pTexture);
-            this->add_region(std::move(pTexture));
         }
     }
 
     if (const texture* pDisabledTexture = mButton.get_disabled_checked_texture().get())
     {
-        auto pTexture = this->create_disabled_checked_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pDisabledTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pDisabledTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pDisabledTexture->get_draw_layer());
-            pTexture->copy_from(*pDisabledTexture);
-            pTexture->notify_loaded();
+        auto pTexture = this->create_region<texture>(
+            pDisabledTexture->get_draw_layer(), pDisabledTexture->get_name(),
+            {mButton.get_disabled_checked_texture()});
 
+        if (pTexture)
+        {
+            pTexture->set_special();
+            pTexture->notify_loaded();
             this->set_disabled_checked_texture(pTexture);
-            this->add_region(std::move(pTexture));
         }
     }
 }
@@ -166,24 +144,5 @@ void check_button::create_glue()
     create_glue_(this);
 }
 
-utils::owner_ptr<texture> check_button::create_checked_texture_()
-{
-    auto pCheckedTexture = utils::make_owned<texture>(get_manager());
-    pCheckedTexture->set_special();
-    pCheckedTexture->set_parent(observer_from(this));
-    pCheckedTexture->set_draw_layer(layer_type::ARTWORK);
-
-    return pCheckedTexture;
-}
-
-utils::owner_ptr<texture> check_button::create_disabled_checked_texture_()
-{
-    auto pDisabledCheckedTexture = utils::make_owned<texture>(get_manager());
-    pDisabledCheckedTexture->set_special();
-    pDisabledCheckedTexture->set_parent(observer_from(this));
-    pDisabledCheckedTexture->set_draw_layer(layer_type::ARTWORK);
-
-    return pDisabledCheckedTexture;
-}
 }
 }

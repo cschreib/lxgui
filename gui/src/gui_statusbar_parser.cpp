@@ -49,10 +49,12 @@ void status_bar::parse_all_blocks_before_children_(xml::block* pBlock)
     {
         if (pBarBlock->get_name() == "BarTexture")
         {
-            auto pBarTexture = create_bar_texture_();
-            pBarTexture->parse_block(pBarBlock);
-            set_bar_texture(pBarTexture);
-            add_region(std::move(pBarTexture));
+            auto pBarTexture = parse_region_(pBarBlock, "ARTWORK", "Texture");
+            if (!pBarTexture)
+                return;
+
+            pBarTexture->set_special();
+            set_bar_texture(utils::static_pointer_cast<texture>(pBarTexture));
         }
         else
             set_bar_color(parse_color_block_(pBarBlock));

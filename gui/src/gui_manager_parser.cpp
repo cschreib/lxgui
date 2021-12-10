@@ -17,7 +17,7 @@ manager::xml_core_attributes manager::parse_core_attributes(xml::block* pBlock,
     utils::observer_ptr<frame> pXMLParent)
 {
     manager::xml_core_attributes mAttr;
-    mAttr.sFrameType = pBlock->get_name();
+    mAttr.sObjectType = pBlock->get_name();
     mAttr.sName = pBlock->get_attribute("name");
 
     if (pXMLParent)
@@ -103,14 +103,14 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                     utils::observer_ptr<frame> pFrame;
                     if (mAttr.pParent)
                     {
-                        pFrame = mAttr.pParent->create_child(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+                        pFrame = mAttr.pParent->create_child(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
                     }
                     else
                     {
                         if (mAttr.bVirtual)
-                            pFrame = create_virtual_root_frame(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+                            pFrame = create_virtual_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
                         else
-                            pFrame = create_root_frame(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
+                            pFrame = create_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
                     }
 
                     if (!pFrame)

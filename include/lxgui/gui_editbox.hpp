@@ -399,7 +399,7 @@ namespace gui
         void parse_font_string_block_(xml::block* pBlock);
         void parse_text_insets_block_(xml::block* pBlock);
 
-        utils::owner_ptr<font_string> create_font_string_();
+        void create_font_string_();
         void create_highlight_();
         void create_carret_();
 

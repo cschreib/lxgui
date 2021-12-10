@@ -252,6 +252,43 @@ void frame::parse_hit_rect_insets_block_(xml::block* pBlock)
     }
 }
 
+utils::observer_ptr<layered_region> frame::parse_region_(xml::block* pBlock,
+    const std::string& sLayer, const std::string& sType)
+{
+    try
+    {
+        auto mAttr = get_manager().parse_core_attributes(pBlock, observer_from(this));
+
+        std::string sObjectType = mAttr.sObjectType;
+        if (!sType.empty())
+            sObjectType = sType;
+
+        auto pRegion = create_region(
+            parse_layer_type(sLayer), sObjectType, mAttr.sName, mAttr.lInheritance);
+
+        if (!pRegion)
+            return nullptr;
+
+        try
+        {
+            pRegion->parse_block(pBlock);
+            pRegion->notify_loaded();
+            return pRegion;
+        }
+        catch (...)
+        {
+            pRegion->release_from_parent();
+            throw;
+        }
+    }
+    catch (const exception& e)
+    {
+        gui::out << gui::error << e.get_description() << std::endl;
+    }
+
+    return nullptr;
+}
+
 void frame::parse_layers_block_(xml::block* pBlock)
 {
     xml::block* pLayersBlock = pBlock->get_block("Layers");
@@ -262,28 +299,47 @@ void frame::parse_layers_block_(xml::block* pBlock)
             std::string sLevel = pLayerBlock->get_attribute("level");
             for (auto* pRegionBlock : pLayerBlock->blocks())
             {
-                auto pRegion = get_manager().create_layered_region(pRegionBlock->get_name());
-                if (!pRegion)
-                    continue;
-
-                try
-                {
-                    pRegion->set_parent(observer_from(this));
-                    pRegion->set_draw_layer(sLevel);
-                    pRegion->parse_block(pRegionBlock);
-                    add_region(std::move(pRegion));
-                }
-                catch (const exception& e)
-                {
-                    gui::out << gui::error << e.get_description() << std::endl;
-                }
-                catch (...)
-                {
-                    throw;
-                }
+                parse_region_(pRegionBlock, sLevel, "");
             }
         }
     }
+}
+
+utils::observer_ptr<frame> frame::parse_child_(xml::block* pBlock, const std::string& sType)
+{
+    try
+    {
+        auto mAttr = get_manager().parse_core_attributes(pBlock, observer_from(this));
+
+        std::string sObjectType = mAttr.sObjectType;
+        if (!sType.empty())
+            sObjectType = sType;
+
+        utils::observer_ptr<frame> pFrame = create_child(
+            sObjectType, mAttr.sName, mAttr.lInheritance);
+
+        if (!pFrame)
+            return nullptr;
+
+        try
+        {
+            pFrame->set_addon(get_manager().get_current_addon());
+            pFrame->parse_block(pBlock);
+            pFrame->notify_loaded();
+            return pFrame;
+        }
+        catch (...)
+        {
+            pFrame->release_from_parent();
+            throw;
+        }
+    }
+    catch (const exception& e)
+    {
+        gui::out << gui::error << e.get_description() << std::endl;
+    }
+
+    return nullptr;
 }
 
 void frame::parse_frames_block_(xml::block* pBlock)
@@ -293,24 +349,7 @@ void frame::parse_frames_block_(xml::block* pBlock)
     {
         for (auto* pElemBlock : pFramesBlock->blocks())
         {
-            try
-            {
-                auto mAttr = get_manager().parse_core_attributes(pElemBlock, observer_from(this));
-
-                utils::observer_ptr<frame> pFrame = create_child(
-                    mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);
-
-                if (!pFrame)
-                    continue;
-
-                pFrame->set_addon(get_manager().get_current_addon());
-                pFrame->parse_block(pElemBlock);
-                pFrame->notify_loaded();
-            }
-            catch (const exception& e)
-            {
-                gui::out << gui::error << e.get_description() << std::endl;
-            }
+            parse_child_(pElemBlock, "");
         }
     }
 }

@@ -297,8 +297,6 @@ void uiobject::register_on_lua(sol::state& mLua)
 
         if (pParent)
         {
-            mSelf.set_parent(pParent);
-
             if (mSelf.is_object_type<frame>())
                 pParent->add_child(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             else
@@ -308,7 +306,6 @@ void uiobject::register_on_lua(sol::state& mLua)
         {
             if (mSelf.is_object_type<frame>())
             {
-                mSelf.set_parent(pParent);
                 mSelf.get_manager().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             }
             else

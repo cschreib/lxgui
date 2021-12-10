@@ -20,6 +20,12 @@ namespace gui
         ENUM_SIZE
     };
 
+    /// Converts a string representation of a layer into the corresponding enumerator
+    /** \param sLayer The layer string (e.g., "ARTWORK")
+    *   \return The corresponding enumerator, or "ARTWORK" if parsing failed
+    */
+    layer_type parse_layer_type(const std::string& sLayer);
+
     /// A #uiobject that can be rendered in a layer.
     /** Layered regions can display content on the screen (texture,
     *   texts, 3D models, ...) and must be contained inside a layer,

@@ -68,31 +68,14 @@ void edit_box::copy_from(const uiobject& mObj)
 
     if (const font_string* pFS = mEditBox.get_font_string().get())
     {
-        auto pText = this->create_font_string_();
+        auto pFont = this->create_region<font_string>(
+            pFS->get_draw_layer(), pFS->get_name(), {mEditBox.get_font_string()});
 
-        if (this->is_virtual())
-            pText->set_virtual();
-
-        pText->set_name(pFS->get_name());
-        if (!get_manager().add_uiobject(pText))
+        if (pFont)
         {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pFS->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pText->create_glue();
-
-            pText->copy_from(*pFS);
-
-            if (!is_virtual())
-                pText->enable_formatting(false);
-
-            pText->notify_loaded();
-            this->set_font_string(pText);
-            this->add_region(std::move(pText));
+            pFont->set_special();
+            pFont->notify_loaded();
+            this->set_font_string(pFont);
         }
     }
 }
@@ -755,8 +738,6 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
     if (!pFontString_)
         return;
 
-    pFontString_->set_special();
-    pFontString_->set_parent(observer_from(this));
     pFontString_->set_word_wrap(bMultiLine_, bMultiLine_);
 
     pFontString_->set_dimensions(vector2f(0, 0));
@@ -772,73 +753,45 @@ void edit_box::set_font_string(utils::observer_ptr<font_string> pFont)
 
 void edit_box::set_font(const std::string& sFontName, float fHeight)
 {
-    if (!pFontString_)
-    {
-        auto pText = create_font_string_();
-
-        pText->set_name("$parentFontString");
-        if (!get_manager().add_uiobject(pText))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \"$parentFontString\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-            return;
-        }
-
-        if (!is_virtual())
-        {
-            pText->create_glue();
-            pText->enable_formatting(false);
-        }
-
-        pText->notify_loaded();
-        set_font_string(pText);
-        add_region(std::move(pText));
-    }
+    create_font_string_();
 
     pFontString_->set_font(sFontName, fHeight);
 
     create_carret_();
 }
 
-utils::owner_ptr<font_string> edit_box::create_font_string_()
+void edit_box::create_font_string_()
 {
-    auto pFont = utils::make_owned<font_string>(get_manager());
-    pFont->set_special();
-    pFont->set_parent(observer_from(this));
-    pFont->set_draw_layer(layer_type::ARTWORK);
+    if (pFontString_)
+        return;
 
-    return pFont;
+    auto pFont = create_region<font_string>(layer_type::ARTWORK, "$parentFontString");
+    if (!pFont)
+        return;
+
+    pFont->set_special();
+    pFont->notify_loaded();
+    set_font_string(pFont);
 }
 
 void edit_box::create_highlight_()
 {
-    if (is_virtual())
+    if (pHighlight_ || is_virtual())
         return;
 
-    auto pHighlight = utils::make_owned<texture>(get_manager());
+    auto pHighlight = create_region<texture>(layer_type::HIGHLIGHT, "$parentHighlight");
+    if (!pHighlight)
+        return;
+
     pHighlight->set_special();
-    pHighlight->set_parent(observer_from(this));
-    pHighlight->set_draw_layer(layer_type::HIGHLIGHT);
-    pHighlight->set_name("$parentHighlight");
-
-    if (!get_manager().add_uiobject(pHighlight))
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            "Trying to create highlight texture for \""+sName_+"\", "
-            "but its name was already taken : \""+pHighlight->get_name()+"\". Skipped." << std::endl;
-        return;
-    }
-
-    pHighlight->create_glue();
 
     pHighlight->set_point(anchor_data(anchor_point::TOP, vector2f(0.0f, lTextInsets_.top)));
     pHighlight->set_point(anchor_data(anchor_point::BOTTOM, vector2f(0.0f, -lTextInsets_.bottom)));
 
     pHighlight->set_solid_color(mHighlightColor_);
+
     pHighlight->notify_loaded();
     pHighlight_ = pHighlight;
-    add_region(std::move(pHighlight));
 }
 
 void edit_box::create_carret_()
@@ -848,28 +801,17 @@ void edit_box::create_carret_()
 
     if (!pCarret_)
     {
-        auto pCarret = utils::make_owned<texture>(get_manager());
-        pCarret->set_special();
-        pCarret->set_parent(observer_from(this));
-        pCarret->set_draw_layer(layer_type::HIGHLIGHT);
-        pCarret->set_name("$parentCarret");
-
-        if (!get_manager().add_uiobject(pCarret))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to create carret texture for \""+sName_+"\", "
-                "but its name was already taken : \""+pCarret->get_name()+"\". Skipped." << std::endl;
+        auto pCarret = create_region<texture>(layer_type::HIGHLIGHT, "$parentCarret");
+        if (!pCarret)
             return;
-        }
 
-        pCarret->create_glue();
+        pCarret->set_special();
 
         pCarret->set_point(anchor_data(
             anchor_point::CENTER, anchor_point::LEFT, vector2f(lTextInsets_.left - 1, 0)));
 
         pCarret->notify_loaded();
         pCarret_ = pCarret;
-        add_region(std::move(pCarret));
     }
 
     quad mQuad = pFontString_->get_text_object()->create_letter_quad(U'|');

@@ -326,7 +326,7 @@ void frame::create_title_region()
         pTitleRegion->set_virtual();
 
     pTitleRegion->set_special();
-    pTitleRegion->set_name_and_parent("$parentTitleRegion", observer_from(this));
+    pTitleRegion->set_name_and_parent_("$parentTitleRegion", observer_from(this));
 
     if (!get_manager().add_uiobject(pTitleRegion))
     {
@@ -618,6 +618,8 @@ utils::observer_ptr<layered_region> frame::add_region(
     if (!pRegion)
         return nullptr;
 
+    pRegion->set_parent_(observer_from(this));
+
     utils::observer_ptr<layered_region> pAddedRegion = pRegion;
     lRegionList_.push_back(std::move(pRegion));
 
@@ -664,7 +666,7 @@ utils::owner_ptr<layered_region> frame::remove_region(
 
     notify_layers_need_update();
     notify_renderer_need_redraw();
-    pRemovedRegion->set_parent(nullptr);
+    pRemovedRegion->set_parent_(nullptr);
 
     if (!bVirtual_)
     {
@@ -692,7 +694,7 @@ utils::observer_ptr<layered_region> frame::create_region(
     if (this->is_virtual())
         pRegion->set_virtual();
 
-    pRegion->set_name_and_parent(sName, observer_from(this));
+    pRegion->set_name_and_parent_(sName, observer_from(this));
 
     if (!get_manager().add_uiobject(pRegion))
         return nullptr;
@@ -731,7 +733,7 @@ utils::observer_ptr<frame> frame::create_child(
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name_and_parent(sName, observer_from(this));
+    pNewFrame->set_name_and_parent_(sName, observer_from(this));
 
     if (this->is_virtual())
         pNewFrame->set_virtual();
@@ -771,6 +773,8 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
 {
     if (!pChild)
         return nullptr;
+
+    pChild->set_parent_(observer_from(this));
 
     if (bIsTopLevel_)
         pChild->notify_top_level_parent_(true, observer_from(this));
@@ -843,7 +847,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
         }
     }
 
-    pRemovedChild->set_parent(nullptr);
+    pRemovedChild->set_parent_(nullptr);
 
     if (!bVirtual_)
     {

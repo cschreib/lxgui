@@ -289,14 +289,6 @@ namespace gui
         void parse_attributes_(xml::block* pBlock) override;
         void parse_all_blocks_before_children_(xml::block* pBlock) override;
 
-        utils::owner_ptr<texture>     create_normal_texture_();
-        utils::owner_ptr<texture>     create_pushed_texture_();
-        utils::owner_ptr<texture>     create_disabled_texture_();
-        utils::owner_ptr<texture>     create_highlight_texture_();
-        utils::owner_ptr<font_string> create_normal_text_();
-        utils::owner_ptr<font_string> create_highlight_text_();
-        utils::owner_ptr<font_string> create_disabled_text_();
-
         state     mState_ = state::UP;
         bool      bHighlighted_ = false;
         bool      bLockHighlight_ = false;

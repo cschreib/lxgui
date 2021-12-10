@@ -108,176 +108,99 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = mButton.get_normal_texture().get())
     {
-        auto pTexture = this->create_normal_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pOtherTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
+        auto pTexture = this->create_region<texture>(
+            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
+            {mButton.get_normal_texture()});
+
+        if (pTexture)
         {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pOtherTexture->get_draw_layer());
-            pTexture->copy_from(*pOtherTexture);
+            pTexture->set_special();
             pTexture->notify_loaded();
             this->set_normal_texture(pTexture);
-
-            this->add_region(std::move(pTexture));
         }
     }
 
     if (const texture* pOtherTexture = mButton.get_pushed_texture().get())
     {
-        auto pTexture = this->create_pushed_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pOtherTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pOtherTexture->get_draw_layer());
-            pTexture->copy_from(*pOtherTexture);
-            pTexture->notify_loaded();
+        auto pTexture = this->create_region<texture>(
+            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
+            {mButton.get_pushed_texture()});
 
+        if (pTexture)
+        {
+            pTexture->set_special();
+            pTexture->notify_loaded();
             this->set_pushed_texture(pTexture);
-            this->add_region(std::move(pTexture));
         }
     }
 
     if (const texture* pOtherTexture = mButton.get_highlight_texture().get())
     {
-        auto pTexture = this->create_highlight_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pOtherTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pOtherTexture->get_draw_layer());
-            pTexture->copy_from(*pOtherTexture);
-            pTexture->notify_loaded();
+        auto pTexture = this->create_region<texture>(
+            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
+            {mButton.get_highlight_texture()});
 
+        if (pTexture)
+        {
+            pTexture->set_special();
+            pTexture->notify_loaded();
             this->set_highlight_texture(pTexture);
-            this->add_region(std::move(pTexture));
         }
     }
 
     if (const texture* pOtherTexture = mButton.get_disabled_texture().get())
     {
-        auto pTexture = this->create_disabled_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pOtherTexture->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherTexture->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
-            pTexture->set_draw_layer(pOtherTexture->get_draw_layer());
-            pTexture->copy_from(*pOtherTexture);
-            pTexture->notify_loaded();
+        auto pTexture = this->create_region<texture>(
+            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
+            {mButton.get_disabled_texture()});
 
+        if (pTexture)
+        {
+            pTexture->set_special();
+            pTexture->notify_loaded();
             this->set_disabled_texture(pTexture);
-            this->add_region(std::move(pTexture));
         }
     }
 
     if (const font_string* pOtherText = mButton.get_normal_text().get())
     {
-        auto pText = this->create_normal_text_();
-        if (this->is_virtual())
-            pText->set_virtual();
-        pText->set_name(pOtherText->get_name());
-        if (!get_manager().add_uiobject(pText))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherText->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pText->create_glue();
-            pText->set_draw_layer(pOtherText->get_draw_layer());
-            pText->copy_from(*pOtherText);
-            pText->notify_loaded();
+        auto pFont = this->create_region<font_string>(
+            pOtherText->get_draw_layer(), pOtherText->get_name(),
+            {mButton.get_normal_text()});
 
-            this->set_normal_text(pText);
-            this->add_region(std::move(pText));
+        if (pFont)
+        {
+            pFont->set_special();
+            pFont->notify_loaded();
+            this->set_normal_text(pFont);
         }
     }
 
     if (const font_string* pOtherText = mButton.get_highlight_text().get())
     {
-        auto pText = this->create_highlight_text_();
-        if (this->is_virtual())
-            pText->set_virtual();
-        pText->set_name(pOtherText->get_name());
-        if (!get_manager().add_uiobject(pText))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherText->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pText->create_glue();
-            pText->set_draw_layer(pOtherText->get_draw_layer());
-            pText->copy_from(*pOtherText);
-            pText->notify_loaded();
+        auto pFont = this->create_region<font_string>(
+            pOtherText->get_draw_layer(), pOtherText->get_name(),
+            {mButton.get_highlight_text()});
 
-            this->set_highlight_text(pText);
-            this->add_region(std::move(pText));
+        if (pFont)
+        {
+            pFont->set_special();
+            pFont->notify_loaded();
+            this->set_highlight_text(pFont);
         }
     }
 
     if (const font_string* pOtherText = mButton.get_disabled_text().get())
     {
-        auto pText = this->create_disabled_text_();
-        if (this->is_virtual())
-            pText->set_virtual();
-        pText->set_name(pOtherText->get_name());
-        if (!get_manager().add_uiobject(pText))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pOtherText->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pText->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pText->create_glue();
-            pText->set_draw_layer(pOtherText->get_draw_layer());
-            pText->copy_from(*pOtherText);
-            pText->notify_loaded();
+        auto pFont = this->create_region<font_string>(
+            pOtherText->get_draw_layer(), pOtherText->get_name(),
+            {mButton.get_disabled_text()});
 
-            this->set_disabled_text(pText);
-            this->add_region(std::move(pText));
+        if (pFont)
+        {
+            pFont->set_special();
+            pFont->notify_loaded();
+            this->set_disabled_text(pFont);
         }
     }
 
@@ -304,76 +227,6 @@ void button::set_text(const utils::ustring& sText)
 const utils::ustring& button::get_text() const
 {
     return sText_;
-}
-
-utils::owner_ptr<texture> button::create_normal_texture_()
-{
-    auto pNormalTexture = utils::make_owned<texture>(get_manager());
-    pNormalTexture->set_special();
-    pNormalTexture->set_parent(observer_from(this));
-    pNormalTexture->set_draw_layer(layer_type::BORDER);
-
-    return pNormalTexture;
-}
-
-utils::owner_ptr<texture> button::create_pushed_texture_()
-{
-    auto pPushedTexture = utils::make_owned<texture>(get_manager());
-    pPushedTexture->set_special();
-    pPushedTexture->set_parent(observer_from(this));
-    pPushedTexture->set_draw_layer(layer_type::BORDER);
-
-    return pPushedTexture;
-}
-
-utils::owner_ptr<texture> button::create_disabled_texture_()
-{
-    auto pDisabledTexture = utils::make_owned<texture>(get_manager());
-    pDisabledTexture->set_special();
-    pDisabledTexture->set_parent(observer_from(this));
-    pDisabledTexture->set_draw_layer(layer_type::BORDER);
-
-    return pDisabledTexture;
-}
-
-utils::owner_ptr<texture> button::create_highlight_texture_()
-{
-    auto pHighlightTexture = utils::make_owned<texture>(get_manager());
-    pHighlightTexture->set_special();
-    pHighlightTexture->set_parent(observer_from(this));
-    pHighlightTexture->set_draw_layer(layer_type::HIGHLIGHT);
-
-    return pHighlightTexture;
-}
-
-utils::owner_ptr<font_string> button::create_normal_text_()
-{
-    auto pNormalText = utils::make_owned<font_string>(get_manager());
-    pNormalText->set_special();
-    pNormalText->set_parent(observer_from(this));
-    pNormalText->set_draw_layer(layer_type::ARTWORK);
-
-    return pNormalText;
-}
-
-utils::owner_ptr<font_string> button::create_highlight_text_()
-{
-    auto pHighlightText = utils::make_owned<font_string>(get_manager());
-    pHighlightText->set_special();
-    pHighlightText->set_parent(observer_from(this));
-    pHighlightText->set_draw_layer(layer_type::ARTWORK);
-
-    return pHighlightText;
-}
-
-utils::owner_ptr<font_string> button::create_disabled_text_()
-{
-    auto pDisabledText = utils::make_owned<font_string>(get_manager());
-    pDisabledText->set_special();
-    pDisabledText->set_parent(observer_from(this));
-    pDisabledText->set_draw_layer(layer_type::BORDER);
-
-    return pDisabledText;
 }
 
 void button::set_normal_texture(utils::observer_ptr<texture> pTexture)

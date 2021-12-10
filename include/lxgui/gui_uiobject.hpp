@@ -150,6 +150,7 @@ namespace gui
     class uiobject : public utils::enable_observer_from_this<uiobject>
     {
     friend manager;
+    friend frame;
     public :
 
         /// Contructor.
@@ -212,19 +213,6 @@ namespace gui
         */
         const std::string& get_raw_name() const;
 
-        /// Sets this widget's name.
-        /** \param sName This widget's name
-        *   \note Can only be called once. If you need to set both the name and the parent
-        *         at the same time (typically, at creation), use set_name_and_parent().
-        */
-        void set_name(const std::string& sName);
-
-        /// Changes this widget's parent.
-        /** \param pParent The new parent
-        *   \note Default is nullptr.
-        */
-        void set_parent(utils::observer_ptr<frame> pParent);
-
         /// Returns this widget's parent.
         /** \return This widget's parent
         */
@@ -234,14 +222,6 @@ namespace gui
         /** \return This widget's parent
         */
         const utils::observer_ptr<frame>& get_parent() { return pParent_; }
-
-        /// Sets this widget's name and parent at once.
-        /** \param sName This widget's name
-        *   \param pParent The new parent
-        *   \note The name can only be set once. If you need to just change the
-        *         parent, call set_parent().
-        */
-        void set_name_and_parent(const std::string& sName, utils::observer_ptr<frame> pParent);
 
         /// Removes this widget from its parent and return an owning pointer.
         /** \return An owning pointer to this widget
@@ -640,6 +620,27 @@ namespace gui
 
         void set_lua_member_(std::string sKey, sol::stack_object mValue);
         sol::object get_lua_member_(const std::string& sKey) const;
+
+        /// Sets this widget's name.
+        /** \param sName This widget's name
+        *   \note Can only be called once. If you need to set both the name and the parent
+        *         at the same time (typically, at creation), use set_name_and_parent().
+        */
+        void set_name_(const std::string& sName);
+
+        /// Changes this widget's parent.
+        /** \param pParent The new parent
+        *   \note Default is nullptr.
+        */
+        void set_parent_(utils::observer_ptr<frame> pParent);
+
+        /// Sets this widget's name and parent at once.
+        /** \param sName This widget's name
+        *   \param pParent The new parent
+        *   \note The name can only be set once. If you need to just change the
+        *         parent, call set_parent().
+        */
+        void set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent);
 
         manager& mManager_;
 

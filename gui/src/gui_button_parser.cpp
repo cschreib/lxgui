@@ -30,86 +30,86 @@ void button::parse_all_blocks_before_children_(xml::block* pBlock)
     pSpecialBlock = pBlock->get_block("NormalTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_normal_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_normal_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_normal_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("PushedTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_pushed_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_pushed_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_pushed_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("DisabledTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_disabled_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_disabled_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_disabled_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 
     pSpecialBlock = pBlock->get_block("HighlightTexture");
     if (pSpecialBlock)
     {
-        auto pTexture = create_highlight_texture_();
-        pTexture->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pTexture->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_highlight_texture(pTexture);
-        add_region(std::move(pTexture));
+        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
+        pTexture->set_special();
+        set_highlight_texture(utils::static_pointer_cast<texture>(pTexture));
     }
 
 
     pSpecialBlock = pBlock->get_block("NormalText");
     if (pSpecialBlock)
     {
-        auto pFontString = create_normal_text_();
-        pFontString->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_normal_text(pFontString);
-        add_region(std::move(pFontString));
+        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
+        pFontString->set_special();
+        set_normal_text(utils::static_pointer_cast<font_string>(pFontString));
     }
 
     pSpecialBlock = pBlock->get_block("HighlightText");
     if (pSpecialBlock)
     {
-        auto pFontString = create_highlight_text_();
-        pFontString->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_highlight_text(pFontString);
-        add_region(std::move(pFontString));
+        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
+        pFontString->set_special();
+        set_highlight_text(utils::static_pointer_cast<font_string>(pFontString));
     }
 
     pSpecialBlock = pBlock->get_block("DisabledText");
     if (pSpecialBlock)
     {
-        auto pFontString = create_disabled_text_();
-        pFontString->parse_block(pSpecialBlock);
+        std::string sLayer = "ARTWORK";
         if (pSpecialBlock->is_provided("layer"))
-            pFontString->set_draw_layer(pSpecialBlock->get_attribute("layer"));
+            sLayer = pSpecialBlock->get_attribute("layer");
 
-        set_disabled_text(pFontString);
-        add_region(std::move(pFontString));
+        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
+        pFontString->set_special();
+        set_disabled_text(utils::static_pointer_cast<font_string>(pFontString));
     }
 
     xml::block* pOffsetBlock = pBlock->get_block("PushedTextOffset");

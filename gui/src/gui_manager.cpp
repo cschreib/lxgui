@@ -201,7 +201,7 @@ utils::observer_ptr<frame> manager::create_root_frame_(
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name(sName);
+    pNewFrame->set_name_(sName);
 
     if (bVirtual)
         pNewFrame->set_virtual();

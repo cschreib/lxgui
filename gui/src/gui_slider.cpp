@@ -84,25 +84,15 @@ void slider::copy_from(const uiobject& mObj)
 
     if (const texture* pThumb = mSlider.get_thumb_texture().get())
     {
-        auto pTexture = this->create_thumb_texture_();
-        if (this->is_virtual())
-            pTexture->set_virtual();
-        pTexture->set_name(pThumb->get_name());
-        if (!get_manager().add_uiobject(pTexture))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                "Trying to add \""+pThumb->get_name()+"\" to \""+sName_+"\", "
-                "but its name was already taken : \""+pTexture->get_name()+"\". Skipped." << std::endl;
-        }
-        else
-        {
-            if (!is_virtual())
-                pTexture->create_glue();
+        auto pTexture = this->create_region<texture>(
+            pThumb->get_draw_layer(), pThumb->get_name(),
+            {mSlider.get_thumb_texture()});
 
-            pTexture->copy_from(*pThumb);
+        if (pTexture)
+        {
+            pTexture->set_special();
             pTexture->notify_loaded();
-            pThumbTexture_ = pTexture;
-            this->add_region(std::move(pTexture));
+            this->set_thumb_texture(pTexture);
         }
     }
 }
@@ -309,9 +299,10 @@ void slider::set_thumb_texture(utils::observer_ptr<texture> pTexture)
     if (!pThumbTexture_)
         return;
 
+    pThumbTexture_->set_draw_layer(mThumbLayer_);
     pThumbTexture_->clear_all_points();
     pThumbTexture_->set_point(anchor_data(
-        anchor_point::CENTER, sName_,
+        anchor_point::CENTER, pThumbTexture_->get_parent().get() == this ? "$parent" : sName_,
         mOrientation_ == orientation::HORIZONTAL ? anchor_point::LEFT : anchor_point::TOP
     ));
 
@@ -419,16 +410,6 @@ void slider::set_allow_clicks_outside_thumb(bool bAllow)
 bool slider::are_clicks_outside_thumb_allowed() const
 {
     return bAllowClicksOutsideThumb_;
-}
-
-utils::owner_ptr<texture> slider::create_thumb_texture_()
-{
-    auto pTexture = utils::make_owned<texture>(get_manager());
-    pTexture->set_special();
-    pTexture->set_parent(observer_from(this));
-    pTexture->set_draw_layer(mThumbLayer_);
-
-    return pTexture;
 }
 
 bool slider::is_in_frame(const vector2f& mPosition) const

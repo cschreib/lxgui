@@ -157,32 +157,6 @@ const std::string& uiobject::get_raw_name() const
     return sRawName_;
 }
 
-void uiobject::set_name(const std::string& sName)
-{
-    if (sName_.empty())
-    {
-        sName_ = sLuaName_ = sRawName_ = sName;
-        if (utils::starts_with(sName_, "$parent"))
-        {
-            if (pParent_)
-                utils::replace(sLuaName_, "$parent", pParent_->get_lua_name());
-            else
-            {
-                gui::out << gui::warning << "gui::" << lType_.back() << " : \"" << sName_ << "\" has no parent" << std::endl;
-                utils::replace(sLuaName_, "$parent", "");
-            }
-        }
-
-        if (!bVirtual_)
-            sName_ = sLuaName_;
-    }
-    else
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "set_name() can only be called once." << std::endl;
-    }
-}
-
 const std::string& uiobject::get_object_type() const
 {
     return lType_.back();
@@ -368,7 +342,33 @@ bool uiobject::is_apparent_height_defined() const
     return mDimensions_.y > 0.0f || (lDefinedBorderList_.top && lDefinedBorderList_.bottom);
 }
 
-void uiobject::set_parent(utils::observer_ptr<frame> pParent)
+void uiobject::set_name_(const std::string& sName)
+{
+    if (sName_.empty())
+    {
+        sName_ = sLuaName_ = sRawName_ = sName;
+        if (utils::starts_with(sName_, "$parent"))
+        {
+            if (pParent_)
+                utils::replace(sLuaName_, "$parent", pParent_->get_lua_name());
+            else
+            {
+                gui::out << gui::warning << "gui::" << lType_.back() << " : \"" << sName_ << "\" has no parent" << std::endl;
+                utils::replace(sLuaName_, "$parent", "");
+            }
+        }
+
+        if (!bVirtual_)
+            sName_ = sLuaName_;
+    }
+    else
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+            << "set_name() can only be called once." << std::endl;
+    }
+}
+
+void uiobject::set_parent_(utils::observer_ptr<frame> pParent)
 {
     if (pParent == observer_from_this())
     {
@@ -385,7 +385,7 @@ void uiobject::set_parent(utils::observer_ptr<frame> pParent)
     }
 }
 
-void uiobject::set_name_and_parent(const std::string& sName, utils::observer_ptr<frame> pParent)
+void uiobject::set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent)
 {
     if (pParent == observer_from_this())
     {
@@ -397,7 +397,7 @@ void uiobject::set_name_and_parent(const std::string& sName, utils::observer_ptr
         return;
 
     pParent_ = std::move(pParent);
-    set_name(sName);
+    set_name_(sName);
 
     if (!bVirtual_)
         notify_borders_need_update();

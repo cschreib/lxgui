@@ -696,7 +696,7 @@ namespace gui
         /// Struct holding core information about a frame, parsed from XML.
         struct xml_core_attributes
         {
-            std::string sFrameType;
+            std::string sObjectType;
             std::string sName;
             bool        bVirtual = false;
 

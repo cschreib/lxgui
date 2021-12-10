@@ -11,6 +11,7 @@
 namespace lxgui {
 namespace gui
 {
+
 layered_region::layered_region(manager& mManager) : region(mManager)
 {
     lType_.push_back(CLASS_NAME);
@@ -89,6 +90,20 @@ void layered_region::set_draw_layer(layer_type mLayer)
 
 void layered_region::set_draw_layer(const std::string& sLayer)
 {
+    set_draw_layer(parse_layer_type(sLayer));
+}
+
+void layered_region::notify_renderer_need_redraw() const
+{
+    if (bVirtual_)
+        return;
+
+    if (pParent_)
+        pParent_->notify_renderer_need_redraw();
+}
+
+layer_type parse_layer_type(const std::string& sLayer)
+{
     layer_type mLayer;
     if (sLayer == "ARTWORK")
         mLayer = layer_type::ARTWORK;
@@ -102,27 +117,14 @@ void layered_region::set_draw_layer(const std::string& sLayer)
         mLayer = layer_type::OVERLAY;
     else
     {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
+        gui::out << gui::warning << "gui::parse_layer_type : "
             << "Unknown layer type : \"" << sLayer << "\". Using \"ARTWORK\"." << std::endl;
 
         mLayer = layer_type::ARTWORK;
     }
 
-    if (mLayer_ != mLayer)
-    {
-        mLayer_ = mLayer;
-        notify_renderer_need_redraw();
-        pParent_->notify_layers_need_update();
-    }
+    return mLayer;
 }
 
-void layered_region::notify_renderer_need_redraw() const
-{
-    if (bVirtual_)
-        return;
-
-    if (pParent_)
-        pParent_->notify_renderer_need_redraw();
-}
 }
 }

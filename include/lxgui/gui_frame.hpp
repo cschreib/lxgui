@@ -1147,6 +1147,9 @@ namespace gui
         virtual void parse_layers_block_(xml::block* pBlock);
         virtual void parse_frames_block_(xml::block* pBlock);
         virtual void parse_scripts_block_(xml::block* pBlock);
+        utils::observer_ptr<layered_region> parse_region_(xml::block* pBlock,
+            const std::string& sLayer, const std::string& sType);
+        utils::observer_ptr<frame> parse_child_(xml::block* pBlock, const std::string& sType);
 
         virtual void notify_top_level_parent_(bool bTopLevel,
             const utils::observer_ptr<frame>& pParent);
