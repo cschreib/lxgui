@@ -88,7 +88,7 @@ $(function() {
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    utils::observer_ptr&lt;frame&gt; pXMLParent)</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html">manager::xml_core_attributes</a> mAttr;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    mAttr.<a class="code" href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#ad9b31d2d0ff83779c464d0d20b593438">sFrameType</a> = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    mAttr.<a class="code" href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#a8dc3da72f20eee10a9c83fb5469144ee">sObjectType</a> = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>();</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    mAttr.<a class="code" href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#aba4796251c7879884b3401633eb24737">sName</a> = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;name&quot;</span>);</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordflow">if</span> (pXMLParent)</div>
@@ -174,14 +174,14 @@ $(function() {
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    utils::observer_ptr&lt;frame&gt; pFrame;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    <span class="keywordflow">if</span> (mAttr.pParent)</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        pFrame = mAttr.pParent-&gt;create_child(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                        pFrame = mAttr.pParent-&gt;create_child(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    }</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    <span class="keywordflow">else</span></div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                    {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        <span class="keywordflow">if</span> (mAttr.bVirtual)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                            pFrame = <a class="code" href="classlxgui_1_1gui_1_1manager.html#a94009568d9f5286e4c1a7644d16b1caa">create_virtual_root_frame</a>(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                            pFrame = <a class="code" href="classlxgui_1_1gui_1_1manager.html#a94009568d9f5286e4c1a7644d16b1caa">create_virtual_root_frame</a>(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                            pFrame = <a class="code" href="classlxgui_1_1gui_1_1manager.html#a3e55ac63dfef8360886515e208082301">create_root_frame</a>(mAttr.sFrameType, mAttr.sName, mAttr.lInheritance);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                            pFrame = <a class="code" href="classlxgui_1_1gui_1_1manager.html#a3e55ac63dfef8360886515e208082301">create_root_frame</a>(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                    }</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                    <span class="keywordflow">if</span> (!pFrame)</div>
@@ -219,7 +219,6 @@ $(function() {
 <div class="ttc" id="aclasslxgui_1_1xml_1_1block_html"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html">lxgui::xml::block</a></div><div class="ttdoc">An element in an XML file.</div><div class="ttdef"><b>Definition:</b> <a href="xml__block_8hpp_source.html#l00051">xml_block.hpp:51</a></div></div>
 <div class="ttc" id="agui__event_8hpp_html"><div class="ttname"><a href="gui__event_8hpp.html">gui_event.hpp</a></div></div>
 <div class="ttc" id="agui__frame_8hpp_html"><div class="ttname"><a href="gui__frame_8hpp.html">gui_frame.hpp</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1manager_1_1xml__core__attributes_html_ad9b31d2d0ff83779c464d0d20b593438"><div class="ttname"><a href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#ad9b31d2d0ff83779c464d0d20b593438">lxgui::gui::manager::xml_core_attributes::sFrameType</a></div><div class="ttdeci">std::string sFrameType</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00699">gui_manager.hpp:699</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a94009568d9f5286e4c1a7644d16b1caa"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a94009568d9f5286e4c1a7644d16b1caa">lxgui::gui::manager::create_virtual_root_frame</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; create_virtual_root_frame(const std::string &amp;sClassName, const std::string &amp;sName, const std::vector&lt; utils::observer_ptr&lt; const uiobject &gt;&gt; &amp;lInheritance={})</div><div class="ttdoc">Creates a new virtual frame, ready for use, and owned by this manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00193">gui_manager.hpp:193</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_af5ed226227be7e1d15d550b7fa1d0987"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">lxgui::xml::block::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns this Block's name.</div></div>
 <div class="ttc" id="agui__eventmanager_8hpp_html"><div class="ttname"><a href="gui__eventmanager_8hpp.html">gui_eventmanager.hpp</a></div></div>
@@ -233,11 +232,12 @@ $(function() {
 <div class="ttc" id="astructlxgui_1_1gui_1_1addon_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1addon.html">lxgui::gui::addon</a></div><div class="ttdoc">A piece of the user interface.</div><div class="ttdef"><b>Definition:</b> <a href="gui__addon_8hpp_source.html#l00013">gui_addon.hpp:13</a></div></div>
 <div class="ttc" id="agui__manager_8hpp_html"><div class="ttname"><a href="gui__manager_8hpp.html">gui_manager.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1manager_html_a6692ce534f711e07d39d7a678982b665"><div class="ttname"><a href="classlxgui_1_1gui_1_1manager.html#a6692ce534f711e07d39d7a678982b665">lxgui::gui::manager::get_uiobject_by_name</a></div><div class="ttdeci">utils::observer_ptr&lt; const uiobject &gt; get_uiobject_by_name(const std::string &amp;sName, bool bVirtual=false) const</div><div class="ttdoc">Returns the uiobject associated with the given name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8cpp_source.html#l00392">gui_manager.cpp:392</a></div></div>
+<div class="ttc" id="astructlxgui_1_1gui_1_1manager_1_1xml__core__attributes_html_a8dc3da72f20eee10a9c83fb5469144ee"><div class="ttname"><a href="structlxgui_1_1gui_1_1manager_1_1xml__core__attributes.html#a8dc3da72f20eee10a9c83fb5469144ee">lxgui::gui::manager::xml_core_attributes::sObjectType</a></div><div class="ttdeci">std::string sObjectType</div><div class="ttdef"><b>Definition:</b> <a href="gui__manager_8hpp_source.html#l00699">gui_manager.hpp:699</a></div></div>
 <div class="ttc" id="axml__document_8hpp_html"><div class="ttname"><a href="xml__document_8hpp.html">xml_document.hpp</a></div></div>
 <div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html_afe177d2e51c81a01f6b43a6a7cef185c"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html#afe177d2e51c81a01f6b43a6a7cef185c">lxgui::gui::event_manager::fire_event</a></div><div class="ttdeci">void fire_event(const event &amp;mEvent)</div><div class="ttdoc">Tells this manager an Event as occured.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8cpp_source.html#l00104">gui_eventmanager.cpp:104</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 9 2021 20:12:10 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 10 2021 09:38:58 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
