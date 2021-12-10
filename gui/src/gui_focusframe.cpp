@@ -16,9 +16,11 @@ void focus_frame::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const focus_frame& mFocusFrame = static_cast<const focus_frame&>(mObj);
+    const focus_frame* pFocusFrame = down_cast<focus_frame>(&mObj);
+    if (!pFocusFrame)
+        return;
 
-    this->enable_auto_focus(mFocusFrame.is_auto_focus_enabled());
+    this->enable_auto_focus(pFocusFrame->is_auto_focus_enabled());
 }
 
 void focus_frame::create_glue()

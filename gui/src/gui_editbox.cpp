@@ -54,22 +54,24 @@ void edit_box::copy_from(const uiobject& mObj)
 {
     focus_frame::copy_from(mObj);
 
-    const edit_box& mEditBox = static_cast<const edit_box&>(mObj);
+    const edit_box* pEditBox = down_cast<edit_box>(&mObj);
+    if (!pEditBox)
+        return;
 
-    this->set_max_letters(mEditBox.get_max_letters());
-    this->set_blink_speed(mEditBox.get_blink_speed());
-    this->set_numeric_only(mEditBox.is_numeric_only());
-    this->set_positive_only(mEditBox.is_positive_only());
-    this->set_integer_only(mEditBox.is_integer_only());
-    this->enable_password_mode(mEditBox.is_password_mode_enabled());
-    this->set_multi_line(mEditBox.is_multi_line());
-    this->set_max_history_lines(mEditBox.get_max_history_lines());
-    this->set_text_insets(mEditBox.get_text_insets());
+    this->set_max_letters(pEditBox->get_max_letters());
+    this->set_blink_speed(pEditBox->get_blink_speed());
+    this->set_numeric_only(pEditBox->is_numeric_only());
+    this->set_positive_only(pEditBox->is_positive_only());
+    this->set_integer_only(pEditBox->is_integer_only());
+    this->enable_password_mode(pEditBox->is_password_mode_enabled());
+    this->set_multi_line(pEditBox->is_multi_line());
+    this->set_max_history_lines(pEditBox->get_max_history_lines());
+    this->set_text_insets(pEditBox->get_text_insets());
 
-    if (const font_string* pFS = mEditBox.get_font_string().get())
+    if (const font_string* pFS = pEditBox->get_font_string().get())
     {
         auto pFont = this->create_region<font_string>(
-            pFS->get_draw_layer(), pFS->get_name(), {mEditBox.get_font_string()});
+            pFS->get_draw_layer(), pFS->get_name(), {pEditBox->get_font_string()});
 
         if (pFont)
         {

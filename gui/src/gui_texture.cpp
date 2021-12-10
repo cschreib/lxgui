@@ -117,19 +117,21 @@ void texture::copy_from(const uiobject& mObj)
 {
     uiobject::copy_from(mObj);
 
-    const texture& mTexture = static_cast<const texture&>(mObj);
+    const texture* pTexture = down_cast<texture>(&mObj);
+    if (!pTexture)
+        return;
 
-    if (mTexture.has_texture_file())
-        this->set_texture(mTexture.get_texture_file());
-    else if (mTexture.has_gradient())
-        this->set_gradient(mTexture.get_gradient());
-    else if (mTexture.has_solid_color())
-        this->set_solid_color(mTexture.get_solid_color());
+    if (pTexture->has_texture_file())
+        this->set_texture(pTexture->get_texture_file());
+    else if (pTexture->has_gradient())
+        this->set_gradient(pTexture->get_gradient());
+    else if (pTexture->has_solid_color())
+        this->set_solid_color(pTexture->get_solid_color());
 
-    this->set_blend_mode(mTexture.get_blend_mode());
-    this->set_tex_coord(mTexture.get_tex_coord());
-    this->set_tex_coord_modifies_rect(mTexture.get_tex_coord_modifies_rect());
-    this->set_desaturated(mTexture.is_desaturated());
+    this->set_blend_mode(pTexture->get_blend_mode());
+    this->set_tex_coord(pTexture->get_tex_coord());
+    this->set_tex_coord_modifies_rect(pTexture->get_tex_coord_modifies_rect());
+    this->set_desaturated(pTexture->is_desaturated());
 }
 
 texture::blend_mode texture::get_blend_mode() const

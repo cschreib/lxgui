@@ -102,15 +102,17 @@ void button::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const button& mButton = static_cast<const button&>(mObj);
+    const button* pButton = down_cast<button>(&mObj);
+    if (!pButton)
+        return;
 
-    this->set_text(mButton.get_text());
+    this->set_text(pButton->get_text());
 
-    if (const texture* pOtherTexture = mButton.get_normal_texture().get())
+    if (const texture* pOtherTexture = pButton->get_normal_texture().get())
     {
         auto pTexture = this->create_region<texture>(
             pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {mButton.get_normal_texture()});
+            {pButton->get_normal_texture()});
 
         if (pTexture)
         {
@@ -120,11 +122,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = mButton.get_pushed_texture().get())
+    if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
     {
         auto pTexture = this->create_region<texture>(
             pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {mButton.get_pushed_texture()});
+            {pButton->get_pushed_texture()});
 
         if (pTexture)
         {
@@ -134,11 +136,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = mButton.get_highlight_texture().get())
+    if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
     {
         auto pTexture = this->create_region<texture>(
             pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {mButton.get_highlight_texture()});
+            {pButton->get_highlight_texture()});
 
         if (pTexture)
         {
@@ -148,11 +150,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const texture* pOtherTexture = mButton.get_disabled_texture().get())
+    if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
     {
         auto pTexture = this->create_region<texture>(
             pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {mButton.get_disabled_texture()});
+            {pButton->get_disabled_texture()});
 
         if (pTexture)
         {
@@ -162,11 +164,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = mButton.get_normal_text().get())
+    if (const font_string* pOtherText = pButton->get_normal_text().get())
     {
         auto pFont = this->create_region<font_string>(
             pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {mButton.get_normal_text()});
+            {pButton->get_normal_text()});
 
         if (pFont)
         {
@@ -176,11 +178,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = mButton.get_highlight_text().get())
+    if (const font_string* pOtherText = pButton->get_highlight_text().get())
     {
         auto pFont = this->create_region<font_string>(
             pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {mButton.get_highlight_text()});
+            {pButton->get_highlight_text()});
 
         if (pFont)
         {
@@ -190,11 +192,11 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    if (const font_string* pOtherText = mButton.get_disabled_text().get())
+    if (const font_string* pOtherText = pButton->get_disabled_text().get())
     {
         auto pFont = this->create_region<font_string>(
             pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {mButton.get_disabled_text()});
+            {pButton->get_disabled_text()});
 
         if (pFont)
         {
@@ -204,9 +206,9 @@ void button::copy_from(const uiobject& mObj)
         }
     }
 
-    this->set_pushed_text_offset(mButton.get_pushed_text_offset());
+    this->set_pushed_text_offset(pButton->get_pushed_text_offset());
 
-    if (!mButton.is_enabled())
+    if (!pButton->is_enabled())
         this->disable();
 }
 

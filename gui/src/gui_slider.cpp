@@ -72,21 +72,23 @@ void slider::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
 
-    const slider& mSlider = static_cast<const slider&>(mObj);
+    const slider* pSlider = down_cast<slider>(&mObj);
+    if (!pSlider)
+        return;
 
-    this->set_value_step(mSlider.get_value_step());
-    this->set_min_value(mSlider.get_min_value());
-    this->set_max_value(mSlider.get_max_value());
-    this->set_value(mSlider.get_value());
-    this->set_thumb_draw_layer(mSlider.get_thumb_draw_layer());
-    this->set_orientation(mSlider.get_orientation());
-    this->set_allow_clicks_outside_thumb(mSlider.are_clicks_outside_thumb_allowed());
+    this->set_value_step(pSlider->get_value_step());
+    this->set_min_value(pSlider->get_min_value());
+    this->set_max_value(pSlider->get_max_value());
+    this->set_value(pSlider->get_value());
+    this->set_thumb_draw_layer(pSlider->get_thumb_draw_layer());
+    this->set_orientation(pSlider->get_orientation());
+    this->set_allow_clicks_outside_thumb(pSlider->are_clicks_outside_thumb_allowed());
 
-    if (const texture* pThumb = mSlider.get_thumb_texture().get())
+    if (const texture* pThumb = pSlider->get_thumb_texture().get())
     {
         auto pTexture = this->create_region<texture>(
             pThumb->get_draw_layer(), pThumb->get_name(),
-            {mSlider.get_thumb_texture()});
+            {pSlider->get_thumb_texture()});
 
         if (pTexture)
         {
