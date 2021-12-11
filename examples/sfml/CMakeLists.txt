@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.8)
 project(lxgui-test-sfml LANGUAGES CXX VERSION 2.0)
 
 # Add the directory containing Findlxgui.cmake to the model path
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../../cmake" ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake" ${CMAKE_MODULE_PATH})
 
 # Find lxgui and dependencies
 find_package(lxgui 2)
