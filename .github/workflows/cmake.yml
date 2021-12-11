@@ -96,7 +96,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../gui/examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        ${{matrix.platform.cmakepp}} cmake ../examples/sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SDL
@@ -104,7 +104,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../gui/examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        ${{matrix.platform.cmakepp}} cmake ../examples/opengl-sdl${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example SFML
@@ -113,7 +113,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../gui/examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        ${{matrix.platform.cmakepp}} cmake ../examples/sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Build example OpenGL-SFML
@@ -122,7 +122,7 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         rm -rf *
-        ${{matrix.platform.cmakepp}} cmake ../gui/examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
+        ${{matrix.platform.cmakepp}} cmake ../examples/opengl-sfml${{matrix.platform.suffix}} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} -DCMAKE_PREFIX_PATH=`pwd`/../dependencies ${{matrix.platform.flags}}
         cmake --build . --config ${BUILD_TYPE} --parallel 2
 
     - name: Prepare publish package
