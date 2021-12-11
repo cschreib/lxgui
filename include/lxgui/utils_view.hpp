@@ -61,6 +61,8 @@ namespace view
         using data_type = typename dereferencer::data_type;
 
         explicit adaptor(ContainerType& mCollection) : mCollection_(mCollection) {}
+        explicit adaptor(ContainerType& mCollection, dereferencer&& mDeref, filter&& mFilter) :
+            mCollection_(mCollection), mDeref_(std::move(mDeref)), mFilter_(std::move(mFilter)) {}
 
         adaptor(const adaptor& mOther) : mCollection_(mOther.mCollection_) {}
         adaptor(adaptor&& mOther) : mCollection_(mOther.mCollection_) {}
@@ -70,15 +72,15 @@ namespace view
         class iterator
         {
         public:
-            explicit iterator(ContainerType& mCollection, base_iterator mIter) :
-                mCollection_(mCollection), mIter_(mIter) {}
+            explicit iterator(const adaptor& mAdaptor, base_iterator mIter) :
+                mAdaptor_(mAdaptor), mIter_(mIter) {}
 
             iterator& operator++()
             {
                 do
                 {
                     ++mIter_;
-                } while (mIter_ != mCollection_.end() && !filter::is_included(mIter_));
+                } while (mIter_ != mAdaptor_.mCollection_.end() && !mAdaptor_.mFilter_.is_included(mIter_));
 
                 return *this;
             }
@@ -93,20 +95,20 @@ namespace view
             bool operator == (const iterator& mOther) const { return mIter_ == mOther.mIter_; }
             bool operator != (const iterator& mOther) const { return mIter_ != mOther.mIter_; }
 
-            data_type operator* () const { return dereferencer::dereference(mIter_); }
-            data_type operator-> () const { return dereferencer::dereference(mIter_); }
+            data_type operator* () const { return mAdaptor_.mDeref_.dereference(mIter_); }
+            data_type operator-> () const { return mAdaptor_.mDeref_.dereference(mIter_); }
 
         private:
 
-            ContainerType& mCollection_;
+            const adaptor& mAdaptor_;
             base_iterator mIter_;
         };
 
         iterator begin() const
         {
-            iterator mIter(mCollection_, mCollection_.begin());
+            iterator mIter(*this, mCollection_.begin());
             if (mCollection_.begin() != mCollection_.end() &&
-                !filter::is_included(mCollection_.begin()))
+                !mFilter_.is_included(mCollection_.begin()))
             {
                 ++mIter;
             }
@@ -115,12 +117,14 @@ namespace view
 
         iterator end() const
         {
-            return iterator(mCollection_, mCollection_.end());
+            return iterator(*this, mCollection_.end());
         }
 
     private:
 
         ContainerType& mCollection_;
+        dereferencer mDeref_;
+        filter mFilter_;
     };
 }
 }
