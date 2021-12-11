@@ -1,4 +1,4 @@
-set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/sdl)
+set(TARGET_DIR ${PROJECT_SOURCE_DIR}/impl/gui/sdl)
 set(SRCROOT ${TARGET_DIR}/src)
 
 add_library(lxgui-sdl

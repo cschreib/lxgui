@@ -53,21 +53,7 @@ find_library(LXGUI_LIBRARY
     PATHS /usr /usr/local
 )
 
-find_library(LXGUI_UTILS_LIBRARY
-    NAMES lxgui-utils lxgui-utils.lib
-    PATH_SUFFIXES lib
-    HINTS ${LXGUI_ROOT} $ENV{LXGUI_ROOT}
-    PATHS /usr /usr/local
-)
-
-find_library(LXGUI_XML_LIBRARY
-    NAMES lxgui-xml lxgui-xml.lib
-    PATH_SUFFIXES lib
-    HINTS ${LXGUI_ROOT} $ENV{LXGUI_ROOT}
-    PATHS /usr /usr/local
-)
-
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY})
 
 find_path(LXGUI_IMPL_INCLUDE_DIR
     NAMES lxgui/impl/gui_gl_renderer.hpp DOC "Path to lxgui implementation include directory."
@@ -111,7 +97,7 @@ find_library(LXGUI_INPUT_SDL_LIBRARY
     PATHS /usr /usr/local
 )
 
-mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY)
+mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY)
 mark_as_advanced(LXGUI_IMPL_INCLUDE_DIR LXGUI_GUI_GL_LIBRARY LXGUI_GUI_SFML_LIBRARY LXGUI_INPUT_SFML_LIBRARY LXGUI_GUI_SDL_LIBRARY LXGUI_INPUT_SDL_LIBRARY)
 
 if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
@@ -146,7 +132,7 @@ endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(lxgui
-                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY LXGUI_INCLUDE_DIR
+                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_INCLUDE_DIR
                                   VERSION_VAR LXGUI_VERSION_STRING)
 
 find_package(Lua REQUIRED)
@@ -161,7 +147,7 @@ set(LXGUI_GUI_SDL_FOUND FALSE)
 set(LXGUI_INPUT_SDL_FOUND FALSE)
 
 set(LXGUI_INCLUDE_DIRS ${LXGUI_INCLUDE_DIR})
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(LXGUI_EMSCRIPTEN TRUE)

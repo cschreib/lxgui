@@ -1,4 +1,4 @@
-set(TARGET_DIR ${PROJECT_SOURCE_DIR}/gui/impl/gui/gl)
+set(TARGET_DIR ${PROJECT_SOURCE_DIR}/impl/gui/gl)
 set(SRCROOT ${TARGET_DIR}/src)
 
 add_library(lxgui-gl
