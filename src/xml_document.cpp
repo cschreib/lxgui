@@ -824,14 +824,14 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
                     std::string sMax = lMinMax.back();
                     if (sMin == "*")
                     {
-                        uiRadioGroup = utils::string_to_uint(sMax);
+                        utils::from_string(sMax, uiRadioGroup);
                     }
                     else
                     {
                         if (sMin != ".")
-                            uiMin = utils::string_to_uint(sMin);
+                            utils::from_string(sMin, uiMin);
                         if (sMax != ".")
-                            uiMax = utils::string_to_uint(sMax);
+                            utils::from_string(sMax, uiMax);
                     }
                 }
                 else
@@ -842,7 +842,8 @@ void document::def_state::read_predef_commands_(std::string& sName, std::string&
                     }
                     else if (utils::is_number(sParams))
                     {
-                        uiMax = uiMin = utils::string_to_uint(sParams);
+                        utils::from_string(sParams, uiMin);
+                        uiMax = uiMin;
                     }
                     else
                     {

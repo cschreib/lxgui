@@ -182,6 +182,8 @@ namespace xml
         */
         std::string get_attribute(const std::string& sName);
 
+        const auto& get_attributes() { return lAttributeList_; }
+
         /// Checks if one of this Block's attribute has been provided.
         /** \param sName The name of the attribute to check
         *   \return 'true' if this attribute has been provided

@@ -112,19 +112,18 @@ namespace parser
                         {
                             texture mTexture;
                             mTexture.pMaterial = mText.get_renderer().create_material(lWords[0]);
+                            mTexture.fWidth = mTexture.fHeight =
+                                std::numeric_limits<float>::quiet_NaN();
+
                             if (lWords.size() == 2)
                             {
-                                mTexture.fWidth = mTexture.fHeight = utils::string_to_float(lWords[1]);
+                                utils::from_string(lWords[1], mTexture.fWidth);
+                                mTexture.fHeight = mTexture.fWidth;
                             }
                             else if (lWords.size() > 2)
                             {
-                                mTexture.fWidth = utils::string_to_float(lWords[1]);
-                                mTexture.fHeight = utils::string_to_float(lWords[2]);
-                            }
-                            else
-                            {
-                                mTexture.fWidth = mTexture.fHeight =
-                                    std::numeric_limits<float>::quiet_NaN();
+                                utils::from_string(lWords[1], mTexture.fWidth);
+                                utils::from_string(lWords[2], mTexture.fHeight);
                             }
 
                             lContent.push_back(mTexture);

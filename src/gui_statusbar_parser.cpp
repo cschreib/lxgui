@@ -2,63 +2,74 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/xml_document.hpp>
-#include <lxgui/utils_string.hpp>
+#include <lxgui/utils_layout_node.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void status_bar::parse_attributes_(xml::block* pBlock)
+
+void status_bar::parse_attributes_(const utils::layout_node& mNode)
 {
-    frame::parse_attributes_(pBlock);
+    frame::parse_attributes_(mNode);
 
-    if (pBlock->is_provided("minValue") || !bInherits_)
-        set_min_value(utils::string_to_float(pBlock->get_attribute("minValue")));
-    if (pBlock->is_provided("maxValue") || !bInherits_)
-        set_max_value(utils::string_to_float(pBlock->get_attribute("maxValue")));
-    if (pBlock->is_provided("defaultValue") || !bInherits_)
-        set_value(utils::string_to_float(pBlock->get_attribute("defaultValue")));
-    if (pBlock->is_provided("drawLayer") || !bInherits_)
-        set_bar_draw_layer(pBlock->get_attribute("drawLayer"));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("minValue"))
+        set_min_value(pAttr->get_value<float>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("maxValue"))
+        set_max_value(pAttr->get_value<float>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
+        set_value(pAttr->get_value<float>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
+        set_bar_draw_layer(pAttr->get_value<std::string>());
 
-    if (pBlock->is_provided("orientation") || !bInherits_)
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("orientation"))
     {
-        std::string sOrientation = pBlock->get_attribute("orientation");
+        std::string sOrientation = pAttr->get_value<std::string>();
         if (sOrientation == "HORIZONTAL")
             set_orientation(orientation::HORIZONTAL);
         else if (sOrientation == "VERTICAL")
             set_orientation(orientation::VERTICAL);
         else
         {
-            gui::out << gui::warning << pBlock->get_location() << " : "
+            gui::out << gui::warning << mNode.get_location() << " : "
                 "Unknown StatusBar orientation : \""+sOrientation+"\". Expecting either :\n"
                 "\"HORIZONTAL\" or \"VERTICAL\". Attribute ignored." << std::endl;
         }
     }
 
-    if (pBlock->is_provided("reversed") || !bInherits_)
-        set_reversed(utils::string_to_bool(pBlock->get_attribute("reversed")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("reversed"))
+        set_reversed(pAttr->get_value<bool>());
 }
 
-void status_bar::parse_all_blocks_before_children_(xml::block* pBlock)
+void status_bar::parse_all_nodes_before_children_(const utils::layout_node& mNode)
 {
-    frame::parse_all_blocks_before_children_(pBlock);
+    frame::parse_all_nodes_before_children_(mNode);
 
-    xml::block* pBarBlock = pBlock->get_radio_block();
-    if (pBarBlock)
+    const utils::layout_node* pTextureNode = mNode.try_get_child("BarTexture");
+    const utils::layout_node* pColorNode = mNode.try_get_child("BarColor");
+    if (pColorNode && pTextureNode)
     {
-        if (pBarBlock->get_name() == "BarTexture")
-        {
-            auto pBarTexture = parse_region_(pBarBlock, "ARTWORK", "Texture");
-            if (!pBarTexture)
-                return;
+        gui::out << gui::warning << mNode.get_location() << " : "
+            "StatusBar can only contain one of BarTexture or BarColor, but not both. "
+            "BarColor ignored." << std::endl;
+    }
 
-            pBarTexture->set_special();
-            set_bar_texture(utils::static_pointer_cast<texture>(pBarTexture));
-        }
-        else
-            set_bar_color(parse_color_block_(pBarBlock));
+    if (pTextureNode)
+    {
+        utils::layout_node mDefaulted = *pTextureNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentBarTexture");
+
+        auto pBarTexture = parse_region_(mDefaulted, "ARTWORK", "Texture");
+        if (!pBarTexture)
+            return;
+
+        pBarTexture->set_special();
+        set_bar_texture(utils::static_pointer_cast<texture>(pBarTexture));
+    }
+    else if (pColorNode)
+    {
+        set_bar_color(parse_color_node_(*pColorNode));
     }
 }
+
 }
 }

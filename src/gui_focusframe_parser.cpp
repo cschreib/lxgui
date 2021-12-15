@@ -1,17 +1,17 @@
 #include "lxgui/gui_focusframe.hpp"
 
-#include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_layout_node.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void focus_frame::parse_attributes_(xml::block* pBlock)
+void focus_frame::parse_attributes_(const utils::layout_node& mNode)
 {
-    frame::parse_attributes_(pBlock);
+    frame::parse_attributes_(mNode);
 
-    if ((pBlock->is_provided("autoFocus") || !pBlock->is_provided("inherits")))
-        enable_auto_focus(utils::string_to_bool(pBlock->get_attribute("autoFocus")));
+    if (mNode.has_attribute("autoFocus"))
+        enable_auto_focus(mNode.get_attribute_value<bool>("autoFocus"));
 }
 }
 }

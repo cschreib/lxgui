@@ -111,7 +111,9 @@ void edit_box::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("get_number", [](const edit_box& mSelf)
     {
-        return utils::string_to_double(mSelf.get_text());
+        double dNumber = 0.0;
+        utils::from_string(mSelf.get_text(), dNumber);
+        return dNumber;
     });
 
     /** @function get_text

@@ -234,21 +234,37 @@ const utils::ustring& button::get_text() const
 void button::set_normal_texture(utils::observer_ptr<texture> pTexture)
 {
     pNormalTexture_ = std::move(pTexture);
+    if (!pNormalTexture_)
+        return;
+
+    pNormalTexture_->set_shown(mState_ == state::UP);
 }
 
 void button::set_pushed_texture(utils::observer_ptr<texture> pTexture)
 {
     pPushedTexture_ = std::move(pTexture);
+    if (!pPushedTexture_)
+        return;
+
+    pPushedTexture_->set_shown(mState_ == state::DOWN);
 }
 
 void button::set_disabled_texture(utils::observer_ptr<texture> pTexture)
 {
     pDisabledTexture_ = std::move(pTexture);
+    if (!pDisabledTexture_)
+        return;
+
+    pDisabledTexture_->set_shown(mState_ == state::DISABLED);
 }
 
 void button::set_highlight_texture(utils::observer_ptr<texture> pTexture)
 {
     pHighlightTexture_ = std::move(pTexture);
+    if (!pHighlightTexture_)
+        return;
+
+    pHighlightTexture_->set_shown(bHighlighted_);
 }
 
 void button::set_normal_text(utils::observer_ptr<font_string> pFont)
@@ -260,6 +276,7 @@ void button::set_normal_text(utils::observer_ptr<font_string> pFont)
     if (!pNormalText_)
         return;
 
+    pNormalText_->set_shown(mState_ == state::UP);
     pNormalText_->set_text(sText_);
 }
 
@@ -272,6 +289,7 @@ void button::set_highlight_text(utils::observer_ptr<font_string> pFont)
     if (!pHighlightText_)
         return;
 
+    pHighlightText_->set_shown(bHighlighted_);
     pHighlightText_->set_text(sText_);
 }
 
@@ -284,6 +302,7 @@ void button::set_disabled_text(utils::observer_ptr<font_string> pFont)
     if (!pDisabledText_)
         return;
 
+    pDisabledText_->set_shown(mState_ == state::DISABLED);
     pDisabledText_->set_text(sText_);
 }
 

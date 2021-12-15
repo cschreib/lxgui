@@ -5,128 +5,154 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_localizer.hpp"
 
-#include <lxgui/xml_document.hpp>
+#include <lxgui/utils_layout_node.hpp>
 #include <lxgui/utils_string.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void button::parse_attributes_(xml::block* pBlock)
+void button::parse_attributes_(const utils::layout_node& mNode)
 {
-    frame::parse_attributes_(pBlock);
+    frame::parse_attributes_(mNode);
 
-    if ((pBlock->is_provided("text") || !pBlock->is_provided("inherits")))
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("text"))
     {
         set_text(utils::utf8_to_unicode(
-            get_manager().get_localizer().localize(pBlock->get_attribute("text"))));
+            get_manager().get_localizer().localize(pAttr->get_value<std::string>())));
     }
 }
 
-void button::parse_all_blocks_before_children_(xml::block* pBlock)
+void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
 {
-    frame::parse_all_blocks_before_children_(pBlock);
+    frame::parse_all_nodes_before_children_(mNode);
 
-    xml::block* pSpecialBlock;
-    pSpecialBlock = pBlock->get_block("NormalTexture");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("NormalTexture"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
-        pTexture->set_special();
-        set_normal_texture(utils::static_pointer_cast<texture>(pTexture));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentNormalTexture");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pTexture = parse_region_(mDefaulted, sLayer, "Texture");
+        if (pTexture)
+        {
+            pTexture->set_special();
+            set_normal_texture(utils::static_pointer_cast<texture>(pTexture));
+        }
     }
 
-    pSpecialBlock = pBlock->get_block("PushedTexture");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("PushedTexture"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
-        pTexture->set_special();
-        set_pushed_texture(utils::static_pointer_cast<texture>(pTexture));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentPushedTexture");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pTexture = parse_region_(mDefaulted, sLayer, "Texture");
+        if (pTexture)
+        {
+            pTexture->set_special();
+            set_pushed_texture(utils::static_pointer_cast<texture>(pTexture));
+        }
     }
 
-    pSpecialBlock = pBlock->get_block("DisabledTexture");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("DisabledTexture"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
-        pTexture->set_special();
-        set_disabled_texture(utils::static_pointer_cast<texture>(pTexture));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentDisabledTexture");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pTexture = parse_region_(mDefaulted, sLayer, "Texture");
+        if (pTexture)
+        {
+            pTexture->set_special();
+            set_disabled_texture(utils::static_pointer_cast<texture>(pTexture));
+        }
     }
 
-    pSpecialBlock = pBlock->get_block("HighlightTexture");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("HighlightTexture"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
-        auto pTexture = parse_region_(pSpecialBlock, sLayer, "Texture");
-        pTexture->set_special();
-        set_highlight_texture(utils::static_pointer_cast<texture>(pTexture));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentHighlightTexture");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pTexture = parse_region_(mDefaulted, sLayer, "Texture");
+        if (pTexture)
+        {
+            pTexture->set_special();
+            set_highlight_texture(utils::static_pointer_cast<texture>(pTexture));
+        }
     }
 
 
-    pSpecialBlock = pBlock->get_block("NormalText");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("NormalText"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
-        pFontString->set_special();
-        set_normal_text(utils::static_pointer_cast<font_string>(pFontString));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentNormalText");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pFontString = parse_region_(mDefaulted, sLayer, "FontString");
+        if (pFontString)
+        {
+            pFontString->set_special();
+            set_normal_text(utils::static_pointer_cast<font_string>(pFontString));
+        }
     }
 
-    pSpecialBlock = pBlock->get_block("HighlightText");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("HighlightText"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
-        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
-        pFontString->set_special();
-        set_highlight_text(utils::static_pointer_cast<font_string>(pFontString));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentHighlightText");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pFontString = parse_region_(mDefaulted, sLayer, "FontString");
+        if (pFontString)
+        {
+            pFontString->set_special();
+            set_highlight_text(utils::static_pointer_cast<font_string>(pFontString));
+        }
     }
 
-    pSpecialBlock = pBlock->get_block("DisabledText");
-    if (pSpecialBlock)
+    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("DisabledText"))
     {
-        std::string sLayer = "ARTWORK";
-        if (pSpecialBlock->is_provided("layer"))
-            sLayer = pSpecialBlock->get_attribute("layer");
+        auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        auto pFontString = parse_region_(pSpecialBlock, sLayer, "FontString");
-        pFontString->set_special();
-        set_disabled_text(utils::static_pointer_cast<font_string>(pFontString));
+        utils::layout_node mDefaulted = *pSpecialNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentDisabledText");
+        mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
+
+        auto pFontString = parse_region_(mDefaulted, sLayer, "FontString");
+        if (pFontString)
+        {
+            pFontString->set_special();
+            set_disabled_text(utils::static_pointer_cast<font_string>(pFontString));
+        }
     }
 
-    xml::block* pOffsetBlock = pBlock->get_block("PushedTextOffset");
-    if (pOffsetBlock)
+    if (const utils::layout_node* pOffsetBlock = mNode.try_get_child("PushedTextOffset"))
     {
-        xml::block* pDimBlock = pOffsetBlock->get_radio_block();
-        if (pDimBlock->get_name() == "AbsDimension")
+        auto mDimensions = parse_dimension_(*pOffsetBlock);
+        if (mDimensions.first == anchor_type::ABS)
         {
             set_pushed_text_offset(vector2f(
-                utils::string_to_float(pDimBlock->get_attribute("x")),
-                utils::string_to_float(pDimBlock->get_attribute("y"))
+                mDimensions.second.x.value_or(0.0f),
+                mDimensions.second.y.value_or(0.0f)
             ));
         }
-        else if (pDimBlock->get_name() == "RelDimension")
+        else
         {
-            gui::out << gui::warning << pDimBlock->get_location() << " : "
-                << "RelDimension for button:PushedTextOffset is not yet supported ("+sName_+")." << std::endl;
+            gui::out << gui::warning << pOffsetBlock->get_location() << " : "
+                << "RelDimension for Button:PushedTextOffset is not yet supported. Skipped." << std::endl;
         }
     }
 }

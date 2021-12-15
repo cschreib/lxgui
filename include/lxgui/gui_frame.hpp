@@ -630,12 +630,12 @@ namespace gui
         /// Returns this frame's max dimensions.
         /** \return This frame's max dimensions
         */
-        vector2f get_max_resize() const;
+        vector2f get_max_dimensions() const;
 
         /// Returns this frame's min dimensions.
         /** \return This frame's min dimensions
         */
-        vector2f get_min_resize() const;
+        vector2f get_min_dimensions() const;
 
         /// Returns the number of children of this frame.
         /** \return The number of children of this frame
@@ -909,12 +909,12 @@ namespace gui
         /// Sets this frame's maximum size.
         /** \param mMax The maximum dimensions of this frame
         */
-        void set_max_resize(const vector2f& mMax);
+        void set_max_dimensions(const vector2f& mMax);
 
         /// Sets this frame's minimum size.
         /** \param mMin Minimum dimensions of this frame
         */
-        void set_min_resize(const vector2f& mMin);
+        void set_min_dimensions(const vector2f& mMin);
 
         /// Sets this frame's maximum height.
         /** \param fMaxHeight The maximum height this frame can have
@@ -1122,13 +1122,13 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The frame's xml::block
-        *   \note Derived classes must override parse_all_blocks_before_children_() if
+        /// Parses data from a utils::layout_node.
+        /** \param mNode The layout node
+        *   \note Derived classes must override parse_all_nodes_before_children_() if
         *         they need to parse additional blocks, and parse_attributes_() if they
         *         need to parse additional attributes.
         */
-        void parse_block(xml::block* pBlock) final;
+        void parse_layout(const utils::layout_node& mNode) final;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -1137,19 +1137,20 @@ namespace gui
 
     protected :
 
-        // XML parsing
-        void parse_attributes_(xml::block* pBlock) override;
-        virtual void parse_all_blocks_before_children_(xml::block* pBlock);
-        virtual void parse_resize_bounds_block_(xml::block* pBlock);
-        virtual void parse_title_region_block_(xml::block* pBlock);
-        virtual void parse_backdrop_block_(xml::block* pBlock);
-        virtual void parse_hit_rect_insets_block_(xml::block* pBlock);
-        virtual void parse_layers_block_(xml::block* pBlock);
-        virtual void parse_frames_block_(xml::block* pBlock);
-        virtual void parse_scripts_block_(xml::block* pBlock);
-        utils::observer_ptr<layered_region> parse_region_(xml::block* pBlock,
+        // Layout parsing
+        void parse_attributes_(const utils::layout_node& mNode) override;
+        virtual void parse_all_nodes_before_children_(const utils::layout_node& mNode);
+        virtual void parse_resize_bounds_node_(const utils::layout_node& mNode);
+        virtual void parse_title_region_node_(const utils::layout_node& mNode);
+        virtual void parse_backdrop_node_(const utils::layout_node& mNode);
+        virtual void parse_hit_rect_insets_node_(const utils::layout_node& mNode);
+        virtual void parse_layers_node_(const utils::layout_node& mNode);
+        virtual void parse_frames_node_(const utils::layout_node& mNode);
+        virtual void parse_scripts_node_(const utils::layout_node& mNode);
+        utils::observer_ptr<layered_region> parse_region_(const utils::layout_node& mNode,
             const std::string& sLayer, const std::string& sType);
-        utils::observer_ptr<frame> parse_child_(xml::block* pBlock, const std::string& sType);
+        utils::observer_ptr<frame> parse_child_(const utils::layout_node& mNode,
+            const std::string& sType);
 
         virtual void notify_top_level_parent_(bool bTopLevel,
             const utils::observer_ptr<frame>& pParent);

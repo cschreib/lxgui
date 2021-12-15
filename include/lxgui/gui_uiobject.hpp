@@ -10,8 +10,6 @@
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_exception.hpp"
 
-#include <lxgui/xml.hpp>
-
 #include <lxgui/utils_maths.hpp>
 #include <lxgui/utils_observer.hpp>
 
@@ -28,6 +26,11 @@ namespace sol
 }
 
 namespace lxgui {
+namespace utils
+{
+    class layout_node;
+}
+
 namespace gui
 {
     struct addon;
@@ -582,10 +585,10 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The uiobject's xml::block
+        /// Parses data from a utils::layout_node.
+        /** \param mNode The layout node
         */
-        virtual void parse_block(xml::block* pBlock) = 0;
+        virtual void parse_layout(const utils::layout_node& mNode) = 0;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -600,10 +603,12 @@ namespace gui
 
     protected :
 
-        // XML parsing
-        virtual void parse_size_block_(xml::block* pBlock);
-        virtual void parse_anchor_block_(xml::block* pBlock);
-        color        parse_color_block_(xml::block* pBlock);
+        // Layout parsing
+        virtual void parse_size_node_(const utils::layout_node& mNode);
+        virtual void parse_anchor_node_(const utils::layout_node& mNode);
+        color        parse_color_node_(const utils::layout_node& mNode);
+        std::pair<anchor_type, vector2<std::optional<float>>> parse_dimension_(
+            const utils::layout_node& mNode);
 
         void read_anchors_(float& fLeft, float& fRight, float& fTop,
                            float& fBottom, float& fXCenter, float& fYCenter) const;

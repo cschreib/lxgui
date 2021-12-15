@@ -842,10 +842,14 @@ void edit_box::check_text_()
         return;
     }
 
-    if (bPositiveOnly_ && utils::string_to_double(sUnicodeText_) < 0)
+    if (bPositiveOnly_)
     {
-        sUnicodeText_.clear();
-        return;
+        double dValue = 0.0;
+        if (!utils::from_string(sUnicodeText_, dValue) || dValue < 0.0)
+        {
+            sUnicodeText_.clear();
+            return;
+        }
     }
 }
 

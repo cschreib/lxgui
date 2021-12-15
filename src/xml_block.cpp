@@ -602,7 +602,7 @@ block* block::create_block(const std::string& sName)
 {
     if (bCreating_)
     {
-        pDoc_->out << "# Error # : xml::block : Already creating a block." << std::endl;
+        pDoc_->out << "# Error # : const utils::layout_node& : Already creating a block." << std::endl;
         return nullptr;
     }
 

@@ -248,10 +248,10 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The font_string's xml::block
+        /// Parses data from a utils::layout_node.
+        /** \param mNode The layout node
         */
-        void parse_block(xml::block* pBlock) override;
+        void parse_layout(const utils::layout_node& mNode) override;
 
         /// Returns the text used to render this font_string.
         /** \return The text used to render this font_string
@@ -270,8 +270,8 @@ namespace gui
 
     private :
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_shadow_block_(xml::block* pBlock);
+        void parse_attributes_(const utils::layout_node& mNode) override;
+        void parse_shadow_node_(const utils::layout_node& mNode);
 
         void create_text_object_();
 

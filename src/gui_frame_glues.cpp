@@ -393,19 +393,19 @@ void frame::register_on_lua(sol::state& mLua)
         return std::make_tuple(lInsets.left, lInsets.right, lInsets.top, lInsets.bottom);
     });
 
-    /** @function get_max_resize
+    /** @function get_max_dimensions
     */
-    mClass.set_function("get_max_resize", [](const frame& mSelf)
+    mClass.set_function("get_max_dimensions", [](const frame& mSelf)
     {
-        const vector2f& lMax = mSelf.get_max_resize();
+        const vector2f& lMax = mSelf.get_max_dimensions();
         return std::make_tuple(lMax.x, lMax.y);
     });
 
-    /** @function get_min_resize
+    /** @function get_min_dimensions
     */
-    mClass.set_function("get_min_resize", [](const frame& mSelf)
+    mClass.set_function("get_min_dimensions", [](const frame& mSelf)
     {
-        const vector2f& lMin = mSelf.get_min_resize();
+        const vector2f& lMin = mSelf.get_min_dimensions();
         return std::make_tuple(lMin.x, lMin.y);
     });
 
@@ -593,18 +593,18 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.set_abs_hit_rect_insets(bounds2f(fLeft, fRight, fTop, fBottom));
     });
 
-    /** @function set_max_resize
+    /** @function set_max_dimensions
     */
-    mClass.set_function("set_max_resize", [](frame& mSelf, float fWidth, float fHeight)
+    mClass.set_function("set_max_dimensions", [](frame& mSelf, float fWidth, float fHeight)
     {
-        mSelf.set_max_resize(vector2f(fWidth, fHeight));
+        mSelf.set_max_dimensions(vector2f(fWidth, fHeight));
     });
 
-    /** @function set_min_resize
+    /** @function set_min_dimensions
     */
-    mClass.set_function("set_min_resize", [](frame& mSelf, float fWidth, float fHeight)
+    mClass.set_function("set_min_dimensions", [](frame& mSelf, float fWidth, float fHeight)
     {
-        mSelf.set_min_resize(vector2f(fWidth, fHeight));
+        mSelf.set_min_dimensions(vector2f(fWidth, fHeight));
     });
 
     /** @function set_max_width

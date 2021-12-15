@@ -3,64 +3,63 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_localizer.hpp"
 
-#include <lxgui/xml_document.hpp>
+#include <lxgui/utils_layout_node.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void font_string::parse_block(xml::block* pBlock)
+void font_string::parse_layout(const utils::layout_node& mNode)
 {
-    layered_region::parse_block(pBlock);
+    layered_region::parse_layout(mNode);
 
-    xml::block* pColorBlock = pBlock->get_block("Color");
-    if (pColorBlock)
-        set_text_color(parse_color_block_(pColorBlock));
+    if (const utils::layout_node* pColorNode = mNode.try_get_child("Color"))
+        set_text_color(parse_color_node_(*pColorNode));
 
-    parse_shadow_block_(pBlock);
+    parse_shadow_node_(mNode);
 }
 
-void font_string::parse_attributes_(xml::block* pBlock)
+void font_string::parse_attributes_(const utils::layout_node& mNode)
 {
-    layered_region::parse_attributes_(pBlock);
+    layered_region::parse_attributes_(mNode);
 
     set_font(
-        get_manager().parse_file_name(pBlock->get_attribute("font")),
-        utils::string_to_float(pBlock->get_attribute("fontHeight"))
+        get_manager().parse_file_name(mNode.get_attribute_value_or<std::string>("font", "")),
+        mNode.get_attribute_value_or<float>("fontHeight", 0.0f)
     );
 
-    if (pBlock->is_provided("text") || !bInherits_)
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("text"))
     {
         set_text(utils::utf8_to_unicode(
-            get_manager().get_localizer().localize(pBlock->get_attribute("text"))));
+            get_manager().get_localizer().localize(pAttr->get_value<std::string>())));
     }
 
-    if (pBlock->is_provided("nonspacewrap") || !bInherits_)
-        set_non_space_wrap(utils::string_to_bool(pBlock->get_attribute("nonspacewrap")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("nonspacewrap"))
+        set_non_space_wrap(pAttr->get_value<bool>());
 
-    if (pBlock->is_provided("spacing") || !bInherits_)
-        set_spacing(utils::string_to_float(pBlock->get_attribute("spacing")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("spacing"))
+        set_spacing(pAttr->get_value<float>());
 
-    if (pBlock->is_provided("lineSpacing") || !bInherits_)
-        set_line_spacing(utils::string_to_float(pBlock->get_attribute("lineSpacing")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("lineSpacing"))
+        set_line_spacing(pAttr->get_value<float>());
 
-    if (pBlock->is_provided("outline") || !bInherits_)
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("outline"))
     {
-        const std::string& sOutline = pBlock->get_attribute("outline");
+        const std::string& sOutline = pAttr->get_value<std::string>();
         if (sOutline == "NORMAL" || sOutline == "THICK")
             set_outlined(true);
         else if (sOutline == "NONE")
             set_outlined(false);
         else
         {
-            gui::out << gui::warning << pBlock->get_location() <<  " : "
+            gui::out << gui::warning << mNode.get_location() <<  " : "
                 << "Unknown outline type for " << sName_ << " : \""
                 << sOutline << "\"." << std::endl;
         }
     }
 
-    if (pBlock->is_provided("justifyH") || !bInherits_)
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("justifyH"))
     {
-        const std::string& sJustifyH = pBlock->get_attribute("justifyH");
+        const std::string& sJustifyH = pAttr->get_value<std::string>();
         if (sJustifyH == "LEFT")
             set_justify_h(text::alignment::LEFT);
         else if (sJustifyH == "CENTER")
@@ -69,15 +68,15 @@ void font_string::parse_attributes_(xml::block* pBlock)
             set_justify_h(text::alignment::RIGHT);
         else
         {
-            gui::out << gui::warning << pBlock->get_location() <<  " : "
+            gui::out << gui::warning << mNode.get_location() <<  " : "
                 << "Unknown horizontal justify behavior for " << sName_
                 << " : \"" << sJustifyH << "\"." << std::endl;
         }
     }
 
-    if (pBlock->is_provided("justifyV") || !bInherits_)
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("justifyV"))
     {
-        const std::string& sJustifyV = pBlock->get_attribute("justifyV");
+        const std::string& sJustifyV = pAttr->get_value<std::string>();
         if (sJustifyV == "TOP")
             set_justify_v(text::vertical_alignment::TOP);
         else if (sJustifyV == "MIDDLE")
@@ -86,29 +85,28 @@ void font_string::parse_attributes_(xml::block* pBlock)
             set_justify_v(text::vertical_alignment::BOTTOM);
         else
         {
-            gui::out << gui::warning << pBlock->get_location() <<  " : "
+            gui::out << gui::warning << mNode.get_location() <<  " : "
                 << "Unknown vertical justify behavior for " << sName_
                 << " : \"" << sJustifyV << "\"." << std::endl;
         }
     }
 }
 
-void font_string::parse_shadow_block_(xml::block* pBlock)
+void font_string::parse_shadow_node_(const utils::layout_node& mNode)
 {
-    xml::block* pShadowBlock = pBlock->get_block("Shadow");
-    if (pShadowBlock)
+    if (const utils::layout_node* pShadowNode = mNode.try_get_child("Shadow"))
     {
         set_shadow(true);
-        xml::block* pColorBlock = pShadowBlock->get_block("Color");
-        if (pColorBlock)
-            set_shadow_color(parse_color_block_(pColorBlock));
 
-        xml::block* pOffsetBlock = pShadowBlock->get_block("Offset");
-        if (pOffsetBlock)
+        if (const utils::layout_node* pColorNode = pShadowNode->try_get_child("Color"))
+            set_shadow_color(parse_color_node_(*pColorNode));
+
+
+        if (const utils::layout_node* pOffsetNode = pShadowNode->try_get_child("Offset"))
         {
             set_shadow_offset(vector2f(
-                utils::string_to_float(pOffsetBlock->get_attribute("x")),
-                utils::string_to_float(pOffsetBlock->get_attribute("y"))
+                pOffsetNode->get_attribute_value_or<float>("x", 0.0),
+                pOffsetNode->get_attribute_value_or<float>("y", 0.0)
             ));
         }
     }

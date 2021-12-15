@@ -268,8 +268,8 @@ void frame::copy_from(const uiobject& mObj)
     this->set_abs_hit_rect_insets(pFrame->get_abs_hit_rect_insets());
     this->set_rel_hit_rect_insets(pFrame->get_rel_hit_rect_insets());
 
-    this->set_max_resize(pFrame->get_max_resize());
-    this->set_min_resize(pFrame->get_min_resize());
+    this->set_max_dimensions(pFrame->get_max_dimensions());
+    this->set_min_dimensions(pFrame->get_min_dimensions());
 
     this->set_scale(pFrame->get_scale());
 
@@ -941,12 +941,12 @@ const bounds2f& frame::get_rel_hit_rect_insets() const
     return lRelHitRectInsetList_;
 }
 
-vector2f frame::get_max_resize() const
+vector2f frame::get_max_dimensions() const
 {
     return vector2f(fMaxWidth_, fMaxHeight_);
 }
 
-vector2f frame::get_min_resize() const
+vector2f frame::get_min_dimensions() const
 {
     return vector2f(fMinWidth_, fMinHeight_);
 }
@@ -1073,7 +1073,10 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     if (uiPos4 == std::string::npos)
         return sOriginalMessage;
 
-    uint uiOffset = utils::string_to_uint(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1));
+    uint uiOffset = 0;
+    if (!utils::from_string(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1), uiOffset))
+        return sOriginalMessage;
+
     sOriginalMessage.erase(uiPos3 + 1, uiPos4 - uiPos3 - 1);
     sOriginalMessage.insert(uiPos3 + 1, utils::to_string(uiLineNbr + uiOffset - 1));
     uiPos4 = sOriginalMessage.find_first_of(':', uiPos3 + 1);
@@ -1550,13 +1553,13 @@ void frame::set_level(int iLevel)
     }
 }
 
-void frame::set_max_resize(const vector2f& mMax)
+void frame::set_max_dimensions(const vector2f& mMax)
 {
     set_max_width(mMax.x);
     set_max_height(mMax.y);
 }
 
-void frame::set_min_resize(const vector2f& mMin)
+void frame::set_min_dimensions(const vector2f& mMin)
 {
     set_min_width(mMin.x);
     set_min_height(mMin.y);

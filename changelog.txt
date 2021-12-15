@@ -80,6 +80,7 @@ Other changes:
  - gui: renamed font_string::get_shadow_offsets to get_shadow_offset
  - gui: renamed uiobject::set_abs_width/height/dimensions to set_width/height/dimensions
  - gui: renamed uiobject::set_rel_width/height/dimensions to set_relative_width/height/dimensions
+ - gui: renamed frame::get/set_min/max_resize to get/set_min/max_dimensions
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()

@@ -2,74 +2,75 @@
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
 
-#include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
+#include <lxgui/utils_layout_node.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void edit_box::parse_attributes_(xml::block* pBlock)
+void edit_box::parse_attributes_(const utils::layout_node& mNode)
 {
-    focus_frame::parse_attributes_(pBlock);
+    focus_frame::parse_attributes_(mNode);
 
-    if ((pBlock->is_provided("letters") || !pBlock->is_provided("inherits")))
-        set_max_letters(utils::string_to_uint(pBlock->get_attribute("letters")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("letters"))
+        set_max_letters(pAttr->get_value<uint>());
 
-    if ((pBlock->is_provided("blinkSpeed") || !pBlock->is_provided("inherits")))
-        set_blink_speed(utils::string_to_float(pBlock->get_attribute("blinkSpeed")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("blinkSpeed"))
+        set_blink_speed(pAttr->get_value<float>());
 
-    if ((pBlock->is_provided("numeric") || !pBlock->is_provided("inherits")))
-        set_numeric_only(utils::string_to_bool(pBlock->get_attribute("numeric")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("numeric"))
+        set_numeric_only(pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("positive") || !pBlock->is_provided("positive")))
-        set_positive_only(utils::string_to_bool(pBlock->get_attribute("positive")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("positive"))
+        set_positive_only(pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("integer") || !pBlock->is_provided("integer")))
-        set_integer_only(utils::string_to_bool(pBlock->get_attribute("integer")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("integer"))
+        set_integer_only(pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("password") || !pBlock->is_provided("inherits")))
-        enable_password_mode(utils::string_to_bool(pBlock->get_attribute("password")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("password"))
+        enable_password_mode(pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("multiLine") || !pBlock->is_provided("inherits")))
-        set_multi_line(utils::string_to_bool(pBlock->get_attribute("multiLine")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("multiLine"))
+        set_multi_line(pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("historyLines") || !pBlock->is_provided("inherits")))
-        set_max_history_lines(utils::string_to_uint(pBlock->get_attribute("historyLines")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("historyLines"))
+        set_max_history_lines(pAttr->get_value<uint>());
 
-    if ((pBlock->is_provided("ignoreArrows") || !pBlock->is_provided("inherits")))
-        set_arrows_ignored(utils::string_to_bool(pBlock->get_attribute("ignoreArrows")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("ignoreArrows"))
+        set_arrows_ignored(pAttr->get_value<bool>());
 }
 
-void edit_box::parse_all_blocks_before_children_(xml::block* pBlock)
+void edit_box::parse_all_nodes_before_children_(const utils::layout_node& mNode)
 {
-    focus_frame::parse_all_blocks_before_children_(pBlock);
+    focus_frame::parse_all_nodes_before_children_(mNode);
 
-    parse_text_insets_block_(pBlock);
-    parse_font_string_block_(pBlock);
+    parse_text_insets_node_(mNode);
+    parse_font_string_node_(mNode);
 
-    xml::block* pHighlightBlock = pBlock->get_block("HighlightColor");
-    if (pHighlightBlock)
-        set_highlight_color(parse_color_block_(pHighlightBlock));
+    if (const utils::layout_node* pHighlightNode = mNode.try_get_child("HighlightColor"))
+        set_highlight_color(parse_color_node_(*pHighlightNode));
 }
 
-void edit_box::parse_font_string_block_(xml::block* pBlock)
+void edit_box::parse_font_string_node_(const utils::layout_node& mNode)
 {
-    xml::block* pFontStringBlock = pBlock->get_block("FontString");
-    if (pFontStringBlock)
+    if (const utils::layout_node* pFontStringNode = mNode.try_get_child("FontString"))
     {
-        auto pFontString = parse_region_(pFontStringBlock, "ARTWORK", "FontString");
+        utils::layout_node mDefaulted = *pFontStringNode;
+        mDefaulted.get_or_set_attribute_value("name", "$parentFontString");
 
-        xml::block* pErrorBlock = pFontStringBlock->get_block("Anchors");
-        if (pErrorBlock)
+        auto pFontString = parse_region_(mDefaulted, "ARTWORK", "FontString");
+        if (!pFontString)
+            return;
+
+        if (const utils::layout_node* pErrorNode = mDefaulted.try_get_child("Anchors"))
         {
-            gui::out << gui::warning << pErrorBlock->get_location() << " : "
+            gui::out << gui::warning << pErrorNode->get_location() << " : "
                 << "edit_box : font_string's anchors are ignored." << std::endl;
         }
 
-        pErrorBlock = pFontStringBlock->get_block("Size");
-        if (pErrorBlock)
+        if (const utils::layout_node* pErrorNode = mDefaulted.try_get_child("Size"))
         {
-            gui::out << gui::warning << pErrorBlock->get_location() << " : "
+            gui::out << gui::warning << pErrorNode->get_location() << " : "
                 << "edit_box : font_string's Size is ignored." << std::endl;
         }
 
@@ -78,16 +79,15 @@ void edit_box::parse_font_string_block_(xml::block* pBlock)
     }
 }
 
-void edit_box::parse_text_insets_block_(xml::block* pBlock)
+void edit_box::parse_text_insets_node_(const utils::layout_node& mNode)
 {
-    xml::block* pTextInsetsBlock = pBlock->get_block("TextInsets");
-    if (pTextInsetsBlock)
+    if (const utils::layout_node* pTextInsetsNode = mNode.try_get_child("TextInsets"))
     {
         set_text_insets(bounds2f(
-            utils::string_to_float(pTextInsetsBlock->get_attribute("left")),
-            utils::string_to_float(pTextInsetsBlock->get_attribute("right")),
-            utils::string_to_float(pTextInsetsBlock->get_attribute("top")),
-            utils::string_to_float(pTextInsetsBlock->get_attribute("bottom"))
+            pTextInsetsNode->get_attribute_value_or<float>("left", 0.0f),
+            pTextInsetsNode->get_attribute_value_or<float>("right", 0.0f),
+            pTextInsetsNode->get_attribute_value_or<float>("top", 0.0f),
+            pTextInsetsNode->get_attribute_value_or<float>("bottom", 0.0f)
         ));
     }
 }

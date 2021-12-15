@@ -178,22 +178,28 @@ namespace utils
     ustring utf8_to_unicode(const string& s);
     string  unicode_to_utf8(const ustring& s);
 
-    uint    hex_to_uint(const string& s);
+    uint hex_to_uint(const string& s);
 
-    int string_to_int(const string& s);
-    int string_to_int(const ustring& s);
+    template<typename T>
+    bool from_string(const string& s, T& v);
 
-    uint string_to_uint(const string& s);
-    uint string_to_uint(const ustring& s);
+    template<typename T>
+    bool from_string(const ustring& s, T& v);
 
-    float string_to_float(const string& s);
-    float string_to_float(const ustring& s);
+    // int string_to_int(const string& s);
+    // int string_to_int(const ustring& s);
 
-    double string_to_double(const string& s);
-    double string_to_double(const ustring& s);
+    // uint string_to_uint(const string& s);
+    // uint string_to_uint(const ustring& s);
 
-    bool string_to_bool(const string& s);
-    bool string_to_bool(const ustring& s);
+    // float string_to_float(const string& s);
+    // float string_to_float(const ustring& s);
+
+    // double string_to_double(const string& s);
+    // double string_to_double(const ustring& s);
+
+    // bool string_to_bool(const string& s);
+    // bool string_to_bool(const ustring& s);
 
     bool is_number(const string& s);
     bool is_number(const ustring& s);

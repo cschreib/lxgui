@@ -394,10 +394,10 @@ namespace gui
 
     protected :
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_all_blocks_before_children_(xml::block* pBlock) override;
-        void parse_font_string_block_(xml::block* pBlock);
-        void parse_text_insets_block_(xml::block* pBlock);
+        void parse_attributes_(const utils::layout_node& mNode) override;
+        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
+        void parse_font_string_node_(const utils::layout_node& mNode);
+        void parse_text_insets_node_(const utils::layout_node& mNode);
 
         void create_font_string_();
         void create_highlight_();
@@ -435,7 +435,7 @@ namespace gui
         std::string sComboKey_;
 
         utils::observer_ptr<texture> pHighlight_ = nullptr;
-        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.35f);
+        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
         uint  uiSelectionStartPos_ = 0u;
         uint  uiSelectionEndPos_ = 0u;
         bool  bSelectedText_ = false;

@@ -693,26 +693,6 @@ namespace gui
         */
         const localizer& get_localizer() const { return *pLocalizer_; }
 
-        /// Struct holding core information about a frame, parsed from XML.
-        struct xml_core_attributes
-        {
-            std::string sObjectType;
-            std::string sName;
-            bool        bVirtual = false;
-
-            utils::observer_ptr<frame> pParent = nullptr;
-
-            std::vector<utils::observer_ptr<const uiobject>> lInheritance;
-        };
-
-        /// Parse "core" attributes from an XML block, before creating a frame.
-        /** \param pBlock     The XML block to parse from
-        *   \param pXMLParent The current XML parent frame of this block (nullptr if none)
-        *   \return Filled in core attributes structure.
-        */
-        xml_core_attributes parse_core_attributes(xml::block* pBlock,
-            utils::observer_ptr<frame> pXMLParent);
-
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */

@@ -3,220 +3,292 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
-#include <lxgui/xml_document.hpp>
+#include <lxgui/utils_layout_node.hpp>
 #include <lxgui/utils_string.hpp>
 
 namespace lxgui {
 namespace gui
 {
-void frame::parse_all_blocks_before_children_(xml::block* pBlock)
+void frame::parse_all_nodes_before_children_(const utils::layout_node& mNode)
 {
-    parse_attributes_(pBlock);
+    parse_attributes_(mNode);
 
-    parse_size_block_(pBlock);
-    parse_resize_bounds_block_(pBlock);
-    parse_anchor_block_(pBlock);
-    parse_title_region_block_(pBlock);
-    parse_backdrop_block_(pBlock);
-    parse_hit_rect_insets_block_(pBlock);
+    parse_size_node_(mNode);
+    parse_resize_bounds_node_(mNode);
+    parse_anchor_node_(mNode);
+    parse_title_region_node_(mNode);
+    parse_backdrop_node_(mNode);
+    parse_hit_rect_insets_node_(mNode);
 
-    parse_layers_block_(pBlock);
+    parse_layers_node_(mNode);
 }
 
-void frame::parse_block(xml::block* pBlock)
+void frame::parse_layout(const utils::layout_node& mNode)
 {
-    parse_all_blocks_before_children_(pBlock);
-    parse_frames_block_(pBlock);
-    parse_scripts_block_(pBlock);
+    parse_all_nodes_before_children_(mNode);
+    parse_frames_node_(mNode);
+    parse_scripts_node_(mNode);
 }
 
-void frame::parse_attributes_(xml::block* pBlock)
+void frame::parse_attributes_(const utils::layout_node& mNode)
 {
-    if (pBlock->is_provided("hidden") || !bInherits_)
-        set_shown(!utils::string_to_bool(pBlock->get_attribute("hidden")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("hidden"))
+        set_shown(!pAttr->get_value<bool>());
 
-    if ((pBlock->is_provided("setAllPoints") || !bInherits_) &&
-        (utils::string_to_bool(pBlock->get_attribute("setAllPoints"))))
+    if (mNode.get_attribute_value_or<bool>("setAllPoints", false))
         set_all_points("$parent");
 
-    if (pBlock->is_provided("alpha") || !bInherits_)
-        set_alpha(utils::string_to_float(pBlock->get_attribute("alpha")));
-    if (pBlock->is_provided("topLevel") || !bInherits_)
-        set_top_level(utils::string_to_bool(pBlock->get_attribute("topLevel")));
-    if (pBlock->is_provided("movable") || !bInherits_)
-        set_movable(utils::string_to_bool(pBlock->get_attribute("movable")));
-    if (pBlock->is_provided("resizable") || !bInherits_)
-        set_resizable(utils::string_to_bool(pBlock->get_attribute("resizable")));
-    if (pBlock->is_provided("frameStrata") || !bInherits_)
-        set_frame_strata(pBlock->get_attribute("frameStrata"));
-    if (pBlock->is_provided("frameLevel"))
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("alpha"))
+        set_alpha(pAttr->get_value<float>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("topLevel"))
+        set_top_level(pAttr->get_value<bool>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("movable"))
+        set_movable(pAttr->get_value<bool>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("resizable"))
+        set_resizable(pAttr->get_value<bool>());
+
+    set_frame_strata(mNode.get_attribute_value_or<std::string>("frameStrata", "PARENT"));
+
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("frameLevel"))
     {
         if (!bVirtual_)
         {
-            std::string sFrameLevel = pBlock->get_attribute("frameLevel");
-            if (sFrameLevel != "PARENT")
-                set_level(utils::string_to_int(sFrameLevel));
+            std::string sFrameLevel = pAttr->get_value<std::string>();
+            int iLevel = 0;
+            if (sFrameLevel != "PARENT" && utils::from_string(sFrameLevel, iLevel))
+                set_level(iLevel);
         }
         else
         {
-            gui::out << gui::warning << pBlock->get_location() << " : "
+            gui::out << gui::warning << mNode.get_location() << " : "
                 << "\"frameLevel\" is not allowed for virtual widgets. Ignored." << std::endl;
         }
     }
-    if (pBlock->is_provided("enableMouse") || !bInherits_)
-        enable_mouse(utils::string_to_bool(pBlock->get_attribute("enableMouse")));
-    if (pBlock->is_provided("enableMouseWheel") || !bInherits_)
-        enable_mouse_wheel(utils::string_to_bool(pBlock->get_attribute("enableMouseWheel")));
-    if (pBlock->is_provided("enableKeyboard") || !bInherits_)
-        enable_keyboard(utils::string_to_bool(pBlock->get_attribute("enableKeyboard")));
-    if (pBlock->is_provided("clampedToScreen") || !bInherits_)
-        set_clamped_to_screen(utils::string_to_bool(pBlock->get_attribute("clampedToScreen")));
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("enableMouse"))
+        enable_mouse(pAttr->get_value<bool>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("enableMouseWheel"))
+        enable_mouse_wheel(pAttr->get_value<bool>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("enableKeyboard"))
+        enable_keyboard(pAttr->get_value<bool>());
+    if (const utils::layout_node* pAttr = mNode.try_get_attribute("clampedToScreen"))
+        set_clamped_to_screen(pAttr->get_value<bool>());
 }
 
-void frame::parse_resize_bounds_block_(xml::block* pBlock)
+void frame::parse_resize_bounds_node_(const utils::layout_node& mNode)
 {
-    xml::block* pResizeBoundsBlock = pBlock->get_block("ResizeBounds");
-    if (pResizeBoundsBlock)
+    if (const utils::layout_node* pResizeBoundsNode = mNode.try_get_child("ResizeBounds"))
     {
-        xml::block* pMinBlock = pResizeBoundsBlock->get_block("Min");
-        if (pMinBlock)
+        if (const utils::layout_node* pMinNode = pResizeBoundsNode->try_get_child("Min"))
         {
-            xml::block* pDimBlock = pMinBlock->get_radio_block();
-            if (pDimBlock->get_name() == "AbsDimension")
+            auto mDimensions = parse_dimension_(*pMinNode);
+            bool bHasX = mDimensions.second.x.has_value();
+            bool bHasY = mDimensions.second.y.has_value();
+            if (mDimensions.first == anchor_type::ABS)
             {
-                set_min_resize(vector2f(
-                    utils::string_to_float(pDimBlock->get_attribute("x")),
-                    utils::string_to_float(pDimBlock->get_attribute("y"))
-                ));
+                if (bHasX && bHasY)
+                {
+                    set_min_dimensions(vector2f(
+                        mDimensions.second.x.value(),
+                        mDimensions.second.y.value()));
+                }
+                else if (bHasX)
+                    set_min_width(mDimensions.second.x.value());
+                else if (bHasY)
+                    set_min_height(mDimensions.second.y.value());
             }
-            else if (pDimBlock->get_name() == "RelDimension")
+            else
             {
-                gui::out << gui::warning << pDimBlock->get_location() << " : "
+                gui::out << gui::warning << pMinNode->get_location() << " : "
                     << "\"RelDimension\" for ResizeBounds:Min is not yet supported. Skipped." << std::endl;
             }
         }
 
-        xml::block* pMaxBlock = pResizeBoundsBlock->get_block("Max");
-        if (pMaxBlock)
+        if (const utils::layout_node* pMaxNode = pResizeBoundsNode->try_get_child("Max"))
         {
-            xml::block* pDimBlock = pMaxBlock->get_radio_block();
-            if (pDimBlock->get_name() == "AbsDimension")
+            auto mDimensions = parse_dimension_(*pMaxNode);
+            bool bHasX = mDimensions.second.x.has_value();
+            bool bHasY = mDimensions.second.y.has_value();
+            if (mDimensions.first == anchor_type::ABS)
             {
-                set_max_resize(vector2f(
-                    utils::string_to_float(pDimBlock->get_attribute("x")),
-                    utils::string_to_float(pDimBlock->get_attribute("y"))
-                ));
+                if (bHasX && bHasY)
+                {
+                    set_max_dimensions(vector2f(
+                        mDimensions.second.x.value(),
+                        mDimensions.second.y.value()));
+                }
+                else if (bHasX)
+                    set_max_width(mDimensions.second.x.value());
+                else if (bHasY)
+                    set_max_height(mDimensions.second.y.value());
             }
-            else if (pDimBlock->get_name() == "RelDimension")
+            else
             {
-                gui::out << gui::warning << pDimBlock->get_location() << " : "
+                gui::out << gui::warning << pMaxNode->get_location() << " : "
                     << "\"RelDimension\" for ResizeBounds:Max is not yet supported. Skipped." << std::endl;
             }
         }
     }
 }
 
-void frame::parse_title_region_block_(xml::block* pBlock)
+void frame::parse_title_region_node_(const utils::layout_node& mNode)
 {
-    xml::block* pTitleRegionBlock = pBlock->get_block("TitleRegion");
-    if (pTitleRegionBlock)
+    if (const utils::layout_node* pTitleRegionNode = mNode.try_get_child("TitleRegion"))
     {
         create_title_region();
 
         if (pTitleRegion_)
-            pTitleRegion_->parse_block(pTitleRegionBlock);
+            pTitleRegion_->parse_layout(*pTitleRegionNode);
     }
 }
 
-void frame::parse_backdrop_block_(xml::block* pBlock)
+void frame::parse_backdrop_node_(const utils::layout_node& mNode)
 {
-    xml::block* pBackdropBlock = pBlock->get_block("Backdrop");
-    if (pBackdropBlock)
+    if (const utils::layout_node* pBackdropNode = mNode.try_get_child("Backdrop"))
     {
         std::unique_ptr<backdrop> pBackdrop(new backdrop(*this));
 
         pBackdrop->set_background(get_manager().parse_file_name(
-            pBackdropBlock->get_attribute("bgFile")
-        ));
+            pBackdropNode->get_attribute_value_or<std::string>("bgFile", "")));
+
         pBackdrop->set_edge(get_manager().parse_file_name(
-            pBackdropBlock->get_attribute("edgeFile")
-        ));
+            pBackdropNode->get_attribute_value_or<std::string>("edgeFile", "")));
 
-        pBackdrop->set_background_tilling(utils::string_to_bool(pBackdropBlock->get_attribute("tile")));
+        pBackdrop->set_background_tilling(pBackdropNode->get_attribute_value_or<bool>("tile", false));
 
-        xml::block* pBGInsetsBlock = pBackdropBlock->get_block("BackgroundInsets");
-        if (pBGInsetsBlock)
+        if (const utils::layout_node* pBGInsetsNode = pBackdropNode->try_get_child("BackgroundInsets"))
         {
-            xml::block* pInsetBlock = pBGInsetsBlock->get_radio_block();
-            if (pInsetBlock->get_name() == "AbsInset")
+            const utils::layout_node* pAbsInsetNode = pBGInsetsNode->try_get_child("AbsInset");
+            const utils::layout_node* pRelInsetNode = pBGInsetsNode->try_get_child("RelInset");
+
+            if (pAbsInsetNode && pRelInsetNode)
+            {
+                gui::out << gui::warning << pBGInsetsNode->get_location() << " : "
+                    "BackgroundInsets node can only contain one of AbsInset or RelInset, but not both. "
+                    "RelInset ignored." << std::endl;
+            }
+
+            if (!pAbsInsetNode && !pRelInsetNode)
+            {
+                gui::out << gui::warning << pBGInsetsNode->get_location() << " : "
+                    "BackgroundInsets node must contain one of AbsInset or RelInset." << std::endl;
+                return;
+            }
+
+            if (pAbsInsetNode)
             {
                 pBackdrop->set_background_insets(bounds2f(
-                    utils::string_to_float(pInsetBlock->get_attribute("left")),
-                    utils::string_to_float(pInsetBlock->get_attribute("right")),
-                    utils::string_to_float(pInsetBlock->get_attribute("top")),
-                    utils::string_to_float(pInsetBlock->get_attribute("bottom"))
+                    pAbsInsetNode->get_attribute_value_or<float>("left", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("right", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("top", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("bottom", 0.0f)
                 ));
             }
             else
             {
-                gui::out << gui::warning << pInsetBlock->get_location() << " : "
+                gui::out << gui::warning << pRelInsetNode->get_location() << " : "
                     << "RelInset for Backdrop:BackgroundInsets is not yet supported (" << sName_ << ")." << std::endl;
             }
         }
 
-        xml::block* pEdgeInsetsBlock = pBackdropBlock->get_block("EdgeInsets");
-        if (pEdgeInsetsBlock)
+        if (const utils::layout_node* pEdgeInsetsNode = pBackdropNode->try_get_child("EdgeInsets"))
         {
-            xml::block* pInsetBlock = pEdgeInsetsBlock->get_radio_block();
-            if (pInsetBlock->get_name() == "AbsInset")
+            const utils::layout_node* pAbsInsetNode = pEdgeInsetsNode->try_get_child("AbsInset");
+            const utils::layout_node* pRelInsetNode = pEdgeInsetsNode->try_get_child("RelInset");
+
+            if (pAbsInsetNode && pRelInsetNode)
+            {
+                gui::out << gui::warning << pEdgeInsetsNode->get_location() << " : "
+                    "EdgeInsets node can only contain one of AbsInset or RelInset, but not both. "
+                    "RelInset ignored." << std::endl;
+            }
+
+            if (!pAbsInsetNode && !pRelInsetNode)
+            {
+                gui::out << gui::warning << pEdgeInsetsNode->get_location() << " : "
+                    "EdgeInsets node must contain one of AbsInset or RelInset." << std::endl;
+                return;
+            }
+
+            if (pAbsInsetNode)
             {
                 pBackdrop->set_edge_insets(bounds2f(
-                    utils::string_to_float(pInsetBlock->get_attribute("left")),
-                    utils::string_to_float(pInsetBlock->get_attribute("right")),
-                    utils::string_to_float(pInsetBlock->get_attribute("top")),
-                    utils::string_to_float(pInsetBlock->get_attribute("bottom"))
+                    pAbsInsetNode->get_attribute_value_or<float>("left", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("right", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("top", 0.0f),
+                    pAbsInsetNode->get_attribute_value_or<float>("bottom", 0.0f)
                 ));
             }
             else
             {
-                gui::out << gui::warning << pInsetBlock->get_location() << " : "
+                gui::out << gui::warning << pRelInsetNode->get_location() << " : "
                     << "RelInset for Backdrop:EdgeInsets is not yet supported (" << sName_ << ")." << std::endl;
             }
         }
 
-        xml::block* pColorBlock = pBackdropBlock->get_block("BackgroundColor");
-        if (pColorBlock)
-            pBackdrop->set_background_color(parse_color_block_(pColorBlock));
+        if (const utils::layout_node* pColorNode = pBackdropNode->try_get_child("BackgroundColor"))
+            pBackdrop->set_background_color(parse_color_node_(*pColorNode));
 
-        pColorBlock = pBackdropBlock->get_block("EdgeColor");
-        if (pColorBlock)
-            pBackdrop->set_edge_color(parse_color_block_(pColorBlock));
+        if (const utils::layout_node* pColorNode = pBackdropNode->try_get_child("EdgeColor"))
+            pBackdrop->set_edge_color(parse_color_node_(*pColorNode));
 
-        xml::block* pEdgeSizeBlock = pBackdropBlock->get_block("EdgeSize");
-        if (pEdgeSizeBlock)
+        if (const utils::layout_node* pEdgeSizeNode = pBackdropNode->try_get_child("EdgeSize"))
         {
-            xml::block* pSizeBlock = pEdgeSizeBlock->get_radio_block();
-            if (pSizeBlock->get_name() == "AbsValue")
+            const utils::layout_node* pAbsValueNode = pEdgeSizeNode->try_get_child("AbsValue");
+            const utils::layout_node* pRelValueNode = pEdgeSizeNode->try_get_child("RelValue");
+
+            if (pAbsValueNode && pRelValueNode)
             {
-                pBackdrop->set_edge_size(utils::string_to_float(pSizeBlock->get_attribute("x")));
+                gui::out << gui::warning << pEdgeSizeNode->get_location() << " : "
+                    "EdgeSize node can only contain one of AbsValue or RelValue, but not both. "
+                    "RelValue ignored." << std::endl;
+            }
+
+            if (!pAbsValueNode && !pRelValueNode)
+            {
+                gui::out << gui::warning << pEdgeSizeNode->get_location() << " : "
+                    "EdgeSize node must contain one of AbsValue or RelValue." << std::endl;
+                return;
+            }
+
+            if (pAbsValueNode)
+            {
+                pBackdrop->set_edge_size(pAbsValueNode->get_attribute_value_or("x", 0.0f));
             }
             else
             {
-                gui::out << gui::warning << pSizeBlock->get_location() << " : "
+                gui::out << gui::warning << pRelValueNode->get_location() << " : "
                     << "RelValue for Backdrop:EdgeSize is not yet supported (" << sName_ << ")." << std::endl;
             }
         }
 
-        xml::block* pTileSizeBlock = pBackdropBlock->get_block("TileSize");
-        if (pTileSizeBlock)
+        if (const utils::layout_node* pTileSizeNode = pBackdropNode->try_get_child("TileSize"))
         {
-            xml::block* pTileBlock = pTileSizeBlock->get_radio_block();
-            if (pTileBlock->get_name() == "AbsValue")
-                pBackdrop->set_tile_size(utils::string_to_float(pTileBlock->get_attribute("x")));
+            const utils::layout_node* pAbsValueNode = pTileSizeNode->try_get_child("AbsValue");
+            const utils::layout_node* pRelValueNode = pTileSizeNode->try_get_child("RelValue");
+
+            if (pAbsValueNode && pRelValueNode)
+            {
+                gui::out << gui::warning << pTileSizeNode->get_location() << " : "
+                    "TileSize node can only contain one of AbsValue or RelValue, but not both. "
+                    "RelValue ignored." << std::endl;
+            }
+
+            if (!pAbsValueNode && !pRelValueNode)
+            {
+                gui::out << gui::warning << pTileSizeNode->get_location() << " : "
+                    "TileSize node must contain one of AbsValue or RelValue." << std::endl;
+                return;
+            }
+
+            if (pAbsValueNode)
+            {
+                pBackdrop->set_tile_size(pAbsValueNode->get_attribute_value_or("x", 0.0f));
+            }
             else
             {
-                gui::out << gui::warning << pTileBlock->get_location() << " : "
+                gui::out << gui::warning << pRelValueNode->get_location() << " : "
                     << "RelValue for Backdrop:TileSize is not yet supported (" << sName_ << ")." << std::endl;
             }
         }
@@ -225,39 +297,54 @@ void frame::parse_backdrop_block_(xml::block* pBlock)
     }
 }
 
-void frame::parse_hit_rect_insets_block_(xml::block* pBlock)
+void frame::parse_hit_rect_insets_node_(const utils::layout_node& mNode)
 {
-    xml::block* pHitRectBlock = pBlock->get_block("HitRectInsets");
-    if (pHitRectBlock)
+    if (const utils::layout_node* pHitRectBlock = mNode.try_get_child("HitRectInsets"))
     {
-        xml::block* pInsetBlock = pHitRectBlock->get_radio_block();
-        if (pInsetBlock->get_name() == "AbsInset")
+        const utils::layout_node* pAbsInsetNode = pHitRectBlock->try_get_child("AbsInset");
+        const utils::layout_node* pRelInsetNode = pHitRectBlock->try_get_child("RelInset");
+
+        if (pAbsInsetNode && pRelInsetNode)
+        {
+            gui::out << gui::warning << pHitRectBlock->get_location() << " : "
+                "HitRectInsets node can only contain one of AbsInset or RelInset, but not both. "
+                "RelInset ignored." << std::endl;
+        }
+
+        if (!pAbsInsetNode && !pRelInsetNode)
+        {
+            gui::out << gui::warning << pHitRectBlock->get_location() << " : "
+                "HitRectInsets node must contain one of AbsInset or RelInset." << std::endl;
+            return;
+        }
+
+        if (pAbsInsetNode)
         {
             set_abs_hit_rect_insets(bounds2f(
-                utils::string_to_float(pInsetBlock->get_attribute("left")),
-                utils::string_to_float(pInsetBlock->get_attribute("right")),
-                utils::string_to_float(pInsetBlock->get_attribute("top")),
-                utils::string_to_float(pInsetBlock->get_attribute("bottom"))
+                pAbsInsetNode->get_attribute_value_or<float>("left", 0.0f),
+                pAbsInsetNode->get_attribute_value_or<float>("right", 0.0f),
+                pAbsInsetNode->get_attribute_value_or<float>("top", 0.0f),
+                pAbsInsetNode->get_attribute_value_or<float>("bottom", 0.0f)
             ));
         }
-        else if (pInsetBlock->get_name() == "RelInset")
+        else
         {
             set_rel_hit_rect_insets(bounds2f(
-                utils::string_to_float(pInsetBlock->get_attribute("left")),
-                utils::string_to_float(pInsetBlock->get_attribute("right")),
-                utils::string_to_float(pInsetBlock->get_attribute("top")),
-                utils::string_to_float(pInsetBlock->get_attribute("bottom"))
+                pRelInsetNode->get_attribute_value_or<float>("left", 0.0f),
+                pRelInsetNode->get_attribute_value_or<float>("right", 0.0f),
+                pRelInsetNode->get_attribute_value_or<float>("top", 0.0f),
+                pRelInsetNode->get_attribute_value_or<float>("bottom", 0.0f)
             ));
         }
     }
 }
 
-utils::observer_ptr<layered_region> frame::parse_region_(xml::block* pBlock,
+utils::observer_ptr<layered_region> frame::parse_region_(const utils::layout_node& mNode,
     const std::string& sLayer, const std::string& sType)
 {
     try
     {
-        auto mAttr = get_manager().parse_core_attributes(pBlock, observer_from(this));
+        auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
 
         std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
@@ -271,7 +358,7 @@ utils::observer_ptr<layered_region> frame::parse_region_(xml::block* pBlock,
 
         try
         {
-            pRegion->parse_block(pBlock);
+            pRegion->parse_layout(mNode);
             pRegion->notify_loaded();
             return pRegion;
         }
@@ -289,27 +376,27 @@ utils::observer_ptr<layered_region> frame::parse_region_(xml::block* pBlock,
     return nullptr;
 }
 
-void frame::parse_layers_block_(xml::block* pBlock)
+void frame::parse_layers_node_(const utils::layout_node& mNode)
 {
-    xml::block* pLayersBlock = pBlock->get_block("Layers");
-    if (pLayersBlock)
+    if (const utils::layout_node* pLayersNode = mNode.try_get_child("Layers"))
     {
-        for (auto* pLayerBlock : pLayersBlock->blocks())
+        for (const utils::layout_node& mLayerNode : pLayersNode->get_children())
         {
-            std::string sLevel = pLayerBlock->get_attribute("level");
-            for (auto* pRegionBlock : pLayerBlock->blocks())
+            std::string sLevel = mLayerNode.get_attribute_value_or<std::string>("level", "ARTWORK");
+            for (const utils::layout_node& mRegionNode : mLayerNode.get_children())
             {
-                parse_region_(pRegionBlock, sLevel, "");
+                parse_region_(mRegionNode, sLevel, "");
             }
         }
     }
 }
 
-utils::observer_ptr<frame> frame::parse_child_(xml::block* pBlock, const std::string& sType)
+utils::observer_ptr<frame> frame::parse_child_(const utils::layout_node& mNode,
+    const std::string& sType)
 {
     try
     {
-        auto mAttr = get_manager().parse_core_attributes(pBlock, observer_from(this));
+        auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
 
         std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
@@ -324,7 +411,7 @@ utils::observer_ptr<frame> frame::parse_child_(xml::block* pBlock, const std::st
         try
         {
             pFrame->set_addon(get_manager().get_current_addon());
-            pFrame->parse_block(pBlock);
+            pFrame->parse_layout(mNode);
             pFrame->notify_loaded();
             return pFrame;
         }
@@ -342,39 +429,35 @@ utils::observer_ptr<frame> frame::parse_child_(xml::block* pBlock, const std::st
     return nullptr;
 }
 
-void frame::parse_frames_block_(xml::block* pBlock)
+void frame::parse_frames_node_(const utils::layout_node& mNode)
 {
-    xml::block* pFramesBlock = pBlock->get_block("Frames");
-    if (pFramesBlock)
+    if (const utils::layout_node* pFramesNode = mNode.try_get_child("Frames"))
     {
-        for (auto* pElemBlock : pFramesBlock->blocks())
+        for (const utils::layout_node& mElemNode : pFramesNode->get_children())
         {
-            parse_child_(pElemBlock, "");
+            parse_child_(mElemNode, "");
         }
     }
 }
 
-void frame::parse_scripts_block_(xml::block* pBlock)
+void frame::parse_scripts_node_(const utils::layout_node& mNode)
 {
-    xml::block* pScriptsBlock = pBlock->get_block("Scripts");
-    if (pScriptsBlock)
+    if (const utils::layout_node* pScriptsNode = mNode.try_get_child("Scripts"))
     {
-        for (auto* pScriptBlock : pScriptsBlock->blocks())
+        for (const utils::layout_node& mScriptNode : pScriptsNode->get_children())
         {
-            bool bOverride = utils::string_to_bool(pScriptBlock->get_attribute("override"));
-            if (bOverride)
+            script_info mInfo{std::string(mScriptNode.get_filename()),
+                              static_cast<uint>(mScriptNode.get_line_number())};
+
+            if (mScriptNode.get_attribute_value_or<bool>("override", false))
             {
-                set_script(
-                    pScriptBlock->get_name(), pScriptBlock->get_value(),
-                    script_info{pScriptBlock->get_file(), pScriptBlock->get_line_nbr()}
-                );
+                set_script(std::string(mScriptNode.get_name()),
+                    std::string(mScriptNode.get_value()), std::move(mInfo));
             }
             else
             {
-                add_script(
-                    pScriptBlock->get_name(), pScriptBlock->get_value(),
-                    script_info{pScriptBlock->get_file(), pScriptBlock->get_line_nbr()}
-                );
+                add_script(std::string(mScriptNode.get_name()),
+                    std::string(mScriptNode.get_value()), std::move(mInfo));
             }
         }
     }

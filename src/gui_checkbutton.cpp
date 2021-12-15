@@ -134,11 +134,26 @@ bool check_button::is_checked() const
 void check_button::set_checked_texture(utils::observer_ptr<texture> pTexture)
 {
     pCheckedTexture_ = std::move(pTexture);
+    if (!pCheckedTexture_)
+        return;
+
+    pCheckedTexture_->set_shown(is_checked() &&
+        (mState_ != state::DISABLED || !pDisabledCheckedTexture_));
 }
 
 void check_button::set_disabled_checked_texture(utils::observer_ptr<texture> pTexture)
 {
     pDisabledCheckedTexture_ = std::move(pTexture);
+    if (!pDisabledCheckedTexture_)
+        return;
+
+    if (pCheckedTexture_)
+    {
+        pCheckedTexture_->set_shown(is_checked() &&
+            (mState_ != state::DISABLED || !pDisabledCheckedTexture_));
+    }
+
+    pDisabledCheckedTexture_->set_shown(is_checked() && mState_ == state::DISABLED);
 }
 
 void check_button::create_glue()

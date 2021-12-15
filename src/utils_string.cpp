@@ -118,56 +118,70 @@ uint hex_to_uint(const string& s)
     return i;
 }
 
-int string_to_int(const string& s)
+template<typename T>
+bool from_string(const string& s, T& v)
 {
-    int i = 0;
-    string_stream ss(s);
-    ss >> i;
-    return i;
+    std::istringstream ss(s);
+    ss >> v;
+
+    if (!ss.fail())
+    {
+        if (ss.eof())
+            return true;
+
+        std::string rem;
+        ss >> rem;
+
+        return rem.find_first_not_of(" \t") == rem.npos;
+    }
+
+    return true;
 }
 
-int string_to_int(const ustring& s)
+template bool from_string<int>(const string&, int&);
+template bool from_string<uint>(const string&, uint&);
+template bool from_string<std::size_t>(const string&, std::size_t&);
+template bool from_string<float>(const string&, float&);
+template bool from_string<double>(const string&, double&);
+
+template<>
+bool from_string<bool>(const string& s, bool& v)
 {
-    return string_to_int(unicode_to_utf8(s));
+    v = s == "true";
+    return v || s == "false";
 }
 
-uint string_to_uint(const string& s)
+template<>
+bool from_string<string>(const string& s, string& v)
 {
-    uint ui = 0;
-    string_stream ss(s);
-    ss >> ui;
-    return ui;
+    v = s;
+    return true;
 }
 
-uint string_to_uint(const ustring& s)
+template<typename T>
+bool from_string(const ustring& s, T& v)
 {
-    return string_to_uint(unicode_to_utf8(s));
+    return from_string(unicode_to_utf8(s), v);
 }
 
-float string_to_float(const string& s)
+template bool from_string<int>(const ustring&, int&);
+template bool from_string<uint>(const ustring&, uint&);
+template bool from_string<std::size_t>(const ustring&, std::size_t&);
+template bool from_string<float>(const ustring&, float&);
+template bool from_string<double>(const ustring&, double&);
+
+template<>
+bool from_string<bool>(const ustring& s, bool& v)
 {
-    float d = 0;
-    string_stream ss(s);
-    ss >> d;
-    return d;
+    v = s == U"true";
+    return v || s == U"false";
 }
 
-float string_to_float(const ustring& s)
+template<>
+bool from_string<ustring>(const ustring& s, ustring& v)
 {
-    return string_to_float(unicode_to_utf8(s));
-}
-
-double string_to_double(const string& s)
-{
-    double d = 0;
-    string_stream ss(s);
-    ss >> d;
-    return d;
-}
-
-double string_to_double(const ustring& s)
-{
-    return string_to_double(unicode_to_utf8(s));
+    v = s;
+    return true;
 }
 
 bool is_number(const string& s)
@@ -214,16 +228,6 @@ bool is_integer(char s)
 bool is_integer(char32_t s)
 {
     return is_number(s);
-}
-
-bool string_to_bool(const string& s)
-{
-    return s == "true";
-}
-
-bool string_to_bool(const ustring& s)
-{
-    return s == U"true";
 }
 
 bool is_boolean(const string& s)

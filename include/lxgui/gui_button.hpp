@@ -286,8 +286,8 @@ namespace gui
 
     protected :
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_all_blocks_before_children_(xml::block* pBlock) override;
+        void parse_attributes_(const utils::layout_node& mNode) override;
+        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
 
         state     mState_ = state::UP;
         bool      bHighlighted_ = false;
