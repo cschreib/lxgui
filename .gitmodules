@@ -13,3 +13,6 @@
 [submodule "extern/pugixml"]
 	path = extern/pugixml
 	url = https://github.com/zeux/pugixml.git
+[submodule "extern/rapidyaml"]
+	path = extern/rapidyaml
+	url = https://github.com/biojppm/rapidyaml.git

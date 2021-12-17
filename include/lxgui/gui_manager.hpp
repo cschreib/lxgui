@@ -731,7 +731,7 @@ namespace gui
         void create_caching_render_target_();
         void create_strata_cache_render_target_(strata& mStrata);
 
-        void parse_xml_file_(const std::string& sFile, addon* pAddOn);
+        void parse_layout_file_(const std::string& sFile, addon* pAddOn);
 
         std::string sUIVersion_ = "0001";
         vector2ui   mScreenDimensions_;

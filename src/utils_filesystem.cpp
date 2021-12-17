@@ -7,6 +7,7 @@
 namespace lxgui {
 namespace utils
 {
+
 bool file_exists(const std::string& sFile)
 {
     return std::filesystem::exists(sFile) && std::filesystem::is_regular_file(sFile);
@@ -70,5 +71,11 @@ bool make_directory(const std::string& sPath)
     std::filesystem::create_directories(sPath);
     return std::filesystem::exists(sPath) && std::filesystem::is_directory(sPath);
 }
+
+std::string get_file_extension(const std::string& sFile)
+{
+    return std::filesystem::path(sFile).extension();
+}
+
 }
 }

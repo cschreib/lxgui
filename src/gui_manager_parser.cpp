@@ -8,6 +8,7 @@
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_layout_node.hpp>
+#include <lxgui/utils_filesystem.hpp>
 
 #include <sol/state.hpp>
 #include <pugixml.hpp>
@@ -103,7 +104,7 @@ void set_block(const file_line_mappings& mFile, utils::layout_node& mNode, const
     mNode.set_value(sValue);
 }
 
-void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
+void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
 {
     file_line_mappings mFile(sFile);
     if (!mFile.is_open())
@@ -113,7 +114,12 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
     }
 
     utils::layout_node mRoot;
+    bool bParsed = false;
 
+    const std::string sExtension = utils::get_file_extension(sFile);
+
+#if defined(LXGUI_ENABLE_XML_PARSER)
+    if (sExtension == ".xml")
     {
         const uint uiOptions = pugi::parse_ws_pcdata_single;
 
@@ -128,6 +134,15 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
         }
 
         set_block(mFile, mRoot, mDoc.child("Ui"));
+        bParsed = true;
+    }
+#endif
+
+    if (!bParsed)
+    {
+        gui::out << gui::error << sFile << ": no parser registered for extension '" +
+            sExtension + "'." << std::endl;
+        return;
     }
 
     for (const auto& mNode : mRoot.get_children())
@@ -153,7 +168,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
         }
         else if (mNode.get_name() == "Include")
         {
-            this->parse_xml_file_(pAddOn->sDirectory + "/" + mNode.get_attribute_value<std::string>("file"), pAddOn);
+            this->parse_layout_file_(pAddOn->sDirectory + "/" + mNode.get_attribute_value<std::string>("file"), pAddOn);
         }
         else
         {

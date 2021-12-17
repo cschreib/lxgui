@@ -489,8 +489,7 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
         else
         {
             utils::trim(sLine, ' ');
-            if (sLine.find(".lua") != sLine.npos || sLine.find(".xml") != sLine.npos)
-                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
+            mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
         }
     }
 
@@ -509,7 +508,8 @@ void manager::load_addon_files_(addon* pAddOn)
     pCurrentAddOn_ = pAddOn;
     for (const auto& sFile : pAddOn->lFileList)
     {
-        if (sFile.find(".lua") != sFile.npos)
+        const std::string sExtension = utils::get_file_extension(sFile);
+        if (sExtension == ".lua")
         {
             try
             {
@@ -526,8 +526,10 @@ void manager::load_addon_files_(addon* pAddOn)
                 fire_event(mEvent);
             }
         }
-        else if (sFile.find(".xml") != sFile.npos)
-            this->parse_xml_file_(sFile, pAddOn);
+        else
+        {
+            this->parse_layout_file_(sFile, pAddOn);
+        }
     }
 
     std::string sSavedVariablesFile = "saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua";

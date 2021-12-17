@@ -27,6 +27,7 @@ lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui im
 lxgui_set_option(LXGUI_BUILD_FMT TRUE BOOL "Build the fmtlib dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_BUILD_PUGIXML TRUE BOOL "Build the pugixml dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_ENABLE_XML_PARSER TRUE BOOL "Enable the XML layout parser (if false, XML layout files cannot be read)")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
@@ -193,10 +194,16 @@ else()
     find_package(fmt REQUIRED)
 endif()
 
-if(LXGUI_BUILD_PUGIXML)
-    add_subdirectory(extern/pugixml)
-else()
-    find_package(pugixml REQUIRED)
+if(LXGUI_ENABLE_XML_PARSER)
+    if(LXGUI_BUILD_PUGIXML)
+        add_subdirectory(extern/pugixml)
+    else()
+        find_package(pugixml)
+        if(NOT TARGET pugixml)
+            message(ERROR ": the XML parser requires pugixml, which is missing. XML parsing will be disabled.")
+            set(LXGUI_ENABLE_XML_PARSER FALSE)
+        endif()
+    endif()
 endif()
 
 set(SOL_ALL_SAFETIES_ON TRUE)
