@@ -6,49 +6,128 @@
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_parser_common.hpp"
 
-#include <lxgui/xml_document.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_layout_node.hpp>
 
 #include <sol/state.hpp>
+#include <pugixml.hpp>
+#include <fstream>
 
 namespace lxgui {
 namespace gui
 {
 
-void set_block(utils::layout_node& mNode, xml::block* pBlock)
+class file_line_mappings
 {
-    mNode.set_location(pBlock->get_location());
-    mNode.set_name(pBlock->get_name());
-    mNode.set_value(pBlock->get_value());
+public:
 
-    for (const auto& mAttr : pBlock->get_attributes())
+    explicit file_line_mappings(const std::string& sFileName) : sFileName_(sFileName)
     {
-        if (mAttr.second.bFound)
+        std::ifstream mStream(sFileName);
+        if (!mStream.is_open())
+            return;
+
+        std::string sLine;
+        uint uiPrevPos = 0u;
+        while (std::getline(mStream, sLine))
         {
-            auto& mAttrib = mNode.add_attribute();
-            mAttrib.set_location(pBlock->get_location());
-            mAttrib.set_name(mAttr.second.sName);
-            mAttrib.set_value(mAttr.second.sValue);
+            sFileContent_ += '\n' + sLine;
+            lLineOffsets_.push_back(uiPrevPos);
+            uiPrevPos += sLine.size() + 1u;
+        }
+
+        bIsOpen_ = true;
+    }
+
+    bool is_open() const { return bIsOpen_; }
+
+    const std::string& get_content() const { return sFileContent_; }
+
+    std::pair<uint,uint> get_line_info(uint uiOffset) const
+    {
+        auto mIter = std::lower_bound(lLineOffsets_.begin(), lLineOffsets_.end(), uiOffset);
+        if (mIter == lLineOffsets_.end())
+            return std::make_pair(0, 0);
+
+        uint uiLineNbr = mIter - lLineOffsets_.begin();
+        uint uiCharOffset = uiOffset - *mIter + 1u;
+
+        return std::make_pair(uiLineNbr, uiCharOffset);
+    }
+
+    std::string get_location(uint uiOffset) const
+    {
+        auto mLocation = get_line_info(uiOffset);
+        if (mLocation.first == 0)
+            return sFileName_ + ":?";
+        else
+            return sFileName_ + ":" + utils::to_string(mLocation.first);
+    }
+
+private:
+
+    bool              bIsOpen_ = false;
+    std::string       sFileName_;
+    std::string       sFileContent_;
+    std::vector<uint> lLineOffsets_;
+};
+
+void set_block(const file_line_mappings& mFile, utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
+{
+    auto sLocation = mFile.get_location(mXMLNode.offset_debug());
+    mNode.set_location(sLocation);
+    mNode.set_name(mXMLNode.name());
+
+    for (const auto& mAttr : mXMLNode.attributes())
+    {
+        auto& mAttrib = mNode.add_attribute();
+        mAttrib.set_location(sLocation);
+        mAttrib.set_name(mAttr.name());
+        mAttrib.set_value(mAttr.value());
+    }
+
+    std::string sValue;
+    for (const auto& mElemNode : mXMLNode.children())
+    {
+        if (mElemNode.type() == pugi::node_pcdata || mElemNode.type() == pugi::node_cdata)
+        {
+            sValue += mElemNode.value();
+        }
+        else
+        {
+            auto& mChild = mNode.add_child();
+            set_block(mFile, mChild, mElemNode);
         }
     }
 
-    for (auto* pElemBlock : pBlock->blocks())
-    {
-        auto& mChild = mNode.add_child();
-        set_block(mChild, pElemBlock);
-    }
+    mNode.set_value(sValue);
 }
 
 void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
 {
-    utils::layout_node mRoot;
+    file_line_mappings mFile(sFile);
+    if (!mFile.is_open())
     {
-        xml::document mDoc(sFile, "interface/ui.def", gui::out);
-        if (!mDoc.check())
-            return;
+        gui::out << gui::error << sFile << ": could not open file for parsing." << std::endl;
+        return;
+    }
 
-        set_block(mRoot, mDoc.get_main_block());
+    utils::layout_node mRoot;
+
+    {
+        const uint uiOptions = pugi::parse_ws_pcdata_single;
+
+        pugi::xml_document mDoc;
+        pugi::xml_parse_result mResult = mDoc.load_buffer(
+            mFile.get_content().c_str(), mFile.get_content().size(), uiOptions);
+
+        if (!mResult)
+        {
+            gui::out << gui::error << mFile.get_location(mResult.offset) << ": " << mResult.description() << std::endl;
+            return;
+        }
+
+        set_block(mFile, mRoot, mDoc.child("Ui"));
     }
 
     for (const auto& mNode : mRoot.get_children())
@@ -102,7 +181,7 @@ void manager::parse_xml_file_(const std::string& sFile, addon* pAddOn)
                 pFrame->parse_layout(mNode);
                 pFrame->notify_loaded();
             }
-            catch (const exception& e)
+            catch (const utils::exception& e)
             {
                 gui::out << gui::error << e.get_description() << std::endl;
             }

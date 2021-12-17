@@ -27,7 +27,8 @@ Major changes:
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
- - lua: removed luapp, using sol2 exclusively
+ - lua: removed custom lua wrapper, using sol2 instead
+ - xml: removed custom xml parser, using pugixml instead
 
 Other changes:
  - general: various fixes and improvements to the build system

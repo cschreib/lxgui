@@ -26,6 +26,7 @@ lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
 lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_FMT TRUE BOOL "Build the fmtlib dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_BUILD_PUGIXML TRUE BOOL "Build the pugixml dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
@@ -192,6 +193,12 @@ else()
     find_package(fmt REQUIRED)
 endif()
 
+if(LXGUI_BUILD_PUGIXML)
+    add_subdirectory(extern/pugixml)
+else()
+    find_package(pugixml REQUIRED)
+endif()
+
 set(SOL_ALL_SAFETIES_ON TRUE)
 set(SOL_PRINT_ERRORS FALSE)
 if(LXGUI_BUILD_SOL2)
@@ -271,8 +278,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_string.cpp
-    ${PROJECT_SOURCE_DIR}/src/xml_block.cpp
-    ${PROJECT_SOURCE_DIR}/src/xml_document.cpp
 )
 
 add_library(lxgui::lxgui ALIAS lxgui)
@@ -289,6 +294,7 @@ target_link_libraries(lxgui PUBLIC fmt::fmt)
 target_link_libraries(lxgui PUBLIC oup::oup)
 target_compile_definitions(lxgui PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
 target_link_libraries(lxgui PRIVATE utf8::cpp)
+target_link_libraries(lxgui PRIVATE pugixml::pugixml)
 if(LXGUI_PLATFORM_LINUX)
     target_link_libraries(lxgui PUBLIC m stdc++ stdc++fs)
 endif()
