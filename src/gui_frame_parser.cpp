@@ -382,6 +382,13 @@ void frame::parse_layers_node_(const utils::layout_node& mNode)
     {
         for (const utils::layout_node& mLayerNode : pLayersNode->get_children())
         {
+            if (mLayerNode.get_name() != "Layer" && mLayerNode.get_name() != "")
+            {
+                gui::out << gui::warning << mLayerNode.get_location() << " : "
+                    << "unexpected node '" << mLayerNode.get_name() << "'; ignored." << std::endl;
+                continue;
+            }
+
             std::string sLevel = mLayerNode.get_attribute_value_or<std::string>("level", "ARTWORK");
             for (const utils::layout_node& mRegionNode : mLayerNode.get_children())
             {
@@ -449,16 +456,18 @@ void frame::parse_scripts_node_(const utils::layout_node& mNode)
             script_info mInfo{std::string(mScriptNode.get_filename()),
                               static_cast<uint>(mScriptNode.get_line_number())};
 
-            if (mScriptNode.get_attribute_value_or<bool>("override", false))
-            {
-                set_script(std::string(mScriptNode.get_name()),
-                    std::string(mScriptNode.get_value()), std::move(mInfo));
-            }
+            std::string sName = std::string(mScriptNode.get_name());
+
+            std::string sScript;
+            if (const utils::layout_node* pRun = mScriptNode.try_get_attribute("run"))
+                sScript = std::string(pRun->get_value());
             else
-            {
-                add_script(std::string(mScriptNode.get_name()),
-                    std::string(mScriptNode.get_value()), std::move(mInfo));
-            }
+                sScript = std::string(mScriptNode.get_value());
+
+            if (mScriptNode.get_attribute_value_or<bool>("override", false))
+                set_script(std::move(sName), std::move(sScript), std::move(mInfo));
+            else
+                add_script(std::move(sName), std::move(sScript), std::move(mInfo));
         }
     }
 }

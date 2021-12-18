@@ -489,7 +489,8 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
         else
         {
             utils::trim(sLine, ' ');
-            mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
+            if (!utils::has_no_content(sLine))
+                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
         }
     }
 

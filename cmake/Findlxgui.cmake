@@ -128,6 +128,24 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
     else()
         set(LXGUI_OPENGL3 FALSE)
     endif()
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_xml
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]$")
+
+    if(lxgui_xml)
+        set(LXGUI_ENABLE_XML_PARSER TRUE)
+    else()
+        set(LXGUI_ENABLE_XML_PARSER FALSE)
+    endif()
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_yaml
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_YAML_PARSER[\t ]$")
+
+    if(lxgui_yaml)
+        set(LXGUI_ENABLE_YAML_PARSER TRUE)
+    else()
+        set(LXGUI_ENABLE_YAML_PARSER FALSE)
+    endif()
 endif()
 
 include(FindPackageHandleStandardArgs)
@@ -139,7 +157,13 @@ find_package(Lua REQUIRED)
 find_package(fmt REQUIRED)
 find_package(oup REQUIRED)
 find_package(sol2 REQUIRED)
-find_package(pugixml REQUIRED)
+
+if(LXGUI_ENABLE_XML_PARSER)
+    find_package(pugixml REQUIRED)
+endif()
+if(LXGUI_ENABLE_YAML_PARSER)
+    find_package(ryml REQUIRED)
+endif()
 
 set(LXGUI_GUI_GL_FOUND FALSE)
 set(LXGUI_GUI_SFML_FOUND FALSE)
@@ -172,7 +196,12 @@ if(LXGUI_FOUND)
         target_link_libraries(lxgui::lxgui INTERFACE sol2::sol2)
         target_link_libraries(lxgui::lxgui INTERFACE fmt::fmt)
         target_link_libraries(lxgui::lxgui INTERFACE oup::oup)
-        target_link_libraries(lxgui::lxgui INTERFACE pugixml::pugixml)
+        if(LXGUI_ENABLE_XML_PARSER)
+            target_link_libraries(lxgui::lxgui INTERFACE pugixml::pugixml)
+        endif()
+        if(LXGUI_ENABLE_YAML_PARSER)
+            target_link_libraries(lxgui::lxgui INTERFACE ryml)
+        endif()
     endif()
 
     if(LXGUI_GUI_GL_LIBRARY)

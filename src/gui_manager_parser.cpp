@@ -11,7 +11,13 @@
 #include <lxgui/utils_filesystem.hpp>
 
 #include <sol/state.hpp>
-#include <pugixml.hpp>
+#if defined(LXGUI_ENABLE_XML_PARSER)
+#   include <pugixml.hpp>
+#endif
+#if defined(LXGUI_ENABLE_YAML_PARSER)
+#   include <ryml.hpp>
+#   include <ryml_std.hpp>
+#endif
 #include <fstream>
 
 namespace lxgui {
@@ -73,17 +79,37 @@ private:
     std::vector<uint> lLineOffsets_;
 };
 
-void set_block(const file_line_mappings& mFile, utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
+std::string normalize_node_name(const std::string& sName, bool bCapitalFirst)
+{
+    std::string sNormalized;
+    bool bNextCapitalize = bCapitalFirst;
+    for (auto cChar : sName)
+    {
+        if (bNextCapitalize)
+            cChar = std::toupper(cChar);
+
+        bNextCapitalize = cChar == '_';
+        if (bNextCapitalize)
+            continue;
+
+        sNormalized.push_back(cChar);
+    }
+
+    return sNormalized;
+}
+
+#if defined(LXGUI_ENABLE_XML_PARSER)
+void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
 {
     auto sLocation = mFile.get_location(mXMLNode.offset_debug());
     mNode.set_location(sLocation);
-    mNode.set_name(mXMLNode.name());
+    mNode.set_name(normalize_node_name(mXMLNode.name(), true));
 
     for (const auto& mAttr : mXMLNode.attributes())
     {
         auto& mAttrib = mNode.add_attribute();
         mAttrib.set_location(sLocation);
-        mAttrib.set_name(mAttr.name());
+        mAttrib.set_name(normalize_node_name(mAttr.name(), false));
         mAttrib.set_value(mAttr.value());
     }
 
@@ -97,12 +123,60 @@ void set_block(const file_line_mappings& mFile, utils::layout_node& mNode, const
         else
         {
             auto& mChild = mNode.add_child();
-            set_block(mFile, mChild, mElemNode);
+            set_node(mFile, mChild, mElemNode);
         }
     }
 
     mNode.set_value(sValue);
 }
+#endif
+
+#if defined(LXGUI_ENABLE_YAML_PARSER)
+std::string to_string(const c4::csubstr& mCString)
+{
+    return std::string(mCString.data(), mCString.size());
+}
+
+void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const ryml::NodeRef& mYAMLNode)
+{
+    // static int level = 0;
+    // auto sLocation = mFile.get_location(mYAMLNode.offset_debug());
+    auto sLocation = mFile.get_location(0); // TODO: get offset
+    mNode.set_location(sLocation);
+
+    if (mYAMLNode.has_key())
+        mNode.set_name(normalize_node_name(to_string(mYAMLNode.key()), true));
+
+    for (const auto mElemNode : mYAMLNode.children())
+    {
+        switch (mElemNode.type())
+        {
+            case ryml::KEYVAL:
+            {
+                auto& mAttrib = mNode.add_attribute();
+                mAttrib.set_location(sLocation);
+                mAttrib.set_name(normalize_node_name(to_string(mElemNode.key()), false));
+                mAttrib.set_value(to_string(mElemNode.val()));
+                break;
+            }
+            case ryml::KEYMAP: [[fallthrough]];
+            case ryml::MAP: [[fallthrough]];
+            case ryml::KEYSEQ:
+            {
+                auto& mChild = mNode.add_child();
+                set_node(mFile, mChild, mElemNode);
+                break;
+            }
+            default:
+            {
+                gui::out << gui::warning << sLocation << " : unsupported YAML node type: '" <<
+                    mElemNode.type_str() << "'." << std::endl;
+                break;
+            }
+        }
+    }
+}
+#endif
 
 void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
 {
@@ -133,7 +207,16 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
             return;
         }
 
-        set_block(mFile, mRoot, mDoc.child("Ui"));
+        set_node(mFile, mRoot, mDoc.first_child());
+        bParsed = true;
+    }
+#endif
+
+#if defined(LXGUI_ENABLE_YAML_PARSER)
+    if (sExtension == ".yml" || sExtension == ".yaml")
+    {
+        ryml::Tree mTree = ryml::parse(ryml::to_csubstr(mFile.get_content()));
+        set_node(mFile, mRoot, mTree.rootref().first_child());
         bParsed = true;
     }
 #endif

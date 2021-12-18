@@ -29,6 +29,14 @@
 					"shell_cmd": "make -j12 list_install_components",
 				},
 				{
+					"name": "package",
+					"shell_cmd": "make -j12 package",
+				},
+				{
+					"name": "package_source",
+					"shell_cmd": "make -j12 package_source",
+				},
+				{
 					"name": "rebuild_cache",
 					"shell_cmd": "make -j12 rebuild_cache",
 				},
@@ -145,6 +153,18 @@
 					"shell_cmd": "make -j12 NightlyUpdate",
 				},
 				{
+					"name": "c4core-amalgamate",
+					"shell_cmd": "make -j12 c4core-amalgamate",
+				},
+				{
+					"name": "ryml-uninstall",
+					"shell_cmd": "make -j12 ryml-uninstall",
+				},
+				{
+					"name": "c4core",
+					"shell_cmd": "make -j12 c4core",
+				},
+				{
 					"name": "fmt",
 					"shell_cmd": "make -j12 fmt",
 				},
@@ -179,6 +199,10 @@
 				{
 					"name": "pugixml-static",
 					"shell_cmd": "make -j12 pugixml-static",
+				},
+				{
+					"name": "ryml",
+					"shell_cmd": "make -j12 ryml",
 				},
 				{
 					"name": "src/gui_alive_checker.o",
@@ -882,71 +906,71 @@
 				},
 				{
 					"name": "src/gui_uiobject_parser.i",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.i"
+					"shell_cmd": "make -j12 src/gui_uiobject_parser.i",
 				},
 				{
 					"name": "src/gui_uiobject_parser.s",
-					"shell_cmd": "make -j12 src/gui_uiobject_parser.s"
+					"shell_cmd": "make -j12 src/gui_uiobject_parser.s",
 				},
 				{
 					"name": "src/gui_vertexcache.o",
-					"shell_cmd": "make -j12 src/gui_vertexcache.o"
+					"shell_cmd": "make -j12 src/gui_vertexcache.o",
 				},
 				{
 					"name": "src/gui_vertexcache.i",
-					"shell_cmd": "make -j12 src/gui_vertexcache.i"
+					"shell_cmd": "make -j12 src/gui_vertexcache.i",
 				},
 				{
 					"name": "src/gui_vertexcache.s",
-					"shell_cmd": "make -j12 src/gui_vertexcache.s"
+					"shell_cmd": "make -j12 src/gui_vertexcache.s",
 				},
 				{
 					"name": "src/input.o",
-					"shell_cmd": "make -j12 src/input.o"
+					"shell_cmd": "make -j12 src/input.o",
 				},
 				{
 					"name": "src/input.i",
-					"shell_cmd": "make -j12 src/input.i"
+					"shell_cmd": "make -j12 src/input.i",
 				},
 				{
 					"name": "src/input.s",
-					"shell_cmd": "make -j12 src/input.s"
+					"shell_cmd": "make -j12 src/input.s",
 				},
 				{
 					"name": "src/input_source.o",
-					"shell_cmd": "make -j12 src/input_source.o"
+					"shell_cmd": "make -j12 src/input_source.o",
 				},
 				{
 					"name": "src/input_source.i",
-					"shell_cmd": "make -j12 src/input_source.i"
+					"shell_cmd": "make -j12 src/input_source.i",
 				},
 				{
 					"name": "src/input_source.s",
-					"shell_cmd": "make -j12 src/input_source.s"
+					"shell_cmd": "make -j12 src/input_source.s",
 				},
 				{
 					"name": "src/utils_exception.o",
-					"shell_cmd": "make -j12 src/utils_exception.o"
+					"shell_cmd": "make -j12 src/utils_exception.o",
 				},
 				{
 					"name": "src/utils_exception.i",
-					"shell_cmd": "make -j12 src/utils_exception.i"
+					"shell_cmd": "make -j12 src/utils_exception.i",
 				},
 				{
 					"name": "src/utils_exception.s",
-					"shell_cmd": "make -j12 src/utils_exception.s"
+					"shell_cmd": "make -j12 src/utils_exception.s",
 				},
 				{
 					"name": "src/utils_filesystem.o",
-					"shell_cmd": "make -j12 src/utils_filesystem.o"
+					"shell_cmd": "make -j12 src/utils_filesystem.o",
 				},
 				{
 					"name": "src/utils_filesystem.i",
-					"shell_cmd": "make -j12 src/utils_filesystem.i"
+					"shell_cmd": "make -j12 src/utils_filesystem.i",
 				},
 				{
 					"name": "src/utils_filesystem.s",
-					"shell_cmd": "make -j12 src/utils_filesystem.s"
+					"shell_cmd": "make -j12 src/utils_filesystem.s",
 				},
 				{
 					"name": "src/utils_maths.o",

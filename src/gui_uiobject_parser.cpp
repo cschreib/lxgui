@@ -110,8 +110,15 @@ void uiobject::parse_anchor_node_(const utils::layout_node& mNode)
     if (const utils::layout_node* pAnchorsNode = mNode.try_get_child("Anchors"))
     {
         std::vector<std::string> lFoundPoints;
-        for (const auto& mAnchorNode : pAnchorsNode->get_children("Anchor"))
+        for (const auto& mAnchorNode : pAnchorsNode->get_children())
         {
+            if (mAnchorNode.get_name() != "Anchor" && mAnchorNode.get_name() != "")
+            {
+                gui::out << gui::warning << mAnchorNode.get_location() << " : "
+                    << "unexpected node '" << mAnchorNode.get_name() << "'; ignored." << std::endl;
+                continue;
+            }
+
             std::string sPoint = mAnchorNode.get_attribute_value_or<std::string>(
                 "point", "TOPLEFT");
             std::string sParent = mAnchorNode.get_attribute_value_or<std::string>(
