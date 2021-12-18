@@ -121,7 +121,7 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
     endforeach()
 
     file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_opengl
-         REGEX "^#[\t ]*define[\t ]+LXGUI_OPENGL3[\t ]$")
+         REGEX "^#[\t ]*define[\t ]+LXGUI_OPENGL3[\t ]*$")
 
     if(lxgui_opengl)
         set(LXGUI_OPENGL3 TRUE)
@@ -130,18 +130,20 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
     endif()
 
     file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_xml
-         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]$")
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]*$")
 
     if(lxgui_xml)
+        message(STATUS "lxgui found with XML parser")
         set(LXGUI_ENABLE_XML_PARSER TRUE)
     else()
         set(LXGUI_ENABLE_XML_PARSER FALSE)
     endif()
 
     file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_yaml
-         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_YAML_PARSER[\t ]$")
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_YAML_PARSER[\t ]*$")
 
     if(lxgui_yaml)
+        message(STATUS "lxgui found with YAML parser")
         set(LXGUI_ENABLE_YAML_PARSER TRUE)
     else()
         set(LXGUI_ENABLE_YAML_PARSER FALSE)
