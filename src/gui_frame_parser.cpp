@@ -453,16 +453,15 @@ void frame::parse_scripts_node_(const utils::layout_node& mNode)
     {
         for (const utils::layout_node& mScriptNode : pScriptsNode->get_children())
         {
-            script_info mInfo{std::string(mScriptNode.get_filename()),
-                              static_cast<uint>(mScriptNode.get_line_number())};
-
             std::string sName = std::string(mScriptNode.get_name());
 
-            std::string sScript;
+            const utils::layout_node* pNode = &mScriptNode;
             if (const utils::layout_node* pRun = mScriptNode.try_get_attribute("run"))
-                sScript = std::string(pRun->get_value());
-            else
-                sScript = std::string(mScriptNode.get_value());
+                pNode = pRun;
+
+            std::string sScript = std::string(pNode->get_value());
+            script_info mInfo{std::string(pNode->get_filename()),
+                    static_cast<uint>(pNode->get_line_number())};
 
             if (mScriptNode.get_attribute_value_or<bool>("override", false))
                 set_script(std::move(sName), std::move(sScript), std::move(mInfo));
