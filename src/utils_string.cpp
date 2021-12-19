@@ -135,7 +135,7 @@ bool from_string(const string& s, T& v)
         return rem.find_first_not_of(" \t") == rem.npos;
     }
 
-    return true;
+    return false;
 }
 
 template bool from_string<int>(const string&, int&);
