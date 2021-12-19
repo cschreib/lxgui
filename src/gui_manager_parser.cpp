@@ -99,7 +99,8 @@ std::string normalize_node_name(const std::string& sName, bool bCapitalFirst)
 }
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
-void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
+void set_node(const file_line_mappings& mFile,
+    utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
 {
     auto sLocation = mFile.get_location(mXMLNode.offset_debug());
     mNode.set_location(sLocation);
@@ -137,11 +138,14 @@ std::string to_string(const c4::csubstr& mCString)
     return std::string(mCString.data(), mCString.size());
 }
 
-void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const ryml::NodeRef& mYAMLNode)
+void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
+    utils::layout_node& mNode, const ryml::NodeRef& mYAMLNode)
 {
-    // static int level = 0;
-    // auto sLocation = mFile.get_location(mYAMLNode.offset_debug());
-    auto sLocation = mFile.get_location(0); // TODO: get offset
+    std::string sLocation;
+    if (mYAMLNode.has_key())
+        sLocation = mFile.get_location(mYAMLNode.key().data() - mTree.arena().data());
+    else if (mYAMLNode.has_val())
+        sLocation = mFile.get_location(mYAMLNode.val().data() - mTree.arena().data());
     mNode.set_location(sLocation);
 
     if (mYAMLNode.has_key())
@@ -153,6 +157,11 @@ void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const 
         {
             case ryml::KEYVAL:
             {
+                if (mElemNode.has_key())
+                    sLocation = mFile.get_location(mElemNode.key().data() - mTree.arena().data());
+                else if (mElemNode.has_val())
+                    sLocation = mFile.get_location(mElemNode.val().data() - mTree.arena().data());
+
                 auto& mAttrib = mNode.add_attribute();
                 mAttrib.set_location(sLocation);
                 mAttrib.set_name(normalize_node_name(to_string(mElemNode.key()), false));
@@ -164,7 +173,7 @@ void set_node(const file_line_mappings& mFile, utils::layout_node& mNode, const 
             case ryml::KEYSEQ:
             {
                 auto& mChild = mNode.add_child();
-                set_node(mFile, mChild, mElemNode);
+                set_node(mFile, mTree, mChild, mElemNode);
                 break;
             }
             default:
@@ -216,7 +225,7 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
     if (sExtension == ".yml" || sExtension == ".yaml")
     {
         ryml::Tree mTree = ryml::parse(ryml::to_csubstr(mFile.get_content()));
-        set_node(mFile, mRoot, mTree.rootref().first_child());
+        set_node(mFile, mTree, mRoot, mTree.rootref().first_child());
         bParsed = true;
     }
 #endif
