@@ -157,13 +157,8 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
         {
             case ryml::KEYVAL:
             {
-                if (mElemNode.has_key())
-                    sLocation = mFile.get_location(mElemNode.key().data() - mTree.arena().data());
-                else if (mElemNode.has_val())
-                    sLocation = mFile.get_location(mElemNode.val().data() - mTree.arena().data());
-
                 auto& mAttrib = mNode.add_attribute();
-                mAttrib.set_location(sLocation);
+                mAttrib.set_location(mFile.get_location(mElemNode.key().data() - mTree.arena().data()));
                 mAttrib.set_name(normalize_node_name(to_string(mElemNode.key()), false));
                 mAttrib.set_value(to_string(mElemNode.val()));
                 break;
