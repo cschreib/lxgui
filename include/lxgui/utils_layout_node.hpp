@@ -47,7 +47,9 @@ namespace utils
         std::size_t get_line_number() const noexcept
         {
             std::size_t uiLine = std::numeric_limits<std::size_t>::max();
-            from_string(sLocation_.substr(sLocation_.find(':')), uiLine);
+            auto uiPos = sLocation_.find(':');
+            if (uiPos != sLocation_.npos && uiPos < sLocation_.size() - 1)
+                from_string(sLocation_.substr(uiPos + 1), uiLine);
             return uiLine;
         }
 
