@@ -43,6 +43,8 @@ public:
             uiPrevPos += sLine.size() + 1u;
         }
 
+        lLineOffsets_.push_back(uiPrevPos);
+
         bIsOpen_ = true;
     }
 
