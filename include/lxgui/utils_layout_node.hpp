@@ -33,6 +33,11 @@ namespace utils
         */
         std::string_view get_location() const noexcept { return sLocation_; }
 
+        /// Returns this node's value location in the file as <file>:<line>.
+        /** \return This node's value location in the file as <file>:<line>
+        */
+        std::string_view get_value_location() const noexcept { return sValueLocation_; }
+
         /// Returns the file from in which this node is located.
         /** \return The file from in which this node is located
         */
@@ -41,6 +46,7 @@ namespace utils
             auto uiPos = sLocation_.find(':');
             return std::string_view(sLocation_.c_str(), uiPos == sLocation_.npos ? sLocation_.size() : uiPos);
         }
+
         /// Returns the line number on which this node is located.
         /** \return The line number on which this node is located
         */
@@ -50,6 +56,18 @@ namespace utils
             auto uiPos = sLocation_.find(':');
             if (uiPos != sLocation_.npos && uiPos < sLocation_.size() - 1)
                 from_string(sLocation_.substr(uiPos + 1), uiLine);
+            return uiLine;
+        }
+
+        /// Returns the line number on which this node's value is located.
+        /** \return The line number on which this node's value is located
+        */
+        std::size_t get_value_line_number() const noexcept
+        {
+            std::size_t uiLine = std::numeric_limits<std::size_t>::max();
+            auto uiPos = sValueLocation_.find(':');
+            if (uiPos != sValueLocation_.npos && uiPos < sValueLocation_.size() - 1)
+                from_string(sValueLocation_.substr(uiPos + 1), uiLine);
             return uiLine;
         }
 
@@ -296,6 +314,11 @@ namespace utils
         */
         void set_location(std::string sLocation) noexcept { sLocation_ = std::move(sLocation); }
 
+        /// Set this node's value location.
+        /** \param sName The new value location
+        */
+        void set_value_location(std::string sLocation) noexcept { sValueLocation_ = std::move(sLocation); }
+
         /// Set this node's name.
         /** \param sName The new name
         */
@@ -341,6 +364,7 @@ namespace utils
         std::string sName_;
         std::string sValue_;
         std::string sLocation_;
+        std::string sValueLocation_;
         child_list  lChildList_;
         child_list  lAttrList_;
     };

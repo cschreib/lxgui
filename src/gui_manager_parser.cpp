@@ -104,12 +104,14 @@ void set_node(const file_line_mappings& mFile,
 {
     auto sLocation = mFile.get_location(mXMLNode.offset_debug());
     mNode.set_location(sLocation);
+    mNode.set_value_location(sLocation);
     mNode.set_name(normalize_node_name(mXMLNode.name(), true));
 
     for (const auto& mAttr : mXMLNode.attributes())
     {
         auto& mAttrib = mNode.add_attribute();
         mAttrib.set_location(sLocation);
+        mAttrib.set_value_location(sLocation);
         mAttrib.set_name(normalize_node_name(mAttr.name(), false));
         mAttrib.set_value(mAttr.value());
     }
@@ -147,6 +149,7 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
     else if (mYAMLNode.has_val())
         sLocation = mFile.get_location(mYAMLNode.val().data() - mTree.arena().data());
     mNode.set_location(sLocation);
+    mNode.set_value_location(sLocation);
 
     if (mYAMLNode.has_key())
         mNode.set_name(normalize_node_name(to_string(mYAMLNode.key()), true));
@@ -159,6 +162,7 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
             {
                 auto& mAttrib = mNode.add_attribute();
                 mAttrib.set_location(mFile.get_location(mElemNode.key().data() - mTree.arena().data()));
+                mAttrib.set_value_location(mFile.get_location(mElemNode.val().data() - mTree.arena().data()));
                 mAttrib.set_name(normalize_node_name(to_string(mElemNode.key()), false));
                 mAttrib.set_value(to_string(mElemNode.val()));
                 break;
