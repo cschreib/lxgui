@@ -209,7 +209,7 @@ if(LXGUI_FOUND)
             target_link_libraries(lxgui::lxgui INTERFACE pugixml::pugixml)
         endif()
         if(LXGUI_ENABLE_YAML_PARSER)
-            target_link_libraries(lxgui::lxgui INTERFACE ryml)
+            target_link_libraries(lxgui::lxgui INTERFACE ryml::ryml)
         endif()
     endif()
 
