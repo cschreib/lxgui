@@ -29,6 +29,7 @@ Major changes:
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
  - lua: removed custom lua wrapper, using sol2 instead
  - xml: removed custom xml parser, using pugixml instead
+ - yaml: added yaml parser for GUI layout
 
 Other changes:
  - general: various fixes and improvements to the build system
