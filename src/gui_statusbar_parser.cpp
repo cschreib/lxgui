@@ -1,27 +1,26 @@
 #include "lxgui/gui_statusbar.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
-
-#include <lxgui/utils_layout_node.hpp>
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
 
-void status_bar::parse_attributes_(const utils::layout_node& mNode)
+void status_bar::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("minValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("minValue"))
         set_min_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("maxValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("maxValue"))
         set_max_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
         set_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
         set_bar_draw_layer(pAttr->get_value<std::string>());
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("orientation"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("orientation"))
     {
         std::string sOrientation = pAttr->get_value<std::string>();
         if (sOrientation == "HORIZONTAL")
@@ -36,16 +35,16 @@ void status_bar::parse_attributes_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("reversed"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("reversed"))
         set_reversed(pAttr->get_value<bool>());
 }
 
-void status_bar::parse_all_nodes_before_children_(const utils::layout_node& mNode)
+void status_bar::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     frame::parse_all_nodes_before_children_(mNode);
 
-    const utils::layout_node* pTextureNode = mNode.try_get_child("BarTexture");
-    const utils::layout_node* pColorNode = mNode.try_get_child("BarColor");
+    const layout_node* pTextureNode = mNode.try_get_child("BarTexture");
+    const layout_node* pColorNode = mNode.try_get_child("BarColor");
     if (pColorNode && pTextureNode)
     {
         gui::out << gui::warning << mNode.get_location() << " : "
@@ -55,7 +54,7 @@ void status_bar::parse_all_nodes_before_children_(const utils::layout_node& mNod
 
     if (pTextureNode)
     {
-        utils::layout_node mDefaulted = *pTextureNode;
+        layout_node mDefaulted = *pTextureNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentBarTexture");
 
         auto pBarTexture = parse_region_(mDefaulted, "ARTWORK", "Texture");

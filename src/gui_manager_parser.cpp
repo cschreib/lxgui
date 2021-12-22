@@ -5,9 +5,9 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_parser_common.hpp"
+#include "lxgui/gui_layoutnode.hpp"
 
 #include <lxgui/utils_string.hpp>
-#include <lxgui/utils_layout_node.hpp>
 #include <lxgui/utils_filesystem.hpp>
 
 #include <sol/state.hpp>
@@ -102,7 +102,7 @@ std::string normalize_node_name(const std::string& sName, bool bCapitalFirst)
 
 #if defined(LXGUI_ENABLE_XML_PARSER)
 void set_node(const file_line_mappings& mFile,
-    utils::layout_node& mNode, const pugi::xml_node& mXMLNode)
+    layout_node& mNode, const pugi::xml_node& mXMLNode)
 {
     auto sLocation = mFile.get_location(mXMLNode.offset_debug());
     mNode.set_location(sLocation);
@@ -143,7 +143,7 @@ std::string to_string(const c4::csubstr& mCString)
 }
 
 void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
-    utils::layout_node& mNode, const ryml::NodeRef& mYAMLNode)
+    layout_node& mNode, const ryml::NodeRef& mYAMLNode)
 {
     std::string sLocation;
     if (mYAMLNode.has_key())
@@ -197,7 +197,7 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
         return;
     }
 
-    utils::layout_node mRoot;
+    layout_node mRoot;
     bool bParsed = false;
 
     const std::string sExtension = utils::get_file_extension(sFile);

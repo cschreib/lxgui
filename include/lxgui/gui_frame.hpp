@@ -1122,13 +1122,13 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Parses data from a utils::layout_node.
+        /// Parses data from a layout_node.
         /** \param mNode The layout node
         *   \note Derived classes must override parse_all_nodes_before_children_() if
         *         they need to parse additional blocks, and parse_attributes_() if they
         *         need to parse additional attributes.
         */
-        void parse_layout(const utils::layout_node& mNode) final;
+        void parse_layout(const layout_node& mNode) final;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -1138,18 +1138,18 @@ namespace gui
     protected :
 
         // Layout parsing
-        void parse_attributes_(const utils::layout_node& mNode) override;
-        virtual void parse_all_nodes_before_children_(const utils::layout_node& mNode);
-        virtual void parse_resize_bounds_node_(const utils::layout_node& mNode);
-        virtual void parse_title_region_node_(const utils::layout_node& mNode);
-        virtual void parse_backdrop_node_(const utils::layout_node& mNode);
-        virtual void parse_hit_rect_insets_node_(const utils::layout_node& mNode);
-        virtual void parse_layers_node_(const utils::layout_node& mNode);
-        virtual void parse_frames_node_(const utils::layout_node& mNode);
-        virtual void parse_scripts_node_(const utils::layout_node& mNode);
-        utils::observer_ptr<layered_region> parse_region_(const utils::layout_node& mNode,
+        void parse_attributes_(const layout_node& mNode) override;
+        virtual void parse_all_nodes_before_children_(const layout_node& mNode);
+        virtual void parse_resize_bounds_node_(const layout_node& mNode);
+        virtual void parse_title_region_node_(const layout_node& mNode);
+        virtual void parse_backdrop_node_(const layout_node& mNode);
+        virtual void parse_hit_rect_insets_node_(const layout_node& mNode);
+        virtual void parse_layers_node_(const layout_node& mNode);
+        virtual void parse_frames_node_(const layout_node& mNode);
+        virtual void parse_scripts_node_(const layout_node& mNode);
+        utils::observer_ptr<layered_region> parse_region_(const layout_node& mNode,
             const std::string& sLayer, const std::string& sType);
-        utils::observer_ptr<frame> parse_child_(const utils::layout_node& mNode,
+        utils::observer_ptr<frame> parse_child_(const layout_node& mNode,
             const std::string& sType);
 
         virtual void notify_top_level_parent_(bool bTopLevel,

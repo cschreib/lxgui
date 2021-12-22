@@ -215,8 +215,8 @@ namespace gui
 
         void notify_thumb_texture_needs_update_() const;
 
-        void parse_attributes_(const utils::layout_node& mNode) override;
-        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
+        void parse_attributes_(const layout_node& mNode) override;
+        void parse_all_nodes_before_children_(const layout_node& mNode) override;
 
         mutable bool bUpdateThumbTexture_ = false;
 

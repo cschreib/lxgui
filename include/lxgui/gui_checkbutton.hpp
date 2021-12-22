@@ -107,7 +107,7 @@ namespace gui
 
     protected :
 
-        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
+        void parse_all_nodes_before_children_(const layout_node& mNode) override;
 
         bool bChecked_ = false;
 

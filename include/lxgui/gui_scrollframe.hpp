@@ -160,8 +160,8 @@ namespace gui
 
     protected :
 
-        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
-        virtual void parse_scroll_child_node_(const utils::layout_node& mNode);
+        void parse_all_nodes_before_children_(const layout_node& mNode) override;
+        virtual void parse_scroll_child_node_(const layout_node& mNode);
 
         void update_scroll_range_();
         void update_scroll_child_input_();

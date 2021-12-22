@@ -3,16 +3,16 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_layoutnode.hpp"
 
-#include <lxgui/utils_layout_node.hpp>
 #include <lxgui/utils_std.hpp>
 
 namespace lxgui {
 namespace gui
 {
-color uiobject::parse_color_node_(const utils::layout_node& mNode)
+color uiobject::parse_color_node_(const layout_node& mNode)
 {
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("c"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("c"))
     {
         std::string sColor = pAttr->get_value<std::string>();
         if (!sColor.empty() && sColor[0] == '#')
@@ -28,10 +28,10 @@ color uiobject::parse_color_node_(const utils::layout_node& mNode)
 }
 
 std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_(
-    const utils::layout_node& mNode)
+    const layout_node& mNode)
 {
-    const utils::layout_node* pAbsDimNode = mNode.try_get_child("AbsDimension");
-    const utils::layout_node* pRelDimNode = mNode.try_get_child("RelDimension");
+    const layout_node* pAbsDimNode = mNode.try_get_child("AbsDimension");
+    const layout_node* pRelDimNode = mNode.try_get_child("RelDimension");
 
     if (pAbsDimNode && pRelDimNode)
     {
@@ -48,7 +48,7 @@ std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_
     }
 
     anchor_type mType = anchor_type::ABS;
-    const utils::layout_node* pNode = nullptr;
+    const layout_node* pNode = nullptr;
     if (pAbsDimNode)
     {
         mType = anchor_type::ABS;
@@ -61,17 +61,17 @@ std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_
     }
 
     vector2<std::optional<float>> mVec;
-    if (const utils::layout_node* pAttr = pNode->try_get_attribute("x"))
+    if (const layout_node* pAttr = pNode->try_get_attribute("x"))
         mVec.x = pAttr->get_value<float>();
-    if (const utils::layout_node* pAttr = pNode->try_get_attribute("y"))
+    if (const layout_node* pAttr = pNode->try_get_attribute("y"))
         mVec.y = pAttr->get_value<float>();
 
     return std::make_pair(mType, mVec);
 }
 
-void uiobject::parse_size_node_(const utils::layout_node& mNode)
+void uiobject::parse_size_node_(const layout_node& mNode)
 {
-    if (const utils::layout_node* pSizeBlock = mNode.try_get_child("Size"))
+    if (const layout_node* pSizeBlock = mNode.try_get_child("Size"))
     {
         auto mDimensions = parse_dimension_(*pSizeBlock);
         bool bHasX = mDimensions.second.x.has_value();
@@ -105,9 +105,9 @@ void uiobject::parse_size_node_(const utils::layout_node& mNode)
     }
 }
 
-void uiobject::parse_anchor_node_(const utils::layout_node& mNode)
+void uiobject::parse_anchor_node_(const layout_node& mNode)
 {
-    if (const utils::layout_node* pAnchorsNode = mNode.try_get_child("Anchors"))
+    if (const layout_node* pAnchorsNode = mNode.try_get_child("Anchors"))
     {
         std::vector<std::string> lFoundPoints;
         for (const auto& mAnchorNode : pAnchorsNode->get_children())
@@ -140,7 +140,7 @@ void uiobject::parse_anchor_node_(const utils::layout_node& mNode)
                 anchor::get_anchor_point(sRelativePoint)
             );
 
-            if (const utils::layout_node* pOffsetNode = mAnchorNode.try_get_child("Offset"))
+            if (const layout_node* pOffsetNode = mAnchorNode.try_get_child("Offset"))
             {
                 auto mDimensions = parse_dimension_(*pOffsetNode);
                 mAnchor.mType = mDimensions.first;

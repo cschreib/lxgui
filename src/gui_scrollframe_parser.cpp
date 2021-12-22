@@ -1,21 +1,20 @@
 #include "lxgui/gui_scrollframe.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
-
-#include <lxgui/utils_layout_node.hpp>
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
-void scroll_frame::parse_all_nodes_before_children_(const utils::layout_node& mNode)
+void scroll_frame::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     frame::parse_all_nodes_before_children_(mNode);
     parse_scroll_child_node_(mNode);
 }
 
-void scroll_frame::parse_scroll_child_node_(const utils::layout_node& mNode)
+void scroll_frame::parse_scroll_child_node_(const layout_node& mNode)
 {
-    if (const utils::layout_node* pScrollChildNode = mNode.try_get_child("ScrollChild"))
+    if (const layout_node* pScrollChildNode = mNode.try_get_child("ScrollChild"))
     {
         if (pScrollChildNode->get_children_count() == 0)
         {
@@ -31,12 +30,12 @@ void scroll_frame::parse_scroll_child_node_(const utils::layout_node& mNode)
             return;
         }
 
-        const utils::layout_node& mChildNode = pScrollChildNode->get_child(0);
+        const layout_node& mChildNode = pScrollChildNode->get_child(0);
         auto pScrollChild = parse_child_(mChildNode, "");
         if (!pScrollChild)
             return;
 
-        const utils::layout_node* pAnchors = mChildNode.try_get_child("Anchors");
+        const layout_node* pAnchors = mChildNode.try_get_child("Anchors");
         if (pAnchors)
         {
             gui::out << gui::warning << pAnchors->get_location() << " : "

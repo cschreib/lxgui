@@ -4,33 +4,31 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_localizer.hpp"
-
-#include <lxgui/utils_layout_node.hpp>
-#include <lxgui/utils_string.hpp>
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
-void button::parse_attributes_(const utils::layout_node& mNode)
+void button::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("text"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("text"))
     {
         set_text(utils::utf8_to_unicode(
             get_manager().get_localizer().localize(pAttr->get_value<std::string>())));
     }
 }
 
-void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
+void button::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     frame::parse_all_nodes_before_children_(mNode);
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("NormalTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("NormalTexture"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentNormalTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -42,11 +40,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("PushedTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("PushedTexture"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentPushedTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -58,11 +56,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("DisabledTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("DisabledTexture"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentDisabledTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -74,11 +72,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("HighlightTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("HighlightTexture"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentHighlightTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -91,11 +89,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
     }
 
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("NormalText"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("NormalText"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentNormalText");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -107,11 +105,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("HighlightText"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("HighlightText"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "HIGHLIGHT");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentHighlightText");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -123,11 +121,11 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pSpecialNode = mNode.try_get_child("DisabledText"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("DisabledText"))
     {
         auto sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "BORDER");
 
-        utils::layout_node mDefaulted = *pSpecialNode;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentDisabledText");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -139,7 +137,7 @@ void button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
         }
     }
 
-    if (const utils::layout_node* pOffsetBlock = mNode.try_get_child("PushedTextOffset"))
+    if (const layout_node* pOffsetBlock = mNode.try_get_child("PushedTextOffset"))
     {
         auto mDimensions = parse_dimension_(*pOffsetBlock);
         if (mDimensions.first == anchor_type::ABS)

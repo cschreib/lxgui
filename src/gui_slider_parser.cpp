@@ -1,28 +1,27 @@
 #include "lxgui/gui_slider.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
-
-#include <lxgui/utils_layout_node.hpp>
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
-void slider::parse_attributes_(const utils::layout_node& mNode)
+void slider::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("valueStep"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("valueStep"))
         set_value_step(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("minValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("minValue"))
         set_min_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("maxValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("maxValue"))
         set_max_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
         set_value(pAttr->get_value<float>());
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
         set_thumb_draw_layer(pAttr->get_value<std::string>());
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("orientation"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("orientation"))
     {
         std::string sOrientation = pAttr->get_value<std::string>();
         if (sOrientation == "HORIZONTAL")
@@ -38,13 +37,13 @@ void slider::parse_attributes_(const utils::layout_node& mNode)
     }
 }
 
-void slider::parse_all_nodes_before_children_(const utils::layout_node& mNode)
+void slider::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     frame::parse_all_nodes_before_children_(mNode);
 
-    if (const utils::layout_node* pThumbBlock = mNode.try_get_child("ThumbTexture"))
+    if (const layout_node* pThumbBlock = mNode.try_get_child("ThumbTexture"))
     {
-        utils::layout_node mDefaulted = *pThumbBlock;
+        layout_node mDefaulted = *pThumbBlock;
         mDefaulted.get_or_set_attribute_value("name", "$parentThumbTexture");
 
         auto pThumbTexture = parse_region_(mDefaulted, "ARTWORK", "Texture");

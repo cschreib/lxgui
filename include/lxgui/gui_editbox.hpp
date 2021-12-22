@@ -394,10 +394,10 @@ namespace gui
 
     protected :
 
-        void parse_attributes_(const utils::layout_node& mNode) override;
-        void parse_all_nodes_before_children_(const utils::layout_node& mNode) override;
-        void parse_font_string_node_(const utils::layout_node& mNode);
-        void parse_text_insets_node_(const utils::layout_node& mNode);
+        void parse_attributes_(const layout_node& mNode) override;
+        void parse_all_nodes_before_children_(const layout_node& mNode) override;
+        void parse_font_string_node_(const layout_node& mNode);
+        void parse_text_insets_node_(const layout_node& mNode);
 
         void create_font_string_();
         void create_highlight_();

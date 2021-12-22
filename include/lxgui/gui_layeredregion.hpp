@@ -93,10 +93,10 @@ namespace gui
         */
         void notify_renderer_need_redraw() const override;
 
-        /// Parses data from a utils::layout_node.
+        /// Parses data from a layout_node.
         /** \param mNode The layout node
         */
-        void parse_layout(const utils::layout_node& mNode) override;
+        void parse_layout(const layout_node& mNode) override;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -105,7 +105,7 @@ namespace gui
 
     protected :
 
-        void parse_attributes_(const utils::layout_node& mNode) override;
+        void parse_attributes_(const layout_node& mNode) override;
 
         layer_type mLayer_ = layer_type::ARTWORK;
     };

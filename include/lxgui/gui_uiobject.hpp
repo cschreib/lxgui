@@ -26,15 +26,11 @@ namespace sol
 }
 
 namespace lxgui {
-namespace utils
-{
-    class layout_node;
-}
-
 namespace gui
 {
     struct addon;
     class manager;
+    class layout_node;
 
     class frame;
     class frame_renderer;
@@ -585,10 +581,10 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Parses data from a utils::layout_node.
+        /// Parses data from a layout_node.
         /** \param mNode The layout node
         */
-        virtual void parse_layout(const utils::layout_node& mNode) = 0;
+        virtual void parse_layout(const layout_node& mNode) = 0;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -604,11 +600,11 @@ namespace gui
     protected :
 
         // Layout parsing
-        virtual void parse_size_node_(const utils::layout_node& mNode);
-        virtual void parse_anchor_node_(const utils::layout_node& mNode);
-        color        parse_color_node_(const utils::layout_node& mNode);
+        virtual void parse_size_node_(const layout_node& mNode);
+        virtual void parse_anchor_node_(const layout_node& mNode);
+        color        parse_color_node_(const layout_node& mNode);
         std::pair<anchor_type, vector2<std::optional<float>>> parse_dimension_(
-            const utils::layout_node& mNode);
+            const layout_node& mNode);
 
         void read_anchors_(float& fLeft, float& fRight, float& fTop,
                            float& fBottom, float& fXCenter, float& fYCenter) const;

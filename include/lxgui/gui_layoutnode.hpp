@@ -1,5 +1,5 @@
-#ifndef LXGUI_UTILS_LAYOUT_NODE_HPP
-#define LXGUI_UTILS_LAYOUT_NODE_HPP
+#ifndef LXGUI_GUI_LAYOUTNODE_HPP
+#define LXGUI_GUI_LAYOUTNODE_HPP
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/utils.hpp"
@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace lxgui {
-namespace utils
+namespace gui
 {
     /// An element in a layout file
     /** This is a format-agnostic representation of a GUI layout, as read
@@ -44,7 +44,8 @@ namespace utils
         std::string_view get_filename() const noexcept
         {
             auto uiPos = sLocation_.find(':');
-            return std::string_view(sLocation_.c_str(), uiPos == sLocation_.npos ? sLocation_.size() : uiPos);
+            return std::string_view(sLocation_.c_str(),
+                uiPos == sLocation_.npos ? sLocation_.size() : uiPos);
         }
 
         /// Returns the line number on which this node is located.
@@ -55,7 +56,7 @@ namespace utils
             std::size_t uiLine = std::numeric_limits<std::size_t>::max();
             auto uiPos = sLocation_.find(':');
             if (uiPos != sLocation_.npos && uiPos < sLocation_.size() - 1)
-                from_string(sLocation_.substr(uiPos + 1), uiLine);
+                utils::from_string(sLocation_.substr(uiPos + 1), uiLine);
             return uiLine;
         }
 
@@ -67,7 +68,7 @@ namespace utils
             std::size_t uiLine = std::numeric_limits<std::size_t>::max();
             auto uiPos = sValueLocation_.find(':');
             if (uiPos != sValueLocation_.npos && uiPos < sValueLocation_.size() - 1)
-                from_string(sValueLocation_.substr(uiPos + 1), uiLine);
+                utils::from_string(sValueLocation_.substr(uiPos + 1), uiLine);
             return uiLine;
         }
 
@@ -103,7 +104,7 @@ namespace utils
         T get_value() const
         {
             T mValue{};
-            if (!from_string(sValue_, mValue))
+            if (!utils::from_string(sValue_, mValue))
             {
                 throw utils::exception(std::string(get_location()) +
                     ": could not parse value for '" + std::string(sName_) +
@@ -121,7 +122,7 @@ namespace utils
         T get_value_or(T mFallback) const noexcept
         {
             T mValue{};
-            if (!from_string(sValue_, mValue))
+            if (!utils::from_string(sValue_, mValue))
                 mValue = mFallback;
 
             return mValue;
@@ -162,7 +163,10 @@ namespace utils
         {
             std::string_view sFilter;
 
-            bool is_included(const BaseIterator& mIter) const { return mIter->get_name() == sFilter; }
+            bool is_included(const BaseIterator& mIter) const
+            {
+                return mIter->get_name() == sFilter;
+            }
         };
 
         using filtered_children_view = utils::view::adaptor<const child_list,
@@ -287,7 +291,8 @@ namespace utils
         *   \param sFallback The fallback
         *   \return The value of the attribute with the provided name, or a default value if none
         */
-        std::string_view get_attribute_value_or(std::string_view sName, std::string_view sFallback) const noexcept
+        std::string_view get_attribute_value_or(std::string_view sName,
+            std::string_view sFallback) const noexcept
         {
             if (const auto* pAttr = try_get_attribute(sName))
                 return pAttr->get_value_or(sFallback);
@@ -317,7 +322,10 @@ namespace utils
         /// Set this node's value location.
         /** \param sName The new value location
         */
-        void set_value_location(std::string sLocation) noexcept { sValueLocation_ = std::move(sLocation); }
+        void set_value_location(std::string sLocation) noexcept
+        {
+            sValueLocation_ = std::move(sLocation);
+        }
 
         /// Set this node's name.
         /** \param sName The new name

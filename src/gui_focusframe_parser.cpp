@@ -1,12 +1,10 @@
 #include "lxgui/gui_focusframe.hpp"
-
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_layout_node.hpp>
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
-void focus_frame::parse_attributes_(const utils::layout_node& mNode)
+void focus_frame::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 

@@ -1,20 +1,19 @@
 #include "lxgui/gui_checkbutton.hpp"
-
-#include <lxgui/utils_layout_node.hpp>
 #include "lxgui/gui_texture.hpp"
+#include "lxgui/gui_layoutnode.hpp"
 
 namespace lxgui {
 namespace gui
 {
-void check_button::parse_all_nodes_before_children_(const utils::layout_node& mNode)
+void check_button::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     button::parse_all_nodes_before_children_(mNode);
 
-    if (const utils::layout_node* pSpecialBlock = mNode.try_get_child("CheckedTexture"))
+    if (const layout_node* pSpecialBlock = mNode.try_get_child("CheckedTexture"))
     {
         std::string sLayer = pSpecialBlock->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        utils::layout_node mDefaulted = *pSpecialBlock;
+        layout_node mDefaulted = *pSpecialBlock;
         mDefaulted.get_or_set_attribute_value("name", "$parentCheckedTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -26,11 +25,11 @@ void check_button::parse_all_nodes_before_children_(const utils::layout_node& mN
         }
     }
 
-    if (const utils::layout_node* pSpecialBlock = mNode.try_get_child("DisabledCheckedTexture"))
+    if (const layout_node* pSpecialBlock = mNode.try_get_child("DisabledCheckedTexture"))
     {
         std::string sLayer = pSpecialBlock->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        utils::layout_node mDefaulted = *pSpecialBlock;
+        layout_node mDefaulted = *pSpecialBlock;
         mDefaulted.get_or_set_attribute_value("name", "$parentDisabledCheckedTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 

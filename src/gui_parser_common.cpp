@@ -5,7 +5,7 @@ namespace lxgui {
 namespace gui
 {
 
-node_core_attributes parse_core_attributes(manager& mManager, const utils::layout_node& mNode,
+node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
     utils::observer_ptr<frame> pParent)
 {
     node_core_attributes mAttr;
@@ -33,7 +33,7 @@ node_core_attributes parse_core_attributes(manager& mManager, const utils::layou
     {
         mAttr.bVirtual = mNode.get_attribute_value_or<bool>("virtual", false);
 
-        if (const utils::layout_node* pAttr = mNode.try_get_attribute("parent"))
+        if (const layout_node* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
             auto pParent = mManager.get_uiobject_by_name(sParent);
@@ -54,7 +54,7 @@ node_core_attributes parse_core_attributes(manager& mManager, const utils::layou
         }
     }
 
-    if (const utils::layout_node* pAttr = mNode.try_get_attribute("inherits"))
+    if (const layout_node* pAttr = mNode.try_get_attribute("inherits"))
         mAttr.lInheritance = mManager.get_virtual_uiobject_list(pAttr->get_value<std::string>());
 
     return mAttr;

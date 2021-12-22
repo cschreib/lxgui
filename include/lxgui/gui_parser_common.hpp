@@ -1,9 +1,10 @@
 #ifndef LXGUI_GUI_PARSER_COMMON_HPP
 #define LXGUI_GUI_PARSER_COMMON_HPP
 
-#include <lxgui/lxgui.hpp>
+#include "lxgui/lxgui.hpp"
+#include "lxgui/gui_layoutnode.hpp"
+
 #include <lxgui/utils_observer.hpp>
-#include <lxgui/utils_layout_node.hpp>
 #include <lxgui/gui_frame.hpp>
 #include <lxgui/gui_manager.hpp>
 
@@ -28,7 +29,7 @@ namespace gui
     *   \param pParent  The current layout parent frame of this block (nullptr if none)
     *   \return Filled in core attributes structure.
     */
-    node_core_attributes parse_core_attributes(manager& mManager, const utils::layout_node& mNode,
+    node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
         utils::observer_ptr<frame> pParent);
 }
 }
