@@ -74,7 +74,7 @@ bool make_directory(const std::string& sPath)
 
 std::string get_file_extension(const std::string& sFile)
 {
-    return std::filesystem::path(sFile).extension();
+    return std::filesystem::path(sFile).extension().u8string();
 }
 
 }
