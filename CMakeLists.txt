@@ -87,6 +87,7 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE /wd4245) # signed/unsigned mismatch
         target_compile_options(${target} PRIVATE /wd4244) # narrowing implicit conversion
         target_compile_options(${target} PRIVATE /wd4100) # unused parameter
+        target_compile_options(${target} PRIVATE /wd4121) # alignment sensitive to padding
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         target_compile_options(${target} PRIVATE -Weverything)
         target_compile_options(${target} PRIVATE -Wno-c++98-compat-pedantic)
