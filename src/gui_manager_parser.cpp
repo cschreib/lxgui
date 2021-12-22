@@ -111,10 +111,18 @@ void set_node(const file_line_mappings& mFile,
 
     for (const auto& mAttr : mXMLNode.attributes())
     {
+        std::string sName = normalize_node_name(mAttr.name(), false);
+        if (const auto* pNode = mNode.try_get_attribute(sName))
+        {
+            gui::out << gui::warning << sLocation << " : attribute: '" <<
+                sName << "' duplicated; only first value will be used." << std::endl;
+            continue;
+        }
+
         auto& mAttrib = mNode.add_attribute();
         mAttrib.set_location(sLocation);
         mAttrib.set_value_location(sLocation);
-        mAttrib.set_name(normalize_node_name(mAttr.name(), false));
+        mAttrib.set_name(std::move(sName));
         mAttrib.set_value(mAttr.value());
     }
 
@@ -162,10 +170,23 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
         {
             case ryml::KEYVAL:
             {
+                std::string sName = normalize_node_name(to_string(mElemNode.key()), false);
+                std::string sAttrLocation = mFile.get_location(mElemNode.key().data() - mTree.arena().data());
+                if (const auto* pNode = mNode.try_get_attribute(sName))
+                {
+                    gui::out << gui::warning << sAttrLocation << " : attribute: '" <<
+                        sName << "' duplicated; only first value will be used." << std::endl;
+                    gui::out << gui::warning << std::string(sAttrLocation.size(), ' ') <<
+                        "   first occurence at: '" << std::endl;
+                    gui::out << gui::warning << std::string(sAttrLocation.size(), ' ') <<
+                        "   " << pNode->get_location() << std::endl;
+                    continue;
+                }
+
                 auto& mAttrib = mNode.add_attribute();
-                mAttrib.set_location(mFile.get_location(mElemNode.key().data() - mTree.arena().data()));
+                mAttrib.set_location(std::move(sAttrLocation));
                 mAttrib.set_value_location(mFile.get_location(mElemNode.val().data() - mTree.arena().data()));
-                mAttrib.set_name(normalize_node_name(to_string(mElemNode.key()), false));
+                mAttrib.set_name(std::move(sName));
                 mAttrib.set_value(to_string(mElemNode.val()));
                 break;
             }
