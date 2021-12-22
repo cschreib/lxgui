@@ -20,6 +20,7 @@
 - [How do I use it? A tutorial.](#how-do-i-use-it-a-tutorial)
     - [Setting up the GUI in C++](#setting-up-the-gui-in-c)
     - [Creating a GUI addon in XML and Lua](#creating-a-gui-addon-in-xml-and-lua)
+    - [Equivalent using YAML](#equivalent-using-yaml)
     - [Equivalent in pure C++](#equivalent-in-pure-c)
 
 <!-- /MarkdownTOC -->
@@ -36,9 +37,9 @@ There are plenty of different GUI libraries out there. They all have something t
 * **Non intrusive**. The library will fit in your existing application without taking over your main loop. All it needs is being fed events, a call to `update()`, a call to `render()`, and nothing more.
 * **Fully extensible**. Except for the base GUI components (gui::frame), every widget is designed to be used as a plugin: gui::texture, gui::font_string, gui::button, gui::edit_box, ... New widgets can be added easily in your own code without modifying lxgui.
 * **Fully documented**. Every class in the library is documented. Doxygen documentation is included (and available on-line [here](https://cschreib.github.io/lxgui/html/annotated.html) for the C++ API, and [here](https://cschreib.github.io/lxgui/lua/index.html) for the Lua API).
-* **Design with XML and Lua files**. The library can use a combination of XML files (for GUI structure) and Lua scripts (for event handling, etc) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of Lua+XML is not required.
+* **Design with layout files and script files**. The library can use a combination of layout files (XML or YAML, defining the GUI layout) and script files (Lua, for event handling, etc.) to construct a fully functional GUI. One can also create everything directly C++ if the flexibility of the layout+script files is not required.
 * **Internationalization and localization support**. The library supports translatable text with a fully flexible system, allowing correct display of the GUI in multiple languages. This is optional: if only one language is required, one can just hard-code strings without worrying about translations. At present, only left-to-right languages are supported.
-* **A familiar API...**. The XML and Lua APIs are directly inspired from World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
+* **A familiar API...**. The layout and scripting APIs are inspired by World of Warcraft's successful GUI system. It is not an exact copy, but most of the important features are there (virtual widgets, inheritance, ...).
 
 
 ## Available GUI widgets
@@ -62,14 +63,14 @@ As you can see from the screenshot below, lxgui can be used to create very compl
 
 A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `gui/examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
 
-Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot below. It can also serve as a demo program, and you can see for yourself what the XML and Lua code looks like for larger scale GUIs.
+Included in the source package (in the `gui/test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot below. It can also serve as a demo program, and you can see for yourself what the layout and script files looks like for larger scale GUIs.
 
 
 ## Gallery
 
 Please head to the [screenshots page](screenshots/screenshots.md) for examples of lxgui being used in real-world projects.
 
-Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable Lua and XML files.
+Below is a screenshot of the test program included with the library (the same interface is displayed in the live demo linked above). It is meant to test and demonstrate most of the features available in the library. Note that the "look-and-feel" displayed here is purely for demonstration; every element of the interface (colors, dialog shapes and style) is defined in fully customizable layout and script files.
 
 ![Sample screenshot](/gui/test/expected.png)
 
@@ -78,7 +79,9 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), [fmtlib](https://github.com/fmtlib/fmt) (included as submodule), and [pugixml](https://github.com/zeux/pugixml) (included as submodule).
+Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+
+To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support XML and YAML layout files, or just one if you need only XML or YAML.
 
 Available rendering back-ends:
 
@@ -337,7 +340,7 @@ while (true)
 // Resources are cleared up automatically on destruction
 ```
 
-With these few lines of code, you can create as many "interface addons" in XML and Lua as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
+With these few lines of code, you can create as many "interface addons" with layout and script files as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
 
 
 ## Creating a GUI addon in XML and Lua
@@ -487,6 +490,55 @@ FPSCounter:1
 
 The `1` means "load". If you put a `0` or remove that line, your addon will not be loaded.
 
+
+## Equivalent using YAML
+
+The above addon, using YAML instead of XML, would look like the following:
+```yaml
+ui:
+  frame:
+    name: FPSCounter
+    anchors:
+      - point: TOPLEFT
+      - point: BOTTOMRIGHT
+
+    layers:
+      layer:
+
+        font_string:
+          name: $parentText
+          font: interface/fonts/main.ttf
+          text: ""
+          font_height: 12
+          justify_h: RIGHT
+          justify_v: BOTTOM
+          outline: NORMAL
+          color: {r: 0, g: 1, b: 0}
+          anchors:
+            - point: BOTTOMRIGHT
+              offset: {abs_dimension: {x: -5, y: -5}}
+
+    scripts:
+      on_load: |
+        -- This is Lua code !
+        self.update_time = 0.5;
+        self.timer = 1.0;
+        self.frames = 0;
+
+      on_update: |
+        -- This is Lua code !
+        self.timer = self.timer + arg1;
+        self.frames = self.frames + 1;
+
+        if (self.timer > self.update_time) then
+            local fps = self.frames/self.timer;
+            self.Text:set_text("FPS : "..math.floor(fps));
+
+            self.timer = 0.0;
+            self.frames = 0;
+        end
+
+```
 
 ## Equivalent in pure C++
 
