@@ -63,8 +63,13 @@ std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_
     vector2<std::optional<float>> mVec;
     if (const layout_node* pAttr = pNode->try_get_attribute("x"))
         mVec.x = pAttr->get_value<float>();
+    else
+        mVec.x = std::nullopt;
+
     if (const layout_node* pAttr = pNode->try_get_attribute("y"))
         mVec.y = pAttr->get_value<float>();
+    else
+        mVec.y = std::nullopt;
 
     return std::make_pair(mType, mVec);
 }
