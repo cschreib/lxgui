@@ -15,4 +15,4 @@
 	url = https://github.com/zeux/pugixml.git
 [submodule "extern/rapidyaml"]
 	path = extern/rapidyaml
-	url = https://github.com/biojppm/rapidyaml.git
+	url = https://github.com/cschreib/rapidyaml.git
