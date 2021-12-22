@@ -18,7 +18,7 @@ void layered_region::parse_layout(const layout_node& mNode)
 
 void layered_region::parse_attributes_(const layout_node& mNode)
 {
-    if (const layout_node* pAttr = mNode.try_get_attribute("hidden"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("hidden"))
         set_shown(pAttr->get_value<bool>());
 
     if (mNode.get_attribute_value_or<bool>("setAllPoints", false))

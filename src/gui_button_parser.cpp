@@ -14,7 +14,7 @@ void button::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("text"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("text"))
     {
         set_text(utils::utf8_to_unicode(
             get_manager().get_localizer().localize(pAttr->get_value<std::string>())));

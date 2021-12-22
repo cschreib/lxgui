@@ -32,24 +32,24 @@ void frame::parse_layout(const layout_node& mNode)
 
 void frame::parse_attributes_(const layout_node& mNode)
 {
-    if (const layout_node* pAttr = mNode.try_get_attribute("hidden"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("hidden"))
         set_shown(!pAttr->get_value<bool>());
 
     if (mNode.get_attribute_value_or<bool>("setAllPoints", false))
         set_all_points("$parent");
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("alpha"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("alpha"))
         set_alpha(pAttr->get_value<float>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("topLevel"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("topLevel"))
         set_top_level(pAttr->get_value<bool>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("movable"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("movable"))
         set_movable(pAttr->get_value<bool>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("resizable"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("resizable"))
         set_resizable(pAttr->get_value<bool>());
 
     set_frame_strata(mNode.get_attribute_value_or<std::string>("frameStrata", "PARENT"));
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("frameLevel"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("frameLevel"))
     {
         if (!bVirtual_)
         {
@@ -64,13 +64,13 @@ void frame::parse_attributes_(const layout_node& mNode)
                 << "\"frameLevel\" is not allowed for virtual widgets. Ignored." << std::endl;
         }
     }
-    if (const layout_node* pAttr = mNode.try_get_attribute("enableMouse"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouse"))
         enable_mouse(pAttr->get_value<bool>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("enableMouseWheel"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouseWheel"))
         enable_mouse_wheel(pAttr->get_value<bool>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("enableKeyboard"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("enableKeyboard"))
         enable_keyboard(pAttr->get_value<bool>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("clampedToScreen"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("clampedToScreen"))
         set_clamped_to_screen(pAttr->get_value<bool>());
 }
 
@@ -453,8 +453,8 @@ void frame::parse_scripts_node_(const layout_node& mNode)
         {
             std::string sName = std::string(mScriptNode.get_name());
 
-            const layout_node* pNode = &mScriptNode;
-            if (const layout_node* pRun = mScriptNode.try_get_attribute("run"))
+            const layout_attribute* pNode = &mScriptNode;
+            if (const layout_attribute* pRun = mScriptNode.try_get_attribute("run"))
                 pNode = pRun;
 
             std::string sScript = std::string(pNode->get_value());

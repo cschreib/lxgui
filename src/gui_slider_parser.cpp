@@ -11,18 +11,18 @@ void slider::parse_attributes_(const layout_node& mNode)
 {
     frame::parse_attributes_(mNode);
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("valueStep"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("valueStep"))
         set_value_step(pAttr->get_value<float>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("minValue"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("minValue"))
         set_min_value(pAttr->get_value<float>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("maxValue"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("maxValue"))
         set_max_value(pAttr->get_value<float>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("defaultValue"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("defaultValue"))
         set_value(pAttr->get_value<float>());
-    if (const layout_node* pAttr = mNode.try_get_attribute("drawLayer"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("drawLayer"))
         set_thumb_draw_layer(pAttr->get_value<std::string>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("orientation"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("orientation"))
     {
         std::string sOrientation = pAttr->get_value<std::string>();
         if (sOrientation == "HORIZONTAL")

@@ -14,19 +14,19 @@
 namespace lxgui {
 namespace gui
 {
-    /// An element in a layout file
+    /// An attribute in a layout file
     /** This is a format-agnostic representation of a GUI layout, as read
     *   for example from an XML or YAML file. The GUI uses this class to de-couple
     *   the layout parsing format (XML, YAML, etc) from the actual parsed layout.
     */
-    class layout_node
+    class layout_attribute
     {
     public :
-        layout_node() = default;
-        layout_node(const layout_node&) = default;
-        layout_node(layout_node&&) = default;
-        layout_node& operator=(const layout_node&) = default;
-        layout_node& operator=(layout_node&&) = default;
+        layout_attribute() = default;
+        layout_attribute(const layout_attribute&) = default;
+        layout_attribute(layout_attribute&&) = default;
+        layout_attribute& operator=(const layout_attribute&) = default;
+        layout_attribute& operator=(layout_attribute&&) = default;
 
         /// Returns this node's location in the file as <file>:<line>.
         /** \return This node's location in the file as <file>:<line>
@@ -130,6 +130,69 @@ namespace gui
 
             return mValue;
         }
+
+        /// Set this node's location.
+        /** \param sName The new location
+        */
+        void set_location(std::string sLocation) noexcept { sLocation_ = std::move(sLocation); }
+
+        /// Set this node's value location.
+        /** \param sName The new value location
+        */
+        void set_value_location(std::string sLocation) noexcept
+        {
+            sValueLocation_ = std::move(sLocation);
+        }
+
+        /// Set this node's name.
+        /** \param sName The new name
+        */
+        void set_name(std::string sName) noexcept { sName_ = std::move(sName); }
+
+        /// Set this node's value.
+        /** \param sValue The new value
+        */
+        void set_value(std::string sValue) noexcept { sValue_ = std::move(sValue); }
+
+        /// Flag this node as "not accessed" for later warnings.
+        void mark_as_not_accessed() const { bAccessed_ = false; }
+
+        /// Flag this node as "fully accessed" for later warnings; no check will be done.
+        void bypass_access_check() const { bAccessBypass_ = true; }
+
+        /// Check if this node was accessed by the parser.
+        /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
+        */
+        bool was_accessed() const { return bAccessed_; }
+
+        /// Check if this node should be bypassed for access checks.
+        /** \return 'true' if this node should be bypassed, 'false' otherwise.
+        */
+        bool is_access_check_bypassed() const { return bAccessBypass_; }
+
+    protected:
+        std::string sName_;
+        std::string sValue_;
+        std::string sLocation_;
+        std::string sValueLocation_;
+
+        mutable bool bAccessed_ = false;
+        mutable bool bAccessBypass_ = false;
+    };
+
+    /// An node in a layout file
+    /** This is a format-agnostic representation of a GUI layout, as read
+    *   for example from an XML or YAML file. The GUI uses this class to de-couple
+    *   the layout parsing format (XML, YAML, etc) from the actual parsed layout.
+    */
+    class layout_node : public layout_attribute
+    {
+    public :
+        layout_node() = default;
+        layout_node(const layout_node&) = default;
+        layout_node(layout_node&&) = default;
+        layout_node& operator=(const layout_node&) = default;
+        layout_node& operator=(layout_node&&) = default;
 
         using child_list = std::vector<layout_node>;
         using children_view = utils::view::adaptor<const child_list,
@@ -236,10 +299,10 @@ namespace gui
         *   \note Will throw if no child is found with this name. Use get_attribute_value_or()
         *         to avoid throwing.
         */
-        const layout_node* try_get_attribute(std::string_view sName) const noexcept
+        const layout_attribute* try_get_attribute(std::string_view sName) const noexcept
         {
             bAccessed_ = true;
-            for (const layout_node& mNode : lAttrList_)
+            for (const layout_attribute& mNode : lAttrList_)
             {
                 if (mNode.get_name() == sName)
                     return &mNode;
@@ -254,10 +317,10 @@ namespace gui
         *   \note Will throw if no attribute is found with this name. Use try_get_attribute()
         *         to avoid throwing.
         */
-        const layout_node& get_attribute(std::string_view sName) const
+        const layout_attribute& get_attribute(std::string_view sName) const
         {
             bAccessed_ = true;
-            if (const layout_node* pAttr = try_get_attribute(sName))
+            if (const layout_attribute* pAttr = try_get_attribute(sName))
                 return *pAttr;
             else
                 throw utils::exception(std::string(get_location()) +
@@ -330,7 +393,7 @@ namespace gui
                 return mFallback;
         }
 
-        using attribute_list = std::vector<layout_node>;
+        using attribute_list = std::vector<layout_attribute>;
         using attribute_view = utils::view::adaptor<const attribute_list,
             utils::view::standard_dereferencer,
             utils::view::no_filter>;
@@ -344,29 +407,6 @@ namespace gui
             return attribute_view(lAttrList_);
         }
 
-        /// Set this node's location.
-        /** \param sName The new location
-        */
-        void set_location(std::string sLocation) noexcept { sLocation_ = std::move(sLocation); }
-
-        /// Set this node's value location.
-        /** \param sName The new value location
-        */
-        void set_value_location(std::string sLocation) noexcept
-        {
-            sValueLocation_ = std::move(sLocation);
-        }
-
-        /// Set this node's name.
-        /** \param sName The new name
-        */
-        void set_name(std::string sName) noexcept { sName_ = std::move(sName); }
-
-        /// Set this node's value.
-        /** \param sValue The new value
-        */
-        void set_value(std::string sValue) noexcept { sValue_ = std::move(sValue); }
-
         /// Add a new child to this node
         /** \return A reference to the added child
         */
@@ -375,7 +415,7 @@ namespace gui
         /// Add a new attribute to this node
         /** \return A reference to the added attribute
         */
-        layout_node& add_attribute() { return lAttrList_.emplace_back(); }
+        layout_attribute& add_attribute() { return lAttrList_.emplace_back(); }
 
         /// Returns the value of the attribute with the provided name, or set it if none.
         /** \param sName  The name to look for
@@ -398,44 +438,21 @@ namespace gui
             }
         }
 
-        /// Flag this node as "not accessed" for later warnings.
-        void mark_as_not_accessed() const { bAccessed_ = false; }
-
-        /// Flag this node as "fully accessed" for later warnings; no check will be done.
-        void bypass_access_check() const { bAccessBypass_ = true; }
-
-        /// Check if this node was accessed by the parser.
-        /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
-        */
-        bool was_accessed() const { return bAccessed_; }
-
-        /// Check if this node should be bypassed for access checks.
-        /** \return 'true' if this node should be bypassed, 'false' otherwise.
-        */
-        bool is_access_check_bypassed() const { return bAccessBypass_; }
-
     private :
 
-        std::string sName_;
-        std::string sValue_;
-        std::string sLocation_;
-        std::string sValueLocation_;
-        child_list  lChildList_;
-        child_list  lAttrList_;
-
-        mutable bool bAccessed_ = false;
-        mutable bool bAccessBypass_ = false;
+        child_list     lChildList_;
+        attribute_list lAttrList_;
     };
 
     template<>
-    inline std::string layout_node::get_value<std::string>() const
+    inline std::string layout_attribute::get_value<std::string>() const
     {
         bAccessed_ = true;
         return sValue_;
     }
 
     template<>
-    inline bool layout_node::get_value<bool>() const
+    inline bool layout_attribute::get_value<bool>() const
     {
         bAccessed_ = true;
         if (sValue_ == "true")

@@ -33,7 +33,7 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
     {
         mAttr.bVirtual = mNode.get_attribute_value_or<bool>("virtual", false);
 
-        if (const layout_node* pAttr = mNode.try_get_attribute("parent"))
+        if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
             auto pParent = mManager.get_uiobject_by_name(sParent);
@@ -54,13 +54,13 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
         }
     }
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("inherits"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits"))
         mAttr.lInheritance = mManager.get_virtual_uiobject_list(pAttr->get_value<std::string>());
 
     return mAttr;
 }
 
-void warn_for_not_accessed_node(const layout_node& mNode, bool bNode)
+void warn_for_not_accessed_node(const layout_node& mNode)
 {
     if (mNode.is_access_check_bypassed())
         return;
@@ -68,14 +68,24 @@ void warn_for_not_accessed_node(const layout_node& mNode, bool bNode)
     if (!mNode.was_accessed())
     {
         gui::out << gui::warning << mNode.get_location() << " : " <<
-            (bNode ? "node" : "attribute") << " '" <<
-            mNode.get_name() << "' was not read by parser; check it has the right name and "
-            "is at the right location." << std::endl;
+            "node '" << mNode.get_name() << "' was not read by parser; "
+            "check its name is spelled correctly and that it is at the right location." << std::endl;
         return;
     }
 
     for (const auto& mAttr : mNode.get_attributes())
-        warn_for_not_accessed_node(mAttr, false);
+    {
+        if (mAttr.is_access_check_bypassed())
+            continue;
+
+        if (!mAttr.was_accessed())
+        {
+            gui::out << gui::warning << mNode.get_location() << " : " <<
+                "attribute '" << mNode.get_name() << "' was not read by parser; "
+                "check its name is spelled correctly and that it is at the right location."
+                << std::endl;
+        }
+    }
 
     for (const auto& mChild : mNode.get_children())
         warn_for_not_accessed_node(mChild);

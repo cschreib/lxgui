@@ -12,7 +12,7 @@ namespace gui
 {
 color uiobject::parse_color_node_(const layout_node& mNode)
 {
-    if (const layout_node* pAttr = mNode.try_get_attribute("c"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("c"))
     {
         std::string sColor = pAttr->get_value<std::string>();
         if (!sColor.empty() && sColor[0] == '#')
@@ -61,12 +61,12 @@ std::pair<anchor_type, vector2<std::optional<float>>> uiobject::parse_dimension_
     }
 
     vector2<std::optional<float>> mVec;
-    if (const layout_node* pAttr = pNode->try_get_attribute("x"))
+    if (const layout_attribute* pAttr = pNode->try_get_attribute("x"))
         mVec.x = pAttr->get_value<float>();
     else
         mVec.x = std::nullopt;
 
-    if (const layout_node* pAttr = pNode->try_get_attribute("y"))
+    if (const layout_attribute* pAttr = pNode->try_get_attribute("y"))
         mVec.y = pAttr->get_value<float>();
     else
         mVec.y = std::nullopt;

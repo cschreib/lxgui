@@ -35,9 +35,8 @@ namespace gui
 
     /// Emit a warning if this node (or any of its attributes/children) was not read.
     /** \param mNode The node to check
-    *   \param bNode 'true' if the node is a node, 'false' if it is an attribute
     */
-    void warn_for_not_accessed_node(const layout_node& mNode, bool bNode = true);
+    void warn_for_not_accessed_node(const layout_node& mNode);
 }
 }
 

@@ -11,31 +11,31 @@ void edit_box::parse_attributes_(const layout_node& mNode)
 {
     focus_frame::parse_attributes_(mNode);
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("letters"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("letters"))
         set_max_letters(pAttr->get_value<uint>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("blinkSpeed"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("blinkSpeed"))
         set_blink_speed(pAttr->get_value<float>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("numeric"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("numeric"))
         set_numeric_only(pAttr->get_value<bool>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("positive"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("positive"))
         set_positive_only(pAttr->get_value<bool>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("integer"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("integer"))
         set_integer_only(pAttr->get_value<bool>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("password"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("password"))
         enable_password_mode(pAttr->get_value<bool>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("multiLine"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("multiLine"))
         set_multi_line(pAttr->get_value<bool>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("historyLines"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("historyLines"))
         set_max_history_lines(pAttr->get_value<uint>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("ignoreArrows"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("ignoreArrows"))
         set_arrows_ignored(pAttr->get_value<bool>());
 }
 

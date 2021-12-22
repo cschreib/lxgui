@@ -22,10 +22,10 @@ void texture::parse_attributes_(const layout_node& mNode)
 {
     layered_region::parse_attributes_(mNode);
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("filter"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("filter"))
         set_filter_mode(pAttr->get_value<std::string>());
 
-    if (const layout_node* pAttr = mNode.try_get_attribute("file"))
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("file"))
         set_texture(get_manager().parse_file_name(pAttr->get_value<std::string>()));
 }
 
