@@ -46,14 +46,14 @@ namespace gui
     *   anything on the screen. Any functionality beyond the list above is implemented
     *   in specialized subclasses (see the full list below).
     *
-    *   __Interaction between C++, Lua, and XML.__ When a uiobject is created,
+    *   __Interaction between C++, Lua, and layout files.__ When a uiobject is created,
     *   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
     *   object lives, this name will be used to refer to it. In particular, as soon
-    *   as the object is created, regardless of whether this was done in C++, XML, or
-    *   Lua, a new variable will be created in the Lua state with the exact same name,
-    *   `PlayerHealthBar`. This variable is a reference to the uiobject, and can
-    *   be used to interact with it dynamically. Because of this, each object must have
-    *   a unique name, otherwise it could not be accessible from Lua.
+    *   as the object is created, regardless of whether this was done in C++, layout
+    *   files, or Lua, a new variable will be created in the Lua state with the exact
+    *   same name, `PlayerHealthBar`. This variable is a reference to the uiobject, and
+    *   can be used to interact with it dynamically. Because of this, each object must
+    *   have a unique name, otherwise it could not be accessible from Lua.
     *
     *   Note: Although you can destroy this Lua variable by setting it to nil, this is
     *   not recommended: the object will _not_ be destroyed (nor garbage-collected)

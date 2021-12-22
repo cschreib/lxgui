@@ -16,8 +16,8 @@ namespace gui
 {
     /// An element in a layout file
     /** This is a format-agnostic representation of a GUI layout, as read
-    *   for example from an XML file. The GUI uses this class to de-couple
-    *   the layout parsing format (XML etc) from the actual parsed layout.
+    *   for example from an XML or YAML file. The GUI uses this class to de-couple
+    *   the layout parsing format (XML, YAML, etc) from the actual parsed layout.
     */
     class layout_node
     {

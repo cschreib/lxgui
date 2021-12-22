@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-    /// Struct holding core information about a frame, parsed from XML.
+    /// Struct holding core information about a frame, parsed from a layout file.
     struct node_core_attributes
     {
         std::string sObjectType;
@@ -23,10 +23,10 @@ namespace gui
         std::vector<utils::observer_ptr<const uiobject>> lInheritance;
     };
 
-    /// Parse "core" attributes from an XML block, before creating a frame.
+    /// Parse "core" attributes from a layout node, before creating a frame.
     /** \param mManager The GUI manager doing the parsing
     *   \param mNode    The layout node to parse from
-    *   \param pParent  The current layout parent frame of this block (nullptr if none)
+    *   \param pParent  The current layout parent frame of this node (nullptr if none)
     *   \return Filled in core attributes structure.
     */
     node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,

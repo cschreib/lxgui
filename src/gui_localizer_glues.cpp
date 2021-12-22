@@ -17,14 +17,15 @@
 *   make that text translatable. This is what this module is for.
 *
 *   **Translatable string codes.** The first change needed is to stop hard-coding *any*
-*   form of text in your GUI code (be it XML or Lua). All text should be replaced by a
-*   "translatable string code", such as `"{button_cancel}"`. The purpose of this code is
-*   to uniquely represent this string you need to display, without giving it an actual
-*   content. The string `"{button_cancel}"` will not itself be displayed on the screen;
-*   instead, the localization system will search for a translation of that string and
-*   return the appropriate text (`"Cancel"` for English, `"Annuler"` for French, etc.).
+*   form of text in your GUI code (be it in layout files or Lua code). All text should be
+*   replaced by a "translatable string code", such as `"{button_cancel}"`. The purpose of
+*   this code is to uniquely represent this string you need to display, without giving it
+*   an actual content. The string `"{button_cancel}"` will not itself be displayed on the
+*   screen; instead, the localization system will search for a translation of that string
+*   and return the appropriate text (`"Cancel"` for English, `"Annuler"` for French,
+*   etc.).
 *
-*   The translation is automatic when the string code is set in the XML attributes,
+*   The translation is automatic when the string code is set in the layout file attributes,
 *   like the `text` attribute of the `FontString` or `Button` objects. This is only
 *   appropriate for translations that do not require additional inputs (see below).
 *

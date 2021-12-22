@@ -118,9 +118,9 @@ namespace gui
     *   is under attack, and pass the ID of the attacked unit as a first argument,
     *   and the ID of the attacker as a second argument. If a callback
     *   function is registered using frame::set_script, these arguments can be
-    *   handled and named like regular function parameters. In XML callback
-    *   handlers, they can be accessed with the hard-coded generic names `arg1`,
-    *   `arg2`, etc.
+    *   handled and named like regular function parameters. In layout files
+    *   "scripts" handlers, they can be accessed with the hard-coded generic names
+    *   `arg1`, `arg2`, etc.
     *
     *   Hard-coded events available to all frames:
     *
@@ -742,8 +742,8 @@ namespace gui
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
         *   \note The script_info parameter is used only for displaying error messages.
-        *         This function is meant to be used by the XML parser. If you want to manually
-        *         define your own script handlers, prefer the other overloads.
+        *         This function is meant to be used by the layout file parser. If you want to
+        *         manually define your own script handlers, prefer the other overloads.
         */
         void add_script(const std::string& sScriptName, const std::string& sContent,
             const script_info& mInfo = script_info{})
@@ -786,8 +786,8 @@ namespace gui
         *   \param sContent    The content ot the script, as Lua code
         *   \param mInfo       The location where this script has been defined
         *   \note The script_info parameter is used only for displaying error messages.
-        *         This function is meant to be used by the XML parser. If you want to manually
-        *         define your own script handlers, prefer the other overloads.
+        *         This function is meant to be used by the layout file parser. If you want to
+        *         manually define your own script handlers, prefer the other overloads.
         */
         void set_script(const std::string& sScriptName, const std::string& sContent,
             const script_info& mInfo = script_info{})

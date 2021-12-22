@@ -78,8 +78,8 @@
 *   and the ID of the attacker as a second argument. If a callback
 *   function is registered using @{Frame:add_script} or @{Frame:set_script},
 *   these arguments can be handled and named like regular function parameters.
-*   In XML callback handlers, they can be accessed with the hard-coded generic
-*   names `arg1`, `arg2`, etc.
+*   In layout files "scripts" handlers, they can be accessed with the
+*   hard-coded generic names `arg1`, `arg2`, etc.
 *
 *   Hard-coded events available to all @{Frame}s:
 *
@@ -119,7 +119,7 @@
 *   initial states for extra logic, or do localization. When this event is
 *   triggered, you can assume that all the frame's regions and children
 *   have already been loaded. The same is true for other frames and regions
-*   that are defined *earlier* in the same XML file, and those that are
+*   that are defined *earlier* in the same layout file, and those that are
 *   defined in an addon listed *earlier* than the current addon in the
 *   'addons.txt' file. In all other cases, frames or regions will not yet
 *   be loaded when `OnLoad` is called, hence they cannot be refered to
