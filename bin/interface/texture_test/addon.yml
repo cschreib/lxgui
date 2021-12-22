@@ -1,0 +1,25 @@
+ui:
+  frame:
+    name: TextureTestFrame
+    anchors:
+      - point: TOPLEFT
+      - point: BOTTOMRIGHT
+
+    layers:
+      layer:
+
+        texture:
+          name: $parentTexture1
+          file: "|texture.png"
+          anchors:
+            - point: BOTTOMLEFT
+
+        texture:
+          name: $parentTexture2
+          size: {abs_dimension: {x: 50, y: 50}}
+          anchors:
+            - {point: BOTTOMLEFT, relative_to: $parentTexture1, relative_point: TOPLEFT}
+          gradient:
+            orientation: HORIZONTAL
+            min_color: {r: 0.7, g: 1}
+            max_color: {r: 1, g: 0.7}
