@@ -100,8 +100,8 @@ find_library(LXGUI_INPUT_SDL_LIBRARY
 mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY)
 mark_as_advanced(LXGUI_IMPL_INCLUDE_DIR LXGUI_GUI_GL_LIBRARY LXGUI_GUI_SFML_LIBRARY LXGUI_INPUT_SFML_LIBRARY LXGUI_GUI_SDL_LIBRARY LXGUI_INPUT_SDL_LIBRARY)
 
-if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_version_str
+if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp")
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_version_str
          REGEX "^#[\t ]*define[\t ]+LXGUI_VERSION_(MAJOR|MINOR)[\t ]+[0-9]+$")
 
     unset(LXGUI_VERSION_STRING)
@@ -120,7 +120,9 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
         endforeach()
     endforeach()
 
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_opengl
+    unset(lxgui_version_str)
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_opengl
          REGEX "^#[\t ]*define[\t ]+LXGUI_OPENGL3[\t ]*$")
 
     if(lxgui_opengl)
@@ -129,9 +131,10 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
         set(LXGUI_OPENGL3 FALSE)
     endif()
 
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_xml
-         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]*$")
+    unset(lxgui_opengl)
 
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_xml
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]*$")
     if(lxgui_xml)
         message(STATUS "lxgui found with XML parser")
         set(LXGUI_ENABLE_XML_PARSER TRUE)
@@ -139,7 +142,9 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
         set(LXGUI_ENABLE_XML_PARSER FALSE)
     endif()
 
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_yaml
+    unset(lxgui_xml)
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_yaml
          REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_YAML_PARSER[\t ]*$")
 
     if(lxgui_yaml)
@@ -148,6 +153,8 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
     else()
         set(LXGUI_ENABLE_YAML_PARSER FALSE)
     endif()
+
+    unset(lxgui_yaml)
 endif()
 
 include(FindPackageHandleStandardArgs)
