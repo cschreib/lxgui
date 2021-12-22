@@ -114,8 +114,9 @@ void set_node(const file_line_mappings& mFile,
         std::string sName = normalize_node_name(mAttr.name(), false);
         if (const auto* pNode = mNode.try_get_attribute(sName))
         {
-            gui::out << gui::warning << sLocation << " : attribute: '" <<
+            gui::out << gui::warning << sLocation << " : attribute '" <<
                 sName << "' duplicated; only first value will be used." << std::endl;
+            pNode->mark_as_not_accessed();
             continue;
         }
 
@@ -174,12 +175,13 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
                 std::string sAttrLocation = mFile.get_location(mElemNode.key().data() - mTree.arena().data());
                 if (const auto* pNode = mNode.try_get_attribute(sName))
                 {
-                    gui::out << gui::warning << sAttrLocation << " : attribute: '" <<
+                    gui::out << gui::warning << sAttrLocation << " : attribute '" <<
                         sName << "' duplicated; only first value will be used." << std::endl;
                     gui::out << gui::warning << std::string(sAttrLocation.size(), ' ') <<
                         "   first occurence at: '" << std::endl;
                     gui::out << gui::warning << std::string(sAttrLocation.size(), ' ') <<
                         "   " << pNode->get_location() << std::endl;
+                    pNode->mark_as_not_accessed();
                     continue;
                 }
 
@@ -316,6 +318,8 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
             }
         }
     }
+
+    warn_for_not_accessed_node(mRoot);
 }
 
 }

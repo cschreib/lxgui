@@ -2,6 +2,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
 namespace lxgui {
 namespace gui
@@ -41,17 +42,20 @@ void slider::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     frame::parse_all_nodes_before_children_(mNode);
 
-    if (const layout_node* pThumbBlock = mNode.try_get_child("ThumbTexture"))
+    if (const layout_node* pThumbNode = mNode.try_get_child("ThumbTexture"))
     {
-        layout_node mDefaulted = *pThumbBlock;
+        layout_node mDefaulted = *pThumbNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentThumbTexture");
 
         auto pThumbTexture = parse_region_(mDefaulted, "ARTWORK", "Texture");
-        if (!pThumbTexture)
-            return;
+        if (pThumbTexture)
+        {
+            pThumbTexture->set_special();
+            set_thumb_texture(utils::static_pointer_cast<texture>(pThumbTexture));
+        }
 
-        pThumbTexture->set_special();
-        set_thumb_texture(utils::static_pointer_cast<texture>(pThumbTexture));
+        warn_for_not_accessed_node(mDefaulted);
+        pThumbNode->bypass_access_check();
     }
 }
 }

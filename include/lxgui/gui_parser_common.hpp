@@ -31,6 +31,13 @@ namespace gui
     */
     node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
         utils::observer_ptr<frame> pParent);
+
+
+    /// Emit a warning if this node (or any of its attributes/children) was not read.
+    /** \param mNode The node to check
+    *   \param bNode 'true' if the node is a node, 'false' if it is an attribute
+    */
+    void warn_for_not_accessed_node(const layout_node& mNode, bool bNode = true);
 }
 }
 

@@ -2,6 +2,7 @@
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
 namespace lxgui {
 namespace gui
@@ -58,11 +59,14 @@ void status_bar::parse_all_nodes_before_children_(const layout_node& mNode)
         mDefaulted.get_or_set_attribute_value("name", "$parentBarTexture");
 
         auto pBarTexture = parse_region_(mDefaulted, "ARTWORK", "Texture");
-        if (!pBarTexture)
-            return;
+        if (pBarTexture)
+        {
+            pBarTexture->set_special();
+            set_bar_texture(utils::static_pointer_cast<texture>(pBarTexture));
+        }
 
-        pBarTexture->set_special();
-        set_bar_texture(utils::static_pointer_cast<texture>(pBarTexture));
+        warn_for_not_accessed_node(mDefaulted);
+        pTextureNode->bypass_access_check();
     }
     else if (pColorNode)
     {

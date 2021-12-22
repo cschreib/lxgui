@@ -81,7 +81,7 @@ namespace gui
         /** \return This node's value as string
         *   \note Returns an empty string if none
         */
-        std::string_view get_value() const noexcept { return sValue_; }
+        std::string_view get_value() const noexcept { bAccessed_ = true; return sValue_; }
 
         /// Returns this node's value as string, or a default value if empty.
         /** \return This node's value as string, or a default value if empty
@@ -89,6 +89,7 @@ namespace gui
         */
         std::string_view get_value_or(std::string_view sFallback) const noexcept
         {
+            bAccessed_ = true;
             if (sValue_.empty())
                 return sFallback;
             else
@@ -103,6 +104,7 @@ namespace gui
         template<typename T>
         T get_value() const
         {
+            bAccessed_ = true;
             T mValue{};
             if (!utils::from_string(sValue_, mValue))
             {
@@ -121,6 +123,7 @@ namespace gui
         template<typename T>
         T get_value_or(T mFallback) const noexcept
         {
+            bAccessed_ = true;
             T mValue{};
             if (!utils::from_string(sValue_, mValue))
                 mValue = mFallback;
@@ -147,6 +150,7 @@ namespace gui
         */
         const layout_node& get_child(std::size_t uiIndex) const noexcept
         {
+            bAccessed_ = true;
             return lChildList_[uiIndex];
         }
 
@@ -155,6 +159,7 @@ namespace gui
         */
         children_view get_children() const noexcept
         {
+            bAccessed_ = true;
             return children_view(lChildList_);
         }
 
@@ -179,6 +184,7 @@ namespace gui
         */
         filtered_children_view get_children(std::string_view sName) const noexcept
         {
+            bAccessed_ = true;
             return filtered_children_view(lChildList_, {}, {sName});
         }
 
@@ -188,6 +194,7 @@ namespace gui
         */
         const layout_node* try_get_child(std::string_view sName) const noexcept
         {
+            bAccessed_ = true;
             for (const layout_node& mNode : get_children(sName))
             {
                 return &mNode;
@@ -204,6 +211,7 @@ namespace gui
         */
         const layout_node& get_child(std::string_view sName) const
         {
+            bAccessed_ = true;
             if (const layout_node* pChild = try_get_child(sName))
                 return *pChild;
             else
@@ -218,6 +226,7 @@ namespace gui
         */
         bool has_child(std::string_view sName) const noexcept
         {
+            bAccessed_ = true;
             return try_get_child(sName) != nullptr;
         }
 
@@ -229,6 +238,7 @@ namespace gui
         */
         const layout_node* try_get_attribute(std::string_view sName) const noexcept
         {
+            bAccessed_ = true;
             for (const layout_node& mNode : lAttrList_)
             {
                 if (mNode.get_name() == sName)
@@ -246,6 +256,7 @@ namespace gui
         */
         const layout_node& get_attribute(std::string_view sName) const
         {
+            bAccessed_ = true;
             if (const layout_node* pAttr = try_get_attribute(sName))
                 return *pAttr;
             else
@@ -260,6 +271,7 @@ namespace gui
         */
         bool has_attribute(std::string_view sName) const noexcept
         {
+            bAccessed_ = true;
             return try_get_attribute(sName) != nullptr;
         }
 
@@ -271,6 +283,7 @@ namespace gui
         */
         std::string_view get_attribute_value(std::string_view sName) const
         {
+            bAccessed_ = true;
             return get_attribute(sName).get_value();
         }
 
@@ -283,6 +296,7 @@ namespace gui
         template<typename T>
         T get_attribute_value(std::string_view sName) const
         {
+            bAccessed_ = true;
             return get_attribute(sName).get_value<T>();
         }
 
@@ -294,6 +308,7 @@ namespace gui
         std::string_view get_attribute_value_or(std::string_view sName,
             std::string_view sFallback) const noexcept
         {
+            bAccessed_ = true;
             if (const auto* pAttr = try_get_attribute(sName))
                 return pAttr->get_value_or(sFallback);
             else
@@ -308,10 +323,25 @@ namespace gui
         template<typename T>
         T get_attribute_value_or(std::string_view sName, T mFallback) const noexcept
         {
+            bAccessed_ = true;
             if (const auto* pAttr = try_get_attribute(sName))
                 return pAttr->get_value_or<T>(mFallback);
             else
                 return mFallback;
+        }
+
+        using attribute_list = std::vector<layout_node>;
+        using attribute_view = utils::view::adaptor<const attribute_list,
+            utils::view::standard_dereferencer,
+            utils::view::no_filter>;
+
+        /// Returns a view to the list of attributes.
+        /** \return A view to the list of attributes
+        */
+        attribute_view get_attributes() const noexcept
+        {
+            bAccessed_ = true;
+            return attribute_view(lAttrList_);
         }
 
         /// Set this node's location.
@@ -356,6 +386,7 @@ namespace gui
         */
         std::string_view get_or_set_attribute_value(std::string_view sName, std::string_view sValue)
         {
+            bAccessed_ = true;
             if (const auto* pAttr = try_get_attribute(sName))
                 return pAttr->get_value();
             else
@@ -367,6 +398,22 @@ namespace gui
             }
         }
 
+        /// Flag this node as "not accessed" for later warnings.
+        void mark_as_not_accessed() const { bAccessed_ = false; }
+
+        /// Flag this node as "fully accessed" for later warnings; no check will be done.
+        void bypass_access_check() const { bAccessBypass_ = true; }
+
+        /// Check if this node was accessed by the parser.
+        /** \return 'true' if this node was accessed by the parser, 'false' otherwise.
+        */
+        bool was_accessed() const { return bAccessed_; }
+
+        /// Check if this node should be bypassed for access checks.
+        /** \return 'true' if this node should be bypassed, 'false' otherwise.
+        */
+        bool is_access_check_bypassed() const { return bAccessBypass_; }
+
     private :
 
         std::string sName_;
@@ -375,17 +422,22 @@ namespace gui
         std::string sValueLocation_;
         child_list  lChildList_;
         child_list  lAttrList_;
+
+        mutable bool bAccessed_ = false;
+        mutable bool bAccessBypass_ = false;
     };
 
     template<>
     inline std::string layout_node::get_value<std::string>() const
     {
+        bAccessed_ = true;
         return sValue_;
     }
 
     template<>
     inline bool layout_node::get_value<bool>() const
     {
+        bAccessed_ = true;
         if (sValue_ == "true")
             return true;
         else if (sValue_ == "false")

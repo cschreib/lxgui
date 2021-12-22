@@ -60,5 +60,27 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
     return mAttr;
 }
 
+void warn_for_not_accessed_node(const layout_node& mNode, bool bNode)
+{
+    if (mNode.is_access_check_bypassed())
+        return;
+
+    if (!mNode.was_accessed())
+    {
+        gui::out << gui::warning << mNode.get_location() << " : " <<
+            (bNode ? "node" : "attribute") << " '" <<
+            mNode.get_name() << "' was not read by parser; check it has the right name and "
+            "is at the right location." << std::endl;
+        return;
+    }
+
+    for (const auto& mAttr : mNode.get_attributes())
+        warn_for_not_accessed_node(mAttr, false);
+
+    for (const auto& mChild : mNode.get_children())
+        warn_for_not_accessed_node(mChild);
+}
+
+
 }
 }

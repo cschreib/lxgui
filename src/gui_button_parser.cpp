@@ -5,6 +5,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
 namespace lxgui {
 namespace gui
@@ -38,6 +39,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_normal_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pSpecialNode = mNode.try_get_child("PushedTexture"))
@@ -54,6 +58,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_pushed_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pSpecialNode = mNode.try_get_child("DisabledTexture"))
@@ -70,6 +77,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_disabled_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pSpecialNode = mNode.try_get_child("HighlightTexture"))
@@ -86,6 +96,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_highlight_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
 
@@ -103,6 +116,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pFontString->set_special();
             set_normal_text(utils::static_pointer_cast<font_string>(pFontString));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pSpecialNode = mNode.try_get_child("HighlightText"))
@@ -119,6 +135,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pFontString->set_special();
             set_highlight_text(utils::static_pointer_cast<font_string>(pFontString));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pSpecialNode = mNode.try_get_child("DisabledText"))
@@ -135,6 +154,9 @@ void button::parse_all_nodes_before_children_(const layout_node& mNode)
             pFontString->set_special();
             set_disabled_text(utils::static_pointer_cast<font_string>(pFontString));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
     if (const layout_node* pOffsetBlock = mNode.try_get_child("PushedTextOffset"))

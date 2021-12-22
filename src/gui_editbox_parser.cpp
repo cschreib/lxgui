@@ -2,6 +2,7 @@
 #include "lxgui/gui_fontstring.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
 namespace lxgui {
 namespace gui
@@ -57,23 +58,26 @@ void edit_box::parse_font_string_node_(const layout_node& mNode)
         mDefaulted.get_or_set_attribute_value("name", "$parentFontString");
 
         auto pFontString = parse_region_(mDefaulted, "ARTWORK", "FontString");
-        if (!pFontString)
-            return;
+        if (pFontString)
+        {
+            pFontString->set_special();
+            set_font_string(utils::static_pointer_cast<font_string>(pFontString));
+        }
 
         if (const layout_node* pErrorNode = mDefaulted.try_get_child("Anchors"))
         {
             gui::out << gui::warning << pErrorNode->get_location() << " : "
-                << "edit_box : font_string's anchors are ignored." << std::endl;
+                << "edit_box : font_string's anchors will be ignored." << std::endl;
         }
 
         if (const layout_node* pErrorNode = mDefaulted.try_get_child("Size"))
         {
             gui::out << gui::warning << pErrorNode->get_location() << " : "
-                << "edit_box : font_string's Size is ignored." << std::endl;
+                << "edit_box : font_string's Size will be ignored." << std::endl;
         }
 
-        pFontString->set_special();
-        set_font_string(utils::static_pointer_cast<font_string>(pFontString));
+        warn_for_not_accessed_node(mDefaulted);
+        pFontStringNode->bypass_access_check();
     }
 }
 

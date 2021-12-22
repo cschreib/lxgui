@@ -1,6 +1,7 @@
 #include "lxgui/gui_checkbutton.hpp"
 #include "lxgui/gui_texture.hpp"
 #include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_parser_common.hpp"
 
 namespace lxgui {
 namespace gui
@@ -9,11 +10,11 @@ void check_button::parse_all_nodes_before_children_(const layout_node& mNode)
 {
     button::parse_all_nodes_before_children_(mNode);
 
-    if (const layout_node* pSpecialBlock = mNode.try_get_child("CheckedTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("CheckedTexture"))
     {
-        std::string sLayer = pSpecialBlock->get_attribute_value_or<std::string>("layer", "ARTWORK");
+        std::string sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        layout_node mDefaulted = *pSpecialBlock;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentCheckedTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -23,13 +24,16 @@ void check_button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_checked_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 
-    if (const layout_node* pSpecialBlock = mNode.try_get_child("DisabledCheckedTexture"))
+    if (const layout_node* pSpecialNode = mNode.try_get_child("DisabledCheckedTexture"))
     {
-        std::string sLayer = pSpecialBlock->get_attribute_value_or<std::string>("layer", "ARTWORK");
+        std::string sLayer = pSpecialNode->get_attribute_value_or<std::string>("layer", "ARTWORK");
 
-        layout_node mDefaulted = *pSpecialBlock;
+        layout_node mDefaulted = *pSpecialNode;
         mDefaulted.get_or_set_attribute_value("name", "$parentDisabledCheckedTexture");
         mDefaulted.get_or_set_attribute_value("setAllPoints", "true");
 
@@ -39,6 +43,9 @@ void check_button::parse_all_nodes_before_children_(const layout_node& mNode)
             pTexture->set_special();
             set_disabled_checked_texture(utils::static_pointer_cast<texture>(pTexture));
         }
+
+        warn_for_not_accessed_node(mDefaulted);
+        pSpecialNode->bypass_access_check();
     }
 }
 }
