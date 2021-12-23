@@ -212,7 +212,6 @@ endif()
 if(LXGUI_ENABLE_YAML_PARSER)
     if(LXGUI_BUILD_RAPIDYAML)
         add_subdirectory(extern/rapidyaml)
-        add_library(ryml::ryml ALIAS ryml) # currently not set by rapidyaml
     else()
         find_package(ryml)
         if(NOT TARGET ryml::ryml)
