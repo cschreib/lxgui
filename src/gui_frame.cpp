@@ -1372,7 +1372,7 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event_data mData;
-            mData.add(static_cast<std::size_t>(mEvent.get<input::key>(0)));
+            mData.add(mEvent.get(0));
             mData.add(mEvent.get(1));
 
             on_script("OnKeyDown", mData);
@@ -1382,7 +1382,7 @@ void frame::on_event(const event& mEvent)
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event_data mData;
-            mData.add(static_cast<std::size_t>(mEvent.get<input::key>(0)));
+            mData.add(mEvent.get(0));
             mData.add(mEvent.get(1));
 
             on_script("OnKeyUp", mData);

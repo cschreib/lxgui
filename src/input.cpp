@@ -459,7 +459,7 @@ void manager::update(float fTempDelta)
                 mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
 
                 gui::event mMouseDragEvent("MOUSE_DRAG_START", true);
-                mMouseDragEvent.add(static_cast<std::size_t>(mMouseDragButton_));
+                mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
                 mMouseDragEvent.add(mMousePos_.x);
                 mMouseDragEvent.add(mMousePos_.y);
                 mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
@@ -478,7 +478,7 @@ void manager::update(float fTempDelta)
         bMouseDragged_ = false;
 
         gui::event mMouseDragEvent("MOUSE_DRAG_STOP", true);
-        mMouseDragEvent.add(static_cast<std::size_t>(mMouseDragButton_));
+        mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
         mMouseDragEvent.add(mMousePos_.x);
         mMouseDragEvent.add(mMousePos_.y);
         mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));

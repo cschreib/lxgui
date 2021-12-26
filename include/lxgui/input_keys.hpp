@@ -2,6 +2,7 @@
 #define LXGUI_KEYS_HPP
 
 #include <lxgui/lxgui.hpp>
+#include <cstdint>
 
 namespace lxgui {
 namespace input
@@ -16,14 +17,14 @@ namespace input
         LONG
     };
 
-    enum class mouse_button
+    enum class mouse_button : std::uint8_t
     {
         LEFT = 0,
         RIGHT,
         MIDDLE
     };
 
-    enum class key
+    enum class key : std::uint8_t
     {
         K_UNASSIGNED  = 0x00,
         K_ESCAPE      = 0x01,
