@@ -318,7 +318,7 @@ namespace parser
 
 text::text(const renderer& mRenderer, std::shared_ptr<gui::font> pFont,
     std::shared_ptr<gui::font> pOutlineFont) :
-    mRenderer_(mRenderer), pFont_(std::move(pFont)), pOutlineFont_(pOutlineFont)
+    mRenderer_(mRenderer), pFont_(std::move(pFont)), pOutlineFont_(std::move(pOutlineFont))
 {
     if (!pFont_)
         return;
@@ -921,7 +921,7 @@ void text::update_() const
         else
             fW_ = fBoxW_;
 
-        fH_ = (1.0f + (lLineList.size() - 1)*fLineSpacing_)*get_line_height();
+        fH_ = (1.0f + static_cast<float>(lLineList.size() - 1)*fLineSpacing_)*get_line_height();
 
         float fY = 0.0f;
         float fX0 = 0.0f;

@@ -40,7 +40,7 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
         }
     }
 
-    begin_(pTarget);
+    begin_(std::move(pTarget));
 }
 
 void renderer::end() const
@@ -191,7 +191,7 @@ void renderer::set_quad_batching_enabled(bool bEnabled)
 
 std::shared_ptr<gui::material> renderer::create_material(const std::string& sFileName, material::filter mFilter) const
 {
-    std::string sBackedName = utils::to_string((int)mFilter) + '|' + sFileName;
+    std::string sBackedName = utils::to_string(static_cast<std::size_t>(mFilter)) + '|' + sFileName;
     auto mIter = lTextureList_.find(sBackedName);
     if (mIter != lTextureList_.end())
     {
@@ -314,7 +314,7 @@ atlas& renderer::get_atlas_(const std::string& sAtlasCategory, material::filter 
 {
     std::shared_ptr<gui::atlas> pAtlas;
 
-    std::string sBakedAtlasName = utils::to_string((int)mFilter) + '|' + sAtlasCategory;
+    std::string sBakedAtlasName = utils::to_string(static_cast<std::size_t>(mFilter)) + '|' + sAtlasCategory;
     auto mIter = lAtlasList_.find(sBakedAtlasName);
     if (mIter != lAtlasList_.end())
     {

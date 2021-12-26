@@ -6,30 +6,32 @@
 namespace lxgui {
 namespace gui
 {
-matrix4f build_identity()
+matrix4f build_identity() noexcept
 {
     matrix4f mId;
     for (std::size_t row = 0u; row < 4u; ++row)
-    for (std::size_t col = 0u; col < 4u; ++col)
-        mId(row, col) = (row == col ? 1.0f : 0.0f);
+    {
+        for (std::size_t col = 0u; col < 4u; ++col)
+            mId(row, col) = (row == col ? 1.0f : 0.0f);
+    }
 
     return mId;
 }
 
 const matrix4f matrix4f::IDENTITY = build_identity();
 
-matrix4f::matrix4f(std::initializer_list<element_type> mList)
+matrix4f::matrix4f(std::initializer_list<element_type> mList) noexcept
 {
     const std::size_t length = std::min<std::size_t>(mList.size(), 16u);
     std::copy(mList.begin(), mList.begin() + length, data);
 }
 
-matrix4f::matrix4f(const element_type* mat)
+matrix4f::matrix4f(const element_type* mat) noexcept
 {
     std::copy(mat, mat + 16u, data);
 }
 
-matrix4f matrix4f::translation(const vector2f& dx)
+matrix4f matrix4f::translation(const vector2f& dx) noexcept
 {
     return {
         1.0f, 0.0f, 0.0f, 0.0f,
@@ -39,7 +41,7 @@ matrix4f matrix4f::translation(const vector2f& dx)
     };
 }
 
-matrix4f matrix4f::scaling(const vector2f& scale)
+matrix4f matrix4f::scaling(const vector2f& scale) noexcept
 {
     return {
         scale.x, 0.0f,    0.0f, 0.0f,
@@ -49,7 +51,7 @@ matrix4f matrix4f::scaling(const vector2f& scale)
     };
 }
 
-matrix4f matrix4f::rotation(float rot)
+matrix4f matrix4f::rotation(float rot) noexcept
 {
     float co = std::cos(rot), si = std::sin(rot);
 
@@ -61,7 +63,7 @@ matrix4f matrix4f::rotation(float rot)
     };
 }
 
-matrix4f matrix4f::transformation(const vector2f& dx, const vector2f& scale, float rot)
+matrix4f matrix4f::transformation(const vector2f& dx, const vector2f& scale, float rot) noexcept
 {
     float co = std::cos(rot), si = std::sin(rot);
 
@@ -73,7 +75,7 @@ matrix4f matrix4f::transformation(const vector2f& dx, const vector2f& scale, flo
     };
 }
 
-matrix4f matrix4f::view(const vector2f& window)
+matrix4f matrix4f::view(const vector2f& window) noexcept
 {
     return {
         2.0f/window.x, 0.0f,          0.0f, 0.0f,
@@ -83,33 +85,33 @@ matrix4f matrix4f::view(const vector2f& window)
     };
 }
 
-matrix4f matrix4f::view(const vector2f& window, const vector2f& center)
+matrix4f matrix4f::view(const vector2f& window, const vector2f& center) noexcept
 {
     return translation(vector2f(window.x/2, window.y/2) - center)*view(window);
 }
 
-void matrix4f::transpose()
+void matrix4f::transpose() noexcept
 {
     for (std::size_t row = 0; row < 4; ++row)
-    for (std::size_t col = 0; col < 4; ++col)
     {
-        std::swap((*this)(row,col), (*this)(col,row));
+        for (std::size_t col = 0; col < 4; ++col)
+            std::swap((*this)(row,col), (*this)(col,row));
     }
 }
 
-void matrix4f::invert()
+void matrix4f::invert() noexcept
 {
     *this = invert(*this);
 }
 
-matrix4f matrix4f::transpose(const matrix4f& m)
+matrix4f matrix4f::transpose(const matrix4f& m) noexcept
 {
     matrix4f n = m;
     n.transpose();
     return n;
 }
 
-matrix4f matrix4f::invert(const matrix4f& m)
+matrix4f matrix4f::invert(const matrix4f& m) noexcept
 {
     element_type m00 = m(0,0), m01 = m(0,1), m02 = m(0,2), m03 = m(0,3);
     element_type m10 = m(1,0), m11 = m(1,1), m12 = m(1,2), m13 = m(1,3);
@@ -172,7 +174,7 @@ matrix4f matrix4f::invert(const matrix4f& m)
     };
 }
 
-matrix4f operator + (const matrix4f& m1, const matrix4f& m2)
+matrix4f operator + (const matrix4f& m1, const matrix4f& m2) noexcept
 {
     matrix4f r;
 
@@ -183,7 +185,7 @@ matrix4f operator + (const matrix4f& m1, const matrix4f& m2)
 }
 
 
-matrix4f operator - (const matrix4f& m1, const matrix4f& m2)
+matrix4f operator - (const matrix4f& m1, const matrix4f& m2) noexcept
 {
     matrix4f r;
 
@@ -193,7 +195,7 @@ matrix4f operator - (const matrix4f& m1, const matrix4f& m2)
     return r;
 }
 
-matrix4f operator * (const matrix4f& m1, const matrix4f& m2)
+matrix4f operator * (const matrix4f& m1, const matrix4f& m2) noexcept
 {
     matrix4f r;
 
@@ -220,7 +222,7 @@ matrix4f operator * (const matrix4f& m1, const matrix4f& m2)
     return r;
 }
 
-vector2f operator * (const matrix4f& m, const vector2f& v)
+vector2f operator * (const matrix4f& m, const vector2f& v) noexcept
 {
     vector2f r;
 
@@ -232,7 +234,7 @@ vector2f operator * (const matrix4f& m, const vector2f& v)
     return r;
 }
 
-vector2f operator * (const vector2f& v, const matrix4f& m)
+vector2f operator * (const vector2f& v, const matrix4f& m) noexcept
 {
     vector2f r;
 

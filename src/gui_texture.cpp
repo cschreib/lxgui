@@ -90,7 +90,7 @@ void texture::render() const
 {
     if (is_visible())
     {
-        auto& mRenderer = get_manager().get_renderer();
+        const auto& mRenderer = get_manager().get_renderer();
         float fAlpha = get_effective_alpha();
 
         if (fAlpha != 1.0f)
@@ -166,7 +166,7 @@ const gradient& texture::get_gradient() const
 
 std::array<float,8> texture::get_tex_coord() const
 {
-    std::array<float,8> mCoords;
+    std::array<float,8> mCoords{};
 
     if (mQuad_.mat)
     {

@@ -13,53 +13,53 @@ namespace gui
     {
         using element_type = float;
 
-        matrix4f() = default;
-        matrix4f(std::initializer_list<element_type> mList);
-        explicit matrix4f(const element_type* mat);
+        matrix4f() noexcept = default;
+        matrix4f(std::initializer_list<element_type> mList) noexcept;
+        explicit matrix4f(const element_type* mat) noexcept;
 
-        element_type& operator () (std::size_t row, std::size_t col)
+        element_type& operator () (std::size_t row, std::size_t col) noexcept
         {
             return data[col+row*4];
         }
 
-        element_type operator () (std::size_t row, std::size_t col) const
+        element_type operator () (std::size_t row, std::size_t col) const noexcept
         {
             return data[col+row*4];
         }
 
-        element_type& operator () (std::size_t i)
+        element_type& operator () (std::size_t i) noexcept
         {
             return data[i];
         }
 
-        element_type operator () (std::size_t i) const
+        element_type operator () (std::size_t i) const noexcept
         {
             return data[i];
         }
 
-        void transpose();
-        void invert();
+        void transpose() noexcept;
+        void invert() noexcept;
 
-        static matrix4f translation(const vector2f& dx);
-        static matrix4f scaling(const vector2f& scale);
-        static matrix4f rotation(float rot);
-        static matrix4f transformation(const vector2f& dx, const vector2f& scale, float rot);
-        static matrix4f view(const vector2f& window);
-        static matrix4f view(const vector2f& window, const vector2f& center);
+        static matrix4f translation(const vector2f& dx) noexcept;
+        static matrix4f scaling(const vector2f& scale) noexcept;
+        static matrix4f rotation(float rot) noexcept;
+        static matrix4f transformation(const vector2f& dx, const vector2f& scale, float rot) noexcept;
+        static matrix4f view(const vector2f& window) noexcept;
+        static matrix4f view(const vector2f& window, const vector2f& center) noexcept;
 
-        static matrix4f transpose(const matrix4f& m);
-        static matrix4f invert(const matrix4f& m);
+        static matrix4f transpose(const matrix4f& m) noexcept;
+        static matrix4f invert(const matrix4f& m) noexcept;
 
         element_type data[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
 
         static const matrix4f IDENTITY;
     };
 
-    matrix4f operator + (const matrix4f& m1, const matrix4f& m2);
-    matrix4f operator - (const matrix4f& m1, const matrix4f& m2);
-    matrix4f operator * (const matrix4f& m1, const matrix4f& m2);
-    vector2f operator * (const matrix4f& m,  const vector2f& v);
-    vector2f operator * (const vector2f& v,  const matrix4f& m);
+    matrix4f operator + (const matrix4f& m1, const matrix4f& m2) noexcept;
+    matrix4f operator - (const matrix4f& m1, const matrix4f& m2) noexcept;
+    matrix4f operator * (const matrix4f& m1, const matrix4f& m2) noexcept;
+    vector2f operator * (const matrix4f& m,  const vector2f& v) noexcept;
+    vector2f operator * (const vector2f& v,  const matrix4f& m) noexcept;
 
     std::ostream& operator << (std::ostream& o, const matrix4f& m);
 }

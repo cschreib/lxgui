@@ -86,7 +86,7 @@ namespace
         if (!sLang.empty())
         {
             auto uiPos1 = sLang.find_first_of(".@");
-            if (uiPos1)
+            if (uiPos1 != std::string::npos)
                 sLang = sLang.substr(0, uiPos1);
 
             utils::replace(sLang, "_", "");
@@ -136,12 +136,12 @@ localizer::localizer()
     });
 }
 
-void localizer::set_locale(std::locale mLocale)
+void localizer::set_locale(const std::locale& mLocale)
 {
     if (mLocale_ == mLocale)
         return;
 
-    mLocale_ = std::move(mLocale);
+    mLocale_ = mLocale;
     clear_translations();
 }
 

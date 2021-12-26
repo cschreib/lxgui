@@ -33,12 +33,11 @@ void texture::parse_tex_coords_node_(const layout_node& mNode)
 {
     if (const layout_node* pTexCoordsNode = mNode.try_get_child("TexCoords"))
     {
-        std::array<float,4> mRect;
-        mRect[0] = pTexCoordsNode->get_attribute_value_or<float>("left", 0.0f);
-        mRect[1] = pTexCoordsNode->get_attribute_value_or<float>("top", 0.0f);
-        mRect[2] = pTexCoordsNode->get_attribute_value_or<float>("right", 1.0f);
-        mRect[3] = pTexCoordsNode->get_attribute_value_or<float>("bottom", 1.0f);
-        set_tex_rect(mRect);
+        set_tex_rect({
+            pTexCoordsNode->get_attribute_value_or<float>("left", 0.0f),
+            pTexCoordsNode->get_attribute_value_or<float>("top", 0.0f),
+            pTexCoordsNode->get_attribute_value_or<float>("right", 1.0f),
+            pTexCoordsNode->get_attribute_value_or<float>("bottom", 1.0f)});
     }
 }
 

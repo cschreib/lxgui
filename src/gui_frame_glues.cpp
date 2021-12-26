@@ -333,8 +333,8 @@ void frame::register_on_lua(sol::state& mLua)
         std::vector<sol::object> lChildren;
         lChildren.reserve(mSelf.get_rough_num_children());
 
-        auto& mLua = mSelf.get_manager().get_lua();
-        for (auto& mChild : mSelf.get_children())
+        const auto& mLua = mSelf.get_manager().get_lua();
+        for (const auto& mChild : mSelf.get_children())
         {
             lChildren.push_back(mLua[mChild.get_lua_name()]);
         }

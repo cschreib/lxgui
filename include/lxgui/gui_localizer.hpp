@@ -59,7 +59,7 @@ namespace gui
         *         the locale after the UI has been loaded: close the UI, set the locale, and load the
         *         UI again.
         */
-        void set_locale(std::locale mLocale);
+        void set_locale(const std::locale& mLocale);
 
         /// Changes the current language (used to translate messages and strings).
         /** \param lLanguages A list of languages

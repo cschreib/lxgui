@@ -745,8 +745,8 @@ namespace gui
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void add_script(const std::string& sScriptName, const std::string& sContent,
-            const script_info& mInfo = script_info{})
+        void add_script(const std::string& sScriptName, std::string sContent,
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, sContent, true, mInfo);
         }
@@ -761,7 +761,7 @@ namespace gui
         *         C++ function instead.
         */
         void add_script(const std::string& sScriptName, sol::protected_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
@@ -776,7 +776,7 @@ namespace gui
         *         instead.
         */
         void add_script(const std::string& sScriptName, script_handler_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
@@ -789,8 +789,8 @@ namespace gui
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void set_script(const std::string& sScriptName, const std::string& sContent,
-            const script_info& mInfo = script_info{})
+        void set_script(const std::string& sScriptName, std::string sContent,
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, sContent, false, mInfo);
         }
@@ -805,7 +805,7 @@ namespace gui
         *         C++ function instead.
         */
         void set_script(const std::string& sScriptName, sol::protected_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
@@ -820,7 +820,7 @@ namespace gui
         *         instead.
         */
         void set_script(const std::string& sScriptName, script_handler_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }

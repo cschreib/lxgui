@@ -177,7 +177,7 @@ void edit_box::register_on_lua(sol::state& mLua)
     {
         mSelf.set_font(sFile, fHeight);
 
-        auto pFontString = mSelf.get_font_string().get();
+        auto* pFontString = mSelf.get_font_string().get();
         if (!pFontString)
             return;
 

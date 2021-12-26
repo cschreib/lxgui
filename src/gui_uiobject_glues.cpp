@@ -132,11 +132,11 @@ void uiobject::set_lua_member_(std::string sKey, sol::stack_object mValue)
     auto mIter = lLuaMembers_.find(sKey);
     if (mIter == lLuaMembers_.cend())
     {
-        lLuaMembers_.insert(mIter, {std::move(sKey), std::move(mValue)});
+        lLuaMembers_.insert(mIter, {std::move(sKey), mValue});
     }
     else
     {
-        mIter->second = sol::object(std::move(mValue));
+        mIter->second = sol::object(mValue);
     }
 }
 

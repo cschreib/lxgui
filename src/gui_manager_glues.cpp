@@ -36,7 +36,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
         sol::lib::os, sol::lib::string, sol::lib::debug);
 
-    pLuaRegs_ = pLuaRegs;
+    pLuaRegs_ = std::move(pLuaRegs);
 
     auto& mLua = *pLua_;
 
@@ -171,7 +171,7 @@ std::string serialize(const std::string& sTab, const sol::object& mValue)
 
         std::string sContent;
         sol::table mTable = mValue.as<sol::table>();
-        for (auto mKeyValue : mTable)
+        for (const auto& mKeyValue : mTable)
         {
             sContent += sTab + "    [" + serialize("", mKeyValue.first) + "] = "
                 + serialize(sTab + "    ", mKeyValue.second) + ",\n";
