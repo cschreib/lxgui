@@ -100,7 +100,7 @@ $(function() {
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">if</span> (mAnchor)</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keywordflow">if</span> (<span class="keyword">auto</span>* pAnchorParent = mAnchor-&gt;get_parent().get())</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <span class="keywordflow">if</span> (<span class="keyword">const</span> <span class="keyword">auto</span>* pAnchorParent = mAnchor-&gt;get_parent().get())</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                    pAnchorParent-&gt;notify_anchored_object(observer_from_this(), <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            }</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
@@ -654,9 +654,9 @@ $(function() {
 <div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;}</div>
 <div class="line"><a name="l00585"></a><span class="lineno">  585</span>&#160; </div>
-<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;uint uiobject::get_num_point()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00586"></a><span class="lineno">  586</span>&#160;std::size_t uiobject::get_num_point()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    uint uiNumAnchors = 0u;</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    std::size_t uiNumAnchors = 0u;</div>
 <div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mAnchor : lAnchorList_)</div>
 <div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;    {</div>
 <div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;        <span class="keywordflow">if</span> (mAnchor)</div>
@@ -968,7 +968,7 @@ $(function() {
 <div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    notify_borders_need_update();</div>
 <div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;}</div>
 <div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160; </div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;<span class="keywordtype">void</span> uiobject::update(<span class="keywordtype">float</span> fDelta)</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;<span class="keywordtype">void</span> uiobject::update(<span class="keywordtype">float</span>)</div>
 <div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;{</div>
 <div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    <span class="comment">//#define DEBUG_LOG(msg) gui::out &lt;&lt; (msg) &lt;&lt; std::endl</span></div>
 <div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;<span class="preprocessor">    #define DEBUG_LOG(msg)</span></div>
@@ -1056,7 +1056,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

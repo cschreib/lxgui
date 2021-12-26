@@ -104,66 +104,65 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pTexCoordsNode = mNode.try_get_child(<span class="stringliteral">&quot;TexCoords&quot;</span>))</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        std::array&lt;float,4&gt; mRect;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        mRect[0] = pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;left&quot;</span>, 0.0f);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        mRect[1] = pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;top&quot;</span>, 0.0f);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        mRect[2] = pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;right&quot;</span>, 1.0f);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        mRect[3] = pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;bottom&quot;</span>, 1.0f);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        set_tex_rect(mRect);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> texture::parse_gradient_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pGradientNode = mNode.try_get_child(<span class="stringliteral">&quot;Gradient&quot;</span>))</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        std::string sOrientation = pGradientNode-&gt;get_attribute_value_or&lt;std::string&gt;(</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="stringliteral">&quot;orientation&quot;</span>, <span class="stringliteral">&quot;HORIZONTAL&quot;</span>);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        gradient::orientation mOrient;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;HORIZONTAL&quot;</span>)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            mOrient = gradient::orientation::HORIZONTAL;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;VERTICAL&quot;</span>)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            mOrient = gradient::orientation::VERTICAL;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pGradientNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="stringliteral">&quot;Unknown gradient orientation for &quot;</span>+sName_+<span class="stringliteral">&quot; : \&quot;&quot;</span>+sOrientation+<span class="stringliteral">&quot;\&quot;. &quot;</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="stringliteral">&quot;No gradient will be shown for this texture.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keyword">const</span> layout_node* pMinColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MinColor&quot;</span>);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <span class="keywordflow">if</span> (!pMinColorNode)</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        {</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <span class="stringliteral">&quot;Gradient requires MinColor child node.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">const</span> layout_node* pMaxColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MaxColor&quot;</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">if</span> (!pMaxColorNode)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                <span class="stringliteral">&quot;Gradient requires MaxColor child node.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        set_gradient(gradient(mOrient,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            parse_color_node_(*pMinColorNode),</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            parse_color_node_(*pMaxColorNode)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        ));</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        set_tex_rect({</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;left&quot;</span>, 0.0f),</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;top&quot;</span>, 0.0f),</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;right&quot;</span>, 1.0f),</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            pTexCoordsNode-&gt;get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;bottom&quot;</span>, 1.0f)});</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keywordtype">void</span> texture::parse_gradient_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pGradientNode = mNode.try_get_child(<span class="stringliteral">&quot;Gradient&quot;</span>))</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        std::string sOrientation = pGradientNode-&gt;get_attribute_value_or&lt;std::string&gt;(</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="stringliteral">&quot;orientation&quot;</span>, <span class="stringliteral">&quot;HORIZONTAL&quot;</span>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        gradient::orientation mOrient;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;HORIZONTAL&quot;</span>)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            mOrient = gradient::orientation::HORIZONTAL;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (sOrientation == <span class="stringliteral">&quot;VERTICAL&quot;</span>)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            mOrient = gradient::orientation::VERTICAL;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pGradientNode-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="stringliteral">&quot;Unknown gradient orientation for &quot;</span>+sName_+<span class="stringliteral">&quot; : \&quot;&quot;</span>+sOrientation+<span class="stringliteral">&quot;\&quot;. &quot;</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="stringliteral">&quot;No gradient will be shown for this texture.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">const</span> layout_node* pMinColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MinColor&quot;</span>);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span> (!pMinColorNode)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                <span class="stringliteral">&quot;Gradient requires MinColor child node.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keyword">const</span> layout_node* pMaxColorNode = pGradientNode-&gt;try_get_child(<span class="stringliteral">&quot;MaxColor&quot;</span>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">if</span> (!pMaxColorNode)</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                <span class="stringliteral">&quot;Gradient requires MaxColor child node.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        set_gradient(gradient(mOrient,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            parse_color_node_(*pMinColorNode),</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            parse_color_node_(*pMaxColorNode)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        ));</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;}</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

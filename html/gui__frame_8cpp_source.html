@@ -574,7 +574,7 @@ $(function() {
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160; </div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;<span class="keywordtype">void</span> frame::disable_draw_layer(layer_type mLayerID)</div>
 <div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;{</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    layer&amp; mLayer = lLayerList_[<span class="keyword">static_cast&lt;</span>uint<span class="keyword">&gt;</span>(mLayerID)];</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    layer&amp; mLayer = lLayerList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mLayerID)];</div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;    <span class="keywordflow">if</span> (!mLayer.bDisabled)</div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;    {</div>
 <div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        mLayer.bDisabled = <span class="keyword">true</span>;</div>
@@ -584,7 +584,7 @@ $(function() {
 <div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160; </div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="keywordtype">void</span> frame::enable_draw_layer(layer_type mLayerID)</div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;{</div>
-<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    layer&amp; mLayer = lLayerList_[<span class="keyword">static_cast&lt;</span>uint<span class="keyword">&gt;</span>(mLayerID)];</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    layer&amp; mLayer = lLayerList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mLayerID)];</div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <span class="keywordflow">if</span> (!mLayer.bDisabled)</div>
 <div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    {</div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        mLayer.bDisabled = <span class="keyword">false</span>;</div>
@@ -1022,24 +1022,24 @@ $(function() {
 <div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;    <span class="keywordflow">return</span> vector2f(fMinWidth_, fMinHeight_);</div>
 <div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;}</div>
 <div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160; </div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;uint frame::get_num_children()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;std::size_t frame::get_num_children()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    <span class="keywordflow">return</span> std::count_if(lChildList_.begin(), lChildList_.end(),</div>
 <div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;        [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; pChild) { return pChild != nullptr; });</div>
 <div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;}</div>
 <div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160; </div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;uint frame::get_rough_num_children()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;std::size_t frame::get_rough_num_children()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;    <span class="keywordflow">return</span> lChildList_.size();</div>
 <div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;}</div>
 <div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160; </div>
-<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;uint frame::get_num_regions()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;std::size_t frame::get_num_regions()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;    <span class="keywordflow">return</span> std::count_if(lRegionList_.begin(), lRegionList_.end(),</div>
 <div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;        [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; pRegion) { return pRegion != nullptr; });</div>
 <div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;}</div>
 <div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160; </div>
-<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;uint frame::get_rough_num_regions()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;std::size_t frame::get_rough_num_regions()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;    <span class="keywordflow">return</span> lRegionList_.size();</div>
 <div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;}</div>
@@ -1114,7 +1114,7 @@ $(function() {
 <div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;    {</div>
 <div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;        <span class="keywordflow">if</span> (<span class="charliteral">&#39;A&#39;</span> &lt;= *iter &amp;&amp; *iter &lt;= <span class="charliteral">&#39;Z&#39;</span>)</div>
 <div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160;        {</div>
-<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;            *iter = tolower(*iter);</div>
+<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;            *iter = std::tolower(*iter);</div>
 <div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;            <span class="keywordflow">if</span> (iter != sAdjustedName.begin())</div>
 <div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160;                iter = sAdjustedName.insert(iter, <span class="charliteral">&#39;_&#39;</span>);</div>
 <div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;        }</div>
@@ -1123,7 +1123,7 @@ $(function() {
 <div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;    <span class="keywordflow">return</span> sAdjustedName;</div>
 <div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;}</div>
 <div class="line"><a name="l01054"></a><span class="lineno"> 1054</span>&#160; </div>
-<div class="line"><a name="l01055"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048"> 1055</a></span>&#160;std::string <a class="code" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">hijack_sol_error_line</a>(std::string sOriginalMessage, <span class="keyword">const</span> std::string&amp; sFile, uint uiLineNbr)</div>
+<div class="line"><a name="l01055"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7"> 1055</a></span>&#160;std::string <a class="code" href="namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7">hijack_sol_error_line</a>(std::string sOriginalMessage, <span class="keyword">const</span> std::string&amp; sFile, std::size_t uiLineNbr)</div>
 <div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;{</div>
 <div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;    <span class="keyword">auto</span> uiPos1 = sOriginalMessage.find(<span class="stringliteral">&quot;[string \&quot;&quot;</span> + sFile);</div>
 <div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;    <span class="keywordflow">if</span> (uiPos1 == std::string::npos)</div>
@@ -1144,7 +1144,7 @@ $(function() {
 <div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;    <span class="keywordflow">if</span> (uiPos4 == std::string::npos)</div>
 <div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160;        <span class="keywordflow">return</span> sOriginalMessage;</div>
 <div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160; </div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;    uint uiOffset = 0;</div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;    std::size_t uiOffset = 0;</div>
 <div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160;    <span class="keywordflow">if</span> (!utils::from_string(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1), uiOffset))</div>
 <div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;        <span class="keywordflow">return</span> sOriginalMessage;</div>
 <div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160; </div>
@@ -1158,12 +1158,12 @@ $(function() {
 <div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160; </div>
 <div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;    std::string sMessage = sOriginalMessage.substr(uiPos4 + 1);</div>
 <div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;    sOriginalMessage.erase(uiPos4 + 1);</div>
-<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;    sOriginalMessage += <a class="code" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">hijack_sol_error_line</a>(sMessage, sFile, uiLineNbr);</div>
+<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;    sOriginalMessage += <a class="code" href="namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7">hijack_sol_error_line</a>(sMessage, sFile, uiLineNbr);</div>
 <div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160; </div>
 <div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160;    <span class="keywordflow">return</span> sOriginalMessage;</div>
 <div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;}</div>
 <div class="line"><a name="l01094"></a><span class="lineno"> 1094</span>&#160; </div>
-<div class="line"><a name="l01095"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128"> 1095</a></span>&#160;std::string <a class="code" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">hijack_sol_error_message</a>(std::string sOriginalMessage, <span class="keyword">const</span> std::string&amp; sFile, uint uiLineNbr)</div>
+<div class="line"><a name="l01095"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#ab845feb74fd908e6f813269c1bbc1e18"> 1095</a></span>&#160;std::string <a class="code" href="namespacelxgui_1_1gui.html#ab845feb74fd908e6f813269c1bbc1e18">hijack_sol_error_message</a>(std::string sOriginalMessage, <span class="keyword">const</span> std::string&amp; sFile, std::size_t uiLineNbr)</div>
 <div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160;{</div>
 <div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;    std::string sNewError;</div>
 <div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> sLine : utils::cut(sOriginalMessage, <span class="stringliteral">&quot;\n&quot;</span>))</div>
@@ -1171,7 +1171,7 @@ $(function() {
 <div class="line"><a name="l01100"></a><span class="lineno"> 1100</span>&#160;        <span class="keywordflow">if</span> (!sNewError.empty())</div>
 <div class="line"><a name="l01101"></a><span class="lineno"> 1101</span>&#160;            sNewError += <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line"><a name="l01102"></a><span class="lineno"> 1102</span>&#160; </div>
-<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;        sNewError += <a class="code" href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">hijack_sol_error_line</a>(sLine, sFile, uiLineNbr);</div>
+<div class="line"><a name="l01103"></a><span class="lineno"> 1103</span>&#160;        sNewError += <a class="code" href="namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7">hijack_sol_error_line</a>(sLine, sFile, uiLineNbr);</div>
 <div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;    }</div>
 <div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160; </div>
 <div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160;    <span class="keywordflow">return</span> sNewError;</div>
@@ -1185,8 +1185,8 @@ $(function() {
 <div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160; </div>
 <div class="line"><a name="l01115"></a><span class="lineno"> 1115</span>&#160;    std::string sStr = <span class="stringliteral">&quot;return function(self&quot;</span>;</div>
 <div class="line"><a name="l01116"></a><span class="lineno"> 1116</span>&#160; </div>
-<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;    constexpr uint uiMaxArgs = 9;</div>
-<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;    <span class="keywordflow">for</span> (uint i = 0; i &lt; uiMaxArgs; ++i)</div>
+<div class="line"><a name="l01117"></a><span class="lineno"> 1117</span>&#160;    constexpr std::size_t uiMaxArgs = 9;</div>
+<div class="line"><a name="l01118"></a><span class="lineno"> 1118</span>&#160;    <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; uiMaxArgs; ++i)</div>
 <div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;        sStr += <span class="stringliteral">&quot;, arg&quot;</span> + utils::to_string(i + 1);</div>
 <div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160; </div>
 <div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160;    sStr += <span class="stringliteral">&quot;) &quot;</span> + sContent + <span class="stringliteral">&quot; end&quot;</span>;</div>
@@ -1196,7 +1196,7 @@ $(function() {
 <div class="line"><a name="l01125"></a><span class="lineno"> 1125</span>&#160;    <span class="keywordflow">if</span> (!mResult.valid())</div>
 <div class="line"><a name="l01126"></a><span class="lineno"> 1126</span>&#160;    {</div>
 <div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">sol::error</a> mError = mResult;</div>
-<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;        std::string sError = <a class="code" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">hijack_sol_error_message</a>(mError.what(), mInfo.sFileName, mInfo.uiLineNbr);</div>
+<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;        std::string sError = <a class="code" href="namespacelxgui_1_1gui.html#ab845feb74fd908e6f813269c1bbc1e18">hijack_sol_error_message</a>(mError.what(), mInfo.sFileName, mInfo.uiLineNbr);</div>
 <div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160; </div>
 <div class="line"><a name="l01130"></a><span class="lineno"> 1130</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">gui::error</a> &lt;&lt; sError &lt;&lt; std::endl;</div>
 <div class="line"><a name="l01131"></a><span class="lineno"> 1131</span>&#160; </div>
@@ -1224,7 +1224,7 @@ $(function() {
 <div class="line"><a name="l01153"></a><span class="lineno"> 1153</span>&#160;        std::vector&lt;sol::object&gt; lArgs;</div>
 <div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160; </div>
 <div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;        <span class="comment">// Set arguments</span></div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;        <span class="keywordflow">for</span> (uint i = 0; i &lt; mArgs.get_num_param(); ++i)</div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160;        <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; mArgs.get_num_param(); ++i)</div>
 <div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;        {</div>
 <div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;            <span class="keyword">const</span> utils::variant&amp; mArg = mArgs.get(i);</div>
 <div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;            <span class="keywordflow">if</span> (std::holds_alternative&lt;utils::empty&gt;(mArg))</div>
@@ -1247,7 +1247,7 @@ $(function() {
 <div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;        <span class="keywordflow">if</span> (!mResult.valid())</div>
 <div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;        {</div>
 <div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">sol::error</a> mError = mResult;</div>
-<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;            std::string sError = <a class="code" href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">hijack_sol_error_message</a>(mError.what(),</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;            std::string sError = <a class="code" href="namespacelxgui_1_1gui.html#ab845feb74fd908e6f813269c1bbc1e18">hijack_sol_error_message</a>(mError.what(),</div>
 <div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;                mInfo.sFileName, mInfo.uiLineNbr);</div>
 <div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160; </div>
 <div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;            <span class="keywordflow">throw</span> gui::exception(sError);</div>
@@ -1443,7 +1443,7 @@ $(function() {
 <div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;        <span class="keywordflow">if</span> (mEvent.get_name() == <span class="stringliteral">&quot;KEY_PRESSED&quot;</span>)</div>
 <div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;        {</div>
 <div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;            event_data mData;</div>
-<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;            mData.add((uint)mEvent.get&lt;input::key&gt;(0));</div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;            mData.add(mEvent.get(0));</div>
 <div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;            mData.add(mEvent.get(1));</div>
 <div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160; </div>
 <div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;            on_script(<span class="stringliteral">&quot;OnKeyDown&quot;</span>, mData);</div>
@@ -1453,7 +1453,7 @@ $(function() {
 <div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (mEvent.get_name() == <span class="stringliteral">&quot;KEY_RELEASED&quot;</span>)</div>
 <div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;        {</div>
 <div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;            event_data mData;</div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;            mData.add((uint)mEvent.get&lt;input::key&gt;(0));</div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;            mData.add(mEvent.get(0));</div>
 <div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160;            mData.add(mEvent.get(1));</div>
 <div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160; </div>
 <div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;            on_script(<span class="stringliteral">&quot;OnKeyUp&quot;</span>, mData);</div>
@@ -2068,13 +2068,13 @@ $(function() {
 <div class="line"><a name="l01997"></a><span class="lineno"> 1997</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; pRegion : lRegionList_)</div>
 <div class="line"><a name="l01998"></a><span class="lineno"> 1998</span>&#160;        {</div>
 <div class="line"><a name="l01999"></a><span class="lineno"> 1999</span>&#160;            <span class="keywordflow">if</span> (pRegion &amp;&amp; pRegion-&gt;get_object_type() != <span class="stringliteral">&quot;font_string&quot;</span>)</div>
-<div class="line"><a name="l02000"></a><span class="lineno"> 2000</span>&#160;                lLayerList_[<span class="keyword">static_cast&lt;</span>uint<span class="keyword">&gt;</span>(pRegion-&gt;get_draw_layer())].lRegionList.push_back(pRegion);</div>
+<div class="line"><a name="l02000"></a><span class="lineno"> 2000</span>&#160;                lLayerList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(pRegion-&gt;get_draw_layer())].lRegionList.push_back(pRegion);</div>
 <div class="line"><a name="l02001"></a><span class="lineno"> 2001</span>&#160;        }</div>
 <div class="line"><a name="l02002"></a><span class="lineno"> 2002</span>&#160; </div>
 <div class="line"><a name="l02003"></a><span class="lineno"> 2003</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; pRegion : lRegionList_)</div>
 <div class="line"><a name="l02004"></a><span class="lineno"> 2004</span>&#160;        {</div>
 <div class="line"><a name="l02005"></a><span class="lineno"> 2005</span>&#160;            <span class="keywordflow">if</span> (pRegion &amp;&amp; pRegion-&gt;get_object_type() == <span class="stringliteral">&quot;font_string&quot;</span>)</div>
-<div class="line"><a name="l02006"></a><span class="lineno"> 2006</span>&#160;                lLayerList_[<span class="keyword">static_cast&lt;</span>uint<span class="keyword">&gt;</span>(pRegion-&gt;get_draw_layer())].lRegionList.push_back(pRegion);</div>
+<div class="line"><a name="l02006"></a><span class="lineno"> 2006</span>&#160;                lLayerList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(pRegion-&gt;get_draw_layer())].lRegionList.push_back(pRegion);</div>
 <div class="line"><a name="l02007"></a><span class="lineno"> 2007</span>&#160;        }</div>
 <div class="line"><a name="l02008"></a><span class="lineno"> 2008</span>&#160; </div>
 <div class="line"><a name="l02009"></a><span class="lineno"> 2009</span>&#160;        bBuildLayerList_ = <span class="keyword">false</span>;</div>
@@ -2177,14 +2177,14 @@ $(function() {
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacelxgui_1_1gui_html_abf2ac19edd1a7ce40ebf7a29b96ecf48"><div class="ttname"><a href="namespacelxgui_1_1gui.html#abf2ac19edd1a7ce40ebf7a29b96ecf48">lxgui::gui::error</a></div><div class="ttdeci">const std::string error</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00008">gui_out.cpp:8</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a54d23357c5e1da31598468a72388e048"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a54d23357c5e1da31598468a72388e048">lxgui::gui::hijack_sol_error_line</a></div><div class="ttdeci">std::string hijack_sol_error_line(std::string sOriginalMessage, const std::string &amp;sFile, uint uiLineNbr)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01055">gui_frame.cpp:1055</a></div></div>
 <div class="ttc" id="agui__frame_8cpp_html_a5d2f30bd1cbcf49f829a7e8eb6173c06"><div class="ttname"><a href="gui__frame_8cpp.html#a5d2f30bd1cbcf49f829a7e8eb6173c06">DEBUG_LOG</a></div><div class="ttdeci">#define DEBUG_LOG(msg)</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a6852e747fabf40d48ce04b0bd9f47128"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a6852e747fabf40d48ce04b0bd9f47128">lxgui::gui::hijack_sol_error_message</a></div><div class="ttdeci">std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string &amp;sFile, uint uiLineNbr)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01095">gui_frame.cpp:1095</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_ab845feb74fd908e6f813269c1bbc1e18"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ab845feb74fd908e6f813269c1bbc1e18">lxgui::gui::hijack_sol_error_message</a></div><div class="ttdeci">std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string &amp;sFile, std::size_t uiLineNbr)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01095">gui_frame.cpp:1095</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a1de0f241f646c54b45584324957871b7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a1de0f241f646c54b45584324957871b7">lxgui::gui::hijack_sol_error_line</a></div><div class="ttdeci">std::string hijack_sol_error_line(std::string sOriginalMessage, const std::string &amp;sFile, std::size_t uiLineNbr)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame_8cpp_source.html#l01055">gui_frame.cpp:1055</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

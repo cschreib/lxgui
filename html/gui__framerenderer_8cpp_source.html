@@ -79,10 +79,10 @@ $(function() {
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// For debugging only</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#af7883b791709545509a95db5de251f57">   11</a></span>&#160;uint <a class="code" href="namespacelxgui_1_1gui.html#af7883b791709545509a95db5de251f57">count_frames</a>(<span class="keyword">const</span> std::array&lt;strata,8&gt;&amp; lStrataList)</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#ae7f4a7d2a42731f62a54c3ed09f6eda9">   11</a></span>&#160;std::size_t <a class="code" href="namespacelxgui_1_1gui.html#ae7f4a7d2a42731f62a54c3ed09f6eda9">count_frames</a>(<span class="keyword">const</span> std::array&lt;strata,8&gt;&amp; lStrataList)</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    uint uiCount = 0;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">for</span> (uint uiStrata = 0; uiStrata &lt; lStrataList.size(); ++uiStrata)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    std::size_t uiCount = 0;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">for</span> (std::size_t uiStrata = 0; uiStrata &lt; lStrataList.size(); ++uiStrata)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mLevel : utils::range::value(lStrataList[uiStrata].lLevelList))</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        {</div>
@@ -96,7 +96,7 @@ $(function() {
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// For debugging only</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">   26</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">print_frames</a>(<span class="keyword">const</span> std::array&lt;strata,8&gt;&amp; lStrataList)</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">for</span> (uint uiStrata = 0; uiStrata &lt; lStrataList.size(); ++uiStrata)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">for</span> (std::size_t uiStrata = 0; uiStrata &lt; lStrataList.size(); ++uiStrata)</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordflow">if</span> (lStrataList[uiStrata].lLevelList.empty()) <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <span class="stringliteral">&quot;strata[&quot;</span> &lt;&lt; uiStrata &lt;&lt; <span class="stringliteral">&quot;]&quot;</span> &lt;&lt; std::endl;</div>
@@ -117,7 +117,7 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="keywordtype">void</span> frame_renderer::notify_strata_needs_redraw(frame_strata mStrata)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    notify_strata_needs_redraw_(lStrataList_[(uint)mStrata]);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    notify_strata_needs_redraw_(lStrataList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mStrata)]);</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;}</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> frame_renderer::notify_rendered_frame(<span class="keyword">const</span> utils::observer_ptr&lt;frame&gt;&amp; pFrame, <span class="keywordtype">bool</span> bRendered)</div>
@@ -131,7 +131,7 @@ $(function() {
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    }</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> mFrameStrata = pFrame-&gt;get_frame_strata();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">auto</span>&amp; mStrata = lStrataList_[(uint)mFrameStrata];</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">auto</span>&amp; mStrata = lStrataList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mFrameStrata)];</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">if</span> (bRendered)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        add_to_strata_list_(mStrata, pFrame);</div>
@@ -149,8 +149,8 @@ $(function() {
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        <span class="keywordflow">throw</span> gui::exception(<span class="stringliteral">&quot;gui::frame_renderer&quot;</span>, <span class="stringliteral">&quot;cannot use PARENT strata for renderer&quot;</span>);</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">auto</span>&amp; mOld = lStrataList_[(uint)mOldStrata];</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">auto</span>&amp; mNew = lStrataList_[(uint)mNewStrata];</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">auto</span>&amp; mOld = lStrataList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mOldStrata)];</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">auto</span>&amp; mNew = lStrataList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mNewStrata)];</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    remove_from_strata_list_(mOld, pFrame);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    add_to_strata_list_(mNew, pFrame);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
@@ -167,7 +167,7 @@ $(function() {
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> mFrameStrata = pFrame-&gt;get_frame_strata();</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">auto</span>&amp; mStrata = lStrataList_[(uint)mFrameStrata];</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">auto</span>&amp; mStrata = lStrataList_[<span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(mFrameStrata)];</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">auto</span>&amp; lLevelList = mStrata.lLevelList;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">auto</span> mIterOld = lLevelList.find(iOldLevel);</div>
@@ -294,13 +294,13 @@ $(function() {
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;}</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="anamespacelxgui_1_1gui_html_af7883b791709545509a95db5de251f57"><div class="ttname"><a href="namespacelxgui_1_1gui.html#af7883b791709545509a95db5de251f57">lxgui::gui::count_frames</a></div><div class="ttdeci">uint count_frames(const std::array&lt; strata, 8 &gt; &amp;lStrataList)</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00011">gui_framerenderer.cpp:11</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_a1417131ce04efe31b8e95d581499167b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a1417131ce04efe31b8e95d581499167b">lxgui::gui::print_frames</a></div><div class="ttdeci">void print_frames(const std::array&lt; strata, 8 &gt; &amp;lStrataList)</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00026">gui_framerenderer.cpp:26</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_ae7f4a7d2a42731f62a54c3ed09f6eda9"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ae7f4a7d2a42731f62a54c3ed09f6eda9">lxgui::gui::count_frames</a></div><div class="ttdeci">std::size_t count_frames(const std::array&lt; strata, 8 &gt; &amp;lStrataList)</div><div class="ttdef"><b>Definition:</b> <a href="gui__framerenderer_8cpp_source.html#l00011">gui_framerenderer.cpp:11</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

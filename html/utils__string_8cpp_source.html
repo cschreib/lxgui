@@ -115,9 +115,9 @@ $(function() {
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;}</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;uint count_occurrences(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; sPattern)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;std::size_t count_occurrences(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; sPattern)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    uint uiCount = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::size_t uiCount = 0;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::size_t uiPos = s.find(sPattern);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">while</span> (uiPos != s.npos)</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div>
@@ -264,9 +264,9 @@ $(function() {
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordflow">return</span> utf8::utf32to8(s);</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;uint hex_to_uint(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s)</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;std::size_t hex_to_uint(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s)</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    uint i = 0;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    std::size_t i = 0;</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    string_stream ss;</div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    ss.imbue(std::locale::classic());</div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    ss &lt;&lt; s;</div>
@@ -557,7 +557,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

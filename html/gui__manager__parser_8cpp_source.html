@@ -106,7 +106,7 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        std::string sLine;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        uint uiPrevPos = 0u;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        std::size_t uiPrevPos = 0u;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">while</span> (std::getline(mStream, sLine))</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        {</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            sFileContent_ += <span class="charliteral">&#39;\n&#39;</span> + sLine;</div>
@@ -123,19 +123,19 @@ $(function() {
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">const</span> std::string&amp; get_content()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> sFileContent_; }</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::pair&lt;uint,uint&gt; get_line_info(uint uiOffset)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::pair&lt;std::size_t,std::size_t&gt; get_line_info(std::size_t uiOffset)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="keyword">auto</span> mIter = std::lower_bound(lLineOffsets_.begin(), lLineOffsets_.end(), uiOffset);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> (mIter == lLineOffsets_.end())</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">return</span> std::make_pair(0, 0);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        uint uiLineNbr = mIter - lLineOffsets_.begin();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        uint uiCharOffset = uiOffset - *mIter + 1u;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        std::size_t uiLineNbr = mIter - lLineOffsets_.begin();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        std::size_t uiCharOffset = uiOffset - *mIter + 1u;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">return</span> std::make_pair(uiLineNbr, uiCharOffset);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::string get_location(uint uiOffset)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::string get_location(std::size_t uiOffset)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="keyword">    </span>{</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="keyword">auto</span> mLocation = get_line_info(uiOffset);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">if</span> (mLocation.first == 0)</div>
@@ -146,10 +146,10 @@ $(function() {
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">bool</span>              bIsOpen_ = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    std::string       sFileName_;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::string       sFileContent_;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::vector&lt;uint&gt; lLineOffsets_;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">bool</span>                     bIsOpen_ = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    std::string              sFileName_;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    std::string              sFileContent_;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::vector&lt;std::size_t&gt; lLineOffsets_;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="namespacelxgui_1_1gui.html#aee46d59fbc358a18fb72176cf34a13e5">   84</a></span>&#160;std::string <a class="code" href="namespacelxgui_1_1gui.html#aee46d59fbc358a18fb72176cf34a13e5">normalize_node_name</a>(<span class="keyword">const</span> std::string&amp; sName, <span class="keywordtype">bool</span> bCapitalFirst)</div>
@@ -299,7 +299,7 @@ $(function() {
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;<span class="preprocessor">#if defined(LXGUI_ENABLE_XML_PARSER)</span></div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    <span class="keywordflow">if</span> (sExtension == <span class="stringliteral">&quot;.xml&quot;</span>)</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    {</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keyword">const</span> uint uiOptions = pugi::parse_ws_pcdata_single;</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> uiOptions = pugi::parse_ws_pcdata_single;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
 <div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        pugi::xml_document mDoc;</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        pugi::xml_parse_result mResult = mDoc.load_buffer(</div>
@@ -406,7 +406,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

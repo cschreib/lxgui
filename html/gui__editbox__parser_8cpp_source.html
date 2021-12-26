@@ -83,7 +83,7 @@ $(function() {
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    focus_frame::parse_attributes_(mNode);</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;letters&quot;</span>))</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        set_max_letters(pAttr-&gt;get_value&lt;uint&gt;());</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        set_max_letters(pAttr-&gt;get_value&lt;std::size_t&gt;());</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;blinkSpeed&quot;</span>))</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        set_blink_speed(pAttr-&gt;get_value&lt;<span class="keywordtype">float</span>&gt;());</div>
@@ -104,7 +104,7 @@ $(function() {
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        set_multi_line(pAttr-&gt;get_value&lt;<span class="keywordtype">bool</span>&gt;());</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;historyLines&quot;</span>))</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        set_max_history_lines(pAttr-&gt;get_value&lt;uint&gt;());</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        set_max_history_lines(pAttr-&gt;get_value&lt;std::size_t&gt;());</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;ignoreArrows&quot;</span>))</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        set_arrows_ignored(pAttr-&gt;get_value&lt;<span class="keywordtype">bool</span>&gt;());</div>
@@ -173,7 +173,7 @@ $(function() {
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 15:48:39 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
