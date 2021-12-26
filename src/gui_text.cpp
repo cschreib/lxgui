@@ -452,13 +452,13 @@ float text::get_text_height() const
     if (!bReady_)
         return 0.0f;
 
-    uint count = std::count(sUnicodeText_.begin(), sUnicodeText_.end(), U'\n');
+    std::size_t count = std::count(sUnicodeText_.begin(), sUnicodeText_.end(), U'\n');
     float fHeight = (1.0f + count*fLineSpacing_)*get_line_height();
 
     return fHeight;
 }
 
-uint text::get_num_lines() const
+std::size_t text::get_num_lines() const
 {
     update_();
     return uiNumLines_;
@@ -616,7 +616,7 @@ void text::render(const matrix4f& mTransform) const
             {
                 std::vector<std::array<vertex,4>> lQuadsCopy = lOutlineQuadList_;
                 for (auto& mQuad : lQuadsCopy)
-                for (uint i = 0; i < 4; ++i)
+                for (std::size_t i = 0; i < 4; ++i)
                 {
                     mQuad[i].pos = mQuad[i].pos * mTransform;
                     mQuad[i].col.a *= fAlpha_;
@@ -637,7 +637,7 @@ void text::render(const matrix4f& mTransform) const
         {
             std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
             for (auto& mQuad : lQuadsCopy)
-            for (uint i = 0; i < 4; ++i)
+            for (std::size_t i = 0; i < 4; ++i)
             {
                 mQuad[i].pos = mQuad[i].pos * mTransform;
 
@@ -654,7 +654,7 @@ void text::render(const matrix4f& mTransform) const
 
         for (auto mQuad : lIconsList_)
         {
-            for (uint i = 0; i < 4; ++i)
+            for (std::size_t i = 0; i < 4; ++i)
             {
                 mQuad.v[i].pos = mQuad.v[i].pos * mTransform;
                 mQuad.v[i].col.a *= fAlpha_;
@@ -683,7 +683,7 @@ void text::update_() const
     std::vector<parser::line> lLineList;
 
     DEBUG_LOG("     Get max line nbr");
-    uint uiMaxLineNbr;
+    std::size_t uiMaxLineNbr = 0;
     if (fBoxH_ != 0.0f && !std::isinf(fBoxH_))
     {
         if (fBoxH_ < get_line_height())
@@ -693,11 +693,12 @@ void text::update_() const
         else
         {
             float fRemaining = fBoxH_ - get_line_height();
-            uiMaxLineNbr = 1 + static_cast<uint>(std::floor(fRemaining/(get_line_height()*fLineSpacing_)));
+            uiMaxLineNbr = 1 + static_cast<std::size_t>(
+                std::floor(fRemaining/(get_line_height()*fLineSpacing_)));
         }
     }
     else
-        uiMaxLineNbr = uint(-1);
+        uiMaxLineNbr = std::numeric_limits<std::size_t>::max();
 
     if (uiMaxLineNbr != 0)
     {
@@ -739,7 +740,7 @@ void text::update_() const
                         // be able to put the last one on the next line
                         auto iterChar2 = iterChar1 + 1;
                         std::vector<parser::item> lErasedContent;
-                        uint uiCharToErase = 0;
+                        std::size_t uiCharToErase = 0;
                         float fLastWordWidth = 0.0f;
                         bool bLastWasWord = false;
                         while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin)
@@ -801,7 +802,7 @@ void text::update_() const
                             // FIXME: this doesn't account for kerning between the "..." and prev char
                             float fWordWidth = get_string_width(U"...");
                             auto iterChar2 = iterChar1 + 1;
-                            uint uiCharToErase = 0;
+                            std::size_t uiCharToErase = 0;
                             while (mLine.fWidth + fWordWidth > fBoxW_ && iterChar2 != iterLineBegin)
                             {
                                 --iterChar2;
@@ -822,7 +823,7 @@ void text::update_() const
                         {
                             DEBUG_LOG("       Truncate");
                             auto iterChar2 = iterChar1 + 1;
-                            uint uiCharToErase = 0;
+                            std::size_t uiCharToErase = 0;
                             while (mLine.fWidth > fBoxW_ && iterChar2 != iterLineBegin)
                             {
                                 --iterChar2;
@@ -1050,7 +1051,7 @@ void text::update_() const
                             mIcon.v[3].uvs = mIcon.mat->get_canvas_uv(vector2f(0.0f, 1.0f), true);
                         }
 
-                        for (uint i = 0; i < 4; ++i)
+                        for (std::size_t i = 0; i < 4; ++i)
                         {
                             mIcon.v[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                         }
@@ -1062,7 +1063,7 @@ void text::update_() const
                         if (pOutlineFont_)
                         {
                             std::array<vertex,4> lVertexList = create_outline_letter_quad_(mValue);
-                            for (uint i = 0; i < 4; ++i)
+                            for (std::size_t i = 0; i < 4; ++i)
                             {
                                 lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                                 lVertexList[i].col = color::BLACK;
@@ -1072,7 +1073,7 @@ void text::update_() const
                         }
 
                         std::array<vertex,4> lVertexList = create_letter_quad_(mValue);
-                        for (uint i = 0; i < 4; ++i)
+                        for (std::size_t i = 0; i < 4; ++i)
                         {
                             lVertexList[i].pos += vector2f(round_to_pixel_(fX), round_to_pixel_(fY));
                             lVertexList[i].col = lColorStack.empty() ? color::EMPTY : lColorStack.back();
@@ -1106,7 +1107,7 @@ void text::update_() const
 
         std::vector<std::array<vertex,4>> lQuadsCopy = lQuadList_;
         for (auto& mQuad : lQuadsCopy)
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
         {
             if (!bFormattingEnabled_ || bForceColor_ || mQuad[i].col == color::EMPTY)
             {
@@ -1160,13 +1161,13 @@ quad text::create_letter_quad(char32_t uiChar) const
     return mOutput;
 }
 
-uint text::get_num_letters() const
+std::size_t text::get_num_letters() const
 {
     update_();
     return lQuadList_.size();
 }
 
-const std::array<vertex,4>& text::get_letter_quad(uint uiIndex) const
+const std::array<vertex,4>& text::get_letter_quad(std::size_t uiIndex) const
 {
     update_();
 

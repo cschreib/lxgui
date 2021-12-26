@@ -17,22 +17,22 @@ namespace gui
         matrix4f(std::initializer_list<element_type> mList);
         explicit matrix4f(const element_type* mat);
 
-        element_type& operator () (uint row, uint col)
+        element_type& operator () (std::size_t row, std::size_t col)
         {
             return data[col+row*4];
         }
 
-        element_type operator () (uint row, uint col) const
+        element_type operator () (std::size_t row, std::size_t col) const
         {
             return data[col+row*4];
         }
 
-        element_type& operator () (uint i)
+        element_type& operator () (std::size_t i)
         {
             return data[i];
         }
 
-        element_type operator () (uint i) const
+        element_type operator () (std::size_t i) const
         {
             return data[i];
         }

@@ -32,7 +32,7 @@ namespace gui
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
         */
-        virtual uint get_size() const = 0;
+        virtual std::size_t get_size() const = 0;
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character

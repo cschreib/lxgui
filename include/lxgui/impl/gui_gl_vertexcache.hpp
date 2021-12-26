@@ -44,13 +44,13 @@ namespace gl
         /** \param lVertexData The vertices to cache
         *   \param uiNumVertex The number of vertices to cache
         */
-        void update_data(const vertex* lVertexData, uint uiNumVertex);
+        void update_data(const vertex* lVertexData, std::size_t uiNumVertex);
 
         /// Update the indices stored in the cache, reusing existing data.
         /** \param lVertexIndices The indices to use for drawing triangles
         *   \param uiNumIndices The number of indices to cache
         */
-        void update_indices(const uint* lVertexIndices, uint uiNumIndices);
+        void update_indices(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices);
 
         /// Update the indices stored in the cache, but only if the current index cache is smaller.
         /** \param lVertexIndices The indices to use for drawing triangles
@@ -60,7 +60,7 @@ namespace gl
         *         were set in previous calls of update_indices() are assumed to not change
         *         value.
         */
-        void update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices);
+        void update_indices_if_grow(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices);
 
         /// Update the data stored in the cache to form new triangles.
         /** \param lVertexData The vertices to cache
@@ -68,7 +68,7 @@ namespace gl
         *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
         *         If the type if QUADS, uiNumVertex must be a multiple of 4.
         */
-        void update(const vertex* lVertexData, uint uiNumVertex) override;
+        void update(const vertex* lVertexData, std::size_t uiNumVertex) override;
 
         /// Renders the cache.
         /** \note This does not bind the material, just binds the cache and renders it
@@ -78,13 +78,13 @@ namespace gl
 
     private :
 
-        uint uiCurrentSizeVertex_ = 0u;
-        uint uiCurrentSizeIndex_ = 0u;
-        uint uiCurrentCapacityVertex_ = 0u;
-        uint uiCurrentCapacityIndex_ = 0u;
-        uint uiVertexArray_ = std::numeric_limits<uint>::max();
-        uint uiVertexBuffer_ = std::numeric_limits<uint>::max();
-        uint uiIndexBuffer_ = std::numeric_limits<uint>::max();
+        std::size_t uiCurrentSizeVertex_ = 0u;
+        std::size_t uiCurrentSizeIndex_ = 0u;
+        std::size_t uiCurrentCapacityVertex_ = 0u;
+        std::size_t uiCurrentCapacityIndex_ = 0u;
+        std::uint32_t uiVertexArray_ = std::numeric_limits<std::uint32_t>::max();
+        std::uint32_t uiVertexBuffer_ = std::numeric_limits<std::uint32_t>::max();
+        std::uint32_t uiIndexBuffer_ = std::numeric_limits<std::uint32_t>::max();
     };
 }
 }

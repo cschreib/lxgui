@@ -11,7 +11,7 @@ namespace lxgui {
 namespace gui {
 namespace sdl
 {
-font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
+font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint,
     bool bPreMultipliedAlphaSupported) :
     uiSize_(uiSize), uiDefaultCodePoint_(uiDefaultCodePoint)
@@ -34,12 +34,12 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
         TTF_SetFontOutline(pFont, uiOutline);
 
     // Add some space between letters to prevent artifacts
-    uint uiSpacing = 1;
+    std::size_t uiSpacing = 1;
 
     int iMaxHeight = 0, iMaxWidth = 0;
 
     // Calculate maximum width and height
-    uint uiNumChar = 0;
+    std::size_t uiNumChar = 0;
     for (const code_point_range& mRange : lCodePoints)
     {
         for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint)
@@ -69,20 +69,19 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
     iMaxWidth = iMaxWidth + 2*uiOutline;
 
     // Calculate the size of the texture
-    size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*uiNumChar;
-
-    uint uiTexSide = static_cast<uint>(std::sqrt((float)uiTexSize));
+    std::size_t uiTexSize = (iMaxWidth + uiSpacing)*(iMaxHeight + uiSpacing)*uiNumChar;
+    std::size_t uiTexSide = static_cast<std::size_t>(std::sqrt((float)uiTexSize));
     uiTexSide += std::max(iMaxWidth, iMaxHeight);
 
     // Round up to nearest power of two
     {
-        uint i = 1;
+        std::size_t i = 1;
         while (uiTexSide > i)
             i *= 2;
         uiTexSide = i;
     }
 
-    size_t uiFinalWidth, uiFinalHeight;
+    std::size_t uiFinalWidth, uiFinalHeight;
     if (uiTexSide*uiTexSide/2 >= uiTexSize)
         uiFinalHeight = uiTexSide/2;
     else
@@ -95,12 +94,12 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
     vector2ui mCanvasDimensions = pTexture_->get_canvas_dimensions();
     vector2f  mCanvasDimensionsFloat = vector2f(mCanvasDimensions);
 
-    uint uiPitch = 0;
+    std::size_t uiPitch = 0;
     ub32color* pTexturePixels = pTexture_->lock_pointer(&uiPitch);
     std::fill(pTexturePixels, pTexturePixels + uiPitch * mCanvasDimensions.y, ub32color(0,0,0,0));
 
-    size_t x = 0, y = 0;
-    uint uiLineMaxHeight = iMaxHeight;
+    std::size_t x = 0, y = 0;
+    std::size_t uiLineMaxHeight = iMaxHeight;
 
     const SDL_Color mColor = {255, 255, 255, 255};
 
@@ -148,13 +147,13 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
                     utils::to_string(pGlyphSurface->format->format)+")");
             }
 
-            const uint uiGlyphWidth = pGlyphSurface->w;
-            const uint uiGlyphHeight = pGlyphSurface->h;
+            const std::size_t uiGlyphWidth = pGlyphSurface->w;
+            const std::size_t uiGlyphHeight = pGlyphSurface->h;
 
             uiLineMaxHeight = std::max(uiLineMaxHeight, uiGlyphHeight);
 
             // If at end of row, jump to next line
-            if (x + uiGlyphWidth > (uint)mCanvasDimensions.x - 1)
+            if (x + uiGlyphWidth > static_cast<std::size_t>(mCanvasDimensions.x) - 1)
             {
                 y += uiLineMaxHeight + uiSpacing;
                 x = 0;
@@ -164,9 +163,9 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
             // this is fine because we always render glyphs in white, and don't care about
             // the color information.
             ub32color* pGlyphPixels = reinterpret_cast<ub32color*>(pGlyphSurface->pixels);
-            int iGlyphPitch = pGlyphSurface->pitch/sizeof(ub32color);
-            for (uint j = 0; j < uiGlyphHeight; ++j)
-            for (uint i = 0; i < uiGlyphWidth; ++i)
+            std::size_t iGlyphPitch = pGlyphSurface->pitch/sizeof(ub32color);
+            for (std::size_t j = 0; j < uiGlyphHeight; ++j)
+            for (std::size_t i = 0; i < uiGlyphWidth; ++i)
                 pTexturePixels[x + i + (y + j)*uiPitch] = pGlyphPixels[i + j*iGlyphPitch];
 
             SDL_FreeSurface(pGlyphSurface);
@@ -196,8 +195,8 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
     // Pre-multiply alpha
     if (bPreMultipliedAlphaSupported)
     {
-        const uint uiArea = mCanvasDimensions.x * mCanvasDimensions.y;
-        for (uint i = 0; i < uiArea; ++i)
+        const std::size_t uiArea = mCanvasDimensions.x * mCanvasDimensions.y;
+        for (std::size_t i = 0; i < uiArea; ++i)
         {
             float a = pTexturePixels[i].a/255.0f;
             pTexturePixels[i].r *= a;
@@ -209,7 +208,7 @@ font::font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, u
     pTexture_->unlock_pointer();
 }
 
-uint font::get_size() const
+std::size_t font::get_size() const
 {
     return uiSize_;
 }

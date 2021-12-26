@@ -23,7 +23,7 @@ void renderer::begin(std::shared_ptr<render_target> pTarget) const
             {
                 if (lQuadCache_[0].pCache == nullptr)
                 {
-                    for (uint uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex)
+                    for (std::size_t uiIndex = 0u; uiIndex < BATCHING_CACHE_CYCLE_SIZE; ++uiIndex)
                     {
                         lQuadCache_[uiIndex].pCache = create_vertex_cache(vertex_cache::type::QUADS);
                     }
@@ -216,8 +216,8 @@ std::shared_ptr<gui::material> renderer::create_material(const std::string& sFil
 
 namespace
 {
-    std::string hash_font_parameters(const std::string& sFontFile, uint uiSize,
-        uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+    std::string hash_font_parameters(const std::string& sFontFile, std::size_t uiSize,
+        std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
         char32_t uiDefaultCodePoint)
     {
         std::string sFontName = sFontFile + "|s" + utils::to_string(uiSize);
@@ -233,8 +233,8 @@ namespace
     }
 }
 
-std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, uint uiSize,
-    uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+std::shared_ptr<gui::font> renderer::create_font(const std::string& sFontFile, std::size_t uiSize,
+    std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
     char32_t uiDefaultCodePoint) const
 {
     const std::string sFontName = hash_font_parameters(
@@ -268,22 +268,22 @@ void renderer::set_texture_atlas_enabled(bool bEnabled)
     bTextureAtlasEnabled_ = bEnabled;
 }
 
-uint renderer::get_texture_atlas_page_size() const
+std::size_t renderer::get_texture_atlas_page_size() const
 {
     if (uiTextureAtlasPageSize_ == 0u)
-        return std::min(4096u, get_texture_max_size());
+        return std::min<std::size_t>(4096u, get_texture_max_size());
     else
         return uiTextureAtlasPageSize_;
 }
 
-void renderer::set_texture_atlas_page_size(uint uiPageSize)
+void renderer::set_texture_atlas_page_size(std::size_t uiPageSize)
 {
     uiTextureAtlasPageSize_ = uiPageSize;
 }
 
-uint renderer::get_num_texture_atlas_pages() const
+std::size_t renderer::get_num_texture_atlas_pages() const
 {
-    uint uiCount = 0;
+    std::size_t uiCount = 0;
 
     for (const auto& mPage : lAtlasList_)
     {
@@ -354,7 +354,7 @@ std::shared_ptr<material> renderer::create_atlas_material(const std::string& sAt
 }
 
 std::shared_ptr<font> renderer::create_atlas_font(const std::string& sAtlasCategory,
-    const std::string& sFontFile, uint uiSize, uint uiOutline,
+    const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const
 {
     if (!is_texture_atlas_enabled())

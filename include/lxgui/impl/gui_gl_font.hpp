@@ -30,7 +30,7 @@ namespace gl
         *   \param lCodePoints The list of Unicode characters to load
         *   \param uiDefaultCodePoint The character to display as fallback
         */
-        font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+        font(const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
             const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint);
 
         /// Destructor.
@@ -39,7 +39,7 @@ namespace gl
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
         */
-        uint get_size() const override;
+        std::size_t get_size() const override;
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
@@ -106,10 +106,10 @@ namespace gl
 
         const character_info* get_character_(char32_t uiChar) const;
 
-        FT_Face  mFace_ = nullptr;
-        uint     uiSize_ = 0u;
-        bool     bKerning_ = false;
-        char32_t uiDefaultCodePoint_ = 0u;
+        FT_Face     mFace_ = nullptr;
+        std::size_t uiSize_ = 0u;
+        bool        bKerning_ = false;
+        char32_t    uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<gl::material> pTexture_;
         std::vector<range_info>       lRangeList_;

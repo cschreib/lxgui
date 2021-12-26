@@ -16,7 +16,7 @@ namespace lxgui {
 namespace input
 {
     constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
-    constexpr std::size_t KEY_NUMBER = static_cast<uint>(key::K_MAXKEY);
+    constexpr std::size_t KEY_NUMBER = static_cast<std::size_t>(key::K_MAXKEY);
 
     /// The base class for input source implementation
     /** \note In case you want to share the same source

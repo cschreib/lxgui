@@ -141,10 +141,10 @@ void material::update_texture(const ub32color* pData)
 
 void material::premultiply_alpha(sf::Image& mData)
 {
-    const uint uiWidth = mData.getSize().x;
-    const uint uiHeight = mData.getSize().y;
-    for (uint x = 0; x < uiWidth; ++x)
-    for (uint y = 0; y < uiHeight; ++y)
+    const std::size_t uiWidth = mData.getSize().x;
+    const std::size_t uiHeight = mData.getSize().y;
+    for (std::size_t x = 0; x < uiWidth; ++x)
+    for (std::size_t y = 0; y < uiHeight; ++y)
     {
         sf::Color c = mData.getPixel(x, y);
         float a = c.a/255.0f;

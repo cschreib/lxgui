@@ -44,12 +44,12 @@ namespace sfml
         *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
         *         If the type if QUADS, uiNumVertex must be a multiple of 4.
         */
-        void update(const vertex* lVertexData, uint uiNumVertex) override;
+        void update(const vertex* lVertexData, std::size_t uiNumVertex) override;
 
         /// Returns the number of vertices currently stored in the cache.
         /** \return The number of vertices currently stored in the cache
         */
-        uint get_num_vertex() const;
+        std::size_t get_num_vertex() const;
 
         /// Returns the SFML vertex buffer object.
         /** \return The SFML vertex buffer object
@@ -58,7 +58,7 @@ namespace sfml
 
     private :
 
-        uint uiNumVertex_ = 0u;
+        std::size_t uiNumVertex_ = 0u;
         sf::VertexBuffer mBuffer_;
     };
 }

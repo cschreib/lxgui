@@ -185,8 +185,8 @@ namespace gui
 
     using vector2f  = vector2<float>;
     using vector2d  = vector2<double>;
-    using vector2i  = vector2<int>;
-    using vector2ui = vector2<uint>;
+    using vector2i  = vector2<std::ptrdiff_t>;
+    using vector2ui = vector2<std::size_t>;
 
     template<typename T>
     vector2<T> operator * (T mValue, const vector2<T>& mV) noexcept

@@ -65,7 +65,7 @@ namespace gui
         *   \note If the type if TRIANGLES, uiNumVertex must be a multiple of 3.
         *         If the type if QUADS, uiNumVertex must be a multiple of 4.
         */
-        virtual void update(const vertex* lVertexData, uint uiNumVertex) = 0;
+        virtual void update(const vertex* lVertexData, std::size_t uiNumVertex) = 0;
 
     protected:
 

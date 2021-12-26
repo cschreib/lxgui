@@ -45,7 +45,7 @@ namespace gui
         mutable bool                   bRedraw = true;
         std::shared_ptr<render_target> pRenderTarget;
         quad                           mQuad;
-        mutable uint                   uiRedrawCount = 0u;
+        mutable std::size_t            uiRedrawCount = 0u;
     };
 }
 }

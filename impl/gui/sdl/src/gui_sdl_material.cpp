@@ -37,7 +37,8 @@ material::material(SDL_Renderer* pRenderer, const vector2ui& mDimensions,
 
     if (mInfo.max_texture_width != 0)
     {
-        if (mDimensions.x > (uint)mInfo.max_texture_width || mDimensions.y > (uint)mInfo.max_texture_height)
+        if (mDimensions.x > static_cast<std::size_t>(mInfo.max_texture_width) ||
+            mDimensions.y > static_cast<std::size_t>(mInfo.max_texture_height))
         {
             throw gui::exception("gui::sdl::material",
                 "Texture dimensions not supported by hardware: ("+
@@ -100,8 +101,8 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     if (bPreMultipliedAlphaSupported)
         premultiply_alpha(pConvertedSurface);
 
-    const uint uiWidth  = pConvertedSurface->w;
-    const uint uiHeight = pConvertedSurface->h;
+    const std::size_t uiWidth  = pConvertedSurface->w;
+    const std::size_t uiHeight = pConvertedSurface->h;
 
     // Set filtering
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, mFilter == filter::NONE ? "0" : "1") == SDL_FALSE)
@@ -111,7 +112,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
 
     // Create streamable texture
     pTexture_ = SDL_CreateTexture(pRenderer, SDL_PIXELFORMAT_ABGR8888,
-        SDL_TEXTUREACCESS_STREAMING, uiWidth, uiHeight);
+        SDL_TEXTUREACCESS_STREAMING, static_cast<int>(uiWidth), static_cast<int>(uiHeight));
     if (pTexture_ == nullptr)
     {
         SDL_FreeSurface(pConvertedSurface);
@@ -120,7 +121,7 @@ material::material(SDL_Renderer* pRenderer, const std::string& sFileName,
     }
 
     // Copy data into the texture
-    uint uiPitch = 0;
+    std::size_t uiPitch = 0;
     ub32color* pTexturePixels = lock_pointer(&uiPitch);
     const ub32color* pSurfacePixelsStart = reinterpret_cast<const ub32color*>(pConvertedSurface->pixels);
     const ub32color* pSurfacePixelsEnd = pSurfacePixelsStart + uiPitch * uiHeight;
@@ -195,8 +196,8 @@ void material::premultiply_alpha(SDL_Surface* pSurface)
 {
     ub32color* pPixelData = reinterpret_cast<ub32color*>(pSurface->pixels);
 
-    const uint uiArea = pSurface->w * pSurface->h;
-    for (uint i = 0; i < uiArea; ++i)
+    const std::size_t uiArea = pSurface->w * pSurface->h;
+    for (std::size_t i = 0; i < uiArea; ++i)
     {
         float a = pPixelData[i].a/255.0f;
         pPixelData[i].r *= a;
@@ -237,8 +238,8 @@ bool material::set_dimensions(const vector2ui& mDimensions)
 
     if (mInfo.max_texture_width != 0)
     {
-        if (mDimensions.x > (uint)mInfo.max_texture_width ||
-            mDimensions.y > (uint)mInfo.max_texture_height)
+        if (mDimensions.x > static_cast<std::size_t>(mInfo.max_texture_width) ||
+            mDimensions.y > static_cast<std::size_t>(mInfo.max_texture_height))
         {
             return false;
         }
@@ -278,7 +279,7 @@ bool material::set_dimensions(const vector2ui& mDimensions)
     return bCanvasUpdated;
 }
 
-const ub32color* material::lock_pointer(uint* pPitch) const
+const ub32color* material::lock_pointer(std::size_t* pPitch) const
 {
     void* pPixelData = nullptr;
     int iPitch = 0;
@@ -288,12 +289,12 @@ const ub32color* material::lock_pointer(uint* pPitch) const
     }
 
     if (pPitch)
-        *pPitch = static_cast<uint>(iPitch) / sizeof(ub32color);
+        *pPitch = static_cast<std::size_t>(iPitch) / sizeof(ub32color);
 
     return reinterpret_cast<ub32color*>(pPixelData);
 }
 
-ub32color* material::lock_pointer(uint* pPitch)
+ub32color* material::lock_pointer(std::size_t* pPitch)
 {
     if (!bIsOwner_)
     {

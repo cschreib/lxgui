@@ -280,7 +280,7 @@ bool manager::key_is_down(key mKey, bool bForce) const
     if (!bForce && bKeyboardFocus_)
         return false;
     else
-        return pSource_->get_key_state().lKeyState[(uint)mKey];
+        return pSource_->get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
 }
 
 bool manager::key_is_down_long(key mKey, bool bForce) const
@@ -288,12 +288,12 @@ bool manager::key_is_down_long(key mKey, bool bForce) const
     if (!bForce && bKeyboardFocus_)
         return false;
     else
-        return lKeyLong_[(uint)mKey];
+        return lKeyLong_[static_cast<std::size_t>(mKey)];
 }
 
 double manager::get_key_down_duration(key mKey) const
 {
-    return lKeyDelay_[(uint)mKey];
+    return lKeyDelay_[static_cast<std::size_t>(mKey)];
 }
 
 std::vector<char32_t> manager::get_chars() const
@@ -306,7 +306,7 @@ bool manager::mouse_is_down(mouse_button mID, bool bForce) const
     if (!bForce && bMouseFocus_)
         return false;
     else
-        return pSource_->get_mouse_state().lButtonState[(uint)mID];
+        return pSource_->get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
 }
 
 bool manager::mouse_is_down_long(mouse_button mID, bool bForce) const
@@ -314,12 +314,12 @@ bool manager::mouse_is_down_long(mouse_button mID, bool bForce) const
     if (!bForce && bMouseFocus_)
         return false;
     else
-        return lMouseLong_[(uint)mID];
+        return lMouseLong_[static_cast<std::size_t>(mID)];
 }
 
 double manager::get_mouse_down_duration(mouse_button mID) const
 {
-    return lMouseDelay_[(uint)mID];
+    return lMouseDelay_[static_cast<std::size_t>(mID)];
 }
 
 bool manager::wheel_is_rolled(bool bForce) const
@@ -357,7 +357,7 @@ void manager::update(float fTempDelta)
     // Update keys
     const source::key_state& mKeyState = pSource_->get_key_state();
     bKey_ = false;
-    for (uint i = 0; i < KEY_NUMBER; ++i)
+    for (std::size_t i = 0; i < KEY_NUMBER; ++i)
     {
         // Update delays
         if (mKeyState.lKeyState[i])
@@ -381,7 +381,7 @@ void manager::update(float fTempDelta)
 
     // Update mouse state
     const source::mouse_state& mMouseState = pSource_->get_mouse_state();
-    for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
+    for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
     {
         // Update delays
         if (mMouseState.lButtonState[i])
@@ -443,8 +443,8 @@ void manager::update(float fTempDelta)
     {
         if (!bMouseDragged_)
         {
-            uint uiMouseButtonPressed = uint(-1);
-            for (uint i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
+            std::size_t uiMouseButtonPressed = std::numeric_limits<std::size_t>::max();
+            for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
             {
                 if (mMouseState.lButtonState[i])
                 {
@@ -453,13 +453,13 @@ void manager::update(float fTempDelta)
                 }
             }
 
-            if (uiMouseButtonPressed != uint(-1))
+            if (uiMouseButtonPressed != std::numeric_limits<std::size_t>::max())
             {
                 bMouseDragged_ = true;
                 mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
 
                 gui::event mMouseDragEvent("MOUSE_DRAG_START", true);
-                mMouseDragEvent.add((uint)mMouseDragButton_);
+                mMouseDragEvent.add(static_cast<std::size_t>(mMouseDragButton_));
                 mMouseDragEvent.add(mMousePos_.x);
                 mMouseDragEvent.add(mMousePos_.y);
                 mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
@@ -473,12 +473,12 @@ void manager::update(float fTempDelta)
         fire_event_(mMouseMovedEvent, true);
     }
 
-    if (bMouseDragged_ && !mMouseState.lButtonState[(uint)mMouseDragButton_])
+    if (bMouseDragged_ && !mMouseState.lButtonState[static_cast<std::size_t>(mMouseDragButton_)])
     {
         bMouseDragged_ = false;
 
         gui::event mMouseDragEvent("MOUSE_DRAG_STOP", true);
-        mMouseDragEvent.add((uint)mMouseDragButton_);
+        mMouseDragEvent.add(static_cast<std::size_t>(mMouseDragButton_));
         mMouseDragEvent.add(mMousePos_.x);
         mMouseDragEvent.add(mMousePos_.y);
         mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));

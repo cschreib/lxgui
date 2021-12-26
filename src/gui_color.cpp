@@ -211,10 +211,10 @@ color operator * (float f, const color& c2) noexcept
 
 std::ostream& operator << (std::ostream& mStream, const color& mColor)
 {
-    return mStream << static_cast<uint>(std::round(255.0f*mColor.r)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.g)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.b)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.a));
+    return mStream << static_cast<std::size_t>(std::round(255.0f*mColor.r)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.g)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.b)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.a));
 }
 
 std::istream& operator >> (std::istream& mStream, color& mColor)

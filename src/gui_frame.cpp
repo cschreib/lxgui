@@ -503,7 +503,7 @@ void frame::check_position() const
 
 void frame::disable_draw_layer(layer_type mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<uint>(mLayerID)];
+    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = true;
@@ -513,7 +513,7 @@ void frame::disable_draw_layer(layer_type mLayerID)
 
 void frame::enable_draw_layer(layer_type mLayerID)
 {
-    layer& mLayer = lLayerList_[static_cast<uint>(mLayerID)];
+    layer& mLayer = lLayerList_[static_cast<std::size_t>(mLayerID)];
     if (!mLayer.bDisabled)
     {
         mLayer.bDisabled = false;
@@ -951,24 +951,24 @@ vector2f frame::get_min_dimensions() const
     return vector2f(fMinWidth_, fMinHeight_);
 }
 
-uint frame::get_num_children() const
+std::size_t frame::get_num_children() const
 {
     return std::count_if(lChildList_.begin(), lChildList_.end(),
         [](const auto& pChild) { return pChild != nullptr; });
 }
 
-uint frame::get_rough_num_children() const
+std::size_t frame::get_rough_num_children() const
 {
     return lChildList_.size();
 }
 
-uint frame::get_num_regions() const
+std::size_t frame::get_num_regions() const
 {
     return std::count_if(lRegionList_.begin(), lRegionList_.end(),
         [](const auto& pRegion) { return pRegion != nullptr; });
 }
 
-uint frame::get_rough_num_regions() const
+std::size_t frame::get_rough_num_regions() const
 {
     return lRegionList_.size();
 }
@@ -1052,7 +1052,7 @@ std::string frame::get_adjusted_script_name(const std::string& sScriptName)
     return sAdjustedName;
 }
 
-std::string hijack_sol_error_line(std::string sOriginalMessage, const std::string& sFile, uint uiLineNbr)
+std::string hijack_sol_error_line(std::string sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
 {
     auto uiPos1 = sOriginalMessage.find("[string \"" + sFile);
     if (uiPos1 == std::string::npos)
@@ -1073,7 +1073,7 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     if (uiPos4 == std::string::npos)
         return sOriginalMessage;
 
-    uint uiOffset = 0;
+    std::size_t uiOffset = 0;
     if (!utils::from_string(sOriginalMessage.substr(uiPos3 + 1, uiPos4 - uiPos3 - 1), uiOffset))
         return sOriginalMessage;
 
@@ -1092,7 +1092,7 @@ std::string hijack_sol_error_line(std::string sOriginalMessage, const std::strin
     return sOriginalMessage;
 }
 
-std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, uint uiLineNbr)
+std::string hijack_sol_error_message(std::string sOriginalMessage, const std::string& sFile, std::size_t uiLineNbr)
 {
     std::string sNewError;
     for (auto sLine : utils::cut(sOriginalMessage, "\n"))
@@ -1114,8 +1114,8 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 
     std::string sStr = "return function(self";
 
-    constexpr uint uiMaxArgs = 9;
-    for (uint i = 0; i < uiMaxArgs; ++i)
+    constexpr std::size_t uiMaxArgs = 9;
+    for (std::size_t i = 0; i < uiMaxArgs; ++i)
         sStr += ", arg" + utils::to_string(i + 1);
 
     sStr += ") " + sContent + " end";
@@ -1153,7 +1153,7 @@ void frame::define_script_(const std::string& sScriptName, sol::protected_functi
         std::vector<sol::object> lArgs;
 
         // Set arguments
-        for (uint i = 0; i < mArgs.get_num_param(); ++i)
+        for (std::size_t i = 0; i < mArgs.get_num_param(); ++i)
         {
             const utils::variant& mArg = mArgs.get(i);
             if (std::holds_alternative<utils::empty>(mArg))
@@ -1372,7 +1372,7 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "KEY_PRESSED")
         {
             event_data mData;
-            mData.add((uint)mEvent.get<input::key>(0));
+            mData.add(static_cast<std::size_t>(mEvent.get<input::key>(0)));
             mData.add(mEvent.get(1));
 
             on_script("OnKeyDown", mData);
@@ -1382,7 +1382,7 @@ void frame::on_event(const event& mEvent)
         else if (mEvent.get_name() == "KEY_RELEASED")
         {
             event_data mData;
-            mData.add((uint)mEvent.get<input::key>(0));
+            mData.add(static_cast<std::size_t>(mEvent.get<input::key>(0)));
             mData.add(mEvent.get(1));
 
             on_script("OnKeyUp", mData);
@@ -1997,13 +1997,13 @@ void frame::update(float fDelta)
         for (const auto& pRegion : lRegionList_)
         {
             if (pRegion && pRegion->get_object_type() != "font_string")
-                lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
+                lLayerList_[static_cast<std::size_t>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
         for (const auto& pRegion : lRegionList_)
         {
             if (pRegion && pRegion->get_object_type() == "font_string")
-                lLayerList_[static_cast<uint>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
+                lLayerList_[static_cast<std::size_t>(pRegion->get_draw_layer())].lRegionList.push_back(pRegion);
         }
 
         bBuildLayerList_ = false;

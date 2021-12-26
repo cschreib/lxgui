@@ -583,9 +583,9 @@ bool uiobject::depends_on(const uiobject& mObj) const
     return false;
 }
 
-uint uiobject::get_num_point() const
+std::size_t uiobject::get_num_point() const
 {
-    uint uiNumAnchors = 0u;
+    std::size_t uiNumAnchors = 0u;
     for (const auto& mAnchor : lAnchorList_)
     {
         if (mAnchor)

@@ -79,7 +79,7 @@ matrix4f renderer::get_view() const
     if (!pCurrentTarget_)
     {
         // Rendering to main screen, flip Y
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
             mCurrentViewMatrix(i,1) *= -1.0f;
     }
 
@@ -88,8 +88,8 @@ matrix4f renderer::get_view() const
 
 void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
 {
-    static const std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
-    static const uint n = ids.size();
+    static const std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
+    static const std::size_t uiNumVertices = lIDs.size();
 
     const sfml::material* pMat = static_cast<const sfml::material*>(pMaterial);
 
@@ -97,14 +97,14 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
     if (pMat)
         mTexDims = vector2f(pMat->get_canvas_dimensions());
 
-    sf::VertexArray mArray(sf::PrimitiveType::Triangles, ids.size() * lQuadList.size());
-    for (uint k = 0; k < lQuadList.size(); ++k)
+    sf::VertexArray mArray(sf::PrimitiveType::Triangles, lIDs.size() * lQuadList.size());
+    for (std::size_t k = 0; k < lQuadList.size(); ++k)
     {
         const std::array<vertex,4>& mVertices = lQuadList[k];
-        for (uint i = 0; i < n; ++i)
+        for (std::size_t i = 0; i < uiNumVertices; ++i)
         {
-            const uint j = ids[i];
-            sf::Vertex& mSFVertex = mArray[k*n + i];
+            const std::size_t j = lIDs[i];
+            sf::Vertex& mSFVertex = mArray[k*uiNumVertices + i];
             const vertex& mVertex = mVertices[j];
             const float a = mVertex.col.a;
 
@@ -166,7 +166,7 @@ std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) co
     return std::make_shared<sfml::atlas>(*this, mFilter);
 }
 
-uint renderer::get_texture_max_size() const
+std::size_t renderer::get_texture_max_size() const
 {
     return sf::Texture::getMaximumSize();
 }
@@ -213,8 +213,8 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
     return std::make_shared<sfml::render_target>(mDimensions, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
-    uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
+    std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
     char32_t uiDefaultCodePoint) const
 {
     return std::make_shared<sfml::font>(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);

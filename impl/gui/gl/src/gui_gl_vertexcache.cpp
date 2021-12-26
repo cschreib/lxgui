@@ -34,7 +34,7 @@ vertex_cache::vertex_cache(type mType) : gui::vertex_cache(mType)
 {
     glGenVertexArrays(1, &uiVertexArray_);
 
-    std::array<uint,2> lBuffers;
+    std::array<std::uint32_t,2> lBuffers;
     glGenBuffers(lBuffers.size(), lBuffers.data());
     uiVertexBuffer_ = lBuffers[0];
     uiIndexBuffer_ = lBuffers[1];
@@ -58,11 +58,11 @@ vertex_cache::~vertex_cache()
 {
     glDeleteVertexArrays(1, &uiVertexArray_);
 
-    std::array<uint,2> lBuffers = { uiVertexBuffer_, uiIndexBuffer_ };
+    std::array<std::uint32_t,2> lBuffers = { uiVertexBuffer_, uiIndexBuffer_ };
     glDeleteBuffers(lBuffers.size(), lBuffers.data());
 }
 
-void vertex_cache::update_data(const vertex* lVertexData, uint uiNumVertex)
+void vertex_cache::update_data(const vertex* lVertexData, std::size_t uiNumVertex)
 {
     glBindBuffer(GL_ARRAY_BUFFER, uiVertexBuffer_);
 
@@ -79,24 +79,24 @@ void vertex_cache::update_data(const vertex* lVertexData, uint uiNumVertex)
     uiCurrentSizeVertex_ = uiNumVertex;
 }
 
-void vertex_cache::update_indices(const uint* lVertexIndices, uint uiNumIndices)
+void vertex_cache::update_indices(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices)
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIndexBuffer_);
 
     if (uiNumIndices > uiCurrentCapacityIndex_)
     {
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * uiNumIndices, lVertexIndices, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(std::uint32_t) * uiNumIndices, lVertexIndices, GL_DYNAMIC_DRAW);
         uiCurrentCapacityIndex_ = uiNumIndices;
     }
     else
     {
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(uint) * uiNumIndices, lVertexIndices);
+        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(std::uint32_t) * uiNumIndices, lVertexIndices);
     }
 
     uiCurrentSizeIndex_ = uiNumIndices;
 }
 
-void vertex_cache::update_indices_if_grow(const uint* lVertexIndices, uint uiNumIndices)
+void vertex_cache::update_indices_if_grow(const std::uint32_t* lVertexIndices, std::size_t uiNumIndices)
 {
     if (uiNumIndices > uiCurrentCapacityIndex_)
     {
@@ -109,12 +109,12 @@ void vertex_cache::update_indices_if_grow(const uint* lVertexIndices, uint uiNum
     }
 }
 
-void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
+void vertex_cache::update(const vertex* lVertexData, std::size_t uiNumVertex)
 {
     if (mType_ == type::QUADS)
     {
-        static constexpr std::array<uint, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
-        static thread_local std::vector<uint> lRepeatedIds;
+        static constexpr std::array<std::uint32_t, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
+        static thread_local std::vector<std::uint32_t> lRepeatedIds;
 
         if (uiNumVertex % 4 != 0)
         {
@@ -127,12 +127,12 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
         update_data(lVertexData, uiNumVertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        uint uiNumIndices = (uiNumVertex/4u)*6u;
+        std::size_t uiNumIndices = (uiNumVertex/4u)*6u;
         if (uiNumIndices > lRepeatedIds.size())
         {
-            uint uiOldSize = lRepeatedIds.size();
+            std::size_t uiOldSize = lRepeatedIds.size();
             lRepeatedIds.resize(uiNumIndices);
-            for (uint i = uiOldSize; i < uiNumIndices; ++i)
+            for (std::size_t i = uiOldSize; i < uiNumIndices; ++i)
             {
                 lRepeatedIds[i] = (i/6)*4 + lQuadIDs[i%6];
             }
@@ -143,7 +143,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
     }
     else
     {
-        static thread_local std::vector<uint> lRepeatedIds;
+        static thread_local std::vector<std::uint32_t> lRepeatedIds;
 
         if (uiNumVertex % 3 != 0)
         {
@@ -156,12 +156,12 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
         update_data(lVertexData, uiNumVertex);
 
         // Update the repeated quads IDs array if it needs to grow
-        uint uiNumIndices = uiNumVertex;
+        std::size_t uiNumIndices = uiNumVertex;
         if (uiNumIndices > lRepeatedIds.size())
         {
-            uint uiOldSize = lRepeatedIds.size();
+            std::size_t uiOldSize = lRepeatedIds.size();
             lRepeatedIds.resize(uiNumIndices);
-            for (uint i = uiOldSize; i < uiNumIndices; ++i)
+            for (std::size_t i = uiOldSize; i < uiNumIndices; ++i)
             {
                 lRepeatedIds[i] = i;
             }

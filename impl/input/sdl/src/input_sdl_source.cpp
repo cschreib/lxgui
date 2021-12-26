@@ -277,7 +277,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
             }
 
             key mKey = from_sdl_(mEvent.key.keysym.sym);
-            mKeyboard_.lKeyState[(uint)mKey] = true;
+            mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = true;
 
             gui::event mKeyboardEvent("KEY_PRESSED");
             mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
@@ -287,7 +287,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
         case SDL_KEYUP:
         {
             key mKey = from_sdl_(mEvent.key.keysym.sym);
-            mKeyboard_.lKeyState[(uint)mKey] = false;
+            mKeyboard_.lKeyState[static_cast<std::size_t>(mKey)] = false;
 
             gui::event mKeyboardEvent("KEY_RELEASED");
             mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
@@ -308,7 +308,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
             mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONDOWN ?
                 lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
-            mMouse_.lButtonState[(uint)mButton] = true;
+            mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = true;
 
             gui::event mMouseEvent("MOUSE_PRESSED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
@@ -333,7 +333,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
             lEvents_.push_back(mMouseEvent);
 
-            clock::time_point mPrev = lLastClickClock_[(uint)mButton];
+            clock::time_point mPrev = lLastClickClock_[static_cast<std::size_t>(mButton)];
             clock::time_point mNow = clock::now();
             double dElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(mNow - mPrev).count()/1000.0;
             if (dElapsed < dDoubleClickTime_)
@@ -342,7 +342,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
                 lEvents_.push_back(mMouseEvent);
             }
 
-            lLastClickClock_[(uint)mButton] = mNow;
+            lLastClickClock_[static_cast<std::size_t>(mButton)] = mNow;
             break;
         }
         case SDL_MOUSEBUTTONUP: [[fallthrough]];
@@ -359,7 +359,7 @@ void source::on_sdl_event(const SDL_Event& mEvent)
 
             mouse_button mButton = mEvent.type == SDL_MOUSEBUTTONUP ?
                 lMouseFromSDL[mEvent.button.button - 1] : mouse_button::LEFT;
-            mMouse_.lButtonState[(uint)mButton] = false;
+            mMouse_.lButtonState[static_cast<std::size_t>(mButton)] = false;
 
             gui::event mMouseEvent("MOUSE_RELEASED");
             mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));

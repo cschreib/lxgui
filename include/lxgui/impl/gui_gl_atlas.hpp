@@ -50,8 +50,8 @@ namespace gl
 
     private :
 
-        uint uiTextureHandle_ = 0u;
-        uint uiSize_ = 0u;
+        std::uint32_t uiTextureHandle_ = 0u;
+        std::size_t   uiSize_ = 0u;
     };
 
     /// A class that holds rendering data

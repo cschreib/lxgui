@@ -1261,7 +1261,7 @@ void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::
 
 int manager::get_highest_level(frame_strata mFrameStrata) const
 {
-    auto& mStrata = lStrataList_[(uint)mFrameStrata];
+    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
     if (!mStrata.lLevelList.empty())
         return mStrata.lLevelList.rbegin()->first;
 
@@ -1368,7 +1368,7 @@ void manager::on_event(const event& mEvent)
     else if (mEvent.get_name() == "WINDOW_RESIZED")
     {
         // Update internal window size
-        mScreenDimensions_ = vector2ui(mEvent.get<uint>(0), mEvent.get<uint>(1));
+        mScreenDimensions_ = vector2ui(mEvent.get<std::size_t>(0), mEvent.get<std::size_t>(1));
 
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
@@ -1456,7 +1456,7 @@ void manager::print_statistics()
 {
     gui::out << "GUI Statistics :" << std::endl;
     gui::out << "    strata redraw percent :" << std::endl;
-    for (uint uiStrata = 0u; uiStrata < lStrataList_.size(); ++uiStrata)
+    for (std::size_t uiStrata = 0u; uiStrata < lStrataList_.size(); ++uiStrata)
     {
         const float fRedrawFraction = float(lStrataList_[uiStrata].uiRedrawCount)/float(uiFrameNumber_);
         gui::out << "     - [" << uiStrata << "] : "

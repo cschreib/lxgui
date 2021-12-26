@@ -788,7 +788,7 @@ namespace gui
         bool bResizeFromRight_ = false;
         bool bResizeFromBottom_ = false;
 
-        uint uiFrameNumber_ = 0u;
+        std::size_t uiFrameNumber_ = 0u;
 
         bool bEnableCaching_= true;
 

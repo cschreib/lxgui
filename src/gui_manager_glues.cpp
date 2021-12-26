@@ -87,7 +87,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     /** @function set_key_binding
     */
     mLua.set_function("set_key_binding", sol::overload(
-    [&](uint uiKey, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         if (sCode.has_value())
@@ -95,7 +95,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             remove_key_binding(mKey);
     },
-    [&](uint uiKey, uint uiModifier, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier = static_cast<input::key>(uiModifier);
@@ -104,7 +104,8 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             remove_key_binding(mKey, mModifier);
     },
-    [&](uint uiKey, uint uiModifier1, uint uiModifier2, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
+        sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier1 = static_cast<input::key>(uiModifier1);

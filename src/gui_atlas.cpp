@@ -277,7 +277,7 @@ bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pF
     }
 }
 
-uint atlas::get_num_pages() const
+std::size_t atlas::get_num_pages() const
 {
     return lPageList_.size();
 }

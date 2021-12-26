@@ -222,7 +222,8 @@ void font_string::create_text_object_()
 {
     if (sFontName_.empty()) return;
 
-    uint uiPixelHeight = std::round(get_manager().get_interface_scaling_factor()*fHeight_);
+    std::size_t uiPixelHeight = static_cast<std::size_t>(
+        std::round(get_manager().get_interface_scaling_factor()*fHeight_));
 
     const auto& mRenderer = get_manager().get_renderer();
     const auto& mLocalizer = get_manager().get_localizer();
@@ -235,7 +236,7 @@ void font_string::create_text_object_()
     {
         pOutlineFont = mRenderer.create_atlas_font(
             "GUI", sFontName_, uiPixelHeight,
-            std::min(2u, static_cast<uint>(std::round(0.2*uiPixelHeight))),
+            std::min<std::size_t>(2u, static_cast<std::size_t>(std::round(0.2*uiPixelHeight))),
             lCodePoints, uiDefaultCodePoint);
     }
 

@@ -144,7 +144,7 @@ namespace sfml
         sf::Texture        mTexture_;
         const sf::Texture* pAtlasTexture_ = nullptr;
 
-        static const uint MAXIMUM_SIZE;
+        static const std::size_t MAXIMUM_SIZE;
     };
 }
 }

@@ -9,8 +9,8 @@ namespace gui
 matrix4f build_identity()
 {
     matrix4f mId;
-    for (uint row = 0u; row < 4u; ++row)
-    for (uint col = 0u; col < 4u; ++col)
+    for (std::size_t row = 0u; row < 4u; ++row)
+    for (std::size_t col = 0u; col < 4u; ++col)
         mId(row, col) = (row == col ? 1.0f : 0.0f);
 
     return mId;
@@ -20,7 +20,7 @@ const matrix4f matrix4f::IDENTITY = build_identity();
 
 matrix4f::matrix4f(std::initializer_list<element_type> mList)
 {
-    const uint length = std::min<std::size_t>(mList.size(), 16u);
+    const std::size_t length = std::min<std::size_t>(mList.size(), 16u);
     std::copy(mList.begin(), mList.begin() + length, data);
 }
 
@@ -90,8 +90,8 @@ matrix4f matrix4f::view(const vector2f& window, const vector2f& center)
 
 void matrix4f::transpose()
 {
-    for (uint row = 0; row < 4; ++row)
-    for (uint col = 0; col < 4; ++col)
+    for (std::size_t row = 0; row < 4; ++row)
+    for (std::size_t col = 0; col < 4; ++col)
     {
         std::swap((*this)(row,col), (*this)(col,row));
     }
@@ -176,7 +176,7 @@ matrix4f operator + (const matrix4f& m1, const matrix4f& m2)
 {
     matrix4f r;
 
-    for (uint i = 0; i < 16; ++i)
+    for (std::size_t i = 0; i < 16; ++i)
         r.data[i] = m1.data[i] + m2.data[i];
 
     return r;
@@ -187,7 +187,7 @@ matrix4f operator - (const matrix4f& m1, const matrix4f& m2)
 {
     matrix4f r;
 
-    for (uint i = 0; i < 16; ++i)
+    for (std::size_t i = 0; i < 16; ++i)
         r.data[i] = m1.data[i] - m2.data[i];
 
     return r;

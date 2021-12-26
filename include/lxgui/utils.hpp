@@ -3,10 +3,4 @@
 
 #include <lxgui/lxgui.hpp>
 
-namespace lxgui
-{
-    using ulong = unsigned long;
-    using uint = unsigned int;
-}
-
 #endif

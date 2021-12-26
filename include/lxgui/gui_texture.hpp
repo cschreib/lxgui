@@ -110,7 +110,7 @@ namespace gui
         *         for each pixel, the original color is multiplied
         *         by this vertex color.
         */
-        color get_vertex_color(uint uiIndex) const;
+        color get_vertex_color(std::size_t uiIndex) const;
 
         /// Checks if this texture is desaturated.
         /** \return 'true' if the texture is desaturated
@@ -215,7 +215,8 @@ namespace gui
         *         for each pixel, the original color is multiplied
         *         by this vertex color.
         */
-        void set_vertex_color(const color& mColor, uint uiIndex = std::numeric_limits<uint>::max());
+        void set_vertex_color(const color& mColor,
+            std::size_t uiIndex = std::numeric_limits<std::size_t>::max());
 
         /// Creates the associated Lua glue.
         void create_glue() override;
