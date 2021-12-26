@@ -2,6 +2,7 @@
 
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_fontstring.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <sol/state.hpp>
@@ -213,11 +214,13 @@ void edit_box::register_on_lua(sol::state& mLua)
     mClass.set_function("set_number", sol::overload(
     [](edit_box& mSelf, int iValue)
     {
-        mSelf.set_text(utils::to_ustring(iValue));
+        mSelf.set_text(utils::utf8_to_unicode(
+            mSelf.get_manager().get_localizer().format_string("{:L}", iValue)));
     },
     [](edit_box& mSelf, double dValue)
     {
-        mSelf.set_text(utils::to_ustring(dValue));
+        mSelf.set_text(utils::utf8_to_unicode(
+            mSelf.get_manager().get_localizer().format_string("{:L}", dValue)));
     }));
 
     /** @function set_numeric

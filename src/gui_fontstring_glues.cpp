@@ -2,6 +2,7 @@
 
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_layeredregion.hpp"
+#include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -295,15 +296,18 @@ void font_string::register_on_lua(sol::state& mLua)
     mClass.set_function("set_text", sol::overload(
     [](font_string& mSelf, bool bValue)
     {
-        mSelf.set_text(utils::to_ustring(bValue));
+        mSelf.set_text(utils::utf8_to_unicode(
+            mSelf.get_manager().get_localizer().localize(bValue ? "{true}" : "{false}")));
     },
     [](font_string& mSelf, int iValue)
     {
-        mSelf.set_text(utils::to_ustring(iValue));
+        mSelf.set_text(utils::utf8_to_unicode(
+            mSelf.get_manager().get_localizer().format_string("{:L}", iValue)));
     },
     [](font_string& mSelf, double dValue)
     {
-        mSelf.set_text(utils::to_ustring(dValue));
+        mSelf.set_text(utils::utf8_to_unicode(
+            mSelf.get_manager().get_localizer().format_string("{:L}", dValue)));
     },
     [](font_string& mSelf, const std::string& sText)
     {
