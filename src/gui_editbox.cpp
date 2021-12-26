@@ -830,6 +830,7 @@ void edit_box::check_text_()
     if (sUnicodeText_.size() > uiMaxLetters_)
         sUnicodeText_.resize(uiMaxLetters_);
 
+    // TODO: use localizer's locale for these checks
     if (bNumericOnly_ && !utils::is_number(sUnicodeText_))
     {
         sUnicodeText_.clear();
