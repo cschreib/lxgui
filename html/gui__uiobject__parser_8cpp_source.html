@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/gui/src/gui_uiobject_parser.cpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/src/gui_uiobject_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a051efa06104b2c378e6b4d01090bb62.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,186 +69,176 @@ $(function() {
 <div class="title">gui_uiobject_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__uiobject__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__uiobject_8hpp.html">lxgui/gui_uiobject.hpp</a>&quot;</span></div>
+<a href="gui__uiobject__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_uiobject.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__anchor_8hpp.html">lxgui/gui_anchor.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__color_8hpp.html">lxgui/gui_color.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="xml__document_8hpp.html">lxgui/xml_document.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils__string_8hpp.html">lxgui/utils_string.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils__std_8hpp.html">lxgui/utils_std.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1uiobject.html#a6040e238b8a5fa14860052cc8bce5f9f">   14</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1color.html">color</a> <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a6040e238b8a5fa14860052cc8bce5f9f">uiobject::parse_color_block_</a>(<a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pBlock)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordflow">if</span> (pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;c&quot;</span>))</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        std::string sColor = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;c&quot;</span>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">if</span> (!sColor.empty() &amp;&amp; sColor[0] == <span class="charliteral">&#39;#&#39;</span>)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>(sColor);</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_anchor.hpp&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_color.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;lxgui/utils_std.hpp&gt;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;color uiobject::parse_color_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;c&quot;</span>))</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        std::string sColor = pAttr-&gt;get_value&lt;std::string&gt;();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">if</span> (!sColor.empty() &amp;&amp; sColor[0] == <span class="charliteral">&#39;#&#39;</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            <span class="keywordflow">return</span> color(sColor);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>(</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        utils::string_to_float(pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;r&quot;</span>)),</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        utils::string_to_float(pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;g&quot;</span>)),</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        utils::string_to_float(pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;b&quot;</span>)),</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        utils::string_to_float(pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;a&quot;</span>))</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    );</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1uiobject.html#a7a40236c7e7a768f28c17beb21b1910f">   32</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a7a40236c7e7a768f28c17beb21b1910f">uiobject::parse_size_block_</a>(<a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pBlock)</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pSizeBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;Size&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">if</span> (pSizeBlock)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pDimBlock = pSizeBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a25801c7e65aa14f6a17285b6ccece646">get_radio_block</a>();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;AbsDimension&quot;</span>)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordtype">bool</span> bHasX = pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;x&quot;</span>), bHasY = pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;y&quot;</span>);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">if</span> (bHasX &amp;&amp; bHasY)</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a5f1491af1b63a22b3a5c2ff4ab3a3dda">set_dimensions</a>(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                    utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>))</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                ));</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasX)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a51085527860a33b352dda295d270495e">set_width</a>(utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)));</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasY)</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae2d92eab17398ad4ae921bb7740125ba">set_height</a>(utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>)));</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;RelDimension&quot;</span>)</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordtype">bool</span> bHasX = pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;x&quot;</span>), bHasY = pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;y&quot;</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">if</span> (bHasX &amp;&amp; bHasY)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a92ba594ff11864c3cc31948e21793aab">set_relative_dimensions</a>(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                    utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)),</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                    utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>))</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                ));</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasX)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a9c78d04a0e17427a1458fceab798e080">set_relative_width</a>(utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)));</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasY)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ac9cbaf467f8348f761d9248e1c7b6709">set_relative_height</a>(utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>)));</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1uiobject.html#a82fa232de2b8c54f78a9471b0a564664">   71</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a82fa232de2b8c54f78a9471b0a564664">uiobject::parse_anchor_block_</a>(<a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pBlock)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;{</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pAnchorsBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;Anchors&quot;</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">if</span> (pAnchorsBlock)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::vector&lt;std::string&gt; lFoundPoints;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span>* pAnchorBlock : pAnchorsBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4db183f257dc308dfb48ff64c78c0b0e">blocks</a>())</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            std::string sPoint = pAnchorBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;point&quot;</span>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            std::string sParent = pAnchorBlock-&gt;get_attribute(<span class="stringliteral">&quot;relativeTo&quot;</span>);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            std::string sRelativePoint = pAnchorBlock-&gt;get_attribute(<span class="stringliteral">&quot;relativePoint&quot;</span>);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">if</span> (<a class="code" href="namespacelxgui_1_1utils.html#a34d7b0c6f96dd8c7324c22c415458127">utils::find</a>(lFoundPoints, sPoint) != lFoundPoints.end())</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pAnchorsBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a0e7941d3f6364e172279793303ead1da">get_location</a>() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    &lt;&lt; <span class="stringliteral">&quot;anchor point \&quot;&quot;</span> &lt;&lt; sPoint &lt;&lt; <span class="stringliteral">&quot;\&quot; has already been defined &quot;</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                    <span class="stringliteral">&quot;for \&quot;&quot;</span> &lt;&lt; <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a> &lt;&lt; <span class="stringliteral">&quot;\&quot;. anchor skipped.&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keywordflow">if</span> (sRelativePoint.empty())</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                    sRelativePoint = sPoint;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                <span class="keywordflow">if</span> (utils::has_no_content(sParent))</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                {</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#aad3abd731f96dfb37739fa6176a64207">pParent_</a> || <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">is_virtual</a>())</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                        sParent = <span class="stringliteral">&quot;$parent&quot;</span>;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                    <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                        sParent = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                <a class="code" href="structlxgui_1_1gui_1_1anchor__data.html">anchor_data</a> mAnchor(</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(sPoint),</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;                    sParent,</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;                    <a class="code" href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">anchor::get_anchor_point</a>(sRelativePoint)</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                );</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pOffsetBlock = pAnchorBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;Offset&quot;</span>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keywordflow">if</span> (pOffsetBlock)</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                {</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pDimBlock = pOffsetBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a25801c7e65aa14f6a17285b6ccece646">get_radio_block</a>();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                    <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;AbsDimension&quot;</span>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                    {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        mAnchor.<a class="code" href="structlxgui_1_1gui_1_1anchor__data.html#ac9a5ea62195e74a024df3a84ffabb156">mType</a> = <a class="code" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbea7d8a220d2262f9d6c658d549ee12cf2c">anchor_type::ABS</a>;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                        mAnchor.<a class="code" href="structlxgui_1_1gui_1_1anchor__data.html#a5ce7e47d86b3be5ad62b675881226f47">mOffset</a> = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                            utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)),</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                            utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>))</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                        );</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                    }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;RelDimension&quot;</span>)</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                    {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                        mAnchor.<a class="code" href="structlxgui_1_1gui_1_1anchor__data.html#ac9a5ea62195e74a024df3a84ffabb156">mType</a> = <a class="code" href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbeae76f78a754cd06573b145266a956cfdf">anchor_type::REL</a>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                        mAnchor.<a class="code" href="structlxgui_1_1gui_1_1anchor__data.html#a5ce7e47d86b3be5ad62b675881226f47">mOffset</a> = <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                            utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)),</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;                            utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>))</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                        );</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    }</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                }</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#af18459c6083be4b15ee1d988dfc2a1b5">set_point</a>(mAnchor);</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> color(</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        mNode.get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;r&quot;</span>, 0.0f),</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        mNode.get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;g&quot;</span>, 0.0f),</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        mNode.get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;b&quot;</span>, 0.0f),</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        mNode.get_attribute_value_or&lt;<span class="keywordtype">float</span>&gt;(<span class="stringliteral">&quot;a&quot;</span>, 1.0f)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    );</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;std::pair&lt;anchor_type, vector2&lt;std::optional&lt;float&gt;&gt;&gt; uiobject::parse_dimension_(</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">const</span> layout_node* pAbsDimNode = mNode.try_get_child(<span class="stringliteral">&quot;AbsDimension&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">const</span> layout_node* pRelDimNode = mNode.try_get_child(<span class="stringliteral">&quot;RelDimension&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordflow">if</span> (pAbsDimNode &amp;&amp; pRelDimNode)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            mNode.get_name() &lt;&lt; <span class="stringliteral">&quot; node can only contain one of AbsDimension or RelDimension, &quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="stringliteral">&quot;but not both. RelDimension ignored.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">if</span> (!pAbsDimNode &amp;&amp; !pRelDimNode)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span> &lt;&lt;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            mNode.get_name() &lt;&lt; <span class="stringliteral">&quot; node must contain one of AbsDimension or RelDimension.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    anchor_type mType = anchor_type::ABS;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> layout_node* pNode = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">if</span> (pAbsDimNode)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        mType = anchor_type::ABS;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        pNode = pAbsDimNode;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        mType = anchor_type::REL;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        pNode = pRelDimNode;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    vector2&lt;std::optional&lt;float&gt;&gt; mVec;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = pNode-&gt;try_get_attribute(<span class="stringliteral">&quot;x&quot;</span>))</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        mVec.x = pAttr-&gt;get_value&lt;<span class="keywordtype">float</span>&gt;();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        mVec.x = std::nullopt;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = pNode-&gt;try_get_attribute(<span class="stringliteral">&quot;y&quot;</span>))</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        mVec.y = pAttr-&gt;get_value&lt;<span class="keywordtype">float</span>&gt;();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        mVec.y = std::nullopt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">return</span> std::make_pair(mType, mVec);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keywordtype">void</span> uiobject::parse_size_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;{</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSizeBlock = mNode.try_get_child(<span class="stringliteral">&quot;Size&quot;</span>))</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keyword">auto</span> mDimensions = parse_dimension_(*pSizeBlock);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordtype">bool</span> bHasX = mDimensions.second.x.has_value();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordtype">bool</span> bHasY = mDimensions.second.y.has_value();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> (mDimensions.first == anchor_type::ABS)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">if</span> (bHasX &amp;&amp; bHasY)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                set_dimensions(vector2f(</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    mDimensions.second.x.value(),</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                    mDimensions.second.y.value()));</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasX)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                set_width(mDimensions.second.x.value());</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasY)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                set_height(mDimensions.second.y.value());</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            <span class="keywordflow">if</span> (bHasX &amp;&amp; bHasY)</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;            {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                set_relative_dimensions(vector2f(</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                    mDimensions.second.x.value(),</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                    mDimensions.second.y.value()));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasX)</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                set_relative_width(mDimensions.second.x.value());</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (bHasY)</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                set_relative_height(mDimensions.second.y.value());</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        }</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keywordtype">void</span> uiobject::parse_anchor_node_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;{</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pAnchorsNode = mNode.try_get_child(<span class="stringliteral">&quot;Anchors&quot;</span>))</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        std::vector&lt;std::string&gt; lFoundPoints;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mAnchorNode : pAnchorsNode-&gt;get_children())</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        {</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;            <span class="keywordflow">if</span> (mAnchorNode.get_name() != <span class="stringliteral">&quot;Anchor&quot;</span> &amp;&amp; mAnchorNode.get_name() != <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mAnchorNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                    &lt;&lt; <span class="stringliteral">&quot;unexpected node &#39;&quot;</span> &lt;&lt; mAnchorNode.get_name() &lt;&lt; <span class="stringliteral">&quot;&#39;; ignored.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            std::string sPoint = mAnchorNode.get_attribute_value_or&lt;std::string&gt;(</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                <span class="stringliteral">&quot;point&quot;</span>, <span class="stringliteral">&quot;TOPLEFT&quot;</span>);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            std::string sParent = mAnchorNode.get_attribute_value_or&lt;std::string&gt;(</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;                <span class="stringliteral">&quot;relativeTo&quot;</span>, pParent_ || is_virtual() ? <span class="stringliteral">&quot;$parent&quot;</span> : <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            std::string sRelativePoint = mAnchorNode.get_attribute_value_or&lt;std::string&gt;(</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                <span class="stringliteral">&quot;relativePoint&quot;</span>, sPoint);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;            <span class="keywordflow">if</span> (utils::find(lFoundPoints, sPoint) != lFoundPoints.end())</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            {</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; mAnchorNode.get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                    &lt;&lt; <span class="stringliteral">&quot;anchor point \&quot;&quot;</span> &lt;&lt; sPoint &lt;&lt; <span class="stringliteral">&quot;\&quot; has already been defined &quot;</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;                    <span class="stringliteral">&quot;for \&quot;&quot;</span> &lt;&lt; sName_ &lt;&lt; <span class="stringliteral">&quot;\&quot;. anchor skipped.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;            anchor_data mAnchor(</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                anchor::get_anchor_point(sPoint),</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;                sParent,</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;                anchor::get_anchor_point(sRelativePoint)</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            );</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;            <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pOffsetNode = mAnchorNode.try_get_child(<span class="stringliteral">&quot;Offset&quot;</span>))</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            {</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                <span class="keyword">auto</span> mDimensions = parse_dimension_(*pOffsetNode);</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                mAnchor.mType = mDimensions.first;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                mAnchor.mOffset = vector2f(</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    mDimensions.second.x.value_or(0.0f),</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    mDimensions.second.y.value_or(0.0f)</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                );</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;            }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;            set_point(mAnchor);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        }</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;}</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a5f1491af1b63a22b3a5c2ff4ab3a3dda"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a5f1491af1b63a22b3a5c2ff4ab3a3dda">lxgui::gui::uiobject::set_dimensions</a></div><div class="ttdeci">virtual void set_dimensions(const vector2f &amp;mDimensions)</div><div class="ttdoc">Changes this widget's absolute dimensions (in pixels).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00249">gui_uiobject.cpp:249</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a7a40236c7e7a768f28c17beb21b1910f"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a7a40236c7e7a768f28c17beb21b1910f">lxgui::gui::uiobject::parse_size_block_</a></div><div class="ttdeci">virtual void parse_size_block_(xml::block *pBlock)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00032">gui_uiobject_parser.cpp:32</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a92ba594ff11864c3cc31948e21793aab"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a92ba594ff11864c3cc31948e21793aab">lxgui::gui::uiobject::set_relative_dimensions</a></div><div class="ttdeci">void set_relative_dimensions(const vector2f &amp;mDimensions)</div><div class="ttdoc">Changes this widget's dimensions (relative to its parent).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00300">gui_uiobject.cpp:300</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_ae5cde9869868d96703677c75d0c83bbeae76f78a754cd06573b145266a956cfdf"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbeae76f78a754cd06573b145266a956cfdf">lxgui::gui::anchor_type::REL</a></div><div class="ttdeci">@ REL</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a9c78d04a0e17427a1458fceab798e080"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a9c78d04a0e17427a1458fceab798e080">lxgui::gui::uiobject::set_relative_width</a></div><div class="ttdeci">void set_relative_width(float fRelWidth)</div><div class="ttdoc">Changes this widget's width (relative to its parent).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00308">gui_uiobject.cpp:308</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a0e7941d3f6364e172279793303ead1da"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a0e7941d3f6364e172279793303ead1da">lxgui::xml::block::get_location</a></div><div class="ttdeci">std::string get_location() const</div><div class="ttdoc">Returns the location at which this block has been found.</div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1anchor__data_html_ac9a5ea62195e74a024df3a84ffabb156"><div class="ttname"><a href="structlxgui_1_1gui_1_1anchor__data.html#ac9a5ea62195e74a024df3a84ffabb156">lxgui::gui::anchor_data::mType</a></div><div class="ttdeci">anchor_type mType</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00084">gui_anchor.hpp:84</a></div></div>
-<div class="ttc" id="agui__uiobject_8hpp_html"><div class="ttname"><a href="gui__uiobject_8hpp.html">gui_uiobject.hpp</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1anchor__data_html_a5ce7e47d86b3be5ad62b675881226f47"><div class="ttname"><a href="structlxgui_1_1gui_1_1anchor__data.html#a5ce7e47d86b3be5ad62b675881226f47">lxgui::gui::anchor_data::mOffset</a></div><div class="ttdeci">vector2f mOffset</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00083">gui_anchor.hpp:83</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1anchor__data_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1anchor__data.html">lxgui::gui::anchor_data</a></div><div class="ttdoc">Stores a position for a UI widget.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8hpp_source.html#l00043">gui_anchor.hpp:43</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae2d92eab17398ad4ae921bb7740125ba"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae2d92eab17398ad4ae921bb7740125ba">lxgui::gui::uiobject::set_height</a></div><div class="ttdeci">virtual void set_height(float fAbsHeight)</div><div class="ttdoc">Changes this widget's absolute height (in pixels).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00283">gui_uiobject.cpp:283</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a849613b41dbb83ad0f8152b6905b9b09"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">lxgui::xml::block::get_block</a></div><div class="ttdeci">block * get_block(const std::string &amp;sName)</div><div class="ttdoc">Returns one of this Block's sub-block.</div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_adec2282d50618b403fd8a54e6e493e31"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">lxgui::xml::block::is_provided</a></div><div class="ttdeci">bool is_provided(const std::string &amp;sName)</div><div class="ttdoc">Checks if one of this Block's attribute has been provided.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_ae5cde9869868d96703677c75d0c83bbea7d8a220d2262f9d6c658d549ee12cf2c"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ae5cde9869868d96703677c75d0c83bbea7d8a220d2262f9d6c658d549ee12cf2c">lxgui::gui::anchor_type::ABS</a></div><div class="ttdeci">@ ABS</div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html">lxgui::xml::block</a></div><div class="ttdoc">An element in an XML file.</div><div class="ttdef"><b>Definition:</b> <a href="xml__block_8hpp_source.html#l00051">xml_block.hpp:51</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a4db183f257dc308dfb48ff64c78c0b0e"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a4db183f257dc308dfb48ff64c78c0b0e">lxgui::xml::block::blocks</a></div><div class="ttdeci">range_block blocks(const std::string &amp;sName=&quot;&quot;)</div><div class="ttdoc">Enable iteration through this Block's sub-blocks.</div><div class="ttdef"><b>Definition:</b> <a href="xml__block_8hpp_source.html#l00177">xml_block.hpp:177</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a82fa232de2b8c54f78a9471b0a564664"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a82fa232de2b8c54f78a9471b0a564664">lxgui::gui::uiobject::parse_anchor_block_</a></div><div class="ttdeci">virtual void parse_anchor_block_(xml::block *pBlock)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00071">gui_uiobject_parser.cpp:71</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00186">gui_vector2.hpp:186</a></div></div>
-<div class="ttc" id="agui__anchor_8hpp_html"><div class="ttname"><a href="gui__anchor_8hpp.html">gui_anchor.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_adc4e43169d721038cf8f257515721593"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">lxgui::gui::uiobject::sName_</a></div><div class="ttdeci">std::string sName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00647">gui_uiobject.hpp:647</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_af5ed226227be7e1d15d550b7fa1d0987"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">lxgui::xml::block::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns this Block's name.</div></div>
-<div class="ttc" id="autils__std_8hpp_html"><div class="ttname"><a href="utils__std_8hpp.html">utils_std.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_aad3abd731f96dfb37739fa6176a64207"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#aad3abd731f96dfb37739fa6176a64207">lxgui::gui::uiobject::pParent_</a></div><div class="ttdeci">utils::observer_ptr&lt; frame &gt; pParent_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00652">gui_uiobject.hpp:652</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_af18459c6083be4b15ee1d988dfc2a1b5"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#af18459c6083be4b15ee1d988dfc2a1b5">lxgui::gui::uiobject::set_point</a></div><div class="ttdeci">void set_point(const anchor_data &amp;mAnchor)</div><div class="ttdoc">Adds/replaces an anchor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00522">gui_uiobject.cpp:522</a></div></div>
-<div class="ttc" id="agui__color_8hpp_html"><div class="ttname"><a href="gui__color_8hpp.html">gui_color.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a6040e238b8a5fa14860052cc8bce5f9f"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a6040e238b8a5fa14860052cc8bce5f9f">lxgui::gui::uiobject::parse_color_block_</a></div><div class="ttdeci">color parse_color_block_(xml::block *pBlock)</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject__parser_8cpp_source.html#l00014">gui_uiobject_parser.cpp:14</a></div></div>
-<div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a51085527860a33b352dda295d270495e"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a51085527860a33b352dda295d270495e">lxgui::gui::uiobject::set_width</a></div><div class="ttdeci">virtual void set_width(float fAbsWidth)</div><div class="ttdoc">Changes this widget's absolute width (in pixels).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00266">gui_uiobject.cpp:266</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a25801c7e65aa14f6a17285b6ccece646"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a25801c7e65aa14f6a17285b6ccece646">lxgui::xml::block::get_radio_block</a></div><div class="ttdeci">block * get_radio_block(uint uiGroup=0u)</div><div class="ttdoc">Returns a radio block.</div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a4439bbb0039a72dfc757e6674409fc29"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">lxgui::xml::block::get_attribute</a></div><div class="ttdeci">std::string get_attribute(const std::string &amp;sName)</div><div class="ttdoc">Returns one of this Block's attribute.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
-<div class="ttc" id="autils__string_8hpp_html"><div class="ttname"><a href="utils__string_8hpp.html">utils_string.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1anchor_html_a385b86487b594ba1bb4de5d2ad7208ce"><div class="ttname"><a href="classlxgui_1_1gui_1_1anchor.html#a385b86487b594ba1bb4de5d2ad7208ce">lxgui::gui::anchor::get_anchor_point</a></div><div class="ttdeci">static anchor_point get_anchor_point(const std::string &amp;sPoint)</div><div class="ttdoc">Returns the anchor point from its name.</div><div class="ttdef"><b>Definition:</b> <a href="gui__anchor_8cpp_source.html#l00178">gui_anchor.cpp:178</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1utils_html_a34d7b0c6f96dd8c7324c22c415458127"><div class="ttname"><a href="namespacelxgui_1_1utils.html#a34d7b0c6f96dd8c7324c22c415458127">lxgui::utils::find</a></div><div class="ttdeci">auto find(C &amp;v, const T &amp;s)</div><div class="ttdef"><b>Definition:</b> <a href="utils__std_8hpp_source.html#l00015">utils_std.hpp:15</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ac9cbaf467f8348f761d9248e1c7b6709"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ac9cbaf467f8348f761d9248e1c7b6709">lxgui::gui::uiobject::set_relative_height</a></div><div class="ttdeci">void set_relative_height(float fRelHeight)</div><div class="ttdoc">Changes this widget's height (relative to its parent).</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00316">gui_uiobject.cpp:316</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_a85b34049a4de7ccb6fba32efef7a6b1e"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#a85b34049a4de7ccb6fba32efef7a6b1e">lxgui::gui::uiobject::is_virtual</a></div><div class="ttdeci">bool is_virtual() const</div><div class="ttdoc">Checks if this uiobject is virtual.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8cpp_source.html#l00632">gui_uiobject.cpp:632</a></div></div>
-<div class="ttc" id="axml__document_8hpp_html"><div class="ttname"><a href="xml__document_8hpp.html">xml_document.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 10 2021 09:54:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

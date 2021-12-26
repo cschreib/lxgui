@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/gui/src/gui_atlas.cpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/src/gui_atlas.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a051efa06104b2c378e6b4d01090bb62.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,21 +69,21 @@ $(function() {
 <div class="title">gui_atlas.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__atlas_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__atlas_8hpp.html">lxgui/gui_atlas.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__vertex_8hpp.html">lxgui/gui_vertex.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__renderer_8hpp.html">lxgui/gui_renderer.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__font_8hpp.html">lxgui/gui_font.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__exception_8hpp.html">lxgui/gui_exception.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="utils__string_8hpp.html">lxgui/utils_string.hpp</a>&quot;</span></div>
+<a href="gui__atlas_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_atlas.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_vertex.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_renderer.hpp&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_font.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_exception.hpp&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;lxgui/utils_string.hpp&quot;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;{</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#adeb9867ed88f9d88741a734563d82adc">   13</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#adeb9867ed88f9d88741a734563d82adc">atlas_page::atlas_page</a>(<a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter) : mFilter_(mFilter) {}</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;atlas_page::atlas_page(material::filter mFilter) : mFilter_(mFilter) {}</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#aa9bcc03d31834ac9d132f76ebb3560f4">   15</a></span>&#160;std::shared_ptr&lt;material&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#aa9bcc03d31834ac9d132f76ebb3560f4">atlas_page::fetch_material</a>(<span class="keyword">const</span> std::string&amp; sFileName)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;std::shared_ptr&lt;material&gt; atlas_page::fetch_material(<span class="keyword">const</span> std::string&amp; sFileName)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">auto</span> mIter = lTextureList_.find(sFileName);</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">if</span> (mIter != lTextureList_.end())</div>
@@ -97,28 +97,28 @@ $(function() {
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#a3e18f0116f81fc3702c8ec8cc652f8ba">   29</a></span>&#160;std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a3e18f0116f81fc3702c8ec8cc652f8ba">atlas_page::add_material</a>(<span class="keyword">const</span> std::string&amp; sFileName,</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">material</a>&amp; mMat)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;std::shared_ptr&lt;gui::material&gt; atlas_page::add_material(<span class="keyword">const</span> std::string&amp; sFileName,</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">const</span> material&amp; mMat)</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> mRect = mMat.<a class="code" href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">get_rect</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> mRect = mMat.get_rect();</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keyword">const</span> <span class="keyword">auto</span> mLocation = find_location_(mRect.width(), mRect.height());</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keywordflow">if</span> (!mLocation.has_value())</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        std::shared_ptr&lt;gui::material&gt; pTex = <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a4d198d36476cd7cc9247605ac5eb7118">add_material_</a>(mMat, mLocation.value());</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        std::shared_ptr&lt;gui::material&gt; pTex = add_material_(mMat, mLocation.value());</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        lTextureList_[sFileName] = pTex;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordflow">return</span> pTex;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e)</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#a2c46f91b48b8a8a50dbbdee07a52d8fa">   50</a></span>&#160;std::shared_ptr&lt;font&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a2c46f91b48b8a8a50dbbdee07a52d8fa">atlas_page::fetch_font</a>(<span class="keyword">const</span> std::string&amp; sFontName)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;std::shared_ptr&lt;font&gt; atlas_page::fetch_font(<span class="keyword">const</span> std::string&amp; sFontName)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">auto</span> mIter = lFontList_.find(sFontName);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (mIter != lFontList_.end())</div>
@@ -132,7 +132,7 @@ $(function() {
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#a4da772a491a6ae2fd1a189d271243ac9">   64</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a4da772a491a6ae2fd1a189d271243ac9">atlas_page::add_font</a>(<span class="keyword">const</span> std::string&amp; sFontName,</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keywordtype">bool</span> atlas_page::add_font(<span class="keyword">const</span> std::string&amp; sFontName,</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::shared_ptr&lt;gui::font&gt; pFont)</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">try</span></div>
@@ -144,7 +144,7 @@ $(function() {
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            <span class="keywordflow">if</span> (!mLocation.has_value())</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            std::shared_ptr&lt;gui::material&gt; pTex = <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a4d198d36476cd7cc9247605ac5eb7118">add_material_</a>(*pMat, mLocation.value());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            std::shared_ptr&lt;gui::material&gt; pTex = add_material_(*pMat, mLocation.value());</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            pFont-&gt;update_texture(pTex);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            lFontList_[sFontName] = pFont;</div>
@@ -155,12 +155,12 @@ $(function() {
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e)</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">   92</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">atlas_page::empty</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keywordtype">bool</span> atlas_page::empty()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; pMat : lTextureList_)</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    {</div>
@@ -181,12 +181,12 @@ $(function() {
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    constexpr <span class="keywordtype">float</span> fPadding = 1.0f; <span class="comment">// pixels</span></div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1bounds2.html">bounds2f</a> mStartQuad(0, fWidth, 0, fHeight);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">empty</a>())</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    bounds2f mStartQuad(0, fWidth, 0, fHeight);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (empty())</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="keywordflow">return</span> mStartQuad;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">float</span> fAtlasWidth = <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#aae44a22fd4bdb94a242b5bc85715ed2d">get_width</a>();</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">float</span> fAtlasHeight = <a class="code" href="classlxgui_1_1gui_1_1atlas__page.html#a41c0c2c3ea10a347e9db17a11b259291">get_height</a>();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">float</span> fAtlasWidth = <a class="code" href="namespacelxgui_1_1gui_1_1parser.html#aebb54dec15302736c582727100815528">get_width</a>();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">float</span> fAtlasHeight = get_height();</div>
 <div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    std::vector&lt;bounds2f&gt; lOccupiedSpace;</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    lOccupiedSpace.reserve(lTextureList_.size());</div>
@@ -194,7 +194,7 @@ $(function() {
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keywordtype">float</span> fMaxWidth = 0.0f;</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordtype">float</span> fMaxHeight = 0.0f;</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">auto</span> apply_padding = [&amp;](<a class="code" href="structlxgui_1_1gui_1_1bounds2.html">bounds2f</a> mRect)</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">auto</span> apply_padding = [&amp;](bounds2f mRect)</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        mRect.right += fPadding;</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        mRect.bottom += fPadding;</div>
@@ -222,13 +222,13 @@ $(function() {
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    }</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordtype">float</span> fBestArea = std::numeric_limits&lt;float&gt;::infinity();</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> mBestQuad;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    bounds2f mBestQuad;</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mRectSource : lOccupiedSpace)</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">auto</span> mTestPosition = [&amp;](<span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>&amp; mPos)</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">auto</span> mTestPosition = [&amp;](<span class="keyword">const</span> vector2f&amp; mPos)</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        {</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keyword">const</span> <a class="code" href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">bounds2f</a> mTestQuad = mStartQuad + mPos;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keyword">const</span> bounds2f mTestQuad = mStartQuad + mPos;</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <span class="keywordflow">if</span> (mTestQuad.right &gt; fAtlasWidth || mTestQuad.bottom &gt; fAtlasHeight)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
@@ -259,10 +259,10 @@ $(function() {
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        <span class="keywordflow">return</span> std::nullopt;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}</div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#a615f0be00c5d3577c6af4c5d8770183f">  191</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1atlas.html#a615f0be00c5d3577c6af4c5d8770183f">atlas::atlas</a>(<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1renderer.html">renderer</a>&amp; mRenderer, <a class="code" href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">material::filter</a> mFilter) :</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;atlas::atlas(<span class="keyword">const</span> renderer&amp; mRenderer, material::filter mFilter) :</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    mRenderer_(mRenderer), mFilter_(mFilter) {}</div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#a2bb9f6f6e95915c17907d02923e97880">  194</a></span>&#160;std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas.html#a2bb9f6f6e95915c17907d02923e97880">atlas::fetch_material</a>(<span class="keyword">const</span> std::string&amp; sFileName)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;std::shared_ptr&lt;gui::material&gt; atlas::fetch_material(<span class="keyword">const</span> std::string&amp; sFileName)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mPageItem : lPageList_)</div>
 <div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    {</div>
@@ -274,7 +274,7 @@ $(function() {
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#aedfc073c9f25726ccfc8a2520c83786b">  206</a></span>&#160;std::shared_ptr&lt;gui::material&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas.html#aedfc073c9f25726ccfc8a2520c83786b">atlas::add_material</a>(<span class="keyword">const</span> std::string&amp; sFileName, <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1material.html">material</a>&amp; mMat)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;std::shared_ptr&lt;gui::material&gt; atlas::add_material(<span class="keyword">const</span> std::string&amp; sFileName, <span class="keyword">const</span> material&amp; mMat)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    {</div>
@@ -286,7 +286,7 @@ $(function() {
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="keywordflow">if</span> (mPageItem.pPage-&gt;empty())</div>
 <div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;Could not fit texture &#39;&quot;</span> &lt;&lt; sFileName &lt;&lt;</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;Could not fit texture &#39;&quot;</span> &lt;&lt; sFileName &lt;&lt;</div>
 <div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                    <span class="stringliteral">&quot;&#39; on any atlas page.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            }</div>
@@ -301,12 +301,12 @@ $(function() {
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e)</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    {</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    }</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;}</div>
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
-<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#a729a6fd11a7d039b3c10709b08bc854e">  238</a></span>&#160;std::shared_ptr&lt;gui::font&gt; <a class="code" href="classlxgui_1_1gui_1_1atlas.html#a729a6fd11a7d039b3c10709b08bc854e">atlas::fetch_font</a>(<span class="keyword">const</span> std::string&amp; sFontName)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;std::shared_ptr&lt;gui::font&gt; atlas::fetch_font(<span class="keyword">const</span> std::string&amp; sFontName)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; mPageItem : lPageList_)</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    {</div>
@@ -318,7 +318,7 @@ $(function() {
 <div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;}</div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#a470e1e940116f2f3415a06882760229e">  250</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classlxgui_1_1gui_1_1atlas.html#a470e1e940116f2f3415a06882760229e">atlas::add_font</a>(<span class="keyword">const</span> std::string&amp; sFontName, std::shared_ptr&lt;gui::font&gt; pFont)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;<span class="keywordtype">bool</span> atlas::add_font(<span class="keyword">const</span> std::string&amp; sFontName, std::shared_ptr&lt;gui::font&gt; pFont)<span class="keyword"> const</span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keywordflow">try</span></div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    {</div>
@@ -329,7 +329,7 @@ $(function() {
 <div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;            <span class="keywordflow">if</span> (mPageItem.pPage-&gt;empty())</div>
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            {</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;Could not fit font &#39;&quot;</span> &lt;&lt; sFontName &lt;&lt;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;                <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; <span class="stringliteral">&quot;Could not fit font &#39;&quot;</span> &lt;&lt; sFontName &lt;&lt;</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;                    <span class="stringliteral">&quot;&#39; on any atlas page.&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            }</div>
@@ -343,12 +343,12 @@ $(function() {
 <div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
 <div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e)</div>
 <div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    {</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; e.what() &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    }</div>
 <div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1atlas.html#ae79c2329900a8f5d90dd8368297f389f">  280</a></span>&#160;<a class="code" href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">uint</a> <a class="code" href="classlxgui_1_1gui_1_1atlas.html#ae79c2329900a8f5d90dd8368297f389f">atlas::get_num_pages</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;uint atlas::get_num_pages()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keywordflow">return</span> lPageList_.size();</div>
 <div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
@@ -356,13 +356,13 @@ $(function() {
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;<span class="keywordtype">void</span> atlas::add_page_()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    page_item mPage;</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    mPage.pPage = <a class="code" href="classlxgui_1_1gui_1_1atlas.html#a0e082852f30fc410a16ede0571e29f97">create_page_</a>();</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;    mPage.pPage = create_page_();</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
 <div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// Add a white pixel as the first material in the atlas.</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="comment">// This can be used for optimizing quad batching, to render</span></div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="comment">// quads with no texture.</span></div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <a class="code" href="structlxgui_1_1gui_1_1ub32color.html">ub32color</a> mPixel(255,255,255,255);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keyword">auto</span> pTex = <a class="code" href="classlxgui_1_1gui_1_1atlas.html#adad78eafdde5830c7412ef5ead78b01a">mRenderer_</a>.<a class="code" href="classlxgui_1_1gui_1_1renderer.html#ac84e9bfa946e6c536950b6ac0a40430a">create_material</a>(<a class="code" href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">vector2ui</a>(1u, 1u), &amp;mPixel);</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    ub32color mPixel(255,255,255,255);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keyword">auto</span> pTex = mRenderer_.create_material(vector2ui(1u, 1u), &amp;mPixel);</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    mPage.pNoTextureMat = mPage.pPage-&gt;add_material(<span class="stringliteral">&quot;&quot;</span>, *pTex);</div>
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    lPageList_.push_back(std::move(mPage));</div>
@@ -371,47 +371,13 @@ $(function() {
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;}</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_afec76b71bb7cd93052a7c2f9a124bd1d"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#afec76b71bb7cd93052a7c2f9a124bd1d">lxgui::gui::atlas_page::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdoc">Checks if this page is empty (contains no materials).</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00092">gui_atlas.cpp:92</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_abd57defc7bd316b1dbf3c9c4125ed5c6"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#abd57defc7bd316b1dbf3c9c4125ed5c6">lxgui::gui::material::filter</a></div><div class="ttdeci">filter</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00035">gui_material.hpp:35</a></div></div>
-<div class="ttc" id="agui__font_8hpp_html"><div class="ttname"><a href="gui__font_8hpp.html">gui_font.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_a2bb9f6f6e95915c17907d02923e97880"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#a2bb9f6f6e95915c17907d02923e97880">lxgui::gui::atlas::fetch_material</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; fetch_material(const std::string &amp;sFileName) const</div><div class="ttdoc">Find a material in this atlas (nullptr if not found).</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00194">gui_atlas.cpp:194</a></div></div>
-<div class="ttc" id="agui__atlas_8hpp_html"><div class="ttname"><a href="gui__atlas_8hpp.html">gui_atlas.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_a41c0c2c3ea10a347e9db17a11b259291"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#a41c0c2c3ea10a347e9db17a11b259291">lxgui::gui::atlas_page::get_height</a></div><div class="ttdeci">virtual float get_height() const =0</div><div class="ttdoc">Return the height of this page (in pixels).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_aa9bcc03d31834ac9d132f76ebb3560f4"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#aa9bcc03d31834ac9d132f76ebb3560f4">lxgui::gui::atlas_page::fetch_material</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; fetch_material(const std::string &amp;sFileName) const</div><div class="ttdoc">Find a material in this page (nullptr if not found).</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00015">gui_atlas.cpp:15</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_a4d198d36476cd7cc9247605ac5eb7118"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#a4d198d36476cd7cc9247605ac5eb7118">lxgui::gui::atlas_page::add_material_</a></div><div class="ttdeci">virtual std::shared_ptr&lt; material &gt; add_material_(const material &amp;mMat, const bounds2f &amp;mLocation)=0</div><div class="ttdoc">Adds a new material to this page, at the provided location.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html">lxgui::gui::material</a></div><div class="ttdoc">A class that holds rendering data.</div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00025">gui_material.hpp:25</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_a470e1e940116f2f3415a06882760229e"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#a470e1e940116f2f3415a06882760229e">lxgui::gui::atlas::add_font</a></div><div class="ttdeci">bool add_font(const std::string &amp;sFontName, std::shared_ptr&lt; gui::font &gt; pFont) const</div><div class="ttdoc">Add a new font to the atlas.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00250">gui_atlas.cpp:250</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_a3e18f0116f81fc3702c8ec8cc652f8ba"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#a3e18f0116f81fc3702c8ec8cc652f8ba">lxgui::gui::atlas_page::add_material</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; add_material(const std::string &amp;sFileName, const material &amp;mMat)</div><div class="ttdoc">Creates a new material from a texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00029">gui_atlas.cpp:29</a></div></div>
-<div class="ttc" id="anamespacelxgui_html_aad60a3835af109b1519d66daff76eb44"><div class="ttname"><a href="namespacelxgui.html#aad60a3835af109b1519d66daff76eb44">lxgui::uint</a></div><div class="ttdeci">unsigned int uint</div><div class="ttdef"><b>Definition:</b> <a href="utils_8hpp_source.html#l00009">utils.hpp:9</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_aae44a22fd4bdb94a242b5bc85715ed2d"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#aae44a22fd4bdb94a242b5bc85715ed2d">lxgui::gui::atlas_page::get_width</a></div><div class="ttdeci">virtual float get_width() const =0</div><div class="ttdoc">Return the width of this page (in pixels).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_a2c46f91b48b8a8a50dbbdee07a52d8fa"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#a2c46f91b48b8a8a50dbbdee07a52d8fa">lxgui::gui::atlas_page::fetch_font</a></div><div class="ttdeci">std::shared_ptr&lt; font &gt; fetch_font(const std::string &amp;sFontName) const</div><div class="ttdoc">Find a font in this page (nullptr if not found).</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00050">gui_atlas.cpp:50</a></div></div>
-<div class="ttc" id="agui__renderer_8hpp_html"><div class="ttname"><a href="gui__renderer_8hpp.html">gui_renderer.hpp</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00186">gui_vector2.hpp:186</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_adeb9867ed88f9d88741a734563d82adc"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#adeb9867ed88f9d88741a734563d82adc">lxgui::gui::atlas_page::atlas_page</a></div><div class="ttdeci">atlas_page(material::filter mFilter)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00013">gui_atlas.cpp:13</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html_ac84e9bfa946e6c536950b6ac0a40430a"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html#ac84e9bfa946e6c536950b6ac0a40430a">lxgui::gui::renderer::create_material</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; create_material(const std::string &amp;sFileName, material::filter mFilter=material::filter::NONE) const</div><div class="ttdoc">Creates a new material from a texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8cpp_source.html#l00192">gui_renderer.cpp:192</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1ub32color_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1ub32color.html">lxgui::gui::ub32color</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__material_8hpp_source.html#l00012">gui_material.hpp:12</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_adad78eafdde5830c7412ef5ead78b01a"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#adad78eafdde5830c7412ef5ead78b01a">lxgui::gui::atlas::mRenderer_</a></div><div class="ttdeci">const renderer &amp; mRenderer_</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8hpp_source.html#l00177">gui_atlas.hpp:177</a></div></div>
-<div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1renderer_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1renderer.html">lxgui::gui::renderer</a></div><div class="ttdoc">Abstract type for implementation specific management.</div><div class="ttdef"><b>Definition:</b> <a href="gui__renderer_8hpp_source.html#l00027">gui_renderer.hpp:27</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_aedfc073c9f25726ccfc8a2520c83786b"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#aedfc073c9f25726ccfc8a2520c83786b">lxgui::gui::atlas::add_material</a></div><div class="ttdeci">std::shared_ptr&lt; material &gt; add_material(const std::string &amp;sFileName, const material &amp;mMat) const</div><div class="ttdoc">Add a new material to the atlas.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00206">gui_atlas.cpp:206</a></div></div>
-<div class="ttc" id="astructlxgui_1_1gui_1_1bounds2_html"><div class="ttname"><a href="structlxgui_1_1gui_1_1bounds2.html">lxgui::gui::bounds2&lt; float &gt;</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_a729a6fd11a7d039b3c10709b08bc854e"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#a729a6fd11a7d039b3c10709b08bc854e">lxgui::gui::atlas::fetch_font</a></div><div class="ttdeci">std::shared_ptr&lt; font &gt; fetch_font(const std::string &amp;sFontName) const</div><div class="ttdoc">Find a font in this atlas (nullptr if not found).</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00238">gui_atlas.cpp:238</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas__page_html_a4da772a491a6ae2fd1a189d271243ac9"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas__page.html#a4da772a491a6ae2fd1a189d271243ac9">lxgui::gui::atlas_page::add_font</a></div><div class="ttdeci">bool add_font(const std::string &amp;sFontName, std::shared_ptr&lt; gui::font &gt; pFont)</div><div class="ttdoc">Creates a new font from a texture file.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00064">gui_atlas.cpp:64</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a6a4595ce39a9c47abd4d8ce95bf56434"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a6a4595ce39a9c47abd4d8ce95bf56434">lxgui::gui::vector2ui</a></div><div class="ttdeci">vector2&lt; uint &gt; vector2ui</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00189">gui_vector2.hpp:189</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a1308bcf31e775be7a976de3806a85ba3"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a1308bcf31e775be7a976de3806a85ba3">lxgui::gui::bounds2f</a></div><div class="ttdeci">bounds2&lt; float &gt; bounds2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__bounds2_8hpp_source.html#l00169">gui_bounds2.hpp:169</a></div></div>
-<div class="ttc" id="autils__string_8hpp_html"><div class="ttname"><a href="utils__string_8hpp.html">utils_string.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_a615f0be00c5d3577c6af4c5d8770183f"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#a615f0be00c5d3577c6af4c5d8770183f">lxgui::gui::atlas::atlas</a></div><div class="ttdeci">atlas(const renderer &amp;mRenderer, material::filter mFilter)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00191">gui_atlas.cpp:191</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1material_html_a7bc89170a07479b34496548163d51a11"><div class="ttname"><a href="classlxgui_1_1gui_1_1material.html#a7bc89170a07479b34496548163d51a11">lxgui::gui::material::get_rect</a></div><div class="ttdeci">virtual bounds2f get_rect() const =0</div><div class="ttdoc">Returns the pixel rect in pixels of the canvas containing this texture (if any).</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_a0e082852f30fc410a16ede0571e29f97"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#a0e082852f30fc410a16ede0571e29f97">lxgui::gui::atlas::create_page_</a></div><div class="ttdeci">virtual std::unique_ptr&lt; atlas_page &gt; create_page_() const =0</div><div class="ttdoc">Create a new page in this atlas.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1atlas_html_ae79c2329900a8f5d90dd8368297f389f"><div class="ttname"><a href="classlxgui_1_1gui_1_1atlas.html#ae79c2329900a8f5d90dd8368297f389f">lxgui::gui::atlas::get_num_pages</a></div><div class="ttdeci">uint get_num_pages() const</div><div class="ttdoc">Return the number of pages in this atlas.</div><div class="ttdef"><b>Definition:</b> <a href="gui__atlas_8cpp_source.html#l00280">gui_atlas.cpp:280</a></div></div>
-<div class="ttc" id="agui__vertex_8hpp_html"><div class="ttname"><a href="gui__vertex_8hpp.html">gui_vertex.hpp</a></div></div>
-<div class="ttc" id="agui__exception_8hpp_html"><div class="ttname"><a href="gui__exception_8hpp.html">gui_exception.hpp</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_1_1parser_html_aebb54dec15302736c582727100815528"><div class="ttname"><a href="namespacelxgui_1_1gui_1_1parser.html#aebb54dec15302736c582727100815528">lxgui::gui::parser::get_width</a></div><div class="ttdeci">float get_width(const text &amp;mText, const item &amp;mItem)</div><div class="ttdef"><b>Definition:</b> <a href="gui__text_8cpp_source.html#l00193">gui_text.cpp:193</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 10 2021 09:54:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

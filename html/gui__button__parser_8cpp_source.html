@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/gui/src/gui_button_parser.cpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/src/gui_button_parser.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a051efa06104b2c378e6b4d01090bb62.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,179 +69,194 @@ $(function() {
 <div class="title">gui_button_parser.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__button__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__button_8hpp.html">lxgui/gui_button.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__texture_8hpp.html">lxgui/gui_texture.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__fontstring_8hpp.html">lxgui/gui_fontstring.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__out_8hpp.html">lxgui/gui_out.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__manager_8hpp.html">lxgui/gui_manager.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__localizer_8hpp.html">lxgui/gui_localizer.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="xml__document_8hpp.html">lxgui/xml_document.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="utils__string_8hpp.html">lxgui/utils_string.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>gui</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1button.html#abd74069f5be589db62a9c1862cf5fee0">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1button.html#abd74069f5be589db62a9c1862cf5fee0">button::parse_attributes_</a>(<a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pBlock)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#a6d1c11b784c194cba56f7333a286cb1d">frame::parse_attributes_</a>(pBlock);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">if</span> ((pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;text&quot;</span>) || !pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;inherits&quot;</span>)))</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a64173f83dd5196011b7712a3708e2028">set_text</a>(utils::utf8_to_unicode(</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">get_manager</a>().get_localizer().localize(pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;text&quot;</span>))));</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1button.html#adb32b486c81116e58485f9388e3e6538">   25</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1button.html#adb32b486c81116e58485f9388e3e6538">button::parse_all_blocks_before_children_</a>(<a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pBlock)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="classlxgui_1_1gui_1_1frame.html#afc5f63e2cdc810eec2356c8a995b28de">frame::parse_all_blocks_before_children_</a>(pBlock);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pSpecialBlock;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;NormalTexture&quot;</span>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a169e908881fe95e1942c23810599e4dc">set_normal_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;PushedTexture&quot;</span>);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a7219966154e98de84249ca0de9dc43f7">set_pushed_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;DisabledTexture&quot;</span>);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#ad97e9e6b6d8ce8e0c10add0a9974658f">set_disabled_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<a href="gui__button__parser_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_button.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_texture.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_fontstring.hpp&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_out.hpp&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_manager.hpp&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_localizer.hpp&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_layoutnode.hpp&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_parser_common.hpp&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>gui</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;{</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">void</span> button::parse_attributes_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    frame::parse_attributes_(mNode);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_attribute* pAttr = mNode.try_get_attribute(<span class="stringliteral">&quot;text&quot;</span>))</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        set_text(utils::utf8_to_unicode(</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            get_manager().get_localizer().localize(pAttr-&gt;get_value&lt;std::string&gt;())));</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> button::parse_all_nodes_before_children_(<span class="keyword">const</span> layout_node&amp; mNode)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    frame::parse_all_nodes_before_children_(mNode);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;NormalTexture&quot;</span>))</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;ARTWORK&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentNormalTexture&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            pTexture-&gt;set_special();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            set_normal_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    }</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;PushedTexture&quot;</span>))</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;BORDER&quot;</span>);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentPushedTexture&quot;</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            pTexture-&gt;set_special();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            set_pushed_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;HighlightTexture&quot;</span>);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keyword">auto</span> pTexture = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        pTexture-&gt;set_special();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#adfe9158839b4742864d3089435bd14c3">set_highlight_texture</a>(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;NormalText&quot;</span>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keyword">auto</span> pFontString = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        pFontString-&gt;set_special();</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a1feee0e44b021633731a879c00c5352e">set_normal_text</a>(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;HighlightText&quot;</span>);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keyword">auto</span> pFontString = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        pFontString-&gt;set_special();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a519695cbb88ab9edd24b85bf92b4df89">set_highlight_text</a>(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    pSpecialBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;DisabledText&quot;</span>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordflow">if</span> (pSpecialBlock)</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        std::string sLayer = <span class="stringliteral">&quot;ARTWORK&quot;</span>;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">if</span> (pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">is_provided</a>(<span class="stringliteral">&quot;layer&quot;</span>))</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            sLayer = pSpecialBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;layer&quot;</span>);</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keyword">auto</span> pFontString = <a class="code" href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">parse_region_</a>(pSpecialBlock, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        pFontString-&gt;set_special();</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <a class="code" href="classlxgui_1_1gui_1_1button.html#a4b29cf177fc9431c43a159ac8d63de61">set_disabled_text</a>(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pOffsetBlock = pBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">get_block</a>(<span class="stringliteral">&quot;PushedTextOffset&quot;</span>);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">if</span> (pOffsetBlock)</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <a class="code" href="classlxgui_1_1xml_1_1block.html">xml::block</a>* pDimBlock = pOffsetBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a25801c7e65aa14f6a17285b6ccece646">get_radio_block</a>();</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;AbsDimension&quot;</span>)</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;            <a class="code" href="classlxgui_1_1gui_1_1button.html#a439cac313fd2fe7a78bb964c094a09e4">set_pushed_text_offset</a>(<a class="code" href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">vector2f</a>(</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;x&quot;</span>)),</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                utils::string_to_float(pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">get_attribute</a>(<span class="stringliteral">&quot;y&quot;</span>))</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;            ));</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        }</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">get_name</a>() == <span class="stringliteral">&quot;RelDimension&quot;</span>)</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pDimBlock-&gt;<a class="code" href="classlxgui_1_1xml_1_1block.html#a0e7941d3f6364e172279793303ead1da">get_location</a>() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;RelDimension for button:PushedTextOffset is not yet supported (&quot;</span>+<a class="code" href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">sName_</a>+<span class="stringliteral">&quot;).&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;}</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;DisabledTexture&quot;</span>))</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;BORDER&quot;</span>);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledTexture&quot;</span>);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            pTexture-&gt;set_special();</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            set_disabled_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;HighlightTexture&quot;</span>))</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;HIGHLIGHT&quot;</span>);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentHighlightTexture&quot;</span>);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">auto</span> pTexture = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;Texture&quot;</span>);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">if</span> (pTexture)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            pTexture-&gt;set_special();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            set_highlight_texture(utils::static_pointer_cast&lt;texture&gt;(pTexture));</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;NormalText&quot;</span>))</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;ARTWORK&quot;</span>);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentNormalText&quot;</span>);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keyword">auto</span> pFontString = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">if</span> (pFontString)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        {</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            pFontString-&gt;set_special();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            set_normal_text(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;HighlightText&quot;</span>))</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    {</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;HIGHLIGHT&quot;</span>);</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentHighlightText&quot;</span>);</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keyword">auto</span> pFontString = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        <span class="keywordflow">if</span> (pFontString)</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        {</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            pFontString-&gt;set_special();</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;            set_highlight_text(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        }</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pSpecialNode = mNode.try_get_child(<span class="stringliteral">&quot;DisabledText&quot;</span>))</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    {</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">auto</span> sLayer = pSpecialNode-&gt;get_attribute_value_or&lt;std::string&gt;(<span class="stringliteral">&quot;layer&quot;</span>, <span class="stringliteral">&quot;BORDER&quot;</span>);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        layout_node mDefaulted = *pSpecialNode;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;name&quot;</span>, <span class="stringliteral">&quot;$parentDisabledText&quot;</span>);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        mDefaulted.get_or_set_attribute_value(<span class="stringliteral">&quot;setAllPoints&quot;</span>, <span class="stringliteral">&quot;true&quot;</span>);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keyword">auto</span> pFontString = parse_region_(mDefaulted, sLayer, <span class="stringliteral">&quot;FontString&quot;</span>);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">if</span> (pFontString)</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            pFontString-&gt;set_special();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            set_disabled_text(utils::static_pointer_cast&lt;font_string&gt;(pFontString));</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">warn_for_not_accessed_node</a>(mDefaulted);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        pSpecialNode-&gt;bypass_access_check();</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordflow">if</span> (<span class="keyword">const</span> layout_node* pOffsetBlock = mNode.try_get_child(<span class="stringliteral">&quot;PushedTextOffset&quot;</span>))</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">auto</span> mDimensions = parse_dimension_(*pOffsetBlock);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">if</span> (mDimensions.first == anchor_type::ABS)</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            set_pushed_text_offset(vector2f(</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;                mDimensions.second.x.value_or(0.0f),</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;                mDimensions.second.y.value_or(0.0f)</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            ));</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        }</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        <span class="keywordflow">else</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        {</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            <a class="code" href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">gui::out</a> &lt;&lt; <a class="code" href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">gui::warning</a> &lt;&lt; pOffsetBlock-&gt;get_location() &lt;&lt; <span class="stringliteral">&quot; : &quot;</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;RelDimension for Button:PushedTextOffset is not yet supported. Skipped.&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        }</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a7219966154e98de84249ca0de9dc43f7"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a7219966154e98de84249ca0de9dc43f7">lxgui::gui::button::set_pushed_texture</a></div><div class="ttdeci">void set_pushed_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's pushed texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00239">gui_button.cpp:239</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a1feee0e44b021633731a879c00c5352e"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a1feee0e44b021633731a879c00c5352e">lxgui::gui::button::set_normal_text</a></div><div class="ttdeci">void set_normal_text(utils::observer_ptr&lt; font_string &gt; pFont)</div><div class="ttdoc">Sets this button's normal text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00254">gui_button.cpp:254</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_a6d1c11b784c194cba56f7333a286cb1d"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#a6d1c11b784c194cba56f7333a286cb1d">lxgui::gui::frame::parse_attributes_</a></div><div class="ttdeci">void parse_attributes_(xml::block *pBlock) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00034">gui_frame_parser.cpp:34</a></div></div>
-<div class="ttc" id="agui__button_8hpp_html"><div class="ttname"><a href="gui__button_8hpp.html">gui_button.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a169e908881fe95e1942c23810599e4dc"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a169e908881fe95e1942c23810599e4dc">lxgui::gui::button::set_normal_texture</a></div><div class="ttdeci">void set_normal_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's normal texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00234">gui_button.cpp:234</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a0e7941d3f6364e172279793303ead1da"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a0e7941d3f6364e172279793303ead1da">lxgui::xml::block::get_location</a></div><div class="ttdeci">std::string get_location() const</div><div class="ttdoc">Returns the location at which this block has been found.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_ad97e9e6b6d8ce8e0c10add0a9974658f"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#ad97e9e6b6d8ce8e0c10add0a9974658f">lxgui::gui::button::set_disabled_texture</a></div><div class="ttdeci">void set_disabled_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's disabled texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00244">gui_button.cpp:244</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a4b29cf177fc9431c43a159ac8d63de61"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a4b29cf177fc9431c43a159ac8d63de61">lxgui::gui::button::set_disabled_text</a></div><div class="ttdeci">void set_disabled_text(utils::observer_ptr&lt; font_string &gt; pFont)</div><div class="ttdoc">Sets this button's disabled text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00278">gui_button.cpp:278</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_ae5880ee33c39fd4d2e6c5cdd5576854c"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#ae5880ee33c39fd4d2e6c5cdd5576854c">lxgui::gui::uiobject::get_manager</a></div><div class="ttdeci">manager &amp; get_manager()</div><div class="ttdoc">Returns this widget's manager.</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00570">gui_uiobject.hpp:570</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a849613b41dbb83ad0f8152b6905b9b09"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a849613b41dbb83ad0f8152b6905b9b09">lxgui::xml::block::get_block</a></div><div class="ttdeci">block * get_block(const std::string &amp;sName)</div><div class="ttdoc">Returns one of this Block's sub-block.</div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_adec2282d50618b403fd8a54e6e493e31"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#adec2282d50618b403fd8a54e6e493e31">lxgui::xml::block::is_provided</a></div><div class="ttdeci">bool is_provided(const std::string &amp;sName)</div><div class="ttdoc">Checks if one of this Block's attribute has been provided.</div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html">lxgui::xml::block</a></div><div class="ttdoc">An element in an XML file.</div><div class="ttdef"><b>Definition:</b> <a href="xml__block_8hpp_source.html#l00051">xml_block.hpp:51</a></div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a051e1b11f711a4135cd59bebfbaa3c6b"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a051e1b11f711a4135cd59bebfbaa3c6b">lxgui::gui::vector2f</a></div><div class="ttdeci">vector2&lt; float &gt; vector2f</div><div class="ttdef"><b>Definition:</b> <a href="gui__vector2_8hpp_source.html#l00186">gui_vector2.hpp:186</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a439cac313fd2fe7a78bb964c094a09e4"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a439cac313fd2fe7a78bb964c094a09e4">lxgui::gui::button::set_pushed_text_offset</a></div><div class="ttdeci">void set_pushed_text_offset(const vector2f &amp;lOffset)</div><div class="ttdoc">Sets this button's pushed text offset.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00490">gui_button.cpp:490</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_afc5f63e2cdc810eec2356c8a995b28de"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#afc5f63e2cdc810eec2356c8a995b28de">lxgui::gui::frame::parse_all_blocks_before_children_</a></div><div class="ttdeci">virtual void parse_all_blocks_before_children_(xml::block *pBlock)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00013">gui_frame_parser.cpp:13</a></div></div>
-<div class="ttc" id="agui__localizer_8hpp_html"><div class="ttname"><a href="gui__localizer_8hpp.html">gui_localizer.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1uiobject_html_adc4e43169d721038cf8f257515721593"><div class="ttname"><a href="classlxgui_1_1gui_1_1uiobject.html#adc4e43169d721038cf8f257515721593">lxgui::gui::uiobject::sName_</a></div><div class="ttdeci">std::string sName_</div><div class="ttdef"><b>Definition:</b> <a href="gui__uiobject_8hpp_source.html#l00647">gui_uiobject.hpp:647</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_af5ed226227be7e1d15d550b7fa1d0987"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#af5ed226227be7e1d15d550b7fa1d0987">lxgui::xml::block::get_name</a></div><div class="ttdeci">const std::string &amp; get_name() const</div><div class="ttdoc">Returns this Block's name.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_adfe9158839b4742864d3089435bd14c3"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#adfe9158839b4742864d3089435bd14c3">lxgui::gui::button::set_highlight_texture</a></div><div class="ttdeci">void set_highlight_texture(utils::observer_ptr&lt; texture &gt; pTexture)</div><div class="ttdoc">Sets this button's highlight texture.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00249">gui_button.cpp:249</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_adb32b486c81116e58485f9388e3e6538"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#adb32b486c81116e58485f9388e3e6538">lxgui::gui::button::parse_all_blocks_before_children_</a></div><div class="ttdeci">void parse_all_blocks_before_children_(xml::block *pBlock) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__button__parser_8cpp_source.html#l00025">gui_button_parser.cpp:25</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_abd74069f5be589db62a9c1862cf5fee0"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#abd74069f5be589db62a9c1862cf5fee0">lxgui::gui::button::parse_attributes_</a></div><div class="ttdeci">void parse_attributes_(xml::block *pBlock) override</div><div class="ttdef"><b>Definition:</b> <a href="gui__button__parser_8cpp_source.html#l00014">gui_button_parser.cpp:14</a></div></div>
-<div class="ttc" id="agui__out_8hpp_html"><div class="ttname"><a href="gui__out_8hpp.html">gui_out.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a64173f83dd5196011b7712a3708e2028"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a64173f83dd5196011b7712a3708e2028">lxgui::gui::button::set_text</a></div><div class="ttdeci">virtual void set_text(const utils::ustring &amp;sText)</div><div class="ttdoc">Sets this button's text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00215">gui_button.cpp:215</a></div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_ad3fee86ac72f2202cd1ac4925fc0f057"><div class="ttname"><a href="namespacelxgui_1_1gui.html#ad3fee86ac72f2202cd1ac4925fc0f057">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out(std::cout.rdbuf())</div></div>
+<div class="ttc" id="anamespacelxgui_1_1gui_html_a3b5e64716a88095f97dbe8b7d9fb72e6"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a3b5e64716a88095f97dbe8b7d9fb72e6">lxgui::gui::warn_for_not_accessed_node</a></div><div class="ttdeci">void warn_for_not_accessed_node(const layout_node &amp;mNode)</div><div class="ttdef"><b>Definition:</b> <a href="gui__parser__common_8cpp_source.html#l00063">gui_parser_common.cpp:63</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a25801c7e65aa14f6a17285b6ccece646"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a25801c7e65aa14f6a17285b6ccece646">lxgui::xml::block::get_radio_block</a></div><div class="ttdeci">block * get_radio_block(uint uiGroup=0u)</div><div class="ttdoc">Returns a radio block.</div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1button_html_a519695cbb88ab9edd24b85bf92b4df89"><div class="ttname"><a href="classlxgui_1_1gui_1_1button.html#a519695cbb88ab9edd24b85bf92b4df89">lxgui::gui::button::set_highlight_text</a></div><div class="ttdeci">void set_highlight_text(utils::observer_ptr&lt; font_string &gt; pFont)</div><div class="ttdoc">Sets this button's highlight text.</div><div class="ttdef"><b>Definition:</b> <a href="gui__button_8cpp_source.html#l00266">gui_button.cpp:266</a></div></div>
 <div class="ttc" id="anamespacelxgui_1_1gui_html_aa1fe198775bd253d95538cc321a947fa"><div class="ttname"><a href="namespacelxgui_1_1gui.html#aa1fe198775bd253d95538cc321a947fa">lxgui::gui::warning</a></div><div class="ttdeci">const std::string warning</div><div class="ttdef"><b>Definition:</b> <a href="gui__out_8cpp_source.html#l00007">gui_out.cpp:7</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1xml_1_1block_html_a4439bbb0039a72dfc757e6674409fc29"><div class="ttname"><a href="classlxgui_1_1xml_1_1block.html#a4439bbb0039a72dfc757e6674409fc29">lxgui::xml::block::get_attribute</a></div><div class="ttdeci">std::string get_attribute(const std::string &amp;sName)</div><div class="ttdoc">Returns one of this Block's attribute.</div></div>
-<div class="ttc" id="anamespacelxgui_1_1gui_html_a423bb8e60c4da6889f890d29ed76e8f7"><div class="ttname"><a href="namespacelxgui_1_1gui.html#a423bb8e60c4da6889f890d29ed76e8f7">lxgui::gui::out</a></div><div class="ttdeci">std::ostream out</div></div>
-<div class="ttc" id="autils__string_8hpp_html"><div class="ttname"><a href="utils__string_8hpp.html">utils_string.hpp</a></div></div>
-<div class="ttc" id="agui__manager_8hpp_html"><div class="ttname"><a href="gui__manager_8hpp.html">gui_manager.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1frame_html_af84c6edb6ae05f22b71945ccdadd7f7b"><div class="ttname"><a href="classlxgui_1_1gui_1_1frame.html#af84c6edb6ae05f22b71945ccdadd7f7b">lxgui::gui::frame::parse_region_</a></div><div class="ttdeci">utils::observer_ptr&lt; layered_region &gt; parse_region_(xml::block *pBlock, const std::string &amp;sLayer, const std::string &amp;sType)</div><div class="ttdef"><b>Definition:</b> <a href="gui__frame__parser_8cpp_source.html#l00255">gui_frame_parser.cpp:255</a></div></div>
-<div class="ttc" id="agui__fontstring_8hpp_html"><div class="ttname"><a href="gui__fontstring_8hpp.html">gui_fontstring.hpp</a></div></div>
-<div class="ttc" id="agui__texture_8hpp_html"><div class="ttname"><a href="gui__texture_8hpp.html">gui_texture.hpp</a></div></div>
-<div class="ttc" id="axml__document_8hpp_html"><div class="ttname"><a href="xml__document_8hpp.html">xml_document.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 10 2021 09:54:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

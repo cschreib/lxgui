@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/gui/src/gui_eventreceiver.cpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/src/gui_eventreceiver.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a051efa06104b2c378e6b4d01090bb62.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,43 +69,35 @@ $(function() {
 <div class="title">gui_eventreceiver.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__eventreceiver_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__eventreceiver_8hpp.html">lxgui/gui_eventreceiver.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__eventmanager_8hpp.html">lxgui/gui_eventmanager.hpp</a>&quot;</span></div>
+<a href="gui__eventreceiver_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_eventreceiver.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_eventmanager.hpp&quot;</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__receiver.html#a2bbc99df92e7122db22586fabab7c323">    8</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a2bbc99df92e7122db22586fabab7c323">event_receiver::event_receiver</a>(<a class="code" href="classlxgui_1_1gui_1_1event__manager.html">event_manager</a>&amp; mManager) :</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;event_receiver::event_receiver(event_manager&amp; mManager) :</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    mEventManager_(mManager)</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;{</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">   13</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">event_receiver::register_event</a>(<span class="keyword">const</span> std::string&amp; sEventName)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keywordtype">void</span> event_receiver::register_event(<span class="keyword">const</span> std::string&amp; sEventName)</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    mEventManager_.<a class="code" href="classlxgui_1_1gui_1_1event__manager.html#a6eae133acca3fb3349622538fe2c9140">register_event_for</a>(observer_from_this(), sEventName);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    mEventManager_.register_event_for(observer_from_this(), sEventName);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">   18</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">event_receiver::unregister_event</a>(<span class="keyword">const</span> std::string&amp; sEventName)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> event_receiver::unregister_event(<span class="keyword">const</span> std::string&amp; sEventName)</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    mEventManager_.<a class="code" href="classlxgui_1_1gui_1_1event__manager.html#a6e5c589dd9c5fbfa6c0cdad143dae172">unregister_event_for</a>(*<span class="keyword">this</span>, sEventName);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    mEventManager_.unregister_event_for(*<span class="keyword">this</span>, sEventName);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="agui__eventreceiver_8hpp_html"><div class="ttname"><a href="gui__eventreceiver_8hpp.html">gui_eventreceiver.hpp</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html_a6eae133acca3fb3349622538fe2c9140"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html#a6eae133acca3fb3349622538fe2c9140">lxgui::gui::event_manager::register_event_for</a></div><div class="ttdeci">void register_event_for(utils::observer_ptr&lt; event_receiver &gt; pReceiver, const std::string &amp;sEvent)</div><div class="ttdoc">Enables an event_receiver's reaction to an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8cpp_source.html#l00016">gui_eventmanager.cpp:16</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a34f7791f5875f6f86428782ea1719b1b"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a34f7791f5875f6f86428782ea1719b1b">lxgui::gui::event_receiver::register_event</a></div><div class="ttdeci">virtual void register_event(const std::string &amp;sEventName)</div><div class="ttdoc">Enables reaction to an Event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00013">gui_eventreceiver.cpp:13</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html">lxgui::gui::event_manager</a></div><div class="ttdoc">Manages events and their responses.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8hpp_source.html#l00019">gui_eventmanager.hpp:19</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a0ae0c8fa099950863dbe6f2ba214ba07"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a0ae0c8fa099950863dbe6f2ba214ba07">lxgui::gui::event_receiver::unregister_event</a></div><div class="ttdeci">virtual void unregister_event(const std::string &amp;sEventName)</div><div class="ttdoc">Disables reaction to an Event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00018">gui_eventreceiver.cpp:18</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__receiver_html_a2bbc99df92e7122db22586fabab7c323"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__receiver.html#a2bbc99df92e7122db22586fabab7c323">lxgui::gui::event_receiver::event_receiver</a></div><div class="ttdeci">event_receiver(event_manager &amp;mManager)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventreceiver_8cpp_source.html#l00008">gui_eventreceiver.cpp:8</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1event__manager_html_a6e5c589dd9c5fbfa6c0cdad143dae172"><div class="ttname"><a href="classlxgui_1_1gui_1_1event__manager.html#a6e5c589dd9c5fbfa6c0cdad143dae172">lxgui::gui::event_manager::unregister_event_for</a></div><div class="ttdeci">void unregister_event_for(event_receiver &amp;mReceiver, const std::string &amp;sEvent)</div><div class="ttdoc">Disables an event_receiver's reaction to an event.</div><div class="ttdef"><b>Definition:</b> <a href="gui__eventmanager_8cpp_source.html#l00054">gui_eventmanager.cpp:54</a></div></div>
-<div class="ttc" id="agui__eventmanager_8hpp_html"><div class="ttname"><a href="gui__eventmanager_8hpp.html">gui_eventmanager.hpp</a></div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 10 2021 09:54:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>

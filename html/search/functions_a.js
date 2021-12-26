@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['layer_2225',['layer',['../structlxgui_1_1gui_1_1layer.html#ad9b672df43caf319ce760049de474150',1,'lxgui::gui::layer']]],
-  ['layered_5fregion_2226',['layered_region',['../classlxgui_1_1gui_1_1layered__region.html#a8b3a3d945c2fe3323782a7e137f2c8c7',1,'lxgui::gui::layered_region']]],
-  ['load_5ftranslation_5ffile_2227',['load_translation_file',['../classlxgui_1_1gui_1_1localizer.html#ae43c342602d51f30cf7420941545d67a',1,'lxgui::gui::localizer']]],
-  ['load_5ftranslations_2228',['load_translations',['../classlxgui_1_1gui_1_1localizer.html#ad1e5be9b555a844ded82de3af491298c',1,'lxgui::gui::localizer']]],
-  ['load_5fui_2229',['load_ui',['../classlxgui_1_1gui_1_1manager.html#a3fe660a79c7db0d0f5a5d9b201a2d478',1,'lxgui::gui::manager']]],
-  ['localize_2230',['localize',['../classlxgui_1_1gui_1_1localizer.html#a0ea0dde6a028586038b59c1959a5b469',1,'lxgui::gui::localizer::localize(std::string_view sKey, sol::variadic_args mVArgs) const'],['../classlxgui_1_1gui_1_1localizer.html#a1904b135daa29f05a5b51101afda0fae',1,'lxgui::gui::localizer::localize(std::string_view sKey, Args &amp;&amp;... mArgs) const']]],
-  ['localizer_2231',['localizer',['../classlxgui_1_1gui_1_1localizer.html#abd11e96c6b40ef1489fa0fcf7fc3dade',1,'lxgui::gui::localizer::localizer()'],['../classlxgui_1_1gui_1_1localizer.html#a06cc99d35ba69dd9b23563d4157d7789',1,'lxgui::gui::localizer::localizer(const localizer &amp;)=delete'],['../classlxgui_1_1gui_1_1localizer.html#a2ffc7e41996316f1aeacfca13be6571f',1,'lxgui::gui::localizer::localizer(localizer &amp;&amp;)=delete']]],
-  ['lock_5fhighlight_2232',['lock_highlight',['../classlxgui_1_1gui_1_1button.html#aa5f4b28b2a948711c08e7d6f27425414',1,'lxgui::gui::button']]],
-  ['lock_5fpointer_2233',['lock_pointer',['../classlxgui_1_1gui_1_1sdl_1_1material.html#a7c8b5a97b4099d16b9cb840bc6ae1933',1,'lxgui::gui::sdl::material::lock_pointer(uint *pPitch=nullptr)'],['../classlxgui_1_1gui_1_1sdl_1_1material.html#a94886bf391762b131029a1d8d486cb69',1,'lxgui::gui::sdl::material::lock_pointer(uint *pPitch=nullptr) const']]]
+  ['remove_5fnull_193',['remove_null',['../namespacelxgui_1_1gui.html#aec6342eda388aefce967b25a48f2cc34',1,'lxgui::gui']]],
+  ['repeat_5fwrap_194',['repeat_wrap',['../namespacelxgui_1_1gui.html#a9bef4f638ffba1c29c9d5510eda91f2a',1,'lxgui::gui']]],
+  ['round_195',['round',['../namespacelxgui_1_1utils.html#aa4c505cea5306e6723e05a645da29e53',1,'lxgui::utils']]]
 ];

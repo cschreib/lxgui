@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>gui: /home/runner/work/lxgui/lxgui/gui/src/gui_gradient.cpp Source File</title>
+<title>gui: /home/runner/work/lxgui/lxgui/src/gui_gradient.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a051efa06104b2c378e6b4d01090bb62.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,28 +69,28 @@ $(function() {
 <div class="title">gui_gradient.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="gui__gradient_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="gui__gradient_8hpp.html">lxgui/gui_gradient.hpp</a>&quot;</span></div>
+<a href="gui__gradient_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;lxgui/gui_gradient.hpp&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacelxgui.html">lxgui</a> {</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span>gui</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1gradient.html#ad09bbe2704e2038c3d5f7c9ca8cd19d1">    7</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1gradient.html#a8b471bc1d1b536f9424ab3c05fc61d65">gradient::gradient</a>(<a class="code" href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0">orientation</a> mOrientation, <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mMinColor, <span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; mMaxColor) :</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;gradient::gradient(orientation mOrientation, <span class="keyword">const</span> color&amp; mMinColor, <span class="keyword">const</span> color&amp; mMaxColor) :</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    mOrientation_(mOrientation), mMinColor_(mMinColor), mMaxColor_(mMaxColor)</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;}</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1gradient.html#a2de046058b5b723edf711fb3bf63e697">   12</a></span>&#160;<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1gradient.html#a2de046058b5b723edf711fb3bf63e697">gradient::get_min_color</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">const</span> color&amp; gradient::get_min_color()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keywordflow">return</span> mMinColor_;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1gradient.html#a5bb4ca519a7b53f8048a73b3562333c4">   17</a></span>&#160;<span class="keyword">const</span> <a class="code" href="classlxgui_1_1gui_1_1color.html">color</a>&amp; <a class="code" href="classlxgui_1_1gui_1_1gradient.html#a5bb4ca519a7b53f8048a73b3562333c4">gradient::get_max_color</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">const</span> color&amp; gradient::get_max_color()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> mMaxColor_;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="classlxgui_1_1gui_1_1gradient.html#aebdd7ce3955acbebba2fb8d4d03a24fa">   22</a></span>&#160;<a class="code" href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0">gradient::orientation</a> <a class="code" href="classlxgui_1_1gui_1_1gradient.html#aebdd7ce3955acbebba2fb8d4d03a24fa">gradient::get_orientation</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;gradient::orientation gradient::get_orientation()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">return</span> mOrientation_;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
@@ -98,17 +98,10 @@ $(function() {
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
-<div class="ttc" id="aclasslxgui_1_1gui_1_1color_html"><div class="ttname"><a href="classlxgui_1_1gui_1_1color.html">lxgui::gui::color</a></div><div class="ttdoc">A simple color class (float RGBA)</div><div class="ttdef"><b>Definition:</b> <a href="gui__color_8hpp_source.html#l00013">gui_color.hpp:13</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_a5bb4ca519a7b53f8048a73b3562333c4"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#a5bb4ca519a7b53f8048a73b3562333c4">lxgui::gui::gradient::get_max_color</a></div><div class="ttdeci">const color &amp; get_max_color() const</div><div class="ttdoc">Returns the gradient's max colors.</div><div class="ttdef"><b>Definition:</b> <a href="gui__gradient_8cpp_source.html#l00017">gui_gradient.cpp:17</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aa46025a9b9a69379c85c6420ffb703b0"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aa46025a9b9a69379c85c6420ffb703b0">lxgui::gui::gradient::orientation</a></div><div class="ttdeci">orientation</div><div class="ttdef"><b>Definition:</b> <a href="gui__gradient_8hpp_source.html#l00016">gui_gradient.hpp:16</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_aebdd7ce3955acbebba2fb8d4d03a24fa"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#aebdd7ce3955acbebba2fb8d4d03a24fa">lxgui::gui::gradient::get_orientation</a></div><div class="ttdeci">orientation get_orientation() const</div><div class="ttdoc">Returns the gradient's orientation.</div><div class="ttdef"><b>Definition:</b> <a href="gui__gradient_8cpp_source.html#l00022">gui_gradient.cpp:22</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_a2de046058b5b723edf711fb3bf63e697"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#a2de046058b5b723edf711fb3bf63e697">lxgui::gui::gradient::get_min_color</a></div><div class="ttdeci">const color &amp; get_min_color() const</div><div class="ttdoc">Returns the gradient's min colors.</div><div class="ttdef"><b>Definition:</b> <a href="gui__gradient_8cpp_source.html#l00012">gui_gradient.cpp:12</a></div></div>
-<div class="ttc" id="aclasslxgui_1_1gui_1_1gradient_html_a8b471bc1d1b536f9424ab3c05fc61d65"><div class="ttname"><a href="classlxgui_1_1gui_1_1gradient.html#a8b471bc1d1b536f9424ab3c05fc61d65">lxgui::gui::gradient::gradient</a></div><div class="ttdeci">gradient()=default</div><div class="ttdoc">Default constructor.</div></div>
 <div class="ttc" id="anamespacelxgui_html"><div class="ttname"><a href="namespacelxgui.html">lxgui</a></div><div class="ttdef"><b>Definition:</b> <a href="gui__alive__checker_8cpp_source.html#l00004">gui_alive_checker.cpp:4</a></div></div>
-<div class="ttc" id="agui__gradient_8hpp_html"><div class="ttname"><a href="gui__gradient_8hpp.html">gui_gradient.hpp</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 10 2021 09:54:55 for gui by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Dec 26 2021 13:26:13 for gui by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.17
 </small></address>
