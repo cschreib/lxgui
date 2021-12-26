@@ -41,7 +41,7 @@ namespace gui
     struct script_info
     {
         std::string sFileName;
-        uint uiLineNbr = 0;
+        std::size_t uiLineNbr = 0;
     };
 
     /// C++ function type for UI script handlers.
@@ -642,7 +642,7 @@ namespace gui
         *   \note If only an approximate number is acceptable, use get_rough_num_children(),
         *         which is faster.
         */
-        uint get_num_children() const;
+        std::size_t get_num_children() const;
 
         /// Returns the approximate number of children of this frame.
         /** \return The approximate number of children of this frame
@@ -650,14 +650,14 @@ namespace gui
         *         This can be used to reserve enough space for memory allocations.
         *         If the exact number of children is required, use get_num_children().
         */
-        uint get_rough_num_children() const;
+        std::size_t get_rough_num_children() const;
 
         /// Returns the number of regions of this frame.
         /** \return The number of regions of this frame
         *   \note If only an approximate number is acceptable, use get_rough_num_regions(),
         *         which is faster.
         */
-        uint get_num_regions() const;
+        std::size_t get_num_regions() const;
 
         /// Returns the approximate number of regions of this frame.
         /** \return The approximate number of regions of this frame
@@ -665,7 +665,7 @@ namespace gui
         *         This can be used to reserve enough space for memory allocations.
         *         If the exact number of regions is required, use get_num_regions().
         */
-        uint get_rough_num_regions() const;
+        std::size_t get_rough_num_regions() const;
 
         /// Returns this frame's scale.
         /** \return This frame's scale
@@ -745,8 +745,8 @@ namespace gui
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void add_script(const std::string& sScriptName, const std::string& sContent,
-            const script_info& mInfo = script_info{})
+        void add_script(const std::string& sScriptName, std::string sContent,
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, sContent, true, mInfo);
         }
@@ -761,7 +761,7 @@ namespace gui
         *         C++ function instead.
         */
         void add_script(const std::string& sScriptName, sol::protected_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
@@ -776,7 +776,7 @@ namespace gui
         *         instead.
         */
         void add_script(const std::string& sScriptName, script_handler_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), true, mInfo);
         }
@@ -789,8 +789,8 @@ namespace gui
         *         This function is meant to be used by the layout file parser. If you want to
         *         manually define your own script handlers, prefer the other overloads.
         */
-        void set_script(const std::string& sScriptName, const std::string& sContent,
-            const script_info& mInfo = script_info{})
+        void set_script(const std::string& sScriptName, std::string sContent,
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, sContent, false, mInfo);
         }
@@ -805,7 +805,7 @@ namespace gui
         *         C++ function instead.
         */
         void set_script(const std::string& sScriptName, sol::protected_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
@@ -820,7 +820,7 @@ namespace gui
         *         instead.
         */
         void set_script(const std::string& sScriptName, script_handler_function mHandler,
-            const script_info& mInfo = script_info{})
+            script_info mInfo = script_info{})
         {
             define_script_(sScriptName, std::move(mHandler), false, mInfo);
         }
@@ -1174,7 +1174,7 @@ namespace gui
         child_list  lChildList_;
         region_list lRegionList_;
 
-        static constexpr uint num_layers = static_cast<uint>(layer_type::ENUM_SIZE);
+        static constexpr std::size_t num_layers = static_cast<std::size_t>(layer_type::ENUM_SIZE);
 
         std::array<layer,num_layers> lLayerList_;
 

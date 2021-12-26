@@ -165,7 +165,7 @@ namespace gui
         /// Return the number of pages in this atlas.
         /** \return The number of pages in this atlas
         */
-        uint get_num_pages() const;
+        std::size_t get_num_pages() const;
 
     protected :
 

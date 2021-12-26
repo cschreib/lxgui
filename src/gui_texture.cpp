@@ -90,13 +90,13 @@ void texture::render() const
 {
     if (is_visible())
     {
-        auto& mRenderer = get_manager().get_renderer();
+        const auto& mRenderer = get_manager().get_renderer();
         float fAlpha = get_effective_alpha();
 
         if (fAlpha != 1.0f)
         {
             quad mBlendedQuad = mQuad_;
-            for (uint i = 0; i < 4; ++i)
+            for (std::size_t i = 0; i < 4; ++i)
                 mBlendedQuad.v[i].col.a *= fAlpha;
 
             mRenderer.render_quad(mBlendedQuad);
@@ -166,11 +166,11 @@ const gradient& texture::get_gradient() const
 
 std::array<float,8> texture::get_tex_coord() const
 {
-    std::array<float,8> mCoords;
+    std::array<float,8> mCoords{};
 
     if (mQuad_.mat)
     {
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
         {
             const vector2f lUV = mQuad_.mat->get_local_uv(mQuad_.v[i].uvs, true);
             mCoords[2*i+0] = lUV.x;
@@ -179,7 +179,7 @@ std::array<float,8> texture::get_tex_coord() const
     }
     else
     {
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
         {
             mCoords[2*i+0] = mQuad_.v[i].uvs.x;
             mCoords[2*i+1] = mQuad_.v[i].uvs.y;
@@ -204,7 +204,7 @@ const std::string& texture::get_texture_file() const
     return std::get<std::string>(mContent_);
 }
 
-color texture::get_vertex_color(uint uiIndex) const
+color texture::get_vertex_color(std::size_t uiIndex) const
 {
     if (uiIndex >= 4)
     {
@@ -493,11 +493,11 @@ void texture::set_quad(const quad& mQuad)
     notify_renderer_need_redraw();
 }
 
-void texture::set_vertex_color(const color& mColor, uint uiIndex)
+void texture::set_vertex_color(const color& mColor, std::size_t uiIndex)
 {
-    if (uiIndex == std::numeric_limits<uint>::max())
+    if (uiIndex == std::numeric_limits<std::size_t>::max())
     {
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
             mQuad_.v[i].col = mColor;
 
         notify_renderer_need_redraw();

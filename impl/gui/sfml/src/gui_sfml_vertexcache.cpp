@@ -29,19 +29,19 @@ void to_sfml(const vertex& v, sf::Vertex& sv)
     sv.texCoords.y = v.uvs.y;
 }
 
-void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
+void vertex_cache::update(const vertex* lVertexData, std::size_t uiNumVertex)
 {
     if (mType_ == type::QUADS)
     {
-        static constexpr std::array<uint, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
+        static constexpr std::array<std::size_t, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
 
-        uint uiNumQuads = uiNumVertex/4u;
-        uint uiNumVertexExpanded = uiNumQuads*6u;
+        std::size_t uiNumQuads = uiNumVertex/4u;
+        std::size_t uiNumVertexExpanded = uiNumQuads*6u;
         if (uiNumVertexExpanded > mBuffer_.getVertexCount())
             mBuffer_.create(uiNumVertexExpanded);
 
         std::vector<sf::Vertex> lVertices(uiNumVertexExpanded);
-        for (uint i = 0; i < uiNumVertexExpanded; ++i)
+        for (std::size_t i = 0; i < uiNumVertexExpanded; ++i)
         {
             auto& sv = lVertices[i];
             const auto& v = lVertexData[(i/6u)*4u + lQuadIDs[i%6u]];
@@ -57,7 +57,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
             mBuffer_.create(uiNumVertex);
 
         std::vector<sf::Vertex> lVertices(uiNumVertex);
-        for (uint i = 0; i < uiNumVertex; ++i)
+        for (std::size_t i = 0; i < uiNumVertex; ++i)
         {
             auto& sv = lVertices[i];
             const auto& v = lVertexData[i];
@@ -69,7 +69,7 @@ void vertex_cache::update(const vertex* lVertexData, uint uiNumVertex)
     }
 }
 
-uint vertex_cache::get_num_vertex() const
+std::size_t vertex_cache::get_num_vertex() const
 {
     return uiNumVertex_;
 }

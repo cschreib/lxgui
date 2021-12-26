@@ -132,11 +132,11 @@ void uiobject::set_lua_member_(std::string sKey, sol::stack_object mValue)
     auto mIter = lLuaMembers_.find(sKey);
     if (mIter == lLuaMembers_.cend())
     {
-        lLuaMembers_.insert(mIter, {std::move(sKey), std::move(mValue)});
+        lLuaMembers_.insert(mIter, {std::move(sKey), mValue});
     }
     else
     {
-        mIter->second = sol::object(std::move(mValue));
+        mIter->second = sol::object(mValue);
     }
 }
 
@@ -221,12 +221,12 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function get_point
     */
-    mClass.set_function("get_point", [](const uiobject& mSelf, sol::optional<uint> mPoint)
+    mClass.set_function("get_point", [](const uiobject& mSelf, sol::optional<std::size_t> mPoint)
     {
         anchor_point mPointValue = anchor_point::TOPLEFT;
         if (mPoint.has_value())
         {
-            if (mPoint.value() > static_cast<uint>(anchor_point::CENTER))
+            if (mPoint.value() > static_cast<std::size_t>(anchor_point::CENTER))
                 throw sol::error("requested anchor point is invalid");
 
             mPointValue = static_cast<anchor_point>(mPoint.value());

@@ -36,8 +36,8 @@ namespace gl
         *   \param mRect             The position of this texture inside the atlas
         *   \param mFilter           Use texture filtering or not (see set_filter())
         */
-        material(uint uiTextureHandle, const vector2ui& mCanvasDimensions, const bounds2f mRect,
-            filter mFilter = filter::NONE);
+        material(std::uint32_t uiTextureHandle, const vector2ui& mCanvasDimensions,
+            const bounds2f mRect, filter mFilter = filter::NONE);
 
         material(const material& tex) = delete;
         material(material&& tex) = delete;
@@ -111,7 +111,7 @@ namespace gl
         /// Returns the OpenGL texture handle.
         /** \note For internal use.
         */
-        uint get_handle_() const;
+        std::uint32_t get_handle_() const;
 
         /// Checks if the machine is capable of using some features.
         /** \note The function checks for non power of two capability.
@@ -123,19 +123,19 @@ namespace gl
         /// Returns the maximum size available for a texture, in pixels.
         /** \return The maximum size available for a texture, in pixels
         */
-        static uint get_max_size();
+        static std::size_t get_max_size();
 
     private:
 
-        vector2ui mCanvasDimensions_;
-        wrap      mWrap_ = wrap::REPEAT;
-        filter    mFilter_ = filter::NONE;
-        uint      uiTextureHandle_ = 0u;
-        bounds2f  mRect_;
-        bool      bIsOwner_ = false;
+        vector2ui     mCanvasDimensions_;
+        wrap          mWrap_ = wrap::REPEAT;
+        filter        mFilter_ = filter::NONE;
+        std::uint32_t uiTextureHandle_ = 0u;
+        bounds2f      mRect_;
+        bool          bIsOwner_ = false;
 
         static bool ONLY_POWER_OF_TWO;
-        static uint MAXIMUM_SIZE;
+        static std::size_t MAXIMUM_SIZE;
     };
 }
 }

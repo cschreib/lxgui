@@ -11,7 +11,7 @@ namespace sfml
 
 atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter) : gui::atlas_page(mFilter)
 {
-    const uint uiSize = mRenderer.get_texture_atlas_page_size();
+    const std::size_t uiSize = mRenderer.get_texture_atlas_page_size();
 
     if (!mTexture_.create(uiSize, uiSize))
     {

@@ -80,7 +80,7 @@ struct main_loop_context
     bool bFocus = true;
     float fDelta = 0.1f;
     timing_clock::time_point mPrevTime;
-    uint uiFrameCount = 0;
+    std::size_t uiFrameCount = 0;
     float fAccumulatedTime = 0.0;
 
     gui::manager* pManager = nullptr;
@@ -324,19 +324,19 @@ int main(int argc, char* argv[])
 
     try
     {
-        uint uiWindowWidth  = 800;
-        uint uiWindowHeight = 600;
-        bool bFullScreen    = false;
-        float fScaleFactor  = 1.0f;
-        bool bPrintToLog    = false;
+        std::size_t uiWindowWidth  = 800u;
+        std::size_t uiWindowHeight = 600u;
+        bool        bFullScreen    = false;
+        float       fScaleFactor   = 1.0f;
+        bool        bPrintToLog    = false;
 
         // Read some configuration data
         if (utils::file_exists("config.lua"))
         {
             sol::state mLua;
             mLua.do_file("config.lua");
-            uiWindowWidth  = mLua["window_width"].get_or(800);
-            uiWindowHeight = mLua["window_height"].get_or(600);
+            uiWindowWidth  = mLua["window_width"].get_or(std::size_t{800u});
+            uiWindowHeight = mLua["window_height"].get_or(std::size_t{600u});
             bFullScreen    = mLua["fullscreen"].get_or(false);
             fScaleFactor   = mLua["scale_factor"].get_or(1.0);
             bPrintToLog    = mLua["print_to_log"].get_or(false);
@@ -490,9 +490,9 @@ int main(int argc, char* argv[])
         for (const auto& sLanguage : pManager->get_localizer().get_preferred_languages())
             std::cout << sLanguage << ", ";
         std::cout << std::endl;
-        uint uiCodePoints = 0u;
+        std::size_t uiCodePoints = 0u;
         for (const auto& mRange : pManager->get_localizer().get_allowed_code_points())
-            uiCodePoints += mRange.uiLast - mRange.uiFirst + 1;
+            uiCodePoints += static_cast<std::size_t>(mRange.uiLast - mRange.uiFirst) + 1;
         std::cout << " Required Unicode code points: " << uiCodePoints << std::endl;
         std::cout << " Renderer settings:" << std::endl;
         std::cout << "  Renderer: " << mGUIRenderer.get_name() << std::endl;

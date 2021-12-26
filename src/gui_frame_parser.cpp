@@ -459,12 +459,12 @@ void frame::parse_scripts_node_(const layout_node& mNode)
 
             std::string sScript = std::string(pNode->get_value());
             script_info mInfo{std::string(pNode->get_filename()),
-                    static_cast<uint>(pNode->get_value_line_number())};
+                    static_cast<std::size_t>(pNode->get_value_line_number())};
 
             if (mScriptNode.get_attribute_value_or<bool>("override", false))
-                set_script(std::move(sName), std::move(sScript), std::move(mInfo));
+                set_script(sName, std::move(sScript), std::move(mInfo));
             else
-                add_script(std::move(sName), std::move(sScript), std::move(mInfo));
+                add_script(sName, std::move(sScript), std::move(mInfo));
         }
     }
 }

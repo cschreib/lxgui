@@ -36,7 +36,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
         sol::lib::os, sol::lib::string, sol::lib::debug);
 
-    pLuaRegs_ = pLuaRegs;
+    pLuaRegs_ = std::move(pLuaRegs);
 
     auto& mLua = *pLua_;
 
@@ -87,7 +87,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     /** @function set_key_binding
     */
     mLua.set_function("set_key_binding", sol::overload(
-    [&](uint uiKey, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         if (sCode.has_value())
@@ -95,7 +95,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             remove_key_binding(mKey);
     },
-    [&](uint uiKey, uint uiModifier, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier = static_cast<input::key>(uiModifier);
@@ -104,7 +104,8 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         else
             remove_key_binding(mKey, mModifier);
     },
-    [&](uint uiKey, uint uiModifier1, uint uiModifier2, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
+        sol::optional<std::string> sCode)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier1 = static_cast<input::key>(uiModifier1);
@@ -170,7 +171,7 @@ std::string serialize(const std::string& sTab, const sol::object& mValue)
 
         std::string sContent;
         sol::table mTable = mValue.as<sol::table>();
-        for (auto mKeyValue : mTable)
+        for (const auto& mKeyValue : mTable)
         {
             sContent += sTab + "    [" + serialize("", mKeyValue.first) + "] = "
                 + serialize(sTab + "    ", mKeyValue.second) + ",\n";

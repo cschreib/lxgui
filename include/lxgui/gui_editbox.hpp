@@ -201,7 +201,8 @@ namespace gui
         *   \param bForceUpdate 'true' to bypass all redundancy checks
         *   \note Will select (uiEnd - uiStart) characters
         */
-        void highlight_text(uint uiStart = 0u, uint uiEnd = uint(-1), bool bForceUpdate = false);
+        void highlight_text(std::size_t uiStart = 0u,
+            std::size_t uiEnd = std::numeric_limits<std::size_t>::max(), bool bForceUpdate = false);
 
         /// Deselects the selected text, if any.
         void unlight_text();
@@ -220,28 +221,28 @@ namespace gui
         /** \return The position of the cursor (0: before first character,
                     get_num-letters(): after last character).
         */
-        uint get_cursor_position() const;
+        std::size_t get_cursor_position() const;
 
         /// Moves the cursor to a chosen position.
         /** \param uiPos The new cursor position (0: before first character,
                          get_num-letters(): after last character).
         */
-        void set_cursor_position(uint uiPos);
+        void set_cursor_position(std::size_t uiPos);
 
         /// Sets the maximum number of letters to allow in this edit_box.
         /** \param uiMaxLetters The max number of letters
         */
-        void set_max_letters(uint uiMaxLetters);
+        void set_max_letters(std::size_t uiMaxLetters);
 
         /// Returns the maximum number of letters to allow in this edit_box.
         /** \return the maximum number of letters to allow in this edit_box
         */
-        uint get_max_letters() const;
+        std::size_t get_max_letters() const;
 
         /// Returns the number of letters in the content.
         /** \return The number of letters in the content
         */
-        uint get_num_letters() const;
+        std::size_t get_num_letters() const;
 
         /// Sets the carret's blink speed.
         /** \param dBlinkSpeed The number of seconds to wait between each blink
@@ -315,12 +316,12 @@ namespace gui
         /// Sets the maximum number of history lines this edit_box can keep.
         /** \param uiMaxHistoryLines The max number of history lines
         */
-        void set_max_history_lines(uint uiMaxHistoryLines);
+        void set_max_history_lines(std::size_t uiMaxHistoryLines);
 
         /// Returns the maximum number of history lines this edit_box can keep.
         /** \return The maximum number of history lines this edit_box can keep
         */
-        uint get_max_history_lines() const;
+        std::size_t get_max_history_lines() const;
 
         /// Adds a new history line to the history line list.
         /** \param sHistoryLine The content of this history line
@@ -410,7 +411,7 @@ namespace gui
 
         bool add_char_(char32_t sChar);
         bool remove_char_();
-        uint get_letter_id_at_(const vector2f& mPosition);
+        std::size_t get_letter_id_at_(const vector2f& mPosition);
         bool move_carret_at_(const vector2f& mPosition);
         bool move_carret_horizontally_(bool bForward = true);
         bool move_carret_vertically_(bool bDown = true);
@@ -422,9 +423,9 @@ namespace gui
         utils::ustring::iterator iterCarretPos_;
         utils::ustring::iterator iterCarretPosOld_;
 
-        uint uiDisplayPos_ = 0;
-        uint uiNumLetters_ = 0;
-        uint uiMaxLetters_ = uint(-1);
+        std::size_t uiDisplayPos_ = 0;
+        std::size_t uiNumLetters_ = 0;
+        std::size_t uiMaxLetters_ = std::numeric_limits<std::size_t>::max();
         bool bNumericOnly_ = false;
         bool bPositiveOnly_ = false;
         bool bIntegerOnly_ = false;
@@ -436,8 +437,8 @@ namespace gui
 
         utils::observer_ptr<texture> pHighlight_ = nullptr;
         color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
-        uint  uiSelectionStartPos_ = 0u;
-        uint  uiSelectionEndPos_ = 0u;
+        std::size_t  uiSelectionStartPos_ = 0u;
+        std::size_t  uiSelectionEndPos_ = 0u;
         bool  bSelectedText_ = false;
 
         utils::observer_ptr<texture> pCarret_ = nullptr;
@@ -445,8 +446,8 @@ namespace gui
         periodic_timer mCarretTimer_;
 
         std::vector<utils::ustring> lHistoryLineList_;
-        uint                        uiMaxHistoryLines_ = uint(-1);
-        uint                        uiCurrentHistoryLine_ = uint(-1);
+        std::size_t                 uiMaxHistoryLines_ = std::numeric_limits<std::size_t>::max();
+        std::size_t                 uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
 
         utils::observer_ptr<font_string> pFontString_ = nullptr;
         bounds2f lTextInsets_ = bounds2f::ZERO;

@@ -53,8 +53,8 @@ int main(int argc, char* argv[])
         // Create a window
         std::cout << "Creating window..." << std::endl;
         const std::string sWindowTitle = "test";
-        const uint uiWindowWidth  = 800;
-        const uint uiWindowHeight = 600;
+        const std::size_t uiWindowWidth  = 800u;
+        const std::size_t uiWindowHeight = 600u;
 
         if (SDL_Init(SDL_INIT_VIDEO) != 0)
         {

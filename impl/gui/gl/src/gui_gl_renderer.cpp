@@ -103,7 +103,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
 #if defined(LXGUI_OPENGL3)
     glActiveTexture(GL_TEXTURE0);
     glUseProgram(pShaderCache_->uiProgram_);
-    uiPreviousTexture_ = static_cast<uint>(-1);
+    uiPreviousTexture_ = static_cast<std::uint32_t>(-1);
 #else
     glDisable(GL_LIGHTING);
     glDisable(GL_ALPHA_TEST);
@@ -129,7 +129,7 @@ void renderer::set_view_(const matrix4f& mViewMatrix) const
     if (!pCurrentTarget_)
     {
         // Rendering to main screen, flip Y
-        for (uint i = 0; i < 4; ++i)
+        for (std::size_t i = 0; i < 4; ++i)
             mCorrectedView(i,1) *= -1.0f;
     }
 
@@ -152,7 +152,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 {
 
 #if !defined(LXGUI_OPENGL3)
-    static constexpr std::array<uint, 6> ids = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<std::size_t, 6> lIDs = {{0, 1, 2, 2, 3, 0}};
     glColor4ub(255, 255, 255, 255);
 
     const gl::material* pMat = static_cast<const gl::material*>(pMaterial);
@@ -164,9 +164,9 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
         glBegin(GL_TRIANGLES);
         for (const auto& v :lQuadList)
         {
-            for (uint i = 0; i < 6; ++i)
+            for (std::size_t i = 0; i < 6; ++i)
             {
-                uint j = ids[i];
+                std::size_t j = lIDs[i];
                 float a = v[j].col.a;
                 glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
                 glTexCoord2f(v[j].uvs.x, v[j].uvs.y);
@@ -181,9 +181,9 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
         glBegin(GL_TRIANGLES);
         for (const auto& v : lQuadList)
         {
-            for (uint i = 0; i < 6; ++i)
+            for (std::size_t i = 0; i < 6; ++i)
             {
-                uint j = ids[i];
+                std::size_t j = lIDs[i];
                 float a = v[j].col.a;
                 glColor4f(v[j].col.r*a, v[j].col.g*a, v[j].col.b*a, a); // Premultipled alpha
                 glVertex2f(v[j].pos.x, v[j].pos.y);
@@ -255,7 +255,7 @@ std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) co
     return std::make_shared<gl::atlas>(*this, mFilter);
 }
 
-uint renderer::get_texture_max_size() const
+std::size_t renderer::get_texture_max_size() const
 {
     return material::get_max_size();
 }
@@ -292,8 +292,8 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
     return std::make_shared<gl::render_target>(mDimensions, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
-    uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
+    std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
     char32_t uiDefaultCodePoint) const
 {
     return std::make_shared<gl::font>(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
@@ -342,7 +342,7 @@ bool renderer::is_gl_extension_supported(const std::string& sExtension)
     GLint uiNumExtension = 0;
     glGetIntegerv(GL_NUM_EXTENSIONS, &uiNumExtension);
 
-    for (GLuint uiIndex = 0; uiIndex < (uint)uiNumExtension; ++uiIndex)
+    for (GLuint uiIndex = 0; uiIndex < static_cast<GLUint>(uiNumExtension); ++uiIndex)
     {
         if (sExtension == reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, uiIndex)))
             return true;
@@ -511,16 +511,16 @@ void renderer::compile_programs_()
 
 void renderer::setup_buffers_()
 {
-    static constexpr std::array<uint, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
+    static constexpr std::array<std::uint32_t, 6> lQuadIDs = {{0, 1, 2, 2, 3, 0}};
 
-    constexpr uint uiNumArrayIndices = 768u;
-    std::vector<uint> lRepeatedIds(uiNumArrayIndices);
-    for (uint i = 0; i < uiNumArrayIndices; ++i)
+    constexpr std::uint32_t uiNumArrayIndices = 768u;
+    std::vector<std::uint32_t> lRepeatedIds(uiNumArrayIndices);
+    for (std::uint32_t i = 0; i < uiNumArrayIndices; ++i)
     {
         lRepeatedIds[i] = (i/6)*4 + lQuadIDs[i%6];
     }
 
-    for (uint i = 0; i < CACHE_CYCLE_SIZE; ++i)
+    for (std::size_t i = 0; i < CACHE_CYCLE_SIZE; ++i)
     {
         pQuadCache_[i] = std::static_pointer_cast<gl::vertex_cache>(create_vertex_cache(
             vertex_cache::type::QUADS));

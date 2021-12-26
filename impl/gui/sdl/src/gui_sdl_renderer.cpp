@@ -520,7 +520,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 {
     const sdl::material* pMat = static_cast<const sdl::material*>(pMaterial);
 
-    for (uint k = 0; k < lQuadList.size(); ++k)
+    for (std::size_t k = 0; k < lQuadList.size(); ++k)
     {
         render_quad_(pMat, lQuadList[k]);
     }
@@ -548,7 +548,7 @@ std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) co
     return std::make_shared<sdl::atlas>(*this, mFilter);
 }
 
-uint renderer::get_texture_max_size() const
+std::size_t renderer::get_texture_max_size() const
 {
     return uiTextureMaxSize_;
 }
@@ -574,10 +574,10 @@ std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimen
     std::shared_ptr<sdl::material> pTex = std::make_shared<sdl::material>(
         pRenderer_, mDimensions, false, material::wrap::REPEAT, mFilter);
 
-    uint uiPitch = 0u;
+    std::size_t uiPitch = 0u;
     ub32color* pTexData = pTex->lock_pointer(&uiPitch);
 
-    for (uint uiY = 0u; uiY < mDimensions.y; ++uiY)
+    for (std::size_t uiY = 0u; uiY < mDimensions.y; ++uiY)
     {
         const ub32color* pPixelDataRow = pPixelData + uiY*mDimensions.x;
         ub32color* pTexDataRow = pTexData + uiY*uiPitch;
@@ -610,8 +610,8 @@ std::shared_ptr<gui::render_target> renderer::create_render_target(
     return std::make_shared<sdl::render_target>(pRenderer_, mDimensions, mFilter);
 }
 
-std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, uint uiSize,
-    uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
+    std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
     char32_t uiDefaultCodePoint) const
 {
     return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize, uiOutline,

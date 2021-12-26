@@ -168,7 +168,7 @@ namespace gui
         /// Returns the number of text lines.
         /** \return The number of text lines
         */
-        uint get_num_lines() const;
+        std::size_t get_num_lines() const;
 
         /// Returns the lenght of a provided string.
         /** \param sString The string to measure
@@ -302,7 +302,7 @@ namespace gui
         /** \return The number of letters currently displayed
         *   \note This function may update the quad cache as needed.
         */
-        uint get_num_letters() const;
+        std::size_t get_num_letters() const;
 
         /// Returns the quad for the letter at the provided index (position, texture coords, color).
         /** \param uiIndex The index of the letter (0: first letter);
@@ -313,7 +313,7 @@ namespace gui
         *         the position (0,0) (if left-aligned). This function may update the quad cache as
         *         needed.
         */
-        const std::array<vertex,4>& get_letter_quad(uint uiIndex) const;
+        const std::array<vertex,4>& get_letter_quad(std::size_t uiIndex) const;
 
         /// Creates a quad that contains the provided character.
         /** \param uiChar The character to draw
@@ -361,7 +361,7 @@ namespace gui
         mutable bool  bUpdateCache_ = false;
         mutable float fW_ = 0.0f;
         mutable float fH_ = 0.0f;
-        mutable uint  uiNumLines_ = 0u;
+        mutable std::size_t uiNumLines_ = 0u;
 
         mutable std::vector<std::array<vertex,4>> lQuadList_;
         mutable std::shared_ptr<vertex_cache>     pVertexCache_;

@@ -440,7 +440,7 @@ namespace gui
         /// Returns the number of defined anchors.
         /** \return The number of defined anchors
         */
-        uint get_num_point() const;
+        std::size_t get_num_point() const;
 
         /// Returns one of this widget's anchor to modify it.
         /** \param mPoint The anchor point
@@ -648,7 +648,7 @@ namespace gui
         std::string sName_;
         std::string sRawName_;
         std::string sLuaName_;
-        uint        uiID_ = uint(-1);
+        std::size_t uiID_ = std::numeric_limits<std::size_t>::max();
 
         utils::observer_ptr<frame> pParent_ = nullptr;
 

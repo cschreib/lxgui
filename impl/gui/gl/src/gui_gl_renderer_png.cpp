@@ -33,7 +33,7 @@ std::shared_ptr<gui::material> renderer::create_material_png_(
         throw gui::exception("gui::gl::manager", "Cannot find file '" + sFileName + "'.");
     }
 
-    const uint PNGSIGSIZE = 8;
+    const std::size_t PNGSIGSIZE = 8;
     png_byte lSignature[PNGSIGSIZE];
     mFile.read(reinterpret_cast<char*>(lSignature), PNGSIGSIZE);
     if (!mFile.good() || png_sig_cmp(lSignature, 0, PNGSIGSIZE) != 0)
@@ -79,13 +79,13 @@ std::shared_ptr<gui::material> renderer::create_material_png_(
         else if (uiColorType != PNG_COLOR_TYPE_RGBA)
             throw gui::exception("gui::gl::manager", "only RGB or RGBA is supported for PNG images.");
 
-        png_uint_32 uiWidth  = png_get_image_width(pReadStruct, pInfoStruct);
-        png_uint_32 uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
+        std::size_t uiWidth  = png_get_image_width(pReadStruct, pInfoStruct);
+        std::size_t uiHeight = png_get_image_height(pReadStruct, pInfoStruct);
 
         std::vector<ub32color> lData(uiWidth*uiHeight);
         std::vector<png_bytep> lRows(uiHeight);
 
-        for (uint i = 0; i < uiHeight; ++i)
+        for (std::size_t i = 0; i < uiHeight; ++i)
             lRows[i] = reinterpret_cast<png_bytep>(lData.data() + i*uiWidth);
 
         png_read_image(pReadStruct, lRows.data());

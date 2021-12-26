@@ -136,11 +136,11 @@ void edit_box::register_on_lua(sol::state& mLua)
     /** @function highlight_text
     */
     mClass.set_function("highlight_text", [](edit_box& mSelf,
-        sol::optional<uint> uiStart, sol::optional<uint> uiEnd)
+        sol::optional<std::size_t> uiStart, sol::optional<std::size_t> uiEnd)
     {
         mSelf.highlight_text(
             uiStart.value_or(0u),
-            uiEnd.value_or(std::numeric_limits<uint>::max()));
+            uiEnd.value_or(std::numeric_limits<std::size_t>::max()));
     });
 
     /** @function insert
@@ -177,7 +177,7 @@ void edit_box::register_on_lua(sol::state& mLua)
     {
         mSelf.set_font(sFile, fHeight);
 
-        auto pFontString = mSelf.get_font_string().get();
+        auto* pFontString = mSelf.get_font_string().get();
         if (!pFontString)
             return;
 

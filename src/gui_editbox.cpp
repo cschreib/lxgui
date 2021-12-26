@@ -91,10 +91,10 @@ void edit_box::update(float fDelta)
 
     if (bMouseDraggedInFrame_)
     {
-        uint uiPos = get_letter_id_at_(mMousePos_);
+        std::size_t uiPos = get_letter_id_at_(mMousePos_);
         if (uiPos != uiSelectionEndPos_)
         {
-            if (uiPos != uint(-1))
+            if (uiPos != std::numeric_limits<std::size_t>::max())
             {
                 highlight_text(uiSelectionStartPos_, uiPos);
                 iterCarretPos_ = sUnicodeText_.begin() + uiPos;
@@ -102,7 +102,7 @@ void edit_box::update(float fDelta)
             }
             else
             {
-                uint uiTemp = uiSelectionStartPos_;
+                std::size_t uiTemp = uiSelectionStartPos_;
                 unlight_text();
                 uiSelectionStartPos_ = uiTemp;
                 iterCarretPos_ = sUnicodeText_.begin() + uiSelectionStartPos_;
@@ -342,7 +342,7 @@ void edit_box::unlight_text()
         pHighlight_->hide();
 }
 
-void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
+void edit_box::highlight_text(std::size_t uiStart, std::size_t uiEnd, bool bForceUpdate)
 {
     if (!pHighlight_)
         create_highlight_();
@@ -350,8 +350,8 @@ void edit_box::highlight_text(uint uiStart, uint uiEnd, bool bForceUpdate)
     if (!pHighlight_)
         return;
 
-    uint uiLeft  = std::min(uiStart, uiEnd);
-    uint uiRight = std::max(uiStart, uiEnd);
+    std::size_t uiLeft  = std::min(uiStart, uiEnd);
+    std::size_t uiRight = std::max(uiStart, uiEnd);
 
     if (uiSelectionStartPos_ != uiStart || uiSelectionEndPos_ != uiEnd || bForceUpdate)
     {
@@ -444,12 +444,12 @@ void edit_box::insert_after_cursor(const utils::ustring& sText)
     }
 }
 
-uint edit_box::get_cursor_position() const
+std::size_t edit_box::get_cursor_position() const
 {
     return iterCarretPos_ - sUnicodeText_.begin();
 }
 
-void edit_box::set_cursor_position(uint uiPos)
+void edit_box::set_cursor_position(std::size_t uiPos)
 {
     if (uiPos == get_cursor_position()) return;
 
@@ -457,11 +457,11 @@ void edit_box::set_cursor_position(uint uiPos)
     update_carret_position_();
 }
 
-void edit_box::set_max_letters(uint uiMaxLetters)
+void edit_box::set_max_letters(std::size_t uiMaxLetters)
 {
     if (uiMaxLetters == 0)
     {
-        uiMaxLetters_ = uint(-1);
+        uiMaxLetters_ = std::numeric_limits<std::size_t>::max();
         return;
     }
 
@@ -469,7 +469,7 @@ void edit_box::set_max_letters(uint uiMaxLetters)
     {
         uiMaxLetters_ = uiMaxLetters;
 
-        uint uiCarretPos = iterCarretPos_ - sUnicodeText_.begin();
+        std::size_t uiCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
         check_text_();
 
@@ -485,12 +485,12 @@ void edit_box::set_max_letters(uint uiMaxLetters)
     }
 }
 
-uint edit_box::get_max_letters() const
+std::size_t edit_box::get_max_letters() const
 {
     return uiMaxLetters_;
 }
 
-uint edit_box::get_num_letters() const
+std::size_t edit_box::get_num_letters() const
 {
     return sUnicodeText_.size();
 }
@@ -611,11 +611,11 @@ bool edit_box::is_multi_line() const
     return bMultiLine_;
 }
 
-void edit_box::set_max_history_lines(uint uiMaxHistoryLines)
+void edit_box::set_max_history_lines(std::size_t uiMaxHistoryLines)
 {
     if (uiMaxHistoryLines == 0)
     {
-        uiMaxHistoryLines_ = uint(-1);
+        uiMaxHistoryLines_ = std::numeric_limits<std::size_t>::max();
         return;
     }
 
@@ -630,12 +630,12 @@ void edit_box::set_max_history_lines(uint uiMaxHistoryLines)
                 lHistoryLineList_.begin() + (lHistoryLineList_.size() - uiMaxHistoryLines_)
             );
 
-            uiCurrentHistoryLine_ = uint(-1);
+            uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
         }
     }
 }
 
-uint edit_box::get_max_history_lines() const
+std::size_t edit_box::get_max_history_lines() const
 {
     return uiMaxHistoryLines_;
 }
@@ -654,7 +654,7 @@ void edit_box::add_history_line(const utils::ustring& sHistoryLine)
         );
     }
 
-    uiCurrentHistoryLine_ = uint(-1);
+    uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
 }
 
 const std::vector<utils::ustring>& edit_box::get_history_lines() const
@@ -665,7 +665,7 @@ const std::vector<utils::ustring>& edit_box::get_history_lines() const
 void edit_box::clear_history()
 {
     lHistoryLineList_.clear();
-    uiCurrentHistoryLine_ = uint(-1);
+    uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
 }
 
 void edit_box::set_arrows_ignored(bool bArrowsIgnored)
@@ -817,7 +817,7 @@ void edit_box::create_carret_()
     }
 
     quad mQuad = pFontString_->get_text_object()->create_letter_quad(U'|');
-    for (uint i = 0; i < 4; ++i)
+    for (std::size_t i = 0; i < 4; ++i)
         mQuad.v[i].col = pFontString_->get_text_color();
 
     pCarret_->set_quad(mQuad);
@@ -930,7 +930,7 @@ void edit_box::update_carret_position_()
 
         if (!bMultiLine_)
         {
-            uint uiGlobalPos = iterCarretPos_ - sUnicodeText_.begin();
+            std::size_t uiGlobalPos = iterCarretPos_ - sUnicodeText_.begin();
 
             if (uiDisplayPos_ > uiGlobalPos)
             {
@@ -953,7 +953,7 @@ void edit_box::update_carret_position_()
                 update_font_string_();
             }
 
-            uint uiCarretPos = uiGlobalPos - uiDisplayPos_;
+            std::size_t uiCarretPos = uiGlobalPos - uiDisplayPos_;
             if (uiCarretPos > sDisplayedText_.size())
             {
                 // The carret has been positioned after the end of the displayed string
@@ -985,9 +985,10 @@ void edit_box::update_carret_position_()
                 (iterCarretPos_ - sUnicodeText_.begin()) - uiDisplayPos_;
         }
 
-        float fYOffset = (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing());
+        float fYOffset = static_cast<float>(
+            (pText->get_num_lines() - 1) * (pText->get_line_height() * pText->get_line_spacing()));
 
-        uint uiIndex = iterDisplayCarret - sDisplayedText_.begin();
+        std::size_t uiIndex = iterDisplayCarret - sDisplayedText_.begin();
 
         float fXOffset = lTextInsets_.left;
         if (uiIndex < sDisplayedText_.size())
@@ -1021,6 +1022,7 @@ bool edit_box::add_char_(char32_t sUnicode)
     if (get_num_letters() >= uiMaxLetters_)
         return false;
 
+    // TODO: use localizer for these checks, if possible
     if (bNumericOnly_)
     {
         if (sUnicode == U'.')
@@ -1065,8 +1067,8 @@ bool edit_box::remove_char_()
     {
         if (uiSelectionStartPos_ != uiSelectionEndPos_)
         {
-            uint uiLeft = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
-            uint uiRight = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
+            std::size_t uiLeft = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
+            std::size_t uiRight = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
 
             sUnicodeText_.erase(uiLeft, uiRight - uiLeft);
 
@@ -1095,7 +1097,7 @@ bool edit_box::remove_char_()
     return true;
 }
 
-uint edit_box::get_letter_id_at_(const vector2f& mPosition)
+std::size_t edit_box::get_letter_id_at_(const vector2f& mPosition)
 {
     if (pFontString_ && pFontString_->get_text_object())
     {
@@ -1114,8 +1116,10 @@ uint edit_box::get_letter_id_at_(const vector2f& mPosition)
             else if (mPosition.x > lBorderList_.right - lTextInsets_.right)
                 return sDisplayedText_.size() + uiDisplayPos_;
 
-            uint uiNumLetters = std::min<uint>(pText->get_num_letters(), sDisplayedText_.size());
-            for (uint uiIndex = 0u; uiIndex < uiNumLetters; ++uiIndex)
+            std::size_t uiNumLetters = std::min<std::size_t>(
+                pText->get_num_letters(), sDisplayedText_.size());
+
+            for (std::size_t uiIndex = 0u; uiIndex < uiNumLetters; ++uiIndex)
             {
                 const auto& mQuad = pText->get_letter_quad(uiIndex);
                 if (fLocalX < 0.5f*(mQuad[0].pos.x + mQuad[2].pos.x))
@@ -1132,13 +1136,13 @@ uint edit_box::get_letter_id_at_(const vector2f& mPosition)
 
     }
 
-    return uint(-1);
+    return std::numeric_limits<std::size_t>::max();
 }
 
 bool edit_box::move_carret_at_(const vector2f& mPosition)
 {
-    uint uiPos = get_letter_id_at_(mPosition);
-    if (uiPos != uint(-1))
+    std::size_t uiPos = get_letter_id_at_(mPosition);
+    if (uiPos != std::numeric_limits<std::size_t>::max())
     {
         iterCarretPos_ = sUnicodeText_.begin() + uiPos;
         update_carret_position_();
@@ -1245,7 +1249,7 @@ void edit_box::process_key_(key mKey)
     }
     else if (mKey == key::K_END)
     {
-        uint uiPreviousCarretPos = get_cursor_position();
+        std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(get_num_letters());
 
         if (get_manager().get_input_manager().shift_is_pressed())
@@ -1262,7 +1266,7 @@ void edit_box::process_key_(key mKey)
     }
     else if (mKey == key::K_HOME)
     {
-        uint uiPreviousCarretPos = get_cursor_position();
+        std::size_t uiPreviousCarretPos = get_cursor_position();
         set_cursor_position(0u);
 
         if (get_manager().get_input_manager().shift_is_pressed())
@@ -1292,13 +1296,13 @@ void edit_box::process_key_(key mKey)
     {
         if (!bArrowsIgnored_)
         {
-            uint uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
+            std::size_t uiPreviousCarretPos = iterCarretPos_ - sUnicodeText_.begin();
 
             if (mKey == key::K_LEFT || mKey == key::K_RIGHT)
             {
                 if (bSelectedText_ && !get_manager().get_input_manager().shift_is_pressed())
                 {
-                    uint uiOffset = 0;
+                    std::size_t uiOffset = 0;
                     if (mKey == key::K_LEFT)
                         uiOffset = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
                     else
@@ -1320,7 +1324,7 @@ void edit_box::process_key_(key mKey)
             {
                 if (bSelectedText_)
                 {
-                    uint uiNewEndPos = iterCarretPos_ - sUnicodeText_.begin();
+                    std::size_t uiNewEndPos = iterCarretPos_ - sUnicodeText_.begin();
                     if (uiNewEndPos != uiSelectionStartPos_)
                         highlight_text(uiSelectionStartPos_, uiNewEndPos);
                     else
@@ -1339,7 +1343,7 @@ void edit_box::process_key_(key mKey)
         {
             if (uiCurrentHistoryLine_ != 0u)
             {
-                if (uiCurrentHistoryLine_ == uint(-1))
+                if (uiCurrentHistoryLine_ == std::numeric_limits<std::size_t>::max())
                     uiCurrentHistoryLine_ = lHistoryLineList_.size()-1;
                 else
                     --uiCurrentHistoryLine_;
@@ -1351,11 +1355,11 @@ void edit_box::process_key_(key mKey)
         }
         else
         {
-            if (uiCurrentHistoryLine_ != uint(-1))
+            if (uiCurrentHistoryLine_ != std::numeric_limits<std::size_t>::max())
             {
                 if (uiCurrentHistoryLine_ + 1 == lHistoryLineList_.size())
                 {
-                    uiCurrentHistoryLine_ = uint(-1);
+                    uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
                     set_text(U"");
                     if (!mChecker.is_alive())
                         return;
@@ -1374,8 +1378,8 @@ void edit_box::process_key_(key mKey)
     {
         if (uiSelectionEndPos_ != uiSelectionStartPos_)
         {
-            uint uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
-            uint uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
+            std::size_t uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
+            std::size_t uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
             utils::ustring sSelected = sUnicodeText_.substr(uiMinPos, uiMaxPos - uiMinPos);
             get_manager().get_input_manager().set_clipboard_content(sSelected);
         }

@@ -42,7 +42,7 @@ namespace sfml
         /// Returns the maximum texture width/height (in pixels).
         /** \return The maximum texture width/height (in pixels)
         */
-        uint get_texture_max_size() const override;
+        std::size_t get_texture_max_size() const override;
 
         /// Checks if the renderer supports texture atlases natively.
         /** \return 'true' if enabled, 'false' otherwise
@@ -127,7 +127,7 @@ namespace sfml
         *         Bitmap fonts are not yet supported.
         */
         std::shared_ptr<gui::font> create_font_(const std::string& sFontFile,
-            uint uiSize, uint uiOutline,
+            std::size_t uiSize, std::size_t uiOutline,
             const std::vector<code_point_range>& lCodePoints,
             char32_t uiDefaultCodePoint) const override;
 

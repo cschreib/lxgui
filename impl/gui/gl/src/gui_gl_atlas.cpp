@@ -46,9 +46,10 @@ atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter)
 
     glGenTextures(1, &uiTextureHandle_);
 
+    GLsizei iSize = static_cast<GLsizei>(uiSize_);
     glBindTexture(GL_TEXTURE_2D, uiTextureHandle_);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-        uiSize_, uiSize_, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
+        iSize, iSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr
     );
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -70,7 +71,7 @@ atlas_page::atlas_page(const gui::renderer& mRenderer, material::filter mFilter)
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 
     // Clear texture data (makes WebGL happy)
-    uint uiFBO = 0;
+    GLuint uiFBO = 0;
     glGenFramebuffers(1, &uiFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, uiTextureHandle_, 0);
@@ -95,7 +96,7 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
     GLint iPreviousID;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &iPreviousID);
 
-    uint uiFBO = 0;
+    GLuint uiFBO = 0;
     glGenFramebuffers(1, &uiFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, uiFBO);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGLMat.get_handle_(), 0);

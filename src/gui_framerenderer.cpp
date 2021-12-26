@@ -8,10 +8,10 @@ namespace lxgui {
 namespace gui
 {
 // For debugging only
-uint count_frames(const std::array<strata,8>& lStrataList)
+std::size_t count_frames(const std::array<strata,8>& lStrataList)
 {
-    uint uiCount = 0;
-    for (uint uiStrata = 0; uiStrata < lStrataList.size(); ++uiStrata)
+    std::size_t uiCount = 0;
+    for (std::size_t uiStrata = 0; uiStrata < lStrataList.size(); ++uiStrata)
     {
         for (const auto& mLevel : utils::range::value(lStrataList[uiStrata].lLevelList))
         {
@@ -25,7 +25,7 @@ uint count_frames(const std::array<strata,8>& lStrataList)
 // For debugging only
 void print_frames(const std::array<strata,8>& lStrataList)
 {
-    for (uint uiStrata = 0; uiStrata < lStrataList.size(); ++uiStrata)
+    for (std::size_t uiStrata = 0; uiStrata < lStrataList.size(); ++uiStrata)
     {
         if (lStrataList[uiStrata].lLevelList.empty()) continue;
         gui::out << "strata[" << uiStrata << "]" << std::endl;
@@ -46,7 +46,7 @@ void frame_renderer::notify_strata_needs_redraw_(const strata& mStrata) const
 
 void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata) const
 {
-    notify_strata_needs_redraw_(lStrataList_[(uint)mStrata]);
+    notify_strata_needs_redraw_(lStrataList_[static_cast<std::size_t>(mStrata)]);
 }
 
 void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& pFrame, bool bRendered)
@@ -60,7 +60,7 @@ void frame_renderer::notify_rendered_frame(const utils::observer_ptr<frame>& pFr
     }
 
     const auto mFrameStrata = pFrame->get_frame_strata();
-    auto& mStrata = lStrataList_[(uint)mFrameStrata];
+    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
 
     if (bRendered)
         add_to_strata_list_(mStrata, pFrame);
@@ -78,8 +78,8 @@ void frame_renderer::notify_frame_strata_changed(const utils::observer_ptr<frame
         throw gui::exception("gui::frame_renderer", "cannot use PARENT strata for renderer");
     }
 
-    auto& mOld = lStrataList_[(uint)mOldStrata];
-    auto& mNew = lStrataList_[(uint)mNewStrata];
+    auto& mOld = lStrataList_[static_cast<std::size_t>(mOldStrata)];
+    auto& mNew = lStrataList_[static_cast<std::size_t>(mNewStrata)];
     remove_from_strata_list_(mOld, pFrame);
     add_to_strata_list_(mNew, pFrame);
 
@@ -96,7 +96,7 @@ void frame_renderer::notify_frame_level_changed(const utils::observer_ptr<frame>
     }
 
     const auto mFrameStrata = pFrame->get_frame_strata();
-    auto& mStrata = lStrataList_[(uint)mFrameStrata];
+    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
     auto& lLevelList = mStrata.lLevelList;
 
     auto mIterOld = lLevelList.find(iOldLevel);

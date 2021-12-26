@@ -59,7 +59,7 @@ namespace sdl
 
         const renderer& mRenderer_;
         SDL_Texture*    pTexture_ = nullptr;
-        uint            uiSize_ = 0u;
+        std::size_t     uiSize_ = 0u;
     };
 
     /// A class that holds rendering data

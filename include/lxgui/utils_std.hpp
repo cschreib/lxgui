@@ -27,11 +27,11 @@ namespace utils
 
 namespace std
 {
-    template<class T, size_t N>
+    template<class T, std::size_t N>
     ostream& operator << (ostream& o, const array<T, N>& a)
     {
         o << "(";
-        for (size_t i = 0; i < N; ++i)
+        for (std::size_t i = 0; i < N; ++i)
         {
             if (i != N-1)
                 o << a[i] << ", ";
@@ -46,8 +46,8 @@ namespace std
     ostream& operator << (ostream& o, const vector<T>& a)
     {
         o << "(";
-        const size_t N = a.size();
-        for (size_t i = 0; i < N; ++i)
+        const std::size_t N = a.size();
+        for (std::size_t i = 0; i < N; ++i)
         {
             if (i != N-1)
                 o << a[i] << ", ";

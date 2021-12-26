@@ -362,8 +362,8 @@ namespace input
 
         // Keyboard
         double                         dLongPressDelay_ = 0.7;
-        std::array<double, KEY_NUMBER> lKeyDelay_;
-        std::array<bool,   KEY_NUMBER> lKeyLong_;
+        std::array<double, KEY_NUMBER> lKeyDelay_ = {};
+        std::array<bool,   KEY_NUMBER> lKeyLong_ = {};
 
         bool bCtrlPressed_ = false;
         bool bShiftPressed_ = false;
@@ -372,8 +372,8 @@ namespace input
         std::vector<char32_t> lChars_;
 
         // Mouse
-        std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_;
-        std::array<bool,   MOUSE_BUTTON_NUMBER> lMouseLong_;
+        std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_ = {};
+        std::array<bool,   MOUSE_BUTTON_NUMBER> lMouseLong_ = {};
 
         std::unordered_map<std::string, bool> lClickGroupList_;
         std::unordered_map<std::string, bool> lForcedClickGroupList_;

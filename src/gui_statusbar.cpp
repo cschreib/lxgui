@@ -13,9 +13,7 @@ namespace gui
 {
 std::array<float,4> select_uvs(const std::array<float,8>& uvs)
 {
-    std::array<float,4> u;
-    u[0] = uvs[0]; u[1] = uvs[1]; u[2] = uvs[4]; u[3] = uvs[5];
-    return u;
+    return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
 status_bar::status_bar(manager& mManager) : frame(mManager)

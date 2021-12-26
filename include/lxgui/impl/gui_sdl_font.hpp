@@ -31,14 +31,14 @@ namespace sdl
         *   \param uiDefaultCodePoint The character to display as fallback
         *   \param bPreMultipliedAlphaSupported Set to 'true' if the renderer supports pre-multipled alpha
         */
-        font(SDL_Renderer* pRenderer, const std::string& sFontFile, uint uiSize, uint uiOutline,
+        font(SDL_Renderer* pRenderer, const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
             const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint,
             bool bPreMultipliedAlphaSupported);
 
         /// Get the size of the font in pixels.
         /** \return The size of the font in pixels
         */
-        uint get_size() const override;
+        std::size_t get_size() const override;
 
         /// Returns the uv coordinates of a character on the texture.
         /** \param uiChar The unicode character
@@ -105,7 +105,7 @@ namespace sdl
 
         const character_info* get_character_(char32_t uiChar) const;
 
-        uint     uiSize_ = 0u;
+        std::size_t uiSize_ = 0u;
         char32_t uiDefaultCodePoint_ = 0u;
 
         std::shared_ptr<sdl::material> pTexture_;

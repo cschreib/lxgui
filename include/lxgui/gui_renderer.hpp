@@ -76,7 +76,7 @@ namespace gui
         /// Returns the maximum texture width/height (in pixels).
         /** \return The maximum texture width/height (in pixels)
         */
-        virtual uint get_texture_max_size() const = 0;
+        virtual std::size_t get_texture_max_size() const = 0;
 
         /// Checks if the renderer supports texture atlases natively.
         /** \return 'true' if enabled, 'false' otherwise
@@ -105,7 +105,7 @@ namespace gui
         /// Returns the width/height of a texture atlas page (in pixels).
         /** \return The width/height of a texture atlas page (in pixels)
         */
-        uint get_texture_atlas_page_size() const;
+        std::size_t get_texture_atlas_page_size() const;
 
         /// Set the width/height of a texture atlas page (in pixels).
         /** \param uiPageSize The texture width/height in pixels
@@ -116,12 +116,12 @@ namespace gui
         *         memory usage from atlas textures is too large. Set it to zero
         *         to fall back to the implementation-defined default value.
         */
-        void set_texture_atlas_page_size(uint uiPageSize);
+        void set_texture_atlas_page_size(std::size_t uiPageSize);
 
         /// Count the total number of texture atlas pages curently in use.
         /** \return The total number of texture atlas pages curently in use
         */
-        uint get_num_texture_atlas_pages() const;
+        std::size_t get_num_texture_atlas_pages() const;
 
         /// Checks if the renderer supports vertex caches.
         /** \return 'true' if supported, 'false' otherwise
@@ -147,7 +147,7 @@ namespace gui
         /** \return The number of batches of vertices sent to the GPU during the last frame
         *   \note This will be zero unless is_quad_batching_enabled() is 'true'.
         */
-        uint get_batch_count() const;
+        std::size_t get_batch_count() const;
 
         /// Begins rendering on a particular render target.
         /** \param pTarget The render target (main screen if nullptr)
@@ -313,8 +313,8 @@ namespace gui
         *         outline itself will be rendered by the returned font. A non-outlined font
         *         must be rendered above the outlined font to fill the actual characters.
         */
-        std::shared_ptr<font> create_font(const std::string& sFontFile, uint uiSize,
-            uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+        std::shared_ptr<font> create_font(const std::string& sFontFile, std::size_t uiSize,
+            std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
             char32_t uiDefaultCodePoint) const;
 
         /// Creates a new font.
@@ -330,7 +330,7 @@ namespace gui
         *   \note See create_atlas_material() for more information on atlases.
         */
         std::shared_ptr<font> create_atlas_font(const std::string& sAtlasCategory,
-            const std::string& sFontFile, uint uiSize, uint uiOutline,
+            const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
             const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) const;
 
         /// Creates a new empty vertex cache.
@@ -429,7 +429,7 @@ namespace gui
         *         from using any other font type, including bitmap fonts.
         */
         virtual std::shared_ptr<font> create_font_(const std::string& sFontFile,
-            uint uiSize, uint uiOutline, const std::vector<code_point_range>& lCodePoints,
+            std::size_t uiSize, std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
             char32_t uiDefaultCodePoint) const = 0;
 
         atlas& get_atlas_(const std::string& sAtlasCategory, material::filter mFilter) const;
@@ -445,7 +445,7 @@ namespace gui
         mutable bool bTextureAtlasEnabled_ = true;
         mutable bool bVertexCacheEnabled_ = true;
         mutable bool bQuadBatchingEnabled_ = true;
-        uint         uiTextureAtlasPageSize_ = 0u;
+        std::size_t  uiTextureAtlasPageSize_ = 0u;
 
         struct quad_batcher
         {
@@ -453,13 +453,13 @@ namespace gui
             std::shared_ptr<vertex_cache>     pCache;
         };
 
-        static constexpr uint BATCHING_CACHE_CYCLE_SIZE = 16u;
+        static constexpr std::size_t BATCHING_CACHE_CYCLE_SIZE = 16u;
         mutable std::array<quad_batcher,BATCHING_CACHE_CYCLE_SIZE> lQuadCache_;
 
         mutable const gui::material* pCurrentMaterial_ = nullptr;
-        mutable uint                 uiCurrentQuadCache_ = 0u;
-        mutable uint                 uiBatchCount_ = 0u;
-        mutable uint                 uiLastFrameBatchCount_ = 0u;
+        mutable std::size_t          uiCurrentQuadCache_ = 0u;
+        mutable std::size_t          uiBatchCount_ = 0u;
+        mutable std::size_t          uiLastFrameBatchCount_ = 0u;
     };
 }
 }

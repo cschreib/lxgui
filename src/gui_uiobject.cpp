@@ -29,7 +29,7 @@ uiobject::~uiobject()
         {
             if (mAnchor)
             {
-                if (auto* pAnchorParent = mAnchor->get_parent().get())
+                if (const auto* pAnchorParent = mAnchor->get_parent().get())
                     pAnchorParent->notify_anchored_object(observer_from_this(), false);
             }
 
@@ -583,9 +583,9 @@ bool uiobject::depends_on(const uiobject& mObj) const
     return false;
 }
 
-uint uiobject::get_num_point() const
+std::size_t uiobject::get_num_point() const
 {
-    uint uiNumAnchors = 0u;
+    std::size_t uiNumAnchors = 0u;
     for (const auto& mAnchor : lAnchorList_)
     {
         if (mAnchor)
@@ -897,7 +897,7 @@ void uiobject::notify_scaling_factor_updated()
     notify_borders_need_update();
 }
 
-void uiobject::update(float fDelta)
+void uiobject::update(float)
 {
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)

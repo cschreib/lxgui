@@ -27,7 +27,7 @@ color::hls color::to_hls() const noexcept
     float ma = std::max(std::max(r, g), b);
     float mi = std::min(std::min(r, g), b);
 
-    color::hls hls;
+    color::hls hls{};
     hls.a = a;
 
     if (ma == mi)
@@ -59,7 +59,7 @@ color::hls color::to_hls() const noexcept
 
 color::hsv color::to_hsv() const noexcept
 {
-    color::hsv hsv;
+    color::hsv hsv{};
 
     float cmax;
     float cmin;
@@ -211,10 +211,10 @@ color operator * (float f, const color& c2) noexcept
 
 std::ostream& operator << (std::ostream& mStream, const color& mColor)
 {
-    return mStream << static_cast<uint>(std::round(255.0f*mColor.r)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.g)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.b)) << ", "
-                   << static_cast<uint>(std::round(255.0f*mColor.a));
+    return mStream << static_cast<std::size_t>(std::round(255.0f*mColor.r)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.g)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.b)) << ", "
+                   << static_cast<std::size_t>(std::round(255.0f*mColor.a));
 }
 
 std::istream& operator >> (std::istream& mStream, color& mColor)
@@ -235,10 +235,10 @@ std::istream& operator >> (std::istream& mStream, color& mColor)
         if (!mStream.eof())
         {
             mStream >> h[0];
-            if (isalnum(h[0]) && !mStream.eof())
+            if (std::isalnum(h[0]) != 0 && !mStream.eof())
             {
                 mStream >> h[1];
-                if (isalnum(h[1]))
+                if (std::isalnum(h[1]) != 0)
                 {
                     mColor.a = utils::hex_to_uint(h)/255.0f;
                     return mStream;

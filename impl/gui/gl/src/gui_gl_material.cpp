@@ -35,9 +35,9 @@ namespace gui {
 namespace gl
 {
 bool material::ONLY_POWER_OF_TWO = true;
-uint material::MAXIMUM_SIZE = 128;
+std::size_t material::MAXIMUM_SIZE = 128;
 
-uint next_pot(uint uiSize)
+std::size_t next_pot(std::size_t uiSize)
 {
     return std::pow(2.0f, std::ceil(std::log2(static_cast<float>(uiSize))));
 }
@@ -97,7 +97,7 @@ material::material(const vector2ui& mDimensions, wrap mWrap, filter mFilter) :
     mRect_ = bounds2f(0, mDimensions.x, 0, mDimensions.y);
 }
 
-material::material(uint uiTextureHandle, const vector2ui& mCanvasDimensions,
+material::material(std::uint32_t uiTextureHandle, const vector2ui& mCanvasDimensions,
     const bounds2f mRect, filter mFilter) :
     gui::material(true), mCanvasDimensions_(mCanvasDimensions), mFilter_(mFilter),
     uiTextureHandle_(uiTextureHandle), mRect_(mRect), bIsOwner_(false)
@@ -279,7 +279,7 @@ void material::update_texture(const ub32color* pData)
     glBindTexture(GL_TEXTURE_2D, iPreviousID);
 }
 
-uint material::get_handle_() const
+std::uint32_t material::get_handle_() const
 {
     return uiTextureHandle_;
 }
@@ -298,7 +298,7 @@ void material::check_availability()
     MAXIMUM_SIZE = iMax;
 }
 
-uint material::get_max_size()
+std::size_t material::get_max_size()
 {
     return MAXIMUM_SIZE;
 }

@@ -35,7 +35,7 @@ public:
             return;
 
         std::string sLine;
-        uint uiPrevPos = 0u;
+        std::size_t uiPrevPos = 0u;
         while (std::getline(mStream, sLine))
         {
             sFileContent_ += '\n' + sLine;
@@ -52,19 +52,19 @@ public:
 
     const std::string& get_content() const { return sFileContent_; }
 
-    std::pair<uint,uint> get_line_info(uint uiOffset) const
+    std::pair<std::size_t,std::size_t> get_line_info(std::size_t uiOffset) const
     {
         auto mIter = std::lower_bound(lLineOffsets_.begin(), lLineOffsets_.end(), uiOffset);
         if (mIter == lLineOffsets_.end())
             return std::make_pair(0, 0);
 
-        uint uiLineNbr = mIter - lLineOffsets_.begin();
-        uint uiCharOffset = uiOffset - *mIter + 1u;
+        std::size_t uiLineNbr = mIter - lLineOffsets_.begin();
+        std::size_t uiCharOffset = uiOffset - *mIter + 1u;
 
         return std::make_pair(uiLineNbr, uiCharOffset);
     }
 
-    std::string get_location(uint uiOffset) const
+    std::string get_location(std::size_t uiOffset) const
     {
         auto mLocation = get_line_info(uiOffset);
         if (mLocation.first == 0)
@@ -75,10 +75,10 @@ public:
 
 private:
 
-    bool              bIsOpen_ = false;
-    std::string       sFileName_;
-    std::string       sFileContent_;
-    std::vector<uint> lLineOffsets_;
+    bool                     bIsOpen_ = false;
+    std::string              sFileName_;
+    std::string              sFileContent_;
+    std::vector<std::size_t> lLineOffsets_;
 };
 
 std::string normalize_node_name(const std::string& sName, bool bCapitalFirst)
@@ -228,7 +228,7 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
 #if defined(LXGUI_ENABLE_XML_PARSER)
     if (sExtension == ".xml")
     {
-        const uint uiOptions = pugi::parse_ws_pcdata_single;
+        const unsigned int uiOptions = pugi::parse_ws_pcdata_single;
 
         pugi::xml_document mDoc;
         pugi::xml_parse_result mResult = mDoc.load_buffer(

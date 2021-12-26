@@ -12,7 +12,7 @@ void edit_box::parse_attributes_(const layout_node& mNode)
     focus_frame::parse_attributes_(mNode);
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("letters"))
-        set_max_letters(pAttr->get_value<uint>());
+        set_max_letters(pAttr->get_value<std::size_t>());
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("blinkSpeed"))
         set_blink_speed(pAttr->get_value<float>());
@@ -33,7 +33,7 @@ void edit_box::parse_attributes_(const layout_node& mNode)
         set_multi_line(pAttr->get_value<bool>());
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("historyLines"))
-        set_max_history_lines(pAttr->get_value<uint>());
+        set_max_history_lines(pAttr->get_value<std::size_t>());
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("ignoreArrows"))
         set_arrows_ignored(pAttr->get_value<bool>());

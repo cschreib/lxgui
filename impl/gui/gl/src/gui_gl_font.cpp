@@ -52,7 +52,7 @@ namespace gl
 namespace
 {
     // Global state for the Freetype library (one per thread)
-    thread_local uint uiFTCount = 0u;
+    thread_local std::size_t uiFTCount = 0u;
     thread_local FT_Library mSharedFT = nullptr;
 
     FT_Library get_freetype()
@@ -78,7 +78,7 @@ namespace
     }
 }
 
-font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+font::font(const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
     uiSize_(uiSize), uiDefaultCodePoint_(uiDefaultCodePoint)
 {
@@ -103,7 +103,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     try
     {
         // Add some space between letters to prevent artifacts
-        const uint uiSpacing = 1;
+        const std::size_t uiSpacing = 1;
 
         if (FT_New_Face(mFT, sFontFile.c_str(), 0, &mFace_) != 0)
         {
@@ -141,8 +141,8 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
             iLoadFlags |= FT_LOAD_NO_BITMAP;
 
         // Calculate maximum width, height and bearing
-        uint uiMaxHeight = 0, uiMaxWidth = 0;
-        uint uiNumChar = 0;
+        std::size_t uiMaxHeight = 0, uiMaxWidth = 0;
+        std::size_t uiNumChar = 0;
         for (const code_point_range& mRange : lCodePoints)
         {
             for (char32_t uiCodePoint = mRange.uiFirst; uiCodePoint <= mRange.uiLast; ++uiCodePoint)
@@ -180,8 +180,8 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         uiMaxWidth = uiMaxWidth + 2*uiOutline;
 
         // Calculate the size of the texture
-        uint uiTexSize = (uiMaxWidth + uiSpacing)*(uiMaxHeight + uiSpacing)*uiNumChar;
-        uint uiTexSide = static_cast<uint>(std::sqrt(static_cast<float>(uiTexSize)));
+        std::size_t uiTexSize = (uiMaxWidth + uiSpacing)*(uiMaxHeight + uiSpacing)*uiNumChar;
+        std::size_t uiTexSide = static_cast<std::size_t>(std::sqrt(static_cast<float>(uiTexSize)));
 
         // Add a bit of overhead since we won't be able to tile this area perfectly
         uiTexSide += std::max(uiMaxWidth, uiMaxHeight);
@@ -189,15 +189,15 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
 
         // Round up to nearest power of two
         {
-            uint i = 1;
+            std::size_t i = 1;
             while (uiTexSide > i)
                 i *= 2;
             uiTexSide = i;
         }
 
         // Set up area as square
-        uint uiFinalWidth = uiTexSide;
-        uint uiFinalHeight = uiTexSide;
+        std::size_t uiFinalWidth = uiTexSide;
+        std::size_t uiFinalHeight = uiTexSide;
 
         // Reduce height if we don't actually need a square
         if (uiFinalWidth*uiFinalHeight/2 >= uiTexSize)
@@ -206,7 +206,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
         std::vector<ub32color> lData(uiFinalWidth*uiFinalHeight);
         std::fill(lData.begin(), lData.end(), ub32color(0, 0, 0, 0));
 
-        uint x = 0, y = 0;
+        std::size_t x = 0, y = 0;
 
         if (FT_HAS_KERNING(mFace_))
             bKerning_ = true;
@@ -274,10 +274,10 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
                 const ub32color::chanel* sBuffer = mBitmap.buffer;
                 if (sBuffer)
                 {
-                    for (uint j = 0; j < mBitmap.rows; ++j)
+                    for (std::size_t j = 0; j < mBitmap.rows; ++j)
                     {
-                        uint uiRowOffset = (y + j)*uiFinalWidth + x;
-                        for (uint i = 0; i < mBitmap.width; ++i, ++sBuffer)
+                        std::size_t uiRowOffset = (y + j)*uiFinalWidth + x;
+                        for (std::size_t i = 0; i < mBitmap.width; ++i, ++sBuffer)
                             lData[i + uiRowOffset] = ub32color(255, 255, 255, *sBuffer);
                     }
                 }
@@ -327,7 +327,7 @@ font::~font()
     release_freetype();
 }
 
-uint font::get_size() const
+std::size_t font::get_size() const
 {
     return uiSize_;
 }
@@ -391,8 +391,8 @@ float font::get_character_kerning(char32_t uiChar1, char32_t uiChar2) const
     if (bKerning_)
     {
         FT_Vector mKerning;
-        uint uiPrev = FT_Get_Char_Index(mFace_, uiChar1);
-        uint uiNext = FT_Get_Char_Index(mFace_, uiChar2);
+        FT_UInt uiPrev = FT_Get_Char_Index(mFace_, uiChar1);
+        FT_UInt uiNext = FT_Get_Char_Index(mFace_, uiChar2);
         if (FT_Get_Kerning(mFace_, uiPrev, uiNext, FT_KERNING_UNFITTED, &mKerning) != 0)
             return ft_round<6>(mKerning.x);
         else

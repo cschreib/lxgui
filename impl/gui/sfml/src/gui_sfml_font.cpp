@@ -8,7 +8,7 @@ namespace lxgui {
 namespace gui {
 namespace sfml
 {
-font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
+font::font(const std::string& sFontFile, std::size_t uiSize, std::size_t uiOutline,
     const std::vector<code_point_range>& lCodePoints, char32_t uiDefaultCodePoint) :
     uiSize_(uiSize), uiOutline_(uiOutline), uiDefaultCodePoint_(uiDefaultCodePoint),
     lCodePoints_(lCodePoints)
@@ -33,7 +33,7 @@ font::font(const std::string& sFontFile, uint uiSize, uint uiOutline,
     pTexture_ = std::make_shared<sfml::material>(mData);
 }
 
-uint font::get_size() const
+std::size_t font::get_size() const
 {
     return uiSize_;
 }

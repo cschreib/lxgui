@@ -46,9 +46,9 @@ void replace(string& s, const string& sPattern, const string& sReplacement)
     }
 }
 
-uint count_occurrences(const string& s, const string& sPattern)
+std::size_t count_occurrences(const string& s, const string& sPattern)
 {
-    uint uiCount = 0;
+    std::size_t uiCount = 0;
     std::size_t uiPos = s.find(sPattern);
     while (uiPos != s.npos)
     {
@@ -195,9 +195,9 @@ string unicode_to_utf8(const ustring& s)
     return utf8::utf32to8(s);
 }
 
-uint hex_to_uint(const string& s)
+std::size_t hex_to_uint(const string& s)
 {
-    uint i = 0;
+    std::size_t i = 0;
     string_stream ss;
     ss.imbue(std::locale::classic());
     ss << s;

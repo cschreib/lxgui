@@ -45,7 +45,7 @@ std::shared_ptr<gui::material> atlas_page::add_material_(const gui::material& mM
 {
     const sdl::material& mSDLMat = static_cast<const sdl::material&>(mMat);
 
-    uint uiTexturePitch = 0;
+    std::size_t uiTexturePitch = 0;
     const ub32color* pTexturePixels = nullptr;
 
     try

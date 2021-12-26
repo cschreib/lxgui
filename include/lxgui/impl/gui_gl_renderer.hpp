@@ -46,7 +46,7 @@ namespace gl
         /// Returns the maximum texture width/height (in pixels).
         /** \return The maximum texture width/height (in pixels)
         */
-        uint get_texture_max_size() const override;
+        std::size_t get_texture_max_size() const override;
 
         /// Checks if the renderer supports texture atlases natively.
         /** \return 'true' if enabled, 'false' otherwise
@@ -138,7 +138,7 @@ namespace gl
         *         Bitmap fonts are not yet supported.
         */
         std::shared_ptr<gui::font> create_font_(const std::string& sFontFile,
-            uint uiSize, uint uiOutline,
+            std::size_t uiSize, std::size_t uiOutline,
             const std::vector<code_point_range>& lCodePoints,
             char32_t uiDefaultCodePoint) const override;
 
@@ -221,7 +221,7 @@ namespace gl
             shader_cache(shader_cache&&) = delete;
             ~shader_cache();
 
-            uint uiProgram_ = 0;
+            std::uint32_t uiProgram_ = 0;
             int iSamplerLocation_ = 0;
             int iProjLocation_ = 0;
             int iModelLocation_ = 0;
@@ -231,13 +231,13 @@ namespace gl
         static thread_local std::weak_ptr<shader_cache> pStaticShaderCache_;
         std::shared_ptr<shader_cache> pShaderCache_;
 
-        static constexpr uint CACHE_CYCLE_SIZE = 1024u;
+        static constexpr std::size_t CACHE_CYCLE_SIZE = 1024u;
         mutable std::array<std::shared_ptr<gl::vertex_cache>,CACHE_CYCLE_SIZE> pQuadCache_;
         mutable std::array<std::shared_ptr<gl::vertex_cache>,CACHE_CYCLE_SIZE> pArrayCache_;
-        mutable uint uiQuadCycleCache_ = 0u;
-        mutable uint uiArrayCycleCache_ = 0u;
+        mutable std::uint32_t uiQuadCycleCache_ = 0u;
+        mutable std::uint32_t uiArrayCycleCache_ = 0u;
 
-        mutable uint uiPreviousTexture_ = std::numeric_limits<uint>::max();
+        mutable std::uint32_t uiPreviousTexture_ = std::numeric_limits<std::uint32_t>::max();
     #endif
     };
 }

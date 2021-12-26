@@ -23,7 +23,7 @@ namespace utils
     void trim(string& s, const string& sPatterns);
     void replace(string& s, const string& sPattern, const string& sReplacement);
 
-    uint count_occurrences(const string& s, const string& sPattern);
+    std::size_t count_occurrences(const string& s, const string& sPattern);
 
     std::vector<string> cut(const string& s, const string& sDelim);
     std::vector<ustring> cut(const ustring& s, const ustring& sDelim);
@@ -42,7 +42,7 @@ namespace utils
     ustring utf8_to_unicode(const string& s);
     string  unicode_to_utf8(const ustring& s);
 
-    uint hex_to_uint(const string& s);
+    std::size_t hex_to_uint(const string& s);
 
     bool from_string(const string&, int&);
     bool from_string(const string&, long&);
@@ -69,9 +69,11 @@ namespace utils
     bool is_number(const string& s);
     bool is_number(const ustring& s);
     bool is_number(char s);
+    bool is_number(char32_t s);
     bool is_integer(const string& s);
     bool is_integer(const ustring& s);
     bool is_integer(char s);
+    bool is_integer(char32_t s);
     bool is_boolean(const string& s);
     bool is_boolean(const ustring& s);
 

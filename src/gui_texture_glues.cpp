@@ -100,7 +100,7 @@ void texture::register_on_lua(sol::state& mLua)
 
     /** @function get_vertex_color
     */
-    mClass.set_function("get_vertex_color", [](const texture& mSelf, uint uiIndex)
+    mClass.set_function("get_vertex_color", [](const texture& mSelf, std::size_t uiIndex)
     {
         color mColor = mSelf.get_vertex_color(uiIndex);
         return std::make_tuple(mColor.r, mColor.g, mColor.b, mColor.a);
@@ -250,18 +250,18 @@ void texture::register_on_lua(sol::state& mLua)
     mClass.set_function("set_vertex_color", sol::overload(
     [](texture& mSelf, const std::string& sColor)
     {
-        mSelf.set_vertex_color(color(sColor), std::numeric_limits<uint>::max());
+        mSelf.set_vertex_color(color(sColor), std::numeric_limits<std::size_t>::max());
     },
     [](texture& mSelf, float fR, float fG, float fB, sol::optional<float> fA)
     {
         mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)),
-            std::numeric_limits<uint>::max());
+            std::numeric_limits<std::size_t>::max());
     },
-    [](texture& mSelf, uint uiIndex, const std::string& sColor)
+    [](texture& mSelf, std::size_t uiIndex, const std::string& sColor)
     {
         mSelf.set_vertex_color(color(sColor), uiIndex);
     },
-    [](texture& mSelf, uint uiIndex, float fR, float fG, float fB, sol::optional<float> fA)
+    [](texture& mSelf, std::size_t uiIndex, float fR, float fG, float fB, sol::optional<float> fA)
     {
         mSelf.set_vertex_color(color(fR, fG, fB, fA.value_or(1.0f)), uiIndex);
     }));
