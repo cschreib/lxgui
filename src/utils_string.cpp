@@ -199,6 +199,7 @@ uint hex_to_uint(const string& s)
 {
     uint i = 0;
     string_stream ss;
+    ss.imbue(std::locale::classic());
     ss << s;
     ss >> std::hex >> i;
     return i;
@@ -208,6 +209,7 @@ template<typename T>
 bool from_string_template(const string& s, T& v)
 {
     std::istringstream ss(s);
+    ss.imbue(std::locale::classic());
     ss >> v;
 
     if (!ss.fail())
@@ -337,8 +339,11 @@ bool from_string(const ustring& s, ustring& v)
 bool is_number(const string& s)
 {
     string_stream mTemp(s);
+    mTemp.imbue(std::locale::classic());
+
     double dValue = 0;
     mTemp >> dValue;
+
     return !mTemp.fail();
 }
 
@@ -360,8 +365,11 @@ bool is_number(char32_t s)
 bool is_integer(const string& s)
 {
     string_stream mTemp(s);
+    mTemp.imbue(std::locale::classic());
+
     std::int64_t iValue = 0;
     mTemp >> iValue;
+
     return !mTemp.fail();
 }
 
@@ -403,7 +411,10 @@ bool is_whitespace(char32_t c)
 template<typename T>
 string to_string_template(T mValue)
 {
-    return std::to_string(mValue);
+    std::ostringstream ss;
+    ss.imbue(std::locale::classic());
+    ss << mValue;
+    return ss.str();
 }
 
 string to_string(int v)
@@ -454,6 +465,7 @@ string to_string(bool b)
 string to_string(void* p)
 {
     string_stream sStream;
+    sStream.imbue(std::locale::classic());
     sStream << p;
     return sStream.str();
 }
