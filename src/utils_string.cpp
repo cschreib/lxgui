@@ -21,7 +21,7 @@ void trim(string& s, char cPattern)
 
 void trim(std::string& s, const std::string& sPatterns)
 {
-    size_t uiStart = s.find_first_not_of(sPatterns);
+    std::size_t uiStart = s.find_first_not_of(sPatterns);
     if (uiStart == s.npos)
     {
         s.clear();
@@ -30,14 +30,14 @@ void trim(std::string& s, const std::string& sPatterns)
     else
         s = s.erase(0, uiStart);
 
-    size_t uiEnd = s.find_last_not_of(sPatterns);
+    std::size_t uiEnd = s.find_last_not_of(sPatterns);
     if (uiEnd != s.npos)
         s = s.erase(uiEnd+1);
 }
 
 void replace(string& s, const string& sPattern, const string& sReplacement)
 {
-    size_t uiPos = s.find(sPattern);
+    std::size_t uiPos = s.find(sPattern);
 
     while (uiPos != s.npos)
     {
@@ -49,7 +49,7 @@ void replace(string& s, const string& sPattern, const string& sReplacement)
 uint count_occurrences(const string& s, const string& sPattern)
 {
     uint uiCount = 0;
-    size_t uiPos = s.find(sPattern);
+    std::size_t uiPos = s.find(sPattern);
     while (uiPos != s.npos)
     {
         ++uiCount;
@@ -59,12 +59,98 @@ uint count_occurrences(const string& s, const string& sPattern)
     return uiCount;
 }
 
+template<typename T>
+std::vector<std::basic_string<T>> cut_template(const std::basic_string<T>& s,
+    const std::basic_string<T>& sDelim)
+{
+    std::vector<std::basic_string<T>> lPieces;
+    std::size_t uiPos = s.find(sDelim);
+    std::size_t uiLastPos = 0u;
+    std::size_t uiCurSize = 0u;
+
+    while (uiPos != std::basic_string<T>::npos)
+    {
+        uiCurSize = uiPos - uiLastPos;
+        if (uiCurSize != 0)
+            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
+        uiLastPos = uiPos + sDelim.size();
+        uiPos = s.find(sDelim, uiLastPos);
+    }
+
+    lPieces.push_back(s.substr(uiLastPos));
+
+    return lPieces;
+}
+
+std::vector<string> cut(const string& s, const string& sDelim)
+{
+    return cut_template(s, sDelim);
+}
+
+std::vector<ustring> cut(const ustring& s, const ustring& sDelim)
+{
+    return cut_template(s, sDelim);
+}
+
+template<typename T>
+std::vector<std::basic_string<T>> cut_each_template(const std::basic_string<T>& s,
+    const std::basic_string<T>& sDelim)
+{
+    std::vector<std::basic_string<T>> lPieces;
+    std::size_t uiPos = s.find(sDelim);
+    std::size_t uiLastPos = 0u;
+    std::size_t uiCurSize = 0u;
+
+    while (uiPos != std::basic_string<T>::npos)
+    {
+        uiCurSize = uiPos - uiLastPos;
+        lPieces.push_back(s.substr(uiLastPos, uiCurSize));
+        uiLastPos = uiPos + sDelim.size();
+        uiPos = s.find(sDelim, uiLastPos);
+    }
+
+    lPieces.push_back(s.substr(uiLastPos));
+
+    return lPieces;
+}
+
+std::vector<string> cut_each(const string& s, const string& sDelim)
+{
+    return cut_each_template(s, sDelim);
+}
+
+std::vector<ustring> cut_each(const ustring& s, const ustring& sDelim)
+{
+    return cut_each_template(s, sDelim);
+}
+
+template<typename T>
+std::pair<std::basic_string<T>,std::basic_string<T>> cut_first_template(
+    const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
+{
+    std::size_t uiPos = s.find(sDelim);
+    if (uiPos == std::basic_string<T>::npos)
+        return {};
+
+    return {s.substr(0, uiPos), s.substr(uiPos + 1u)};
+}
+
+std::pair<string,string> cut_first(const string& s, const string& sDelim)
+{
+    return cut_first_template(s, sDelim);
+}
+
+std::pair<ustring,ustring> cut_first(const ustring& s, const ustring& sDelim)
+{
+    return cut_first_template(s, sDelim);
+}
+
 bool has_no_content(const string& s)
 {
     if (s.empty())
         return true;
 
-    for (size_t i = 0; i < s.length(); ++i)
+    for (std::size_t i = 0; i < s.length(); ++i)
     {
         if (s[i] != ' ' && s[i] != '\t')
             return false;
@@ -75,8 +161,8 @@ bool has_no_content(const string& s)
 
 bool starts_with(const string& s, const string& sPattern)
 {
-    size_t n = std::min(s.size(), sPattern.size());
-    for (size_t i = 0; i < n; ++i)
+    std::size_t n = std::min(s.size(), sPattern.size());
+    for (std::size_t i = 0; i < n; ++i)
     {
         if (s[i] != sPattern[i])
             return false;
@@ -87,10 +173,10 @@ bool starts_with(const string& s, const string& sPattern)
 
 bool ends_with(const string& s, const string& sPattern)
 {
-    size_t ss = s.size();
-    size_t ps = sPattern.size();
-    size_t n = std::min(ss, ps);
-    for (size_t i = 1; i <= n; ++i)
+    std::size_t ss = s.size();
+    std::size_t ps = sPattern.size();
+    std::size_t n = std::min(ss, ps);
+    for (std::size_t i = 1; i <= n; ++i)
     {
         if (s[ss-i] != sPattern[ps-i])
             return false;
@@ -119,7 +205,7 @@ uint hex_to_uint(const string& s)
 }
 
 template<typename T>
-bool from_string(const string& s, T& v)
+bool from_string_template(const string& s, T& v)
 {
     std::istringstream ss(s);
     ss >> v;
@@ -138,47 +224,111 @@ bool from_string(const string& s, T& v)
     return false;
 }
 
-template bool from_string<int>(const string&, int&);
-template bool from_string<uint>(const string&, uint&);
-template bool from_string<std::size_t>(const string&, std::size_t&);
-template bool from_string<float>(const string&, float&);
-template bool from_string<double>(const string&, double&);
+bool from_string(const string& s, int& v)
+{
+    return from_string_template(s, v);
+}
 
-template<>
-bool from_string<bool>(const string& s, bool& v)
+bool from_string(const string& s, long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, long long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, unsigned& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, unsigned long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, unsigned long long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, float& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, double& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const string& s, bool& v)
 {
     v = s == "true";
     return v || s == "false";
 }
 
-template<>
-bool from_string<string>(const string& s, string& v)
+bool from_string(const string& s, string& v)
 {
     v = s;
     return true;
 }
 
 template<typename T>
-bool from_string(const ustring& s, T& v)
+bool from_string_template(const ustring& s, T& v)
 {
     return from_string(unicode_to_utf8(s), v);
 }
 
-template bool from_string<int>(const ustring&, int&);
-template bool from_string<uint>(const ustring&, uint&);
-template bool from_string<std::size_t>(const ustring&, std::size_t&);
-template bool from_string<float>(const ustring&, float&);
-template bool from_string<double>(const ustring&, double&);
+bool from_string(const ustring& s, int& v)
+{
+    return from_string_template(s, v);
+}
 
-template<>
-bool from_string<bool>(const ustring& s, bool& v)
+bool from_string(const ustring& s, long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, long long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, unsigned& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, unsigned long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, unsigned long long& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, float& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, double& v)
+{
+    return from_string_template(s, v);
+}
+
+bool from_string(const ustring& s, bool& v)
 {
     v = s == U"true";
     return v || s == U"false";
 }
 
-template<>
-bool from_string<ustring>(const ustring& s, ustring& v)
+bool from_string(const ustring& s, ustring& v)
 {
     v = s;
     return true;
@@ -251,41 +401,49 @@ bool is_whitespace(char32_t c)
 }
 
 template<typename T>
-string value_to_string(T mValue)
+string to_string_template(T mValue)
 {
-    string_stream sStream;
-    sStream << mValue;
-    return sStream.str();
+    return std::to_string(mValue);
 }
 
-string to_string(int i)
+string to_string(int v)
 {
-    return value_to_string(i);
+    return to_string_template(v);
 }
 
-string to_string(uint i)
+string to_string(long v)
 {
-    return value_to_string(i);
+    return to_string_template(v);
 }
 
-string to_string(long i)
+string to_string(long long v)
 {
-    return value_to_string(i);
+    return to_string_template(v);
 }
 
-string to_string(ulong ui)
+string to_string(unsigned v)
 {
-    return value_to_string(ui);
+    return to_string_template(v);
 }
 
-string to_string(float f)
+string to_string(unsigned long v)
 {
-    return value_to_string(f);
+    return to_string_template(v);
 }
 
-string to_string(double f)
+string to_string(unsigned long long v)
 {
-    return value_to_string(f);
+    return to_string_template(v);
+}
+
+string to_string(float v)
+{
+    return to_string_template(v);
+}
+
+string to_string(double v)
+{
+    return to_string_template(v);
 }
 
 string to_string(bool b)
@@ -307,10 +465,8 @@ std::string to_string(const utils::variant& mValue)
         using inner_type = std::decay_t<decltype(mInnerValue)>;
         if constexpr (std::is_same_v<inner_type, utils::empty>)
             return "<none>";
-        else if constexpr (std::is_same_v<inner_type, bool>)
-            return to_string(mInnerValue);
         else
-            return value_to_string(mInnerValue);
+            return to_string(mInnerValue);
     }, mValue);
 }
 }

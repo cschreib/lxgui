@@ -25,150 +25,14 @@ namespace utils
 
     uint count_occurrences(const string& s, const string& sPattern);
 
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
+    std::vector<string> cut(const string& s, const string& sDelim);
+    std::vector<ustring> cut(const ustring& s, const ustring& sDelim);
 
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            if (uiCurSize != 0)
-                lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-        }
+    std::vector<string> cut_each(const string& s, const string& sDelim);
+    std::vector<ustring> cut_each(const ustring& s, const ustring& sDelim);
 
-        lPieces.push_back(s.substr(uiLastPos));
-
-        return lPieces;
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim)
-    {
-        return cut(s, std::basic_string<T>(sDelim));
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
-        uint uiCount = 0u;
-
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            if (uiCurSize != 0)
-                lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-            ++uiCount;
-
-            if (uiCount >= uiMaxCut)
-                break;
-        }
-
-        lPieces.push_back(s.substr(uiLastPos));
-
-        return lPieces;
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
-    {
-        return cut(s, std::basic_string<T>(sDelim), uiMaxCut);
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
-
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-        }
-
-        lPieces.push_back(s.substr(uiLastPos));
-
-        return lPieces;
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim)
-    {
-        return cut_each(s, std::basic_string<T>(sDelim));
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const std::basic_string<T>& sDelim, uint uiMaxCut)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-        size_t uiPos = s.find(sDelim);
-        size_t uiLastPos = 0u;
-        size_t uiCurSize = 0u;
-        uint uiCount = 0u;
-
-        while (uiPos != std::basic_string<T>::npos)
-        {
-            uiCurSize = uiPos - uiLastPos;
-            lPieces.push_back(s.substr(uiLastPos, uiCurSize));
-            uiLastPos = uiPos + sDelim.size();
-            uiPos = s.find(sDelim, uiLastPos);
-
-            if (uiCount >= uiMaxCut)
-                break;
-        }
-
-        lPieces.push_back(s.substr(uiLastPos));
-
-        return lPieces;
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut_each(const std::basic_string<T>& s, const T* sDelim, uint uiMaxCut)
-    {
-        return cut_each(s, std::basic_string<T>(sDelim), uiMaxCut);
-    }
-
-    template<typename T>
-    std::vector<std::basic_string<T>> cut(const std::basic_string<T>& s, const std::vector<T>& lDelims)
-    {
-        std::vector<std::basic_string<T>> lPieces;
-
-        std::basic_string<T> sTemp;
-        for (auto c : s)
-        {
-            if (std::find(lDelims.begin(), lDelims.end(), c) != lDelims.end())
-            {
-                if (!sTemp.empty())
-                {
-                    lPieces.push_back(sTemp);
-                    sTemp.clear();
-                }
-            }
-            else
-                sTemp.push_back(c);
-        }
-
-        if (!sTemp.empty())
-            lPieces.push_back(sTemp);
-
-        return lPieces;
-    }
+    std::pair<string,string> cut_first(const string& s, const string& sDelim);
+    std::pair<ustring,ustring> cut_first(const ustring& s, const ustring& sDelim);
 
     bool starts_with(const string& s, const string& sPattern);
     bool ends_with(const string& s, const string& sPattern);
@@ -180,11 +44,27 @@ namespace utils
 
     uint hex_to_uint(const string& s);
 
-    template<typename T>
-    bool from_string(const string& s, T& v);
+    bool from_string(const string&, int&);
+    bool from_string(const string&, long&);
+    bool from_string(const string&, long long&);
+    bool from_string(const string&, unsigned&);
+    bool from_string(const string&, unsigned long&);
+    bool from_string(const string&, unsigned long long&);
+    bool from_string(const string&, float&);
+    bool from_string(const string&, double&);
+    bool from_string(const string&, bool&);
+    bool from_string(const string&, string&);
 
-    template<typename T>
-    bool from_string(const ustring& s, T& v);
+    bool from_string(const ustring&, int&);
+    bool from_string(const ustring&, long&);
+    bool from_string(const ustring&, long long&);
+    bool from_string(const ustring&, unsigned&);
+    bool from_string(const ustring&, unsigned long&);
+    bool from_string(const ustring&, unsigned long long&);
+    bool from_string(const ustring&, float&);
+    bool from_string(const ustring&, double&);
+    bool from_string(const ustring&, bool&);
+    bool from_string(const ustring&, ustring&);
 
     bool is_number(const string& s);
     bool is_number(const ustring& s);
@@ -198,12 +78,15 @@ namespace utils
     bool is_whitespace(char c);
     bool is_whitespace(char32_t c);
 
-    string to_string(int i);
-    string to_string(uint ui);
-    string to_string(long i);
-    string to_string(ulong ui);
-    string to_string(float f);
-    string to_string(double f);
+    string to_string(int v);
+    string to_string(long v);
+    string to_string(long long v);
+    string to_string(unsigned v);
+    string to_string(unsigned long v);
+    string to_string(unsigned long long v);
+    string to_string(float v);
+    string to_string(double v);
+    string to_string(bool v);
     string to_string(bool b);
     string to_string(void* p);
 
@@ -213,7 +96,7 @@ namespace utils
         if (p != nullptr)
             return to_string(static_cast<void*>(p));
         else
-            return "NULL";
+            return "null";
     }
 
     string to_string(const utils::variant& mValue);

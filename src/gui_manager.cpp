@@ -447,13 +447,14 @@ void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& 
         {
             sLine.erase(0, 2);
             utils::trim(sLine, ' ');
-            std::vector<std::string> lArgs = utils::cut(sLine, ":", 1);
-            if (lArgs.size() == 2)
+            std::pair<std::string, std::string> lArgs = utils::cut_first(sLine, ":");
+            if (!lArgs.first.empty() && !lArgs.second.empty())
             {
-                std::string sKey = lArgs[0];
+                std::string sKey = lArgs.first;
                 utils::trim(sKey, ' ');
-                std::string sValue = lArgs[1];
+                std::string sValue = lArgs.second;
                 utils::trim(sValue, ' ');
+
                 if (sKey == "Interface")
                 {
                     mAddOn.sUIVersion = sValue;
@@ -587,12 +588,12 @@ void manager::load_addon_directory_(const std::string& sDirectory)
             }
             else
             {
-                std::vector<std::string> lArgs = utils::cut(sLine, ":", 1);
-                if (lArgs.size() == 2)
+                std::pair<std::string,std::string> lArgs = utils::cut_first(sLine, ":");
+                if (!lArgs.first.empty() && !lArgs.second.empty())
                 {
-                    std::string sKey = lArgs[0];
+                    std::string sKey = lArgs.first;
                     utils::trim(sKey, ' ');
-                    std::string sValue = lArgs[1];
+                    std::string sValue = lArgs.second;
                     utils::trim(sValue, ' ');
                     auto iter = lAddOns.find(sKey);
                     if (iter != lAddOns.end())
@@ -602,8 +603,7 @@ void manager::load_addon_directory_(const std::string& sDirectory)
                         else
                             lAddOnStack.push_back(&iter->second);
 
-                        if (sValue != "1")
-                            iter->second.bEnabled = false;
+                        iter->second.bEnabled = sValue == "1";
                     }
                 }
             }
