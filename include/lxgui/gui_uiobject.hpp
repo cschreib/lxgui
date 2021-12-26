@@ -10,8 +10,6 @@
 #include "lxgui/gui_strata.hpp"
 #include "lxgui/gui_exception.hpp"
 
-#include <lxgui/xml.hpp>
-
 #include <lxgui/utils_maths.hpp>
 #include <lxgui/utils_observer.hpp>
 
@@ -32,6 +30,7 @@ namespace gui
 {
     struct addon;
     class manager;
+    class layout_node;
 
     class frame;
     class frame_renderer;
@@ -47,14 +46,14 @@ namespace gui
     *   anything on the screen. Any functionality beyond the list above is implemented
     *   in specialized subclasses (see the full list below).
     *
-    *   __Interaction between C++, Lua, and XML.__ When a uiobject is created,
+    *   __Interaction between C++, Lua, and layout files.__ When a uiobject is created,
     *   it must be given a name, for example `"PlayerHealthBar"`. For as long as the
     *   object lives, this name will be used to refer to it. In particular, as soon
-    *   as the object is created, regardless of whether this was done in C++, XML, or
-    *   Lua, a new variable will be created in the Lua state with the exact same name,
-    *   `PlayerHealthBar`. This variable is a reference to the uiobject, and can
-    *   be used to interact with it dynamically. Because of this, each object must have
-    *   a unique name, otherwise it could not be accessible from Lua.
+    *   as the object is created, regardless of whether this was done in C++, layout
+    *   files, or Lua, a new variable will be created in the Lua state with the exact
+    *   same name, `PlayerHealthBar`. This variable is a reference to the uiobject, and
+    *   can be used to interact with it dynamically. Because of this, each object must
+    *   have a unique name, otherwise it could not be accessible from Lua.
     *
     *   Note: Although you can destroy this Lua variable by setting it to nil, this is
     *   not recommended: the object will _not_ be destroyed (nor garbage-collected)
@@ -582,10 +581,10 @@ namespace gui
         /// Removes the Lua glue.
         void remove_glue();
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The uiobject's xml::block
+        /// Parses data from a layout_node.
+        /** \param mNode The layout node
         */
-        virtual void parse_block(xml::block* pBlock) = 0;
+        virtual void parse_layout(const layout_node& mNode) = 0;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -600,10 +599,12 @@ namespace gui
 
     protected :
 
-        // XML parsing
-        virtual void parse_size_block_(xml::block* pBlock);
-        virtual void parse_anchor_block_(xml::block* pBlock);
-        color        parse_color_block_(xml::block* pBlock);
+        // Layout parsing
+        virtual void parse_size_node_(const layout_node& mNode);
+        virtual void parse_anchor_node_(const layout_node& mNode);
+        color        parse_color_node_(const layout_node& mNode);
+        std::pair<anchor_type, vector2<std::optional<float>>> parse_dimension_(
+            const layout_node& mNode);
 
         void read_anchors_(float& fLeft, float& fRight, float& fTop,
                            float& fBottom, float& fXCenter, float& fYCenter) const;

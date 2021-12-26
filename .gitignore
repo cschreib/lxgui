@@ -1,11 +1,11 @@
 build
 build_wasm
-gui/bin/lxgui-test*
-gui/bin/cout.txt
-gui/bin/gui.txt
-gui/doc/html
-gui/doc/lua
-gui/doc/*.log
+bin/lxgui-test*
+bin/cout.txt
+bin/gui.txt
+doc/html
+doc/lua
+doc/*.log
 *.sublime-workspace
 compile_commands.json
 dependencies/lib

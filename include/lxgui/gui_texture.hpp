@@ -220,10 +220,10 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The texture's xml::block
+        /// Parses data from a layout_node.
+        /** \param mNode The layout node
         */
-        void parse_block(xml::block* pBlock) override;
+        void parse_layout(const layout_node& mNode) override;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
@@ -232,9 +232,9 @@ namespace gui
 
     private :
 
-        void parse_attributes_(xml::block* pBlock) override;
-        void parse_tex_coords_block_(xml::block* pBlock);
-        void parse_gradient_block_(xml::block* pBlock);
+        void parse_attributes_(const layout_node& mNode) override;
+        void parse_tex_coords_node_(const layout_node& mNode);
+        void parse_gradient_node_(const layout_node& mNode);
 
         void update_dimensions_from_tex_coord_();
         void update_borders_() const override;

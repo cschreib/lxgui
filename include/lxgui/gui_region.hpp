@@ -35,16 +35,16 @@ namespace gui
         /// Creates the associated Lua glue.
         void create_glue() override;
 
-        /// Parses data from an xml::block.
-        /** \param pBlock The frame's xml::block
+        /// Parses data from a layout_node.
+        /** \param mNode The layout node
         */
-        void parse_block(xml::block* pBlock) override;
+        void parse_layout(const layout_node& mNode) override;
 
         static constexpr const char* CLASS_NAME = "Region";
 
     protected :
 
-        virtual void parse_attributes_(xml::block* pBlock);
+        virtual void parse_attributes_(const layout_node& mNode);
     };
 }
 }

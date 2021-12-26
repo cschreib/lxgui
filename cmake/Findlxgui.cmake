@@ -53,21 +53,7 @@ find_library(LXGUI_LIBRARY
     PATHS /usr /usr/local
 )
 
-find_library(LXGUI_UTILS_LIBRARY
-    NAMES lxgui-utils lxgui-utils.lib
-    PATH_SUFFIXES lib
-    HINTS ${LXGUI_ROOT} $ENV{LXGUI_ROOT}
-    PATHS /usr /usr/local
-)
-
-find_library(LXGUI_XML_LIBRARY
-    NAMES lxgui-xml lxgui-xml.lib
-    PATH_SUFFIXES lib
-    HINTS ${LXGUI_ROOT} $ENV{LXGUI_ROOT}
-    PATHS /usr /usr/local
-)
-
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY})
 
 find_path(LXGUI_IMPL_INCLUDE_DIR
     NAMES lxgui/impl/gui_gl_renderer.hpp DOC "Path to lxgui implementation include directory."
@@ -111,11 +97,11 @@ find_library(LXGUI_INPUT_SDL_LIBRARY
     PATHS /usr /usr/local
 )
 
-mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY)
+mark_as_advanced(LXGUI_INCLUDE_DIR LXGUI_LIBRARY)
 mark_as_advanced(LXGUI_IMPL_INCLUDE_DIR LXGUI_GUI_GL_LIBRARY LXGUI_GUI_SFML_LIBRARY LXGUI_INPUT_SFML_LIBRARY LXGUI_GUI_SDL_LIBRARY LXGUI_INPUT_SDL_LIBRARY)
 
-if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_version_str
+if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp")
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_version_str
          REGEX "^#[\t ]*define[\t ]+LXGUI_VERSION_(MAJOR|MINOR)[\t ]+[0-9]+$")
 
     unset(LXGUI_VERSION_STRING)
@@ -134,25 +120,59 @@ if(LXGUI_INCLUDE_DIR AND EXISTS "${LXGUI_INCLUDE_DIR}/lxgui.hpp")
         endforeach()
     endforeach()
 
-    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui.hpp" lxgui_opengl
-         REGEX "^#[\t ]*define[\t ]+LXGUI_OPENGL3[\t ]$")
+    unset(lxgui_version_str)
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_opengl
+         REGEX "^#[\t ]*define[\t ]+LXGUI_OPENGL3[\t ]*$")
 
     if(lxgui_opengl)
         set(LXGUI_OPENGL3 TRUE)
     else()
         set(LXGUI_OPENGL3 FALSE)
     endif()
+
+    unset(lxgui_opengl)
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_xml
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_XML_PARSER[\t ]*$")
+    if(lxgui_xml)
+        message(STATUS "lxgui found with XML parser")
+        set(LXGUI_ENABLE_XML_PARSER TRUE)
+    else()
+        set(LXGUI_ENABLE_XML_PARSER FALSE)
+    endif()
+
+    unset(lxgui_xml)
+
+    file(STRINGS "${LXGUI_INCLUDE_DIR}/lxgui/lxgui.hpp" lxgui_yaml
+         REGEX "^#[\t ]*define[\t ]+LXGUI_ENABLE_YAML_PARSER[\t ]*$")
+
+    if(lxgui_yaml)
+        message(STATUS "lxgui found with YAML parser")
+        set(LXGUI_ENABLE_YAML_PARSER TRUE)
+    else()
+        set(LXGUI_ENABLE_YAML_PARSER FALSE)
+    endif()
+
+    unset(lxgui_yaml)
 endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(lxgui
-                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_XML_LIBRARY LXGUI_UTILS_LIBRARY LXGUI_INCLUDE_DIR
+                                  REQUIRED_VARS LXGUI_LIBRARY LXGUI_INCLUDE_DIR
                                   VERSION_VAR LXGUI_VERSION_STRING)
 
 find_package(Lua REQUIRED)
 find_package(fmt REQUIRED)
 find_package(oup REQUIRED)
 find_package(sol2 REQUIRED)
+
+if(LXGUI_ENABLE_XML_PARSER)
+    find_package(pugixml REQUIRED)
+endif()
+if(LXGUI_ENABLE_YAML_PARSER)
+    find_package(ryml REQUIRED)
+endif()
 
 set(LXGUI_GUI_GL_FOUND FALSE)
 set(LXGUI_GUI_SFML_FOUND FALSE)
@@ -161,12 +181,11 @@ set(LXGUI_GUI_SDL_FOUND FALSE)
 set(LXGUI_INPUT_SDL_FOUND FALSE)
 
 set(LXGUI_INCLUDE_DIRS ${LXGUI_INCLUDE_DIR})
-set(LXGUI_LIBRARIES ${LXGUI_LIBRARY} ${LXGUI_XML_LIBRARY} ${LXGUI_UTILS_LIBRARY})
+set(LXGUI_LIBRARIES ${LXGUI_LIBRARY})
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Emscripten")
     set(LXGUI_EMSCRIPTEN TRUE)
     set(LXGUI_EMSCRIPTEN_FLAGS "-s DISABLE_EXCEPTION_CATCHING=0")
-    mark_as_advanced(LXGUI_EMSCRIPTEN_FLAGS)
 else()
     set(LXGUI_EMSCRIPTEN FALSE)
 endif()
@@ -185,6 +204,12 @@ if(LXGUI_FOUND)
         target_link_libraries(lxgui::lxgui INTERFACE sol2::sol2)
         target_link_libraries(lxgui::lxgui INTERFACE fmt::fmt)
         target_link_libraries(lxgui::lxgui INTERFACE oup::oup)
+        if(LXGUI_ENABLE_XML_PARSER)
+            target_link_libraries(lxgui::lxgui INTERFACE pugixml::pugixml)
+        endif()
+        if(LXGUI_ENABLE_YAML_PARSER)
+            target_link_libraries(lxgui::lxgui INTERFACE ryml::ryml)
+        endif()
     endif()
 
     if(LXGUI_GUI_GL_LIBRARY)
@@ -203,7 +228,7 @@ if(LXGUI_FOUND)
                 set(LXGUI_GUI_GL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_GUI_GL_LIBRARIES ${LXGUI_GUI_GL_LIBRARY})
 
-                mark_as_advanced(LXGUI_GUI_GL_INCLUDE_DIRS LXGUI_GUI_GL_LIBRARIES)
+                mark_as_advanced(LXGUI_GUI_GL_FOUND)
             else()
                 message(ERROR ": the OpenGL implementation of the GUI requires OpenGL, GLEW, freetype, libpng and zlib")
             endif()
@@ -219,7 +244,7 @@ if(LXGUI_FOUND)
 
                 set(LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN "-s USE_SDL=2 -s USE_LIBPNG=1 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=3")
 
-                mark_as_advanced(LXGUI_GUI_GL_INCLUDE_DIRS LXGUI_GUI_GL_LIBRARIES LXGUI_GUI_GL_LIBRARIES_EMSCRIPTEN)
+                mark_as_advanced(LXGUI_GUI_GL_FOUND)
             else()
                 message(ERROR ": the OpenGL implementation of the GUI requires freetype")
             endif()
@@ -254,7 +279,7 @@ if(LXGUI_FOUND)
                 set(LXGUI_GUI_SFML_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_GUI_SFML_LIBRARIES ${LXGUI_GUI_SFML_LIBRARY})
 
-                mark_as_advanced(LXGUI_GUI_SFML_INCLUDE_DIRS LXGUI_GUI_SFML_LIBRARIES)
+                mark_as_advanced(LXGUI_GUI_SFML_FOUND)
             else()
                 message(ERROR ": the SFML implementation of the GUI requires the SFML library")
             endif()
@@ -281,7 +306,7 @@ if(LXGUI_FOUND)
                 set(LXGUI_INPUT_SFML_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_INPUT_SFML_LIBRARIES ${LXGUI_INPUT_SFML_LIBRARY})
 
-                mark_as_advanced(LXGUI_INPUT_SFML_INCLUDE_DIRS LXGUI_INPUT_SFML_LIBRARIES)
+                mark_as_advanced(LXGUI_INPUT_SFML_FOUND)
             else()
                 message(ERROR ": the SFML implementation of the input requires the SFML library")
             endif()
@@ -317,7 +342,7 @@ if(LXGUI_FOUND)
                 set(LXGUI_GUI_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_GUI_SDL_LIBRARIES ${LXGUI_GUI_SDL_LIBRARY})
 
-                mark_as_advanced(LXGUI_GUI_SDL_FOUND LXGUI_GUI_SDL_INCLUDE_DIRS LXGUI_GUI_SDL_LIBRARIES)
+                mark_as_advanced(LXGUI_GUI_SDL_FOUND)
             else()
                 message(ERROR ": the SDL implementation of the GUI requires the SDL, SDL_ttf, and SDL_image libraries")
             endif()
@@ -353,7 +378,7 @@ if(LXGUI_FOUND)
                 set(LXGUI_INPUT_SDL_INCLUDE_DIRS ${LXGUI_IMPL_INCLUDE_DIR})
                 set(LXGUI_INPUT_SDL_LIBRARIES ${LXGUI_INPUT_SDL_LIBRARY})
 
-                mark_as_advanced(LXGUI_INPUT_SDL_INCLUDE_DIRS LXGUI_INPUT_SDL_LIBRARIES)
+                mark_as_advanced(LXGUI_INPUT_SDL_FOUND)
             else()
                 message(ERROR ": the SDL implementation of the input requires the SDL library")
             endif()
@@ -380,7 +405,7 @@ if(LXGUI_FOUND)
     endif()
 endif()
 
-mark_as_advanced(LXGUI_OPENGL3 LXGUI_INCLUDE_DIRS LXGUI_LIBRARIES LXGUI_GUI_GL_FOUND
-    LXGUI_GUI_SFML_FOUND LXGUI_INPUT_SFML_FOUND LXGUI_GUI_SDL_FOUND LXGUI_INPUT_SDL_FOUND)
+mark_as_advanced(LXGUI_OPENGL3 LXGUI_ENABLE_XML_PARSER LXGUI_ENABLE_YAML_PARSER
+    LXGUI_GUI_GL_FOUND LXGUI_GUI_SFML_FOUND LXGUI_INPUT_SFML_FOUND LXGUI_GUI_SDL_FOUND LXGUI_INPUT_SDL_FOUND)
 
 unset(LXGUI_EMSCRIPTEN)

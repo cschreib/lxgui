@@ -27,7 +27,9 @@ Major changes:
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
- - lua: removed luapp, using sol2 exclusively
+ - lua: removed custom lua wrapper, using sol2 instead
+ - xml: removed custom xml parser, using pugixml instead
+ - yaml: added yaml parser for GUI layout
 
 Other changes:
  - general: various fixes and improvements to the build system
@@ -47,7 +49,6 @@ Other changes:
  - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
- - lua: starting switching to sol2 to manage the Lua state
  - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
  - input: get_key_name() is now platform-independent, and only returns English
@@ -80,6 +81,7 @@ Other changes:
  - gui: renamed font_string::get_shadow_offsets to get_shadow_offset
  - gui: renamed uiobject::set_abs_width/height/dimensions to set_width/height/dimensions
  - gui: renamed uiobject::set_rel_width/height/dimensions to set_relative_width/height/dimensions
+ - gui: renamed frame::get/set_min/max_resize to get/set_min/max_dimensions
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
@@ -158,7 +160,7 @@ Other changes:
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
  - gui: fixed missing 'const' for uiobject::render()
- - xml: now parsing standard XML comments
+ - utils: string conversion functions are now locale-independent; use localizer class otherwise
 
 v1.2.0:
  - added support for MSVC 2010

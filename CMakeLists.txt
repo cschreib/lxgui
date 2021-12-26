@@ -1,3 +1,6 @@
+##############################################################################
+# Base setup
+##############################################################################
 cmake_minimum_required(VERSION 3.8)
 cmake_policy(SET CMP0048 "NEW")
 cmake_policy(SET CMP0072 "NEW")
@@ -23,10 +26,18 @@ lxgui_set_option(LXGUI_BUILD_TEST TRUE BOOL "Build the test program")
 lxgui_set_option(LXGUI_OPENGL3 TRUE BOOL "Use OpenGL3 to build the OpenGL gui implementation")
 lxgui_set_option(LXGUI_BUILD_FMT TRUE BOOL "Build the fmtlib dependency (if false, will search for it in the system)")
 lxgui_set_option(LXGUI_BUILD_SOL2 TRUE BOOL "Build the sol2 dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_BUILD_PUGIXML TRUE BOOL "Build the pugixml dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_BUILD_RAPIDYAML TRUE BOOL "Build the rapidyaml dependency (if false, will search for it in the system)")
+lxgui_set_option(LXGUI_ENABLE_XML_PARSER TRUE BOOL "Enable the XML layout parser (if false, XML layout files cannot be read)")
+lxgui_set_option(LXGUI_ENABLE_YAML_PARSER TRUE BOOL "Enable the YAML layout parser (if false, YAML layout files cannot be read)")
 lxgui_set_option(LXGUI_TEST_IMPLEMENTATION "SFML" STRING "Which implementation to test (SFML/SDL/OPENGL_SFML/OPENGL_SDL)")
 
 # project name
 project(lxgui LANGUAGES CXX VERSION 2.0)
+
+##############################################################################
+# Compiler and system checks
+##############################################################################
 
 # check compiler versions
 if(CMAKE_SYSTEM_NAME MATCHES "Emscripten")
@@ -76,6 +87,7 @@ macro(lxgui_set_warning_level target)
         target_compile_options(${target} PRIVATE /wd4245) # signed/unsigned mismatch
         target_compile_options(${target} PRIVATE /wd4244) # narrowing implicit conversion
         target_compile_options(${target} PRIVATE /wd4100) # unused parameter
+        target_compile_options(${target} PRIVATE /wd4121) # alignment sensitive to padding
     elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         target_compile_options(${target} PRIVATE -Weverything)
         target_compile_options(${target} PRIVATE -Wno-c++98-compat-pedantic)
@@ -146,6 +158,10 @@ elseif (WIN32)
     endif()
 endif()
 
+##############################################################################
+# Dependencies
+##############################################################################
+
 # configure dependencies
 set(SDL2_BUILDING_LIBRARY TRUE)
 
@@ -181,6 +197,30 @@ else()
     find_package(fmt REQUIRED)
 endif()
 
+if(LXGUI_ENABLE_XML_PARSER)
+    if(LXGUI_BUILD_PUGIXML)
+        add_subdirectory(extern/pugixml)
+    else()
+        find_package(pugixml)
+        if(NOT TARGET pugixml::pugixml)
+            message(ERROR ": the XML parser requires pugixml, which is missing. XML parsing will be disabled.")
+            set(LXGUI_ENABLE_XML_PARSER FALSE)
+        endif()
+    endif()
+endif()
+
+if(LXGUI_ENABLE_YAML_PARSER)
+    if(LXGUI_BUILD_RAPIDYAML)
+        add_subdirectory(extern/rapidyaml)
+    else()
+        find_package(ryml)
+        if(NOT TARGET ryml::ryml)
+            message(ERROR ": the YAML parser requires rapidyaml, which is missing. YAML parsing will be disabled.")
+            set(LXGUI_ENABLE_YAML_PARSER FALSE)
+        endif()
+    endif()
+endif()
+
 set(SOL_ALL_SAFETIES_ON TRUE)
 set(SOL_PRINT_ERRORS FALSE)
 if(LXGUI_BUILD_SOL2)
@@ -189,15 +229,122 @@ else()
     find_package(sol2 REQUIRED)
 endif()
 
-# add the subdirectories for core library components
-add_subdirectory(utils)
-add_subdirectory(xml)
-add_subdirectory(gui)
+##############################################################################
+# Main library
+##############################################################################
 
-# add the subdirectories for back-ends
+add_library(lxgui
+    ${PROJECT_SOURCE_DIR}/src/gui_anchor.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_alive_checker.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_atlas.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_backdrop.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_button.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_button_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_button_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_checkbutton_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_color.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_editbox.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_editbox_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_editbox_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_event.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_eventmanager.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_eventreceiver.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_focusframe.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_fontstring.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_fontstring_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_fontstring_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_frame.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_frame_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_frame_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_framerenderer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_gradient.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_localizer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_localizer_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_manager.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_manager_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_manager_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_material.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_matrix4.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_out.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_parser_common.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_region_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_renderer.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_scrollframe_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_slider.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_slider_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_slider_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_statusbar.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_statusbar_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_statusbar_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_text.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_texture.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_texture_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_texture_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_uiobject.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_glues.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_uiobject_parser.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
+    ${PROJECT_SOURCE_DIR}/src/input.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_source.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp
+    ${PROJECT_SOURCE_DIR}/src/utils_string.cpp
+)
+
+add_library(lxgui::lxgui ALIAS lxgui)
+
+# need C++17
+target_compile_features(lxgui PRIVATE cxx_std_17)
+lxgui_set_warning_level(lxgui)
+target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+# needed dependencies
+target_link_libraries(lxgui PUBLIC Lua::Lua)
+target_link_libraries(lxgui PUBLIC sol2::sol2)
+target_link_libraries(lxgui PUBLIC fmt::fmt)
+target_link_libraries(lxgui PUBLIC oup::oup)
+target_compile_definitions(lxgui PRIVATE -DUTF_CPP_CPLUSPLUS=201703L)
+target_link_libraries(lxgui PRIVATE utf8::cpp)
+if(LXGUI_ENABLE_XML_PARSER)
+    target_link_libraries(lxgui PRIVATE pugixml::pugixml)
+endif()
+if(LXGUI_ENABLE_YAML_PARSER)
+    target_link_libraries(lxgui PRIVATE ryml::ryml)
+endif()
+if(LXGUI_PLATFORM_LINUX)
+    target_link_libraries(lxgui PUBLIC m stdc++ stdc++fs)
+endif()
+
+configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
+               "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")
+
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
+install(FILES ${files} DESTINATION include/lxgui)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
+install(FILES ${files} DESTINATION include/lxgui)
+file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
+install(FILES ${files} DESTINATION include/lxgui)
+install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
+install(TARGETS lxgui ARCHIVE DESTINATION lib)
+
+##############################################################################
+# Back-ends
+##############################################################################
+
 if(LXGUI_BUILD_GUI_GL_IMPL)
     if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
-        add_subdirectory(gui/impl/gui/gl)
+        add_subdirectory(impl/gui/gl)
     else()
         message(ERROR ": the OpenGL implementation of the GUI requires OpenGL, GLEW, freetype, libpng and zlib")
         set(LXGUI_BUILD_GUI_GL_IMPL FALSE)
@@ -208,7 +355,7 @@ if(LXGUI_BUILD_GUI_SFML_IMPL)
         message(ERROR ": the SFML implementation of the GUI is not supported with Emscripten")
         set(LXGUI_BUILD_GUI_SFML_IMPL FALSE)
     elseif(SFML_FOUND)
-        add_subdirectory(gui/impl/gui/sfml)
+        add_subdirectory(impl/gui/sfml)
     else()
         message(ERROR ": the SFML implementation of the GUI requires the SFML library")
         set(LXGUI_BUILD_GUI_SFML_IMPL FALSE)
@@ -219,7 +366,7 @@ if(LXGUI_BUILD_INPUT_SFML_IMPL)
         message(ERROR ": the SFML implementation of the input is not supported with Emscripten")
         set(LXGUI_BUILD_INPUT_SFML_IMPL FALSE)
     elseif(SFML_FOUND)
-        add_subdirectory(gui/impl/input/sfml)
+        add_subdirectory(impl/input/sfml)
     else()
         message(ERROR ": the SFML implementation of the input requires the SFML library")
         set(LXGUI_BUILD_INPUT_SFML_IMPL FALSE)
@@ -227,7 +374,7 @@ if(LXGUI_BUILD_INPUT_SFML_IMPL)
 endif()
 if(LXGUI_BUILD_GUI_SDL_IMPL)
     if((SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
-        add_subdirectory(gui/impl/gui/sdl)
+        add_subdirectory(impl/gui/sdl)
     else()
         message(ERROR ": the SDL implementation of the GUI requires the SDL2, SDL2_ttf, and SDL2_image libraries")
         set(LXGUI_BUILD_GUI_SDL_IMPL FALSE)
@@ -235,14 +382,17 @@ if(LXGUI_BUILD_GUI_SDL_IMPL)
 endif()
 if(LXGUI_BUILD_INPUT_SDL_IMPL)
     if(SDL2_FOUND OR LXGUI_COMPILER_EMSCRIPTEN)
-        add_subdirectory(gui/impl/input/sdl)
+        add_subdirectory(impl/input/sdl)
     else()
         message(ERROR ": the SDL implementation of the input requires the SDL library")
         set(LXGUI_BUILD_INPUT_SDL_IMPL FALSE)
     endif()
 endif()
 
-# add the subdirectory for the test application
+##############################################################################
+# Test
+##############################################################################
+
 if(LXGUI_BUILD_TEST)
     if(LXGUI_COMPILER_EMSCRIPTEN AND NOT (LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL" OR LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL"))
         message(WARNING "Warning: the test program only supports SDL or OPENGL_SDL when compiled with Emscripten")
@@ -250,25 +400,25 @@ if(LXGUI_BUILD_TEST)
     endif()
     if (LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
         if(OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SFML_FOUND)
-            add_subdirectory(gui/test)
+            add_subdirectory(test)
         else()
             message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SFML.")
         endif()
     elseif (LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
         if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SDL2_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
-            add_subdirectory(gui/test)
+            add_subdirectory(test)
         else()
             message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SDL.")
         endif()
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SDL")
         if((SDL2_FOUND AND SDL2_TTF_FOUND AND SDL2_IMAGE_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
-            add_subdirectory(gui/test)
+            add_subdirectory(test)
         else()
             message(ERROR ": the test program requires SDL2, SDL2_ttf, and SDL2_image.")
         endif()
     elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "SFML")
         if(SFML_FOUND)
-            add_subdirectory(gui/test)
+            add_subdirectory(test)
         else()
             message(ERROR ": the test program requires SFML.")
         endif()

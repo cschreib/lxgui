@@ -71,7 +71,7 @@ namespace gui
 
     protected :
 
-        void parse_attributes_(xml::block* pBlock) override;
+        void parse_attributes_(const layout_node& mNode) override;
 
         bool bFocus_ = false;
         bool bAutoFocus_ = false;

@@ -10,3 +10,9 @@
 [submodule "extern/observable_unique_ptr"]
 	path = extern/observable_unique_ptr
 	url = https://github.com/cschreib/observable_unique_ptr.git
+[submodule "extern/pugixml"]
+	path = extern/pugixml
+	url = https://github.com/zeux/pugixml.git
+[submodule "extern/rapidyaml"]
+	path = extern/rapidyaml
+	url = https://github.com/biojppm/rapidyaml.git

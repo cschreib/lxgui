@@ -7,7 +7,6 @@ namespace lxgui
 {
     using ulong = unsigned long;
     using uint = unsigned int;
-    using uchar = unsigned char;
 }
 
 #endif

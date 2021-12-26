@@ -102,8 +102,8 @@ namespace input
         */
         double get_key_down_duration(key mKey) const;
 
-        /// Returns the UTF8 (multibyte) character that has been entered.
-        /** \return The multibyte UTF8 character just entered with the keyboard
+        /// Returns the UTF32 characters that have been entered.
+        /** \return The UTF32 characters entered with the keyboard on the last update() call
         */
         std::vector<char32_t> get_chars() const;
 
