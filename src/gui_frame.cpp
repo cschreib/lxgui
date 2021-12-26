@@ -1043,7 +1043,7 @@ std::string frame::get_adjusted_script_name(const std::string& sScriptName)
     {
         if ('A' <= *iter && *iter <= 'Z')
         {
-            *iter = tolower(*iter);
+            *iter = std::tolower(*iter);
             if (iter != sAdjustedName.begin())
                 iter = sAdjustedName.insert(iter, '_');
         }
