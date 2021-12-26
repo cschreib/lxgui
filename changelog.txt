@@ -49,7 +49,6 @@ Other changes:
  - utils: removed broken custom code for UTF8-UTF32 conversion and use a library instead
  - lua: added support for Lua versions later than 5.1
  - lua: removed unusual constructs to serialize a table
- - lua: starting switching to sol2 to manage the Lua state
  - input: simplified class hierarchy by merging handler+handler_impl into input::source
  - input: vastly improved performance of SFML input implementation
  - input: get_key_name() is now platform-independent, and only returns English
@@ -161,7 +160,7 @@ Other changes:
  - gui: fixed frame not marked as "user placed" when moved or resized
  - gui: fixed missing 'const' for slider::are_clicks_outside_thumb_allowed()
  - gui: fixed missing 'const' for uiobject::render()
- - xml: now parsing standard XML comments
+ - utils: string conversion functions are now locale-independent; use localizer class otherwise
 
 v1.2.0:
  - added support for MSVC 2010
