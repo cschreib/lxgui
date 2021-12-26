@@ -1368,7 +1368,7 @@ void manager::on_event(const event& mEvent)
     else if (mEvent.get_name() == "WINDOW_RESIZED")
     {
         // Update internal window size
-        mScreenDimensions_ = vector2ui(mEvent.get<std::size_t>(0), mEvent.get<std::size_t>(1));
+        mScreenDimensions_ = vector2ui(mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1));
 
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);

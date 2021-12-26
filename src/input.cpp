@@ -496,8 +496,8 @@ void manager::update(float fTempDelta)
     {
         const auto mDimensions = pSource_->get_window_dimensions();
         gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
-        mWindowResizedEvent.add(mDimensions.x);
-        mWindowResizedEvent.add(mDimensions.y);
+        mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.x));
+        mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.y));
         fire_event_(mWindowResizedEvent, true);
         pSource_->reset_window_resized();
     }
