@@ -7,6 +7,7 @@
 namespace lxgui {
 namespace gui
 {
+
 // For debugging only
 std::size_t count_frames(const std::array<strata,8>& lStrataList)
 {
@@ -119,6 +120,33 @@ void frame_renderer::notify_frame_level_changed(const utils::observer_ptr<frame>
     notify_strata_needs_redraw_(mStrata);
 }
 
+utils::observer_ptr<frame> frame_renderer::find_hovered_frame(const vector2f& mPosition)
+{
+    // Iterate through the frames in reverse order from rendering (frame on top goes first)
+    for (const auto& mStrata : utils::range::reverse(lStrataList_))
+    {
+        for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
+        {
+            for (const auto& pFrame : utils::range::reverse(mLevel.lFrameList))
+            {
+                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(mPosition))
+                    return pFrame;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+int frame_renderer::get_highest_level(frame_strata mFrameStrata) const
+{
+    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
+    if (!mStrata.lLevelList.empty())
+        return mStrata.lLevelList.rbegin()->first;
+
+    return 0;
+}
+
 void frame_renderer::add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame)
 {
     int iNewLevel = pFrame->get_level();
@@ -203,22 +231,5 @@ void frame_renderer::reset_strata_list_changed_flag_()
     bStrataListUpdated_ = false;
 }
 
-utils::observer_ptr<frame> frame_renderer::find_hovered_frame_(const vector2f& mPosition)
-{
-    // Iterate through the frames in reverse order from rendering (frame on top goes first)
-    for (const auto& mStrata : utils::range::reverse(lStrataList_))
-    {
-        for (const auto& mLevel : utils::range::reverse_value(mStrata.lLevelList))
-        {
-            for (const auto& pFrame : utils::range::reverse(mLevel.lFrameList))
-            {
-                if (pFrame->is_mouse_enabled() && pFrame->is_visible() && pFrame->is_in_frame(mPosition))
-                    return pFrame;
-            }
-        }
-    }
-
-    return nullptr;
-}
 }
 }

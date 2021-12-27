@@ -3,6 +3,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -944,7 +945,7 @@ void uiobject::notify_loaded()
 
 utils::observer_ptr<const frame_renderer> uiobject::get_top_level_renderer() const
 {
-    if (!pParent_) return get_manager().observer_from_this();
+    if (!pParent_) return get_manager().get_root().observer_from_this();
     return pParent_->get_top_level_renderer();
 }
 

@@ -905,6 +905,18 @@
 					"shell_cmd": "make -j12 src/gui_uiobject_parser.s",
 				},
 				{
+					"name": "src/gui_uiroot.o",
+					"shell_cmd": "make -j12 src/gui_uiroot.o",
+				},
+				{
+					"name": "src/gui_uiroot.i",
+					"shell_cmd": "make -j12 src/gui_uiroot.i",
+				},
+				{
+					"name": "src/gui_uiroot.s",
+					"shell_cmd": "make -j12 src/gui_uiroot.s",
+				},
+				{
 					"name": "src/gui_vertexcache.o",
 					"shell_cmd": "make -j12 src/gui_vertexcache.o",
 				},
@@ -978,15 +990,15 @@
 				},
 				{
 					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o",
+					"shell_cmd": "make -j12 src/utils_string.o"
 				},
 				{
 					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i",
+					"shell_cmd": "make -j12 src/utils_string.i"
 				},
 				{
 					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s",
+					"shell_cmd": "make -j12 src/utils_string.s"
 				},
 			],
 			"working_dir": "$folder/build",

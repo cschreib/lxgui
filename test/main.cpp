@@ -225,7 +225,7 @@ void main_loop(void* pTypeErasedData)
                         gui::out << "###" << std::endl;
                         break;
                     case sf::Keyboard::Key::C:
-                        mContext.pManager->enable_caching(!mContext.pManager->is_caching_enabled());
+                        mContext.pManager->get_root().toggle_caching();
                         break;
                     case sf::Keyboard::Key::R:
                         mContext.pManager->reload_ui();
@@ -505,7 +505,7 @@ int main(int argc, char* argv[])
         std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
         std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
-        pManager->enable_caching(false);
+        pManager->get_root().enable_caching(false);
 
         pManager->set_interface_scaling_factor(fScaleFactor);
 
@@ -562,7 +562,7 @@ int main(int argc, char* argv[])
         // A "root" frame has no parent and is directly owned by the gui::manager.
         // A "child" frame is owned by another frame.
         utils::observer_ptr<gui::frame> pFrame;
-        pFrame = pManager->create_root_frame<gui::frame>("FPSCounter");
+        pFrame = pManager->get_root().create_root_frame<gui::frame>("FPSCounter");
         pFrame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
         pFrame->set_point(gui::anchor_data(
             gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT));

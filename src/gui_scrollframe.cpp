@@ -247,7 +247,7 @@ void scroll_frame::update_scroll_child_input_()
     update_mouse_in_frame_();
     if (bMouseInScrollTexture_)
     {
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(mOffset);
+        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mOffset);
 
         if (pHoveredFrame != pHoveredScrollChild_)
         {

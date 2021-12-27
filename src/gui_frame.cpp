@@ -841,7 +841,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     if (!bVirtual_)
     {
         utils::observer_ptr<frame_renderer> pTopLevelRenderer = get_top_level_renderer();
-        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager();
+        bNotifyRenderer = !pChild->get_renderer() && pTopLevelRenderer.get() != &get_manager().get_root();
         if (bNotifyRenderer)
         {
             pTopLevelRenderer->notify_rendered_frame(pChild, false);
@@ -855,7 +855,7 @@ utils::owner_ptr<frame> frame::remove_child(const utils::observer_ptr<frame>& pC
     {
         if (bNotifyRenderer)
         {
-            get_manager().notify_rendered_frame(pChild, true);
+            get_manager().get_root().notify_rendered_frame(pChild, true);
             pChild->propagate_renderer_(true);
         }
 
@@ -1616,7 +1616,7 @@ utils::owner_ptr<uiobject> frame::release_from_parent()
     if (pParent_)
         return pParent_->remove_child(pSelf);
     else
-        return get_manager().remove_root_frame(pSelf);
+        return get_manager().get_root().remove_root_frame(pSelf);
 }
 
 void frame::set_resizable(bool bIsResizable)
@@ -1650,13 +1650,14 @@ void frame::raise()
         return;
 
     int iOldLevel = iLevel_;
-    iLevel_ = get_manager().get_highest_level(mStrata_) + 1;
+    auto pTopLevelRenderer = get_top_level_renderer();
+    iLevel_ = pTopLevelRenderer->get_highest_level(mStrata_) + 1;
 
     if (iLevel_ > iOldLevel)
     {
         if (!is_virtual())
         {
-            get_top_level_renderer()->notify_frame_level_changed(
+            pTopLevelRenderer->notify_frame_level_changed(
                 observer_from(this), iOldLevel, iLevel_);
         }
 
@@ -1756,7 +1757,7 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
     else if (pParent_)
         return pParent_->get_top_level_renderer();
     else
-        return get_manager().observer_from_this();
+        return get_manager().get_root().observer_from_this();
 }
 
 void frame::notify_visible(bool bTriggerEvents)

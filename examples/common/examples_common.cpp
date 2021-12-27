@@ -86,7 +86,7 @@ void examples_setup_gui(gui::manager& mManager)
     // A "root" frame has no parent and is directly owned by the gui::manager.
     // A "child" frame is owned by another frame.
     utils::observer_ptr<gui::frame> pFrame;
-    pFrame = mManager.create_root_frame<gui::frame>("FPSCounter");
+    pFrame = mManager.get_root().create_root_frame<gui::frame>("FPSCounter");
     pFrame->set_point(gui::anchor_data(gui::anchor_point::TOPLEFT));
     pFrame->set_point(gui::anchor_data(
         gui::anchor_point::BOTTOMRIGHT, "FontstringTestFrameText", gui::anchor_point::TOPRIGHT));

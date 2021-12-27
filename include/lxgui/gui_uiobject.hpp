@@ -30,6 +30,7 @@ namespace gui
 {
     struct addon;
     class manager;
+    class uiroot;
     class layout_node;
 
     class frame;
@@ -149,6 +150,7 @@ namespace gui
     class uiobject : public utils::enable_observer_from_this<uiobject>
     {
     friend manager;
+    friend uiroot;
     friend frame;
     public :
 

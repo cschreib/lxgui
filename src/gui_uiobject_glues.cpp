@@ -5,6 +5,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -306,7 +307,7 @@ void uiobject::register_on_lua(sol::state& mLua)
         {
             if (mSelf.is_object_type<frame>())
             {
-                mSelf.get_manager().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
+                mSelf.get_manager().get_root().add_root_frame(utils::static_pointer_cast<frame>(mSelf.release_from_parent()));
             }
             else
                 throw sol::error("set_parent(nil) can only be called on frames");

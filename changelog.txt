@@ -66,6 +66,7 @@ Other changes:
  - gui: added explicit =delete for copy and move constructors when appropriate
  - gui: added event_data class
  - gui: added frame::get_rough_num_children and get_rough_num_regions
+ - gui: added uiroot to hold root frames
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class

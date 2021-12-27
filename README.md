@@ -567,7 +567,7 @@ Re-creating the above addon in pure C++ is perfectly possible. This can be done 
 ```c++
 // Create the Frame
 utils::observer_ptr<gui::frame> frame;
-frame = manager->create_root_frame<gui::frame>("FPSCounter");
+frame = manager->get_root().create_root_frame<gui::frame>("FPSCounter");
 frame->set_point(gui::anchor_point::TOPLEFT);
 frame->set_point(gui::anchor_point::BOTTOMRIGHT);
 

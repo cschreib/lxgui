@@ -7,7 +7,7 @@
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_framerenderer.hpp"
+#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -46,7 +46,7 @@ namespace gui
     struct vertex;
 
     /// Manages the user interface
-    class manager : private event_manager, public event_receiver, public frame_renderer
+    class manager : private event_manager, public event_receiver
     {
     private :
 
@@ -64,22 +64,6 @@ namespace gui
 
     public :
 
-        /// Type of the root frame list.
-        /** \note Constraints on the choice container type:
-        *          - must not invalidate iterators on back insertion
-        *          - must allow forward iteration
-        *          - iterators can be invalidated on removal
-        *          - most common use is iteration, not addition or removal
-        *          - ordering of elements is irrelevant
-        */
-        using root_frame_list = std::list<utils::owner_ptr<frame>>;
-        using root_frame_list_view = utils::view::adaptor<root_frame_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
-        using const_root_frame_list_view = utils::view::adaptor<const root_frame_list,
-            utils::view::smart_ptr_dereferencer,
-            utils::view::non_null_filter>;
-
         /// Constructor.
         /** \param pInputSource The input source to use
         *   \param pRenderer    The renderer implementation
@@ -94,11 +78,6 @@ namespace gui
         manager(manager&& mMgr) = delete;
         manager& operator = (const manager& mMgr) = delete;
         manager& operator = (manager&& mMgr) = delete;
-
-        /// Returns the width and height of of this renderer's main render target (e.g., screen).
-        /** \return The render target dimensions
-        */
-        vector2f get_target_dimensions() const override;
 
         /// Sets the global UI scaling factor.
         /** \param fScalingFactor The factor to use for rescaling (1: no rescaling, default)
@@ -159,78 +138,6 @@ namespace gui
         */
         utils::owner_ptr<frame> create_frame(const std::string& sClassName);
 
-        /// Creates a new frame, ready for use, and owned by this manager.
-        /** \param sClassName   The sub class of the frame (Button, ...)
-        *   \param sName        The name of this frame
-        *   \param lInheritance The objects to inherit from
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable. However, you still need to call
-        *         notify_loaded() when you are done with any extra initialization
-        *         you require on this frame. If you do not, the frame's OnLoad
-        *         callback will not fire.
-        */
-        utils::observer_ptr<frame> create_root_frame(
-            const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
-        {
-            return create_root_frame_(sClassName, sName, false, lInheritance);
-        }
-
-        /// Creates a new virtual frame, ready for use, and owned by this manager.
-        /** \param sClassName   The sub class of the frame (Button, ...)
-        *   \param sName        The name of this frame
-        *   \param lInheritance The objects to inherit from
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable for inheritance.
-        *   \note Virtual frames are not displayed, but they can be used as templates
-        *         to create other frames through inheritance.
-        */
-        utils::observer_ptr<frame> create_virtual_root_frame(
-            const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
-        {
-            return create_root_frame_(sClassName, sName, true, lInheritance);
-        }
-
-        /// Creates a new frame, ready for use, and owned by this manager.
-        /** \param sName        The name of this frame
-        *   \param lInheritance The objects to inherit from
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable. However, you still need to call
-        *         notify_loaded() when you are done with any extra initialization
-        *         you require on this frame. If you do not, the frame's OnLoad
-        *         callback will not fire.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame> create_root_frame(const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
-        {
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(frame_type::CLASS_NAME, sName, false, lInheritance));
-        }
-
-        /// Creates a new virtual frame, ready for use, and owned by this manager.
-        /** \param sName        The name of this frame
-        *   \param lInheritance The objects to inherit from
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable for inheritance.
-        *   \note Virtual frames are not displayed, but they can be used as templates
-        *         to create other frames through inheritance.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame> create_virtual_root_frame(const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
-        {
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(frame_type::CLASS_NAME, sName, true, lInheritance));
-        }
-
         /// Creates a new layered_region.
         /** \param sClassName The sub class of the layered_region (FontString or texture)
         *   \return The new layered_region
@@ -247,12 +154,6 @@ namespace gui
         */
         bool add_uiobject(utils::observer_ptr<uiobject> pObj);
 
-        /// Make a frame owned by this manager.
-        /** \param pFrame The frame to add to the root frame list
-        *   \return Raw pointer to the frame
-        */
-        utils::observer_ptr<frame> add_root_frame(utils::owner_ptr<frame> pFrame);
-
          /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
         *   \note Called automatically by uiobject destructor.
@@ -265,23 +166,6 @@ namespace gui
         */
         void remove_frame(const utils::observer_ptr<frame>& pObj);
 
-        /// Remove a frame from the list of frames owned by this manager.
-        /** \param pFrame The frame to be released
-        *   \return A unique_ptr to the previously owned frame, ignore it to destroy it.
-        */
-        utils::owner_ptr<frame> remove_root_frame(
-            const utils::observer_ptr<frame>& pFrame);
-
-        /// Returns the root frame list.
-        /** \return The root frame list
-        */
-        root_frame_list_view get_root_frames();
-
-        /// Returns the root frame list.
-        /** \return The root frame list
-        */
-        const_root_frame_list_view get_root_frames() const;
-
         /// Return a list of virtual uiobjects matching the provided comma-separated list.
         /** \param sNames Comma-separated list of object names
         *   \return A vector of objects matching the list. Objects not found will be excluded.
@@ -290,7 +174,7 @@ namespace gui
             const std::string& sNames) const;
 
         /// Returns the uiobject associated with the given name.
-        /** \param sName    The name of the widget you're after
+        /** \param sName    The name of the widget you're
         *   \param bVirtual 'true' to search for a virtual frame
         *   \return The uiobject associated with the given name, or nullptr if not found
         */
@@ -516,23 +400,6 @@ namespace gui
         /// Tells this manager an object has moved.
         void notify_object_moved();
 
-        /// Enables/disables GUI caching.
-        /** \param bEnable 'true' to enable
-        *   \note See toggle_caching().
-        */
-        void enable_caching(bool bEnable);
-
-        /// Toggles render caching.
-        /** \note Enabled by default.
-        *   \note Enabling this will most likely improve performances.
-        */
-        void toggle_caching();
-
-        /// Checks if GUI caching is enabled.
-        /** \return 'true' if GUI caching is enabled
-        */
-        bool is_caching_enabled() const;
-
         /// Enables/disables input response for all widgets.
         /** \param bEnable 'true' to enable input
         *   \note See toggle_input() and is_input_enabled().
@@ -565,12 +432,6 @@ namespace gui
         /** \param pFocusFrame The focus_frame requesting focus
         */
         void request_focus(utils::observer_ptr<focus_frame> pFocusFrame);
-
-        /// Returns the highest level on the provided strata.
-        /** \param mframe_strata The strata to inspect
-        *   \return The highest level on the provided strata
-        */
-        int get_highest_level(frame_strata mframe_strata) const;
 
         /// updates this manager and its widgets.
         /** \param fDelta The time elapsed since the last call
@@ -672,6 +533,16 @@ namespace gui
         */
         const localizer& get_localizer() const { return *pLocalizer_; }
 
+        /// Returns the UI root object, which contains root frames.
+        /** \return The root object
+        */
+        uiroot& get_root() { return *pRoot_; }
+
+        /// Returns the UI root object, which contains root frames.
+        /** \return The root object
+        */
+        const uiroot& get_root() const { return *pRoot_; }
+
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */
@@ -703,13 +574,6 @@ namespace gui
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
             const vector2f& mMousePos = vector2f::ZERO);
 
-        utils::observer_ptr<frame> create_root_frame_(const std::string& sClassName,
-            const std::string& sName, bool bVirtual,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance);
-
-        void create_caching_render_target_();
-        void create_strata_cache_render_target_(strata& mStrata);
-
         void parse_layout_file_(const std::string& sFile, addon* pAddOn);
 
         std::string sUIVersion_ = "0001";
@@ -739,7 +603,7 @@ namespace gui
         string_map<utils::observer_ptr<uiobject>> lNamedObjectList_;
         string_map<utils::observer_ptr<uiobject>> lNamedVirtualObjectList_;
 
-        root_frame_list lRootFrameList_;
+        utils::owner_ptr<uiroot> pRoot_;
 
         std::vector<std::string>      lGUIDirectoryList_;
         const addon*                  pCurrentAddOn_ = nullptr;
@@ -764,13 +628,6 @@ namespace gui
         bool bResizeHeight_ = false;
         bool bResizeFromRight_ = false;
         bool bResizeFromBottom_ = false;
-
-        std::size_t uiFrameNumber_ = 0u;
-
-        bool bEnableCaching_= true;
-
-        std::shared_ptr<render_target> pRenderTarget_;
-        quad                           mScreenQuad_;
 
         string_map<std::function<utils::owner_ptr<frame>(manager&)>>          lCustomFrameList_;
         string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> lCustomRegionList_;

@@ -66,6 +66,18 @@ namespace gui
         */
         virtual vector2f get_target_dimensions() const = 0;
 
+        /// Find the top-most frame at the provided coordinates
+        /** \param mPosition The coordinates to look at
+        *   \return The hovered frame, or nullptr if none
+        */
+        utils::observer_ptr<frame> find_hovered_frame(const vector2f& mPosition);
+
+        /// Returns the highest level on the provided strata.
+        /** \param mframe_strata The strata to inspect
+        *   \return The highest level on the provided strata
+        */
+        int get_highest_level(frame_strata mframe_strata) const;
+
     protected :
 
         void add_to_strata_list_(strata& mStrata, const utils::observer_ptr<frame>& pFrame);
@@ -78,8 +90,6 @@ namespace gui
         void notify_strata_needs_redraw_(strata& mStrata);
 
         void render_strata_(const strata& mStrata) const;
-
-        utils::observer_ptr<frame> find_hovered_frame_(const vector2f& mPosition);
 
         std::array<strata,8> lStrataList_;
         bool                 bStrataListUpdated_ = false;

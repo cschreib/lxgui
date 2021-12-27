@@ -33,6 +33,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     register_event("KEY_PRESSED");
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
+    pRoot_->register_event("WINDOW_RESIZED");
 
     pLua_ = std::unique_ptr<sol::state>(new sol::state());
     pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
@@ -67,7 +68,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         if (pParent.has_value())
             pNewFrame = pParent.value().create_child(sType, sName, lInheritance);
         else
-            pNewFrame = create_root_frame(sType, sName, lInheritance);
+            pNewFrame = pRoot_->create_root_frame(sType, sName, lInheritance);
 
         if (pNewFrame)
         {

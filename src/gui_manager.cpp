@@ -14,6 +14,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -51,6 +52,7 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::unique_ptr<localizer>(new localizer());
+    pRoot_ = utils::make_owned<uiroot>(*this);
 
     // NB: cannot call register_event() here, as observable_from_this()
     // is not yet fully initialised! This is done in create_lua() instead.
@@ -59,11 +61,6 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
 manager::~manager()
 {
     close_ui();
-}
-
-vector2f manager::get_target_dimensions() const
-{
-    return vector2f(mScreenDimensions_)/get_interface_scaling_factor();
 }
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
@@ -76,18 +73,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
     fScalingFactor_ = fFullScalingFactor;
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
-
-    for (auto& mFrame : get_root_frames())
-        mFrame.notify_scaling_factor_updated();
-
-    if (pRenderTarget_)
-        create_caching_render_target_();
-
-    for (auto& mStrata : lStrataList_)
-    {
-        if (mStrata.pRenderTarget)
-            create_strata_cache_render_target_(mStrata);
-    }
+    pRoot_->notify_scaling_factor_updated();
 
     notify_object_moved();
 }
@@ -188,51 +174,6 @@ utils::owner_ptr<frame> manager::create_frame(const std::string& sClassName)
     }
 }
 
-utils::observer_ptr<frame> manager::create_root_frame_(
-    const std::string& sClassName, const std::string& sName,
-    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
-{
-    if (!check_uiobject_name(sName))
-        return nullptr;
-
-    auto pNewFrame = create_frame(sClassName);
-    if (!pNewFrame)
-        return nullptr;
-
-    pNewFrame->set_name_(sName);
-
-    if (bVirtual)
-        pNewFrame->set_virtual();
-
-    if (!pNewFrame->is_virtual())
-        notify_rendered_frame(pNewFrame, true);
-
-    if (!add_uiobject(pNewFrame))
-        return nullptr;
-
-    if (!pNewFrame->is_virtual())
-        pNewFrame->create_glue();
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pNewFrame->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::manager : "
-                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other frame
-        pNewFrame->copy_from(*pObj);
-    }
-
-    pNewFrame->set_newly_created();
-
-    return add_root_frame(std::move(pNewFrame));
-}
-
 utils::owner_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
 {
     auto iterRegion = lCustomRegionList_.find(sClassName);
@@ -281,24 +222,6 @@ bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
     return true;
 }
 
-utils::observer_ptr<frame> manager::add_root_frame(utils::owner_ptr<frame> pFrame)
-{
-    utils::observer_ptr<frame> pAddedFrame = pFrame;
-    lRootFrameList_.push_back(std::move(pFrame));
-
-    if (!pAddedFrame->is_virtual())
-    {
-        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
-        if (pOldTopLevelRenderer.get() != this)
-        {
-            pOldTopLevelRenderer->notify_rendered_frame(pAddedFrame, false);
-            notify_rendered_frame(pAddedFrame, true);
-        }
-    }
-
-    return pAddedFrame;
-}
-
 void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
 {
     uiobject* pObjRaw = pObj.get();
@@ -328,36 +251,8 @@ void manager::remove_frame(const utils::observer_ptr<frame>& pObj)
         clear_focussed_frame_();
 }
 
-utils::owner_ptr<frame> manager::remove_root_frame(
-    const utils::observer_ptr<frame>& pFrame)
-{
-    frame* pFrameRaw = pFrame.get();
-    if (!pFrameRaw)
-        return nullptr;
-
-    auto mIter = utils::find_if(lRootFrameList_, [&](const auto& pObj)
-    {
-        return pObj.get() == pFrameRaw;
-    });
-
-    if (mIter == lRootFrameList_.end())
-        return nullptr;
-
-    // NB: the iterator is not removed yet; it will be removed later in update().
-    return std::move(*mIter);
-}
-
-manager::root_frame_list_view manager::get_root_frames()
-{
-    return root_frame_list_view(lRootFrameList_);
-}
-
-manager::const_root_frame_list_view manager::get_root_frames() const
-{
-    return const_root_frame_list_view(lRootFrameList_);
-}
-
-std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(const std::string& sNames) const
+std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(
+    const std::string& sNames) const
 {
     std::vector<utils::observer_ptr<const uiobject>> lInheritance;
     if (!utils::has_no_content(sNames))
@@ -682,12 +577,10 @@ void manager::close_ui()
                 save_variables_(&mAddOn);
         }
 
-        lRootFrameList_.clear();
+        pRoot_ = utils::make_owned<uiroot>(*this);
 
         lNamedObjectList_.clear();
         lNamedVirtualObjectList_.clear();
-
-        clear_strata_list_();
 
         lAddOnList_.clear();
 
@@ -708,8 +601,6 @@ void manager::close_ui()
         bResizeHeight_ = false;
         bResizeFromRight_ = false;
         bResizeFromBottom_ = false;
-
-        uiFrameNumber_ = 0;
 
         lKeyBindingList_.clear();
 
@@ -763,72 +654,9 @@ void manager::render_ui() const
 {
     begin();
 
-    if (bEnableCaching_)
-    {
-        pRenderer_->render_quad(mScreenQuad_);
-    }
-    else
-    {
-        for (const auto& mStrata : lStrataList_)
-        {
-            render_strata_(mStrata);
-        }
-    }
+    pRoot_->render();
 
     end();
-}
-
-void manager::create_caching_render_target_()
-{
-    try
-    {
-        if (pRenderTarget_)
-            pRenderTarget_->set_dimensions(mScreenDimensions_);
-        else
-            pRenderTarget_ = pRenderer_->create_render_target(mScreenDimensions_);
-    }
-    catch (const utils::exception& e)
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "Unable to create render_target for GUI caching :\n" << e.get_description() << std::endl;
-
-        bEnableCaching_ = false;
-        return;
-    }
-
-    vector2f mScaledDimensions = vector2f(mScreenDimensions_)/get_interface_scaling_factor();
-
-    mScreenQuad_.mat = pRenderer_->create_material(pRenderTarget_);
-    mScreenQuad_.v[0].pos = vector2f::ZERO;
-    mScreenQuad_.v[1].pos = vector2f(mScaledDimensions.x, 0);
-    mScreenQuad_.v[2].pos = mScaledDimensions;
-    mScreenQuad_.v[3].pos = vector2f(0, mScaledDimensions.y);
-
-    mScreenQuad_.v[0].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 0), true);
-    mScreenQuad_.v[1].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(1, 0), true);
-    mScreenQuad_.v[2].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(1, 1), true);
-    mScreenQuad_.v[3].uvs = mScreenQuad_.mat->get_canvas_uv(vector2f(0, 1), true);
-}
-
-void manager::create_strata_cache_render_target_(strata& mStrata)
-{
-    if (mStrata.pRenderTarget)
-        mStrata.pRenderTarget->set_dimensions(mScreenDimensions_);
-    else
-        mStrata.pRenderTarget = pRenderer_->create_render_target(mScreenDimensions_);
-
-    vector2f mScaledDimensions = vector2f(mScreenDimensions_)/get_interface_scaling_factor();
-
-    mStrata.mQuad.mat = pRenderer_->create_material(mStrata.pRenderTarget);
-    mStrata.mQuad.v[0].pos = vector2f::ZERO;
-    mStrata.mQuad.v[1].pos = vector2f(mScaledDimensions.x, 0);
-    mStrata.mQuad.v[2].pos = mScaledDimensions;
-    mStrata.mQuad.v[3].pos = vector2f(0, mScaledDimensions.y);
-
-    mStrata.mQuad.v[0].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 0), true);
-    mStrata.mQuad.v[1].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(1, 0), true);
-    mStrata.mQuad.v[2].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(1, 1), true);
-    mStrata.mQuad.v[3].uvs = mStrata.mQuad.mat->get_canvas_uv(vector2f(0, 1), true);
 }
 
 bool manager::is_loading_ui() const
@@ -841,17 +669,6 @@ bool manager::is_loaded() const
     return !bClosed_;
 }
 
-template<typename T>
-void remove_null(T& lList)
-{
-    auto mIterRemove = std::remove_if(lList.begin(), lList.end(), [](auto& pObj)
-    {
-        return pObj == nullptr;
-    });
-
-    lList.erase(mIterRemove, lList.end());
-}
-
 void manager::update(float fDelta)
 {
     bUpdating_ = true;
@@ -860,80 +677,14 @@ void manager::update(float fDelta)
     pInputManager_->update(fDelta);
 
     DEBUG_LOG(" Update widgets...");
-    // ... then update logics on main widgets from parent to children.
-    for (auto& mFrame : get_root_frames())
-    {
-        if (!mFrame.is_virtual())
-            mFrame.update(fDelta);
-    }
+    pRoot_->update(fDelta);
 
-    // Removed destroyed frames
-    remove_null(lRootFrameList_);
-
-    if (bEnableCaching_)
-    {
-        DEBUG_LOG(" Redraw strata...");
-
-        try
-        {
-            bool bRedraw = has_strata_list_changed_();
-            for (auto& mStrata : lStrataList_)
-            {
-                if (mStrata.bRedraw)
-                {
-                    if (!mStrata.pRenderTarget)
-                        create_strata_cache_render_target_(mStrata);
-
-                    if (mStrata.pRenderTarget)
-                    {
-                        begin(mStrata.pRenderTarget);
-                        mStrata.pRenderTarget->clear(color::EMPTY);
-                        render_strata_(mStrata);
-                        end();
-                    }
-
-                    bRedraw = true;
-                }
-
-                mStrata.bRedraw = false;
-            }
-
-            if (!pRenderTarget_)
-                create_caching_render_target_();
-
-            if (bRedraw && pRenderTarget_)
-            {
-                begin(pRenderTarget_);
-                pRenderTarget_->clear(color::EMPTY);
-
-                for (auto& mStrata : lStrataList_)
-                {
-                    pRenderer_->render_quad(mStrata.mQuad);
-                }
-
-                end();
-            }
-        }
-        catch (const utils::exception& e)
-        {
-            gui::out << gui::error << "gui::manager : "
-                << "Unable to create render_target for strata :\n"
-                << e.get_description() << std::endl;
-
-            bEnableCaching_ = false;
-        }
-    }
-
-    if (has_strata_list_changed_() || bObjectMoved_ ||
-        pInputManager_->get_mouse_delta() != vector2f::ZERO)
-    {
+    if (bObjectMoved_ || pInputManager_->get_mouse_delta() != vector2f::ZERO)
         bUpdateHoveredFrame_ = true;
-    }
 
     update_hovered_frame_();
 
     bObjectMoved_ = false;
-    reset_strata_list_changed_flag_();
 
     if (bFirstIteration_)
     {
@@ -942,7 +693,6 @@ void manager::update(float fDelta)
         bFirstIteration_ = false;
     }
 
-    ++uiFrameNumber_;
     frame_ended();
     bUpdating_ = false;
 
@@ -1112,28 +862,6 @@ void manager::notify_object_moved()
     bObjectMoved_ = true;
 }
 
-void manager::toggle_caching()
-{
-    bEnableCaching_ = !bEnableCaching_;
-
-    if (bEnableCaching_)
-    {
-        for (auto& mStrata : lStrataList_)
-            mStrata.bRedraw = true;
-    }
-}
-
-void manager::enable_caching(bool bEnable)
-{
-    if (bEnableCaching_ != bEnable)
-        toggle_caching();
-}
-
-bool manager::is_caching_enabled() const
-{
-    return bEnableCaching_;
-}
-
 void manager::enable_input(bool bEnable)
 {
     if (bInputEnabled_ != bEnable)
@@ -1173,7 +901,7 @@ void manager::update_hovered_frame_()
     DEBUG_LOG(" Update hovered frame...");
     const auto mMousePos = pInputManager_->get_mouse_position();
 
-    utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame_(mMousePos);
+    utils::observer_ptr<frame> pHoveredFrame = pRoot_->find_hovered_frame(mMousePos);
     set_hovered_frame_(std::move(pHoveredFrame), mMousePos);
 
     bUpdateHoveredFrame_ = false;
@@ -1250,15 +978,6 @@ void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::
             }
         }
     }
-}
-
-int manager::get_highest_level(frame_strata mFrameStrata) const
-{
-    auto& mStrata = lStrataList_[static_cast<std::size_t>(mFrameStrata)];
-    if (!mStrata.lLevelList.empty())
-        return mStrata.lLevelList.rbegin()->first;
-
-    return 0;
 }
 
 const addon* manager::get_current_addon()
@@ -1366,29 +1085,9 @@ void manager::on_event(const event& mEvent)
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
 
-        // Notify all frames anchored to the window edges
-        for (auto& mFrame : get_root_frames())
-        {
-            if (!mFrame.is_virtual())
-            {
-                mFrame.notify_borders_need_update();
-                mFrame.notify_renderer_need_redraw();
-            }
-        }
-
         notify_object_moved();
 
         pRenderer_->notify_window_resized(mScreenDimensions_);
-
-        // Resize caching render targets
-        if (pRenderTarget_)
-            create_caching_render_target_();
-
-        for (auto& mStrata : lStrataList_)
-        {
-            if (mStrata.pRenderTarget)
-                create_strata_cache_render_target_(mStrata);
-        }
     }
     else if (mEvent.get_name() == "MOUSE_MOVED")
     {
@@ -1448,18 +1147,6 @@ void manager::on_event(const event& mEvent)
     }
 }
 
-void manager::print_statistics()
-{
-    gui::out << "GUI Statistics :" << std::endl;
-    gui::out << "    strata redraw percent :" << std::endl;
-    for (std::size_t uiStrata = 0u; uiStrata < lStrataList_.size(); ++uiStrata)
-    {
-        const float fRedrawFraction = float(lStrataList_[uiStrata].uiRedrawCount)/float(uiFrameNumber_);
-        gui::out << "     - [" << uiStrata << "] : "
-            << utils::to_string(100.0f*fRedrawFraction) << "%" << std::endl;
-    }
-}
-
 std::string manager::print_ui() const
 {
     std::stringstream s;
@@ -1480,7 +1167,7 @@ std::string manager::print_ui() const
     }
 
     s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
-    for (const auto& mFrame : get_root_frames())
+    for (const auto& mFrame : pRoot_->get_root_frames())
     {
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }

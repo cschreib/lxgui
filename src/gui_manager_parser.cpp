@@ -300,9 +300,9 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
                 else
                 {
                     if (mAttr.bVirtual)
-                        pFrame = create_virtual_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
+                        pFrame = pRoot_->create_virtual_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
                     else
-                        pFrame = create_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
+                        pFrame = pRoot_->create_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
                 }
 
                 if (!pFrame)
