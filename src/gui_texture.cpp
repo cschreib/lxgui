@@ -14,7 +14,7 @@
 namespace lxgui {
 namespace gui
 {
-texture::texture(manager& mManager) : layered_region(mManager)
+texture::texture(manager& mManager) : layered_region(mManager), mRenderer_(mManager.get_renderer())
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -88,23 +88,22 @@ std::string texture::serialize(const std::string& sTab) const
 
 void texture::render() const
 {
-    if (is_visible())
+    if (!is_visible())
+        return;
+
+    float fAlpha = get_effective_alpha();
+
+    if (fAlpha != 1.0f)
     {
-        const auto& mRenderer = get_manager().get_renderer();
-        float fAlpha = get_effective_alpha();
+        quad mBlendedQuad = mQuad_;
+        for (std::size_t i = 0; i < 4; ++i)
+            mBlendedQuad.v[i].col.a *= fAlpha;
 
-        if (fAlpha != 1.0f)
-        {
-            quad mBlendedQuad = mQuad_;
-            for (std::size_t i = 0; i < 4; ++i)
-                mBlendedQuad.v[i].col.a *= fAlpha;
-
-            mRenderer.render_quad(mBlendedQuad);
-        }
-        else
-        {
-            mRenderer.render_quad(mQuad_);
-        }
+        mRenderer_.render_quad(mBlendedQuad);
+    }
+    else
+    {
+        mRenderer_.render_quad(mQuad_);
     }
 }
 

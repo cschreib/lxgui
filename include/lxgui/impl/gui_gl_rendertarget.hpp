@@ -29,10 +29,10 @@ namespace gl
         ~render_target() override;
 
         /// Begins rendering on this target.
-        void begin() override;
+        void begin();
 
         /// Ends rendering on this target.
-        void end() override;
+        void end();
 
         /// Clears the content of this render_target.
         /** \param mColor The color to use as background
@@ -79,7 +79,7 @@ namespace gl
         std::uint32_t                 uiFBOHandle_ = 0;
         std::shared_ptr<gl::material> pTexture_;
 
-        mutable matrix4f mViewMatrix_;
+        matrix4f mViewMatrix_;
     };
 }
 }

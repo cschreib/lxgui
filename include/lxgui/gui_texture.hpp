@@ -13,6 +13,8 @@
 namespace lxgui {
 namespace gui
 {
+    class renderer;
+
     /// A layered_region that can draw images and colored rectangles.
     /** This object contains either a texture taken from a file,
     *   or a plain color (possibly with a different color on each corner).
@@ -248,6 +250,7 @@ namespace gui
         bool             bIsDesaturated_ = false;
         bool             bTexCoordModifiesRect_ = false;
 
+        renderer& mRenderer_;
         quad mQuad_;
     };
 }

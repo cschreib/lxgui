@@ -223,7 +223,7 @@ void font_string::create_text_object_()
     std::size_t uiPixelHeight = static_cast<std::size_t>(
         std::round(get_manager().get_interface_scaling_factor()*fHeight_));
 
-    const auto& mRenderer = get_manager().get_renderer();
+    auto& mRenderer = get_manager().get_renderer();
     const auto& mLocalizer = get_manager().get_localizer();
 
     const auto& lCodePoints = mLocalizer.get_allowed_code_points();

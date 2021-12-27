@@ -30,7 +30,7 @@ namespace sdl
     public :
 
         /// Constructor.
-        explicit atlas_page(const renderer& mRenderer, material::filter mFilter);
+        explicit atlas_page(renderer& mRenderer, material::filter mFilter);
 
         /// Destructor.
         ~atlas_page() override;
@@ -57,7 +57,7 @@ namespace sdl
 
     private :
 
-        const renderer& mRenderer_;
+        renderer& mRenderer_;
         SDL_Texture*    pTexture_ = nullptr;
         std::size_t     uiSize_ = 0u;
     };
@@ -75,7 +75,7 @@ namespace sdl
         /** \param mRenderer The renderer with witch to create this atlas
         *   \param mFilter   Use texture filtering or not (see set_filter())
         */
-        explicit atlas(const renderer& mRenderer, material::filter mFilter);
+        explicit atlas(renderer& mRenderer, material::filter mFilter);
 
         atlas(const atlas& tex) = delete;
         atlas(atlas&& tex) = delete;
@@ -87,11 +87,11 @@ namespace sdl
         /// Create a new page in this atlas.
         /** \return The new page, added at the back of the page list
         */
-        std::unique_ptr<gui::atlas_page> create_page_() const override;
+        std::unique_ptr<gui::atlas_page> create_page_() override;
 
     private :
 
-        const renderer& mSDLRenderer_;
+        renderer& mSDLRenderer_;
     };
 }
 }

@@ -19,8 +19,6 @@ std::shared_ptr<material> atlas_page::fetch_material(const std::string& sFileNam
     {
         if (std::shared_ptr<gui::material> pLock = mIter->second.lock())
             return pLock;
-        else
-            lTextureList_.erase(mIter);
     }
 
     return nullptr;
@@ -54,8 +52,6 @@ std::shared_ptr<font> atlas_page::fetch_font(const std::string& sFontName) const
     {
         if (std::shared_ptr<gui::font> pLock = mIter->second.lock())
             return pLock;
-        else
-            lFontList_.erase(mIter);
     }
 
     return nullptr;
@@ -188,7 +184,7 @@ std::optional<bounds2f> atlas_page::find_location_(float fWidth, float fHeight) 
         return std::nullopt;
 }
 
-atlas::atlas(const renderer& mRenderer, material::filter mFilter) :
+atlas::atlas(renderer& mRenderer, material::filter mFilter) :
     mRenderer_(mRenderer), mFilter_(mFilter) {}
 
 std::shared_ptr<gui::material> atlas::fetch_material(const std::string& sFileName) const
@@ -203,7 +199,8 @@ std::shared_ptr<gui::material> atlas::fetch_material(const std::string& sFileNam
     return nullptr;
 }
 
-std::shared_ptr<gui::material> atlas::add_material(const std::string& sFileName, const material& mMat) const
+std::shared_ptr<gui::material> atlas::add_material(const std::string& sFileName,
+    const material& mMat)
 {
     try
     {
@@ -247,7 +244,7 @@ std::shared_ptr<gui::font> atlas::fetch_font(const std::string& sFontName) const
     return nullptr;
 }
 
-bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont) const
+bool atlas::add_font(const std::string& sFontName, std::shared_ptr<gui::font> pFont)
 {
     try
     {
@@ -282,7 +279,7 @@ std::size_t atlas::get_num_pages() const
     return lPageList_.size();
 }
 
-void atlas::add_page_() const
+void atlas::add_page_()
 {
     page_item mPage;
     mPage.pPage = create_page_();

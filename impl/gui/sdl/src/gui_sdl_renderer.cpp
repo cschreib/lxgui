@@ -63,7 +63,7 @@ std::string renderer::get_name() const
     return std::string("SDL (") + mRendererInfo.name + ")";
 }
 
-void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget)
 {
     if (pCurrentTarget_)
         throw gui::exception("gui::sdl::renderer", "Missing call to end()");
@@ -83,7 +83,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     mViewMatrix_ = mTargetViewMatrix_;
 }
 
-void renderer::end_() const
+void renderer::end_()
 {
     if (pCurrentTarget_)
         pCurrentTarget_->end();
@@ -91,7 +91,7 @@ void renderer::end_() const
     pCurrentTarget_ = nullptr;
 }
 
-void renderer::set_view_(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix)
 {
     mRawViewMatrix_ = mViewMatrix;
     mViewMatrix_ = mViewMatrix*matrix4f::invert(mTargetViewMatrix_);
@@ -311,8 +311,7 @@ sdl_render_data make_rects(const std::array<vertex,4>& lVertexList,
     return mData;
 }
 
-void renderer::render_quad_(const sdl::material* pMat,
-    const std::array<vertex,4>& lVertexList) const
+void renderer::render_quad_(const sdl::material* pMat, const std::array<vertex,4>& lVertexList)
 {
     auto lViewList = lVertexList;
     for (auto& v : lViewList)
@@ -516,7 +515,8 @@ void renderer::render_quad_(const sdl::material* pMat,
     }
 }
 
-void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial,
+    const std::vector<std::array<vertex,4>>& lQuadList)
 {
     const sdl::material* pMat = static_cast<const sdl::material*>(pMaterial);
 
@@ -526,7 +526,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
     }
 }
 
-void renderer::render_cache_(const gui::material*, const gui::vertex_cache&, const matrix4f&) const
+void renderer::render_cache_(const gui::material*, const gui::vertex_cache&, const matrix4f&)
 {
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }
@@ -536,14 +536,14 @@ SDL_Renderer* renderer::get_sdl_renderer() const
     return pRenderer_;
 }
 
-std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter)
 {
     return std::make_shared<sdl::material>(
         pRenderer_, sFileName, bPreMultipliedAlphaSupported_, material::wrap::REPEAT, mFilter
     );
 }
 
-std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter)
 {
     return std::make_shared<sdl::atlas>(*this, mFilter);
 }
@@ -569,7 +569,7 @@ bool renderer::is_vertex_cache_supported() const
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
-    const ub32color* pPixelData, material::filter mFilter) const
+    const ub32color* pPixelData, material::filter mFilter)
 {
     std::shared_ptr<sdl::material> pTex = std::make_shared<sdl::material>(
         pRenderer_, mDimensions, false, material::wrap::REPEAT, mFilter);
@@ -590,7 +590,7 @@ std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimen
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) const
+    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation)
 {
     auto pTex = std::static_pointer_cast<sdl::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())
@@ -605,20 +605,20 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    const vector2ui& mDimensions, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter)
 {
     return std::make_shared<sdl::render_target>(pRenderer_, mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
     std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-    char32_t uiDefaultCodePoint) const
+    char32_t uiDefaultCodePoint)
 {
     return std::make_shared<sdl::font>(pRenderer_, sFontFile, uiSize, uiOutline,
         lCodePoints, uiDefaultCodePoint, bPreMultipliedAlphaSupported_);
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type)
 {
     throw gui::exception("gui::sdl::renderer", "SDL does not support vertex caches.");
 }

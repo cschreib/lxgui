@@ -12,7 +12,7 @@ namespace gui {
 namespace sdl
 {
 
-atlas_page::atlas_page(const renderer& mRenderer, material::filter mFilter) :
+atlas_page::atlas_page(renderer& mRenderer, material::filter mFilter) :
     gui::atlas_page(mFilter), mRenderer_(mRenderer)
 {
     // Set filtering
@@ -86,10 +86,10 @@ float atlas_page::get_height() const
     return uiSize_;
 }
 
-atlas::atlas(const renderer& mRenderer, material::filter mFilter) :
+atlas::atlas(renderer& mRenderer, material::filter mFilter) :
     gui::atlas(mRenderer, mFilter), mSDLRenderer_(mRenderer) {}
 
-std::unique_ptr<gui::atlas_page> atlas::create_page_() const
+std::unique_ptr<gui::atlas_page> atlas::create_page_()
 {
     return std::make_unique<sdl::atlas_page>(mSDLRenderer_, mFilter_);
 }

@@ -77,7 +77,7 @@ renderer::shader_cache::~shader_cache()
 }
 #endif
 
-void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
+void renderer::begin_(std::shared_ptr<gui::render_target> pTarget)
 {
     matrix4f mCurrentViewMatrix;
 
@@ -112,7 +112,7 @@ void renderer::begin_(std::shared_ptr<gui::render_target> pTarget) const
     set_view_(mCurrentViewMatrix);
 }
 
-void renderer::end_() const
+void renderer::end_()
 {
     if (pCurrentTarget_)
     {
@@ -121,7 +121,7 @@ void renderer::end_() const
     }
 }
 
-void renderer::set_view_(const matrix4f& mViewMatrix) const
+void renderer::set_view_(const matrix4f& mViewMatrix)
 {
     mCurrentViewMatrix_ = mViewMatrix;
 
@@ -148,7 +148,8 @@ matrix4f renderer::get_view() const
     return mCurrentViewMatrix_;
 }
 
-void renderer::render_quads_(const gui::material* pMaterial, const std::vector<std::array<vertex,4>>& lQuadList) const
+void renderer::render_quads_(const gui::material* pMaterial,
+    const std::vector<std::array<vertex,4>>& lQuadList)
 {
 
 #if !defined(LXGUI_OPENGL3)
@@ -210,7 +211,7 @@ void renderer::render_quads_(const gui::material* pMaterial, const std::vector<s
 }
 
 void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_cache& mCache,
-    const matrix4f& mModelTransform) const
+    const matrix4f& mModelTransform)
 {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
@@ -242,7 +243,8 @@ void renderer::render_cache_(const gui::material* pMaterial, const gui::vertex_c
 #endif
 }
 
-std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName, material::filter mFilter) const
+std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFileName,
+    material::filter mFilter)
 {
     if (!utils::ends_with(sFileName, ".png"))
         throw gui::exception("gui::gl::renderer", "Unsupported texture format '" + sFileName + "'.");
@@ -250,7 +252,7 @@ std::shared_ptr<gui::material> renderer::create_material_(const std::string& sFi
     return create_material_png_(sFileName, mFilter);
 }
 
-std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter) const
+std::shared_ptr<gui::atlas> renderer::create_atlas_(material::filter mFilter)
 {
     return std::make_shared<gl::atlas>(*this, mFilter);
 }
@@ -261,7 +263,7 @@ std::size_t renderer::get_texture_max_size() const
 }
 
 std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimensions,
-    const ub32color* pPixelData, material::filter mFilter) const
+    const ub32color* pPixelData, material::filter mFilter)
 {
     std::shared_ptr<gl::material> pTex = std::make_shared<gl::material>(
         mDimensions, material::wrap::REPEAT, mFilter);
@@ -272,7 +274,7 @@ std::shared_ptr<gui::material> renderer::create_material(const vector2ui& mDimen
 }
 
 std::shared_ptr<gui::material> renderer::create_material(
-    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation) const
+    std::shared_ptr<gui::render_target> pRenderTarget, const bounds2f& mLocation)
 {
     auto pTex = std::static_pointer_cast<gl::render_target>(pRenderTarget)->get_material().lock();
     if (mLocation == pRenderTarget->get_rect())
@@ -287,14 +289,14 @@ std::shared_ptr<gui::material> renderer::create_material(
 }
 
 std::shared_ptr<gui::render_target> renderer::create_render_target(
-    const vector2ui& mDimensions, material::filter mFilter) const
+    const vector2ui& mDimensions, material::filter mFilter)
 {
     return std::make_shared<gl::render_target>(mDimensions, mFilter);
 }
 
 std::shared_ptr<gui::font> renderer::create_font_(const std::string& sFontFile, std::size_t uiSize,
     std::size_t uiOutline, const std::vector<code_point_range>& lCodePoints,
-    char32_t uiDefaultCodePoint) const
+    char32_t uiDefaultCodePoint)
 {
     return std::make_shared<gl::font>(sFontFile, uiSize, uiOutline, lCodePoints, uiDefaultCodePoint);
 }
@@ -318,7 +320,7 @@ bool renderer::is_vertex_cache_supported() const
 #endif
 }
 
-std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType) const
+std::shared_ptr<gui::vertex_cache> renderer::create_vertex_cache(gui::vertex_cache::type mType)
 {
 #if !defined(LXGUI_OPENGL3)
     throw gui::exception("gl::renderer", "Legacy OpenGL does not support vertex caches.");
