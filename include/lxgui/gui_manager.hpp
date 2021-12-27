@@ -29,9 +29,6 @@ namespace sol {
 }
 
 namespace lxgui {
-namespace lua {
-    class state;
-}
 
 namespace input {
     class source;
@@ -390,16 +387,6 @@ namespace gui
         /** \return The GUI Lua state
         */
         const sol::state& get_lua() const;
-
-        /// Returns the GUI Lua state (luapp wrapper).
-        /** \return The GUI Lua state
-        */
-        lua::state& get_luapp();
-
-        /// Returns the GUI Lua state (luapp wrapper).
-        /** \return The GUI Lua state
-        */
-        const lua::state& get_luapp() const;
 
         /// Creates the lua::state that will be used to communicate with the GUI.
         /** \param pLuaRegs Some code that will get exectued each time the lua
