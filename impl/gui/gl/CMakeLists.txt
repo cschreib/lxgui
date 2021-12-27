@@ -16,7 +16,9 @@ add_library(lxgui::gui::gl ALIAS lxgui-gl)
 # need C++17
 target_compile_features(lxgui-gl PRIVATE cxx_std_17)
 lxgui_set_warning_level(lxgui-gl)
-target_include_directories(lxgui-gl PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(lxgui-gl PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # needed dependencies
 target_link_libraries(lxgui-gl PUBLIC lxgui::lxgui)
@@ -32,5 +34,7 @@ else()
 endif()
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_gl_*.hpp)
-install(FILES ${files} DESTINATION include/lxgui/impl)
-install(TARGETS lxgui-gl ARCHIVE DESTINATION lib)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lxgui/impl)
+
+list(APPEND LXGUI_INSTALL_TARGETS lxgui-gl)
+set(LXGUI_INSTALL_TARGETS ${LXGUI_INSTALL_TARGETS} PARENT_SCOPE)

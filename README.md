@@ -61,7 +61,7 @@ As you can see from the screenshot below, lxgui can be used to create very compl
 
 ## Demonstration
 
-A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project.
+A WebAssembly live demo is accessible on-line [here](https://cschreib.github.io/lxgui/demo/lxgui-test-opengl-sdl-emscripten.html) (if your browser supports WebGL2) or [here](https://cschreib.github.io/lxgui/demo/lxgui-test-sdl-emscripten.html) (if your browser only supports WebGL1). Bootstrap examples are available in the `examples` directory in this repository, and demonstrate the steps required to include lxgui in a CMake project (requires CMake 3.14 or later).
 
 Included in the source package (in the `test` directory) is a test program that should compile and work fine if you have installed the whole thing properly. It is supposed to render exactly as the sample screenshot below. It can also serve as a demo program, and you can see for yourself what the layout and script files looks like for larger scale GUIs.
 
@@ -79,7 +79,7 @@ This screenshot was generated on a Release (optimised) build of lxgui with the O
 
 ## Front-end and back-ends
 
-Using CMake, you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
+Using CMake (3.14 or later), you can compile using the command line, or create projects files for your favorite IDE. The front-end GUI library itself only depends on [Lua](http://www.lua.org/) (>5.1), [sol2](https://github.com/ThePhD/sol2) (included as a submodule), [utfcpp](https://github.com/nemtrif/utfcpp) (included as a submodule), [oup](https://github.com/cschreib/observable_unique_ptr) (included as submodule), and [fmtlib](https://github.com/fmtlib/fmt) (included as submodule).
 
 To parse layout files, the library depends on [pugixml](https://github.com/zeux/pugixml) (included as submodule), and [rapidyaml](https://github.com/biojppm/rapidyaml) (included as submodule). These are optional dependencies; you can use both if you want to support XML and YAML layout files, or just one if you need only XML or YAML.
 
@@ -342,6 +342,26 @@ while (true)
 
 With these few lines of code, you can create as many "interface addons" with layout and script files as you wish. Let's consider a very simple example: we want to create an FPS counter at the bottom right corner of the screen.
 
+With lxgui installed, compiling can be done with a simple CMake script:
+```cmake
+cmake_minimum_required(VERSION 3.14)
+
+# Setup main project
+project(my_project LANGUAGES CXX)
+
+# Find lxgui and dependencies
+find_package(lxgui 2)
+
+# Create new executable
+add_executable(my_executable
+    ${PROJECT_SOURCE_DIR}/main.cpp) # add your sources here
+
+# Link to lxgui (here, using SFML implementation)
+target_link_libraries(my_executable
+    lxgui::gui::sfml # SFML rendering implementation
+    lxgui::input::sfml # SFML input implementation
+    lxgui::lxgui) # core library
+```
 
 ## Creating a GUI addon in XML and Lua
 

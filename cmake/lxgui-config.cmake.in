@@ -1,0 +1,83 @@
+@PACKAGE_INIT@
+# Find dependencies
+####################################################################################
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}" ${CMAKE_MODULE_PATH})
+
+include(CMakeFindDependencyMacro)
+
+find_dependency(Lua)
+find_dependency(fmt)
+find_dependency(oup)
+find_dependency(sol2)
+find_dependency(utf8cpp)
+
+if (@LXGUI_ENABLE_XML_PARSER@)
+  find_dependency(pugixml)
+endif ()
+
+if (@LXGUI_ENABLE_YAML_PARSER@)
+  find_dependency(ryml)
+endif ()
+
+if (@LXGUI_BUILD_GUI_GL_IMPL@)
+  find_dependency(Freetype)
+  if (NOT @LXGUI_COMPILER_EMSCRIPTEN@)
+    find_dependency(PNG)
+    find_dependency(ZLIB)
+    find_dependency(GLEW)
+    cmake_policy(SET CMP0072 "NEW")
+    find_dependency(OpenGL)
+  endif ()
+endif ()
+
+if (@LXGUI_BUILD_GUI_SFML_IMPL@ OR @LXGUI_BUILD_INPUT_SFML_IMPL@)
+  find_dependency(SFML 2 COMPONENTS graphics system window)
+  if (NOT TARGET sfml::graphics)
+      add_library(sfml::graphics UNKNOWN IMPORTED)
+      set_target_properties(sfml::graphics PROPERTIES INTERFACE_LINK_LIBRARIES sfml-graphics)
+  endif ()
+  if (NOT TARGET sfml::system)
+      add_library(sfml::system UNKNOWN IMPORTED)
+      set_target_properties(sfml::system PROPERTIES INTERFACE_LINK_LIBRARIES sfml-system)
+  endif ()
+  if (NOT TARGET sfml::window)
+      add_library(sfml::window UNKNOWN IMPORTED)
+      set_target_properties(sfml::window PROPERTIES INTERFACE_LINK_LIBRARIES sfml-window)
+  endif ()
+endif ()
+
+if (@LXGUI_BUILD_GUI_SDL_IMPL@ OR @LXGUI_BUILD_INPUT_SDL_IMPL@)
+  if (NOT @LXGUI_COMPILER_EMSCRIPTEN@)
+    find_dependency(SDL2)
+    if (NOT TARGET SDL2::SDL2)
+      if (TARGET SDL2)
+        add_library(SDL2::SDL2 UNKNOWN IMPORTED)
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_LINK_LIBRARIES SDL2)
+      else ()
+        add_library(SDL2::SDL2 UNKNOWN IMPORTED)
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIRS}")
+        set_target_properties(SDL2::SDL2 PROPERTIES INTERFACE_LINK_LIBRARIES "${SDL2_LIBRARIES}")
+        set_target_properties(SDL2::SDL2 PROPERTIES IMPORTED_LOCATION "${SDL2_LIBRARIES}")
+      endif ()
+    endif ()
+    find_dependency(SDL2_image)
+  endif ()
+endif ()
+
+if (@LXGUI_BUILD_GUI_SDL_IMPL@)
+  if (NOT @LXGUI_COMPILER_EMSCRIPTEN@)
+    find_dependency(SDL2_ttf)
+  endif ()
+endif ()
+
+####################################################################################
+# Load lxgui targets
+####################################################################################
+
+include("${CMAKE_CURRENT_LIST_DIR}/lxgui-targets.cmake")
+
+if (NOT TARGET lxgui)
+  add_library(lxgui INTERFACE IMPORTED)
+  set_target_properties(lxgui PROPERTIES INTERFACE_LINK_LIBRARIES lxgui::lxgui)
+endif ()

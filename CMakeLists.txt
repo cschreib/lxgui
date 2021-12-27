@@ -1,9 +1,12 @@
 ##############################################################################
 # Base setup
 ##############################################################################
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14)
 cmake_policy(SET CMP0048 "NEW")
 cmake_policy(SET CMP0072 "NEW")
+cmake_policy(SET CMP0077 "NEW")
+cmake_policy(SET CMP0083 "NEW")
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 # define a macro that helps defining an option
 macro(lxgui_set_option var default type docstring)
@@ -158,6 +161,10 @@ elseif (WIN32)
     endif()
 endif()
 
+if (NOT LXGUI_COMPILER_EMSCRIPTEN)
+    set(LXGUI_COMPILER_EMSCRIPTEN FALSE)
+endif()
+
 ##############################################################################
 # Dependencies
 ##############################################################################
@@ -187,6 +194,7 @@ if (LUA_VERSION_STRING VERSION_GREATER_EQUAL 5.1 AND LUA_VERSION_STRING VERSION_
 endif()
 
 # add the subdirectories for dependencies
+set(UTF8_INSTALL 1)
 add_subdirectory(extern/utfcpp)
 add_subdirectory(extern/observable_unique_ptr)
 
@@ -305,9 +313,13 @@ add_library(lxgui
 add_library(lxgui::lxgui ALIAS lxgui)
 
 # need C++17
-target_compile_features(lxgui PRIVATE cxx_std_17)
+target_compile_features(lxgui PUBLIC cxx_std_17)
+
+# compilation options
 lxgui_set_warning_level(lxgui)
-target_include_directories(lxgui PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(lxgui PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>)
 
 # needed dependencies
 target_link_libraries(lxgui PUBLIC Lua::Lua)
@@ -323,20 +335,21 @@ if(LXGUI_ENABLE_YAML_PARSER)
     target_link_libraries(lxgui PRIVATE ryml::ryml)
 endif()
 if(LXGUI_PLATFORM_LINUX)
-    target_link_libraries(lxgui PUBLIC m stdc++ stdc++fs)
+    target_link_libraries(lxgui PRIVATE m stdc++ stdc++fs)
 endif()
 
 configure_file("${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp.config"
                "${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp")
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/gui*.hpp)
-install(FILES ${files} DESTINATION include/lxgui)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/input*.hpp)
-install(FILES ${files} DESTINATION include/lxgui)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/utils*.hpp)
-install(FILES ${files} DESTINATION include/lxgui)
-install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION include/lxgui)
-install(TARGETS lxgui ARCHIVE DESTINATION lib)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
+install(FILES ${PROJECT_SOURCE_DIR}/include/lxgui/lxgui.hpp DESTINATION ${CMAKE_INSTALL_PREFIX}/include/lxgui)
+
+set(LXGUI_INSTALL_TARGETS lxgui)
 
 ##############################################################################
 # Back-ends
@@ -390,6 +403,44 @@ if(LXGUI_BUILD_INPUT_SDL_IMPL)
 endif()
 
 ##############################################################################
+# Config file
+##############################################################################
+
+install(TARGETS ${LXGUI_INSTALL_TARGETS}
+  EXPORT lxgui-targets
+  LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib COMPONENT Library
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib COMPONENT Development
+  INCLUDES DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
+
+install(EXPORT lxgui-targets
+  NAMESPACE lxgui::
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/lxgui COMPONENT Development)
+
+export(EXPORT lxgui-targets
+  NAMESPACE lxgui::)
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+  "${PROJECT_SOURCE_DIR}/cmake/lxgui-config.cmake.in"
+  "${PROJECT_BINARY_DIR}/lxgui-config.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO
+  NO_SET_AND_CHECK_MACRO)
+
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/lxgui-config-version.cmake"
+  COMPATIBILITY SameMajorVersion)
+
+install(FILES
+  "${PROJECT_BINARY_DIR}/lxgui-config.cmake"
+  "${PROJECT_BINARY_DIR}/lxgui-config-version.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindLua.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindSDL2_image.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/FindSDL2_ttf.cmake"
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/lxgui COMPONENT Development)
+
+##############################################################################
 # Test
 ##############################################################################
 
@@ -398,13 +449,13 @@ if(LXGUI_BUILD_TEST)
         message(WARNING "Warning: the test program only supports SDL or OPENGL_SDL when compiled with Emscripten")
         set(LXGUI_TEST_IMPLEMENTATION "SDL")
     endif()
-    if (LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
+    if(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SFML")
         if(OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SFML_FOUND)
             add_subdirectory(test)
         else()
             message(ERROR ": the test program requires OpenGL, GLEW, freetype, libpng, zlib and SFML.")
         endif()
-    elseif (LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
+    elseif(LXGUI_TEST_IMPLEMENTATION STREQUAL "OPENGL_SDL")
         if((OPENGL_FOUND AND GLEW_FOUND AND FREETYPE_FOUND AND PNG_FOUND AND ZLIB_FOUND AND SDL2_FOUND) OR LXGUI_COMPILER_EMSCRIPTEN)
             add_subdirectory(test)
         else()
