@@ -283,13 +283,13 @@ namespace input
         *         manager. If you need to remove one from the list, see
         *         remove_event_manager().
         */
-        void register_event_manager(gui::event_manager* pManager);
+        void register_event_manager(utils::observer_ptr<gui::event_manager> pManager);
 
         /// Unregisters an event manager.
-        /** \param pManager The manager to unregister
+        /** \param mManager The manager to unregister
         *   \note For more details, see register_event_manager().
         */
-        void unregister_event_manager(gui::event_manager* pManager);
+        void unregister_event_manager(gui::event_manager& mManager);
 
         /// Retrieve a copy of the clipboard content.
         /** \return A copy of the clipboard content (empty string is clipboard is empty).
@@ -358,7 +358,7 @@ namespace input
         utils::observer_ptr<gui::event_receiver> pKeyboardFocusReceiver_ = nullptr;
         utils::observer_ptr<gui::event_receiver> pMouseFocusReceiver_ = nullptr;
 
-        std::vector<gui::event_manager*> lEventManagerList_;
+        std::vector<utils::observer_ptr<gui::event_manager>> lEventManagerList_;
 
         // Keyboard
         double                         dLongPressDelay_ = 0.7;

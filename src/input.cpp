@@ -621,17 +621,29 @@ source& manager::get_source()
     return *pSource_;
 }
 
-void manager::register_event_manager(gui::event_manager* pManager)
+void manager::register_event_manager(utils::observer_ptr<gui::event_manager> pManager)
 {
-    if (utils::find(lEventManagerList_, pManager) == lEventManagerList_.end())
-        lEventManagerList_.push_back(pManager);
+    gui::event_manager* pManagerRaw = pManager.get();
+    auto mIter = utils::find_if(lEventManagerList_,
+        [&](const auto& pPtr) { return pPtr.get() == pManagerRaw; });
+
+    if (mIter != lEventManagerList_.end())
+    {
+        gui::out << gui::warning << "event manager " << pManagerRaw
+            << " has already been registered";
+        return;
+    }
+
+    lEventManagerList_.push_back(std::move(pManager));
 }
 
-void manager::unregister_event_manager(gui::event_manager* pManager)
+void manager::unregister_event_manager(gui::event_manager& mManager)
 {
-    auto iter = utils::find(lEventManagerList_, pManager);
-    if (iter != lEventManagerList_.end())
-        lEventManagerList_.erase(iter);
+    auto mIter = utils::find_if(lEventManagerList_,
+        [&](const auto& pPtr) { return pPtr.get() == &mManager; });
+
+    if (mIter != lEventManagerList_.end())
+        lEventManagerList_.erase(mIter);
 }
 
 utils::ustring manager::get_clipboard_content()
@@ -689,8 +701,11 @@ void manager::fire_event_(const gui::event& mEvent, bool bForce)
     }
     else
     {
-        for (auto* pManager : lEventManagerList_)
-            pManager->fire_event(mEvent);
+        for (const auto& pManager : lEventManagerList_)
+        {
+            if (pManager)
+                pManager->fire_event(mEvent);
+        }
     }
 }
 

@@ -46,8 +46,6 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
-    pInputManager_->register_event_manager(this);
-
     mScreenDimensions_ = pInputManager_->get_window_dimensions();
 
     set_interface_scaling_factor(1.0f);

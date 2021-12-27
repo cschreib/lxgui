@@ -28,6 +28,8 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     if (pLua_) return;
 
     // TODO: find a better place to put this
+    pInputManager_->register_event_manager(
+        utils::observer_ptr<event_manager>(observer_from_this(), static_cast<event_manager*>(this)));
     register_event("KEY_PRESSED");
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
