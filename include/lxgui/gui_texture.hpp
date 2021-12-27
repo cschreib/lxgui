@@ -248,7 +248,7 @@ namespace gui
         bool             bIsDesaturated_ = false;
         bool             bTexCoordModifiesRect_ = false;
 
-        mutable quad mQuad_;
+        quad mQuad_;
     };
 }
 }
