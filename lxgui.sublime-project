@@ -29,14 +29,6 @@
 					"shell_cmd": "make -j12 list_install_components",
 				},
 				{
-					"name": "package",
-					"shell_cmd": "make -j12 package",
-				},
-				{
-					"name": "package_source",
-					"shell_cmd": "make -j12 package_source",
-				},
-				{
 					"name": "rebuild_cache",
 					"shell_cmd": "make -j12 rebuild_cache",
 				},
@@ -974,27 +966,27 @@
 				},
 				{
 					"name": "src/utils_maths.o",
-					"shell_cmd": "make -j12 src/utils_maths.o"
+					"shell_cmd": "make -j12 src/utils_maths.o",
 				},
 				{
 					"name": "src/utils_maths.i",
-					"shell_cmd": "make -j12 src/utils_maths.i"
+					"shell_cmd": "make -j12 src/utils_maths.i",
 				},
 				{
 					"name": "src/utils_maths.s",
-					"shell_cmd": "make -j12 src/utils_maths.s"
+					"shell_cmd": "make -j12 src/utils_maths.s",
 				},
 				{
 					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o"
+					"shell_cmd": "make -j12 src/utils_string.o",
 				},
 				{
 					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i"
+					"shell_cmd": "make -j12 src/utils_string.i",
 				},
 				{
 					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s"
+					"shell_cmd": "make -j12 src/utils_string.s",
 				},
 			],
 			"working_dir": "$folder/build",
