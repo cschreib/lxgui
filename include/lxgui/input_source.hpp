@@ -99,15 +99,15 @@ namespace input
         /// Toggles mouse grab.
         /** When the mouse is grabbed, it is confined to the borders
         *   of the main window. The actual cursor behavior when reaching
-        *   those borders is of no importance : what matters is that
-        *   relative mouse movement is always aquired, i.e. the mouse is never
-        *   blocked.
+        *   those borders is not specified (could be clamped, or reset to the
+        *   center, or reappear on the other side of the window, etc.), however
+        *   relative mouse movement will always be reported correctly.
         *   The mouse is not grabbed by default.
         */
         virtual void toggle_mouse_grab() = 0;
 
         /// Checks if window has been resized.
-        /** \return true if the window has been resized
+        /** \return true if the window has been resized since the last reset_window_resized() call
         */
         bool has_window_resized() const;
 
@@ -130,7 +130,7 @@ namespace input
         double get_doubleclick_time() const;
 
         /// Retrieve a copy of the clipboard content.
-        /** \return A copy of the clipboard content (empty string is clipboard is empty).
+        /** \return A copy of the clipboard content (empty string if clipboard is empty).
         */
         virtual utils::ustring get_clipboard_content() = 0;
 
@@ -151,7 +151,8 @@ namespace input
         *   \note This is implementation-dependent; not all input implementations are able
         *         to produce this hint, in which case the function always returns 1.
         *         Consequently, it is recommended to not rely blindly on this hint, and
-        *         to offer a way for the user to change the scaling factor.
+        *         to offer a way for the user to change the scaling factor. But this can be used
+        *         for a good default value.
         */
         virtual float get_interface_scaling_factor_hint() const;
 
