@@ -304,9 +304,6 @@ namespace gui
         */
         virtual bool can_use_script(const std::string& sScriptName) const;
 
-        /// Checks if this frame's position is valid.
-        void check_position() const;
-
         /// Copies an uiobject's parameters into this frame (inheritance).
         /** \param mObj The uiobject to copy
         */
@@ -1155,11 +1152,13 @@ namespace gui
         virtual void notify_top_level_parent_(bool bTopLevel,
             const utils::observer_ptr<frame>& pParent);
 
+        void check_position_();
+
         void add_level_(int iAmount);
 
         void propagate_renderer_(bool bRendered);
 
-        void update_borders_() const override;
+        void update_borders_() override;
         void update_mouse_in_frame_();
 
         void define_script_(const std::string& sScriptName, const std::string& sContent,

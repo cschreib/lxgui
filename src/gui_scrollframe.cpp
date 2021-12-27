@@ -136,6 +136,8 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
             vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->notify_borders_need_update();
+
         bRedrawScrollRenderTarget_ = true;
     }
 }
@@ -159,6 +161,8 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
 
         pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
             vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->notify_borders_need_update();
+
         bRedrawScrollRenderTarget_ = true;
     }
 }
@@ -361,12 +365,11 @@ vector2f scroll_frame::get_target_dimensions() const
     return get_apparent_dimensions();
 }
 
-void scroll_frame::update_borders_() const
+void scroll_frame::update_borders_()
 {
-    bool bPositionUpdated = bUpdateBorders_;
     frame::update_borders_();
 
-    if (bPositionUpdated && pScrollChild_)
+    if (pScrollChild_)
         pScrollChild_->notify_borders_need_update();
 }
 

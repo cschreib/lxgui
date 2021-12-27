@@ -496,7 +496,7 @@ void slider::update(float fDelta)
     }
 }
 
-void slider::notify_borders_need_update() const
+void slider::notify_borders_need_update()
 {
     frame::notify_borders_need_update();
     notify_thumb_texture_needs_update_();

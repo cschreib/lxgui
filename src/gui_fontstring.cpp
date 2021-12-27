@@ -20,8 +20,6 @@ font_string::font_string(manager& mManager) : layered_region(mManager)
 
 void font_string::render() const
 {
-    update_borders_();
-
     if (!pText_ || !bReady_ || !is_visible())
         return;
 
@@ -476,18 +474,16 @@ const text* font_string::get_text_object() const
     return pText_.get();
 }
 
-void font_string::update_borders_() const
+void font_string::update_borders_()
 {
     if (!pText_)
         return uiobject::update_borders_();
 
-    if (!bUpdateBorders_)
-        return;
-
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
 
-    bool bOldReady = bReady_;
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
     bReady_ = true;
 
     if (!lAnchorList_.empty())
@@ -521,8 +517,10 @@ void font_string::update_borders_() const
         if (std::isinf(fBoxWidth))
             fBoxWidth = pText_->get_width();
 
-        make_borders_(fTop, fBottom, fYCenter, fBoxHeight);
-        make_borders_(fLeft, fRight, fXCenter, fBoxWidth);
+        if (!make_borders_(fTop, fBottom, fYCenter, fBoxHeight))
+            bReady_ = false;
+        if (!make_borders_(fLeft, fRight, fXCenter, fBoxWidth))
+            bReady_ = false;
 
         if (bReady_)
         {
@@ -538,8 +536,6 @@ void font_string::update_borders_() const
         }
         else
             lBorderList_ = bounds2f::ZERO;
-
-        bUpdateBorders_ = false;
     }
     else
     {
@@ -560,7 +556,7 @@ void font_string::update_borders_() const
     lBorderList_.top = round_to_pixel(lBorderList_.top);
     lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
-    if (bReady_ || (!bReady_ && bOldReady))
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
         notify_renderer_need_redraw();

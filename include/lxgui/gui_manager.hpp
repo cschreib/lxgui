@@ -559,7 +559,7 @@ namespace gui
         const utils::observer_ptr<frame>& get_hovered_frame();
 
         /// Notifies this manager that it should update the hovered frame.
-        void notify_hovered_frame_dirty() const;
+        void notify_hovered_frame_dirty();
 
         /// Asks this manager for focus.
         /** \param pFocusFrame The focus_frame requesting focus
@@ -747,7 +747,7 @@ namespace gui
 
         bool                             bObjectMoved_ = false;
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
-        mutable bool                     bUpdateHoveredFrame_ = false;
+        bool                             bUpdateHoveredFrame_ = false;
         utils::observer_ptr<focus_frame> pFocusedFrame_ = nullptr;
 
         utils::observer_ptr<uiobject> pMovedObject_ = nullptr;

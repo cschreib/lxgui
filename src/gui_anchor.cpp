@@ -11,7 +11,7 @@ namespace lxgui {
 namespace gui
 {
 
-anchor::anchor(const uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
+anchor::anchor(uiobject& mObject, const anchor_data& mAnchor) : anchor_data(mAnchor)
 {
     if (!mObject.is_virtual())
     {
@@ -22,13 +22,13 @@ anchor::anchor(const uiobject& mObject, const anchor_data& mAnchor) : anchor_dat
     }
 }
 
-void anchor::update_parent_(const uiobject& mObject)
+void anchor::update_parent_(uiobject& mObject)
 {
     pParent_ = nullptr;
 
     if (sParent.empty()) return;
 
-    utils::observer_ptr<const frame> pObjParent = mObject.get_parent();
+    utils::observer_ptr<frame> pObjParent = mObject.get_parent();
 
     std::string sParentFullName = sParent;
     if (pObjParent)
@@ -43,7 +43,7 @@ void anchor::update_parent_(const uiobject& mObject)
         return;
     }
 
-    utils::observer_ptr<const uiobject> pNewParent =
+    utils::observer_ptr<uiobject> pNewParent =
         mObject.get_manager().get_uiobject_by_name(sParentFullName);
 
     if (!pNewParent)

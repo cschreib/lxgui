@@ -1185,7 +1185,7 @@ const utils::observer_ptr<frame>& manager::get_hovered_frame()
     return pHoveredFrame_;
 }
 
-void manager::notify_hovered_frame_dirty() const
+void manager::notify_hovered_frame_dirty()
 {
     bUpdateHoveredFrame_ = true;
 }
@@ -1419,7 +1419,10 @@ void manager::on_event(const event& mEvent)
             if (mApplyConstraintFunc_)
                 mApplyConstraintFunc_();
 
-            pMovedObject_->notify_borders_need_update();
+            // As a result of applying constraints, object may have been deleted,
+            // so check again before use
+            if (pMovedObject_)
+                pMovedObject_->notify_borders_need_update();
         }
         else if (pSizedObject_)
         {

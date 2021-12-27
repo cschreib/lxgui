@@ -415,7 +415,7 @@ void frame::set_height(float fAbsHeight)
     uiobject::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
 }
 
-void frame::check_position() const
+void frame::check_position_()
 {
     if (lBorderList_.right - lBorderList_.left < fMinWidth_)
     {
@@ -1945,23 +1945,18 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
     }
 }
 
-void frame::update_borders_() const
+void frame::update_borders_()
 {
-    bool bPositionUpdated = bUpdateBorders_;
     uiobject::update_borders_();
 
-    if (bPositionUpdated)
-    {
-        check_position();
-        get_manager().notify_hovered_frame_dirty();
-        if (pBackdrop_)
-            pBackdrop_->notify_borders_updated();
-    }
+    check_position_();
+
+    if (pBackdrop_)
+        pBackdrop_->notify_borders_updated();
 }
 
 void frame::update_mouse_in_frame_()
 {
-    update_borders_();
     get_manager().get_hovered_frame();
 }
 

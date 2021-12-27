@@ -275,9 +275,9 @@ namespace gui
 
         void create_text_object_();
 
-        void update_borders_() const override;
+        void update_borders_() override;
 
-        mutable std::unique_ptr<text> pText_;
+        std::unique_ptr<text> pText_;
 
         utils::ustring sText_;
         std::string    sFontName_;

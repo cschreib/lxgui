@@ -29,8 +29,8 @@ uiobject::~uiobject()
         {
             if (mAnchor)
             {
-                if (const auto* pAnchorParent = mAnchor->get_parent().get())
-                    pAnchorParent->notify_anchored_object(observer_from_this(), false);
+                if (auto* pAnchorParent = mAnchor->get_parent().get())
+                    pAnchorParent->remove_anchored_object(*this);
             }
 
             mAnchor.reset();
@@ -328,7 +328,6 @@ const vector2f& uiobject::get_dimensions() const
 
 vector2f uiobject::get_apparent_dimensions() const
 {
-    update_borders_();
     return vector2f(lBorderList_.width(), lBorderList_.height());
 }
 
@@ -419,37 +418,31 @@ void uiobject::destroy()
 
 vector2f uiobject::get_center() const
 {
-    update_borders_();
     return lBorderList_.center();
 }
 
 float uiobject::get_left() const
 {
-    update_borders_();
     return lBorderList_.left;
 }
 
 float uiobject::get_right() const
 {
-    update_borders_();
     return lBorderList_.right;
 }
 
 float uiobject::get_top() const
 {
-    update_borders_();
     return lBorderList_.top;
 }
 
 float uiobject::get_bottom() const
 {
-    update_borders_();
     return lBorderList_.bottom;
 }
 
 const bounds2f& uiobject::get_borders() const
 {
-    update_borders_();
     return lBorderList_;
 }
 
@@ -597,11 +590,6 @@ std::size_t uiobject::get_num_point() const
 
 anchor& uiobject::modify_point(anchor_point mPoint)
 {
-    get_manager().notify_object_moved();
-
-    if (!bVirtual_)
-        notify_borders_need_update();
-
     auto& mAnchor = lAnchorList_[static_cast<int>(mPoint)];
     if (!mAnchor)
     {
@@ -639,22 +627,18 @@ void uiobject::set_virtual()
     bVirtual_ = true;
 }
 
-void uiobject::notify_anchored_object(utils::observer_ptr<uiobject> pObj, bool bAnchored) const
+void uiobject::add_anchored_object(uiobject& mObj)
 {
-    if (!pObj)
-        return;
+    lAnchoredObjectList_.push_back(observer_from(&mObj));
+}
 
-    auto mIter = utils::find(lAnchoredObjectList_, pObj);
-    if (bAnchored)
-    {
-        if (mIter == lAnchoredObjectList_.end())
-            lAnchoredObjectList_.push_back(pObj);
-    }
-    else
-    {
-        if (mIter != lAnchoredObjectList_.end())
-            lAnchoredObjectList_.erase(mIter);
-    }
+void uiobject::remove_anchored_object(uiobject& mObj)
+{
+    auto mIter = utils::find_if(lAnchoredObjectList_,
+        [&](const auto& pPtr) { return pPtr.get() == &mObj; });
+
+    if (mIter != lAnchoredObjectList_.end())
+        lAnchoredObjectList_.erase(mIter);
 }
 
 float uiobject::round_to_pixel(float fValue, utils::rounding_method mMethod) const
@@ -670,7 +654,7 @@ vector2f uiobject::round_to_pixel(const vector2f& mPosition, utils::rounding_met
                     utils::round(mPosition.y, 1.0f/fScalingFactor, mMethod));
 }
 
-void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
+bool uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const
 {
     if (std::isinf(fMin) && std::isinf(fMax))
     {
@@ -680,7 +664,7 @@ void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSiz
             fMax = fCenter + fSize/2.0f;
         }
         else
-            bReady_ = false;
+            return false;
     }
     else if (std::isinf(fMax))
     {
@@ -689,7 +673,7 @@ void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSiz
         else if (!std::isinf(fCenter))
             fMax = fMin + 2.0f*(fCenter - fMin);
         else
-            bReady_ = false;
+            return false;
     }
     else if (std::isinf(fMin))
     {
@@ -698,8 +682,10 @@ void uiobject::make_borders_(float& fMin, float& fMax, float fCenter, float fSiz
         else if (!std::isinf(fCenter))
             fMin = fMax - 2.0f*(fMax - fCenter);
         else
-            bReady_ = false;
+            return false;
     }
+
+    return true;
 }
 
 void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
@@ -716,12 +702,6 @@ void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
             continue;
 
         const anchor& mAnchor = mOptAnchor.value();
-
-        // Make sure the anchored object has its borders updated
-        const uiobject* pObj = mAnchor.get_parent().get();
-        if (pObj)
-            pObj->update_borders_();
-
         const vector2f mAnchorPoint = mAnchor.get_point(*this);
 
         switch (mAnchor.mPoint)
@@ -766,17 +746,16 @@ void uiobject::read_anchors_(float& fLeft, float& fRight, float& fTop,
     }
 }
 
-void uiobject::update_borders_() const
+void uiobject::update_borders_()
 {
     // #define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
-    DEBUG_LOG("  Request update for " + sLuaName_);
-    if (!bUpdateBorders_)
-        return;
 
     DEBUG_LOG("  Update anchors for " + sLuaName_);
 
-    bool bOldReady = bReady_;
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
+
     bReady_ = true;
 
     if (!lAnchorList_.empty())
@@ -797,8 +776,10 @@ void uiobject::update_borders_() const
         DEBUG_LOG("    y_center=" + utils::to_string(fYCenter));
 
         DEBUG_LOG("  Make borders");
-        make_borders_(fTop,  fBottom, fYCenter, fRoundedHeight);
-        make_borders_(fLeft, fRight,  fXCenter, fRoundedWidth);
+        if (!make_borders_(fTop,  fBottom, fYCenter, fRoundedHeight))
+            bReady_ = false;
+        if (!make_borders_(fLeft, fRight,  fXCenter, fRoundedWidth))
+            bReady_ = false;
 
         if (bReady_)
         {
@@ -811,8 +792,6 @@ void uiobject::update_borders_() const
         }
         else
             lBorderList_ = bounds2f::ZERO;
-
-        bUpdateBorders_ = false;
     }
     else
     {
@@ -831,24 +810,26 @@ void uiobject::update_borders_() const
     DEBUG_LOG("    top=" + utils::to_string(lBorderList_.top));
     DEBUG_LOG("    bottom=" + utils::to_string(lBorderList_.bottom));
 
-    if (bReady_ || (!bReady_ && bOldReady))
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
+        get_manager().notify_object_moved();
         notify_renderer_need_redraw();
     }
+
     DEBUG_LOG("  @");
     #undef DEBUG_LOG
 }
 
 void uiobject::update_anchors_()
 {
-    std::vector<utils::observer_ptr<const uiobject>> lAnchorParentList;
+    std::vector<utils::observer_ptr<uiobject>> lAnchorParentList;
     for (auto& mAnchor : lAnchorList_)
     {
         if (!mAnchor)
             continue;
 
-        utils::observer_ptr<const uiobject> pObj = mAnchor->get_parent();
+        utils::observer_ptr<uiobject> pObj = mAnchor->get_parent();
         if (pObj)
         {
             if (pObj->depends_on(*this))
@@ -870,23 +851,27 @@ void uiobject::update_anchors_()
     for (const auto& pParent : lPreviousAnchorParentList_)
     {
         if (utils::find(lAnchorParentList, pParent) == lAnchorParentList.end())
-            pParent->notify_anchored_object(observer_from_this(), false);
+            pParent->remove_anchored_object(*this);
     }
 
     for (const auto& pParent : lAnchorParentList)
     {
         if (utils::find(lPreviousAnchorParentList_, pParent) == lPreviousAnchorParentList_.end())
-            pParent->notify_anchored_object(observer_from_this(), true);
+            pParent->add_anchored_object(*this);
     }
 
     lPreviousAnchorParentList_ = std::move(lAnchorParentList);
 }
 
-void uiobject::notify_borders_need_update() const
+void uiobject::notify_borders_need_update()
 {
-    if (bUpdateBorders_) return;
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
 
-    bUpdateBorders_ = true;
+    update_borders_();
+
+    if (lBorderList_ != lOldBorderList || bOldReady != bReady_)
+        get_manager().notify_object_moved();
 
     for (const auto& pObject : lAnchoredObjectList_)
         pObject->notify_borders_need_update();
@@ -902,7 +887,6 @@ void uiobject::update(float)
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)
     DEBUG_LOG("  Update " + sName_ + " (" + lType_.back() + ")");
-    update_borders_();
 
     if (bNewlyCreated_)
     {

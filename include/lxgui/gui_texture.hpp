@@ -238,7 +238,7 @@ namespace gui
         void parse_gradient_node_(const layout_node& mNode);
 
         void update_dimensions_from_tex_coord_();
-        void update_borders_() const override;
+        void update_borders_() override;
 
         using content = std::variant<color, std::string, gradient>;
         content mContent_ = color::WHITE;

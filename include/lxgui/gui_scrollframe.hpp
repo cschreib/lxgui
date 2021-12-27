@@ -167,7 +167,7 @@ namespace gui
         void update_scroll_child_input_();
         void rebuild_scroll_render_target_();
         void render_scroll_strata_list_();
-        void update_borders_() const override;
+        void update_borders_() override;
 
         float fHorizontalScroll_ = 0;
         float fHorizontalScrollRange_ = 0;

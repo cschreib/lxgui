@@ -516,18 +516,14 @@ void texture::set_vertex_color(const color& mColor, std::size_t uiIndex)
     notify_renderer_need_redraw();
 }
 
-void texture::update_borders_() const
+void texture::update_borders_()
 {
-    bool bBordersUpdated = bUpdateBorders_;
     layered_region::update_borders_();
 
-    if (bBordersUpdated)
-    {
-        mQuad_.v[0].pos = lBorderList_.top_left();
-        mQuad_.v[1].pos = lBorderList_.top_right();
-        mQuad_.v[2].pos = lBorderList_.bottom_right();
-        mQuad_.v[3].pos = lBorderList_.bottom_left();
-    }
+    mQuad_.v[0].pos = lBorderList_.top_left();
+    mQuad_.v[1].pos = lBorderList_.top_right();
+    mQuad_.v[2].pos = lBorderList_.bottom_right();
+    mQuad_.v[3].pos = lBorderList_.bottom_left();
 }
 
 }

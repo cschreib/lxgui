@@ -194,7 +194,7 @@ namespace gui
         void create_glue() override;
 
         /// Tells this widget that its borders need updating.
-        void notify_borders_need_update() const override;
+        void notify_borders_need_update() override;
 
         /// Updates this widget's logic.
         /** \param fDelta Time spent since last update

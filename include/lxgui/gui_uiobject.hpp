@@ -190,7 +190,7 @@ namespace gui
         virtual void copy_from(const uiobject& mObj);
 
         /// Tells this widget that its borders need updating.
-        virtual void notify_borders_need_update() const;
+        virtual void notify_borders_need_update();
 
         /// Tells this widget that the global interface scaling factor has changed.
         virtual void notify_scaling_factor_updated();
@@ -476,10 +476,17 @@ namespace gui
             utils::rounding_method mMethod = utils::rounding_method::NEAREST) const;
 
         /// Notifies this widget that another one is anchored to it.
-        /** \param pObj      The anchored widget
-        *   \param bAnchored 'true' if it is anchored, 'false' if it's no longer the case
+        /** \param mObj The anchored widget
+        *   \note Anchored objects get their borders automatically updated
+        *         whenever this objet's borders are updated.
         */
-        void notify_anchored_object(utils::observer_ptr<uiobject> pObj, bool bAnchored) const;
+        void add_anchored_object(uiobject& mObj);
+
+        /// Notifies this widget that another one is no longer anchored to it.
+        /** \param mObj The widget no longer anchored
+        *   \see add_anchored_object()
+        */
+        void remove_anchored_object(uiobject& mObj);
 
         /// Checks if this uiobject is virtual.
         /** \return 'true' if this uiobject is virtual
@@ -609,9 +616,9 @@ namespace gui
         void read_anchors_(float& fLeft, float& fRight, float& fTop,
                            float& fBottom, float& fXCenter, float& fYCenter) const;
 
-        void make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
+        bool make_borders_(float& fMin, float& fMax, float fCenter, float fSize) const;
 
-        virtual void update_borders_() const;
+        virtual void update_borders_();
         virtual void update_anchors_();
 
         sol::state&  get_lua_();
@@ -652,29 +659,27 @@ namespace gui
 
         utils::observer_ptr<frame> pParent_ = nullptr;
 
-        bool         bSpecial_ = false;
-        bool         bNewlyCreated_ = false;
-        bool         bInherits_ = false;
-        bool         bVirtual_ = false;
-        bool         bLoaded_ = false;
-        mutable bool bReady_ = true;
+        bool bSpecial_ = false;
+        bool bNewlyCreated_ = false;
+        bool bInherits_ = false;
+        bool bVirtual_ = false;
+        bool bLoaded_ = false;
+        bool bReady_ = true;
 
         std::vector<std::string> lType_;
 
         std::array<std::optional<anchor>,9> lAnchorList_;
-        std::vector<utils::observer_ptr<const uiobject>> lPreviousAnchorParentList_;
+        std::vector<utils::observer_ptr<uiobject>> lPreviousAnchorParentList_;
         bounds2<bool>                       lDefinedBorderList_;
-        mutable bounds2f                    lBorderList_;
+        bounds2f                            lBorderList_;
 
         float fAlpha_ = 1.0f;
         bool  bIsShown_ = true;
         bool  bIsVisible_ = true;
 
-        mutable vector2f mDimensions_;
+        vector2f mDimensions_;
 
-        mutable bool bUpdateBorders_ = true;
-
-        mutable std::vector<utils::observer_ptr<uiobject>> lAnchoredObjectList_;
+        std::vector<utils::observer_ptr<uiobject>> lAnchoredObjectList_;
 
         std::unordered_map<std::string, sol::object> lLuaMembers_;
     };
