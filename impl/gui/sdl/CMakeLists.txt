@@ -15,7 +15,9 @@ add_library(lxgui::gui::sdl ALIAS lxgui-sdl)
 # need C++17
 target_compile_features(lxgui-sdl PRIVATE cxx_std_17)
 lxgui_set_warning_level(lxgui-sdl)
-target_include_directories(lxgui-sdl PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(lxgui-sdl PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # needed dependencies
 target_link_libraries(lxgui-sdl PUBLIC lxgui::lxgui)
@@ -30,5 +32,7 @@ else()
 endif()
 
 file(GLOB files ${PROJECT_SOURCE_DIR}/include/lxgui/impl/gui_sd*.hpp)
-install(FILES ${files} DESTINATION include/lxgui/impl)
-install(TARGETS lxgui-sdl ARCHIVE DESTINATION lib)
+install(FILES ${files} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/lxgui/impl)
+
+list(APPEND LXGUI_INSTALL_TARGETS lxgui-sdl)
+set(LXGUI_INSTALL_TARGETS ${LXGUI_INSTALL_TARGETS} PARENT_SCOPE)
