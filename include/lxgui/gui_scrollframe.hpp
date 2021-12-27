@@ -134,7 +134,7 @@ namespace gui
         void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos) override;
 
         /// Tells this renderer that one of its widget requires redraw.
-        void notify_strata_needs_redraw(frame_strata mStrata) const override;
+        void notify_strata_needs_redraw(frame_strata mStrata) override;
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render
@@ -176,9 +176,9 @@ namespace gui
 
         utils::observer_ptr<frame> pScrollChild_ = nullptr;
 
-        mutable bool bRebuildScrollRenderTarget_ = false;
-        mutable bool bRedrawScrollRenderTarget_ = false;
-        mutable bool bUpdateScrollRange_ = false;
+        bool bRebuildScrollRenderTarget_ = false;
+        bool bRedrawScrollRenderTarget_ = false;
+        bool bUpdateScrollRange_ = false;
         std::shared_ptr<render_target> pScrollRenderTarget_;
 
         utils::observer_ptr<texture> pScrollTexture_ = nullptr;

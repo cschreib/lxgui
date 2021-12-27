@@ -918,7 +918,7 @@ bool uiobject::is_special() const
     return bSpecial_;
 }
 
-void uiobject::notify_renderer_need_redraw() const
+void uiobject::notify_renderer_need_redraw()
 {
 }
 

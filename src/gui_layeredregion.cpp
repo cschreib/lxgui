@@ -93,7 +93,7 @@ void layered_region::set_draw_layer(const std::string& sLayer)
     set_draw_layer(parse_layer_type(sLayer));
 }
 
-void layered_region::notify_renderer_need_redraw() const
+void layered_region::notify_renderer_need_redraw()
 {
     if (bVirtual_)
         return;

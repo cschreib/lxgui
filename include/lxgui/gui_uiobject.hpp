@@ -548,7 +548,7 @@ namespace gui
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape-changing function.
         */
-        virtual void notify_renderer_need_redraw() const;
+        virtual void notify_renderer_need_redraw();
 
         /// Returns the list of all objects that are anchored to this one.
         /** \return The list of all objects that are anchored to this one

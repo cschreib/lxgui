@@ -1044,7 +1044,7 @@ namespace gui
         /// Notifies the renderer of this widget that it needs to be redrawn.
         /** \note Automatically called by any shape changing function.
         */
-        void notify_renderer_need_redraw() const override;
+        void notify_renderer_need_redraw() override;
 
         /// Changes this widget's absolute dimensions (in pixels).
         /** \param mDimensions The new dimensions

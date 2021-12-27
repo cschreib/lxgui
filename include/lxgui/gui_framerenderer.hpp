@@ -37,7 +37,7 @@ namespace gui
         frame_renderer& operator=(frame_renderer&&) = delete;
 
         /// Tells this renderer that one of its widget requires redraw.
-        virtual void notify_strata_needs_redraw(frame_strata mStrata) const;
+        virtual void notify_strata_needs_redraw(frame_strata mStrata);
 
         /// Tells this renderer that it should (or not) render another frame.
         /** \param pFrame    The frame to render
@@ -75,7 +75,7 @@ namespace gui
         void clear_strata_list_();
         bool has_strata_list_changed_() const;
         void reset_strata_list_changed_flag_();
-        void notify_strata_needs_redraw_(const strata& mStrata) const;
+        void notify_strata_needs_redraw_(strata& mStrata);
 
         void render_strata_(const strata& mStrata) const;
 

@@ -1810,7 +1810,7 @@ void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<f
         mChild.notify_top_level_parent_(bTopLevel, pParent);
 }
 
-void frame::notify_renderer_need_redraw() const
+void frame::notify_renderer_need_redraw()
 {
     if (bVirtual_)
         return;

@@ -39,12 +39,12 @@ void print_frames(const std::array<strata,8>& lStrataList)
     }
 }
 
-void frame_renderer::notify_strata_needs_redraw_(const strata& mStrata) const
+void frame_renderer::notify_strata_needs_redraw_(strata& mStrata)
 {
     mStrata.bRedraw = true;
 }
 
-void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata) const
+void frame_renderer::notify_strata_needs_redraw(frame_strata mStrata)
 {
     notify_strata_needs_redraw_(lStrataList_[static_cast<std::size_t>(mStrata)]);
 }
