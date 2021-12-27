@@ -196,14 +196,6 @@ namespace gui
         /// Tells this widget that its borders need updating.
         void notify_borders_need_update() override;
 
-        /// Updates this widget's logic.
-        /** \param fDelta Time spent since last update
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void update(float fDelta) override;
-
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);
 
@@ -212,13 +204,12 @@ namespace gui
     protected :
 
         void constrain_thumb_();
+        void update_thumb_texture_();
 
-        void notify_thumb_texture_needs_update_() const;
+        void notify_thumb_texture_needs_update_();
 
         void parse_attributes_(const layout_node& mNode) override;
         void parse_all_nodes_before_children_(const layout_node& mNode) override;
-
-        mutable bool bUpdateThumbTexture_ = false;
 
         orientation mOrientation_ = orientation::VERTICAL;
 
@@ -231,8 +222,9 @@ namespace gui
 
         layer_type mThumbLayer_ = layer_type::OVERLAY;
         utils::observer_ptr<texture> pThumbTexture_ = nullptr;
-        bool       bThumbMoved_ = false;
-        bool       bMouseInThumb_ = false;
+
+        bool bThumbMoved_ = false;
+        bool bMouseInThumb_ = false;
     };
 }
 }
