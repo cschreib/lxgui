@@ -632,7 +632,7 @@ namespace gui
         /// Sets this widget's name.
         /** \param sName This widget's name
         *   \note Can only be called once. If you need to set both the name and the parent
-        *         at the same time (typically, at creation), use set_name_and_parent().
+        *         at the same time (typically, at creation), use set_name_and_parent_().
         */
         void set_name_(const std::string& sName);
 
@@ -646,7 +646,7 @@ namespace gui
         /** \param sName This widget's name
         *   \param pParent The new parent
         *   \note The name can only be set once. If you need to just change the
-        *         parent, call set_parent().
+        *         parent, call set_parent_().
         */
         void set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent);
 
