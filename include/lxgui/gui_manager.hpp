@@ -553,14 +553,6 @@ namespace gui
         */
         bool is_input_enabled() const;
 
-        /// Sets wether the Manager should clear all fonts when closed.
-        /** \param bClear 'true' to clear fonts
-        *   \note Enabled by default. Note that when enabled, it will also
-        *         clear fonts when the UI is reloaded, and load them once
-        *         again.
-        */
-        void clear_fonts_on_close(bool bClear);
-
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)
         */
@@ -724,8 +716,6 @@ namespace gui
         vector2ui   mScreenDimensions_;
         float       fScalingFactor_ = 1.0f;
         float       fBaseScalingFactor_ = 1.0f;
-
-        bool bClearFontsOnClose_ = true;
 
         std::unique_ptr<sol::state>        pLua_;
         std::function<void(gui::manager&)> pLuaRegs_;

@@ -1167,11 +1167,6 @@ bool manager::is_input_enabled() const
     return bInputEnabled_;
 }
 
-void manager::clear_fonts_on_close(bool bClear)
-{
-    bClearFontsOnClose_ = bClear;
-}
-
 void manager::update_hovered_frame_()
 {
     if (!bUpdateHoveredFrame_ || !bInputEnabled_)
