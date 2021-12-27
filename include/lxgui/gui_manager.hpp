@@ -577,7 +577,6 @@ namespace gui
         void parse_layout_file_(const std::string& sFile, addon* pAddOn);
 
         std::string sUIVersion_ = "0001";
-        vector2ui   mScreenDimensions_;
         float       fScalingFactor_ = 1.0f;
         float       fBaseScalingFactor_ = 1.0f;
 

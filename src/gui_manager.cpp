@@ -47,8 +47,6 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
-    mScreenDimensions_ = pInputManager_->get_window_dimensions();
-
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::unique_ptr<localizer>(new localizer());
@@ -640,7 +638,7 @@ void manager::begin(std::shared_ptr<render_target> pTarget) const
     if (pTarget)
         mView = vector2f(pTarget->get_canvas_dimensions())/fScalingFactor_;
     else
-        mView = vector2f(mScreenDimensions_)/fScalingFactor_;
+        mView = pRoot_->get_target_dimensions();
 
     pRenderer_->set_view(matrix4f::view(mView));
 }
@@ -1079,15 +1077,13 @@ void manager::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "WINDOW_RESIZED")
     {
-        // Update internal window size
-        mScreenDimensions_ = vector2ui(mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1));
-
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
 
         notify_object_moved();
 
-        pRenderer_->notify_window_resized(mScreenDimensions_);
+        pRenderer_->notify_window_resized(vector2ui(
+            mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1)));
     }
     else if (mEvent.get_name() == "MOUSE_MOVED")
     {
