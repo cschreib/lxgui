@@ -300,7 +300,7 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
                 else
                 {
                     if (mAttr.bVirtual)
-                        pFrame = pRoot_->create_virtual_root_frame(std::move(mAttr));
+                        pFrame = pVirtualRoot_->create_root_frame(std::move(mAttr));
                     else
                         pFrame = pRoot_->create_root_frame(std::move(mAttr));
                 }

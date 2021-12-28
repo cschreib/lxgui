@@ -414,6 +414,16 @@ namespace gui
         */
         const uiroot& get_root() const { return *pRoot_; }
 
+        /// Returns the UI root object, which contains root frames.
+        /** \return The root object
+        */
+        frame_container& get_virtual_root() { return *pVirtualRoot_; }
+
+        /// Returns the UI root object, which contains root frames.
+        /** \return The root object
+        */
+        const frame_container& get_virtual_root() const { return *pVirtualRoot_; }
+
         /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
         */
@@ -504,6 +514,7 @@ namespace gui
         std::unique_ptr<virtual_registry> pVirtualObjectRegistry_;
 
         utils::owner_ptr<uiroot> pRoot_;
+        utils::owner_ptr<frame_container> pVirtualRoot_;
 
         std::vector<std::string>      lGUIDirectoryList_;
         const addon*                  pCurrentAddOn_ = nullptr;

@@ -3,7 +3,6 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"
-#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/input.hpp"
 
@@ -13,15 +12,15 @@ namespace lxgui {
 namespace gui
 {
 
-frame_container::frame_container(manager& mManager, frame_renderer* pRenderer) :
-    mManager_(mManager), pRenderer_(pRenderer)
+frame_container::frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer) :
+    mManager_(mManager), mRegistry_(mRegistry), pRenderer_(pRenderer)
 {
 }
 
 utils::observer_ptr<frame> frame_container::create_root_frame_(
-    registry& mRegistry, frame_renderer* pRenderer, const uiobject_core_attributes& mAttr)
+    const uiobject_core_attributes& mAttr)
 {
-    auto pNewFrame = get_manager().get_factory().create_frame(mRegistry, pRenderer, mAttr);
+    auto pNewFrame = get_manager().get_factory().create_frame(mRegistry_, pRenderer_, mAttr);
     if (!pNewFrame)
         return nullptr;
 
@@ -70,14 +69,6 @@ void frame_container::garbage_collect()
 
     lRootFrameList_.erase(mIterRemove, lRootFrameList_.end());
 }
-
-registry& frame_container::get_registry() { return get_manager().get_registry(); }
-
-const registry& frame_container::get_registry() const { return get_manager().get_registry(); }
-
-registry& frame_container::get_virtual_registry() { return get_manager().get_virtual_registry(); }
-
-const registry& frame_container::get_virtual_registry() const { return get_manager().get_virtual_registry(); }
 
 }
 }

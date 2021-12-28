@@ -40,7 +40,7 @@ namespace gui
         uiroot& operator = (const uiroot&) = delete;
         uiroot& operator = (uiroot&&) = delete;
 
-        /// Returns the width and height of of this renderer's main render target (e.g., screen).
+        /// Returns the width and height of this renderer's main render target (e.g., screen).
         /** \return The render target dimensions
         */
         vector2f get_target_dimensions() const override;

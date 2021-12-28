@@ -16,7 +16,7 @@ namespace gui
 {
 
 uiroot::uiroot(manager& mManager) :
-    event_receiver(mManager.get_event_manager()), frame_container(mManager, this),
+    event_receiver(mManager.get_event_manager()), frame_container(mManager, mManager.get_registry(), this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
@@ -111,8 +111,7 @@ void uiroot::update(float fDelta)
     // Update logics on root frames from parent to children.
     for (auto& mFrame : get_root_frames())
     {
-        if (!mFrame.is_virtual())
-            mFrame.update(fDelta);
+        mFrame.update(fDelta);
     }
 
     // Removed destroyed frames
@@ -210,11 +209,8 @@ void uiroot::on_event(const event& mEvent)
         // Notify all frames anchored to the window edges
         for (auto& mFrame : get_root_frames())
         {
-            if (!mFrame.is_virtual())
-            {
-                mFrame.notify_borders_need_update();
-                mFrame.notify_renderer_need_redraw();
-            }
+            mFrame.notify_borders_need_update();
+            mFrame.notify_renderer_need_redraw();
         }
 
         // Resize caching render targets
@@ -233,8 +229,7 @@ void uiroot::notify_scaling_factor_updated()
 {
     for (auto& mFrame : get_root_frames())
     {
-        if (!mFrame.is_virtual())
-            mFrame.notify_scaling_factor_updated();
+        mFrame.notify_scaling_factor_updated();
     }
 
     if (pRenderTarget_)

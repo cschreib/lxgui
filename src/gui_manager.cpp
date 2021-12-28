@@ -55,8 +55,9 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     pLocalizer_ = std::make_unique<localizer>();
     pObjectRegistry_ = std::make_unique<registry>();
     pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
-    pRoot_ = utils::make_owned<uiroot>(*this);
     pFactory_ = std::make_unique<factory>(*this);
+    pRoot_ = utils::make_owned<uiroot>(*this);
+    pVirtualRoot_ = utils::make_owned<frame_container>(*this, get_virtual_registry(), nullptr);
 
     // NB: cannot call register_event() here, as observable_from_this()
     // is not yet fully initialised! This is done in create_lua() instead.
@@ -410,11 +411,17 @@ void manager::close_ui()
 
         pInputManager_->unregister_event_manager(*this);
 
-        pRoot_ = utils::make_owned<uiroot>(*this);
-        pFactory_ = std::make_unique<factory>(*this);
+        pVirtualRoot_ = nullptr;
+        pRoot_ = nullptr;
+        pObjectRegistry_ = nullptr;
+        pVirtualObjectRegistry_ = nullptr;
+        pFactory_ = nullptr;
 
+        pFactory_ = std::make_unique<factory>(*this);
         pObjectRegistry_ = std::make_unique<registry>();
         pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
+        pRoot_ = utils::make_owned<uiroot>(*this);
+        pVirtualRoot_ = utils::make_owned<frame_container>(*this, get_virtual_registry(), nullptr);
 
         lAddOnList_.clear();
 
@@ -1001,18 +1008,12 @@ std::string manager::print_ui() const
     s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())
     {
-        if (mFrame.is_virtual())
-            continue;
-
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 
     s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
-    for (const auto& mFrame : pRoot_->get_root_frames())
+    for (const auto& mFrame : pVirtualRoot_->get_root_frames())
     {
-        if (!mFrame.is_virtual())
-            continue;
-
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 

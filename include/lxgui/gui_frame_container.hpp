@@ -48,7 +48,7 @@ namespace gui
         /// Constructor.
         /** \param mManager The GUI manager
         */
-        explicit frame_container(manager& mManager, frame_renderer* pRenderer);
+        explicit frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer);
 
         frame_container(const frame_container&) = delete;
         frame_container(frame_container&&) = delete;
@@ -68,7 +68,7 @@ namespace gui
         {
             mAttr.pParent = nullptr;
 
-            return create_root_frame_(get_registry(), pRenderer_, mAttr);
+            return create_root_frame_(mAttr);
         }
 
         /// Creates a new frame, ready for use, and owned by this frame_container.
@@ -87,8 +87,7 @@ namespace gui
             mAttr.sObjectType = frame_type::CLASS_NAME;
             mAttr.pParent = nullptr;
 
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_registry(), pRenderer_, mAttr));
+            return utils::static_pointer_cast<frame_type>(create_root_frame_(mAttr));
         }
 
         /// Creates a new frame, ready for use, and owned by this frame_container.
@@ -108,62 +107,7 @@ namespace gui
             mAttr.sName = sName;
             mAttr.sObjectType = frame_type::CLASS_NAME;
 
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_registry(), pRenderer_, mAttr));
-        }
-
-        /// Creates a new virtual frame, ready for use, and owned by this frame_container.
-        /** \param mAttr The core attributes of the frame (pParent will be ignored)
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable for inheritance.
-        *   \note Virtual frames are not displayed, but they can be used as templates
-        *         to create other frames through inheritance.
-        */
-        utils::observer_ptr<frame> create_virtual_root_frame(uiobject_core_attributes mAttr)
-        {
-            mAttr.pParent = nullptr;
-
-            return create_root_frame_(get_virtual_registry(), nullptr, mAttr);
-        }
-
-        /// Creates a new virtual frame, ready for use, and owned by this frame_container.
-        /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable for inheritance.
-        *   \note Virtual frames are not displayed, but they can be used as templates
-        *         to create other frames through inheritance.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame> create_virtual_root_frame(uiobject_core_attributes mAttr)
-        {
-            mAttr.sObjectType = frame_type::CLASS_NAME;
-            mAttr.pParent = nullptr;
-
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_virtual_registry(), nullptr, mAttr));
-        }
-
-        /// Creates a new virtual frame, ready for use, and owned by this frame_container.
-        /** \param sName The name of the new frame
-        *   \return The new frame
-        *   \note This function takes care of the basic initializing: the
-        *         frame is directly usable for inheritance.
-        *   \note Virtual frames are not displayed, but they can be used as templates
-        *         to create other frames through inheritance.
-        */
-        template<typename frame_type, typename enable =
-            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame> create_virtual_root_frame(const std::string& sName)
-        {
-            uiobject_core_attributes mAttr;
-            mAttr.sName = sName;
-            mAttr.sObjectType = frame_type::CLASS_NAME;
-
-            return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_virtual_registry(), nullptr, mAttr));
+            return utils::static_pointer_cast<frame_type>(create_root_frame_(mAttr));
         }
 
         /// Make a frame owned by this frame_container.
@@ -209,31 +153,22 @@ namespace gui
         /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
         */
-        registry& get_registry();
+        registry& get_registry() { return mRegistry_; }
 
         /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
         */
-        const registry& get_registry() const;
-
-        /// Returns the UI object registry, which keeps track of all objects in the UI.
-        /** \return The registry object
-        */
-        registry& get_virtual_registry();
-
-        /// Returns the UI object registry, which keeps track of all objects in the UI.
-        /** \return The registry object
-        */
-        const registry& get_virtual_registry() const;
+        const registry& get_registry() const { return mRegistry_; }
 
     protected :
 
         virtual utils::observer_ptr<frame> create_root_frame_(
-            registry& mRegistry, frame_renderer* pRenderer, const uiobject_core_attributes& mAttr);
+            const uiobject_core_attributes& mAttr);
 
     private :
 
         manager& mManager_;
+        registry& mRegistry_;
         frame_renderer* pRenderer_;
 
         root_frame_list lRootFrameList_;
