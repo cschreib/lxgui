@@ -36,7 +36,7 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
         if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
-            auto pParent = mManager.get_uiobject_by_name(sParent);
+            auto pParent = mManager.get_registry().get_uiobject_by_name(sParent);
             if (!sParent.empty() && !mAttr.pParent)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "

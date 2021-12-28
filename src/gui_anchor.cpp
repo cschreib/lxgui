@@ -44,7 +44,7 @@ void anchor::update_parent_(uiobject& mObject)
     }
 
     utils::observer_ptr<uiobject> pNewParent =
-        mObject.get_manager().get_uiobject_by_name(sParentFullName);
+        mObject.get_manager().get_registry().get_uiobject_by_name(sParentFullName);
 
     if (!pNewParent)
     {

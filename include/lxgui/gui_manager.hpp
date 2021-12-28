@@ -8,6 +8,7 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -172,26 +173,6 @@ namespace gui
         */
         std::vector<utils::observer_ptr<const uiobject>> get_virtual_uiobject_list(
             const std::string& sNames) const;
-
-        /// Returns the uiobject associated with the given name.
-        /** \param sName    The name of the widget you're
-        *   \param bVirtual 'true' to search for a virtual frame
-        *   \return The uiobject associated with the given name, or nullptr if not found
-        */
-        utils::observer_ptr<const uiobject> get_uiobject_by_name(
-            const std::string& sName, bool bVirtual = false) const;
-
-        /// Returns the uiobject associated with the given name.
-        /** \param sName    The name of the widget you're after
-        *   \param bVirtual 'true' to search for a virtual frame
-        *   \return The uiobject associated with the given name, or nullptr if not found
-        */
-        utils::observer_ptr<uiobject> get_uiobject_by_name(
-            const std::string& sName, bool bVirtual = false)
-        {
-            return utils::const_pointer_cast<uiobject>(
-                const_cast<const manager*>(this)->get_uiobject_by_name(sName, bVirtual));
-        }
 
         /// Prints in the log several performance statistics.
         void print_statistics();
@@ -543,6 +524,16 @@ namespace gui
         */
         const uiroot& get_root() const { return *pRoot_; }
 
+        /// Returns the UI object registry, which keeps track of all objects in the UI by name.
+        /** \return The registry object
+        */
+        registry& get_registry() { return mObjectRegistry_; }
+
+        /// Returns the UI object registry, which keeps track of all objects in the UI by name.
+        /** \return The registry object
+        */
+        const registry& get_registry() const { return mObjectRegistry_; }
+
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */
@@ -599,8 +590,8 @@ namespace gui
 
         key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
-        string_map<utils::observer_ptr<uiobject>> lNamedObjectList_;
-        string_map<utils::observer_ptr<uiobject>> lNamedVirtualObjectList_;
+        registry mObjectRegistry_;
+        registry mVirtualObjectRegistry_;
 
         utils::owner_ptr<uiroot> pRoot_;
 

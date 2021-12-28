@@ -701,6 +701,18 @@
 					"shell_cmd": "make -j12 src/gui_region_parser.s",
 				},
 				{
+					"name": "src/gui_registry.o",
+					"shell_cmd": "make -j12 src/gui_registry.o",
+				},
+				{
+					"name": "src/gui_registry.i",
+					"shell_cmd": "make -j12 src/gui_registry.i",
+				},
+				{
+					"name": "src/gui_registry.s",
+					"shell_cmd": "make -j12 src/gui_registry.s",
+				},
+				{
 					"name": "src/gui_renderer.o",
 					"shell_cmd": "make -j12 src/gui_renderer.o",
 				},

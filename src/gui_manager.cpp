@@ -191,7 +191,7 @@ bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
         return false;
     }
 
-    std::unordered_map<std::string, utils::observer_ptr<uiobject>>* lNamedList = nullptr;
+    registry* pRegistry = nullptr;
     if (pObj->is_virtual())
     {
         if (pObj->get_parent())
@@ -201,23 +201,12 @@ bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
             return true;
         }
 
-        lNamedList = &lNamedVirtualObjectList_;
+        pRegistry = &mVirtualObjectRegistry_;
     }
     else
-        lNamedList = &lNamedObjectList_;
+        pRegistry = &mObjectRegistry_;
 
-    auto iterNamedObj = lNamedList->find(pObj->get_name());
-    if (iterNamedObj != lNamedList->end())
-    {
-        gui::out << gui::warning << "gui::manager : "
-            << "A" << std::string(pObj->is_virtual() ? " virtual" : "") << " widget with the name \""
-            << pObj->get_name() << "\" already exists." << std::endl;
-        return false;
-    }
-
-    (*lNamedList)[pObj->get_name()] = pObj;
-
-    return true;
+    return pRegistry->add_uiobject(std::move(pObj));
 }
 
 void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
@@ -226,9 +215,9 @@ void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
     if (!pObjRaw) return;
 
     if (!pObjRaw->is_virtual())
-        lNamedObjectList_.erase(pObjRaw->get_name());
+        mObjectRegistry_.remove_uiobject(*pObjRaw);
     else
-        lNamedVirtualObjectList_.erase(pObjRaw->get_name());
+        mVirtualObjectRegistry_.remove_uiobject(*pObjRaw);
 
     if (pMovedObject_.get() == pObjRaw)
         stop_moving(*pObjRaw);
@@ -253,52 +242,29 @@ std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_l
     const std::string& sNames) const
 {
     std::vector<utils::observer_ptr<const uiobject>> lInheritance;
-    if (!utils::has_no_content(sNames))
+    for (auto sParent : utils::cut(sNames, ","))
     {
-        for (auto sParent : utils::cut(sNames, ","))
+        utils::trim(sParent, ' ');
+
+        utils::observer_ptr<const uiobject> pObj =
+            mVirtualObjectRegistry_.get_uiobject_by_name(sParent);
+
+        if (!pObj)
         {
-            utils::trim(sParent, ' ');
-            utils::observer_ptr<const uiobject> pObj = get_uiobject_by_name(sParent, true);
-            if (!pObj)
-            {
-                bool bNonVirtual = false;
-                if (get_uiobject_by_name(sParent))
-                    bNonVirtual = true;
+            bool bExistsNonVirtual = mObjectRegistry_.get_uiobject_by_name(sParent) != nullptr;
 
-                gui::out << gui::warning << "gui::manager : "
-                    << "Cannot find inherited object \"" << sParent << "\""
-                    << std::string(bNonVirtual ? " (object is not virtual)" : "")
-                    << ". Inheritance skipped." << std::endl;
+            gui::out << gui::warning << "gui::manager : "
+                << "Cannot find inherited object \"" << sParent << "\""
+                << std::string(bExistsNonVirtual ? " (object is not virtual)" : "")
+                << ". Inheritance skipped." << std::endl;
 
-                continue;
-            }
-
-            lInheritance.push_back(std::move(pObj));
+            continue;
         }
+
+        lInheritance.push_back(std::move(pObj));
     }
 
     return lInheritance;
-}
-
-utils::observer_ptr<const uiobject> manager::get_uiobject_by_name(
-    const std::string& sName, bool bVirtual) const
-{
-    if (bVirtual)
-    {
-        auto iter = lNamedVirtualObjectList_.find(sName);
-        if (iter != lNamedVirtualObjectList_.end())
-            return iter->second;
-        else
-            return nullptr;
-    }
-    else
-    {
-        auto iter = lNamedObjectList_.find(sName);
-        if (iter != lNamedObjectList_.end())
-            return iter->second;
-        else
-            return nullptr;
-    }
 }
 
 sol::state& manager::get_lua()
@@ -577,8 +543,8 @@ void manager::close_ui()
 
         pRoot_ = utils::make_owned<uiroot>(*this);
 
-        lNamedObjectList_.clear();
-        lNamedVirtualObjectList_.clear();
+        mObjectRegistry_ = registry{};
+        mVirtualObjectRegistry_ = registry{};
 
         lAddOnList_.clear();
 
@@ -1165,14 +1131,19 @@ std::string manager::print_ui() const
     s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())
     {
+        if (mFrame.is_virtual())
+            continue;
+
         s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 
     s << "\n\n#################### Virtual UIObjects ####################\n\n########################\n" << std::endl;
-    for (const auto& pObject : utils::range::value(lNamedVirtualObjectList_))
+    for (const auto& mFrame : pRoot_->get_root_frames())
     {
-        if (pObject)
-            s << pObject->serialize("") << "\n########################\n" << std::endl;
+        if (!mFrame.is_virtual())
+            continue;
+
+        s << mFrame.serialize("") << "\n########################\n" << std::endl;
     }
 
     return s.str();
