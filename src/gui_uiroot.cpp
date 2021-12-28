@@ -198,7 +198,10 @@ void uiroot::update(float fDelta)
 {
     // Update logics on root frames from parent to children.
     for (auto& mFrame : get_root_frames())
-        mFrame.update(fDelta);
+    {
+        if (!mFrame.is_virtual())
+            mFrame.update(fDelta);
+    }
 
     // Removed destroyed frames
     remove_null(lRootFrameList_);
@@ -317,7 +320,10 @@ void uiroot::on_event(const event& mEvent)
 void uiroot::notify_scaling_factor_updated()
 {
     for (auto& mFrame : get_root_frames())
-        mFrame.notify_scaling_factor_updated();
+    {
+        if (!mFrame.is_virtual())
+            mFrame.notify_scaling_factor_updated();
+    }
 
     if (pRenderTarget_)
         create_caching_render_target_();
