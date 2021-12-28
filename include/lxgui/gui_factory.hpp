@@ -30,19 +30,19 @@ namespace gui
     {
     private :
 
-        template <class T>
+        template<typename T>
         static utils::owner_ptr<uiobject> create_new_object_(manager& pMgr)
         {
             return utils::make_owned<T>(pMgr);
         }
 
-        template <class T>
+        template<typename T>
         static utils::owner_ptr<frame> create_new_frame_(manager& pMgr)
         {
             return utils::make_owned<T>(pMgr);
         }
 
-        template <class T>
+        template<typename T>
         static utils::owner_ptr<layered_region> create_new_layered_region_(manager& pMgr)
         {
             return utils::make_owned<T>(pMgr);
