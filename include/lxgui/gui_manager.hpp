@@ -7,7 +7,6 @@
 #include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -42,10 +41,10 @@ namespace gui
     class frame;
     class focus_frame;
     class renderer;
-    class registry;
-    class virtual_registry;
     class localizer;
     class factory;
+    class uiroot;
+    class virtual_uiroot;
     struct vertex;
 
     /// Manages the user interface
@@ -400,32 +399,12 @@ namespace gui
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        frame_container& get_virtual_root() { return *pVirtualRoot_; }
+        virtual_uiroot& get_virtual_root() { return *pVirtualRoot_; }
 
         /// Returns the UI root object, which contains root frames.
         /** \return The root object
         */
-        const frame_container& get_virtual_root() const { return *pVirtualRoot_; }
-
-        /// Returns the UI object registry, which keeps track of all objects in the UI.
-        /** \return The registry object
-        */
-        registry& get_registry() { return *pObjectRegistry_; }
-
-        /// Returns the UI object registry, which keeps track of all objects in the UI.
-        /** \return The registry object
-        */
-        const registry& get_registry() const { return *pObjectRegistry_; }
-
-        /// Returns the UI virtual object registry, which keeps track of all virtual objects in the UI.
-        /** \return The registry object
-        */
-        virtual_registry& get_virtual_registry() { return *pVirtualObjectRegistry_; }
-
-        /// Returns the UI virtual object registry, which keeps track of all virtual objects in the UI.
-        /** \return The registry object
-        */
-        const virtual_registry& get_virtual_registry() const { return *pVirtualObjectRegistry_; }
+        const virtual_uiroot& get_virtual_root() const { return *pVirtualRoot_; }
 
         /// Returns the UI object factory, which is used to create new objects.
         /** \return The factory object
@@ -492,11 +471,8 @@ namespace gui
 
         key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
-        std::unique_ptr<registry>         pObjectRegistry_;
-        std::unique_ptr<virtual_registry> pVirtualObjectRegistry_;
-
-        utils::owner_ptr<uiroot> pRoot_;
-        utils::owner_ptr<frame_container> pVirtualRoot_;
+        utils::owner_ptr<uiroot>         pRoot_;
+        utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
 
         std::vector<std::string>      lGUIDirectoryList_;
         const addon*                  pCurrentAddOn_ = nullptr;

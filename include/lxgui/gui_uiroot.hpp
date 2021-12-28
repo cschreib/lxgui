@@ -5,9 +5,9 @@
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_frame_container.hpp"
+#include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_vector2.hpp"
 
-#include <lxgui/utils_view.hpp>
 #include <lxgui/utils_observer.hpp>
 
 #include <list>
@@ -34,6 +34,9 @@ namespace gui
         /** \param mManager The GUI manager
         */
         explicit uiroot(manager& mManager);
+
+        /// Destructor.
+        ~uiroot();
 
         uiroot(const uiroot&) = delete;
         uiroot(uiroot&&) = delete;
@@ -88,6 +91,16 @@ namespace gui
         */
         const manager& get_manager() const { return mManager_; }
 
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
+        /** \return The registry object
+        */
+        registry& get_registry() { return mObjectRegistry_; }
+
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
+        /** \return The registry object
+        */
+        const registry& get_registry() const { return mObjectRegistry_; }
+
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */
@@ -111,6 +124,7 @@ namespace gui
 
         manager& mManager_;
         renderer& mRenderer_;
+        registry mObjectRegistry_;
 
         vector2ui mScreenDimensions_;
 

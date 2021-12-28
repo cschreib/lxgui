@@ -16,10 +16,16 @@ namespace gui
 {
 
 uiroot::uiroot(manager& mManager) :
-    event_receiver(mManager.get_event_manager()), frame_container(mManager, mManager.get_registry(), this),
+    event_receiver(mManager.get_event_manager()), frame_container(mManager, mObjectRegistry_, this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
+}
+
+uiroot::~uiroot()
+{
+    // Must be done before we destroy the registry
+    clear_frames_();
 }
 
 vector2f uiroot::get_target_dimensions() const

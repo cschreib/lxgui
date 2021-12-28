@@ -70,5 +70,10 @@ void frame_container::garbage_collect()
     lRootFrameList_.erase(mIterRemove, lRootFrameList_.end());
 }
 
+void frame_container::clear_frames_()
+{
+    lRootFrameList_.clear();
+}
+
 }
 }

@@ -3,6 +3,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_layoutnode.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_frame.hpp"
 
 namespace lxgui {
@@ -40,7 +42,7 @@ uiobject_core_attributes parse_core_attributes(manager& mManager, const layout_n
         if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
-            auto pParentObj = mManager.get_registry().get_uiobject_by_name(sParent);
+            auto pParentObj = mManager.get_root().get_registry().get_uiobject_by_name(sParent);
             if (!sParent.empty() && !pParentObj)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
@@ -60,7 +62,7 @@ uiobject_core_attributes parse_core_attributes(manager& mManager, const layout_n
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits"))
     {
-        mAttr.lInheritance = mManager.get_virtual_registry().get_virtual_uiobject_list(
+        mAttr.lInheritance = mManager.get_virtual_root().get_registry().get_virtual_uiobject_list(
             pAttr->get_value<std::string>());
     }
 

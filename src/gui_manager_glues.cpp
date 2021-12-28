@@ -7,6 +7,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/input.hpp"
 
@@ -63,7 +64,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         mAttr.sObjectType = sType;
         if (sInheritance.has_value())
         {
-            mAttr.lInheritance = get_virtual_registry().get_virtual_uiobject_list(
+            mAttr.lInheritance = get_virtual_root().get_registry().get_virtual_uiobject_list(
                 sInheritance.value());
         }
 

@@ -5,6 +5,7 @@
 #include <lxgui/gui_uiobject.hpp>
 #include <lxgui/gui_frame.hpp>
 #include <lxgui/gui_manager.hpp>
+#include <lxgui/gui_uiroot.hpp>
 #include <lxgui/gui_registry.hpp>
 #include <lxgui/utils_string.hpp>
 #include <sol/state.hpp>
@@ -58,7 +59,7 @@ inline utils::observer_ptr<uiobject> get_object(manager& mManager,
             if (utils::has_no_content(mValue))
                 return nullptr;
 
-            auto pParent = mManager.get_registry().get_uiobject_by_name(mValue);
+            auto pParent = mManager.get_root().get_registry().get_uiobject_by_name(mValue);
             if (!pParent)
                 throw sol::error("no widget with name \""+mValue+"\"");
 
@@ -83,7 +84,7 @@ utils::observer_ptr<T> get_object(manager& mManager, const std::variant<std::str
             if (utils::has_no_content(mValue))
                 return nullptr;
 
-            auto pParentObject = mManager.get_registry().get_uiobject_by_name(mValue);
+            auto pParentObject = mManager.get_root().get_registry().get_uiobject_by_name(mValue);
             if (!pParentObject)
                 throw sol::error("no widget with name \""+mValue+"\"");
 

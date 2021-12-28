@@ -14,9 +14,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_renderer.hpp"
-#include "lxgui/gui_registry.hpp"
-#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/input.hpp"
 
@@ -53,11 +52,9 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::make_unique<localizer>();
-    pObjectRegistry_ = std::make_unique<registry>();
-    pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
     pFactory_ = std::make_unique<factory>(*this);
     pRoot_ = utils::make_owned<uiroot>(*this);
-    pVirtualRoot_ = utils::make_owned<frame_container>(*this, get_virtual_registry(), nullptr);
+    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
 
     // NB: cannot call register_event() here, as observable_from_this()
     // is not yet fully initialised! This is done in create_lua() instead.
@@ -374,15 +371,11 @@ void manager::close_ui()
 
         pVirtualRoot_ = nullptr;
         pRoot_ = nullptr;
-        pObjectRegistry_ = nullptr;
-        pVirtualObjectRegistry_ = nullptr;
         pFactory_ = nullptr;
 
         pFactory_ = std::make_unique<factory>(*this);
-        pObjectRegistry_ = std::make_unique<registry>();
-        pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
         pRoot_ = utils::make_owned<uiroot>(*this);
-        pVirtualRoot_ = utils::make_owned<frame_container>(*this, get_virtual_registry(), nullptr);
+        pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
 
         lAddOnList_.clear();
 

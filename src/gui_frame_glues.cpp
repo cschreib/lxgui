@@ -7,6 +7,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
+#include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
@@ -224,7 +225,7 @@ void frame::register_on_lua(sol::state& mLua)
 
         uiobject_core_attributes mAttr;
         mAttr.sName = sName;
-        mAttr.lInheritance = mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
             sInheritance.value_or(""));
 
         return mSelf.create_region<font_string>(mLayer, std::move(mAttr));
@@ -241,7 +242,7 @@ void frame::register_on_lua(sol::state& mLua)
 
         uiobject_core_attributes mAttr;
         mAttr.sName = sName;
-        mAttr.lInheritance = mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_root().get_registry().get_virtual_uiobject_list(
             sInheritance.value_or(""));
 
         return mSelf.create_region<texture>(mLayer, std::move(mAttr));

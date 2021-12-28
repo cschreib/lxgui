@@ -3,6 +3,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_registry.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -45,7 +46,7 @@ void anchor::update_parent_(uiobject& mObject)
     }
 
     utils::observer_ptr<uiobject> pNewParent =
-        mObject.get_manager().get_registry().get_uiobject_by_name(sParentFullName);
+        mObject.get_registry().get_uiobject_by_name(sParentFullName);
 
     if (!pNewParent)
     {

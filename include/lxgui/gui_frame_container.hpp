@@ -168,6 +168,8 @@ namespace gui
         virtual utils::observer_ptr<frame> create_root_frame_(
             const uiobject_core_attributes& mAttr);
 
+        void clear_frames_();
+
     private :
 
         manager& mManager_;

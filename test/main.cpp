@@ -9,6 +9,7 @@
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_localizer.hpp>
 #include <lxgui/gui_factory.hpp>
+#include <lxgui/gui_uiroot.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 #include <lxgui/utils_filesystem.hpp>

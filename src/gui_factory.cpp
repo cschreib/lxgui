@@ -5,6 +5,7 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_registry.hpp"
 
 namespace lxgui {

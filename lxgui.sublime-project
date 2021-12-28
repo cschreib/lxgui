@@ -977,6 +977,18 @@
 					"shell_cmd": "make -j12 src/gui_virtual_registry.s",
 				},
 				{
+					"name": "src/gui_virtual_uiroot.o",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.o",
+				},
+				{
+					"name": "src/gui_virtual_uiroot.i",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.i",
+				},
+				{
+					"name": "src/gui_virtual_uiroot.s",
+					"shell_cmd": "make -j12 src/gui_virtual_uiroot.s",
+				},
+				{
 					"name": "src/input.o",
 					"shell_cmd": "make -j12 src/input.o",
 				},
