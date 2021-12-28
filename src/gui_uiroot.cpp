@@ -15,7 +15,9 @@ namespace lxgui {
 namespace gui
 {
 
-uiroot::uiroot(manager& mManager) : event_receiver(mManager.get_event_manager()), mManager_(mManager), mRenderer_(mManager.get_renderer())
+uiroot::uiroot(manager& mManager) :
+    event_receiver(mManager.get_event_manager()), frame_container(mManager),
+    mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
 }
@@ -23,97 +25,6 @@ uiroot::uiroot(manager& mManager) : event_receiver(mManager.get_event_manager())
 vector2f uiroot::get_target_dimensions() const
 {
     return vector2f(mScreenDimensions_)/get_manager().get_interface_scaling_factor();
-}
-
-utils::observer_ptr<frame> uiroot::create_root_frame_(
-    const std::string& sClassName, const std::string& sName,
-    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
-{
-    if (!get_manager().get_registry().check_uiobject_name(sName))
-        return nullptr;
-
-    auto pNewFrame = get_manager().create_frame(sClassName);
-    if (!pNewFrame)
-        return nullptr;
-
-    pNewFrame->set_name_(sName);
-
-    if (bVirtual)
-        pNewFrame->set_virtual();
-
-    if (!pNewFrame->is_virtual())
-        notify_rendered_frame(pNewFrame, true);
-
-    if (!get_manager().add_uiobject(pNewFrame))
-        return nullptr;
-
-    if (!pNewFrame->is_virtual())
-        pNewFrame->create_glue();
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pNewFrame->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::uiroot : "
-                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other frame
-        pNewFrame->copy_from(*pObj);
-    }
-
-    pNewFrame->set_newly_created();
-
-    return add_root_frame(std::move(pNewFrame));
-}
-
-utils::observer_ptr<frame> uiroot::add_root_frame(utils::owner_ptr<frame> pFrame)
-{
-    utils::observer_ptr<frame> pAddedFrame = pFrame;
-    lRootFrameList_.push_back(std::move(pFrame));
-
-    if (!pAddedFrame->is_virtual())
-    {
-        utils::observer_ptr<frame_renderer> pOldTopLevelRenderer = pAddedFrame->get_top_level_renderer();
-        if (pOldTopLevelRenderer.get() != this)
-        {
-            pOldTopLevelRenderer->notify_rendered_frame(pAddedFrame, false);
-            notify_rendered_frame(pAddedFrame, true);
-        }
-    }
-
-    return pAddedFrame;
-}
-
-utils::owner_ptr<frame> uiroot::remove_root_frame(const utils::observer_ptr<frame>& pFrame)
-{
-    frame* pFrameRaw = pFrame.get();
-    if (!pFrameRaw)
-        return nullptr;
-
-    auto mIter = utils::find_if(lRootFrameList_, [&](const auto& pObj)
-    {
-        return pObj.get() == pFrameRaw;
-    });
-
-    if (mIter == lRootFrameList_.end())
-        return nullptr;
-
-    // NB: the iterator is not removed yet; it will be removed later in update().
-    return std::move(*mIter);
-}
-
-uiroot::root_frame_list_view uiroot::get_root_frames()
-{
-    return root_frame_list_view(lRootFrameList_);
-}
-
-uiroot::const_root_frame_list_view uiroot::get_root_frames() const
-{
-    return const_root_frame_list_view(lRootFrameList_);
 }
 
 void uiroot::render() const
@@ -205,7 +116,7 @@ void uiroot::update(float fDelta)
     }
 
     // Removed destroyed frames
-    remove_null(lRootFrameList_);
+    garbage_collect();
 
     bool bRedraw = has_strata_list_changed_();
     reset_strata_list_changed_flag_();
@@ -334,6 +245,20 @@ void uiroot::notify_scaling_factor_updated()
         if (mStrata.pRenderTarget)
             create_strata_cache_render_target_(mStrata);
     }
+}
+
+utils::observer_ptr<frame> uiroot::create_root_frame_(
+    registry& mRegistry, const std::string& sClassName, const std::string& sName,
+    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+{
+    auto pFrame = frame_container::create_root_frame_(mRegistry, sClassName, sName, bVirtual, lInheritance);
+    if (!pFrame)
+        return nullptr;
+
+    if (!pFrame->is_virtual())
+        notify_rendered_frame(pFrame, true);
+
+    return pFrame;
 }
 
 }

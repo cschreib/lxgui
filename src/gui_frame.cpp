@@ -327,19 +327,20 @@ void frame::create_title_region()
     if (this->is_virtual())
         pTitleRegion->set_virtual();
 
-    pTitleRegion->set_special();
     pTitleRegion->set_name_and_parent_("$parentTitleRegion", observer_from(this));
 
-    if (!get_manager().add_uiobject(pTitleRegion))
-    {
-        gui::out << gui::warning << "gui::" << lType_.back() << " : "
-            << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-            "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
-        return;
-    }
+    pTitleRegion->set_special();
 
     if (!pTitleRegion->is_virtual())
     {
+        if (!get_registry().add_uiobject(pTitleRegion))
+        {
+            gui::out << gui::warning << "gui::" << lType_.back() << " : "
+                << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
+                "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
+            return;
+        }
+
         pTitleRegion->create_glue();
 
         // Add shortcut to region as entry in Lua table
@@ -698,13 +699,15 @@ utils::observer_ptr<layered_region> frame::create_region(
 
     pRegion->set_name_and_parent_(sName, observer_from(this));
 
-    if (!get_manager().add_uiobject(pRegion))
-        return nullptr;
+    if (!pRegion->is_virtual())
+    {
+        if (!get_registry().add_uiobject(pRegion))
+            return nullptr;
+
+        pRegion->create_glue();
+    }
 
     pRegion->set_draw_layer(mLayer);
-
-    if (!pRegion->is_virtual())
-        pRegion->create_glue();
 
     for (const auto& pObj : lInheritance)
     {
@@ -728,28 +731,30 @@ utils::observer_ptr<frame> frame::create_child(
     const std::string& sClassName, const std::string& sName,
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!get_manager().get_registry().check_uiobject_name(sName))
+    if (!get_registry().check_uiobject_name(sName))
         return nullptr;
 
     auto pNewFrame = get_manager().create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
-    pNewFrame->set_name_and_parent_(sName, observer_from(this));
-
     if (this->is_virtual())
         pNewFrame->set_virtual();
 
-    if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
-
-    pNewFrame->set_level(get_level() + 1);
-
-    if (!get_manager().add_uiobject(pNewFrame))
-        return nullptr;
+    pNewFrame->set_name_and_parent_(sName, observer_from(this));
 
     if (!pNewFrame->is_virtual())
+    {
+        if (!get_registry().add_uiobject(pNewFrame))
+            return nullptr;
+
         pNewFrame->create_glue();
+
+        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
+    }
+
+    // Must be called after the renderer is set
+    pNewFrame->set_level(get_level() + 1);
 
     for (const auto& pObj : lInheritance)
     {

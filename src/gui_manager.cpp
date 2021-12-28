@@ -147,32 +147,6 @@ utils::owner_ptr<layered_region> manager::create_layered_region(const std::strin
     return nullptr;
 }
 
-bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
-{
-    if (!pObj)
-    {
-        gui::out << gui::error << "gui::manager : Adding a null widget." << std::endl;
-        return false;
-    }
-
-    registry* pRegistry = nullptr;
-    if (pObj->is_virtual())
-    {
-        if (pObj->get_parent())
-        {
-            // Virtual children are not recorded in the named list, as they
-            // cannot be inherited from directly, and won't appear in the UI.
-            return true;
-        }
-
-        pRegistry = pVirtualObjectRegistry_.get();
-    }
-    else
-        pRegistry = pObjectRegistry_.get();
-
-    return pRegistry->add_uiobject(std::move(pObj));
-}
-
 void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
 {
     uiobject* pObjRaw = pObj.get();

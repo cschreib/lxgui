@@ -31,6 +31,8 @@ namespace gui
     struct addon;
     class manager;
     class uiroot;
+    class registry;
+    class frame_container;
     class layout_node;
 
     class frame;
@@ -150,7 +152,7 @@ namespace gui
     class uiobject : public utils::enable_observer_from_this<uiobject>
     {
     friend manager;
-    friend uiroot;
+    friend frame_container;
     friend frame;
     public :
 
@@ -581,6 +583,16 @@ namespace gui
         /** \return This widget's manager
         */
         const manager& get_manager() const { return mManager_; }
+
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
+        /** \return The registry object
+        */
+        registry& get_registry();
+
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
+        /** \return The registry object
+        */
+        const registry& get_registry() const;
 
         /// Creates the associated Lua glue.
         /** \note This method is pure virtual : it must be overriden.

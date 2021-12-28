@@ -4,6 +4,8 @@
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_registry.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -957,6 +959,16 @@ void uiobject::notify_visible(bool)
 void uiobject::notify_invisible(bool)
 {
     bIsVisible_ = false;
+}
+
+registry& uiobject::get_registry()
+{
+    return is_virtual() ? get_manager().get_virtual_registry() : get_manager().get_registry();
+}
+
+const registry& uiobject::get_registry() const
+{
+    return is_virtual() ? get_manager().get_virtual_registry() : get_manager().get_registry();
 }
 
 }

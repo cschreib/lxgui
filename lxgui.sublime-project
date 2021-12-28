@@ -485,6 +485,18 @@
 					"shell_cmd": "make -j12 src/gui_frame.s",
 				},
 				{
+					"name": "src/gui_frame_container.o",
+					"shell_cmd": "make -j12 src/gui_frame_container.o",
+				},
+				{
+					"name": "src/gui_frame_container.i",
+					"shell_cmd": "make -j12 src/gui_frame_container.i",
+				},
+				{
+					"name": "src/gui_frame_container.s",
+					"shell_cmd": "make -j12 src/gui_frame_container.s",
+				},
+				{
 					"name": "src/gui_frame_glues.o",
 					"shell_cmd": "make -j12 src/gui_frame_glues.o",
 				},

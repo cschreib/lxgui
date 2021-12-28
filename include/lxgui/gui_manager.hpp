@@ -144,12 +144,6 @@ namespace gui
         utils::owner_ptr<layered_region> create_layered_region(
             const std::string& sClassName);
 
-        /// Adds an uiobject to be handled by this manager.
-        /** \param pObj The object to add
-        *   \return 'false' if the name of the widget was already taken
-        */
-        bool add_uiobject(utils::observer_ptr<uiobject> pObj);
-
          /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
         *   \note Called automatically by uiobject destructor.
