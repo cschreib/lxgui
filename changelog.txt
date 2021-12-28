@@ -95,6 +95,7 @@ Other changes:
  - gui: removed anchor::get_abs_x/get_abs_y and added anchor::get_point
  - gui: removed uiobject::get_abs_width/height and added uiobject::get_dimensions()
  - gui: removed uiobject::get_apparent_width/height and added uiobject::get_apparent_dimensions()
+ - gui: removed uiobject::set_newly_created/is_newly_created (no longer necessary)
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument

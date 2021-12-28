@@ -887,18 +887,6 @@ void uiobject::notify_scaling_factor_updated()
 
 void uiobject::update(float)
 {
-    //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
-    #define DEBUG_LOG(msg)
-    DEBUG_LOG("  Update " + sName_ + " (" + lType_.back() + ")");
-
-    if (bNewlyCreated_)
-    {
-        bNewlyCreated_ = false;
-        DEBUG_LOG("  Fire redraw");
-        notify_renderer_need_redraw();
-    }
-    DEBUG_LOG("  +");
-    #undef DEBUG_LOG
 }
 
 sol::state& uiobject::get_lua_()
@@ -923,16 +911,6 @@ bool uiobject::is_special() const
 
 void uiobject::notify_renderer_need_redraw()
 {
-}
-
-void uiobject::set_newly_created()
-{
-    bNewlyCreated_ = true;
-}
-
-bool uiobject::is_newly_created() const
-{
-    return bNewlyCreated_;
 }
 
 const std::vector<utils::observer_ptr<uiobject>>& uiobject::get_anchored_objects() const

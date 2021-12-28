@@ -73,7 +73,7 @@ void frame::render() const
 
             for (const auto& pRegion : mLayer.lRegionList)
             {
-                if (pRegion->is_shown() && !pRegion->is_newly_created())
+                if (pRegion->is_shown())
                     pRegion->render();
             }
         }
@@ -737,8 +737,6 @@ utils::observer_ptr<frame> frame::create_child(
         // Inherit from the other frame
         pNewFrame->copy_from(*pObj);
     }
-
-    pNewFrame->set_newly_created();
 
     return add_child(std::move(pNewFrame));
 }

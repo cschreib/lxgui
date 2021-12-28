@@ -518,19 +518,6 @@ namespace gui
         */
         bool is_special() const;
 
-        /// Flags this object as newly created.
-        /** \note Newly created objects aren't rendered.
-        *         They unflag themselves after the first update() call.
-        *   \note This function is only called on objects created in Lua.
-        */
-        void set_newly_created();
-
-        /// Checks if this object has been newly created.
-        /** \return 'true' if this object has been newly created
-        *   \note For more informations, see set_newly_created().
-        */
-        bool is_newly_created() const;
-
         /// Returns the renderer of this object or its parents.
         /** \return The renderer of this object or its parents
         *   \note For more informations, see frame::set_renderer().
@@ -672,7 +659,6 @@ namespace gui
         utils::observer_ptr<frame> pParent_ = nullptr;
 
         bool bSpecial_ = false;
-        bool bNewlyCreated_ = false;
         bool bInherits_ = false;
         bool bVirtual_ = false;
         bool bLoaded_ = false;

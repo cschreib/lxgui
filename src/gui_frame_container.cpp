@@ -42,8 +42,6 @@ utils::observer_ptr<frame> frame_container::create_root_frame_(
         pNewFrame->copy_from(*pObj);
     }
 
-    pNewFrame->set_newly_created();
-
     return add_root_frame(std::move(pNewFrame));
 }
 

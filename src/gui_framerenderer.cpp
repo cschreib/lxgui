@@ -200,8 +200,7 @@ void frame_renderer::render_strata_(const strata& mStrata) const
     {
         for (const auto& pFrame : mLevel.lFrameList)
         {
-            if (!pFrame->is_newly_created())
-                pFrame->render();
+            pFrame->render();
         }
     }
 
