@@ -52,6 +52,7 @@ namespace gui
         */
         explicit frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer);
 
+        virtual ~frame_container() = default;
         frame_container(const frame_container&) = delete;
         frame_container(frame_container&&) = delete;
         frame_container& operator = (const frame_container&) = delete;

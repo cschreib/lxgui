@@ -18,7 +18,7 @@ namespace lxgui {
 namespace gui
 {
     class uiobject;
-    class uiobject_core_attributes;
+    struct uiobject_core_attributes;
     class layered_region;
     class frame;
     class registry;

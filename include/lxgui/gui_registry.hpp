@@ -19,6 +19,7 @@ namespace gui
     public :
 
         registry() = default;
+        virtual ~registry() = default;
         registry(const registry& mMgr) = default;
         registry(registry&& mMgr) = default;
         registry& operator = (const registry& mMgr) = default;

@@ -40,16 +40,16 @@ uiobject_core_attributes parse_core_attributes(manager& mManager, const layout_n
         if (const layout_attribute* pAttr = mNode.try_get_attribute("parent"))
         {
             std::string sParent = pAttr->get_value<std::string>();
-            auto pParent = mManager.get_registry().get_uiobject_by_name(sParent);
-            if (!sParent.empty() && !mAttr.pParent)
+            auto pParentObj = mManager.get_registry().get_uiobject_by_name(sParent);
+            if (!sParent.empty() && !pParentObj)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
                     << "Cannot find \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "
                     "No parent given to that widget." << std::endl;
             }
 
-            mAttr.pParent = down_cast<frame>(pParent);
-            if (pParent != nullptr && mAttr.pParent == nullptr)
+            mAttr.pParent = down_cast<frame>(pParentObj);
+            if (pParentObj != nullptr && mAttr.pParent == nullptr)
             {
                 gui::out << gui::warning << mNode.get_location() << " : "
                     << "Cannot set  \"" << mAttr.sName << "\"'s parent : \"" << sParent << "\". "

@@ -29,10 +29,10 @@ namespace gl
         ~render_target() override;
 
         /// Begins rendering on this target.
-        void begin();
+        void begin() override;
 
         /// Ends rendering on this target.
-        void end();
+        void end() override;
 
         /// Clears the content of this render_target.
         /** \param mColor The color to use as background
