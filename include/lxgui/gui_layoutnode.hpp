@@ -28,13 +28,13 @@ namespace gui
         layout_attribute& operator=(const layout_attribute&) = default;
         layout_attribute& operator=(layout_attribute&&) = default;
 
-        /// Returns this node's location in the file as <file>:<line>.
-        /** \return This node's location in the file as <file>:<line>
+        /// Returns this node's location in the file as {file}:{line}.
+        /** \return This node's location in the file as {file}:{line}
         */
         std::string_view get_location() const noexcept { return sLocation_; }
 
-        /// Returns this node's value location in the file as <file>:<line>.
-        /** \return This node's value location in the file as <file>:<line>
+        /// Returns this node's value location in the file as {file}:{line}.
+        /** \return This node's value location in the file as {file}:{line}
         */
         std::string_view get_value_location() const noexcept { return sValueLocation_; }
 
@@ -132,12 +132,12 @@ namespace gui
         }
 
         /// Set this node's location.
-        /** \param sName The new location
+        /** \param sLocation The new location
         */
         void set_location(std::string sLocation) noexcept { sLocation_ = std::move(sLocation); }
 
         /// Set this node's value location.
-        /** \param sName The new value location
+        /** \param sLocation The new value location
         */
         void set_value_location(std::string sLocation) noexcept
         {

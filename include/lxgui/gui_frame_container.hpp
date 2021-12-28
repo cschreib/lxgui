@@ -46,7 +46,9 @@ namespace gui
             utils::view::non_null_filter>;
 
         /// Constructor.
-        /** \param mManager The GUI manager
+        /** \param mManager  The GUI manager
+        *   \param mRegistry The registry in which new frames should be registered
+        *   \param pRenderer The frame_renderer that will render these frames (nullptr if none).
         */
         explicit frame_container(manager& mManager, registry& mRegistry, frame_renderer* pRenderer);
 

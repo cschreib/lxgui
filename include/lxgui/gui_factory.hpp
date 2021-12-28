@@ -26,6 +26,11 @@ namespace gui
     class manager;
 
     /// Handles the creation of new UI objects.
+    /** \note This is a low-level class, which is only meant to be used
+    *         internally by the GUI. To create your own UI objects, use
+    *         uiroot::create_root_frame(), frame::create_child(), or
+    *         frame::create_region().
+    */
     class factory
     {
     private :
@@ -61,31 +66,35 @@ namespace gui
         factory& operator = (factory&& mMgr) = delete;
 
         /// Creates a new uiobject.
-        /** \param sClassName The sub class of the frame (Button, ...)
+        /** \param mRegistry The registry in which to register this object
+        *   \param mAttr     The attributes of the object
         *   \return The new frame
-        *   \note This is a low level function; the returned frame only has the bare
-        *         minimum initialization. Use create_root_frame() or frame::create_child()
-        *         to get a fully-functional frame object.
+        *   \note This function takes care of the basic initializing: the
+        *         object is directly usable.
         */
         utils::owner_ptr<uiobject> create_uiobject(
             registry& mRegistry, const uiobject_core_attributes& mAttr);
 
         /// Creates a new frame.
-        /** \param sClassName The sub class of the frame (Button, ...)
+        /** \param mRegistry The registry in which to register this frame
+        *   \param pRenderer The frame_renderer that will render this frame
+        *   \param mAttr     The attributes of the frame
         *   \return The new frame
-        *   \note This is a low level function; the returned frame only has the bare
-        *         minimum initialization. Use create_root_frame() or frame::create_child()
-        *         to get a fully-functional frame object.
+        *   \note This function takes care of the basic initializing: the
+        *         frame is directly usable. However, you still need to call
+        *         notify_loaded() when you are done with any extra initialization
+        *         you require on this frame. If you do not, the frame's OnLoad
+        *         callback will not fire.
         */
         utils::owner_ptr<frame> create_frame(
             registry& mRegistry, frame_renderer* pRenderer, const uiobject_core_attributes& mAttr);
 
         /// Creates a new layered_region.
-        /** \param sClassName The sub class of the layered_region (FontString or texture)
+        /** \param mRegistry The registry in which to register this region
+        *   \param mAttr     The attributes of the region
         *   \return The new layered_region
-        *   \note This is a low level function; the returned region only has the bare
-        *         minimum initialization. Use frame::create_region() to get a fully-functional
-        *         region object.
+        *   \note This function takes care of the basic initializing: the
+        *         region is directly usable.
         */
         utils::owner_ptr<layered_region> create_layered_region(
             registry& mRegistry, const uiobject_core_attributes& mAttr);
