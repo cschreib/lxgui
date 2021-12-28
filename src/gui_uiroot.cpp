@@ -3,6 +3,7 @@
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_registry.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/utils_std.hpp>
@@ -28,7 +29,7 @@ utils::observer_ptr<frame> uiroot::create_root_frame_(
     const std::string& sClassName, const std::string& sName,
     bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!get_manager().check_uiobject_name(sName))
+    if (!get_manager().get_registry().check_uiobject_name(sName))
         return nullptr;
 
     auto pNewFrame = get_manager().create_frame(sClassName);

@@ -5,6 +5,7 @@
 #include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/input.hpp"
 
 #include <sol/state.hpp>
@@ -62,7 +63,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     {
         std::vector<utils::observer_ptr<const uiobject>> lInheritance;
         if (sInheritance.has_value())
-            lInheritance = get_virtual_uiobject_list(sInheritance.value());
+            lInheritance = get_virtual_registry().get_virtual_uiobject_list(sInheritance.value());
 
         utils::observer_ptr<frame> pNewFrame;
         if (pParent.has_value())

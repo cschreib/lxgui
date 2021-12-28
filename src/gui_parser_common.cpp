@@ -1,4 +1,5 @@
 #include "lxgui/gui_parser_common.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
 
 namespace lxgui {
@@ -55,7 +56,10 @@ node_core_attributes parse_core_attributes(manager& mManager, const layout_node&
     }
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("inherits"))
-        mAttr.lInheritance = mManager.get_virtual_uiobject_list(pAttr->get_value<std::string>());
+    {
+        mAttr.lInheritance = mManager.get_virtual_registry().get_virtual_uiobject_list(
+            pAttr->get_value<std::string>());
+    }
 
     return mAttr;
 }

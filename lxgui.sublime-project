@@ -941,6 +941,18 @@
 					"shell_cmd": "make -j12 src/gui_vertexcache.s",
 				},
 				{
+					"name": "src/gui_virtual_registry.o",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.o",
+				},
+				{
+					"name": "src/gui_virtual_registry.i",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.i",
+				},
+				{
+					"name": "src/gui_virtual_registry.s",
+					"shell_cmd": "make -j12 src/gui_virtual_registry.s",
+				},
+				{
 					"name": "src/input.o",
 					"shell_cmd": "make -j12 src/input.o",
 				},

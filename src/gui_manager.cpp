@@ -14,6 +14,8 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_renderer.hpp"
+#include "lxgui/gui_registry.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiroot.hpp"
 #include "lxgui/input.hpp"
 
@@ -49,7 +51,9 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
 {
     set_interface_scaling_factor(1.0f);
 
-    pLocalizer_ = std::unique_ptr<localizer>(new localizer());
+    pLocalizer_ = std::make_unique<localizer>();
+    pObjectRegistry_ = std::make_unique<registry>();
+    pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
     pRoot_ = utils::make_owned<uiroot>(*this);
 
     // NB: cannot call register_event() here, as observable_from_this()
@@ -90,46 +94,6 @@ void manager::add_addon_directory(const std::string& sDirectory)
 void manager::clear_addon_directory_list()
 {
     lGUIDirectoryList_.clear();
-}
-
-bool manager::check_uiobject_name(const std::string& sName) const
-{
-    if (utils::has_no_content(sName))
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "Cannot create a uiobject with a blank name." << std::endl;
-        return false;
-    }
-
-    if (utils::is_number(sName[0]))
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "A widget's name cannot start by a number : \"" << sName
-            << "\" is forbidden." << std::endl;
-        return false;
-    }
-
-    size_t uiPos = sName.find("$");
-    if (uiPos != sName.npos && uiPos != 0)
-    {
-        gui::out << gui::error << "gui::manager : "
-            << "A widget's name cannot contain the character '$' except at the begining : \""
-            << sName << "\" is forbidden." << std::endl;
-        return false;
-    }
-
-    for (auto c : sName)
-    {
-        if (!isalnum(c) && c != '_' && c != '$')
-        {
-            gui::out << gui::error << "gui::manager : "
-                << "A widget's name can only contain alphanumeric symbols, or underscores : \""
-                << sName << "\" is forbidden." << std::endl;
-            return false;
-        }
-    }
-
-    return true;
 }
 
 utils::owner_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
@@ -201,10 +165,10 @@ bool manager::add_uiobject(utils::observer_ptr<uiobject> pObj)
             return true;
         }
 
-        pRegistry = &mVirtualObjectRegistry_;
+        pRegistry = pVirtualObjectRegistry_.get();
     }
     else
-        pRegistry = &mObjectRegistry_;
+        pRegistry = pObjectRegistry_.get();
 
     return pRegistry->add_uiobject(std::move(pObj));
 }
@@ -214,10 +178,17 @@ void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
     uiobject* pObjRaw = pObj.get();
     if (!pObjRaw) return;
 
-    if (!pObjRaw->is_virtual())
-        mObjectRegistry_.remove_uiobject(*pObjRaw);
+    registry* pRegistry = nullptr;
+    if (pObjRaw->is_virtual())
+    {
+        if (!pObjRaw->get_parent())
+            pRegistry = pVirtualObjectRegistry_.get();
+    }
     else
-        mVirtualObjectRegistry_.remove_uiobject(*pObjRaw);
+        pRegistry = pObjectRegistry_.get();
+
+    if (pRegistry)
+        pRegistry->remove_uiobject(*pObjRaw);
 
     if (pMovedObject_.get() == pObjRaw)
         stop_moving(*pObjRaw);
@@ -236,35 +207,6 @@ void manager::remove_frame(const utils::observer_ptr<frame>& pObj)
 
     if (pFocusedFrame_.get() == pObjRaw)
         clear_focussed_frame_();
-}
-
-std::vector<utils::observer_ptr<const uiobject>> manager::get_virtual_uiobject_list(
-    const std::string& sNames) const
-{
-    std::vector<utils::observer_ptr<const uiobject>> lInheritance;
-    for (auto sParent : utils::cut(sNames, ","))
-    {
-        utils::trim(sParent, ' ');
-
-        utils::observer_ptr<const uiobject> pObj =
-            mVirtualObjectRegistry_.get_uiobject_by_name(sParent);
-
-        if (!pObj)
-        {
-            bool bExistsNonVirtual = mObjectRegistry_.get_uiobject_by_name(sParent) != nullptr;
-
-            gui::out << gui::warning << "gui::manager : "
-                << "Cannot find inherited object \"" << sParent << "\""
-                << std::string(bExistsNonVirtual ? " (object is not virtual)" : "")
-                << ". Inheritance skipped." << std::endl;
-
-            continue;
-        }
-
-        lInheritance.push_back(std::move(pObj));
-    }
-
-    return lInheritance;
 }
 
 sol::state& manager::get_lua()
@@ -543,8 +485,8 @@ void manager::close_ui()
 
         pRoot_ = utils::make_owned<uiroot>(*this);
 
-        mObjectRegistry_ = registry{};
-        mVirtualObjectRegistry_ = registry{};
+        pObjectRegistry_ = std::make_unique<registry>();
+        pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
 
         lAddOnList_.clear();
 

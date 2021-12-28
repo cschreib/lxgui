@@ -5,6 +5,7 @@
 #include <lxgui/gui_uiobject.hpp>
 #include <lxgui/gui_frame.hpp>
 #include <lxgui/gui_manager.hpp>
+#include <lxgui/gui_registry.hpp>
 #include <lxgui/utils_string.hpp>
 #include <sol/state.hpp>
 

@@ -304,6 +304,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_uiobject_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_uiroot.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/input.cpp
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp

@@ -2,6 +2,7 @@
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_string.hpp>

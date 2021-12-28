@@ -7,6 +7,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
+#include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <sol/state.hpp>
@@ -223,7 +224,8 @@ void frame::register_on_lua(sol::state& mLua)
 
         return mSelf.create_region<font_string>(
             mLayer, sName,
-            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
+            mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+                sInheritance.value_or(""))
         );
     });
 
@@ -238,7 +240,8 @@ void frame::register_on_lua(sol::state& mLua)
 
         return mSelf.create_region<texture>(
             mLayer, sName,
-            mSelf.get_manager().get_virtual_uiobject_list(sInheritance.value_or(""))
+            mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+                sInheritance.value_or(""))
         );
     });
 

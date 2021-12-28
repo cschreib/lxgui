@@ -8,7 +8,6 @@
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_uiroot.hpp"
-#include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
@@ -43,6 +42,8 @@ namespace gui
     class frame;
     class focus_frame;
     class renderer;
+    class registry;
+    class virtual_registry;
     class localizer;
     struct vertex;
 
@@ -114,12 +115,6 @@ namespace gui
         */
         void clear_addon_directory_list();
 
-        /// Checks the provided string is suitable for naming a widget.
-        /** \param sName The string to test
-        *   \return 'true' if the provided string can be the name of a widget
-        */
-        bool check_uiobject_name(const std::string& sName) const;
-
         /// Creates a new uiobject.
         /** \param sClassName The class of the uiobject (Frame, fontString, Button, ...)
         *   \return The new uiobject
@@ -166,13 +161,6 @@ namespace gui
         *   \note Called automatically by frame destructor.
         */
         void remove_frame(const utils::observer_ptr<frame>& pObj);
-
-        /// Return a list of virtual uiobjects matching the provided comma-separated list.
-        /** \param sNames Comma-separated list of object names
-        *   \return A vector of objects matching the list. Objects not found will be excluded.
-        */
-        std::vector<utils::observer_ptr<const uiobject>> get_virtual_uiobject_list(
-            const std::string& sNames) const;
 
         /// Prints in the log several performance statistics.
         void print_statistics();
@@ -524,15 +512,25 @@ namespace gui
         */
         const uiroot& get_root() const { return *pRoot_; }
 
-        /// Returns the UI object registry, which keeps track of all objects in the UI by name.
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
         */
-        registry& get_registry() { return mObjectRegistry_; }
+        registry& get_registry() { return *pObjectRegistry_; }
 
-        /// Returns the UI object registry, which keeps track of all objects in the UI by name.
+        /// Returns the UI object registry, which keeps track of all objects in the UI.
         /** \return The registry object
         */
-        const registry& get_registry() const { return mObjectRegistry_; }
+        const registry& get_registry() const { return *pObjectRegistry_; }
+
+        /// Returns the UI virtual object registry, which keeps track of all virtual objects in the UI.
+        /** \return The registry object
+        */
+        virtual_registry& get_virtual_registry() { return *pVirtualObjectRegistry_; }
+
+        /// Returns the UI virtual object registry, which keeps track of all virtual objects in the UI.
+        /** \return The registry object
+        */
+        const virtual_registry& get_virtual_registry() const { return *pVirtualObjectRegistry_; }
 
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
@@ -590,8 +588,8 @@ namespace gui
 
         key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
-        registry mObjectRegistry_;
-        registry mVirtualObjectRegistry_;
+        std::unique_ptr<registry>         pObjectRegistry_;
+        std::unique_ptr<virtual_registry> pVirtualObjectRegistry_;
 
         utils::owner_ptr<uiroot> pRoot_;
 

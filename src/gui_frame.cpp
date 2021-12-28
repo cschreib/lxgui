@@ -728,7 +728,7 @@ utils::observer_ptr<frame> frame::create_child(
     const std::string& sClassName, const std::string& sName,
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!get_manager().check_uiobject_name(sName))
+    if (!get_manager().get_registry().check_uiobject_name(sName))
         return nullptr;
 
     auto pNewFrame = get_manager().create_frame(sClassName);
