@@ -268,11 +268,8 @@ namespace gui
         /// shows/hides this widget.
         /** \param bIsShown 'true' if you want to show this widget
         *   \note See show() and hide() for more infos.
-        *   \note Contrary to show() and hide(), this function doesn't
-        *         trigger any event ("OnShow" or "OnHide"). It should
-        *         only be used to set the initial state of the widget.
         */
-        virtual void set_shown(bool bIsShown);
+        void set_shown(bool bIsShown);
 
         /// Checks if this widget is shown.
         /** \return 'true' if this widget is shown
@@ -545,19 +542,30 @@ namespace gui
         const std::vector<utils::observer_ptr<uiobject>>& get_anchored_objects() const;
 
         /// Notifies this widget that it has been fully loaded.
+        /** \see is_loaded()
+        */
         virtual void notify_loaded();
 
-        /// Notifies this widget that it is now visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /// Checks if this widget has been fully loaded.
+        /** \note A widget that is not fully loaded still has all its core attributes
+        *         set, hence can be considered as "fully constructed" from a C++ point
+        *         of view. However, semantically, the object may need further steps to
+        *         be complete, as designed by the UI designer. Therefore, form the UI's
+        *         point of view, a widget is considered "complete" only if is_loaded()
+        *         returns 'true' (see notifu_loaded()). Only then can the widget, e.g.,
+        *         react to or generate events.
         */
-        virtual void notify_visible(bool bTriggerEvents = true);
+        bool is_loaded() const;
+
+        /// Notifies this widget that it is now visible on screen.
+        /** \note Automatically called by show()/hide().
+        */
+        virtual void notify_visible();
 
         /// Notifies this widget that it is no longer visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        virtual void notify_invisible(bool bTriggerEvents = true);
+        virtual void notify_invisible();
 
         /// Returns this widget's manager.
         /** \return This widget's manager

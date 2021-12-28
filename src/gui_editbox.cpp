@@ -277,6 +277,9 @@ void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
 
 void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
 {
+    if (!is_loaded())
+        return;
+
     if (bFocus_ && (sScriptName == "OnKeyUp" || sScriptName == "OnKeyDown"))
         return;
 

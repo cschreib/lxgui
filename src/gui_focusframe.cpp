@@ -71,19 +71,19 @@ void focus_frame::notify_focus(bool bFocus)
     bFocus_ = bFocus;
 }
 
-void focus_frame::notify_visible(bool bTriggerEvents)
+void focus_frame::notify_visible()
 {
     if (bAutoFocus_)
         set_focus(true);
 
-    frame::notify_visible(bTriggerEvents);
+    frame::notify_visible();
 }
 
-void focus_frame::notify_invisible(bool bTriggerEvents)
+void focus_frame::notify_invisible()
 {
     set_focus(false);
 
-    frame::notify_invisible(bTriggerEvents);
+    frame::notify_invisible();
 }
 
 }

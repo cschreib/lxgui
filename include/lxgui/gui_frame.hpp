@@ -1032,15 +1032,6 @@ namespace gui
         */
         void hide() override;
 
-        /// shows/hides this widget.
-        /** \param bIsShown 'true' if you want to show this widget
-        *   \note See show() and hide() for more infos.
-        *   \note Contrary to show() and hide(), this function doesn't
-        *         trigger any event ("OnShow" or "OnHide"). It should
-        *         only be used to set the initial state of the widget.
-        */
-        void set_shown(bool bIsShown) override;
-
         /// Flags this object as rendered by another object.
         /** \param pRenderer The object that will take care of rendering this widget
         *   \note By default, objects are rendered by the gui::manager.
@@ -1108,16 +1099,14 @@ namespace gui
         virtual void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos);
 
         /// Notifies this widget that it is now visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_visible(bool bTriggerEvents = true) override;
+        void notify_visible() override;
 
         /// Notifies this widget that it is no longer visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_invisible(bool bTriggerEvents = true) override;
+        void notify_invisible() override;
 
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.

@@ -229,18 +229,10 @@ void uiobject::hide()
 
 void uiobject::set_shown(bool bIsShown)
 {
-    if (bIsShown == bIsShown_) return;
-
-    bIsShown_ = bIsShown;
-
-    bool bNewVisible = bIsShown_ && (!pParent_ || pParent_->is_visible());
-    if (bNewVisible != bIsVisible_)
-    {
-        if (bNewVisible)
-            notify_visible(false);
-        else
-            notify_invisible(false);
-    }
+    if (bIsShown)
+        show();
+    else
+        hide();
 }
 
 bool uiobject::is_shown() const
@@ -927,18 +919,23 @@ void uiobject::notify_loaded()
     bLoaded_ = true;
 }
 
+bool uiobject::is_loaded() const
+{
+    return bLoaded_;
+}
+
 utils::observer_ptr<const frame_renderer> uiobject::get_top_level_renderer() const
 {
     if (!pParent_) return get_manager().get_root().observer_from_this();
     return pParent_->get_top_level_renderer();
 }
 
-void uiobject::notify_visible(bool)
+void uiobject::notify_visible()
 {
     bIsVisible_ = true;
 }
 
-void uiobject::notify_invisible(bool)
+void uiobject::notify_invisible()
 {
     bIsVisible_ = false;
 }

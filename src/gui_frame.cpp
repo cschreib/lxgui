@@ -732,9 +732,9 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
         pChild->notify_top_level_parent_(true, pTopLevelParent_);
 
     if (is_visible() && pChild->is_shown())
-        pChild->notify_visible(!get_manager().is_loading_ui());
+        pChild->notify_visible();
     else
-        pChild->notify_invisible(!get_manager().is_loading_ui());
+        pChild->notify_invisible();
 
     utils::observer_ptr<frame> pAddedChild = pChild;
     lChildList_.push_back(std::move(pChild));
@@ -1341,6 +1341,9 @@ void frame::on_event(const event& mEvent)
 
 void frame::on_script(const std::string& sScriptName, const event_data& mData)
 {
+    if (!is_loaded())
+        return;
+
     auto iterH = lScriptHandlerList_.find(sScriptName);
     if (iterH == lScriptHandlerList_.end())
         return;
@@ -1707,44 +1710,38 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
         return get_manager().get_root().observer_from_this();
 }
 
-void frame::notify_visible(bool bTriggerEvents)
+void frame::notify_visible()
 {
-    uiobject::notify_visible(bTriggerEvents);
+    uiobject::notify_visible();
 
     for (auto& mRegion : get_regions())
     {
         if (mRegion.is_shown())
-            mRegion.notify_visible(bTriggerEvents);
+            mRegion.notify_visible();
     }
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
-            mChild.notify_visible(bTriggerEvents);
+            mChild.notify_visible();
     }
 
-    if (bTriggerEvents)
-    {
-        lQueuedEventList_.push_back("OnShow");
-        notify_renderer_need_redraw();
-    }
+    lQueuedEventList_.push_back("OnShow");
+    notify_renderer_need_redraw();
 }
 
-void frame::notify_invisible(bool bTriggerEvents)
+void frame::notify_invisible()
 {
-    uiobject::notify_invisible(bTriggerEvents);
+    uiobject::notify_invisible();
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
-            mChild.notify_invisible(bTriggerEvents);
+            mChild.notify_invisible();
     }
 
-    if (bTriggerEvents)
-    {
-        lQueuedEventList_.push_back("OnHide");
-        notify_renderer_need_redraw();
-    }
+    lQueuedEventList_.push_back("OnHide");
+    notify_renderer_need_redraw();
 }
 
 void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<frame>& pParent)
@@ -1808,17 +1805,6 @@ void frame::hide()
         get_manager().notify_hovered_frame_dirty();
         update_mouse_in_frame_();
     }
-}
-
-void frame::set_shown(bool bIsShown)
-{
-    if (bIsShown_ == bIsShown)
-        return;
-
-    bIsShown_ = bIsShown;
-
-    if (!bIsShown_)
-        notify_invisible(false);
 }
 
 void frame::unregister_all_events()

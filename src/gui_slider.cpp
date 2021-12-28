@@ -59,6 +59,9 @@ bool slider::can_use_script(const std::string& sScriptName) const
 
 void slider::on_script(const std::string& sScriptName, const event_data& mData)
 {
+    if (!is_loaded())
+        return;
+
     if (sScriptName == "OnLoad")
         enable_mouse(true);
 

@@ -61,16 +61,14 @@ namespace gui
         void create_glue() override;
 
         /// Notifies this widget that it is now visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_visible(bool bTriggerEvents = true) override;
+        void notify_visible() override;
 
         /// Notifies this widget that it is no longer visible on screen.
-        /** \param bTriggerEvents Set to false to disable OnShow/OnHide events
-        *   \note Automatically called by show()/hide().
+        /** \note Automatically called by show()/hide().
         */
-        void notify_invisible(bool bTriggerEvents = true) override;
+        void notify_invisible() override;
 
         /// Registers this widget class to the provided Lua state
         static void register_on_lua(sol::state& mLua);

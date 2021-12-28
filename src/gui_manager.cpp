@@ -346,12 +346,9 @@ void manager::read_files()
 {
     if (bClosed_)
     {
-        bLoadingUI_ = true;
-
         for (const auto& sDirectory : lGUIDirectoryList_)
             this->load_addon_directory_(sDirectory);
 
-        bLoadingUI_ = false;
         bClosed_ = false;
     }
 }
@@ -410,7 +407,6 @@ void manager::close_ui()
         lKeyBindingList_.clear();
 
         bClosed_ = true;
-        bLoadingUI_ = false;
         pCurrentAddOn_ = nullptr;
 
         pLocalizer_->clear_translations();
@@ -462,11 +458,6 @@ void manager::render_ui() const
     pRoot_->render();
 
     end();
-}
-
-bool manager::is_loading_ui() const
-{
-    return bLoadingUI_;
 }
 
 bool manager::is_loaded() const

@@ -41,6 +41,9 @@ bool button::can_use_script(const std::string& sScriptName) const
 
 void button::on_script(const std::string& sScriptName, const event_data& mData)
 {
+    if (!is_loaded())
+        return;
+
     if (sScriptName == "OnLoad")
         enable_mouse(true);
 

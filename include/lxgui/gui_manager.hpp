@@ -245,11 +245,6 @@ namespace gui
         /// Renders the UI into the current render target.
         void render_ui() const;
 
-        /// Checks if the UI is currently being loaded.
-        /** \return 'true' if the UI is currently being loaded
-        */
-        bool is_loading_ui() const;
-
         /// Checks if the UI has been loaded.
         /** \return 'true' if the UI has being loaded
         */
