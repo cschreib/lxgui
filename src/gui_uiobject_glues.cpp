@@ -272,19 +272,13 @@ void uiobject::register_on_lua(sol::state& mLua)
 
     /** @function set_all_points
     */
-    mClass.set_function("set_all_points", sol::overload(
-    [](uiobject& mSelf)
+    mClass.set_function("set_all_points", [](uiobject& mSelf,
+        sol::optional<std::variant<std::string,uiobject*>> mTarget)
     {
-        mSelf.set_all_points(utils::observer_ptr<uiobject>(nullptr));
-    },
-    [](uiobject& mSelf, const std::string& sTargetName)
-    {
-        mSelf.set_all_points(mSelf.get_manager().get_uiobject_by_name(sTargetName));
-    },
-    [](uiobject& mSelf, const utils::observer_ptr<uiobject>& pTarget)
-    {
-        mSelf.set_all_points(pTarget);
-    }));
+        mSelf.set_all_points(mTarget.has_value() ?
+            get_object<uiobject>(mSelf.get_manager(), mTarget.value()) :
+            nullptr);
+    });
 
     /** @function set_height
     */
