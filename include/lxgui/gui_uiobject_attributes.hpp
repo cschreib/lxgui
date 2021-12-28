@@ -23,13 +23,6 @@ namespace gui
         utils::observer_ptr<frame> pParent = nullptr;
 
         std::vector<utils::observer_ptr<const uiobject>> lInheritance;
-
-        static uiobject_core_attributes from_name(std::string sNewName)
-        {
-            uiobject_core_attributes mAttr;
-            mAttr.sName = std::move(sNewName);
-            return mAttr;
-        }
     };
 }
 }
