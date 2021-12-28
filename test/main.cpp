@@ -158,7 +158,7 @@ void main_loop(void* pTypeErasedData)
                         gui::out << "###" << std::endl;
                         break;
                     case SDLK_c:
-                        mContext.pManager->enable_caching(!mContext.pManager->is_caching_enabled());
+                        mContext.pManager->get_root().toggle_caching();
                         break;
                     case SDLK_r:
                         mContext.pManager->reload_ui();
