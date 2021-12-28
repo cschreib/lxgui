@@ -18,7 +18,7 @@ namespace gui
     {
     public :
 
-        virtual_registry(const registry& mObjectRegistry);
+        explicit virtual_registry(const registry& mObjectRegistry);
 
         virtual_registry(const virtual_registry& mMgr) = default;
         virtual_registry(virtual_registry&& mMgr) = default;

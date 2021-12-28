@@ -298,13 +298,14 @@ manager->create_lua([](gui::manager& mgr)
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
     //  - register the needed widgets
-    mgr.register_region_type<gui::texture>();
-    mgr.register_region_type<gui::font_string>();
-    mgr.register_frame_type<gui::button>();
-    mgr.register_frame_type<gui::slider>();
-    mgr.register_frame_type<gui::edit_box>();
-    mgr.register_frame_type<gui::scroll_frame>();
-    mgr.register_frame_type<gui::status_bar>();
+    gui::factory& fac = mgr.get_factory();
+    fac.register_uiobject_type<gui::texture>();
+    fac.register_uiobject_type<gui::font_string>();
+    fac.register_uiobject_type<gui::button>();
+    fac.register_uiobject_type<gui::slider>();
+    fac.register_uiobject_type<gui::edit_box>();
+    fac.register_uiobject_type<gui::scroll_frame>();
+    fac.register_uiobject_type<gui::status_bar>();
     //  - register your own additional Lua "glue" functions, if needed
     // ...
 });

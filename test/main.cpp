@@ -8,6 +8,7 @@
 #include <lxgui/gui_statusbar.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_localizer.hpp>
+#include <lxgui/gui_factory.hpp>
 #include <lxgui/gui_out.hpp>
 #include <lxgui/input.hpp>
 #include <lxgui/utils_filesystem.hpp>
@@ -520,13 +521,14 @@ int main(int argc, char* argv[])
             // again later on, for example when one reloads the GUI (the
             // lua state is destroyed and created again).
             //  - register the needed widgets
-            mManager.register_region_type<gui::texture>();
-            mManager.register_region_type<gui::font_string>();
-            mManager.register_frame_type<gui::button>();
-            mManager.register_frame_type<gui::slider>();
-            mManager.register_frame_type<gui::edit_box>();
-            mManager.register_frame_type<gui::scroll_frame>();
-            mManager.register_frame_type<gui::status_bar>();
+            gui::factory& mFactory = mManager.get_factory();
+            mFactory.register_uiobject_type<gui::texture>();
+            mFactory.register_uiobject_type<gui::font_string>();
+            mFactory.register_uiobject_type<gui::button>();
+            mFactory.register_uiobject_type<gui::slider>();
+            mFactory.register_uiobject_type<gui::edit_box>();
+            mFactory.register_uiobject_type<gui::scroll_frame>();
+            mFactory.register_uiobject_type<gui::status_bar>();
             //  - register additional lua functions
             sol::state& mLua = mManager.get_lua();
             mLua.set_function("get_folder_list", [](const std::string& sDir)

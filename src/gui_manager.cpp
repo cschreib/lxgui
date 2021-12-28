@@ -17,6 +17,7 @@
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_uiroot.hpp"
+#include "lxgui/gui_factory.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -55,6 +56,7 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     pObjectRegistry_ = std::make_unique<registry>();
     pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);
     pRoot_ = utils::make_owned<uiroot>(*this);
+    pFactory_ = std::make_unique<factory>(*this);
 
     // NB: cannot call register_event() here, as observable_from_this()
     // is not yet fully initialised! This is done in create_lua() instead.
@@ -94,57 +96,6 @@ void manager::add_addon_directory(const std::string& sDirectory)
 void manager::clear_addon_directory_list()
 {
     lGUIDirectoryList_.clear();
-}
-
-utils::owner_ptr<uiobject> manager::create_uiobject(const std::string& sClassName)
-{
-    if (sClassName == "Frame")
-        return utils::make_owned<frame>(*this);
-    else if (sClassName == "FocusFrame")
-        return utils::make_owned<focus_frame>(*this);
-    else
-    {
-        auto iterFrame = lCustomFrameList_.find(sClassName);
-        if (iterFrame != lCustomFrameList_.end())
-            return iterFrame->second(*this);
-
-        auto iterRegion = lCustomRegionList_.find(sClassName);
-        if (iterRegion != lCustomRegionList_.end())
-            return iterRegion->second(*this);
-
-        gui::out << gui::warning << "gui::manager : Unknown uiobject class : \""
-            << sClassName << "\"." << std::endl;
-        return nullptr;
-    }
-}
-
-utils::owner_ptr<frame> manager::create_frame(const std::string& sClassName)
-{
-    if (sClassName == "Frame")
-        return utils::make_owned<frame>(*this);
-    else if (sClassName == "FocusFrame")
-        return utils::make_owned<focus_frame>(*this);
-    else
-    {
-        auto iterFrame = lCustomFrameList_.find(sClassName);
-        if (iterFrame != lCustomFrameList_.end())
-            return iterFrame->second(*this);
-
-        gui::out << gui::warning << "gui::manager : Unknown Frame class : \""
-            << sClassName << "\"." << std::endl;
-        return nullptr;
-    }
-}
-
-utils::owner_ptr<layered_region> manager::create_layered_region(const std::string& sClassName)
-{
-    auto iterRegion = lCustomRegionList_.find(sClassName);
-    if (iterRegion != lCustomRegionList_.end())
-        return iterRegion->second(*this);
-
-    gui::out << gui::warning << "gui::manager : Unknown layered_region class : \""
-        << sClassName << "\"." << std::endl;
-    return nullptr;
 }
 
 void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
@@ -457,7 +408,10 @@ void manager::close_ui()
                 save_variables_(&mAddOn);
         }
 
+        pInputManager_->unregister_event_manager(*this);
+
         pRoot_ = utils::make_owned<uiroot>(*this);
+        pFactory_ = std::make_unique<factory>(*this);
 
         pObjectRegistry_ = std::make_unique<registry>();
         pVirtualObjectRegistry_ = std::make_unique<virtual_registry>(*pObjectRegistry_);

@@ -45,25 +45,12 @@ namespace gui
     class registry;
     class virtual_registry;
     class localizer;
+    class factory;
     struct vertex;
 
     /// Manages the user interface
     class manager : private event_manager, public event_receiver
     {
-    private :
-
-        template <class T>
-        static utils::owner_ptr<frame> create_new_frame(manager& pMgr)
-        {
-            return utils::make_owned<T>(pMgr);
-        }
-
-        template <class T>
-        static utils::owner_ptr<layered_region> create_new_layered_region(manager& pMgr)
-        {
-            return utils::make_owned<T>(pMgr);
-        }
-
     public :
 
         /// Constructor.
@@ -114,35 +101,6 @@ namespace gui
         *         from your game's main menu to the real game).
         */
         void clear_addon_directory_list();
-
-        /// Creates a new uiobject.
-        /** \param sClassName The class of the uiobject (Frame, fontString, Button, ...)
-        *   \return The new uiobject
-        *   \note This is a low level function; the returned object only has the bare
-        *         minimum initialization. Use create_root_frame() or frame::create_child()
-        *         to get a fully-functional frame object, or frame::create_region() for
-        *         region objects.
-        */
-        utils::owner_ptr<uiobject> create_uiobject(const std::string& sClassName);
-
-        /// Creates a new frame.
-        /** \param sClassName The sub class of the frame (Button, ...)
-        *   \return The new frame
-        *   \note This is a low level function; the returned frame only has the bare
-        *         minimum initialization. Use create_root_frame() or frame::create_child()
-        *         to get a fully-functional frame object.
-        */
-        utils::owner_ptr<frame> create_frame(const std::string& sClassName);
-
-        /// Creates a new layered_region.
-        /** \param sClassName The sub class of the layered_region (FontString or texture)
-        *   \return The new layered_region
-        *   \note This is a low level function; the returned region only has the bare
-        *         minimum initialization. Use frame::create_region() to get a fully-functional
-        *         region object.
-        */
-        utils::owner_ptr<layered_region> create_layered_region(
-            const std::string& sClassName);
 
          /// Removes an uiobject from this manager.
         /** \param pObj The object to remove
@@ -406,56 +364,6 @@ namespace gui
         */
         void on_event(const event& mEvent) override;
 
-        /// Registers a new frame type.
-        /** \note Set the first template argument as the C++ type of this frame.
-        */
-        template<typename frame_type,
-            typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        void register_frame_type()
-        {
-            lCustomFrameList_[frame_type::CLASS_NAME] = &create_new_frame<frame_type>;
-            frame_type::register_on_lua(*pLua_);
-        }
-
-        /// Registers a new frame type.
-        /** \param mFactoryFunction A function that creates new frames of this type. Must take a
-        *                           lxgui::gui::manager& as first and only argument, and return
-        *                           a utils::owner_ptr<frame>.
-        *   \note Set the first template argument as the C++ type of this frame.
-        */
-        template<typename frame_type, typename function_type,
-            typename enable = typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        void register_frame_type(function_type&& mFactoryFunction)
-        {
-            lCustomFrameList_[frame_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
-            frame_type::register_on_lua(*pLua_);
-        }
-
-        /// Registers a new layered_region type.
-        /** \note Set the first template argument as the C++ type of this layered_region.
-        */
-        template<typename region_type,
-            typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        void register_region_type()
-        {
-            lCustomRegionList_[region_type::CLASS_NAME] = &create_new_layered_region<region_type>;
-            region_type::register_on_lua(*pLua_);
-        }
-
-        /// Registers a new layered_region type.
-        /** \param mFactoryFunction A function that creates new layered regions of this type. Must
-        *                           take a lxgui::gui::manager& as first and only argument, and
-        *                           return a utils::owner_ptr<layered_region>.
-        *   \note Set the first template argument as the C++ type of this layered_region.
-        */
-        template<typename region_type, typename function_type,
-            typename enable = typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        void register_region_type(function_type&& mFactoryFunction)
-        {
-            lCustomRegionList_[region_type::CLASS_NAME] = std::forward<function_type>(mFactoryFunction);
-            region_type::register_on_lua(*pLua_);
-        }
-
         /// Returns the renderer implementation.
         /** \return The renderer implementation
         */
@@ -525,6 +433,16 @@ namespace gui
         /** \return The registry object
         */
         const virtual_registry& get_virtual_registry() const { return *pVirtualObjectRegistry_; }
+
+        /// Returns the UI object factory, which is used to create new objects.
+        /** \return The factory object
+        */
+        factory& get_factory() { return *pFactory_; }
+
+        /// Returns the UI object factory, which is used to create new objects.
+        /** \return The factory object
+        */
+        const factory& get_factory() const { return *pFactory_; }
 
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
@@ -611,8 +529,7 @@ namespace gui
         bool bResizeFromRight_ = false;
         bool bResizeFromBottom_ = false;
 
-        string_map<std::function<utils::owner_ptr<frame>(manager&)>>          lCustomFrameList_;
-        string_map<std::function<utils::owner_ptr<layered_region>(manager&)>> lCustomRegionList_;
+        std::unique_ptr<factory> pFactory_;
 
         std::unique_ptr<localizer> pLocalizer_;
         std::unique_ptr<renderer>  pRenderer_;

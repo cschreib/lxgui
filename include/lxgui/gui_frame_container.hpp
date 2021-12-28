@@ -46,7 +46,7 @@ namespace gui
         /// Constructor.
         /** \param mManager The GUI manager
         */
-        frame_container(manager& mManager);
+        explicit frame_container(manager& mManager);
 
         frame_container(const frame_container&) = delete;
         frame_container(frame_container&&) = delete;

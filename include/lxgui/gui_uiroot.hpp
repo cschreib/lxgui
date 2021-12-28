@@ -33,7 +33,7 @@ namespace gui
         /// Constructor.
         /** \param mManager The GUI manager
         */
-        uiroot(manager& mManager);
+        explicit uiroot(manager& mManager);
 
         uiroot(const uiroot&) = delete;
         uiroot(uiroot&&) = delete;

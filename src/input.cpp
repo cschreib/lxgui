@@ -630,7 +630,7 @@ void manager::register_event_manager(utils::observer_ptr<gui::event_manager> pMa
     if (mIter != lEventManagerList_.end())
     {
         gui::out << gui::warning << "event manager " << pManagerRaw
-            << " has already been registered";
+            << " has already been registered" << std::endl;
         return;
     }
 

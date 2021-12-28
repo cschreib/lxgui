@@ -401,6 +401,18 @@
 					"shell_cmd": "make -j12 src/gui_eventreceiver.s",
 				},
 				{
+					"name": "src/gui_factory.o",
+					"shell_cmd": "make -j12 src/gui_factory.o",
+				},
+				{
+					"name": "src/gui_factory.i",
+					"shell_cmd": "make -j12 src/gui_factory.i",
+				},
+				{
+					"name": "src/gui_factory.s",
+					"shell_cmd": "make -j12 src/gui_factory.s",
+				},
+				{
 					"name": "src/gui_focusframe.o",
 					"shell_cmd": "make -j12 src/gui_focusframe.o",
 				},

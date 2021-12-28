@@ -51,13 +51,14 @@ void examples_setup_gui(gui::manager& mManager)
         // lua state is destroyed and created again).
 
         //  - register the needed widgets
-        mManager.register_region_type<gui::texture>();
-        mManager.register_region_type<gui::font_string>();
-        mManager.register_frame_type<gui::button>();
-        mManager.register_frame_type<gui::slider>();
-        mManager.register_frame_type<gui::edit_box>();
-        mManager.register_frame_type<gui::scroll_frame>();
-        mManager.register_frame_type<gui::status_bar>();
+        gui::factory& mFactory = mManager.get_factory();
+        mFactory.register_uiobject_type<gui::texture>();
+        mFactory.register_uiobject_type<gui::font_string>();
+        mFactory.register_uiobject_type<gui::button>();
+        mFactory.register_uiobject_type<gui::slider>();
+        mFactory.register_uiobject_type<gui::edit_box>();
+        mFactory.register_uiobject_type<gui::scroll_frame>();
+        mFactory.register_uiobject_type<gui::status_bar>();
 
         //  - register additional lua functions (add your own functions here)
         sol::state& mLua = mManager.get_lua();

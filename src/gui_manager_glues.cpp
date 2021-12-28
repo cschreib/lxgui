@@ -3,8 +3,10 @@
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
+#include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/input.hpp"
 
@@ -43,11 +45,6 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     pLuaRegs_ = std::move(pLuaRegs);
 
     auto& mLua = *pLua_;
-
-    uiobject::register_on_lua(mLua);
-    frame::register_on_lua(mLua);
-    focus_frame::register_on_lua(mLua);
-    layered_region::register_on_lua(mLua);
 
     /** @function log
     */
@@ -148,7 +145,16 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
         return get_interface_scaling_factor();
     });
 
-    pLocalizer_->register_on_lua(*pLua_);
+    pLocalizer_->register_on_lua(mLua);
+
+    // Base types
+    pFactory_->register_uiobject_type<frame>();
+    pFactory_->register_uiobject_type<focus_frame>();
+    pFactory_->register_uiobject_type<region>();
+    pFactory_->register_uiobject_type<layered_region>();
+
+    // Abstract types
+    uiobject::register_on_lua(mLua);
 
     if (pLuaRegs_)
         pLuaRegs_(*this);

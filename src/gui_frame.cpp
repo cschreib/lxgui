@@ -8,6 +8,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_alive_checker.hpp"
+#include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -322,27 +323,17 @@ void frame::create_title_region()
         return;
     }
 
-    auto pTitleRegion = utils::make_owned<region>(get_manager());
+    auto pTitleRegion = utils::static_pointer_cast<region>(
+        get_manager().get_factory().create_uiobject(
+            get_registry(), "Region", is_virtual(), "$parentTitleRegion", observer_from(this)));
 
-    if (this->is_virtual())
-        pTitleRegion->set_virtual();
-
-    pTitleRegion->set_name_and_parent_("$parentTitleRegion", observer_from(this));
+    if (!pTitleRegion)
+        return;
 
     pTitleRegion->set_special();
 
     if (!pTitleRegion->is_virtual())
     {
-        if (!get_registry().add_uiobject(pTitleRegion))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "Cannot create \"" << sName_ << "\"'s title region because another uiobject "
-                "already took its name : \"" << pTitleRegion->get_name() << "\"." << std::endl;
-            return;
-        }
-
-        pTitleRegion->create_glue();
-
         // Add shortcut to region as entry in Lua table
         auto& mLua = get_lua_();
         mLua[get_lua_name()]["TitleRegion"] = mLua[pTitleRegion->get_lua_name()];
@@ -690,22 +681,11 @@ utils::observer_ptr<layered_region> frame::create_region(
     layer_type mLayer, const std::string& sClassName, const std::string& sName,
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    auto pRegion = get_manager().create_layered_region(sClassName);
+    auto pRegion = get_manager().get_factory().create_layered_region(
+        get_registry(), sClassName, is_virtual(), sName, observer_from(this));
+
     if (!pRegion)
         return nullptr;
-
-    if (this->is_virtual())
-        pRegion->set_virtual();
-
-    pRegion->set_name_and_parent_(sName, observer_from(this));
-
-    if (!pRegion->is_virtual())
-    {
-        if (!get_registry().add_uiobject(pRegion))
-            return nullptr;
-
-        pRegion->create_glue();
-    }
 
     pRegion->set_draw_layer(mLayer);
 
@@ -731,27 +711,14 @@ utils::observer_ptr<frame> frame::create_child(
     const std::string& sClassName, const std::string& sName,
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
-    if (!get_registry().check_uiobject_name(sName))
-        return nullptr;
+    auto pNewFrame = get_manager().get_factory().create_frame(
+        get_registry(), sClassName, is_virtual(), sName, observer_from(this));
 
-    auto pNewFrame = get_manager().create_frame(sClassName);
     if (!pNewFrame)
         return nullptr;
 
-    if (this->is_virtual())
-        pNewFrame->set_virtual();
-
-    pNewFrame->set_name_and_parent_(sName, observer_from(this));
-
     if (!pNewFrame->is_virtual())
-    {
-        if (!get_registry().add_uiobject(pNewFrame))
-            return nullptr;
-
-        pNewFrame->create_glue();
-
         get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
-    }
 
     // Must be called after the renderer is set
     pNewFrame->set_level(get_level() + 1);
