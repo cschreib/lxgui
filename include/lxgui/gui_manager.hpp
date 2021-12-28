@@ -102,18 +102,6 @@ namespace gui
         */
         void clear_addon_directory_list();
 
-         /// Removes an uiobject from this manager.
-        /** \param pObj The object to remove
-        *   \note Called automatically by uiobject destructor.
-        */
-        void remove_uiobject(const utils::observer_ptr<uiobject>& pObj);
-
-         /// Removes a frame from this manager.
-        /** \param pObj The frame to remove
-        *   \note Called automatically by frame destructor.
-        */
-        void remove_frame(const utils::observer_ptr<frame>& pObj);
-
         /// Prints in the log several performance statistics.
         void print_statistics();
 
@@ -479,7 +467,6 @@ namespace gui
         void save_variables_(const addon* pAddOn);
         std::string serialize_global_(const std::string& sVariable) const;
 
-        void clear_focussed_frame_();
         void clear_hovered_frame_();
         void update_hovered_frame_();
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,

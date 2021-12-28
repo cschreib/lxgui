@@ -99,42 +99,6 @@ void manager::clear_addon_directory_list()
     lGUIDirectoryList_.clear();
 }
 
-void manager::remove_uiobject(const utils::observer_ptr<uiobject>& pObj)
-{
-    uiobject* pObjRaw = pObj.get();
-    if (!pObjRaw) return;
-
-    registry* pRegistry = nullptr;
-    if (pObjRaw->is_virtual())
-    {
-        if (!pObjRaw->get_parent())
-            pRegistry = pVirtualObjectRegistry_.get();
-    }
-    else
-        pRegistry = pObjectRegistry_.get();
-
-    if (pRegistry)
-        pRegistry->remove_uiobject(*pObjRaw);
-
-    if (pMovedObject_.get() == pObjRaw)
-        stop_moving(*pObjRaw);
-
-    if (pSizedObject_.get() == pObjRaw)
-        stop_sizing(*pObjRaw);
-}
-
-void manager::remove_frame(const utils::observer_ptr<frame>& pObj)
-{
-    frame* pObjRaw = pObj.get();
-    if (!pObjRaw) return;
-
-    if (pHoveredFrame_.get() == pObjRaw)
-        clear_hovered_frame_();
-
-    if (pFocusedFrame_.get() == pObjRaw)
-        clear_focussed_frame_();
-}
-
 sol::state& manager::get_lua()
 {
     return *pLua_;
@@ -759,28 +723,21 @@ void manager::notify_hovered_frame_dirty()
     bUpdateHoveredFrame_ = true;
 }
 
-void manager::clear_focussed_frame_()
-{
-    pFocusedFrame_ = nullptr;
-    pInputManager_->set_keyboard_focus(false);
-}
-
 void manager::request_focus(utils::observer_ptr<focus_frame> pFocusFrame)
 {
     if (pFocusFrame == pFocusedFrame_)
         return;
 
-    if (pFocusedFrame_)
-        pFocusedFrame_->notify_focus(false);
-
     if (pFocusFrame)
     {
         pFocusedFrame_ = std::move(pFocusFrame);
-        pFocusedFrame_->notify_focus(true);
         pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
     }
     else
-        clear_focussed_frame_();
+    {
+        pFocusedFrame_ = nullptr;
+        pInputManager_->set_keyboard_focus(false);
+    }
 }
 
 void manager::set_key_binding(input::key mKey, const std::string& sLuaString)

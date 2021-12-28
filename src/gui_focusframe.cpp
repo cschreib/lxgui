@@ -12,6 +12,12 @@ focus_frame::focus_frame(manager& mManager) : frame(mManager)
     lType_.push_back(CLASS_NAME);
 }
 
+focus_frame::~focus_frame()
+{
+    if (has_focus())
+        get_manager().request_focus(nullptr);
+}
+
 void focus_frame::copy_from(const uiobject& mObj)
 {
     frame::copy_from(mObj);
@@ -40,10 +46,24 @@ bool focus_frame::is_auto_focus_enabled() const
 
 void focus_frame::set_focus(bool bFocus)
 {
+    if (bFocus == bFocus_)
+        return;
+
     if (bFocus)
+    {
+        notify_focus(true);
         get_manager().request_focus(observer_from(this));
+    }
     else if (bFocus_)
+    {
+        notify_focus(false);
         get_manager().request_focus(nullptr);
+    }
+}
+
+bool focus_frame::has_focus() const
+{
+    return bFocus_;
 }
 
 void focus_frame::notify_focus(bool bFocus)

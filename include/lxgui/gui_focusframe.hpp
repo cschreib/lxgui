@@ -18,6 +18,9 @@ namespace gui
         /// Constructor.
         explicit focus_frame(manager& mManager);
 
+        /// Destructor.
+        ~focus_frame();
+
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param mObj The uiobject to copy
         */
@@ -42,6 +45,11 @@ namespace gui
         *         through notify_focus().
         */
         void set_focus(bool bFocus);
+
+        /// Check if this frame currently has focus.
+        /** \return 'true' if the frame has focus, 'false' otherwise
+        */
+        bool has_focus() const;
 
         /// Notifies this focus_frame it has gained/lost focus.
         /** \param bFocus 'true' if the focus_frame has gained focus

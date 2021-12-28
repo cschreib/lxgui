@@ -84,7 +84,11 @@ uiobject::~uiobject()
     }
 
     // Unregister this object from the GUI manager
-    get_manager().remove_uiobject(observer_from_this());
+    if (!is_virtual() || pParent_ == nullptr)
+        get_registry().remove_uiobject(*this);
+
+    get_manager().stop_moving(*this);
+    get_manager().stop_sizing(*this);
 }
 
 std::string uiobject::serialize(const std::string& sTab) const

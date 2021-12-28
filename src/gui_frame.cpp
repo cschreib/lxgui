@@ -55,8 +55,7 @@ frame::~frame()
         pRenderer_ = nullptr;
     }
 
-    // Unregister this frame from the GUI manager
-    get_manager().remove_frame(observer_from(this));
+    get_manager().notify_hovered_frame_dirty();
 }
 
 void frame::render() const
