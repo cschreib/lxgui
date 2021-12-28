@@ -343,14 +343,10 @@ utils::observer_ptr<layered_region> frame::parse_region_(const layout_node& mNod
     try
     {
         auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
-
-        std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
-            sObjectType = sType;
+            mAttr.sObjectType = sType;
 
-        auto pRegion = create_region(
-            parse_layer_type(sLayer), sObjectType, mAttr.sName, mAttr.lInheritance);
-
+        auto pRegion = create_region(parse_layer_type(sLayer), mAttr);
         if (!pRegion)
             return nullptr;
 
@@ -402,14 +398,10 @@ utils::observer_ptr<frame> frame::parse_child_(const layout_node& mNode,
     try
     {
         auto mAttr = parse_core_attributes(get_manager(), mNode, observer_from(this));
-
-        std::string sObjectType = mAttr.sObjectType;
         if (!sType.empty())
-            sObjectType = sType;
+            mAttr.sObjectType = sType;
 
-        utils::observer_ptr<frame> pFrame = create_child(
-            sObjectType, mAttr.sName, mAttr.lInheritance);
-
+        auto pFrame = create_child(mAttr);
         if (!pFrame)
             return nullptr;
 

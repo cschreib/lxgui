@@ -18,6 +18,7 @@ namespace lxgui {
 namespace gui
 {
     class uiobject;
+    class uiobject_core_attributes;
     class layered_region;
     class frame;
     class registry;
@@ -67,9 +68,7 @@ namespace gui
         *         to get a fully-functional frame object.
         */
         utils::owner_ptr<uiobject> create_uiobject(
-            registry& mRegistry, const std::string& sClassName, bool bVirtual,
-            const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
+            registry& mRegistry, const uiobject_core_attributes& mAttr);
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
@@ -79,9 +78,7 @@ namespace gui
         *         to get a fully-functional frame object.
         */
         utils::owner_ptr<frame> create_frame(
-            registry& mRegistry, frame_renderer* pRenderer, const std::string& sClassName,
-            bool bVirtual, const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
+            registry& mRegistry, frame_renderer* pRenderer, const uiobject_core_attributes& mAttr);
 
         /// Creates a new layered_region.
         /** \param sClassName The sub class of the layered_region (FontString or texture)
@@ -91,9 +88,7 @@ namespace gui
         *         region object.
         */
         utils::owner_ptr<layered_region> create_layered_region(
-            registry& mRegistry, const std::string& sClassName, bool bVirtual,
-            const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
+            registry& mRegistry, const uiobject_core_attributes& mAttr);
 
         /// Registers a new object type.
         /** \note Set the first template argument as the C++ type of this object.
@@ -125,10 +120,9 @@ namespace gui
     private :
 
         bool finalize_object_(registry& mRegistry, uiobject& mObject,
-            bool bVirtual, const std::string& sName, utils::observer_ptr<frame> pParent);
+            const uiobject_core_attributes& mAttr);
 
-        void apply_inheritance_(uiobject& mObject,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance);
+        void apply_inheritance_(uiobject& mObject, const uiobject_core_attributes& mAttr);
 
         manager& mManager_;
 

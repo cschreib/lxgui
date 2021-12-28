@@ -3,6 +3,7 @@
 
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_region.hpp"
+#include "lxgui/gui_uiobject_attributes.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_event.hpp"
@@ -370,25 +371,20 @@ namespace gui
             const utils::observer_ptr<layered_region>& pRegion);
 
         /// Creates a new region as child of this frame.
-        /** \param mLayer       The layer on which to create the region
-        *   \param sClassName   The name of the region class ("FontString", ...)
-        *   \param sName        The name of the region
-        *   \param lInheritance The objects to inherit from
+        /** \param mLayer The layer on which to create the region
+        *   \param mAttr  The core attributes of the reguion (pParent will be ignored)
         *   \return The created region.
         *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
         *         you can directly use the created region.
         */
-        utils::observer_ptr<layered_region> create_region(
-            layer_type mLayer, const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {}
-        );
+        utils::observer_ptr<layered_region> create_region(layer_type mLayer,
+            uiobject_core_attributes mAttr);
 
         /// Creates a new region as child of this frame.
-        /** \param mLayer       The layer on which to create the region
-        *   \param sName        The name of the region
-        *   \param lInheritance The objects to inherit from
+        /** \param mLayer The layer on which to create the region
+        *   \param mAttr  The core attributes of the reguion (sObjectType and pParent will be ignored)
         *   \return The created region.
         *   \note You don't have the reponsibility to delete this region.
         *         It will be done automatically when its parent is deleted.
@@ -397,17 +393,36 @@ namespace gui
         */
         template<typename region_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
-        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
+        utils::observer_ptr<region_type> create_region(layer_type mLayer,
+            uiobject_core_attributes mAttr)
         {
-            return utils::static_pointer_cast<region_type>(create_region(
-                mLayer, region_type::CLASS_NAME, sName, lInheritance));
+            mAttr.sObjectType = region_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
+        }
+
+        /// Creates a new region as child of this frame.
+        /** \param mLayer       The layer on which to create the region
+        *   \param sName        The name of the region
+        *   \return The created region.
+        *   \note You don't have the reponsibility to delete this region.
+        *         It will be done automatically when its parent is deleted.
+        *   \note This function takes care of the basic initializing :
+        *         you can directly use the created region.
+        */
+        template<typename region_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::layered_region, region_type>::value>::type>
+        utils::observer_ptr<region_type> create_region(layer_type mLayer, const std::string& sName)
+        {
+            uiobject_core_attributes mAttr;
+            mAttr.sName = sName;
+            mAttr.sObjectType = region_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<region_type>(create_region(mLayer, std::move(mAttr)));
         }
 
         /// Creates a new frame as child of this frame.
-        /** \param sClassName   The name of the frame class ("Button", ...)
-        *   \param sName        The name of the frame
-        *   \param lInheritance The objects to inherit from
+        /** \param mAttr The core attributes of the frame (pParent will be ignored)
         *   \return The created frame.
         *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
@@ -417,26 +432,48 @@ namespace gui
         *         initialization you require on this frame. If you do not,
         *         the frame's OnLoad callback will not fire.
         */
-        utils::observer_ptr<frame> create_child(
-            const std::string& sClassName, const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
+        utils::observer_ptr<frame> create_child(uiobject_core_attributes mAttr);
 
         /// Creates a new frame as child of this frame.
-        /** \param sName        The name of the frame
-        *   \param lInheritance The objects to inherit from
+        /** \param mAttr The core attributes of the frame (sObjectType and pParent will be ignored)
         *   \return The created frame.
         *   \note You don't have the reponsibility to delete this frame.
         *         It will be done automatically when its parent is deleted.
         *   \note This function takes care of the basic initializing :
-        *         you can directly use the created frame.
+        *         you can directly use the created frame. However, you still
+        *         need to call notify_loaded() when you are done with any extra
+        *         initialization you require on this frame. If you do not,
+        *         the frame's OnLoad callback will not fire.
         */
         template<typename frame_type, typename enable =
             typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
-        utils::observer_ptr<frame_type> create_child(const std::string& sName,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
+        utils::observer_ptr<frame_type> create_child(uiobject_core_attributes mAttr)
         {
-            return utils::static_pointer_cast<frame_type>(create_child(
-                frame_type::CLASS_NAME, sName, lInheritance));
+            mAttr.sObjectType = frame_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
+        }
+
+        /// Creates a new frame as child of this frame.
+        /** \param sName The name of the frame
+        *   \return The created frame.
+        *   \note You don't have the reponsibility to delete this frame.
+        *         It will be done automatically when its parent is deleted.
+        *   \note This function takes care of the basic initializing :
+        *         you can directly use the created frame. However, you still
+        *         need to call notify_loaded() when you are done with any extra
+        *         initialization you require on this frame. If you do not,
+        *         the frame's OnLoad callback will not fire.
+        */
+        template<typename frame_type, typename enable =
+            typename std::enable_if<std::is_base_of<gui::frame, frame_type>::value>::type>
+        utils::observer_ptr<frame_type> create_child(const std::string& sName)
+        {
+            uiobject_core_attributes mAttr;
+            mAttr.sName = sName;
+            mAttr.sObjectType = frame_type::CLASS_NAME;
+
+            return utils::static_pointer_cast<frame_type>(create_child(std::move(mAttr)));
         }
 
         /// Adds a frame to this frame's children.

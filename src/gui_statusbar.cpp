@@ -68,9 +68,11 @@ void status_bar::copy_from(const uiobject& mObj)
 
     if (const texture* pBar = pStatusBar->get_bar_texture().get())
     {
-        auto pBarTexture = this->create_region<texture>(
-            pBar->get_draw_layer(), pBar->get_name(),
-            {pStatusBar->get_bar_texture()});
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pBar->get_name();
+        mAttr.lInheritance = {pStatusBar->get_bar_texture()};
+
+        auto pBarTexture = this->create_region<texture>(pBar->get_draw_layer(), std::move(mAttr));
 
         if (pBarTexture)
         {
@@ -268,6 +270,9 @@ void status_bar::create_bar_texture_()
         return;
 
     auto pBarTexture = create_region<texture>(mBarLayer_, "$parentBarTexture");
+    if (!pBarTexture)
+        return;
+
     pBarTexture->set_special();
     pBarTexture->notify_loaded();
     set_bar_texture(pBarTexture);

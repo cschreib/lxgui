@@ -70,8 +70,11 @@ void edit_box::copy_from(const uiobject& mObj)
 
     if (const font_string* pFS = pEditBox->get_font_string().get())
     {
-        auto pFont = this->create_region<font_string>(
-            pFS->get_draw_layer(), pFS->get_name(), {pEditBox->get_font_string()});
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pFS->get_name();
+        mAttr.lInheritance = {pEditBox->get_font_string()};
+
+        auto pFont = this->create_region<font_string>(pFS->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {

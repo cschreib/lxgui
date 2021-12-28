@@ -63,8 +63,12 @@ void scroll_frame::copy_from(const uiobject& mObj)
 
     if (const frame* pOtherChild = pScrollFrame->get_scroll_child().get())
     {
-        utils::observer_ptr<frame> pScrollChild = create_child(pOtherChild->get_object_type(),
-                pOtherChild->get_raw_name(), {pScrollFrame->get_scroll_child()});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pOtherChild->get_object_type();
+        mAttr.sName = pOtherChild->get_raw_name();
+        mAttr.lInheritance = {pScrollFrame->get_scroll_child()};
+
+        utils::observer_ptr<frame> pScrollChild = create_child(std::move(mAttr));
 
         if (pScrollChild)
         {

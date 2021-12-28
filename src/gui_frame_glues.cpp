@@ -222,11 +222,12 @@ void frame::register_on_lua(sol::state& mLua)
         if (sLayer.has_value())
             mLayer = layer::get_layer_type(sLayer.value());
 
-        return mSelf.create_region<font_string>(
-            mLayer, sName,
-            mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
-                sInheritance.value_or(""))
-        );
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+            sInheritance.value_or(""));
+
+        return mSelf.create_region<font_string>(mLayer, std::move(mAttr));
     });
 
     /** @function create_texture
@@ -238,11 +239,12 @@ void frame::register_on_lua(sol::state& mLua)
         if (sLayer.has_value())
             mLayer = layer::get_layer_type(sLayer.value());
 
-        return mSelf.create_region<texture>(
-            mLayer, sName,
-            mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
-                sInheritance.value_or(""))
-        );
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.lInheritance = mSelf.get_manager().get_virtual_registry().get_virtual_uiobject_list(
+            sInheritance.value_or(""));
+
+        return mSelf.create_region<texture>(mLayer, std::move(mAttr));
     });
 
     /** @function create_title_region

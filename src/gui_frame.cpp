@@ -278,10 +278,12 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pArt || pArt->is_special()) continue;
 
-        utils::observer_ptr<layered_region> pNewArt = create_region(
-            pArt->get_draw_layer(), pArt->get_object_type(), pArt->get_raw_name(),
-            {pArt});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pArt->get_object_type();
+        mAttr.sName = pArt->get_raw_name();
+        mAttr.lInheritance = {pArt};
 
+        auto pNewArt = create_region(pArt->get_draw_layer(), std::move(mAttr));
         if (!pNewArt) continue;
 
         pNewArt->notify_loaded();
@@ -306,9 +308,12 @@ void frame::copy_from(const uiobject& mObj)
     {
         if (!pChild || pChild->is_special()) continue;
 
-        utils::observer_ptr<frame> pNewChild = create_child(
-            pChild->get_object_type(), pChild->get_raw_name(), {pChild});
+        uiobject_core_attributes mAttr;
+        mAttr.sObjectType = pChild->get_object_type();
+        mAttr.sName = pChild->get_raw_name();
+        mAttr.lInheritance = {pChild};
 
+        auto pNewChild = create_child(std::move(mAttr));
         if (!pNewChild) continue;
 
         pNewChild->notify_loaded();
@@ -323,9 +328,14 @@ void frame::create_title_region()
         return;
     }
 
+    uiobject_core_attributes mAttr;
+    mAttr.sObjectType = "Region";
+    mAttr.bVirtual = is_virtual();
+    mAttr.sName = "$parentTitleRegion";
+    mAttr.pParent = observer_from(this);
+
     auto pTitleRegion = utils::static_pointer_cast<region>(
-        get_manager().get_factory().create_uiobject(
-            get_registry(), "Region", is_virtual(), "$parentTitleRegion", observer_from(this)));
+        get_manager().get_factory().create_uiobject(get_registry(), std::move(mAttr)));
 
     if (!pTitleRegion)
         return;
@@ -677,12 +687,13 @@ utils::owner_ptr<layered_region> frame::remove_region(
     return pRemovedRegion;
 }
 
-utils::observer_ptr<layered_region> frame::create_region(
-    layer_type mLayer, const std::string& sClassName, const std::string& sName,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+utils::observer_ptr<layered_region> frame::create_region(layer_type mLayer,
+    uiobject_core_attributes mAttr)
 {
-    auto pRegion = get_manager().get_factory().create_layered_region(
-        get_registry(), sClassName, is_virtual(), sName, observer_from(this), lInheritance);
+    mAttr.bVirtual = is_virtual();
+    mAttr.pParent = observer_from(this);
+
+    auto pRegion = get_manager().get_factory().create_layered_region(get_registry(), mAttr);
 
     if (!pRegion)
         return nullptr;
@@ -692,13 +703,13 @@ utils::observer_ptr<layered_region> frame::create_region(
     return add_region(std::move(pRegion));
 }
 
-utils::observer_ptr<frame> frame::create_child(
-    const std::string& sClassName, const std::string& sName,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+utils::observer_ptr<frame> frame::create_child(uiobject_core_attributes mAttr)
 {
+    mAttr.bVirtual = is_virtual();
+    mAttr.pParent = observer_from(this);
+
     auto pNewFrame = get_manager().get_factory().create_frame(
-        get_registry(), get_top_level_renderer().get(), sClassName, is_virtual(),
-        sName, observer_from(this), lInheritance);
+        get_registry(), get_top_level_renderer().get(), mAttr);
 
     if (!pNewFrame)
         return nullptr;

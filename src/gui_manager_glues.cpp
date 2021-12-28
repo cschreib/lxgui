@@ -58,15 +58,20 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
     mLua.set_function("create_frame", [&](const std::string& sType, const std::string& sName,
         sol::optional<frame&> pParent, sol::optional<std::string> sInheritance) -> sol::object
     {
-        std::vector<utils::observer_ptr<const uiobject>> lInheritance;
+        uiobject_core_attributes mAttr;
+        mAttr.sName = sName;
+        mAttr.sObjectType = sType;
         if (sInheritance.has_value())
-            lInheritance = get_virtual_registry().get_virtual_uiobject_list(sInheritance.value());
+        {
+            mAttr.lInheritance = get_virtual_registry().get_virtual_uiobject_list(
+                sInheritance.value());
+        }
 
         utils::observer_ptr<frame> pNewFrame;
         if (pParent.has_value())
-            pNewFrame = pParent.value().create_child(sType, sName, lInheritance);
+            pNewFrame = pParent.value().create_child(std::move(mAttr));
         else
-            pNewFrame = pRoot_->create_root_frame(sType, sName, lInheritance);
+            pNewFrame = pRoot_->create_root_frame(std::move(mAttr));
 
         if (pNewFrame)
         {

@@ -1,15 +1,18 @@
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_out.hpp"
+#include "lxgui/gui_layoutnode.hpp"
+#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_frame.hpp"
 
 namespace lxgui {
 namespace gui
 {
 
-node_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
+uiobject_core_attributes parse_core_attributes(manager& mManager, const layout_node& mNode,
     utils::observer_ptr<frame> pParent)
 {
-    node_core_attributes mAttr;
+    uiobject_core_attributes mAttr;
     mAttr.sObjectType = mNode.get_name();
     mAttr.sName = mNode.get_attribute_value<std::string>("name");
 

@@ -110,9 +110,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_normal_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_normal_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_normal_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -124,9 +127,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_pushed_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_pushed_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_pushed_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -138,9 +144,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_highlight_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_highlight_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_highlight_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -152,9 +161,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const texture* pOtherTexture = pButton->get_disabled_texture().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherTexture->get_name();
+        mAttr.lInheritance = {pButton->get_disabled_texture()};
+
         auto pTexture = this->create_region<texture>(
-            pOtherTexture->get_draw_layer(), pOtherTexture->get_name(),
-            {pButton->get_disabled_texture()});
+            pOtherTexture->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {
@@ -166,9 +178,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_normal_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_normal_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_normal_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -180,9 +195,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_highlight_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_highlight_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_highlight_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {
@@ -194,9 +212,12 @@ void button::copy_from(const uiobject& mObj)
 
     if (const font_string* pOtherText = pButton->get_disabled_text().get())
     {
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pOtherText->get_name();
+        mAttr.lInheritance = {pButton->get_disabled_text()};
+
         auto pFont = this->create_region<font_string>(
-            pOtherText->get_draw_layer(), pOtherText->get_name(),
-            {pButton->get_disabled_text()});
+            pOtherText->get_draw_layer(), std::move(mAttr));
 
         if (pFont)
         {

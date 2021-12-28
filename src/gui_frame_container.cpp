@@ -19,13 +19,9 @@ frame_container::frame_container(manager& mManager, frame_renderer* pRenderer) :
 }
 
 utils::observer_ptr<frame> frame_container::create_root_frame_(
-    registry& mRegistry, frame_renderer* pRenderer, const std::string& sClassName,
-    const std::string& sName, bool bVirtual,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+    registry& mRegistry, frame_renderer* pRenderer, const uiobject_core_attributes& mAttr)
 {
-    auto pNewFrame = get_manager().get_factory().create_frame(
-        mRegistry, pRenderer, sClassName, bVirtual, sName, nullptr, lInheritance);
-
+    auto pNewFrame = get_manager().get_factory().create_frame(mRegistry, pRenderer, mAttr);
     if (!pNewFrame)
         return nullptr;
 
@@ -53,7 +49,7 @@ utils::owner_ptr<frame> frame_container::remove_root_frame(const utils::observer
     if (mIter == lRootFrameList_.end())
         return nullptr;
 
-    // NB: the iterator is not removed yet; it will be removed later in update().
+    // NB: the iterator is not removed yet; it will be removed later in garbage_collect().
     return std::move(*mIter);
 }
 

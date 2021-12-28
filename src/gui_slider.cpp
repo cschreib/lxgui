@@ -86,9 +86,11 @@ void slider::copy_from(const uiobject& mObj)
 
     if (const texture* pThumb = pSlider->get_thumb_texture().get())
     {
-        auto pTexture = this->create_region<texture>(
-            pThumb->get_draw_layer(), pThumb->get_name(),
-            {pSlider->get_thumb_texture()});
+        uiobject_core_attributes mAttr;
+        mAttr.sName = pThumb->get_name();
+        mAttr.lInheritance = {pSlider->get_thumb_texture()};
+
+        auto pTexture = this->create_region<texture>(pThumb->get_draw_layer(), std::move(mAttr));
 
         if (pTexture)
         {

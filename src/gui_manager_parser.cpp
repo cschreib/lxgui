@@ -295,14 +295,14 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
                 utils::observer_ptr<frame> pFrame;
                 if (mAttr.pParent)
                 {
-                    pFrame = mAttr.pParent->create_child(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
+                    pFrame = mAttr.pParent->create_child(std::move(mAttr));
                 }
                 else
                 {
                     if (mAttr.bVirtual)
-                        pFrame = pRoot_->create_virtual_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
+                        pFrame = pRoot_->create_virtual_root_frame(std::move(mAttr));
                     else
-                        pFrame = pRoot_->create_root_frame(mAttr.sObjectType, mAttr.sName, mAttr.lInheritance);
+                        pFrame = pRoot_->create_root_frame(std::move(mAttr));
                 }
 
                 if (!pFrame)

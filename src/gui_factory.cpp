@@ -16,18 +16,16 @@ factory::factory(manager& mManager) : mManager_(mManager)
 }
 
 utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
-    const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+    const uiobject_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(sName))
+    if (!mRegistry.check_uiobject_name(mAttr.sName))
         return nullptr;
 
-    auto mIter = lCustomObjectList_.find(sClassName);
+    auto mIter = lCustomObjectList_.find(mAttr.sObjectType);
     if (mIter == lCustomObjectList_.end())
     {
         gui::out << gui::warning << "gui::factory : Unknown object class : \""
-            << sClassName << "\"." << std::endl;
+            << mAttr.sObjectType << "\"." << std::endl;
         return nullptr;
     }
 
@@ -35,27 +33,25 @@ utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
     if (!pNewObject)
         return nullptr;
 
-    if (!finalize_object_(mRegistry, *pNewObject, bVirtual, sName, pParent))
+    if (!finalize_object_(mRegistry, *pNewObject, mAttr))
         return nullptr;
 
-    apply_inheritance_(*pNewObject, lInheritance);
+    apply_inheritance_(*pNewObject, mAttr);
 
     return pNewObject;
 }
 
 utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_renderer* pRenderer,
-    const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+    const uiobject_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(sName))
+    if (!mRegistry.check_uiobject_name(mAttr.sName))
         return nullptr;
 
-    auto mIter = lCustomFrameList_.find(sClassName);
+    auto mIter = lCustomFrameList_.find(mAttr.sObjectType);
     if (mIter == lCustomFrameList_.end())
     {
         gui::out << gui::warning << "gui::factory : Unknown frame class : \""
-            << sClassName << "\"." << std::endl;
+            << mAttr.sObjectType << "\"." << std::endl;
         return nullptr;
     }
 
@@ -63,30 +59,28 @@ utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_rendere
     if (!pNewFrame)
         return nullptr;
 
-    if (!finalize_object_(mRegistry, *pNewFrame, bVirtual, sName, pParent))
+    if (!finalize_object_(mRegistry, *pNewFrame, mAttr))
         return nullptr;
 
     if (pRenderer && !pNewFrame->is_virtual())
         pRenderer->notify_rendered_frame(pNewFrame, true);
 
-    apply_inheritance_(*pNewFrame, lInheritance);
+    apply_inheritance_(*pNewFrame, mAttr);
 
     return pNewFrame;
 }
 
 utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegistry,
-    const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+    const uiobject_core_attributes& mAttr)
 {
-    if (!mRegistry.check_uiobject_name(sName))
+    if (!mRegistry.check_uiobject_name(mAttr.sName))
         return nullptr;
 
-    auto mIter = lCustomRegionList_.find(sClassName);
+    auto mIter = lCustomRegionList_.find(mAttr.sObjectType);
     if (mIter == lCustomRegionList_.end())
     {
         gui::out << gui::warning << "gui::factory : Unknown layered_region class : \""
-            << sClassName << "\"." << std::endl;
+            << mAttr.sObjectType << "\"." << std::endl;
         return nullptr;
     }
 
@@ -94,10 +88,10 @@ utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegis
     if (!pNewRegion)
         return nullptr;
 
-    if (!finalize_object_(mRegistry, *pNewRegion, bVirtual, sName, pParent))
+    if (!finalize_object_(mRegistry, *pNewRegion, mAttr))
         return nullptr;
 
-    apply_inheritance_(*pNewRegion, lInheritance);
+    apply_inheritance_(*pNewRegion, mAttr);
 
     return pNewRegion;
 }
@@ -112,18 +106,18 @@ const sol::state& factory::get_lua() const
     return mManager_.get_lua();
 }
 
-bool factory::finalize_object_(registry& mRegistry, uiobject& mObject, bool bVirtual,
-    const std::string& sName, utils::observer_ptr<frame> pParent)
+bool factory::finalize_object_(registry& mRegistry, uiobject& mObject,
+    const uiobject_core_attributes& mAttr)
 {
-    if (bVirtual)
+    if (mAttr.bVirtual)
         mObject.set_virtual();
 
-    if (pParent)
-        mObject.set_name_and_parent_(sName, pParent);
+    if (mAttr.pParent)
+        mObject.set_name_and_parent_(mAttr.sName, mAttr.pParent);
     else
-        mObject.set_name_(sName);
+        mObject.set_name_(mAttr.sName);
 
-    if (!mObject.is_virtual() || pParent == nullptr)
+    if (!mObject.is_virtual() || mAttr.pParent == nullptr)
     {
         if (!mRegistry.add_uiobject(observer_from(&mObject)))
             return false;
@@ -135,10 +129,9 @@ bool factory::finalize_object_(registry& mRegistry, uiobject& mObject, bool bVir
     return true;
 }
 
-void factory::apply_inheritance_(uiobject& mObject,
-    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+void factory::apply_inheritance_(uiobject& mObject, const uiobject_core_attributes& mAttr)
 {
-    for (const auto& pBase : lInheritance)
+    for (const auto& pBase : mAttr.lInheritance)
     {
         if (!mObject.is_object_type(pBase->get_object_type()))
         {
