@@ -13,34 +13,21 @@ namespace lxgui {
 namespace gui
 {
 
-frame_container::frame_container(manager& mManager) : mManager_(mManager)
+frame_container::frame_container(manager& mManager, frame_renderer* pRenderer) :
+    mManager_(mManager), pRenderer_(pRenderer)
 {
 }
 
 utils::observer_ptr<frame> frame_container::create_root_frame_(
-    registry& mRegistry, const std::string& sClassName, const std::string& sName,
-    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+    registry& mRegistry, frame_renderer* pRenderer, const std::string& sClassName,
+    const std::string& sName, bool bVirtual,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     auto pNewFrame = get_manager().get_factory().create_frame(
-        mRegistry, sClassName, bVirtual, sName, nullptr);
+        mRegistry, pRenderer, sClassName, bVirtual, sName, nullptr, lInheritance);
 
     if (!pNewFrame)
         return nullptr;
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pNewFrame->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::frame_container : "
-                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other frame
-        pNewFrame->copy_from(*pObj);
-    }
 
     return add_root_frame(std::move(pNewFrame));
 }

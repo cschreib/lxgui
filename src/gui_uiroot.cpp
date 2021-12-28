@@ -16,7 +16,7 @@ namespace gui
 {
 
 uiroot::uiroot(manager& mManager) :
-    event_receiver(mManager.get_event_manager()), frame_container(mManager),
+    event_receiver(mManager.get_event_manager()), frame_container(mManager, this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
@@ -245,20 +245,6 @@ void uiroot::notify_scaling_factor_updated()
         if (mStrata.pRenderTarget)
             create_strata_cache_render_target_(mStrata);
     }
-}
-
-utils::observer_ptr<frame> uiroot::create_root_frame_(
-    registry& mRegistry, const std::string& sClassName, const std::string& sName,
-    bool bVirtual, const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
-{
-    auto pFrame = frame_container::create_root_frame_(mRegistry, sClassName, sName, bVirtual, lInheritance);
-    if (!pFrame)
-        return nullptr;
-
-    if (!pFrame->is_virtual())
-        notify_rendered_frame(pFrame, true);
-
-    return pFrame;
 }
 
 }

@@ -21,6 +21,7 @@ namespace gui
     class layered_region;
     class frame;
     class registry;
+    class frame_renderer;
     class manager;
 
     /// Handles the creation of new UI objects.
@@ -66,8 +67,9 @@ namespace gui
         *         to get a fully-functional frame object.
         */
         utils::owner_ptr<uiobject> create_uiobject(
-           registry& mRegistry, const std::string& sClassName, bool bVirtual,
-           const std::string& sName, utils::observer_ptr<frame> pParent = nullptr);
+            registry& mRegistry, const std::string& sClassName, bool bVirtual,
+            const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
 
         /// Creates a new frame.
         /** \param sClassName The sub class of the frame (Button, ...)
@@ -77,8 +79,9 @@ namespace gui
         *         to get a fully-functional frame object.
         */
         utils::owner_ptr<frame> create_frame(
-           registry& mRegistry, const std::string& sClassName, bool bVirtual,
-           const std::string& sName, utils::observer_ptr<frame> pParent = nullptr);
+            registry& mRegistry, frame_renderer* pRenderer, const std::string& sClassName,
+            bool bVirtual, const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
 
         /// Creates a new layered_region.
         /** \param sClassName The sub class of the layered_region (FontString or texture)
@@ -89,7 +92,8 @@ namespace gui
         */
         utils::owner_ptr<layered_region> create_layered_region(
             registry& mRegistry, const std::string& sClassName, bool bVirtual,
-            const std::string& sName, utils::observer_ptr<frame> pParent = nullptr);
+            const std::string& sName, utils::observer_ptr<frame> pParent = nullptr,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {});
 
         /// Registers a new object type.
         /** \note Set the first template argument as the C++ type of this object.
@@ -100,10 +104,10 @@ namespace gui
         {
             if constexpr (std::is_base_of_v<gui::layered_region, object_type>)
                 lCustomRegionList_[object_type::CLASS_NAME] = &create_new_layered_region_<object_type>;
-            if constexpr (std::is_base_of_v<gui::frame, object_type>)
+            else if constexpr (std::is_base_of_v<gui::frame, object_type>)
                 lCustomFrameList_[object_type::CLASS_NAME] = &create_new_frame_<object_type>;
-
-            lCustomObjectList_[object_type::CLASS_NAME] = &create_new_object_<object_type>;
+            else
+                lCustomObjectList_[object_type::CLASS_NAME] = &create_new_object_<object_type>;
 
             object_type::register_on_lua(get_lua());
         }
@@ -122,6 +126,9 @@ namespace gui
 
         bool finalize_object_(registry& mRegistry, uiobject& mObject,
             bool bVirtual, const std::string& sName, utils::observer_ptr<frame> pParent);
+
+        void apply_inheritance_(uiobject& mObject,
+            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance);
 
         manager& mManager_;
 

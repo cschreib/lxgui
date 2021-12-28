@@ -17,6 +17,7 @@ namespace gui
     class uiobject;
     class frame;
     class registry;
+    class frame_renderer;
     class manager;
 
     /// Container of frames.
@@ -46,7 +47,7 @@ namespace gui
         /// Constructor.
         /** \param mManager The GUI manager
         */
-        explicit frame_container(manager& mManager);
+        explicit frame_container(manager& mManager, frame_renderer* pRenderer);
 
         frame_container(const frame_container&) = delete;
         frame_container(frame_container&&) = delete;
@@ -68,7 +69,7 @@ namespace gui
             const std::string& sClassName, const std::string& sName,
             const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
-            return create_root_frame_(get_registry(),
+            return create_root_frame_(get_registry(), pRenderer_,
                 sClassName, sName, false, lInheritance);
         }
 
@@ -88,7 +89,7 @@ namespace gui
             const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
             return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_registry(),
+                create_root_frame_(get_registry(), pRenderer_,
                     frame_type::CLASS_NAME, sName, false, lInheritance));
         }
 
@@ -106,7 +107,7 @@ namespace gui
             const std::string& sClassName, const std::string& sName,
             const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
-            return create_root_frame_(get_virtual_registry(),
+            return create_root_frame_(get_virtual_registry(), nullptr,
                 sClassName, sName, true, lInheritance);
         }
 
@@ -125,7 +126,7 @@ namespace gui
             const std::vector<utils::observer_ptr<const uiobject>>& lInheritance = {})
         {
             return utils::static_pointer_cast<frame_type>(
-                create_root_frame_(get_virtual_registry(),
+                create_root_frame_(get_virtual_registry(), nullptr,
                     frame_type::CLASS_NAME, sName, true, lInheritance));
         }
 
@@ -189,31 +190,17 @@ namespace gui
         */
         const registry& get_virtual_registry() const;
 
-        // /// Return an observer pointer to 'this'.
-        // /** \return A new observer pointer pointing to 'this'.
-        // */
-        // utils::observer_ptr<const frame_container> observer_from_this() const
-        // {
-        //     return utils::static_pointer_cast<const frame_container>(event_receiver::observer_from_this());
-        // }
-
-        // /// Return an observer pointer to 'this'.
-        // /** \return A new observer pointer pointing to 'this'.
-        // */
-        // utils::observer_ptr<frame_container> observer_from_this()
-        // {
-        //     return utils::static_pointer_cast<frame_container>(event_receiver::observer_from_this());
-        // }
-
     protected :
 
         virtual utils::observer_ptr<frame> create_root_frame_(
-            registry& mRegistry, const std::string& sClassName, const std::string& sName, bool bVirtual,
+            registry& mRegistry, frame_renderer* pRenderer, const std::string& sClassName,
+            const std::string& sName, bool bVirtual,
             const std::vector<utils::observer_ptr<const uiobject>>& lInheritance);
 
     private :
 
         manager& mManager_;
+        frame_renderer* pRenderer_;
 
         root_frame_list lRootFrameList_;
     };

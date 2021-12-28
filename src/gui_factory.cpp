@@ -17,7 +17,8 @@ factory::factory(manager& mManager) : mManager_(mManager)
 
 utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
     const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent)
+    utils::observer_ptr<frame> pParent,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     if (!mRegistry.check_uiobject_name(sName))
         return nullptr;
@@ -37,12 +38,15 @@ utils::owner_ptr<uiobject> factory::create_uiobject(registry& mRegistry,
     if (!finalize_object_(mRegistry, *pNewObject, bVirtual, sName, pParent))
         return nullptr;
 
+    apply_inheritance_(*pNewObject, lInheritance);
+
     return pNewObject;
 }
 
-utils::owner_ptr<frame> factory::create_frame(registry& mRegistry,
+utils::owner_ptr<frame> factory::create_frame(registry& mRegistry, frame_renderer* pRenderer,
     const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent)
+    utils::observer_ptr<frame> pParent,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     if (!mRegistry.check_uiobject_name(sName))
         return nullptr;
@@ -62,12 +66,18 @@ utils::owner_ptr<frame> factory::create_frame(registry& mRegistry,
     if (!finalize_object_(mRegistry, *pNewFrame, bVirtual, sName, pParent))
         return nullptr;
 
+    if (pRenderer && !pNewFrame->is_virtual())
+        pRenderer->notify_rendered_frame(pNewFrame, true);
+
+    apply_inheritance_(*pNewFrame, lInheritance);
+
     return pNewFrame;
 }
 
 utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegistry,
     const std::string& sClassName, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent)
+    utils::observer_ptr<frame> pParent,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     if (!mRegistry.check_uiobject_name(sName))
         return nullptr;
@@ -87,6 +97,8 @@ utils::owner_ptr<layered_region> factory::create_layered_region(registry& mRegis
     if (!finalize_object_(mRegistry, *pNewRegion, bVirtual, sName, pParent))
         return nullptr;
 
+    apply_inheritance_(*pNewRegion, lInheritance);
+
     return pNewRegion;
 }
 
@@ -100,8 +112,8 @@ const sol::state& factory::get_lua() const
     return mManager_.get_lua();
 }
 
-bool factory::finalize_object_(registry& mRegistry, uiobject& mObject, bool bVirtual, const std::string& sName,
-    utils::observer_ptr<frame> pParent)
+bool factory::finalize_object_(registry& mRegistry, uiobject& mObject, bool bVirtual,
+    const std::string& sName, utils::observer_ptr<frame> pParent)
 {
     if (bVirtual)
         mObject.set_virtual();
@@ -121,6 +133,25 @@ bool factory::finalize_object_(registry& mRegistry, uiobject& mObject, bool bVir
         mObject.create_glue();
 
     return true;
+}
+
+void factory::apply_inheritance_(uiobject& mObject,
+    const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
+{
+    for (const auto& pBase : lInheritance)
+    {
+        if (!mObject.is_object_type(pBase->get_object_type()))
+        {
+            gui::out << gui::warning << "gui::factory : "
+                << "\"" << mObject.get_name() << "\" (" << mObject.get_object_type()
+                << ") cannot inherit from \"" << pBase->get_name() << "\" (" << pBase->get_object_type()
+                << "). Inheritance skipped." << std::endl;
+            continue;
+        }
+
+        // Inherit from the other object
+        mObject.copy_from(*pBase);
+    }
 }
 
 }

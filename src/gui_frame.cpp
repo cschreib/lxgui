@@ -682,27 +682,12 @@ utils::observer_ptr<layered_region> frame::create_region(
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     auto pRegion = get_manager().get_factory().create_layered_region(
-        get_registry(), sClassName, is_virtual(), sName, observer_from(this));
+        get_registry(), sClassName, is_virtual(), sName, observer_from(this), lInheritance);
 
     if (!pRegion)
         return nullptr;
 
     pRegion->set_draw_layer(mLayer);
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pRegion->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::" << lType_.back() << " : "
-                << "\"" << pRegion->get_name() << "\" (" << pRegion->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other region
-        pRegion->copy_from(*pObj);
-    }
 
     return add_region(std::move(pRegion));
 }
@@ -712,31 +697,13 @@ utils::observer_ptr<frame> frame::create_child(
     const std::vector<utils::observer_ptr<const uiobject>>& lInheritance)
 {
     auto pNewFrame = get_manager().get_factory().create_frame(
-        get_registry(), sClassName, is_virtual(), sName, observer_from(this));
+        get_registry(), get_top_level_renderer().get(), sClassName, is_virtual(),
+        sName, observer_from(this), lInheritance);
 
     if (!pNewFrame)
         return nullptr;
 
-    if (!pNewFrame->is_virtual())
-        get_top_level_renderer()->notify_rendered_frame(pNewFrame, true);
-
-    // Must be called after the renderer is set
     pNewFrame->set_level(get_level() + 1);
-
-    for (const auto& pObj : lInheritance)
-    {
-        if (!pNewFrame->is_object_type(pObj->get_object_type()))
-        {
-            gui::out << gui::warning << "gui::manager : "
-                << "\"" << pNewFrame->get_name() << "\" (" << pNewFrame->get_object_type()
-                << ") cannot inherit from \"" << pObj->get_name() << "\" (" << pObj->get_object_type()
-                << "). Inheritance skipped." << std::endl;
-            continue;
-        }
-
-        // Inherit from the other frame
-        pNewFrame->copy_from(*pObj);
-    }
 
     return add_child(std::move(pNewFrame));
 }

@@ -106,10 +106,6 @@ namespace gui
 
     private :
 
-        utils::observer_ptr<frame> create_root_frame_(
-            registry& mRegistry, const std::string& sClassName, const std::string& sName, bool bVirtual,
-            const std::vector<utils::observer_ptr<const uiobject>>& lInheritance) override;
-
         void create_caching_render_target_();
         void create_strata_cache_render_target_(strata& mStrata);
 
