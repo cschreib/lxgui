@@ -43,7 +43,6 @@ int main(int argc, char* argv[])
 
         // Use full SFML implementation
         utils::owner_ptr<gui::manager> pManager = gui::sfml::create_manager(mWindow);
-        pManager->enable_caching(false);
 
         // Setup the GUI (see examples_common.cpp)
         examples_setup_gui(*pManager);

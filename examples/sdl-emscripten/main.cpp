@@ -182,8 +182,6 @@ int main(int argc, char* argv[])
         utils::owner_ptr<gui::manager> pManager =
             gui::sdl::create_manager(pWindow.get(), pRenderer.get());
 
-        pManager->enable_caching(false);
-
         // Setup the GUI (see examples_common.cpp)
         examples_setup_gui(*pManager);
 

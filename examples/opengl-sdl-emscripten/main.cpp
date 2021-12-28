@@ -204,8 +204,6 @@ int main(int argc, char* argv[])
             std::move(pRenderer)
         );
 
-        pManager->enable_caching(false);
-
         // Setup the GUI (see examples_common.cpp)
         examples_setup_gui(*pManager);
 
