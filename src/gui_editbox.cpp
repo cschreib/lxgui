@@ -19,9 +19,7 @@ namespace lxgui {
 namespace gui
 {
 edit_box::edit_box(manager& mManager) : focus_frame(mManager),
-    mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false),
-    mLastKeyPressed_(key::K_UNASSIGNED),
-    mKeyRepeatTimer_(dKeyRepeatSpeed_, periodic_timer::start_type::FIRST_TICK, true)
+    mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false)
 {
     lType_.push_back(CLASS_NAME);
 
@@ -133,22 +131,6 @@ void edit_box::update(float fDelta)
         }
     }
 
-    if (bFocus_ && mLastKeyPressed_ != key::K_UNASSIGNED &&
-        get_manager().get_input_manager().key_is_down_long(mLastKeyPressed_, true))
-    {
-        if (mKeyRepeatTimer_.is_paused())
-            mKeyRepeatTimer_.start();
-
-        mKeyRepeatTimer_.update(fDelta);
-
-        if (mKeyRepeatTimer_.ticks())
-        {
-            process_key_(mLastKeyPressed_);
-            if (!mChecker.is_alive())
-                return;
-        }
-    }
-
     if (iterCarretPos_ != iterCarretPosOld_)
     {
         iterCarretPosOld_ = iterCarretPos_;
@@ -238,8 +220,6 @@ void edit_box::on_event(const event& mEvent)
                 return;
         }
 
-        mLastKeyPressed_ = mKey;
-
         process_key_(mKey);
         if (!mChecker.is_alive())
             return;
@@ -252,12 +232,6 @@ void edit_box::on_event(const event& mEvent)
         {
             on_script("OnEscapePressed");
             return;
-        }
-
-        if (mKey == mLastKeyPressed_)
-        {
-            mLastKeyPressed_ = key::K_UNASSIGNED;
-            mKeyRepeatTimer_.stop();
         }
     }
 }

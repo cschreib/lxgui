@@ -451,10 +451,6 @@ namespace gui
 
         utils::observer_ptr<font_string> pFontString_ = nullptr;
         bounds2f lTextInsets_ = bounds2f::ZERO;
-
-        input::key     mLastKeyPressed_;
-        double         dKeyRepeatSpeed_ = 0.03;
-        periodic_timer mKeyRepeatTimer_;
     };
 }
 }
