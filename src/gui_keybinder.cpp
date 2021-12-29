@@ -1,5 +1,6 @@
 #include "lxgui/gui_keybinder.hpp"
 #include "lxgui/gui_event.hpp"
+#include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/input.hpp"
 
@@ -10,7 +11,7 @@ namespace gui
 {
 
 keybinder::keybinder(input::manager& mInputManager, event_manager& mEventManager) :
-    event_receiver(mEventManager), mInputManager_(mInputManager)
+    event_receiver(mEventManager), mInputManager_(mInputManager), mEventManager_(mEventManager)
 {
 }
 
@@ -114,8 +115,13 @@ void keybinder::on_event(const event& mEvent)
     }
     catch (const sol::error& e)
     {
-        gui::out << gui::error << "Bound action : " << mHandler.second
-            << " : " << e.what() << std::endl;
+        std::string sError = "Bound action: " + mHandler.second + ": " + std::string(e.what());
+
+        gui::out << gui::error << sError << std::endl;
+
+        event mEvent("LUA_ERROR");
+        mEvent.add(sError);
+        mEventManager_.fire_event(mEvent);
     }
 }
 

@@ -85,6 +85,7 @@ namespace gui
         using key_map = std::unordered_map<input::key,T>;
 
         input::manager& mInputManager_;
+        event_manager& mEventManager_;
 
         key_map<key_map<key_map<sol::protected_function>>> lKeyBindingList_;
     };
