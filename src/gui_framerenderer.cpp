@@ -203,8 +203,6 @@ void frame_renderer::render_strata_(const strata& mStrata) const
             pFrame->render();
         }
     }
-
-    ++mStrata.uiRedrawCount;
 }
 
 void frame_renderer::clear_strata_list_()
@@ -213,7 +211,6 @@ void frame_renderer::clear_strata_list_()
     {
         mStrata.lLevelList.clear();
         mStrata.pRenderTarget = nullptr;
-        mStrata.uiRedrawCount = 0u;
         mStrata.bRedraw = true;
     }
 
