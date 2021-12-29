@@ -133,6 +133,7 @@ Other changes:
  - gui: added frame::get_script
  - gui: added slider::set_orientation(const std::string&)
  - gui: added status_bar::set_orientation(const std::string&)
+ - gui: added manager::close_ui_now and made close_ui safer
  - gui: render targets can now have texture filtering other than nearest
  - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications

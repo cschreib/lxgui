@@ -109,6 +109,8 @@ namespace gui
 
         /// Adds a new directory to be parsed for UI addons.
         /** \param sDirectory The new directory
+        *   \note If the UI is already loaded, this change will only take effect after
+        *         the UI is reloaded, see reload_ui().
         */
         void add_addon_directory(const std::string& sDirectory);
 
@@ -116,8 +118,22 @@ namespace gui
         /** \note This is usefull whenever you need to reload a
         *         completely different UI (for example, when switching
         *         from your game's main menu to the real game).
+        *   \note If the UI is already loaded, this change will only take effect after
+        *         the UI is reloaded, see reload_ui().
         */
         void clear_addon_directory_list();
+
+        /// Set the code to be executed on each fresh Lua state.
+        /** \param pLuaRegs Some code that will get executed immediately after the Lua
+        *                   state is created
+        *   \note This function is usefull if you need to create additionnal
+        *         resources on the Lua state before the GUI files are loaded.
+        *         The argument to this function will be stored and reused, each time
+        *         the Lua state is created (e.g., when the GUI is re-loaded, see reload_ui()).
+        *         If the UI is already loaded, this change will only take effect after
+        *         the UI is reloaded.
+        */
+        void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
 
         /// Prints debug informations in the log file.
         /** \note Calls uiobject::serialize().
@@ -158,54 +174,45 @@ namespace gui
             input::key uiModifier2 = input::key::K_UNASSIGNED
         );
 
-        /// Returns the GUI Lua state (sol wrapper).
-        /** \return The GUI Lua state
-        */
-        sol::state& get_lua();
-
-        /// Returns the GUI Lua state (sol wrapper).
-        /** \return The GUI Lua state
-        */
-        const sol::state& get_lua() const;
-
-        /// Set the code to be executed on each fresh Lua state.
-        /** \param pLuaRegs Some code that will get executed immediately after the Lua
-        *                   state is created
-        *   \note This function is usefull if you need to create additionnal
-        *         resources on the Lua state before the GUI files are loaded.
-        *         The argument to this function will be stored and reused, each time
-        *         the Lua state is created (e.g., when the GUI is re-loaded, see reload_ui()).
-        *   \warning Do not call this function while the manager is running update()
-        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
-        */
-        void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
-
         /// Loads the UI.
         /** \note Creates the Lua state and loads addon files (if any).
-        *   \warning Do not call this function while the manager is running update()
-        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        *         Calling this function if the UI is already loaded will have no effect.
+        *         If your intent is to re-load the UI, use reload_ui() instead.
         */
         void load_ui();
 
-        /// Closes the UI, deletes widgets.
-        /** \warning Do not call this function while the manager is running update()
-        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        /// Closes the UI (at the end of the current or next update_ui()).
+        /** \note Because the actual re-loading is deferred to the end of the current update_ui() call,
+        *         or to the end of the next update_ui() call, it is safe to call this function at any
+        *         time. If you need to close the UI without delay, use close_ui_now().
         */
         void close_ui();
 
-        /// Closes the UI and load it again (at the end of the current or next update()).
-        /** \note Because the actual re-loading is deferred to the end of the current update() call,
-        *         or to the end of the next update() call, it is safe to call this function at any
+        /// Closes the UI (immediately).
+        /** \note All widgets will be deleted, and the Lua state will be closed.
+        *   \warning Do not call this function while the manager is running update_ui()
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        */
+        void close_ui_now();
+
+        /// Closes the UI and load it again (at the end of the current or next update_ui()).
+        /** \note Because the actual re-loading is deferred to the end of the current update_ui() call,
+        *         or to the end of the next update_ui() call, it is safe to call this function at any
         *         time. If you need to reload the UI without delay, use reload_ui_now().
         */
         void reload_ui();
 
         /// Closes the UI and load it again (immediately).
-        /** \note Calls close_ui() then load_ui().
-        *   \warning Do not call this function while the manager is running update()
+        /** \note Calls close_ui_now() then load_ui().
+        *   \warning Do not call this function while the manager is running update_ui()
         *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void reload_ui_now();
+
+        /// Checks if the UI has been loaded.
+        /** \return 'true' if the UI has being loaded
+        */
+        bool is_loaded() const;
 
         /// Tells the rendering back-end to start rendering into a new target.
         /** \param pTarget The target to render to (nullptr to render to the screen)
@@ -221,10 +228,15 @@ namespace gui
         /// Renders the UI into the current render target.
         void render_ui() const;
 
-        /// Checks if the UI has been loaded.
-        /** \return 'true' if the UI has being loaded
+        /// Updates this manager and its widgets.
+        /** \param fDelta The time elapsed since the last call
         */
-        bool is_loaded() const;
+        void update_ui(float fDelta);
+
+        /// Called whenever an Event occurs.
+        /** \param mEvent The Event which has occured
+        */
+        void on_event(const event& mEvent) override;
 
         /// Ask this manager for movement management.
         /** \param pObj        The object to move
@@ -313,15 +325,15 @@ namespace gui
         */
         void request_focus(utils::observer_ptr<focus_frame> pFocusFrame);
 
-        /// Updates this manager and its widgets.
-        /** \param fDelta The time elapsed since the last call
+        /// Returns the GUI Lua state (sol wrapper).
+        /** \return The GUI Lua state
         */
-        void update_ui(float fDelta);
+        sol::state& get_lua();
 
-        /// Called whenever an Event occurs.
-        /** \param mEvent The Event which has occured
+        /// Returns the GUI Lua state (sol wrapper).
+        /** \return The GUI Lua state
         */
-        void on_event(const event& mEvent) override;
+        const sol::state& get_lua() const;
 
         /// Returns the renderer implementation.
         /** \return The renderer implementation
@@ -423,7 +435,7 @@ namespace gui
 
         /// Creates the lua::state that will be used to communicate with the GUI.
         /**
-        *   \warning Do not call this function while the manager is running update()
+        *   \warning Do not call this function while the manager is running update_ui()
         *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void create_lua_();
@@ -432,53 +444,49 @@ namespace gui
         /** \note See add_addon_directory().
         *   \note See load_ui().
         *   \note See create_lua().
-        *   \warning Do not call this function while the manager is running update()
+        *   \warning Do not call this function while the manager is running update_ui()
         *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
         void read_files_();
-
-        void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
-        void load_addon_files_(addon* pAddOn);
-        void load_addon_directory_(const std::string& sDirectory);
-
-        void save_variables_(const addon* pAddOn);
-        std::string serialize_global_(const std::string& sVariable) const;
 
         void clear_hovered_frame_();
         void update_hovered_frame_();
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
             const vector2f& mMousePos = vector2f::ZERO);
 
-        void parse_layout_file_(const std::string& sFile, addon* pAddOn);
-
-        float fScalingFactor_ = 1.0f;
-        float fBaseScalingFactor_ = 1.0f;
-        bool  bEnableCaching_ = false;
-
-        std::unique_ptr<sol::state>        pLua_;
-        std::function<void(gui::manager&)> pLuaRegs_;
-
-        bool bClosed_ = true;
-        bool bLoadingUI_ = false;
-        bool bReloadUI_ = false;
-        bool bFirstIteration_ = true;
-        bool bUpdating_ = false;
-
-        bool                            bInputEnabled_ = true;
-        std::unique_ptr<input::manager> pInputManager_;
-
         template<typename T>
         using key_map = std::unordered_map<input::key,T>;
         template<typename T>
         using string_map = std::unordered_map<std::string,T>;
 
-        key_map<key_map<key_map<std::string>>> lKeyBindingList_;
+        // Persistent state
+        float fScalingFactor_ = 1.0f;
+        float fBaseScalingFactor_ = 1.0f;
+        bool  bEnableCaching_ = false;
+        std::function<void(gui::manager&)> pLuaRegs_;
+        std::vector<std::string>           lGUIDirectoryList_;
 
+        // Implementations
+        std::unique_ptr<input::manager>  pInputManager_;
+        std::unique_ptr<renderer>        pRenderer_;
+
+        // UI state
+        std::unique_ptr<factory>         pFactory_;
+        std::unique_ptr<localizer>       pLocalizer_;
+        std::unique_ptr<sol::state>      pLua_;
         utils::owner_ptr<uiroot>         pRoot_;
         utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
+        std::unique_ptr<addon_registry>  pAddOnRegistry_;
 
-        std::vector<std::string>        lGUIDirectoryList_;
-        std::unique_ptr<addon_registry> pAddOnRegistry_;
+        bool bLoaded_ = false;
+        bool bReloadUI_ = false;
+        bool bCloseUI_ = false;
+        bool bFirstIteration_ = true;
+        bool bUpdating_ = false;
+
+        bool bInputEnabled_ = true;
+
+        key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
         bool                             bObjectMoved_ = false;
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
@@ -499,11 +507,6 @@ namespace gui
         bool bResizeHeight_ = false;
         bool bResizeFromRight_ = false;
         bool bResizeFromBottom_ = false;
-
-        std::unique_ptr<factory> pFactory_;
-
-        std::unique_ptr<localizer> pLocalizer_;
-        std::unique_ptr<renderer>  pRenderer_;
     };
 }
 }

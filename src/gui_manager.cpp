@@ -55,12 +55,12 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     pLocalizer_ = std::make_unique<localizer>();
 
     // NB: cannot call register_event() here, as observable_from_this()
-    // is not yet fully initialised! This is done in create_lua() instead.
+    // is not yet fully initialised! This is done in load_ui() instead.
 }
 
 manager::~manager()
 {
-    close_ui();
+    close_ui_now();
 }
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
@@ -128,7 +128,7 @@ const sol::state& manager::get_lua() const
 
 void manager::read_files_()
 {
-    if (!bClosed_ || pAddOnRegistry_)
+    if (bLoaded_ || pAddOnRegistry_)
         return;
 
     pAddOnRegistry_ = std::make_unique<addon_registry>(
@@ -140,7 +140,7 @@ void manager::read_files_()
 
 void manager::load_ui()
 {
-    if (!bClosed_)
+    if (bLoaded_)
         return;
 
     pFactory_ = std::make_unique<factory>(*this);
@@ -159,15 +159,25 @@ void manager::load_ui()
 
     read_files_();
 
-    bClosed_ = false;
+    bLoaded_ = true;
+    bCloseUI_ = false;
 }
 
 void manager::close_ui()
 {
-    if (bClosed_)
+    if (bUpdating_)
+        bCloseUI_ = true;
+    else
+        close_ui_now();
+}
+
+void manager::close_ui_now()
+{
+    if (!bLoaded_)
         return;
 
-    pAddOnRegistry_->save_variables();
+    if (pAddOnRegistry_)
+        pAddOnRegistry_->save_variables();
 
     pVirtualRoot_ = nullptr;
     pRoot_ = nullptr;
@@ -195,8 +205,6 @@ void manager::close_ui()
 
     lKeyBindingList_.clear();
 
-    bClosed_ = true;
-
     pLocalizer_->clear_translations();
 
     unregister_event("KEY_PRESSED");
@@ -204,17 +212,22 @@ void manager::close_ui()
     unregister_event("WINDOW_RESIZED");
 
     pInputManager_->unregister_event_manager(*this);
+
+    bLoaded_ = false;
 }
 
 void manager::reload_ui()
 {
-    bReloadUI_ = true;
+    if (bUpdating_)
+        bReloadUI_ = true;
+    else
+        reload_ui_now();
 }
 
 void manager::reload_ui_now()
 {
     gui::out << "Closing UI..." << std::endl;
-    close_ui();
+    close_ui_now();
     gui::out << "Done. Loading UI..." << std::endl;
     load_ui();
     gui::out << "Done." << std::endl;
@@ -251,7 +264,7 @@ void manager::render_ui() const
 
 bool manager::is_loaded() const
 {
-    return !bClosed_;
+    return bLoaded_;
 }
 
 void manager::update_ui(float fDelta)
@@ -279,10 +292,13 @@ void manager::update_ui(float fDelta)
     }
 
     frame_ended();
+
     bUpdating_ = false;
 
     if (bReloadUI_)
         reload_ui_now();
+    if (bCloseUI_)
+        close_ui_now();
 }
 
 void manager::clear_hovered_frame_()
