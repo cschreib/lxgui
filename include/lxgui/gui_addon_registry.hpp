@@ -32,10 +32,10 @@ namespace gui
         addon_registry(sol::state& mLua, localizer& mLocalizer, event_manager& mEventManager,
             uiroot& mRoot, virtual_uiroot& mVirtualRoot);
 
-        addon_registry(const addon_registry& mMgr) = delete;
-        addon_registry(addon_registry&& mMgr) = delete;
-        addon_registry& operator = (const addon_registry& mMgr) = delete;
-        addon_registry& operator = (addon_registry&& mMgr) = delete;
+        addon_registry(const addon_registry&) = delete;
+        addon_registry(addon_registry&&) = delete;
+        addon_registry& operator = (const addon_registry&) = delete;
+        addon_registry& operator = (addon_registry&&) = delete;
 
         /// Parse all addons inside a directory.
         /** \note The directory must contain a file named addon.txt, and
@@ -78,8 +78,6 @@ namespace gui
         event_manager&  mEventManager_;
         uiroot&         mRoot_;
         virtual_uiroot& mVirtualRoot_;
-
-        std::string sUIVersion_ = "0001";
 
         const addon*                  pCurrentAddOn_ = nullptr;
         string_map<string_map<addon>> lAddOnList_;

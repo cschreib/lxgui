@@ -14,6 +14,13 @@
 #include <fstream>
 #include <sstream>
 
+namespace
+{
+    // This should be incremented for each non-backward compatible change
+    // to the GUI API, or when new elements are added to the API.
+    const char* LXGUI_UI_VERSION = "0001";
+}
+
 namespace lxgui {
 namespace gui
 {
@@ -64,13 +71,13 @@ void addon_registry::load_addon_toc_(const std::string& sAddOnName, const std::s
                 {
                     mAddOn.sUIVersion = sValue;
 
-                    if (mAddOn.sUIVersion == sUIVersion_)
+                    if (mAddOn.sUIVersion == LXGUI_UI_VERSION)
                         mAddOn.bEnabled = true;
                     else
                     {
                         gui::out << gui::warning << "gui::manager : "
                             << "Wrong UI version for \"" << sAddOnName << "\" (got : "
-                            << mAddOn.sUIVersion << ", expected : " << sUIVersion_
+                            << mAddOn.sUIVersion << ", expected : " << LXGUI_UI_VERSION
                             << "). AddOn disabled." << std::endl;
                         mAddOn.bEnabled = false;
                     }
