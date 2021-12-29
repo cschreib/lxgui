@@ -251,9 +251,6 @@ void uiobject::set_dimensions(const vector2f& mDimensions)
     if (mDimensions_ == mDimensions)
         return;
 
-    if (!bVirtual_)
-        get_manager().notify_object_moved();
-
     mDimensions_ = mDimensions;
 
     if (!bVirtual_)
@@ -268,9 +265,6 @@ void uiobject::set_width(float fAbsWidth)
     if (mDimensions_.x == fAbsWidth)
         return;
 
-    if (!bVirtual_)
-        get_manager().notify_object_moved();
-
     mDimensions_.x = fAbsWidth;
 
     if (!bVirtual_)
@@ -284,9 +278,6 @@ void uiobject::set_height(float fAbsHeight)
 {
     if (mDimensions_.y == fAbsHeight)
         return;
-
-    if (!bVirtual_)
-        get_manager().notify_object_moved();
 
     mDimensions_.y = fAbsHeight;
 
@@ -467,7 +458,6 @@ void uiobject::clear_all_points()
             update_anchors_();
             notify_borders_need_update();
             notify_renderer_need_redraw();
-            get_manager().notify_object_moved();
         }
     }
 }
@@ -496,7 +486,6 @@ void uiobject::set_all_points(const std::string& sObjName)
         update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
-        get_manager().notify_object_moved();
     }
 }
 
@@ -554,7 +543,6 @@ void uiobject::set_point(const anchor_data& mAnchor)
         update_anchors_();
         notify_borders_need_update();
         notify_renderer_need_redraw();
-        get_manager().notify_object_moved();
     }
 }
 
@@ -865,13 +853,10 @@ void uiobject::update_anchors_()
 
 void uiobject::notify_borders_need_update()
 {
-    const bool bOldReady = bReady_;
-    const auto lOldBorderList = lBorderList_;
+    if (bVirtual_)
+        return;
 
     update_borders_();
-
-    if (lBorderList_ != lOldBorderList || bOldReady != bReady_)
-        get_manager().notify_object_moved();
 
     for (const auto& pObject : lAnchoredObjectList_)
         pObject->notify_borders_need_update();

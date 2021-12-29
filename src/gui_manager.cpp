@@ -258,9 +258,6 @@ void manager::update_ui(float fDelta)
     DEBUG_LOG(" Update widgets...");
     pRoot_->update(fDelta);
 
-    if (bObjectMoved_ || pInputManager_->get_mouse_delta() != vector2f::ZERO)
-        bUpdateHoveredFrame_ = true;
-
     update_hovered_frame_();
 
     bObjectMoved_ = false;
@@ -442,6 +439,7 @@ const vector2f& manager::get_movement() const
 void manager::notify_object_moved()
 {
     bObjectMoved_ = true;
+    notify_hovered_frame_dirty();
 }
 
 void manager::enable_input(bool bEnable)
@@ -531,6 +529,8 @@ void manager::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "MOUSE_MOVED")
     {
+        notify_hovered_frame_dirty();
+
         if (pMovedObject_ || pSizedObject_)
         {
             DEBUG_LOG(" Moved object...");

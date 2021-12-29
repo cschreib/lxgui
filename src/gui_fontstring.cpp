@@ -559,6 +559,7 @@ void font_string::update_borders_()
     if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
+        get_manager().notify_object_moved();
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  @");
