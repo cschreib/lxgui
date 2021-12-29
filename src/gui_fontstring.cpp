@@ -69,7 +69,7 @@ std::string font_string::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << layered_region::serialize(sTab);
+    sStr << base::serialize(sTab);
 
     sStr << sTab << "  # Font name   : " << sFontName_ << "\n";
     sStr << sTab << "  # Font height : " << fHeight_ << "\n";
@@ -114,7 +114,7 @@ void font_string::create_glue()
 
 void font_string::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const font_string* pFontString = down_cast<font_string>(&mObj);
     if (!pFontString)
@@ -210,7 +210,7 @@ const color& font_string::get_text_color() const
 
 void font_string::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pText_)
         set_font(sFontName_, fHeight_);
@@ -477,7 +477,7 @@ const text* font_string::get_text_object() const
 void font_string::update_borders_()
 {
     if (!pText_)
-        return uiobject::update_borders_();
+        return base::update_borders_();
 
     //#define DEBUG_LOG(msg) gui::out << (msg) << std::endl
     #define DEBUG_LOG(msg)

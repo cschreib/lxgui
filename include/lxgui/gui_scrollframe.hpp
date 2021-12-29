@@ -34,6 +34,8 @@ namespace gui
     */
     class scroll_frame : public frame, public frame_renderer
     {
+        using base = frame;
+
     public :
 
         /// Constructor.

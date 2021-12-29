@@ -30,7 +30,7 @@ std::string slider::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << frame::serialize(sTab);
+    sStr << base::serialize(sTab);
     sStr << sTab << "  # Orientation: ";
     switch (mOrientation_)
     {
@@ -49,7 +49,7 @@ std::string slider::serialize(const std::string& sTab) const
 
 bool slider::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if (sScriptName == "OnValueChanged")
         return true;
@@ -66,14 +66,14 @@ void slider::on_script(const std::string& sScriptName, const event_data& mData)
         enable_mouse(true);
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+    base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 }
 
 void slider::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const slider* pSlider = down_cast<slider>(&mObj);
     if (!pSlider)
@@ -153,7 +153,7 @@ void slider::on_event(const event& mEvent)
 {
     alive_checker mChecker(*this);
 
-    frame::on_event(mEvent);
+    base::on_event(mEvent);
     if (!mChecker.is_alive())
         return;
 
@@ -435,9 +435,9 @@ bool slider::is_in_frame(const vector2f& mPosition) const
     if (bAllowClicksOutsideThumb_)
     {
         if (pThumbTexture_)
-            return frame::is_in_frame(mPosition) || pThumbTexture_->is_in_region(mPosition);
+            return base::is_in_frame(mPosition) || pThumbTexture_->is_in_region(mPosition);
         else
-            return frame::is_in_frame(mPosition);
+            return base::is_in_frame(mPosition);
     }
     else
     {
@@ -451,7 +451,7 @@ bool slider::is_in_frame(const vector2f& mPosition) const
 void slider::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
 {
     if (bAllowClicksOutsideThumb_)
-        frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);
+        base::notify_mouse_in_frame(bMouseInFrame, mMousePos);
 
     bMouseInThumb_ = (bMouseInFrame && pThumbTexture_ && pThumbTexture_->is_in_region(mMousePos));
 }
@@ -474,7 +474,7 @@ void slider::update_thumb_texture_()
 
 void slider::notify_borders_need_update()
 {
-    frame::notify_borders_need_update();
+    base::notify_borders_need_update();
     notify_thumb_texture_needs_update_();
 }
 

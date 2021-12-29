@@ -14,6 +14,8 @@ namespace gui
     */
     class check_button : public button
     {
+        using base = button;
+
     public :
 
         /// Constructor.

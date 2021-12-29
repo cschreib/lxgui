@@ -18,7 +18,7 @@ button::button(manager& mManager) : frame(mManager)
 
 std::string button::serialize(const std::string& sTab) const
 {
-    return frame::serialize(sTab);
+    return base::serialize(sTab);
 }
 
 void button::create_glue()
@@ -28,7 +28,7 @@ void button::create_glue()
 
 bool button::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if ((sScriptName == "OnClick") ||
         (sScriptName == "OnDoubleClick") ||
@@ -48,7 +48,7 @@ void button::on_script(const std::string& sScriptName, const event_data& mData)
         enable_mouse(true);
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+    base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -82,7 +82,7 @@ void button::on_event(const event& mEvent)
 {
     alive_checker mChecker(*this);
 
-    frame::on_event(mEvent);
+    base::on_event(mEvent);
     if (!mChecker.is_alive())
         return;
 
@@ -103,7 +103,7 @@ void button::on_event(const event& mEvent)
 
 void button::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const button* pButton = down_cast<button>(&mObj);
     if (!pButton)

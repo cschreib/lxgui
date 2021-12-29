@@ -30,6 +30,8 @@ namespace gui
     */
     class status_bar : public frame
     {
+        using base = frame;
+
     public :
 
         enum class orientation

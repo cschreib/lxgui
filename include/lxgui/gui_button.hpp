@@ -42,6 +42,8 @@ namespace gui
     */
     class button : public frame
     {
+        using base = frame;
+
     public :
 
         enum class state

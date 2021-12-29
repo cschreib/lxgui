@@ -28,6 +28,8 @@ namespace gui
     */
     class slider : public frame
     {
+        using base = frame;
+
     public :
 
         enum class orientation

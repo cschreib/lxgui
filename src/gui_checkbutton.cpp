@@ -15,12 +15,12 @@ check_button::check_button(manager& mManager) : button(mManager)
 
 std::string check_button::serialize(const std::string& sTab) const
 {
-    return button::serialize(sTab);
+    return base::serialize(sTab);
 }
 
 void check_button::copy_from(const uiobject& mObj)
 {
-    button::copy_from(mObj);
+    base::copy_from(mObj);
 
     const check_button* pButton = down_cast<check_button>(&mObj);
     if (!pButton)
@@ -98,7 +98,7 @@ void check_button::uncheck()
 
 void check_button::disable()
 {
-    button::disable();
+    base::disable();
 
     if (is_enabled() && is_checked() && pDisabledCheckedTexture_)
     {
@@ -111,7 +111,7 @@ void check_button::disable()
 
 void check_button::enable()
 {
-    button::enable();
+    base::enable();
 
     if (!is_enabled() && is_checked() && pDisabledCheckedTexture_)
     {
@@ -124,7 +124,7 @@ void check_button::enable()
 
 void check_button::release()
 {
-    button::release();
+    base::release();
 
     if (is_checked())
         uncheck();

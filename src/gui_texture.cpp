@@ -22,7 +22,7 @@ texture::texture(manager& mManager) : layered_region(mManager), mRenderer_(mMana
 std::string texture::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
-    sStr << layered_region::serialize(sTab);
+    sStr << base::serialize(sTab);
 
     std::visit([&](const auto& mData)
     {
@@ -114,7 +114,7 @@ void texture::create_glue()
 
 void texture::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const texture* pTexture = down_cast<texture>(&mObj);
     if (!pTexture)
@@ -518,7 +518,7 @@ void texture::set_vertex_color(const color& mColor, std::size_t uiIndex)
 
 void texture::update_borders_()
 {
-    layered_region::update_borders_();
+    base::update_borders_();
 
     mQuad_.v[0].pos = lBorderList_.top_left();
     mQuad_.v[1].pos = lBorderList_.top_right();

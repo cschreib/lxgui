@@ -139,6 +139,8 @@ namespace gui
     */
     class edit_box : public focus_frame
     {
+        using base = focus_frame;
+
     public :
 
         /// Constructor.

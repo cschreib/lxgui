@@ -216,6 +216,8 @@ namespace gui
     */
     class frame : public event_receiver, public region
     {
+        using base = region;
+
     public :
 
         /// Type of the frame child list (internal).

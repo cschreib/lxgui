@@ -21,6 +21,8 @@ namespace gui
     */
     class texture : public layered_region
     {
+        using base = layered_region;
+
     public :
 
         enum class blend_mode

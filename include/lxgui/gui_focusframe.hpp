@@ -13,6 +13,8 @@ namespace gui
     */
     class focus_frame : public frame
     {
+        using base = frame;
+
     public :
 
         /// Constructor.

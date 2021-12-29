@@ -25,7 +25,7 @@ std::string status_bar::serialize(const std::string& sTab) const
 {
     std::ostringstream sStr;
 
-    sStr << frame::serialize(sTab);
+    sStr << base::serialize(sTab);
     sStr << sTab << "  # Orientation: ";
     switch (mOrientation_)
     {
@@ -43,7 +43,7 @@ std::string status_bar::serialize(const std::string& sTab) const
 
 bool status_bar::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if (sScriptName == "OnValueChanged")
         return true;
@@ -53,7 +53,7 @@ bool status_bar::can_use_script(const std::string& sScriptName) const
 
 void status_bar::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const status_bar* pStatusBar = down_cast<status_bar>(&mObj);
     if (!pStatusBar)
@@ -317,7 +317,7 @@ void status_bar::update(float fDelta)
     }
 
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
 }

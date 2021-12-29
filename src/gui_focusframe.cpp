@@ -20,7 +20,7 @@ focus_frame::~focus_frame()
 
 void focus_frame::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const focus_frame* pFocusFrame = down_cast<focus_frame>(&mObj);
     if (!pFocusFrame)
@@ -76,14 +76,14 @@ void focus_frame::notify_visible()
     if (bAutoFocus_)
         set_focus(true);
 
-    frame::notify_visible();
+    base::notify_visible();
 }
 
 void focus_frame::notify_invisible()
 {
     set_focus(false);
 
-    frame::notify_invisible();
+    base::notify_invisible();
 }
 
 }

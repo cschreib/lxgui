@@ -45,7 +45,7 @@ void scroll_frame::on_script(const std::string& sScriptName, const event_data& m
         return;
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+    base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -55,7 +55,7 @@ void scroll_frame::on_script(const std::string& sScriptName, const event_data& m
 
 void scroll_frame::copy_from(const uiobject& mObj)
 {
-    frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const scroll_frame* pScrollFrame = down_cast<scroll_frame>(&mObj);
     if (!pScrollFrame)
@@ -191,7 +191,7 @@ void scroll_frame::update(float fDelta)
         mOldChildSize = pScrollChild_->get_apparent_dimensions();
 
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
 
@@ -276,7 +276,7 @@ void scroll_frame::update_scroll_child_input_()
 
 void scroll_frame::notify_scaling_factor_updated()
 {
-    frame::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     bRebuildScrollRenderTarget_ = true;
 }
@@ -332,14 +332,14 @@ void scroll_frame::render_scroll_strata_list_()
 bool scroll_frame::is_in_frame(const vector2f& mPosition) const
 {
     if (pScrollTexture_)
-        return frame::is_in_frame(mPosition) || pScrollTexture_->is_in_region(mPosition);
+        return base::is_in_frame(mPosition) || pScrollTexture_->is_in_region(mPosition);
     else
-        return frame::is_in_frame(mPosition);
+        return base::is_in_frame(mPosition);
 }
 
 void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
 {
-    frame::notify_mouse_in_frame(bMouseInFrame, mMousePos);
+    base::notify_mouse_in_frame(bMouseInFrame, mMousePos);
     bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(mMousePos));
 }
 
@@ -382,7 +382,7 @@ vector2f scroll_frame::get_target_dimensions() const
 
 void scroll_frame::update_borders_()
 {
-    frame::update_borders_();
+    base::update_borders_();
 
     if (pScrollChild_)
         pScrollChild_->notify_borders_need_update();

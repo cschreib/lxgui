@@ -16,6 +16,8 @@ namespace gui
     */
     class region : public uiobject
     {
+        using base = uiobject;
+
     public :
 
         /// Constructor.

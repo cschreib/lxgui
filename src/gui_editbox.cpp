@@ -29,7 +29,7 @@ edit_box::edit_box(manager& mManager) : focus_frame(mManager),
 
 bool edit_box::can_use_script(const std::string& sScriptName) const
 {
-    if (frame::can_use_script(sScriptName))
+    if (base::can_use_script(sScriptName))
         return true;
     else if ((sScriptName == "OnChar") ||
         (sScriptName == "OnCursorChanged") ||
@@ -50,7 +50,7 @@ bool edit_box::can_use_script(const std::string& sScriptName) const
 
 void edit_box::copy_from(const uiobject& mObj)
 {
-    focus_frame::copy_from(mObj);
+    base::copy_from(mObj);
 
     const edit_box* pEditBox = down_cast<edit_box>(&mObj);
     if (!pEditBox)
@@ -86,7 +86,8 @@ void edit_box::copy_from(const uiobject& mObj)
 void edit_box::update(float fDelta)
 {
     alive_checker mChecker(*this);
-    frame::update(fDelta);
+
+    base::update(fDelta);
     if (!mChecker.is_alive())
         return;
 
@@ -144,7 +145,7 @@ void edit_box::on_event(const event& mEvent)
 {
     alive_checker mChecker(*this);
 
-    frame::on_event(mEvent);
+    base::on_event(mEvent);
     if (!mChecker.is_alive())
         return;
 
@@ -246,7 +247,7 @@ void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
             unregister_event("TEXT_ENTERED");
     }
 
-    frame::enable_keyboard(bIsKeyboardEnabled);
+    base::enable_keyboard(bIsKeyboardEnabled);
 }
 
 void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
@@ -264,7 +265,8 @@ void edit_box::on_script(const std::string& sScriptName, const event_data& mData
     }
 
     alive_checker mChecker(*this);
-    frame::on_script(sScriptName, mData);
+
+    base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
 
@@ -705,7 +707,7 @@ void edit_box::notify_focus(bool bFocus)
 
 void edit_box::notify_scaling_factor_updated()
 {
-    frame::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pFontString_)
     {

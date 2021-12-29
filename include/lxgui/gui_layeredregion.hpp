@@ -37,6 +37,8 @@ namespace gui
     */
     class layered_region : public region
     {
+        using base = region;
+
     public :
 
         /// Constructor.

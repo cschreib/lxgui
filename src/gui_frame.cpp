@@ -227,7 +227,7 @@ bool frame::can_use_script(const std::string& sScriptName) const
 
 void frame::copy_from(const uiobject& mObj)
 {
-    uiobject::copy_from(mObj);
+    base::copy_from(mObj);
 
     const frame* pFrame = down_cast<frame>(&mObj);
     if (!pFrame)
@@ -401,7 +401,7 @@ utils::observer_ptr<const layered_region> frame::get_region(const std::string& s
 
 void frame::set_dimensions(const vector2f& mDimensions)
 {
-    uiobject::set_dimensions(vector2f(
+    base::set_dimensions(vector2f(
         std::min(std::max(mDimensions.x,  fMinWidth_),  fMaxWidth_),
         std::min(std::max(mDimensions.y, fMinHeight_), fMaxHeight_)
     ));
@@ -409,12 +409,12 @@ void frame::set_dimensions(const vector2f& mDimensions)
 
 void frame::set_width(float fAbsWidth)
 {
-    uiobject::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
+    base::set_width(std::min(std::max(fAbsWidth, fMinWidth_), fMaxWidth_));
 }
 
 void frame::set_height(float fAbsHeight)
 {
-    uiobject::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
+    base::set_height(std::min(std::max(fAbsHeight, fMinHeight_), fMaxHeight_));
 }
 
 void frame::check_position_()
@@ -585,7 +585,7 @@ void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 
 void frame::notify_loaded()
 {
-    uiobject::notify_loaded();
+    base::notify_loaded();
 
     if (!bVirtual_)
     {
@@ -1714,7 +1714,7 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
 
 void frame::notify_visible()
 {
-    uiobject::notify_visible();
+    base::notify_visible();
 
     for (auto& mRegion : get_regions())
     {
@@ -1734,7 +1734,7 @@ void frame::notify_visible()
 
 void frame::notify_invisible()
 {
-    uiobject::notify_invisible();
+    base::notify_invisible();
 
     for (auto& mChild : get_children())
     {
@@ -1767,7 +1767,7 @@ void frame::notify_renderer_need_redraw()
 
 void frame::notify_scaling_factor_updated()
 {
-    uiobject::notify_scaling_factor_updated();
+    base::notify_scaling_factor_updated();
 
     if (pTitleRegion_)
         pTitleRegion_->notify_scaling_factor_updated();
@@ -1785,7 +1785,7 @@ void frame::show()
         return;
 
     bool bWasVisible_ = bIsVisible_;
-    uiobject::show();
+    base::show();
 
     if (!bWasVisible_)
     {
@@ -1800,7 +1800,7 @@ void frame::hide()
         return;
 
     bool bWasVisible_ = bIsVisible_;
-    uiobject::hide();
+    base::hide();
 
     if (bWasVisible_)
     {
@@ -1891,7 +1891,7 @@ void frame::update(float fDelta)
     alive_checker mChecker(*this);
 
     DEBUG_LOG("  ~");
-    uiobject::update(fDelta);
+    base::update(fDelta);
     DEBUG_LOG("   #");
 
     for (const auto& sEvent : lQueuedEventList_)

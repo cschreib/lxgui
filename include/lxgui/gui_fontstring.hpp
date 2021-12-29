@@ -33,6 +33,8 @@ namespace gui
     */
     class font_string : public layered_region
     {
+        using base = layered_region;
+
     public :
 
         /// Constructor.
