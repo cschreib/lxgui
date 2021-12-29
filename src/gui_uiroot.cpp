@@ -129,7 +129,7 @@ void uiroot::update(float fDelta)
     reset_strata_list_changed_flag_();
 
     if (bRedraw)
-        get_manager().notify_object_moved();
+        get_manager().notify_hovered_frame_dirty();
 
     if (bEnableCaching_)
     {

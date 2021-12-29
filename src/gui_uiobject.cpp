@@ -756,10 +756,10 @@ void uiobject::update_borders_()
 
         DEBUG_LOG("  Read anchors");
         read_anchors_(fLeft, fRight, fTop, fBottom, fXCenter, fYCenter);
-        DEBUG_LOG("    left=" + utils::to_string(fLeft));
-        DEBUG_LOG("    right=" + utils::to_string(fRight));
-        DEBUG_LOG("    top=" + utils::to_string(fTop));
-        DEBUG_LOG("    bottom=" + utils::to_string(fBottom));
+        DEBUG_LOG("    left="     + utils::to_string(fLeft));
+        DEBUG_LOG("    right="    + utils::to_string(fRight));
+        DEBUG_LOG("    top="      + utils::to_string(fTop));
+        DEBUG_LOG("    bottom="   + utils::to_string(fBottom));
         DEBUG_LOG("    x_center=" + utils::to_string(fXCenter));
         DEBUG_LOG("    y_center=" + utils::to_string(fYCenter));
 
@@ -788,20 +788,19 @@ void uiobject::update_borders_()
     }
 
     DEBUG_LOG("  Final borders");
-    lBorderList_.left = round_to_pixel(lBorderList_.left);
-    lBorderList_.right = round_to_pixel(lBorderList_.right);
-    lBorderList_.top = round_to_pixel(lBorderList_.top);
+    lBorderList_.left   = round_to_pixel(lBorderList_.left);
+    lBorderList_.right  = round_to_pixel(lBorderList_.right);
+    lBorderList_.top    = round_to_pixel(lBorderList_.top);
     lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
-    DEBUG_LOG("    left=" + utils::to_string(lBorderList_.left));
-    DEBUG_LOG("    right=" + utils::to_string(lBorderList_.right));
-    DEBUG_LOG("    top=" + utils::to_string(lBorderList_.top));
+    DEBUG_LOG("    left="   + utils::to_string(lBorderList_.left));
+    DEBUG_LOG("    right="  + utils::to_string(lBorderList_.right));
+    DEBUG_LOG("    top="    + utils::to_string(lBorderList_.top));
     DEBUG_LOG("    bottom=" + utils::to_string(lBorderList_.bottom));
 
     if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
-        get_manager().notify_object_moved();
         notify_renderer_need_redraw();
     }
 
@@ -853,7 +852,7 @@ void uiobject::update_anchors_()
 
 void uiobject::notify_borders_need_update()
 {
-    if (bVirtual_)
+    if (is_virtual())
         return;
 
     update_borders_();

@@ -1863,12 +1863,19 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
 
 void frame::update_borders_()
 {
-    uiobject::update_borders_();
+    const bool bOldReady = bReady_;
+    const auto lOldBorderList = lBorderList_;
+
+    base::update_borders_();
 
     check_position_();
 
-    if (pBackdrop_)
-        pBackdrop_->notify_borders_updated();
+    if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
+    {
+        get_manager().notify_hovered_frame_dirty();
+        if (pBackdrop_)
+            pBackdrop_->notify_borders_updated();
+    }
 }
 
 void frame::update_mouse_in_frame_()

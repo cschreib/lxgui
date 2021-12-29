@@ -76,7 +76,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
     pRoot_->notify_scaling_factor_updated();
 
-    notify_object_moved();
+    notify_hovered_frame_dirty();
 }
 
 float manager::get_interface_scaling_factor() const
@@ -195,7 +195,6 @@ void manager::close_ui_now()
     pMovedObject_ = nullptr;
     pSizedObject_ = nullptr;
     pMovedAnchor_ = nullptr;
-    bObjectMoved_ = false;
     mMouseMovement_ = vector2f::ZERO;
     mMovementStartPosition_ = vector2f::ZERO;
     mConstraint_ = constraint::NONE;
@@ -259,8 +258,6 @@ void manager::update_ui(float fDelta)
     pRoot_->update(fDelta);
 
     update_hovered_frame_();
-
-    bObjectMoved_ = false;
 
     if (bFirstIteration_)
     {
@@ -436,12 +433,6 @@ const vector2f& manager::get_movement() const
     return mMouseMovement_;
 }
 
-void manager::notify_object_moved()
-{
-    bObjectMoved_ = true;
-    notify_hovered_frame_dirty();
-}
-
 void manager::enable_input(bool bEnable)
 {
     if (bInputEnabled_ != bEnable)
@@ -522,7 +513,7 @@ void manager::on_event(const event& mEvent)
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
 
-        notify_object_moved();
+        notify_hovered_frame_dirty();
 
         pRenderer_->notify_window_resized(vector2ui(
             mEvent.get<std::uint32_t>(0), mEvent.get<std::uint32_t>(1)));

@@ -245,9 +245,6 @@ namespace gui
         */
         const vector2f& get_movement() const;
 
-        /// Tells this manager an object has moved.
-        void notify_object_moved();
-
         /// Enables/disables input response for all widgets.
         /** \param bEnable 'true' to enable input
         *   \note See toggle_input() and is_input_enabled().
@@ -443,8 +440,6 @@ namespace gui
 
         bool bInputEnabled_ = true;
 
-
-        bool                             bObjectMoved_ = false;
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
         bool                             bUpdateHoveredFrame_ = false;
         utils::observer_ptr<focus_frame> pFocusedFrame_ = nullptr;

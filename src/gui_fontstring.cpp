@@ -551,15 +551,14 @@ void font_string::update_borders_()
         bReady_ = false;
     }
 
-    lBorderList_.left = round_to_pixel(lBorderList_.left);
-    lBorderList_.right = round_to_pixel(lBorderList_.right);
-    lBorderList_.top = round_to_pixel(lBorderList_.top);
+    lBorderList_.left   = round_to_pixel(lBorderList_.left);
+    lBorderList_.right  = round_to_pixel(lBorderList_.right);
+    lBorderList_.top    = round_to_pixel(lBorderList_.top);
     lBorderList_.bottom = round_to_pixel(lBorderList_.bottom);
 
     if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
         DEBUG_LOG("  Fire redraw");
-        get_manager().notify_object_moved();
         notify_renderer_need_redraw();
     }
     DEBUG_LOG("  @");
