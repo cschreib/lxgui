@@ -119,9 +119,6 @@ namespace gui
         */
         void clear_addon_directory_list();
 
-        /// Prints in the log several performance statistics.
-        void print_statistics();
-
         /// Prints debug informations in the log file.
         /** \note Calls uiobject::serialize().
         */

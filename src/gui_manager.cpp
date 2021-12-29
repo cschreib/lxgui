@@ -701,21 +701,6 @@ std::string manager::print_ui() const
 {
     std::stringstream s;
 
-    // if (!lAddOnList_.empty())
-    // {
-    //     s << "\n\n######################## Loaded addons ########################\n" << std::endl;
-    //     for (const auto& iterDirectory : lAddOnList_)
-    //     {
-    //         s << "# Directory : " << iterDirectory.first << "\n|-###" << std::endl;
-    //         for (const auto& iterAdd : iterDirectory.second)
-    //         {
-    //             if (iterAdd.second.bEnabled)
-    //                 s << "|   # " << iterAdd.first << std::endl;
-    //         }
-    //         s << "|-###\n#" << std::endl;
-    //     }
-    // }
-
     s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())
     {
