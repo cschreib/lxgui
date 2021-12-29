@@ -69,7 +69,8 @@ Other changes:
  - gui: added uiroot to hold root frames
  - gui: added virtual_uiroot to hold virtual root frames
  - gui: added factory to manage uiobject creation functions
- - gui: added registry to handle uiobject lookup by name
+ - gui: added registry and virtual_registry to handle uiobject lookup by name
+ - gui: added addon_registry to load and manage addons
  - gui: added uiobject::is_loaded() and clarify the semantic
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -87,6 +88,9 @@ Other changes:
  - gui: renamed uiobject::set_abs_width/height/dimensions to set_width/height/dimensions
  - gui: renamed uiobject::set_rel_width/height/dimensions to set_relative_width/height/dimensions
  - gui: renamed frame::get/set_min/max_resize to get/set_min/max_dimensions
+ - gui: renamed manager::update to update_ui
+ - gui: renamed manager::read_files to load_ui
+ - gui: renamed manager::create_lua to register_lua_glues
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()

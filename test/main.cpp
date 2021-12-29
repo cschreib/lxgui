@@ -268,7 +268,7 @@ void main_loop(void* pTypeErasedData)
 
     // Update the gui
     timing_clock::time_point mStart = timing_clock::now();
-    mContext.pManager->update(mContext.fDelta);
+    mContext.pManager->update_ui(mContext.fDelta);
 
     // Clear the window
 #if defined(GLSFML_GUI) || defined(GLSDL_GUI)
@@ -514,9 +514,8 @@ int main(int argc, char* argv[])
         // Load files :
         //  - first set the directory in which the interface is located
         pManager->add_addon_directory("interface");
-        //  - create the lua::state
-        std::cout << " Creating lua..." << std::endl;
-        pManager->create_lua([](gui::manager& mManager)
+        //  - register Lua "glues" (C++ functions and classes callable from Lua)
+        pManager->register_lua_glues([](gui::manager& mManager)
         {
             // We use a lambda function because this code might be called
             // again later on, for example when one reloads the GUI (the
@@ -544,7 +543,7 @@ int main(int argc, char* argv[])
 
         //  - and load all files
         std::cout << " Reading gui files..." << std::endl;
-        pManager->read_files();
+        pManager->load_ui();
 
         // Create context for the main loop
         main_loop_context mContext;

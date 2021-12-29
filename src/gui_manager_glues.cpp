@@ -28,23 +28,18 @@ namespace lxgui {
 namespace gui
 {
 
-void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
+void manager::register_lua_glues(std::function<void(gui::manager&)> pLuaRegs)
+{
+    pLuaRegs_ = std::move(pLuaRegs);
+}
+
+void manager::create_lua_()
 {
     if (pLua_) return;
-
-    // TODO: find a better place to put this
-    pInputManager_->register_event_manager(
-        utils::observer_ptr<event_manager>(observer_from_this(), static_cast<event_manager*>(this)));
-    register_event("KEY_PRESSED");
-    register_event("MOUSE_MOVED");
-    register_event("WINDOW_RESIZED");
-    pRoot_->register_event("WINDOW_RESIZED");
 
     pLua_ = std::unique_ptr<sol::state>(new sol::state());
     pLua_->open_libraries(sol::lib::base, sol::lib::math, sol::lib::table, sol::lib::io,
         sol::lib::os, sol::lib::string, sol::lib::debug);
-
-    pLuaRegs_ = std::move(pLuaRegs);
 
     auto& mLua = *pLua_;
 

@@ -53,9 +53,6 @@ manager::manager(std::unique_ptr<input::source> pInputSource,
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::make_unique<localizer>();
-    pFactory_ = std::make_unique<factory>(*this);
-    pRoot_ = utils::make_owned<uiroot>(*this);
-    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
 
     // NB: cannot call register_event() here, as observable_from_this()
     // is not yet fully initialised! This is done in create_lua() instead.
@@ -107,7 +104,7 @@ const sol::state& manager::get_lua() const
     return *pLua_;
 }
 
-void manager::read_files()
+void manager::read_files_()
 {
     if (!bClosed_ || pAddOnRegistry_)
         return;
@@ -117,63 +114,74 @@ void manager::read_files()
 
     for (const auto& sDirectory : lGUIDirectoryList_)
         pAddOnRegistry_->load_addon_directory(sDirectory);
-
-    bClosed_ = false;
 }
 
 void manager::load_ui()
 {
-    create_lua(pLuaRegs_);
+    if (!bClosed_)
+        return;
 
-    read_files();
+    pFactory_ = std::make_unique<factory>(*this);
+    pRoot_ = utils::make_owned<uiroot>(*this);
+    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
+
+    pInputManager_->register_event_manager(
+        utils::observer_ptr<event_manager>(observer_from_this(), static_cast<event_manager*>(this)));
+
+    register_event("KEY_PRESSED");
+    register_event("MOUSE_MOVED");
+    register_event("WINDOW_RESIZED");
+    pRoot_->register_event("WINDOW_RESIZED");
+
+    create_lua_();
+
+    read_files_();
+
+    bClosed_ = false;
 }
 
 void manager::close_ui()
 {
-    if (!bClosed_)
-    {
-        pAddOnRegistry_->save_variables();
+    if (bClosed_)
+        return;
 
-        pInputManager_->unregister_event_manager(*this);
+    pAddOnRegistry_->save_variables();
 
-        pVirtualRoot_ = nullptr;
-        pRoot_ = nullptr;
-        pFactory_ = nullptr;
+    pVirtualRoot_ = nullptr;
+    pRoot_ = nullptr;
+    pFactory_ = nullptr;
 
-        pFactory_ = std::make_unique<factory>(*this);
-        pRoot_ = utils::make_owned<uiroot>(*this);
-        pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
+    pAddOnRegistry_ = nullptr;
 
-        pAddOnRegistry_ = nullptr;
+    pLua_ = nullptr;
 
-        pLua_ = nullptr;
+    pHoveredFrame_ = nullptr;
+    bUpdateHoveredFrame_ = false;
+    pFocusedFrame_ = nullptr;
+    pMovedObject_ = nullptr;
+    pSizedObject_ = nullptr;
+    pMovedAnchor_ = nullptr;
+    bObjectMoved_ = false;
+    mMouseMovement_ = vector2f::ZERO;
+    mMovementStartPosition_ = vector2f::ZERO;
+    mConstraint_ = constraint::NONE;
+    mResizeStart_ = vector2f::ZERO;
+    bResizeWidth_ = false;
+    bResizeHeight_ = false;
+    bResizeFromRight_ = false;
+    bResizeFromBottom_ = false;
 
-        pHoveredFrame_ = nullptr;
-        bUpdateHoveredFrame_ = false;
-        pFocusedFrame_ = nullptr;
-        pMovedObject_ = nullptr;
-        pSizedObject_ = nullptr;
-        pMovedAnchor_ = nullptr;
-        bObjectMoved_ = false;
-        mMouseMovement_ = vector2f::ZERO;
-        mMovementStartPosition_ = vector2f::ZERO;
-        mConstraint_ = constraint::NONE;
-        mResizeStart_ = vector2f::ZERO;
-        bResizeWidth_ = false;
-        bResizeHeight_ = false;
-        bResizeFromRight_ = false;
-        bResizeFromBottom_ = false;
+    lKeyBindingList_.clear();
 
-        lKeyBindingList_.clear();
+    bClosed_ = true;
 
-        bClosed_ = true;
+    pLocalizer_->clear_translations();
 
-        pLocalizer_->clear_translations();
+    unregister_event("KEY_PRESSED");
+    unregister_event("MOUSE_MOVED");
+    unregister_event("WINDOW_RESIZED");
 
-        unregister_event("KEY_PRESSED");
-        unregister_event("MOUSE_MOVED");
-        unregister_event("WINDOW_RESIZED");
-    }
+    pInputManager_->unregister_event_manager(*this);
 }
 
 void manager::reload_ui()
@@ -224,7 +232,7 @@ bool manager::is_loaded() const
     return !bClosed_;
 }
 
-void manager::update(float fDelta)
+void manager::update_ui(float fDelta)
 {
     bUpdating_ = true;
 

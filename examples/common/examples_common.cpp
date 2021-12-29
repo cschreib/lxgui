@@ -46,10 +46,9 @@ void examples_setup_gui(gui::manager& mManager)
     std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
     std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
-    // The first thing to do is create the lua::state, and register any glue function
-    // into the Lua state to call into your C++ application.
-    std::cout << " Creating lua..." << std::endl;
-    mManager.create_lua([](gui::manager& mManager)
+    // The first thing to do is register any required C++ classes and functions
+    // onto the Lua state.
+    mManager.register_lua_glues([](gui::manager& mManager)
     {
         // We use a lambda function because this code might be called
         // again later on, for example when one reloads the GUI (the
@@ -84,7 +83,7 @@ void examples_setup_gui(gui::manager& mManager)
     //  - set the directory in which the interface is located
     mManager.add_addon_directory("interface");
     //  - and load all files
-    mManager.read_files();
+    mManager.load_ui();
 
     // Alternatively, you can also create GUI elements directly in C++ code:
 

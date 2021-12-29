@@ -36,8 +36,6 @@ namespace input {
 
 namespace gui
 {
-    class region;
-    class layered_region;
     class frame;
     class focus_frame;
     class renderer;
@@ -46,7 +44,6 @@ namespace gui
     class uiroot;
     class virtual_uiroot;
     class addon_registry;
-    struct vertex;
 
     /// Manages the user interface
     class manager : private event_manager, public event_receiver
@@ -135,7 +132,7 @@ namespace gui
         );
 
         /// Unbinds a key.
-        /** \param uiKey      The key to unbind
+        /** \param uiKey       The key to unbind
         *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
         *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
         */
@@ -154,31 +151,20 @@ namespace gui
         */
         const sol::state& get_lua() const;
 
-        /// Creates the lua::state that will be used to communicate with the GUI.
-        /** \param pLuaRegs Some code that will get exectued each time the lua
+        /// Set the code to be executed on each fresh Lua state.
+        /** \param pLuaRegs Some code that will get executed immediately after the Lua
         *                   state is created
         *   \note This function is usefull if you need to create additionnal
         *         resources on the Lua state before the GUI files are loaded.
-        *         You need to do this inside the provided argument function,
-        *         because this code will need to be called again in case the GUI
-        *         is reloaded (see reload_ui()).
-        *         Else, you can simply use load_ui().
+        *         The argument to this function will be stored and reused, each time
+        *         the Lua state is created (e.g., when the GUI is re-loaded, see reload_ui()).
         *   \warning Do not call this function while the manager is running update()
         *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
-        void create_lua(std::function<void(gui::manager&)> pLuaRegs = nullptr);
-
-        /// Reads GUI files in the directory list.
-        /** \note See add_addon_directory().
-        *   \note See load_ui().
-        *   \note See create_lua().
-        *   \warning Do not call this function while the manager is running update()
-        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
-        */
-        void read_files();
+        void register_lua_glues(std::function<void(gui::manager&)> pLuaRegs);
 
         /// Loads the UI.
-        /** \note Calls create_lua() then read_files().
+        /** \note Creates the Lua state and loads addon files (if any).
         *   \warning Do not call this function while the manager is running update()
         *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
         */
@@ -313,7 +299,7 @@ namespace gui
         /// Updates this manager and its widgets.
         /** \param fDelta The time elapsed since the last call
         */
-        void update(float fDelta);
+        void update_ui(float fDelta);
 
         /// Called whenever an Event occurs.
         /** \param mEvent The Event which has occured
@@ -417,6 +403,22 @@ namespace gui
         }
 
     private :
+
+        /// Creates the lua::state that will be used to communicate with the GUI.
+        /**
+        *   \warning Do not call this function while the manager is running update()
+        *           (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        */
+        void create_lua_();
+
+        /// Reads GUI files in the directory list.
+        /** \note See add_addon_directory().
+        *   \note See load_ui().
+        *   \note See create_lua().
+        *   \warning Do not call this function while the manager is running update()
+        *            (i.e., do not call this directly from a frame's callback, C++ or Lua).
+        */
+        void read_files_();
 
         void load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory);
         void load_addon_files_(addon* pAddOn);

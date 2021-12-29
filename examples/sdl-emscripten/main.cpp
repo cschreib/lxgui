@@ -90,7 +90,7 @@ try
     }
 
     // Update the gui
-    mContext.pManager->update(mContext.fDelta);
+    mContext.pManager->update_ui(mContext.fDelta);
 
     // Your own rendering would go here!
     // For this example, we just clear the window

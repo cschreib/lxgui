@@ -285,15 +285,15 @@ input::sfml::source& sfml_source = static_cast<input::sfml::source&>(
 );
 
 // Load GUI addons:
-// In lxgui, the GUI is formed of multiple modular "addons", which each define
+// In lxgui, the GUI is formed of multiple modular "addons", each of which defines
 // the appearance and behavior of a specific GUI element (e.g., one addon for
 // the player status bars, one addon for the inventory, etc.).
 // See below for an example addon.
 
 //  - First set the directory in which the GUI addons are located
 manager->add_addon_directory("interface");
-//  - Then create the Lua state
-manager->create_lua([](gui::manager& mgr)
+//  - Then register Lua "glues" (C++ classes and functions to expose to Lua)
+manager->register_lua_glues([](gui::manager& mgr)
 {
     // This code might be called again later on, for example when one
     // reloads the GUI (the Lua state is destroyed and created again).
@@ -306,12 +306,12 @@ manager->create_lua([](gui::manager& mgr)
     fac.register_uiobject_type<gui::edit_box>();
     fac.register_uiobject_type<gui::scroll_frame>();
     fac.register_uiobject_type<gui::status_bar>();
-    //  - register your own additional Lua "glue" functions, if needed
+    //  - register your own additional Lua "glue" functions, if needed.
     // ...
 });
 
 //  - and eventually load all addons
-manager->read_files();
+manager->load_ui();
 
 // Start the main loop
 sf::Clock clock;
@@ -332,7 +332,7 @@ while (true)
     clock.restart();
 
     // Update the GUI
-    manager->update(delta);
+    manager->update_ui(delta);
 
     // Render the GUI
     manager->render_ui();

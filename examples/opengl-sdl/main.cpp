@@ -174,7 +174,7 @@ int main(int argc, char* argv[])
 
             // Update the gui
             SDL_GL_MakeCurrent(pWindow.get(), mGLContext.pContext);
-            pManager->update(fDelta);
+            pManager->update_ui(fDelta);
 
             // Your own rendering would go here!
             // For this example, we just clear the window
