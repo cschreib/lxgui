@@ -190,7 +190,6 @@ void manager::close_ui_now()
     pLua_ = nullptr;
 
     pHoveredFrame_ = nullptr;
-    bUpdateHoveredFrame_ = false;
     pFocusedFrame_ = nullptr;
     pMovedObject_ = nullptr;
     pSizedObject_ = nullptr;
@@ -257,13 +256,13 @@ void manager::update_ui(float fDelta)
     DEBUG_LOG(" Update widgets...");
     pRoot_->update(fDelta);
 
-    update_hovered_frame_();
-
     if (bFirstIteration_)
     {
         DEBUG_LOG(" Entering world...");
         fire_event(event("ENTERING_WORLD"));
         bFirstIteration_ = false;
+
+        update_hovered_frame_();
     }
 
     frame_ended();
@@ -445,7 +444,7 @@ void manager::toggle_input()
 
     if (bInputEnabled_)
     {
-        bUpdateHoveredFrame_ = true;
+        update_hovered_frame_();
 
         if (pFocusedFrame_)
             pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
@@ -466,7 +465,7 @@ bool manager::is_input_enabled() const
 
 void manager::update_hovered_frame_()
 {
-    if (!bUpdateHoveredFrame_ || !bInputEnabled_)
+    if (!bInputEnabled_)
         return;
 
     DEBUG_LOG(" Update hovered frame...");
@@ -474,19 +473,16 @@ void manager::update_hovered_frame_()
 
     utils::observer_ptr<frame> pHoveredFrame = pRoot_->find_hovered_frame(mMousePos);
     set_hovered_frame_(std::move(pHoveredFrame), mMousePos);
-
-    bUpdateHoveredFrame_ = false;
 }
 
-const utils::observer_ptr<frame>& manager::get_hovered_frame()
+const utils::observer_ptr<frame>& manager::get_hovered_frame() const
 {
-    update_hovered_frame_();
     return pHoveredFrame_;
 }
 
 void manager::notify_hovered_frame_dirty()
 {
-    bUpdateHoveredFrame_ = true;
+    update_hovered_frame_();
 }
 
 void manager::request_focus(utils::observer_ptr<focus_frame> pFocusFrame)

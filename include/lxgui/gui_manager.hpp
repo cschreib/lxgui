@@ -268,7 +268,7 @@ namespace gui
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)
         */
-        const utils::observer_ptr<frame>& get_hovered_frame();
+        const utils::observer_ptr<frame>& get_hovered_frame() const;
 
         /// Notifies this manager that it should update the hovered frame.
         void notify_hovered_frame_dirty();
@@ -441,7 +441,6 @@ namespace gui
         bool bInputEnabled_ = true;
 
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
-        bool                             bUpdateHoveredFrame_ = false;
         utils::observer_ptr<focus_frame> pFocusedFrame_ = nullptr;
 
         utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
