@@ -89,13 +89,6 @@ namespace input
         */
         bool key_is_down(key mKey, bool bForce = false) const;
 
-        /// Checks if a key is being pressed for a long time.
-        /** \param mKey   The ID code of the key you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if the key is being pressed for a long time
-        */
-        bool key_is_down_long(key mKey, bool bForce = false) const;
-
         /// Returns elapsed time since the key has been pressed.
         /** \param mKey The ID code of the key you're interested in
         *   \return Elapsed time since the key has been pressed
@@ -153,13 +146,6 @@ namespace input
         */
         bool mouse_is_down(mouse_button mID, bool bForce = false) const;
 
-        /// Checks if a mouse button is being pressed for a long time.
-        /** \param mID    The ID code of the mouse button you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if the mouse button is being pressed for a long time
-        */
-        bool mouse_is_down_long(mouse_button mID, bool bForce = false) const;
-
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you're interested in
         *   \return Elapsed time since the mouse button has been pressed
@@ -202,17 +188,6 @@ namespace input
         /** \return The double click maximum time
         */
         double get_doubleclick_time() const;
-
-        /// Sets the duration after which a key is considered as pressed for a long time.
-        /** \param dLongPressDelay The "long pressed" duration
-        *   \note This is used for key repeating for example.
-        */
-        void set_long_press_delay(double dLongPressDelay);
-
-        /// Returns the duration after which a key is considered as pressed for a long time.
-        /** \return The duration after which a key is considered as pressed for a long time
-        */
-        double get_long_press_delay() const;
 
         /// Sets whether input should be focussed.
         /** \param bFocus    'true' to stop general inputs and focus on one receiver
@@ -361,19 +336,12 @@ namespace input
         std::vector<utils::observer_ptr<gui::event_manager>> lEventManagerList_;
 
         // Keyboard
-        double                         dLongPressDelay_ = 0.7;
         std::array<double, KEY_NUMBER> lKeyDelay_ = {};
-        std::array<bool,   KEY_NUMBER> lKeyLong_ = {};
 
-        bool bCtrlPressed_ = false;
-        bool bShiftPressed_ = false;
-        bool bAltPressed_ = false;
-        bool bKey_ = false;
         std::vector<char32_t> lChars_;
 
         // Mouse
         std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_ = {};
-        std::array<bool,   MOUSE_BUTTON_NUMBER> lMouseLong_ = {};
 
         std::unordered_map<std::string, bool> lClickGroupList_;
         std::unordered_map<std::string, bool> lForcedClickGroupList_;

@@ -18,10 +18,7 @@ namespace input
 manager::manager(std::unique_ptr<source> pSource) : pSource_(std::move(pSource))
 {
     lKeyDelay_.fill(0.0);
-    lKeyLong_.fill(false);
-
     lMouseDelay_.fill(0.0);
-    lMouseLong_.fill(false);
 }
 
 void manager::allow_input(const std::string& sGroupName)
@@ -283,14 +280,6 @@ bool manager::key_is_down(key mKey, bool bForce) const
         return pSource_->get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
 }
 
-bool manager::key_is_down_long(key mKey, bool bForce) const
-{
-    if (!bForce && bKeyboardFocus_)
-        return false;
-    else
-        return lKeyLong_[static_cast<std::size_t>(mKey)];
-}
-
 double manager::get_key_down_duration(key mKey) const
 {
     return lKeyDelay_[static_cast<std::size_t>(mKey)];
@@ -307,14 +296,6 @@ bool manager::mouse_is_down(mouse_button mID, bool bForce) const
         return false;
     else
         return pSource_->get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
-}
-
-bool manager::mouse_is_down_long(mouse_button mID, bool bForce) const
-{
-    if (!bForce && bMouseFocus_)
-        return false;
-    else
-        return lMouseLong_[static_cast<std::size_t>(mID)];
 }
 
 double manager::get_mouse_down_duration(mouse_button mID) const
@@ -356,22 +337,13 @@ void manager::update(float fTempDelta)
 
     // Update keys
     const source::key_state& mKeyState = pSource_->get_key_state();
-    bKey_ = false;
     for (std::size_t i = 0; i < KEY_NUMBER; ++i)
     {
         // Update delays
         if (mKeyState.lKeyState[i])
-        {
-            bKey_ = true;
             lKeyDelay_[i] += dDelta;
-            if (lKeyDelay_[i] >= dLongPressDelay_)
-                lKeyLong_[i] = true;
-        }
         else
-        {
             lKeyDelay_[i] = 0.0;
-            lKeyLong_[i] = false;
-        }
     }
 
     // Handle modifier keys
@@ -385,16 +357,9 @@ void manager::update(float fTempDelta)
     {
         // Update delays
         if (mMouseState.lButtonState[i])
-        {
             lMouseDelay_[i] += dDelta;
-            if (lMouseDelay_[i] >= dLongPressDelay_)
-                lMouseLong_[i] = true;
-        }
         else
-        {
             lMouseDelay_[i] = 0.0;
-            lMouseLong_[i] = false;
-        }
     }
 
     // Send events
@@ -588,16 +553,6 @@ const gui::vector2f& manager::get_mouse_delta() const
 float manager::get_mouse_wheel() const
 {
     return fMWheel_;
-}
-
-void manager::set_long_press_delay(double dLongPressDelay)
-{
-    dLongPressDelay_ = dLongPressDelay;
-}
-
-double manager::get_long_press_delay() const
-{
-    return dLongPressDelay_;
 }
 
 std::string manager::get_mouse_button_string(mouse_button mID) const
