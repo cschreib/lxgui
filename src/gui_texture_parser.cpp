@@ -26,7 +26,7 @@ void texture::parse_attributes_(const layout_node& mNode)
         set_filter_mode(pAttr->get_value<std::string>());
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("file"))
-        set_texture(get_manager().parse_file_name(pAttr->get_value<std::string>()));
+        set_texture(pAttr->get_value<std::string>());
 }
 
 void texture::parse_tex_coords_node_(const layout_node& mNode)

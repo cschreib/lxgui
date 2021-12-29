@@ -45,6 +45,7 @@ namespace gui
     class factory;
     class uiroot;
     class virtual_uiroot;
+    class addon_registry;
     struct vertex;
 
     /// Manages the user interface
@@ -108,33 +109,6 @@ namespace gui
         /** \note Calls uiobject::serialize().
         */
         std::string print_ui() const;
-
-        /// Returns the addon that is being parsed.
-        /** \return The addon that is being parsed
-        */
-        const addon* get_current_addon();
-
-        /// Sets the current addon.
-        /** \param pAddOn The current addon
-        *   \note The current addon is used when parsing file names.
-        *         See parse_file_name() for more information. For uiobjects
-        *         that are created manually after the loading stage, one
-        *         needs to specify the addon that is actually creating the
-        *         widget, and that is the purpose of this method.
-        *         It is called by frame automatically, before each call to
-        *         handler functions.
-        */
-        void set_current_addon(const addon* pAddOn);
-
-        /// Reads a file address and completes it to make a working address.
-        /** \param sFileName The raw file name
-        *   \return The modified file name
-        *   \note All file names are relative to the Engine's executable path,
-        *         but sometimes you'd like to use a path that is relative to
-        *         your addon directory for example. To do so, you need to append
-        *         "|" in front of your file name.
-        */
-        std::string parse_file_name(const std::string& sFileName) const;
 
         /// Binds some Lua code to a key.
         /** \param uiKey      The key to bind
@@ -336,7 +310,7 @@ namespace gui
         */
         void request_focus(utils::observer_ptr<focus_frame> pFocusFrame);
 
-        /// updates this manager and its widgets.
+        /// Updates this manager and its widgets.
         /** \param fDelta The time elapsed since the last call
         */
         void update(float fDelta);
@@ -416,6 +390,16 @@ namespace gui
         */
         const factory& get_factory() const { return *pFactory_; }
 
+        /// Returns the addon registry, which keeps track of loaded addons.
+        /** \return The registry object
+        */
+        addon_registry* get_addon_registry() { return pAddOnRegistry_.get(); }
+
+        /// Returns the addon registry, which keeps track of loaded addons.
+        /** \return The registry object
+        */
+        const addon_registry* get_addon_registry() const { return pAddOnRegistry_.get(); }
+
         /// Return an observer pointer to 'this'.
         /** \return A new observer pointer pointing to 'this'.
         */
@@ -448,9 +432,8 @@ namespace gui
 
         void parse_layout_file_(const std::string& sFile, addon* pAddOn);
 
-        std::string sUIVersion_ = "0001";
-        float       fScalingFactor_ = 1.0f;
-        float       fBaseScalingFactor_ = 1.0f;
+        float fScalingFactor_ = 1.0f;
+        float fBaseScalingFactor_ = 1.0f;
 
         std::unique_ptr<sol::state>        pLua_;
         std::function<void(gui::manager&)> pLuaRegs_;
@@ -474,9 +457,8 @@ namespace gui
         utils::owner_ptr<uiroot>         pRoot_;
         utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
 
-        std::vector<std::string>      lGUIDirectoryList_;
-        const addon*                  pCurrentAddOn_ = nullptr;
-        string_map<string_map<addon>> lAddOnList_;
+        std::vector<std::string>        lGUIDirectoryList_;
+        std::unique_ptr<addon_registry> pAddOnRegistry_;
 
         bool                             bObjectMoved_ = false;
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;

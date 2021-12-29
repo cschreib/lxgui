@@ -567,6 +567,30 @@ namespace gui
         */
         virtual void notify_invisible();
 
+        /// Sets the addon this frame belongs to.
+        /** \param pAddOn The addon this frame belongs to
+        */
+        void set_addon(const addon* pAddOn);
+
+        /// Returns this frame's addon.
+        /** \return This frame's addon
+        *   \note Returns "nullptr" if the frame has been created
+        *         by Lua code and wasn't assigned a parent.
+        */
+        const addon* get_addon() const;
+
+        /// Convert an addon-relative file path to a application-relative path
+        /** \param sFileName The raw file name
+        *   \return The modified file name
+        *   \note All file names must be relative to the current working directory
+        *         (typically, the application's executable path),
+        *         but sometimes it is more convenient and maintainable to specify a path that
+        *         is relative to the addon directory. This can be achieved by simply putting
+        *         "|" in front of a file name, which will then be interpreted as relative
+        *         to the addon directory. This function takes care of this transformation.
+        */
+        std::string parse_file_name(const std::string& sFileName) const;
+
         /// Returns this widget's manager.
         /** \return This widget's manager
         */
@@ -658,6 +682,8 @@ namespace gui
         void set_name_and_parent_(const std::string& sName, utils::observer_ptr<frame> pParent);
 
         manager& mManager_;
+
+        const addon* pAddOn_ = nullptr;
 
         std::string sName_;
         std::string sRawName_;

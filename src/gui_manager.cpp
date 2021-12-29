@@ -17,6 +17,7 @@
 #include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -106,248 +107,18 @@ const sol::state& manager::get_lua() const
     return *pLua_;
 }
 
-void manager::load_addon_toc_(const std::string& sAddOnName, const std::string& sAddOnDirectory)
-{
-    auto& lAddOns = lAddOnList_[sAddOnDirectory];
-    if (lAddOns.find(sAddOnName) != lAddOns.end())
-        return;
-
-    addon mAddOn;
-    mAddOn.bEnabled = true;
-    mAddOn.sMainDirectory = utils::cut(sAddOnDirectory, "/").back();
-    mAddOn.sDirectory = sAddOnDirectory + "/" + sAddOnName;
-
-    std::string sTOCFile = mAddOn.sDirectory + "/" + sAddOnName + ".toc";
-    std::ifstream mFile(sTOCFile);
-    if (!mFile.is_open())
-        return;
-
-    while (!mFile.eof())
-    {
-        std::string sLine; getline(mFile, sLine);
-        if (sLine.empty())
-            continue;
-
-        utils::replace(sLine, "\r", "");
-        if (sLine[0] == '#' && sLine[1] == '#')
-        {
-            sLine.erase(0, 2);
-            utils::trim(sLine, ' ');
-            std::pair<std::string, std::string> lArgs = utils::cut_first(sLine, ":");
-            if (!lArgs.first.empty() && !lArgs.second.empty())
-            {
-                std::string sKey = lArgs.first;
-                utils::trim(sKey, ' ');
-                std::string sValue = lArgs.second;
-                utils::trim(sValue, ' ');
-
-                if (sKey == "Interface")
-                {
-                    mAddOn.sUIVersion = sValue;
-
-                    if (mAddOn.sUIVersion == sUIVersion_)
-                        mAddOn.bEnabled = true;
-                    else
-                    {
-                        gui::out << gui::warning << "gui::manager : "
-                            << "Wrong UI version for \"" << sAddOnName << "\" (got : "
-                            << mAddOn.sUIVersion << ", expected : " << sUIVersion_
-                            << "). AddOn disabled." << std::endl;
-                        mAddOn.bEnabled = false;
-                    }
-                }
-                else if (sKey == "Title")
-                    mAddOn.sName = sValue;
-                else if (sKey == "Version")
-                    mAddOn.sVersion = sValue;
-                else if (sKey == "Author")
-                    mAddOn.sAuthor = sValue;
-                else if (sKey == "SavedVariables")
-                {
-                    for (auto sVar : utils::cut(sValue, ","))
-                    {
-                        utils::trim(sVar, ' ');
-                        if (!utils::has_no_content(sVar))
-                            mAddOn.lSavedVariableList.push_back(std::move(sVar));
-                    }
-                }
-            }
-        }
-        else
-        {
-            utils::trim(sLine, ' ');
-            if (!utils::has_no_content(sLine))
-                mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
-        }
-    }
-
-    mFile.close();
-
-    if (mAddOn.sName.empty())
-        gui::out << gui::error << "gui::manager : Missing addon name in " << sTOCFile << "." << std::endl;
-    else
-        lAddOns[sAddOnName] = mAddOn;
-}
-
-void manager::load_addon_files_(addon* pAddOn)
-{
-    pLocalizer_->load_translations(pAddOn->sDirectory);
-
-    pCurrentAddOn_ = pAddOn;
-    for (const auto& sFile : pAddOn->lFileList)
-    {
-        const std::string sExtension = utils::get_file_extension(sFile);
-        if (sExtension == ".lua")
-        {
-            try
-            {
-                pLua_->do_file(sFile);
-            }
-            catch (const sol::error& e)
-            {
-                std::string sError = e.what();
-
-                gui::out << gui::error << sError << std::endl;
-
-                event mEvent("LUA_ERROR");
-                mEvent.add(sError);
-                fire_event(mEvent);
-            }
-        }
-        else
-        {
-            this->parse_layout_file_(sFile, pAddOn);
-        }
-    }
-
-    std::string sSavedVariablesFile = "saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua";
-    if (utils::file_exists(sSavedVariablesFile))
-    {
-        try
-        {
-            pLua_->do_file(sSavedVariablesFile);
-        }
-        catch (const sol::error& e)
-        {
-            std::string sError = e.what();
-
-            gui::out << gui::error << sError << std::endl;
-
-            event mEvent("LUA_ERROR");
-            mEvent.add(sError);
-            fire_event(mEvent);
-        }
-    }
-
-    event mEvent("ADDON_LOADED");
-    mEvent.add(pAddOn->sName);
-    fire_event(mEvent);
-}
-
-void manager::load_addon_directory_(const std::string& sDirectory)
-{
-    for (auto sSubDir : utils::get_directory_list(sDirectory))
-        this->load_addon_toc_(sSubDir, sDirectory);
-
-    std::vector<addon*> lCoreAddOnStack;
-    std::vector<addon*> lAddOnStack;
-    bool bCore = false;
-
-    auto& lAddOns = lAddOnList_[sDirectory];
-
-    std::ifstream mFile(sDirectory + "/addons.txt");
-    if (mFile.is_open())
-    {
-        while (!mFile.eof())
-        {
-            std::string sLine;
-            getline(mFile, sLine);
-            if (sLine.empty())
-                continue;
-
-            utils::replace(sLine, "\r", "");
-            if (sLine[0] == '#')
-            {
-                sLine.erase(0, 1);
-                utils::trim(sLine, ' ');
-                bCore = sLine == "Core";
-            }
-            else
-            {
-                std::pair<std::string,std::string> lArgs = utils::cut_first(sLine, ":");
-                if (!lArgs.first.empty() && !lArgs.second.empty())
-                {
-                    std::string sKey = lArgs.first;
-                    utils::trim(sKey, ' ');
-                    std::string sValue = lArgs.second;
-                    utils::trim(sValue, ' ');
-                    auto iter = lAddOns.find(sKey);
-                    if (iter != lAddOns.end())
-                    {
-                        if (bCore)
-                            lCoreAddOnStack.push_back(&iter->second);
-                        else
-                            lAddOnStack.push_back(&iter->second);
-
-                        iter->second.bEnabled = sValue == "1";
-                    }
-                }
-            }
-        }
-        mFile.close();
-    }
-
-    for (auto* pAddOn : lCoreAddOnStack)
-    {
-        if (pAddOn->bEnabled)
-            this->load_addon_files_(pAddOn);
-    }
-
-    for (auto* pAddOn : lAddOnStack)
-    {
-        if (pAddOn->bEnabled)
-            this->load_addon_files_(pAddOn);
-    }
-
-    pCurrentAddOn_ = nullptr;
-}
-
-void manager::save_variables_(const addon* pAddOn)
-{
-    if (!pAddOn->lSavedVariableList.empty())
-    {
-        if (!utils::make_directory("saves/interface/"+pAddOn->sMainDirectory))
-        {
-            gui::out << gui::error << "gui::manager : "
-                "unable to create directory 'saves/interface/" <<
-                pAddOn->sMainDirectory << "'" << std::endl;
-            return;
-        }
-
-        std::ofstream mFile("saves/interface/"+pAddOn->sMainDirectory+"/"+pAddOn->sName+".lua");
-        for (const auto& sVariable : pAddOn->lSavedVariableList)
-        {
-            std::string sSerialized = serialize_global_(sVariable);
-            if (!sSerialized.empty())
-                mFile << sSerialized << "\n";
-        }
-    }
-}
-
-void gui_out(const std::string& sMessage)
-{
-    gui::out << sMessage << std::endl;
-}
-
 void manager::read_files()
 {
-    if (bClosed_)
-    {
-        for (const auto& sDirectory : lGUIDirectoryList_)
-            this->load_addon_directory_(sDirectory);
+    if (!bClosed_ || pAddOnRegistry_)
+        return;
 
-        bClosed_ = false;
-    }
+    pAddOnRegistry_ = std::make_unique<addon_registry>(
+        get_lua(), get_localizer(), get_event_manager(), get_root(), get_virtual_root());
+
+    for (const auto& sDirectory : lGUIDirectoryList_)
+        pAddOnRegistry_->load_addon_directory(sDirectory);
+
+    bClosed_ = false;
 }
 
 void manager::load_ui()
@@ -361,11 +132,7 @@ void manager::close_ui()
 {
     if (!bClosed_)
     {
-        for (const auto& sDirectory : lGUIDirectoryList_)
-        {
-            for (const auto& mAddOn : utils::range::value(lAddOnList_[sDirectory]))
-                save_variables_(&mAddOn);
-        }
+        pAddOnRegistry_->save_variables();
 
         pInputManager_->unregister_event_manager(*this);
 
@@ -377,7 +144,7 @@ void manager::close_ui()
         pRoot_ = utils::make_owned<uiroot>(*this);
         pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
 
-        lAddOnList_.clear();
+        pAddOnRegistry_ = nullptr;
 
         pLua_ = nullptr;
 
@@ -400,7 +167,6 @@ void manager::close_ui()
         lKeyBindingList_.clear();
 
         bClosed_ = true;
-        pCurrentAddOn_ = nullptr;
 
         pLocalizer_->clear_translations();
 
@@ -762,32 +528,6 @@ void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::
     }
 }
 
-const addon* manager::get_current_addon()
-{
-    return pCurrentAddOn_;
-}
-
-void manager::set_current_addon(const addon* pAddOn)
-{
-    pCurrentAddOn_ = pAddOn;
-}
-
-std::string manager::parse_file_name(const std::string& sFileName) const
-{
-    if (sFileName.empty())
-        return sFileName;
-
-    std::string sNewFile = sFileName;
-    if (sNewFile[0] == '|')
-    {
-        sNewFile[0] = '/';
-        if (pCurrentAddOn_)
-            sNewFile = pCurrentAddOn_->sDirectory + sNewFile;
-    }
-
-    return sNewFile;
-}
-
 void manager::on_event(const event& mEvent)
 {
     if (mEvent.get_name() == "KEY_PRESSED")
@@ -931,20 +671,20 @@ std::string manager::print_ui() const
 {
     std::stringstream s;
 
-    if (!lAddOnList_.empty())
-    {
-        s << "\n\n######################## Loaded addons ########################\n" << std::endl;
-        for (const auto& iterDirectory : lAddOnList_)
-        {
-            s << "# Directory : " << iterDirectory.first << "\n|-###" << std::endl;
-            for (const auto& iterAdd : iterDirectory.second)
-            {
-                if (iterAdd.second.bEnabled)
-                    s << "|   # " << iterAdd.first << std::endl;
-            }
-            s << "|-###\n#" << std::endl;
-        }
-    }
+    // if (!lAddOnList_.empty())
+    // {
+    //     s << "\n\n######################## Loaded addons ########################\n" << std::endl;
+    //     for (const auto& iterDirectory : lAddOnList_)
+    //     {
+    //         s << "# Directory : " << iterDirectory.first << "\n|-###" << std::endl;
+    //         for (const auto& iterAdd : iterDirectory.second)
+    //         {
+    //             if (iterAdd.second.bEnabled)
+    //                 s << "|   # " << iterAdd.first << std::endl;
+    //         }
+    //         s << "|-###\n#" << std::endl;
+    //     }
+    // }
 
     s << "\n\n######################## UIObjects ########################\n\n########################\n" << std::endl;
     for (const auto& mFrame : pRoot_->get_root_frames())

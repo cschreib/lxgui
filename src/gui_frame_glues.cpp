@@ -527,10 +527,9 @@ void frame::register_on_lua(sol::state& mLua)
         std::unique_ptr<backdrop> pBackdrop(new backdrop(mSelf));
 
         sol::table& mTable = mTableOpt.value();
-        manager& mManager = mSelf.get_manager();
 
-        pBackdrop->set_background(mManager.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
-        pBackdrop->set_edge(mManager.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
+        pBackdrop->set_background(mSelf.parse_file_name(mTable["bgFile"].get_or<std::string>("")));
+        pBackdrop->set_edge(mSelf.parse_file_name(mTable["edgeFile"].get_or<std::string>("")));
         pBackdrop->set_background_tilling(mTable["tile"].get_or(false));
 
         float fTileSize = mTable["tileSize"].get_or<float>(0.0);

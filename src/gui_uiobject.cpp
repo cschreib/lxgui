@@ -941,6 +941,43 @@ void uiobject::notify_invisible()
     bIsVisible_ = false;
 }
 
+std::string uiobject::parse_file_name(const std::string& sFileName) const
+{
+    if (sFileName.empty())
+        return sFileName;
+
+    std::string sNewFile = sFileName;
+
+    const addon* pAddOn = get_addon();
+    if (sNewFile[0] == '|' && pAddOn)
+    {
+        sNewFile[0] = '/';
+        sNewFile = pAddOn->sDirectory + sNewFile;
+    }
+
+    return sNewFile;
+}
+
+void uiobject::set_addon(const addon* pAddOn)
+{
+    if (pAddOn_)
+    {
+        gui::out << gui::warning << "gui::" << lType_.back() <<
+            " : set_addon() can only be called once." << std::endl;
+        return;
+    }
+
+    pAddOn_ = pAddOn;
+}
+
+const addon* uiobject::get_addon() const
+{
+    if (!pAddOn_ && pParent_)
+        return pParent_->get_addon();
+    else
+        return pAddOn_;
+}
+
 registry& uiobject::get_registry()
 {
     return is_virtual() ?

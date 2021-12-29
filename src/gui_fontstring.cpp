@@ -256,7 +256,7 @@ void font_string::create_text_object_()
 
 void font_string::set_font(const std::string& sFontName, float fHeight)
 {
-    sFontName_ = sFontName;
+    sFontName_ = parse_file_name(sFontName);
     fHeight_ = fHeight;
 
     create_text_object_();

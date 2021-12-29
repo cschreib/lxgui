@@ -1,7 +1,6 @@
-#include "lxgui/gui_manager.hpp"
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_parser_common.hpp"
@@ -20,6 +19,7 @@
 #   include <ryml.hpp>
 #   include <ryml_std.hpp>
 #endif
+
 #include <fstream>
 
 namespace lxgui {
@@ -213,7 +213,7 @@ void set_node(const file_line_mappings& mFile, const ryml::Tree& mTree,
 }
 #endif
 
-void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
+void addon_registry::parse_layout_file_(const std::string& sFile, const addon& mAddOn)
 {
     file_line_mappings mFile(sFile);
     if (!mFile.is_open())
@@ -238,7 +238,8 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
 
         if (!mResult)
         {
-            gui::out << gui::error << mFile.get_location(mResult.offset) << ": " << mResult.description() << std::endl;
+            gui::out << gui::error << mFile.get_location(mResult.offset) << ": "
+                << mResult.description() << std::endl;
             return;
         }
 
@@ -267,11 +268,12 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
     {
         if (mNode.get_name() == "Script")
         {
-            std::string sScriptFile = pAddOn->sDirectory + "/" + mNode.get_attribute_value<std::string>("file");
+            std::string sScriptFile = mAddOn.sDirectory+"/"+
+                mNode.get_attribute_value<std::string>("file");
 
             try
             {
-                pLua_->do_file(sScriptFile);
+                mLua_.do_file(sScriptFile);
             }
             catch (const sol::error& e)
             {
@@ -281,18 +283,20 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
 
                 event mEvent("LUA_ERROR");
                 mEvent.add(sError);
-                fire_event(mEvent);
+                mEventManager_.fire_event(mEvent);
             }
         }
         else if (mNode.get_name() == "Include")
         {
-            this->parse_layout_file_(pAddOn->sDirectory + "/" + mNode.get_attribute_value<std::string>("file"), pAddOn);
+            parse_layout_file_(mAddOn.sDirectory+"/"+
+                mNode.get_attribute_value<std::string>("file"), mAddOn);
         }
         else
         {
             try
             {
-                auto mAttr = parse_core_attributes(*this, mNode, nullptr);
+                auto mAttr = parse_core_attributes(
+                    mRoot_.get_registry(), mVirtualRoot_.get_registry(), mNode, nullptr);
 
                 utils::observer_ptr<frame> pFrame;
                 if (mAttr.pParent)
@@ -302,15 +306,15 @@ void manager::parse_layout_file_(const std::string& sFile, addon* pAddOn)
                 else
                 {
                     if (mAttr.bVirtual)
-                        pFrame = pVirtualRoot_->create_root_frame(std::move(mAttr));
+                        pFrame = mVirtualRoot_.create_root_frame(std::move(mAttr));
                     else
-                        pFrame = pRoot_->create_root_frame(std::move(mAttr));
+                        pFrame = mRoot_.create_root_frame(std::move(mAttr));
                 }
 
                 if (!pFrame)
                     continue;
 
-                pFrame->set_addon(get_current_addon());
+                pFrame->set_addon(&mAddOn);
                 pFrame->parse_layout(mNode);
                 pFrame->notify_loaded();
             }

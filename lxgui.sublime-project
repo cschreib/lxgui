@@ -197,6 +197,42 @@
 					"shell_cmd": "make -j12 ryml",
 				},
 				{
+					"name": "src/gui_addon.o",
+					"shell_cmd": "make -j12 src/gui_addon.o",
+				},
+				{
+					"name": "src/gui_addon.i",
+					"shell_cmd": "make -j12 src/gui_addon.i",
+				},
+				{
+					"name": "src/gui_addon.s",
+					"shell_cmd": "make -j12 src/gui_addon.s",
+				},
+				{
+					"name": "src/gui_addon_registry.o",
+					"shell_cmd": "make -j12 src/gui_addon_registry.o",
+				},
+				{
+					"name": "src/gui_addon_registry.i",
+					"shell_cmd": "make -j12 src/gui_addon_registry.i",
+				},
+				{
+					"name": "src/gui_addon_registry.s",
+					"shell_cmd": "make -j12 src/gui_addon_registry.s",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.o",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.o",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.i",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.i",
+				},
+				{
+					"name": "src/gui_addon_registry_parser.s",
+					"shell_cmd": "make -j12 src/gui_addon_registry_parser.s",
+				},
+				{
 					"name": "src/gui_alive_checker.o",
 					"shell_cmd": "make -j12 src/gui_alive_checker.o",
 				},
@@ -639,18 +675,6 @@
 				{
 					"name": "src/gui_manager_glues.s",
 					"shell_cmd": "make -j12 src/gui_manager_glues.s",
-				},
-				{
-					"name": "src/gui_manager_parser.o",
-					"shell_cmd": "make -j12 src/gui_manager_parser.o",
-				},
-				{
-					"name": "src/gui_manager_parser.i",
-					"shell_cmd": "make -j12 src/gui_manager_parser.i",
-				},
-				{
-					"name": "src/gui_manager_parser.s",
-					"shell_cmd": "make -j12 src/gui_manager_parser.s",
 				},
 				{
 					"name": "src/gui_material.o",

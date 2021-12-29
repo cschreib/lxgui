@@ -397,16 +397,17 @@ void texture::update_dimensions_from_tex_coord_()
 
 void texture::set_texture(const std::string& sFile)
 {
-    mContent_ = sFile;
+    std::string sParsedFile = parse_file_name(sFile);
+    mContent_ = sParsedFile;
 
-    if (sFile.empty())
+    if (sParsedFile.empty())
         return;
 
     auto& mRenderer = get_manager().get_renderer();
 
     std::shared_ptr<gui::material> pMat;
-    if (utils::file_exists(sFile))
-        pMat = mRenderer.create_atlas_material("GUI", sFile, mFilter_);
+    if (utils::file_exists(sParsedFile))
+        pMat = mRenderer.create_atlas_material("GUI", sParsedFile, mFilter_);
 
     mQuad_.mat = pMat;
 
@@ -426,7 +427,7 @@ void texture::set_texture(const std::string& sFile)
     else
     {
         gui::out << gui::error << "gui::" << lType_.back() << " : "
-            << "Cannot load file \"" << sFile << "\" for \"" << sName_
+            << "Cannot load file \"" << sParsedFile << "\" for \"" << sName_
             << "\".\nUsing white texture instead." << std::endl;
     }
 

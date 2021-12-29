@@ -9,6 +9,7 @@
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/input.hpp"
 
 #include <sol/state.hpp>
@@ -76,7 +77,7 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 
         if (pNewFrame)
         {
-            pNewFrame->set_addon(get_current_addon());
+            pNewFrame->set_addon(get_addon_registry()->get_current_addon());
             pNewFrame->notify_loaded();
             return get_lua()[pNewFrame->get_lua_name()];
         }
@@ -164,49 +165,6 @@ void manager::create_lua(std::function<void(gui::manager&)> pLuaRegs)
 
     if (pLuaRegs_)
         pLuaRegs_(*this);
-}
-
-std::string serialize(const std::string& sTab, const sol::object& mValue)
-{
-    if (mValue.is<double>())
-    {
-        return utils::to_string(mValue.as<double>());
-    }
-    else if (mValue.is<int>())
-    {
-        return utils::to_string(mValue.as<int>());
-    }
-    else if (mValue.is<std::string>())
-    {
-        return "\"" + utils::to_string(mValue.as<std::string>()) + "\"";
-    }
-    else if (mValue.is<sol::table>())
-    {
-        std::string sResult;
-        sResult += "{";
-
-        std::string sContent;
-        sol::table mTable = mValue.as<sol::table>();
-        for (const auto& mKeyValue : mTable)
-        {
-            sContent += sTab + "    [" + serialize("", mKeyValue.first) + "] = "
-                + serialize(sTab + "    ", mKeyValue.second) + ",\n";
-        }
-
-        if (!sContent.empty())
-            sResult += "\n" + sContent + sTab;
-
-        sResult += "}";
-        return sResult;
-    }
-
-    return "nil";
-}
-
-std::string manager::serialize_global_(const std::string& sVariable) const
-{
-    sol::object mValue = pLua_->globals()[sVariable];
-    return serialize("", mValue);
 }
 
 }

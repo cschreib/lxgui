@@ -9,6 +9,7 @@
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/gui_factory.hpp"
+#include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -1348,10 +1349,11 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
     if (iterH == lScriptHandlerList_.end())
         return;
 
-    // Make a copy of the manager pointer: in case the frame is deleted, we will need this
-    auto& mManager = get_manager();
-    auto* pOldAddOn = mManager.get_current_addon();
-    mManager.set_current_addon(get_addon());
+    // Make a copy of useful pointers: in case the frame is deleted, we will need this
+    auto& mEventManager = get_manager().get_event_manager();
+    auto& mAddonRegistry = *get_manager().get_addon_registry();
+    auto* pOldAddOn = mAddonRegistry.get_current_addon();
+    mAddonRegistry.set_current_addon(get_addon());
 
     try
     {
@@ -1375,10 +1377,10 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        mManager.get_event_manager().fire_event(mEvent);
+        mEventManager.fire_event(mEvent);
     }
 
-    mManager.set_current_addon(pOldAddOn);
+    mAddonRegistry.set_current_addon(pOldAddOn);
 }
 
 void frame::register_all_events()
@@ -1826,26 +1828,6 @@ void frame::unregister_event(const std::string& sEvent)
 
     if (!bVirtual_)
         event_receiver::unregister_event(sEvent);
-}
-
-void frame::set_addon(const addon* pAddOn)
-{
-    if (!pAddOn_)
-    {
-        pAddOn_ = pAddOn;
-        for (auto& mChild : get_children())
-            mChild.set_addon(pAddOn);
-    }
-    else
-        gui::out << gui::warning << "gui::" << lType_.back() << " : set_addon() can only be called once." << std::endl;
-}
-
-const addon* frame::get_addon() const
-{
-    if (!pAddOn_ && pParent_)
-        return pParent_->get_addon();
-    else
-        return pAddOn_;
 }
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)

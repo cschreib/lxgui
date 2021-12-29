@@ -242,6 +242,8 @@ endif()
 ##############################################################################
 
 add_library(lxgui
+    ${PROJECT_SOURCE_DIR}/src/gui_addon_registry.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_addon_registry_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_anchor.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_alive_checker.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_atlas.cpp
@@ -279,7 +281,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_localizer_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_manager.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_manager_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_manager_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_material.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_matrix4.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_out.cpp

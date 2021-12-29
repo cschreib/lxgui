@@ -1130,18 +1130,6 @@ namespace gui
         */
         void unregister_event(const std::string& sEventName) override;
 
-        /// Sets the addon this frame belongs to.
-        /** \param pAddOn The addon this frame belongs to
-        */
-        void set_addon(const addon* pAddOn);
-
-        /// Returns this frame's addon.
-        /** \return This frame's addon
-        *   \note Returns "nullptr" if the frame has been created
-        *         by Lua code and wasn't assigned a parent.
-        */
-        const addon* get_addon() const;
-
         /// Creates the associated Lua glue.
         void create_glue() override;
 
@@ -1208,8 +1196,6 @@ namespace gui
         std::vector<std::string> lQueuedEventList_;
         std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
-
-        const addon* pAddOn_ = nullptr;
 
         int iLevel_ = 0;
 
