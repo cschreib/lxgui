@@ -49,12 +49,19 @@ void manager::force_input_allowed(const std::string& sGroupName, bool bForce)
     lForcedClickGroupList_[sGroupName] = bForce;
 }
 
-bool manager::get_key(bool bForce) const
+bool manager::any_key_is_down(bool bForce) const
 {
     if (!bForce && bKeyboardFocus_)
         return false;
-    else
-        return bKey_;
+
+    const auto& lKeyState = pSource_->get_key_state().lKeyState;
+    for (std::size_t i = 1; i < KEY_NUMBER; ++i)
+    {
+        if (lKeyState[i])
+            return true;
+    }
+
+    return false;
 }
 
 std::string manager::get_key_name(key mKey) const
@@ -346,11 +353,6 @@ void manager::update(float fTempDelta)
             lKeyDelay_[i] = 0.0;
     }
 
-    // Handle modifier keys
-    bCtrlPressed_  = key_is_down(key::K_LCONTROL, true) || key_is_down(key::K_RCONTROL, true);
-    bShiftPressed_ = key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
-    bAltPressed_   = key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
-
     // Update mouse state
     const source::mouse_state& mMouseState = pSource_->get_mouse_state();
     for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
@@ -527,17 +529,17 @@ bool manager::is_mouse_focused() const
 
 bool manager::alt_is_pressed() const
 {
-    return bAltPressed_;
+    return key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
 }
 
 bool manager::shift_is_pressed() const
 {
-    return bShiftPressed_;
+    return key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
 }
 
 bool manager::ctrl_is_pressed() const
 {
-    return bCtrlPressed_;
+    return key_is_down(key::K_LCONTROL, true) || key_is_down(key::K_RCONTROL, true);
 }
 
 const gui::vector2f& manager::get_mouse_position() const
@@ -646,21 +648,27 @@ void manager::fire_event_(const gui::event& mEvent, bool bForce)
     bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;
     bool bKeyboardEvent = mEvent.get_name().find("KEY_") == 0u || mEvent.get_name() == "TEXT_ENTERED";
 
-    if (bMouseEvent && pMouseFocusReceiver_ && !bForce)
+    if (bMouseEvent)
     {
-        pMouseFocusReceiver_->on_event(mEvent);
-    }
-    else if (bKeyboardEvent && pKeyboardFocusReceiver_ && !bForce)
-    {
-        pKeyboardFocusReceiver_->on_event(mEvent);
-    }
-    else
-    {
-        for (const auto& pManager : lEventManagerList_)
+        if (pMouseFocusReceiver_ && !bForce)
         {
-            if (pManager)
-                pManager->fire_event(mEvent);
+            pMouseFocusReceiver_->on_event(mEvent);
+            return;
         }
+    }
+    else if (bKeyboardEvent)
+    {
+        if (pKeyboardFocusReceiver_ && !bForce)
+        {
+            pKeyboardFocusReceiver_->on_event(mEvent);
+            return;
+        }
+    }
+
+    for (const auto& pManager : lEventManagerList_)
+    {
+        if (pManager)
+            pManager->fire_event(mEvent);
     }
 }
 

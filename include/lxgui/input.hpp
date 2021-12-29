@@ -76,11 +76,11 @@ namespace input
         */
         void force_input_allowed(const std::string& sGroupName, bool bForce);
 
-        /// Checks if a key has been pressed.
+        /// Checks if any key is being pressed.
         /** \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if a key has been pressed
+        *   \return 'true' if any key is being pressed
         */
-        bool get_key(bool bForce = false) const;
+        bool any_key_is_down(bool bForce = false) const;
 
         /// Checks if a key is being pressed.
         /** \param mKey   The ID code of the key you're interested in
