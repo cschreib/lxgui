@@ -4,12 +4,7 @@
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_focusframe.hpp"
-#include "lxgui/gui_layeredregion.hpp"
-#include "lxgui/gui_rendertarget.hpp"
-#include "lxgui/gui_material.hpp"
 #include "lxgui/gui_localizer.hpp"
-#include "lxgui/gui_matrix4.hpp"
-#include "lxgui/gui_font.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_eventmanager.hpp"
@@ -21,12 +16,8 @@
 #include "lxgui/gui_keybinder.hpp"
 #include "lxgui/input.hpp"
 
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_std.hpp>
-#include <lxgui/utils_range.hpp>
 
-#include <fstream>
 #include <sstream>
 
 /** \mainpage lxgui documentation

@@ -1,5 +1,6 @@
 #include "lxgui/gui_uiobject.hpp"
 
+#include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_manager.hpp"

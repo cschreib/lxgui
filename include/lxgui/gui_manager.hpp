@@ -4,22 +4,13 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_eventmanager.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_addon.hpp"
 #include "lxgui/gui_anchor.hpp"
-#include "lxgui/gui_uiobject.hpp"
-#include "lxgui/gui_quad.hpp"
 #include "lxgui/input_keys.hpp"
 
-#include <lxgui/utils_exception.hpp>
-#include <lxgui/utils_view.hpp>
 #include <lxgui/utils_observer.hpp>
 
 #include <string>
 #include <vector>
-#include <list>
-#include <unordered_map>
-#include <tuple>
-#include <array>
 #include <functional>
 #include <memory>
 
@@ -36,6 +27,7 @@ namespace input {
 
 namespace gui
 {
+    class uiobject;
     class frame;
     class focus_frame;
     class renderer;

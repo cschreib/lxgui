@@ -2,6 +2,7 @@
 #include "lxgui/impl/gui_gl_material.hpp"
 #include <lxgui/gui_manager.hpp>
 #include <lxgui/gui_out.hpp>
+#include <lxgui/gui_exception.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
 
