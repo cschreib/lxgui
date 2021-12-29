@@ -274,6 +274,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_framerenderer.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_frame_container.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_gradient.cpp
+    ${PROJECT_SOURCE_DIR}/src/gui_keybinder.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_layeredregion_parser.cpp

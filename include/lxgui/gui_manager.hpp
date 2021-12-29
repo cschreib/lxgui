@@ -44,6 +44,7 @@ namespace gui
     class uiroot;
     class virtual_uiroot;
     class addon_registry;
+    class keybinder;
 
     /// Manages the user interface
     class manager : private event_manager, public event_receiver
@@ -139,40 +140,6 @@ namespace gui
         /** \note Calls uiobject::serialize().
         */
         std::string print_ui() const;
-
-        /// Binds some Lua code to a key.
-        /** \param uiKey      The key to bind
-        *   \param sLuaString The Lua code that will be executed
-        */
-        void set_key_binding(input::key uiKey, const std::string& sLuaString);
-
-        /// Binds some Lua code to a key.
-        /** \param uiKey      The key to bind
-        *   \param uiModifier The modifier key (shift, ctrl, ...)
-        *   \param sLuaString The Lua code that will be executed
-        */
-        void set_key_binding(input::key uiKey, input::key uiModifier, const std::string& sLuaString);
-
-        /// Binds some Lua code to a key.
-        /** \param uiKey       The key to bind
-        *   \param uiModifier1 The first modifier key (shift, ctrl, ...)
-        *   \param uiModifier2 The second modifier key (shift, ctrl, ...)
-        *   \param sLuaString  The Lua code that will be executed
-        */
-        void set_key_binding(
-            input::key uiKey, input::key uiModifier1, input::key uiModifier2,
-            const std::string& sLuaString
-        );
-
-        /// Unbinds a key.
-        /** \param uiKey       The key to unbind
-        *   \param uiModifier1 The first modifier key (shift, ctrl, ...), default is no modifier
-        *   \param uiModifier2 The second modifier key (shift, ctrl, ...), default is no modified
-        */
-        void remove_key_binding(
-            input::key uiKey, input::key uiModifier1 = input::key::K_UNASSIGNED,
-            input::key uiModifier2 = input::key::K_UNASSIGNED
-        );
 
         /// Loads the UI.
         /** \note Creates the Lua state and loads addon files (if any).
@@ -466,6 +433,7 @@ namespace gui
         utils::owner_ptr<uiroot>         pRoot_;
         utils::owner_ptr<virtual_uiroot> pVirtualRoot_;
         std::unique_ptr<addon_registry>  pAddOnRegistry_;
+        utils::owner_ptr<keybinder>      pKeybinder_;
 
         bool bLoaded_ = false;
         bool bReloadUI_ = false;
@@ -475,7 +443,6 @@ namespace gui
 
         bool bInputEnabled_ = true;
 
-        key_map<key_map<key_map<std::string>>> lKeyBindingList_;
 
         bool                             bObjectMoved_ = false;
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;

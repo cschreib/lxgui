@@ -197,18 +197,6 @@
 					"shell_cmd": "make -j12 ryml",
 				},
 				{
-					"name": "src/gui_addon.o",
-					"shell_cmd": "make -j12 src/gui_addon.o",
-				},
-				{
-					"name": "src/gui_addon.i",
-					"shell_cmd": "make -j12 src/gui_addon.i",
-				},
-				{
-					"name": "src/gui_addon.s",
-					"shell_cmd": "make -j12 src/gui_addon.s",
-				},
-				{
 					"name": "src/gui_addon_registry.o",
 					"shell_cmd": "make -j12 src/gui_addon_registry.o",
 				},
@@ -591,6 +579,18 @@
 				{
 					"name": "src/gui_gradient.s",
 					"shell_cmd": "make -j12 src/gui_gradient.s",
+				},
+				{
+					"name": "src/gui_keybinder.o",
+					"shell_cmd": "make -j12 src/gui_keybinder.o",
+				},
+				{
+					"name": "src/gui_keybinder.i",
+					"shell_cmd": "make -j12 src/gui_keybinder.i",
+				},
+				{
+					"name": "src/gui_keybinder.s",
+					"shell_cmd": "make -j12 src/gui_keybinder.s",
 				},
 				{
 					"name": "src/gui_layeredregion.o",
@@ -1074,15 +1074,15 @@
 				},
 				{
 					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o"
+					"shell_cmd": "make -j12 src/utils_string.o",
 				},
 				{
 					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i"
+					"shell_cmd": "make -j12 src/utils_string.i",
 				},
 				{
 					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s"
+					"shell_cmd": "make -j12 src/utils_string.s",
 				},
 			],
 			"working_dir": "$folder/build",

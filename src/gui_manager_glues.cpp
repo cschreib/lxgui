@@ -10,6 +10,7 @@
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_addon_registry.hpp"
+#include "lxgui/gui_keybinder.hpp"
 #include "lxgui/input.hpp"
 
 #include <sol/state.hpp>
@@ -90,33 +91,33 @@ void manager::create_lua_()
     /** @function set_key_binding
     */
     mLua.set_function("set_key_binding", sol::overload(
-    [&](std::size_t uiKey, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, sol::optional<sol::protected_function> mFunction)
     {
         auto mKey = static_cast<input::key>(uiKey);
-        if (sCode.has_value())
-            set_key_binding(mKey, sCode.value());
+        if (mFunction.has_value())
+            pKeybinder_->set_key_binding(mKey, mFunction.value());
         else
-            remove_key_binding(mKey);
+            pKeybinder_->remove_key_binding(mKey);
     },
-    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<std::string> sCode)
+    [&](std::size_t uiKey, std::size_t uiModifier, sol::optional<sol::protected_function> mFunction)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier = static_cast<input::key>(uiModifier);
-        if (sCode.has_value())
-            set_key_binding(mKey, mModifier, sCode.value());
+        if (mFunction.has_value())
+            pKeybinder_->set_key_binding(mKey, mModifier, mFunction.value());
         else
-            remove_key_binding(mKey, mModifier);
+            pKeybinder_->remove_key_binding(mKey, mModifier);
     },
     [&](std::size_t uiKey, std::size_t uiModifier1, std::size_t uiModifier2,
-        sol::optional<std::string> sCode)
+        sol::optional<sol::protected_function> mFunction)
     {
         auto mKey = static_cast<input::key>(uiKey);
         auto mModifier1 = static_cast<input::key>(uiModifier1);
         auto mModifier2 = static_cast<input::key>(uiModifier2);
-        if (sCode.has_value())
-            set_key_binding(mKey, mModifier1, mModifier2, sCode.value());
+        if (mFunction.has_value())
+            pKeybinder_->set_key_binding(mKey, mModifier1, mModifier2, mFunction.value());
         else
-            remove_key_binding(mKey, mModifier1, mModifier2);
+            pKeybinder_->remove_key_binding(mKey, mModifier1, mModifier2);
     }));
 
     /** Closes the whole GUI and re-loads addons from files.

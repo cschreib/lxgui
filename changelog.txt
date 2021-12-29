@@ -71,6 +71,7 @@ Other changes:
  - gui: added factory to manage uiobject creation functions
  - gui: added registry and virtual_registry to handle uiobject lookup by name
  - gui: added addon_registry to load and manage addons
+ - gui: added keybinder to manage Lua key bindings
  - gui: added uiobject::is_loaded() and clarify the semantic
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
@@ -124,6 +125,7 @@ Other changes:
  - gui: relative sizing is now only applicable to XML <Size>
  - gui: split anchor into anchor (logic) + anchor_data (data)
  - gui: uiobject::set_parent() and uiobject::set_name() are no longer public
+ - gui: Lua key binding functions now expect Lua functions as handlers, not strings
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box

@@ -18,6 +18,7 @@
 #include "lxgui/gui_virtual_uiroot.hpp"
 #include "lxgui/gui_factory.hpp"
 #include "lxgui/gui_addon_registry.hpp"
+#include "lxgui/gui_keybinder.hpp"
 #include "lxgui/input.hpp"
 
 #include <lxgui/utils_string.hpp>
@@ -145,17 +146,19 @@ void manager::load_ui()
 
     pFactory_ = std::make_unique<factory>(*this);
     pRoot_ = utils::make_owned<uiroot>(*this);
-    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, pRoot_->get_registry());
+    pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
 
     pInputManager_->register_event_manager(
         utils::observer_ptr<event_manager>(observer_from_this(), static_cast<event_manager*>(this)));
 
-    register_event("KEY_PRESSED");
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
     pRoot_->register_event("WINDOW_RESIZED");
 
     create_lua_();
+
+    pKeybinder_ = utils::make_owned<keybinder>(get_input_manager(), get_event_manager());
+    pKeybinder_->register_event("KEY_PRESSED");
 
     read_files_();
 
@@ -182,9 +185,8 @@ void manager::close_ui_now()
     pVirtualRoot_ = nullptr;
     pRoot_ = nullptr;
     pFactory_ = nullptr;
-
     pAddOnRegistry_ = nullptr;
-
+    pKeybinder_ = nullptr;
     pLua_ = nullptr;
 
     pHoveredFrame_ = nullptr;
@@ -203,11 +205,8 @@ void manager::close_ui_now()
     bResizeFromRight_ = false;
     bResizeFromBottom_ = false;
 
-    lKeyBindingList_.clear();
-
     pLocalizer_->clear_translations();
 
-    unregister_event("KEY_PRESSED");
     unregister_event("MOUSE_MOVED");
     unregister_event("WINDOW_RESIZED");
 
@@ -518,116 +517,9 @@ void manager::request_focus(utils::observer_ptr<focus_frame> pFocusFrame)
     }
 }
 
-void manager::set_key_binding(input::key mKey, const std::string& sLuaString)
-{
-    lKeyBindingList_[mKey][input::key::K_UNASSIGNED][input::key::K_UNASSIGNED] = sLuaString;
-}
-
-void manager::set_key_binding(input::key mKey, input::key mModifier, const std::string& sLuaString)
-{
-    lKeyBindingList_[mKey][mModifier][input::key::K_UNASSIGNED] = sLuaString;
-}
-
-void manager::set_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2, const std::string& sLuaString)
-{
-    lKeyBindingList_[mKey][mModifier1][mModifier2] = sLuaString;
-}
-
-void manager::remove_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2)
-{
-    auto iter1 = lKeyBindingList_.find(mKey);
-    if (iter1 != lKeyBindingList_.end())
-    {
-        auto iter2 = iter1->second.find(mModifier1);
-        if (iter2 != iter1->second.end())
-        {
-            auto iter3 = iter2->second.find(mModifier2);
-            if (iter3 != iter2->second.end())
-            {
-                iter2->second.erase(iter3);
-
-                if (iter2->second.empty())
-                    iter1->second.erase(iter2);
-
-                if (iter1->second.empty())
-                    lKeyBindingList_.erase(iter1);
-            }
-        }
-    }
-}
-
 void manager::on_event(const event& mEvent)
 {
-    if (mEvent.get_name() == "KEY_PRESSED")
-    {
-        const input::key mKey = mEvent.get<input::key>(0);
-
-        std::string sScript;
-        std::string sKeyName;
-
-        auto iter1 = lKeyBindingList_.find(mKey);
-        if (iter1 != lKeyBindingList_.end())
-        {
-            for (const auto& iter2 : iter1->second)
-            {
-                if (iter2.first == input::key::K_UNASSIGNED ||
-                    !pInputManager_->key_is_down(iter2.first))
-                    continue;
-
-                // First try to get a match with the most complicated binding with two modifiers
-                for (const auto& iter3 : iter2.second)
-                {
-                    if (iter3.first == input::key::K_UNASSIGNED ||
-                        !pInputManager_->key_is_down(iter3.first))
-                        continue;
-
-                    sScript = iter3.second;
-                    sKeyName = pInputManager_->get_key_name(mKey, iter2.first, iter3.first);
-                    break;
-                }
-
-                if (!sScript.empty())
-                    break;
-
-                // If none was found, try with only one modifier
-                auto iter3 = iter2.second.find(input::key::K_UNASSIGNED);
-                if (iter3 != iter2.second.end())
-                {
-                    sScript = iter3->second;
-                    sKeyName = pInputManager_->get_key_name(mKey, iter2.first);
-                }
-            }
-
-            if (sScript.empty())
-            {
-                // If no modifier was matching, try with no modifier
-                auto iter2 = iter1->second.find(input::key::K_UNASSIGNED);
-                if (iter2 != iter1->second.end())
-                {
-                    auto iter3 = iter2->second.find(input::key::K_UNASSIGNED);
-                    if (iter3 != iter2->second.end())
-                    {
-                        sScript = iter3->second;
-                        sKeyName = pInputManager_->get_key_name(mKey);
-                    }
-                }
-            }
-        }
-
-        if (!sScript.empty())
-        {
-            try
-            {
-                pLua_->do_string(sScript);
-            }
-            catch (const sol::error& e)
-            {
-                gui::out << gui::error << "Bound action : " << sKeyName
-                    << " : " << e.what() << std::endl;
-            }
-        }
-    }
-    else if (mEvent.get_name() == "WINDOW_RESIZED")
+    if (mEvent.get_name() == "WINDOW_RESIZED")
     {
         // Update the scaling factor
         set_interface_scaling_factor(fBaseScalingFactor_);
