@@ -87,6 +87,26 @@ namespace gui
         */
         float get_interface_scaling_factor() const;
 
+        /// Enables or disables interface caching.
+        /** \param bEnableCaching 'true' to enable, 'false' to disable
+        *   \see toggle_caching()
+        */
+        void enable_caching(bool bEnableCaching);
+
+        /// Toggles interface caching.
+        /** \note Disabled by default. Enabling this will most likely improve performances,
+        *         at the expense of higher GPU memory usage. The UI will be cached into
+        *         large render targets, which are only redrawn when the UI changes, rather
+        *         than redrawn on each frame.
+        */
+        void toggle_caching();
+
+        /// Checks if interface caching is enabled.
+        /** \return 'true' if interface caching is enabled
+        *   \see toggle_caching()
+        */
+        bool is_caching_enabled() const;
+
         /// Adds a new directory to be parsed for UI addons.
         /** \param sDirectory The new directory
         */
@@ -436,6 +456,7 @@ namespace gui
 
         float fScalingFactor_ = 1.0f;
         float fBaseScalingFactor_ = 1.0f;
+        bool  bEnableCaching_ = false;
 
         std::unique_ptr<sol::state>        pLua_;
         std::function<void(gui::manager&)> pLuaRegs_;

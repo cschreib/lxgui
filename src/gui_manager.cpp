@@ -83,6 +83,28 @@ float manager::get_interface_scaling_factor() const
     return fScalingFactor_;
 }
 
+void manager::enable_caching(bool bEnableCaching)
+{
+    bEnableCaching_ = bEnableCaching;
+    if (pRoot_)
+        pRoot_->enable_caching(bEnableCaching_);
+}
+
+void manager::toggle_caching()
+{
+    bEnableCaching_ = !bEnableCaching_;
+    if (pRoot_)
+        pRoot_->enable_caching(bEnableCaching_);
+}
+
+bool manager::is_caching_enabled() const
+{
+    if (pRoot_)
+        return pRoot_->is_caching_enabled();
+    else
+        return bEnableCaching_;
+}
+
 void manager::add_addon_directory(const std::string& sDirectory)
 {
     if (utils::find(lGUIDirectoryList_, sDirectory) == lGUIDirectoryList_.end())

@@ -134,6 +134,7 @@ Other changes:
  - gui: added slider::set_orientation(const std::string&)
  - gui: added status_bar::set_orientation(const std::string&)
  - gui: render targets can now have texture filtering other than nearest
+ - gui: GUI caching is now disabled by default
  - gui: improved peformance of "update borders" notifications
  - gui: improved peformance of generating new object IDs
  - gui: improved peformance of font outline rendering

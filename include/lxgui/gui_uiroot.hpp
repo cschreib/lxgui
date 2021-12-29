@@ -51,20 +51,23 @@ namespace gui
         /// Renders the UI into the current render target.
         void render() const;
 
-        /// Enables/disables GUI caching.
-        /** \param bEnable 'true' to enable
-        *   \note See toggle_caching().
+        /// Enables or disables interface caching.
+        /** \param bEnableCaching 'true' to enable, 'false' to disable
+        *   \see toggle_caching()
         */
         void enable_caching(bool bEnable);
 
-        /// Toggles render caching.
-        /** \note Enabled by default.
-        *   \note Enabling this will most likely improve performances.
+        /// Toggles interface caching.
+        /** \note Disabled by default. Enabling this will most likely improve performances,
+        *         at the expense of higher GPU memory usage. The UI will be cached into
+        *         large render targets, which are only redrawn when the UI changes, rather
+        *         than redrawn on each frame.
         */
         void toggle_caching();
 
-        /// Checks if GUI caching is enabled.
-        /** \return 'true' if GUI caching is enabled
+        /// Checks if interface caching is enabled.
+        /** \return 'true' if interface caching is enabled
+        *   \see toggle_caching()
         */
         bool is_caching_enabled() const;
 
@@ -128,7 +131,7 @@ namespace gui
 
         vector2ui mScreenDimensions_;
 
-        bool bEnableCaching_= true;
+        bool bEnableCaching_= false;
 
         std::shared_ptr<render_target> pRenderTarget_;
         quad                           mScreenQuad_;

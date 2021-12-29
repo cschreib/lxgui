@@ -28,9 +28,6 @@ float get_time_delta(const timing_clock::time_point& mT1, const timing_clock::ti
 
 void examples_setup_gui(gui::manager& mManager)
 {
-    // Disable UI caching by default
-    mManager.get_root().enable_caching(false);
-
     // Automatically select best settings
     gui::renderer& mGUIRenderer = mManager.get_renderer();
     mGUIRenderer.auto_detect_settings();

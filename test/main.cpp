@@ -507,8 +507,6 @@ int main(int argc, char* argv[])
         std::cout << "  Texture per-vertex color supported: " << mGUIRenderer.is_texture_vertex_color_supported() << std::endl;
         std::cout << "  Quad batching enabled: " << mGUIRenderer.is_quad_batching_enabled() << std::endl;
 
-        pManager->get_root().enable_caching(false);
-
         pManager->set_interface_scaling_factor(fScaleFactor);
 
         // Load files :
