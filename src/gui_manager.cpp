@@ -235,31 +235,13 @@ void manager::reload_ui_now()
     bReloadUI_ = false;
 }
 
-void manager::begin(std::shared_ptr<render_target> pTarget) const
-{
-    pRenderer_->begin(pTarget);
-
-    vector2f mView;
-    if (pTarget)
-        mView = vector2f(pTarget->get_canvas_dimensions())/fScalingFactor_;
-    else
-        mView = pRoot_->get_target_dimensions();
-
-    pRenderer_->set_view(matrix4f::view(mView));
-}
-
-void manager::end() const
-{
-    pRenderer_->end();
-}
-
 void manager::render_ui() const
 {
-    begin();
+    pRenderer_->begin();
 
     pRoot_->render();
 
-    end();
+    pRenderer_->end();
 }
 
 bool manager::is_loaded() const

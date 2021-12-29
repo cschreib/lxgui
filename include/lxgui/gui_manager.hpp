@@ -214,17 +214,6 @@ namespace gui
         */
         bool is_loaded() const;
 
-        /// Tells the rendering back-end to start rendering into a new target.
-        /** \param pTarget The target to render to (nullptr to render to the screen)
-        */
-        void begin(std::shared_ptr<render_target> pTarget = nullptr) const;
-
-        /// Tells the rendering back-end we are done rendering on the current target.
-        /** \note For most back-ends, this is when the rendering is actually
-        *         done, so do not forget to call it even if it appears to do nothing.
-        */
-        void end() const;
-
         /// Renders the UI into the current render target.
         void render_ui() const;
 

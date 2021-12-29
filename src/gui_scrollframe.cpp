@@ -310,7 +310,15 @@ void scroll_frame::rebuild_scroll_render_target_()
 
 void scroll_frame::render_scroll_strata_list_()
 {
-    get_manager().begin(pScrollRenderTarget_);
+    renderer& mRenderer = get_manager().get_renderer();
+
+    mRenderer.begin(pScrollRenderTarget_);
+
+    vector2f mView = vector2f(pScrollRenderTarget_->get_canvas_dimensions())/
+        get_manager().get_interface_scaling_factor();
+
+    mRenderer.set_view(matrix4f::view(mView));
+
     pScrollRenderTarget_->clear(color::EMPTY);
 
     for (const auto& mStrata : lStrataList_)
@@ -318,7 +326,7 @@ void scroll_frame::render_scroll_strata_list_()
         render_strata_(mStrata);
     }
 
-    get_manager().end();
+    mRenderer.end();
 }
 
 bool scroll_frame::is_in_frame(const vector2f& mPosition) const

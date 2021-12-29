@@ -35,6 +35,8 @@ vector2f uiroot::get_target_dimensions() const
 
 void uiroot::render() const
 {
+    mRenderer_.set_view(matrix4f::view(get_target_dimensions()));
+
     if (bEnableCaching_)
     {
         mRenderer_.render_quad(mScreenQuad_);
@@ -144,10 +146,17 @@ void uiroot::update(float fDelta)
 
                     if (mStrata.pRenderTarget)
                     {
-                        get_manager().begin(mStrata.pRenderTarget);
+                        mRenderer_.begin(mStrata.pRenderTarget);
+
+                        vector2f mView = vector2f(mStrata.pRenderTarget->get_canvas_dimensions())/
+                            get_manager().get_interface_scaling_factor();
+
+                        mRenderer_.set_view(matrix4f::view(mView));
+
                         mStrata.pRenderTarget->clear(color::EMPTY);
                         render_strata_(mStrata);
-                        get_manager().end();
+
+                        mRenderer_.end();
                     }
 
                     bRedraw = true;
@@ -161,7 +170,13 @@ void uiroot::update(float fDelta)
 
             if (bRedraw && pRenderTarget_)
             {
-                get_manager().begin(pRenderTarget_);
+                mRenderer_.begin(pRenderTarget_);
+
+                vector2f mView = vector2f(pRenderTarget_->get_canvas_dimensions())/
+                    get_manager().get_interface_scaling_factor();
+
+                mRenderer_.set_view(matrix4f::view(mView));
+
                 pRenderTarget_->clear(color::EMPTY);
 
                 for (auto& mStrata : lStrataList_)
@@ -169,7 +184,7 @@ void uiroot::update(float fDelta)
                     mRenderer_.render_quad(mStrata.mQuad);
                 }
 
-                get_manager().end();
+                mRenderer_.end();
             }
         }
         catch (const utils::exception& e)
