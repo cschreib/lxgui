@@ -12,7 +12,6 @@
 #include <sol/state.hpp>
 
 #include <fstream>
-#include <sstream>
 
 namespace
 {
@@ -48,13 +47,13 @@ void addon_registry::load_addon_toc_(const std::string& sAddOnName, const std::s
     if (!mFile.is_open())
         return;
 
-    while (!mFile.eof())
+    std::string sLine;
+    while (std::getline(mFile, sLine))
     {
-        std::string sLine; getline(mFile, sLine);
+        utils::replace(sLine, "\r", "");
         if (sLine.empty())
             continue;
 
-        utils::replace(sLine, "\r", "");
         if (sLine[0] == '#' && sLine[1] == '#')
         {
             sLine.erase(0, 2);
@@ -106,8 +105,6 @@ void addon_registry::load_addon_toc_(const std::string& sAddOnName, const std::s
                 mAddOn.lFileList.push_back(mAddOn.sDirectory + "/" + sLine);
         }
     }
-
-    mFile.close();
 
     if (mAddOn.sName.empty())
         gui::out << gui::error << "gui::manager : Missing addon name in " << sTOCFile << "." << std::endl;
