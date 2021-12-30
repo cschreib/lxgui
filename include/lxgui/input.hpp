@@ -80,25 +80,23 @@ namespace input
         /** \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if any key is being pressed
         */
-        bool any_key_is_down(bool bForce = false) const;
+        bool any_key_is_down() const;
 
         /// Checks if a key is being pressed.
         /** \param mKey   The ID code of the key you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the key is being pressed
+        *   \note This will report the keyboard state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
-        bool key_is_down(key mKey, bool bForce = false) const;
+        bool key_is_down(key mKey) const;
 
         /// Returns elapsed time since the key has been pressed.
         /** \param mKey The ID code of the key you're interested in
         *   \return Elapsed time since the key has been pressed
+        *   \note This will report the keyboard state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         double get_key_down_duration(key mKey) const;
-
-        /// Returns the UTF32 characters that have been entered.
-        /** \return The UTF32 characters entered with the keyboard on the last update() call
-        */
-        std::vector<char32_t> get_chars() const;
 
         /// Returns the name of the provided key, as it appears on your keyboard.
         /** \param mKey The key
@@ -126,50 +124,66 @@ namespace input
 
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
+        *   \note This will report the keyboard state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         bool alt_is_pressed() const;
 
         /// Checks if Shift is beeing pressed.
         /** \return 'true' if Shift is beeing pressed
+        *   \note This will report the keyboard state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         bool shift_is_pressed() const;
 
         /// Checks if Control (Ctrl) is beeing pressed.
         /** \return 'true' if Control (Ctrl) is beeing pressed
+        *   \note This will report the keyboard state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         bool ctrl_is_pressed() const;
 
         /// Checks if a mouse button is being pressed.
         /** \param mID    The ID code of the mouse button you're interested in
-        *   \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if the mouse button is being pressed
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
-        bool mouse_is_down(mouse_button mID, bool bForce = false) const;
+        bool mouse_is_down(mouse_button mID) const;
 
         /// Returns elapsed time since the mouse button has been pressed.
         /** \param mKey The ID code of the mouse button you're interested in
         *   \return Elapsed time since the mouse button has been pressed
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         double get_mouse_down_duration(mouse_button mKey) const;
 
         /// Checks if the mouse wheel has been rolled.
-        /** \param bForce 'true' to bypass focus (see set_focus())
-        *   \return 'true' if the mouse wheel has been rolled
+        /** \return 'true' if the mouse wheel has been rolled
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
-        bool wheel_is_rolled(bool bForce = false) const;
+        bool wheel_is_rolled() const;
 
         /// Returns the position of the mouse in pixels.
         /** \return The position of the mouse in pixels
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         const gui::vector2f& get_mouse_position() const;
 
         /// Returns the position variation of the mouse.
         /** \return The position variation of the mouse
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         const gui::vector2f& get_mouse_delta() const;
 
         /// Returns the rolling ammount of the mouse wheel.
         /** \return The rolling ammount of the mouse wheel
+        *   \note This will report the mouse state regardless of focus.
+        *         If supporting focus is necessary, respond to input events instead.
         */
         float get_mouse_wheel() const;
 
@@ -252,11 +266,11 @@ namespace input
         */
         bool is_mouse_focused() const;
 
-        /// Registers a new event manager that will listen to input events.
+        /// Registers a new event manager that will emit input events.
         /** \param pManager The new event manager
         *   \note There can be as many event managers connected to this input
         *         manager. If you need to remove one from the list, see
-        *         remove_event_manager().
+        *         @ref unregister_event_manager().
         */
         void register_event_manager(utils::observer_ptr<gui::event_manager> pManager);
 
@@ -324,7 +338,7 @@ namespace input
 
     private :
 
-        void fire_event_(const gui::event& mEvent, bool bForce = false);
+        void fire_event_(const gui::event& mEvent);
 
         bool bRemoveKeyboardFocus_ = false;
         bool bRemoveMouseFocus_ = false;
@@ -337,8 +351,6 @@ namespace input
 
         // Keyboard
         std::array<double, KEY_NUMBER> lKeyDelay_ = {};
-
-        std::vector<char32_t> lChars_;
 
         // Mouse
         std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_ = {};
@@ -353,8 +365,6 @@ namespace input
         bool          bWheelRolled_ = false;
         bool          bMouseDragged_ = false;
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;
-
-        double dTime_ = 0.0;
 
         std::unique_ptr<source> pSource_;
     };

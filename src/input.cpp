@@ -49,11 +49,8 @@ void manager::force_input_allowed(const std::string& sGroupName, bool bForce)
     lForcedClickGroupList_[sGroupName] = bForce;
 }
 
-bool manager::any_key_is_down(bool bForce) const
+bool manager::any_key_is_down() const
 {
-    if (!bForce && bKeyboardFocus_)
-        return false;
-
     const auto& lKeyState = pSource_->get_key_state().lKeyState;
     for (std::size_t i = 1; i < KEY_NUMBER; ++i)
     {
@@ -279,12 +276,9 @@ std::string manager::get_key_name(key mKey, key mModifier1, key mModifier2) cons
     return sString + get_key_name(mKey);
 }
 
-bool manager::key_is_down(key mKey, bool bForce) const
+bool manager::key_is_down(key mKey) const
 {
-    if (!bForce && bKeyboardFocus_)
-        return false;
-    else
-        return pSource_->get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
+    return pSource_->get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
 }
 
 double manager::get_key_down_duration(key mKey) const
@@ -292,17 +286,9 @@ double manager::get_key_down_duration(key mKey) const
     return lKeyDelay_[static_cast<std::size_t>(mKey)];
 }
 
-std::vector<char32_t> manager::get_chars() const
+bool manager::mouse_is_down(mouse_button mID) const
 {
-    return lChars_;
-}
-
-bool manager::mouse_is_down(mouse_button mID, bool bForce) const
-{
-    if (!bForce && bMouseFocus_)
-        return false;
-    else
-        return pSource_->get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
+    return pSource_->get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
 }
 
 double manager::get_mouse_down_duration(mouse_button mID) const
@@ -310,12 +296,9 @@ double manager::get_mouse_down_duration(mouse_button mID) const
     return lMouseDelay_[static_cast<std::size_t>(mID)];
 }
 
-bool manager::wheel_is_rolled(bool bForce) const
+bool manager::wheel_is_rolled() const
 {
-    if (!bForce && bMouseFocus_)
-        return false;
-    else
-        return bWheelRolled_;
+    return bWheelRolled_;
 }
 
 void manager::update(float fTempDelta)
@@ -383,12 +366,12 @@ void manager::update(float fTempDelta)
         fire_event_(mEvent);
     }
 
-    lChars_ = pSource_->get_chars();
-    if (!lChars_.empty())
+    auto lChars = pSource_->get_chars();
+    if (!lChars.empty())
     {
         gui::event mCharEvent("TEXT_ENTERED");
         mCharEvent.add(std::uint32_t{});
-        for (auto cChar : lChars_)
+        for (auto cChar : lChars)
         {
             mCharEvent.get(0) = cChar;
             fire_event_(mCharEvent);
@@ -430,14 +413,14 @@ void manager::update(float fTempDelta)
                 mMouseDragEvent.add(mMousePos_.x);
                 mMouseDragEvent.add(mMousePos_.y);
                 mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
-                fire_event_(mMouseDragEvent, true);
+                fire_event_(mMouseDragEvent);
             }
         }
 
         gui::event mMouseMovedEvent("MOUSE_MOVED", true);
         mMouseMovedEvent.add(mMouseDelta_.x);
         mMouseMovedEvent.add(mMouseDelta_.y);
-        fire_event_(mMouseMovedEvent, true);
+        fire_event_(mMouseMovedEvent);
     }
 
     if (bMouseDragged_ && !mMouseState.lButtonState[static_cast<std::size_t>(mMouseDragButton_)])
@@ -449,14 +432,14 @@ void manager::update(float fTempDelta)
         mMouseDragEvent.add(mMousePos_.x);
         mMouseDragEvent.add(mMousePos_.y);
         mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
-        fire_event_(mMouseDragEvent, true);
+        fire_event_(mMouseDragEvent);
     }
 
     if (bWheelRolled_)
     {
         gui::event mMouseWheelEvent("MOUSE_WHEEL", true);
         mMouseWheelEvent.add(fMWheel_);
-        fire_event_(mMouseWheelEvent, true);
+        fire_event_(mMouseWheelEvent);
     }
 
     if (pSource_->has_window_resized())
@@ -465,11 +448,9 @@ void manager::update(float fTempDelta)
         gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
         mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.x));
         mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.y));
-        fire_event_(mWindowResizedEvent, true);
+        fire_event_(mWindowResizedEvent);
         pSource_->reset_window_resized();
     }
-
-    dTime_ += dDelta;
 }
 
 void manager::set_doubleclick_time(double dDoubleClickTime)
@@ -529,17 +510,17 @@ bool manager::is_mouse_focused() const
 
 bool manager::alt_is_pressed() const
 {
-    return key_is_down(key::K_LMENU, true) || key_is_down(key::K_RMENU, true);
+    return key_is_down(key::K_LMENU) || key_is_down(key::K_RMENU);
 }
 
 bool manager::shift_is_pressed() const
 {
-    return key_is_down(key::K_LSHIFT, true) || key_is_down(key::K_RSHIFT, true);
+    return key_is_down(key::K_LSHIFT) || key_is_down(key::K_RSHIFT);
 }
 
 bool manager::ctrl_is_pressed() const
 {
-    return key_is_down(key::K_LCONTROL, true) || key_is_down(key::K_RCONTROL, true);
+    return key_is_down(key::K_LCONTROL) || key_is_down(key::K_RCONTROL);
 }
 
 const gui::vector2f& manager::get_mouse_position() const
@@ -643,26 +624,20 @@ float manager::get_interface_scaling_factor_hint() const
     return pSource_->get_interface_scaling_factor_hint();
 }
 
-void manager::fire_event_(const gui::event& mEvent, bool bForce)
+void manager::fire_event_(const gui::event& mEvent)
 {
     bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;
     bool bKeyboardEvent = mEvent.get_name().find("KEY_") == 0u || mEvent.get_name() == "TEXT_ENTERED";
 
-    if (bMouseEvent)
+    if (bMouseEvent && pMouseFocusReceiver_)
     {
-        if (pMouseFocusReceiver_ && !bForce)
-        {
-            pMouseFocusReceiver_->on_event(mEvent);
-            return;
-        }
+        pMouseFocusReceiver_->on_event(mEvent);
+        return;
     }
-    else if (bKeyboardEvent)
+    else if (bKeyboardEvent && pKeyboardFocusReceiver_)
     {
-        if (pKeyboardFocusReceiver_ && !bForce)
-        {
-            pKeyboardFocusReceiver_->on_event(mEvent);
-            return;
-        }
+        pKeyboardFocusReceiver_->on_event(mEvent);
+        return;
     }
 
     for (const auto& pManager : lEventManagerList_)
