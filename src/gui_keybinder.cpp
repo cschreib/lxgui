@@ -20,12 +20,14 @@ void keybinder::set_key_binding(input::key mKey, sol::protected_function mHandle
     lKeyBindingList_[mKey][input::key::K_UNASSIGNED][input::key::K_UNASSIGNED] = std::move(mHandler);
 }
 
-void keybinder::set_key_binding(input::key mKey, input::key mModifier, sol::protected_function mHandler)
+void keybinder::set_key_binding(input::key mKey, input::key mModifier,
+    sol::protected_function mHandler)
 {
     lKeyBindingList_[mKey][mModifier][input::key::K_UNASSIGNED] = std::move(mHandler);
 }
 
-void keybinder::set_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2, sol::protected_function mHandler)
+void keybinder::set_key_binding(input::key mKey, input::key mModifier1, input::key mModifier2,
+    sol::protected_function mHandler)
 {
     lKeyBindingList_[mKey][mModifier1][mModifier2] = std::move(mHandler);
 }
