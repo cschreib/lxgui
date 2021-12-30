@@ -16,7 +16,7 @@ namespace lxgui {
 namespace gui
 {
     class localizer;
-    class event_manager;
+    class event_emitter;
     class uiroot;
     class virtual_uiroot;
 
@@ -29,7 +29,7 @@ namespace gui
         /** \param pInputSource The input source to use
         *   \param pRenderer    The renderer implementation
         */
-        addon_registry(sol::state& mLua, localizer& mLocalizer, event_manager& mEventManager,
+        addon_registry(sol::state& mLua, localizer& mLocalizer, event_emitter& mEventEmitter,
             uiroot& mRoot, virtual_uiroot& mVirtualRoot);
 
         addon_registry(const addon_registry&) = delete;
@@ -75,7 +75,7 @@ namespace gui
 
         sol::state&     mLua_;
         localizer&      mLocalizer_;
-        event_manager&  mEventManager_;
+        event_emitter&  mEventEmitter_;
         uiroot&         mRoot_;
         virtual_uiroot& mVirtualRoot_;
 

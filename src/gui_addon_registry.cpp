@@ -2,7 +2,7 @@
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_filesystem.hpp>
@@ -25,8 +25,8 @@ namespace gui
 {
 
 addon_registry::addon_registry(sol::state& mLua, localizer& mLocalizer,
-    event_manager& mEventManager, uiroot& mRoot, virtual_uiroot& mVirtualRoot) :
-    mLua_(mLua), mLocalizer_(mLocalizer), mEventManager_(mEventManager),
+    event_emitter& mEventEmitter, uiroot& mRoot, virtual_uiroot& mVirtualRoot) :
+    mLua_(mLua), mLocalizer_(mLocalizer), mEventEmitter_(mEventEmitter),
     mRoot_(mRoot), mVirtualRoot_(mVirtualRoot)
 {
 }
@@ -134,7 +134,7 @@ void addon_registry::load_addon_files_(const addon& mAddOn)
 
                 event mEvent("LUA_ERROR");
                 mEvent.add(sError);
-                mEventManager_.fire_event(mEvent);
+                mEventEmitter_.fire_event(mEvent);
             }
         }
         else
@@ -158,13 +158,13 @@ void addon_registry::load_addon_files_(const addon& mAddOn)
 
             event mEvent("LUA_ERROR");
             mEvent.add(sError);
-            mEventManager_.fire_event(mEvent);
+            mEventEmitter_.fire_event(mEvent);
        }
     }
 
     event mEvent("ADDON_LOADED");
     mEvent.add(mAddOn.sName);
-    mEventManager_.fire_event(mEvent);
+    mEventEmitter_.fire_event(mEvent);
 }
 
 void addon_registry::load_addon_directory(const std::string& sDirectory)

@@ -11,20 +11,20 @@ namespace lxgui {
 namespace gui
 {
     class event;
-    class event_manager;
+    class event_emitter;
 
     /// Abstract interface for event handling
-    /** All classes which should react to some events
-    *   should inherit from this class.<br>
-    *   They will automatically react to events thanks
-    *   to the event_manager.
+    /** Any class needing to listen to events from an event_emitter
+    *   must inherit from this class and implement @ref on_event().
     */
     class event_receiver : public utils::enable_observer_from_this<event_receiver>
     {
     public :
 
         /// Constructor.
-        explicit event_receiver(event_manager& mManager);
+        /** \param mEmitter The event emitter to listen to
+        */
+        explicit event_receiver(event_emitter& mEmitter);
 
         /// Destructor.
         virtual ~event_receiver() = default;
@@ -62,7 +62,7 @@ namespace gui
 
     private :
 
-        event_manager& mEventManager_;
+        event_emitter& mEventEmitter_;
     };
 }
 }

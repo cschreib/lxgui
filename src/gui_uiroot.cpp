@@ -16,7 +16,7 @@ namespace gui
 {
 
 uiroot::uiroot(manager& mManager) :
-    event_receiver(mManager.get_event_manager()), frame_container(mManager, mObjectRegistry_, this),
+    event_receiver(mManager.get_event_emitter()), frame_container(mManager, mObjectRegistry_, this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();

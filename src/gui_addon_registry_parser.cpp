@@ -2,7 +2,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_parser_common.hpp"
 #include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_virtual_uiroot.hpp"
@@ -283,7 +283,7 @@ void addon_registry::parse_layout_file_(const std::string& sFile, const addon& m
 
                 event mEvent("LUA_ERROR");
                 mEvent.add(sError);
-                mEventManager_.fire_event(mEvent);
+                mEventEmitter_.fire_event(mEvent);
             }
         }
         else if (mNode.get_name() == "Include")

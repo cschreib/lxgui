@@ -2,7 +2,7 @@
 #include "lxgui/input_source.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
 
 #include <lxgui/utils_exception.hpp>
@@ -559,29 +559,29 @@ source& manager::get_source()
     return *pSource_;
 }
 
-void manager::register_event_manager(utils::observer_ptr<gui::event_manager> pManager)
+void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter)
 {
-    gui::event_manager* pManagerRaw = pManager.get();
-    auto mIter = utils::find_if(lEventManagerList_,
-        [&](const auto& pPtr) { return pPtr.get() == pManagerRaw; });
+    gui::event_emitter* pEmitterRaw = pEmitter.get();
+    auto mIter = utils::find_if(lEventEmitterList_,
+        [&](const auto& pPtr) { return pPtr.get() == pEmitterRaw; });
 
-    if (mIter != lEventManagerList_.end())
+    if (mIter != lEventEmitterList_.end())
     {
-        gui::out << gui::warning << "event manager " << pManagerRaw
+        gui::out << gui::warning << "event emitter " << pEmitterRaw
             << " has already been registered" << std::endl;
         return;
     }
 
-    lEventManagerList_.push_back(std::move(pManager));
+    lEventEmitterList_.push_back(std::move(pEmitter));
 }
 
-void manager::unregister_event_manager(gui::event_manager& mManager)
+void manager::unregister_event_emitter(gui::event_emitter& mEmitter)
 {
-    auto mIter = utils::find_if(lEventManagerList_,
-        [&](const auto& pPtr) { return pPtr.get() == &mManager; });
+    auto mIter = utils::find_if(lEventEmitterList_,
+        [&](const auto& pPtr) { return pPtr.get() == &mEmitter; });
 
-    if (mIter != lEventManagerList_.end())
-        lEventManagerList_.erase(mIter);
+    if (mIter != lEventEmitterList_.end())
+        lEventEmitterList_.erase(mIter);
 }
 
 utils::ustring manager::get_clipboard_content()
@@ -640,7 +640,7 @@ void manager::fire_event_(const gui::event& mEvent)
         return;
     }
 
-    for (const auto& pManager : lEventManagerList_)
+    for (const auto& pManager : lEventEmitterList_)
     {
         if (pManager)
             pManager->fire_event(mEvent);

@@ -22,7 +22,7 @@ namespace gui
 {
     class event;
     class event_receiver;
-    class event_manager;
+    class event_emitter;
 }
 
 namespace input
@@ -266,19 +266,19 @@ namespace input
         */
         bool is_mouse_focused() const;
 
-        /// Registers a new event manager that will emit input events.
-        /** \param pManager The new event manager
-        *   \note There can be as many event managers connected to this input
+        /// Registers a new event emitter that will forward input events.
+        /** \param pEmitter The new event emitter
+        *   \note There can be as many event emitters connected to this input
         *         manager. If you need to remove one from the list, see
-        *         @ref unregister_event_manager().
+        *         @ref unregister_event_emitter().
         */
-        void register_event_manager(utils::observer_ptr<gui::event_manager> pManager);
+        void register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter);
 
-        /// Unregisters an event manager.
-        /** \param mManager The manager to unregister
-        *   \note For more details, see register_event_manager().
+        /// Unregisters an event emitter.
+        /** \param mEmitter The emitter to unregister
+        *   \note For more details, see @ref register_event_emitter().
         */
-        void unregister_event_manager(gui::event_manager& mManager);
+        void unregister_event_emitter(gui::event_emitter& mEmitter);
 
         /// Retrieve a copy of the clipboard content.
         /** \return A copy of the clipboard content (empty string is clipboard is empty).
@@ -347,7 +347,7 @@ namespace input
         utils::observer_ptr<gui::event_receiver> pKeyboardFocusReceiver_ = nullptr;
         utils::observer_ptr<gui::event_receiver> pMouseFocusReceiver_ = nullptr;
 
-        std::vector<utils::observer_ptr<gui::event_manager>> lEventManagerList_;
+        std::vector<utils::observer_ptr<gui::event_emitter>> lEventEmitterList_;
 
         // Keyboard
         std::array<double, KEY_NUMBER> lKeyDelay_ = {};

@@ -401,16 +401,16 @@
 					"shell_cmd": "make -j12 src/gui_event.s",
 				},
 				{
-					"name": "src/gui_eventmanager.o",
-					"shell_cmd": "make -j12 src/gui_eventmanager.o",
+					"name": "src/gui_eventemitter.o",
+					"shell_cmd": "make -j12 src/gui_eventemitter.o",
 				},
 				{
-					"name": "src/gui_eventmanager.i",
-					"shell_cmd": "make -j12 src/gui_eventmanager.i",
+					"name": "src/gui_eventemitter.i",
+					"shell_cmd": "make -j12 src/gui_eventemitter.i",
 				},
 				{
-					"name": "src/gui_eventmanager.s",
-					"shell_cmd": "make -j12 src/gui_eventmanager.s",
+					"name": "src/gui_eventemitter.s",
+					"shell_cmd": "make -j12 src/gui_eventemitter.s",
 				},
 				{
 					"name": "src/gui_eventreceiver.o",

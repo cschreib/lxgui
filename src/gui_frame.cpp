@@ -4,7 +4,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_backdrop.hpp"
 #include "lxgui/gui_event.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_framerenderer.hpp"
 #include "lxgui/gui_alive_checker.hpp"
@@ -31,7 +31,7 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager& mManager) : event_receiver(mManager.get_event_manager()), region(mManager)
+frame::frame(manager& mManager) : event_receiver(mManager.get_event_emitter()), region(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -1079,7 +1079,7 @@ void frame::define_script_(const std::string& sScriptName, const std::string& sC
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        get_manager().get_event_manager().fire_event(mEvent);
+        get_manager().get_event_emitter().fire_event(mEvent);
         return;
     }
 
@@ -1350,7 +1350,7 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
         return;
 
     // Make a copy of useful pointers: in case the frame is deleted, we will need this
-    auto& mEventManager = get_manager().get_event_manager();
+    auto& mEventEmitter = get_manager().get_event_emitter();
     auto& mAddonRegistry = *get_manager().get_addon_registry();
     auto* pOldAddOn = mAddonRegistry.get_current_addon();
     mAddonRegistry.set_current_addon(get_addon());
@@ -1377,7 +1377,7 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
 
         event mEvent("LUA_ERROR");
         mEvent.add(sError);
-        mEventManager.fire_event(mEvent);
+        mEventEmitter.fire_event(mEvent);
     }
 
     mAddonRegistry.set_current_addon(pOldAddOn);

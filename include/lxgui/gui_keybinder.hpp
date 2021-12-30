@@ -22,7 +22,7 @@ namespace input {
 
 namespace gui
 {
-    class event_manager;
+    class event_emitter;
 
     /// Manages the user interface
     class keybinder : public event_receiver
@@ -30,7 +30,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit keybinder(input::manager& mInputManager, event_manager& mEventManager);
+        explicit keybinder(input::manager& mInputManager, event_emitter& mEventEmitter);
 
         keybinder(const keybinder&) = delete;
         keybinder(keybinder&&) = delete;
@@ -85,7 +85,7 @@ namespace gui
         using key_map = std::unordered_map<input::key,T>;
 
         input::manager& mInputManager_;
-        event_manager& mEventManager_;
+        event_emitter& mEventEmitter_;
 
         key_map<key_map<key_map<sol::protected_function>>> lKeyBindingList_;
     };

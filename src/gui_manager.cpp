@@ -7,7 +7,7 @@
 #include "lxgui/gui_localizer.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_uiroot.hpp"
 #include "lxgui/gui_virtual_uiroot.hpp"
@@ -37,8 +37,8 @@ namespace gui
 
 manager::manager(std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
-    event_manager(),
-    event_receiver(static_cast<event_manager&>(*this)),
+    event_emitter(),
+    event_receiver(static_cast<event_emitter&>(*this)),
     pInputManager_(new input::manager(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
@@ -124,7 +124,7 @@ void manager::read_files_()
         return;
 
     pAddOnRegistry_ = std::make_unique<addon_registry>(
-        get_lua(), get_localizer(), get_event_manager(), get_root(), get_virtual_root());
+        get_lua(), get_localizer(), get_event_emitter(), get_root(), get_virtual_root());
 
     for (const auto& sDirectory : lGUIDirectoryList_)
         pAddOnRegistry_->load_addon_directory(sDirectory);
@@ -139,8 +139,8 @@ void manager::load_ui()
     pRoot_ = utils::make_owned<uiroot>(*this);
     pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
 
-    pInputManager_->register_event_manager(
-        utils::observer_ptr<event_manager>(observer_from_this(), static_cast<event_manager*>(this)));
+    pInputManager_->register_event_emitter(
+        utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
 
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
@@ -148,7 +148,7 @@ void manager::load_ui()
 
     create_lua_();
 
-    pKeybinder_ = utils::make_owned<keybinder>(get_input_manager(), get_event_manager());
+    pKeybinder_ = utils::make_owned<keybinder>(get_input_manager(), get_event_emitter());
     pKeybinder_->register_event("KEY_PRESSED");
 
     read_files_();
@@ -199,7 +199,7 @@ void manager::close_ui_now()
     unregister_event("MOUSE_MOVED");
     unregister_event("WINDOW_RESIZED");
 
-    pInputManager_->unregister_event_manager(*this);
+    pInputManager_->unregister_event_emitter(*this);
 
     bLoaded_ = false;
 }

@@ -2,7 +2,7 @@
 #define LXGUI_GUI_MANAGER_HPP
 
 #include <lxgui/lxgui.hpp>
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_anchor.hpp"
 #include "lxgui/input_keys.hpp"
@@ -39,7 +39,7 @@ namespace gui
     class keybinder;
 
     /// Manages the user interface
-    class manager : private event_manager, public event_receiver
+    class manager : private event_emitter, public event_receiver
     {
     public :
 
@@ -290,15 +290,15 @@ namespace gui
         */
         renderer& get_renderer() { return *pRenderer_; }
 
-        /// Returns the gui event manager.
-        /** \return The gui event manager
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
         */
-        const event_manager& get_event_manager() const { return *this; }
+        const event_emitter& get_event_emitter() const { return *this; }
 
-        /// Returns the gui event manager.
-        /** \return The gui event manager
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
         */
-        event_manager& get_event_manager() { return *this; }
+        event_emitter& get_event_emitter() { return *this; }
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui

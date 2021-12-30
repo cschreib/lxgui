@@ -1,4 +1,4 @@
-#include "lxgui/gui_eventmanager.hpp"
+#include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/gui_exception.hpp"
@@ -13,11 +13,12 @@
 namespace lxgui {
 namespace gui
 {
-void event_manager::register_event_for(utils::observer_ptr<event_receiver> pReceiver,
+
+void event_emitter::register_event_for(utils::observer_ptr<event_receiver> pReceiver,
     const std::string& sEventName)
 {
     if (!pReceiver)
-        throw gui::exception("event_manager", "event receiver pointer is null");
+        throw gui::exception("event_emitter", "event receiver pointer is null");
 
     DEBUG_LOG("register "+sEventName+" to "+utils::to_string(pReceiver));
     auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj)
@@ -35,7 +36,7 @@ void event_manager::register_event_for(utils::observer_ptr<event_receiver> pRece
 
         if (mIter != mIterEvent->lReceiverList.end())
         {
-            gui::out << gui::warning << "event_manager : "
+            gui::out << gui::warning << "event_emitter : "
                 << "Event \"" << sEventName << "\" is already registered to this event_receiver "
                 << "(event_receiver : " << pReceiver.get() << ")." << std::endl;
             return;
@@ -51,7 +52,7 @@ void event_manager::register_event_for(utils::observer_ptr<event_receiver> pRece
     }
 }
 
-void event_manager::unregister_event_for(event_receiver& pReceiver, const std::string& sEventName)
+void event_emitter::unregister_event_for(event_receiver& pReceiver, const std::string& sEventName)
 {
     auto mIterEvent = utils::find_if(lRegisteredEventList_, [&](auto& mObj)
     {
@@ -60,7 +61,7 @@ void event_manager::unregister_event_for(event_receiver& pReceiver, const std::s
 
     if (mIterEvent == lRegisteredEventList_.end())
     {
-        gui::out << gui::warning << "event_manager : "
+        gui::out << gui::warning << "event_emitter : "
             << "Event \"" << sEventName << "\" is not registered to this event_receiver "
             << "(event_receiver : " << &pReceiver << ")." << std::endl;
 
@@ -74,7 +75,7 @@ void event_manager::unregister_event_for(event_receiver& pReceiver, const std::s
 
     if (mIter == mIterEvent->lReceiverList.end())
     {
-        gui::out << gui::warning << "event_manager : "
+        gui::out << gui::warning << "event_emitter : "
             << "Event \"" << sEventName << "\" is not registered to this event_receiver "
             << "(event_receiver : " << &pReceiver << ")." << std::endl;
 
@@ -86,7 +87,7 @@ void event_manager::unregister_event_for(event_receiver& pReceiver, const std::s
     *mIter = nullptr;
 }
 
-void event_manager::unregister_receiver(event_receiver& pReceiver)
+void event_emitter::unregister_receiver(event_receiver& pReceiver)
 {
     DEBUG_LOG("unregister " + utils::to_string(pReceiver));
     for (auto& mEvent : lRegisteredEventList_)
@@ -101,7 +102,7 @@ void event_manager::unregister_receiver(event_receiver& pReceiver)
     }
 }
 
-void event_manager::fire_event(const event& mEvent)
+void event_emitter::fire_event(const event& mEvent)
 {
     DEBUG_LOG(mEvent.get_name());
     auto mIter = utils::find_if(lRegisteredEventList_, [&](auto& mObj)
@@ -134,7 +135,7 @@ void event_manager::fire_event(const event& mEvent)
         mIter->bFired = true;
 }
 
-void event_manager::frame_ended()
+void event_emitter::frame_ended()
 {
     for (auto& mEvent : lRegisteredEventList_)
     {
@@ -152,5 +153,6 @@ void event_manager::frame_ended()
         mEvent.lReceiverList.erase(mIterRem, mEvent.lReceiverList.end());
     }
 }
+
 }
 }

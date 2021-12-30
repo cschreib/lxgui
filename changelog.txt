@@ -93,6 +93,7 @@ Other changes:
  - gui: renamed manager::update to update_ui
  - gui: renamed manager::read_files to load_ui
  - gui: renamed manager::create_lua to register_lua_glues
+ - gui: renamed event_manager to event_emitter
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
