@@ -36,7 +36,7 @@ namespace gui
         explicit uiroot(manager& mManager);
 
         /// Destructor.
-        ~uiroot();
+        ~uiroot() override;
 
         uiroot(const uiroot&) = delete;
         uiroot(uiroot&&) = delete;
