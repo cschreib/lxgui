@@ -158,7 +158,7 @@ namespace gui
         explicit uiobject(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
-        virtual ~uiobject();
+        ~uiobject() override;
 
         /// Non-copiable
         uiobject(const uiobject&) = delete;
