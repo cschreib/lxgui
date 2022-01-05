@@ -316,7 +316,6 @@ void manager::stop_moving(const uiobject& mObj)
 {
     if (pMovedObject_.get() == &mObj)
     {
-        std::cout << "1." << std::endl;
         pMovedObject_ = nullptr;
         pMovedAnchor_ = nullptr;
     }
@@ -510,7 +509,6 @@ void manager::on_event(const event& mEvent)
 
         if (pMovedObject_)
         {
-            std::cout << "0: " << mMouseMovement_.x << ", " << mMouseMovement_.y << std::endl;
             switch (mConstraint_)
             {
                 case constraint::NONE :

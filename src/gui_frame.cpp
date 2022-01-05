@@ -1236,10 +1236,7 @@ void frame::on_event(const event& mEvent)
         if (mEvent.get_name() == "MOUSE_DRAG_START")
         {
             if (bMouseInTitleRegion_)
-            {
-                std::cout << "1" << std::endl;
                 start_moving();
-            }
 
             if (bMouseInFrame_)
             {
