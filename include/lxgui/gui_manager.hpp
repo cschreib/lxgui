@@ -400,11 +400,6 @@ namespace gui
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
             const vector2f& mMousePos = vector2f::ZERO);
 
-        template<typename T>
-        using key_map = std::unordered_map<input::key,T>;
-        template<typename T>
-        using string_map = std::unordered_map<std::string,T>;
-
         // Persistent state
         float fScalingFactor_ = 1.0f;
         float fBaseScalingFactor_ = 1.0f;
