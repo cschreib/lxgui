@@ -21,7 +21,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit region(manager& mManager);
+        explicit region(utils::control_block& mBlock, manager& mManager);
 
         /// Renders this widget on the current render target.
         /** \note Does nothing.

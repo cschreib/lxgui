@@ -21,7 +21,7 @@ void step_value(float& fValue, float fStep)
         fValue = std::round(fValue/fStep)*fStep;
 }
 
-slider::slider(manager& mManager) : frame(mManager)
+slider::slider(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -157,65 +157,63 @@ void slider::on_event(const event& mEvent)
     if (!mChecker.is_alive())
         return;
 
-    if (bIsMouseEnabled_ && get_manager().is_input_enabled())
+    if (!get_manager().is_input_enabled())
+        return;
+
+    if (mEvent.get_name() == "MOUSE_PRESSED")
     {
-        if (mEvent.get_name() == "MOUSE_PRESSED")
+        anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
+
+        if (bMouseInThumb_)
         {
-            update_mouse_in_frame_();
+            get_manager().start_moving(
+                pThumbTexture_, &mAnchor,
+                mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
+                [&]() { constrain_thumb_(); }
+            );
+            bThumbMoved_ = true;
+        }
+        else if (bMouseInFrame_ && bAllowClicksOutsideThumb_)
+        {
+            const vector2f mApparentSize = get_apparent_dimensions();
 
-            anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
-
-            if (bMouseInThumb_)
+            float fValue;
+            if (mOrientation_ == orientation::HORIZONTAL)
             {
+                float fOffset = mMousePos_.x - lBorderList_.left;
+                fValue = fOffset/mApparentSize.x;
+                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
+            }
+            else
+            {
+                float fOffset = mMousePos_.y - lBorderList_.top;
+                fValue = fOffset/mApparentSize.y;
+                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
+            }
+
+            if (pThumbTexture_)
+            {
+                float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
+
+                if (mOrientation_ == orientation::HORIZONTAL)
+                    mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
+                else
+                    mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
+
                 get_manager().start_moving(
                     pThumbTexture_, &mAnchor,
-                    mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
-                    [&]() { constrain_thumb_(); }
+                    mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y
                 );
                 bThumbMoved_ = true;
             }
-            else if (bMouseInFrame_ && bAllowClicksOutsideThumb_)
-            {
-                const vector2f mApparentSize = get_apparent_dimensions();
-
-                float fValue;
-                if (mOrientation_ == orientation::HORIZONTAL)
-                {
-                    float fOffset = mMousePos_.x - lBorderList_.left;
-                    fValue = fOffset/mApparentSize.x;
-                    set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
-                }
-                else
-                {
-                    float fOffset = mMousePos_.y - lBorderList_.top;
-                    fValue = fOffset/mApparentSize.y;
-                    set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
-                }
-
-                if (pThumbTexture_)
-                {
-                    float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
-
-                    if (mOrientation_ == orientation::HORIZONTAL)
-                        mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
-                    else
-                        mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
-
-                    get_manager().start_moving(
-                        pThumbTexture_, &mAnchor,
-                        mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y
-                    );
-                    bThumbMoved_ = true;
-                }
-            }
         }
-        else if (mEvent.get_name() == "MOUSE_RELEASED")
+    }
+    else if (mEvent.get_name() == "MOUSE_RELEASED")
+    {
+        if (pThumbTexture_)
         {
-            if (pThumbTexture_)
-            {
-                get_manager().stop_moving(*pThumbTexture_);
-                bThumbMoved_ = false;
-            }
+            get_manager().stop_moving(*pThumbTexture_);
+            bThumbMoved_ = false;
         }
     }
 }

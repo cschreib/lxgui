@@ -13,7 +13,8 @@ namespace lxgui {
 namespace gui
 {
 
-font_string::font_string(manager& mManager) : layered_region(mManager)
+font_string::font_string(utils::control_block& mBlock, manager& mManager) :
+    layered_region(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

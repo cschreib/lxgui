@@ -33,7 +33,7 @@ namespace gui
         /// Constructor.
         /** \param mManager The GUI manager
         */
-        explicit uiroot(manager& mManager);
+        explicit uiroot(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~uiroot() override;

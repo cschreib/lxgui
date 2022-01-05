@@ -5,7 +5,8 @@ namespace lxgui {
 namespace gui
 {
 
-event_receiver::event_receiver(event_emitter& mEmitter) :
+event_receiver::event_receiver(utils::control_block& mBlock, event_emitter& mEmitter) :
+    utils::enable_observer_from_this<event_receiver>(mBlock),
     mEventEmitter_(mEmitter)
 {
 }

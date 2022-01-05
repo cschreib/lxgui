@@ -2,11 +2,13 @@
 #define LXGUI_INPUT_SOURCE_HPP
 
 #include <lxgui/lxgui.hpp>
+#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_eventemitter.hpp"
+#include "lxgui/input_keys.hpp"
+#include "lxgui/gui_vector2.hpp"
+
 #include "lxgui/utils.hpp"
 #include "lxgui/utils_string.hpp"
-#include "lxgui/gui_vector2.hpp"
-#include "lxgui/gui_event.hpp"
-#include "lxgui/input_keys.hpp"
 
 #include <string>
 #include <vector>
@@ -19,14 +21,22 @@ namespace input
     constexpr std::size_t KEY_NUMBER = static_cast<std::size_t>(key::K_MAXKEY);
 
     /// The base class for input source implementation
-    /** \note In case you want to share the same source
-    *         for multiple input::manager, you have to call
-    *         set_manually_updated(true), and update the
-    *         source yourself. Else, it will be updated
-    *         by each input::manager (which may not be
-    *         desirable).
+    /** \note The implementation is responsible for generating the
+    *         following events:
+    *          - MOUSE_MOVED:
+    *              float: dx, float: dy, float: x, float: y
+    *          - MOUSE_WHEEL:
+    *              float: dx
+    *          - MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_DOUBLE_CLICKED:
+    *              uint32: button, float: x, float: y
+    *          - KEY_PRESSED, KEY_RELEASED:
+    *              uint32: button
+    *          - TEXT_ENTERED:
+    *              uint32: character
+    *          - WINDOW_RESIZED:
+    *              uint32: width, uint32: height
     */
-    class source
+    class source : public gui::event_emitter
     {
     public :
 
@@ -39,9 +49,7 @@ namespace input
         {
             std::array<bool, MOUSE_BUTTON_NUMBER> lButtonState = {};
             gui::vector2f mPosition;
-            gui::vector2f mDelta;
-            float fRelWheel = 0.0f;
-            bool  bHasDelta = false;
+            float fWheel = 0.0f;
         };
 
         /// Constructor.
@@ -50,69 +58,17 @@ namespace input
         /// Destructor.
         virtual ~source() = default;
 
-        /// Non-copiable
+        // Non-copiable, non-movable
         source(const source&) = delete;
-
-        /// Non-movable
         source(source&&) = delete;
-
-        /// Non-copiable
         source& operator=(const source&) = delete;
-
-        /// Non-movable
         source& operator=(source&&) = delete;
-
-        /// Updates this input source.
-        void update();
-
-        /// Checks if this source is manually updated.
-        /** \return 'true' if this source is manually updated
-        *   \note See set_manually_updated().
-        */
-        bool is_manually_updated() const;
-
-        /// Marks this source as manually updated.
-        /** \param bManuallyUpdated 'true' if this source is manually updated
-        *   \note In case you want to share the same source
-        *         for several input::manager, you have to call
-        *         set_manually_updated(true), and update the
-        *         source yourself. Else, it will be updated
-        *         by each input::manager (which may not be
-        *         desirable).
-        */
-        void set_manually_updated(bool bManuallyUpdated);
 
         /// Returns the keyboard state of this input source.
         const key_state& get_key_state() const;
 
-        /// Returns the unicode characters that have been entered.
-        /** \return The unicode characters entered with the keyboard
-        */
-        const std::vector<char32_t>& get_chars() const;
-
-        /// Return the accumulated events since last frame and clear the cache in the input source.
-        std::vector<gui::event> poll_events();
-
         /// Returns the mouse state of this input source.
         const mouse_state& get_mouse_state() const;
-
-        /// Toggles mouse grab.
-        /** When the mouse is grabbed, it is confined to the borders
-        *   of the main window. The actual cursor behavior when reaching
-        *   those borders is not specified (could be clamped, or reset to the
-        *   center, or reappear on the other side of the window, etc.), however
-        *   relative mouse movement will always be reported correctly.
-        *   The mouse is not grabbed by default.
-        */
-        virtual void toggle_mouse_grab() = 0;
-
-        /// Checks if window has been resized.
-        /** \return true if the window has been resized since the last reset_window_resized() call
-        */
-        bool has_window_resized() const;
-
-        /// Resets the "window resized" flag.
-        void reset_window_resized();
 
         /// Get the window size (in pixels)
         /** \return The window size
@@ -146,6 +102,9 @@ namespace input
         */
         virtual void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) = 0;
 
+        /// Sets the mouse cursor back to the default (arrow).
+        virtual void reset_mouse_cursor() = 0;
+
         /// Return the interface scaling factor suggested by the operating system.
         /** \return The interface scaling factor suggested by the operating system
         *   \note This is implementation-dependent; not all input implementations are able
@@ -156,25 +115,11 @@ namespace input
         */
         virtual float get_interface_scaling_factor_hint() const;
 
-        /// Sets the mouse cursor back to the default (arrow).
-        virtual void reset_mouse_cursor() = 0;
-
     protected:
-
-        /// Updates this implementation input source.
-        virtual void update_() = 0;
 
         key_state   mKeyboard_;
         mouse_state mMouse_;
 
-        std::vector<char32_t> lChars_;
-        std::vector<char32_t> lCharsCache_;
-
-        std::vector<gui::event> lEvents_;
-
-        bool bManuallyUpdated_ = false;
-
-        bool bWindowResized_ = false;
         gui::vector2ui mWindowDimensions_;
 
         double dDoubleClickTime_ = 0.25;

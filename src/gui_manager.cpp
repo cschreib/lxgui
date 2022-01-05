@@ -35,19 +35,19 @@ namespace lxgui {
 namespace gui
 {
 
-manager::manager(std::unique_ptr<input::source> pInputSource,
+manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pInputSource,
     std::unique_ptr<renderer> pRenderer) :
     event_emitter(),
-    event_receiver(static_cast<event_emitter&>(*this)),
-    pInputManager_(new input::manager(std::move(pInputSource))),
+    event_receiver(mBlock, static_cast<event_emitter&>(*this)),
+    pInputManager_(utils::make_owned<input::manager>(std::move(pInputSource))),
     pRenderer_(std::move(pRenderer))
 {
     set_interface_scaling_factor(1.0f);
 
     pLocalizer_ = std::make_unique<localizer>();
 
-    // NB: cannot call register_event() here, as observable_from_this()
-    // is not yet fully initialised! This is done in load_ui() instead.
+    register_event("MOUSE_MOVED");
+    register_event("WINDOW_RESIZED");
 }
 
 manager::~manager()
@@ -142,14 +142,9 @@ void manager::load_ui()
     pInputManager_->register_event_emitter(
         utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
 
-    register_event("MOUSE_MOVED");
-    register_event("WINDOW_RESIZED");
-    pRoot_->register_event("WINDOW_RESIZED");
-
     create_lua_();
 
     pKeybinder_ = utils::make_owned<keybinder>(get_input_manager(), get_event_emitter());
-    pKeybinder_->register_event("KEY_PRESSED");
 
     read_files_();
 
@@ -195,9 +190,6 @@ void manager::close_ui_now()
     bResizeFromBottom_ = false;
 
     pLocalizer_->clear_translations();
-
-    unregister_event("MOUSE_MOVED");
-    unregister_event("WINDOW_RESIZED");
 
     pInputManager_->unregister_event_emitter(*this);
 
@@ -324,6 +316,7 @@ void manager::stop_moving(const uiobject& mObj)
 {
     if (pMovedObject_.get() == &mObj)
     {
+        std::cout << "1." << std::endl;
         pMovedObject_ = nullptr;
         pMovedAnchor_ = nullptr;
     }
@@ -517,6 +510,7 @@ void manager::on_event(const event& mEvent)
 
         if (pMovedObject_)
         {
+            std::cout << "0: " << mMouseMovement_.x << ", " << mMouseMovement_.y << std::endl;
             switch (mConstraint_)
             {
                 case constraint::NONE :

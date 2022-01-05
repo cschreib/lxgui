@@ -15,10 +15,94 @@ namespace lxgui {
 namespace input
 {
 
-manager::manager(std::unique_ptr<source> pSource) : pSource_(std::move(pSource))
+manager::manager(utils::control_block& mBlock, std::unique_ptr<source> pSource) :
+    event_receiver(mBlock, *pSource), pSource_(std::move(pSource))
 {
+    register_event("KEY_PRESSED");
+    register_event("KEY_RELEASED");
+    register_event("MOUSE_PRESSED");
+    register_event("MOUSE_RELEASED");
+    register_event("MOUSE_DOUBLE_CLICKED");
+    register_event("MOUSE_WHEEL");
+    register_event("MOUSE_MOVED");
+    register_event("TEXT_ENTERED");
+    register_event("WINDOW_RESIZED");
+
     lKeyDelay_.fill(0.0);
     lMouseDelay_.fill(0.0);
+}
+
+void manager::on_event(const gui::event& mOrigEvent)
+{
+    gui::event mEvent = mOrigEvent;
+
+    if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
+    {
+        // Add key name to the event
+        mEvent.add(get_key_name(utils::get<key>(mEvent.get(0))));
+    }
+    else if (mEvent.get_name() == "MOUSE_PRESSED" ||
+             mEvent.get_name() == "MOUSE_RELEASED" ||
+             mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
+    {
+        // Apply scaling factor to mouse coordinates
+        for (std::size_t i = 1; i <= 2; ++i)
+            mEvent.get(i) = mEvent.get<float>(i)/fScalingFactor_;
+        // Add button name to the event
+        mEvent.add(get_mouse_button_string(mEvent.get<mouse_button>(0)));
+    }
+    else if (mEvent.get_name() == "MOUSE_MOVED")
+    {
+        // Apply scaling factor to mouse coordinates
+        for (std::size_t i = 0; i < 4; ++i)
+            mEvent.get(i) = mEvent.get<float>(i)/fScalingFactor_;
+    }
+
+    // Forward event to all registered emitters.
+    fire_event_(mEvent);
+
+    if (mEvent.get_name() == "MOUSE_MOVED")
+    {
+        if (!bMouseDragged_)
+        {
+            std::size_t uiMouseButtonPressed = std::numeric_limits<std::size_t>::max();
+            for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
+            {
+                if (mouse_is_down(static_cast<mouse_button>(i)))
+                {
+                    uiMouseButtonPressed = i;
+                    break;
+                }
+            }
+
+            if (uiMouseButtonPressed != std::numeric_limits<std::size_t>::max())
+            {
+                bMouseDragged_ = true;
+                mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
+
+                gui::event mMouseDragEvent("MOUSE_DRAG_START");
+                mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
+                mMouseDragEvent.add(mEvent.get<float>(2));
+                mMouseDragEvent.add(mEvent.get<float>(3));
+                mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
+                fire_event_(mMouseDragEvent);
+            }
+        }
+    }
+    else if (mEvent.get_name() == "MOUSE_RELEASED")
+    {
+        if (bMouseDragged_ && mEvent.get<mouse_button>(0) == mMouseDragButton_)
+        {
+            bMouseDragged_ = false;
+
+            gui::event mMouseDragEvent("MOUSE_DRAG_STOP");
+            mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
+            mMouseDragEvent.add(mEvent.get<float>(1));
+            mMouseDragEvent.add(mEvent.get<float>(2));
+            mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
+            fire_event_(mMouseDragEvent);
+        }
+    }
 }
 
 void manager::allow_input(const std::string& sGroupName)
@@ -296,11 +380,6 @@ double manager::get_mouse_down_duration(mouse_button mID) const
     return lMouseDelay_[static_cast<std::size_t>(mID)];
 }
 
-bool manager::wheel_is_rolled() const
-{
-    return bWheelRolled_;
-}
-
 void manager::update(float fTempDelta)
 {
     if (bRemoveKeyboardFocus_)
@@ -316,9 +395,6 @@ void manager::update(float fTempDelta)
         pMouseFocusReceiver_ = nullptr;
         bRemoveMouseFocus_ = false;
     }
-
-    if (!pSource_->is_manually_updated())
-        pSource_->update();
 
     // Control extreme delta time after loading/at startup etc
     double dDelta = fTempDelta;
@@ -345,111 +421,6 @@ void manager::update(float fTempDelta)
             lMouseDelay_[i] += dDelta;
         else
             lMouseDelay_[i] = 0.0;
-    }
-
-    // Send events
-    for (auto& mEvent : pSource_->poll_events())
-    {
-        if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
-        {
-            // Add key name to the event
-            mEvent.add(get_key_name(utils::get<key>(mEvent.get(0))));
-        }
-        else if (mEvent.get_name() == "MOUSE_PRESSED" ||
-                 mEvent.get_name() == "MOUSE_RELEASED" ||
-                 mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
-        {
-            // Add button name to the event
-            mEvent.add(get_mouse_button_string(mEvent.get<mouse_button>(0)));
-        }
-
-        fire_event_(mEvent);
-    }
-
-    auto lChars = pSource_->get_chars();
-    if (!lChars.empty())
-    {
-        gui::event mCharEvent("TEXT_ENTERED");
-        mCharEvent.add(std::uint32_t{});
-        for (auto cChar : lChars)
-        {
-            mCharEvent.get(0) = cChar;
-            fire_event_(mCharEvent);
-        }
-    }
-
-    // Update mouse position
-    if (mMouseState.bHasDelta)
-        mMouseDelta_ = mMouseState.mDelta/fScalingFactor_;
-    else
-        mMouseDelta_ = mMouseState.mPosition/fScalingFactor_ - mMousePos_;
-
-    mMousePos_ = mMouseState.mPosition/fScalingFactor_;
-    fMWheel_ = mMouseState.fRelWheel;
-    bWheelRolled_ = fMWheel_ != 0.0f;
-
-    // Send movement event
-    if (mMouseDelta_ != gui::vector2f::ZERO)
-    {
-        if (!bMouseDragged_)
-        {
-            std::size_t uiMouseButtonPressed = std::numeric_limits<std::size_t>::max();
-            for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
-            {
-                if (mMouseState.lButtonState[i])
-                {
-                    uiMouseButtonPressed = i;
-                    break;
-                }
-            }
-
-            if (uiMouseButtonPressed != std::numeric_limits<std::size_t>::max())
-            {
-                bMouseDragged_ = true;
-                mMouseDragButton_ = static_cast<mouse_button>(uiMouseButtonPressed);
-
-                gui::event mMouseDragEvent("MOUSE_DRAG_START", true);
-                mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
-                mMouseDragEvent.add(mMousePos_.x);
-                mMouseDragEvent.add(mMousePos_.y);
-                mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
-                fire_event_(mMouseDragEvent);
-            }
-        }
-
-        gui::event mMouseMovedEvent("MOUSE_MOVED", true);
-        mMouseMovedEvent.add(mMouseDelta_.x);
-        mMouseMovedEvent.add(mMouseDelta_.y);
-        fire_event_(mMouseMovedEvent);
-    }
-
-    if (bMouseDragged_ && !mMouseState.lButtonState[static_cast<std::size_t>(mMouseDragButton_)])
-    {
-        bMouseDragged_ = false;
-
-        gui::event mMouseDragEvent("MOUSE_DRAG_STOP", true);
-        mMouseDragEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mMouseDragButton_));
-        mMouseDragEvent.add(mMousePos_.x);
-        mMouseDragEvent.add(mMousePos_.y);
-        mMouseDragEvent.add(get_mouse_button_string(mMouseDragButton_));
-        fire_event_(mMouseDragEvent);
-    }
-
-    if (bWheelRolled_)
-    {
-        gui::event mMouseWheelEvent("MOUSE_WHEEL", true);
-        mMouseWheelEvent.add(fMWheel_);
-        fire_event_(mMouseWheelEvent);
-    }
-
-    if (pSource_->has_window_resized())
-    {
-        const auto mDimensions = pSource_->get_window_dimensions();
-        gui::event mWindowResizedEvent("WINDOW_RESIZED", true);
-        mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.x));
-        mWindowResizedEvent.add(static_cast<std::uint32_t>(mDimensions.y));
-        fire_event_(mWindowResizedEvent);
-        pSource_->reset_window_resized();
     }
 }
 
@@ -523,19 +494,14 @@ bool manager::ctrl_is_pressed() const
     return key_is_down(key::K_LCONTROL) || key_is_down(key::K_RCONTROL);
 }
 
-const gui::vector2f& manager::get_mouse_position() const
+gui::vector2f manager::get_mouse_position() const
 {
-    return mMousePos_;
-}
-
-const gui::vector2f& manager::get_mouse_delta() const
-{
-    return mMouseDelta_;
+    return pSource_->get_mouse_state().mPosition/fScalingFactor_;
 }
 
 float manager::get_mouse_wheel() const
 {
-    return fMWheel_;
+    return pSource_->get_mouse_state().fWheel;
 }
 
 std::string manager::get_mouse_button_string(mouse_button mID) const
@@ -642,8 +608,8 @@ void manager::fire_event_(const gui::event& mEvent)
 
     for (const auto& pManager : lEventEmitterList_)
     {
-        if (pManager)
-            pManager->fire_event(mEvent);
+        if (auto* pManagerRaw = pManager.get())
+            pManagerRaw->fire_event(mEvent);
     }
 }
 

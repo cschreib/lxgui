@@ -47,8 +47,9 @@ namespace gui
         /** \param pInputSource The input source to use
         *   \param pRenderer    The renderer implementation
         */
-        manager(std::unique_ptr<input::source> pInputSource,
-                std::unique_ptr<renderer> pRenderer);
+        manager(utils::control_block& mBlock,
+            std::unique_ptr<input::source> pInputSource,
+            std::unique_ptr<renderer> pRenderer);
 
         /// Destructor.
         ~manager() override;
@@ -412,7 +413,7 @@ namespace gui
         std::vector<std::string>           lGUIDirectoryList_;
 
         // Implementations
-        std::unique_ptr<input::manager>  pInputManager_;
+        utils::owner_ptr<input::manager> pInputManager_;
         std::unique_ptr<renderer>        pRenderer_;
 
         // UI state

@@ -30,7 +30,8 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit keybinder(input::manager& mInputManager, event_emitter& mEventEmitter);
+        explicit keybinder(utils::control_block& mBlock, input::manager& mInputManager,
+            event_emitter& mEventEmitter);
 
         keybinder(const keybinder&) = delete;
         keybinder(keybinder&&) = delete;

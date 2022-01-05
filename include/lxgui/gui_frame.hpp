@@ -279,7 +279,7 @@ namespace gui
             non_disconnected_filter>;
 
         /// Constructor.
-        explicit frame(manager& mManager);
+        explicit frame(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~frame() override;
@@ -1175,7 +1175,6 @@ namespace gui
         void propagate_renderer_(bool bRendered);
 
         void update_borders_() override;
-        void update_mouse_in_frame_();
 
         void define_script_(const std::string& sScriptName, const std::string& sContent,
             bool bAppend, const script_info& mInfo);

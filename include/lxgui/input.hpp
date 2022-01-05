@@ -7,7 +7,7 @@
 #include <lxgui/utils_observer.hpp>
 
 #include "lxgui/gui_vector2.hpp"
-#include "lxgui/gui_event.hpp"
+#include "lxgui/gui_eventreceiver.hpp"
 #include "lxgui/input_keys.hpp"
 #include "lxgui/input_source.hpp"
 
@@ -21,21 +21,20 @@ namespace lxgui {
 namespace gui
 {
     class event;
-    class event_receiver;
     class event_emitter;
 }
 
 namespace input
 {
     /// Handles inputs (keyboard and mouse)
-    class manager
+    class manager : public gui::event_receiver
     {
     public :
 
         /// Initializes this manager with a chosen input source.
         /** \param pSource The input source
         */
-        explicit manager(std::unique_ptr<source> pSource);
+        explicit manager(utils::control_block& mBlock, std::unique_ptr<source> pSource);
 
         /// Non-copiable
         manager(const manager&) = delete;
@@ -51,6 +50,13 @@ namespace input
 
         /// Updates input (keyboard and mouse).
         void update(float fDelta);
+
+        /// Called whenever an event occurs.
+        /** \param mEvent The event which has occured
+        *   \note Only registered events will cause this
+        *         function to be called.
+        */
+        void on_event(const gui::event& mEvent) override;
 
         /// Allows a particular input group to receive input events.
         /** \param sGroupName The name of the group to enable
@@ -159,29 +165,15 @@ namespace input
         */
         double get_mouse_down_duration(mouse_button mKey) const;
 
-        /// Checks if the mouse wheel has been rolled.
-        /** \return 'true' if the mouse wheel has been rolled
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
-        */
-        bool wheel_is_rolled() const;
-
         /// Returns the position of the mouse in pixels.
         /** \return The position of the mouse in pixels
         *   \note This will report the mouse state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
         */
-        const gui::vector2f& get_mouse_position() const;
+        gui::vector2f get_mouse_position() const;
 
-        /// Returns the position variation of the mouse.
-        /** \return The position variation of the mouse
-        *   \note This will report the mouse state regardless of focus.
-        *         If supporting focus is necessary, respond to input events instead.
-        */
-        const gui::vector2f& get_mouse_delta() const;
-
-        /// Returns the rolling ammount of the mouse wheel.
-        /** \return The rolling ammount of the mouse wheel
+        /// Returns the accumulated rolling ammount of the mouse wheel.
+        /** \return The accumulated rolling ammount of the mouse wheel
         *   \note This will report the mouse state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
         */
@@ -359,10 +351,7 @@ namespace input
         std::unordered_map<std::string, bool> lForcedClickGroupList_;
 
         float         fScalingFactor_ = 1.0f;
-        gui::vector2f mMousePos_;
-        gui::vector2f mMouseDelta_;
-        float         fMWheel_ = 0.0f;
-        bool          bWheelRolled_ = false;
+
         bool          bMouseDragged_ = false;
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;
 

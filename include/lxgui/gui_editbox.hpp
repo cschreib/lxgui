@@ -144,7 +144,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit edit_box(manager& mManager);
+        explicit edit_box(utils::control_block& mBlock, manager& mManager);
 
         /// Copies an uiobject's parameters into this edit_box (inheritance).
         /** \param mObj The uiobject to copy

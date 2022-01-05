@@ -16,7 +16,7 @@ std::array<float,4> select_uvs(const std::array<float,8>& uvs)
     return {uvs[0], uvs[1], uvs[4], uvs[5]};
 }
 
-status_bar::status_bar(manager& mManager) : frame(mManager)
+status_bar::status_bar(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

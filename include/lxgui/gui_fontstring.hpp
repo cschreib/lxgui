@@ -38,7 +38,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit font_string(manager& mManager);
+        explicit font_string(utils::control_block& mBlock, manager& mManager);
 
         /// Prints all relevant information about this widget in a string.
         /** \param sTab The offset to give to all lines

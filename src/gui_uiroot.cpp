@@ -15,11 +15,13 @@ namespace lxgui {
 namespace gui
 {
 
-uiroot::uiroot(manager& mManager) :
-    event_receiver(mManager.get_event_emitter()), frame_container(mManager, mObjectRegistry_, this),
+uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
+    event_receiver(mBlock, mManager.get_event_emitter()),
+    frame_container(mManager, mObjectRegistry_, this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
     mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
+    register_event("WINDOW_RESIZED");
 }
 
 uiroot::~uiroot()

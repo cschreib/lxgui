@@ -14,7 +14,8 @@
 namespace lxgui {
 namespace gui
 {
-texture::texture(manager& mManager) : layered_region(mManager), mRenderer_(mManager.get_renderer())
+texture::texture(utils::control_block& mBlock, manager& mManager) :
+    layered_region(mBlock, mManager), mRenderer_(mManager.get_renderer())
 {
     lType_.push_back(CLASS_NAME);
 }

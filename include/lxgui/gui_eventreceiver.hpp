@@ -24,7 +24,7 @@ namespace gui
         /// Constructor.
         /** \param mEmitter The event emitter to listen to
         */
-        explicit event_receiver(event_emitter& mEmitter);
+        explicit event_receiver(utils::control_block& mBlock, event_emitter& mEmitter);
 
         /// Destructor.
         virtual ~event_receiver() = default;

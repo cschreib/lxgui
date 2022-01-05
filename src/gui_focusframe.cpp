@@ -7,7 +7,7 @@ using namespace lxgui::input;
 namespace lxgui {
 namespace gui
 {
-focus_frame::focus_frame(manager& mManager) : frame(mManager)
+focus_frame::focus_frame(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

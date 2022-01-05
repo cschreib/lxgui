@@ -18,7 +18,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit focus_frame(manager& mManager);
+        explicit focus_frame(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~focus_frame();

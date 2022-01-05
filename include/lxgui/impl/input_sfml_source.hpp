@@ -25,15 +25,11 @@ namespace sfml
 
         /// Initializes this input source.
         /** \param pWindow The window from which to receive input
-        *   \param bMouseGrab Set to 'true' to turn on mouse grab (locked on screen center)
         */
-        explicit source(sf::Window& pWindow, bool bMouseGrab = false);
+        explicit source(sf::Window& pWindow);
 
         source(const source&) = delete;
         source& operator = (const source&) = delete;
-
-        void toggle_mouse_grab() override;
-        std::string get_key_name(key mKey) const;
 
         utils::ustring get_clipboard_content() override;
         void set_clipboard_content(const utils::ustring& sContent) override;
@@ -43,21 +39,14 @@ namespace sfml
         void set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot) override;
         void reset_mouse_cursor() override;
 
-    protected :
-
-        void update_() override;
-
     private :
 
         input::key from_sfml_(int uiSFKey) const;
 
         sf::Window& mWindow_;
 
-        bool bMouseGrab_ = false;
-        bool bFirst_ = true;
-
-        gui::vector2f mOldMousePos_;
-        float fWheelCache_ = 0.0f;
+        gui::vector2i mOldMousePos_;
+        bool bFirstMouseMove_ = true;
 
         std::array<sf::Clock, MOUSE_BUTTON_NUMBER> lLastClickClock_;
 

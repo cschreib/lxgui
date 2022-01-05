@@ -11,7 +11,8 @@
 namespace lxgui {
 namespace gui
 {
-scroll_frame::scroll_frame(manager& mManager) : frame(mManager)
+scroll_frame::scroll_frame(utils::control_block& mBlock, manager& mManager) :
+    frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -251,7 +252,6 @@ void scroll_frame::update_scroll_child_input_()
 {
     const vector2f mOffset = mMousePos_ - lBorderList_.top_left();
 
-    update_mouse_in_frame_();
     if (bMouseInScrollTexture_)
     {
         utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mOffset);

@@ -8,7 +8,7 @@
 namespace lxgui {
 namespace gui
 {
-check_button::check_button(manager& mManager) : button(mManager)
+check_button::check_button(utils::control_block& mBlock, manager& mManager) : button(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

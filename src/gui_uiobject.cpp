@@ -20,7 +20,8 @@
 namespace lxgui {
 namespace gui
 {
-uiobject::uiobject(manager& mManager) : mManager_(mManager)
+uiobject::uiobject(utils::control_block& mBlock, manager& mManager) :
+    utils::enable_observer_from_this<uiobject>(mBlock), mManager_(mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

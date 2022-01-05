@@ -39,7 +39,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit scroll_frame(manager& mManager);
+        explicit scroll_frame(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         ~scroll_frame() override;

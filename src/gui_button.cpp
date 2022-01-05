@@ -11,7 +11,7 @@
 namespace lxgui {
 namespace gui
 {
-button::button(manager& mManager) : frame(mManager)
+button::button(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -89,15 +89,11 @@ void button::on_event(const event& mEvent)
     if (!get_manager().is_input_enabled())
         return;
 
-    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
+    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED" && bMouseInFrame_)
     {
-        update_mouse_in_frame_();
-        if (bMouseInFrame_)
-        {
-            on_script("OnDoubleClicked");
-            if (!mChecker.is_alive())
-                return;
-        }
+        on_script("OnDoubleClicked");
+        if (!mChecker.is_alive())
+            return;
     }
 }
 
@@ -523,7 +519,6 @@ void button::lock_highlight()
 
 void button::unlock_highlight()
 {
-    update_mouse_in_frame_();
     if (!bMouseInFrame_)
         unlight();
 

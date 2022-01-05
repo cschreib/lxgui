@@ -17,22 +17,9 @@ namespace lxgui {
 namespace input {
 namespace sfml
 {
-source::source(sf::Window& mWindow, bool bMouseGrab) :
-    mWindow_(mWindow), bMouseGrab_(bMouseGrab)
+source::source(sf::Window& mWindow) : mWindow_(mWindow)
 {
     mWindowDimensions_ = gui::vector2ui(mWindow_.getSize().x, mWindow_.getSize().y);
-
-    if (bMouseGrab_)
-        mOldMousePos_ = gui::vector2f(mWindowDimensions_)/2.0f;
-
-    mMouse_.bHasDelta = true;
-}
-
-void source::toggle_mouse_grab()
-{
-    bMouseGrab_ = !bMouseGrab_;
-    if (bMouseGrab_)
-        mOldMousePos_ = gui::vector2f(mWindowDimensions_)/2.0f;
 }
 
 utils::ustring source::get_clipboard_content()
@@ -189,53 +176,38 @@ key source::from_sfml_(int uiSFKey) const
     }
 }
 
-void source::update_()
-{
-    const sf::Vector2i mMousePos = Mouse::getPosition(mWindow_);
-
-    if (bFirst_)
-    {
-        mMouse_.mPosition = gui::vector2f(mMousePos.x, mMousePos.y);
-        mMouse_.mDelta = gui::vector2f::ZERO;
-        bFirst_ = false;
-
-        if (!bMouseGrab_)
-            mOldMousePos_ = mMouse_.mPosition;
-    }
-    else
-    {
-        mMouse_.mDelta = gui::vector2f(mMousePos.x, mMousePos.y) - mOldMousePos_;
-        mMouse_.mPosition += mMouse_.mDelta;
-
-        if (bMouseGrab_)
-            Mouse::setPosition(sf::Vector2i(mOldMousePos_.x, mOldMousePos_.y), mWindow_);
-        else
-            mOldMousePos_ = mMouse_.mPosition;
-    }
-
-    mMouse_.fRelWheel = 0.0f;
-    std::swap(mMouse_.fRelWheel, fWheelCache_);
-}
-
 void source::on_sfml_event(const sf::Event& mEvent)
 {
-    static const mouse_button lMouseFromSFML[3] = {mouse_button::LEFT, mouse_button::RIGHT, mouse_button::MIDDLE};
+    static const mouse_button lMouseFromSFML[3] = {
+        mouse_button::LEFT, mouse_button::RIGHT, mouse_button::MIDDLE};
 
     if (mEvent.type == sf::Event::TextEntered)
     {
         auto c = mEvent.text.unicode;
         // Remove non printable characters (< 32) and Del. (127)
         if (c >= 32 && c != 127)
-            lCharsCache_.push_back(c);
+        {
+            gui::event mCharEvent("TEXT_ENTERED");
+            mCharEvent.add(static_cast<std::uint32_t>(c));
+            fire_event(mCharEvent);
+        }
     }
     else if (mEvent.type == sf::Event::MouseWheelMoved)
     {
-        fWheelCache_ += mEvent.mouseWheel.delta;
+        mMouse_.fWheel += mEvent.mouseWheel.delta;
+
+        gui::event mWheelEvent("MOUSE_WHEEL");
+        mWheelEvent.add(static_cast<float>(mEvent.mouseWheel.delta));
+        fire_event(mWheelEvent);
     }
     else if (mEvent.type == sf::Event::Resized)
     {
-        bWindowResized_ = true;
         mWindowDimensions_ = gui::vector2ui(mEvent.size.width, mEvent.size.height);
+
+        gui::event mWindowResizedEvent("WINDOW_RESIZED");
+        mWindowResizedEvent.add(static_cast<std::uint32_t>(mEvent.size.width));
+        mWindowResizedEvent.add(static_cast<std::uint32_t>(mEvent.size.height));
+        fire_event(mWindowResizedEvent);
     }
     else if (mEvent.type == sf::Event::KeyPressed)
     {
@@ -244,7 +216,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
 
         gui::event mKeyboardEvent("KEY_PRESSED");
         mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-        lEvents_.push_back(mKeyboardEvent);
+        fire_event(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::KeyReleased)
     {
@@ -253,7 +225,7 @@ void source::on_sfml_event(const sf::Event& mEvent)
 
         gui::event mKeyboardEvent("KEY_RELEASED");
         mKeyboardEvent.add(static_cast<std::underlying_type_t<key>>(mKey));
-        lEvents_.push_back(mKeyboardEvent);
+        fire_event(mKeyboardEvent);
     }
     else if (mEvent.type == sf::Event::MouseButtonPressed)
     {
@@ -266,13 +238,13 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
         mMouseEvent.add(static_cast<float>(mMousePos.x));
         mMouseEvent.add(static_cast<float>(mMousePos.y));
-        lEvents_.push_back(mMouseEvent);
+        fire_event(mMouseEvent);
 
         double dClickTime = lLastClickClock_[static_cast<std::size_t>(mButton)].getElapsedTime().asSeconds();
         if (dClickTime < dDoubleClickTime_)
         {
             mMouseEvent.set_name("MOUSE_DOUBLE_CLICKED");
-            lEvents_.push_back(mMouseEvent);
+            fire_event(mMouseEvent);
         }
 
         lLastClickClock_[static_cast<std::size_t>(mButton)].restart();
@@ -288,7 +260,28 @@ void source::on_sfml_event(const sf::Event& mEvent)
         mMouseEvent.add(static_cast<std::underlying_type_t<mouse_button>>(mButton));
         mMouseEvent.add(static_cast<float>(mMousePos.x));
         mMouseEvent.add(static_cast<float>(mMousePos.y));
-        lEvents_.push_back(mMouseEvent);
+        fire_event(mMouseEvent);
+    }
+    else if (mEvent.type == sf::Event::MouseMoved)
+    {
+        gui::vector2i mMousePos(mEvent.mouseMove.x, mEvent.mouseMove.y);
+        gui::vector2i mMouseDelta;
+        if (!bFirstMouseMove_)
+        {
+            mMouseDelta = mMousePos - mOldMousePos_;
+            mOldMousePos_ = mMousePos;
+        }
+
+        bFirstMouseMove_ = false;
+
+        mMouse_.mPosition = gui::vector2f(mMousePos.x, mMousePos.y);
+
+        gui::event mMouseEvent("MOUSE_MOVED");
+        mMouseEvent.add(static_cast<float>(mMouseDelta.x));
+        mMouseEvent.add(static_cast<float>(mMouseDelta.y));
+        mMouseEvent.add(static_cast<float>(mMousePos.x));
+        mMouseEvent.add(static_cast<float>(mMousePos.y));
+        fire_event(mMouseEvent);
     }
 }
 }

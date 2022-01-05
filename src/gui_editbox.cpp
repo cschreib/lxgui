@@ -18,7 +18,7 @@ using namespace lxgui::input;
 namespace lxgui {
 namespace gui
 {
-edit_box::edit_box(manager& mManager) : focus_frame(mManager),
+edit_box::edit_box(utils::control_block& mBlock, manager& mManager) : focus_frame(mBlock, mManager),
     mCarretTimer_(dBlinkSpeed_, periodic_timer::start_type::FIRST_TICK, false)
 {
     lType_.push_back(CLASS_NAME);
@@ -173,7 +173,6 @@ void edit_box::on_event(const event& mEvent)
 
     if (mEvent.get_name() == "MOUSE_PRESSED")
     {
-        update_mouse_in_frame_();
         if (bMouseInFrame_)
         {
             set_focus(true);

@@ -12,7 +12,8 @@ namespace lxgui {
 namespace gui
 {
 
-layered_region::layered_region(manager& mManager) : region(mManager)
+layered_region::layered_region(utils::control_block& mBlock, manager& mManager) :
+    region(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }

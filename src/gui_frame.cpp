@@ -31,7 +31,8 @@ layer::layer() : bDisabled(false)
 {
 }
 
-frame::frame(manager& mManager) : event_receiver(mManager.get_event_emitter()), region(mManager)
+frame::frame(utils::control_block& mBlock, manager& mManager) :
+    event_receiver(mBlock, mManager.get_event_emitter()), region(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
 }
@@ -1230,14 +1231,15 @@ void frame::on_event(const event& mEvent)
     if (!get_manager().is_input_enabled())
         return;
 
-    if (bIsMouseEnabled_ && bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
+    if (bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
     {
-        update_mouse_in_frame_();
-
         if (mEvent.get_name() == "MOUSE_DRAG_START")
         {
             if (bMouseInTitleRegion_)
+            {
+                std::cout << "1" << std::endl;
                 start_moving();
+            }
 
             if (bMouseInFrame_)
             {
@@ -1788,10 +1790,7 @@ void frame::show()
     base::show();
 
     if (!bWasVisible_)
-    {
         get_manager().notify_hovered_frame_dirty();
-        update_mouse_in_frame_();
-    }
 }
 
 void frame::hide()
@@ -1803,10 +1802,7 @@ void frame::hide()
     base::hide();
 
     if (bWasVisible_)
-    {
         get_manager().notify_hovered_frame_dirty();
-        update_mouse_in_frame_();
-    }
 }
 
 void frame::unregister_all_events()
@@ -1876,11 +1872,6 @@ void frame::update_borders_()
         if (pBackdrop_)
             pBackdrop_->notify_borders_updated();
     }
-}
-
-void frame::update_mouse_in_frame_()
-{
-    get_manager().get_hovered_frame();
 }
 
 void frame::update(float fDelta)

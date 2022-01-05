@@ -155,7 +155,7 @@ namespace gui
     public :
 
         /// Contructor.
-        explicit uiobject(manager& mManager);
+        explicit uiobject(utils::control_block& mBlock, manager& mManager);
 
         /// Destructor.
         virtual ~uiobject();

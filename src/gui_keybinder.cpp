@@ -10,9 +10,12 @@ namespace lxgui {
 namespace gui
 {
 
-keybinder::keybinder(input::manager& mInputManager, event_emitter& mEventEmitter) :
-    event_receiver(mEventEmitter), mInputManager_(mInputManager), mEventEmitter_(mEventEmitter)
+keybinder::keybinder(utils::control_block& mBlock, input::manager& mInputManager,
+    event_emitter& mEventEmitter) :
+    event_receiver(mBlock, mEventEmitter), mInputManager_(mInputManager),
+    mEventEmitter_(mEventEmitter)
 {
+    register_event("KEY_PRESSED");
 }
 
 void keybinder::set_key_binding(input::key mKey, sol::protected_function mHandler)
