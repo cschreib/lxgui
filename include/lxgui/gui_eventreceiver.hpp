@@ -26,9 +26,6 @@ namespace gui
         */
         explicit event_receiver(utils::control_block& mBlock, event_emitter& mEmitter);
 
-        /// Destructor.
-        virtual ~event_receiver() = default;
-
         /// Non-copiable
         event_receiver(const event_receiver&) = delete;
 
