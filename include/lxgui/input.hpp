@@ -203,8 +203,6 @@ namespace input
         *         and these should be prevented from happening. This can be achieved by
         *         calling this function and using the edit box as second argument, which
         *         will ensure that input events are only sent to the edit box exclusively.
-        *   \note Calling set_focus(false) doesn't immediately remove focus.
-        *         You have to wait for the next update() call.
         *   \note This function will forward all events (mouse and keyboard)
         *         to the new receiver. See set_keyboard_focus() and
         *         set_mouse_focus() for partial forwarding.
@@ -331,8 +329,6 @@ namespace input
 
         void fire_event_(const gui::event& mEvent);
 
-        bool bRemoveKeyboardFocus_ = false;
-        bool bRemoveMouseFocus_ = false;
         bool bKeyboardFocus_ = false;
         bool bMouseFocus_ = false;
         utils::observer_ptr<gui::event_receiver> pKeyboardFocusReceiver_ = nullptr;

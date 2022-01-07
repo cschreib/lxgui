@@ -382,20 +382,6 @@ double manager::get_mouse_down_duration(mouse_button mID) const
 
 void manager::update(float fTempDelta)
 {
-    if (bRemoveKeyboardFocus_)
-    {
-        bKeyboardFocus_ = false;
-        pKeyboardFocusReceiver_ = nullptr;
-        bRemoveKeyboardFocus_ = false;
-    }
-
-    if (bRemoveMouseFocus_)
-    {
-        bMouseFocus_ = false;
-        pMouseFocusReceiver_ = nullptr;
-        bRemoveMouseFocus_ = false;
-    }
-
     // Control extreme delta time after loading/at startup etc
     double dDelta = fTempDelta;
     if ((dDelta < 0.0) || (dDelta > 1.0))
@@ -442,26 +428,14 @@ void manager::set_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pR
 
 void manager::set_keyboard_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
 {
-    if (bKeyboardFocus_ && !bFocus)
-        bRemoveKeyboardFocus_ = true;
-    else
-    {
-        bRemoveKeyboardFocus_ = false;
-        bKeyboardFocus_ = bFocus;
-        pKeyboardFocusReceiver_ = std::move(pReceiver);
-    }
+    bKeyboardFocus_ = bFocus;
+    pKeyboardFocusReceiver_ = std::move(pReceiver);
 }
 
 void manager::set_mouse_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
 {
-    if (bMouseFocus_ && !bFocus)
-        bRemoveMouseFocus_ = true;
-    else
-    {
-        bRemoveMouseFocus_ = false;
-        bMouseFocus_ = bFocus;
-        pMouseFocusReceiver_ = std::move(pReceiver);
-    }
+    bMouseFocus_ = bFocus;
+    pMouseFocusReceiver_ = std::move(pReceiver);
 }
 
 bool manager::is_focused() const
