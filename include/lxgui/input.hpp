@@ -89,7 +89,7 @@ namespace input
         bool any_key_is_down() const;
 
         /// Checks if a key is being pressed.
-        /** \param mKey   The ID code of the key you're interested in
+        /** \param mKey   The ID code of the key you are interested in
         *   \return 'true' if the key is being pressed
         *   \note This will report the keyboard state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
@@ -97,7 +97,7 @@ namespace input
         bool key_is_down(key mKey) const;
 
         /// Returns elapsed time since the key has been pressed.
-        /** \param mKey The ID code of the key you're interested in
+        /** \param mKey The ID code of the key you are interested in
         *   \return Elapsed time since the key has been pressed
         *   \note This will report the keyboard state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
@@ -150,7 +150,7 @@ namespace input
         bool ctrl_is_pressed() const;
 
         /// Checks if a mouse button is being pressed.
-        /** \param mID    The ID code of the mouse button you're interested in
+        /** \param mID The ID code of the mouse button you are interested in
         *   \return 'true' if the mouse button is being pressed
         *   \note This will report the mouse state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
@@ -158,7 +158,7 @@ namespace input
         bool mouse_is_down(mouse_button mID) const;
 
         /// Returns elapsed time since the mouse button has been pressed.
-        /** \param mKey The ID code of the mouse button you're interested in
+        /** \param mKey The ID code of the mouse button you are interested in
         *   \return Elapsed time since the mouse button has been pressed
         *   \note This will report the mouse state regardless of focus.
         *         If supporting focus is necessary, respond to input events instead.
@@ -180,7 +180,7 @@ namespace input
         float get_mouse_wheel() const;
 
         /// Returns the string associated to a mouse button.
-        /** \param mID The ID code of the mouse button you're interested in
+        /** \param mID The ID code of the mouse button you are interested in
         *   \return The string associated with the mouse button
         */
         std::string get_mouse_button_string(mouse_button mID) const;
@@ -198,12 +198,11 @@ namespace input
         /// Sets whether input should be focussed.
         /** \param bFocus    'true' to stop general inputs and focus on one receiver
         *   \param pReceiver The event receiver that requires focus (if any)
-        *   \note This function is usefull if you need to implement
-        *         an edit box: the user can type letters binded to
-        *         actions in the game, and you should prevent them
-        *         from happening. So, you just have to call this function
-        *         and use the second argument of all input functions to
-        *         force focus in your edit box.
+        *   \note This function is usefull to implement an edit box: the user can type
+        *         letters using keys that can be bound to special actions in the game,
+        *         and these should be prevented from happening. This can be achieved by
+        *         calling this function and using the edit box as second argument, which
+        *         will ensure that input events are only sent to the edit box exclusively.
         *   \note Calling set_focus(false) doesn't immediately remove focus.
         *         You have to wait for the next update() call.
         *   \note This function will forward all events (mouse and keyboard)
