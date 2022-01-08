@@ -14,9 +14,13 @@
 #include <functional>
 #include <memory>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sol {
     class state;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 
@@ -44,7 +48,8 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param pInputSource The input source to use
+        /** \param mBlock       The owner pointer control block
+        *   \param pInputSource The input source to use
         *   \param pRenderer    The renderer implementation
         */
         manager(utils::control_block& mBlock,
@@ -230,13 +235,6 @@ namespace gui
         *   \return 'true' if the given object is allowed to be resized
         */
         bool is_sizing(const uiobject& mObj) const;
-
-        /// Returns the accumulated mouse movement.
-        /** \return The accumulated mouse movement
-        *   \note This vector is reset to zero whenever start_moving() or
-        *         start_sizing() is called.
-        */
-        const vector2f& get_movement() const;
 
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)

@@ -32,7 +32,8 @@ namespace input
     public :
 
         /// Initializes this manager with a chosen input source.
-        /** \param pSource The input source
+        /** \param mBlock  The owner pointer control block
+        *   \param pSource The input source
         */
         explicit manager(utils::control_block& mBlock, std::unique_ptr<source> pSource);
 

@@ -20,6 +20,8 @@ namespace lxgui {
 namespace gui
 {
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace parser
 {
     enum class color_action
@@ -315,6 +317,8 @@ namespace parser
         return fMaxWidth;
     }
 }
+/** \endcond
+*/
 
 text::text(renderer& mRenderer, std::shared_ptr<gui::font> pFont,
     std::shared_ptr<gui::font> pOutlineFont) :

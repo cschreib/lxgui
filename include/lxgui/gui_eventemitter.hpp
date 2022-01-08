@@ -59,13 +59,13 @@ namespace gui
         /// Emmit a new event.
         /** \param mEvent The event which has occurred
         *   \note All event_receivers listening to this event will be notified of the event
-        *         by calling @ref event_receiver::on_event().
+        *         by calling @ref lxgui::gui::event_receiver::on_event().
         */
         void fire_event(const event& mEvent);
 
         /// Tells this manager to clear the fired events list.
         /** \note This is necessary for events that are flagged as "once per frame", and which
-        *         will not be triggered more than once until "frame_ended()" is called.
+        *         will not be triggered more than once until @ref frame_ended()"is called.
         *         This function must not be called from within an event callback, as it will
         *         perform garbage-collection of expired event receivers.
         */

@@ -4,10 +4,14 @@
 #include "lxgui/impl/gui_sfml_renderer.hpp"
 #include "lxgui/gui_manager.hpp"
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sf
 {
     class RenderWindow;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 namespace gui {

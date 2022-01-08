@@ -8,10 +8,14 @@
 
 #include <memory>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sf
 {
     class RenderTexture;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 namespace gui {

@@ -8,9 +8,13 @@
 #include <vector>
 #include <unordered_map>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sol {
     class state;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 namespace gui
@@ -26,8 +30,11 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param pInputSource The input source to use
-        *   \param pRenderer    The renderer implementation
+        /** \param mLua          The GUI Lua state
+        *   \param mLocalizer    The localizer class, to load new translation into
+        *   \param mEventEmitter The event emitter, to fire "addon loaded" events
+        *   \param mRoot         The GUI root, to create new frames into
+        *   \param mVirtualRoot  The virtual root, to create new virtual frames into
         */
         addon_registry(sol::state& mLua, localizer& mLocalizer, event_emitter& mEventEmitter,
             uiroot& mRoot, virtual_uiroot& mVirtualRoot);

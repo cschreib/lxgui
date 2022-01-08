@@ -8,11 +8,15 @@
 
 #include <memory>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sf
 {
     class RenderWindow;
     class RenderTarget;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 namespace gui {

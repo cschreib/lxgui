@@ -31,7 +31,8 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param mManager The GUI manager
+        /** \param mBlock   The owner pointer control block
+        *   \param mManager The GUI manager
         */
         explicit uiroot(utils::control_block& mBlock, manager& mManager);
 
@@ -52,7 +53,7 @@ namespace gui
         void render() const;
 
         /// Enables or disables interface caching.
-        /** \param bEnableCaching 'true' to enable, 'false' to disable
+        /** \param bEnable 'true' to enable, 'false' to disable
         *   \see toggle_caching()
         */
         void enable_caching(bool bEnable);

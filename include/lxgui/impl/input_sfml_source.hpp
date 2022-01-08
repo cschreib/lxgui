@@ -10,10 +10,14 @@
 #include <unordered_map>
 #include <memory>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sf {
     class Window;
     class Event;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 namespace input {

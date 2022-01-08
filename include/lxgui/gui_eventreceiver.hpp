@@ -22,7 +22,8 @@ namespace gui
     public :
 
         /// Constructor.
-        /** \param mEmitter The event emitter to listen to
+        /** \param mBlock   The owner pointer control block
+        *   \param mEmitter The event emitter to listen to
         */
         explicit event_receiver(utils::control_block& mBlock, event_emitter& mEmitter);
 

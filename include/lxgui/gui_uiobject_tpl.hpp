@@ -10,6 +10,8 @@
 #include <lxgui/utils_string.hpp>
 #include <sol/state.hpp>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sol
 {
     template<typename T>
@@ -26,6 +28,8 @@ namespace sol
         }
     };
 }
+/** \endcond
+*/
 
 template<typename T>
 void sol_lua_check_access(sol::types<T>, lua_State* pLua, int iIndex, sol::stack::record& /*mTracking*/)

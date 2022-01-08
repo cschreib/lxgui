@@ -11,7 +11,7 @@
 #include <iostream>
 #include <algorithm>
 
-/** \cond NOT_REMOVE_FROM_DOC
+/** \cond INCLUDE_INTERNALS_IN_DOC
 */
 namespace lxgui {
 namespace utils

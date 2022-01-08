@@ -409,11 +409,6 @@ bool manager::is_sizing(const uiobject& mObj) const
     return pSizedObject_.get() == &mObj;
 }
 
-const vector2f& manager::get_movement() const
-{
-    return mMouseMovement_;
-}
-
 void manager::update_hovered_frame_()
 {
     DEBUG_LOG(" Update hovered frame...");

@@ -483,3 +483,6 @@ std::string to_string(const utils::variant& mValue)
 }
 }
 }
+
+/** \endcond
+*/

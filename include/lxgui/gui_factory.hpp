@@ -9,9 +9,13 @@
 #include <unordered_map>
 #include <functional>
 
+/** \cond INCLUDE_INTERNALS_IN_DOC
+*/
 namespace sol {
     class state;
 }
+/** \endcond
+*/
 
 namespace lxgui {
 
