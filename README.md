@@ -119,6 +119,11 @@ Then, clone the project, including the submodules (this is important! the librar
 git clone --recurse-submodules https://github.com/cschreib/lxgui
 ```
 
+If you have already cloned the repository and missed the `--recurse-submodules` option while cloning, you can still checkout all submodules at any time using the command:
+```
+git submodule update --init --recursive
+```
+
 The rest of the build instructions depends on your target operating system; please follow the instructions in the next sections accordingly.
 
 
