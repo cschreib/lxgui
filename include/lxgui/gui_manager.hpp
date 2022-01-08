@@ -401,8 +401,7 @@ namespace gui
         bool bFirstIteration_ = true;
         bool bUpdating_ = false;
 
-        utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
-        utils::observer_ptr<focus_frame> pFocusedFrame_ = nullptr;
+        utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
 
         utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
         utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
