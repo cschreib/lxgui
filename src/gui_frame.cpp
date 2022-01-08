@@ -1228,9 +1228,6 @@ void frame::on_event(const event& mEvent)
             return;
     }
 
-    if (!get_manager().is_input_enabled())
-        return;
-
     if (bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
     {
         if (mEvent.get_name() == "MOUSE_DRAG_START")

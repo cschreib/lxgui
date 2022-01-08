@@ -86,9 +86,6 @@ void button::on_event(const event& mEvent)
     if (!mChecker.is_alive())
         return;
 
-    if (!get_manager().is_input_enabled())
-        return;
-
     if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED" && bMouseInFrame_)
     {
         on_script("OnDoubleClicked");

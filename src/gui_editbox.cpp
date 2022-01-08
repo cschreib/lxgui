@@ -149,9 +149,6 @@ void edit_box::on_event(const event& mEvent)
     if (!mChecker.is_alive())
         return;
 
-    if (!get_manager().is_input_enabled())
-        return;
-
     if (mEvent.get_name() == "TEXT_ENTERED" && bFocus_)
     {
         std::uint32_t c = mEvent.get<std::uint32_t>(0);
@@ -675,12 +672,11 @@ const bounds2f& edit_box::get_text_insets() const
     return lTextInsets_;
 }
 
-void edit_box::notify_focus(bool bFocus)
+void edit_box::notify_focus_(bool bFocus)
 {
     if (bFocus_ != bFocus)
     {
-        bFocus_ = bFocus;
-        if (bFocus_)
+        if (bFocus)
         {
             if (!pCarret_)
                 create_carret_();
@@ -689,8 +685,6 @@ void edit_box::notify_focus(bool bFocus)
                 pCarret_->show();
 
             mCarretTimer_.zero();
-
-            lQueuedEventList_.push_back("OnEditFocusGained");
         }
         else
         {
@@ -698,10 +692,10 @@ void edit_box::notify_focus(bool bFocus)
                 pCarret_->hide();
 
             unlight_text();
-
-            lQueuedEventList_.push_back("OnEditFocusLost");
         }
     }
+
+    base::notify_focus_(bFocus);
 }
 
 void edit_box::notify_scaling_factor_updated()

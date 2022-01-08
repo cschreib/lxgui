@@ -195,47 +195,32 @@ namespace input
         */
         double get_doubleclick_time() const;
 
-        /// Sets whether input should be focussed.
-        /** \param bFocus    'true' to stop general inputs and focus on one receiver
-        *   \param pReceiver The event receiver that requires focus (if any)
-        *   \note This function is usefull to implement an edit box: the user can type
-        *         letters using keys that can be bound to special actions in the game,
-        *         and these should be prevented from happening. This can be achieved by
-        *         calling this function and using the edit box as second argument, which
-        *         will ensure that input events are only sent to the edit box exclusively.
-        *   \note This function will forward all events (mouse and keyboard)
-        *         to the new receiver. See set_keyboard_focus() and
-        *         set_mouse_focus() for partial forwarding.
-        */
-        void set_focus(bool bFocus,
-            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
-
         /// Sets whether keyboard input should be focussed.
-        /** \param bFocus    'true' to stop keyboard inputs and focus on one receiver
-        *   \param pReceiver The event receiver that requires focus (if any)
+        /** \param pReceiver The event receiver that requires focus
         *   \note This function will forward all keyboard events to the new receiver.
-        *         See set_focus() for more information.
+        *         This is usefull to implement an edit box: the user can type letters using keys
+        *         that can be bound to special actions in the game, and these should be prevented
+        *         from happening. This can be achieved by calling this function and using the
+        *         edit box as second argument, which will ensure that input events are only sent
+        *         to the edit box exclusively.
         */
-        void set_keyboard_focus(bool bFocus,
-            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
+        void request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pReceiver);
+
+        /// Give up focus of keyboard input.
+        /** \param mReceiver The event receiver that releases focus
+        */
+        void release_keyboard_focus(const gui::event_receiver& mReceiver);
 
         /// Sets whether mouse input should be focussed.
-        /** \param bFocus    'true' to stop mouse inputs and focus on one receiver
-        *   \param pReceiver The event receiver that requires focus (if any)
+        /** \param pReceiver The event receiver that requires focus
         *   \note This function will forward all mouse events to the new receiver.
-        *         See set_focus() for more information.
         */
-        void set_mouse_focus(bool bFocus,
-            utils::observer_ptr<gui::event_receiver> pReceiver = nullptr);
+        void request_mouse_focus(utils::observer_ptr<gui::event_receiver> pReceiver);
 
-        /// Checks whether all input is focused somewhere, to prevent multiple inputs.
-        /** \return 'true' if input is focused
-        *   \note See set_focus() for more information. If you use some other source
-        *         of input than this manager, you should check the result of this
-        *         function before actually using it (if the manager is not focussed,
-        *         it should not provide any input).
+        /// Give up focus of mouse input.
+        /** \param mReceiver The event receiver that releases focus
         */
-        bool is_focused() const;
+        void release_mouse_focus(const gui::event_receiver& mReceiver);
 
         /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
@@ -329,10 +314,11 @@ namespace input
 
         void fire_event_(const gui::event& mEvent);
 
-        bool bKeyboardFocus_ = false;
-        bool bMouseFocus_ = false;
-        utils::observer_ptr<gui::event_receiver> pKeyboardFocusReceiver_ = nullptr;
-        utils::observer_ptr<gui::event_receiver> pMouseFocusReceiver_ = nullptr;
+        gui::event_receiver* get_keyboard_focus_() const;
+        gui::event_receiver* get_mouse_focus_() const;
+
+        std::vector<utils::observer_ptr<gui::event_receiver>> lKeyboardFocusStack_;
+        std::vector<utils::observer_ptr<gui::event_receiver>> lMouseFocusStack_;
 
         std::vector<utils::observer_ptr<gui::event_emitter>> lEventEmitterList_;
 

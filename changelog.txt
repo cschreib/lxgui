@@ -27,6 +27,7 @@ Major changes:
     - the special frames are created (e.g., scroll child)
     - the children frames are created, in order of declaration in the XML file
  - gui: inherited scripts will be preserved and executed before the scripts defined in the frames
+ - gui: focus is now handled as a stack rather than binary
  - lua: removed custom lua wrapper, using sol2 instead
  - xml: removed custom xml parser, using pugixml instead
  - yaml: added yaml parser for GUI layout
@@ -128,6 +129,8 @@ Other changes:
  - gui: split anchor into anchor (logic) + anchor_data (data)
  - gui: uiobject::set_parent() and uiobject::set_name() are no longer public
  - gui: Lua key binding functions now expect Lua functions as handlers, not strings
+ - gui: renamed OnEditFocusGained to OnFocusGained (now available for FocusFrame too)
+ - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box

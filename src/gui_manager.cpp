@@ -176,7 +176,6 @@ void manager::close_ui_now()
     pLua_ = nullptr;
 
     pHoveredFrame_ = nullptr;
-    pFocusedFrame_ = nullptr;
     pMovedObject_ = nullptr;
     pSizedObject_ = nullptr;
     pMovedAnchor_ = nullptr;
@@ -415,42 +414,8 @@ const vector2f& manager::get_movement() const
     return mMouseMovement_;
 }
 
-void manager::enable_input(bool bEnable)
-{
-    if (bInputEnabled_ != bEnable)
-        toggle_input();
-}
-
-void manager::toggle_input()
-{
-    bInputEnabled_ = !bInputEnabled_;
-
-    if (bInputEnabled_)
-    {
-        update_hovered_frame_();
-
-        if (pFocusedFrame_)
-            pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
-    }
-    else
-    {
-        set_hovered_frame_(nullptr);
-
-        if (pFocusedFrame_)
-            pInputManager_->set_keyboard_focus(false);
-    }
-}
-
-bool manager::is_input_enabled() const
-{
-    return bInputEnabled_;
-}
-
 void manager::update_hovered_frame_()
 {
-    if (!bInputEnabled_)
-        return;
-
     DEBUG_LOG(" Update hovered frame...");
     const auto mMousePos = pInputManager_->get_mouse_position();
 
@@ -466,23 +431,6 @@ const utils::observer_ptr<frame>& manager::get_hovered_frame() const
 void manager::notify_hovered_frame_dirty()
 {
     update_hovered_frame_();
-}
-
-void manager::request_focus(utils::observer_ptr<focus_frame> pFocusFrame)
-{
-    if (pFocusFrame == pFocusedFrame_)
-        return;
-
-    if (pFocusFrame)
-    {
-        pFocusedFrame_ = std::move(pFocusFrame);
-        pInputManager_->set_keyboard_focus(true, pFocusedFrame_);
-    }
-    else
-    {
-        pFocusedFrame_ = nullptr;
-        pInputManager_->set_keyboard_focus(false);
-    }
 }
 
 void manager::on_event(const event& mEvent)

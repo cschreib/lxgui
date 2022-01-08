@@ -27,16 +27,12 @@
 *   and @{Frame:register_for_drag} set to `"LeftButton"` by default.
 *
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
-*   in addition to those from @{Frame}:
+*   in addition to those from @{FocusFrame}:
 *
 *   - `OnChar`: Triggered whenever a new character is added to the
 *   edit box. Will always be preceeded by `OnTextChanged`.
 *   - `OnCursorChanged`: Triggered whenever the position of the edit
 *   cursor is changed (not yet implemented).
-*   - `OnEditFocusGained`: Triggered when the edit box gains focus,
-*   see @{FocusFrame:set_focus}.
-*   - `OnEditFocusLost`: Triggered when the edit box looses focus,
-*   see @{FocusFrame:set_focus}.
 *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
 *   is pressed while the edit box is focussed. This captures both
 *   the main keyboard key and the smaller one on the numpad.

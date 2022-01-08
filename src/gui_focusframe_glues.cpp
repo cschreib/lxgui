@@ -7,6 +7,14 @@
 /** A @{Frame} that can receive and loose focus.
 *   A typical usage example is the @{EditBox}.
 *
+*   __Events.__ Hard-coded events available to all @{FocusFrame}es,
+*   in addition to those from @{Frame}:
+*
+*   - `OnFocusGained`: Triggered when the frame gains focus,
+*   see @{FocusFrame:set_focus}.
+*   - `OnFocusLost`: Triggered when the frame looses focus,
+*   see @{FocusFrame:set_focus}.
+*
 *   Inherits all methods from: @{UIObject}, @{Frame}.
 *
 *   Child classes: @{EditBox}.

@@ -8,6 +8,7 @@
 #include <lxgui/utils_exception.hpp>
 #include <lxgui/utils_string.hpp>
 #include <lxgui/utils_std.hpp>
+#include <lxgui/utils_range.hpp>
 
 #include <iostream>
 
@@ -420,37 +421,122 @@ double manager::get_doubleclick_time() const
     return pSource_->get_doubleclick_time();
 }
 
-void manager::set_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
+void release_focus_to_list(const gui::event_receiver& mReceiver,
+    std::vector<utils::observer_ptr<gui::event_receiver>>& lList)
 {
-    set_keyboard_focus(bFocus, pReceiver);
-    set_mouse_focus(bFocus, pReceiver);
+    if (lList.empty())
+        return;
+
+    // Find receiver in the list
+    auto mIter = utils::find_if(lList,
+        [&](const auto& pPtr) {
+            return pPtr.get() == &mReceiver;
+        }
+    );
+
+    if (mIter == lList.end())
+        return;
+
+    // Set it to null
+    *mIter = nullptr;
+
+    // Clean up null entries
+    auto mEndIter = std::remove_if(lList.begin(), lList.end(),
+        [](const auto& pPtr)
+        {
+            return pPtr == nullptr;
+        }
+    );
+
+    lList.erase(mEndIter, lList.end());
 }
 
-void manager::set_keyboard_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
+void request_focus_to_list(utils::observer_ptr<gui::event_receiver> pReceiver,
+    std::vector<utils::observer_ptr<gui::event_receiver>>& lList)
 {
-    bKeyboardFocus_ = bFocus;
-    pKeyboardFocusReceiver_ = std::move(pReceiver);
+    auto* pRawPointer = pReceiver.get();
+    if (!pRawPointer)
+        return;
+
+    // Check if this receiver was already in the focus stack and remove it
+    release_focus_to_list(*pRawPointer, lList);
+
+    // Add receiver at the top of the stack
+    lList.push_back(std::move(pReceiver));
 }
 
-void manager::set_mouse_focus(bool bFocus, utils::observer_ptr<gui::event_receiver> pReceiver)
+void manager::request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
 {
-    bMouseFocus_ = bFocus;
-    pMouseFocusReceiver_ = std::move(pReceiver);
+    auto* pOldFocus = get_keyboard_focus_();
+    request_focus_to_list(std::move(pReceiver), lKeyboardFocusStack_);
+    auto* pNewFocus = get_keyboard_focus_();
+
+    if (pOldFocus != pNewFocus)
+    {
+        if (pOldFocus)
+            pOldFocus->on_event(gui::event("KEYBOARD_FOCUS_LOST"));
+
+        if (pNewFocus)
+            pNewFocus->on_event(gui::event("KEYBOARD_FOCUS_GAINED"));
+    }
 }
 
-bool manager::is_focused() const
+void manager::request_mouse_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
 {
-    return bKeyboardFocus_ && bMouseFocus_;
+    auto* pOldFocus = get_mouse_focus_();
+    request_focus_to_list(std::move(pReceiver), lMouseFocusStack_);
+    auto* pNewFocus = get_mouse_focus_();
+
+    if (pOldFocus != pNewFocus)
+    {
+        if (pOldFocus)
+            pOldFocus->on_event(gui::event("MOUSE_FOCUS_LOST"));
+
+        if (pNewFocus)
+            pNewFocus->on_event(gui::event("MOUSE_FOCUS_GAINED"));
+    }
+}
+
+void manager::release_keyboard_focus(const gui::event_receiver& mReceiver)
+{
+    auto* pOldFocus = get_keyboard_focus_();
+    release_focus_to_list(mReceiver, lKeyboardFocusStack_);
+    auto* pNewFocus = get_keyboard_focus_();
+
+    if (pOldFocus != pNewFocus)
+    {
+        if (pOldFocus)
+            pOldFocus->on_event(gui::event("KEYBOARD_FOCUS_LOST"));
+
+        if (pNewFocus)
+            pNewFocus->on_event(gui::event("KEYBOARD_FOCUS_GAINED"));
+    }
+}
+
+void manager::release_mouse_focus(const gui::event_receiver& mReceiver)
+{
+    auto* pOldFocus = get_mouse_focus_();
+    release_focus_to_list(mReceiver, lMouseFocusStack_);
+    auto* pNewFocus = get_mouse_focus_();
+
+    if (pOldFocus != pNewFocus)
+    {
+        if (pOldFocus)
+            pOldFocus->on_event(gui::event("MOUSE_FOCUS_LOST"));
+
+        if (pNewFocus)
+            pNewFocus->on_event(gui::event("MOUSE_FOCUS_GAINED"));
+    }
 }
 
 bool manager::is_keyboard_focused() const
 {
-    return bKeyboardFocus_;
+    return get_keyboard_focus_() != nullptr;
 }
 
 bool manager::is_mouse_focused() const
 {
-    return bMouseFocus_;
+    return get_mouse_focus_() != nullptr;
 }
 
 bool manager::alt_is_pressed() const
@@ -503,7 +589,11 @@ void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEm
 {
     gui::event_emitter* pEmitterRaw = pEmitter.get();
     auto mIter = utils::find_if(lEventEmitterList_,
-        [&](const auto& pPtr) { return pPtr.get() == pEmitterRaw; });
+        [&](const auto& pPtr)
+        {
+            return pPtr.get() == pEmitterRaw;
+        }
+    );
 
     if (mIter != lEventEmitterList_.end())
     {
@@ -518,7 +608,11 @@ void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEm
 void manager::unregister_event_emitter(gui::event_emitter& mEmitter)
 {
     auto mIter = utils::find_if(lEventEmitterList_,
-        [&](const auto& pPtr) { return pPtr.get() == &mEmitter; });
+        [&](const auto& pPtr)
+        {
+            return pPtr.get() == &mEmitter;
+        }
+    );
 
     if (mIter != lEventEmitterList_.end())
         lEventEmitterList_.erase(mIter);
@@ -564,20 +658,48 @@ float manager::get_interface_scaling_factor_hint() const
     return pSource_->get_interface_scaling_factor_hint();
 }
 
+gui::event_receiver* manager::get_keyboard_focus_() const
+{
+    for (const auto& pPtr : utils::range::reverse(lKeyboardFocusStack_))
+    {
+        if (auto* pRawPointer = pPtr.get())
+            return pRawPointer;
+    }
+
+    return nullptr;
+}
+
+gui::event_receiver* manager::get_mouse_focus_() const
+{
+    for (const auto& pPtr : utils::range::reverse(lMouseFocusStack_))
+    {
+        if (auto* pRawPointer = pPtr.get())
+            return pRawPointer;
+    }
+
+    return nullptr;
+}
+
 void manager::fire_event_(const gui::event& mEvent)
 {
     bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;
     bool bKeyboardEvent = mEvent.get_name().find("KEY_") == 0u || mEvent.get_name() == "TEXT_ENTERED";
 
-    if (bMouseEvent && pMouseFocusReceiver_)
+    if (bMouseEvent)
     {
-        pMouseFocusReceiver_->on_event(mEvent);
-        return;
+        if (auto* pMouseFocusReceiver = get_mouse_focus_())
+        {
+            pMouseFocusReceiver->on_event(mEvent);
+            return;
+        }
     }
-    else if (bKeyboardEvent && pKeyboardFocusReceiver_)
+    else if (bKeyboardEvent)
     {
-        pKeyboardFocusReceiver_->on_event(mEvent);
-        return;
+        if (auto* pKeyboardFocusReceiver = get_keyboard_focus_())
+        {
+            pKeyboardFocusReceiver->on_event(mEvent);
+            return;
+        }
     }
 
     for (const auto& pManager : lEventEmitterList_)

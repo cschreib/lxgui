@@ -238,26 +238,6 @@ namespace gui
         */
         const vector2f& get_movement() const;
 
-        /// Enables/disables input response for all widgets.
-        /** \param bEnable 'true' to enable input
-        *   \note See toggle_input() and is_input_enabled().
-        */
-        void enable_input(bool bEnable);
-
-        /// Toggles input response for all widgets.
-        /** \note Enabled by default.
-        *   \note See is_input_enabled().
-        */
-        void toggle_input();
-
-        /// Checks if input response is enabled for all widgets.
-        /** \return 'true' if input response is enabled
-        *   \note All widgets must call this function and check
-        *         its return value before reacting to input events.
-        *   \note See toggle_input().
-        */
-        bool is_input_enabled() const;
-
         /// Returns the frame under the mouse.
         /** \return The frame under the mouse (nullptr if none)
         */
@@ -265,11 +245,6 @@ namespace gui
 
         /// Notifies this manager that it should update the hovered frame.
         void notify_hovered_frame_dirty();
-
-        /// Asks this manager for focus.
-        /** \param pFocusFrame The focus_frame requesting focus
-        */
-        void request_focus(utils::observer_ptr<focus_frame> pFocusFrame);
 
         /// Returns the GUI Lua state (sol wrapper).
         /** \return The GUI Lua state
@@ -425,8 +400,6 @@ namespace gui
         bool bCloseUI_ = false;
         bool bFirstIteration_ = true;
         bool bUpdating_ = false;
-
-        bool bInputEnabled_ = true;
 
         utils::observer_ptr<frame>       pHoveredFrame_ = nullptr;
         utils::observer_ptr<focus_frame> pFocusedFrame_ = nullptr;

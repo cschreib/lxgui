@@ -157,9 +157,6 @@ void slider::on_event(const event& mEvent)
     if (!mChecker.is_alive())
         return;
 
-    if (!get_manager().is_input_enabled())
-        return;
-
     if (mEvent.get_name() == "MOUSE_PRESSED")
     {
         anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);

@@ -20,13 +20,18 @@ namespace gui
         /// Constructor.
         explicit focus_frame(utils::control_block& mBlock, manager& mManager);
 
-        /// Destructor.
-        ~focus_frame();
-
         /// Copies an uiobject's parameters into this focus_frame (inheritance).
         /** \param mObj The uiobject to copy
         */
         void copy_from(const uiobject& mObj) override;
+
+        /// Calls the on_event script.
+        /** \param mEvent The Event that occured
+        *   \note Triggered callbacks could destroy the frame. If you need
+        *         to use the frame again after calling this function, use
+        *         the helper class alive_checker.
+        */
+        void on_event(const event& mEvent) override;
 
         /// Enables automatic focus for this focus_frame.
         /** \param bEnable 'true' to enable auto focus
@@ -41,10 +46,10 @@ namespace gui
         bool is_auto_focus_enabled() const;
 
         /// Asks for focus for this focus_frame.
-        /** \param bFocus 'true' to give to focus, 'false' to remove it
-        *   \note This does not give focus immediately to the focus_frame.
-        *         It is up to the manager class to actually give the focus
-        *         through notify_focus().
+        /** \param bFocus 'true' to ask for focus, 'false' to release it
+        *   \note Focus can be lost if another focus_frame asks for focus later.
+        *         The focus will be restored automaticallly when that other frame
+        *         releases focus, or it can be requested again by calling set_focus(true).
         */
         void set_focus(bool bFocus);
 
@@ -52,12 +57,6 @@ namespace gui
         /** \return 'true' if the frame has focus, 'false' otherwise
         */
         bool has_focus() const;
-
-        /// Notifies this focus_frame it has gained/lost focus.
-        /** \param bFocus 'true' if the focus_frame has gained focus
-        *   \note This function is called by the manager.
-        */
-        virtual void notify_focus(bool bFocus);
 
         /// Returns this widget's Lua glue.
         void create_glue() override;
@@ -80,6 +79,7 @@ namespace gui
     protected :
 
         void parse_attributes_(const layout_node& mNode) override;
+        virtual void notify_focus_(bool bFocus);
 
         bool bFocus_ = false;
         bool bAutoFocus_ = false;

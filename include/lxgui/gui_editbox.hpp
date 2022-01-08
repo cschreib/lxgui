@@ -378,12 +378,6 @@ namespace gui
         */
         void set_font(const std::string& sFontName, float fHeight);
 
-        /// Notifies this edit_box it has gained/lost focus.
-        /** \param bFocus 'true' if the edit_box has gained focus
-        *   \note This function is called by manager.
-        */
-        void notify_focus(bool bFocus) override;
-
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
@@ -396,6 +390,8 @@ namespace gui
         static constexpr const char* CLASS_NAME = "EditBox";
 
     protected :
+
+        void notify_focus_(bool bFocus) override;
 
         void parse_attributes_(const layout_node& mNode) override;
         void parse_all_nodes_before_children_(const layout_node& mNode) override;
