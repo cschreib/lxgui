@@ -147,9 +147,9 @@ namespace gui
         void load_ui();
 
         /// Closes the UI (at the end of the current or next update_ui()).
-        /** \note Because the actual re-loading is deferred to the end of the current update_ui() call,
-        *         or to the end of the next update_ui() call, it is safe to call this function at any
-        *         time. If you need to close the UI without delay, use close_ui_now().
+        /** \note The actual closing may be deferred if called from within update_ui(),
+        *         therefore it is safe to call this function at any time. If you need to
+        *         close the UI without delay, use close_ui_now().
         */
         void close_ui();
 
@@ -161,9 +161,9 @@ namespace gui
         void close_ui_now();
 
         /// Closes the UI and load it again (at the end of the current or next update_ui()).
-        /** \note Because the actual re-loading is deferred to the end of the current update_ui() call,
-        *         or to the end of the next update_ui() call, it is safe to call this function at any
-        *         time. If you need to reload the UI without delay, use reload_ui_now().
+        /** \note The actual re-loading may be deferred if called from within update_ui(),
+        *         therefore it is safe to call this function at any time. If you need to
+        *         reload the UI without delay, use reload_ui_now().
         */
         void reload_ui();
 
