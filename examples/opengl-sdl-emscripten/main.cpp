@@ -37,6 +37,7 @@ try
 {
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
     input::manager& mInputMgr = mContext.pManager->get_input_manager();
+    input::manager& mWorldInputMgr = mContext.pManager->get_world_input_manager();
 
     // Get events from SDL
     SDL_Event mEvent;
@@ -78,10 +79,14 @@ try
         static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
     }
 
-    // Check if WORLD input is allowed
-    if (mInputMgr.can_receive_input("WORLD"))
+    // Check if "world" mouse input is blocked (the "world" is whatever is displayed below
+    // the UI, which typically consists of objects that belong to the game world).
+    // This happens if the mouse is over a UI frame that captures mouse input.
+    // The world input dispatcher will not generate input events in this instance, however
+    // you are still able to query the mouse state.
+    if (!mWorldInputMgr.is_mouse_blocked())
     {
-        // Process mouse and click events in the game...
+        // Process mouse inputs for the game...
     }
 
     // If the window is not focussed, do nothing and wait until focus comes back

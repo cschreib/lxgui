@@ -295,6 +295,16 @@ namespace gui
         */
         input::manager& get_input_manager() { return *pInputManager_; }
 
+        /// Returns the input manager associated to this gui.
+        /** \return The input manager associated to this gui
+        */
+        const input::manager& get_world_input_manager() const { return *pWorldInputManager_; }
+
+        /// Returns the input manager associated to this gui.
+        /** \return The input manager associated to this gui
+        */
+        input::manager& get_world_input_manager() { return *pWorldInputManager_; }
+
         /// Returns the object used for localizing strings.
         /** \return The current localizer
         */
@@ -398,6 +408,7 @@ namespace gui
         // IO
         std::unique_ptr<input::window>   pWindow_;
         utils::owner_ptr<input::manager> pInputManager_;
+        utils::owner_ptr<input::manager> pWorldInputManager_;
 
         // UI state
         std::unique_ptr<factory>         pFactory_;

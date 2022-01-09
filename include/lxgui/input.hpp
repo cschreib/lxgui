@@ -51,29 +51,20 @@ namespace input
         */
         void on_event(const gui::event& mEvent) override;
 
-        /// Allows a particular input group to receive input events.
-        /** \param sGroupName The name of the group to enable
+        /// Enable/disable mouse inputs
+        /** \param bBlock 'true' to block mouse input events from being generated, 'true' to allow all
+        *   \note This only blocks mouse events; the state of the keyboard and mouse can always be
+        *         queried using @ref key_is_down, @ref mouse_is_down, etc. Use
+        *         @ref is_mouse_blocked() before using direct state queries if you want to fully
+        *         honor mouse input blocking.
         */
-        void allow_input(const std::string& sGroupName);
+        void block_mouse_events(bool bBlock);
 
-        /// Prevents a particular input group from receiving input events.
-        /** \param sGroupName The name of the group to disable
+        /// Check if mouse events are blocked
+        /** \return 'true' if blocked, 'false' otherwise
+        *   \see block_events
         */
-        void block_input(const std::string& sGroupName);
-
-        /// Checks if a particular input group can receive input events.
-        /** \param sGroupName The name of the group to check
-        *   \return 'true' if the group can receive input events
-        */
-        bool can_receive_input(const std::string& sGroupName) const;
-
-        /// Makes sure a particular input group receives input events.
-        /** \param sGroupName The name of the group to force
-        *   \param bForce     'true' to force input
-        *   \note Even if you call block_input() with the same group name,
-        *         can_receive_input() will return true.
-        */
-        void force_input_allowed(const std::string& sGroupName, bool bForce);
+        bool is_mouse_blocked() const;
 
         /// Checks if any key is being pressed.
         /** \param bForce 'true' to bypass focus (see set_focus())
@@ -257,15 +248,13 @@ namespace input
         std::array<time_point, KEY_NUMBER>          lKeyPressedTime_ = {};
         std::array<time_point, MOUSE_BUTTON_NUMBER> lMousePressedTime_ = {};
 
-        std::unordered_map<std::string, bool> lClickGroupList_;
-        std::unordered_map<std::string, bool> lForcedClickGroupList_;
-
         float         fScalingFactor_ = 1.0f;
 
         bool          bMouseDragged_ = false;
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;
 
         source& mSource_;
+        bool bMouseBlocked_ = false;
     };
 }
 }

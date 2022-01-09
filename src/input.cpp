@@ -32,6 +32,10 @@ manager::manager(utils::control_block& mBlock, source& mSource) :
 
 void manager::on_event(const gui::event& mOrigEvent)
 {
+    bool bMouseEvent = mOrigEvent.get_name().find("MOUSE_") == 0u;
+    if (bMouseEvent && is_mouse_blocked())
+        return;
+
     gui::event mEvent = mOrigEvent;
 
     if (mEvent.get_name() == "KEY_PRESSED")
@@ -105,32 +109,14 @@ void manager::on_event(const gui::event& mOrigEvent)
     }
 }
 
-void manager::allow_input(const std::string& sGroupName)
+void manager::block_mouse_events(bool bBlock)
 {
-    lClickGroupList_[sGroupName] = true;
+    bMouseBlocked_ = bBlock;
 }
 
-void manager::block_input(const std::string& sGroupName)
+bool manager::is_mouse_blocked() const
 {
-    lClickGroupList_[sGroupName] = false;
-}
-
-bool manager::can_receive_input(const std::string& sGroupName) const
-{
-    auto iter = lClickGroupList_.find(sGroupName);
-    if (iter != lClickGroupList_.end() && !iter->second)
-    {
-        iter = lForcedClickGroupList_.find(sGroupName);
-        if (iter == lForcedClickGroupList_.end() || !iter->second)
-            return false;
-    }
-
-    return true;
-}
-
-void manager::force_input_allowed(const std::string& sGroupName, bool bForce)
-{
-    lForcedClickGroupList_[sGroupName] = bForce;
+    return bMouseBlocked_;
 }
 
 bool manager::any_key_is_down() const

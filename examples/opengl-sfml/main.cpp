@@ -70,6 +70,7 @@ int main(int argc, char* argv[])
         float fDelta = 0.0f;
         timing_clock::time_point mPrevTime = timing_clock::now();
         input::manager& mInputMgr = pManager->get_input_manager();
+        input::manager& mWorldInputMgr = pManager->get_world_input_manager();
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -109,10 +110,14 @@ int main(int argc, char* argv[])
                 static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
             }
 
-            // Check if WORLD input is allowed
-            if (mInputMgr.can_receive_input("WORLD"))
+            // Check if "world" mouse input is blocked (the "world" is whatever is displayed below
+            // the UI, which typically consists of objects that belong to the game world).
+            // This happens if the mouse is over a UI frame that captures mouse input.
+            // The world input dispatcher will not generate input events in this instance, however
+            // you are still able to query the mouse state.
+            if (!mWorldInputMgr.is_mouse_blocked())
             {
-                // Process mouse and click events in the game...
+                // Process mouse inputs for the game...
             }
 
             // If the window is not focussed, do nothing and wait until focus comes back

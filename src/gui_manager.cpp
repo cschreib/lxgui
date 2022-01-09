@@ -44,6 +44,7 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pI
     pRenderer_(std::move(pRenderer)),
     pWindow_(std::make_unique<input::window>(*pInputSource_)),
     pInputManager_(utils::make_owned<input::manager>(*pInputSource_)),
+    pWorldInputManager_(utils::make_owned<input::manager>(*pInputSource_)),
     pLocalizer_(std::make_unique<localizer>())
 {
     set_interface_scaling_factor(1.0f);
@@ -67,6 +68,7 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
     fScalingFactor_ = fFullScalingFactor;
 
     pInputManager_->set_interface_scaling_factor(fScalingFactor_);
+    pWorldInputManager_->set_interface_scaling_factor(fScalingFactor_);
     pRoot_->notify_scaling_factor_updated();
 
     notify_hovered_frame_dirty();
@@ -143,6 +145,8 @@ void manager::load_ui()
 
     pInputManager_->register_event_emitter(
         utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
+    pWorldInputManager_->register_event_emitter(
+        utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
 
     create_lua_();
 
@@ -193,6 +197,7 @@ void manager::close_ui_now()
     pLocalizer_->clear_translations();
 
     pInputManager_->unregister_event_emitter(*this);
+    pWorldInputManager_->unregister_event_emitter(*this);
 
     bLoaded_ = false;
 }
@@ -259,7 +264,7 @@ void manager::update_ui(float fDelta)
 void manager::clear_hovered_frame_()
 {
     pHoveredFrame_ = nullptr;
-    pInputManager_->allow_input("WORLD");
+    pWorldInputManager_->block_mouse_events(false);
 }
 
 void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2f& mMousePos)
@@ -272,9 +277,9 @@ void manager::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector
         pHoveredFrame_ = pFrame;
         pHoveredFrame_->notify_mouse_in_frame(true, mMousePos);
         if (pHoveredFrame_->is_world_input_allowed())
-            pInputManager_->allow_input("WORLD");
+            pWorldInputManager_->block_mouse_events(false);
         else
-            pInputManager_->block_input("WORLD");
+            pWorldInputManager_->block_mouse_events(true);
     }
     else
         clear_hovered_frame_();
