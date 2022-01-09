@@ -4,8 +4,6 @@
 #include "lxgui/gui_alive_checker.hpp"
 #include "lxgui/input.hpp"
 
-using namespace lxgui::input;
-
 namespace lxgui {
 namespace gui
 {
