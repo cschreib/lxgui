@@ -232,9 +232,6 @@ void manager::update_ui(float fDelta)
 {
     bUpdating_ = true;
 
-    DEBUG_LOG(" Input...");
-    pInputManager_->update(fDelta);
-
     DEBUG_LOG(" Update widgets...");
     pRoot_->update(fDelta);
 

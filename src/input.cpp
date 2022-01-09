@@ -28,9 +28,6 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<source> pSource) 
     register_event("MOUSE_MOVED");
     register_event("TEXT_ENTERED");
     register_event("WINDOW_RESIZED");
-
-    lKeyDelay_.fill(0.0);
-    lMouseDelay_.fill(0.0);
 }
 
 void manager::on_event(const gui::event& mOrigEvent)
@@ -39,18 +36,31 @@ void manager::on_event(const gui::event& mOrigEvent)
 
     if (mEvent.get_name() == "KEY_PRESSED" || mEvent.get_name() == "KEY_RELEASED")
     {
+        const auto mKey = mEvent.get<key>(0);
+
         // Add key name to the event
-        mEvent.add(get_key_name(utils::get<key>(mEvent.get(0))));
+        mEvent.add(get_key_name(mKey));
+
+        // Record press time
+        if (mEvent.get_name() == "KEY_PRESSED")
+            lKeyPressedTime_[static_cast<std::size_t>(mKey)] = timer::now();
     }
     else if (mEvent.get_name() == "MOUSE_PRESSED" ||
              mEvent.get_name() == "MOUSE_RELEASED" ||
              mEvent.get_name() == "MOUSE_DOUBLE_CLICKED")
     {
+        const auto mButton = mEvent.get<mouse_button>(0);
+
         // Apply scaling factor to mouse coordinates
         for (std::size_t i = 1; i <= 2; ++i)
             mEvent.get(i) = mEvent.get<float>(i)/fScalingFactor_;
+
         // Add button name to the event
-        mEvent.add(get_mouse_button_string(mEvent.get<mouse_button>(0)));
+        mEvent.add(get_mouse_button_string(mButton));
+
+        // Record press time
+        if (mEvent.get_name() == "MOUSE_PRESSED")
+            lMousePressedTime_[static_cast<std::size_t>(mButton)] = timer::now();
     }
     else if (mEvent.get_name() == "MOUSE_MOVED")
     {
@@ -368,7 +378,11 @@ bool manager::key_is_down(key mKey) const
 
 double manager::get_key_down_duration(key mKey) const
 {
-    return lKeyDelay_[static_cast<std::size_t>(mKey)];
+    if (!key_is_down(mKey))
+        return 0.0;
+
+    return std::chrono::duration<double>(
+        timer::now() - lKeyPressedTime_[static_cast<std::size_t>(mKey)]).count();
 }
 
 bool manager::mouse_is_down(mouse_button mID) const
@@ -378,37 +392,11 @@ bool manager::mouse_is_down(mouse_button mID) const
 
 double manager::get_mouse_down_duration(mouse_button mID) const
 {
-    return lMouseDelay_[static_cast<std::size_t>(mID)];
-}
+    if (!mouse_is_down(mID))
+        return 0.0;
 
-void manager::update(float fTempDelta)
-{
-    // Control extreme delta time after loading/at startup etc
-    double dDelta = fTempDelta;
-    if ((dDelta < 0.0) || (dDelta > 1.0))
-        dDelta = 0.05;
-
-    // Update keys
-    const source::key_state& mKeyState = pSource_->get_key_state();
-    for (std::size_t i = 0; i < KEY_NUMBER; ++i)
-    {
-        // Update delays
-        if (mKeyState.lKeyState[i])
-            lKeyDelay_[i] += dDelta;
-        else
-            lKeyDelay_[i] = 0.0;
-    }
-
-    // Update mouse state
-    const source::mouse_state& mMouseState = pSource_->get_mouse_state();
-    for (std::size_t i = 0; i < MOUSE_BUTTON_NUMBER; ++i)
-    {
-        // Update delays
-        if (mMouseState.lButtonState[i])
-            lMouseDelay_[i] += dDelta;
-        else
-            lMouseDelay_[i] = 0.0;
-    }
+    return std::chrono::duration<double>(
+        timer::now() - lMousePressedTime_[static_cast<std::size_t>(mID)]).count();
 }
 
 void manager::set_doubleclick_time(double dDoubleClickTime)

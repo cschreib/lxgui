@@ -16,6 +16,7 @@
 #include <array>
 #include <unordered_map>
 #include <memory>
+#include <chrono>
 
 namespace lxgui {
 namespace gui
@@ -37,20 +38,11 @@ namespace input
         */
         explicit manager(utils::control_block& mBlock, std::unique_ptr<source> pSource);
 
-        /// Non-copiable
+        // Non-copiable, non-movable
         manager(const manager&) = delete;
-
-        /// Non-movable
         manager(manager&&) = delete;
-
-        /// Non-copiable
         manager& operator=(const manager&) = delete;
-
-        /// Non-movable
         manager& operator=(manager&&) = delete;
-
-        /// Updates input (keyboard and mouse).
-        void update(float fDelta);
 
         /// Called whenever an event occurs.
         /** \param mEvent The event which has occured
@@ -323,11 +315,11 @@ namespace input
 
         std::vector<utils::observer_ptr<gui::event_emitter>> lEventEmitterList_;
 
-        // Keyboard
-        std::array<double, KEY_NUMBER> lKeyDelay_ = {};
+        using timer = std::chrono::high_resolution_clock;
+        using time_point = timer::time_point;
 
-        // Mouse
-        std::array<double, MOUSE_BUTTON_NUMBER> lMouseDelay_ = {};
+        std::array<time_point, KEY_NUMBER>          lKeyPressedTime_ = {};
+        std::array<time_point, MOUSE_BUTTON_NUMBER> lMousePressedTime_ = {};
 
         std::unordered_map<std::string, bool> lClickGroupList_;
         std::unordered_map<std::string, bool> lForcedClickGroupList_;
