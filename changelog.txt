@@ -75,6 +75,7 @@ Other changes:
  - gui: added addon_registry to load and manage addons
  - gui: added keybinder to manage Lua key bindings
  - gui: added uiobject::is_loaded() and clarify the semantic
+ - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class
@@ -95,6 +96,8 @@ Other changes:
  - gui: renamed manager::read_files to load_ui
  - gui: renamed manager::create_lua to register_lua_glues
  - gui: renamed event_manager to event_emitter
+ - gui: renamed input::manager::get_key_name into input::get_key_codename
+ - gui: renamed input::manager::get_mouse_button_string into input::get_mouse_button_codename
  - gui: removed Frame:on from Lua API (instead, call scripts directly, e.g.: frame:on_update())
  - gui: removed the sprite class
  - gui: removed uiobject::get_base()
@@ -110,6 +113,7 @@ Other changes:
  - gui: removed uiobject::set_newly_created/is_newly_created (no longer necessary)
  - gui: removed manager::is_loading_ui() (no longer necessary)
  - gui: removed manager::begin() and end()
+ - gui: renamed input::manager::get_key_name overloads with modifiers
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument
@@ -131,6 +135,7 @@ Other changes:
  - gui: Lua key binding functions now expect Lua functions as handlers, not strings
  - gui: renamed OnEditFocusGained to OnFocusGained (now available for FocusFrame too)
  - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
+ - gui: key and mouse events no longer contain string names of buttons and keys
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
