@@ -2,7 +2,7 @@
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_out.hpp"
-#include "lxgui/input.hpp"
+#include "lxgui/input_dispatcher.hpp"
 
 #include <sol/state.hpp>
 
@@ -94,9 +94,9 @@ std::string get_key_debug_name(input::key mKey, input::key mModifier1, input::ke
 }
 
 
-keybinder::keybinder(utils::control_block& mBlock, input::manager& mInputManager,
+keybinder::keybinder(utils::control_block& mBlock, input::dispatcher& mInputDispatcher,
     event_emitter& mEventEmitter) :
-    event_receiver(mBlock, mEventEmitter), mInputManager_(mInputManager),
+    event_receiver(mBlock, mEventEmitter), mInputDispatcher_(mInputDispatcher),
     mEventEmitter_(mEventEmitter)
 {
     register_event("KEY_PRESSED");
@@ -152,14 +152,14 @@ std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
     for (const auto& iter2 : iter1->second)
     {
         if (iter2.first == input::key::K_UNASSIGNED ||
-            !mInputManager_.key_is_down(iter2.first))
+            !mInputDispatcher_.key_is_down(iter2.first))
             continue;
 
         // First try to get a match with the most complicated binding with two modifiers
         for (const auto& iter3 : iter2.second)
         {
             if (iter3.first == input::key::K_UNASSIGNED ||
-                !mInputManager_.key_is_down(iter3.first))
+                !mInputDispatcher_.key_is_down(iter3.first))
                 continue;
 
             return {&iter3.second, get_key_debug_name(mKey, iter2.first, iter3.first)};

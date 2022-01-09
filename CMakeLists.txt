@@ -310,7 +310,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_vertexcache.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_registry.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_virtual_uiroot.cpp
-    ${PROJECT_SOURCE_DIR}/src/input.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_dispatcher.cpp
     ${PROJECT_SOURCE_DIR}/src/input_keys.cpp
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp
     ${PROJECT_SOURCE_DIR}/src/input_window.cpp

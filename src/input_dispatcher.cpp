@@ -1,4 +1,4 @@
-#include "lxgui/input.hpp"
+#include "lxgui/input_dispatcher.hpp"
 #include "lxgui/input_source.hpp"
 #include "lxgui/gui_event.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
@@ -16,7 +16,7 @@ namespace lxgui {
 namespace input
 {
 
-manager::manager(utils::control_block& mBlock, source& mSource) :
+dispatcher::dispatcher(utils::control_block& mBlock, source& mSource) :
     event_receiver(mBlock, mSource), mSource_(mSource)
 {
     register_event("KEY_PRESSED");
@@ -30,7 +30,7 @@ manager::manager(utils::control_block& mBlock, source& mSource) :
     register_event("WINDOW_RESIZED");
 }
 
-void manager::on_event(const gui::event& mOrigEvent)
+void dispatcher::on_event(const gui::event& mOrigEvent)
 {
     bool bMouseEvent = mOrigEvent.get_name().find("MOUSE_") == 0u;
     if (bMouseEvent && is_mouse_blocked())
@@ -109,17 +109,17 @@ void manager::on_event(const gui::event& mOrigEvent)
     }
 }
 
-void manager::block_mouse_events(bool bBlock)
+void dispatcher::block_mouse_events(bool bBlock)
 {
     bMouseBlocked_ = bBlock;
 }
 
-bool manager::is_mouse_blocked() const
+bool dispatcher::is_mouse_blocked() const
 {
     return bMouseBlocked_;
 }
 
-bool manager::any_key_is_down() const
+bool dispatcher::any_key_is_down() const
 {
     const auto& lKeyState = mSource_.get_key_state().lKeyState;
     for (std::size_t i = 1; i < KEY_NUMBER; ++i)
@@ -131,12 +131,12 @@ bool manager::any_key_is_down() const
     return false;
 }
 
-bool manager::key_is_down(key mKey) const
+bool dispatcher::key_is_down(key mKey) const
 {
     return mSource_.get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
 }
 
-double manager::get_key_down_duration(key mKey) const
+double dispatcher::get_key_down_duration(key mKey) const
 {
     if (!key_is_down(mKey))
         return 0.0;
@@ -145,12 +145,12 @@ double manager::get_key_down_duration(key mKey) const
         timer::now() - lKeyPressedTime_[static_cast<std::size_t>(mKey)]).count();
 }
 
-bool manager::mouse_is_down(mouse_button mID) const
+bool dispatcher::mouse_is_down(mouse_button mID) const
 {
     return mSource_.get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
 }
 
-double manager::get_mouse_down_duration(mouse_button mID) const
+double dispatcher::get_mouse_down_duration(mouse_button mID) const
 {
     if (!mouse_is_down(mID))
         return 0.0;
@@ -159,12 +159,12 @@ double manager::get_mouse_down_duration(mouse_button mID) const
         timer::now() - lMousePressedTime_[static_cast<std::size_t>(mID)]).count();
 }
 
-void manager::set_doubleclick_time(double dDoubleClickTime)
+void dispatcher::set_doubleclick_time(double dDoubleClickTime)
 {
     mSource_.set_doubleclick_time(dDoubleClickTime);
 }
 
-double manager::get_doubleclick_time() const
+double dispatcher::get_doubleclick_time() const
 {
     return mSource_.get_doubleclick_time();
 }
@@ -213,7 +213,7 @@ void request_focus_to_list(utils::observer_ptr<gui::event_receiver> pReceiver,
     lList.push_back(std::move(pReceiver));
 }
 
-void manager::request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
+void dispatcher::request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
 {
     auto* pOldFocus = get_keyboard_focus_();
     request_focus_to_list(std::move(pReceiver), lKeyboardFocusStack_);
@@ -229,7 +229,7 @@ void manager::request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pR
     }
 }
 
-void manager::request_mouse_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
+void dispatcher::request_mouse_focus(utils::observer_ptr<gui::event_receiver> pReceiver)
 {
     auto* pOldFocus = get_mouse_focus_();
     request_focus_to_list(std::move(pReceiver), lMouseFocusStack_);
@@ -245,7 +245,7 @@ void manager::request_mouse_focus(utils::observer_ptr<gui::event_receiver> pRece
     }
 }
 
-void manager::release_keyboard_focus(const gui::event_receiver& mReceiver)
+void dispatcher::release_keyboard_focus(const gui::event_receiver& mReceiver)
 {
     auto* pOldFocus = get_keyboard_focus_();
     release_focus_to_list(mReceiver, lKeyboardFocusStack_);
@@ -261,7 +261,7 @@ void manager::release_keyboard_focus(const gui::event_receiver& mReceiver)
     }
 }
 
-void manager::release_mouse_focus(const gui::event_receiver& mReceiver)
+void dispatcher::release_mouse_focus(const gui::event_receiver& mReceiver)
 {
     auto* pOldFocus = get_mouse_focus_();
     release_focus_to_list(mReceiver, lMouseFocusStack_);
@@ -277,52 +277,52 @@ void manager::release_mouse_focus(const gui::event_receiver& mReceiver)
     }
 }
 
-bool manager::is_keyboard_focused() const
+bool dispatcher::is_keyboard_focused() const
 {
     return get_keyboard_focus_() != nullptr;
 }
 
-bool manager::is_mouse_focused() const
+bool dispatcher::is_mouse_focused() const
 {
     return get_mouse_focus_() != nullptr;
 }
 
-bool manager::alt_is_pressed() const
+bool dispatcher::alt_is_pressed() const
 {
     return key_is_down(key::K_LMENU) || key_is_down(key::K_RMENU);
 }
 
-bool manager::shift_is_pressed() const
+bool dispatcher::shift_is_pressed() const
 {
     return key_is_down(key::K_LSHIFT) || key_is_down(key::K_RSHIFT);
 }
 
-bool manager::ctrl_is_pressed() const
+bool dispatcher::ctrl_is_pressed() const
 {
     return key_is_down(key::K_LCONTROL) || key_is_down(key::K_RCONTROL);
 }
 
-gui::vector2f manager::get_mouse_position() const
+gui::vector2f dispatcher::get_mouse_position() const
 {
     return mSource_.get_mouse_state().mPosition/fScalingFactor_;
 }
 
-float manager::get_mouse_wheel() const
+float dispatcher::get_mouse_wheel() const
 {
     return mSource_.get_mouse_state().fWheel;
 }
 
-const source& manager::get_source() const
+const source& dispatcher::get_source() const
 {
     return mSource_;
 }
 
-source& manager::get_source()
+source& dispatcher::get_source()
 {
     return mSource_;
 }
 
-void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter)
+void dispatcher::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter)
 {
     gui::event_emitter* pEmitterRaw = pEmitter.get();
     auto mIter = utils::find_if(lEventEmitterList_,
@@ -342,7 +342,7 @@ void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEm
     lEventEmitterList_.push_back(std::move(pEmitter));
 }
 
-void manager::unregister_event_emitter(gui::event_emitter& mEmitter)
+void dispatcher::unregister_event_emitter(gui::event_emitter& mEmitter)
 {
     auto mIter = utils::find_if(lEventEmitterList_,
         [&](const auto& pPtr)
@@ -355,17 +355,17 @@ void manager::unregister_event_emitter(gui::event_emitter& mEmitter)
         lEventEmitterList_.erase(mIter);
 }
 
-void manager::set_interface_scaling_factor(float fScalingFactor)
+void dispatcher::set_interface_scaling_factor(float fScalingFactor)
 {
     fScalingFactor_ = fScalingFactor;
 }
 
-float manager::get_interface_scaling_factor() const
+float dispatcher::get_interface_scaling_factor() const
 {
     return fScalingFactor_;
 }
 
-gui::event_receiver* manager::get_keyboard_focus_() const
+gui::event_receiver* dispatcher::get_keyboard_focus_() const
 {
     for (const auto& pPtr : utils::range::reverse(lKeyboardFocusStack_))
     {
@@ -376,7 +376,7 @@ gui::event_receiver* manager::get_keyboard_focus_() const
     return nullptr;
 }
 
-gui::event_receiver* manager::get_mouse_focus_() const
+gui::event_receiver* dispatcher::get_mouse_focus_() const
 {
     for (const auto& pPtr : utils::range::reverse(lMouseFocusStack_))
     {
@@ -387,7 +387,7 @@ gui::event_receiver* manager::get_mouse_focus_() const
     return nullptr;
 }
 
-void manager::fire_event_(const gui::event& mEvent)
+void dispatcher::fire_event_(const gui::event& mEvent)
 {
     bool bMouseEvent = mEvent.get_name().find("MOUSE_") == 0u;
     bool bKeyboardEvent = mEvent.get_name().find("KEY_") == 0u || mEvent.get_name() == "TEXT_ENTERED";

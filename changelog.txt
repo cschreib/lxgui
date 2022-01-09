@@ -115,6 +115,7 @@ Other changes:
  - gui: removed manager::is_loading_ui() (no longer necessary)
  - gui: removed manager::begin() and end()
  - gui: renamed input::manager::get_key_name overloads with modifiers
+ - gui: renamed input::manager to input::dispatcher
  - gui: edit_box::set_text_insets now takes a single bounds2f argument
  - gui: frame::on_script now takes the full script name ("OnUpdate" vs "Update")
  - gui: frame::on_script now takes a 'const event_data&' instead of an 'event*' argument
@@ -124,7 +125,6 @@ Other changes:
  - gui: all UI objects are now managed with explicit single ownership (unique_ptr)
  - gui: added frame_renderer class interface to clarify the frame class
  - gui: only frames can now be flagged as having a frame_renderer
- - gui: manager now inherits from event_manager instead of owning one (fix chicken/egg problem)
  - gui: "frame_level" has been renamed to just "level"
  - gui: frame::get_children and frame::get_regions return views rather than containers
  - gui: added gui::down_cast for safer down casting

@@ -27,7 +27,7 @@ namespace lxgui {
 namespace input {
     class source;
     class window;
-    class manager;
+    class dispatcher;
 }
 
 namespace gui
@@ -288,22 +288,22 @@ namespace gui
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        const input::manager& get_input_manager() const { return *pInputManager_; }
+        const input::dispatcher& get_input_dispatcher() const { return *pInputDispatcher_; }
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        input::manager& get_input_manager() { return *pInputManager_; }
+        input::dispatcher& get_input_dispatcher() { return *pInputDispatcher_; }
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        const input::manager& get_world_input_manager() const { return *pWorldInputManager_; }
+        const input::dispatcher& get_world_input_dispatcher() const { return *pWorldInputDispatcher_; }
 
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
-        input::manager& get_world_input_manager() { return *pWorldInputManager_; }
+        input::dispatcher& get_world_input_dispatcher() { return *pWorldInputDispatcher_; }
 
         /// Returns the object used for localizing strings.
         /** \return The current localizer
@@ -407,8 +407,8 @@ namespace gui
 
         // IO
         std::unique_ptr<input::window>   pWindow_;
-        utils::owner_ptr<input::manager> pInputManager_;
-        utils::owner_ptr<input::manager> pWorldInputManager_;
+        utils::owner_ptr<input::dispatcher> pInputDispatcher_;
+        utils::owner_ptr<input::dispatcher> pWorldInputDispatcher_;
 
         // UI state
         std::unique_ptr<factory>         pFactory_;

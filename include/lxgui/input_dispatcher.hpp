@@ -1,21 +1,16 @@
-#ifndef LXGUI_INPUT_HPP
-#define LXGUI_INPUT_HPP
+#ifndef LXGUI_INPUT_DISPATCHER_HPP
+#define LXGUI_INPUT_DISPATCHER_HPP
 
 #include <lxgui/lxgui.hpp>
-#include <lxgui/utils.hpp>
-#include <lxgui/utils_string.hpp>
-#include <lxgui/utils_observer.hpp>
-
+#include "lxgui/input_keys.hpp"
 #include "lxgui/gui_vector2.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/input_keys.hpp"
-#include "lxgui/input_source.hpp"
+
+#include <lxgui/utils_observer.hpp>
 
 #include <string>
 #include <vector>
 #include <array>
-#include <unordered_map>
-#include <memory>
 #include <chrono>
 
 namespace lxgui {
@@ -27,22 +22,24 @@ namespace gui
 
 namespace input
 {
+    class source;
+
     /// Handles inputs (keyboard and mouse)
-    class manager : public gui::event_receiver
+    class dispatcher : public gui::event_receiver
     {
     public :
 
-        /// Initializes this manager with a chosen input source.
+        /// Initializes this dispatcher with a chosen input source.
         /** \param mBlock  The owner pointer control block
         *   \param mSource The input source
         */
-        explicit manager(utils::control_block& mBlock, source& mSource);
+        explicit dispatcher(utils::control_block& mBlock, source& mSource);
 
         // Non-copiable, non-movable
-        manager(const manager&) = delete;
-        manager(manager&&) = delete;
-        manager& operator=(const manager&) = delete;
-        manager& operator=(manager&&) = delete;
+        dispatcher(const dispatcher&) = delete;
+        dispatcher(dispatcher&&) = delete;
+        dispatcher& operator=(const dispatcher&) = delete;
+        dispatcher& operator=(dispatcher&&) = delete;
 
         /// Called whenever an event occurs.
         /** \param mEvent The event which has occured
@@ -179,8 +176,8 @@ namespace input
         /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
         *   \note See set_keyboard_focus() for more information. If you use some other source
-        *         of input than this manager, you should check the result of this
-        *         function before actually using it (if the manager is not focussed,
+        *         of input than this dispatcher, you should check the result of this
+        *         function before actually using it (if the dispatcher is not focussed,
         *         it should not provide any input).
         */
         bool is_keyboard_focused() const;
@@ -188,8 +185,8 @@ namespace input
         /// Checks whether mouse input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
         *   \note See set_mouse_focus() for more information. If you use some other source
-        *         of input than this manager, you should check the result of this
-        *         function before actually using it (if the manager is not focussed,
+        *         of input than this dispatcher, you should check the result of this
+        *         function before actually using it (if the dispatcher is not focussed,
         *         it should not provide any input).
         */
         bool is_mouse_focused() const;
@@ -197,7 +194,7 @@ namespace input
         /// Registers a new event emitter that will forward input events.
         /** \param pEmitter The new event emitter
         *   \note There can be as many event emitters connected to this input
-        *         manager. If you need to remove one from the list, see
+        *         dispatcher. If you need to remove one from the list, see
         *         @ref unregister_event_emitter().
         */
         void register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter);

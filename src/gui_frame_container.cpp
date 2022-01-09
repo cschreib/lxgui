@@ -4,7 +4,6 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_registry.hpp"
 #include "lxgui/gui_factory.hpp"
-#include "lxgui/input.hpp"
 
 #include <lxgui/utils_std.hpp>
 

@@ -1,7 +1,7 @@
 #include <lxgui/lxgui.hpp>
 #include <lxgui/gui_event.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/input_dispatcher.hpp>
 
 #if defined(LXGUI_PLATFORM_WINDOWS)
     #define NOMINMAX
@@ -116,8 +116,8 @@ int main(int argc, char* argv[])
         bool bFocus = true;
         double fDelta = 0.0;
         timing_clock::time_point mPrevTime = timing_clock::now();
-        input::manager& mInputMgr = pManager->get_input_manager();
-        input::manager& mWorldInputMgr = pManager->get_world_input_manager();
+        input::dispatcher& mInputDispatcher = pManager->get_input_dispatcher();
+        input::dispatcher& mWorldInputDispatcher = pManager->get_world_input_dispatcher();
 
         std::cout << "Entering loop..." << std::endl;
 
@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
                     // capture some of them (for example: the user is typing in an edit_box).
                     // Therefore, before we can react to these events, we must check that
                     // the input isn't being "focussed":
-                    if (!mInputMgr.is_keyboard_focused())
+                    if (!mInputDispatcher.is_keyboard_focused())
                     {
                         switch (mEvent.key.keysym.sym)
                         {
@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
                 }
 
                 // Feed events to the GUI
-                static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
+                static_cast<input::sdl::source&>(mInputDispatcher.get_source()).on_sdl_event(mEvent);
             }
 
             // Check if "world" mouse input is blocked (the "world" is whatever is displayed below
@@ -165,7 +165,7 @@ int main(int argc, char* argv[])
             // This happens if the mouse is over a UI frame that captures mouse input.
             // The world input dispatcher will not generate input events in this instance, however
             // you are still able to query the mouse state.
-            if (!mWorldInputMgr.is_mouse_blocked())
+            if (!mWorldInputDispatcher.is_mouse_blocked())
             {
                 // Process mouse inputs for the game...
             }

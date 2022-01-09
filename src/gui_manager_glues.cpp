@@ -11,7 +11,7 @@
 #include "lxgui/gui_virtual_registry.hpp"
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_keybinder.hpp"
-#include "lxgui/input.hpp"
+#include "lxgui/input_keys.hpp"
 
 #include <sol/state.hpp>
 

@@ -2,7 +2,7 @@
 #include "lxgui/gui_manager.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_alive_checker.hpp"
-#include "lxgui/input.hpp"
+#include "lxgui/input_dispatcher.hpp"
 
 namespace lxgui {
 namespace gui
@@ -57,7 +57,7 @@ bool focus_frame::is_auto_focus_enabled() const
 
 void focus_frame::set_focus(bool bFocus)
 {
-    auto& mInput = get_manager().get_input_manager();
+    auto& mInput = get_manager().get_input_dispatcher();
     if (bFocus)
         mInput.request_keyboard_focus(observer_from(this));
     else

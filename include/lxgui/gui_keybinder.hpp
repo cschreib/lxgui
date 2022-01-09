@@ -21,7 +21,7 @@ namespace sol {
 namespace lxgui {
 
 namespace input {
-    class manager;
+    class dispatcher;
 }
 
 namespace gui
@@ -34,7 +34,7 @@ namespace gui
     public :
 
         /// Constructor.
-        explicit keybinder(utils::control_block& mBlock, input::manager& mInputManager,
+        explicit keybinder(utils::control_block& mBlock, input::dispatcher& mInputDispatcher,
             event_emitter& mEventEmitter);
 
         keybinder(const keybinder&) = delete;
@@ -89,7 +89,7 @@ namespace gui
         template<typename T>
         using key_map = std::unordered_map<input::key,T>;
 
-        input::manager& mInputManager_;
+        input::dispatcher& mInputDispatcher_;
         event_emitter& mEventEmitter_;
 
         key_map<key_map<key_map<sol::protected_function>>> lKeyBindingList_;

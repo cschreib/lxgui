@@ -11,7 +11,7 @@
 #include <lxgui/gui_factory.hpp>
 #include <lxgui/gui_uiroot.hpp>
 #include <lxgui/gui_out.hpp>
-#include <lxgui/input.hpp>
+#include <lxgui/input_dispatcher.hpp>
 #include <lxgui/utils_filesystem.hpp>
 #include <lxgui/utils_string.hpp>
 
@@ -108,8 +108,8 @@ void main_loop(void* pTypeErasedData)
 
     main_loop_context& mContext = *reinterpret_cast<main_loop_context*>(pTypeErasedData);
 
-    input::manager& mInputMgr = mContext.pManager->get_input_manager();
-    input::manager& mWorldInputMgr = mContext.pManager->get_world_input_manager();
+    input::dispatcher& mInputDispatcher = mContext.pManager->get_input_dispatcher();
+    input::dispatcher& mWorldInputDispatcher = mContext.pManager->get_world_input_dispatcher();
 
 #if defined(SDL_GUI) || defined(GLSDL_GUI)
     // Get events from SDL
@@ -139,7 +139,7 @@ void main_loop(void* pTypeErasedData)
             // capture some of them (for example: the user is typing in an edit_box).
             // Therefore, before we can react to these events, we must check that
             // the input isn't being "focussed":
-            if (!mInputMgr.is_keyboard_focused())
+            if (!mInputDispatcher.is_keyboard_focused())
             {
                 switch (mEvent.key.keysym.sym)
                 {
@@ -180,7 +180,7 @@ void main_loop(void* pTypeErasedData)
         }
 
         // Feed events to the GUI
-        static_cast<input::sdl::source&>(mInputMgr.get_source()).on_sdl_event(mEvent);
+        static_cast<input::sdl::source&>(mInputDispatcher.get_source()).on_sdl_event(mEvent);
     }
 #elif defined(SFML_GUI) || defined(GLSFML_GUI)
     // Get events from SFML
@@ -207,7 +207,7 @@ void main_loop(void* pTypeErasedData)
             // capture some of them (for example: the user is typing in an edit_box).
             // Therefore, before we can react to these events, we must check that
             // the input isn't being "focussed":
-            if (!mInputMgr.is_keyboard_focused())
+            if (!mInputDispatcher.is_keyboard_focused())
             {
                 switch (mEvent.key.code)
                 {
@@ -247,7 +247,7 @@ void main_loop(void* pTypeErasedData)
             }
         }
 
-        static_cast<input::sfml::source&>(mInputMgr.get_source()).on_sfml_event(mEvent);
+        static_cast<input::sfml::source&>(mInputDispatcher.get_source()).on_sfml_event(mEvent);
     }
 #endif
 
@@ -256,7 +256,7 @@ void main_loop(void* pTypeErasedData)
     // This happens if the mouse is over a UI frame that captures mouse input.
     // The world input dispatcher will not generate input events in this instance, however you
     // are still able to query the mouse state.
-    if (!mWorldInputMgr.is_mouse_blocked())
+    if (!mWorldInputDispatcher.is_mouse_blocked())
     {
         // Process mouse inputs for the game...
     }

@@ -1013,16 +1013,16 @@
 					"shell_cmd": "make -j12 src/gui_virtual_uiroot.s",
 				},
 				{
-					"name": "src/input.o",
-					"shell_cmd": "make -j12 src/input.o",
+					"name": "src/input_dispatcher.o",
+					"shell_cmd": "make -j12 src/input_dispatcher.o",
 				},
 				{
-					"name": "src/input.i",
-					"shell_cmd": "make -j12 src/input.i",
+					"name": "src/input_dispatcher.i",
+					"shell_cmd": "make -j12 src/input_dispatcher.i",
 				},
 				{
-					"name": "src/input.s",
-					"shell_cmd": "make -j12 src/input.s",
+					"name": "src/input_dispatcher.s",
+					"shell_cmd": "make -j12 src/input_dispatcher.s",
 				},
 				{
 					"name": "src/input_keys.o",
@@ -1098,15 +1098,15 @@
 				},
 				{
 					"name": "src/utils_string.o",
-					"shell_cmd": "make -j12 src/utils_string.o"
+					"shell_cmd": "make -j12 src/utils_string.o",
 				},
 				{
 					"name": "src/utils_string.i",
-					"shell_cmd": "make -j12 src/utils_string.i"
+					"shell_cmd": "make -j12 src/utils_string.i",
 				},
 				{
 					"name": "src/utils_string.s",
-					"shell_cmd": "make -j12 src/utils_string.s"
+					"shell_cmd": "make -j12 src/utils_string.s",
 				},
 			],
 			"working_dir": "$folder/build",

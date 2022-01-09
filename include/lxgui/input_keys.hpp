@@ -208,6 +208,9 @@ namespace input
     *         Use a @ref localizer to transform this into a user-friendly name.
     */
     std::string_view get_localizable_key_name(key mKey);
+
+    constexpr std::size_t MOUSE_BUTTON_NUMBER = 3u;
+    constexpr std::size_t KEY_NUMBER = static_cast<std::size_t>(key::K_MAXKEY);
 }
 }
 
