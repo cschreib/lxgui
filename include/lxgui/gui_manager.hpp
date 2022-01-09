@@ -275,6 +275,16 @@ namespace gui
         */
         event_emitter& get_event_emitter() { return *this; }
 
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
+        */
+        const event_emitter& get_world_event_emitter() const { return *pWorldEventEmitter_; }
+
+        /// Returns the gui event emitter.
+        /** \return The gui event emitter
+        */
+        event_emitter& get_world_event_emitter() { return *pWorldEventEmitter_; }
+
         /// Returns the window in which this gui is being displayed.
         /** \return The window in which this gui is being displayed
         */
@@ -406,8 +416,9 @@ namespace gui
         std::unique_ptr<renderer>        pRenderer_;
 
         // IO
-        std::unique_ptr<input::window>   pWindow_;
+        std::unique_ptr<input::window>      pWindow_;
         utils::owner_ptr<input::dispatcher> pInputDispatcher_;
+        std::unique_ptr<event_emitter>      pWorldEventEmitter_;
         utils::owner_ptr<input::dispatcher> pWorldInputDispatcher_;
 
         // UI state

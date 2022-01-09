@@ -30,10 +30,12 @@ namespace input
     public :
 
         /// Initializes this dispatcher with a chosen input source.
-        /** \param mBlock  The owner pointer control block
-        *   \param mSource The input source
+        /** \param mBlock        The owner pointer control block
+        *   \param mSource       The input source
+        *   \param mEventEmitter The event emitter that will generate input events
         */
-        explicit dispatcher(utils::control_block& mBlock, source& mSource);
+        explicit dispatcher(utils::control_block& mBlock, source& mSource,
+            gui::event_emitter& mEventEmitter);
 
         // Non-copiable, non-movable
         dispatcher(const dispatcher&) = delete;
@@ -191,20 +193,6 @@ namespace input
         */
         bool is_mouse_focused() const;
 
-        /// Registers a new event emitter that will forward input events.
-        /** \param pEmitter The new event emitter
-        *   \note There can be as many event emitters connected to this input
-        *         dispatcher. If you need to remove one from the list, see
-        *         @ref unregister_event_emitter().
-        */
-        void register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter);
-
-        /// Unregisters an event emitter.
-        /** \param mEmitter The emitter to unregister
-        *   \note For more details, see @ref register_event_emitter().
-        */
-        void unregister_event_emitter(gui::event_emitter& mEmitter);
-
         /// Sets the scaling factor applied to the interface.
         /** \param fScalingFactor The new scaling factor (default: 1)
         *   \note This is the conversion factor between UI units and pixels in the display.
@@ -237,7 +225,7 @@ namespace input
         std::vector<utils::observer_ptr<gui::event_receiver>> lKeyboardFocusStack_;
         std::vector<utils::observer_ptr<gui::event_receiver>> lMouseFocusStack_;
 
-        std::vector<utils::observer_ptr<gui::event_emitter>> lEventEmitterList_;
+        gui::event_emitter& mEventEmitter_;
 
         using timer = std::chrono::high_resolution_clock;
         using time_point = timer::time_point;

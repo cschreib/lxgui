@@ -44,8 +44,9 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pI
     pInputSource_(std::move(pInputSource)),
     pRenderer_(std::move(pRenderer)),
     pWindow_(std::make_unique<input::window>(*pInputSource_)),
-    pInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
-    pWorldInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_)),
+    pInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_, static_cast<event_emitter&>(*this))),
+    pWorldEventEmitter_(std::make_unique<gui::event_emitter>()),
+    pWorldInputDispatcher_(utils::make_owned<input::dispatcher>(*pInputSource_, *pWorldEventEmitter_)),
     pLocalizer_(std::make_unique<localizer>())
 {
     set_interface_scaling_factor(1.0f);
@@ -144,11 +145,6 @@ void manager::load_ui()
     pRoot_ = utils::make_owned<uiroot>(*this);
     pVirtualRoot_ = utils::make_owned<virtual_uiroot>(*this, get_root().get_registry());
 
-    pInputDispatcher_->register_event_emitter(
-        utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
-    pWorldInputDispatcher_->register_event_emitter(
-        utils::observer_ptr<event_emitter>(observer_from_this(), static_cast<event_emitter*>(this)));
-
     create_lua_();
 
     pKeybinder_ = utils::make_owned<keybinder>(get_input_dispatcher(), get_event_emitter());
@@ -196,9 +192,6 @@ void manager::close_ui_now()
     bResizeFromBottom_ = false;
 
     pLocalizer_->clear_translations();
-
-    pInputDispatcher_->unregister_event_emitter(*this);
-    pWorldInputDispatcher_->unregister_event_emitter(*this);
 
     bLoaded_ = false;
 }

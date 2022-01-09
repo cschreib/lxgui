@@ -16,8 +16,8 @@ namespace lxgui {
 namespace input
 {
 
-dispatcher::dispatcher(utils::control_block& mBlock, source& mSource) :
-    event_receiver(mBlock, mSource), mSource_(mSource)
+dispatcher::dispatcher(utils::control_block& mBlock, source& mSource, gui::event_emitter& mEventEmitter) :
+    event_receiver(mBlock, mSource), mEventEmitter_(mEventEmitter), mSource_(mSource)
 {
     register_event("KEY_PRESSED");
     register_event("KEY_RELEASED");
@@ -322,39 +322,6 @@ source& dispatcher::get_source()
     return mSource_;
 }
 
-void dispatcher::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter)
-{
-    gui::event_emitter* pEmitterRaw = pEmitter.get();
-    auto mIter = utils::find_if(lEventEmitterList_,
-        [&](const auto& pPtr)
-        {
-            return pPtr.get() == pEmitterRaw;
-        }
-    );
-
-    if (mIter != lEventEmitterList_.end())
-    {
-        gui::out << gui::warning << "event emitter " << pEmitterRaw
-            << " has already been registered" << std::endl;
-        return;
-    }
-
-    lEventEmitterList_.push_back(std::move(pEmitter));
-}
-
-void dispatcher::unregister_event_emitter(gui::event_emitter& mEmitter)
-{
-    auto mIter = utils::find_if(lEventEmitterList_,
-        [&](const auto& pPtr)
-        {
-            return pPtr.get() == &mEmitter;
-        }
-    );
-
-    if (mIter != lEventEmitterList_.end())
-        lEventEmitterList_.erase(mIter);
-}
-
 void dispatcher::set_interface_scaling_factor(float fScalingFactor)
 {
     fScalingFactor_ = fScalingFactor;
@@ -409,11 +376,7 @@ void dispatcher::fire_event_(const gui::event& mEvent)
         }
     }
 
-    for (const auto& pManager : lEventEmitterList_)
-    {
-        if (auto* pManagerRaw = pManager.get())
-            pManagerRaw->fire_event(mEvent);
-    }
+    mEventEmitter_.fire_event(mEvent);
 }
 
 }
