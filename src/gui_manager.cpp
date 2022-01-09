@@ -15,6 +15,7 @@
 #include "lxgui/gui_addon_registry.hpp"
 #include "lxgui/gui_keybinder.hpp"
 #include "lxgui/input.hpp"
+#include "lxgui/input_window.hpp"
 
 #include <lxgui/utils_std.hpp>
 
@@ -39,12 +40,13 @@ manager::manager(utils::control_block& mBlock, std::unique_ptr<input::source> pI
     std::unique_ptr<renderer> pRenderer) :
     event_emitter(),
     event_receiver(mBlock, static_cast<event_emitter&>(*this)),
-    pInputManager_(utils::make_owned<input::manager>(std::move(pInputSource))),
-    pRenderer_(std::move(pRenderer))
+    pInputSource_(std::move(pInputSource)),
+    pRenderer_(std::move(pRenderer)),
+    pWindow_(std::make_unique<input::window>(*pInputSource_)),
+    pInputManager_(utils::make_owned<input::manager>(*pInputSource_)),
+    pLocalizer_(std::make_unique<localizer>())
 {
     set_interface_scaling_factor(1.0f);
-
-    pLocalizer_ = std::make_unique<localizer>();
 
     register_event("MOUSE_MOVED");
     register_event("WINDOW_RESIZED");
@@ -57,7 +59,7 @@ manager::~manager()
 
 void manager::set_interface_scaling_factor(float fScalingFactor)
 {
-    float fFullScalingFactor = fScalingFactor*pInputManager_->get_interface_scaling_factor_hint();
+    float fFullScalingFactor = fScalingFactor*pWindow_->get_interface_scaling_factor_hint();
 
     if (fFullScalingFactor == fScalingFactor_) return;
 

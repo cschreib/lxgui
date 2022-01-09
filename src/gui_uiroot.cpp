@@ -4,7 +4,7 @@
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_renderer.hpp"
 #include "lxgui/gui_registry.hpp"
-#include "lxgui/input.hpp"
+#include "lxgui/input_window.hpp"
 
 #include <lxgui/utils_std.hpp>
 
@@ -20,7 +20,7 @@ uiroot::uiroot(utils::control_block& mBlock, manager& mManager) :
     frame_container(mManager, mObjectRegistry_, this),
     mManager_(mManager), mRenderer_(mManager.get_renderer())
 {
-    mScreenDimensions_ = mManager.get_input_manager().get_window_dimensions();
+    mScreenDimensions_ = mManager.get_window().get_dimensions();
     register_event("WINDOW_RESIZED");
 }
 

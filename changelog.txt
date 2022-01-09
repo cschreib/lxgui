@@ -76,6 +76,7 @@ Other changes:
  - gui: added keybinder to manage Lua key bindings
  - gui: added uiobject::is_loaded() and clarify the semantic
  - gui: added input::get_localizable_key_name and input::get_localizable_mouse_button_name
+ - gui: added input::window as an interface to implementation-dependent concepts (clipboard...)
  - gui: renamed gui::manager_impl into gui::renderer
  - gui: renamed gui::gl::manager into gui::gl::renderer
  - gui: renamed gui::gl::matrix4f into gui::matrix4f and reworked internals of the class

@@ -26,6 +26,7 @@ namespace lxgui {
 
 namespace input {
     class source;
+    class window;
     class manager;
 }
 
@@ -274,6 +275,16 @@ namespace gui
         */
         event_emitter& get_event_emitter() { return *this; }
 
+        /// Returns the window in which this gui is being displayed.
+        /** \return The window in which this gui is being displayed
+        */
+        const input::window& get_window() const { return *pWindow_; }
+
+        /// Returns the window in which this gui is being displayed.
+        /** \return The window in which this gui is being displayed
+        */
+        input::window& get_window() { return *pWindow_; }
+
         /// Returns the input manager associated to this gui.
         /** \return The input manager associated to this gui
         */
@@ -381,8 +392,12 @@ namespace gui
         std::vector<std::string>           lGUIDirectoryList_;
 
         // Implementations
-        utils::owner_ptr<input::manager> pInputManager_;
+        std::unique_ptr<input::source>   pInputSource_;
         std::unique_ptr<renderer>        pRenderer_;
+
+        // IO
+        std::unique_ptr<input::window>   pWindow_;
+        utils::owner_ptr<input::manager> pInputManager_;
 
         // UI state
         std::unique_ptr<factory>         pFactory_;

@@ -313,6 +313,7 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/input.cpp
     ${PROJECT_SOURCE_DIR}/src/input_keys.cpp
     ${PROJECT_SOURCE_DIR}/src/input_source.cpp
+    ${PROJECT_SOURCE_DIR}/src/input_window.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_exception.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_filesystem.cpp
     ${PROJECT_SOURCE_DIR}/src/utils_maths.cpp

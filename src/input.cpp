@@ -16,8 +16,8 @@ namespace lxgui {
 namespace input
 {
 
-manager::manager(utils::control_block& mBlock, std::unique_ptr<source> pSource) :
-    event_receiver(mBlock, *pSource), pSource_(std::move(pSource))
+manager::manager(utils::control_block& mBlock, source& mSource) :
+    event_receiver(mBlock, mSource), mSource_(mSource)
 {
     register_event("KEY_PRESSED");
     register_event("KEY_RELEASED");
@@ -135,7 +135,7 @@ void manager::force_input_allowed(const std::string& sGroupName, bool bForce)
 
 bool manager::any_key_is_down() const
 {
-    const auto& lKeyState = pSource_->get_key_state().lKeyState;
+    const auto& lKeyState = mSource_.get_key_state().lKeyState;
     for (std::size_t i = 1; i < KEY_NUMBER; ++i)
     {
         if (lKeyState[i])
@@ -147,7 +147,7 @@ bool manager::any_key_is_down() const
 
 bool manager::key_is_down(key mKey) const
 {
-    return pSource_->get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
+    return mSource_.get_key_state().lKeyState[static_cast<std::size_t>(mKey)];
 }
 
 double manager::get_key_down_duration(key mKey) const
@@ -161,7 +161,7 @@ double manager::get_key_down_duration(key mKey) const
 
 bool manager::mouse_is_down(mouse_button mID) const
 {
-    return pSource_->get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
+    return mSource_.get_mouse_state().lButtonState[static_cast<std::size_t>(mID)];
 }
 
 double manager::get_mouse_down_duration(mouse_button mID) const
@@ -175,12 +175,12 @@ double manager::get_mouse_down_duration(mouse_button mID) const
 
 void manager::set_doubleclick_time(double dDoubleClickTime)
 {
-    pSource_->set_doubleclick_time(dDoubleClickTime);
+    mSource_.set_doubleclick_time(dDoubleClickTime);
 }
 
 double manager::get_doubleclick_time() const
 {
-    return pSource_->get_doubleclick_time();
+    return mSource_.get_doubleclick_time();
 }
 
 void release_focus_to_list(const gui::event_receiver& mReceiver,
@@ -318,22 +318,22 @@ bool manager::ctrl_is_pressed() const
 
 gui::vector2f manager::get_mouse_position() const
 {
-    return pSource_->get_mouse_state().mPosition/fScalingFactor_;
+    return mSource_.get_mouse_state().mPosition/fScalingFactor_;
 }
 
 float manager::get_mouse_wheel() const
 {
-    return pSource_->get_mouse_state().fWheel;
+    return mSource_.get_mouse_state().fWheel;
 }
 
 const source& manager::get_source() const
 {
-    return *pSource_;
+    return mSource_;
 }
 
 source& manager::get_source()
 {
-    return *pSource_;
+    return mSource_;
 }
 
 void manager::register_event_emitter(utils::observer_ptr<gui::event_emitter> pEmitter)
@@ -369,31 +369,6 @@ void manager::unregister_event_emitter(gui::event_emitter& mEmitter)
         lEventEmitterList_.erase(mIter);
 }
 
-utils::ustring manager::get_clipboard_content()
-{
-    return pSource_->get_clipboard_content();
-}
-
-void manager::set_clipboard_content(const utils::ustring& sContent)
-{
-    return pSource_->set_clipboard_content(sContent);
-}
-
-void manager::set_mouse_cursor(const std::string& sFileName, const gui::vector2i& mHotSpot)
-{
-    return pSource_->set_mouse_cursor(sFileName, mHotSpot);
-}
-
-void manager::reset_mouse_cursor()
-{
-    return pSource_->reset_mouse_cursor();
-}
-
-const gui::vector2ui& manager::get_window_dimensions() const
-{
-    return pSource_->get_window_dimensions();
-}
-
 void manager::set_interface_scaling_factor(float fScalingFactor)
 {
     fScalingFactor_ = fScalingFactor;
@@ -402,11 +377,6 @@ void manager::set_interface_scaling_factor(float fScalingFactor)
 float manager::get_interface_scaling_factor() const
 {
     return fScalingFactor_;
-}
-
-float manager::get_interface_scaling_factor_hint() const
-{
-    return pSource_->get_interface_scaling_factor_hint();
 }
 
 gui::event_receiver* manager::get_keyboard_focus_() const

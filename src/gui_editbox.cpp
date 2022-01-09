@@ -9,6 +9,7 @@
 #include "lxgui/gui_uiobject_tpl.hpp"
 
 #include <lxgui/input.hpp>
+#include <lxgui/input_window.hpp>
 #include <lxgui/utils_range.hpp>
 
 #include <sol/state.hpp>
@@ -1356,12 +1357,12 @@ void edit_box::process_key_(key mKey)
             std::size_t uiMinPos = std::min(uiSelectionStartPos_, uiSelectionEndPos_);
             std::size_t uiMaxPos = std::max(uiSelectionStartPos_, uiSelectionEndPos_);
             utils::ustring sSelected = sUnicodeText_.substr(uiMinPos, uiMaxPos - uiMinPos);
-            get_manager().get_input_manager().set_clipboard_content(sSelected);
+            get_manager().get_window().set_clipboard_content(sSelected);
         }
     }
     else if (mKey == key::K_V && get_manager().get_input_manager().ctrl_is_pressed())
     {
-        for (char32_t cChar : get_manager().get_input_manager().get_clipboard_content())
+        for (char32_t cChar : get_manager().get_window().get_clipboard_content())
         {
             if (!add_char_(cChar))
                 break;

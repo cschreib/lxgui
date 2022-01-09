@@ -1049,6 +1049,18 @@
 					"shell_cmd": "make -j12 src/input_source.s",
 				},
 				{
+					"name": "src/input_window.o",
+					"shell_cmd": "make -j12 src/input_window.o",
+				},
+				{
+					"name": "src/input_window.i",
+					"shell_cmd": "make -j12 src/input_window.i",
+				},
+				{
+					"name": "src/input_window.s",
+					"shell_cmd": "make -j12 src/input_window.s",
+				},
+				{
 					"name": "src/utils_exception.o",
 					"shell_cmd": "make -j12 src/utils_exception.o",
 				},
