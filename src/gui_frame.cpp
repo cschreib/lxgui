@@ -1237,7 +1237,9 @@ void frame::on_event(const event& mEvent)
 
             if (bMouseInFrame_)
             {
-                std::string sMouseButton = mEvent.get<std::string>(3);
+                std::string sMouseButton = std::string(input::get_mouse_button_codename(
+                    mEvent.get<input::mouse_button>(0)));
+
                 if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
                 {
                     bMouseDraggedInFrame_ = true;
@@ -1261,7 +1263,9 @@ void frame::on_event(const event& mEvent)
 
             if (bMouseInFrame_)
             {
-                std::string sMouseButton = mEvent.get<std::string>(3);
+                std::string sMouseButton = std::string(input::get_mouse_button_codename(
+                    mEvent.get<input::mouse_button>(0)));
+
                 if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
                 {
                     on_script("OnReceiveDrag");
@@ -1281,7 +1285,9 @@ void frame::on_event(const event& mEvent)
                     pTopLevelParent_->raise();
 
                 event_data mData;
-                mData.add(mEvent.get(3));
+                mData.add(std::string(input::get_mouse_button_codename(
+                    mEvent.get<input::mouse_button>(0))));
+
                 on_script("OnMouseDown", mData);
                 if (!mChecker.is_alive())
                     return;
@@ -1292,7 +1298,9 @@ void frame::on_event(const event& mEvent)
             if (bMouseInFrame_)
             {
                 event_data mData;
-                mData.add(mEvent.get(3));
+                mData.add(std::string(input::get_mouse_button_codename(
+                    mEvent.get<input::mouse_button>(0))));
+
                 on_script("OnMouseUp", mData);
                 if (!mChecker.is_alive())
                     return;
@@ -1317,7 +1325,8 @@ void frame::on_event(const event& mEvent)
         {
             event_data mData;
             mData.add(mEvent.get(0));
-            mData.add(mEvent.get(1));
+            mData.add(std::string(
+                input::get_key_codename(mEvent.get<input::key>(0))));
 
             on_script("OnKeyDown", mData);
             if (!mChecker.is_alive())
@@ -1327,7 +1336,8 @@ void frame::on_event(const event& mEvent)
         {
             event_data mData;
             mData.add(mEvent.get(0));
-            mData.add(mEvent.get(1));
+            mData.add(std::string(
+                input::get_key_codename(mEvent.get<input::key>(0))));
 
             on_script("OnKeyUp", mData);
             if (!mChecker.is_alive())

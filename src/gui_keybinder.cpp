@@ -10,6 +10,90 @@ namespace lxgui {
 namespace gui
 {
 
+std::string get_key_debug_name(input::key mKey)
+{
+    return std::string(input::get_key_codename(mKey));
+}
+
+std::string get_key_debug_name(input::key mKey, input::key mModifier)
+{
+    std::string sString;
+    switch (mModifier)
+    {
+        case (input::key::K_LSHIFT) :
+        case (input::key::K_RSHIFT) :
+            sString = "Shift + ";
+            break;
+
+        case (input::key::K_LCONTROL) :
+        case (input::key::K_RCONTROL) :
+            sString = "Ctrl + ";
+            break;
+
+        case (input::key::K_LMENU) :
+        case (input::key::K_RMENU) :
+            sString = "Alt + ";
+            break;
+
+        default :
+            sString = get_key_debug_name(mModifier) + " + ";
+            break;
+    }
+
+    return sString + get_key_debug_name(mKey);
+}
+
+std::string get_key_debug_name(input::key mKey, input::key mModifier1, input::key mModifier2)
+{
+    std::string sString;
+    switch (mModifier1)
+    {
+        case (input::key::K_LSHIFT) :
+        case (input::key::K_RSHIFT) :
+            sString = "Shift + ";
+            break;
+
+        case (input::key::K_LCONTROL) :
+        case (input::key::K_RCONTROL) :
+            sString = "Ctrl + ";
+            break;
+
+        case (input::key::K_LMENU) :
+        case (input::key::K_RMENU) :
+            sString = "Alt + ";
+            break;
+
+        default :
+            sString = get_key_debug_name(mModifier1) + " + ";
+            break;
+    }
+
+    switch (mModifier2)
+    {
+        case (input::key::K_LSHIFT) :
+        case (input::key::K_RSHIFT) :
+            sString += "Shift + ";
+            break;
+
+        case (input::key::K_LCONTROL) :
+        case (input::key::K_RCONTROL) :
+            sString += "Ctrl + ";
+            break;
+
+        case (input::key::K_LMENU) :
+        case (input::key::K_RMENU) :
+            sString += "Alt + ";
+            break;
+
+        default :
+            sString += get_key_debug_name(mModifier2) + " + ";
+            break;
+    }
+
+    return sString + get_key_debug_name(mKey);
+}
+
+
 keybinder::keybinder(utils::control_block& mBlock, input::manager& mInputManager,
     event_emitter& mEventEmitter) :
     event_receiver(mBlock, mEventEmitter), mInputManager_(mInputManager),
@@ -78,14 +162,14 @@ std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
                 !mInputManager_.key_is_down(iter3.first))
                 continue;
 
-            return {&iter3.second, mInputManager_.get_key_name(mKey, iter2.first, iter3.first)};
+            return {&iter3.second, get_key_debug_name(mKey, iter2.first, iter3.first)};
         }
 
         // If none was found, try with only one modifier
         auto iter3 = iter2.second.find(input::key::K_UNASSIGNED);
         if (iter3 != iter2.second.end())
         {
-            return {&iter3->second, mInputManager_.get_key_name(mKey, iter2.first)};
+            return {&iter3->second, get_key_debug_name(mKey, iter2.first)};
         }
     }
 
@@ -96,7 +180,7 @@ std::pair<const sol::protected_function*, std::string> keybinder::find_handler_(
         auto iter3 = iter2->second.find(input::key::K_UNASSIGNED);
         if (iter3 != iter2->second.end())
         {
-            return {&iter3->second, mInputManager_.get_key_name(mKey)};
+            return {&iter3->second, get_key_debug_name(mKey)};
         }
     }
 

@@ -97,30 +97,6 @@ namespace input
         */
         double get_key_down_duration(key mKey) const;
 
-        /// Returns the name of the provided key, as it appears on your keyboard.
-        /** \param mKey The key
-        *   \return The name of the provided key, as it appears on your keyboard
-        *   \note This will only return English key names.
-        */
-        std::string get_key_name(key mKey) const;
-
-        /// Returns the name of the provided key combination.
-        /** \param mKey      The main key
-        *   \param mModifier The modifier key (shift, ctrl, ...)
-        *   \return The name of key combination, example : "Ctrl + A"
-        *   \note This will only return English key names.
-        */
-        std::string get_key_name(key mKey, key mModifier) const;
-
-        /// Returns the name of the provided key combination.
-        /** \param mKey       The main key
-        *   \param mModifier1 The first modifier key (shift, ctrl, ...)
-        *   \param mModifier2 The second modifier key (shift, ctrl, ...)
-        *   \return The name of key combination, example : "Ctrl + Shift + A"
-        *   \note This will only return English key names.
-        */
-        std::string get_key_name(key mKey, key mModifier1, key mModifier2) const;
-
         /// Checks if Alt is beeing pressed.
         /** \return 'true' if Alt is beeing pressed
         *   \note This will report the keyboard state regardless of focus.
@@ -171,12 +147,6 @@ namespace input
         *         If supporting focus is necessary, respond to input events instead.
         */
         float get_mouse_wheel() const;
-
-        /// Returns the string associated to a mouse button.
-        /** \param mID The ID code of the mouse button you are interested in
-        *   \return The string associated with the mouse button
-        */
-        std::string get_mouse_button_string(mouse_button mID) const;
 
         /// Sets the double click maximum time.
         /** \param dDoubleClickTime Maximum amount of time between two clicks in a double click
