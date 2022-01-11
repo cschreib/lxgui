@@ -56,14 +56,6 @@ void anchor::update_parent_(uiobject& mObject)
         return;
     }
 
-    if (mObject.get_top_level_renderer() != pNewParent->get_top_level_renderer())
-    {
-        gui::out << gui::error << "gui::" << mObject.get_object_type() << " : "
-            << "uiobject \"" << mObject.get_name() << "\" tries to anchor to \""
-            << sParentFullName << "\" which is in another renderer." << std::endl;
-        return;
-    }
-
     pParent_ = pNewParent;
 }
 

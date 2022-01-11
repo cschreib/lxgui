@@ -171,10 +171,8 @@ namespace gui
         void render_scroll_strata_list_();
         void update_borders_() override;
 
-        float fHorizontalScroll_ = 0;
-        float fHorizontalScrollRange_ = 0;
-        float fVerticalScroll_ = 0;
-        float fVerticalScrollRange_ = 0;
+        vector2f mScroll_;
+        vector2f mScrollRange_;
 
         utils::observer_ptr<frame> pScrollChild_ = nullptr;
 

@@ -88,10 +88,6 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
     if (pScrollChild_)
     {
         pScrollChild_->set_renderer(nullptr);
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = vector2f(
-            lBorderList_.top_left() - vector2f(fHorizontalScroll_, fVerticalScroll_)
-        );
-
         clear_strata_list_();
     }
     else if (!is_virtual() && !pScrollTexture_)
@@ -124,9 +120,7 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
             pScrollChild_->set_renderer(observer_from(this));
 
         pScrollChild_->clear_all_points();
-
-        pScrollChild_->set_point(anchor_data(
-            anchor_point::TOPLEFT, "", vector2f(-fHorizontalScroll_, -fVerticalScroll_)));
+        pScrollChild_->set_point(anchor_data(anchor_point::TOPLEFT, get_name(), -mScroll_));
 
         update_scroll_range_();
         bUpdateScrollRange_ = false;
@@ -137,13 +131,12 @@ void scroll_frame::set_scroll_child(utils::owner_ptr<frame> pFrame)
 
 void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
 {
-    if (fHorizontalScroll_ != fHorizontalScroll)
+    if (mScroll_.x != fHorizontalScroll)
     {
-        fHorizontalScroll_ = fHorizontalScroll;
+        mScroll_.x = fHorizontalScroll;
         lQueuedEventList_.push_back("OnHorizontalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
-            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
 
         bRedrawScrollRenderTarget_ = true;
@@ -152,23 +145,22 @@ void scroll_frame::set_horizontal_scroll(float fHorizontalScroll)
 
 float scroll_frame::get_horizontal_scroll() const
 {
-    return fHorizontalScroll_;
+    return mScroll_.x;
 }
 
 float scroll_frame::get_horizontal_scroll_range() const
 {
-    return fHorizontalScrollRange_;
+    return mScrollRange_.x;
 }
 
 void scroll_frame::set_vertical_scroll(float fVerticalScroll)
 {
-    if (fVerticalScroll_ != fVerticalScroll)
+    if (mScroll_.y != fVerticalScroll)
     {
-        fVerticalScroll_ = fVerticalScroll;
+        mScroll_.y = fVerticalScroll;
         lQueuedEventList_.push_back("OnVerticalScroll");
 
-        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset =
-            vector2f(-fHorizontalScroll_, -fVerticalScroll_);
+        pScrollChild_->modify_point(anchor_point::TOPLEFT).mOffset = -mScroll_;
         pScrollChild_->notify_borders_need_update();
 
         bRedrawScrollRenderTarget_ = true;
@@ -177,12 +169,12 @@ void scroll_frame::set_vertical_scroll(float fVerticalScroll)
 
 float scroll_frame::get_vertical_scroll() const
 {
-    return fVerticalScroll_;
+    return mScroll_.y;
 }
 
 float scroll_frame::get_vertical_scroll_range() const
 {
-    return fVerticalScrollRange_;
+    return mScrollRange_.y;
 }
 
 void scroll_frame::update(float fDelta)
@@ -233,11 +225,10 @@ void scroll_frame::update_scroll_range_()
     const vector2f mApparentSize = get_apparent_dimensions();
     const vector2f mChildApparentSize = pScrollChild_->get_apparent_dimensions();
 
-    fHorizontalScrollRange_ = mChildApparentSize.x - mApparentSize.x;
-    fVerticalScrollRange_ = mChildApparentSize.y - mApparentSize.y;
+    mScrollRange_ = mChildApparentSize - mApparentSize;
 
-    if (fHorizontalScrollRange_ < 0) fHorizontalScrollRange_ = 0;
-    if (fVerticalScrollRange_ < 0) fVerticalScrollRange_ = 0;
+    if (mScrollRange_.x < 0) mScrollRange_.x = 0;
+    if (mScrollRange_.y < 0) mScrollRange_.y = 0;
 
     if (!is_virtual())
     {
@@ -250,7 +241,7 @@ void scroll_frame::update_scroll_range_()
 
 void scroll_frame::update_scroll_child_input_()
 {
-    const vector2f mOffset = mMousePos_ - lBorderList_.top_left();
+    const vector2f mOffset = mMousePos_;
 
     if (bMouseInScrollTexture_)
     {
@@ -317,7 +308,7 @@ void scroll_frame::render_scroll_strata_list_()
     vector2f mView = vector2f(pScrollRenderTarget_->get_canvas_dimensions())/
         get_manager().get_interface_scaling_factor();
 
-    mRenderer.set_view(matrix4f::view(mView));
+    mRenderer.set_view(matrix4f::translation(-get_borders().top_left()) * matrix4f::view(mView));
 
     pScrollRenderTarget_->clear(color::EMPTY);
 

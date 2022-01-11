@@ -57,7 +57,6 @@ Other changes:
  - input: added get_interface_scaling_factor_hint()
  - input: added set_interface_scaling_factor()
  - input: removed key_is_down_long() and mouse_is_down_long()
- - gui: added error message when trying to anchor to an object managed by another renderer
  - gui: added error message when trying to anchor to a "$parent..." when there is no parent
  - gui: added support for nested manually-rendered objects (scroll frame inside scroll frame)
  - gui: added renderer::set_view() to allow arbitrary view transforms
@@ -137,6 +136,7 @@ Other changes:
  - gui: renamed OnEditFocusGained to OnFocusGained (now available for FocusFrame too)
  - gui: renamed OnEditFocusLost to OnFocusLost (now available for FocusFrame too)
  - gui: key and mouse events no longer contain string names of buttons and keys
+ - gui: objects inside a scroll_frame can now correctly anchor to other objects
  - gui: added OnReceiveDrag for frame
  - gui: added OnCursorChanged for edit_box
  - gui: added OnUpPressed and OnDownPressed callbacks to edit_box
