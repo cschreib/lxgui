@@ -350,17 +350,17 @@ namespace gui
         /// Sets if this frame can receive mouse click input.
         /** \param bIsMouseEnabled 'true' to enable
         */
-        virtual void enable_mouse_click(bool bIsMouseEnabled);
+        void enable_mouse_click(bool bIsMouseEnabled);
 
         /// Sets if this frame can receive mouse move input.
         /** \param bIsMouseEnabled 'true' to enable
         */
-        virtual void enable_mouse_move(bool bIsMouseEnabled);
+        void enable_mouse_move(bool bIsMouseEnabled);
 
         /// Sets if this frame can receive mouse wheel input.
         /** \param bIsMouseWheelEnabled 'true' to enable
         */
-        virtual void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+        void enable_mouse_wheel(bool bIsMouseWheelEnabled);
 
         /// Checks if this frame has a script defined.
         /** \param sScriptName The name of the script to check

@@ -234,19 +234,6 @@ void edit_box::on_event(const event& mEvent)
     }
 }
 
-void edit_box::enable_keyboard(bool bIsKeyboardEnabled)
-{
-    if (!bVirtual_)
-    {
-        if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
-            register_event("TEXT_ENTERED");
-        else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
-            unregister_event("TEXT_ENTERED");
-    }
-
-    base::enable_keyboard(bIsKeyboardEnabled);
-}
-
 void edit_box::on_script(const std::string& sScriptName, const event_data& mData)
 {
     if (!is_loaded())

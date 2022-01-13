@@ -529,21 +529,26 @@ void frame::enable_draw_layer(layer_type mLayerID)
 
 void frame::enable_keyboard(bool bIsKeyboardEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsKeyboardEnabled && !bIsKeyboardEnabled_)
-        {
-            register_event("KEY_PRESSED");
-            register_event("KEY_RELEASED");
-        }
-        else if (!bIsKeyboardEnabled && bIsKeyboardEnabled_)
-        {
-            unregister_event("KEY_PRESSED");
-            unregister_event("KEY_RELEASED");
-        }
-    }
+    if (bIsKeyboardEnabled_ == bIsKeyboardEnabled)
+        return;
 
     bIsKeyboardEnabled_ = bIsKeyboardEnabled;
+
+    if (bVirtual_)
+        return;
+
+    if (bIsKeyboardEnabled_)
+    {
+        register_event("TEXT_ENTERED");
+        register_event("KEY_PRESSED");
+        register_event("KEY_RELEASED");
+    }
+    else
+    {
+        unregister_event("TEXT_ENTERED");
+        unregister_event("KEY_PRESSED");
+        unregister_event("KEY_RELEASED");
+    }
 }
 
 void frame::enable_mouse(bool bIsMouseEnabled)

@@ -182,11 +182,6 @@ namespace gui
         */
         bool can_use_script(const std::string& sScriptName) const override;
 
-        /// Sets if this edit_box can receive keyboard input.
-        /** \param bIsKeyboardEnabled 'true' to enable
-        */
-        void enable_keyboard(bool bIsKeyboardEnabled) override;
-
         /// Sets the content of this edit_box.
         /** \param sText The content of this edit_box
         */
