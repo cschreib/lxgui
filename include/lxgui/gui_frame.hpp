@@ -340,7 +340,7 @@ namespace gui
         /// Sets if this frame can receive keyboard input.
         /** \param bIsKeyboardEnabled 'true' to enable
         */
-        virtual void enable_keyboard(bool bIsKeyboardEnabled);
+        void enable_keyboard(bool bIsKeyboardEnabled);
 
         /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
