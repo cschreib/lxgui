@@ -966,7 +966,7 @@ bool frame::is_clamped_to_screen() const
     return bIsClampedToScreen_;
 }
 
-bool frame::is_in_frame(const vector2f& mPosition) const
+bool frame::is_in_region(const vector2f& mPosition) const
 {
     if (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition))
         return true;

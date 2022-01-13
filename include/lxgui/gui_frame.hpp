@@ -740,11 +740,11 @@ namespace gui
         */
         bool is_clamped_to_screen() const;
 
-        /// Checks if the provided coordinates are in the frame.
+        /// Checks if the provided coordinates are inside this frame.
         /** \param mPosition The coordinates to test
-        *   \return 'true' if the provided coordinates are in the frame
+        *   \return 'true' if the provided coordinates are inside this frame or its title region
         */
-        virtual bool is_in_frame(const vector2f& mPosition) const;
+        bool is_in_region(const vector2f& mPosition) const override;
 
         /// Checks if this frame can receive keyboard input.
         /** \return 'true' if this frame can receive keyboard input
