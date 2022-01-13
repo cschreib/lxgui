@@ -112,18 +112,20 @@ std::string frame::serialize(const std::string& sTab) const
         sStr << " (" << pTopLevelParent_->get_name() << ")\n";
     else
         sStr << "\n";
-    if (!bIsMouseEnabled_ && !bIsKeyboardEnabled_ && !bIsMouseWheelEnabled_)
+    if (!bIsMouseClickEnabled_ && !bIsMouseMoveEnabled_ && !bIsKeyboardEnabled_ && !bIsMouseWheelEnabled_)
         sStr << sTab << "  # Inputs      : none\n";
     else
     {
         sStr << sTab << "  # Inputs      :\n";
         sStr << sTab << "  |-###\n";
-        if (bIsMouseEnabled_)
-            sStr << sTab << "  |   # mouse\n";
-        if (bIsKeyboardEnabled_)
-            sStr << sTab << "  |   # keyboard\n";
+        if (bIsMouseClickEnabled_)
+            sStr << sTab << "  |   # mouse click\n";
+        if (bIsMouseMoveEnabled_)
+            sStr << sTab << "  |   # mouse move\n";
         if (bIsMouseWheelEnabled_)
             sStr << sTab << "  |   # mouse wheel\n";
+        if (bIsKeyboardEnabled_)
+            sStr << sTab << "  |   # keyboard\n";
         sStr << sTab << "  |-###\n";
     }
     sStr << sTab << "  # Movable     : " << bIsMovable_ << "\n";
@@ -260,7 +262,8 @@ void frame::copy_from(const uiobject& mObj)
     this->set_top_level(pFrame->is_top_level());
 
     this->enable_keyboard(pFrame->is_keyboard_enabled());
-    this->enable_mouse(pFrame->is_mouse_enabled(), pFrame->is_world_input_allowed());
+    this->enable_mouse_click(pFrame->is_mouse_click_enabled());
+    this->enable_mouse_move(pFrame->is_mouse_move_enabled());
     this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
 
     this->set_movable(pFrame->is_movable());
@@ -543,45 +546,71 @@ void frame::enable_keyboard(bool bIsKeyboardEnabled)
     bIsKeyboardEnabled_ = bIsKeyboardEnabled;
 }
 
-void frame::enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput)
+void frame::enable_mouse(bool bIsMouseEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsMouseEnabled && !bIsMouseEnabled_)
-        {
-            register_event("MOUSE_MOVED");
-            register_event("MOUSE_PRESSED");
-            register_event("MOUSE_DOUBLE_CLICKED");
-            register_event("MOUSE_RELEASED");
-            register_event("MOUSE_DRAG_START");
-            register_event("MOUSE_DRAG_STOP");
-        }
-        else if (!bIsMouseEnabled && bIsMouseEnabled_)
-        {
-            unregister_event("MOUSE_MOVED");
-            unregister_event("MOUSE_PRESSED");
-            unregister_event("MOUSE_DOUBLE_CLICKED");
-            unregister_event("MOUSE_RELEASED");
-            unregister_event("MOUSE_DRAG_START");
-            unregister_event("MOUSE_DRAG_STOP");
-        }
-    }
+    enable_mouse_click(bIsMouseEnabled);
+    enable_mouse_move(bIsMouseEnabled);
+}
 
-    bAllowWorldInput_ = bAllowWorldInput;
-    bIsMouseEnabled_ = bIsMouseEnabled;
+void frame::enable_mouse_click(bool bIsMouseEnabled)
+{
+    if (bIsMouseClickEnabled_ == bIsMouseEnabled)
+        return;
+
+    bIsMouseClickEnabled_ = bIsMouseEnabled;
+
+    if (bVirtual_)
+        return;
+
+    if (bIsMouseClickEnabled_)
+    {
+        register_event("MOUSE_PRESSED");
+        register_event("MOUSE_DOUBLE_CLICKED");
+        register_event("MOUSE_RELEASED");
+        register_event("MOUSE_DRAG_START");
+        register_event("MOUSE_DRAG_STOP");
+    }
+    else
+    {
+        unregister_event("MOUSE_PRESSED");
+        unregister_event("MOUSE_DOUBLE_CLICKED");
+        unregister_event("MOUSE_RELEASED");
+        unregister_event("MOUSE_DRAG_START");
+        unregister_event("MOUSE_DRAG_STOP");
+    }
+}
+
+void frame::enable_mouse_move(bool bIsMouseEnabled)
+{
+    if (bIsMouseMoveEnabled_ == bIsMouseEnabled)
+        return;
+
+    bIsMouseMoveEnabled_ = bIsMouseEnabled;
+
+    if (bVirtual_)
+        return;
+
+    if (bIsMouseMoveEnabled_)
+        register_event("MOUSE_MOVED");
+    else
+        unregister_event("MOUSE_MOVED");
 }
 
 void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 {
-    if (!bVirtual_)
-    {
-        if (bIsMouseWheelEnabled && !bIsMouseWheelEnabled_)
-            register_event("MOUSE_WHEEL");
-        else if (!bIsMouseWheelEnabled && bIsMouseWheelEnabled_)
-            unregister_event("MOUSE_WHEEL");
-    }
+    if (bIsMouseWheelEnabled_ == bIsMouseWheelEnabled)
+        return;
 
     bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
+
+    if (bVirtual_)
+        return;
+
+    if (bIsMouseWheelEnabled_)
+        register_event("MOUSE_WHEEL");
+    else
+        unregister_event("MOUSE_WHEEL");
+
 }
 
 void frame::notify_loaded()
@@ -950,14 +979,14 @@ bool frame::is_keyboard_enabled() const
     return bIsKeyboardEnabled_;
 }
 
-bool frame::is_mouse_enabled() const
+bool frame::is_mouse_click_enabled() const
 {
-    return bIsMouseEnabled_;
+    return bIsMouseClickEnabled_;
 }
 
-bool frame::is_world_input_allowed() const
+bool frame::is_mouse_move_enabled() const
 {
-    return bAllowWorldInput_;
+    return bIsMouseMoveEnabled_;
 }
 
 bool frame::is_mouse_wheel_enabled() const

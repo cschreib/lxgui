@@ -106,9 +106,12 @@ namespace gui
     *
     *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
     *   frame::enable_keyboard.
-    *   - Events related to mouse input (`OnDragStart`, `OnDragStop`, `OnEnter`,
-    *   `OnLeave`, `OnMouseUp`, `OnMouseDown`, `OnMouseWheel`, `OnReceiveDrag`)
+    *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
+    *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
+    *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
     *   require frame::enable_mouse.
+    *   - Events related to mouse wheel input (`OnMouseWheel`) require
+    *   frame::enable_mouse_wheel.
     *
     *   To use the second type of events (generic events), you have to register
     *   a callback for `OnEvent` _and_ register the frame for each generic event
@@ -155,23 +158,30 @@ namespace gui
     *   position and size of the frame and its title region, but not the space
     *   occupied by its children or layered regions. Will not trigger if the
     *   frame is hidden, unless the frame was just hidden with the mouse
-    *   previously inside the frame.
+    *   previously inside the frame. Finally, this _will_ trigger whenever
+    *   the mouse enters another mouse-enabled frame with a higher level/strata,
+    *   even if the mouse is still technically within this frame's region.
     *   - `OnLoad`: Triggered just after the frame is created. This is where
     *   you would normally register for events and specific inputs, set up
     *   initial states for extra logic, or do localization.
     *   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
+    *   only fire for the top-most frame under the mouse cursor which is
+    *   mouse-click-enabled.
     *   - `OnMouseUp`: Triggered when any mouse button is released. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
+    *   only fire for the top-most frame under the mouse cursor which is
+    *   mouse-click-enabled.
     *   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
     *   provides one argument to the registered callback: a number indicating by
     *   how many "notches" the wheel has turned in this event. A positive value
     *   means the wheel has been moved "away" from the user (this would normally
-    *   scroll *up* in a document).
+    *   scroll *up* in a document). This even will only fire for the top-most
+    *   frame under the mouse cursor which is mouse-wheel-enabled.
     *   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
     *   dragged onto the frame, and when one of the mouse button registered for
     *   dragging (see frame::register_for_drag) is released. This enables
@@ -332,11 +342,20 @@ namespace gui
         */
         virtual void enable_keyboard(bool bIsKeyboardEnabled);
 
-        /// Sets if this frame can receive mouse input.
+        /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
-        *   \param bAllowWorldInput 'true' to allow world input
         */
-        virtual void enable_mouse(bool bIsMouseEnabled, bool bAllowWorldInput = false);
+        void enable_mouse(bool bIsMouseEnabled);
+
+        /// Sets if this frame can receive mouse click input.
+        /** \param bIsMouseEnabled 'true' to enable
+        */
+        virtual void enable_mouse_click(bool bIsMouseEnabled);
+
+        /// Sets if this frame can receive mouse move input.
+        /** \param bIsMouseEnabled 'true' to enable
+        */
+        virtual void enable_mouse_move(bool bIsMouseEnabled);
 
         /// Sets if this frame can receive mouse wheel input.
         /** \param bIsMouseWheelEnabled 'true' to enable
@@ -732,15 +751,15 @@ namespace gui
         */
         bool is_keyboard_enabled() const;
 
-        /// Checks if this frame can receive mouse input.
-        /** \return 'true' if this frame can receive mouse input
+        /// Checks if this frame can receive mouse movement input.
+        /** \return 'true' if this frame can receive mouse movement input
         */
-        bool is_mouse_enabled() const;
+        bool is_mouse_move_enabled() const;
 
-        /// Checks if this frame allows world input.
-        /** \return 'true' if this frame allows world input
+        /// Checks if this frame can receive mouse click input.
+        /** \return 'true' if this frame can receive mouse click input
         */
-        bool is_world_input_allowed() const;
+        bool is_mouse_click_enabled() const;
 
         /// Checks if this frame can receive mouse wheel input.
         /** \return 'true' if this frame can receive mouse wheel input
@@ -1211,8 +1230,8 @@ namespace gui
         bool bHasAllEventsRegistred_ = false;
 
         bool bIsKeyboardEnabled_ = false;
-        bool bIsMouseEnabled_ = false;
-        bool bAllowWorldInput_ = false;
+        bool bIsMouseClickEnabled_ = false;
+        bool bIsMouseMoveEnabled_ = false;
         bool bIsMouseWheelEnabled_ = false;
         bool bIsMovable_ = false;
         bool bIsClampedToScreen_ = false;
