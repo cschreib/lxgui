@@ -262,9 +262,6 @@ add_library(lxgui
     ${PROJECT_SOURCE_DIR}/src/gui_eventemitter.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_eventreceiver.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_factory.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_glues.cpp
-    ${PROJECT_SOURCE_DIR}/src/gui_focusframe_parser.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring_glues.cpp
     ${PROJECT_SOURCE_DIR}/src/gui_fontstring_parser.cpp

@@ -65,11 +65,11 @@
 *   enabling. In particular:
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-*   @{Frame:enable_keyboard}.
+*   focus, see @{Frame:set_focus}.
 *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
-*   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
+*   `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
 *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
-*   require @{Frame:enable_mouse}.
+*   require @{Frame:enable_mouse_move}.
 *   - Events related to mouse wheel input (`OnMouseWheel`) require
 *   @{Frame:enable_mouse_wheel}.
 *
@@ -92,6 +92,10 @@
 *   dragging (see @{Frame:register_for_drag}) has been pressed inside the
 *   area of the screen occupied by the frame, and a mouse movement is first
 *   recorded.
+*   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
+*   until `OnDragStop` is triggered.
+*   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
+*   released.
 *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
 *   the screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
@@ -102,17 +106,23 @@
 *   been fired, the registered callback function is always provided with a
 *   first argument that is set to a string matching the event name. Further
 *   arguments can be passed to the callback and are handled as for other events.
+*   - `OnFocusGained`: Triggered when the frame gains focus, see
+*   @{Frame:set_focus}.
+*   - `OnFocusLost`: Triggered when the frame looses focus, see
+*   @{Frame:set_focus}.
 *   - `OnHide`: Triggered when @{UIObject:hide} is called, or when the frame
 *   is hidden indirectly (for example if its parent is itself hidden). This
 *   will only fire if the frame was previously shown.
-*   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will not
-*   trigger if the frame is hidden. This event provides two arguments to
-*   the registered callback: a number identifying the key, and the
-*   human-readable name of the key.
-*   - `OnKeyUp`: Triggered when any keyboard key is released. Will not
-*   trigger if the frame is hidden. This event provides two arguments to
-*   the registered callback: a number identifying the key, and the
-*   human-readable name of the key.
+*   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+*   trigger if the frame has focus (see @{Frame:set_focus}). This event provides
+*   two arguments to the registered callback: a number identifying the key, and
+*   the human-readable name of the key. If you need to react to key presses
+*   without focus, use @{set_key_binding}.
+*   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
+*   trigger if the frame has focus (see @{Frame:set_focus}). This event provides
+*   two arguments to the registered callback: a number identifying the key, and
+*   the human-readable name of the key. If you need to react to key presses
+*   without focus, use @{set_key_binding}.
 *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
 *   screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
@@ -224,6 +234,13 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.add_script(sName, std::move(mFunc));
     });
 
+    /** @function clear_focus
+    */
+    mClass.set_function("clear_focus", [](frame& mSelf)
+    {
+        mSelf.set_focus(false);
+    });
+
     /** @function create_font_string
     */
     mClass.set_function("create_font_string", [](frame& mSelf, const std::string& sName,
@@ -275,10 +292,6 @@ void frame::register_on_lua(sol::state& mLua)
     {
         mSelf.enable_draw_layer(layer::get_layer_type(sLayer));
     });
-
-    /** @function enable_keyboard
-    */
-    mClass.set_function("enable_keyboard", member_function<&frame::enable_keyboard>());
 
     /** @function enable_mouse
     */
@@ -461,6 +474,10 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("has_script", member_function<&frame::has_script>());
 
+    /** @function is_auto_focus
+    */
+    mClass.set_function("is_auto_focus", member_function<&frame::is_auto_focus_enabled>());
+
     /** @function is_clamped_to_screen
     */
     mClass.set_function("is_clamped_to_screen", member_function<&frame::is_clamped_to_screen>());
@@ -471,10 +488,6 @@ void frame::register_on_lua(sol::state& mLua)
     {
         return mSelf.get_frame_type() == sType;
     });
-
-    /** @function is_keyboard_enabled
-    */
-    mClass.set_function("is_keyboard_enabled", member_function<&frame::is_keyboard_enabled>());
 
     /** @function is_mouse_click_enabled
     */
@@ -531,6 +544,10 @@ void frame::register_on_lua(sol::state& mLua)
 
         mSelf.register_for_drag(lButtonList);
     });
+
+    /** @function set_auto_focus
+    */
+    mClass.set_function("set_auto_focus", member_function<&frame::enable_auto_focus>());
 
     /** @function set_backdrop
     */
@@ -598,6 +615,13 @@ void frame::register_on_lua(sol::state& mLua)
     /** @function set_clamped_to_screen
     */
     mClass.set_function("set_clamped_to_screen", member_function<&frame::set_clamped_to_screen>());
+
+    /** @function set_focus
+    */
+    mClass.set_function("set_focus", [](frame& mSelf)
+    {
+        mSelf.set_focus(true);
+    });
 
     /** @function set_frame_level
     */

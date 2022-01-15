@@ -437,42 +437,6 @@
 					"shell_cmd": "make -j12 src/gui_factory.s",
 				},
 				{
-					"name": "src/gui_focusframe.o",
-					"shell_cmd": "make -j12 src/gui_focusframe.o",
-				},
-				{
-					"name": "src/gui_focusframe.i",
-					"shell_cmd": "make -j12 src/gui_focusframe.i",
-				},
-				{
-					"name": "src/gui_focusframe.s",
-					"shell_cmd": "make -j12 src/gui_focusframe.s",
-				},
-				{
-					"name": "src/gui_focusframe_glues.o",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.o",
-				},
-				{
-					"name": "src/gui_focusframe_glues.i",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.i",
-				},
-				{
-					"name": "src/gui_focusframe_glues.s",
-					"shell_cmd": "make -j12 src/gui_focusframe_glues.s",
-				},
-				{
-					"name": "src/gui_focusframe_parser.o",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.o",
-				},
-				{
-					"name": "src/gui_focusframe_parser.i",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.i",
-				},
-				{
-					"name": "src/gui_focusframe_parser.s",
-					"shell_cmd": "make -j12 src/gui_focusframe_parser.s",
-				},
-				{
 					"name": "src/gui_fontstring.o",
 					"shell_cmd": "make -j12 src/gui_fontstring.o",
 				},

@@ -14,6 +14,7 @@ namespace gui
 button::button(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
+    enable_mouse(true);
 }
 
 std::string button::serialize(const std::string& sTab) const
@@ -31,7 +32,6 @@ bool button::can_use_script(const std::string& sScriptName) const
     if (base::can_use_script(sScriptName))
         return true;
     else if ((sScriptName == "OnClick") ||
-        (sScriptName == "OnDoubleClick") ||
         (sScriptName == "OnEnable") ||
         (sScriptName == "OnDisable"))
         return true;
@@ -41,12 +41,6 @@ bool button::can_use_script(const std::string& sScriptName) const
 
 void button::on_script(const std::string& sScriptName, const event_data& mData)
 {
-    if (!is_loaded())
-        return;
-
-    if (sScriptName == "OnLoad")
-        enable_mouse(true);
-
     alive_checker mChecker(*this);
     base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
@@ -75,22 +69,6 @@ void button::on_script(const std::string& sScriptName, const event_data& mData)
             if (!mChecker.is_alive())
                 return;
         }
-    }
-}
-
-void button::on_event(const event& mEvent)
-{
-    alive_checker mChecker(*this);
-
-    base::on_event(mEvent);
-    if (!mChecker.is_alive())
-        return;
-
-    if (mEvent.get_name() == "MOUSE_DOUBLE_CLICKED" && bMouseInFrame_)
-    {
-        on_script("OnDoubleClicked");
-        if (!mChecker.is_alive())
-            return;
     }
 }
 

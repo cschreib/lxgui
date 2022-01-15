@@ -27,7 +27,7 @@
 *   and @{Frame:register_for_drag} set to `"LeftButton"` by default.
 *
 *   __Events.__ Hard-coded events available to all @{EditBox}es,
-*   in addition to those from @{FocusFrame}:
+*   in addition to those from @{Frame}:
 *
 *   - `OnChar`: Triggered whenever a new character is added to the
 *   edit box. Will always be preceeded by `OnTextChanged`.
@@ -52,7 +52,7 @@
 *   - `OnTextSet`: Triggered by @{EditBox:set_text}. Will always be
 *   followed by `OnTextChanged`.
 *
-*   Inherits all methods from: @{UIObject}, @{Frame}, @{FocusFrame}.
+*   Inherits all methods from: @{UIObject}, @{Frame}.
 *
 *   Child classes: none.
 *   @classmod EditBox
@@ -64,7 +64,7 @@ namespace gui
 void edit_box::register_on_lua(sol::state& mLua)
 {
     auto mClass = mLua.new_usertype<edit_box>("EditBox",
-        sol::base_classes, sol::bases<uiobject, frame, focus_frame>(),
+        sol::base_classes, sol::bases<uiobject, frame>(),
         sol::meta_function::index,
         member_function<&edit_box::get_lua_member_>(),
         sol::meta_function::new_index,

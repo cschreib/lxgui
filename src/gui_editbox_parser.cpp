@@ -9,7 +9,7 @@ namespace gui
 {
 void edit_box::parse_attributes_(const layout_node& mNode)
 {
-    focus_frame::parse_attributes_(mNode);
+    base::parse_attributes_(mNode);
 
     if (const layout_attribute* pAttr = mNode.try_get_attribute("letters"))
         set_max_letters(pAttr->get_value<std::size_t>());
@@ -41,7 +41,7 @@ void edit_box::parse_attributes_(const layout_node& mNode)
 
 void edit_box::parse_all_nodes_before_children_(const layout_node& mNode)
 {
-    focus_frame::parse_all_nodes_before_children_(mNode);
+    base::parse_all_nodes_before_children_(mNode);
 
     parse_text_insets_node_(mNode);
     parse_font_string_node_(mNode);

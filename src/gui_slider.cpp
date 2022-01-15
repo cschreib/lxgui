@@ -24,6 +24,8 @@ void step_value(float& fValue, float fStep)
 slider::slider(utils::control_block& mBlock, manager& mManager) : frame(mBlock, mManager)
 {
     lType_.push_back(CLASS_NAME);
+    enable_mouse(true);
+    register_for_drag({"LeftButton"});
 }
 
 std::string slider::serialize(const std::string& sTab) const
@@ -59,16 +61,57 @@ bool slider::can_use_script(const std::string& sScriptName) const
 
 void slider::on_script(const std::string& sScriptName, const event_data& mData)
 {
-    if (!is_loaded())
-        return;
-
-    if (sScriptName == "OnLoad")
-        enable_mouse(true);
-
     alive_checker mChecker(*this);
     base::on_script(sScriptName, mData);
     if (!mChecker.is_alive())
         return;
+
+    if (sScriptName == "OnDragStart")
+    {
+        if (pThumbTexture_ && pThumbTexture_->is_in_region({mData.get<float>(1), mData.get<float>(2)}))
+        {
+            anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
+
+            get_manager().get_root().start_moving(
+                pThumbTexture_, &mAnchor,
+                mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
+                [&]() { constrain_thumb_(); }
+            );
+
+            bThumbMoved_ = true;
+        }
+    }
+    else if (sScriptName == "OnDragStop")
+    {
+        if (pThumbTexture_)
+        {
+            if (get_manager().get_root().is_moving(*pThumbTexture_))
+                get_manager().get_root().stop_moving();
+
+            bThumbMoved_ = false;
+        }
+    }
+    else if (sScriptName == "OnMouseDown")
+    {
+        if (bAllowClicksOutsideThumb_)
+        {
+            const vector2f mApparentSize = get_apparent_dimensions();
+
+            float fValue;
+            if (mOrientation_ == orientation::HORIZONTAL)
+            {
+                float fOffset = mData.get<float>(1) - lBorderList_.left;
+                fValue = fOffset/mApparentSize.x;
+                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
+            }
+            else
+            {
+                float fOffset = mData.get<float>(2) - lBorderList_.top;
+                fValue = fOffset/mApparentSize.y;
+                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
+            }
+        }
+    }
 }
 
 void slider::copy_from(const uiobject& mObj)
@@ -147,72 +190,6 @@ void slider::constrain_thumb_()
 
     if (fValue_ != fOldValue)
         on_script("OnValueChanged");
-}
-
-void slider::on_event(const event& mEvent)
-{
-    alive_checker mChecker(*this);
-
-    base::on_event(mEvent);
-    if (!mChecker.is_alive())
-        return;
-
-    if (mEvent.get_name() == "MOUSE_PRESSED")
-    {
-        anchor& mAnchor = pThumbTexture_->modify_point(anchor_point::CENTER);
-
-        if (bMouseInThumb_)
-        {
-            get_manager().start_moving(
-                pThumbTexture_, &mAnchor,
-                mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y,
-                [&]() { constrain_thumb_(); }
-            );
-            bThumbMoved_ = true;
-        }
-        else if (bMouseInFrame_ && bAllowClicksOutsideThumb_)
-        {
-            const vector2f mApparentSize = get_apparent_dimensions();
-
-            float fValue;
-            if (mOrientation_ == orientation::HORIZONTAL)
-            {
-                float fOffset = mMousePos_.x - lBorderList_.left;
-                fValue = fOffset/mApparentSize.x;
-                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
-            }
-            else
-            {
-                float fOffset = mMousePos_.y - lBorderList_.top;
-                fValue = fOffset/mApparentSize.y;
-                set_value(fValue*(fMaxValue_ - fMinValue_) + fMinValue_);
-            }
-
-            if (pThumbTexture_)
-            {
-                float fCoef = (fValue_ - fMinValue_)/(fMaxValue_ - fMinValue_);
-
-                if (mOrientation_ == orientation::HORIZONTAL)
-                    mAnchor.mOffset = vector2f(mApparentSize.x*fCoef, 0);
-                else
-                    mAnchor.mOffset = vector2f(0, mApparentSize.y*fCoef);
-
-                get_manager().start_moving(
-                    pThumbTexture_, &mAnchor,
-                    mOrientation_ == orientation::HORIZONTAL ? constraint::X : constraint::Y
-                );
-                bThumbMoved_ = true;
-            }
-        }
-    }
-    else if (mEvent.get_name() == "MOUSE_RELEASED")
-    {
-        if (pThumbTexture_)
-        {
-            get_manager().stop_moving(*pThumbTexture_);
-            bThumbMoved_ = false;
-        }
-    }
 }
 
 void slider::set_min_value(float fMin)
@@ -425,30 +402,15 @@ bool slider::are_clicks_outside_thumb_allowed() const
     return bAllowClicksOutsideThumb_;
 }
 
-bool slider::is_in_frame(const vector2f& mPosition) const
+bool slider::is_in_region(const vector2f& mPosition) const
 {
     if (bAllowClicksOutsideThumb_)
     {
-        if (pThumbTexture_)
-            return base::is_in_frame(mPosition) || pThumbTexture_->is_in_region(mPosition);
-        else
-            return base::is_in_frame(mPosition);
+        if (base::is_in_region(mPosition))
+            return true;
     }
-    else
-    {
-        if (pThumbTexture_)
-            return pThumbTexture_->is_in_region(mPosition);
-        else
-            return false;
-    }
-}
 
-void slider::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
-{
-    if (bAllowClicksOutsideThumb_)
-        base::notify_mouse_in_frame(bMouseInFrame, mMousePos);
-
-    bMouseInThumb_ = (bMouseInFrame && pThumbTexture_ && pThumbTexture_->is_in_region(mMousePos));
+    return pThumbTexture_ && pThumbTexture_->is_in_region(mPosition);
 }
 
 void slider::update_thumb_texture_()

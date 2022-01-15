@@ -4,7 +4,6 @@
 #include <lxgui/lxgui.hpp>
 #include "lxgui/gui_eventemitter.hpp"
 #include "lxgui/gui_eventreceiver.hpp"
-#include "lxgui/gui_anchor.hpp"
 #include "lxgui/input_keys.hpp"
 
 #include <lxgui/utils_observer.hpp>
@@ -32,9 +31,6 @@ namespace input {
 
 namespace gui
 {
-    class uiobject;
-    class frame;
-    class focus_frame;
     class renderer;
     class localizer;
     class factory;
@@ -193,58 +189,6 @@ namespace gui
         */
         void on_event(const event& mEvent) override;
 
-        /// Ask this manager for movement management.
-        /** \param pObj        The object to move
-        *   \param pAnchor     The reference anchor
-        *   \param mConstraint The constraint axis if any
-        *   \param mApplyConstraintFunc Optional function to implement further constraints
-        *   \note Movement is handled by the manager itself, you don't
-        *         need to do anything.
-        */
-        void start_moving(
-            utils::observer_ptr<uiobject> pObj, anchor* pAnchor = nullptr,
-            constraint mConstraint = constraint::NONE,
-            std::function<void()> mApplyConstraintFunc = nullptr
-        );
-
-        /// Stops movement for the given object.
-        /** \param mObj The object to stop moving
-        */
-        void stop_moving(const uiobject& mObj);
-
-        /// Checks if the given object is allowed to move.
-        /** \param mObj The object to check
-        *   \return 'true' if the given object is allowed to move
-        */
-        bool is_moving(const uiobject& mObj) const;
-
-        /// Starts resizing a widget.
-        /** \param pObj   The object to resize
-        *   \param mPoint The sizing point
-        *   \note Resizing is handled by the manager itself, you don't
-        *         need to do anything.
-        */
-        void start_sizing(utils::observer_ptr<uiobject> pObj, anchor_point mPoint);
-
-        /// Stops sizing for the given object.
-        /** \param mObj The object to stop sizing
-        */
-        void stop_sizing(const uiobject& mObj);
-
-        /// Checks if the given object is allowed to be resized.
-        /** \param mObj The object to check
-        *   \return 'true' if the given object is allowed to be resized
-        */
-        bool is_sizing(const uiobject& mObj) const;
-
-        /// Returns the frame under the mouse.
-        /** \return The frame under the mouse (nullptr if none)
-        */
-        const utils::observer_ptr<frame>& get_hovered_frame() const;
-
-        /// Notifies this manager that it should update the hovered frame.
-        void notify_hovered_frame_dirty();
-
         /// Returns the GUI Lua state (sol wrapper).
         /** \return The GUI Lua state
         */
@@ -399,11 +343,6 @@ namespace gui
         */
         void read_files_();
 
-        void clear_hovered_frame_();
-        void update_hovered_frame_();
-        void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
-            const vector2f& mMousePos = vector2f::ZERO);
-
         // Persistent state
         float fScalingFactor_ = 1.0f;
         float fBaseScalingFactor_ = 1.0f;
@@ -435,23 +374,6 @@ namespace gui
         bool bCloseUI_ = false;
         bool bFirstIteration_ = true;
         bool bUpdating_ = false;
-
-        utils::observer_ptr<frame> pHoveredFrame_ = nullptr;
-
-        utils::observer_ptr<uiobject> pMovedObject_ = nullptr;
-        utils::observer_ptr<uiobject> pSizedObject_ = nullptr;
-        vector2f                      mMouseMovement_;
-
-        anchor*    pMovedAnchor_ = nullptr;
-        vector2f   mMovementStartPosition_;
-        constraint mConstraint_ = constraint::NONE;
-        std::function<void()> mApplyConstraintFunc_;
-
-        vector2f mResizeStart_;
-        bool bResizeWidth_ = false;
-        bool bResizeHeight_ = false;
-        bool bResizeFromRight_ = false;
-        bool bResizeFromBottom_ = false;
     };
 }
 }

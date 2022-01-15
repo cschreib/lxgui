@@ -57,7 +57,9 @@ frame::~frame()
         pRenderer_ = nullptr;
     }
 
-    get_manager().notify_hovered_frame_dirty();
+    get_manager().get_root().notify_hovered_frame_dirty();
+
+    set_focus(false);
 }
 
 void frame::render() const
@@ -108,11 +110,11 @@ std::string frame::serialize(const std::string& sTab) const
     }
     sStr << sTab << "  # Level       : " << iLevel_ << "\n";
     sStr << sTab << "  # TopLevel    : " << bIsTopLevel_;
-    if (!bIsTopLevel_ && pTopLevelParent_)
-        sStr << " (" << pTopLevelParent_->get_name() << ")\n";
+    if (!bIsTopLevel_ && get_top_level_parent())
+        sStr << " (" << get_top_level_parent()->get_name() << ")\n";
     else
         sStr << "\n";
-    if (!bIsMouseClickEnabled_ && !bIsMouseMoveEnabled_ && !bIsKeyboardEnabled_ && !bIsMouseWheelEnabled_)
+    if (!bIsMouseClickEnabled_ && !bIsMouseMoveEnabled_ && ! !bIsMouseWheelEnabled_)
         sStr << sTab << "  # Inputs      : none\n";
     else
     {
@@ -124,8 +126,6 @@ std::string frame::serialize(const std::string& sTab) const
             sStr << sTab << "  |   # mouse move\n";
         if (bIsMouseWheelEnabled_)
             sStr << sTab << "  |   # mouse wheel\n";
-        if (bIsKeyboardEnabled_)
-            sStr << sTab << "  |   # keyboard\n";
         sStr << sTab << "  |-###\n";
     }
     sStr << sTab << "  # Movable     : " << bIsMovable_ << "\n";
@@ -209,8 +209,11 @@ bool frame::can_use_script(const std::string& sScriptName) const
 {
     if ((sScriptName == "OnDragStart") ||
         (sScriptName == "OnDragStop") ||
+        (sScriptName == "OnDragMove") ||
         (sScriptName == "OnEnter") ||
         (sScriptName == "OnEvent") ||
+        (sScriptName == "OnFocusGained") ||
+        (sScriptName == "OnFocusLost") ||
         (sScriptName == "OnHide") ||
         (sScriptName == "OnKeyDown") ||
         (sScriptName == "OnKeyUp") ||
@@ -218,6 +221,7 @@ bool frame::can_use_script(const std::string& sScriptName) const
         (sScriptName == "OnLoad") ||
         (sScriptName == "OnMouseDown") ||
         (sScriptName == "OnMouseUp") ||
+        (sScriptName == "OnDoubleClick") ||
         (sScriptName == "OnMouseWheel") ||
         (sScriptName == "OnReceiveDrag") ||
         (sScriptName == "OnShow") ||
@@ -261,7 +265,6 @@ void frame::copy_from(const uiobject& mObj)
 
     this->set_top_level(pFrame->is_top_level());
 
-    this->enable_keyboard(pFrame->is_keyboard_enabled());
     this->enable_mouse_click(pFrame->is_mouse_click_enabled());
     this->enable_mouse_move(pFrame->is_mouse_move_enabled());
     this->enable_mouse_wheel(pFrame->is_mouse_wheel_enabled());
@@ -527,30 +530,6 @@ void frame::enable_draw_layer(layer_type mLayerID)
     }
 }
 
-void frame::enable_keyboard(bool bIsKeyboardEnabled)
-{
-    if (bIsKeyboardEnabled_ == bIsKeyboardEnabled)
-        return;
-
-    bIsKeyboardEnabled_ = bIsKeyboardEnabled;
-
-    if (bVirtual_)
-        return;
-
-    if (bIsKeyboardEnabled_)
-    {
-        register_event("TEXT_ENTERED");
-        register_event("KEY_PRESSED");
-        register_event("KEY_RELEASED");
-    }
-    else
-    {
-        unregister_event("TEXT_ENTERED");
-        unregister_event("KEY_PRESSED");
-        unregister_event("KEY_RELEASED");
-    }
-}
-
 void frame::enable_mouse(bool bIsMouseEnabled)
 {
     enable_mouse_click(bIsMouseEnabled);
@@ -559,63 +538,17 @@ void frame::enable_mouse(bool bIsMouseEnabled)
 
 void frame::enable_mouse_click(bool bIsMouseEnabled)
 {
-    if (bIsMouseClickEnabled_ == bIsMouseEnabled)
-        return;
-
     bIsMouseClickEnabled_ = bIsMouseEnabled;
-
-    if (bVirtual_)
-        return;
-
-    if (bIsMouseClickEnabled_)
-    {
-        register_event("MOUSE_PRESSED");
-        register_event("MOUSE_DOUBLE_CLICKED");
-        register_event("MOUSE_RELEASED");
-        register_event("MOUSE_DRAG_START");
-        register_event("MOUSE_DRAG_STOP");
-    }
-    else
-    {
-        unregister_event("MOUSE_PRESSED");
-        unregister_event("MOUSE_DOUBLE_CLICKED");
-        unregister_event("MOUSE_RELEASED");
-        unregister_event("MOUSE_DRAG_START");
-        unregister_event("MOUSE_DRAG_STOP");
-    }
 }
 
 void frame::enable_mouse_move(bool bIsMouseEnabled)
 {
-    if (bIsMouseMoveEnabled_ == bIsMouseEnabled)
-        return;
-
     bIsMouseMoveEnabled_ = bIsMouseEnabled;
-
-    if (bVirtual_)
-        return;
-
-    if (bIsMouseMoveEnabled_)
-        register_event("MOUSE_MOVED");
-    else
-        unregister_event("MOUSE_MOVED");
 }
 
 void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
 {
-    if (bIsMouseWheelEnabled_ == bIsMouseWheelEnabled)
-        return;
-
     bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
-
-    if (bVirtual_)
-        return;
-
-    if (bIsMouseWheelEnabled_)
-        register_event("MOUSE_WHEEL");
-    else
-        unregister_event("MOUSE_WHEEL");
-
 }
 
 void frame::notify_loaded()
@@ -761,12 +694,6 @@ utils::observer_ptr<frame> frame::add_child(utils::owner_ptr<frame> pChild)
 
     pChild->set_parent_(observer_from(this));
 
-    if (bIsTopLevel_)
-        pChild->notify_top_level_parent_(true, observer_from(this));
-
-    if (pTopLevelParent_)
-        pChild->notify_top_level_parent_(true, pTopLevelParent_);
-
     if (is_visible() && pChild->is_shown())
         pChild->notify_visible();
     else
@@ -891,6 +818,21 @@ frame_strata frame::get_frame_strata() const
     return mStrata_;
 }
 
+utils::observer_ptr<const frame> frame::get_top_level_parent() const
+{
+    auto pFrame = observer_from(this);
+    do
+    {
+        if (pFrame->is_top_level())
+            return pFrame;
+
+        pFrame = pFrame->get_parent();
+    }
+    while (pFrame);
+
+    return nullptr;
+}
+
 const backdrop* frame::get_backdrop() const
 {
     return pBackdrop_.get();
@@ -979,9 +921,13 @@ bool frame::is_in_region(const vector2f& mPosition) const
     return bIsInXRange && bIsInYRange;
 }
 
-bool frame::is_keyboard_enabled() const
+utils::observer_ptr<const frame> frame::find_topmost_at_position(const vector2f& mPosition,
+    const std::function<bool(const frame&)>& mPredicate) const
 {
-    return bIsKeyboardEnabled_;
+    if (is_in_region(mPosition) && mPredicate(*this))
+        return observer_from(this);
+
+    return nullptr;
 }
 
 bool frame::is_mouse_click_enabled() const
@@ -997,6 +943,11 @@ bool frame::is_mouse_move_enabled() const
 bool frame::is_mouse_wheel_enabled() const
 {
     return bIsMouseWheelEnabled_;
+}
+
+bool frame::is_registered_for_drag(const std::string& sButton) const
+{
+    return lRegDragList_.find(sButton) != lRegDragList_.end();
 }
 
 bool frame::is_movable() const
@@ -1262,98 +1213,7 @@ void frame::on_event(const event& mEvent)
             return;
     }
 
-    if (bIsVisible_ && mEvent.get_name().find("MOUSE_") == 0u)
-    {
-        if (mEvent.get_name() == "MOUSE_DRAG_START")
-        {
-            if (bMouseInTitleRegion_)
-                start_moving();
-
-            if (bMouseInFrame_)
-            {
-                std::string sMouseButton = std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0)));
-
-                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
-                {
-                    bMouseDraggedInFrame_ = true;
-                    on_script("OnDragStart");
-                    if (!mChecker.is_alive())
-                        return;
-                }
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_DRAG_STOP")
-        {
-            stop_moving();
-
-            if (bMouseDraggedInFrame_)
-            {
-                bMouseDraggedInFrame_ = false;
-                on_script("OnDragStop");
-                if (!mChecker.is_alive())
-                    return;
-            }
-
-            if (bMouseInFrame_)
-            {
-                std::string sMouseButton = std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0)));
-
-                if (lRegDragList_.find(sMouseButton) != lRegDragList_.end())
-                {
-                    on_script("OnReceiveDrag");
-                    if (!mChecker.is_alive())
-                        return;
-                }
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_PRESSED")
-        {
-            if (bMouseInFrame_)
-            {
-                if (bIsTopLevel_)
-                    raise();
-
-                if (pTopLevelParent_)
-                    pTopLevelParent_->raise();
-
-                event_data mData;
-                mData.add(std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0))));
-
-                on_script("OnMouseDown", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_RELEASED")
-        {
-            if (bMouseInFrame_)
-            {
-                event_data mData;
-                mData.add(std::string(input::get_mouse_button_codename(
-                    mEvent.get<input::mouse_button>(0))));
-
-                on_script("OnMouseUp", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-        else if (mEvent.get_name() == "MOUSE_WHEEL")
-        {
-            if (bMouseInFrame_)
-            {
-                event_data mData;
-                mData.add(mEvent.get(0));
-                on_script("OnMouseWheel", mData);
-                if (!mChecker.is_alive())
-                    return;
-            }
-        }
-    }
-
-    if (bIsKeyboardEnabled_ && bIsVisible_)
+    if (bIsVisible_)
     {
         if (mEvent.get_name() == "KEY_PRESSED")
         {
@@ -1625,15 +1485,7 @@ void frame::set_scale(float fScale)
 
 void frame::set_top_level(bool bIsTopLevel)
 {
-    if (bIsTopLevel_ == bIsTopLevel)
-        return;
-
     bIsTopLevel_ = bIsTopLevel;
-
-    for (auto& mChild : get_children())
-    {
-        mChild.notify_top_level_parent_(bIsTopLevel_, observer_from(this));
-    }
 }
 
 void frame::raise()
@@ -1662,6 +1514,43 @@ void frame::raise()
         iLevel_ = iOldLevel;
 }
 
+void frame::enable_auto_focus(bool bEnable)
+{
+    bAutoFocus_ = bEnable;
+}
+
+bool frame::is_auto_focus_enabled() const
+{
+    return bAutoFocus_;
+}
+
+void frame::set_focus(bool bFocus)
+{
+    auto& mRoot = get_manager().get_root();
+    if (bFocus)
+        mRoot.request_focus(observer_from(this));
+    else
+        mRoot.release_focus(*this);
+}
+
+bool frame::has_focus() const
+{
+    return bFocus_;
+}
+
+void frame::notify_focus(bool bFocus)
+{
+    if (bFocus_ == bFocus)
+        return;
+
+    bFocus_ = bFocus;
+
+    if (bFocus_)
+        on_script("OnFocusGained");
+    else
+        on_script("OnFocusLost");
+}
+
 void frame::add_level_(int iAmount)
 {
     int iOldLevel = iLevel_;
@@ -1687,14 +1576,14 @@ void frame::start_moving()
     if (bIsMovable_)
     {
         set_user_placed(true);
-        get_manager().start_moving(observer_from(this));
+        get_manager().get_root().start_moving(observer_from(this));
     }
 }
 
 void frame::stop_moving()
 {
-    if (bIsMovable_)
-        get_manager().stop_moving(*this);
+    if (get_manager().get_root().is_moving(*this))
+        get_manager().get_root().stop_moving();
 }
 
 void frame::start_sizing(const anchor_point& mPoint)
@@ -1702,13 +1591,14 @@ void frame::start_sizing(const anchor_point& mPoint)
     if (bIsResizable_)
     {
         set_user_placed(true);
-        get_manager().start_sizing(observer_from(this), mPoint);
+        get_manager().get_root().start_sizing(observer_from(this), mPoint);
     }
 }
 
 void frame::stop_sizing()
 {
-    get_manager().stop_sizing(*this);
+    if (get_manager().get_root().is_sizing(*this))
+        get_manager().get_root().stop_sizing();
 }
 
 void frame::propagate_renderer_(bool bRendered)
@@ -1754,18 +1644,35 @@ utils::observer_ptr<const frame_renderer> frame::get_top_level_renderer() const
 
 void frame::notify_visible()
 {
+    alive_checker mChecker(*this);
+
+    if (bAutoFocus_)
+    {
+        set_focus(true);
+        if (!mChecker.is_alive())
+            return;
+    }
+
     base::notify_visible();
 
     for (auto& mRegion : get_regions())
     {
         if (mRegion.is_shown())
+        {
             mRegion.notify_visible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
+        {
             mChild.notify_visible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
     lQueuedEventList_.push_back("OnShow");
@@ -1774,27 +1681,26 @@ void frame::notify_visible()
 
 void frame::notify_invisible()
 {
+    alive_checker mChecker(*this);
+
+    set_focus(false);
+    if (!mChecker.is_alive())
+        return;
+
     base::notify_invisible();
 
     for (auto& mChild : get_children())
     {
         if (mChild.is_shown())
+        {
             mChild.notify_invisible();
+            if (!mChecker.is_alive())
+                return;
+        }
     }
 
     lQueuedEventList_.push_back("OnHide");
     notify_renderer_need_redraw();
-}
-
-void frame::notify_top_level_parent_(bool bTopLevel, const utils::observer_ptr<frame>& pParent)
-{
-    if (bTopLevel)
-        pTopLevelParent_ = pParent;
-    else
-        pTopLevelParent_ = nullptr;
-
-    for (auto& mChild : get_children())
-        mChild.notify_top_level_parent_(bTopLevel, pParent);
 }
 
 void frame::notify_renderer_need_redraw()
@@ -1828,7 +1734,7 @@ void frame::show()
     base::show();
 
     if (!bWasVisible_)
-        get_manager().notify_hovered_frame_dirty();
+        get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::hide()
@@ -1840,7 +1746,7 @@ void frame::hide()
     base::hide();
 
     if (bWasVisible_)
-        get_manager().notify_hovered_frame_dirty();
+        get_manager().get_root().notify_hovered_frame_dirty();
 }
 
 void frame::unregister_all_events()
@@ -1878,8 +1784,6 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
         }
 
         bMouseInFrame_ = true;
-        mMousePos_ = mPosition;
-        bMouseInTitleRegion_ = (pTitleRegion_ && pTitleRegion_->is_in_region(mPosition));
     }
     else
     {
@@ -1890,7 +1794,6 @@ void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
                 return;
         }
 
-        bMouseInTitleRegion_ = false;
         bMouseInFrame_ = false;
     }
 }
@@ -1906,7 +1809,7 @@ void frame::update_borders_()
 
     if (lBorderList_ != lOldBorderList || bReady_ != bOldReady)
     {
-        get_manager().notify_hovered_frame_dirty();
+        get_manager().get_root().notify_hovered_frame_dirty();
         if (pBackdrop_)
             pBackdrop_->notify_borders_updated();
     }

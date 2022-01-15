@@ -2,7 +2,6 @@
 #include "lxgui/gui_uiobject.hpp"
 #include "lxgui/gui_uiobject_tpl.hpp"
 #include "lxgui/gui_frame.hpp"
-#include "lxgui/gui_focusframe.hpp"
 #include "lxgui/gui_layeredregion.hpp"
 #include "lxgui/gui_out.hpp"
 #include "lxgui/gui_localizer.hpp"
@@ -152,7 +151,6 @@ void manager::create_lua_()
 
     // Base types
     pFactory_->register_uiobject_type<frame>();
-    pFactory_->register_uiobject_type<focus_frame>();
     pFactory_->register_uiobject_type<region>();
     pFactory_->register_uiobject_type<layered_region>();
 

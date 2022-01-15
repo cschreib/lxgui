@@ -6,6 +6,8 @@
 #include <lxgui/utils_observer.hpp>
 #include "lxgui/gui_strata.hpp"
 
+#include <functional>
+
 namespace lxgui {
 namespace gui
 {
@@ -66,11 +68,24 @@ namespace gui
         */
         virtual vector2f get_target_dimensions() const = 0;
 
-        /// Find the top-most frame at the provided coordinates
+        /// Find the top-most frame matching the provided predicate at the provided coordinates
+        /** \param mPosition  The coordinates to look at
+        *   \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The hovered frame, or nullptr if none
+        */
+        utils::observer_ptr<const frame> find_hovered_frame(const vector2f& mPosition,
+            const std::function<bool(const frame&)>& mPredicate) const;
+
+        /// Find the top-most frame matching the provided predicate at the provided coordinates
         /** \param mPosition The coordinates to look at
         *   \return The hovered frame, or nullptr if none
         */
-        utils::observer_ptr<frame> find_hovered_frame(const vector2f& mPosition);
+        utils::observer_ptr<frame> find_hovered_frame(const vector2f& mPosition,
+            const std::function<bool(const frame&)>& mPredicate)
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame_renderer*>(this)->find_hovered_frame(mPosition, mPredicate));
+        }
 
         /// Returns the highest level on the provided strata.
         /** \param mframe_strata The strata to inspect

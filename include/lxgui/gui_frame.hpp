@@ -105,11 +105,11 @@ namespace gui
     *   However, some hard-coded events require explicit enabling. In particular:
     *
     *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-    *   frame::enable_keyboard.
+    *   focus, see @ref frame::set_focus.
     *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
     *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
     *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
-    *   require frame::enable_mouse.
+    *   require frame::enable_mouse_move.
     *   - Events related to mouse wheel input (`OnMouseWheel`) require
     *   frame::enable_mouse_wheel.
     *
@@ -132,6 +132,10 @@ namespace gui
     *   dragging (see frame::register_for_drag) has been pressed inside the
     *   area of the screen occupied by the frame, and a mouse movement is first
     *   recorded.
+    *   - `OnDragMove`: Triggered after `OnDragStart`, each time the mouse moves,
+    *   until `OnDragStop` is triggered.
+    *   - `OnDragStop`: Triggered after `OnDragStart`, when the mouse button is
+    *   released.
     *   - `OnEnter`: Triggered when the mouse pointer enters into the area of
     *   the screen occupied by the frame. Note: this only takes into account the
     *   position and size of the frame and its title region, but not the space
@@ -142,17 +146,23 @@ namespace gui
     *   been fired, the registered callback function is always provided with a
     *   first argument that is set to a string matching the event name. Further
     *   arguments can be passed to the callback and are handled as for other events.
+    *   - `OnFocusGained`: Triggered when the frame gains focus, see
+    *   frame::set_focus.
+    *   - `OnFocusLost`: Triggered when the frame looses focus, see
+    *   frame::set_focus.
     *   - `OnHide`: Triggered when uiobject::hide is called, or when the frame
     *   is hidden indirectly (for example if its parent is itself hidden). This
     *   will only fire if the frame was previously shown.
-    *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will not
-    *   trigger if the frame is hidden. This event provides two arguments to
-    *   the registered callback: a number identifying the key, and the
-    *   human-readable name of the key.
-    *   - `OnKeyUp`: Triggered when any keyboard key is released. Will not
-    *   trigger if the frame is hidden. This event provides two arguments to
-    *   the registered callback: a number identifying the key, and the
-    *   human-readable name of the key.
+    *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
+    *   trigger if the frame has focus (see frame::set_focus). This event provides
+    *   two arguments to the registered callback: a number identifying the key, and
+    *   the human-readable name of the key. If you need to react to key presses
+    *   without focus, use the @ref keybinder.
+    *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
+    *   trigger if the frame has focus (see frame::set_focus). This event provides
+    *   two arguments to the registered callback: a number identifying the key, and
+    *   the human-readable name of the key. If you need to react to key presses
+    *   without focus, use the @ref keybinder.
     *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
     *   screen occupied by the frame. Note: this only takes into account the
     *   position and size of the frame and its title region, but not the space
@@ -336,11 +346,6 @@ namespace gui
         /** \param mLayerID The id of the layer to enable
         */
         void enable_draw_layer(layer_type mLayerID);
-
-        /// Sets if this frame can receive keyboard input.
-        /** \param bIsKeyboardEnabled 'true' to enable
-        */
-        void enable_keyboard(bool bIsKeyboardEnabled);
 
         /// Sets if this frame can receive mouse input (click & move).
         /** \param bIsMouseEnabled 'true' to enable
@@ -652,6 +657,20 @@ namespace gui
         */
         frame_strata get_frame_strata() const;
 
+        /// Returns this frame's top-level parent.
+        /** \return This frame's top-level parent
+        */
+        utils::observer_ptr<const frame> get_top_level_parent() const;
+
+        /// Returns this frame's top-level parent.
+        /** \return This frame's top-level parent
+        */
+        utils::observer_ptr<frame> get_top_level_parent()
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame*>(this)->get_top_level_parent());
+        }
+
         /// Returns this frame's backdrop.
         /** \return This frame's backdrop
         */
@@ -746,10 +765,31 @@ namespace gui
         */
         bool is_in_region(const vector2f& mPosition) const override;
 
-        /// Checks if this frame can receive keyboard input.
-        /** \return 'true' if this frame can receive keyboard input
+        /// Find the topmost frame matching the provided predicate at the provided position.
+        /** \param mPosition  The coordinates to test
+        *   \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, if any, and nullptr otherwise.
+        *   \note For most frames, this can either return 'this' or 'nullptr'. For
+        *         frames responsible for rendering other frames (such as @ref scroll_frame),
+        *         this can return other frames.
         */
-        bool is_keyboard_enabled() const;
+        virtual utils::observer_ptr<const frame> find_topmost_at_position(const vector2f& mPosition,
+            const std::function<bool(const frame&)>& mPredicate) const;
+
+        /// Find the topmost frame matching the provided predicate at the provided position.
+        /** \param mPosition  The coordinates to test
+        *   \param mPredicate A function returning 'true' if the frame can be selected
+        *   \return The topmost frame, if any, and nullptr otherwise.
+        *   \note For most frames, this can either return 'this' or 'nullptr'. For
+        *         frames responsible for rendering other frames (such as @ref scroll_frame),
+        *         this can return other frames.
+        */
+        utils::observer_ptr<frame> find_topmost_at_position(const vector2f& mPosition,
+            const std::function<bool(const frame&)>& mPredicate)
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const frame*>(this)->find_topmost_at_position(mPosition, mPredicate));
+        }
 
         /// Checks if this frame can receive mouse movement input.
         /** \return 'true' if this frame can receive mouse movement input
@@ -765,6 +805,11 @@ namespace gui
         /** \return 'true' if this frame can receive mouse wheel input
         */
         bool is_mouse_wheel_enabled() const;
+
+        /// Checks if this frame is registered for drag events with the provided mouse button.
+        /** \return 'true' if this frame is registered for drag events
+        */
+        bool is_registered_for_drag(const std::string& sButton) const;
 
         /// Checks if this frame can be moved.
         /** \return 'true' if this frame can be moved
@@ -1013,6 +1058,10 @@ namespace gui
 
         /// Sets if this frame is at top level.
         /** \param bIsTopLevel 'true' to put the frame at top level
+        *   \note A top-level frame will be raised to the foreground if it or
+        *         any of its children are clicked. This should typically be
+        *         set to 'true' for any "dialog" or "window" frame, which
+        *         can be moved around, and not for "element" frames (buttons, etc.).
         */
         void set_top_level(bool bIsTopLevel);
 
@@ -1052,6 +1101,29 @@ namespace gui
         *         anymore, even if they are still marked as shown.
         */
         void hide() override;
+
+        /// Enables automatic focus when this frame is shown or raised.
+        /** \param bEnable 'true' to enable auto focus
+        */
+        void enable_auto_focus(bool bEnable);
+
+        /// Checks if automatic focus is enabled.
+        /** \return 'true' if automatic focus is enabled
+        */
+        bool is_auto_focus_enabled() const;
+
+        /// Asks for focus for this frame.
+        /** \param bFocus 'true' to ask for focus, 'false' to release it
+        *   \note Focus can be lost if another frame asks for focus later.
+        *         The focus will be restored automaticallly when that other frame
+        *         releases focus, or it can be requested again by calling set_focus(true).
+        */
+        void set_focus(bool bFocus);
+
+        /// Check if this frame currently has focus.
+        /** \return 'true' if the frame has focus, 'false' otherwise
+        */
+        bool has_focus() const;
 
         /// Flags this object as rendered by another object.
         /** \param pRenderer The object that will take care of rendering this widget
@@ -1129,6 +1201,11 @@ namespace gui
         */
         void notify_invisible() override;
 
+        /// Notifies this frame that it has received or lost focus.
+        /** \param bFocus 'true' if focus is received, 'false' if lost
+        */
+        virtual void notify_focus(bool bFocus);
+
         /// Notifies this widget that it has been fully loaded.
         /** \note Calls the "OnLoad" script.
         */
@@ -1184,9 +1261,6 @@ namespace gui
         utils::observer_ptr<frame> parse_child_(const layout_node& mNode,
             const std::string& sType);
 
-        virtual void notify_top_level_parent_(bool bTopLevel,
-            const utils::observer_ptr<frame>& pParent);
-
         void check_position_();
 
         void add_level_(int iAmount);
@@ -1217,11 +1291,9 @@ namespace gui
         std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
 
-        int iLevel_ = 0;
-
-        frame_strata               mStrata_ = frame_strata::MEDIUM;
-        bool                       bIsTopLevel_ = false;
-        utils::observer_ptr<frame> pTopLevelParent_ = nullptr;
+        int          iLevel_ = 0;
+        frame_strata mStrata_ = frame_strata::MEDIUM;
+        bool         bIsTopLevel_ = false;
 
         utils::observer_ptr<frame_renderer> pRenderer_ = nullptr;
 
@@ -1253,12 +1325,13 @@ namespace gui
         float fScale_ = 1.0f;
 
         bool bMouseInFrame_ = false;
-        bool bMouseInTitleRegion_ = false;
-        vector2f mMousePos_;
 
         utils::owner_ptr<region> pTitleRegion_ = nullptr;
 
         bool bMouseDraggedInFrame_ = false;
+
+        bool bFocus_ = false;
+        bool bAutoFocus_ = false;
     };
 }
 }

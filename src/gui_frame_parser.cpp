@@ -70,10 +70,10 @@ void frame::parse_attributes_(const layout_node& mNode)
         enable_mouse(pAttr->get_value<bool>());
     if (const layout_attribute* pAttr = mNode.try_get_attribute("enableMouseWheel"))
         enable_mouse_wheel(pAttr->get_value<bool>());
-    if (const layout_attribute* pAttr = mNode.try_get_attribute("enableKeyboard"))
-        enable_keyboard(pAttr->get_value<bool>());
     if (const layout_attribute* pAttr = mNode.try_get_attribute("clampedToScreen"))
         set_clamped_to_screen(pAttr->get_value<bool>());
+    if (const layout_attribute* pAttr = mNode.try_get_attribute("autoFocus"))
+        enable_auto_focus(pAttr->get_value<bool>());
 }
 
 void frame::parse_resize_bounds_node_(const layout_node& mNode)

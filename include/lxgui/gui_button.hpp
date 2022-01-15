@@ -80,14 +80,6 @@ namespace gui
         */
         void on_script(const std::string& sScriptName, const event_data& mData = event_data{}) override;
 
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
-
         /// Copies an uiobject's parameters into this Button (inheritance).
         /** \param mObj The uiobject to copy
         */

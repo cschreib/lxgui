@@ -170,27 +170,12 @@ namespace gui
         */
         bool are_clicks_outside_thumb_allowed() const;
 
-        /// Checks if the provided coordinates are in the frame.
+        /// Checks if the provided coordinates are in the slider.
         /** \param mPosition The coordinate to test
-        *   \return 'true' if the provided coordinates are in the frame
-        *   \note The slider version of this function also checks if the
-        *         mouse is over the thumb texture.
+        *   \return 'true' if the provided coordinates are in the slider, its title region,
+        *           or its thumb texture
         */
-        bool is_in_frame(const vector2f& mPosition) const override;
-
-        /// Tells this frame it is being overed by the mouse.
-        /** \param bMouseInFrame 'true' if the mouse is above this frame
-        *   \param mMousePos     The mouse coordinate
-        */
-        void notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos) override;
-
-        /// Calls the on_event script.
-        /** \param mEvent The Event that occured
-        *   \note Triggered callbacks could destroy the frame. If you need
-        *         to use the frame again after calling this function, use
-        *         the helper class alive_checker.
-        */
-        void on_event(const event& mEvent) override;
+        bool is_in_region(const vector2f& mPosition) const override;
 
         /// Returns this widget's Lua glue.
         void create_glue() override;
@@ -226,7 +211,6 @@ namespace gui
         utils::observer_ptr<texture> pThumbTexture_ = nullptr;
 
         bool bThumbMoved_ = false;
-        bool bMouseInThumb_ = false;
     };
 }
 }

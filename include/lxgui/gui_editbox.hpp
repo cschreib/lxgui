@@ -5,7 +5,7 @@
 #include <lxgui/utils.hpp>
 #include <lxgui/utils_string.hpp>
 #include "lxgui/input_keys.hpp"
-#include "lxgui/gui_focusframe.hpp"
+#include "lxgui/gui_frame.hpp"
 #include "lxgui/gui_color.hpp"
 #include "lxgui/gui_bounds2.hpp"
 
@@ -114,10 +114,6 @@ namespace gui
     *   edit box. Will always be preceeded by `OnTextChanged`.
     *   - `OnCursorChanged`: Triggered whenever the position of the edit
     *   cursor is changed (not yet implemented).
-    *   - `OnEditFocusGained`: Triggered when the edit box gains focus,
-    *   see @{FocusFrame:set_focus}.
-    *   - `OnEditFocusLost`: Triggered when the edit box looses focus,
-    *   see @{FocusFrame:set_focus}.
     *   - `OnEnterPressed`: Triggered when the `Enter` (or `Return`) key
     *   is pressed while the edit box is focussed. This captures both
     *   the main keyboard key and the smaller one on the numpad.
@@ -137,9 +133,9 @@ namespace gui
     *   - `OnTextSet`: Triggered by edit_box::set_text. Will always be
     *   followed by `OnTextChanged`.
     */
-    class edit_box : public focus_frame
+    class edit_box : public frame
     {
-        using base = focus_frame;
+        using base = frame;
 
     public :
 
@@ -373,6 +369,11 @@ namespace gui
         */
         void set_font(const std::string& sFontName, float fHeight);
 
+        /// Notifies this frame that it has received or lost focus.
+        /** \param bFocus 'true' if focus is received, 'false' if lost
+        */
+        void notify_focus(bool bFocus) override;
+
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
@@ -385,8 +386,6 @@ namespace gui
         static constexpr const char* CLASS_NAME = "EditBox";
 
     protected :
-
-        void notify_focus_(bool bFocus) override;
 
         void parse_attributes_(const layout_node& mNode) override;
         void parse_all_nodes_before_children_(const layout_node& mNode) override;
@@ -429,20 +428,21 @@ namespace gui
         std::string sComboKey_;
 
         utils::observer_ptr<texture> pHighlight_ = nullptr;
-        color mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
-        std::size_t  uiSelectionStartPos_ = 0u;
-        std::size_t  uiSelectionEndPos_ = 0u;
-        bool  bSelectedText_ = false;
+        color                        mHighlightColor_ = color(1.0f, 1.0f, 1.0f, 0.5f);
+        std::size_t                  uiSelectionStartPos_ = 0u;
+        std::size_t                  uiSelectionEndPos_ = 0u;
+        bool                         bSelectedText_ = false;
 
         utils::observer_ptr<texture> pCarret_ = nullptr;
-        double         dBlinkSpeed_ = 0.5;
-        periodic_timer mCarretTimer_;
+        double                       dBlinkSpeed_ = 0.5;
+        periodic_timer               mCarretTimer_;
 
         std::vector<utils::ustring> lHistoryLineList_;
         std::size_t                 uiMaxHistoryLines_ = std::numeric_limits<std::size_t>::max();
         std::size_t                 uiCurrentHistoryLine_ = std::numeric_limits<std::size_t>::max();
 
         utils::observer_ptr<font_string> pFontString_ = nullptr;
+
         bounds2f lTextInsets_ = bounds2f::ZERO;
     };
 }

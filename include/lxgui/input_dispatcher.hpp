@@ -65,6 +65,21 @@ namespace input
         */
         bool is_mouse_blocked() const;
 
+        /// Enable/disable keyboard inputs
+        /** \param bBlock 'true' to block keyboard input events from being generated, 'true' to allow all
+        *   \note This only blocks keyboard events; the state of the keyboard and keyboard can always be
+        *         queried using @ref key_is_down, @ref keyboard_is_down, etc. Use
+        *         @ref is_keyboard_blocked() before using direct state queries if you want to fully
+        *         honor keyboard input blocking.
+        */
+        void block_keyboard_events(bool bBlock);
+
+        /// Check if keyboard events are blocked
+        /** \return 'true' if blocked, 'false' otherwise
+        *   \see block_events
+        */
+        bool is_keyboard_blocked() const;
+
         /// Checks if any key is being pressed.
         /** \param bForce 'true' to bypass focus (see set_focus())
         *   \return 'true' if any key is being pressed
@@ -148,51 +163,6 @@ namespace input
         */
         double get_doubleclick_time() const;
 
-        /// Sets whether keyboard input should be focussed.
-        /** \param pReceiver The event receiver that requires focus
-        *   \note This function will forward all keyboard events to the new receiver.
-        *         This is usefull to implement an edit box: the user can type letters using keys
-        *         that can be bound to special actions in the game, and these should be prevented
-        *         from happening. This can be achieved by calling this function and using the
-        *         edit box as second argument, which will ensure that input events are only sent
-        *         to the edit box exclusively.
-        */
-        void request_keyboard_focus(utils::observer_ptr<gui::event_receiver> pReceiver);
-
-        /// Give up focus of keyboard input.
-        /** \param mReceiver The event receiver that releases focus
-        */
-        void release_keyboard_focus(const gui::event_receiver& mReceiver);
-
-        /// Sets whether mouse input should be focussed.
-        /** \param pReceiver The event receiver that requires focus
-        *   \note This function will forward all mouse events to the new receiver.
-        */
-        void request_mouse_focus(utils::observer_ptr<gui::event_receiver> pReceiver);
-
-        /// Give up focus of mouse input.
-        /** \param mReceiver The event receiver that releases focus
-        */
-        void release_mouse_focus(const gui::event_receiver& mReceiver);
-
-        /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
-        /** \return 'true' if input is focused
-        *   \note See set_keyboard_focus() for more information. If you use some other source
-        *         of input than this dispatcher, you should check the result of this
-        *         function before actually using it (if the dispatcher is not focussed,
-        *         it should not provide any input).
-        */
-        bool is_keyboard_focused() const;
-
-        /// Checks whether mouse input is focused somewhere, to prevent multiple inputs.
-        /** \return 'true' if input is focused
-        *   \note See set_mouse_focus() for more information. If you use some other source
-        *         of input than this dispatcher, you should check the result of this
-        *         function before actually using it (if the dispatcher is not focussed,
-        *         it should not provide any input).
-        */
-        bool is_mouse_focused() const;
-
         /// Sets the scaling factor applied to the interface.
         /** \param fScalingFactor The new scaling factor (default: 1)
         *   \note This is the conversion factor between UI units and pixels in the display.
@@ -219,12 +189,6 @@ namespace input
 
         void fire_event_(const gui::event& mEvent);
 
-        gui::event_receiver* get_keyboard_focus_() const;
-        gui::event_receiver* get_mouse_focus_() const;
-
-        std::vector<utils::observer_ptr<gui::event_receiver>> lKeyboardFocusStack_;
-        std::vector<utils::observer_ptr<gui::event_receiver>> lMouseFocusStack_;
-
         gui::event_emitter& mEventEmitter_;
 
         using timer = std::chrono::high_resolution_clock;
@@ -239,7 +203,9 @@ namespace input
         mouse_button  mMouseDragButton_ = mouse_button::LEFT;
 
         source& mSource_;
+
         bool bMouseBlocked_ = false;
+        bool bKeyboardBlocked_ = false;
     };
 }
 }

@@ -209,9 +209,6 @@ void scroll_frame::update(float fDelta)
             bUpdateScrollRange_ = false;
         }
 
-        if (pScrollChild_)
-            update_scroll_child_input_();
-
         if (pScrollChild_ && pScrollRenderTarget_ && bRedrawScrollRenderTarget_)
         {
             render_scroll_strata_list_();
@@ -236,32 +233,6 @@ void scroll_frame::update_scroll_range_()
         on_script("OnScrollRangeChanged");
         if (!mChecker.is_alive())
             return;
-    }
-}
-
-void scroll_frame::update_scroll_child_input_()
-{
-    const vector2f mOffset = mMousePos_;
-
-    if (bMouseInScrollTexture_)
-    {
-        utils::observer_ptr<frame> pHoveredFrame = find_hovered_frame(mOffset);
-
-        if (pHoveredFrame != pHoveredScrollChild_)
-        {
-            if (pHoveredScrollChild_)
-                pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
-
-            pHoveredScrollChild_ = pHoveredFrame;
-        }
-
-        if (pHoveredScrollChild_)
-            pHoveredScrollChild_->notify_mouse_in_frame(true, mOffset);
-    }
-    else if (pHoveredScrollChild_)
-    {
-        pHoveredScrollChild_->notify_mouse_in_frame(false, mOffset);
-        pHoveredScrollChild_ = nullptr;
     }
 }
 
@@ -320,18 +291,18 @@ void scroll_frame::render_scroll_strata_list_()
     mRenderer.end();
 }
 
-bool scroll_frame::is_in_frame(const vector2f& mPosition) const
+utils::observer_ptr<const frame> scroll_frame::find_topmost_at_position(const vector2f& mPosition,
+    const std::function<bool(const frame&)>& mPredicate) const
 {
-    if (pScrollTexture_)
-        return base::is_in_frame(mPosition) || pScrollTexture_->is_in_region(mPosition);
-    else
-        return base::is_in_frame(mPosition);
-}
+    if (is_in_region(mPosition) && mPredicate(*this))
+    {
+        if (auto pHoveredFrame = find_hovered_frame(mPosition, mPredicate))
+            return pHoveredFrame;
 
-void scroll_frame::notify_mouse_in_frame(bool bMouseInFrame, const vector2f& mMousePos)
-{
-    base::notify_mouse_in_frame(bMouseInFrame, mMousePos);
-    bMouseInScrollTexture_ = (bMouseInFrame && pScrollTexture_ && pScrollTexture_->is_in_region(mMousePos));
+        return observer_from(this);
+    }
+
+    return nullptr;
 }
 
 void scroll_frame::notify_strata_needs_redraw(frame_strata mStrata)
@@ -354,29 +325,12 @@ void scroll_frame::notify_rendered_frame(const utils::observer_ptr<frame>& pFram
 
     frame_renderer::notify_rendered_frame(pFrame, bRendered);
 
-    if (!bRendered)
-    {
-        if (pFrame == pHoveredScrollChild_)
-        {
-            pHoveredScrollChild_->notify_mouse_in_frame(false, vector2f::ZERO);
-            pHoveredScrollChild_ = nullptr;
-        }
-    }
-
     bRedrawScrollRenderTarget_ = true;
 }
 
 vector2f scroll_frame::get_target_dimensions() const
 {
     return get_apparent_dimensions();
-}
-
-void scroll_frame::update_borders_()
-{
-    base::update_borders_();
-
-    if (pScrollChild_)
-        pScrollChild_->notify_borders_need_update();
 }
 
 }
