@@ -65,7 +65,7 @@
 *   enabling. In particular:
 *
 *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-*   focus, see @{Frame:set_focus}.
+*   focus, see @{Frame:set_focus}, or @{Frame:enable_key_capture}.
 *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
 *   `OnMouseUp`, `OnMouseDown`) require @{Frame:enable_mouse_click}.
 *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
@@ -114,15 +114,25 @@
 *   is hidden indirectly (for example if its parent is itself hidden). This
 *   will only fire if the frame was previously shown.
 *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
-*   trigger if the frame has focus (see @{Frame:set_focus}). This event provides
-*   two arguments to the registered callback: a number identifying the key, and
-*   the human-readable name of the key. If you need to react to key presses
-*   without focus, use @{set_key_binding}.
+*   trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+*   been registered for capture using @{Frame:enable_key_capture}. If no
+*   frame is focussed, only the topmost frame with
+*   @{Frame:enable_key_capture} will receive the event. If no frame has
+*   captured the key, then the key is tested for existing key bindings (see
+*   @{set_key_binding}). This event provides two arguments to the registered
+*   callback: a number identifying the key, and the human-readable name of the
+*   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+*   the @{set_key_binding}.
 *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
-*   trigger if the frame has focus (see @{Frame:set_focus}). This event provides
-*   two arguments to the registered callback: a number identifying the key, and
-*   the human-readable name of the key. If you need to react to key presses
-*   without focus, use @{set_key_binding}.
+*   trigger if the frame has focus (see @{Frame:set_focus}) or if the key has
+*   been registered for capture using @{Frame:enable_key_capture}. If no
+*   frame is focussed, only the topmost frame with
+*   @{Frame:enable_key_capture} will receive the event. If no frame has
+*   captured the key, then the key is tested for existing key bindings (see
+*   @{set_key_binding}). This event provides two arguments to the registered
+*   callback: a number identifying the key, and the human-readable name of the
+*   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+*   the @{set_key_binding}.
 *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
 *   screen occupied by the frame. Note: this only takes into account the
 *   position and size of the frame and its title region, but not the space
@@ -141,24 +151,22 @@
 *   'addons.txt' file. In all other cases, frames or regions will not yet
 *   be loaded when `OnLoad` is called, hence they cannot be refered to
 *   (directly or indirectly).
-*   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
+*   - `OnMouseDown`: Triggered when any mouse button is pressedand this frame is
+*   the topmost mouse-click-enabled frame under the mouse pointer. Will not
 *   trigger if the frame is hidden. This event provides one argument to
 *   the registered callback: a string identifying the mouse button
-*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
-*   only fire for the top-most frame under the mouse cursor which is
-*   mouse-click-enabled.
-*   - `OnMouseUp`: Triggered when any mouse button is released. Will not
+*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+*   - `OnMouseUp`: Triggered when any mouse button is releasedand this frame is
+*   the topmost mouse-click-enabled frame under the mouse pointer. Will not
 *   trigger if the frame is hidden. This event provides one argument to
 *   the registered callback: a string identifying the mouse button
-*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
-*   only fire for the top-most frame under the mouse cursor which is
-*   mouse-click-enabled.
-*   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
+*   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+*   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
+*   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
 *   provides one argument to the registered callback: a number indicating by
 *   how many "notches" the wheel has turned in this event. A positive value
 *   means the wheel has been moved "away" from the user (this would normally
-*   scroll *up* in a document). This even will only fire for the top-most
-*   frame under the mouse cursor which is mouse-wheel-enabled.
+*   scroll *up* in a document).
 *   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
 *   dragged onto the frame, and when one of the mouse button registered for
 *   dragging (see @{Frame:register_for_drag}) is released. This enables
@@ -308,6 +316,10 @@ void frame::register_on_lua(sol::state& mLua)
     /** @function enable_mouse_wheel
     */
     mClass.set_function("enable_mouse_wheel", member_function<&frame::enable_mouse_wheel>());
+
+    /** @function enable_key_capture
+    */
+    mClass.set_function("enable_key_capture", member_function<&frame::enable_key_capture>());
 
     /** @function get_backdrop
     */
@@ -501,6 +513,10 @@ void frame::register_on_lua(sol::state& mLua)
     */
     mClass.set_function("is_mouse_wheel_enabled", member_function<&frame::is_mouse_wheel_enabled>());
 
+    /** @function is_key_capture_enabled
+    */
+    mClass.set_function("is_key_capture_enabled", member_function<&frame::is_key_capture_enabled>());
+
     /** @function is_movable
     */
     mClass.set_function("is_movable", member_function<&frame::is_movable>());
@@ -520,10 +536,6 @@ void frame::register_on_lua(sol::state& mLua)
     /** @function raise
     */
     mClass.set_function("raise", member_function<&frame::raise>());
-
-    /** @function register_all_events
-    */
-    mClass.set_function("register_all_events", member_function<&frame::register_all_events>());
 
     /** @function register_event
     */
@@ -727,10 +739,6 @@ void frame::register_on_lua(sol::state& mLua)
         mSelf.stop_moving();
         mSelf.stop_sizing();
     });
-
-    /** @function unregister_all_events
-    */
-    mClass.set_function("unregister_all_events", member_function<&frame::unregister_all_events>());
 
     /** @function unregister_event
     */

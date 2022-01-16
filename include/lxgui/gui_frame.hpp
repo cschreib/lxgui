@@ -105,7 +105,7 @@ namespace gui
     *   However, some hard-coded events require explicit enabling. In particular:
     *
     *   - Events related to keyboard input (`OnKeyDown`, `OnKeyUp`) require
-    *   focus, see @ref frame::set_focus.
+    *   focus, see @ref frame::set_focus, or @ref frame::enable_key_capture.
     *   - Events related to mouse click input (`OnDragStart`, `OnDragStop`,
     *   `OnMouseUp`, `OnMouseDown`) require frame::enable_mouse_click.
     *   - Events related to mouse move input (`OnEnter`, `OnLeave`)
@@ -154,15 +154,25 @@ namespace gui
     *   is hidden indirectly (for example if its parent is itself hidden). This
     *   will only fire if the frame was previously shown.
     *   - `OnKeyDown`: Triggered when any keyboard key is pressed. Will only
-    *   trigger if the frame has focus (see frame::set_focus). This event provides
-    *   two arguments to the registered callback: a number identifying the key, and
-    *   the human-readable name of the key. If you need to react to key presses
-    *   without focus, use the @ref keybinder.
+    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+    *   been registered for capture using @ref frame::enable_key_capture. If no
+    *   frame is focussed, only the topmost frame with
+    *   @ref frame::enable_key_capture will receive the event. If no frame has
+    *   captured the key, then the key is tested for existing key bindings (see
+    *   @ref keybinder). This event provides two arguments to the registered
+    *   callback: a number identifying the key, and the human-readable name of the
+    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+    *   the @ref keybinder.
     *   - `OnKeyUp`: Triggered when any keyboard key is released. Will only
-    *   trigger if the frame has focus (see frame::set_focus). This event provides
-    *   two arguments to the registered callback: a number identifying the key, and
-    *   the human-readable name of the key. If you need to react to key presses
-    *   without focus, use the @ref keybinder.
+    *   trigger if the frame has focus (see @ref frame::set_focus) or if the key has
+    *   been registered for capture using @ref frame::enable_key_capture. If no
+    *   frame is focussed, only the topmost frame with
+    *   @ref frame::enable_key_capture will receive the event. If no frame has
+    *   captured the key, then the key is tested for existing key bindings (see
+    *   @ref keybinder). This event provides two arguments to the registered
+    *   callback: a number identifying the key, and the human-readable name of the
+    *   key. If you need to react to simultaneous key presses (e.g., Shift+A), use
+    *   the @ref keybinder.
     *   - `OnLeave`: Triggered when the mouse pointer leaves the area of the
     *   screen occupied by the frame. Note: this only takes into account the
     *   position and size of the frame and its title region, but not the space
@@ -174,24 +184,22 @@ namespace gui
     *   - `OnLoad`: Triggered just after the frame is created. This is where
     *   you would normally register for events and specific inputs, set up
     *   initial states for extra logic, or do localization.
-    *   - `OnMouseDown`: Triggered when any mouse button is pressed. Will not
+    *   - `OnMouseDown`: Triggered when any mouse button is pressed and this frame is
+    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
-    *   only fire for the top-most frame under the mouse cursor which is
-    *   mouse-click-enabled.
-    *   - `OnMouseUp`: Triggered when any mouse button is released. Will not
+    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+    *   - `OnMouseUp`: Triggered when any mouse button is released and this frame is
+    *   the topmost mouse-click-enabled frame under the mouse pointer. Will not
     *   trigger if the frame is hidden. This event provides one argument to
     *   the registered callback: a string identifying the mouse button
-    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`). This event will
-    *   only fire for the top-most frame under the mouse cursor which is
-    *   mouse-click-enabled.
-    *   - `OnMouseWheel`: Triggered when the mouse wheel is moved. This event
+    *   (`"LeftButton"`, `"RightButton"`, or `"MiddleButton"`).
+    *   - `OnMouseWheel`: Triggered when the mouse wheel is moved and this frame is
+    *   the topmost mouse-wheel-enabled frame under the mouse pointer. This event
     *   provides one argument to the registered callback: a number indicating by
     *   how many "notches" the wheel has turned in this event. A positive value
     *   means the wheel has been moved "away" from the user (this would normally
-    *   scroll *up* in a document). This even will only fire for the top-most
-    *   frame under the mouse cursor which is mouse-wheel-enabled.
+    *   scroll *up* in a document).
     *   - `OnReceiveDrag`: Triggered when the mouse pointer was previously
     *   dragged onto the frame, and when one of the mouse button registered for
     *   dragging (see frame::register_for_drag) is released. This enables
@@ -366,6 +374,14 @@ namespace gui
         /** \param bIsMouseWheelEnabled 'true' to enable
         */
         void enable_mouse_wheel(bool bIsMouseWheelEnabled);
+
+        /// Sets if this frame can receive keyboard input from a specific key.
+        /** \param sKey              The key to capture
+        *   \param bIsCaptureEnabled 'true' to enable
+        *   \note If the frame captures the key, other frames below it will
+        *         not be able to receive the input from this key.
+        */
+        void enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled);
 
         /// Checks if this frame has a script defined.
         /** \param sScriptName The name of the script to check
@@ -809,6 +825,12 @@ namespace gui
         */
         bool is_registered_for_drag(const std::string& sButton) const;
 
+        /// Checks if this frame can receive keyboard input from a specific key.
+        /** \param sKey The key to check
+        *   \return 'true' if this frame can receive keyboard input from this key
+        */
+        bool is_key_capture_enabled(const std::string& sKey) const;
+
         /// Checks if this frame can be moved.
         /** \return 'true' if this frame can be moved
         */
@@ -952,9 +974,6 @@ namespace gui
         *         the helper class alive_checker.
         */
         void on_event(const event& mEvent) override;
-
-        /// Tells this frame to react to every event in the game.
-        void register_all_events();
 
         /// Tells this frame to react to a certain event.
         /** \param sEventName The name of the event
@@ -1218,9 +1237,6 @@ namespace gui
         /// Tells this widget that the global interface scaling factor has changed.
         void notify_scaling_factor_updated() override;
 
-        /// Tells the frame not to react to all events.
-        void unregister_all_events();
-
         /// Tells the frame not to react to a certain event.
         /** \param sEventName The name of the event
         */
@@ -1286,8 +1302,8 @@ namespace gui
         std::unordered_map<std::string, std::shared_ptr<script_handler_list>> lScriptHandlerList_;
 
         std::vector<std::string> lQueuedEventList_;
-        std::set<std::string>    lRegEventList_;
         std::set<std::string>    lRegDragList_;
+        std::set<std::string>    lRegKeyList_;
 
         int          iLevel_ = 0;
         frame_strata mStrata_ = frame_strata::MEDIUM;
@@ -1297,9 +1313,6 @@ namespace gui
 
         std::unique_ptr<backdrop> pBackdrop_;
 
-        bool bHasAllEventsRegistred_ = false;
-
-        bool bIsKeyboardEnabled_ = false;
         bool bIsMouseClickEnabled_ = false;
         bool bIsMouseMoveEnabled_ = false;
         bool bIsMouseWheelEnabled_ = false;

@@ -456,8 +456,7 @@ void uiroot::on_event(const event& mEvent)
             pTopmostFrame = find_topmost_frame(
                 [&](const frame& mFrame)
                 {
-                    // return mFrame.is_key_captured(sKeyName);
-                    return true;
+                    return mFrame.is_key_capture_enabled(sKeyName);
                 }
             );
         }

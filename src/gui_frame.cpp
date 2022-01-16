@@ -552,6 +552,14 @@ void frame::enable_mouse_wheel(bool bIsMouseWheelEnabled)
     bIsMouseWheelEnabled_ = bIsMouseWheelEnabled;
 }
 
+void frame::enable_key_capture(const std::string& sKey, bool bIsCaptureEnabled)
+{
+    if (bIsCaptureEnabled)
+        lRegKeyList_.erase(sKey);
+    else
+        lRegKeyList_.insert(sKey);
+}
+
 void frame::notify_loaded()
 {
     base::notify_loaded();
@@ -951,6 +959,11 @@ bool frame::is_registered_for_drag(const std::string& sButton) const
     return lRegDragList_.find(sButton) != lRegDragList_.end();
 }
 
+bool frame::is_key_capture_enabled(const std::string& sKey) const
+{
+    return lRegKeyList_.find(sKey) != lRegKeyList_.end();
+}
+
 bool frame::is_movable() const
 {
     return bIsMovable_;
@@ -1194,8 +1207,7 @@ void frame::on_event(const event& mEvent)
 {
     alive_checker mChecker(*this);
 
-    if (has_script("OnEvent") &&
-        (lRegEventList_.find(mEvent.get_name()) != lRegEventList_.end() || bHasAllEventsRegistred_))
+    if (has_script("OnEvent"))
     {
         // ADDON_LOADED should only be fired if it's this frame's addon
         if (mEvent.get_name() == "ADDON_LOADED")
@@ -1258,21 +1270,12 @@ void frame::on_script(const std::string& sScriptName, const event_data& mData)
     mAddonRegistry.set_current_addon(pOldAddOn);
 }
 
-void frame::register_all_events()
-{
-    bHasAllEventsRegistred_ = true;
-    lRegEventList_.clear();
-}
-
 void frame::register_event(const std::string& sEvent)
 {
-    if (bHasAllEventsRegistred_)
+    if (bVirtual_)
         return;
 
-    auto mInserted = lRegEventList_.insert(sEvent);
-
-    if (!bVirtual_ && mInserted.second)
-        event_receiver::register_event(sEvent);
+    event_receiver::register_event(sEvent);
 }
 
 void frame::register_for_drag(const std::vector<std::string>& lButtonList)
@@ -1724,25 +1727,12 @@ void frame::hide()
         get_manager().get_root().notify_hovered_frame_dirty();
 }
 
-void frame::unregister_all_events()
-{
-    bHasAllEventsRegistred_ = false;
-    lRegEventList_.clear();
-}
-
 void frame::unregister_event(const std::string& sEvent)
 {
-    if (bHasAllEventsRegistred_)
+    if (bVirtual_)
         return;
 
-    auto mIter = lRegEventList_.find(sEvent);
-    if (mIter == lRegEventList_.end())
-        return;
-
-    lRegEventList_.erase(sEvent);
-
-    if (!bVirtual_)
-        event_receiver::unregister_event(sEvent);
+    event_receiver::unregister_event(sEvent);
 }
 
 void frame::notify_mouse_in_frame(bool bMouseInframe, const vector2f& mPosition)
