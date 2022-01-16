@@ -180,11 +180,28 @@ namespace gui
         */
         void release_focus(const frame& mReceiver);
 
+        /// Release all requested focus.
+        void clear_focus();
+
         /// Checks whether keyboard input is focused somewhere, to prevent multiple inputs.
         /** \return 'true' if input is focused
         *   \note See set_focus() for more information.
         */
         bool is_focused() const;
+
+        /// Returns the currently focussed frame (nullptr if none).
+        /** \return The currently focussed frame (nullptr if none)
+        */
+        utils::observer_ptr<const frame> get_focussed_frame() const;
+
+        /// Returns the currently focussed frame (nullptr if none).
+        /** \return The currently focussed frame (nullptr if none)
+        */
+        utils::observer_ptr<frame> get_focussed_frame()
+        {
+            return utils::const_pointer_cast<frame>(
+                const_cast<const uiroot*>(this)->get_focussed_frame());
+        }
 
         /// Returns this widget's manager.
         /** \return This widget's manager
@@ -241,9 +258,6 @@ namespace gui
         void update_hovered_frame_();
         void set_hovered_frame_(utils::observer_ptr<frame> pFrame,
             const vector2f& mMousePos = vector2f::ZERO);
-
-        void clear_focus_();
-        utils::observer_ptr<frame> get_focus_() const;
 
         manager&  mManager_;
         renderer& mRenderer_;

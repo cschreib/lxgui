@@ -413,8 +413,8 @@ void uiroot::on_event(const event& mEvent)
 
         if (mEvent.get_name() == "MOUSE_PRESSED")
         {
-            if (!pHoveredFrame || pHoveredFrame != get_focus_())
-                clear_focus_();
+            if (!pHoveredFrame || pHoveredFrame != get_focussed_frame())
+                clear_focus();
         }
 
         if (!pHoveredFrame)
@@ -448,7 +448,7 @@ void uiroot::on_event(const event& mEvent)
         std::string sKeyName = std::string(input::get_key_codename(mKey));
 
         // First, give priority to the focussed frame
-        utils::observer_ptr<frame> pTopmostFrame = get_focus_();
+        utils::observer_ptr<frame> pTopmostFrame = get_focussed_frame();
 
         // TODO:
         // If no focussed frame, look top-down for a frame that captures this key
@@ -497,7 +497,7 @@ void uiroot::on_event(const event& mEvent)
     }
     else if (mEvent.get_name() == "TEXT_ENTERED")
     {
-        if (auto pFocus = get_focus_())
+        if (auto pFocus = get_focussed_frame())
         {
             std::uint32_t uiChar = mEvent.get<std::uint32_t>(0);
             event_data mData;
@@ -714,9 +714,9 @@ void request_focus_to_list(utils::observer_ptr<frame> pReceiver,
 
 void uiroot::request_focus(utils::observer_ptr<frame> pReceiver)
 {
-    auto pOldFocus = get_focus_();
+    auto pOldFocus = get_focussed_frame();
     request_focus_to_list(std::move(pReceiver), lFocusStack_);
-    auto pNewFocus = get_focus_();
+    auto pNewFocus = get_focussed_frame();
 
     if (pOldFocus != pNewFocus)
     {
@@ -727,14 +727,14 @@ void uiroot::request_focus(utils::observer_ptr<frame> pReceiver)
             pNewFocus->notify_focus(true);
     }
 
-    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focus_() != nullptr);
+    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focussed_frame() != nullptr);
 }
 
 void uiroot::release_focus(const frame& mReceiver)
 {
-    auto pOldFocus = get_focus_();
+    auto pOldFocus = get_focussed_frame();
     release_focus_to_list(mReceiver, lFocusStack_);
-    auto pNewFocus = get_focus_();
+    auto pNewFocus = get_focussed_frame();
 
     if (pOldFocus != pNewFocus)
     {
@@ -745,12 +745,34 @@ void uiroot::release_focus(const frame& mReceiver)
             pNewFocus->notify_focus(true);
     }
 
-    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focus_() != nullptr);
+    get_manager().get_world_input_dispatcher().block_keyboard_events(get_focussed_frame() != nullptr);
+}
+
+void uiroot::clear_focus()
+{
+    auto pOldFocus = get_focussed_frame();
+    lFocusStack_.clear();
+
+    if (pOldFocus)
+        pOldFocus->notify_focus(false);
+
+    get_manager().get_world_input_dispatcher().block_keyboard_events(false);
 }
 
 bool uiroot::is_focused() const
 {
-    return get_focus_() != nullptr;
+    return get_focussed_frame() != nullptr;
+}
+
+utils::observer_ptr<const frame> uiroot::get_focussed_frame() const
+{
+    for (const auto& pPtr : utils::range::reverse(lFocusStack_))
+    {
+        if (pPtr)
+            return pPtr;
+    }
+
+    return nullptr;
 }
 
 void uiroot::clear_hovered_frame_()
@@ -772,28 +794,6 @@ void uiroot::set_hovered_frame_(utils::observer_ptr<frame> pFrame, const vector2
     }
     else
         clear_hovered_frame_();
-}
-
-void uiroot::clear_focus_()
-{
-    auto pOldFocus = get_focus_();
-    lFocusStack_.clear();
-
-    if (pOldFocus)
-        pOldFocus->notify_focus(false);
-
-    get_manager().get_world_input_dispatcher().block_keyboard_events(false);
-}
-
-utils::observer_ptr<frame> uiroot::get_focus_() const
-{
-    for (const auto& pPtr : utils::range::reverse(lFocusStack_))
-    {
-        if (pPtr)
-            return pPtr;
-    }
-
-    return nullptr;
 }
 
 }
